@@ -63,7 +63,7 @@ class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
             ],
              */
             [
-                'label' => 'input_25 eval=int, default=0, range lower=-2, range upper=2',
+                'label' => 'input_25 eval=int default=0 range lower=-2 range upper=2',
                 'inputValue' => '2',
                 'expectedValue' => '2',
                 'expectedInternalValue' => '2',
@@ -71,7 +71,7 @@ class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_25 eval=int, default=0, range lower=-2, range upper=2',
+                'label' => 'input_25 eval=int default=0 range lower=-2 range upper=2',
                 'inputValue' => '-1',
                 'expectedValue' => '-1',
                 'expectedInternalValue' => '-1',

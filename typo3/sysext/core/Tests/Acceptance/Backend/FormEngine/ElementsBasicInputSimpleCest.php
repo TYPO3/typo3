@@ -100,7 +100,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_10 eval=is_in, is_in=abc123',
+                'label' => 'input_10 eval=is_in is_in=abc123',
                 'inputValue' => 'abcd1234',
                 'expectedValue' => 'abc123',
                 'expectedInternalValue' => 'abc123',
@@ -108,7 +108,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_10 eval=is_in, is_in=abc123',
+                'label' => 'input_10 eval=is_in is_in=abc123',
                 'inputValue' => 'Kasper TYPO3',
                 'expectedValue' => 'a3',
                 'expectedInternalValue' => 'a3',
