@@ -18,19 +18,11 @@ use TYPO3\CMS\Core\Cache\Backend\WincacheBackend;
 
 /**
  * Testcase for the WinCache cache backend
+ *
+ * @requires extension wincache
  */
 class WincacheBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
-    /**
-     * Sets up this testcase
-     */
-    protected function setUp()
-    {
-        if (!extension_loaded('wincache')) {
-            $this->markTestSkipped('WinCache extension was not available');
-        }
-    }
-
     /**
      * @test
      */
