@@ -208,27 +208,29 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                 ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
 
-            $result = $queryBuilder->select('pages.uid')
-                ->addSelectLiteral(
-                    $queryBuilder->expr()->count('*', 'count'),
-                    $queryBuilder->expr()->max('sys_template.root', 'root_max_val'),
-                    $queryBuilder->expr()->min('sys_template.root', 'root_min_val')
+            $result = $queryBuilder->select('sys_template.uid')
+                ->addSelect(
+                    'sys_template.pid',
+                    'sys_template.title',
+                    'sys_template.sitetitle',
+                    'sys_template.root',
+                    'sys_template.hidden',
+                    'sys_template.starttime',
+                    'sys_template.endtime'
                 )
-                ->from('pages')
                 ->from('sys_template')
-                ->where($queryBuilder->expr()->eq('pages.uid', $queryBuilder->quoteIdentifier('sys_template.pid')))
-                ->groupBy('pages.uid', 'pages.pid', 'pages.sorting')
-                ->orderBy('pages.pid')
-                ->addOrderBy('pages.sorting')
+                ->orderBy('sys_template.pid')
+                ->addOrderBy('sys_template.sorting')
                 ->execute();
-
             $pArray = [];
             while ($record = $result->fetch()) {
-                $this->setInPageArray($pArray, BackendUtility::BEgetRootLine($record['uid'], 'AND 1=1'), $record);
+                $additionalFieldsForRootline = ['sorting', 'hidden', 'fe_group', 'starttime', 'endtime', 'shortcut', 'nav_hide', 'module', 'content_from_pid'];
+                $rootline = BackendUtility::BEgetRootLine($record['pid'], '', true, $additionalFieldsForRootline);
+                $this->setInPageArray($pArray, $rootline, $record);
             }
 
             $view->getRenderingContext()->setControllerAction('PageZero');
-            $view->assign('templateList', $this->renderList($pArray));
+            $view->assign('pageTree', $pArray);
 
             // RENDER LIST of pages with templates, END
             // Setting up the buttons and markers for docheader
@@ -535,13 +537,13 @@ page.10.value = HELLO WORLD!
         return $tce->substNEWwithIDs['NEW'];
     }
 
-    // RENDER LIST of pages with templates, BEGIN
     /**
      * Set page in array
+     * To render list of page tree with templates
      *
-     * @param array $pArray
-     * @param array $rlArr
-     * @param array $row
+     * @param array $pArray Multidimensional array of page tree with template records
+     * @param array $rlArr Rootline array
+     * @param array $row Record of sys_template
      */
     public function setInPageArray(&$pArray, $rlArr, $row)
     {
@@ -551,18 +553,21 @@ page.10.value = HELLO WORLD!
             array_shift($rlArr);
         }
         $cEl = current($rlArr);
-        $pArray[$cEl['uid']] = $cEl['title'];
+        if (empty($pArray[$cEl['uid']])) {
+            $pArray[$cEl['uid']] = $cEl;
+        }
         array_shift($rlArr);
         if (!empty($rlArr)) {
-            $key = $cEl['uid'] . '.';
-            if (empty($pArray[$key])) {
-                $pArray[$key] = [];
+            if (empty($pArray[$cEl['uid']]['_nodes'])) {
+                $pArray[$cEl['uid']]['_nodes'] = [];
             }
-            $this->setInPageArray($pArray[$key], $rlArr, $row);
+            $this->setInPageArray($pArray[$cEl['uid']]['_nodes'], $rlArr, $row);
         } else {
-            $key = $cEl['uid'] . '_';
-            $pArray[$key] = $row;
+            $pArray[$cEl['uid']]['_templates'][] = $row;
         }
+        uasort($pArray, function ($a, $b) {
+            return $a['sorting'] - $b['sorting'];
+        });
     }
 
     /**
@@ -572,6 +577,7 @@ page.10.value = HELLO WORLD!
      * @param array $lines
      * @param int $c
      * @return array
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
      */
     public function renderList($pArray, $lines = [], $c = 0)
     {

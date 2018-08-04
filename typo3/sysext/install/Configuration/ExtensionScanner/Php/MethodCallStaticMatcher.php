@@ -652,4 +652,11 @@ return [
             'Deprecation-85796-SaltedPasswordsCleanups.rst',
         ],
     ],
+    'TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::renderList' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-81430-TypoScriptTemplateModuleControllerrenderList.rst',
+        ],
+    ],
 ];
