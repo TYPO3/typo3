@@ -106,6 +106,8 @@ class CommandUtility
         // Compile the path & command
         if ($gfxConf['processor'] === 'GraphicsMagick') {
             $path = self::escapeShellArgument($path . 'gm' . $isExt) . ' ' . self::escapeShellArgument($command);
+        } elseif (TYPO3_OS === 'WIN' && !@is_file($path . $command . $isExt)) {
+            $path = self::escapeShellArgument($path . 'magick' . $isExt) . ' ' . self::escapeShellArgument($command);
         } else {
             $path = self::escapeShellArgument($path . $command . $isExt);
         }
