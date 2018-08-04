@@ -19,19 +19,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
+ *
+ * @requires function sem_get
  */
 class SemaphoreLockStrategyTest extends UnitTestCase
 {
-    /**
-     * Set up the tests
-     */
-    protected function setUp()
-    {
-        if (!SemaphoreLockStrategy::getCapabilities()) {
-            $this->markTestSkipped('The system does not support semaphore locking.');
-        }
-    }
-
     /**
      * @test
      */
