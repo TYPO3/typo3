@@ -24,6 +24,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  * Warning:
  * These functional tests use and flush redis database numbers 0 and 1 on the
  * redis host specified by environment variable typo3RedisHost
+ *
+ * @requires extension redis
  */
 class RedisBackendTest extends FunctionalTestCase
 {
@@ -34,9 +36,6 @@ class RedisBackendTest extends FunctionalTestCase
     {
         // Note this functional does NOT call parent::setUp() since it does
         // not need a full blown instance and database
-        if (!extension_loaded('redis')) {
-            $this->markTestSkipped('redis extension was not available');
-        }
         if (!getenv('typo3TestingRedisHost')) {
             $this->markTestSkipped('environment variable "typo3TestingRedisHost" must be set to run this test');
         }
