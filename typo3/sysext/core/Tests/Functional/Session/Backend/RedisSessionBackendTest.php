@@ -23,6 +23,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case
+ *
+ * @requires extension redis
  */
 class RedisSessionBackendTest extends FunctionalTestCase
 {
@@ -48,9 +50,6 @@ class RedisSessionBackendTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        if (!extension_loaded('redis')) {
-            $this->markTestSkipped('redis extension was not available');
-        }
         if (!getenv('typo3TestingRedisHost')) {
             $this->markTestSkipped('environment variable "typo3TestingRedisHost" must be set to run this test');
         }
