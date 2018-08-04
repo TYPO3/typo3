@@ -107,7 +107,11 @@ class CommandUtility
         if ($gfxConf['processor'] === 'GraphicsMagick') {
             $path = self::escapeShellArgument($path . 'gm' . $isExt) . ' ' . self::escapeShellArgument($command);
         } else {
-            $path = self::escapeShellArgument($path . $command . $isExt);
+            if (Environment::isWindows() && !@is_file($path . $command . $isExt)) {
+                $path = self::escapeShellArgument($path . 'magick' . $isExt) . ' ' . self::escapeShellArgument($command);
+            } else {
+                $path = self::escapeShellArgument($path . $command . $isExt);
+            }
         }
         // strip profile information for thumbnails and reduce their size
         if ($parameters && $command !== 'identify') {
