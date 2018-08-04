@@ -68,6 +68,10 @@ class ImageMagick6Preset extends AbstractImagePreset
         foreach ($searchPaths as $path) {
             if (Environment::isWindows()) {
                 $executable = 'identify.exe';
+
+                if (!@is_file($path . $executable)) {
+                    $executable = 'magick.exe';
+                }
             } else {
                 $executable = 'identify';
             }
