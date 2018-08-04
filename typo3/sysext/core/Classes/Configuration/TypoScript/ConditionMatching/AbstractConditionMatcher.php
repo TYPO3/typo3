@@ -216,6 +216,7 @@ abstract class AbstractConditionMatcher
                 }
                 $values = GeneralUtility::trimExplode(',', $value, true);
                 foreach ($values as $test) {
+                    // matches a string with asterix in front and back. See https://docs.typo3.org/typo3cms/TyposcriptReference/Conditions/Reference.html#language for use case.
                     if (preg_match('/^\\*.+\\*$/', $test)) {
                         $allLanguages = preg_split('/[,;]/', GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
                         if (in_array(substr($test, 1, -1), $allLanguages)) {
