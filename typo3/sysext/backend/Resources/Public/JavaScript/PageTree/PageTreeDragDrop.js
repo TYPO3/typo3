@@ -258,7 +258,6 @@ define([
           )
         ) {
           var options = _this.changeNodePosition({droppedNode: droppedNode});
-
           var modalText = options.position === 'in' ? TYPO3.lang['mess.move_into'] : TYPO3.lang['mess.move_after'];
           modalText = modalText.replace('%s', options.node.name).replace('%s', options.target.name);
 
@@ -673,10 +672,8 @@ define([
         return;
       }
 
-      tree.nodes.indexOf(tree.settings.nodeOver.node);
-
       if (position === 'before') {
-        var positionAndTarget = this.setNodePositionAndTarget(tree.settings.nodeDrag.depth, index);
+        var positionAndTarget = this.setNodePositionAndTarget(index);
         position = positionAndTarget[0];
         target = positionAndTarget[1];
       }
@@ -697,27 +694,30 @@ define([
     /**
      * Returns Array of position and target node
      *
-     * @param {Integer} nodeDepth
-     * @param {Integer} index
+     * @param {Integer} index of node which is over mouse
      * @returns {Array} [position, target]
      */
-    setNodePositionAndTarget: function(nodeDepth, index) {
+    setNodePositionAndTarget: function(index) {
+      var nodes = this.tree.nodes;
+      var nodeOver = nodes[index];
+      var nodeOverDepth = nodeOver.depth;
       if (index > 0) {
         index--;
       }
-
+      var nodeBefore = nodes[index];
+      var nodeBeforeDepth = nodeBefore.depth;
       var target = this.tree.nodes[index];
 
-      if (this.tree.nodes[index].depth === nodeDepth) {
+      if (nodeBeforeDepth === nodeOverDepth) {
         return ['after', target];
-      } else if (this.tree.nodes[index].depth < nodeDepth) {
+      } else if (nodeBeforeDepth < nodeOverDepth) {
         return ['in', target];
       } else {
         for (var i = index; i >= 0; i--) {
-          if (this.tree.nodes[i].depth === nodeDepth) {
+          if (nodes[i].depth === nodeOverDepth) {
             return ['after', this.tree.nodes[i]];
-          } else if (this.tree.nodes[i].depth < nodeDepth) {
-            return ['in', this.tree.nodes[i]];
+          } else if (nodes[i].depth < nodeOverDepth) {
+            return ['in', nodes[i]];
           }
         }
       }
@@ -778,7 +778,7 @@ define([
       }
 
       if (newNode.position === 'before') {
-        var positionAndTarget = this.setNodePositionAndTarget(this.tree.nodes[index].depth, index);
+        var positionAndTarget = this.setNodePositionAndTarget(index);
         newNode.position = positionAndTarget[0];
         newNode.target = positionAndTarget[1];
       }
