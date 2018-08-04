@@ -23,6 +23,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for the PDO cache backend
+ *
+ * @requires extension pdo_sqlite
  */
 class PdoBackendTest extends UnitTestCase
 {
@@ -30,17 +32,6 @@ class PdoBackendTest extends UnitTestCase
      * @var bool Reset singletons created by subject
      */
     protected $resetSingletonInstances = true;
-
-    /**
-     * Sets up this testcase
-     */
-    protected function setUp()
-    {
-        if (!extension_loaded('pdo_sqlite')) {
-            $this->markTestSkipped('pdo_sqlite extension was not available');
-        }
-        parent::setUp();
-    }
 
     /**
      * @test
