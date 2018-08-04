@@ -64,6 +64,13 @@ class ElementHistoryController
     protected $moduleTemplate;
 
     /**
+     * Restrict editing by non-Admins (0-no, 1-yes)
+     *
+     * @var bool
+     */
+    protected $editLock = false;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -123,6 +130,7 @@ class ElementHistoryController
         $elementData = $this->historyObject->getElementData();
         if ($elementData) {
             $this->setPagePath($elementData[0], $elementData[1]);
+            $this->editLock = $this->getEditLockFromElement($elementData[0], $elementData[1]);
             // Get link to page history if the element history is shown
             if ($elementData[0] !== 'pages') {
                 $this->view->assign('singleElement', true);
@@ -138,6 +146,7 @@ class ElementHistoryController
         }
 
         $this->view->assign('TYPO3_REQUEST_URI', $normalizedParams->getRequestUrl());
+        $this->view->assign('editLock', $this->editLock);
 
         // Setting up the buttons and markers for docheader
         $this->getButtons($request);
@@ -502,5 +511,30 @@ class ElementHistoryController
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * Get the editlock value from page of a history element
+     *
+     * @param string $tableName
+     * @param int $elementUid
+     *
+     * @return bool
+     */
+    protected function getEditLockFromElement($tableName, $elementUid): bool
+    {
+        // If the user is admin, then he may always edit the page.
+        if ($this->getBackendUser()->isAdmin()) {
+            return false;
+        }
+
+        $record = BackendUtility::getRecord($tableName, $elementUid, '*', '', false);
+        // we need the parent page record for the editlock info if element isn't a page
+        if ($tableName !== 'pages') {
+            $pageId = $record['pid'];
+            $record = BackendUtility::getRecord('pages', $pageId, '*', '', false);
+        }
+
+        return (bool)$record['editlock'];
     }
 }

@@ -117,6 +117,9 @@
 			<trans-unit id="noDifferences">
 				<source>There are no differences to the current page!</source>
 			</trans-unit>
+			<trans-unit id="editLockIsActive">
+				<source>Editing is blocked for non-admins</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -17,9 +17,20 @@
 		<tbody>
 		<f:for each="{history}" as="historyRow">
 			<tr>
-				<td><span><span title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:sumUpChanges')}">
-					<a href="{historyRow.diffUrl}"><core:icon identifier="actions-document-history-open" /></a>
-				</span></span></td>
+				<td>
+					<f:if condition="{editLock}">
+						<f:then>
+							<button class="btn btn-default disabled" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:editLockIsActive')}">
+								<core:icon identifier="actions-document-history-open" />
+							</button>
+						</f:then>
+						<f:else>
+							<a class="btn btn-default" href="{historyRow.diffUrl}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:sumUpChanges')}">
+								<core:icon identifier="actions-document-history-open" />
+							</a>
+						</f:else>
+					</f:if>
+				</td>
 				<td>{historyRow.time}</td>
 				<td>{historyRow.age}</td>
 				<td>
