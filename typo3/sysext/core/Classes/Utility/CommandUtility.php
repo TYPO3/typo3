@@ -140,7 +140,7 @@ class CommandUtility
         $cmdLine = $path . ' ' . $parameters;
         // It is needed to change the parameters order when a mask image has been specified
         if ($command === 'composite') {
-            $paramsArr = GeneralUtility::unQuoteFilenames($parameters);
+            $paramsArr = self::unQuoteFilenames($parameters);
             $paramsArrCount = count($paramsArr);
             if ($paramsArrCount > 5) {
                 $tmp = $paramsArr[$paramsArrCount - 3];
@@ -463,6 +463,36 @@ class CommandUtility
         }
 
         return $output;
+    }
+
+    /**
+     * Explode a string (normally a list of filenames) with whitespaces by considering quotes in that string.
+     *
+     * @param string $parameters The whole parameters string
+     * @return array Exploded parameters
+     */
+    protected static function unQuoteFilenames(string $parameters): array
+    {
+        $paramsArr = explode(' ', trim($parameters));
+        // Whenever a quote character (") is found, $quoteActive is set to the element number inside of $params.
+        // A value of -1 means that there are not open quotes at the current position.
+        $quoteActive = -1;
+        foreach ($paramsArr as $k => $v) {
+            if ($quoteActive > -1) {
+                $paramsArr[$quoteActive] .= ' ' . $v;
+                unset($paramsArr[$k]);
+                if (substr($v, -1) === $paramsArr[$quoteActive][0]) {
+                    $quoteActive = -1;
+                }
+            } elseif (!trim($v)) {
+                // Remove empty elements
+                unset($paramsArr[$k]);
+            } elseif (preg_match('/^(["\'])/', $v) && substr($v, -1) !== $v[0]) {
+                $quoteActive = $k;
+            }
+        }
+        // Return re-indexed array
+        return array_values($paramsArr);
     }
 
     /**

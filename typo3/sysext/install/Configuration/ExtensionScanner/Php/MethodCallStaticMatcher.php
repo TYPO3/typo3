@@ -617,4 +617,11 @@ return [
             'Deprecation-85759-DeprecateGeneralUtilitygetHostName.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::unQuoteFilenames' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85760-DeprecateGeneralUtilityunQuoteFilenames.rst',
+        ],
+    ],
 ];

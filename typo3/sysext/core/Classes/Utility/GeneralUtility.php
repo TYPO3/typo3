@@ -4071,9 +4071,11 @@ class GeneralUtility
      * @param string $parameters The whole parameters string
      * @param bool $unQuote If set, the elements of the resulting array are unquoted.
      * @return array Exploded parameters
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10
      */
     public static function unQuoteFilenames($parameters, $unQuote = false)
     {
+        trigger_error('The method `TYPO3\CMS\Core\Utility\GeneralUtility::unQuoteFilenames()` has been deprecated and should not be used any longer, this method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
         $paramsArr = explode(' ', trim($parameters));
         // Whenever a quote character (") is found, $quoteActive is set to the element number inside of $params. A value of -1 means that there are not open quotes at the current position.
         $quoteActive = -1;
