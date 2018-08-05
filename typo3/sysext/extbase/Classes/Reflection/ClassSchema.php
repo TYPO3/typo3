@@ -472,7 +472,7 @@ class ClassSchema
                     $this->methods[$methodName]['params'][$parameterName]['type'] = ltrim($parameterClass->getName(), '\\');
                 } else {
                     $methodTagsAndValues = $this->methods[$methodName]['tags'];
-                    if (isset($methodTagsAndValues['param'], $methodTagsAndValues['param'][$parameterPosition])) {
+                    if (isset($methodTagsAndValues['param'][$parameterPosition])) {
                         $explodedParameters = explode(' ', $methodTagsAndValues['param'][$parameterPosition]);
                         if (count($explodedParameters) >= 2) {
                             if (TypeHandlingUtility::isSimpleType($explodedParameters[0])) {
