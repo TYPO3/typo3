@@ -86,11 +86,22 @@ class SystemEnvironmentBuilder
         self::defineTypo3RequestTypes();
         self::setRequestType($requestType | ($requestType === self::REQUESTTYPE_BE && strpos($_REQUEST['route'] ?? '', '/ajax/') === 0 ? TYPO3_REQUESTTYPE_AJAX : 0));
         self::defineLegacyConstants($requestType === self::REQUESTTYPE_FE ? 'FE' : 'BE');
-        self::definePaths($entryPointLevel);
+        self::definePaths($entryPointLevel, $requestType);
         self::checkMainPathsExist();
         self::initializeGlobalVariables();
         self::initializeGlobalTimeTrackingVariables();
         self::initializeBasicErrorReporting();
+
+        $applicationContext = static::createApplicationContext();
+        self::initializeEnvironment($applicationContext, $requestType);
+        GeneralUtility::presetApplicationContext($applicationContext);
+    }
+
+    protected static function createApplicationContext(): ApplicationContext
+    {
+        $applicationContext = getenv('TYPO3_CONTEXT') ?: (getenv('REDIRECT_TYPO3_CONTEXT') ?: 'Production');
+
+        return new ApplicationContext($applicationContext);
     }
 
     /**
@@ -171,10 +182,11 @@ class SystemEnvironmentBuilder
      * Calculate all required base paths and set as constants.
      *
      * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
+     * @param int $requestType
      */
-    protected static function definePaths($entryPointLevel = 0)
+    protected static function definePaths($entryPointLevel = 0, int $requestType)
     {
-        $isCli = PHP_SAPI === 'cli' && getenv('TYPO3_CONTEXT') !== 'Testing/Frontend';
+        $isCli = self::isCliRequestType($requestType);
         // Absolute path of the entry script that was called
         $scriptPath = GeneralUtility::fixWindowsFilePath(self::getPathThisScript($isCli));
         $rootPath = self::getRootPathFromScriptPath($scriptPath, $entryPointLevel);
@@ -268,12 +280,10 @@ class SystemEnvironmentBuilder
      * Initialize the Environment class
      *
      * @param ApplicationContext $context
+     * @param int|null $requestType
      */
-    public static function initializeEnvironment(ApplicationContext $context)
+    public static function initializeEnvironment(ApplicationContext $context, int $requestType = null)
     {
-        // TYPO3_CONTEXT is set in testing framework to check for frontend calls
-        // forked from a CLI process
-        $isCli = PHP_SAPI === 'cli' && (string)$context !== 'Testing/Frontend';
         // Absolute path of the entry script that was called
         $scriptPath = PATH_thisScript;
         $sitePath = rtrim(PATH_site, '/');
@@ -293,7 +303,7 @@ class SystemEnvironmentBuilder
         $isDifferentRootPath = ($projectRootPath && $projectRootPath !== $sitePath);
         Environment::initialize(
             $context,
-            $isCli,
+            self::isCliRequestType($requestType),
             self::usesComposerClassLoading(),
             $isDifferentRootPath ? $projectRootPath : $sitePath,
             $sitePath,
@@ -535,5 +545,21 @@ class SystemEnvironmentBuilder
             return;
         }
         define('TYPO3_MODE', $mode);
+    }
+
+    /**
+     * Checks if request type is cli.
+     * Falls back to check PHP_SAPI in case request type is not provided
+     *
+     * @param int|null $requestType
+     * @return bool
+     */
+    protected static function isCliRequestType(?int $requestType): bool
+    {
+        if ($requestType === null) {
+            $requestType = PHP_SAPI === 'cli' ? self::REQUESTTYPE_CLI : self::REQUESTTYPE_FE;
+        }
+
+        return ($requestType & self::REQUESTTYPE_CLI) === self::REQUESTTYPE_CLI;
     }
 }

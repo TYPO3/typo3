@@ -73,9 +73,6 @@ class Bootstrap
         bool $failsafe = false
     ): ContainerInterface {
         $requestId = substr(md5(uniqid('', true)), 0, 13);
-        $applicationContext = static::createApplicationContext();
-        SystemEnvironmentBuilder::initializeEnvironment($applicationContext);
-        GeneralUtility::presetApplicationContext($applicationContext);
 
         static::initializeClassLoader($classLoader);
         if (!Environment::isComposerMode() && ClassLoadingInformation::isClassLoadingInformationAvailable()) {
@@ -257,6 +254,7 @@ class Bootstrap
     /**
      * @return ApplicationContext
      * @internal This is not a public API method, do not use in own extensions
+     * @deprecated Will be removed with v10
      */
     public static function createApplicationContext(): ApplicationContext
     {
@@ -318,10 +316,7 @@ class Bootstrap
         }
         // @deprecated: remove this code block in TYPO3 v10.0
         if (GeneralUtility::getApplicationContext() === null) {
-            $applicationContext = static::createApplicationContext();
             SystemEnvironmentBuilder::run($entryPointLevel);
-            SystemEnvironmentBuilder::initializeEnvironment($applicationContext);
-            GeneralUtility::presetApplicationContext($applicationContext);
         }
         if (!Environment::isComposerMode() && ClassLoadingInformation::isClassLoadingInformationAvailable()) {
             ClassLoadingInformation::registerClassLoadingInformation();
