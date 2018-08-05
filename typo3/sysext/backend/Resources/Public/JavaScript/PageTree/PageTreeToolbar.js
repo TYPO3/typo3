@@ -156,17 +156,16 @@ define(['jquery',
 
       //toggle toolbar submenu
       $toolbar.find('[data-tree-show-submenu]').each(function() {
-        var _this = this;
         $(this).click(function() {
           var $this = $(this);
           var name = $this.attr('data-tree-show-submenu');
           var $submenu = $toolbar.find('[data-tree-submenu=' + name + ']');
 
           $toolbar.find('[data-tree-show-submenu]').not(this).removeClass('active');
-          $this.toggleClass('active');
+          $this.addClass('active');
 
           $toolbar.find('[data-tree-submenu]').not($submenu).removeClass('active');
-          $submenu.toggleClass('active', $this.hasClass('active'));
+          $submenu.addClass('active');
           $submenu.find('input').focus();
         });
       });
@@ -190,6 +189,12 @@ define(['jquery',
       });
 
       $toolbar.find('[data-toggle="tooltip"]').tooltip();
+
+      if ($('[data-tree-show-submenu="page-new"]').length) {
+        $('[data-tree-show-submenu="page-new"]').trigger('click');
+      } else {
+        $('.svg-toolbar__menu :first-child:not(.js-svg-refresh)').trigger('click');
+      }
     };
 
     /**
