@@ -3038,9 +3038,11 @@ class GeneralUtility
      *
      * @param bool $requestHost Use request host (when not in CLI mode).
      * @return string The fully-qualified host name.
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10
      */
     public static function getHostname($requestHost = true)
     {
+        trigger_error('The method `TYPO3\CMS\Core\Utility\GeneralUtility::getHostname()` has been deprecated and should not be used any longer, this method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
         $host = '';
         // If not called from the command-line, resolve on getIndpEnv()
         if ($requestHost && !Environment::isCli()) {

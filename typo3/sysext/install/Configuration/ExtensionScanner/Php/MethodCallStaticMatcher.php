@@ -610,4 +610,11 @@ return [
             'Deprecation-84414-BackendUtilityshortcutExists.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::getHostname' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85759-DeprecateGeneralUtilitygetHostName.rst',
+        ],
+    ],
 ];
