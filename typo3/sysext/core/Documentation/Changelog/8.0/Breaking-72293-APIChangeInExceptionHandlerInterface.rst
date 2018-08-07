@@ -11,7 +11,7 @@ Description
 ===========
 
 The class `\Throwable` was added in PHP7 as new parent of `\Exceptions`. So we
-were in need to remove the type hint in #72117, which we now read as `\Throwable`
+were in need to remove the type hint in :issue:`72117`, which we now read as `\Throwable`
 instead of `\Exception` as we only support PHP 7.0 or newer.
 See http://php.net/manual/en/migration70.incompatible.php
 
