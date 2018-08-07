@@ -108,7 +108,7 @@ class AuthenticationService extends AbstractAuthenticationService
         $submittedUsername = (string)$this->login['uname'];
         $submittedPassword = (string)$this->login['uident_text'];
         $passwordHashInDatabase = $user['password'];
-        $queriedDomain = $this->authInfo['REMOTE_HOST'];
+        $queriedDomain = $this->authInfo['HTTP_HOST'];
         $configuredDomainLock = $user['lockToDomain'];
         $userDatabaseTable = $this->db_user['table'];
 
@@ -192,9 +192,9 @@ class AuthenticationService extends AbstractAuthenticationService
         if (!$isDomainLockMet) {
             // Password ok, but configured domain lock not met
             $errorMessage = 'Login-attempt from ###IP###, username \'%s\', locked domain \'%s\' did not match \'%s\'!';
-            $this->writeLogMessage($errorMessage, $user[$this->db_user['username_column']], $configuredDomainLock, $this->authInfo['HTTP_HOST']);
-            $this->writelog(255, 3, 3, 1, $errorMessage, [$user[$this->db_user['username_column']], $configuredDomainLock, $this->authInfo['HTTP_HOST']]);
-            $this->logger->info(sprintf($errorMessage, $user[$this->db_user['username_column']], $configuredDomainLock, $this->authInfo['HTTP_HOST']));
+            $this->writeLogMessage($errorMessage, $user[$this->db_user['username_column']], $configuredDomainLock, $queriedDomain);
+            $this->writelog(255, 3, 3, 1, $errorMessage, [$user[$this->db_user['username_column']], $configuredDomainLock, $queriedDomain]);
+            $this->logger->info(sprintf($errorMessage, $user[$this->db_user['username_column']], $configuredDomainLock, $queriedDomain));
             // Responsible, authentication ok, but domain lock not ok, do NOT check other services
             return 0;
         }

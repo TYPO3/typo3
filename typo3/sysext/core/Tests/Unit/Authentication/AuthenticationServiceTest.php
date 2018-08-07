@@ -130,7 +130,7 @@ class AuthenticationServiceTest extends UnitTestCase
             ],
             [
                 'db_user' => ['table' => 'be_users'],
-                'REMOTE_HOST' => ''
+                'HTTP_HOST' => ''
             ],
             $pObjProphecy->reveal()
         );
@@ -158,7 +158,7 @@ class AuthenticationServiceTest extends UnitTestCase
             ],
             [
                 'db_user' => ['table' => 'be_users'],
-                'REMOTE_HOST' => '',
+                'HTTP_HOST' => '',
             ],
             $pObjProphecy->reveal()
         );
@@ -187,7 +187,7 @@ class AuthenticationServiceTest extends UnitTestCase
             ],
             [
                 'db_user' => ['table' => 'be_users'],
-                'REMOTE_HOST' => ''
+                'HTTP_HOST' => ''
             ],
             $pObjProphecy->reveal()
         );
