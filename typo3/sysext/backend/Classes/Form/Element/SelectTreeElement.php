@@ -22,6 +22,15 @@ namespace TYPO3\CMS\Backend\Form\Element;
 class SelectTreeElement extends AbstractFormElement
 {
     /**
+     * @var array Default wizards
+     */
+    protected $defaultFieldWizard = [
+        'localizationStateSelector' => [
+            'renderType' => 'localizationStateSelector',
+        ],
+    ];
+
+    /**
      * Default number of tree nodes to show (determines tree height)
      * when no ['config']['size'] is set
      *
