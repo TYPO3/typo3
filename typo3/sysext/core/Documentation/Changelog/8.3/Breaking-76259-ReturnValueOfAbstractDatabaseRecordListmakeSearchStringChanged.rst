@@ -14,7 +14,7 @@ The value returned by :php:`AbstractDatabaseRecordList::makeSearchString`
 has been adjusted.
 
 The SQL fragment no longer includes the leading `AND` SQL operator and the
-method returns "1=1" if no search word is specified or if the table contains
+method returns `"1=1"` if no search word is specified or if the table contains
 no searchable fields.
 
 

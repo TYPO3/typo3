@@ -25,7 +25,7 @@ The new signature is:
             ->fetchColumn();
     }
 
-The parameter `$constraints` is expected to be an array of Doctrine Expressions
+The parameter :php:`$constraints` is expected to be an array of Doctrine Expressions
 or SQL fragments.
 
 In case of SQL fragments proper quoting needs to be ensured by the invoking method.
@@ -48,7 +48,7 @@ Installations using 3rd party extensions that use :php:`AbstractDatabaseRecordLi
 Migration
 =========
 
-Instead of passing an array of parameters built using the deprecated ::php::`makeQueryArray()` method
+Instead of passing an array of parameters built using the deprecated :php:`makeQueryArray()` method
 explicitly pass in the table name, page id and any additional query restrictions required.
 
 .. index:: Database, PHP-API, Backend

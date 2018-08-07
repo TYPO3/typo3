@@ -14,12 +14,13 @@ Extbase's custom implementation to pre-parse and cache queries has been removed 
 via Doctrine DBAL.
 
 The following public methods have been removed:
-* `Typo3DbBackend->quoteTextValueCallback()`
-* `Typo3DbQueryParser->preparseQuery()`
-* `Typo3DbQueryParser->normalizeParameterIdentifier()`
-* `Typo3DbQueryParser->addDynamicQueryParts()`
-* `ComparisonInterface->setParameterIdentifier`
-* `ComparisonInterface->getParameterIdentifier`
+
+* :php:`Typo3DbBackend->quoteTextValueCallback()`
+* :php:`Typo3DbQueryParser->preparseQuery()`
+* :php:`Typo3DbQueryParser->normalizeParameterIdentifier()`
+* :php:`Typo3DbQueryParser->addDynamicQueryParts()`
+* :php:`ComparisonInterface->setParameterIdentifier`
+* :php:`ComparisonInterface->getParameterIdentifier`
 
 
 Impact
@@ -37,6 +38,6 @@ Any TYPO3 installation using custom logic inside Extbase's own Persistence layer
 Migration
 =========
 
-Remove the functionality and just use `Typo3DbQueryParser->parseQuery()`.
+Remove the functionality and just use :php:`Typo3DbQueryParser->parseQuery()`.
 
 .. index:: Database, PHP-API, ext:extbase

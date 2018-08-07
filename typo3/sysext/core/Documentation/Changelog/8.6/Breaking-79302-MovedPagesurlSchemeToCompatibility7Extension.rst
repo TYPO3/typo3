@@ -37,7 +37,7 @@ Migration
 Install the compatibility7 extension to have the same functionality as before, or use HTTPS enforcing via server configuration (.htaccess)
 or any SSL related extension in the TYPO3 Extension Repository (TER) that provides superior functionality.
 
-To ensure a certain protocol when previewing a page the TSconfig option `TCEMAIN.previewDomain` can be used to set a preview prefix including
+To ensure a certain protocol when previewing a page the TSconfig option :ts:`TCEMAIN.previewDomain` can be used to set a preview prefix including
 the URL scheme.
 
 .. index:: Database, Frontend

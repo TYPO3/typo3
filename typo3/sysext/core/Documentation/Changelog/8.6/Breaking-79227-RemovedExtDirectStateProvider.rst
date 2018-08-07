@@ -9,16 +9,17 @@ See :issue:`79227`
 Description
 ===========
 
-The ExtDirect based State Provider for ExtJS applications (endpoint `TYPO3.ExtDirectStateProvider.ExtDirect`) has been removed.
+The ExtDirect based State Provider for ExtJS applications (endpoint :javascript:`TYPO3.ExtDirectStateProvider.ExtDirect`) has been removed.
 
-The ExtDirect endpoint `TYPO3.ExtDirectStateProvider.ExtDirect` is no longer available.
+The ExtDirect endpoint :javascript:`TYPO3.ExtDirectStateProvider.ExtDirect` is no longer available.
 
 The following PHP classes have been removed:
-* `\TYPO3\CMS\Backend\InterfaceState\ExtDirect\DataProvider`
-* `\TYPO3\CMS\Backend\Tree\AbstractTreeStateProvider`
-* `\TYPO3\CMS\Backend\Tree\AbstractExtJsTree`
 
-The relevant JavaScript file `ExtDirect.StateProvider.js` has been removed.
+* :php:`\TYPO3\CMS\Backend\InterfaceState\ExtDirect\DataProvider`
+* :php:`\TYPO3\CMS\Backend\Tree\AbstractTreeStateProvider`
+* :php:`\TYPO3\CMS\Backend\Tree\AbstractExtJsTree`
+
+The relevant JavaScript file :file:`ExtDirect.StateProvider.js` has been removed.
 
 The PHP method php:`DocumentTemplate->setExtDirectStateProvider()` to load the JavaScript file has been removed.
 

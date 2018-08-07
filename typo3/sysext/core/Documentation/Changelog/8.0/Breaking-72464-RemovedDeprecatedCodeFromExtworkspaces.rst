@@ -13,17 +13,17 @@ Description
 The following components have been changed during the development of TYPO3 CMS 7
 and lead to deprecated code which is removed in TYPO3 CMS 8.
 
-* remove rewritten toolbar item (#62800)
-* remove rewritten notification parts (#35245)
+* remove rewritten toolbar item (:issue:`62800`)
+* remove rewritten notification parts (:issue:`35245`)
 
 
 Impact
 ======
 
-Using or extending `\TYPO3\CMS\Workspaces\ExtDirect\ToolbarMenu` will fail since
+Using or extending :php:`\TYPO3\CMS\Workspaces\ExtDirect\ToolbarMenu` will fail since
 it has been removed.
 
-Using \TYPO3\CMS\Workspaces\Service\StagesService::getNotificationMode($stageId)
+Using :php:`\TYPO3\CMS\Workspaces\Service\StagesService::getNotificationMode($stageId)`
 will fail.
 
 Relying on the following database fields in the tables sys_workspace and

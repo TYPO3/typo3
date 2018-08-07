@@ -31,7 +31,7 @@ a call to the old method name and any code that called the public method from ou
 Migration
 =========
 
-Rename `pi_list_browseresults()` to `renderPagination()`.
+Rename :php:`pi_list_browseresults()` to :php:`renderPagination()`.
 
 Calling the method from outside the class is no longer possible.
 

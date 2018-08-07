@@ -10,12 +10,12 @@ Description
 ===========
 
 The following JavaScript methods related to ExtJS have been removed from the Backend main frame
-as defined in the main `backend.js` file.
+as defined in the main :file:`backend.js` file.
 
-:javascript:`TYPO3._instances`
-:javascript:`TYPO3.addInstance`
-:javascript:`TYPO3.getInstance`
-:javascript:`TYPO3.helpers.split`
+* :javascript:`TYPO3._instances`
+* :javascript:`TYPO3.addInstance`
+* :javascript:`TYPO3.getInstance`
+* :javascript:`TYPO3.helpers.split`
 
 
 Impact

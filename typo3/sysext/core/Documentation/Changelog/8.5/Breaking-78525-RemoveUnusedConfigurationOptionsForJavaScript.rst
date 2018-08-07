@@ -9,10 +9,10 @@ See :issue:`78525`
 Description
 ===========
 
-Removed all options that are not used anymore from TYPO3.configuration in JavaScript context.
+Removed all options that are not used anymore from :javascript:`TYPO3.configuration` in JavaScript context.
 
-:javascript:`TYPO3.configuration.moduleMenuWidth`
-:javascript:`TYPO3.configuration.topBarHeight`
+* :javascript:`TYPO3.configuration.moduleMenuWidth`
+* :javascript:`TYPO3.configuration.topBarHeight`
 
 
 Impact

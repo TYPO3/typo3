@@ -13,13 +13,14 @@ In order to streamline CSS Styled Content and Fluid Styled Content several optio
 of CSS Styled Content have been dropped without replacement.
 
 Options Dropped:
-- TCA image_compression
-- TCA image_effects
-- TCA image_noRows
-- TypoScript IMAGE noRows dropped
-- TypoScript IMAGE noCols dropped
-- TypoScript IMAGE noRowsStdWrap dropped
-- TypoScript IMGTEXT captionAlign dropped
+
+* TCA image_compression
+* TCA image_effects
+* TCA image_noRows
+* TypoScript IMAGE noRows dropped
+* TypoScript IMAGE noCols dropped
+* TypoScript IMAGE noRowsStdWrap dropped
+* TypoScript IMGTEXT captionAlign dropped
 
 
 Impact

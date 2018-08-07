@@ -9,7 +9,7 @@ See :issue:`78855`
 Description
 ===========
 
-These translations have been removed from `EXT:sys_action/Resources/Private/Language/locallang.xlf`:
+These translations have been removed from :file:`EXT:sys_action/Resources/Private/Language/locallang.xlf`:
 
 * action_BEu_hidden
 * action_BEu_username
@@ -18,7 +18,7 @@ These translations have been removed from `EXT:sys_action/Resources/Private/Lang
 * action_BEu_email
 * action_BEu_usergroups
 
-These translations have been removed from `EXT:sys_action/Resources/Private/Language/locallang_tca.xlf`:
+These translations have been removed from :file:`EXT:sys_action/Resources/Private/Language/locallang_tca.xlf`:
 
 * tx_sys_action
 
@@ -38,6 +38,6 @@ Installations that use the removed translations in third party code.
 Migration
 =========
 
-Create your own `locallang.xlf` file and add the required translations.
+Create your own :file:`locallang.xlf` file and add the required translations.
 
 .. index:: Backend, ext:sys_action

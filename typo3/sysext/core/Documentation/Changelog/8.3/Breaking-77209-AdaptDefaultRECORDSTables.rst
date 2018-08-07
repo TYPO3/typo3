@@ -11,7 +11,7 @@ Description
 ===========
 
 The value of the constant :ts:`styles.content.shortcut.tables` which is set by
-EXT:fluid_styled_content has been changed from "tt_content,tt_address,tt_news,tx_news_domain_model_news" to "tt_content".
+EXT:fluid_styled_content has been changed from :ts:`tt_content,tt_address,tt_news,tx_news_domain_model_news` to :ts:`tt_content`.
 
 
 Impact

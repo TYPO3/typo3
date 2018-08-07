@@ -10,13 +10,13 @@ See :issue:`77184`
 Description
 ===========
 
-The following public properties of the PHP class `TypoScriptFrontendController` have been removed.
+The following public properties of the PHP class :php:`TypoScriptFrontendController` have been removed.
 
-- TYPO3_CONF_VARS
-- defaultBodyTag
-- clientInfo
+* :php:`TYPO3_CONF_VARS`
+* :php:`defaultBodyTag`
+* :php:`clientInfo`
 
-Additionally, the first parameter of the `TypoScriptFrontendController` constructor has no effect anymore and can be set
+Additionally, the first parameter of the :php:`TypoScriptFrontendController` constructor has no effect anymore and can be set
 to null.
 
 
@@ -35,11 +35,11 @@ Any installation working with the public property in a third-party extension or 
 Migration
 =========
 
-For any calls to `$TSFE->TYPO3_CONF_VARS` the global array `$GLOBALS['TYPO3_CONF_VARS']` should be used.
+For any calls to :php:`$GLOBALS['TSFE']->TYPO3_CONF_VARS` the global array :php:`$GLOBALS['TYPO3_CONF_VARS']` should be used.
 
-For the property `defaultBodyTag` the according TypoScript settings can be used to override the
+For the property :php:`defaultBodyTag` the according TypoScript settings can be used to override the
 body tag or the page title.
 
-The information previously stored in the clientInfo property can be fetched via `GeneralUtility::clientInfo()`.
+The information previously stored in the clientInfo property can be fetched via :php:`GeneralUtility::clientInfo()`.
 
 .. index:: PHP-API, Frontend

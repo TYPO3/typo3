@@ -29,8 +29,8 @@ when new ``RenderingContext`` instances are created.
 
 See for reference how to create such implementations:
 
-* ``\TYPO3Fluid\Fluid\Core\Parser\TemplateProcessorInterface``
-* ``\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\ExpressionNodeInterface``
+* :php:`\TYPO3Fluid\Fluid\Core\Parser\TemplateProcessorInterface`
+* :php:`\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\ExpressionNodeInterface`
 
 Both interfaces contain the documentation for how they must be implemented, when/why functions get called and what the
 expected return types are. The interfaces must of course be implemented by classes you add to ``TYPO3_CONF_VARS`` in

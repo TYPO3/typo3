@@ -10,13 +10,13 @@ Description
 ===========
 
 In the past it was possible to override the "New Page Creation Wizard" via custom scripts
-when using page TSconfig via `mod.web_list.newPageWiz.overrideWithExtension = myextension` to define an extension,
-which then needed a file placed under `mod1/index.php`. The script was then called with certain parameters instead
+when using page TSconfig via :ts:`mod.web_list.newPageWiz.overrideWithExtension = myextension` to define an extension,
+which then needed a file placed under :file:`mod1/index.php`. The script was then called with certain parameters instead
 of the wizard.
 
 The new way of handling entry-points and custom scripts is now built via modules and routes. The former option
-`mod.web_list.newPageWiz.overrideWithExtension` has been removed and a new option
-`mod.newPageWizard.override` has been introduced instead. Instead of setting the option to a certain extension key,
+:ts:`mod.web_list.newPageWiz.overrideWithExtension` has been removed and a new option
+:ts:`mod.newPageWizard.override` has been introduced instead. Instead of setting the option to a certain extension key,
 a custom module or route has to be specified.
 
 Example:
@@ -29,7 +29,7 @@ Example:
 Impact
 ======
 
-Using the old TSconfig option `mod.web_list.newPageWiz.overrideWithExtension` has no effect anymore and
+Using the old TSconfig option :ts:`mod.web_list.newPageWiz.overrideWithExtension` has no effect anymore and
 will fallback to the regular new page creation wizard provided by the TYPO3 Core.
 
 

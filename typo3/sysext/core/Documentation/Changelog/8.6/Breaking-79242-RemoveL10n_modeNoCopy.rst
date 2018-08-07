@@ -23,14 +23,14 @@ to a particular localization when that was created. Now, this value is duplicate
 Affected Installations
 ======================
 
-All having `$GLOBALS['TCA'][<table-name>]['columns'][<column-name>]['l10n_mode']`
+All having :php:`$GLOBALS['TCA'][<table-name>]['columns'][<column-name>]['l10n_mode']`
 set to `noCopy`.
 
 
 Migration
 =========
 
-Remove setting `$GLOBALS['TCA'][<table-name>]['columns'][<column-name>]['l10n_mode']`
+Remove setting :php:`$GLOBALS['TCA'][<table-name>]['columns'][<column-name>]['l10n_mode']`
 if it is set to `noCopy`.
 
 .. index:: TCA, Backend

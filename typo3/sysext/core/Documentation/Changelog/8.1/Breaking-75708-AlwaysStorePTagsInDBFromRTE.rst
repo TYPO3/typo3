@@ -10,18 +10,18 @@ See :issue:`75708`
 Description
 ===========
 
-When transforming HTML data from the Rich Text Editor to the database, the RteHtmlParser removed <p> tags from
-lines when there were no attributes for the <p> tags, otherwise they were kept as <p> tags with
+When transforming HTML data from the Rich Text Editor to the database, the RteHtmlParser removed :html:`<p>` tags from
+lines when there were no attributes for the :html:`<p>` tags, otherwise they were kept as :html:`<p>` tags with
 their attributes.
 
-The transformation now always keeps <p> tags within the content in order to minimize the transformation overhead
+The transformation now always keeps :html:`<p>` tags within the content in order to minimize the transformation overhead
 between the RTE and the database.
 
 
 Impact
 ======
 
-Every time an RTE field is edited, the <p> tags are now stored inside the database when saving the content.
+Every time an RTE field is edited, the :html:`<p>` tags are now stored inside the database when saving the content.
 
 
 Affected Installations

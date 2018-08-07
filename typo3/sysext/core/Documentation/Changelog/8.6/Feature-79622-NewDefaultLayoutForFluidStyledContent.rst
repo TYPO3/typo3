@@ -1,5 +1,7 @@
 .. include:: ../../Includes.txt
 
+.. _feature-79622-new-default-layout-for-fluid-styled-content:
+
 =============================================================
 Feature: #79622 - New default layout for Fluid Styled Content
 =============================================================
@@ -146,6 +148,5 @@ Basic Usage
    <f:section name="Main">
       ...
    </f:section>
-
 
 .. index:: Fluid, Frontend, ext:fluid_styled_content, TypoScript

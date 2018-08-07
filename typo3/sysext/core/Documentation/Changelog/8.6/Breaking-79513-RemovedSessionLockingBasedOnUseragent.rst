@@ -13,7 +13,7 @@ When using session data or user-login functionality with TYPO3, the default conf
 harden the session binding to the User Agent information sent by the HTTP request. If the user agent
 information does not match, the session gets renewed and the user gets logged out.
 
-The options `$TYPO3_CONF_VARS['FE']['lockHashKeyWords']` and `$TYPO3_CONF_VARS['BE']['lockHashKeyWords']`
+The options :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['lockHashKeyWords']` and :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['lockHashKeyWords']`
 were set to "useragent" by default to use this additional session locking check.
 
 This case is especially problematic when having a larger website (e.g. a community platform) with
@@ -30,12 +30,12 @@ as well) has been removed without substitution.
 Impact
 ======
 
-The options `$TYPO3_CONF_VARS['FE']['lockHashKeyWords']` and `$TYPO3_CONF_VARS['BE']['lockHashKeyWords']`
+The options :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['lockHashKeyWords']` and :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['lockHashKeyWords']`
 are removed automatically when hitting the install tool.
 
 The database fields 'fe_sessions.ses_hashlock' and 'be_sessions.ses_hashlock' have been removed.
 
-The public property `$lockHashKeyWords` of the PHP class `AbstractUserAuthentication` has been
+The public property :php:`$lockHashKeyWords` of the PHP class `AbstractUserAuthentication` has been
 removed and will throw a PHP Notice when trying to access it.
 
 All other functionality related to sessions still works the same.

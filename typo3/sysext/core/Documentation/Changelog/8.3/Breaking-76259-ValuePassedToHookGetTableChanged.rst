@@ -10,7 +10,7 @@ See :issue:`76259`
 Description
 ===========
 
-The value of `$additionalWhere` passed to the method :php:`getDBlistQuery()`
+The value of :php:`$additionalWhere` passed to the method :php:`getDBlistQuery()`
 as part of the hook `getTable` in :php:`\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList`
 has changed and no longer includes the leading `AND`.
 

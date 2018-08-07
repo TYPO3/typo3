@@ -39,7 +39,7 @@ Migration
 All content elements and overrides need to be migrated to the new default
 layout. Have a look at the feature description on how to use the new layout.
 
-Feature-79622-NewDefaultLayoutForFluidStyledContent.rst
+See: :ref:`feature-79622-new-default-layout-for-fluid-styled-content`.
 
 
 .. index:: Fluid, Frontend, ext:fluid_styled_content

@@ -12,26 +12,26 @@ Description
 
 To provide support for multiple database connections and remapping tables to different
 database systems within the TYPO3 Core the configuration format for database connections
-in `LocalConfiguration.php` / `$GLOBALS['TYPO3_CONF_VARS']['DB']` has changed.
+in :file:`LocalConfiguration.php` / :php:`$GLOBALS['TYPO3_CONF_VARS']['DB']` has changed.
 
 The new configuration array structure:
 
 .. code-block:: php
 
-	'DB' => [
-		'Connections' => [
-			'Default' => [
-				'driver' => 'mysqli',
-				'dbname' => 'typo3_database',
-				'password' => 'typo3',
-				'host' => '127.0.0.1',
-				'port' => 3306,
-				'user' => 'typo3',
-				'unix_socket' => '',
-				'charset' => 'utf-8',
-			],
-		],
-	],
+   'DB' => [
+       'Connections' => [
+           'Default' => [
+               'driver' => 'mysqli',
+               'dbname' => 'typo3_database',
+               'password' => 'typo3',
+               'host' => '127.0.0.1',
+               'port' => 3306,
+               'user' => 'typo3',
+               'unix_socket' => '',
+               'charset' => 'utf-8',
+           ],
+       ],
+   ],
 
 Be aware that besides the deeper nesting below 'Connections/Default' some of the configuration
 keys have been renamed. It is required to provide the new configuration key `driver` with a
@@ -75,7 +75,7 @@ Migration
 =========
 
 The Install Tool will migrate the configuration information for the default connection to the new
-format. Installations overriding the database configuration using `AdditionalConfiguration.php`
+format. Installations overriding the database configuration using :file:`AdditionalConfiguration.php`
 or other means need to ensure the new format is being used.
 
 .. index:: Database, LocalConfiguration

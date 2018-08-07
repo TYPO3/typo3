@@ -10,19 +10,21 @@ See :issue:`77062`
 Description
 ===========
 
-In previous TYPO3 versions it was possible to add help text and and an help image to a certain category or
+In previous TYPO3 versions it was possible to add help text and an help image to a certain category or
 configuration option in the TypoScript Constant Editor of the TYPO3 Backend. This was previously done via an
 additional Constant Editor option within the `TSConstantEditor` object.
 
 The functionality has been removed without substitution.
 
 Along with that change, the following PHP methods have been removed:
-- :php:`ExtendedTemplateService::ext_getTSCE_config_image()`
-- :php:`ConfigurationForm::ext_getTSCE_config_image()`
+
+* :php:`ExtendedTemplateService::ext_getTSCE_config_image()`
+* :php:`ConfigurationForm::ext_getTSCE_config_image()`
 
 The following public properties have been removed:
-- :php:`ExtendedTemplateService::$ext_localGfxPrefix`
-- :php:`ExtendedTemplateService::$ext_localWebGfxPrefix`
+
+* :php:`ExtendedTemplateService::$ext_localGfxPrefix`
+* :php:`ExtendedTemplateService::$ext_localWebGfxPrefix`
 
 Within :php:`ConfigurationForm::ext_initTSstyleConfig()` the second and third parameter have been removed.
 

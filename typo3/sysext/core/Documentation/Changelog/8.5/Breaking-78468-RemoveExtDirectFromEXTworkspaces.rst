@@ -19,17 +19,17 @@ Impact
 
 The following classes have been moved:
 
-* EXT:workspaces/Classes/ExtDirect/AbstractHandler.php
-  => EXT:workspaces/Classes/Controller/Remote/AbstractHandler.php
+* :file:`EXT:workspaces/Classes/ExtDirect/AbstractHandler.php`
+  => :file:`EXT:workspaces/Classes/Controller/Remote/AbstractHandler.php`
 
-* EXT:workspaces/Classes/ExtDirect/ActionHandler.php
-  => EXT:workspaces/Classes/Controller/Remote/ActionHandler.php
+* :file:`EXT:workspaces/Classes/ExtDirect/ActionHandler.php`
+  => :file:`EXT:workspaces/Classes/Controller/Remote/ActionHandler.php`
 
-* EXT:workspaces/Classes/ExtDirect/MassActionHandler.php
-  => EXT:workspaces/Classes/Controller/Remote/MassActionHandler.php
+* :file:`EXT:workspaces/Classes/ExtDirect/MassActionHandler.php`
+  => :file:`EXT:workspaces/Classes/Controller/Remote/MassActionHandler.php`
 
-* EXT:workspaces/Classes/ExtDirect/ExtDirectServer.php
-  => EXT:workspaces/Classes/Controller/Remote/RemoteServer.php
+* :file:`EXT:workspaces/Classes/ExtDirect/ExtDirectServer.php`
+  => :file:`EXT:workspaces/Classes/Controller/Remote/RemoteServer.php`
 
 
 Affected Installations

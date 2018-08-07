@@ -12,19 +12,19 @@ Description
 
 The following methods have been removed from `ContentObjectRenderer` without substitution:
 
-* DBgetDelete()
-* DBgetUpdate()
-* DBgetInsert()
-* DBmayFEUserEdit()
-* DBmayFEUserEditSelect()
-* exec_mm_query()
-* exec_mm_query_uidList()
+* :php:`DBgetDelete()`
+* :php:`DBgetUpdate()`
+* :php:`DBgetInsert()`
+* :php:`DBmayFEUserEdit()`
+* :php:`DBmayFEUserEditSelect()`
+* :php:`exec_mm_query()`
+* :php:`exec_mm_query_uidList()`
 
 The following TCA options have no effect anymore throughout the TYPO3 Core:
 
-* $GLOBALS['TCA'][table]['ctrl']['fe_cruser_id']
-* $GLOBALS['TCA'][table]['ctrl']['fe_crgroup_id']
-* $GLOBALS['TCA'][table]['ctrl']['fe_admin_lock']
+* :php:`$GLOBALS['TCA'][table]['ctrl']['fe_cruser_id']`
+* :php:`$GLOBALS['TCA'][table]['ctrl']['fe_crgroup_id']`
+* :php:`$GLOBALS['TCA'][table]['ctrl']['fe_admin_lock']`
 
 
 Impact

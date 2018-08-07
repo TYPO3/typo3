@@ -12,8 +12,8 @@ Description
 
 The following unused properties have been removed from the :php:`PageTreeView` class:
 
-:php:`ext_separateNotinmenuPages`
-:php:`ext_alphasortNotinmenuPages`
+* :php:`ext_separateNotinmenuPages`
+* :php:`ext_alphasortNotinmenuPages`
 
 
 Impact
