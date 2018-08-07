@@ -47,10 +47,13 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] = [
         'after' => ['info'],
         'submodules' => [
             'log' => [
-                'module' => \TYPO3\CMS\Adminpanel\Modules\Debug\Log::class
-            ]
-        ]
-    ]
+                'module' => \TYPO3\CMS\Adminpanel\Modules\Debug\Log::class,
+            ],
+            'queryInformation' => [
+                'module' => \TYPO3\CMS\Adminpanel\Modules\Debug\QueryInformation::class,
+            ],
+        ],
+    ],
 ];
 
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['adminPanel_save']

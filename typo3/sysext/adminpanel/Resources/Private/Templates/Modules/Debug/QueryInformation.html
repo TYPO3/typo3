@@ -1,0 +1,95 @@
+<html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<div class="typo3-adminPanel-sql">
+    <div class="typo3-adminPanel-row typo3-adminPanel-row-nowrap typo3-adminPanel-sql-header">
+        <div class="typo3-adminPanel-col typo3-adminPanel-col-icon"></div>
+        <div class="typo3-adminPanel-col typo3-adminPanel-col-ellipsis typo3-adminPanel-col-auto">
+            <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.sqlQuery"/>
+        </div>
+        <div class="typo3-adminPanel-col typo3-adminPanel-sql-col-count">
+            <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.queryCount"/>
+        </div>
+        <div class="typo3-adminPanel-col typo3-adminPanel-sql-col-time">
+            <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.queryTime"/>
+        </div>
+    </div>
+    <f:for each="{queries}" as="queryCollection" iteration="queryCollectionIteration">
+        <div class="typo3-adminPanel-row typo3-adminPanel-row-nowrap">
+            <div class="typo3-adminPanel-col typo3-adminPanel-col-icon">
+                <a href="#" title="{f:translate(key:'LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:button.view')}" data-typo3-zoom-target="queryCollection-{queryCollectionIteration.index}">
+                    <core:icon identifier="actions-document-view" alternativeMarkupIdentifier="inline"/>
+                </a>
+            </div>
+            <div class="typo3-adminPanel-col typo3-adminPanel-col-ellipsis typo3-adminPanel-col-auto">
+                {queryCollection.sql}
+            </div>
+            <div class="typo3-adminPanel-col typo3-adminPanel-sql-col-count">{queryCollection.count}</div>
+            <div class="typo3-adminPanel-col typo3-adminPanel-sql-col-time">
+                <div class="typo3-adminPanel-progress">
+                    <div class="typo3-adminPanel-progress-bar" style="width:{queryCollection.time / totalTime * 100}%;"></div>
+                    <div class="typo3-adminPanel-progress-value"><f:format.number decimals="2">{queryCollection.time}</f:format.number></div>
+                </div>
+            </div>
+        </div>
+        <div class="typo3-adminPanel-zoom"  data-typo3-zoom-id="queryCollection-{queryCollectionIteration.index}">
+            <div class="typo3-adminPanel-zoom-header">
+                <button class="typo3-adminPanel-btn" data-typo3-zoom-close="true">
+                    {f:translate(key:'LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:button.close')}
+                </button>
+            </div>
+            <div class="typo3-adminPanel-zoom-body">
+                <h3 class="typo3-adminPanel-headline">{f:translate(key:'LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.query')}</h3>
+                <pre class="typo3-adminPanel-sql-statement">{queryCollection.sql}</pre>
+                <f:if condition="{queryCollection.queries}">
+                    <f:if condition="{queryCollection.queries.0.backtrace}">
+                        <f:alias map="{query: queryCollection.queries.0}">
+                            <h3 class="typo3-adminPanel-headline">{f:translate(key:'LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.backtrace')}</h3>
+                            <div class="typo3-adminPanel-sql-backtrace">
+                                <f:for each="{query.backtrace}" as="value">
+                                    <div class="typo3-adminPanel-sql-backtrace-item">
+                                        <span class="typo3-adminPanel-sql-backtrace-item-function">
+                                            {value.class}{value.type}{value.function}
+                                        </span>
+                                        <span class="typo3-adminPanel-sql-backtrace-item-file">
+                                            {value.file}:{value.line}
+                                        </span>
+                                    </div>
+                                </f:for>
+                            </div>
+                        </f:alias>
+                    </f:if>
+                    <h3 class="typo3-adminPanel-headline">{f:translate(key:'LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.queries')}</h3>
+                    <div class="typo3-adminPanel-table-overflow">
+                        <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
+                            <thead>
+                                <tr>
+                                    <f:for each="{queryCollection.queries.0.params}" as="value" iteration="param">
+                                        <th scope="col">dcValue{param.cycle}</th>
+                                    </f:for>
+                                    <th scope="col" class="typo3-adminPanel-table-cell-space"></th>
+                                    <th scope="col" class="typo3-adminPanel-table-cell-time"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.queryTime"/></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <f:for each="{queryCollection.queries}" as="query" iteration="iterator">
+                                    <tr>
+                                        <f:for each="{query.params}" as="value">
+                                            <td class="typo3-adminPanel-table-cell-break">{value}</td>
+                                        </f:for>
+                                        <td scope="col" class="typo3-adminPanel-table-cell-space"></td>
+                                        <td class="typo3-adminPanel-table-cell-time">
+                                            <div class="typo3-adminPanel-progress">
+                                                <div class="typo3-adminPanel-progress-bar" style="width:{query.executionMS * 1000 / totalTime * 100}%;"></div>
+                                                <div class="typo3-adminPanel-progress-value"><f:format.number decimals="2">{query.executionMS * 1000}</f:format.number></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </f:for>
+                            </tbody>
+                        </table>
+                    </div>
+                </f:if>
+            </div>
+        </div>
+    </f:for>
+</div>
+</html>

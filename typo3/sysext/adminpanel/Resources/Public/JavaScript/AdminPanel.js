@@ -22,6 +22,8 @@ function toggleAdminPanelState() {
 function renderBackdrop() {
   var adminPanel = document.querySelector('#TSFE_ADMIN_PANEL_FORM');
   var backdrop = document.createElement('div');
+  var body = document.querySelector('body');
+  body.classList.add('typo3-adminPanel-noscroll');
   backdrop.classList.add('typo3-adminPanel-backdrop');
   adminPanel.appendChild(backdrop);
   addBackdropListener();
@@ -29,6 +31,8 @@ function renderBackdrop() {
 
 function removeBackdrop() {
   var backdrop = document.querySelector('.typo3-adminPanel-backdrop');
+  var body = document.querySelector('body');
+  body.classList.remove('typo3-adminPanel-noscroll');
   if (backdrop !== null) {
     backdrop.remove();
   }
@@ -181,3 +185,35 @@ function initializeTabs() {
 }
 
 window.addEventListener('load', initializeAdminPanel, false);
+
+/**
+ * Zoom
+ */
+function initializeZooms() {
+  var zoomOpenTrigger = document.querySelectorAll('[data-typo3-zoom-target]');
+  var zoomCloseTrigger = document.querySelectorAll('[data-typo3-zoom-close]');
+
+  function openZoom(event) {
+    event.preventDefault();
+    var trigger = event.currentTarget;
+    var targetId = trigger.getAttribute('data-typo3-zoom-target');
+    var target = document.querySelector('[data-typo3-zoom-id=' + targetId + ']');
+    target.classList.add('typo3-adminPanel-zoom-show');
+  }
+
+  for (var i = 0; i < zoomOpenTrigger.length; i++) {
+    zoomOpenTrigger[i].addEventListener("click", openZoom)
+  }
+
+  function closeZoom(event) {
+    event.preventDefault();
+    var trigger = event.currentTarget;
+    var target = trigger.closest('[data-typo3-zoom-id]');
+    target.classList.remove('typo3-adminPanel-zoom-show');
+  }
+
+  for (var i = 0; i < zoomCloseTrigger.length; i++) {
+    zoomCloseTrigger[i].addEventListener("click", closeZoom)
+  }
+}
+window.addEventListener('load', initializeZooms, false);

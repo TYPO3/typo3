@@ -58,7 +58,7 @@ class MainController implements SingletonInterface
     /**
      * @var array
      */
-    private $adminPanelModuleConfiguration;
+    protected $adminPanelModuleConfiguration;
 
     /**
      * @param ModuleLoader $moduleLoader

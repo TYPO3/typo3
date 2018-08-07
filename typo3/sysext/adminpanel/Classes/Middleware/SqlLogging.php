@@ -20,39 +20,28 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use TYPO3\CMS\Adminpanel\Controller\MainController;
+use TYPO3\CMS\Adminpanel\Log\DoctrineSqlLogger;
 use TYPO3\CMS\Adminpanel\Utility\StateUtility;
-use TYPO3\CMS\Adminpanel\View\AdminPanelView;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * PSR-15 Middleware to initialize the admin panel
+ * Enable sql logging for the admin panel
  *
  * @internal
  */
-class AdminPanelInitiator implements MiddlewareInterface
+class SqlLogging implements MiddlewareInterface
 {
+
     /**
-     * Initialize the adminPanel if
-     * - backend user is logged in
-     * - at least one adminpanel functionality is enabled
-     * - admin panel is open
-     *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
+     * Enable SQL Logging as early as possible to catch all queries if the admin panel is active
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (StateUtility::isActivated() && StateUtility::isOpen()) {
-            $adminPanelController = GeneralUtility::makeInstance(
-                MainController::class
-            );
-            $adminPanelController->initialize($request);
-            // legacy handling
-            $beUser = $GLOBALS['BE_USER'];
-            $beUser->adminPanel = GeneralUtility::makeInstance(AdminPanelView::class);
-            $beUser->extAdmEnabled = true;
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+            $connection = $connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+            $connection->getConfiguration()->setSQLLogger(GeneralUtility::makeInstance(DoctrineSqlLogger::class));
         }
         return $handler->handle($request);
     }

@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Adminpanel\Hooks;
  */
 
 use TYPO3\CMS\Adminpanel\Controller\MainController;
-use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
+use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -40,9 +40,7 @@ class RenderHook
     public function renderAdminPanel(array $params, TypoScriptFrontendController $pObj): void
     {
         if (
-            $pObj->isBackendUserLoggedIn() &&
-            $GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication &&
-            isset($GLOBALS['BE_USER']->getTSConfig()['admPanel.']['enable.']) &&
+            StateUtility::isActivated() &&
             !$GLOBALS['BE_USER']->extAdminConfig['hide'] && $pObj->config['config']['admPanel']
         ) {
             $mainController = GeneralUtility::makeInstance(MainController::class);

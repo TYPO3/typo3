@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Adminpanel\Log;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Adminpanel\Utility\MemoryUtility;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Log\Writer\AbstractWriter;
@@ -28,8 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class InMemoryLogWriter extends AbstractWriter
 {
     public static $log = [];
-
-    private const MINIMAL_PERCENT_OF_FREE_MEMORY = 0.30;
 
     private static $memoryLock = false;
 
@@ -48,7 +47,7 @@ class InMemoryLogWriter extends AbstractWriter
         }
 
         // Guard: Memory Usage
-        if (!self::$memoryLock && $this->isMemoryConsumptionTooHigh()) {
+        if (!self::$memoryLock && MemoryUtility::isMemoryConsumptionTooHigh()) {
             $this->lockWriter();
             return $this;
         }
@@ -56,24 +55,6 @@ class InMemoryLogWriter extends AbstractWriter
         self::$log[] = $record;
 
         return $this;
-    }
-
-    /**
-     * Checks memory usage used in current process - this is no guarantee for not running out of memory
-     * but should prevent memory exhaustion due to the InMemoryLogger in most cases.
-     *
-     * The logger will stop logging once the amount of free memory falls below the threshold (see
-     * MINIMAL_PERCENT_OF_FREE_MEMORY const).
-     *
-     * @return bool
-     */
-    protected function isMemoryConsumptionTooHigh(): bool
-    {
-        $iniLimit = ini_get('memory_limit');
-        $memoryLimit = $iniLimit === '-1' ? -1 : GeneralUtility::getBytesFromSizeMeasurement($iniLimit);
-        $freeMemory = $memoryLimit - memory_get_usage(true);
-
-        return $memoryLimit > 0 && $freeMemory < (self::MINIMAL_PERCENT_OF_FREE_MEMORY * $memoryLimit);
     }
 
     /**
