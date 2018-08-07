@@ -166,30 +166,28 @@ class SaltedPasswordService extends AbstractAuthenticationService
             $validPasswd = $this->compareUident($user, $this->login);
             if (!$validPasswd) {
                 // Failed login attempt (wrong password)
-                $errorMessage = 'Login-attempt from ###IP### (%s), username \'%s\', password not accepted!';
+                $errorMessage = 'Login-attempt from ###IP###, username \'%s\', password not accepted!';
                 // No delegation to further services
                 if ($this->authenticationFailed) {
                     $this->writeLogMessage(TYPO3_MODE . ' Authentication failed - wrong password for username \'%s\'', $this->login['uname']);
                     $OK = 0;
                 } else {
-                    $this->writeLogMessage($errorMessage, $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']);
+                    $this->writeLogMessage($errorMessage, $this->login['uname']);
                 }
                 $this->writelog(255, 3, 3, 1, $errorMessage, [
-                    $this->authInfo['REMOTE_HOST'],
                     $this->login['uname']
                 ]);
-                $this->logger->info(sprintf($errorMessage, $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
+                $this->logger->info(sprintf($errorMessage, $this->login['uname']));
             } elseif ($validPasswd && $user['lockToDomain'] && strcasecmp($user['lockToDomain'], $this->authInfo['HTTP_HOST'])) {
                 // Lock domain didn't match, so error:
-                $errorMessage = 'Login-attempt from ###IP### (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!';
-                $this->writeLogMessage($errorMessage, $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']);
+                $errorMessage = 'Login-attempt from ###IP###, username \'%s\', locked domain \'%s\' did not match \'%s\'!';
+                $this->writeLogMessage($errorMessage, $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']);
                 $this->writelog(255, 3, 3, 1, $errorMessage, [
-                    $this->authInfo['REMOTE_HOST'],
                     $user[$this->db_user['username_column']],
                     $user['lockToDomain'],
                     $this->authInfo['HTTP_HOST']
                 ]);
-                $this->logger->info(sprintf($errorMessage, $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']));
+                $this->logger->info(sprintf($errorMessage, $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']));
                 $OK = 0;
             } elseif ($validPasswd) {
                 $this->writeLogMessage(TYPO3_MODE . ' Authentication successful for username \'%s\'', $this->login['uname']);

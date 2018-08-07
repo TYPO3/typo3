@@ -88,8 +88,7 @@ class AuthenticationService
                 ->setBody('There has been an Install Tool login at TYPO3 site'
                     . ' \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\''
                     . ' (' . GeneralUtility::getIndpEnv('HTTP_HOST') . ')'
-                    . ' from remote address \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\''
-                    . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')')
+                    . ' from remote address \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\'')
                 ->send();
         }
     }
@@ -111,8 +110,7 @@ class AuthenticationService
                     . ' \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\''
                     . ' (' . GeneralUtility::getIndpEnv('HTTP_HOST') . ')'
                     . ' The last 5 characters of the MD5 hash of the password tried was \'' . substr(md5($formValues['password']), -5) . '\''
-                    . ' remote address was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\''
-                    . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')')
+                    . ' remote address was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\'')
                 ->send();
         }
     }

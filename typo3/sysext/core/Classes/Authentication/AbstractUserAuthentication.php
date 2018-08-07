@@ -774,13 +774,13 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
             // User logged in - write that to the log!
             if ($this->writeStdLog && $activeLogin) {
-                $this->writelog(255, 1, 0, 1, 'User %s logged in from ###IP### (%s)', [$tempuser[$this->username_column], GeneralUtility::getIndpEnv('REMOTE_HOST')], '', '', '');
+                $this->writelog(255, 1, 0, 1, 'User %s logged in from ###IP###', [$tempuser[$this->username_column]], '', '', '');
             }
             if ($activeLogin) {
-                $this->logger->info('User ' . $tempuser[$this->username_column] . ' logged in from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')');
+                $this->logger->info('User ' . $tempuser[$this->username_column] . ' logged in from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR'));
             }
             if (!$activeLogin) {
-                $this->logger->debug('User ' . $tempuser[$this->username_column] . ' authenticated from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')');
+                $this->logger->debug('User ' . $tempuser[$this->username_column] . ' authenticated from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR'));
             }
         } else {
             // User was not authenticated, so we should reuse the existing anonymous session

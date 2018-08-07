@@ -57,20 +57,19 @@ class AuthenticationService extends AbstractAuthenticationService
         }
         if ((string)$this->login['uident_text'] === '') {
             // Failed Login attempt (no password given)
-            $this->writelog(255, 3, 3, 2, 'Login-attempt from ###IP### (%s) for username \'%s\' with an empty password!', [
-                $this->authInfo['REMOTE_HOST'], $this->login['uname']
+            $this->writelog(255, 3, 3, 2, 'Login-attempt from ###IP### for username \'%s\' with an empty password!', [
+                $this->login['uname']
             ]);
-            $this->logger->warning(sprintf('Login-attempt from %s (%s), for username \'%s\' with an empty password!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
+            $this->logger->warning(sprintf('Login-attempt from %s, for username \'%s\' with an empty password!', $this->authInfo['REMOTE_ADDR'], $this->login['uname']));
             return false;
         }
 
         $user = $this->fetchUserRecord($this->login['uname']);
         if (!is_array($user)) {
             // Failed login attempt (no username found)
-            $this->writelog(255, 3, 3, 2, 'Login-attempt from ###IP### (%s), username \'%s\' not found!!', [$this->authInfo['REMOTE_HOST'], $this->login['uname']]);
+            $this->writelog(255, 3, 3, 2, 'Login-attempt from ###IP###, username \'%s\' not found!!', [$this->login['uname']]);
             $this->logger->info('Login-attempt from username \'' . $this->login['uname'] . '\' not found!', [
-                'REMOTE_ADDR' => $this->authInfo['REMOTE_ADDR'],
-                'REMOTE_HOST' => $this->authInfo['REMOTE_HOST'],
+                'REMOTE_ADDR' => $this->authInfo['REMOTE_ADDR']
             ]);
         } else {
             $this->logger->debug('User found', [
@@ -172,10 +171,10 @@ class AuthenticationService extends AbstractAuthenticationService
             // Could not find a responsible hash algorithm for given password. This is unusual since other
             // authentication services would usually be called before this one with higher priority. We thus log
             // the failed login but still return '100' to proceed with other services that may follow.
-            $message = 'Login-attempt from ###IP### (%s), username \'%s\', no suitable hash method found!';
-            $this->writeLogMessage($message, $this->authInfo['REMOTE_HOST'], $submittedUsername);
-            $this->writelog(255, 3, 3, 1, $message, [$this->authInfo['REMOTE_HOST'], $submittedUsername]);
-            $this->logger->info(sprintf($message, $this->authInfo['REMOTE_HOST'], $submittedUsername));
+            $message = 'Login-attempt from ###IP###, username \'%s\', no suitable hash method found!';
+            $this->writeLogMessage($message, $submittedUsername);
+            $this->writelog(255, 3, 3, 1, $message, [$submittedUsername]);
+            $this->logger->info(sprintf($message, $submittedUsername));
             // Not responsible, check other services
             return 100;
         }
@@ -183,19 +182,19 @@ class AuthenticationService extends AbstractAuthenticationService
         if (!$isValidPassword) {
             // Failed login attempt - wrong password
             $this->writeLogMessage(TYPO3_MODE . ' Authentication failed - wrong password for username \'%s\'', $submittedUsername);
-            $message = 'Login-attempt from ###IP### (%s), username \'%s\', password not accepted!';
-            $this->writelog(255, 3, 3, 1, $message, [$this->authInfo['REMOTE_HOST'], $submittedUsername]);
-            $this->logger->info(sprintf($message, $this->authInfo['REMOTE_HOST'], $submittedUsername));
+            $message = 'Login-attempt from ###IP###, username \'%s\', password not accepted!';
+            $this->writelog(255, 3, 3, 1, $message, [$submittedUsername]);
+            $this->logger->info(sprintf($message, $submittedUsername));
             // Responsible, authentication failed, do NOT check other services
             return 0;
         }
 
         if (!$isDomainLockMet) {
             // Password ok, but configured domain lock not met
-            $errorMessage = 'Login-attempt from ###IP### (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!';
-            $this->writeLogMessage($errorMessage, $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $configuredDomainLock, $this->authInfo['HTTP_HOST']);
-            $this->writelog(255, 3, 3, 1, $errorMessage, [$this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $configuredDomainLock, $this->authInfo['HTTP_HOST']]);
-            $this->logger->info(sprintf($errorMessage, $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $configuredDomainLock, $this->authInfo['HTTP_HOST']));
+            $errorMessage = 'Login-attempt from ###IP###, username \'%s\', locked domain \'%s\' did not match \'%s\'!';
+            $this->writeLogMessage($errorMessage, $user[$this->db_user['username_column']], $configuredDomainLock, $this->authInfo['HTTP_HOST']);
+            $this->writelog(255, 3, 3, 1, $errorMessage, [$user[$this->db_user['username_column']], $configuredDomainLock, $this->authInfo['HTTP_HOST']]);
+            $this->logger->info(sprintf($errorMessage, $user[$this->db_user['username_column']], $configuredDomainLock, $this->authInfo['HTTP_HOST']));
             // Responsible, authentication ok, but domain lock not ok, do NOT check other services
             return 0;
         }
