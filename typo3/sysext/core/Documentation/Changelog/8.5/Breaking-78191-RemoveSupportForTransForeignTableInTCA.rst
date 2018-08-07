@@ -26,8 +26,8 @@ Impact
 Modifications concerning the following two TCA control properties won't have
 any effect anymore:
 
-+ `$TCA[<tableName>]['ctrl']['transForeignTable']`
-+ `$TCA[<tableName>]['ctrl']['transOrigPointerTable']`
+* :php:`$GLOBALS[TCA][<tableName>]['ctrl']['transForeignTable']`
+* :php:`$GLOBALS[TCA][<tableName>]['ctrl']['transOrigPointerTable']`
 
 
 Affected Installations
@@ -43,7 +43,7 @@ No special actions are required if just the core defaults are used. Special
 adjustments concerning the mentioned TCA properties should be verified and
 hard-coded for the time being.
 
-+ `$TCA['pages']['ctrl']['transForeignTable']`, use value `pages_language_overlay` directly
-+ `$TCA['pages_language_overlay']['ctrl']['transOrigPointerTable']`, use value `pages` directly
+* :php:`$GLOBALS[TCA]['pages']['ctrl']['transForeignTable']`, use value `pages_language_overlay` directly
+* :php:`$GLOBALS[TCA]['pages_language_overlay']['ctrl']['transOrigPointerTable']`, use value `pages` directly
 
 .. index:: TCA, Backend

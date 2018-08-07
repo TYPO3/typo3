@@ -9,7 +9,7 @@ See :issue:`79025`
 Description
 ===========
 
-Since the .gitattributes export change, a lot of base test classes for writing own tests are missing in distribution builds.
+Since the :file:`.gitattributes` export change, a lot of base test classes for writing own tests are missing in distribution builds.
 To get a sustainable future-proof solution, the TYPO3 core testing framework will be extracted to an own component.
 
 
@@ -33,7 +33,7 @@ All installations using core testing components as base.
 Migration
 =========
 
-Change the namespace from TYPO3\CMS\Core\Tests to TYPO3\TestingFramework\Core or in case of the xml fixtures the corresponding file path.
+Change the namespace from :php:`TYPO3\CMS\Core\Tests` to :php:`TYPO3\TestingFramework\Core` or in case of the xml fixtures the corresponding file path.
 
 If you need to ensure compatibility with multiple TYPO3 versions, use the base test classes with their old names.
 

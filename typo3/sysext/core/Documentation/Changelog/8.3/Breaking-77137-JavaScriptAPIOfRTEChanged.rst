@@ -19,12 +19,14 @@ Impact
 ExtJS-based plugins will throw JavaScript errors.
 
 The following methods have been removed:
+
 * `onContainerResize`
 * `getWindowDimensions`
 * `setTabPanelHeight`
 * `syncHeight`
 
 The following methods have been changed:
+
 * `openContainerWindow`
 * `buildButtonConfig`
 

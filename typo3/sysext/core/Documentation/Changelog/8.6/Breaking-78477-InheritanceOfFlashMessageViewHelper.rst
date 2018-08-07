@@ -1,27 +1,27 @@
 .. include:: ../../Includes.txt
 
-====================================================================================
-Breaking: #78477 - FlashMessageViewHelper no longer inherits from TagBasedViewHelper
-====================================================================================
+=====================================================================================
+Breaking: #78477 - FlashMessagesViewHelper no longer inherits from TagBasedViewHelper
+=====================================================================================
 
 See :issue:`78477`
 
 Description
 ===========
 
-The :php:`FlashMessageViewHelper` has been refactored and no longer inherits from the :php:`TagBasedViewHelper`.
+The :php:`FlashMessagesViewHelper` has been refactored and no longer inherits from the :php:`TagBasedViewHelper`.
 
 
 Impact
 ======
 
-The :php:`FlashMessageViewHelper` outputs default context specific markup. Adding own classes or tag attributes is no longer possible.
+The :php:`FlashMessagesViewHelper` outputs default context specific markup. Adding own classes or tag attributes is no longer possible.
 
 
 Affected Installations
 ======================
 
-All installations using the :php:`FlashMessageViewHelper` with tag specific attributes.
+All installations using the :php:`FlashMessagesViewHelper` with tag specific attributes.
 
 
 Migration

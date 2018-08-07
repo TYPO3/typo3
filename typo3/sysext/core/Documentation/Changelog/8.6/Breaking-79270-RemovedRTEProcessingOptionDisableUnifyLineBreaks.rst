@@ -9,7 +9,7 @@ See :issue:`79270`
 Description
 ===========
 
-The RTE option that could be set via PageTSconfig `RTE.default.proc.disableUnifyLineBreaks` has been removed.
+The RTE option that could be set via PageTSconfig :ts:`RTE.default.proc.disableUnifyLineBreaks` has been removed.
 
 The option was never set by default.
 

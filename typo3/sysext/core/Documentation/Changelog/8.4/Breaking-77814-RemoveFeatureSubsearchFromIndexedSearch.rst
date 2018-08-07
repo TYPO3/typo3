@@ -12,7 +12,7 @@ Description
 The feature subsearch which enabled the possibility to append previously searched words to the current
 query was removed.
 
-The option TypoScript `plugin.tx_indexedsearch.clearSearchBox` has been removed.
+The option TypoScript :ts:`plugin.tx_indexedsearch.clearSearchBox` has been removed.
 
 
 Impact

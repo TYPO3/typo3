@@ -15,24 +15,28 @@ refactored. All previous flexform configuration has been migrated to database
 fields, shared across both content rendering definitions.
 
 Element options removed:
-- Table Summary
-- No CSS styles for this table
+
+* Table Summary
+* No CSS styles for this table
 
 Element options changed:
-- Additional CSS Class
+
+* Additional CSS Class
 
 Rendering changes:
-- Additional CSS classes for tr, th, td have been dropped
+
+* Additional CSS classes for tr, th, td have been dropped
 
 TypoScript options removed:
-- color
-- tableParams_0
-- tableParams_1
-- tableParams_2
-- tableParams_3
-- border
-- cellpadding
-- cellspacing
+
+* color
+* tableParams_0
+* tableParams_1
+* tableParams_2
+* tableParams_3
+* border
+* cellpadding
+* cellspacing
 
 
 Table Summary

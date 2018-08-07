@@ -10,7 +10,7 @@ Description
 ===========
 
 The tables `pages`, `tt_content` and `sys_file_metadata` have been removed from `defaultCategorizedTables`. 
-For these tables the core API `\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable` would be
+For these tables the core API :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable` would be
 executed to define a common position of the categories field.
 
 

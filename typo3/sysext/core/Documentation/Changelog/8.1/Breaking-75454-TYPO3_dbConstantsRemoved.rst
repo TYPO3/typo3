@@ -10,7 +10,7 @@ See :issue:`75454`
 Description
 ===========
 
-The PHP constants `TYPO3_db`, `TYPO3_db_username`, `TYPO3_db_password` and `TYPO3_db_host`
+The PHP constants :php:`TYPO3_db`, :php:`TYPO3_db_username`, :php:`TYPO3_db_password` and :php:`TYPO3_db_host`
 which were used when TYPO3 initialized the database connection have been removed.
 
 
@@ -30,7 +30,7 @@ Any installation which uses a third-party extension using these constants.
 Migration
 =========
 
-Use the configuration data within `$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']`
+Use the configuration data within :php:`$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']`
 to determine the username, password and host information for the default database connection.
 
 .. index:: PHP-API, Database, LocalConfiguration

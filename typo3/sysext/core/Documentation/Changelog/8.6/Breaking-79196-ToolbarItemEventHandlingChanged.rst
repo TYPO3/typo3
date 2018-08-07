@@ -28,18 +28,18 @@ All installations with old-fashioned toolbar item registrations.
 Migration
 =========
 
-In most cases it's sufficient to replace the register function with `Viewport.Topbar.Toolbar.registerEvent()`.
+In most cases it's sufficient to replace the register function with :javascript:`Viewport.Topbar.Toolbar.registerEvent()`.
 
 Example:
 
 .. code-block:: javascript
 
 	define(['jquery', 'TYPO3/CMS/Backend/Viewport'], function($, Viewport) {
-		// old registration
-		$(MyAwesomeItem.doStuff)
+	   // old registration
+	   MyAwesomeItem.doStuff)
 
-		// new registration
-		Viewport.Topbar.Toolbar.registerEvent(MyAwesomeItem.doStuff);
+	   // new registration
+	   Viewport.Topbar.Toolbar.registerEvent(MyAwesomeItem.doStuff);
 	});
 
 .. index:: Backend, JavaScript

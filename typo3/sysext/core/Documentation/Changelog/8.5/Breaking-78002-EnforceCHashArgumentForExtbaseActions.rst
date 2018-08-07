@@ -24,7 +24,7 @@ Affected Installations
 ======================
 
 All generated links to Extbase actions that explicitly disabled the cHash are
-affected - like `<f:link.action action="..." noCacheHash="1"/>`
+affected - like :html:`<f:link.action action="..." noCacheHash="1"/>`
 
 
 Migration
@@ -33,8 +33,8 @@ Migration
 Either one of the following:
 
 + ensure to use a valid cHash, e.g. by removing the
-  `noCacheHash="1"` argument from link view-helpers
-+ disable the `feature.requireCHashArgumentForActionArguments`
+  :html:`noCacheHash="1"` argument from link view-helpers
++ disable the :ts:`feature.requireCHashArgumentForActionArguments`
   setting for the particular extension
 
 .. index:: Frontend, PHP-API, ext:extbase

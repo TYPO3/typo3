@@ -24,7 +24,7 @@ in Frontend mode will not yield the expected result.
 Affected Installations
 ======================
 
-Any installation that uses the `FILES` cObject, e.g. via the `uploads` CType, as well as
+Any installation that uses the :ts:`FILES` cObject, e.g. via the `uploads` CType, as well as
 any installation with a 3rd party extension that uses the named method.
 
 Migration

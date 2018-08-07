@@ -10,8 +10,8 @@ Description
 ===========
 
 During the fluidification of the clipboard, it became obvious that the method
-`printContentFromTab()` doesn't describe the method correctly anymore. So it has been
-renamed to `getContentFromTab()`.
+:php:`printContentFromTab()` doesn't describe the method correctly anymore. So it has been
+renamed to :php:`getContentFromTab()`.
 
 
 Impact
@@ -25,12 +25,12 @@ is needed.
 Affected Installations
 ======================
 
-Every extension that calls `Clipboard->printContentFromTab()`.
+Every extension that calls :php:`Clipboard->printContentFromTab()`.
 
 
 Migration
 =========
 
-Change the call from `Clipboard->printContentFromTab()` to `Clipboard->getContentFromTab()`.
+Change the call from :php:`Clipboard->printContentFromTab()` to :php:`Clipboard->getContentFromTab()`.
 
 .. index:: Backend, PHP-API

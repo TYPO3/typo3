@@ -18,14 +18,14 @@ TCA Column Config
 * [config][treeConfig][appearance][allowRecursiveMode]
 
 The option hasn't been working for a while and the documentation vs. implementation
-was off - see https://forge.typo3.org/issues/77074
+was off - see :issue:`77074`
 
 * [config][treeConfig][appearance][width]
 
 * [config][autoSizeMax]
 
 The options have no influence on the rendering of FormEngine select field configured
-with 'renderType'=>'selectTree' anymore.
+with :php:`'renderType' => 'selectTree'` anymore.
 
 The Recursive selection button (the green arrow button located on the category tree toolbar) was
 not widely used, mostly due that nobody expected the green "refresh" icon was related to recursive

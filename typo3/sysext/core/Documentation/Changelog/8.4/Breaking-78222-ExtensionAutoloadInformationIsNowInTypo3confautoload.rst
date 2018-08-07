@@ -10,14 +10,14 @@ Description
 ===========
 
 To make clear that autoload information is not a cache,
-the files have been moved from typo3temp to typo3conf.
+the files have been moved from :file:`typo3temp` to :file:`typo3conf`.
 
 
 Impact
 ======
 
 TYPO3 deployments which do not take advantage of composer, might need some adaption
-to also include the new location in typo3conf in the list of to be synced files.
+to also include the new location in :file:`typo3conf` in the list of to be synced files.
 
 
 Affected Installations

@@ -43,7 +43,7 @@ Affected Installations
 ======================
 
 Any existing installation upgrading to TYPO3 v8 with a (e.g. cron) CLI script, running the reference index update via
-the `typo3/cli_dispatch.phpsh`.
+the :file:`typo3/cli_dispatch.phpsh`.
 
 
 Migration

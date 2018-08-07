@@ -9,8 +9,8 @@ See :issue:`79120`
 Description
 ===========
 
-The deprecated PHP constants `TYPO3_cliKey` and `TYPO3_cliInclude`, and the global variables `$GLOBALS['temp_cliScriptPath']` and 
-`$GLOBALS['temp_cliKey']` which had been filled when running a CLI command have been removed.
+The deprecated PHP constants :php:`TYPO3_cliKey` and :php:`TYPO3_cliInclude`, and the global variables :php:`$GLOBALS['temp_cliScriptPath']` and 
+:php:`$GLOBALS['temp_cliKey']` which had been filled when running a CLI command have been removed.
 
 
 Impact

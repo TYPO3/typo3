@@ -27,7 +27,7 @@ Affected Installations
 ======================
 
 All instances with extensions setting TCA options and having
-`$GLOBALS['TCA'][<table-name>]['columns'][<column-name>]['l10n_mode']` set to `mergeIfNotBlank`.
+:php:`$GLOBALS['TCA'][<table-name>]['columns'][<column-name>]['l10n_mode']` set to `mergeIfNotBlank`.
 
 
 Migration
@@ -35,7 +35,7 @@ Migration
 
 First execute the upgrade wizard
 **Migrate values in database records having "l10n_mode" set** in the install tool.
-After that, remove `$GLOBALS['TCA'][<table-name>]['columns'][<column-name>]['l10n_mode']`
+After that, remove :php:`$GLOBALS['TCA'][<table-name>]['columns'][<column-name>]['l10n_mode']`
 if it is set to `mergeIfNotBlank`. If `l10n_mode` is removed before the upgrade wizard
 has been executed, nothing will be migrated - thus, it's important to keep that order
 of migration.

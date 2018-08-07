@@ -10,7 +10,7 @@ See :issue:`75323`
 Description
 ===========
 
-The entry point `PHP` classes for `index.php`, `typo3/index.php` and so forth (called "Application classes")
+The entry point `PHP` classes for :file:`index.php`, :file:`typo3/index.php` and so forth (called "Application classes")
 now have a parameter not to define the path to the entry point but the number of subdirectories under the main
 installation path, allowing to not specify the name of the path, but just the levels of subdirectories.
 
@@ -35,6 +35,6 @@ Migration
 =========
 
 Use the entry point level as integer, instead of the string, in your custom entry points. See
-`TYPO3\CMS\Backend\Http\Application` for an example.
+:php:`TYPO3\CMS\Backend\Http\Application` for an example.
 
 .. index:: PHP-API, Backend

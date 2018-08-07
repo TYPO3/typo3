@@ -45,7 +45,7 @@ you must provide the writable property paths with a hook. Otherwise the editor w
 
 Connect to the hook:
 
-.. code-block:: yaml
+.. code-block:: php
 
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['buildFormDefinitionValidationConfiguration'][] = \Vendor\YourNamespace\YourClass::class;
 
@@ -53,7 +53,7 @@ Use the hook:
 
 The hook must return an array with a set of ValidationDto objects.
 
-.. code-block:: yaml
+.. code-block:: php
 
     /**
      * @param \TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators\ValidationDto $validationDto

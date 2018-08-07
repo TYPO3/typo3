@@ -10,9 +10,9 @@ See :issue:`75829`
 Description
 ===========
 
-The functionality for importing .t3d files created from installations lower than TYPO3 CMS 6.0 has been removed.
+The functionality for importing :file:`*.t3d` files created from installations lower than TYPO3 CMS 6.0 has been removed.
 
-The following public method has been removed: :php`\TYPO3\CMS\Impexp\Import::fixCharsets()`.
+The following public method has been removed: :php:`\TYPO3\CMS\Impexp\Import::fixCharsets()`.
 
 
 Impact
