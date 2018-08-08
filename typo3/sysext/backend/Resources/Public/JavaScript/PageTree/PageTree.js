@@ -190,6 +190,9 @@ define(['jquery',
      * @param {Node} node
      */
     PageTree.prototype.nodeSelectedAfter = function(node) {
+      if (!node.checked) {
+        return;
+      }
       //remember the selected page in the global state
       fsMod.recentIds.web = node.identifier;
       fsMod.currentBank = node.stateIdentifier.split('_')[0];
@@ -307,8 +310,6 @@ define(['jquery',
       }
 
       var _this = this;
-      var checked = node.checked;
-
       var selectedNodes = this.getSelectedNodes();
       selectedNodes.forEach(function (node) {
         if (node.checked === true) {
