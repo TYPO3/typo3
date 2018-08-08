@@ -506,11 +506,11 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
     public function sendZipFileToBrowserAndDelete($fileName, $downloadName = '')
     {
         if ($downloadName === '') {
-            $downloadName = PathUtility::basename($fileName, '.zip');
+            $downloadName = PathUtility::basename($fileName);
         }
         header('Content-Type: application/zip');
         header('Content-Length: ' . filesize($fileName));
-        header('Content-Disposition: attachment; filename="' . $downloadName . '.zip"');
+        header('Content-Disposition: attachment; filename="' . $downloadName . '"');
         readfile($fileName);
         unlink($fileName);
         die;
