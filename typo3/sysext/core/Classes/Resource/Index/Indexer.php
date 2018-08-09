@@ -72,6 +72,11 @@ class Indexer
         $record = $this->getFileIndexRepository()->addRaw($fileProperties);
         $fileObject = $this->getResourceFactory()->getFileObject($record['uid'], $record);
         $this->extractRequiredMetaData($fileObject);
+
+        if ($this->storage->autoExtractMetadataEnabled()) {
+            $this->extractMetaData($fileObject);
+        }
+
         return $fileObject;
     }
 
