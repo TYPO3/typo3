@@ -100,11 +100,11 @@ class SettingsController extends AbstractController
                 FlashMessage::ERROR
             ));
         } else {
-            $saltFactory = SaltFactory::getSaltingInstance(null, 'BE');
+            $hashInstance = GeneralUtility::makeInstance(SaltFactory::class)->getDefaultHashInstance('BE');
             $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
             $configurationManager->setLocalConfigurationValueByPath(
                 'BE/installToolPassword',
-                $saltFactory->getHashedPassword($password)
+                $hashInstance->getHashedPassword($password)
             );
             $messageQueue->enqueue(new FlashMessage('Install tool password changed'));
         }

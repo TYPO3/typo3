@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Saltedpasswords\Exception\InvalidSaltException;
 use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
@@ -288,8 +289,15 @@ class SetupModuleController
                         $passwordOk = true;
                     } else {
                         $currentPasswordHashed = $GLOBALS['BE_USER']->user['password'];
-                        $saltFactory = SaltFactory::getSaltingInstance($currentPasswordHashed);
-                        $passwordOk = $saltFactory->checkPassword($be_user_data['passwordCurrent'], $currentPasswordHashed);
+                        $passwordOk = false;
+                        $saltFactory = GeneralUtility::makeInstance(SaltFactory::class);
+                        try {
+                            $hashInstance = $saltFactory->get($currentPasswordHashed);
+                            $passwordOk = $hashInstance->checkPassword($be_user_data['passwordCurrent'], $currentPasswordHashed);
+                        } catch (InvalidSaltException $e) {
+                            // Could not find hash class responsible for existing password. This is a
+                            // misconfiguration and user can not change its password.
+                        }
                     }
                     if ($passwordOk) {
                         $this->passwordIsUpdated = self::PASSWORD_UPDATED;

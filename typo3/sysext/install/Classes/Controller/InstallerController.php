@@ -1092,15 +1092,14 @@ For each website you need a TypoScript template on the main page of your website
     }
 
     /**
-     * This function returns a salted hashed key.
+     * This function returns a salted hashed key for new backend user password and install tool password
      *
      * @param string $password
      * @return string
      */
     protected function getHashedPassword($password)
     {
-        $saltFactory = SaltFactory::getSaltingInstance(null, 'BE');
-        return $saltFactory->getHashedPassword($password);
+        return GeneralUtility::makeInstance(SaltFactory::class)->getDefaultHashInstance('BE')->getHashedPassword($password);
     }
 
     /**

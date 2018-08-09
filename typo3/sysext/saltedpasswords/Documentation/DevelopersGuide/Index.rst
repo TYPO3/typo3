@@ -25,22 +25,18 @@ Creating a hash
 When you want to create a new salted user password hash from a given
 plain-text password, these are the steps to be done:
 
-- let the factory deliver an instance of the default hashing class
-
-- create the salted user password hash
+* let the factory deliver an instance of the default hashing class with given context `FE` or `BE`
+* create the salted user password hash
 
 Example implementation for TYPO3 frontend:
 
 ::
 
-   // plain-text password
+   // Given plain text password
    $password = 'XXX';
-   $saltedPassword = '';
 
-   $objSalt = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(NULL);
-   if (is_object($objSalt)) {
-       $saltedPassword = $objSalt->getHashedPassword($password);
-   }
+   $hashInstance = GeneralUtility::makeInstance(SaltFactory::class)->getDefaultHashInstance('FE');
+   $hashedPassword = $hashInstance->getHashedPassword($password);
 
 
 .. _checking-a-password:
@@ -51,9 +47,8 @@ Checking a password
 When you want to check a plain-text password against a salted user
 password hash, these are the steps to be done:
 
-- let the factory deliver an instance of the according hashing class
-
-- compare plain-text password with salted user password hash
+* let the factory deliver an instance of the according hashing class
+* compare plain-text password with salted user password hash
 
 Example implementation for TYPO3 frontend:
 
@@ -61,14 +56,11 @@ Example implementation for TYPO3 frontend:
 
    // plain-text password
    $password = 'XXX';
-   // salted user password hash
-   $saltedPassword = 'YYY';
-   // keeps status if plain-text password matches given salted user password hash
-   $success = FALSE;
-   $objSalt = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($saltedPassword);
-   if (is_object($objSalt)) {
-       $success = $objSalt->checkPassword($password, $saltedPassword);
-   }
+   // stored password hash
+   $passwordHash = 'YYY';
+   $success = GeneralUtility::makeInstance(SaltFactory::class)
+       ->get($saltedPassword)
+       ->checkPassword($password, $passwordHash);
 
 
 .. _adding-a-new-salting-method:

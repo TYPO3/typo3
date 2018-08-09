@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salt;
 
 /*
@@ -14,7 +15,11 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salt;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Saltedpasswords\Exception\InvalidSaltException;
+use TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt;
+use TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt;
+use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -23,145 +28,123 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class SaltFactoryTest extends UnitTestCase
 {
     /**
-     * Keeps instance of object to test.
-     *
-     * @var \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface
+     * @test
      */
-    protected $objectInstance;
-
-    /**
-     * Sets up the fixtures for this testcase.
-     */
-    protected function setUp()
+    public function getThrowsExceptionIfARegisteredHashDoesNotImplementSaltInterface(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['saltedpasswords'] = [
-            'BE' => [
-                'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class,
-            ],
-            'FE' => [
-                'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class,
-            ],
-        ];
-        $this->objectInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance();
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'] = [ \stdClass::class ];
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(1533818569);
+        (new SaltFactory())->get('ThisIsNotAValidHash');
     }
 
     /**
      * @test
      */
-    public function objectInstanceNotNull()
+    public function getThrowsExceptionIfNoClassIsFoundThatHandlesGivenHash(): void
     {
-        $this->assertNotNull($this->objectInstance);
+        $this->expectException(InvalidSaltException::class);
+        $this->expectExceptionCode(1533818591);
+        (new SaltFactory())->get('ThisIsNotAValidHash');
     }
 
     /**
      * @test
      */
-    public function objectInstanceImplementsInterface()
+    public function getThrowsExceptionIfClassThatHandlesAHashIsNotAvailable(): void
     {
-        $this->assertInstanceOf(\TYPO3\CMS\Saltedpasswords\Salt\SaltInterface::class, $this->objectInstance);
+        $phpassProphecy = $this->prophesize(PhpassSalt::class);
+        GeneralUtility::addInstance(PhpassSalt::class, $phpassProphecy->reveal());
+        $phpassProphecy->isAvailable()->shouldBeCalled()->willReturn(false);
+        $this->expectException(InvalidSaltException::class);
+        $this->expectExceptionCode(1533818591);
+        (new SaltFactory())->get('$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF.');
     }
 
     /**
      * @test
      */
-    public function abstractComposedSaltBase64EncodeReturnsProperLength()
+    public function getThrowsExceptionIfClassThatHandlesAHashSaysNoToHash(): void
     {
-        // set up an instance that extends AbstractComposedSalt first
-        $saltPbkdf2 = '$pbkdf2-sha256$6400$0ZrzXitFSGltTQnBWOsdAw$Y11AchqV4b0sUisdZd0Xr97KWoymNE0LNNrnEgY4H9M';
-        $this->objectInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($saltPbkdf2);
-
-        // 3 Bytes should result in a 6 char length base64 encoded string
-        // used for MD5 and PHPass salted hashing
-        $byteLength = 3;
-        $reqLengthBase64 = (int)ceil($byteLength * 8 / 6);
-        $randomBytes = (new Random())->generateRandomBytes($byteLength);
-        $this->assertTrue(strlen($this->objectInstance->base64Encode($randomBytes, $byteLength)) == $reqLengthBase64);
-        // 16 Bytes should result in a 22 char length base64 encoded string
-        // used for Blowfish salted hashing
-        $byteLength = 16;
-        $reqLengthBase64 = (int)ceil($byteLength * 8 / 6);
-        $randomBytes = (new Random())->generateRandomBytes($byteLength);
-        $this->assertTrue(strlen($this->objectInstance->base64Encode($randomBytes, $byteLength)) == $reqLengthBase64);
+        $phpassProphecy = $this->prophesize(PhpassSalt::class);
+        GeneralUtility::addInstance(PhpassSalt::class, $phpassProphecy->reveal());
+        $phpassProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
+        $hash = '$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF.';
+        $phpassProphecy->isValidSaltedPW($hash)->shouldBeCalled()->willReturn(false);
+        $this->expectException(InvalidSaltException::class);
+        $this->expectExceptionCode(1533818591);
+        (new SaltFactory())->get($hash);
     }
 
     /**
      * @test
      */
-    public function objectInstanceForMD5Salts()
+    public function getReturnsInstanceOfHashClassThatHandlesHash(): void
     {
-        $saltMD5 = '$1$rasmusle$rISCgZzpwk3UhDidwXvin0';
-        $this->objectInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($saltMD5);
-        $this->assertTrue(get_class($this->objectInstance) == \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class || is_subclass_of($this->objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class));
-        $this->assertInstanceOf(\TYPO3\CMS\Saltedpasswords\Salt\AbstractComposedSalt::class, $this->objectInstance);
+        $phpassProphecy = $this->prophesize(PhpassSalt::class);
+        $phpassRevelation = $phpassProphecy->reveal();
+        GeneralUtility::addInstance(PhpassSalt::class, $phpassRevelation);
+        $phpassProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
+        $hash = '$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF.';
+        $phpassProphecy->isValidSaltedPW($hash)->shouldBeCalled()->willReturn(true);
+        $this->assertSame($phpassRevelation, (new SaltFactory())->get($hash));
     }
 
     /**
      * @test
      */
-    public function objectInstanceForBlowfishSalts()
+    public function getDefaultHashInstanceThrowsExceptionIfModeIsNotBeOrFe(): void
     {
-        $saltBlowfish = '$2a$07$abcdefghijklmnopqrstuuIdQV69PAxWYTgmnoGpe0Sk47GNS/9ZW';
-        $this->objectInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($saltBlowfish);
-        $this->assertTrue(get_class($this->objectInstance) == \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class || is_subclass_of($this->objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class));
-        $this->assertInstanceOf(\TYPO3\CMS\Saltedpasswords\Salt\AbstractComposedSalt::class, $this->objectInstance);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1533820041);
+        (new SaltFactory())->getDefaultHashInstance('foo');
     }
 
     /**
      * @test
      */
-    public function objectInstanceForPhpassSalts()
+    public function getDefaultHashReturnsInstanceOfConfiguredDefaultFeMethod(): void
     {
-        $saltPhpass = '$P$CWF13LlG/0UcAQFUjnnS4LOqyRW43c.';
-        $this->objectInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($saltPhpass);
-        $this->assertTrue(get_class($this->objectInstance) == \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class || is_subclass_of($this->objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class));
-        $this->assertInstanceOf(\TYPO3\CMS\Saltedpasswords\Salt\AbstractComposedSalt::class, $this->objectInstance);
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['saltedpasswords']['FE']['saltedPWHashingMethod'] = Argon2iSalt::class;
+        $hashInstance = (new SaltFactory())->getDefaultHashInstance('FE');
+        $this->assertInstanceOf(Argon2iSalt::class, $hashInstance);
     }
 
     /**
      * @test
      */
-    public function objectInstanceForPbkdf2Salts()
+    public function getDefaultHashReturnsInstanceOfConfiguredDefaultBeMethod(): void
     {
-        $saltPbkdf2 = '$pbkdf2-sha256$6400$0ZrzXitFSGltTQnBWOsdAw$Y11AchqV4b0sUisdZd0Xr97KWoymNE0LNNrnEgY4H9M';
-        $this->objectInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($saltPbkdf2);
-        $this->assertTrue(get_class($this->objectInstance) == \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class || is_subclass_of($this->objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class));
-        $this->assertInstanceOf(\TYPO3\CMS\Saltedpasswords\Salt\AbstractComposedSalt::class, $this->objectInstance);
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['saltedpasswords']['BE']['saltedPWHashingMethod'] = Argon2iSalt::class;
+        $hashInstance = (new SaltFactory())->getDefaultHashInstance('BE');
+        $this->assertInstanceOf(Argon2iSalt::class, $hashInstance);
+    }
+
+    /**
+     * @test
+     * @todo: have a test for exception 1533820194 after utility class is no longer used
+     */
+    public function getDefaultHashThrowsExceptionIfDefaultHashMethodDoesNotImplementSaltInterface(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['saltedpasswords']['BE']['saltedPWHashingMethod'] = \stdClass::class;
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'] = [ \stdClass::class ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1533820281);
+        (new SaltFactory())->getDefaultHashInstance('BE');
     }
 
     /**
      * @test
      */
-    public function objectInstanceForPhpPasswordHashBcryptSalts()
+    public function getDefaultHashThrowsExceptionIfDefaultHashMethodIsNotAvailable(): void
     {
-        $saltBcrypt = '$2y$12$Tz.al0seuEgRt61u0bzqAOWu67PgG2ThG25oATJJ0oS5KLCPCgBOe';
-        $this->objectInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($saltBcrypt);
-        $this->assertInstanceOf(\TYPO3\CMS\Saltedpasswords\Salt\BcryptSalt::class, $this->objectInstance);
-    }
-
-    /**
-     * @test
-     */
-    public function objectInstanceForPhpPasswordHashArgon2iSalts()
-    {
-        $saltArgon2i = '$argon2i$v=19$m=8,t=1,p=1$djZiNkdEa3lOZm1SSmZsdQ$9iiRjpLZAT7kfHwS1xU9cqSU7+nXy275qpB/eKjI1ig';
-        $this->objectInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($saltArgon2i);
-        $this->assertInstanceOf(\TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt::class, $this->objectInstance);
-    }
-
-    /**
-     * @test
-     */
-    public function resettingFactoryInstanceSucceeds()
-    {
-        $defaultClassNameToUse = \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::getDefaultSaltingHashingMethod();
-        if ($defaultClassNameToUse == \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class) {
-            $saltedPW = '$P$CWF13LlG/0UcAQFUjnnS4LOqyRW43c.';
-        } else {
-            $saltedPW = '$1$rasmusle$rISCgZzpwk3UhDidwXvin0';
-        }
-        $this->objectInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($saltedPW);
-        // resetting
-        $this->objectInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(null);
-        $this->assertTrue(get_class($this->objectInstance) == $defaultClassNameToUse || is_subclass_of($this->objectInstance, $defaultClassNameToUse));
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['saltedpasswords']['BE']['saltedPWHashingMethod'] = Argon2iSalt::class;
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'] = [ \stdClass::class ];
+        $argonProphecy = $this->prophesize(Argon2iSalt::class);
+        GeneralUtility::addInstance(Argon2iSalt::class, $argonProphecy->reveal());
+        $argonProphecy->isAvailable()->shouldBeCalled()->willReturn(false);
+        $this->expectException(InvalidSaltException::class);
+        $this->expectExceptionCode(1533822084);
+        (new SaltFactory())->getDefaultHashInstance('BE');
     }
 }

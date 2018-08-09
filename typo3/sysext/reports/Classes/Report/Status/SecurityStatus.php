@@ -16,12 +16,14 @@ namespace TYPO3\CMS\Reports\Report\Status;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reports\RequestAwareStatusProviderInterface;
 use TYPO3\CMS\Reports\Status as ReportStatus;
+use TYPO3\CMS\Saltedpasswords\Exception\InvalidSaltException;
 use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
@@ -159,35 +161,29 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
             ->fetch();
 
         if (!empty($row)) {
-            $secure = true;
-            /** @var \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface $saltingObject */
-            $saltingObject = SaltFactory::getSaltingInstance($row['password']);
-            if (is_object($saltingObject)) {
-                if ($saltingObject->checkPassword('password', $row['password'])) {
-                    $secure = false;
+            try {
+                $hashInstance = GeneralUtility::makeInstance(SaltFactory::class)->get($row['password']);
+                if ($hashInstance->checkPassword('password', $row['password'])) {
+                    // If the password for 'admin' user is 'password': bad idea!
+                    // We're checking since the (very) old installer created instances like this in dark old times.
+                    $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                    $value = $this->getLanguageService()->getLL('status_insecure');
+                    $severity = ReportStatus::ERROR;
+                    $editUserAccountUrl = (string)$uriBuilder->buildUriFromRoute(
+                        'record_edit',
+                        [
+                            'edit[be_users][' . $row['uid'] . ']' => 'edit',
+                            'returnUrl' => (string)$uriBuilder->buildUriFromRoute('system_reports')
+                        ]
+                    );
+                    $message = sprintf(
+                        $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.backend_admin'),
+                        '<a href="' . htmlspecialchars($editUserAccountUrl) . '">',
+                        '</a>'
+                    );
                 }
-            }
-            // Check against plain MD5
-            if ($row['password'] === '5f4dcc3b5aa765d61d8327deb882cf99') {
-                $secure = false;
-            }
-            if (!$secure) {
-                /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-                $value = $this->getLanguageService()->getLL('status_insecure');
-                $severity = ReportStatus::ERROR;
-                $editUserAccountUrl = (string)$uriBuilder->buildUriFromRoute(
-                    'record_edit',
-                    [
-                        'edit[be_users][' . $row['uid'] . ']' => 'edit',
-                        'returnUrl' => (string)$uriBuilder->buildUriFromRoute('system_reports')
-                    ]
-                );
-                $message = sprintf(
-                    $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.backend_admin'),
-                    '<a href="' . htmlspecialchars($editUserAccountUrl) . '">',
-                    '</a>'
-                );
+            } catch (InvalidSaltException $e) {
+                // No hash class handling for current hash could be found. Not good, but ok in this case.
             }
         }
 

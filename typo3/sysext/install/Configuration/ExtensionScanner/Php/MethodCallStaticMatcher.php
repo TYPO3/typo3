@@ -624,4 +624,32 @@ return [
             'Deprecation-85760-DeprecateGeneralUtilityunQuoteFilenames.rst',
         ],
     ],
+    'TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85796-SaltedPasswordsCleanups.rst',
+        ],
+    ],
+    'TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::determineSaltingHashingMethod' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85796-SaltedPasswordsCleanups.rst',
+        ],
+    ],
+    'TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::setPreferredHashingMethod' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85796-SaltedPasswordsCleanups.rst',
+        ],
+    ],
+    'TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::getNumberOfBackendUsersWithInsecurePassword' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85796-SaltedPasswordsCleanups.rst',
+        ],
+    ],
 ];

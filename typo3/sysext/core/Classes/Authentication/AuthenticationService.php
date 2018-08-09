@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Saltedpasswords\Exception\InvalidSaltException;
 use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 use TYPO3\CMS\Saltedpasswords\Salt\SaltInterface;
 
@@ -117,18 +118,26 @@ class AuthenticationService extends AbstractAuthenticationService
         $isReHashNeeded = false;
         $isDomainLockMet = false;
 
-        // Get a hashed password instance for the hash stored in db of this user
-        $saltedPasswordInstance = SaltFactory::getSaltingInstance($passwordHashInDatabase);
-        // An instance of the currently configured salted password mechanism
-        $currentConfiguredSaltedPasswordInstance = SaltFactory::getSaltingInstance(null);
+        $saltFactory = GeneralUtility::makeInstance(SaltFactory::class);
 
-        if ($saltedPasswordInstance instanceof SaltInterface) {
+        // Get a hashed password instance for the hash stored in db of this user
+        try {
+            $hashInstance = $saltFactory->get($passwordHashInDatabase);
+        } catch (InvalidSaltException $e) {
+            // This can be refactored if the 'else' part below is gone in v10: Log and return 100 here
+            $hashInstance = null;
+        }
+        // An instance of the currently configured salted password mechanism
+        // Don't catch InvalidSaltException here: Only install tool should handle those configuration failures
+        $defaultHashInstance = $saltFactory->getDefaultHashInstance(TYPO3_MODE);
+
+        if ($hashInstance instanceof SaltInterface) {
             // We found a hash class that can handle this type of hash
             $isSaltedPassword = true;
-            $isValidPassword = $saltedPasswordInstance->checkPassword($submittedPassword, $passwordHashInDatabase);
+            $isValidPassword = $hashInstance->checkPassword($submittedPassword, $passwordHashInDatabase);
             if ($isValidPassword) {
-                if ($saltedPasswordInstance->isHashUpdateNeeded($passwordHashInDatabase)
-                    || $currentConfiguredSaltedPasswordInstance != $saltedPasswordInstance
+                if ($hashInstance->isHashUpdateNeeded($passwordHashInDatabase)
+                    || $defaultHashInstance != $hashInstance
                 ) {
                     // Lax object comparison intended: Rehash if old and new salt objects are not
                     // instances of the same class.
@@ -148,10 +157,10 @@ class AuthenticationService extends AbstractAuthenticationService
                 // If the stored db password starts with M$, it may be a md5 password that has been
                 // upgraded to a salted md5 using the old salted passwords scheduler task.
                 // See if a salt instance is returned if we cut off the M, so Md5Salt kicks in
-                $saltedPasswordInstance = SaltFactory::getSaltingInstance(substr($passwordHashInDatabase, 1));
-                if ($saltedPasswordInstance instanceof SaltInterface) {
+                try {
+                    $hashInstance = $saltFactory->get(substr($passwordHashInDatabase, 1));
                     $isSaltedPassword = true;
-                    $isValidPassword = $saltedPasswordInstance->checkPassword(md5($submittedPassword), substr($passwordHashInDatabase, 1));
+                    $isValidPassword = $hashInstance->checkPassword(md5($submittedPassword), substr($passwordHashInDatabase, 1));
                     if ($isValidPassword) {
                         // Upgrade this password to a sane mechanism now
                         $isReHashNeeded = true;
@@ -163,6 +172,8 @@ class AuthenticationService extends AbstractAuthenticationService
                             $isDomainLockMet = true;
                         }
                     }
+                } catch (InvalidSaltException $e) {
+                    // Still no instance found: $isSaltedPasswords is NOT set to true, logging and return done below
                 }
             }
         }
@@ -204,7 +215,7 @@ class AuthenticationService extends AbstractAuthenticationService
             $this->updatePasswordHashInDatabase(
                 $userDatabaseTable,
                 (int)$user['uid'],
-                $currentConfiguredSaltedPasswordInstance->getHashedPassword($submittedPassword)
+                $defaultHashInstance->getHashedPassword($submittedPassword)
             );
         }
 

@@ -478,8 +478,8 @@ class MaintenanceController extends AbstractController
                     FlashMessage::ERROR
                 ));
             } else {
-                $saltFactory = SaltFactory::getSaltingInstance(null, 'BE');
-                $hashedPassword = $saltFactory->getHashedPassword($password);
+                $hashInstance = GeneralUtility::makeInstance(SaltFactory::class)->getDefaultHashInstance('BE');
+                $hashedPassword = $hashInstance->getHashedPassword($password);
                 $adminUserFields = [
                     'username' => $username,
                     'password' => $hashedPassword,

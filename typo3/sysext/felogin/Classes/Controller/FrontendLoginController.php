@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
+use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
  * Plugin 'Website User Login' for the 'felogin' extension.
@@ -352,8 +353,8 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
                         );
                     } else {
                         // Hash password using configured salted passwords hash mechanism for FE
-                        $objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance();
-                        $newPass = $objInstanceSaltedPW->getHashedPassword($postData['password1']);
+                        $hashInstance = GeneralUtility::makeInstance(SaltFactory::class)->getDefaultHashInstance('FE');
+                        $newPass = $hashInstance->getHashedPassword($postData['password1']);
 
                         // Call a hook for further password processing
                         if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed']) {

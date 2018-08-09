@@ -148,7 +148,7 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
     {
         $cryptoService = GeneralUtility::makeInstance(Random::class);
         $password = $cryptoService->generateRandomBytes(20);
-        $saltFactory = SaltFactory::getSaltingInstance(null, 'BE');
-        return $saltFactory->getHashedPassword($password);
+        $hashInstance = GeneralUtility::makeInstance(SaltFactory::class)->getDefaultHashInstance('BE');
+        return $hashInstance->getHashedPassword($password);
     }
 }

@@ -138,8 +138,8 @@ class RequestHandler implements RequestHandlerInterface
                         new FlashMessage('Please enter the install tool password', '', FlashMessage::ERROR)
                     );
                 } else {
-                    $saltFactory = SaltFactory::getSaltingInstance(null, 'BE');
-                    $hashedPassword = $saltFactory->getHashedPassword($password);
+                    $hashInstance = GeneralUtility::makeInstance(SaltFactory::class)->getDefaultHashInstance('BE');
+                    $hashedPassword = $hashInstance->getHashedPassword($password);
                     $messageQueue = (new FlashMessageQueue('install'))->enqueue(
                         new FlashMessage(
                             'Given password does not match the install tool login password. Calculated hash: ' . $hashedPassword,

@@ -32,9 +32,11 @@ class SaltedPasswordsUtility
      * Calculates number of backend users, who have no saltedpasswords protection.
      *
      * @return int
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public static function getNumberOfBackendUsersWithInsecurePassword()
     {
+        trigger_error('This method is obsolete and will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
         $queryBuilder->getRestrictions()->removeAll();
 

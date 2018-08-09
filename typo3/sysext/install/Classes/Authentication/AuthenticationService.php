@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\SessionService;
+use TYPO3\CMS\Saltedpasswords\Exception\InvalidSaltException;
 use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
@@ -50,18 +51,24 @@ class AuthenticationService
         $validPassword = false;
         if ($password !== null && $password !== '') {
             $installToolPassword = $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'];
-            $saltFactory = SaltFactory::getSaltingInstance($installToolPassword);
-            if (is_object($saltFactory)) {
-                $validPassword = $saltFactory->checkPassword($password, $installToolPassword);
-            } elseif (md5($password) === $installToolPassword) {
-                // Update install tool password if it is still "MD5"
-                $saltFactory = SaltFactory::getSaltingInstance(null, 'BE');
-                $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
-                $configurationManager->setLocalConfigurationValueByPath(
-                    'BE/installToolPassword',
-                    $saltFactory->getHashedPassword($password)
-                );
-                $validPassword = true;
+            $hashFactory = GeneralUtility::makeInstance(SaltFactory::class);
+            try {
+                $hashInstance = $hashFactory->get($installToolPassword);
+                $validPassword = $hashInstance->checkPassword($password, $installToolPassword);
+            } catch (InvalidSaltException $e) {
+                // Given hash in global configuration is not a valid salted password
+                if (md5($password) === $installToolPassword) {
+                    // Update configured install tool hash if it is still "MD5" and password matches
+                    // @todo: This should be removed in v10 with a dedicated breaking patch
+                    // @todo: Additionally, this code should check required hash updates and update the hash if needed
+                    $hashInstance = $hashFactory->getDefaultHashInstance('BE');
+                    $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
+                    $configurationManager->setLocalConfigurationValueByPath(
+                        'BE/installToolPassword',
+                        $hashInstance->getHashedPassword($password)
+                    );
+                    $validPassword = true;
+                }
             }
         }
         if ($validPassword) {

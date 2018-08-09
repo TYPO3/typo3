@@ -18,6 +18,8 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\CMS\Reports\Status;
+use TYPO3\CMS\Saltedpasswords\Exception\InvalidSaltException;
+use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
  * Provides an status report of the security of the install tool
@@ -45,14 +47,21 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
      */
     protected function getInstallToolPasswordStatus()
     {
+        // @todo @deprecated: This should be removed in v10 when install tool allows proper hashes only
         $value = $GLOBALS['LANG']->getLL('status_ok');
         $message = '';
         $severity = Status::OK;
         $validPassword = true;
         $installToolPassword = $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'];
-        $saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($installToolPassword);
-        if ($installToolPassword !== '' && is_object($saltFactory)) {
-            $validPassword = !$saltFactory->checkPassword('joh316', $installToolPassword);
+        $hashInstance = null;
+        $hashFactory = GeneralUtility::makeInstance(SaltFactory::class);
+        try {
+            $hashInstance = $hashFactory->get($installToolPassword);
+        } catch (InvalidSaltException $e) {
+            // $hashInstance stays null
+        }
+        if ($installToolPassword !== '' && $hashInstance === null) {
+            $validPassword = !$hashFactory->checkPassword('joh316', $installToolPassword);
         } elseif ($installToolPassword === md5('joh316')) {
             $validPassword = false;
         }

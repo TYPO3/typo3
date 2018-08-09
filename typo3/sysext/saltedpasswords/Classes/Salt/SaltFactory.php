@@ -16,11 +16,12 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Saltedpasswords\Exception\InvalidSaltException;
 use TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility;
 
 /**
- * Class that implements Blowfish salted hashing based on PHP's
- * crypt() function.
+ * Factory class to find and return hash instances of given hashed passwords
+ * and to find and return default hash instances to hash new passwords.
  */
 class SaltFactory
 {
@@ -29,8 +30,75 @@ class SaltFactory
      * This member is set in the getSaltingInstance() function.
      *
      * @var SaltInterface
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     protected static $instance;
+
+    /**
+     * Find a hash class that handles given hash and return an instance of it.
+     *
+     * @param string $hash Given hash to find instance for
+     * @return SaltInterface Object that can handle given hash
+     * @throws \LogicException If a registered hash class does not implement SaltInterface
+     * @throws InvalidSaltException If no class was found that handles given hash
+     */
+    public function get(string $hash): SaltInterface
+    {
+        // @todo: Refactor $registeredHashClasses when implementing 'preset' and moving config options
+        $registeredHashClasses = static::getRegisteredSaltedHashingMethods();
+
+        foreach ($registeredHashClasses as $className) {
+            $hashInstance = GeneralUtility::makeInstance($className);
+            if (!$hashInstance instanceof SaltInterface) {
+                throw new \LogicException('Class ' . $className . ' does not implement SaltInterface', 1533818569);
+            }
+            if ($hashInstance->isAvailable() && $hashInstance->isValidSaltedPW($hash)) {
+                return $hashInstance;
+            }
+        }
+        // Do not add the hash to the exception to prevent information disclosure
+        throw new InvalidSaltException('No implementation found that handles given hash.', 1533818591);
+    }
+
+    /**
+     * Determine configured default hash method and return an instance of the class representing it.
+     *
+     * @param string $mode 'FE' for frontend users, 'BE' for backend users
+     * @return SaltInterface Class instance that is configured as default hash method
+     * @throws \InvalidArgumentException If configured default hash class does not implement SaltInterface
+     * @throws InvalidSaltException If configuration is broken
+     */
+    public function getDefaultHashInstance(string $mode): SaltInterface
+    {
+        if ($mode !== 'FE' && $mode !== 'BE') {
+            throw new \InvalidArgumentException('Mode must be either \'FE\' or \'BE\', ' . $mode . ' given.', 1533820041);
+        }
+        $defaultHashClassName = SaltedPasswordsUtility::getDefaultSaltingHashingMethod($mode);
+
+        // @todo: Refactor $availableHashClasses when implementing 'preset' and moving config options
+        $availableHashClasses = static::getRegisteredSaltedHashingMethods();
+
+        if (!isset($availableHashClasses[$defaultHashClassName])) {
+            throw new InvalidSaltException(
+                'Configured default hash method ' . $defaultHashClassName . ' is not registered',
+                1533820194
+            );
+        }
+        $hashInstance =  GeneralUtility::makeInstance($defaultHashClassName);
+        if (!$hashInstance instanceof SaltInterface) {
+            throw new \RuntimeException(
+                'Configured default hash method ' . $defaultHashClassName . ' is not an instance of SaltInterface',
+                1533820281
+            );
+        }
+        if (!$hashInstance->isAvailable()) {
+            throw new InvalidSaltException(
+                'Configured default hash method ' . $defaultHashClassName . ' is not available, missing php requirement?',
+                1533822084
+            );
+        }
+        return $hashInstance;
+    }
 
     /**
      * Returns list of all registered hashing methods. Used eg. in
@@ -40,7 +108,14 @@ class SaltFactory
      */
     public static function getRegisteredSaltedHashingMethods(): array
     {
-        $saltMethods = static::getDefaultSaltMethods();
+        $saltMethods = [
+            Md5Salt::class => Md5Salt::class,
+            BlowfishSalt::class => BlowfishSalt::class,
+            PhpassSalt::class => PhpassSalt::class,
+            Pbkdf2Salt::class => Pbkdf2Salt::class,
+            BcryptSalt::class => BcryptSalt::class,
+            Argon2iSalt::class => Argon2iSalt::class,
+        ];
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'])) {
             $configuredMethods = (array)$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'];
             if (!empty($configuredMethods)) {
@@ -58,23 +133,6 @@ class SaltFactory
     }
 
     /**
-     * Returns an array with default salt method class names.
-     *
-     * @return array
-     */
-    protected static function getDefaultSaltMethods(): array
-    {
-        return [
-            Md5Salt::class => Md5Salt::class,
-            BlowfishSalt::class => BlowfishSalt::class,
-            PhpassSalt::class => PhpassSalt::class,
-            Pbkdf2Salt::class => Pbkdf2Salt::class,
-            BcryptSalt::class => BcryptSalt::class,
-            Argon2iSalt::class => Argon2iSalt::class,
-        ];
-    }
-
-    /**
      * Obtains a salting hashing method instance.
      *
      * This function will return an instance of a class that implements
@@ -85,9 +143,14 @@ class SaltFactory
      * @param string|null $saltedHash Salted hashed password to determine the type of used method from or NULL to reset to the default type
      * @param string $mode The TYPO3 mode (FE or BE) saltedpasswords shall be used for
      * @return SaltInterface|null An instance of salting hash method class or null if given hash is not supported
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public static function getSaltingInstance($saltedHash = '', $mode = TYPO3_MODE)
     {
+        trigger_error(
+            'This method is obsolete and will be removed in TYPO3 v10. Use get() and getDefaultHashInstance() instead.',
+            E_USER_DEPRECATED
+        );
         // Creating new instance when
         // * no instance existing
         // * a salted hash given to determine salted hashing method from
@@ -101,6 +164,7 @@ class SaltFactory
                 }
             } else {
                 $classNameToUse = SaltedPasswordsUtility::getDefaultSaltingHashingMethod($mode);
+                // Calls deprecated determineSaltingHashingMethod - ok, since getSaltingInstance() is deprecated, too
                 $availableClasses = static::getRegisteredSaltedHashingMethods();
                 self::$instance = GeneralUtility::makeInstance($availableClasses[$classNameToUse]);
             }
@@ -116,9 +180,14 @@ class SaltFactory
      * @param string $saltedHash
      * @param string $mode (optional) The TYPO3 mode (FE or BE) saltedpasswords shall be used for
      * @return bool TRUE, if salting hashing method has been found, otherwise FALSE
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public static function determineSaltingHashingMethod(string $saltedHash, $mode = TYPO3_MODE): bool
     {
+        trigger_error(
+            'This method is obsolete and will be removed in TYPO3 v10.',
+            E_USER_DEPRECATED
+        );
         $registeredMethods = static::getRegisteredSaltedHashingMethods();
         $defaultClassName = SaltedPasswordsUtility::getDefaultSaltingHashingMethod($mode);
         $defaultReference = $registeredMethods[$defaultClassName];
@@ -144,9 +213,11 @@ class SaltFactory
      *
      * @param string $resource Object resource to use (e.g. \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class)
      * @return SaltInterface|null An instance of salting hashing method object or null
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public static function setPreferredHashingMethod(string $resource)
     {
+        trigger_error('This method is obsolete and will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         self::$instance = null;
         $objectInstance = GeneralUtility::makeInstance($resource);
         if ($objectInstance instanceof SaltInterface) {
