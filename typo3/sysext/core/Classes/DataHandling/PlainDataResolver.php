@@ -290,7 +290,8 @@ class PlainDataResolver
             ->where(
                 $queryBuilder->expr()->in(
                     'uid',
-                    $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
+                    // do not use named parameter here as the list can get too long
+                    array_map('intval', $ids)
                 )
             );
 
@@ -302,7 +303,7 @@ class PlainDataResolver
 
         $sortedIds = $queryBuilder->execute()->fetchAll();
 
-        return array_column($sortedIds, 'uid');
+        return array_map('intval', array_column($sortedIds, 'uid'));
     }
 
     /**
