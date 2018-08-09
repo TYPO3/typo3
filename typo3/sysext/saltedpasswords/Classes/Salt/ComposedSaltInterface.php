@@ -18,6 +18,8 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
 /**
  * Interface for implementing salts that compose the password-hash string
  * themselves.
+ *
+ * @deprecated and will be removed in TYPO3 v10.0.
  */
 interface ComposedSaltInterface extends SaltInterface
 {

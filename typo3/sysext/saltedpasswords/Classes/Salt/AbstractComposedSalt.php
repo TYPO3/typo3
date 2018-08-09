@@ -18,25 +18,11 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
 /**
  * Abstract class with methods needed to be extended
  * in a salted hashing class that composes an own salted password hash.
+ *
+ * @deprecated and will be removed in TYPO3 v10.0.
  */
-abstract class AbstractComposedSalt implements ComposedSaltInterface
+abstract class AbstractComposedSalt
 {
-    /**
-     * Method applies settings (prefix, optional hash count, optional suffix)
-     * to a salt.
-     *
-     * @param string $salt A salt to apply setting to
-     * @return string Salt with setting
-     */
-    abstract protected function applySettingsToSalt(string $salt): string;
-
-    /**
-     * Generates a random base salt settings for the hash.
-     *
-     * @return string A string containing settings and a random salt
-     */
-    abstract protected function getGeneratedSalt(): string;
-
     /**
      * Returns a string for mapping an int to the corresponding base 64 character.
      *
@@ -45,36 +31,16 @@ abstract class AbstractComposedSalt implements ComposedSaltInterface
     abstract protected function getItoa64(): string;
 
     /**
-     * Returns setting string to indicate type of hashing method.
-     *
-     * @return string Setting string of hashing method
-     */
-    abstract protected function getSetting(): string;
-
-    /**
-     * Returns length of required salt.
-     *
-     * @return int Length of required salt
-     */
-    abstract public function getSaltLength(): int;
-
-    /**
-     * Method determines if a given string is a valid salt
-     *
-     * @param string $salt String to check
-     * @return bool TRUE if it's valid salt, otherwise FALSE
-     */
-    abstract public function isValidSalt(string $salt): bool;
-
-    /**
      * Encodes bytes into printable base 64 using the *nix standard from crypt().
      *
      * @param string $input The string containing bytes to encode.
      * @param int $count The number of characters (bytes) to encode.
      * @return string Encoded string
+     * @deprecated and will be removed in TYPO3 v10.0.
      */
     public function base64Encode(string $input, int $count): string
     {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         $output = '';
         $i = 0;
         $itoa64 = $this->getItoa64();
@@ -106,9 +72,11 @@ abstract class AbstractComposedSalt implements ComposedSaltInterface
      *
      * @param int $byteLength Length of bytes to calculate in base64 chars
      * @return int Required length of base64 characters
+     * @deprecated and will be removed in TYPO3 v10.0.
      */
     protected function getLengthBase64FromBytes(int $byteLength): int
     {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         // Calculates bytes in bits in base64
         return (int)ceil($byteLength * 8 / 6);
     }

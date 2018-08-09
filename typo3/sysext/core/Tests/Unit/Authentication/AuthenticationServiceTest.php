@@ -192,8 +192,8 @@ class AuthenticationServiceTest extends UnitTestCase
             $pObjProphecy->reveal()
         );
         $dbUser = [
-            // an phpass hash of 'myPassword'
-            'password' => '$P$C/2Vr3ywuuPo5C7cs75YBnVhgBWpMP1',
+            // an argon2i hash of 'myPassword'
+            'password' => '$argon2i$v=19$m=16384,t=16,p=2$Ty9zOFVWdDBVQmlWTldVbg$kiVbkrYeTvgNg84i97WZBMQszmza66IohBxUtOnzRvU',
             'lockToDomain' => ''
         ];
         $this->assertSame(200, $subject->authUser($dbUser));
@@ -225,8 +225,8 @@ class AuthenticationServiceTest extends UnitTestCase
             $pObjProphecy->reveal()
         );
         $dbUser = [
-            // an phpass hash of 'myPassword'
-            'password' => '$P$C/2Vr3ywuuPo5C7cs75YBnVhgBWpMP1',
+            // an argon2i hash of 'myPassword'
+            'password' => '$argon2i$v=19$m=16384,t=16,p=2$Ty9zOFVWdDBVQmlWTldVbg$kiVbkrYeTvgNg84i97WZBMQszmza66IohBxUtOnzRvU',
             'username' => 'lolli',
             'lockToDomain' => 'not.example.com'
         ];

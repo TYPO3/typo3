@@ -20,6 +20,11 @@ use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
+use TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt;
+use TYPO3\CMS\Saltedpasswords\Salt\BcryptSalt;
+use TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt;
+use TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt;
+use TYPO3\CMS\Saltedpasswords\Salt\SaltInterface;
 
 /**
  * Execute "silent" LocalConfiguration upgrades if needed.
@@ -140,6 +145,8 @@ class SilentConfigurationUpgradeService
     /**
      * Executed configuration upgrades. Single upgrade methods must throw a
      * ConfigurationChangedException if something was written to LocalConfiguration.
+     *
+     * @throws ConfigurationChangedException
      */
     public function execute()
     {
@@ -158,8 +165,9 @@ class SilentConfigurationUpgradeService
         $this->migrateCacheHashOptions();
         $this->migrateExceptionErrors();
         $this->migrateDisplayErrorsSetting();
+        $this->migrateSaltedPasswordsSettings();
 
-        // Should run at the end to prevent that obsolete settings are removed before migration
+        // Should run at the end to prevent obsolete settings are removed before migration
         $this->removeObsoleteLocalConfigurationSettings();
     }
 
@@ -168,6 +176,8 @@ class SilentConfigurationUpgradeService
      * and have no impact on the core anymore.
      * To keep the configuration clean, those old settings are just silently
      * removed from LocalConfiguration if set.
+     *
+     * @throws ConfigurationChangedException
      */
     protected function removeObsoleteLocalConfigurationSettings()
     {
@@ -183,6 +193,8 @@ class SilentConfigurationUpgradeService
      * Backend login security is set to rsa if rsaauth
      * is installed (but not used) otherwise the default value "normal" has to be used.
      * This forces either 'normal' or 'rsa' to be set in LocalConfiguration.
+     *
+     * @throws ConfigurationChangedException
      */
     protected function configureBackendLoginSecurity()
     {
@@ -211,6 +223,8 @@ class SilentConfigurationUpgradeService
      * and the whole TYPO3 link rendering later on. A random key is set here in
      * LocalConfiguration if it does not exist yet. This might possible happen
      * during upgrading and will happen during first install.
+     *
+     * @throws ConfigurationChangedException
      */
     protected function generateEncryptionKeyIfNeeded()
     {
@@ -230,6 +244,8 @@ class SilentConfigurationUpgradeService
 
     /**
      * Parse old curl and HTTP options and set new HTTP options, related to Guzzle
+     *
+     * @throws ConfigurationChangedException
      */
     protected function transferHttpSettings()
     {
@@ -428,6 +444,8 @@ class SilentConfigurationUpgradeService
      * "Configuration presets" in install tool is not type safe, so value
      * comparisons here are not type safe too, to not trigger changes to
      * LocalConfiguration again.
+     *
+     * @throws ConfigurationChangedException
      */
     protected function disableImageMagickDetailSettingsIfImageMagickIsDisabled()
     {
@@ -489,6 +507,8 @@ class SilentConfigurationUpgradeService
      * "Configuration presets" in install tool is not type safe, so value
      * comparisons here are not type safe too, to not trigger changes to
      * LocalConfiguration again.
+     *
+     * @throws ConfigurationChangedException
      */
     protected function setImageMagickDetailSettings()
     {
@@ -529,6 +549,8 @@ class SilentConfigurationUpgradeService
     /**
      * Migrate the definition of the image processor from the configuration value
      * im_version_5 to the setting processor.
+     *
+     * @throws ConfigurationChangedException
      */
     protected function migrateImageProcessorSetting()
     {
@@ -612,6 +634,8 @@ class SilentConfigurationUpgradeService
 
     /**
      * Migrate the configuration value thumbnails_png to a boolean value.
+     *
+     * @throws ConfigurationChangedException
      */
     protected function migrateThumbnailsPngSetting()
     {
@@ -633,6 +657,8 @@ class SilentConfigurationUpgradeService
 
     /**
      * Migrate the configuration setting BE/lockSSL to boolean if set in the LocalConfiguration.php file
+     *
+     * @throws ConfigurationChangedException
      */
     protected function migrateLockSslSetting()
     {
@@ -650,6 +676,8 @@ class SilentConfigurationUpgradeService
 
     /**
      * Move the database connection settings to a "Default" connection
+     *
+     * @throws ConfigurationChangedException
      */
     protected function migrateDatabaseConnectionSettings()
     {
@@ -770,6 +798,8 @@ class SilentConfigurationUpgradeService
     /**
      * Migrate the configuration setting DB/Connections/Default/charset to 'utf8' as
      * 'utf-8' is not supported by all MySQL versions.
+     *
+     * @throws ConfigurationChangedException
      */
     protected function migrateDatabaseConnectionCharset()
     {
@@ -788,6 +818,8 @@ class SilentConfigurationUpgradeService
 
     /**
      * Migrate the configuration setting DB/Connections/Default/driverOptions to array type.
+     *
+     * @throws ConfigurationChangedException
      */
     protected function migrateDatabaseDriverOptions()
     {
@@ -799,6 +831,7 @@ class SilentConfigurationUpgradeService
                     'DB/Connections/Default/driverOptions',
                     ['flags' => (int)$options]
                 );
+                $this->throwConfigurationChangedException();
             }
         } catch (MissingArrayPathException $e) {
             // no driver options found, nothing needs to be modified
@@ -807,6 +840,8 @@ class SilentConfigurationUpgradeService
 
     /**
      * Migrate the configuration setting BE/lang/debug if set in the LocalConfiguration.php file
+     *
+     * @throws ConfigurationChangedException
      */
     protected function migrateLangDebug()
     {
@@ -816,6 +851,7 @@ class SilentConfigurationUpgradeService
             // check if the current option is set and boolean
             if (isset($currentOption) && is_bool($currentOption)) {
                 $confManager->setLocalConfigurationValueByPath('BE/languageDebug', $currentOption);
+                $this->throwConfigurationChangedException();
             }
         } catch (MissingArrayPathException $e) {
             // no change inside the LocalConfiguration.php found, so nothing needs to be modified
@@ -824,6 +860,8 @@ class SilentConfigurationUpgradeService
 
     /**
      * Migrate single cache hash related options under "FE" into "FE/cacheHash"
+     *
+     * @throws ConfigurationChangedException
      */
     protected function migrateCacheHashOptions()
     {
@@ -883,6 +921,8 @@ class SilentConfigurationUpgradeService
 
     /**
      * Migrate SYS/exceptionalErrors to not contain E_USER_DEPRECATED
+     *
+     * @throws ConfigurationChangedException
      */
     protected function migrateExceptionErrors()
     {
@@ -892,6 +932,7 @@ class SilentConfigurationUpgradeService
             // make sure E_USER_DEPRECATED is not part of the exceptionalErrors
             if ($currentOption & E_USER_DEPRECATED) {
                 $confManager->setLocalConfigurationValueByPath('SYS/exceptionalErrors', $currentOption & ~E_USER_DEPRECATED);
+                $this->throwConfigurationChangedException();
             }
         } catch (MissingArrayPathException $e) {
             // no change inside the LocalConfiguration.php found, so nothing needs to be modified
@@ -900,6 +941,8 @@ class SilentConfigurationUpgradeService
 
     /**
      * Migrate SYS/displayErrors to not contain 2
+     *
+     * @throws ConfigurationChangedException
      */
     protected function migrateDisplayErrorsSetting()
     {
@@ -909,9 +952,73 @@ class SilentConfigurationUpgradeService
             // make sure displayErrors is set to 2
             if ($currentOption === 2) {
                 $confManager->setLocalConfigurationValueByPath('SYS/displayErrors', -1);
+                $this->throwConfigurationChangedException();
             }
         } catch (MissingArrayPathException $e) {
             // no change inside the LocalConfiguration.php found, so nothing needs to be modified
         }
+    }
+
+    /**
+     * Migrate salted passwords extension configuration settings to BE/passwordHashing and FE/passwordHashing
+     *
+     * @throws ConfigurationChangedException
+     */
+    protected function migrateSaltedPasswordsSettings()
+    {
+        $confManager = $this->configurationManager;
+        $configsToRemove = [];
+        try {
+            $extensionConfiguration = (array)$confManager->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords');
+            $configsToRemove[] = 'EXTENSIONS/saltedpasswords';
+        } catch (MissingArrayPathException $e) {
+            $extensionConfiguration = [];
+        }
+        try {
+            // The silent upgrade may be executed before LayoutController synchronized old serialized extConf
+            // settings to EXTENSIONS if upgrading from v8 to v9.
+            $extConfConfiguration = (string)$confManager->getLocalConfigurationValueByPath('EXT/extConf/saltedpasswords');
+            $configsToRemove[] = 'EXT/extConf/saltedpasswords';
+        } catch (MissingArrayPathException $e) {
+            $extConfConfiguration = [];
+        }
+        // Migration already done
+        if (empty($extensionConfiguration) && empty($extConfConfiguration)) {
+            return;
+        }
+        // Upgrade to best available hash method. This is only done once since that code will no longer be reached
+        // after first migration because extConf and EXTENSIONS array entries are gone then. Thus, a manual selection
+        // to some different hash mechanism will not be touched again after first upgrade.
+        // Phpass is always available, so we have some last fallback if the others don't kick in
+        $okHashMethods = [
+            Argon2iSalt::class,
+            BcryptSalt::class,
+            Pbkdf2Salt::class,
+            PhpassSalt::class,
+        ];
+        $newMethods = [];
+        foreach (['BE', 'FE'] as $mode) {
+            foreach ($okHashMethods as $className) {
+                /** @var SaltInterface $instance */
+                $instance = GeneralUtility::makeInstance($className);
+                if ($instance->isAvailable()) {
+                    $newMethods[$mode] = $className;
+                    break;
+                }
+            }
+        }
+        // We only need to write to LocalConfiguration if method is different than Argon2i from DefaultConfiguration
+        $newConfig = [];
+        if ($newMethods['BE'] !== Argon2iSalt::class) {
+            $newConfig['BE/passwordHashing/className'] = $newMethods['BE'];
+        }
+        if ($newMethods['FE'] !== Argon2iSalt::class) {
+            $newConfig['FE/passwordHashing/className'] = $newMethods['FE'];
+        }
+        if (!empty($newConfig)) {
+            $confManager->setLocalConfigurationValuesByPathValuePairs($newConfig);
+        }
+        $confManager->removeLocalConfigurationKeysByPath($configsToRemove);
+        $this->throwConfigurationChangedException();
     }
 }

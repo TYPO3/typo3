@@ -53,7 +53,7 @@ class AuthenticationService
             $installToolPassword = $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'];
             $hashFactory = GeneralUtility::makeInstance(SaltFactory::class);
             try {
-                $hashInstance = $hashFactory->get($installToolPassword);
+                $hashInstance = $hashFactory->get($installToolPassword, 'BE');
                 $validPassword = $hashInstance->checkPassword($password, $installToolPassword);
             } catch (InvalidSaltException $e) {
                 // Given hash in global configuration is not a valid salted password

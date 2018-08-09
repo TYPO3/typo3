@@ -165,4 +165,9 @@ return [
             'Deprecation-85124-RedirectingUrlHandlerHookConcept.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ext/saltedpasswords\'][\'saltMethods\']' => [
+        'restFiles' => [
+            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst'
+        ],
+    ],
 ];

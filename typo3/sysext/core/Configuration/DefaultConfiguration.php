@@ -104,6 +104,14 @@ return [
         'reverseProxyPrefix' => '',
         'reverseProxySSL' => '',
         'reverseProxyPrefixSSL' => '',
+        'availablePasswordHashAlgorithms' => [
+            \TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt::class,
+            \TYPO3\CMS\Saltedpasswords\Salt\BcryptSalt::class,
+            \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class,
+            \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
+            \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class,
+            \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class,
+        ],
         'caching' => [
             'cacheConfigurations' => [
                 // The cache_core cache is is for core php code only and must
@@ -1214,6 +1222,10 @@ return [
                 'Headers' => ['clickJackingProtection' => 'X-Frame-Options: SAMEORIGIN']
             ]
         ],
+        'passwordHashing' => [
+            'className' => \TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt::class,
+            'options' => [],
+        ],
     ],
     'FE' => [ // Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
         'addAllowedPaths' => '',
@@ -1269,6 +1281,10 @@ return [
             'email' => \TYPO3\CMS\Frontend\Typolink\EmailLinkBuilder::class,
             'record' => \TYPO3\CMS\Frontend\Typolink\DatabaseRecordLinkBuilder::class,
             'unknown' => \TYPO3\CMS\Frontend\Typolink\LegacyLinkBuilder::class,
+        ],
+        'passwordHashing' => [
+            'className' => \TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt::class,
+            'options' => [],
         ],
     ],
     'MAIL' => [ // Mail configurations to tune how \TYPO3\CMS\Core\Mail\ classes will send their mails.

@@ -42,10 +42,9 @@ interface SaltInterface
      * Method creates a salted hash for a given plaintext password
      *
      * @param string $password Plaintext password to create a salted hash from
-     * @param string $salt Optional custom salt to use
      * @return string Salted hashed password
      */
-    public function getHashedPassword(string $password, string $salt = null);
+    public function getHashedPassword(string $password);
 
     /**
      * Checks whether a user's hashed password needs to be replaced with a new hash.

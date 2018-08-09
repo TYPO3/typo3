@@ -1,0 +1,32 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:be.infobox state="{f:if(condition:'{preset.isAvailable}', then:'0', else:'2')}" disableIcon="true">
+	<input
+		type="radio"
+		class="t3-install-tool-configuration-radio"
+		id="t3-install-tool-configuration-passwordHashing-pbkdf2"
+		name="install[values][{feature.name}][enable]"
+		value="{preset.name}"
+		{f:if(condition:'{preset.isAvailable}', then:'', else:'disabled="disabled"')}
+		{f:if(condition: preset.isActive, then:'checked="checked"')}
+	/>
+	<label for="t3-install-tool-configuration-passwordHashing-pbkdf2" class="t3-install-tool-configuration-radio-label">
+		<strong>PBKDF2</strong> {f:if(condition: preset.isActive, then:' [Active]')}
+	</label>
+	<p>
+		<f:if condition="{preset.isAvailable}">
+			<f:then>
+				PBKDF2 is a key derivation function recommended by IETF in RFC 8018 as part of the PKCS series, even
+				though newer password hashing functions such as Argon2i are designed to address weaknesses of PBKDF2.
+				It could be a preferred password hash algorithm if storing passwords in a FIPS compliant way is necessary.
+				Usually, selecting Argon2i as hash algorithm is good to go.
+			</f:then>
+			<f:else>
+				PBKDF2 is not available on this system. This is very uncommon. If Argon2i and bcrypt are also not available,
+				you should seriously question the quality of your current hoster and reach them out to fix this as soon as possible.
+			</f:else>
+		</f:if>
+	</p>
+</f:be.infobox>
+
+</html>

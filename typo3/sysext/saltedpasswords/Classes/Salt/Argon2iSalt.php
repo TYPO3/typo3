@@ -50,6 +50,44 @@ class Argon2iSalt implements SaltInterface
     ];
 
     /**
+     * Constructor sets options if given
+     *
+     * @param array $options
+     */
+    public function __construct(array $options = [])
+    {
+        $newOptions = $this->options;
+        if (isset($options['memory_cost'])) {
+            if ((int)$options['memory_cost'] < PASSWORD_ARGON2_DEFAULT_MEMORY_COST) {
+                throw new \InvalidArgumentException(
+                    'memory_cost must not be lower than ' . PASSWORD_ARGON2_DEFAULT_MEMORY_COST,
+                    1533899612
+                );
+            }
+            $newOptions['memory_cost'] = (int)$options['memory_cost'];
+        }
+        if (isset($options['time_cost'])) {
+            if ((int)$options['time_cost'] < PASSWORD_ARGON2_DEFAULT_TIME_COST) {
+                throw new \InvalidArgumentException(
+                    'time_cost must not be lower than ' . PASSWORD_ARGON2_DEFAULT_TIME_COST,
+                    1533899613
+                );
+            }
+            $newOptions['time_cost'] = (int)$options['time_cost'];
+        }
+        if (isset($options['threads'])) {
+            if ((int)$options['threads'] < PASSWORD_ARGON2_DEFAULT_THREADS) {
+                throw new \InvalidArgumentException(
+                    'threads must not be lower than ' . PASSWORD_ARGON2_DEFAULT_THREADS,
+                    1533899614
+                );
+            }
+            $newOptions['threads'] = (int)$options['threads'];
+        }
+        $this->options = $newOptions;
+    }
+
+    /**
      * Checks if a given plaintext password is correct by comparing it with
      * a given salted hashed password.
      *
@@ -70,15 +108,14 @@ class Argon2iSalt implements SaltInterface
      */
     public function isAvailable(): bool
     {
-        return defined('PASSWORD_ARGON2I')
-            && PASSWORD_BCRYPT;
+        return defined('PASSWORD_ARGON2I') && PASSWORD_ARGON2I;
     }
 
     /**
      * Creates a salted hash for a given plaintext password
      *
      * @param string $password Plaintext password to create a salted hash from
-     * @param string $salt Optional custom salt to use
+     * @param string $salt Deprecated optional custom salt to use
      * @return string|null Salted hashed password
      */
     public function getHashedPassword(string $password, string $salt = null)
@@ -129,9 +166,11 @@ class Argon2iSalt implements SaltInterface
 
     /**
      * @return array
+     * @deprecated and will be removed in TYPO3 v10.0.
      */
     public function getOptions(): array
     {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         return $this->options;
     }
 
@@ -139,9 +178,11 @@ class Argon2iSalt implements SaltInterface
      * Set new memory_cost, time_cost, and thread values.
      *
      * @param array $options
+     * @deprecated and will be removed in TYPO3 v10.0.
      */
     public function setOptions(array $options): void
     {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         $newOptions = [];
 
         // Check options for validity, else use hard coded defaults

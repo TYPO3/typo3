@@ -15,14 +15,18 @@ namespace TYPO3\CMS\Install\Tests\Unit\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
+use TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt;
+use TYPO3\CMS\Saltedpasswords\Salt\BcryptSalt;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -728,8 +732,10 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             ->method('setLocalConfigurationValueByPath')
             ->with($this->equalTo('BE/languageDebug'), false);
 
-        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
+        $this->expectException(ConfigurationChangedException::class);
+        $this->expectExceptionCode(1379024938);
 
+        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
         $silentConfigurationUpgradeServiceInstance->_call('migrateLangDebug');
     }
 
@@ -754,12 +760,11 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
                 ->willReturn($value);
         }
 
-        $configurationManager->setLocalConfigurationValuesByPathValuePairs(\Prophecy\Argument::cetera())
-            ->shouldBeCalled();
-        $configurationManager->removeLocalConfigurationKeysByPath(\Prophecy\Argument::cetera())
-            ->shouldBeCalled();
+        $configurationManager->setLocalConfigurationValuesByPathValuePairs(Argument::cetera())->shouldBeCalled();
+        $configurationManager->removeLocalConfigurationKeysByPath(Argument::cetera())->shouldBeCalled();
 
         $this->expectException(ConfigurationChangedException::class);
+        $this->expectExceptionCode(1379024938);
 
         /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
@@ -771,7 +776,143 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         );
 
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $configurationManager->reveal());
-
         $silentConfigurationUpgradeServiceInstance->_call('migrateCacheHashOptions');
+    }
+
+    /**
+     * @test
+     */
+    public function migrateSaltedPasswordsSettingsDoesNothingIfExtensionConfigsAreNotSet()
+    {
+        $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
+        $configurationManagerException = new MissingArrayPathException('Path does not exist in array', 1533989414);
+        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords')
+            ->shouldBeCalled()->willThrow($configurationManagerException);
+        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXT/extConf/saltedpasswords')
+            ->shouldBeCalled()->willThrow($configurationManagerException);
+        $configurationManagerProphecy->setLocalConfigurationValuesByPathValuePairs(Argument::cetera())
+            ->shouldNotBeCalled();
+        $silentConfigurationUpgradeService = $this->getAccessibleMock(
+            SilentConfigurationUpgradeService::class,
+            ['dummy'],
+            [$configurationManagerProphecy->reveal()]
+        );
+        $silentConfigurationUpgradeService->_call('migrateSaltedPasswordsSettings');
+    }
+
+    /**
+     * @test
+     */
+    public function migrateSaltedPasswordsSettingsDoesNothingIfExtensionConfigsAreEmpty()
+    {
+        $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
+        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords')
+            ->shouldBeCalled()->willReturn([]);
+        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXT/extConf/saltedpasswords')
+            ->shouldBeCalled()->willReturn('');
+        $configurationManagerProphecy->setLocalConfigurationValuesByPathValuePairs(Argument::cetera())
+            ->shouldNotBeCalled();
+        $silentConfigurationUpgradeService = $this->getAccessibleMock(
+            SilentConfigurationUpgradeService::class,
+            ['dummy'],
+            [$configurationManagerProphecy->reveal()]
+        );
+        $silentConfigurationUpgradeService->_call('migrateSaltedPasswordsSettings');
+    }
+
+    /**
+     * @test
+     */
+    public function migrateSaltedPasswordsSettingsRemovesExtensionsConfigAndSetsNothingElseIfArgon2iIsAvailable()
+    {
+        $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
+        $configurationManagerException = new MissingArrayPathException('Path does not exist in array', 1533989428);
+        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords')
+            ->shouldBeCalled()->willReturn(['thereIs' => 'something']);
+        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXT/extConf/saltedpasswords')
+            ->shouldBeCalled()->willThrow($configurationManagerException);
+        $argonBeProphecy = $this->prophesize(Argon2iSalt::class);
+        $argonBeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
+        GeneralUtility::addInstance(Argon2iSalt::class, $argonBeProphecy->reveal());
+        $argonFeProphecy = $this->prophesize(Argon2iSalt::class);
+        $argonFeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
+        GeneralUtility::addInstance(Argon2iSalt::class, $argonFeProphecy->reveal());
+        $configurationManagerProphecy->removeLocalConfigurationKeysByPath(['EXTENSIONS/saltedpasswords'])
+            ->shouldBeCalled();
+        $silentConfigurationUpgradeService = $this->getAccessibleMock(
+            SilentConfigurationUpgradeService::class,
+            ['dummy'],
+            [$configurationManagerProphecy->reveal()]
+        );
+        $this->expectException(ConfigurationChangedException::class);
+        $this->expectExceptionCode(1379024938);
+        $silentConfigurationUpgradeService->_call('migrateSaltedPasswordsSettings');
+    }
+
+    /**
+     * @test
+     */
+    public function migrateSaltedPasswordsSettingsRemovesExtConfAndSetsNothingElseIfArgon2iIsAvailable()
+    {
+        $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
+        $configurationManagerException = new MissingArrayPathException('Path does not exist in array', 1533989434);
+        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords')
+            ->shouldBeCalled()->willThrow($configurationManagerException);
+        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXT/extConf/saltedpasswords')
+            ->shouldBeCalled()->willReturn('someConfiguration');
+        $argonBeProphecy = $this->prophesize(Argon2iSalt::class);
+        $argonBeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
+        GeneralUtility::addInstance(Argon2iSalt::class, $argonBeProphecy->reveal());
+        $argonFeProphecy = $this->prophesize(Argon2iSalt::class);
+        $argonFeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
+        GeneralUtility::addInstance(Argon2iSalt::class, $argonFeProphecy->reveal());
+        $configurationManagerProphecy->removeLocalConfigurationKeysByPath(['EXT/extConf/saltedpasswords'])
+            ->shouldBeCalled();
+        $silentConfigurationUpgradeService = $this->getAccessibleMock(
+            SilentConfigurationUpgradeService::class,
+            ['dummy'],
+            [$configurationManagerProphecy->reveal()]
+        );
+        $this->expectException(ConfigurationChangedException::class);
+        $this->expectExceptionCode(1379024938);
+        $silentConfigurationUpgradeService->_call('migrateSaltedPasswordsSettings');
+    }
+
+    /**
+     * @test
+     */
+    public function migrateSaltedPasswordsSetsSpecificHashMethodIfArgon2iIsNotAvailable()
+    {
+        $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
+        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords')
+            ->shouldBeCalled()->willReturn(['thereIs' => 'something']);
+        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXT/extConf/saltedpasswords')
+            ->shouldBeCalled()->willReturn('someConfiguration');
+        $argonBeProphecy = $this->prophesize(Argon2iSalt::class);
+        $argonBeProphecy->isAvailable()->shouldBeCalled()->willReturn(false);
+        GeneralUtility::addInstance(Argon2iSalt::class, $argonBeProphecy->reveal());
+        $bcryptBeProphecy = $this->prophesize(BcryptSalt::class);
+        $bcryptBeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
+        GeneralUtility::addInstance(BcryptSalt::class, $bcryptBeProphecy->reveal());
+        $argonFeProphecy = $this->prophesize(Argon2iSalt::class);
+        $argonFeProphecy->isAvailable()->shouldBeCalled()->willReturn(false);
+        GeneralUtility::addInstance(Argon2iSalt::class, $argonFeProphecy->reveal());
+        $bcryptFeProphecy = $this->prophesize(BcryptSalt::class);
+        $bcryptFeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
+        GeneralUtility::addInstance(BcryptSalt::class, $bcryptFeProphecy->reveal());
+        $configurationManagerProphecy->setLocalConfigurationValuesByPathValuePairs([
+            'BE/passwordHashing/className' => BcryptSalt::class,
+            'FE/passwordHashing/className' => BcryptSalt::class,
+        ])->shouldBeCalled();
+        $configurationManagerProphecy->removeLocalConfigurationKeysByPath(['EXTENSIONS/saltedpasswords', 'EXT/extConf/saltedpasswords'])
+            ->shouldBeCalled();
+        $silentConfigurationUpgradeService = $this->getAccessibleMock(
+            SilentConfigurationUpgradeService::class,
+            ['dummy'],
+            [$configurationManagerProphecy->reveal()]
+        );
+        $this->expectException(ConfigurationChangedException::class);
+        $this->expectExceptionCode(1379024938);
+        $silentConfigurationUpgradeService->_call('migrateSaltedPasswordsSettings');
     }
 }

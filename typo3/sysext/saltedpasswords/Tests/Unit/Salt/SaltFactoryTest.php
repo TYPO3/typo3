@@ -20,6 +20,7 @@ use TYPO3\CMS\Saltedpasswords\Exception\InvalidSaltException;
 use TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt;
 use TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt;
 use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
+use TYPO3\CMS\Saltedpasswords\Tests\Unit\Salt\Fixtures\TestSalt;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -30,12 +31,44 @@ class SaltFactoryTest extends UnitTestCase
     /**
      * @test
      */
+    public function getThrowsExceptionIfModeIsNotBeOrFe(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1533948312);
+        (new SaltFactory())->get('ThisIsNotAValidHash', 'foo');
+    }
+
+    /**
+     * @test
+     */
+    public function getThrowsExceptionWithBrokenClassNameModeConfiguration(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(1533949053);
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['passwordHashing']['className'] = '';
+        (new SaltFactory())->get('ThisIsNotAValidHash', 'FE');
+    }
+
+    /**
+     * @test
+     */
+    public function getThrowsExceptionWithBrokenOptionsModeConfiguration(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(1533949053);
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['passwordHashing']['options'] = '';
+        (new SaltFactory())->get('ThisIsNotAValidHash', 'FE');
+    }
+
+    /**
+     * @test
+     */
     public function getThrowsExceptionIfARegisteredHashDoesNotImplementSaltInterface(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'] = [ \stdClass::class ];
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['availablePasswordHashAlgorithms'] = [ \stdClass::class ];
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1533818569);
-        (new SaltFactory())->get('ThisIsNotAValidHash');
+        (new SaltFactory())->get('ThisIsNotAValidHash', 'BE');
     }
 
     /**
@@ -45,7 +78,7 @@ class SaltFactoryTest extends UnitTestCase
     {
         $this->expectException(InvalidSaltException::class);
         $this->expectExceptionCode(1533818591);
-        (new SaltFactory())->get('ThisIsNotAValidHash');
+        (new SaltFactory())->get('ThisIsNotAValidHash', 'BE');
     }
 
     /**
@@ -58,7 +91,7 @@ class SaltFactoryTest extends UnitTestCase
         $phpassProphecy->isAvailable()->shouldBeCalled()->willReturn(false);
         $this->expectException(InvalidSaltException::class);
         $this->expectExceptionCode(1533818591);
-        (new SaltFactory())->get('$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF.');
+        (new SaltFactory())->get('$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF.', 'BE');
     }
 
     /**
@@ -73,7 +106,24 @@ class SaltFactoryTest extends UnitTestCase
         $phpassProphecy->isValidSaltedPW($hash)->shouldBeCalled()->willReturn(false);
         $this->expectException(InvalidSaltException::class);
         $this->expectExceptionCode(1533818591);
-        (new SaltFactory())->get($hash);
+        (new SaltFactory())->get($hash, 'BE');
+    }
+
+    /**
+     * @test
+     */
+    public function getHandsConfiguredOptionsToHashClassIfMethodIsConfiguredDefaultForMode(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['availablePasswordHashAlgorithms'] = [ TestSalt::class ];
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['passwordHashing'] = [
+            'className' => TestSalt::class,
+            'options' => [
+                'foo' => 'bar'
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1533950385);
+        (new SaltFactory())->get('someHash', 'FE');
     }
 
     /**
@@ -87,7 +137,7 @@ class SaltFactoryTest extends UnitTestCase
         $phpassProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
         $hash = '$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF.';
         $phpassProphecy->isValidSaltedPW($hash)->shouldBeCalled()->willReturn(true);
-        $this->assertSame($phpassRevelation, (new SaltFactory())->get($hash));
+        $this->assertSame($phpassRevelation, (new SaltFactory())->get($hash, 'BE'));
     }
 
     /**
@@ -98,6 +148,28 @@ class SaltFactoryTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1533820041);
         (new SaltFactory())->getDefaultHashInstance('foo');
+    }
+
+    /**
+     * @test
+     */
+    public function getDefaultHashInstanceThrowsExceptionWithBrokenClassNameModeConfiguration(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(1533950622);
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['passwordHashing']['className'] = '';
+        (new SaltFactory())->getDefaultHashInstance('FE');
+    }
+
+    /**
+     * @test
+     */
+    public function getDefaultHashInstanceThrowsExceptionWithBrokenOptionsModeConfiguration(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(1533950622);
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['passwordHashing']['options'] = '';
+        (new SaltFactory())->getDefaultHashInstance('FE');
     }
 
     /**
@@ -122,14 +194,25 @@ class SaltFactoryTest extends UnitTestCase
 
     /**
      * @test
-     * @todo: have a test for exception 1533820194 after utility class is no longer used
      */
     public function getDefaultHashThrowsExceptionIfDefaultHashMethodDoesNotImplementSaltInterface(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['saltedpasswords']['BE']['saltedPWHashingMethod'] = \stdClass::class;
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'] = [ \stdClass::class ];
-        $this->expectException(\RuntimeException::class);
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordHashing']['className'] = \stdClass::class;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['availablePasswordHashAlgorithms'] = [ \stdClass::class ];
+        $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1533820281);
+        (new SaltFactory())->getDefaultHashInstance('BE');
+    }
+
+    /**
+     * @test
+     */
+    public function getDefaultHashThrowsExceptionIfDefaultHashMethodIsNotRegistered(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordHashing']['className'] = \stdClass::class;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['availablePasswordHashAlgorithms'] = [ Argon2iSalt::class ];
+        $this->expectException(InvalidSaltException::class);
+        $this->expectExceptionCode(1533820194);
         (new SaltFactory())->getDefaultHashInstance('BE');
     }
 
@@ -139,12 +222,52 @@ class SaltFactoryTest extends UnitTestCase
     public function getDefaultHashThrowsExceptionIfDefaultHashMethodIsNotAvailable(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['saltedpasswords']['BE']['saltedPWHashingMethod'] = Argon2iSalt::class;
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'] = [ \stdClass::class ];
         $argonProphecy = $this->prophesize(Argon2iSalt::class);
         GeneralUtility::addInstance(Argon2iSalt::class, $argonProphecy->reveal());
         $argonProphecy->isAvailable()->shouldBeCalled()->willReturn(false);
         $this->expectException(InvalidSaltException::class);
         $this->expectExceptionCode(1533822084);
         (new SaltFactory())->getDefaultHashInstance('BE');
+    }
+
+    /**
+     * @test
+     */
+    public function getDefaultHoshHandsConfiguredOptionsToHashClass(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['availablePasswordHashAlgorithms'] = [ TestSalt::class ];
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['passwordHashing'] = [
+            'className' => TestSalt::class,
+            'options' => [
+                'foo' => 'bar'
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1533950385);
+        (new SaltFactory())->getDefaultHashInstance('FE');
+    }
+
+    /**
+     * @test
+     */
+    public function getRegisteredSaltedHashingMethodsReturnsRegisteredMethods(): void
+    {
+        $methods = [
+            'foo',
+            'bar'
+        ];
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['availablePasswordHashAlgorithms'] = $methods;
+        $this->assertSame($methods, SaltFactory::getRegisteredSaltedHashingMethods());
+    }
+
+    /**
+     * @test
+     */
+    public function getRegisteredSaltedHashingMethodsThrowsExceptionIfNoMethodIsConfigured(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1533948733);
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['availablePasswordHashAlgorithms'] = [];
+        SaltFactory::getRegisteredSaltedHashingMethods();
     }
 }

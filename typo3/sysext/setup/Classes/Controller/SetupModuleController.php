@@ -292,7 +292,7 @@ class SetupModuleController
                         $passwordOk = false;
                         $saltFactory = GeneralUtility::makeInstance(SaltFactory::class);
                         try {
-                            $hashInstance = $saltFactory->get($currentPasswordHashed);
+                            $hashInstance = $saltFactory->get($currentPasswordHashed, 'BE');
                             $passwordOk = $hashInstance->checkPassword($be_user_data['passwordCurrent'], $currentPasswordHashed);
                         } catch (InvalidSaltException $e) {
                             // Could not find hash class responsible for existing password. This is a

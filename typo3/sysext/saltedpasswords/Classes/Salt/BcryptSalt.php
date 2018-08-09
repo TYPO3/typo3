@@ -48,6 +48,27 @@ class BcryptSalt implements SaltInterface
     ];
 
     /**
+     * Constructor sets options if given
+     *
+     * @param array $options
+     */
+    public function __construct(array $options = [])
+    {
+        $newOptions = $this->options;
+        // Check options for validity
+        if (isset($options['cost'])) {
+            if (!$this->isValidBcryptCost((int)$options['cost'])) {
+                throw new \InvalidArgumentException(
+                    'cost must not be lower than ' . PASSWORD_BCRYPT_DEFAULT_COST . ' or higher than 31',
+                    1533902002
+                );
+            }
+            $newOptions['cost'] = (int)$options['cost'];
+        }
+        $this->options = $newOptions;
+    }
+
+    /**
      * Returns true if sha384 for pre-hashing and bcrypt itself is available.
      *
      * @return bool
@@ -65,6 +86,8 @@ class BcryptSalt implements SaltInterface
      * Checks if a given plaintext password is correct by comparing it with
      * a given salted hashed password.
      *
+     * @param string $plainPW plain text password to compare with salted hash
+     * @param string $saltedHashPW Salted hash to compare plain-text password with
      * @return bool
      */
     public function checkPassword(string $plainPW, string $saltedHashPW): bool
@@ -75,9 +98,8 @@ class BcryptSalt implements SaltInterface
     /**
      * Extend parent method to workaround bcrypt limitations.
      *
-     * @see \TYPO3\CMS\Saltedpasswords\Salt\BcryptSalt::processPlainPassword()
      * @param string $password Plaintext password to create a salted hash from
-     * @param string $salt Optional custom salt to use
+     * @param string $salt Deprecated optional custom salt to use
      * @return string Salted hashed password
      */
     public function getHashedPassword(string $password, string $salt = null)
@@ -94,22 +116,6 @@ class BcryptSalt implements SaltInterface
             }
         }
         return $hashedPassword;
-    }
-
-    /**
-     * The plain password is processed through sha384 and then base64
-     * encoded. This will produce a 64 characters input to use with
-     * password_* functions, which has some advantages:
-     * 1. It is close to the (bcrypt-) maximum of 72 character keyspace
-     * 2. base64 will never produce NUL bytes (bcrypt truncates on NUL bytes)
-     * 3. sha384 is resistant to length extension attacks
-     *
-     * @param string $password
-     * @return string
-     */
-    protected function processPlainPassword(string $password): string
-    {
-        return base64_encode(hash('sha384', $password, true));
     }
 
     /**
@@ -133,7 +139,6 @@ class BcryptSalt implements SaltInterface
         }
         return $result;
     }
-
     /**
      * Checks whether a user's hashed password needs to be replaced with a new hash.
      *
@@ -146,10 +151,38 @@ class BcryptSalt implements SaltInterface
     }
 
     /**
+     * The plain password is processed through sha384 and then base64
+     * encoded. This will produce a 64 characters input to use with
+     * password_* functions, which has some advantages:
+     * 1. It is close to the (bcrypt-) maximum of 72 character keyspace
+     * 2. base64 will never produce NUL bytes (bcrypt truncates on NUL bytes)
+     * 3. sha384 is resistant to length extension attacks
+     *
+     * @param string $password
+     * @return string
+     */
+    protected function processPlainPassword(string $password): string
+    {
+        return base64_encode(hash('sha384', $password, true));
+    }
+
+    /**
+     * @see https://github.com/php/php-src/blob/php-7.2.0/ext/standard/password.c#L441-L444
+     * @param int $cost
+     * @return bool
+     */
+    protected function isValidBcryptCost(int $cost): bool
+    {
+        return $cost >= PASSWORD_BCRYPT_DEFAULT_COST && $cost <= 31;
+    }
+
+    /**
      * @return array
+     * @deprecated and will be removed in TYPO3 v10.0.
      */
     public function getOptions(): array
     {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         return $this->options;
     }
 
@@ -157,9 +190,11 @@ class BcryptSalt implements SaltInterface
      * Set new memory_cost, time_cost, and thread values.
      *
      * @param array $options
+     * @deprecated and will be removed in TYPO3 v10.0.
      */
     public function setOptions(array $options): void
     {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         $newOptions = [];
 
         // Check options for validity, else use hard coded defaults
@@ -176,15 +211,5 @@ class BcryptSalt implements SaltInterface
         }
 
         $this->options = $newOptions;
-    }
-
-    /**
-     * @see https://github.com/php/php-src/blob/php-7.2.0/ext/standard/password.c#L441-L444
-     * @param int $cost
-     * @return bool
-     */
-    protected function isValidBcryptCost(int $cost): bool
-    {
-        return $cost >= PASSWORD_BCRYPT_DEFAULT_COST && $cost <= 31;
     }
 }

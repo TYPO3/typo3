@@ -19,6 +19,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * class providing configuration checks for saltedpasswords.
+ *
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
  */
 class ExtensionManagerConfigurationUtility
 {
@@ -26,6 +28,14 @@ class ExtensionManagerConfigurationUtility
      * @var array
      */
     protected $extConf = [];
+
+    /**
+     * Deprecate this class
+     */
+    public function __construct()
+    {
+        trigger_error(self::class . ' is obsolete and will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+    }
 
     /**
      * Initializes this object.

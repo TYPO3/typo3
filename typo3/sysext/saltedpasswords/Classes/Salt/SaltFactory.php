@@ -38,17 +38,38 @@ class SaltFactory
      * Find a hash class that handles given hash and return an instance of it.
      *
      * @param string $hash Given hash to find instance for
+     * @param string $mode 'FE' for frontend users, 'BE' for backend users
      * @return SaltInterface Object that can handle given hash
-     * @throws \LogicException If a registered hash class does not implement SaltInterface
+     * @throws \LogicException
+     * @throws \InvalidArgumentException
      * @throws InvalidSaltException If no class was found that handles given hash
      */
-    public function get(string $hash): SaltInterface
+    public function get(string $hash, string $mode): SaltInterface
     {
-        // @todo: Refactor $registeredHashClasses when implementing 'preset' and moving config options
+        if ($mode !== 'FE' && $mode !== 'BE') {
+            throw new \InvalidArgumentException('Mode must be either \'FE\' or \'BE\', ' . $mode . ' given.', 1533948312);
+        }
+
         $registeredHashClasses = static::getRegisteredSaltedHashingMethods();
 
+        if (empty($GLOBALS['TYPO3_CONF_VARS'][$mode]['passwordHashing']['className'])
+            || !isset($GLOBALS['TYPO3_CONF_VARS'][$mode]['passwordHashing']['options'])
+            || !is_array($GLOBALS['TYPO3_CONF_VARS'][$mode]['passwordHashing']['options'])
+        ) {
+            throw new \LogicException(
+                'passwordHashing configuration of ' . $mode . ' broken',
+                1533949053
+            );
+        }
+        $defaultHashClassName = $GLOBALS['TYPO3_CONF_VARS'][$mode]['passwordHashing']['className'];
+        $defaultHashOptions = (array)$GLOBALS['TYPO3_CONF_VARS'][$mode]['passwordHashing']['options'];
+
         foreach ($registeredHashClasses as $className) {
-            $hashInstance = GeneralUtility::makeInstance($className);
+            if ($className === $defaultHashClassName) {
+                $hashInstance = GeneralUtility::makeInstance($className, $defaultHashOptions);
+            } else {
+                $hashInstance = GeneralUtility::makeInstance($className);
+            }
             if (!$hashInstance instanceof SaltInterface) {
                 throw new \LogicException('Class ' . $className . ' does not implement SaltInterface', 1533818569);
             }
@@ -65,7 +86,8 @@ class SaltFactory
      *
      * @param string $mode 'FE' for frontend users, 'BE' for backend users
      * @return SaltInterface Class instance that is configured as default hash method
-     * @throws \InvalidArgumentException If configured default hash class does not implement SaltInterface
+     * @throws \InvalidArgumentException
+     * @throws \LogicException
      * @throws InvalidSaltException If configuration is broken
      */
     public function getDefaultHashInstance(string $mode): SaltInterface
@@ -73,20 +95,30 @@ class SaltFactory
         if ($mode !== 'FE' && $mode !== 'BE') {
             throw new \InvalidArgumentException('Mode must be either \'FE\' or \'BE\', ' . $mode . ' given.', 1533820041);
         }
-        $defaultHashClassName = SaltedPasswordsUtility::getDefaultSaltingHashingMethod($mode);
 
-        // @todo: Refactor $availableHashClasses when implementing 'preset' and moving config options
+        if (empty($GLOBALS['TYPO3_CONF_VARS'][$mode]['passwordHashing']['className'])
+            || !isset($GLOBALS['TYPO3_CONF_VARS'][$mode]['passwordHashing']['options'])
+            || !is_array($GLOBALS['TYPO3_CONF_VARS'][$mode]['passwordHashing']['options'])
+        ) {
+            throw new \LogicException(
+                'passwordHashing configuration of ' . $mode . ' broken',
+                1533950622
+            );
+        }
+
+        $defaultHashClassName = $GLOBALS['TYPO3_CONF_VARS'][$mode]['passwordHashing']['className'];
+        $defaultHashOptions = $GLOBALS['TYPO3_CONF_VARS'][$mode]['passwordHashing']['options'];
         $availableHashClasses = static::getRegisteredSaltedHashingMethods();
 
-        if (!isset($availableHashClasses[$defaultHashClassName])) {
+        if (!in_array($defaultHashClassName, $availableHashClasses, true)) {
             throw new InvalidSaltException(
                 'Configured default hash method ' . $defaultHashClassName . ' is not registered',
                 1533820194
             );
         }
-        $hashInstance =  GeneralUtility::makeInstance($defaultHashClassName);
+        $hashInstance =  GeneralUtility::makeInstance($defaultHashClassName, $defaultHashOptions);
         if (!$hashInstance instanceof SaltInterface) {
-            throw new \RuntimeException(
+            throw new \LogicException(
                 'Configured default hash method ' . $defaultHashClassName . ' is not an instance of SaltInterface',
                 1533820281
             );
@@ -105,28 +137,23 @@ class SaltFactory
      * extension configuration to select the default hashing method.
      *
      * @return array
+     * @throws \RuntimeException
      */
     public static function getRegisteredSaltedHashingMethods(): array
     {
-        $saltMethods = [
-            Md5Salt::class => Md5Salt::class,
-            BlowfishSalt::class => BlowfishSalt::class,
-            PhpassSalt::class => PhpassSalt::class,
-            Pbkdf2Salt::class => Pbkdf2Salt::class,
-            BcryptSalt::class => BcryptSalt::class,
-            Argon2iSalt::class => Argon2iSalt::class,
-        ];
+        $saltMethods = $GLOBALS['TYPO3_CONF_VARS']['SYS']['availablePasswordHashAlgorithms'];
+        if (!is_array($saltMethods) || empty($saltMethods)) {
+            throw new \RuntimeException('No password hash methods configured', 1533948733);
+        }
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'])) {
+            trigger_error(
+                'Registering additional hash algorithms in $GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ext/saltedpasswords\'][\'saltMethods\']'
+                . ' has been deprecated. Extend $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'availablePasswordHashAlgorithms\'] instead',
+                E_USER_DEPRECATED
+            );
             $configuredMethods = (array)$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'];
             if (!empty($configuredMethods)) {
-                if (isset($configuredMethods[0])) {
-                    // ensure the key of the array is not numeric, but a class name
-                    foreach ($configuredMethods as $method) {
-                        $saltMethods[$method] = $method;
-                    }
-                } else {
-                    $saltMethods = array_merge($saltMethods, $configuredMethods);
-                }
+                $saltMethods = array_merge($saltMethods, $configuredMethods);
             }
         }
         return $saltMethods;
@@ -164,9 +191,7 @@ class SaltFactory
                 }
             } else {
                 $classNameToUse = SaltedPasswordsUtility::getDefaultSaltingHashingMethod($mode);
-                // Calls deprecated determineSaltingHashingMethod - ok, since getSaltingInstance() is deprecated, too
-                $availableClasses = static::getRegisteredSaltedHashingMethods();
-                self::$instance = GeneralUtility::makeInstance($availableClasses[$classNameToUse]);
+                self::$instance = GeneralUtility::makeInstance($classNameToUse);
             }
         }
         return self::$instance;
@@ -190,10 +215,9 @@ class SaltFactory
         );
         $registeredMethods = static::getRegisteredSaltedHashingMethods();
         $defaultClassName = SaltedPasswordsUtility::getDefaultSaltingHashingMethod($mode);
-        $defaultReference = $registeredMethods[$defaultClassName];
         unset($registeredMethods[$defaultClassName]);
         // place the default method first in the order
-        $registeredMethods = [$defaultClassName => $defaultReference] + $registeredMethods;
+        $registeredMethods = [$defaultClassName => $defaultClassName] + $registeredMethods;
         $methodFound = false;
         foreach ($registeredMethods as $method) {
             $objectInstance = GeneralUtility::makeInstance($method);

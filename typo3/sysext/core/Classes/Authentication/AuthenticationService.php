@@ -122,7 +122,7 @@ class AuthenticationService extends AbstractAuthenticationService
 
         // Get a hashed password instance for the hash stored in db of this user
         try {
-            $hashInstance = $saltFactory->get($passwordHashInDatabase);
+            $hashInstance = $saltFactory->get($passwordHashInDatabase, TYPO3_MODE);
         } catch (InvalidSaltException $e) {
             // This can be refactored if the 'else' part below is gone in v10: Log and return 100 here
             $hashInstance = null;
@@ -158,7 +158,7 @@ class AuthenticationService extends AbstractAuthenticationService
                 // upgraded to a salted md5 using the old salted passwords scheduler task.
                 // See if a salt instance is returned if we cut off the M, so Md5Salt kicks in
                 try {
-                    $hashInstance = $saltFactory->get(substr($passwordHashInDatabase, 1));
+                    $hashInstance = $saltFactory->get(substr($passwordHashInDatabase, 1), TYPO3_MODE);
                     $isSaltedPassword = true;
                     $isValidPassword = $hashInstance->checkPassword(md5($submittedPassword), substr($passwordHashInDatabase, 1));
                     if ($isValidPassword) {

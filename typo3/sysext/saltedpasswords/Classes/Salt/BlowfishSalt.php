@@ -15,6 +15,10 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
+use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class that implements Blowfish salted hashing based on PHP's
  * crypt() function.
@@ -22,125 +26,96 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  * Warning: Blowfish salted hashing with PHP's crypt() is not available
  * on every system.
  */
-class BlowfishSalt extends Md5Salt
+class BlowfishSalt implements SaltInterface
 {
+    use PublicMethodDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicMethods = [
+        'isValidSalt' => 'Using BlowfishSalt::isValidSalt() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'base64Encode' => 'Using BlowfishSalt::base64Encode() is deprecated and will not be possible anymore in TYPO3 v10.',
+    ];
+
+    /**
+     * Prefix for the password hash.
+     */
+    protected const PREFIX = '$2a$';
+
+    /**
+     * @var array The default log2 number of iterations for password stretching.
+     */
+    protected $options = [
+        'hash_count' => 7
+    ];
+
+    /**
+     * Keeps a string for mapping an int to the corresponding
+     * base 64 character.
+     *
+     * @deprecated and will be removed in TYPO3 v10.0.
+     */
+    const ITOA64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
     /**
      * The default log2 number of iterations for password stretching.
+     *
+     * @deprecated and will be removed in TYPO3 v10.0.
      */
     const HASH_COUNT = 7;
 
     /**
      * The default maximum allowed log2 number of iterations for
      * password stretching.
+     *
+     * @deprecated and will be removed in TYPO3 v10.0.
      */
     const MAX_HASH_COUNT = 17;
 
     /**
      * The default minimum allowed log2 number of iterations for
      * password stretching.
+     *
+     * @deprecated and will be removed in TYPO3 v10.0.
      */
     const MIN_HASH_COUNT = 4;
 
     /**
-     * Keeps log2 number
-     * of iterations for password stretching.
+     * Constructor sets options if given
      *
-     * @var int
+     * @param array $options
      */
-    protected static $hashCount;
-
-    /**
-     * Keeps maximum allowed log2 number
-     * of iterations for password stretching.
-     *
-     * @var int
-     */
-    protected static $maxHashCount;
-
-    /**
-     * Keeps minimum allowed log2 number
-     * of iterations for password stretching.
-     *
-     * @var int
-     */
-    protected static $minHashCount;
-
-    /**
-     * Keeps length of a Blowfish salt in bytes.
-     *
-     * @var int
-     */
-    protected static $saltLengthBlowfish = 16;
-
-    /**
-     * Setting string to indicate type of hashing method (blowfish).
-     *
-     * @var string
-     */
-    protected static $settingBlowfish = '$2a$';
-
-    /**
-     * Method applies settings (prefix, hash count) to a salt.
-     *
-     * Overwrites {@link Md5Salt::applySettingsToSalt()}
-     * with Blowfish specifics.
-     *
-     * @param string $salt A salt to apply setting to
-     * @return string Salt with setting
-     */
-    protected function applySettingsToSalt(string $salt): string
+    public function __construct(array $options = [])
     {
-        $saltWithSettings = $salt;
-        $reqLenBase64 = $this->getLengthBase64FromBytes($this->getSaltLength());
-        // salt without setting
-        if (strlen($salt) == $reqLenBase64) {
-            $saltWithSettings = $this->getSetting() . sprintf('%02u', $this->getHashCount()) . '$' . $salt;
+        $newOptions = $this->options;
+        if (isset($options['hash_count'])) {
+            if ((int)$options['hash_count'] < 4 || (int)$options['hash_count'] > 17) {
+                throw new \InvalidArgumentException(
+                    'hash_count must not be lower than 4 or bigger than 17',
+                    1533903545
+                );
+            }
+            $newOptions['hash_count'] = (int)$options['hash_count'];
         }
-        return $saltWithSettings;
+        $this->options = $newOptions;
     }
 
     /**
-     * Parses the log2 iteration count from a stored hash or setting string.
+     * Method checks if a given plaintext password is correct by comparing it with
+     * a given salted hashed password.
      *
-     * @param string $setting Complete hash or a hash's setting string or to get log2 iteration count from
-     * @return int Used hashcount for given hash string
+     * @param string $plainPW plain-text password to compare with salted hash
+     * @param string $saltedHashPW salted hash to compare plain-text password with
+     * @return bool TRUE, if plain-text password matches the salted hash, otherwise FALSE
      */
-    protected function getCountLog2(string $setting): int
+    public function checkPassword(string $plainPW, string $saltedHashPW): bool
     {
-        $countLog2 = null;
-        $setting = substr($setting, strlen($this->getSetting()));
-        $firstSplitPos = strpos($setting, '$');
-        // Hashcount existing
-        if ($firstSplitPos !== false && $firstSplitPos <= 2 && is_numeric(substr($setting, 0, $firstSplitPos))) {
-            $countLog2 = (int)substr($setting, 0, $firstSplitPos);
+        $isCorrect = false;
+        if ($this->isValidSalt($saltedHashPW)) {
+            $isCorrect = \password_verify($plainPW, $saltedHashPW);
         }
-        return $countLog2;
-    }
-
-    /**
-     * Method returns log2 number of iterations for password stretching.
-     *
-     * @return int log2 number of iterations for password stretching
-     * @see HASH_COUNT
-     * @see $hashCount
-     * @see setHashCount()
-     */
-    public function getHashCount(): int
-    {
-        return self::$hashCount ?? self::HASH_COUNT;
-    }
-
-    /**
-     * Method returns maximum allowed log2 number of iterations for password stretching.
-     *
-     * @return int Maximum allowed log2 number of iterations for password stretching
-     * @see MAX_HASH_COUNT
-     * @see $maxHashCount
-     * @see setMaxHashCount()
-     */
-    public function getMaxHashCount(): int
-    {
-        return self::$maxHashCount ?? self::MAX_HASH_COUNT;
+        return $isCorrect;
     }
 
     /**
@@ -154,42 +129,25 @@ class BlowfishSalt extends Md5Salt
     }
 
     /**
-     * Method returns minimum allowed log2 number of iterations for password stretching.
+     * Method creates a salted hash for a given plaintext password
      *
-     * @return int Minimum allowed log2 number of iterations for password stretching
-     * @see MIN_HASH_COUNT
-     * @see $minHashCount
-     * @see setMinHashCount()
+     * @param string $password plaintext password to create a salted hash from
+     * @param string $salt Deprecated optional custom salt with setting to use
+     * @return string Salted hashed password
      */
-    public function getMinHashCount(): int
+    public function getHashedPassword(string $password, string $salt = null)
     {
-        return self::$minHashCount ?? self::MIN_HASH_COUNT;
-    }
-
-    /**
-     * Returns length of a Blowfish salt in bytes.
-     *
-     * Overwrites {@link Md5Salt::getSaltLength()}
-     * with Blowfish specifics.
-     *
-     * @return int Length of a Blowfish salt in bytes
-     */
-    public function getSaltLength(): int
-    {
-        return self::$saltLengthBlowfish;
-    }
-
-    /**
-     * Returns setting string of Blowfish salted hashes.
-     *
-     * Overwrites {@link Md5Salt::getSetting()}
-     * with Blowfish specifics.
-     *
-     * @return string Setting string of Blowfish salted hashes
-     */
-    public function getSetting(): string
-    {
-        return self::$settingBlowfish;
+        if ($salt !== null) {
+            trigger_error(static::class . ': using a custom salt is deprecated.', E_USER_DEPRECATED);
+        }
+        $saltedPW = null;
+        if (!empty($password)) {
+            if (empty($salt) || !$this->isValidSalt($salt)) {
+                $salt = $this->getGeneratedSalt();
+            }
+            $saltedPW = crypt($password, $this->applySettingsToSalt($salt));
+        }
+        return $saltedPW;
     }
 
     /**
@@ -205,32 +163,102 @@ class BlowfishSalt extends Md5Salt
      */
     public function isHashUpdateNeeded(string $saltedPW): bool
     {
-        // Check whether this was an updated password.
-        if (strncmp($saltedPW, '$2', 2) || !$this->isValidSalt($saltedPW)) {
-            return true;
-        }
         // Check whether the iteration count used differs from the standard number.
         $countLog2 = $this->getCountLog2($saltedPW);
-        return $countLog2 !== null && $countLog2 < $this->getHashCount();
+        return $countLog2 !== null && $countLog2 < $this->options['hash_count'];
+    }
+
+    /**
+     * Method determines if a given string is a valid salted hashed password.
+     *
+     * @param string $saltedPW String to check
+     * @return bool TRUE if it's valid salted hashed password, otherwise FALSE
+     */
+    public function isValidSaltedPW(string $saltedPW): bool
+    {
+        $isValid = !strncmp(self::PREFIX, $saltedPW, strlen(self::PREFIX));
+        if ($isValid) {
+            $isValid = $this->isValidSalt($saltedPW);
+        }
+        return $isValid;
+    }
+
+    /**
+     * Generates a random base 64-encoded salt prefixed and suffixed with settings for the hash.
+     *
+     * Proper use of salts may defeat a number of attacks, including:
+     * - The ability to try candidate passwords against multiple hashes at once.
+     * - The ability to use pre-hashed lists of candidate passwords.
+     * - The ability to determine whether two users have the same (or different)
+     * password without actually having to guess one of the passwords.
+     *
+     * @return string A character string containing settings and a random salt
+     */
+    protected function getGeneratedSalt(): string
+    {
+        $randomBytes = GeneralUtility::makeInstance(Random::class)->generateRandomBytes(16);
+        return $this->base64Encode($randomBytes, 16);
+    }
+
+    /**
+     * Method applies settings (prefix, hash count) to a salt.
+     *
+     * @param string $salt A salt to apply setting to
+     * @return string Salt with setting
+     */
+    protected function applySettingsToSalt(string $salt): string
+    {
+        $saltWithSettings = $salt;
+        $reqLenBase64 = $this->getLengthBase64FromBytes(16);
+        // salt without setting
+        if (strlen($salt) == $reqLenBase64) {
+            $saltWithSettings = self::PREFIX . sprintf('%02u', $this->options['hash_count']) . '$' . $salt;
+        }
+        return $saltWithSettings;
+    }
+
+    /**
+     * Parses the log2 iteration count from a stored hash or setting string.
+     *
+     * @param string $setting Complete hash or a hash's setting string or to get log2 iteration count from
+     * @return int Used hashcount for given hash string
+     */
+    protected function getCountLog2(string $setting): int
+    {
+        $countLog2 = null;
+        $setting = substr($setting, strlen(self::PREFIX));
+        $firstSplitPos = strpos($setting, '$');
+        // Hashcount existing
+        if ($firstSplitPos !== false && $firstSplitPos <= 2 && is_numeric(substr($setting, 0, $firstSplitPos))) {
+            $countLog2 = (int)substr($setting, 0, $firstSplitPos);
+        }
+        return $countLog2;
+    }
+
+    /**
+     * Returns a string for mapping an int to the corresponding base 64 character.
+     *
+     * @return string String for mapping an int to the corresponding base 64 character
+     */
+    protected function getItoa64(): string
+    {
+        return './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
     }
 
     /**
      * Method determines if a given string is a valid salt.
      *
-     * Overwrites {@link Md5Salt::isValidSalt()} with
-     * Blowfish specifics.
-     *
      * @param string $salt String to check
      * @return bool TRUE if it's valid salt, otherwise FALSE
      */
-    public function isValidSalt(string $salt): bool
+    protected function isValidSalt(string $salt): bool
     {
         $isValid = ($skip = false);
-        $reqLenBase64 = $this->getLengthBase64FromBytes($this->getSaltLength());
+        $reqLenBase64 = $this->getLengthBase64FromBytes(16);
         if (strlen($salt) >= $reqLenBase64) {
             // Salt with prefixed setting
             if (!strncmp('$', $salt, 1)) {
-                if (!strncmp($this->getSetting(), $salt, strlen($this->getSetting()))) {
+                if (!strncmp(self::PREFIX, $salt, strlen(self::PREFIX))) {
                     $isValid = true;
                     $salt = substr($salt, strrpos($salt, '$') + 1);
                 } else {
@@ -248,41 +276,147 @@ class BlowfishSalt extends Md5Salt
     }
 
     /**
+     * Encodes bytes into printable base 64 using the *nix standard from crypt().
+     *
+     * @param string $input The string containing bytes to encode.
+     * @param int $count The number of characters (bytes) to encode.
+     * @return string Encoded string
+     */
+    protected function base64Encode(string $input, int $count): string
+    {
+        $output = '';
+        $i = 0;
+        $itoa64 = $this->getItoa64();
+        do {
+            $value = ord($input[$i++]);
+            $output .= $itoa64[$value & 63];
+            if ($i < $count) {
+                $value |= ord($input[$i]) << 8;
+            }
+            $output .= $itoa64[$value >> 6 & 63];
+            if ($i++ >= $count) {
+                break;
+            }
+            if ($i < $count) {
+                $value |= ord($input[$i]) << 16;
+            }
+            $output .= $itoa64[$value >> 12 & 63];
+            if ($i++ >= $count) {
+                break;
+            }
+            $output .= $itoa64[$value >> 18 & 63];
+        } while ($i < $count);
+        return $output;
+    }
+
+    /**
+     * Method determines required length of base64 characters for a given
+     * length of a byte string.
+     *
+     * @param int $byteLength Length of bytes to calculate in base64 chars
+     * @return int Required length of base64 characters
+     */
+    protected function getLengthBase64FromBytes(int $byteLength): int
+    {
+        // Calculates bytes in bits in base64
+        return (int)ceil($byteLength * 8 / 6);
+    }
+
+    /**
+     * Method returns log2 number of iterations for password stretching.
+     *
+     * @return int log2 number of iterations for password stretching
+     * @deprecated and will be removed in TYPO3 v10.0.
+     */
+    public function getHashCount(): int
+    {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        return $this->options['hash_count'];
+    }
+
+    /**
+     * Method returns maximum allowed log2 number of iterations for password stretching.
+     *
+     * @return int Maximum allowed log2 number of iterations for password stretching
+     * @deprecated and will be removed in TYPO3 v10.0.
+     */
+    public function getMaxHashCount(): int
+    {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        return 17;
+    }
+
+    /**
+     * Method returns minimum allowed log2 number of iterations for password stretching.
+     *
+     * @return int Minimum allowed log2 number of iterations for password stretching
+     * @deprecated and will be removed in TYPO3 v10.0.
+     */
+    public function getMinHashCount(): int
+    {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        return 4;
+    }
+
+    /**
+     * Returns length of a Blowfish salt in bytes.
+     *
+     * @return int Length of a Blowfish salt in bytes
+     * @deprecated and will be removed in TYPO3 v10.0.
+     */
+    public function getSaltLength(): int
+    {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        return 16;
+    }
+
+    /**
+     * Returns setting string of Blowfish salted hashes.
+     *
+     * @return string Setting string of Blowfish salted hashes
+     * @deprecated and will be removed in TYPO3 v10.0.
+     */
+    public function getSetting(): string
+    {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        return self::PREFIX;
+    }
+
+    /**
      * Method sets log2 number of iterations for password stretching.
      *
      * @param int $hashCount log2 number of iterations for password stretching to set
-     * @see HASH_COUNT
-     * @see $hashCount
-     * @see getHashCount()
+     * @deprecated and will be removed in TYPO3 v10.0.
      */
     public function setHashCount(int $hashCount = null)
     {
-        self::$hashCount = $hashCount !== null && $hashCount >= $this->getMinHashCount() && $hashCount <= $this->getMaxHashCount() ? $hashCount : self::HASH_COUNT;
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        if ($hashCount >= 4 && $hashCount <= 17) {
+            $this->options['hash_count'] = $hashCount;
+        }
     }
 
     /**
      * Method sets maximum allowed log2 number of iterations for password stretching.
      *
      * @param int $maxHashCount Maximum allowed log2 number of iterations for password stretching to set
-     * @see MAX_HASH_COUNT
-     * @see $maxHashCount
-     * @see getMaxHashCount()
+     * @deprecated and will be removed in TYPO3 v10.0.
      */
     public function setMaxHashCount(int $maxHashCount = null)
     {
-        self::$maxHashCount = $maxHashCount ?? self::MAX_HASH_COUNT;
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        // Empty, max hash count is hard coded to 17
     }
 
     /**
      * Method sets minimum allowed log2 number of iterations for password stretching.
      *
      * @param int $minHashCount Minimum allowed log2 number of iterations for password stretching to set
-     * @see MIN_HASH_COUNT
-     * @see $minHashCount
-     * @see getMinHashCount()
+     * @deprecated and will be removed in TYPO3 v10.0.
      */
     public function setMinHashCount(int $minHashCount = null)
     {
-        self::$minHashCount = $minHashCount ?? self::MIN_HASH_COUNT;
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        // Empty, min hash count is hard coded to 4
     }
 }

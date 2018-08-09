@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salt;
 
 /*
@@ -14,105 +15,49 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salt;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Saltedpasswords\Salt\Md5Salt;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcases for Md5Salt
+ * Test case
  */
-class Md5SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class Md5SaltTest extends UnitTestCase
 {
-    /**
-     * Keeps instance of object to test.
-     *
-     * @var \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt
-     */
-    protected $objectInstance;
-
     /**
      * Sets up the fixtures for this testcase.
      */
     protected function setUp()
     {
-        $this->objectInstance = $this->getMockBuilder(\TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class)
-            ->setMethods(['dummy'])
-            ->getMock();
-    }
-
-    /**
-     * Prepares a message to be shown when a salted hashing is not supported.
-     *
-     * @return string Empty string if salted hashing method is available, otherwise an according warning
-     */
-    protected function getWarningWhenMethodUnavailable()
-    {
-        $warningMsg = '';
         if (!CRYPT_MD5) {
-            $warningMsg = 'MD5 is not supported on your platform. ' . 'Then, some of the md5 tests will fail.';
+            $this->markTestSkipped('Blowfish is not supported on your platform.');
         }
-        return $warningMsg;
     }
 
     /**
      * @test
      */
-    public function hasCorrectBaseClass()
+    public function getHashedPasswordReturnsNullWithEmptyPassword()
     {
-        $hasCorrectBaseClass = get_class($this->objectInstance) === \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class;
-        // XCLASS ?
-        if (!$hasCorrectBaseClass && false != get_parent_class($this->objectInstance)) {
-            $hasCorrectBaseClass = is_subclass_of($this->objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class);
-        }
-        $this->assertTrue($hasCorrectBaseClass);
+        $this->assertNull((new Md5Salt())->getHashedPassword(''));
     }
 
     /**
      * @test
      */
-    public function nonZeroSaltLength()
+    public function getHashedPasswordReturnsNotNullWithNonEmptyPassword()
     {
-        $this->assertTrue($this->objectInstance->getSaltLength() > 0);
+        $this->assertNotNull((new Md5Salt())->getHashedPassword('a'));
     }
 
     /**
      * @test
      */
-    public function emptyPasswordResultsInNullSaltedPassword()
-    {
-        $password = '';
-        $this->assertNull($this->objectInstance->getHashedPassword($password));
-    }
-
-    /**
-     * @test
-     */
-    public function nonEmptyPasswordResultsInNonNullSaltedPassword()
-    {
-        $password = 'a';
-        $this->assertNotNull($this->objectInstance->getHashedPassword($password), $this->getWarningWhenMethodUnavailable());
-    }
-
-    /**
-     * @test
-     */
-    public function createdSaltedHashOfProperStructure()
+    public function getHashedPasswordCreatesAHashThatValidates()
     {
         $password = 'password';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->isValidSaltedPW($saltedHashPassword), $this->getWarningWhenMethodUnavailable());
-    }
-
-    /**
-     * @test
-     */
-    public function createdSaltedHashOfProperStructureForCustomSaltWithoutSetting()
-    {
-        $password = 'password';
-        // custom salt without setting
-        $randomBytes = (new Random())->generateRandomBytes($this->objectInstance->getSaltLength());
-        $salt = $this->objectInstance->base64Encode($randomBytes, $this->objectInstance->getSaltLength());
-        $this->assertTrue($this->objectInstance->isValidSalt($salt), $this->getWarningWhenMethodUnavailable());
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password, $salt);
-        $this->assertTrue($this->objectInstance->isValidSaltedPW($saltedHashPassword), $this->getWarningWhenMethodUnavailable());
+        $subject = new Md5Salt();
+        $saltedHashPassword = $subject->getHashedPassword($password);
+        $this->assertTrue($subject->isValidSaltedPW($saltedHashPassword));
     }
 
     /**
@@ -123,11 +68,11 @@ class Md5SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function authenticationWithValidAlphaCharClassPasswordAndFixedHash()
+    public function checkPasswordReturnsTrueWithValidAlphaCharClassPasswordAndFixedHash()
     {
         $password = 'password';
         $saltedHashPassword = '$1$GNu9HdMt$RwkPb28pce4nXZfnplVZY/';
-        $this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword), $this->getWarningWhenMethodUnavailable());
+        $this->assertTrue((new Md5Salt())->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -135,11 +80,11 @@ class Md5SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function authenticationFailsWithBrokenHash()
+    public function checkPasswordReturnsFalseWithBrokenHash()
     {
         $password = 'password';
         $saltedHashPassword = '$1$GNu9HdMt$RwkPb28pce4nXZfnplVZY';
-        $this->assertFalse($this->objectInstance->checkPassword($password, $saltedHashPassword), $this->getWarningWhenMethodUnavailable());
+        $this->assertFalse((new Md5Salt())->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -150,11 +95,12 @@ class Md5SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function authenticationWithValidAlphaCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidAlphaCharClassPassword()
     {
         $password = 'aEjOtY';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword), $this->getWarningWhenMethodUnavailable());
+        $subject = new Md5Salt();
+        $saltedHashPassword = $subject->getHashedPassword($password);
+        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -165,11 +111,12 @@ class Md5SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function authenticationWithValidNumericCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidNumericCharClassPassword()
     {
         $password = '01369';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword), $this->getWarningWhenMethodUnavailable());
+        $subject = new Md5Salt();
+        $saltedHashPassword = $subject->getHashedPassword($password);
+        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -180,11 +127,12 @@ class Md5SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function authenticationWithValidAsciiSpecialCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidAsciiSpecialCharClassPassword()
     {
         $password = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword), $this->getWarningWhenMethodUnavailable());
+        $subject = new Md5Salt();
+        $saltedHashPassword = $subject->getHashedPassword($password);
+        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -195,15 +143,16 @@ class Md5SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function authenticationWithValidLatin1SpecialCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidLatin1SpecialCharClassPassword()
     {
         $password = '';
         for ($i = 160; $i <= 191; $i++) {
             $password .= chr($i);
         }
         $password .= chr(215) . chr(247);
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword), $this->getWarningWhenMethodUnavailable());
+        $subject = new Md5Salt();
+        $saltedHashPassword = $subject->getHashedPassword($password);
+        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -214,7 +163,7 @@ class Md5SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function authenticationWithValidLatin1UmlautCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidLatin1UmlautCharClassPassword()
     {
         $password = '';
         for ($i = 192; $i <= 214; $i++) {
@@ -226,49 +175,31 @@ class Md5SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         for ($i = 248; $i <= 255; $i++) {
             $password .= chr($i);
         }
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword), $this->getWarningWhenMethodUnavailable());
+        $subject = new Md5Salt();
+        $saltedHashPassword = $subject->getHashedPassword($password);
+        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
      * @test
      */
-    public function authenticationWithNonValidPassword()
+    public function checkPasswordReturnsFalseWithNonValidPassword()
     {
         $password = 'password';
         $password1 = $password . 'INVALID';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertFalse($this->objectInstance->checkPassword($password1, $saltedHashPassword), $this->getWarningWhenMethodUnavailable());
+        $subject = new Md5Salt();
+        $saltedHashPassword = $subject->getHashedPassword($password);
+        $this->assertFalse($subject->checkPassword($password1, $saltedHashPassword));
     }
 
     /**
      * @test
      */
-    public function passwordVariationsResultInDifferentHashes()
-    {
-        $pad = 'a';
-        $criticalPwLength = 0;
-        // We're using a constant salt.
-        $saltedHashPasswordCurrent = $salt = $this->objectInstance->getHashedPassword($pad);
-        for ($i = 0; $i <= 128; $i += 8) {
-            $password = str_repeat($pad, max($i, 1));
-            $saltedHashPasswordPrevious = $saltedHashPasswordCurrent;
-            $saltedHashPasswordCurrent = $this->objectInstance->getHashedPassword($password, $salt);
-            if ($i > 0 && $saltedHashPasswordPrevious === $saltedHashPasswordCurrent) {
-                $criticalPwLength = $i;
-                break;
-            }
-        }
-        $this->assertTrue($criticalPwLength == 0 || $criticalPwLength > 32, $this->getWarningWhenMethodUnavailable() . 'Duplicates of hashed passwords with plaintext password of length ' . $criticalPwLength . '+.');
-    }
-
-    /**
-     * @test
-     */
-    public function noUpdateNecessityForMd5()
+    public function isHashUpdateNeededReturnsFalse()
     {
         $password = 'password';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertFalse($this->objectInstance->isHashUpdateNeeded($saltedHashPassword));
+        $subject = new Md5Salt();
+        $saltedHashPassword = $subject->getHashedPassword($password);
+        $this->assertFalse($subject->isHashUpdateNeeded($saltedHashPassword));
     }
 }

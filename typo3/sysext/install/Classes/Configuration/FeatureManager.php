@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Configuration\Context\ContextFeature;
 use TYPO3\CMS\Install\Configuration\Image\ImageFeature;
 use TYPO3\CMS\Install\Configuration\Mail\MailFeature;
+use TYPO3\CMS\Install\Configuration\PasswordHashing\PasswordHashingFeature;
 
 /**
  * Instantiate and configure all known features and presets
@@ -31,6 +32,7 @@ class FeatureManager
         ContextFeature::class,
         ImageFeature::class,
         MailFeature::class,
+        PasswordHashingFeature::class,
     ];
 
     /**

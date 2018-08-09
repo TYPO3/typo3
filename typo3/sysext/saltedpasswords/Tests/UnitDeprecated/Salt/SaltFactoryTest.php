@@ -59,50 +59,6 @@ class SaltFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function objectInstanceForMD5Salts()
-    {
-        $saltMD5 = '$1$rasmusle$rISCgZzpwk3UhDidwXvin0';
-        $objectInstance = SaltFactory::getSaltingInstance($saltMD5);
-        $this->assertTrue(get_class($objectInstance) == \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class || is_subclass_of($objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class));
-        $this->assertInstanceOf(\TYPO3\CMS\Saltedpasswords\Salt\AbstractComposedSalt::class, $objectInstance);
-    }
-
-    /**
-     * @test
-     */
-    public function objectInstanceForBlowfishSalts()
-    {
-        $saltBlowfish = '$2a$07$abcdefghijklmnopqrstuuIdQV69PAxWYTgmnoGpe0Sk47GNS/9ZW';
-        $objectInstance = SaltFactory::getSaltingInstance($saltBlowfish);
-        $this->assertTrue(get_class($objectInstance) == \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class || is_subclass_of($objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class));
-        $this->assertInstanceOf(\TYPO3\CMS\Saltedpasswords\Salt\AbstractComposedSalt::class, $objectInstance);
-    }
-
-    /**
-     * @test
-     */
-    public function objectInstanceForPhpassSalts()
-    {
-        $saltPhpass = '$P$CWF13LlG/0UcAQFUjnnS4LOqyRW43c.';
-        $objectInstance = SaltFactory::getSaltingInstance($saltPhpass);
-        $this->assertTrue(get_class($objectInstance) == \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class || is_subclass_of($objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class));
-        $this->assertInstanceOf(\TYPO3\CMS\Saltedpasswords\Salt\AbstractComposedSalt::class, $objectInstance);
-    }
-
-    /**
-     * @test
-     */
-    public function objectInstanceForPbkdf2Salts()
-    {
-        $saltPbkdf2 = '$pbkdf2-sha256$6400$0ZrzXitFSGltTQnBWOsdAw$Y11AchqV4b0sUisdZd0Xr97KWoymNE0LNNrnEgY4H9M';
-        $objectInstance = SaltFactory::getSaltingInstance($saltPbkdf2);
-        $this->assertTrue(get_class($objectInstance) == \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class || is_subclass_of($objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class));
-        $this->assertInstanceOf(\TYPO3\CMS\Saltedpasswords\Salt\AbstractComposedSalt::class, $objectInstance);
-    }
-
-    /**
-     * @test
-     */
     public function objectInstanceForPhpPasswordHashBcryptSalts()
     {
         $saltBcrypt = '$2y$12$Tz.al0seuEgRt61u0bzqAOWu67PgG2ThG25oATJJ0oS5KLCPCgBOe';

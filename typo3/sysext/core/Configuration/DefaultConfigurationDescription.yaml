@@ -218,6 +218,9 @@ SYS:
               unifiedPageTranslationHandling:
                 type: bool
                 description: 'If activated, TCA configuration for pages_language_overlay will never be loaded, and the database table "pages_language_overlay" will not be created.'
+        availablePasswordHashAlgorithms:
+            type: array
+            description: 'A list of available password hash mechanisms. Extensions may register additional mechanisms here. This is usually not extended in LocalConfiguration.php.'
 EXT:
     type: container
     description: 'Extension Installation'
@@ -351,6 +354,19 @@ BE:
         debug:
             type: bool
             description: 'If enabled, the loginrefresh is disabled and pageRenderer is set to debug mode. Furthermore the fieldname is appended to the label of fields. Use this to debug the backend only!'
+        passwordHashing:
+            type: container
+            items:
+                className:
+                    type: dropdown
+                    allowedValues:
+                        'TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt': 'Good password hash mechanism. Used by default if available.'
+                        'TYPO3\CMS\Saltedpasswords\Salt\BcryptSalt': 'Good password hash mechanism.'
+                        'TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt': 'Fallback hash mechanism if argon and bcrypt are not available.'
+                        'TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt': 'Fallback hash mechanism if none of the above are avalaible.'
+                options:
+                    type: array
+                    description: 'Special settings for specific hashes.'
 FE:
     type: container
     description: 'Frontend'
@@ -478,6 +494,19 @@ FE:
               Allows to automatically include a version number (timestamp of the file) to referred CSS and JS filenames
               on the rendered page. This will make browsers and proxies reload the files if they change (thus avoiding caching issues).
               <strong>IMPORTANT</strong>: ''embed'' requires extra <code>.htaccess</code> rules to work (please refer to the <code>_.htaccess</code> file shipped with TYPO3)'
+        passwordHashing:
+            type: container
+            items:
+                className:
+                    type: dropdown
+                    allowedValues:
+                        'TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt': 'Good password hash mechanism. Used by default if available.'
+                        'TYPO3\CMS\Saltedpasswords\Salt\BcryptSalt': 'Good password hash mechanism.'
+                        'TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt': 'Fallback hash mechanism if argon and bcrypt are not available.'
+                        'TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt': 'Fallback hash mechanism if none of the above are avalaible.'
+                options:
+                    type: array
+                    description: 'Special settings for specific hashes.'
 MAIL:
     type: container
     description: 'Mail'

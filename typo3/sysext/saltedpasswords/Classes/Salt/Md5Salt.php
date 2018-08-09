@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -25,51 +26,30 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * MD5 salted hashing with PHP's crypt() should be available
  * on most of the systems.
  */
-class Md5Salt extends AbstractComposedSalt
+class Md5Salt implements SaltInterface
 {
+    use PublicMethodDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicMethods = [
+        'isValidSalt' => 'Using Md5Salt::isValidSalt() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'base64Encode' => 'Using Md5Salt::base64Encode() is deprecated and will not be possible anymore in TYPO3 v10.',
+    ];
+
+    /**
+     * Prefix for the password hash.
+     */
+    protected const PREFIX = '$1$';
+
     /**
      * Keeps a string for mapping an int to the corresponding
      * base 64 character.
+     *
+     * @deprecated and will be removed in TYPO3 v10.0.
      */
     const ITOA64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-
-    /**
-     * Keeps length of a MD5 salt in bytes.
-     *
-     * @var int
-     */
-    protected static $saltLengthMD5 = 6;
-
-    /**
-     * Keeps suffix to be appended to a salt.
-     *
-     * @var string
-     */
-    protected static $saltSuffixMD5 = '$';
-
-    /**
-     * Setting string to indicate type of hashing method (md5).
-     *
-     * @var string
-     */
-    protected static $settingMD5 = '$1$';
-
-    /**
-     * Method applies settings (prefix, suffix) to a salt.
-     *
-     * @param string $salt A salt to apply setting to
-     * @return string Salt with setting
-     */
-    protected function applySettingsToSalt(string $salt): string
-    {
-        $saltWithSettings = $salt;
-        $reqLenBase64 = $this->getLengthBase64FromBytes($this->getSaltLength());
-        // Salt without setting
-        if (strlen($salt) == $reqLenBase64) {
-            $saltWithSettings = $this->getSetting() . $salt . $this->getSaltSuffix();
-        }
-        return $saltWithSettings;
-    }
 
     /**
      * Method checks if a given plaintext password is correct by comparing it with
@@ -89,52 +69,6 @@ class Md5Salt extends AbstractComposedSalt
     }
 
     /**
-     * Generates a random base 64-encoded salt prefixed and suffixed with settings for the hash.
-     *
-     * Proper use of salts may defeat a number of attacks, including:
-     * - The ability to try candidate passwords against multiple hashes at once.
-     * - The ability to use pre-hashed lists of candidate passwords.
-     * - The ability to determine whether two users have the same (or different)
-     * password without actually having to guess one of the passwords.
-     *
-     * @return string A character string containing settings and a random salt
-     */
-    protected function getGeneratedSalt(): string
-    {
-        $randomBytes = GeneralUtility::makeInstance(Random::class)->generateRandomBytes($this->getSaltLength());
-        return $this->base64Encode($randomBytes, $this->getSaltLength());
-    }
-
-    /**
-     * Method creates a salted hash for a given plaintext password
-     *
-     * @param string $password plaintext password to create a salted hash from
-     * @param string $salt Optional custom salt with setting to use
-     * @return string Salted hashed password
-     */
-    public function getHashedPassword(string $password, string $salt = null)
-    {
-        $saltedPW = null;
-        if (!empty($password)) {
-            if (empty($salt) || !$this->isValidSalt($salt)) {
-                $salt = $this->getGeneratedSalt();
-            }
-            $saltedPW = crypt($password, $this->applySettingsToSalt($salt));
-        }
-        return $saltedPW;
-    }
-
-    /**
-     * Returns a string for mapping an int to the corresponding base 64 character.
-     *
-     * @return string String for mapping an int to the corresponding base 64 character
-     */
-    protected function getItoa64(): string
-    {
-        return self::ITOA64;
-    }
-
-    /**
      * Returns whether all prerequisites for the hashing methods are matched
      *
      * @return bool Method available
@@ -145,33 +79,25 @@ class Md5Salt extends AbstractComposedSalt
     }
 
     /**
-     * Returns length of a MD5 salt in bytes.
+     * Method creates a salted hash for a given plaintext password
      *
-     * @return int Length of a MD5 salt in bytes
+     * @param string $password plaintext password to create a salted hash from
+     * @param string $salt Deprecated optional custom salt with setting to use
+     * @return string Salted hashed password
      */
-    public function getSaltLength(): int
+    public function getHashedPassword(string $password, string $salt = null)
     {
-        return self::$saltLengthMD5;
-    }
-
-    /**
-     * Returns suffix to be appended to a salt.
-     *
-     * @return string Suffix of a salt
-     */
-    protected function getSaltSuffix(): string
-    {
-        return self::$saltSuffixMD5;
-    }
-
-    /**
-     * Returns setting string of MD5 salted hashes.
-     *
-     * @return string Setting string of MD5 salted hashes
-     */
-    public function getSetting(): string
-    {
-        return self::$settingMD5;
+        if ($salt !== null) {
+            trigger_error(static::class . ': using a custom salt is deprecated.', E_USER_DEPRECATED);
+        }
+        $saltedPW = null;
+        if (!empty($password)) {
+            if (empty($salt) || !$this->isValidSalt($salt)) {
+                $salt = $this->getGeneratedSalt();
+            }
+            $saltedPW = crypt($password, $this->applySettingsToSalt($salt));
+        }
+        return $saltedPW;
     }
 
     /**
@@ -190,21 +116,80 @@ class Md5Salt extends AbstractComposedSalt
     }
 
     /**
+     * Method determines if a given string is a valid salted hashed password.
+     *
+     * @param string $saltedPW String to check
+     * @return bool TRUE if it's valid salted hashed password, otherwise FALSE
+     */
+    public function isValidSaltedPW(string $saltedPW): bool
+    {
+        $isValid = !strncmp(self::PREFIX, $saltedPW, strlen(self::PREFIX));
+        if ($isValid) {
+            $isValid = $this->isValidSalt($saltedPW);
+        }
+        return $isValid;
+    }
+
+    /**
+     * Generates a random base 64-encoded salt prefixed and suffixed with settings for the hash.
+     *
+     * Proper use of salts may defeat a number of attacks, including:
+     * - The ability to try candidate passwords against multiple hashes at once.
+     * - The ability to use pre-hashed lists of candidate passwords.
+     * - The ability to determine whether two users have the same (or different)
+     * password without actually having to guess one of the passwords.
+     *
+     * @return string A character string containing settings and a random salt
+     */
+    protected function getGeneratedSalt(): string
+    {
+        $randomBytes = GeneralUtility::makeInstance(Random::class)->generateRandomBytes(6);
+        return $this->base64Encode($randomBytes, 6);
+    }
+
+    /**
+     * Method applies settings (prefix, suffix) to a salt.
+     *
+     * @param string $salt A salt to apply setting to
+     * @return string Salt with setting
+     */
+    protected function applySettingsToSalt(string $salt): string
+    {
+        $saltWithSettings = $salt;
+        $reqLenBase64 = $this->getLengthBase64FromBytes(6);
+        // Salt without setting
+        if (strlen($salt) == $reqLenBase64) {
+            $saltWithSettings = self::PREFIX . $salt . '$';
+        }
+        return $saltWithSettings;
+    }
+
+    /**
+     * Returns a string for mapping an int to the corresponding base 64 character.
+     *
+     * @return string String for mapping an int to the corresponding base 64 character
+     */
+    protected function getItoa64(): string
+    {
+        return './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    }
+
+    /**
      * Method determines if a given string is a valid salt
      *
      * @param string $salt String to check
      * @return bool TRUE if it's valid salt, otherwise FALSE
      */
-    public function isValidSalt(string $salt): bool
+    protected function isValidSalt(string $salt): bool
     {
         $isValid = ($skip = false);
-        $reqLenBase64 = $this->getLengthBase64FromBytes($this->getSaltLength());
+        $reqLenBase64 = $this->getLengthBase64FromBytes(6);
         if (strlen($salt) >= $reqLenBase64) {
             // Salt with prefixed setting
             if (!strncmp('$', $salt, 1)) {
-                if (!strncmp($this->getSetting(), $salt, strlen($this->getSetting()))) {
+                if (!strncmp(self::PREFIX, $salt, strlen(self::PREFIX))) {
                     $isValid = true;
-                    $salt = substr($salt, strlen($this->getSetting()));
+                    $salt = substr($salt, strlen(self::PREFIX));
                 } else {
                     $skip = true;
                 }
@@ -220,17 +205,73 @@ class Md5Salt extends AbstractComposedSalt
     }
 
     /**
-     * Method determines if a given string is a valid salted hashed password.
+     * Encodes bytes into printable base 64 using the *nix standard from crypt().
      *
-     * @param string $saltedPW String to check
-     * @return bool TRUE if it's valid salted hashed password, otherwise FALSE
+     * @param string $input The string containing bytes to encode.
+     * @param int $count The number of characters (bytes) to encode.
+     * @return string Encoded string
      */
-    public function isValidSaltedPW(string $saltedPW): bool
+    protected function base64Encode(string $input, int $count): string
     {
-        $isValid = !strncmp($this->getSetting(), $saltedPW, strlen($this->getSetting()));
-        if ($isValid) {
-            $isValid = $this->isValidSalt($saltedPW);
-        }
-        return $isValid;
+        $output = '';
+        $i = 0;
+        $itoa64 = $this->getItoa64();
+        do {
+            $value = ord($input[$i++]);
+            $output .= $itoa64[$value & 63];
+            if ($i < $count) {
+                $value |= ord($input[$i]) << 8;
+            }
+            $output .= $itoa64[$value >> 6 & 63];
+            if ($i++ >= $count) {
+                break;
+            }
+            if ($i < $count) {
+                $value |= ord($input[$i]) << 16;
+            }
+            $output .= $itoa64[$value >> 12 & 63];
+            if ($i++ >= $count) {
+                break;
+            }
+            $output .= $itoa64[$value >> 18 & 63];
+        } while ($i < $count);
+        return $output;
+    }
+
+    /**
+     * Method determines required length of base64 characters for a given
+     * length of a byte string.
+     *
+     * @param int $byteLength Length of bytes to calculate in base64 chars
+     * @return int Required length of base64 characters
+     */
+    protected function getLengthBase64FromBytes(int $byteLength): int
+    {
+        // Calculates bytes in bits in base64
+        return (int)ceil($byteLength * 8 / 6);
+    }
+
+    /**
+     * Returns setting string of MD5 salted hashes.
+     *
+     * @return string Setting string of MD5 salted hashes
+     * @deprecated and will be removed in TYPO3 v10.0.
+     */
+    public function getSetting(): string
+    {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        return self::PREFIX;
+    }
+
+    /**
+     * Returns length of a MD5 salt in bytes.
+     *
+     * @return int Length of a MD5 salt in bytes
+     * @deprecated and will be removed in TYPO3 v10.0.
+     */
+    public function getSaltLength(): int
+    {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        return 6;
     }
 }

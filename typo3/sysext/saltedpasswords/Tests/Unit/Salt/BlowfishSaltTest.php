@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salt;
 
 /*
@@ -14,34 +15,18 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salt;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for BlowfishSalt
+ * Test case
  */
-class BlowfishSaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class BlowfishSaltTest extends UnitTestCase
 {
-    /**
-     * Keeps instance of object to test.
-     *
-     * @var \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt
-     */
-    protected $objectInstance;
-
     /**
      * Sets up the fixtures for this testcase.
      */
     protected function setUp()
-    {
-        $this->objectInstance = $this->getMockBuilder(\TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class)
-            ->setMethods(['dummy'])
-            ->getMock();
-    }
-
-    /**
-     * Marks tests as skipped if the blowfish method is not available.
-     */
-    protected function skipTestIfBlowfishIsNotAvailable()
     {
         if (!CRYPT_BLOWFISH) {
             $this->markTestSkipped('Blowfish is not supported on your platform.');
@@ -51,82 +36,50 @@ class BlowfishSaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function hasCorrectBaseClass()
+    public function constructorThrowsExceptionIfHashCountIsTooLow()
     {
-        $hasCorrectBaseClass = get_class($this->objectInstance) === \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class;
-        // XCLASS ?
-        if (!$hasCorrectBaseClass && false != get_parent_class($this->objectInstance)) {
-            $hasCorrectBaseClass = is_subclass_of($this->objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class);
-        }
-        $this->assertTrue($hasCorrectBaseClass);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1533903545);
+        new BlowfishSalt(['hash_count' => 3]);
     }
 
     /**
      * @test
      */
-    public function nonZeroSaltLength()
+    public function constructorThrowsExceptionIfHashCountIsTooHigh()
     {
-        $this->assertTrue($this->objectInstance->getSaltLength() > 0);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1533903545);
+        new BlowfishSalt(['hash_count' => 18]);
     }
 
     /**
      * @test
      */
-    public function emptyPasswordResultsInNullSaltedPassword()
+    public function getHashedPasswordWithEmptyPasswordResultsInNullSaltedPassword()
     {
         $password = '';
-        $this->assertNull($this->objectInstance->getHashedPassword($password));
+        $this->assertNull((new BlowfishSalt(['hash_count' => 4]))->getHashedPassword($password));
     }
 
     /**
      * @test
      */
-    public function nonEmptyPasswordResultsInNonNullSaltedPassword()
+    public function getHashedPasswordWithNonEmptyPasswordResultsInNonNullSaltedPassword()
     {
-        $this->skipTestIfBlowfishIsNotAvailable();
         $password = 'a';
-        $this->assertNotNull($this->objectInstance->getHashedPassword($password));
+        $this->assertNotNull((new BlowfishSalt(['hash_count' => 4]))->getHashedPassword($password));
     }
 
     /**
      * @test
      */
-    public function createdSaltedHashOfProperStructure()
+    public function getHashedPasswordValidates()
     {
-        $this->skipTestIfBlowfishIsNotAvailable();
         $password = 'password';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->isValidSaltedPW($saltedHashPassword));
-    }
-
-    /**
-     * @test
-     */
-    public function createdSaltedHashOfProperStructureForCustomSaltWithoutSetting()
-    {
-        $this->skipTestIfBlowfishIsNotAvailable();
-        $password = 'password';
-        // custom salt without setting
-        $randomBytes = (new Random())->generateRandomBytes($this->objectInstance->getSaltLength());
-        $salt = $this->objectInstance->base64Encode($randomBytes, $this->objectInstance->getSaltLength());
-        $this->assertTrue($this->objectInstance->isValidSalt($salt));
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password, $salt);
-        $this->assertTrue($this->objectInstance->isValidSaltedPW($saltedHashPassword));
-    }
-
-    /**
-     * @test
-     */
-    public function createdSaltedHashOfProperStructureForMinimumHashCount()
-    {
-        $this->skipTestIfBlowfishIsNotAvailable();
-        $password = 'password';
-        $minHashCount = $this->objectInstance->getMinHashCount();
-        $this->objectInstance->setHashCount($minHashCount);
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->isValidSaltedPW($saltedHashPassword));
-        // reset hashcount
-        $this->objectInstance->setHashCount(null);
+        $subject = new BlowfishSalt(['hash_count' => 4]);
+        $saltedHashPassword = $subject->getHashedPassword($password);
+        $this->assertTrue($subject->isValidSaltedPW($saltedHashPassword));
     }
 
     /**
@@ -137,11 +90,11 @@ class BlowfishSaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function authenticationWithValidAlphaCharClassPasswordAndFixedHash()
+    public function checkPasswordReturnsTrueWithValidAlphaCharClassPasswordAndFixedHash()
     {
         $password = 'password';
         $saltedHashPassword = '$2a$07$Rvtl6CyMhR8GZGhHypjwOuydeN0nKFAlgo1LmmGrLowtIrtkov5Na';
-        $this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword));
+        $this->assertTrue((new BlowfishSalt(['hash_count' => 4]))->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -149,11 +102,11 @@ class BlowfishSaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function authenticationFailsWithBrokenHash()
+    public function checkPasswordReturnsFalseFailsWithBrokenHash()
     {
         $password = 'password';
         $saltedHashPassword = '$2a$07$Rvtl6CyMhR8GZGhHypjwOuydeN0nKFAlgo1LmmGrLowtIrtkov5N';
-        $this->assertFalse($this->objectInstance->checkPassword($password, $saltedHashPassword));
+        $this->assertFalse((new BlowfishSalt(['hash_count' => 4]))->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -164,12 +117,12 @@ class BlowfishSaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function authenticationWithValidAlphaCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidAlphaCharClassPassword()
     {
-        $this->skipTestIfBlowfishIsNotAvailable();
         $password = 'aEjOtY';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword));
+        $subject = new BlowfishSalt(['hash_count' => 4]);
+        $saltedHashPassword = $subject->getHashedPassword($password);
+        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -180,12 +133,12 @@ class BlowfishSaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function authenticationWithValidNumericCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidNumericCharClassPassword()
     {
-        $this->skipTestIfBlowfishIsNotAvailable();
         $password = '01369';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword));
+        $subject = new BlowfishSalt(['hash_count' => 4]);
+        $saltedHashPassword = $subject->getHashedPassword($password);
+        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -196,12 +149,12 @@ class BlowfishSaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function authenticationWithValidAsciiSpecialCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidAsciiSpecialCharClassPassword()
     {
-        $this->skipTestIfBlowfishIsNotAvailable();
         $password = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword));
+        $subject = new BlowfishSalt(['hash_count' => 4]);
+        $saltedHashPassword = $subject->getHashedPassword($password);
+        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -212,16 +165,16 @@ class BlowfishSaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function authenticationWithValidLatin1SpecialCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidLatin1SpecialCharClassPassword()
     {
-        $this->skipTestIfBlowfishIsNotAvailable();
         $password = '';
         for ($i = 160; $i <= 191; $i++) {
             $password .= chr($i);
         }
         $password .= chr(215) . chr(247);
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword));
+        $subject = new BlowfishSalt(['hash_count' => 4]);
+        $saltedHashPassword = $subject->getHashedPassword($password);
+        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -232,9 +185,8 @@ class BlowfishSaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @test
      */
-    public function authenticationWithValidLatin1UmlautCharClassPassword()
+    public function checkPasswordReturnsReturnsTrueWithValidLatin1UmlautCharClassPassword()
     {
-        $this->skipTestIfBlowfishIsNotAvailable();
         $password = '';
         for ($i = 192; $i <= 214; $i++) {
             $password .= chr($i);
@@ -245,123 +197,42 @@ class BlowfishSaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         for ($i = 248; $i <= 255; $i++) {
             $password .= chr($i);
         }
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword));
+        $subject = new BlowfishSalt(['hash_count' => 4]);
+        $saltedHashPassword = $subject->getHashedPassword($password);
+        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
      * @test
      */
-    public function authenticationWithNonValidPassword()
+    public function checkPasswordReturnsFalseWithNonValidPassword()
     {
-        $this->skipTestIfBlowfishIsNotAvailable();
         $password = 'password';
         $password1 = $password . 'INVALID';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertFalse($this->objectInstance->checkPassword($password1, $saltedHashPassword));
+        $subject = new BlowfishSalt(['hash_count' => 4]);
+        $saltedHashPassword = $subject->getHashedPassword($password);
+        $this->assertFalse($subject->checkPassword($password1, $saltedHashPassword));
     }
 
     /**
      * @test
      */
-    public function passwordVariationsResultInDifferentHashes()
-    {
-        $this->skipTestIfBlowfishIsNotAvailable();
-        $pad = 'a';
-        $criticalPwLength = 0;
-        // We're using a constant salt.
-        $saltedHashPasswordCurrent = $salt = $this->objectInstance->getHashedPassword($pad);
-        for ($i = 0; $i <= 128; $i += 8) {
-            $password = str_repeat($pad, max($i, 1));
-            $saltedHashPasswordPrevious = $saltedHashPasswordCurrent;
-            $saltedHashPasswordCurrent = $this->objectInstance->getHashedPassword($password, $salt);
-            if ($i > 0 && $saltedHashPasswordPrevious === $saltedHashPasswordCurrent) {
-                $criticalPwLength = $i;
-                break;
-            }
-        }
-        $this->assertTrue($criticalPwLength == 0 || $criticalPwLength > 32, 'Duplicates of hashed passwords with plaintext password of length ' . $criticalPwLength . '+.');
-    }
-
-    /**
-     * @test
-     */
-    public function modifiedMinHashCount()
-    {
-        $minHashCount = $this->objectInstance->getMinHashCount();
-        $this->objectInstance->setMinHashCount($minHashCount - 1);
-        $this->assertTrue($this->objectInstance->getMinHashCount() < $minHashCount);
-        $this->objectInstance->setMinHashCount($minHashCount + 1);
-        $this->assertTrue($this->objectInstance->getMinHashCount() > $minHashCount);
-    }
-
-    /**
-     * @test
-     */
-    public function modifiedMaxHashCount()
-    {
-        $maxHashCount = $this->objectInstance->getMaxHashCount();
-        $this->objectInstance->setMaxHashCount($maxHashCount + 1);
-        $this->assertTrue($this->objectInstance->getMaxHashCount() > $maxHashCount);
-        $this->objectInstance->setMaxHashCount($maxHashCount - 1);
-        $this->assertTrue($this->objectInstance->getMaxHashCount() < $maxHashCount);
-    }
-
-    /**
-     * @test
-     */
-    public function modifiedHashCount()
-    {
-        $hashCount = $this->objectInstance->getHashCount();
-        $this->objectInstance->setMaxHashCount($hashCount + 1);
-        $this->objectInstance->setHashCount($hashCount + 1);
-        $this->assertTrue($this->objectInstance->getHashCount() > $hashCount);
-        $this->objectInstance->setMinHashCount($hashCount - 1);
-        $this->objectInstance->setHashCount($hashCount - 1);
-        $this->assertTrue($this->objectInstance->getHashCount() < $hashCount);
-        // reset hashcount
-        $this->objectInstance->setHashCount(null);
-    }
-
-    /**
-     * @test
-     */
-    public function updateNecessityForValidSaltedPassword()
-    {
-        $this->skipTestIfBlowfishIsNotAvailable();
-        $password = 'password';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $this->assertFalse($this->objectInstance->isHashUpdateNeeded($saltedHashPassword));
-    }
-
-    /**
-     * @test
-     */
-    public function updateNecessityForIncreasedHashcount()
+    public function isHashUpdateNeededReturnsFalseForValidSaltedPassword()
     {
         $password = 'password';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $increasedHashCount = $this->objectInstance->getHashCount() + 1;
-        $this->objectInstance->setMaxHashCount($increasedHashCount);
-        $this->objectInstance->setHashCount($increasedHashCount);
-        $this->assertTrue($this->objectInstance->isHashUpdateNeeded($saltedHashPassword));
-        // reset hashcount
-        $this->objectInstance->setHashCount(null);
+        $subject = new BlowfishSalt(['hash_count' => 4]);
+        $saltedHashPassword = $subject->getHashedPassword($password);
+        $this->assertFalse($subject->isHashUpdateNeeded($saltedHashPassword));
     }
 
     /**
      * @test
      */
-    public function updateNecessityForDecreasedHashcount()
+    public function isHashUpdateNeededReturnsTrueForHashGeneratedWithOldOptions()
     {
-        $this->skipTestIfBlowfishIsNotAvailable();
-        $password = 'password';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-        $decreasedHashCount = $this->objectInstance->getHashCount() - 1;
-        $this->objectInstance->setMinHashCount($decreasedHashCount);
-        $this->objectInstance->setHashCount($decreasedHashCount);
-        $this->assertFalse($this->objectInstance->isHashUpdateNeeded($saltedHashPassword));
-        // reset hashcount
-        $this->objectInstance->setHashCount(null);
+        $subject = new BlowfishSalt(['hash_count' => 4]);
+        $hash = $subject->getHashedPassword('password');
+        $subject = new BlowfishSalt(['hash_count' => 5]);
+        $this->assertTrue($subject->isHashUpdateNeeded($hash));
     }
 }

@@ -1,0 +1,32 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:be.infobox state="{f:if(condition:'{preset.isAvailable}', then:'0', else:'2')}" disableIcon="true">
+	<input
+		type="radio"
+		class="t3-install-tool-configuration-radio"
+		id="t3-install-tool-configuration-passwordHashing-phpass"
+		name="install[values][{feature.name}][enable]"
+		value="{preset.name}"
+		{f:if(condition:'{preset.isAvailable}', then:'', else:'disabled="disabled"')}
+		{f:if(condition: preset.isActive, then:'checked="checked"')}
+	/>
+	<label for="t3-install-tool-configuration-passwordHashing-phpass" class="t3-install-tool-configuration-radio-label">
+		<strong>phpass</strong> {f:if(condition: preset.isActive, then:' [Active]')}
+	</label>
+	<p>
+		<f:if condition="{preset.isAvailable}">
+			<f:then>
+				In almost all cases, a modern hash algorithm like Argon2i should be preferred and is good to go.
+				phpass is a portable public domain password hashing framework for use in PHP applications since 2005.
+				The implementation should work on almost all PHP builds. It might be a suitable password storage hash
+				method in seldom cases if third party systems must use the same password hash on a low database level
+				and no sane different authentication service can be used for whatever reason.
+			</f:then>
+			<f:else>
+				That's funny: phpass is always available!
+			</f:else>
+		</f:if>
+	</p>
+</f:be.infobox>
+
+</html>

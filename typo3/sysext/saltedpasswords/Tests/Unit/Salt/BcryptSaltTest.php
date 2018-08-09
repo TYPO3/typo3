@@ -33,33 +33,31 @@ class BcryptSaltTest extends UnitTestCase
      */
     protected function setUp()
     {
-        $this->subject = new BcryptSalt();
         // Set a low cost to speed up tests
-        $this->subject->setOptions([
-            'cost' => 10,
-        ]);
-    }
-
-    /**
-     * @test
-     */
-    public function getOptionsReturnsPreviouslySetOptions()
-    {
         $options = [
-            'cost' => 11,
+            'cost' => 10,
         ];
-        $this->subject->setOptions($options);
-        $this->assertSame($this->subject->getOptions(), $options);
+        $this->subject = new BcryptSalt($options);
     }
 
     /**
      * @test
      */
-    public function setOptionsThrowsExceptionOnTooLowCostValue()
+    public function constructorThrowsExceptionIfMemoryCostIsTooLow()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1526042084);
-        $this->subject->setOptions(['cost' => 9]);
+        $this->expectExceptionCode(1533902002);
+        new BcryptSalt(['cost' => 9]);
+    }
+
+    /**
+     * @test
+     */
+    public function constructorThrowsExceptionIfMemoryCostIsTooHigh()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1533902002);
+        new BcryptSalt(['cost' => 32]);
     }
 
     /**
@@ -185,13 +183,10 @@ class BcryptSaltTest extends UnitTestCase
      */
     public function isHashUpdateNeededReturnsTrueForHashGeneratedWithOldOptions()
     {
-        $originalOptions = $this->subject->getOptions();
-        $hash = $this->subject->getHashedPassword('password');
-
-        $newOptions = $originalOptions;
-        $newOptions['cost'] = $newOptions['cost'] + 1;
-        $this->subject->setOptions($newOptions);
-        $this->assertTrue($this->subject->isHashUpdateNeeded($hash));
+        $subject = new BcryptSalt(['cost' => 10]);
+        $hash = $subject->getHashedPassword('password');
+        $subject = new BcryptSalt(['cost' => 11]);
+        $this->assertTrue($subject->isHashUpdateNeeded($hash));
     }
 
     /**

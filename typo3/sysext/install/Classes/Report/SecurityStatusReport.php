@@ -56,7 +56,7 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
         $hashInstance = null;
         $hashFactory = GeneralUtility::makeInstance(SaltFactory::class);
         try {
-            $hashInstance = $hashFactory->get($installToolPassword);
+            $hashInstance = $hashFactory->get($installToolPassword, 'BE');
         } catch (InvalidSaltException $e) {
             // $hashInstance stays null
         }

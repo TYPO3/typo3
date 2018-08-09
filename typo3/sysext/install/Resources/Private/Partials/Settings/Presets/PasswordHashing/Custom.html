@@ -1,0 +1,37 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:be.infobox state="1" disableIcon="true">
+	<input
+		type="radio"
+		class="t3-install-tool-configuration-radio"
+		id="t3-install-tool-configuration-passwordHashing-custom"
+		name="install[values][{feature.name}][enable]"
+		value="{preset.name}"
+		disabled="disabled"
+		{f:if(condition: preset.isActive, then:'checked="checked"')}
+	/>
+	<label for="t3-install-tool-configuration-passwordHashing-custom" class="t3-install-tool-configuration-radio-label">
+		<strong>Custom configuration</strong> {f:if(condition: preset.isActive, then:' [Active]')}
+	</label>
+	<p>Custom password hash settings. This interface does not allow modification of the values, they are just shown.
+		Configuring custom hash settings is for advanced users who know exactly what they are doing. Refer to the
+		core documentation for details.</p>
+	<f:for each="{preset.configurationValues}" as="configurationValue" key="configurationKey">
+		<div class="form-group">
+			<label class="col-sm-6 control-label" for="{feature.name}{preset.name}{configurationKey}">{configurationKey}</label>
+			<div class="col-sm-6">
+				<input
+					id="{feature.name}{preset.name}{configurationKey}"
+					type="text"
+					name="install[values][{feature.name}][{preset.name}][{configurationKey}]"
+					value="{configurationValue}"
+					disabled="disabled"
+					class="form-control t3js-custom-preset"
+					data-radio="t3-install-tool-configuration-passwordHashing-custom"
+					/>
+			</div>
+		</div>
+	</f:for>
+</f:be.infobox>
+
+</html>

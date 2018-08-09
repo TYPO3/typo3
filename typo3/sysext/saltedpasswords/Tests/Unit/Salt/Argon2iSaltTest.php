@@ -29,61 +29,46 @@ class Argon2iSaltTest extends UnitTestCase
     protected $subject;
 
     /**
-     * Sets up the fixtures for this testcase.
+     * Sets up the subject for this test case.
      */
     protected function setUp()
     {
-        $this->subject = new Argon2iSalt();
-        // Set low values to speed up tests
-        $this->subject->setOptions([
+        $options = [
             'memory_cost' => 1024,
             'time_cost' => 2,
             'threads' => 2,
-        ]);
-    }
-
-    /**
-     * @test
-     */
-    public function getOptionsReturnsPreviouslySetOptions()
-    {
-        $options = [
-            'memory_cost' => 2048,
-            'time_cost' => 4,
-            'threads' => 4,
         ];
-        $this->subject->setOptions($options);
-        $this->assertSame($this->subject->getOptions(), $options);
+        $this->subject = new Argon2iSalt($options);
     }
 
     /**
      * @test
      */
-    public function setOptionsThrowsExceptionWithTooLowMemoryCost()
+    public function constructorThrowsExceptionIfMemoryCostIsTooLow()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1526042080);
-        $this->subject->setOptions(['memory_cost' => 1]);
+        $this->expectExceptionCode(1533899612);
+        new Argon2iSalt(['memory_cost' => 1]);
     }
 
     /**
      * @test
      */
-    public function setOptionsThrowsExceptionWithTooLowTimeCost()
+    public function constructorThrowsExceptionIfTimeCostIsTooLow()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1526042081);
-        $this->subject->setOptions(['time_cost' => 1]);
+        $this->expectExceptionCode(1533899613);
+        new Argon2iSalt(['time_cost' => 1]);
     }
 
     /**
      * @test
      */
-    public function setOptionsThrowsExceptionWithTooLowThreads()
+    public function constructorThrowsExceptionIfThreadsIsTooLow()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1526042082);
-        $this->subject->setOptions(['threads' => 1]);
+        $this->expectExceptionCode(1533899614);
+        new Argon2iSalt(['threads' => 1]);
     }
 
     /**
@@ -210,27 +195,30 @@ class Argon2iSaltTest extends UnitTestCase
      */
     public function isHashUpdateNeededReturnsTrueForHashGeneratedWithOldOptions()
     {
-        $originalOptions = $this->subject->getOptions();
-        $hash = $this->subject->getHashedPassword('password');
+        $originalOptions = [
+            'memory_cost' => 1024,
+            'time_cost' => 2,
+            'threads' => 2,
+        ];
+        $subject = new Argon2iSalt($originalOptions);
+        $hash = $subject->getHashedPassword('password');
 
+        // Change $memoryCost
         $newOptions = $originalOptions;
         $newOptions['memory_cost'] = $newOptions['memory_cost'] + 1;
-        $this->subject->setOptions($newOptions);
-        $this->assertTrue($this->subject->isHashUpdateNeeded($hash));
-        $this->subject->setOptions($originalOptions);
+        $subject = new Argon2iSalt($newOptions);
+        $this->assertTrue($subject->isHashUpdateNeeded($hash));
 
         // Change $timeCost
         $newOptions = $originalOptions;
         $newOptions['time_cost'] = $newOptions['time_cost'] + 1;
-        $this->subject->setOptions($newOptions);
-        $this->assertTrue($this->subject->isHashUpdateNeeded($hash));
-        $this->subject->setOptions($originalOptions);
+        $subject = new Argon2iSalt($newOptions);
+        $this->assertTrue($subject->isHashUpdateNeeded($hash));
 
         // Change $threads
         $newOptions = $originalOptions;
         $newOptions['threads'] = $newOptions['threads'] + 1;
-        $this->subject->setOptions($newOptions);
-        $this->assertTrue($this->subject->isHashUpdateNeeded($hash));
-        $this->subject->setOptions($originalOptions);
+        $subject = new Argon2iSalt($newOptions);
+        $this->assertTrue($subject->isHashUpdateNeeded($hash));
     }
 }

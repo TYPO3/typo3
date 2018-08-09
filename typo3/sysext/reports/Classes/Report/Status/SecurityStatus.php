@@ -162,7 +162,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
 
         if (!empty($row)) {
             try {
-                $hashInstance = GeneralUtility::makeInstance(SaltFactory::class)->get($row['password']);
+                $hashInstance = GeneralUtility::makeInstance(SaltFactory::class)->get($row['password'], 'BE');
                 if ($hashInstance->checkPassword('password', $row['password'])) {
                     // If the password for 'admin' user is 'password': bad idea!
                     // We're checking since the (very) old installer created instances like this in dark old times.

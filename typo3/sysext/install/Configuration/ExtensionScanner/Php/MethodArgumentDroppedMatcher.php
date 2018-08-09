@@ -177,4 +177,32 @@ return [
             'Breaking-84877-MethodsOfLocalizationRepositoryChanged.rst',
         ],
     ],
+    'TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt->getHashedPassword' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst',
+        ],
+    ],
+    'TYPO3\CMS\Saltedpasswords\Salt\Md5Salt->getHashedPassword' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst',
+        ],
+    ],
+    'TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt->getHashedPassword' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst',
+        ],
+    ],
+    'TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt->getHashedPassword' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst',
+        ],
+    ],
 ];

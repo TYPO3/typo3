@@ -25,6 +25,8 @@ class SaltedPasswordsUtility
 {
     /**
      * Keeps this extension's key.
+     *
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     const EXTKEY = 'saltedpasswords';
 
@@ -56,11 +58,14 @@ class SaltedPasswordsUtility
 
     /**
      * Returns extension configuration data from $TYPO3_CONF_VARS (configurable in Extension Manager)
+     *
      * @param string $mode TYPO3_MODE, whether Configuration for Frontend or Backend should be delivered
      * @return array Extension configuration data
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public static function returnExtConf($mode = TYPO3_MODE)
     {
+        trigger_error('This method is obsolete and will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         $currentConfiguration = self::returnExtConfDefaults();
         if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['saltedpasswords'])) {
             $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('saltedpasswords');
@@ -76,9 +81,11 @@ class SaltedPasswordsUtility
      * Returns default configuration of this extension.
      *
      * @return array Default extension configuration data for localconf.php
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public static function returnExtConfDefaults()
     {
+        trigger_error('This method is obsolete and will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         return [
             'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
         ];
@@ -90,14 +97,17 @@ class SaltedPasswordsUtility
      *
      * @param string $mode (optional) The TYPO3 mode (FE or BE) saltedpasswords shall be used for
      * @return string Classname of object to be used
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public static function getDefaultSaltingHashingMethod($mode = TYPO3_MODE)
     {
+        trigger_error('This method is obsolete and will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         $extConf = self::returnExtConf($mode);
         $classNameToUse = \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class;
-        if (array_key_exists(
+        if (in_array(
             $extConf['saltedPWHashingMethod'],
-            \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getRegisteredSaltedHashingMethods()
+            \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getRegisteredSaltedHashingMethods(),
+            true
         )) {
             $classNameToUse = $extConf['saltedPWHashingMethod'];
         }

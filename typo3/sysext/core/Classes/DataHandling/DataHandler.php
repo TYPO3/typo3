@@ -2960,16 +2960,13 @@ class DataHandler implements LoggerAwareInterface
                     $isDeprecatedSaltedHash = $hashMethod === 'M$';
                     $tempValue = $isDeprecatedSaltedHash ? substr($value, 1) : $value;
                     $hashFactory = GeneralUtility::makeInstance(SaltFactory::class);
+                    $mode = $table === 'fe_users' ? 'FE' : 'BE';
                     try {
-                        $hashFactory->get($tempValue);
+                        $hashFactory->get($tempValue, $mode);
                     } catch (InvalidSaltException $e) {
                         // We got no salted password instance, incoming value must be a new plaintext password
                         // Get an instance of the current configured salted password strategy and hash the value
-                        if ($table === 'fe_users') {
-                            $newHashInstance = $hashFactory->getDefaultHashInstance('FE');
-                        } else {
-                            $newHashInstance = $hashFactory->getDefaultHashInstance('BE');
-                        }
+                        $newHashInstance = $hashFactory->getDefaultHashInstance($mode);
                         $value = $newHashInstance->getHashedPassword($value);
                     }
                     break;

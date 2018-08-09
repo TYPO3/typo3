@@ -719,4 +719,24 @@ return [
             'Deprecation-85802-MoveFlexFormServiceFromEXTextbaseToEXTcore.rst',
         ],
     ],
+    'TYPO3\CMS\Saltedpasswords\Salt\ComposedSaltInterface' => [
+        'restFiles' => [
+            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst'
+        ],
+    ],
+    'TYPO3\CMS\Saltedpasswords\Salt\AbstractComposedSalt' => [
+        'restFiles' => [
+            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst'
+        ],
+    ],
+    'TYPO3\CMS\Saltedpasswords\Salt\Utility\ExtensionManagerConfigurationUtility' => [
+        'restFiles' => [
+            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst'
+        ],
+    ],
+    'TYPO3\CMS\Saltedpasswords\Salt\Utility\SaltedPasswordsUtility' => [
+        'restFiles' => [
+            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst'
+        ],
+    ],
 ];

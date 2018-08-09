@@ -36,7 +36,7 @@ class ImageFeature extends Configuration\AbstractFeature implements Configuratio
     ];
 
     /**
-     * Image feature can be feeded with an additional path to search for executables,
+     * Image feature can be fed with an additional path to search for executables,
      * this getter returns the given input string (for Fluid)
      *
      * @return string
