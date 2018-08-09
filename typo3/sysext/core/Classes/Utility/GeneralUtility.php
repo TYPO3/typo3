@@ -722,10 +722,10 @@ class GeneralUtility
             $ipad = str_repeat(chr(54), $hashBlocksize);
             if (strlen($secret) > $hashBlocksize) {
                 // Keys longer than block size are shorten
-                $key = str_pad(pack('H*', call_user_func($hashAlgorithm, $secret)), $hashBlocksize, chr(0));
+                $key = str_pad(pack('H*', call_user_func($hashAlgorithm, $secret)), $hashBlocksize, "\0");
             } else {
                 // Keys shorter than block size are zero-padded
-                $key = str_pad($secret, $hashBlocksize, chr(0));
+                $key = str_pad($secret, $hashBlocksize, "\0");
             }
             $hmac = call_user_func($hashAlgorithm, ($key ^ $opad) . pack('H*', call_user_func(
                 $hashAlgorithm,
@@ -1370,7 +1370,7 @@ class GeneralUtility
             // re-ident to one tab using the first line as reference
             $match = [];
             if (preg_match('/^(\\t+)/', $string, $match)) {
-                $string = str_replace($match[1], TAB, $string);
+                $string = str_replace($match[1], "\t", $string);
             }
             return '<script type="text/javascript">
 /*<![CDATA[*/
@@ -1475,9 +1475,9 @@ class GeneralUtility
     public static function array2xml(array $array, $NSprefix = '', $level = 0, $docTag = 'phparray', $spaceInd = 0, array $options = [], array $stackData = [])
     {
         // The list of byte values which will trigger binary-safe storage. If any value has one of these char values in it, it will be encoded in base64
-        $binaryChars = chr(0) . chr(1) . chr(2) . chr(3) . chr(4) . chr(5) . chr(6) . chr(7) . chr(8) . chr(11) . chr(12) . chr(14) . chr(15) . chr(16) . chr(17) . chr(18) . chr(19) . chr(20) . chr(21) . chr(22) . chr(23) . chr(24) . chr(25) . chr(26) . chr(27) . chr(28) . chr(29) . chr(30) . chr(31);
+        $binaryChars = "\0" . chr(1) . chr(2) . chr(3) . chr(4) . chr(5) . chr(6) . chr(7) . chr(8) . chr(11) . chr(12) . chr(14) . chr(15) . chr(16) . chr(17) . chr(18) . chr(19) . chr(20) . chr(21) . chr(22) . chr(23) . chr(24) . chr(25) . chr(26) . chr(27) . chr(28) . chr(29) . chr(30) . chr(31);
         // Set indenting mode:
-        $indentChar = $spaceInd ? ' ' : TAB;
+        $indentChar = $spaceInd ? ' ' : "\t";
         $indentN = $spaceInd > 0 ? $spaceInd : 1;
         $nl = $spaceInd >= 0 ? LF : '';
         // Init output variable:

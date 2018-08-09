@@ -3254,10 +3254,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $indent = (int)$parts[0];
         $comment = htmlspecialchars($this->insertData($parts[1]));
         $output = LF
-            . str_pad('', $indent, TAB) . '<!-- ' . $comment . ' [begin] -->' . LF
-            . str_pad('', $indent + 1, TAB) . $content . LF
-            . str_pad('', $indent, TAB) . '<!-- ' . $comment . ' [end] -->' . LF
-            . str_pad('', $indent + 1, TAB);
+            . str_pad('', $indent, "\t") . '<!-- ' . $comment . ' [begin] -->' . LF
+            . str_pad('', $indent + 1, "\t") . $content . LF
+            . str_pad('', $indent, "\t") . '<!-- ' . $comment . ' [end] -->' . LF
+            . str_pad('', $indent + 1, "\t");
         return $output;
     }
 
@@ -4406,7 +4406,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $pieces = count($textpieces);
             $textstr = $textpieces[0];
             for ($i = 1; $i < $pieces; $i++) {
-                $len = strcspn($textpieces[$i], chr(32) . TAB . CRLF);
+                $len = strcspn($textpieces[$i], chr(32) . "\t" . CRLF);
                 if (trim(substr($textstr, -1)) === '' && $len) {
                     $lastChar = substr($textpieces[$i], $len - 1, 1);
                     if (!preg_match('/[A-Za-z0-9\\/#_-]/', $lastChar)) {
@@ -4482,7 +4482,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $textstr = $textpieces[0];
         $tsfe = $this->getTypoScriptFrontendController();
         for ($i = 1; $i < $pieces; $i++) {
-            $len = strcspn($textpieces[$i], chr(32) . TAB . CRLF);
+            $len = strcspn($textpieces[$i], chr(32) . "\t" . CRLF);
             if (trim(substr($textstr, -1)) === '' && $len) {
                 $lastChar = substr($textpieces[$i], $len - 1, 1);
                 if (!preg_match('/[A-Za-z0-9]/', $lastChar)) {

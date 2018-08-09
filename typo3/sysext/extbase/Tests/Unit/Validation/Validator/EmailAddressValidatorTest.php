@@ -69,7 +69,7 @@ class EmailAddressValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
             ['someone@typo3.'],
             ['local@192.168.2'],
             ['local@192.168.270.1'],
-            ['foo@bar.com' . chr(0)],
+            ['foo@bar.com' . "\0"],
             ['foo@bar.org' . chr(10)],
             ['andreas@foerthner@example.com'],
             ['some@one.net ']

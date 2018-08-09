@@ -81,7 +81,7 @@ class FileHandlingUtilityTest extends UnitTestCase
             ['../../'],
             ['/foo/bar'],
             ['foo//bar'],
-            ['foo/bar' . chr(0)],
+            ['foo/bar' . "\0"],
         ];
     }
 

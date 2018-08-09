@@ -270,7 +270,7 @@ class LocalDriverTest extends BaseTestCase
     {
         return [
             'folder name with NULL character' => [
-                'some' . chr(0) . 'Folder',
+                'some' . "\0" . 'Folder',
                 'some_Folder'
             ],
             'folder name with directory part' => [

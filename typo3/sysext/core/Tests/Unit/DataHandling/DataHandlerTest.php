@@ -1024,8 +1024,8 @@ class DataHandlerTest extends UnitTestCase
             'with space after' => ['Test (copy 42) ', 'Test (copy 42) '],
             'with double spaces after' => ['Test (copy 42)  ', 'Test (copy 42)  '],
             'with three spaces after' => ['Test (copy 42)   ', 'Test (copy 42)   '],
-            'with double tab before' => ['Test' . chr(9) . '(copy 42)', 'Test'],
-            'with double tab after' => ['Test (copy 42)' . chr(9), 'Test (copy 42)' . chr(9)],
+            'with double tab before' => ['Test' . "\t" . '(copy 42)', 'Test'],
+            'with double tab after' => ['Test (copy 42)' . "\t", 'Test (copy 42)' . "\t"],
         ];
     }
 

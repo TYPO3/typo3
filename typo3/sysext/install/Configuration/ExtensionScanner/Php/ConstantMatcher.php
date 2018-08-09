@@ -89,4 +89,64 @@ return [
             'Deprecation-85285-DeprecatedSystemConstants.rst',
         ],
     ],
+    'NUL' => [
+        'restFiles' => [
+            'Deprecation-85793-DeprecateSeveralConstantsFromSystemEnvironmentBuilder.rst',
+        ]
+    ],
+    'TAB' => [
+        'restFiles' => [
+            'Deprecation-85793-DeprecateSeveralConstantsFromSystemEnvironmentBuilder.rst',
+        ]
+    ],
+    'SUB' => [
+        'restFiles' => [
+            'Deprecation-85793-DeprecateSeveralConstantsFromSystemEnvironmentBuilder.rst',
+        ]
+    ],
+    'TYPO3_URL_SYSTEMREQUIREMENTS' => [
+        'restFiles' => [
+            'Deprecation-85793-DeprecateSeveralConstantsFromSystemEnvironmentBuilder.rst',
+        ]
+    ],
+    'TYPO3_URL_DOWNLOAD' => [
+        'restFiles' => [
+            'Deprecation-85793-DeprecateSeveralConstantsFromSystemEnvironmentBuilder.rst',
+        ]
+    ],
+    'TYPO3_URL_SECURITY' => [
+        'restFiles' => [
+            'Deprecation-85793-DeprecateSeveralConstantsFromSystemEnvironmentBuilder.rst',
+        ]
+    ],
+    'TYPO3_URL_CONTRIBUTE' => [
+        'restFiles' => [
+            'Deprecation-85793-DeprecateSeveralConstantsFromSystemEnvironmentBuilder.rst',
+        ]
+    ],
+    'TYPO3_URL_CONSULTANCY' => [
+        'restFiles' => [
+            'Deprecation-85793-DeprecateSeveralConstantsFromSystemEnvironmentBuilder.rst',
+        ]
+    ],
+    'TYPO3_URL_DOCUMENTATION_TSCONFIG' => [
+        'restFiles' => [
+            'Deprecation-85793-DeprecateSeveralConstantsFromSystemEnvironmentBuilder.rst',
+        ]
+    ],
+    'TYPO3_URL_DOCUMENTATION_TSREF' => [
+        'restFiles' => [
+            'Deprecation-85793-DeprecateSeveralConstantsFromSystemEnvironmentBuilder.rst',
+        ]
+    ],
+    'TYPO3_URL_DOCUMENTATION' => [
+        'restFiles' => [
+            'Deprecation-85793-DeprecateSeveralConstantsFromSystemEnvironmentBuilder.rst',
+        ]
+    ],
+    'TYPO3_URL_MAILINGLISTS' => [
+        'restFiles' => [
+            'Deprecation-85793-DeprecateSeveralConstantsFromSystemEnvironmentBuilder.rst',
+        ]
+    ],
 ];

@@ -103,7 +103,7 @@ class PageGenerator
         }
         $headerComment = $tsfe->config['config']['headerComment'];
         if (trim($headerComment)) {
-            $pageRenderer->addInlineComment(TAB . str_replace(LF, LF . TAB, trim($headerComment)) . LF);
+            $pageRenderer->addInlineComment("\t" . str_replace(LF, LF . "\t", trim($headerComment)) . LF);
         }
         // Setting charset:
         $theCharset = $tsfe->metaCharset;

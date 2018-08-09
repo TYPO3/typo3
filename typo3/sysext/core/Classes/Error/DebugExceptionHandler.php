@@ -183,7 +183,7 @@ class DebugExceptionHandler extends AbstractExceptionHandler
                 if ($endLine > $startLine) {
                     $codeSnippet = '<br /><span style="font-size:10px;">' . htmlspecialchars($filePathAndName) . ':</span><br /><pre>';
                     for ($line = $startLine; $line < $endLine; $line++) {
-                        $codeLine = str_replace(TAB, ' ', $phpFile[$line - 1]);
+                        $codeLine = str_replace("\t", ' ', $phpFile[$line - 1]);
                         if ($line === $lineNumber) {
                             $codeSnippet .= '</pre><pre style="background-color: #F1F1F1; color: black;">';
                         }

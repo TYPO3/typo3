@@ -53,7 +53,7 @@ class UploadedFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'float'  => [1.1],
             /* Have not figured out a valid way to test an invalid path yet; null byte injection
              * appears to get caught by fopen()
-            'invalid-path' => [ ('WIN' === strtoupper(substr(PHP_OS, 0, 3))) ? '[:]' : 'foo' . chr(0) ],
+            'invalid-path' => [ ('WIN' === strtoupper(substr(PHP_OS, 0, 3))) ? '[:]' : 'foo' . "\0" ],
              */
             'array'  => [['filename']],
             'object' => [(object)['filename']],

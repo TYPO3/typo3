@@ -373,7 +373,7 @@ class TypoScriptParser
                     if ($line[0] !== '}' && $line[0] !== '#' && $line[0] !== '/') {
                         // If not brace-end or comment
                         // Find object name string until we meet an operator
-                        $varL = strcspn($line, TAB . ' {=<>(');
+                        $varL = strcspn($line, "\t" . ' {=<>(');
                         // check for special ":=" operator
                         if ($varL > 0 && substr($line, $varL - 1, 2) === ':=') {
                             --$varL;
@@ -406,7 +406,7 @@ class TypoScriptParser
                                         $tsFuncArg = $match[2];
                                         $val = $this->getVal($objStrName, $setup);
                                         $currentValue = $val[0] ?? null;
-                                        $tsFuncArg = str_replace(['\\\\', '\\n', '\\t'], ['\\', LF, TAB], $tsFuncArg);
+                                        $tsFuncArg = str_replace(['\\\\', '\\n', '\\t'], ['\\', LF, "\t"], $tsFuncArg);
                                         $newValue = $this->executeValueModifier($tsFunc, $tsFuncArg, $currentValue);
                                         if (isset($newValue)) {
                                             $line = '= ' . $newValue;

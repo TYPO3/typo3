@@ -995,7 +995,7 @@ class GeneralUtilityTest extends UnitTestCase
             'trailing carriage return' => ['test@example.com' . CR],
             'trailing linefeed' => ['test@example.com' . LF],
             'trailing carriage return linefeed' => ['test@example.com' . CRLF],
-            'trailing tab' => ['test@example.com' . TAB],
+            'trailing tab' => ['test@example.com' . "\t"],
             'prohibited input characters' => ['“mailto:test@example.com”'],
         ];
     }
@@ -2359,11 +2359,11 @@ class GeneralUtilityTest extends UnitTestCase
                 'Hello\\u0020World\\u0021'
             ],
             'Whitespaces are properly encoded' => [
-                TAB . LF . CR . ' ',
+                "\t" . LF . CR . ' ',
                 '\\u0009\\u000A\\u000D\\u0020'
             ],
             'Null byte is properly encoded' => [
-                chr(0),
+                "\0",
                 '\\u0000'
             ],
             'Umlauts are properly encoded' => [
@@ -4035,7 +4035,7 @@ class GeneralUtilityTest extends UnitTestCase
             'backslash in path' => ['path\\path'],
             'directory up in path' => ['path/../path'],
             'directory up at the beginning' => ['../path'],
-            'NUL character in path' => ['path' . chr(0) . 'path'],
+            'NUL character in path' => ['path' . "\0" . 'path'],
             'BS character in path' => ['path' . chr(8) . 'path'],
             'invalid UTF-8-sequence' => ["\xc0" . 'path/path'],
             'Could be overlong NUL in some UTF-8 implementations, invalid in RFC3629' => ["\xc0\x80" . 'path/path'],
@@ -4098,8 +4098,8 @@ class GeneralUtilityTest extends UnitTestCase
     public function deniedFilesDataProvider()
     {
         return [
-            'Nul character in file' => ['image' . chr(0) . '.gif'],
-            'Nul character in file with .php' => ['image.php' . chr(0) . '.gif'],
+            'Nul character in file' => ['image' . "\0" . '.gif'],
+            'Nul character in file with .php' => ['image.php' . "\0" . '.gif'],
             'Regular .php file' => ['file.php'],
             'Regular .php5 file' => ['file.php5'],
             'Regular .php3 file' => ['file.php3'],

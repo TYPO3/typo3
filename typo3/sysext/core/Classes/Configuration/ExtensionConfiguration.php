@@ -473,7 +473,7 @@ class ExtensionConfiguration
                 if ($line[0] !== '}' && $line[0] !== '#' && $line[0] !== '/') {
                     // If not brace-end or comment
                     // Find object name string until we meet an operator
-                    $varL = strcspn($line, TAB . ' {=<>(');
+                    $varL = strcspn($line, "\t" . ' {=<>(');
                     // check for special ":=" operator
                     if ($varL > 0 && substr($line, $varL - 1, 2) === ':=') {
                         --$varL;

@@ -4959,7 +4959,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ],
             'no config: double break with whitespace' => [
                 'onetwo',
-                'one' . LF . TAB . ' ' . TAB . ' ' . LF . 'two',
+                'one' . LF . "\t" . ' ' . "\t" . ' ' . LF . 'two',
                 [],
             ],
             'no config: single break around' => [
@@ -5577,9 +5577,9 @@ class ContentObjectRendererTest extends UnitTestCase
             'null' => null,
             'false' => false,
             'empty' => '',
-            'whitespace' => TAB . ' ',
+            'whitespace' => "\t" . ' ',
             'stringZero' => '0',
-            'stringZeroWithWhiteSpace' => TAB . ' 0 ' . TAB,
+            'stringZeroWithWhiteSpace' => "\t" . ' 0 ' . "\t",
             'zero' => 0,
             'string' => 'string',
             'true' => true,
@@ -5887,7 +5887,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'null is blank' => [$alt, null, $conf],
             'false is blank' => [$alt, false, $conf],
             'empty string is blank' => [$alt, '', $conf],
-            'whitespace is blank' => [$alt, TAB . '', $conf],
+            'whitespace is blank' => [$alt, "\t" . '', $conf],
             // non-blank cases
             'string is not blank' => ['string', 'string', $conf],
             'zero is not blank' => [0, 0, $conf],
@@ -5934,12 +5934,12 @@ class ContentObjectRendererTest extends UnitTestCase
             'false is empty' => [$alt, false, $conf],
             'zero is empty' => [$alt, 0, $conf],
             'float zero is empty' => [$alt, 0.0, $conf],
-            'whitespace is empty' => [$alt, TAB . ' ', $conf],
+            'whitespace is empty' => [$alt, "\t" . ' ', $conf],
             'empty string is empty' => [$alt, '', $conf],
             'zero string is empty' => [$alt, '0', $conf],
             'zero string is empty with whitespace' => [
                 $alt,
-                TAB . ' 0 ' . TAB,
+                "\t" . ' 0 ' . "\t",
                 $conf
             ],
             // non-empty cases
@@ -5990,7 +5990,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'zero is not null' => [0, 0, $conf],
             'zero string is not null' => ['0', '0', $conf],
             'empty string is not null' => ['', '', $conf],
-            'whitespace is not null' => [TAB . '', TAB . '', $conf],
+            'whitespace is not null' => ["\t" . '', "\t" . '', $conf],
         ];
     }
 
@@ -6041,7 +6041,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'trims whitespace' => [
                 '<wrap>XXX</wrap>',
                 'XXX',
-                ['innerWrap' => '<wrap>' . TAB . ' | ' . TAB . '</wrap>'],
+                ['innerWrap' => '<wrap>' . "\t" . ' | ' . "\t" . '</wrap>'],
             ],
             'split char change is not possible' => [
                 '<wrap> # </wrap>XXX',
@@ -6097,7 +6097,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'trims whitespace' => [
                 '<wrap>XXX</wrap>',
                 'XXX',
-                ['innerWrap2' => '<wrap>' . TAB . ' | ' . TAB . '</wrap>'],
+                ['innerWrap2' => '<wrap>' . "\t" . ' | ' . "\t" . '</wrap>'],
             ],
             'split char change is not possible' => [
                 '<wrap> # </wrap>XXX',
@@ -6431,11 +6431,11 @@ class ContentObjectRendererTest extends UnitTestCase
                 ],
             ],
             'Tabs as whitespace' => [
-                TAB . 'left' . TAB . 'middle' . TAB . 'right' . TAB,
+                "\t" . 'left' . "\t" . 'middle' . "\t" . 'right' . "\t",
                 'middle',
                 [
                     'noTrimWrap' =>
-                        '|' . TAB . 'left' . TAB . '|' . TAB . 'right' . TAB . '|',
+                        '|' . "\t" . 'left' . "\t" . '|' . "\t" . 'right' . "\t" . '|',
                 ],
             ],
             'Split char is 0' => [
@@ -6587,7 +6587,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'trims whitespace' => [
                 '<wrap>XXX</wrap>',
                 'XXX',
-                ['outerWrap' => '<wrap>' . TAB . ' | ' . TAB . '</wrap>'],
+                ['outerWrap' => '<wrap>' . "\t" . ' | ' . "\t" . '</wrap>'],
             ],
             'split char change is not possible' => [
                 '<wrap> # </wrap>XXX',
@@ -6643,7 +6643,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'whitespace does not override' => [
                 'content',
                 'content',
-                ['override' => ' ' . TAB]
+                ['override' => ' ' . "\t"]
             ],
             'zero does not override' => [
                 'content',
@@ -6681,9 +6681,9 @@ class ContentObjectRendererTest extends UnitTestCase
                 ['override' => true]
             ],
             'the value is not trimmed' => [
-                TAB . 'override',
+                "\t" . 'override',
                 'content',
-                ['override' => TAB . 'override']
+                ['override' => "\t" . 'override']
             ],
         ];
     }
@@ -7195,7 +7195,7 @@ class ContentObjectRendererTest extends UnitTestCase
 
             // non-empty content
             'blank is not empty' => [' ', false, ' '],
-            'tab is not empty' => [TAB, false, TAB],
+            'tab is not empty' => ["\t", false, "\t"],
             'linebreak is not empty' => [PHP_EOL, false, PHP_EOL],
             '"0" is not empty' => ['0', false, '0'],
             '0 is not empty' => [0, false, 0],
@@ -7754,8 +7754,8 @@ class ContentObjectRendererTest extends UnitTestCase
             'empty string' => ['', ''],
             'string without whitespace' => ['xxx', 'xxx'],
             'string with whitespace inside' => [
-                'xx ' . TAB . ' xx',
-                'xx ' . TAB . ' xx',
+                'xx ' . "\t" . ' xx',
+                'xx ' . "\t" . ' xx',
             ],
             'string with newlines inside' => [
                 'xx ' . PHP_EOL . ' xx',
@@ -7763,9 +7763,9 @@ class ContentObjectRendererTest extends UnitTestCase
             ],
             // string trimmed
             'blanks around' => ['xxx', '  xxx  '],
-            'tabs around' => ['xxx', TAB . 'xxx' . TAB],
+            'tabs around' => ['xxx', "\t" . 'xxx' . "\t"],
             'newlines around' => ['xxx', PHP_EOL . 'xxx' . PHP_EOL],
-            'mixed case' => ['xxx', TAB . ' xxx ' . PHP_EOL],
+            'mixed case' => ['xxx', "\t" . ' xxx ' . PHP_EOL],
             // non strings
             'null' => ['', null],
             'false' => ['', false],
@@ -7856,7 +7856,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'trims whitespace' => [
                 '<wrapper>XXX</wrapper>',
                 'XXX',
-                ['wrap' => '<wrapper>' . TAB . ' | ' . TAB . '</wrapper>'],
+                ['wrap' => '<wrapper>' . "\t" . ' | ' . "\t" . '</wrapper>'],
             ],
             'missing pipe puts wrap before' => [
                 '<pre>XXX',
@@ -7922,7 +7922,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'trims whitespace' => [
                 '<wrapper>XXX</wrapper>',
                 'XXX',
-                ['wrap2' => '<wrapper>' . TAB . ' | ' . TAB . '</wrapper>'],
+                ['wrap2' => '<wrapper>' . "\t" . ' | ' . "\t" . '</wrapper>'],
             ],
             'missing pipe puts wrap2 before' => [
                 '<pre>XXX',
@@ -7985,7 +7985,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'trims whitespace' => [
                 '<wrapper>XXX</wrapper>',
                 'XXX',
-                ['wrap3' => '<wrapper>' . TAB . ' | ' . TAB . '</wrapper>'],
+                ['wrap3' => '<wrapper>' . "\t" . ' | ' . "\t" . '</wrapper>'],
             ],
             'missing pipe puts wrap3 before' => [
                 '<pre>XXX',
@@ -8178,9 +8178,9 @@ class ContentObjectRendererTest extends UnitTestCase
         $format .= '%%s%s%%s%s';
         $format .= '%%s<!-- %%s [end] -->%s';
         $format .= '%%s%s';
-        $format = sprintf($format, LF, LF, TAB, LF, LF, TAB);
-        $indent1 = TAB;
-        $indent2 = TAB . TAB;
+        $format = sprintf($format, LF, LF, "\t", LF, LF, "\t");
+        $indent1 = "\t";
+        $indent2 = "\t" . "\t";
         return [
             'indent one tab' => [
                 sprintf(

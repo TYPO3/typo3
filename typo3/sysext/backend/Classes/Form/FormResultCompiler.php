@@ -295,7 +295,7 @@ class FormResultCompiler
         }
         $out .= LF . implode(LF, $this->additionalJavaScriptPost);
 
-        return $html . LF . TAB . GeneralUtility::wrapJS($out);
+        return $html . LF . "\t" . GeneralUtility::wrapJS($out);
     }
 
     /**

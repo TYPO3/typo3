@@ -60,11 +60,11 @@ class JavaScriptEncoderTest extends UnitTestCase
                 'Hello\\x20World\\x21'
             ],
             'Whitespaces are properly encoded' => [
-                TAB . LF . CR . ' ',
+                "\t" . LF . CR . ' ',
                 '\\x09\\x0A\\x0D\\x20'
             ],
             'Null byte is properly encoded' => [
-                chr(0),
+                "\0",
                 '\\x00'
             ],
             'Umlauts are properly encoded' => [
