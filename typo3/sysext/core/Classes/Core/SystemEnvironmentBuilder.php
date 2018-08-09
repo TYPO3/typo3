@@ -121,7 +121,7 @@ class SystemEnvironmentBuilder
         define('TYPO3_URL_SECURITY', 'https://typo3.org/teams/security/');
         define('TYPO3_URL_DOWNLOAD', 'https://typo3.org/download/');
         define('TYPO3_URL_SYSTEMREQUIREMENTS', 'https://typo3.org/typo3-cms/overview/requirements/');
-        define('TYPO3_URL_DONATE', 'https://typo3.org/donate/online-donation/');
+        define('TYPO3_URL_DONATE', 'https://typo3.org/community/contribute/donate/');
         define('TYPO3_URL_WIKI_OPCODECACHE', 'https://wiki.typo3.org/Opcode_Cache');
 
         // A null, a tabulator, a linefeed, a carriage return, a substitution, a CR-LF combination
