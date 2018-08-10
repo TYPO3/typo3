@@ -714,4 +714,9 @@ return [
             'Deprecation-85761-DeprecatedSaltedPasswordService.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Service\FlexFormService' => [
+        'restFiles' => [
+            'Deprecation-85802-MoveFlexFormServiceFromEXTextbaseToEXTcore.rst',
+        ],
+    ],
 ];

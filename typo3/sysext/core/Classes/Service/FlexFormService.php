@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Service;
+namespace TYPO3\CMS\Core\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.

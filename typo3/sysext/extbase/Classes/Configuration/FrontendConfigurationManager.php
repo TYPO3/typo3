@@ -25,14 +25,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Service\FlexFormService
+     * @var \TYPO3\CMS\Core\Service\FlexFormService
      */
     protected $flexFormService;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Service\FlexFormService $flexFormService
+     * @param \TYPO3\CMS\Core\Service\FlexFormService $flexFormService
      */
-    public function injectFlexFormService(\TYPO3\CMS\Extbase\Service\FlexFormService $flexFormService)
+    public function injectFlexFormService(\TYPO3\CMS\Core\Service\FlexFormService $flexFormService)
     {
         $this->flexFormService = $flexFormService;
     }

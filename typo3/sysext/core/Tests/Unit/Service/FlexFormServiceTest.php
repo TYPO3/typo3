@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
+namespace TYPO3\CMS\Core\Tests\Unit\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -108,7 +108,7 @@ class FlexFormServiceTest extends UnitTestCase
         $cacheManagerMock->expects($this->any())->method('getCache')->will($this->returnValue($cacheMock));
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $cacheManagerMock);
 
-        $flexFormService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Service\FlexFormService::class)
+        $flexFormService = $this->getMockBuilder(\TYPO3\CMS\Core\Service\FlexFormService::class)
             ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
