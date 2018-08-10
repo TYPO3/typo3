@@ -233,7 +233,7 @@ class Request extends Message implements RequestInterface
      *     request-target forms allowed in request messages)
      *
      * @param mixed $requestTarget
-     * @return Request
+     * @return static
      */
     public function withRequestTarget($requestTarget)
     {
@@ -267,7 +267,7 @@ class Request extends Message implements RequestInterface
      * changed request method.
      *
      * @param string $method Case-sensitive method.
-     * @return Request
+     * @return static
      * @throws \InvalidArgumentException for invalid HTTP methods.
      */
     public function withMethod($method)
@@ -320,7 +320,7 @@ class Request extends Message implements RequestInterface
      *
      * @param \Psr\Http\Message\UriInterface $uri New request URI to use.
      * @param bool $preserveHost Preserve the original state of the Host header.
-     * @return Request
+     * @return static
      */
     public function withUri(UriInterface $uri, $preserveHost = false)
     {
