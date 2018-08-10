@@ -18,7 +18,8 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Response;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
 /**
  * This test is an Extbase version of the \TYPO3\CMS\Frontend\Tests\Functional\Rendering\LocalizedContentRenderingTest
@@ -91,6 +92,13 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
             'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/ContentJsonRenderer.typoscript'
 
         ]);
+    }
+
+    protected function tearDown()
+    {
+        unset($this->objectManager);
+        unset($this->contentRepository);
+        parent::tearDown();
     }
 
     public function defaultLanguageConfigurationDataProvider(): array
@@ -758,7 +766,7 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = strict',
                 'visibleRecords' => [],
-                'status' => 404,
+                'statusCode' => 404,
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
@@ -851,7 +859,7 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = strict',
                 'visibleRecords' => [],
-                'status' => 404
+                'statusCode' => 404
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 1
@@ -941,7 +949,7 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = strict',
                 'visibleRecords' => [],
-                'status' => 404,
+                'statusCode' => 404,
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
@@ -976,18 +984,22 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
      *
      * @param string $typoScript
      * @param array $visibleRecords
-     * @param string $status 'success' or 404
+     * @param int $statusCode '200' or '404'
      */
-    public function contentOnNonTranslatedPageGerman(string $typoScript, array $visibleRecords, string $status='success')
+    public function contentOnNonTranslatedPageGerman(string $typoScript, array $visibleRecords, int $statusCode = 200)
     {
         $this->addTypoScriptToTemplateRecord(1, $typoScript);
-        $visibleHeaders = array_map(function ($element) {
-            return $element['header'];
-        }, $visibleRecords);
+        $visibleHeaders = array_column($visibleRecords, 'header');
 
-        $frontendResponse = $this->getFrontendResponse(self::VALUE_PageId, 2);
-        if ($status === Response::STATUS_Success) {
-            $responseSections = $frontendResponse->getResponseSections('Extbase:list()');
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest())
+                ->withPageId(self::VALUE_PageId)
+                ->withLanguageId(2)
+        );
+
+        if ($statusCode === 200) {
+            $responseSections = ResponseContent::fromString((string)$response->getBody())
+                ->getSections('Extbase:list()');
             $this->assertThat(
                 $responseSections,
                 $this->getRequestSectionHasRecordConstraint()
@@ -1015,8 +1027,8 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
                     ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
             }
         }
-        //some configuration combinations results in 404, in that case status will be set to 404
-        $this->assertEquals($status, $frontendResponse->getStatus());
+
+        $this->assertEquals($statusCode, $response->getStatusCode());
     }
 
     public function contentOnPartiallyTranslatedPageDataProvider(): array

@@ -63,6 +63,7 @@ abstract class AbstractApplication implements ApplicationInterface
             return;
         }
 
+        // @todo This requires some merge strategy or header callback handling
         if (!headers_sent()) {
             // If the response code was not changed by legacy code (still is 200)
             // then allow the PSR-7 response object to explicitly set it.
@@ -96,12 +97,17 @@ abstract class AbstractApplication implements ApplicationInterface
      *
      * @param callable $execute
      */
-    public function run(callable $execute = null)
+    final public function run(callable $execute = null)
     {
-        $response = $this->handle(\TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals());
-
-        if ($execute !== null) {
-            call_user_func($execute);
+        try {
+            $response = $this->handle(
+                \TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals()
+            );
+            if ($execute !== null) {
+                call_user_func($execute);
+            }
+        } catch (ImmediateResponseException $exception) {
+            $response = $exception->getResponse();
         }
 
         $this->sendResponse($response);

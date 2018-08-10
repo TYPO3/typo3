@@ -16,7 +16,8 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Rendering;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Response;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
 /**
  * Test case checking if localized tt_content is rendered correctly with different language settings
@@ -736,7 +737,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                 'sys_language_content' => 2,
                 'sys_language_mode' => 'strict',
                 'sys_language_contentOL' => 0,
-                'status' => 404,
+                'statusCode' => 404,
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
@@ -838,7 +839,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                 'sys_language_content' => 2,
                 'sys_language_mode' => 'strict',
                 'sys_language_contentOL' => 1,
-                'status' => 404
+                'statusCode' => 404
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 1
@@ -937,7 +938,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                 'sys_language_content' => 2,
                 'sys_language_mode' => 'strict',
                 'sys_language_contentOL' => 'hideNonTranslated',
-                'status' => 404,
+                'statusCode' => 404,
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
@@ -970,18 +971,23 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
      * @param int $sysLanguageContent
      * @param string $sysLanguageMode
      * @param string $sysLanguageContentOL
-     * @param string $status 'success' or 404
+     * @param string $statusCode 200 or 404
      */
-    public function contentOnNonTranslatedPageGerman(string $typoScript, array $visibleRecords, string $pageTitle, int $sysLanguageUid, int $sysLanguageContent, string $sysLanguageMode, string $sysLanguageContentOL, string $status='success')
+    public function contentOnNonTranslatedPageGerman(string $typoScript, array $visibleRecords, string $pageTitle, int $sysLanguageUid, int $sysLanguageContent, string $sysLanguageMode, string $sysLanguageContentOL, int $statusCode = 200)
     {
         $this->addTypoScriptToTemplateRecord(1, $typoScript);
-        $visibleHeaders = array_map(function ($element) {
-            return $element['header'];
-        }, $visibleRecords);
+        $visibleHeaders = array_column($visibleRecords, 'header');
 
-        $frontendResponse = $this->getFrontendResponse(self::VALUE_PageId, 2);
-        if ($status === Response::STATUS_Success) {
-            $responseSections = $frontendResponse->getResponseSections();
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest())
+                ->withPageId(self::VALUE_PageId)
+                ->withLanguageId(2)
+        );
+
+        if ($statusCode === 200) {
+            $responseStructure = ResponseContent::fromString((string)$response->getBody());
+            $responseSections = $responseStructure->getSections();
+
             $this->assertThat(
                 $responseSections,
                 $this->getRequestSectionHasRecordConstraint()
@@ -1009,15 +1015,14 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
             }
 
-            $content = json_decode($frontendResponse->getContent());
-            $this->assertEquals($pageTitle, $content->Scope->page->title);
-            $this->assertEquals($sysLanguageUid, $content->Scope->tsfe->sys_language_uid, 'sys_language_uid doesn\'t match');
-            $this->assertEquals($sysLanguageContent, $content->Scope->tsfe->sys_language_content, 'sys_language_content doesn\'t match');
-            $this->assertEquals($sysLanguageMode, $content->Scope->tsfe->sys_language_mode, 'sys_language_mode doesn\t match');
-            $this->assertEquals($sysLanguageContentOL, $content->Scope->tsfe->sys_language_contentOL, 'sys_language_contentOL doesn\t match');
+            $this->assertEquals($pageTitle, $responseStructure->getScopePath('page/title'));
+            $this->assertEquals($sysLanguageUid, $responseStructure->getScopePath('tsfe/sys_language_uid'), 'sys_language_uid doesn\'t match');
+            $this->assertEquals($sysLanguageContent, $responseStructure->getScopePath('tsfe/sys_language_content'), 'sys_language_content doesn\'t match');
+            $this->assertEquals($sysLanguageMode, $responseStructure->getScopePath('tsfe/sys_language_mode'), 'sys_language_mode doesn\t match');
+            $this->assertEquals($sysLanguageContentOL, $responseStructure->getScopePath('tsfe/sys_language_contentOL'), 'sys_language_contentOL doesn\t match');
         }
-        //some configuration combinations results in 404, in that case status will be set to 404
-        $this->assertEquals($status, $frontendResponse->getStatus());
+
+        $this->assertEquals($statusCode, $response->getStatusCode());
     }
 
     public function contentOnPartiallyTranslatedPageDataProvider(): array

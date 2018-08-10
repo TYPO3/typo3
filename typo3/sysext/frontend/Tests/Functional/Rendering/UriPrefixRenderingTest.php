@@ -3,10 +3,9 @@ declare(strict_types = 1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Rendering;
 
-use PHPUnit\Util\PHP\AbstractPhpProcess;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Response;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class UriPrefixRenderingTest extends FunctionalTestCase
@@ -284,13 +283,14 @@ class UriPrefixRenderingTest extends FunctionalTestCase
      */
     public function urisAreRenderedUsingAbsRefPrefix(string $absRefPrefixAspect, string $compressorAspect, array $expectations)
     {
-        $content = $this->executeFrontendRequest(
-            1,
-            [
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest())->withQueryParameters([
+                'id' => 1,
                 'testAbsRefPrefix' => $absRefPrefixAspect,
-                'testCompressor' => $compressorAspect
-            ]
+                'testCompressor' => $compressorAspect,
+            ])
         );
+        $content = (string)$response->getBody();
 
         foreach ($expectations as $type => $expectation) {
             $shallExist = true;
@@ -338,48 +338,6 @@ class UriPrefixRenderingTest extends FunctionalTestCase
                 }
             }
         }
-    }
-
-    /**
-     * Executes frontend request by invoking PHP sub-process.
-     *
-     * @param int $pageId
-     * @param array $queryArguments
-     * @return string
-     */
-    protected function executeFrontendRequest(int $pageId, array $queryArguments = []): string
-    {
-        $query = array_merge(
-            $queryArguments,
-            ['id' => (int)$pageId]
-        );
-        $arguments = [
-            'documentRoot' => $this->instancePath,
-            'requestUrl' => 'http://localhost/?' . http_build_query($query),
-        ];
-
-        $template = new \Text_Template(TYPO3_PATH_PACKAGES . 'typo3/testing-framework/Resources/Core/Functional/Fixtures/Frontend/request.tpl');
-        $template->setVar(
-            [
-                'arguments' => var_export($arguments, true),
-                'originalRoot' => ORIGINAL_ROOT,
-                'vendorPath' => TYPO3_PATH_PACKAGES
-            ]
-        );
-
-        $php = AbstractPhpProcess::factory();
-        $response = $php->runJob($template->render());
-        $result = json_decode($response['stdout'], true);
-
-        if ($result === null) {
-            $this->fail('Frontend Response is empty');
-        }
-
-        if ($result['status'] === Response::STATUS_Failure) {
-            $this->fail('Frontend Response has failure:' . LF . $result['error']);
-        }
-
-        return $result['content'];
     }
 
     /**

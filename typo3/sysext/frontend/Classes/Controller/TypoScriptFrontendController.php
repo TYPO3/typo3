@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
+use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\LockFactory;
@@ -894,7 +895,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $message,
                     ['code' => PageAccessFailureReasons::DATABASE_CONNECTION_FAILED]
                 );
-                $this->sendResponseAndExit($response);
+                throw new ImmediateResponseException($response, 1533931298);
             } catch (ServiceUnavailableException $e) {
                 throw new ServiceUnavailableException($message, 1301648782);
             }
@@ -1350,7 +1351,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                             $message,
                             ['code' => PageAccessFailureReasons::NO_PAGES_FOUND]
                         );
-                        $this->sendResponseAndExit($response);
+                        throw new ImmediateResponseException($response, 1533931299);
                     } catch (ServiceUnavailableException $e) {
                         throw new ServiceUnavailableException($message, 1301648975);
                     }
@@ -1404,7 +1405,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         $this->getPageAccessFailureReasons()
                     );
             }
-            $this->sendResponseAndExit($response);
+            throw new ImmediateResponseException($response, 1533931329);
         }
         // Init SYS_LASTCHANGED
         $this->register['SYS_LASTCHANGED'] = (int)$this->page['tstamp'];
@@ -1501,7 +1502,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         $message,
                         $this->getPageAccessFailureReasons(PageAccessFailureReasons::PAGE_NOT_FOUND)
                     );
-                    $this->sendResponseAndExit($response);
+                    throw new ImmediateResponseException($response, 1533931330);
                 } catch (PageNotFoundException $e) {
                     throw new PageNotFoundException($message, 1301648780);
                 }
@@ -1517,7 +1518,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $message,
                     $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_INVALID_PAGETYPE)
                 );
-                $this->sendResponseAndExit($response);
+                throw new ImmediateResponseException($response, 1533931343);
             } catch (PageNotFoundException $e) {
                 throw new PageNotFoundException($message, 1301648781);
             }
@@ -1564,7 +1565,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $message,
                     $this->getPageAccessFailureReasons(PageAccessFailureReasons::ROOTLINE_BROKEN)
                 );
-                $this->sendResponseAndExit($response);
+                throw new ImmediateResponseException($response, 1533931350);
             } catch (ServiceUnavailableException $e) {
                 throw new ServiceUnavailableException($message, 1301648167);
             }
@@ -1579,7 +1580,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         $message,
                         $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_GENERAL)
                     );
-                    $this->sendResponseAndExit($response);
+                    throw new ImmediateResponseException($response, 1533931351);
                 } catch (ServiceUnavailableException $e) {
                     $this->logger->warning($message);
                     throw new ServiceUnavailableException($message, 1301648234);
@@ -2189,11 +2190,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         'Request parameters could not be validated (&cHash comparison failed)',
                         ['code' => PageAccessFailureReasons::CACHEHASH_COMPARISON_FAILED]
                     );
-                    $this->sendResponseAndExit($response);
-                } else {
-                    $this->disableCache();
-                    $this->getTimeTracker()->setTSlogMessage('The incoming cHash "' . $this->cHash . '" and calculated cHash "' . $cHash_calc . '" did not match, so caching was disabled. The fieldlist used was "' . implode(',', array_keys($this->cHash_array)) . '"', 2);
+                    throw new ImmediateResponseException($response, 1533931352);
                 }
+                $this->disableCache();
+                $this->getTimeTracker()->setTSlogMessage('The incoming cHash "' . $this->cHash . '" and calculated cHash "' . $cHash_calc . '" did not match, so caching was disabled. The fieldlist used was "' . implode(',', array_keys($this->cHash_array)) . '"', 2);
             }
         } elseif (is_array($GET)) {
             // No cHash is set, check if that is correct
@@ -2221,11 +2221,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     'Request parameters could not be validated (&cHash empty)',
                     ['code' => PageAccessFailureReasons::CACHEHASH_EMPTY]
                 );
-                $this->sendResponseAndExit($response);
-            } else {
-                $this->disableCache();
-                $this->getTimeTracker()->setTSlogMessage('TSFE->reqCHash(): No &cHash parameter was sent for GET vars though required so caching is disabled', 2);
+                throw new ImmediateResponseException($response, 1533931354);
             }
+            $this->disableCache();
+            $this->getTimeTracker()->setTSlogMessage('TSFE->reqCHash(): No &cHash parameter was sent for GET vars though required so caching is disabled', 2);
         }
     }
 
@@ -2504,7 +2503,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                             $message,
                             ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_CONFIGURED]
                         );
-                        $this->sendResponseAndExit($response);
+                        throw new ImmediateResponseException($response, 1533931374);
                     } catch (ServiceUnavailableException $e) {
                         $explanation = 'This means that there is no TypoScript object of type PAGE with typeNum=' . $this->type . ' configured.';
                         throw new ServiceUnavailableException($message . ' ' . $explanation, 1294587217);
@@ -2560,7 +2559,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         $message,
                         ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_FOUND]
                     );
-                    $this->sendResponseAndExit($response);
+                    throw new ImmediateResponseException($response, 1533931380);
                 } catch (ServiceUnavailableException $e) {
                     throw new ServiceUnavailableException($message, 1294587218);
                 }
@@ -2654,50 +2653,49 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         'Page is not available in the requested language.',
                         ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE]
                     );
-                    $this->sendResponseAndExit($response);
-                } else {
-                    switch ((string)$languageAspect->getLegacyLanguageMode()) {
-                        case 'strict':
-                            $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                                $GLOBALS['TYPO3_REQUEST'],
-                                'Page is not available in the requested language (strict).',
-                                ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE_STRICT_MODE]
-                            );
-                            $this->sendResponseAndExit($response);
-                            break;
-                        case 'fallback':
-                        case 'content_fallback':
-                            // Setting content uid (but leaving the sys_language_uid) when a content_fallback
-                            // value was found.
-                            foreach ($languageAspect->getFallbackChain() ?? [] as $orderValue) {
-                                if ($orderValue === '0' || $orderValue === 0 || $orderValue === '') {
-                                    $languageContentId = 0;
-                                    break;
-                                }
-                                if (MathUtility::canBeInterpretedAsInteger($orderValue) && !empty($this->sys_page->getPageOverlay($this->id, (int)$orderValue))) {
-                                    $languageContentId = (int)$orderValue;
-                                    break;
-                                }
-                                if ($orderValue === 'pageNotFound') {
-                                    // The existing fallbacks have not been found, but instead of continuing
-                                    // page rendering with default language, a "page not found" message should be shown
-                                    // instead.
-                                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                                        $GLOBALS['TYPO3_REQUEST'],
-                                        'Page is not available in the requested language (fallbacks did not apply).',
-                                        ['code' => PageAccessFailureReasons::LANGUAGE_AND_FALLBACKS_NOT_AVAILABLE]
-                                    );
-                                    $this->sendResponseAndExit($response);
-                                }
+                    throw new ImmediateResponseException($response, 1533931388);
+                }
+                switch ((string)$languageAspect->getLegacyLanguageMode()) {
+                    case 'strict':
+                        $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                            $GLOBALS['TYPO3_REQUEST'],
+                            'Page is not available in the requested language (strict).',
+                            ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE_STRICT_MODE]
+                        );
+                        throw new ImmediateResponseException($response, 1533931395);
+                        break;
+                    case 'fallback':
+                    case 'content_fallback':
+                        // Setting content uid (but leaving the sys_language_uid) when a content_fallback
+                        // value was found.
+                        foreach ($languageAspect->getFallbackChain() ?? [] as $orderValue) {
+                            if ($orderValue === '0' || $orderValue === 0 || $orderValue === '') {
+                                $languageContentId = 0;
+                                break;
                             }
-                            break;
-                        case 'ignore':
-                            $languageContentId = $languageAspect->getId();
-                            break;
-                        default:
-                            // Default is that everything defaults to the default language...
-                            $languageId = ($languageContentId = 0);
-                    }
+                            if (MathUtility::canBeInterpretedAsInteger($orderValue) && !empty($this->sys_page->getPageOverlay($this->id, (int)$orderValue))) {
+                                $languageContentId = (int)$orderValue;
+                                break;
+                            }
+                            if ($orderValue === 'pageNotFound') {
+                                // The existing fallbacks have not been found, but instead of continuing
+                                // page rendering with default language, a "page not found" message should be shown
+                                // instead.
+                                $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                                    $GLOBALS['TYPO3_REQUEST'],
+                                    'Page is not available in the requested language (fallbacks did not apply).',
+                                    ['code' => PageAccessFailureReasons::LANGUAGE_AND_FALLBACKS_NOT_AVAILABLE]
+                                );
+                                throw new ImmediateResponseException($response, 1533931402);
+                            }
+                        }
+                        break;
+                    case 'ignore':
+                        $languageContentId = $languageAspect->getId();
+                        break;
+                    default:
+                        // Default is that everything defaults to the default language...
+                        $languageId = ($languageContentId = 0);
                 }
             } else {
                 // Setting sys_language if an overlay record was found (which it is only if a language is used)
@@ -2728,7 +2726,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $message,
                 ['code' => PageAccessFailureReasons::LANGUAGE_DEFAULT_NOT_AVAILABLE]
             );
-            $this->sendResponseAndExit($response);
+            throw new ImmediateResponseException($response, 1533931423);
         }
 
         if ($languageAspect->getId() > 0) {
@@ -4895,30 +4893,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $httpResponseCode ?: null
             );
         }
-    }
-
-    /**
-     * Helper method to kill the request. Exits.
-     * Should not be used from the outside, rather return the response object
-     * Ideally, this method will be dropped by TYPO3 v9 LTS.
-     *
-     * @param ResponseInterface $response
-     */
-    protected function sendResponseAndExit(ResponseInterface $response)
-    {
-        // If the response code was not changed by legacy code (still is 200)
-        // then allow the PSR-7 response object to explicitly set it.
-        // Otherwise let legacy code take precedence.
-        // This code path can be deprecated once we expose the response object to third party code
-        if (http_response_code() === 200) {
-            header('HTTP/' . $response->getProtocolVersion() . ' ' . $response->getStatusCode() . ' ' . $response->getReasonPhrase());
-        }
-
-        foreach ($response->getHeaders() as $name => $values) {
-            header($name . ': ' . implode(', ', $values));
-        }
-        echo $response->getBody()->__toString();
-        die;
     }
 
     /**

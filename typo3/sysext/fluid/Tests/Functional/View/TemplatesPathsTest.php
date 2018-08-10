@@ -14,9 +14,7 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\View;
  * The TYPO3 project - inspiring people to share!
  */
 
-use PHPUnit\Util\PHP\AbstractPhpProcess;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Response;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class TemplatesPathsTest extends FunctionalTestCase
@@ -144,7 +142,7 @@ class TemplatesPathsTest extends FunctionalTestCase
             'mode' => 'fluidTemplate',
         ];
 
-        $content = $this->fetchFrontendResponse($requestArguments)->getContent();
+        $content = $this->fetchFrontendResponseBody($requestArguments);
 
         $this->assertContains($expectedTemplate, $content);
         $this->assertContains($expectedPartial, $content);
@@ -167,7 +165,7 @@ class TemplatesPathsTest extends FunctionalTestCase
             'mode' => 'controller',
         ];
 
-        $content = $this->fetchFrontendResponse($requestArguments)->getContent();
+        $content = $this->fetchFrontendResponseBody($requestArguments);
 
         $this->assertContains($expectedTemplate, $content);
         $this->assertContains($expectedPartial, $content);
@@ -191,7 +189,7 @@ class TemplatesPathsTest extends FunctionalTestCase
             'pluginConfig' => 'extensionKey',
         ];
 
-        $content = $this->fetchFrontendResponse($requestArguments)->getContent();
+        $content = $this->fetchFrontendResponseBody($requestArguments);
 
         $this->assertContains($expectedTemplate, $content);
         $this->assertContains($expectedPartial, $content);
@@ -215,7 +213,7 @@ class TemplatesPathsTest extends FunctionalTestCase
             'pluginConfig' => 'pluginName',
         ];
 
-        $content = $this->fetchFrontendResponse($requestArguments)->getContent();
+        $content = $this->fetchFrontendResponseBody($requestArguments);
 
         $this->assertContains($expectedTemplate, $content);
         $this->assertContains($expectedPartial, $content);
@@ -234,7 +232,7 @@ class TemplatesPathsTest extends FunctionalTestCase
             'widgetConfig' => 'new',
         ];
 
-        $content = $this->fetchFrontendResponse($requestArguments)->getContent();
+        $content = $this->fetchFrontendResponseBody($requestArguments);
 
         $this->assertContains('PAGINATE WIDGET', $content);
     }
@@ -251,7 +249,7 @@ class TemplatesPathsTest extends FunctionalTestCase
             'widgetConfig' => 'old',
         ];
 
-        $content = $this->fetchFrontendResponse($requestArguments)->getContent();
+        $content = $this->fetchFrontendResponseBody($requestArguments);
 
         $this->assertContains('PAGINATE WIDGET', $content);
     }
@@ -268,7 +266,7 @@ class TemplatesPathsTest extends FunctionalTestCase
             'pluginConfig' => 'incomplete',
         ];
 
-        $content = $this->fetchFrontendResponse($requestArguments)->getContent();
+        $content = $this->fetchFrontendResponseBody($requestArguments);
 
         $this->assertContains('Base Template', $content);
         $this->assertContains('Default Layout', $content);
@@ -285,7 +283,7 @@ class TemplatesPathsTest extends FunctionalTestCase
             'mode' => '2plugins',
         ];
 
-        $content = $this->fetchFrontendResponse($requestArguments)->getContent();
+        $content = $this->fetchFrontendResponseBody($requestArguments);
 
         $this->assertContains('Base Template', $content);
         $this->assertContains('Override Template', $content);
@@ -293,39 +291,17 @@ class TemplatesPathsTest extends FunctionalTestCase
 
     /**
      * @param array $requestArguments
-     * @param bool $failOnFailure
-     * @return Response
+     * @return string
      */
-    protected function fetchFrontendResponse(array $requestArguments, $failOnFailure = true)
+    protected function fetchFrontendResponseBody(array $requestArguments): string
     {
-        $arguments = [
-            'documentRoot' => $this->instancePath,
-            'requestUrl' => 'http://localhost' . '/?' . GeneralUtility::implodeArrayForUrl('', $requestArguments),
-        ];
+        (new InternalRequest())
+            ->withQueryParameters($requestArguments);
 
-        $template = new \Text_Template(TYPO3_PATH_PACKAGES . 'typo3/testing-framework/Resources/Core/Functional/Fixtures/Frontend/request.tpl');
-        $template->setVar(
-            [
-                'arguments' => var_export($arguments, true),
-                'originalRoot' => ORIGINAL_ROOT,
-                'vendorPath' => TYPO3_PATH_PACKAGES,
-            ]
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest())->withQueryParameters($requestArguments)
         );
 
-        $php = AbstractPhpProcess::factory();
-        $response = $php->runJob($template->render());
-        $result = json_decode($response['stdout'], true);
-
-        if ($result === null) {
-            $this->fail('Frontend Response is empty');
-        }
-
-        if ($failOnFailure && $result['status'] === Response::STATUS_Failure) {
-            $this->fail('Frontend Response has failure:' . LF . $result['error']);
-        }
-
-        $response = new Response($result['status'], $result['content'], $result['error']);
-
-        return $response;
+        return (string)$response->getBody();
     }
 }
