@@ -205,4 +205,10 @@ return [
             'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Page\PageRenderer->addInlineLanguageLabelArray' => [
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85806-DeprecateSecondArgumentOfPageRendereraddInlineLanguageLabelArray.rst',
+        ],
+    ],
 ];

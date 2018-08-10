@@ -272,14 +272,14 @@ class FormResultCompiler
 
         // todo: change these things in JS
         $pageRenderer->addInlineLanguageLabelArray([
-            'FormEngine.noRecordTitle'          => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title',
-            'FormEngine.fieldsChanged'          => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.fieldsChanged',
-            'FormEngine.fieldsMissing'          => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.fieldsMissing',
-            'FormEngine.maxItemsAllowed'        => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.maxItemsAllowed',
-            'FormEngine.refreshRequiredTitle'   => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refreshRequired.title',
-            'FormEngine.refreshRequiredContent' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refreshRequired.content',
-            'FormEngine.remainingCharacters'    => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters',
-        ], true);
+            'FormEngine.noRecordTitle'          => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title'),
+            'FormEngine.fieldsChanged'          => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.fieldsChanged'),
+            'FormEngine.fieldsMissing'          => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.fieldsMissing'),
+            'FormEngine.maxItemsAllowed'        => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.maxItemsAllowed'),
+            'FormEngine.refreshRequiredTitle'   => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refreshRequired.title'),
+            'FormEngine.refreshRequiredContent' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refreshRequired.content'),
+            'FormEngine.remainingCharacters'    => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters'),
+        ]);
 
         $out = LF . 'TBE_EDITOR.doSaveFieldName = "' . ($this->doSaveFieldName ? addslashes($this->doSaveFieldName) : '') . '";';
 
@@ -304,6 +304,16 @@ class FormResultCompiler
     protected function getBackendUserAuthentication()
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * Returns an instance of LanguageService
+     *
+     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 
     /**

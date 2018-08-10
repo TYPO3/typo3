@@ -1525,9 +1525,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $array
      * @param bool $parseWithLanguageService
      */
-    public function addInlineLanguageLabelArray(array $array, $parseWithLanguageService = false)
+    public function addInlineLanguageLabelArray(array $array, $parseWithLanguageService = null)
     {
         if ($parseWithLanguageService === true) {
+            trigger_error('PageRenderer::addInlineLanguageLabelArray() second method argument set to true is deprecated, and will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
             foreach ($array as $key => $value) {
                 if (TYPO3_MODE === 'FE') {
                     $array[$key] = $this->getTypoScriptFrontendController()->sL($value);
@@ -1535,6 +1536,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                     $array[$key] = $this->getLanguageService()->sL($value);
                 }
             }
+        } elseif ($parseWithLanguageService !== null) {
+            trigger_error('PageRenderer::addInlineLanguageLabelArray() does not need a second method argument anymore, and will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         }
 
         $this->inlineLanguageLabels = array_merge($this->inlineLanguageLabels, $array);

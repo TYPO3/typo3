@@ -194,8 +194,8 @@ class SetupModuleController
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngine');
         $pageRenderer->addInlineSetting('FormEngine', 'formName', 'editform');
         $pageRenderer->addInlineLanguageLabelArray([
-            'FormEngine.remainingCharacters'    => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters',
-        ], true);
+            'FormEngine.remainingCharacters' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters'),
+        ]);
     }
 
     /**
