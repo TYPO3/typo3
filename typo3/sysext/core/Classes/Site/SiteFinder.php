@@ -16,8 +16,9 @@ namespace TYPO3\CMS\Core\Site;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -67,22 +68,44 @@ class SiteFinder
     }
 
     /**
-     * Get a list of all configured base uris of all sites
+     * Returns a Symfony RouteCollection containing all routes to all sites.
      *
-     * @return array
+     * {next} is not evaluated yet, but set as suffix and will change in the future.
+     *
+     * @return RouteCollection
+     * @internal this method will likely change due to further extraction into custom logic for Routing
      */
-    public function getBaseUris(): array
+    public function getRouteCollectionForAllSites(): RouteCollection
     {
-        $baseUrls = [];
+        $collection = new RouteCollection();
+        $groupedRoutes = [];
         foreach ($this->sites as $site) {
-            foreach ($site->getLanguages() as $language) {
-                $baseUrls[$language->getBase()] = $language;
-                if ($language->getLanguageId() === 0) {
-                    $baseUrls[$site->getBase()] = $language;
+            foreach ($site->getLanguages() as $siteLanguage) {
+                $urlParts = parse_url($siteLanguage->getBase());
+                $route = new Route(
+                    ($urlParts['path'] ?? '/') . '{next}',
+                    ['next' => '', 'site' => $site, 'language' => $siteLanguage],
+                    array_filter(['next' => '.*', 'port' => $urlParts['port'] ?? null]),
+                    ['utf8' => true],
+                    $urlParts['host'] ?? '',
+                    !empty($urlParts['scheme']) ? [$urlParts['scheme']] : null
+                );
+                $identifier = 'site_' . $site->getIdentifier() . '_' . $siteLanguage->getLanguageId();
+                $groupedRoutes[$urlParts['host'] ?? 0][$urlParts['path'] ?? 0][$identifier] = $route;
+            }
+        }
+        // As the {next} parameter is greedy, it needs to be ensured that the one with the most specific part
+        // matches last
+        foreach ($groupedRoutes as $groupedRoutesPerHost) {
+            krsort($groupedRoutesPerHost);
+            foreach ($groupedRoutesPerHost as $groupedRoutesPerPath) {
+                krsort($groupedRoutesPerPath);
+                foreach ($groupedRoutesPerPath as $identifier => $route) {
+                    $collection->add($identifier, $route);
                 }
             }
         }
-        return $baseUrls;
+        return $collection;
     }
 
     /**
@@ -98,28 +121,6 @@ class SiteFinder
             return $this->sites[$this->mappingRootPageIdToIdentifier[$rootPageId]];
         }
         throw new SiteNotFoundException('No site found for root page id ' . $rootPageId, 1521668882);
-    }
-
-    /**
-     * Get a site language by given base URI
-     *
-     * @param string $uri
-     * @return mixed|null
-     */
-    public function getSiteLanguageByBase(string $uri)
-    {
-        $baseUris = $this->getBaseUris();
-        $bestMatchedUri = null;
-        foreach ($baseUris as $base => $language) {
-            if (strpos($uri, $base) === 0 && strlen($bestMatchedUri ?? '') < strlen($base)) {
-                $bestMatchedUri = $base;
-            }
-        }
-        $siteLanguage = $baseUris[$bestMatchedUri] ?? null;
-        if ($siteLanguage instanceof Site) {
-            $siteLanguage = $siteLanguage->getLanguageById(0);
-        }
-        return $siteLanguage;
     }
 
     /**

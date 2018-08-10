@@ -19,6 +19,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\RequestContext;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\NormalizedParams;
@@ -39,6 +42,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class SiteResolver implements MiddlewareInterface
 {
     /**
+     * @var SiteFinder
+     */
+    protected $finder;
+
+    /**
+     * Injects necessary objects
+     * @param SiteFinder|null $finder
+     */
+    public function __construct(SiteFinder $finder = null)
+    {
+        $this->finder = $finder ?? GeneralUtility::makeInstance(SiteFinder::class);
+    }
+
+    /**
      * Resolve the site/language information by checking the page ID or the URL.
      *
      * @param ServerRequestInterface $request
@@ -47,8 +64,6 @@ class SiteResolver implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $finder = GeneralUtility::makeInstance(SiteFinder::class);
-
         $site = null;
         $language = null;
 
@@ -59,17 +74,35 @@ class SiteResolver implements MiddlewareInterface
         if ($pageId > 0 && $languageId !== null) {
             // Loop over the whole rootline without permissions to get the actual site information
             try {
-                $site = $finder->getSiteByPageId((int)$pageId);
+                $site = $this->finder->getSiteByPageId((int)$pageId);
                 $language = $site->getLanguageById((int)$languageId);
             } catch (SiteNotFoundException $e) {
+                // No site found by ID
             }
         }
+
+        // 2. Check if there is a site language, if not, do "Site Routing"
         if (!($language instanceof SiteLanguage)) {
-            // 2. Check if there is a site language, if not, just don't do anything
-            $language = $finder->getSiteLanguageByBase((string)$request->getUri());
-            // @todo: use exception for getSiteLanguageByBase
-            if ($language) {
-                $site = $language->getSite();
+            $collection = $this->finder->getRouteCollectionForAllSites();
+            // This part will likely be extracted into a separate class that builds a context out of a PSR-7 request
+            // something like $result = SiteRouter->matchRequest($psr7Request);
+            $context = new RequestContext(
+                '',
+                $request->getMethod(),
+                $request->getUri()->getHost(),
+                $request->getUri()->getScheme(),
+                // Ports are only necessary for URL generation in Symfony which is not used by TYPO3
+                80,
+                443,
+                $request->getUri()->getPath()
+            );
+            $matcher = new UrlMatcher($collection, $context);
+            try {
+                $result = $matcher->match($request->getUri()->getPath());
+                $site = $result['site'];
+                $language = $result['language'];
+            } catch (ResourceNotFoundException $e) {
+                // No site found
             }
         }
 

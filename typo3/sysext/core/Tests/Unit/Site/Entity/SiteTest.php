@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Site\Entity;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Error\PageErrorHandler\FluidPageErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\InvalidPageErrorHandlerException;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageContentErrorHandler;
@@ -27,6 +27,100 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SiteTest extends UnitTestCase
 {
+    public function getBaseReturnsProperUriDataProvider()
+    {
+        return [
+            'URL with scheme and domain' => ['https://www.typo3.org', 'https://www.typo3.org'],
+            'URL with scheme and domain and path' => ['https://www.typo3.org/howdy', 'https://www.typo3.org/howdy'],
+            'URL with scheme and domain and path with trailing slash' => ['https://www.typo3.org/howdy/', 'https://www.typo3.org/howdy/'],
+            'URL without scheme, but with domain' => ['www.typo3.org', '//www.typo3.org'],
+            'URL without scheme, but with domain and path' => ['www.typo3.org/partner', '//www.typo3.org/partner'],
+            'URL without scheme, but with domain and path and trailing slash' => ['www.typo3.org/partner/', '//www.typo3.org/partner/'],
+            'URL without scheme and domain but with absolute path' => ['/partner', '/partner'],
+            'URL without scheme and domain but with absolute path and trailing slash' => ['/partner/', '/partner/'],
+            'URL without scheme, domain but with random path receives a scheme divider' => ['partner/', '/partner/'],
+            'URL with ID query parameter' => ['/partner/?id=nice-to-see-you', '/partner/?id=nice-to-see-you'],
+            'URL with unknown query parameter' => ['/partner/?in-crime=nice-to-see-you', '/partner/?in-crime=nice-to-see-you'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider getBaseReturnsProperUriDataProvider
+     */
+    public function getBaseReturnsProperUri($input, $expected)
+    {
+        $subject = new Site('all-your-base-belongs-to-us', 13, [
+            'base' => $input,
+            'languages' => []
+        ]);
+        $this->assertEquals($expected, $subject->getBase());
+    }
+
+    /**
+     * Consists of three parts:
+     * - input "site" base
+     * - input "site language" base
+     * - expected "site language" base after it is glued together
+     */
+    public function getBaseForSiteLanguageReturnsProperUriDataProvider()
+    {
+        return [
+            'Language as a regular path segment' => [
+                'https://www.typo3.org',
+                'en',
+                'https://www.typo3.org/en',
+            ],
+            'Language with two path segments' => [
+                'https://www.typo3.org',
+                'us/en',
+                'https://www.typo3.org/us/en',
+            ],
+            'Site base is added to absolute path segment' => [
+                'https://www.typo3.com/microsites/',
+                '/onboarding/',
+                'https://www.typo3.com/microsites/onboarding/',
+            ],
+            'Site base is prefixed to absolute path segment' => [
+                'https://www.typo3.com/microsites/',
+                'onboarding/',
+                'https://www.typo3.com/microsites/onboarding/',
+            ],
+            'Language with domain and scheme, do not care about site base' => [
+                'https://www.typo3.org',
+                'https://www.typo3.it',
+                'https://www.typo3.it',
+            ],
+            'Language with domain but no scheme, do not care about site base' => [
+                'blabla.car',
+                'www.typo3.fr',
+                '//www.typo3.fr',
+            ],
+        ];
+    }
+
+    /**
+     * This test shows that the a base from a site language is properly "inheriting" the base
+     * from a site if it isn't absolute.
+     *
+     * @test
+     * @dataProvider getBaseForSiteLanguageReturnsProperUriDataProvider
+     */
+    public function getBaseForSiteLanguageReturnsProperUri($siteBase, $languageBase, $expected)
+    {
+        $subject = new Site('all-of-base', 13, [
+            'base' => $siteBase,
+            'languages' => [
+                [
+                    'languageId' => 0,
+                    'base' => $languageBase,
+                    'locale' => 'it_IT.UTF-8',
+                ]
+            ]
+        ]);
+        $this->assertEquals($expected, $subject->getLanguageById(0)->getBase());
+    }
+
     /**
      * @test
      */
@@ -68,14 +162,14 @@ class SiteTest extends UnitTestCase
     {
         $this->expectException(InvalidPageErrorHandlerException::class);
         $this->expectExceptionCode(1527432330);
-        $this->expectExceptionMessage('The configured error handler "' . BackendUtility::class . '" for status code 404 must implement the PageErrorHandlerInterface.');
+        $this->expectExceptionMessage('The configured error handler "' . Random::class . '" for status code 404 must implement the PageErrorHandlerInterface.');
         $subject = new Site('aint-misbehaving', 13, [
             'languages' => [],
             'errorHandling' => [
                 [
                     'errorCode' => 404,
                     'errorHandler' => 'PHP',
-                    'errorPhpClassFQCN' => BackendUtility::class
+                    'errorPhpClassFQCN' => Random::class
                 ],
             ]
         ]);

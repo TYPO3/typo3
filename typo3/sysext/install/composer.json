@@ -14,7 +14,7 @@
 	},
 	"require": {
 		"nikic/php-parser": "^4.0",
-		"symfony/finder": "^2.7 || ^3.0 || ^4.0",
+		"symfony/finder": "^4.1",
 		"typo3/cms-core": "9.4.*@dev",
 		"typo3/cms-extbase": "9.4.*@dev",
 		"typo3/cms-fluid": "9.4.*@dev"

@@ -74,27 +74,36 @@ class Site implements SiteInterface
         $this->identifier = $identifier;
         $this->rootPageId = $rootPageId;
         $this->configuration = $configuration;
-        $configuration['languages'] = $configuration['languages'] ?: [0 => [
-            'languageId' => 0,
-            'title' => 'Default',
-            'navigationTitle' => '',
-            'typo3Language' => 'default',
-            'flag' => 'us',
-            'locale' => 'en_US.UTF-8',
-            'iso-639-1' => 'en',
-            'hreflang' => 'en-US',
-            'direction' => '',
-        ]];
-        $this->base = $configuration['base'] ?? '';
+        $configuration['languages'] = $configuration['languages'] ?: [
+            0 => [
+                'languageId' => 0,
+                'title' => 'Default',
+                'navigationTitle' => '',
+                'typo3Language' => 'default',
+                'flag' => 'us',
+                'locale' => 'en_US.UTF-8',
+                'iso-639-1' => 'en',
+                'hreflang' => 'en-US',
+                'direction' => '',
+            ]
+        ];
+        $this->base = $this->sanitizeBaseUrl($configuration['base'] ?? '');
         foreach ($configuration['languages'] as $languageConfiguration) {
             $languageUid = (int)$languageConfiguration['languageId'];
-            $base = '/';
+            // site language has defined its own base, this is the case most of the time.
             if (!empty($languageConfiguration['base'])) {
                 $base = $languageConfiguration['base'];
-            }
-            $baseParts = parse_url($base);
-            if (empty($baseParts['scheme'])) {
-                $base = rtrim($this->base, '/') . '/' . ltrim($base, '/');
+                $base = $this->sanitizeBaseUrl($base);
+                $baseParts = parse_url($base);
+                // no host given by the language-specific base, so lets prefix the main site base
+                if (empty($baseParts['scheme']) && empty($baseParts['host'])) {
+                    $base = rtrim($this->base, '/') . '/' . ltrim($base, '/');
+                    $base = $this->sanitizeBaseUrl($base);
+                }
+            } else {
+                // Language configuration does not have a base defined
+                // So the main site base is used (usually done for default languages)
+                $base = $this->sanitizeBaseUrl(rtrim($this->base, '/') . '/');
             }
             $this->languages[$languageUid] = new SiteLanguage(
                 $this,
@@ -223,5 +232,30 @@ class Site implements SiteInterface
             'Attribute ' . $attributeName . ' does not exist on site ' . $this->identifier . '.',
             1522495954
         );
+    }
+
+    /**
+     * If a site base contains "/" or "www.domain.com", it is ensured that
+     * parse_url() can handle this kind of configuration properly.
+     *
+     * @param string $base
+     * @return string
+     */
+    protected function sanitizeBaseUrl(string $base): string
+    {
+        // no protocol ("//") and the first part is no "/" (path), means that this is a domain like
+        // "www.domain.com/blabla", and we want to ensure that this one then gets a "no-scheme agnostic" part
+        if (!empty($base) && strpos($base, '//') === false && $base{0} !== '/') {
+            // either a scheme is added, or no scheme but with domain, or a path which is not absolute
+            // make the base prefixed with a slash, so it is recognized as path, not as domain
+            // treat as path
+            if (strpos($base, '.') === false) {
+                $base = '/' . $base;
+            } else {
+                // treat as domain name
+                $base = '//' . $base;
+            }
+        }
+        return $base;
     }
 }
