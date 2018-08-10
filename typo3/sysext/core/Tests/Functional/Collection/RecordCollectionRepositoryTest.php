@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Collection\RecordCollectionRepository;
 use TYPO3\CMS\Core\Collection\StaticRecordCollection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Test case for \TYPO3\CMS\Core\Collection\RecordCollectionRepository
@@ -46,17 +45,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
         $this->subject = $this->getMockBuilder(RecordCollectionRepository::class)
             ->setMethods(['getEnvironmentMode'])
             ->getMock();
-
         $this->testTableName = $this->getUniqueId('tx_testtable');
-
-        $typoScriptFrontendController = GeneralUtility::makeInstance(
-            TypoScriptFrontendController::class,
-            null,
-            1,
-            0
-        );
-        $typoScriptFrontendController->showHiddenRecords = false;
-        $GLOBALS['TSFE'] = $typoScriptFrontendController;
     }
 
     protected function tearDown()

@@ -956,7 +956,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Initializes the front-end user groups.
-     * Sets ->loginUser and ->gr_list based on front-end user status.
+     * Sets frontend.user aspect based on front-end user status.
      */
     public function initUserGroups()
     {
@@ -967,14 +967,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->fe_user->fetchGroupData();
         $isUserAndGroupSet = is_array($this->fe_user->user) && !empty($this->fe_user->groupData['uid']);
         if ($isUserAndGroupSet) {
-            // global flag!
-            $this->loginUser = true;
             // group -2 is not an existing group, but denotes a 'default' group when a user IS logged in.
             // This is used to let elements be shown for all logged in users!
             $userGroups[] = -2;
             $groupsFromUserRecord = $this->fe_user->groupData['uid'];
         } else {
-            $this->loginUser = false;
             // group -1 is not an existing group, but denotes a 'default' group when not logged in.
             // This is used to let elements be hidden, when a user is logged in!
             $userGroups[] = -1;
@@ -994,7 +991,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $userGroups = array_merge($userGroups, array_map('intval', $groupsFromUserRecord));
         }
 
-        $this->gr_list = implode(',', $userGroups);
         $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user ?: null, $userGroups));
 
         // For every 60 seconds the is_online timestamp for a logged-in user is updated
@@ -1049,8 +1045,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             || $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages', false)
             || $this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false)
         ) {
-            $this->showHiddenPage = false;
-            $this->showHiddenRecords = false;
             $GLOBALS['SIM_EXEC_TIME'] = $GLOBALS['EXEC_TIME'];
             $GLOBALS['SIM_ACCESS_TIME'] = $GLOBALS['ACCESS_TIME'];
             $this->fePreview = 0;
@@ -1098,26 +1092,26 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $backendUserObject->fetchGroupData();
             }
             // Unset the user initialization if any setting / restriction applies
-            if (!$backendUserObject->checkBackendAccessSettingsFromInitPhp()) {
-                $backendUserObject = null;
-            } elseif (!empty($backendUserObject->user['uid'])) {
-                // If the user is active now, let the controller know
-                $this->beUserLogin = true;
-            } else {
+            if (!$backendUserObject->checkBackendAccessSettingsFromInitPhp() || empty($backendUserObject->user['uid'])) {
                 $backendUserObject = null;
             }
             $this->getTimeTracker()->pull();
             $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] = microtime(true);
         }
-        // POST BE_USER HOOK
-        $_params = [
-            'BE_USER' => &$backendUserObject
-        ];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-        }
         $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $backendUserObject));
         $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $backendUserObject ? $backendUserObject->workspace : 0));
+        // POST BE_USER HOOK
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'])) {
+            $_params = [
+                'BE_USER' => &$backendUserObject
+            ];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'] as $_funcRef) {
+                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+            }
+            // Set the aspect again, in case it got changed
+            $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $backendUserObject));
+            $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $backendUserObject ? $backendUserObject->workspace : 0));
+        }
         return $backendUserObject;
     }
 
@@ -1163,7 +1157,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 } else {
                     $userGroups = [0, -2];
                 }
-                $this->gr_list = implode(',', $userGroups);
                 $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user ?: null, $userGroups));
                 // Fetching the id again, now with the preview settings reset.
                 $this->fetch_the_id();
@@ -1185,8 +1178,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Evaluates admin panel or workspace settings to see if
      * visibility settings like
      * - $fePreview
-     * - $showHiddenPage
-     * - $showHiddenRecords
+     * - Visibility Aspect: includeHiddenPages
+     * - Visibility Aspect: includeHiddenPontent
      * - $simUserGroup
      * should be applied to the current object.
      *
@@ -1211,7 +1204,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $aspect = $this->context->getAspect('visibility');
             $newAspect = GeneralUtility::makeInstance(VisibilityAspect::class, true, $aspect->includeHiddenContent(), $aspect->includeDeletedRecords());
             $this->context->setAspect('visibility', $newAspect);
-            $this->showHiddenPage = true;
         }
         // The preview flag will be set if an offline workspace will be previewed
         if ($this->whichWorkspace() > 0) {
@@ -1284,8 +1276,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * - sys_page
      * - sys_page->where_groupAccess
      * - sys_page->where_hid_del
-     * - loginUser
-     * - gr_list
+     * - Context: FrontendUser Aspect
      * - no_cache
      * - register['SYS_LASTCHANGED']
      * - pageNotFound
@@ -1726,7 +1717,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Checks page record for enableFields
      * Returns TRUE if enableFields does not disable the page record.
-     * Takes notice of the ->showHiddenPage flag and uses SIM_ACCESS_TIME for start/endtime evaluation
+     * Takes notice of the includeHiddenPages visibility aspect flag and uses SIM_ACCESS_TIME for start/endtime evaluation
      *
      * @param array $row The page record to evaluate (needs fields: hidden, starttime, endtime, fe_group)
      * @param bool $bypassGroupCheck Bypass group-check
@@ -1743,7 +1734,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 return false;
             }
         }
-        if ((!$row['hidden'] || $this->showHiddenPage) && $row['starttime'] <= $GLOBALS['SIM_ACCESS_TIME'] && ($row['endtime'] == 0 || $row['endtime'] > $GLOBALS['SIM_ACCESS_TIME']) && ($bypassGroupCheck || $this->checkPageGroupAccess($row))) {
+        if ((!$row['hidden'] || $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages', false))
+            && $row['starttime'] <= $GLOBALS['SIM_ACCESS_TIME']
+            && ($row['endtime'] == 0 || $row['endtime'] > $GLOBALS['SIM_ACCESS_TIME'])
+            && ($bypassGroupCheck || $this->checkPageGroupAccess($row))) {
             return true;
         }
         return false;
@@ -1753,7 +1747,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Check group access against a page record
      *
      * @param array $row The page record to evaluate (needs field: fe_group)
-     * @param mixed $groupList List of group id's (comma list or array). Default is $this->gr_list
+     * @param mixed $groupList List of group id's (comma list or array). Default is group Ids from frontend.user aspect
      * @return bool TRUE, if group access is granted.
      * @access private
      */
@@ -2409,7 +2403,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Calculates the cache-hash
-     * This hash is unique to the template, the variables ->id, ->type, ->gr_list (list of groups), ->MP (Mount Points) and cHash array
+     * This hash is unique to the template, the variables ->id, ->type, list of fe user groups, ->MP (Mount Points) and cHash array
      * Used to get and later store the cached data.
      *
      * @return string MD5 hash of serialized hash base from createHashBase()
@@ -2436,7 +2430,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Calculates the cache-hash (or the lock-hash)
      * This hash is unique to the template,
-     * the variables ->id, ->type, ->gr_list (list of groups),
+     * the variables ->id, ->type, list of frontend user groups,
      * ->MP (Mount Points) and cHash array
      * Used to get and later store the cached data.
      *
