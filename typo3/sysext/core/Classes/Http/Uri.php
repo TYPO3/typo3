@@ -355,7 +355,7 @@ class Uri implements UriInterface
      *
      * @param string $scheme The scheme to use with the new instance.
      *
-     * @return self A new instance with the specified scheme.
+     * @return static A new instance with the specified scheme.
      * @throws \InvalidArgumentException for invalid or unsupported schemes.
      */
     public function withScheme($scheme)
@@ -380,7 +380,7 @@ class Uri implements UriInterface
      * @param string $user The user name to use for authority.
      * @param string|null $password The password associated with $user.
      *
-     * @return self A new instance with the specified user information.
+     * @return static A new instance with the specified user information.
      */
     public function withUserInfo($user, $password = null)
     {
@@ -404,7 +404,7 @@ class Uri implements UriInterface
      *
      * @param string $host The hostname to use with the new instance.
      *
-     * @return self A new instance with the specified host.
+     * @return static A new instance with the specified host.
      * @throws \InvalidArgumentException for invalid hostnames.
      */
     public function withHost($host)
@@ -429,7 +429,7 @@ class Uri implements UriInterface
      * @param int|null $port The port to use with the new instance; a null value
      *     removes the port information.
      *
-     * @return self A new instance with the specified port.
+     * @return static A new instance with the specified port.
      * @throws \InvalidArgumentException for invalid ports.
      */
     public function withPort($port)
@@ -471,7 +471,7 @@ class Uri implements UriInterface
      *
      * @param string $path The path to use with the new instance.
      *
-     * @return self A new instance with the specified path.
+     * @return static A new instance with the specified path.
      * @throws \InvalidArgumentException for invalid paths.
      */
     public function withPath($path)
@@ -507,7 +507,7 @@ class Uri implements UriInterface
      *
      * @param string $query The query string to use with the new instance.
      *
-     * @return self A new instance with the specified query string.
+     * @return static A new instance with the specified query string.
      * @throws \InvalidArgumentException for invalid query strings.
      */
     public function withQuery($query)
@@ -539,7 +539,7 @@ class Uri implements UriInterface
      *
      * @param string $fragment The fragment to use with the new instance.
      *
-     * @return self A new instance with the specified fragment.
+     * @return static A new instance with the specified fragment.
      */
     public function withFragment($fragment)
     {

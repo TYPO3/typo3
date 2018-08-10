@@ -130,7 +130,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      * updated cookie values.
      *
      * @param array $cookies Array of key/value pairs representing cookies.
-     * @return ServerRequest
+     * @return static
      */
     public function withCookieParams(array $cookies)
     {
@@ -176,7 +176,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      *
      * @param array $query Array of query string arguments, typically from
      *     $_GET.
-     * @return ServerRequest
+     * @return static
      */
     public function withQueryParams(array $query)
     {
@@ -210,7 +210,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      * updated body parameters.
      *
      * @param array $uploadedFiles An array tree of UploadedFileInterface instances.
-     * @return ServerRequest
+     * @return static
      * @throws \InvalidArgumentException if an invalid structure is provided.
      */
     public function withUploadedFiles(array $uploadedFiles)
@@ -265,7 +265,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      *
      * @param array|object|null $data The deserialized body data. This will
      *     typically be in an array or object.
-     * @return ServerRequest
+     * @return static
      * @throws \InvalidArgumentException if an unsupported argument type is
      *     provided.
      */
@@ -327,7 +327,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      *
      * @param string $name The attribute name.
      * @param mixed $value The value of the attribute.
-     * @return ServerRequest
+     * @return static
      */
     public function withAttribute($name, $value)
     {
@@ -349,7 +349,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      * @see getAttributes()
      *
      * @param string $name The attribute name.
-     * @return ServerRequest
+     * @return static
      */
     public function withoutAttribute($name)
     {
