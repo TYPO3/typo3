@@ -1,0 +1,13 @@
+config {
+  no_cache = 1
+}
+
+page {
+  99999 {
+    stdWrap.postUserFunc.values {
+      getpost.children {
+        testing\.value.data = gp:testing|value
+      }
+    }
+  }
+}

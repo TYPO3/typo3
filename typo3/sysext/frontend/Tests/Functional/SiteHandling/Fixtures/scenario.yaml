@@ -1,0 +1,77 @@
+__variables:
+  - &pageStandard 0
+  - &pageShortcut 4
+  - &contentText 'text'
+  - &idAcmeRootPage 101
+  - &idAcmeFirstPage 102
+
+entitySettings:
+  '*':
+    nodeColumnName: 'pid'
+    columnNames: {id: 'uid', language: 'sys_language_uid'}
+    defaultValues: {pid: 0}
+  page:
+    isNode: true
+    tableName: 'pages'
+    parentColumnName: 'pid'
+    languageColumnNames: ['l10n_parent', 'l10n_source']
+    columnNames: {type: 'doktype', root: 'is_siteroot'}
+    defaultValues: {hidden: 0, doktype: *pageStandard}
+    valueInstructions:
+      shortcut:
+        first: {shortcut: 0, shortcut_mode: 1}
+  content:
+    tableName: 'tt_content'
+    languageColumnNames: ['l18n_parent', 'l10n_source']
+    columnNames: {title: 'header', type: 'CType'}
+  language:
+    tableName: 'sys_language'
+    columnNames: {code: 'language_isocode'}
+  typoscript:
+    tableName: 'sys_template'
+    valueInstructions:
+      type:
+        site: {root: 1, clear: 1}
+
+entities:
+  language:
+    - self: {id: 1, title: 'French', code: 'fr'}
+    - self: {id: 2, title: 'Franco-Canadian', code: 'fr'}
+  page:
+    - self: {id: *idAcmeRootPage, title: 'ACME Inc', type: *pageShortcut, shortcut: 'first', root: true, alias: 'acme-root'}
+      entities:
+        # @todo Fallback TypoScript, probably remove
+        typoscript:
+          - self:
+              type: site
+              title: 'ACME Inc'
+              sitetitle: 'A Company that Manufactures Everything Inc'
+              config: |
+                page = PAGE
+                page {
+                  10 = TEXT
+                  10.data = page:uid
+                }
+
+      children:
+        - self: {id: *idAcmeFirstPage, title: 'EN: Welcome', alias: 'acme-first'}
+          languageVariants:
+            - self: {title: 'FR: Welcome', language: 1}
+            - self: {title: 'FR-CA: Welcome', language: 2}
+          entities:
+            content:
+              - self: {title: 'EN: Content Element #1', type: *contentText}
+                # @todo does not work due to a bug in DataHandler's remap stack for l10n_source
+                languageVariants:
+                  - self: {title: 'FR: Content Element #1', type: *contentText, language: 1}
+                    languageVariants:
+                      - self: {title: 'FR-CA: Content Element #1', type: *contentText, language: 2}
+              - self: {title: 'EN: Content Element #2', type: *contentText}
+          children:
+            - self: {title: 'EN: Home', type: *pageShortcut, shortcut: *idAcmeRootPage}
+            - self: {title: 'EN: Features'}
+            - self: {title: 'EN: Contact'}
+        - self: {id: 404, title: 'Page not found'}
+          entities:
+            content:
+              - self: {title: 'EN: Page not found', type: *contentText}
