@@ -2563,5 +2563,12 @@ return [
         'restFiles' => [
             'Deprecation-85699-DeprecateMethodsInPageRepository.rst',
         ],
-    ]
+    ],
+    'TYPO3\CMS\Extbase\Service\EnvironmentService->isEnvironmentInCliMode' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85807-DeprecateEnvironmentServiceisEnvironmentInCliMode.rst',
+        ],
+    ],
 ];

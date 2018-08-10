@@ -45,9 +45,12 @@ class EnvironmentService implements \TYPO3\CMS\Core\SingletonInterface
      * Detects if we are running a script from the command line.
      *
      * @return bool
+     * @deprecated since TYPO3 v9.4 and will be removed in TYPO3 v10
+     * @see Environment::isCli()
      */
     public function isEnvironmentInCliMode()
     {
+        trigger_error('EnvironmentService::isEnvironmentInCliMode is deprecated and will be removed in TYPO3 v10. Use Environment::isCli() instead.', E_USER_DEPRECATED);
         return Environment::isCli();
     }
 
