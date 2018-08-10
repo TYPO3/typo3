@@ -70,6 +70,25 @@ class SiteConfiguration
      */
     public function resolveAllExistingSites(): array
     {
+        $sites = [];
+        $siteConfiguration = $this->getAllSiteConfigurationFromFiles();
+        foreach ($siteConfiguration as $identifier => $configuration) {
+            $rootPageId = (int)($configuration['site']['rootPageId'] ?? 0);
+            if ($rootPageId > 0) {
+                $sites[$identifier] = GeneralUtility::makeInstance(Site::class, $identifier, $rootPageId, $configuration['site']);
+            }
+        }
+        return $sites;
+    }
+
+    /**
+     * Read the site configuration from config files.
+     *
+     * @return array
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     */
+    protected function getAllSiteConfigurationFromFiles(): array
+    {
         // Check if the data is already cached
         if ($siteConfiguration = $this->getCache()->get($this->cacheIdentifier)) {
             $siteConfiguration = json_decode($siteConfiguration, true);
@@ -93,14 +112,7 @@ class SiteConfiguration
             }
             $this->getCache()->set($this->cacheIdentifier, json_encode($siteConfiguration));
         }
-        $sites = [];
-        foreach ($siteConfiguration ?? [] as $identifier => $configuration) {
-            $rootPageId = (int)($configuration['site']['rootPageId'] ?? 0);
-            if ($rootPageId > 0) {
-                $sites[$identifier] = GeneralUtility::makeInstance(Site::class, $identifier, $rootPageId, $configuration['site']);
-            }
-        }
-        return $sites;
+        return $siteConfiguration ?? [];
     }
 
     /**
