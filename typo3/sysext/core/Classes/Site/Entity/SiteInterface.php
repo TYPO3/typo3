@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Site\Entity;
  */
 
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
+use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
 
 interface SiteInterface
 {
@@ -48,7 +49,7 @@ interface SiteInterface
      *
      * @param int $statusCode
      * @return PageErrorHandlerInterface
-     * @throws \RuntimeException
+     * @throws PageErrorHandlerNotConfiguredException
      */
     public function getErrorHandler(int $statusCode): PageErrorHandlerInterface;
 }

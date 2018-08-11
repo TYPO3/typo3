@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Error\PageErrorHandler\FluidPageErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\InvalidPageErrorHandlerException;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageContentErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
+use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -181,7 +182,7 @@ class SiteTest extends UnitTestCase
      */
     public function getErrorHandlerThrowsExceptionWhenNoErrorHandlerIsConfigured()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(PageErrorHandlerNotConfiguredException::class);
         $this->expectExceptionCode(1522495914);
         $this->expectExceptionMessage('No error handler given for the status code "404".');
         $subject = new Site('aint-misbehaving', 13, ['languages' => []]);
@@ -193,7 +194,7 @@ class SiteTest extends UnitTestCase
      */
     public function getErrorHandlerThrowsExceptionWhenNoErrorHandlerForStatusCodeIsConfigured()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(PageErrorHandlerNotConfiguredException::class);
         $this->expectExceptionCode(1522495914);
         $this->expectExceptionMessage('No error handler given for the status code "404".');
         $subject = new Site('aint-misbehaving', 13, [

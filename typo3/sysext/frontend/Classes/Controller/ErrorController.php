@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
+use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -307,6 +308,13 @@ class ErrorController
     protected function getErrorHandlerFromSite(ServerRequestInterface $request, int $statusCode): ?PageErrorHandlerInterface
     {
         $site = $request->getAttribute('site');
-        return $site instanceof Site ? $site->getErrorHandler($statusCode) : $site;
+        if ($site instanceof Site) {
+            try {
+                return $site->getErrorHandler($statusCode);
+            } catch (PageErrorHandlerNotConfiguredException $e) {
+                // No error handler found, so fallback back to the generic TYPO3 error handler.
+            }
+        }
+        return null;
     }
 }

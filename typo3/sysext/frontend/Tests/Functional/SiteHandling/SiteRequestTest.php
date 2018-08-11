@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\PhpError;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataMapFactory;
@@ -335,8 +336,6 @@ class SiteRequestTest extends AbstractRequestTest
      *
      * @test
      * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
-     * @todo In case no error handler is defined, default handler should be used
-     * @see PlainRequestTest::pageRequestSendsNotFoundResponseWithInvalidCacheHash
      */
     public function pageRequestThrowsExceptionWithInvalidCacheHashWithoutHavingErrorHandling(string $uri)
     {
@@ -345,12 +344,44 @@ class SiteRequestTest extends AbstractRequestTest
             $this->buildSiteConfiguration(101, 'https://website.local/')
         );
 
-        $this->expectExceptionCode(1522495914);
-        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1518472189);
+        $this->expectException(PageNotFoundException::class);
 
         $this->executeFrontendRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
+        );
+    }
+
+    /**
+     * @param string $uri
+     *
+     * @test
+     * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
+     */
+    public function pageRequestSendsNotFoundResponseWithInvalidCacheHash(string $uri)
+    {
+        $response = $this->executeFrontendRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext->withMergedGlobalSettings([
+                'TYPO3_CONF_VARS' => [
+                    'FE' => [
+                        'pageNotFound_handling' => 'READFILE:typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/PageError.txt',
+                    ]
+                ]
+            ])
+        );
+
+        static::assertSame(
+            404,
+            $response->getStatusCode()
+        );
+        static::assertThat(
+            (string)$response->getBody(),
+            static::logicalOr(
+                static::stringContains('reason: Request parameters could not be validated (&amp;cHash empty)'),
+                static::stringContains('reason: Request parameters could not be validated (&amp;cHash comparison failed)')
+            )
         );
     }
 

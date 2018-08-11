@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Error\PageErrorHandler\FluidPageErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\InvalidPageErrorHandlerException;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageContentErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
+use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -184,7 +185,7 @@ class Site implements SiteInterface
      *
      * @param int $statusCode
      * @return PageErrorHandlerInterface
-     * @throws \RuntimeException
+     * @throws PageErrorHandlerNotConfiguredException
      * @throws InvalidPageErrorHandlerException
      */
     public function getErrorHandler(int $statusCode): PageErrorHandlerInterface
@@ -203,7 +204,7 @@ class Site implements SiteInterface
                 }
                 return $handler;
         }
-        throw new \RuntimeException('No error handler given for the status code "' . $statusCode . '".', 1522495914);
+        throw new PageErrorHandlerNotConfiguredException('No error handler given for the status code "' . $statusCode . '".', 1522495914);
     }
 
     /**
