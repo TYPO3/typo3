@@ -53,6 +53,8 @@ class PageTreeRepository
         'doktype',
         'is_siteroot',
         'module',
+        'extendToSubpages',
+        'content_from_pid',
         't3ver_oid',
         't3ver_id',
         't3ver_wsid',
