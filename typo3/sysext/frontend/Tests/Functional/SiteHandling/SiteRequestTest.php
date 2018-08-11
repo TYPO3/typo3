@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
 /*
@@ -15,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
  */
 
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\PhpError;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataMapFactory;
@@ -34,16 +36,6 @@ class SiteRequestTest extends AbstractRequestTest
     ];
 
     /**
-     * @var array
-     */
-    protected $coreExtensionsToLoad = ['frontend'];
-
-    /**
-     * @var ActionService
-     */
-    private $actionService;
-
-    /**
      * @var string
      */
     private $siteTitle = 'A Company that Manufactures Everything Inc';
@@ -52,6 +44,11 @@ class SiteRequestTest extends AbstractRequestTest
      * @var InternalRequestContext
      */
     private $internalRequestContext;
+
+    /**
+     * @var ActionService
+     */
+    private $actionService;
 
     protected function setUp()
     {
@@ -63,6 +60,7 @@ class SiteRequestTest extends AbstractRequestTest
 
         $this->setUpBackendUserFromFixture(1);
         $this->actionService = new ActionService();
+        Bootstrap::initializeLanguageObject();
 
         $scenarioFile = __DIR__ . '/Fixtures/scenario.yaml';
         $factory = DataMapFactory::fromYamlFile($scenarioFile);
@@ -70,6 +68,9 @@ class SiteRequestTest extends AbstractRequestTest
             $factory->getDataMap(),
             [],
             $factory->getSuggestedIds()
+        );
+        static::failIfArrayIsNotEmpty(
+            $this->actionService->getDataHandler()->errorLog
         );
 
         $this->setUpFrontendRootPage(

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
 /*
@@ -93,5 +94,20 @@ abstract class AbstractRequestTest extends FunctionalTestCase
     protected function keysFromValues(array $array): array
     {
         return array_combine($array, $array);
+    }
+
+    /**
+     * @param array $items
+     */
+    protected static function failIfArrayIsNotEmpty(array $items): void
+    {
+        if (empty($items)) {
+            return;
+        }
+
+        static::fail(
+            'Array was not empty as expected, but contained these items:' . LF
+            . '* ' . implode(LF . '* ', $items)
+        );
     }
 }
