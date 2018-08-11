@@ -49,7 +49,7 @@ class AdminPanelInitiator implements MiddlewareInterface
             $beUser->extAdminConfig = $beUser->getTSConfig()['admPanel.'] ?? [];
             $adminPanelConfiguration = $beUser->extAdminConfig;
             if (isset($adminPanelConfiguration['enable.']) &&
-                ($beUser->uc['TSFE_adminConfig']['display_top'] ?? false)
+                ($beUser->uc['AdminPanel']['display_top'] ?? false)
             ) {
                 // only initialize if at least one module is enabled.
                 foreach ($adminPanelConfiguration['enable.'] as $value) {

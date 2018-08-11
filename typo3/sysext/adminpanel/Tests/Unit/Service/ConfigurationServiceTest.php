@@ -135,7 +135,7 @@ class ConfigurationServiceTest extends UnitTestCase
     {
         $this->setUpUserTsConfigForAdmPanel([]);
         $this->beUserProphecy->uc = [
-            'TSFE_adminConfig' => [
+            'AdminPanel' => [
                 'preview_showHiddenPages' => '1',
             ],
         ];
@@ -178,7 +178,7 @@ class ConfigurationServiceTest extends UnitTestCase
     {
         // existing configuration from UC
         $this->beUserProphecy->uc = [
-            'TSFE_adminConfig' => [
+            'AdminPanel' => [
                 'foo' => 'bar',
             ],
         ];
@@ -197,7 +197,7 @@ class ConfigurationServiceTest extends UnitTestCase
         $configurationService->saveConfiguration([], $requestProphecy->reveal());
 
         $expected = [
-            'TSFE_adminConfig' => [
+            'AdminPanel' => [
                 'foo' => 'bar',
                 'baz' => 'bam',
             ],

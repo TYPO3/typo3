@@ -51,7 +51,7 @@ abstract class AbstractSubModule implements AdminPanelSubModuleInterface
     /**
      * Returns LanguageService
      *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
     protected function getLanguageService(): LanguageService
     {

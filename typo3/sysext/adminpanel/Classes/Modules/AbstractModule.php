@@ -32,7 +32,7 @@ abstract class AbstractModule implements AdminPanelModuleInterface
 {
 
     /**
-     * @var \TYPO3\CMS\Adminpanel\Modules\AdminPanelSubModuleInterface[]
+     * @var AdminPanelSubModuleInterface[]
      */
     protected $subModules = [];
 
@@ -44,7 +44,7 @@ abstract class AbstractModule implements AdminPanelModuleInterface
     protected $mainConfiguration;
 
     /**
-     * @var \TYPO3\CMS\Adminpanel\Service\ConfigurationService
+     * @var ConfigurationService
      */
     protected $configurationService;
 
@@ -104,22 +104,6 @@ abstract class AbstractModule implements AdminPanelModuleInterface
     }
 
     /**
-     * Translate given key
-     *
-     * @param string $key Key for a label in the $LOCAL_LANG array of "sysext/lang/Resources/Private/Language/locallang_tsfe.xlf
-     * @param bool $convertWithHtmlspecialchars If TRUE the language-label will be sent through htmlspecialchars
-     * @return string The value for the $key
-     */
-    protected function extGetLL($key, $convertWithHtmlspecialchars = true): string
-    {
-        $labelStr = $this->getLanguageService()->getLL($key);
-        if ($convertWithHtmlspecialchars) {
-            $labelStr = htmlspecialchars($labelStr, ENT_QUOTES | ENT_HTML5);
-        }
-        return $labelStr;
-    }
-
-    /**
      * Returns the current BE user.
      *
      * @return BackendUserAuthentication|FrontendBackendUserAuthentication
@@ -132,7 +116,7 @@ abstract class AbstractModule implements AdminPanelModuleInterface
     /**
      * Returns LanguageService
      *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
     protected function getLanguageService(): LanguageService
     {

@@ -23,12 +23,10 @@ use TYPO3\CMS\Adminpanel\Service\ModuleLoader;
 use TYPO3\CMS\Adminpanel\View\AdminPanelView;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Main controller for the admin panel
@@ -113,7 +111,7 @@ class MainController implements SingletonInterface
      */
     public function render(): string
     {
-        // legacy handling
+        // legacy handling, deprecated, will be removed in TYPO3 v10.0.
         $adminPanelView = GeneralUtility::makeInstance(AdminPanelView::class);
         $hookObjectContent = $adminPanelView->callDeprecatedHookObject();
         // end legacy handling
@@ -245,16 +243,6 @@ class MainController implements SingletonInterface
     }
 
     /**
-     * Returns LanguageService
-     *
-     * @return LanguageService
-     */
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
-    }
-
-    /**
      * Return a string with tags for main admin panel resources
      *
      * @return string
@@ -270,14 +258,6 @@ class MainController implements SingletonInterface
     }
 
     /**
-     * @return TypoScriptFrontendController
-     */
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
-    }
-
-    /**
      * Returns true if admin panel was activated
      * (switched "on" via GUI)
      *
@@ -285,6 +265,6 @@ class MainController implements SingletonInterface
      */
     protected function isAdminPanelActivated(): bool
     {
-        return (bool)($this->getBackendUser()->uc['TSFE_adminConfig']['display_top'] ?? false);
+        return (bool)($this->getBackendUser()->uc['AdminPanel']['display_top'] ?? false);
     }
 }

@@ -21,6 +21,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Checks whether the given value is an array
+ *
+ * @internal
  */
 class IsArrayViewHelper extends AbstractViewHelper
 {

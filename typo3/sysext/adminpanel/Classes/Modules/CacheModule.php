@@ -47,8 +47,8 @@ class CacheModule extends AbstractModule
 
         $view->assignMultiple(
             [
-                'isEnabled' => $this->getBackendUser()->uc['TSFE_adminConfig']['display_cache'],
-                'noCache' => $this->getBackendUser()->uc['TSFE_adminConfig']['cache_noCache'],
+                'isEnabled' => $this->getBackendUser()->uc['AdminPanel']['display_cache'],
+                'noCache' => $this->getBackendUser()->uc['AdminPanel']['cache_noCache'],
                 'currentId' => $this->getTypoScriptFrontendController()->id,
                 'clearPageCacheUrl' => $feCacheClear ? (string)$uriBuilder->buildUriFromRoute('tce_db', ['cacheCmd' => 'pages']) : '',
                 'clearCurrentPageCacheUrl' => (string)$uriBuilder->buildUriFromRoute(

@@ -118,7 +118,7 @@ class EditModule extends AbstractModule
         $typoScriptFrontend->displayEditIcons = $this->configurationService->getConfigurationOption('edit', 'displayIcons');
         $typoScriptFrontend->displayFieldEditIcons = $this->configurationService->getConfigurationOption('edit', 'displayFieldIcons');
 
-        if (GeneralUtility::_GP('ADMCMD_editIcons')) {
+        if ($request->getQueryParams()['ADMCMD_editIcons'] ?? $request->getParsedBody()['ADMCMD_editIcons'] ?? false) {
             $typoScriptFrontend->displayFieldEditIcons = '1';
         }
         if ($extFeEditLoaded && $typoScriptFrontend->displayEditIcons) {

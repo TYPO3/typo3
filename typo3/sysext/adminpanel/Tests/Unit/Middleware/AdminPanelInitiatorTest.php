@@ -51,7 +51,7 @@ class AdminPanelInitiatorTest extends UnitTestCase
             ],
         ];
         $uc = [
-            'TSFE_adminConfig' => [
+            'AdminPanel' => [
                 'display_top' => true
             ]
         ];
@@ -91,7 +91,7 @@ class AdminPanelInitiatorTest extends UnitTestCase
             ],
         ];
         $uc = [
-            'TSFE_adminConfig' => [
+            'AdminPanel' => [
                 'display_top' => false
             ]
         ];
@@ -107,7 +107,7 @@ class AdminPanelInitiatorTest extends UnitTestCase
             'admPanel.' => [],
         ];
         $uc = [
-            'TSFE_adminConfig' => [
+            'AdminPanel' => [
                 'display_top' => true
             ]
         ];

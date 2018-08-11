@@ -57,11 +57,11 @@ class GeneralInformation extends AbstractSubModule
                     'pageType' => $tsfe->type,
                     'groupList' => implode(',', $frontendUserAspect->getGroupIds()),
                     'noCache' => $this->isNoCacheEnabled(),
-                    'countUserInt' => \count($tsfe->config['INTincScript'] ?? []),
+                    'countUserInt' => count($tsfe->config['INTincScript'] ?? []),
                     'totalParsetime' => $this->getTimeTracker()->getParseTime(),
                     'feUser' => [
-                        'uid' => $tsfe->fe_user->user['uid'] ?? 0,
-                        'username' => $tsfe->fe_user->user['username'] ?? ''
+                        'uid' => $frontendUserAspect->get('id') ?: 0,
+                        'username' => $frontendUserAspect->get('username') ?: ''
                     ],
                     'imagesOnPage' => $this->collectImagesOnPage(),
                     'documentSize' => $this->collectDocumentSize()

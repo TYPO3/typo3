@@ -36,12 +36,12 @@ class AjaxController
     protected $adminPanelModuleConfiguration;
 
     /**
-     * @var \TYPO3\CMS\Adminpanel\Service\ModuleLoader
+     * @var ModuleLoader
      */
     protected $moduleLoader;
 
     /**
-     * @var \TYPO3\CMS\Adminpanel\Service\ConfigurationService
+     * @var ConfigurationService
      */
     private $configurationService;
 
@@ -76,15 +76,15 @@ class AjaxController
     /**
      * Toggle admin panel active state via UC
      *
-     * @return \TYPO3\CMS\Core\Http\JsonResponse
+     * @return JsonResponse
      */
     public function toggleActiveState(): JsonResponse
     {
         $backendUser = $this->getBackendUser();
-        if ($backendUser->uc['TSFE_adminConfig']['display_top'] ?? false) {
-            $backendUser->uc['TSFE_adminConfig']['display_top'] = false;
+        if ($backendUser->uc['AdminPanel']['display_top'] ?? false) {
+            $backendUser->uc['AdminPanel']['display_top'] = false;
         } else {
-            $backendUser->uc['TSFE_adminConfig']['display_top'] = true;
+            $backendUser->uc['AdminPanel']['display_top'] = true;
         }
         $backendUser->writeUC();
         return new JsonResponse(['success' => true]);
@@ -93,7 +93,7 @@ class AjaxController
     /**
      * Returns the current BE user.
      *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
     protected function getBackendUser(): BackendUserAuthentication
     {

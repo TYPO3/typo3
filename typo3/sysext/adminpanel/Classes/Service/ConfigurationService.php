@@ -66,7 +66,7 @@ class ConfigurationService implements SingletonInterface
         if (isset($this->mainConfiguration['override.'][$identifier . '.'][$option])) {
             $returnValue = $this->mainConfiguration['override.'][$identifier . '.'][$option];
         } else {
-            $returnValue = $this->getBackendUser()->uc['TSFE_adminConfig'][$identifier . '_' . $option] ?? '';
+            $returnValue = $this->getBackendUser()->uc['AdminPanel'][$identifier . '_' . $option] ?? '';
         }
 
         return (string)$returnValue;
@@ -96,11 +96,11 @@ class ConfigurationService implements SingletonInterface
             }
         }
         // Settings
-        $beUser->uc['TSFE_adminConfig'] = array_merge(
-            !is_array($beUser->uc['TSFE_adminConfig']) ? [] : $beUser->uc['TSFE_adminConfig'],
+        $beUser->uc['AdminPanel'] = array_merge(
+            !is_array($beUser->uc['AdminPanel']) ? [] : $beUser->uc['AdminPanel'],
             $configurationToSave
         );
-        unset($beUser->uc['TSFE_adminConfig']['action']);
+        unset($beUser->uc['AdminPanel']['action']);
         // Saving
         $beUser->writeUC();
     }
