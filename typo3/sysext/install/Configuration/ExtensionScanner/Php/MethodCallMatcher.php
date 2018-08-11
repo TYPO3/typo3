@@ -2844,4 +2844,40 @@ return [
             'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Core\Boostrap->configure' => [
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Core\Boostrap->setEarlyInstance' => [
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Core\Boostrap->getEarlyInstance' => [
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Core\Boostrap->getEarlyInstances' => [
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Core\Boostrap->initializePackageManagement' => [
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Core\Boostrap->setRequestType' => [
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+        ],
+    ],
 ];

@@ -659,4 +659,60 @@ return [
             'Deprecation-81430-TypoScriptTemplateModuleControllerrenderList.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Core\Boostrap::usesComposerClassLoading' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Core\Boostrap::getInstance' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Core\Boostrap::checkIfEssentialConfigurationExists' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Core\Boostrap::loadConfigurationAndInitialize' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Core\Boostrap::populateLocalConfiguration' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Core\Boostrap::disableCoreCache' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Core\Boostrap::initializeCachingFramework' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Core\Boostrap::setFinalCachingFrameworkCacheConfiguration' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+        ],
+    ],
 ];
