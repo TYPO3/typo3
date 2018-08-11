@@ -29,6 +29,6 @@ Any TYPO3 installation with a custom extension that uses these PHP methods.
 Migration
 =========
 
-Use `ArrayUtility::filterAndSortByNumericKeys` and `rtrim($url, '?')` as drop-in replacements.
+Use `\\TYPO3\\CMS\\Core\\Utility\\ArrayUtility::filterAndSortByNumericKeys` and `rtrim($url, '?')` as drop-in replacements.
 
 .. index:: PHP-API
