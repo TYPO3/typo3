@@ -65,7 +65,8 @@ class SiteResolverTest extends UnitTestCase
                         [
                             'site' => $site->getIdentifier(),
                             'language-id' => $language->getLanguageId(),
-                            'language-base' => $language->getBase()
+                            'language-base' => $language->getBase(),
+                            'rootpage' => $GLOBALS['TSFE']->domainStartPage
                         ]
                     );
                 }
@@ -138,7 +139,7 @@ class SiteResolverTest extends UnitTestCase
                     ]
                 ]
             ]),
-            'sub-site' => new Site('sub-site', 13, [
+            'sub-site' => new Site('sub-site', 15, [
                 'base' => '/mysubsite/',
                 'languages' => [
                     0 => [
@@ -161,6 +162,214 @@ class SiteResolverTest extends UnitTestCase
             $this->assertEquals('sub-site', $result['site']);
             $this->assertEquals(0, $result['language-id']);
             $this->assertEquals('/mysubsite/', $result['language-base']);
+        }
+    }
+
+    public function detectSubSubsiteInsideNestedUrlStructureDataProvider()
+    {
+        return [
+            'matches second site' => [
+                'https://www.random-result.com/mysubsite/you-know-why/',
+                'sub-site',
+                14,
+                '/mysubsite/'
+            ],
+            'matches third site' => [
+                'https://www.random-result.com/mysubsite/micro-site/oh-yes-you-do/',
+                'subsub-site',
+                15,
+                '/mysubsite/micro-site/'
+            ],
+            'matches a subsite in first site' => [
+                'https://www.random-result.com/products/pampers/',
+                'outside-site',
+                13,
+                '/'
+            ],
+        ];
+    }
+
+    /**
+     * Scenario with three sites
+     * Site 1: /
+     * Site 2: /mysubsite/
+     * Site 3: /mysubsite/micro-site/
+     *
+     * The result should be that site 2 is resolved by the router when calling
+     *
+     * www.random-result.com/mysubsite/you-know-why/
+     *
+     * and site 3 when calling
+     * www.random-result.com/mysubsite/micro-site/oh-yes-you-do/
+     *
+     * @test
+     * @dataProvider detectSubSubsiteInsideNestedUrlStructureDataProvider
+     */
+    public function detectSubSubsiteInsideNestedUrlStructure($incomingUrl, $expectedSiteIdentifier, $expectedRootPageId, $expectedBase)
+    {
+        $this->siteFinder->_set('sites', [
+            'outside-site' => new Site('outside-site', 13, [
+                'base' => '/',
+                'languages' => [
+                    0 => [
+                        'languageId' => 0,
+                        'locale' => 'fr_FR.UTF-8',
+                        'base' => '/'
+                    ]
+                ]
+            ]),
+            'sub-site' => new Site('sub-site', 14, [
+                'base' => '/mysubsite/',
+                'languages' => [
+                    0 => [
+                        'languageId' => 0,
+                        'locale' => 'fr_FR.UTF-8',
+                        'base' => '/'
+                    ]
+                ]
+            ]),
+            'subsub-site' => new Site('subsub-site', 15, [
+                'base' => '/mysubsite/micro-site/',
+                'languages' => [
+                    0 => [
+                        'languageId' => 0,
+                        'locale' => 'fr_FR.UTF-8',
+                        'base' => '/'
+                    ]
+                ]
+            ]),
+        ]);
+
+        $request = new ServerRequest($incomingUrl, 'GET');
+        $subject = new SiteResolver($this->siteFinder);
+        $response = $subject->process($request, $this->siteFoundRequestHandler);
+        if ($response instanceof NullResponse) {
+            $this->fail('No site configuration found in URL ' . $incomingUrl . '.');
+        } else {
+            $result = $response->getBody()->getContents();
+            $result = json_decode($result, true);
+            $this->assertEquals($expectedSiteIdentifier, $result['site']);
+            $this->assertEquals($expectedRootPageId, $result['rootpage']);
+            $this->assertEquals($expectedBase, $result['language-base']);
+        }
+    }
+
+    public function detectProperLanguageByIncomingUrlDataProvider()
+    {
+        return [
+            'matches second site' => [
+                'https://www.random-result.com/mysubsite/you-know-why/',
+                'sub-site',
+                14,
+                2,
+                '/mysubsite/'
+            ],
+            'matches second site in other language' => [
+                'https://www.random-result.com/mysubsite/it/you-know-why/',
+                'sub-site',
+                14,
+                2,
+                '/mysubsite/'
+            ],
+            'matches second site because third site language prefix did not match' => [
+                'https://www.random-result.com/mysubsite/micro-site/oh-yes-you-do/',
+                'sub-site',
+                14,
+                2,
+                '/mysubsite/'
+            ],
+            'matches third site' => [
+                'https://www.random-result.com/mysubsite/micro-site/ru/oh-yes-you-do/',
+                'subsub-site',
+                15,
+                13,
+                '/mysubsite/micro-site/ru/'
+            ],
+            /**
+             * This case does not work, as no language prefix is defined.
+            'matches a subsite in first site' => [
+                'https://www.random-result.com/products/pampers/',
+                'outside-site',
+                13,
+                0,
+                '/'
+            ],
+             */
+            'matches a subsite with translation in first site' => [
+                'https://www.random-result.com/fr/products/pampers/',
+                'outside-site',
+                13,
+                1,
+                '/fr/'
+            ],
+        ];
+    }
+
+    /**
+     * Scenario with three one site and three languages
+     * Site 1: /
+     *     Language 0: /en/
+     *     Language 1: /fr/
+     * Site 2: /mysubsite/
+     *     Language: 2: /
+     * Site 3: /mysubsite/micro-site/
+     *     Language: 13: /ru/
+     *
+     * @test
+     * @dataProvider detectProperLanguageByIncomingUrlDataProvider
+     */
+    public function detectProperLanguageByIncomingUrl($incomingUrl, $expectedSiteIdentifier, $expectedRootPageId, $expectedLanguageId, $expectedBase)
+    {
+        $this->siteFinder->_set('sites', [
+            'outside-site' => new Site('outside-site', 13, [
+                'base' => '/',
+                'languages' => [
+                    0 => [
+                        'languageId' => 0,
+                        'locale' => 'en_US.UTF-8',
+                        'base' => '/en/'
+                    ],
+                    1 => [
+                        'languageId' => 1,
+                        'locale' => 'fr_CA.UTF-8',
+                        'base' => '/fr/'
+                    ]
+                ]
+            ]),
+            'sub-site' => new Site('sub-site', 14, [
+                'base' => '/mysubsite/',
+                'languages' => [
+                    2 => [
+                        'languageId' => 2,
+                        'locale' => 'it_IT.UTF-8',
+                        'base' => '/'
+                    ]
+                ]
+            ]),
+            'subsub-site' => new Site('subsub-site', 15, [
+                'base' => '/mysubsite/micro-site/',
+                'languages' => [
+                    13 => [
+                        'languageId' => 13,
+                        'locale' => 'ru_RU.UTF-8',
+                        'base' => '/ru/'
+                    ]
+                ]
+            ]),
+        ]);
+
+        $request = new ServerRequest($incomingUrl, 'GET');
+        $subject = new SiteResolver($this->siteFinder);
+        $response = $subject->process($request, $this->siteFoundRequestHandler);
+        if ($response instanceof NullResponse) {
+            $this->fail('No site configuration found in URL ' . $incomingUrl . '.');
+        } else {
+            $result = $response->getBody()->getContents();
+            $result = json_decode($result, true);
+            $this->assertEquals($expectedSiteIdentifier, $result['site']);
+            $this->assertEquals($expectedRootPageId, $result['rootpage']);
+            $this->assertEquals($expectedLanguageId, $result['language-id']);
+            $this->assertEquals($expectedBase, $result['language-base']);
         }
     }
 }

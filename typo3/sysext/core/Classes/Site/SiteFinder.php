@@ -91,11 +91,11 @@ class SiteFinder
                     !empty($urlParts['scheme']) ? [$urlParts['scheme']] : null
                 );
                 $identifier = 'site_' . $site->getIdentifier() . '_' . $siteLanguage->getLanguageId();
-                $groupedRoutes[$urlParts['host'] ?? 0][$urlParts['path'] ?? 0][$identifier] = $route;
+                $groupedRoutes[($urlParts['scheme'] ?? '-') . ($urlParts['host'] ?? '-')][$urlParts['path'] ?? '/'][$identifier] = $route;
             }
         }
-        // As the {next} parameter is greedy, it needs to be ensured that the one with the most specific part
-        // matches last
+        // As the {next} parameter is greedy, it needs to be ensured that the one with the
+        // most specific part matches first
         foreach ($groupedRoutes as $groupedRoutesPerHost) {
             krsort($groupedRoutesPerHost);
             foreach ($groupedRoutesPerHost as $groupedRoutesPerPath) {
