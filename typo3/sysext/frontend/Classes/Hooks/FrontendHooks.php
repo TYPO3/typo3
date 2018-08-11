@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Frontend\Hooks;
 
 /*
@@ -27,16 +29,15 @@ class FrontendHooks
      * in the LIVE workspace
      *
      * @param array $params
-     * @param TypoScriptFrontendController $pObj
-     * @return string
+     * @param TypoScriptFrontendController $controller
      */
-    public function hook_previewInfo($params, $pObj)
+    public function displayPreviewInfoMessage($params, TypoScriptFrontendController $controller)
     {
-        if (!$pObj->fePreview || $pObj->doWorkspacePreview()) {
-            return '';
+        if (!$controller->fePreview || $controller->doWorkspacePreview()) {
+            return;
         }
-        if ($pObj->config['config']['message_preview']) {
-            $message = $pObj->config['config']['message_preview'];
+        if ($controller->config['config']['message_preview']) {
+            $message = $controller->config['config']['message_preview'];
         } else {
             $label = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_tsfe.xlf:preview');
             $styles = [];
@@ -57,7 +58,9 @@ class FrontendHooks
             $styles[] = 'border-radius: 2px';
             $message = '<div id="typo3-preview-info" style="' . implode(';', $styles) . '">' . htmlspecialchars($label) . '</div>';
         }
-        return $message;
+        if (!empty($message)) {
+            $controller->content = str_ireplace('</body>', $message . '</body>', $controller->content);
+        }
     }
 
     /**
