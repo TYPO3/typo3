@@ -170,4 +170,9 @@ return [
             'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst'
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'hook_previewInfo\']' => [
+        'restFiles' => [
+            'Deprecation-85878-EidUtilityAndVariousTSFEMethods.rst',
+        ],
+    ],
 ];

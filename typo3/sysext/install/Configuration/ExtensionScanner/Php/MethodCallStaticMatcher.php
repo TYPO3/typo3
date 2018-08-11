@@ -407,7 +407,7 @@ return [
             'Deprecation-80993-GeneralUtilitygetUserObj.rst',
         ],
     ],
-    'TYPO3\CMS\Frontend\Utility::initTCA' => [
+    'TYPO3\CMS\Frontend\Utility\EidUtility::initTCA' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
@@ -734,6 +734,27 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85858-GeneralUtilityclientInfo.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Utility\EidUtility::initLanguage' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85878-EidUtilityAndVariousTSFEMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Utility\EidUtility::initFeUser' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85878-EidUtilityAndVariousTSFEMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Utility\EidUtility::initExtensionTCA' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85878-EidUtilityAndVariousTSFEMethods.rst',
         ],
     ],
 ];

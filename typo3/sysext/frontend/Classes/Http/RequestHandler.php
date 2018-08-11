@@ -119,7 +119,7 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
             $this->timeTracker->pull();
         }
         // Store session data for fe_users
-        $controller->storeSessionData();
+        $controller->fe_user->storeSessionData();
 
         // @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0.
         $redirectResponse = $controller->redirectToExternalUrl(true);
@@ -134,9 +134,15 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         }
 
         // Preview info
-        $controller->previewInfo();
-        // Hook for end-of-frontend
-        $controller->hook_eofe();
+        // @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
+        $controller->previewInfo(true);
+
+        // Hook for "end-of-frontend"
+        $_params = ['pObj' => &$controller];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $controller);
+        }
+
         // Finish timetracking
         $this->timeTracker->pull();
 

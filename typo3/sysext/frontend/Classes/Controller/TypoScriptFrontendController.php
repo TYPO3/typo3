@@ -922,9 +922,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Initializes the front-end login user.
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. Use the PSR-15 middleware instead to set up the Frontend User object.
      */
     public function initFEuser()
     {
+        trigger_error('TSFE->initFEuser() will be removed in TYPO3 v10.0. Use the FrontendUserAuthenticator middleware instead to initialize a Frontend User object', E_USER_DEPRECATED);
         $this->fe_user = GeneralUtility::makeInstance(FrontendUserAuthentication::class);
         // List of pid's acceptable
         $pid = GeneralUtility::_GP('pid');
@@ -3839,13 +3841,20 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         // Set cache related headers to client (used to enable proxy / client caching!)
         if (!empty($this->config['config']['sendCacheHeaders'])) {
-            $this->sendCacheHeaders();
+            $headers = $this->getCacheHeaders();
+            foreach ($headers as $header => $value) {
+                header($header . ': ' . $value);
+            }
         }
         // Set headers, if any
         $this->sendAdditionalHeaders();
         // Send appropriate status code in case of temporary content
         if ($this->tempContent) {
-            $this->addTempContentHttpHeaders();
+            header('HTTP/1.0 503 Service unavailable');
+            $headers = $this->getHttpHeadersForTemporaryContent();
+            foreach ($headers as $header => $value) {
+                header($header . ': ' . $value);
+            }
         }
         // Make substitution of eg. username/uid in content only if cache-headers for client/proxy caching is NOT sent!
         if (!$this->isClientCachable) {
@@ -3861,9 +3870,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Send cache headers good for client/reverse proxy caching.
      * @see getCacheHeaders() for more details
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. Use $TSFE->processOutput to send headers instead.
      */
     public function sendCacheHeaders()
     {
+        trigger_error('$TSFE->sendCacheHeaders() will be removed in TYPO3 v10.0, as all headers are compiled within "processOutput" depending on various scenarios. Use $TSFE->processOutput() instead.', E_USER_DEPRECATED);
         $headers = $this->getCacheHeaders();
         foreach ($headers as $header => $value) {
             header($header . ': ' . $value);
@@ -3977,17 +3988,28 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Stores session data for the front end user
+     *
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0, as this is a simple wrapper method.
      */
     public function storeSessionData()
     {
+        trigger_error('Calling $TSFE->storeSessionData will be removed in TYPO3 v10.0. Use the call on the FrontendUserAuthentication object directly instead.', E_USER_DEPRECATED);
         $this->fe_user->storeSessionData();
     }
 
     /**
      * Outputs preview info.
+     *
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. Use "hook_eofe" instead.
+     * @param bool $isCoreCall if set to true, there will be no deprecation message.
      */
-    public function previewInfo()
+    public function previewInfo($isCoreCall = false)
     {
+        if (!$isCoreCall) {
+            trigger_error('The method $TSFE->previewInfo() will be removed in TYPO3 v10.0, as this is now called by the Frontend RequestHandler', E_USER_DEPRECATED);
+        } elseif (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_previewInfo'])) {
+            trigger_error('The hook "hook_previewInfo" will be removed in TYPO3 v10.0, but is still in use. Use hook_eofe instead.', E_USER_DEPRECATED);
+        }
         if ($this->fePreview !== 0) {
             $previewInfo = '';
             $_params = ['pObj' => &$this];
@@ -4000,9 +4022,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * End-Of-Frontend hook
+     *
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. Functionality still exists.
      */
     public function hook_eofe()
     {
+        trigger_error('TSFE->hook_eofe() will be removed in TYPO3 v10.0. The hook is now executed within Frontend RequestHandler', E_USER_DEPRECATED);
         $_params = ['pObj' => &$this];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
@@ -4010,10 +4035,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Sends HTTP headers for temporary content. These headers prevent search engines from caching temporary content and asks them to revisit this page again.
+     * Sends HTTP headers for temporary content.
+     * These headers prevent search engines from caching temporary content and asks them to revisit this page again.
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. Use $TSFE->processOutput to send headers instead.
      */
     public function addTempContentHttpHeaders()
     {
+        trigger_error('$TSFE->addTempContentHttpHeaders() will be removed in TYPO3 v10.0, as all headers are compiled within "processOutput" depending on various scenarios. Use $TSFE->processOutput() instead.', E_USER_DEPRECATED);
         header('HTTP/1.0 503 Service unavailable');
         $headers = $this->getHttpHeadersForTemporaryContent();
         foreach ($headers as $header => $value) {
