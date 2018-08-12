@@ -581,6 +581,11 @@ page.10.value = HELLO WORLD!
      */
     public function renderList($pArray, $lines = [], $c = 0)
     {
+        trigger_error(
+            'The method `TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::renderList` has been deprecated and should not be used any longer, this method will be removed in TYPO3 v10.0',
+            E_USER_DEPRECATED
+        );
+
         if (!is_array($pArray)) {
             return $lines;
         }
