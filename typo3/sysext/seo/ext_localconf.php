@@ -14,3 +14,14 @@ $metaTagManagerRegistry->registerManager(
     \TYPO3\CMS\Seo\MetaTag\TwitterCardMetaTagManager::class
 );
 unset($metaTagManagerRegistry);
+
+// Add module configuration
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(trim('
+    config.pageTitleProviders {
+        seo {
+           provider = TYPO3\CMS\Seo\PageTitle\SeoTitlePageTitleProvider
+            before = record
+            after = altPageTitle
+        }
+    }
+'));

@@ -139,3 +139,16 @@ $metaTagManagerRegistry->registerManager(
     \TYPO3\CMS\Core\MetaTag\EdgeMetaTagManager::class
 );
 unset($metaTagManagerRegistry);
+
+// Add module configuration
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(trim('
+    config.pageTitleProviders {
+        altPageTitle {
+            provider = TYPO3\CMS\Core\PageTitle\AltPageTitleProvider
+            before = record
+        }
+        record {
+            provider = TYPO3\CMS\Core\PageTitle\RecordPageTitleProvider
+        }
+    }
+'));

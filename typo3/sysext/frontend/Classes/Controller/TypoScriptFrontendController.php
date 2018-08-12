@@ -49,6 +49,7 @@ use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -64,6 +65,7 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Compatibility\LegacyDomainResolver;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -3605,10 +3607,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
         }
 
-        $pageTitle = $this->altPageTitle ?: $this->page['title'] ?? '';
-        if (isset($this->page['seo_title']) && !empty($this->page['seo_title'])) {
-            $pageTitle = $this->page['seo_title'];
-        }
+        $titleProvider = GeneralUtility::makeInstance(ObjectManager::class)->get(PageTitleProviderManager::class);
+        $pageTitle = $titleProvider->getTitle();
 
         $titleTagContent = $this->printTitle(
             $pageTitle,
@@ -3617,6 +3617,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $pageTitleSeparator
         );
         if ($this->config['config']['titleTagFunction'] ?? false) {
+            // @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
+            $this->logDeprecatedTyposcript('config.titleTagFunction', 'Please use the new TitleTag API to create custom title tags. Deprecated in version 9, will be removed in version 10');
+
             $titleTagContent = $this->cObj->callUserFunction(
                 $this->config['config']['titleTagFunction'],
                 [],
