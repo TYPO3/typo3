@@ -715,4 +715,11 @@ return [
             'Deprecation-85821-DeprecatedBoostrapMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Page\PageGenerator::renderContent' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85822-DeprecatePageGeneratorrenderContent.rst',
+        ],
+    ],
 ];

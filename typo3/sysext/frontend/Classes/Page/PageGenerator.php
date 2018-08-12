@@ -44,9 +44,11 @@ class PageGenerator
 
     /**
      * Rendering the page content
+     * @deprecated since TYPO3 v9.4 will be removed in TYPO3 v10.0. This functionality is now within RequestHandler.
      */
     public static function renderContent()
     {
+        trigger_error('PageGenerator::renderContent() will be removed in TYPO3 v10.0. This logic is now built in TYPO3s Frontend RequestHandler.', E_USER_DEPRECATED);
         /** @var TypoScriptFrontendController $tsfe */
         $tsfe = $GLOBALS['TSFE'];
 

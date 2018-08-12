@@ -73,8 +73,24 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
             $this->timeTracker->push('Page generation');
             $controller->generatePage_preProcessing();
             $controller->preparePageContentGeneration();
+
             // Content generation
-            PageGenerator::renderContent();
+            $this->timeTracker->incStackPointer();
+            $this->timeTracker->push($controller->sPre, 'PAGE');
+
+            $pageContent = $this->generatePageContent($controller);
+            // Now render the Page header (<head> tag content and wrap around <body> tag) - this is done
+            // after the "main" page Content, since some JS may be inserted at that point.
+            // if 'disableAllHeaderCode' is set, all the header-code is discarded
+            if ($controller->config['config']['disableAllHeaderCode']) {
+                $controller->content = $pageContent;
+            } else {
+                PageGenerator::renderContentWithHeader($pageContent);
+            }
+
+            $this->timeTracker->pull($this->timeTracker->LR ? $controller->content : '');
+            $this->timeTracker->decStackPointer();
+
             $controller->setAbsRefPrefix();
             $controller->generatePage_postProcessing();
             $this->timeTracker->pull();
@@ -129,6 +145,24 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         }
 
         return $isOutputting ? $response : new NullResponse();
+    }
+
+    /**
+     * Generates the main content part within <body> tags (except JS files/CSS files).
+     *
+     * @param TypoScriptFrontendController $controller
+     * @return string
+     */
+    protected function generatePageContent(TypoScriptFrontendController $controller): string
+    {
+        $pageContent = $controller->cObj->cObjGet($controller->pSetup);
+        if ($controller->pSetup['wrap']) {
+            $pageContent = $controller->cObj->wrap($pageContent, $controller->pSetup['wrap']);
+        }
+        if ($controller->pSetup['stdWrap.']) {
+            $pageContent = $controller->cObj->stdWrap($pageContent, $controller->pSetup['stdWrap.']);
+        }
+        return $pageContent;
     }
 
     /**
