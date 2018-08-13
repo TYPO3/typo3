@@ -65,6 +65,66 @@ class AbstractConditionMatcherTest extends UnitTestCase
     }
 
     /**
+     * @return array
+     */
+    public function datesConditionDataProvider(): array
+    {
+        return [
+            '[dayofmonth = 17]' => ['dayofmonth', 17, true],
+            '[dayofweek = 3]' => ['dayofweek', 3, true],
+            '[dayofyear = 16]' => ['dayofyear', 16, true],
+            '[hour = 11]' => ['hour', 11, true],
+            '[minute = 4]' => ['minute', 4, true],
+            '[month = 1]' => ['month', 1, true],
+            '[year = 1945]' => ['year', 1945, true],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider datesConditionDataProvider
+     * @param string $expressionMethod
+     * @param int $expressionValue
+     * @param bool $expected
+     */
+    public function checkConditionMatcherForDates(string $expressionMethod, int $expressionValue, bool $expected): void
+    {
+        $GLOBALS['SIM_EXEC_TIME'] = mktime(11, 4, 0, 1, 17, 1945);
+        $this->assertSame($expected, $this->evaluateConditionCommonMethod->invokeArgs(
+            $this->conditionMatcher,
+            [$expressionMethod, $expressionValue]
+        ));
+    }
+
+    /**
+     * @return array
+     */
+    public function hostnameDataProvider(): array
+    {
+        return [
+            '[hostname = localhost]' => ['hostname', 'localhost', true],
+            '[hostname = localhost, foo.local]' => ['hostname', 'localhost, foo.local', true],
+            '[hostname = bar.local, foo.local]' => ['hostname', 'bar.local, foo.local', false],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider hostnameDataProvider
+     * @param string $expressionMethod
+     * @param string $expressionValue
+     * @param bool $expected
+     */
+    public function checkConditionMatcherForHostname(string $expressionMethod, string $expressionValue, bool $expected): void
+    {
+        $GLOBALS['_SERVER']['REMOTE_ADDR'] = '127.0.0.1';
+        $this->assertSame($expected, $this->evaluateConditionCommonMethod->invokeArgs(
+            $this->conditionMatcher,
+            [$expressionMethod, $expressionValue]
+        ));
+    }
+
+    /**
      * Data provider with matching applicationContext conditions.
      *
      * @return array

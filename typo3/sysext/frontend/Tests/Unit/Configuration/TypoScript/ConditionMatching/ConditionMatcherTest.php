@@ -511,6 +511,31 @@ class ConditionMatcherTest extends UnitTestCase
     }
 
     /**
+     * @return array
+     */
+    public function pageDataProvider(): array
+    {
+        return [
+            '[page|layout = 0]' => ['[page|layout = 0]', true],
+            '[page|layout = 1]' => ['[page|layout = 1]', false],
+            '[page|title = Foo]' => ['[page|title = Foo]', true],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider pageDataProvider
+     * @param string $expression
+     * @param bool $expected
+     */
+    public function checkConditionMatcherForPage(string $expression, bool $expected): void
+    {
+        $GLOBALS['TSFE']->page = ['title' => 'Foo', 'layout' => 0];
+        $subject = new ConditionMatcher(new Context());
+        $this->assertSame($expected, $subject->match($expression));
+    }
+
+    /**
      * Tests whether a page Id is found in the previous rootline entries.
      *
      * @test
