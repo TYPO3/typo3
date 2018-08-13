@@ -20,6 +20,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
@@ -36,7 +37,6 @@ use TYPO3\CMS\Install\Service\ClearCacheService;
 use TYPO3\CMS\Install\Service\ClearTableService;
 use TYPO3\CMS\Install\Service\LanguagePackService;
 use TYPO3\CMS\Install\Service\Typo3tempFileService;
-use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
  * Maintenance controller
@@ -478,7 +478,7 @@ class MaintenanceController extends AbstractController
                     FlashMessage::ERROR
                 ));
             } else {
-                $hashInstance = GeneralUtility::makeInstance(SaltFactory::class)->getDefaultHashInstance('BE');
+                $hashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('BE');
                 $hashedPassword = $hashInstance->getHashedPassword($password);
                 $adminUserFields = [
                     'username' => $username,

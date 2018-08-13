@@ -17,14 +17,14 @@ namespace TYPO3\CMS\Reports\Report\Status;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reports\RequestAwareStatusProviderInterface;
 use TYPO3\CMS\Reports\Status as ReportStatus;
-use TYPO3\CMS\Saltedpasswords\Exception\InvalidSaltException;
-use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
  * Performs several checks about the system's health
@@ -162,7 +162,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
 
         if (!empty($row)) {
             try {
-                $hashInstance = GeneralUtility::makeInstance(SaltFactory::class)->get($row['password'], 'BE');
+                $hashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->get($row['password'], 'BE');
                 if ($hashInstance->checkPassword('password', $row['password'])) {
                     // If the password for 'admin' user is 'password': bad idea!
                     // We're checking since the (very) old installer created instances like this in dark old times.
@@ -182,7 +182,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
                         '</a>'
                     );
                 }
-            } catch (InvalidSaltException $e) {
+            } catch (InvalidPasswordHashException $e) {
                 // No hash class handling for current hash could be found. Not good, but ok in this case.
             }
         }

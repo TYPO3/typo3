@@ -15,11 +15,11 @@ namespace TYPO3\CMS\Install\Report;
  */
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\CMS\Reports\Status;
-use TYPO3\CMS\Saltedpasswords\Exception\InvalidSaltException;
-use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
  * Provides an status report of the security of the install tool
@@ -54,10 +54,10 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
         $validPassword = true;
         $installToolPassword = $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'];
         $hashInstance = null;
-        $hashFactory = GeneralUtility::makeInstance(SaltFactory::class);
+        $hashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
         try {
             $hashInstance = $hashFactory->get($installToolPassword, 'BE');
-        } catch (InvalidSaltException $e) {
+        } catch (InvalidPasswordHashException $e) {
             // $hashInstance stays null
         }
         if ($installToolPassword !== '' && $hashInstance === null) {

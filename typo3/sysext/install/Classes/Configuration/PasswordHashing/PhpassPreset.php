@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Install\Configuration\PasswordHashing;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Configuration\AbstractPreset;
-use TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt;
 
 /**
  * Preset for password hashing method "phpass"
@@ -38,9 +38,9 @@ class PhpassPreset extends AbstractPreset
      * @var array Configuration values handled by this preset
      */
     protected $configurationValues = [
-        'BE/passwordHashing/className' => PhpassSalt::class,
+        'BE/passwordHashing/className' => PhpassPasswordHash::class,
         'BE/passwordHashing/options' => [],
-        'FE/passwordHashing/className' => PhpassSalt::class,
+        'FE/passwordHashing/className' => PhpassPasswordHash::class,
         'FE/passwordHashing/options' => [],
     ];
 
@@ -49,8 +49,8 @@ class PhpassPreset extends AbstractPreset
      *
      * @return bool
      */
-    public function isAvailable()
+    public function isAvailable(): bool
     {
-        return GeneralUtility::makeInstance(PhpassSalt::class)->isAvailable();
+        return GeneralUtility::makeInstance(PhpassPasswordHash::class)->isAvailable();
     }
 }

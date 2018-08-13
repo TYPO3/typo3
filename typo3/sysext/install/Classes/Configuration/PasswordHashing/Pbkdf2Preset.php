@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Install\Configuration\PasswordHashing;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Configuration\AbstractPreset;
-use TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt;
 
 /**
  * Preset for password hashing method "PBKDF2"
@@ -38,9 +38,9 @@ class Pbkdf2Preset extends AbstractPreset
      * @var array Configuration values handled by this preset
      */
     protected $configurationValues = [
-        'BE/passwordHashing/className' => Pbkdf2Salt::class,
+        'BE/passwordHashing/className' => Pbkdf2PasswordHash::class,
         'BE/passwordHashing/options' => [],
-        'FE/passwordHashing/className' => Pbkdf2Salt::class,
+        'FE/passwordHashing/className' => Pbkdf2PasswordHash::class,
         'FE/passwordHashing/options' => [],
     ];
 
@@ -49,8 +49,8 @@ class Pbkdf2Preset extends AbstractPreset
      *
      * @return bool
      */
-    public function isAvailable()
+    public function isAvailable(): bool
     {
-        return GeneralUtility::makeInstance(Pbkdf2Salt::class)->isAvailable();
+        return GeneralUtility::makeInstance(Pbkdf2PasswordHash::class)->isAvailable();
     }
 }

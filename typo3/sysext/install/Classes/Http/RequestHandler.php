@@ -19,6 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -40,7 +41,6 @@ use TYPO3\CMS\Install\Controller\SettingsController;
 use TYPO3\CMS\Install\Controller\UpgradeController;
 use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\CMS\Install\Service\SessionService;
-use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
  * Default request handler for all requests inside the TYPO3 Install Tool, which does a simple hardcoded
@@ -138,7 +138,7 @@ class RequestHandler implements RequestHandlerInterface
                         new FlashMessage('Please enter the install tool password', '', FlashMessage::ERROR)
                     );
                 } else {
-                    $hashInstance = GeneralUtility::makeInstance(SaltFactory::class)->getDefaultHashInstance('BE');
+                    $hashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('BE');
                     $hashedPassword = $hashInstance->getHashedPassword($password);
                     $messageQueue = (new FlashMessageQueue('install'))->enqueue(
                         new FlashMessage(

@@ -15,16 +15,16 @@ namespace TYPO3\CMS\Install\Service;
  */
 
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
-use TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt;
-use TYPO3\CMS\Saltedpasswords\Salt\BcryptSalt;
-use TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt;
-use TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt;
-use TYPO3\CMS\Saltedpasswords\Salt\SaltInterface;
 
 /**
  * Execute "silent" LocalConfiguration upgrades if needed.
@@ -991,15 +991,15 @@ class SilentConfigurationUpgradeService
         // to some different hash mechanism will not be touched again after first upgrade.
         // Phpass is always available, so we have some last fallback if the others don't kick in
         $okHashMethods = [
-            Argon2iSalt::class,
-            BcryptSalt::class,
-            Pbkdf2Salt::class,
-            PhpassSalt::class,
+            Argon2iPasswordHash::class,
+            BcryptPasswordHash::class,
+            Pbkdf2PasswordHash::class,
+            PhpassPasswordHash::class,
         ];
         $newMethods = [];
         foreach (['BE', 'FE'] as $mode) {
             foreach ($okHashMethods as $className) {
-                /** @var SaltInterface $instance */
+                /** @var PasswordHashInterface $instance */
                 $instance = GeneralUtility::makeInstance($className);
                 if ($instance->isAvailable()) {
                     $newMethods[$mode] = $className;
@@ -1009,10 +1009,10 @@ class SilentConfigurationUpgradeService
         }
         // We only need to write to LocalConfiguration if method is different than Argon2i from DefaultConfiguration
         $newConfig = [];
-        if ($newMethods['BE'] !== Argon2iSalt::class) {
+        if ($newMethods['BE'] !== Argon2iPasswordHash::class) {
             $newConfig['BE/passwordHashing/className'] = $newMethods['BE'];
         }
-        if ($newMethods['FE'] !== Argon2iSalt::class) {
+        if ($newMethods['FE'] !== Argon2iPasswordHash::class) {
             $newConfig['FE/passwordHashing/className'] = $newMethods['FE'];
         }
         if (!empty($newConfig)) {

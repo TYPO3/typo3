@@ -24,6 +24,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -36,8 +38,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Saltedpasswords\Exception\InvalidSaltException;
-use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
  * Script class for the Setup module
@@ -290,11 +290,11 @@ class SetupModuleController
                     } else {
                         $currentPasswordHashed = $GLOBALS['BE_USER']->user['password'];
                         $passwordOk = false;
-                        $saltFactory = GeneralUtility::makeInstance(SaltFactory::class);
+                        $saltFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
                         try {
                             $hashInstance = $saltFactory->get($currentPasswordHashed, 'BE');
                             $passwordOk = $hashInstance->checkPassword($be_user_data['passwordCurrent'], $currentPasswordHashed);
-                        } catch (InvalidSaltException $e) {
+                        } catch (InvalidPasswordHashException $e) {
                             // Could not find hash class responsible for existing password. This is a
                             // misconfiguration and user can not change its password.
                         }

@@ -15,11 +15,11 @@ namespace TYPO3\CMS\Core\Authentication;
  */
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
  * TYPO3 backend user authentication on a CLI level
@@ -148,7 +148,7 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
     {
         $cryptoService = GeneralUtility::makeInstance(Random::class);
         $password = $cryptoService->generateRandomBytes(20);
-        $hashInstance = GeneralUtility::makeInstance(SaltFactory::class)->getDefaultHashInstance('BE');
+        $hashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('BE');
         return $hashInstance->getHashedPassword($password);
     }
 }

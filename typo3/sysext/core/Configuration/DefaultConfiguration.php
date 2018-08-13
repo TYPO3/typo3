@@ -105,12 +105,12 @@ return [
         'reverseProxySSL' => '',
         'reverseProxyPrefixSSL' => '',
         'availablePasswordHashAlgorithms' => [
-            \TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt::class,
-            \TYPO3\CMS\Saltedpasswords\Salt\BcryptSalt::class,
-            \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class,
-            \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
-            \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class,
-            \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class,
+            \TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash::class,
+            \TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash::class,
+            \TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash::class,
+            \TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash::class,
+            \TYPO3\CMS\Core\Crypto\PasswordHashing\BlowfishPasswordHash::class,
+            \TYPO3\CMS\Core\Crypto\PasswordHashing\Md5PasswordHash::class,
         ],
         'caching' => [
             'cacheConfigurations' => [
@@ -1223,7 +1223,7 @@ return [
             ]
         ],
         'passwordHashing' => [
-            'className' => \TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt::class,
+            'className' => \TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash::class,
             'options' => [],
         ],
     ],
@@ -1283,7 +1283,7 @@ return [
             'unknown' => \TYPO3\CMS\Frontend\Typolink\LegacyLinkBuilder::class,
         ],
         'passwordHashing' => [
-            'className' => \TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt::class,
+            'className' => \TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash::class,
             'options' => [],
         ],
     ],

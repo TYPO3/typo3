@@ -144,15 +144,6 @@
 			<trans-unit id="status_encryptionKey">
 				<source>Encryption Key</source>
 			</trans-unit>
-			<trans-unit id="status_saltedPasswords">
-				<source>Backend user password hashes</source>
-			</trans-unit>
-			<trans-unit id="status_saltedPasswords_infoText">
-				<source>During the configuration check of saltedpasswords the following issues have been found</source>
-			</trans-unit>
-			<trans-unit id="status_saltedPasswords_notAllPasswordsHashed">
-				<source>Some backend user passwords are found to be only md5 hashed. Run the scheduler task to convert all passwords to salted hashes.</source>
-			</trans-unit>
 			<trans-unit id="status_fileDenyPattern">
 				<source>File Deny Pattern</source>
 			</trans-unit>

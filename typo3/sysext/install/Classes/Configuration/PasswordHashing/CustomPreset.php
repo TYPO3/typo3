@@ -31,7 +31,7 @@ class CustomPreset extends AbstractCustomPreset implements CustomPresetInterface
      *
      * @return array Current custom configuration values
      */
-    public function getConfigurationValues()
+    public function getConfigurationValues(): array
     {
         $configurationValues = [];
         $configurationValues['BE/passwordHashing/className'] =

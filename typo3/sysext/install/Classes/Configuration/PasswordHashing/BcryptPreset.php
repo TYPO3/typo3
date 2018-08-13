@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Install\Configuration\PasswordHashing;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Configuration\AbstractPreset;
-use TYPO3\CMS\Saltedpasswords\Salt\BcryptSalt;
 
 /**
  * Preset for password hashing method "bcrypt"
@@ -38,9 +38,9 @@ class BcryptPreset extends AbstractPreset
      * @var array Configuration values handled by this preset
      */
     protected $configurationValues = [
-        'BE/passwordHashing/className' => BcryptSalt::class,
+        'BE/passwordHashing/className' => BcryptPasswordHash::class,
         'BE/passwordHashing/options' => [],
-        'FE/passwordHashing/className' => BcryptSalt::class,
+        'FE/passwordHashing/className' => BcryptPasswordHash::class,
         'FE/passwordHashing/options' => [],
     ];
 
@@ -49,8 +49,8 @@ class BcryptPreset extends AbstractPreset
      *
      * @return bool
      */
-    public function isAvailable()
+    public function isAvailable(): bool
     {
-        return GeneralUtility::makeInstance(BcryptSalt::class)->isAvailable();
+        return GeneralUtility::makeInstance(BcryptPasswordHash::class)->isAvailable();
     }
 }

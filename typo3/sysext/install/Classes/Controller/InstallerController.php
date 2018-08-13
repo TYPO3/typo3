@@ -23,6 +23,12 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -47,12 +53,6 @@ use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 use TYPO3\CMS\Install\SystemEnvironment\Check;
 use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
-use TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt;
-use TYPO3\CMS\Saltedpasswords\Salt\BcryptSalt;
-use TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt;
-use TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt;
-use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
-use TYPO3\CMS\Saltedpasswords\Salt\SaltInterface;
 
 /**
  * Install step controller, dispatcher class of step actions.
@@ -1100,24 +1100,24 @@ For each website you need a TypoScript template on the main page of your website
      * This function returns a salted hashed key for new backend user password and install tool password.
      *
      * This method is executed during installation *before* the preset did set up proper hash method
-     * selection in LocalConfiguration. So SaltFactory is not usable at this point. We thus loop through
+     * selection in LocalConfiguration. So PasswordHashFactory is not usable at this point. We thus loop through
      * the four default hash mechanisms and select the first one that works. The preset calculation of step
      * executeDefaultConfigurationAction() basically does the same later.
      *
      * @param string $password Plain text password
      * @return string Hashed password
-     * @throws \LogicException If no hash method has been found, should never happen PhpassSalt is always available
+     * @throws \LogicException If no hash method has been found, should never happen PhpassPasswordHash is always available
      */
     protected function getHashedPassword($password)
     {
         $okHashMethods = [
-            Argon2iSalt::class,
-            BcryptSalt::class,
-            Pbkdf2Salt::class,
-            PhpassSalt::class,
+            Argon2iPasswordHash::class,
+            BcryptPasswordHash::class,
+            Pbkdf2PasswordHash::class,
+            PhpassPasswordHash::class,
         ];
         foreach ($okHashMethods as $className) {
-            /** @var SaltInterface $instance */
+            /** @var PasswordHashInterface $instance */
             $instance = GeneralUtility::makeInstance($className);
             if ($instance->isAvailable()) {
                 return $instance->getHashedPassword($password);

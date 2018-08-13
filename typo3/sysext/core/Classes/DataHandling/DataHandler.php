@@ -35,6 +35,8 @@ use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidPointerFieldValueExce
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -60,8 +62,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Saltedpasswords\Exception\InvalidSaltException;
-use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
  * The main data handler class which takes care of correctly updating and inserting records.
@@ -2954,16 +2954,16 @@ class DataHandler implements LoggerAwareInterface
                     $hashMethod = substr($value, 0, 2);
                     // The old scheduler task turned existing non-salted passwords into salted hashes by taking the simple md5
                     // and using that as 'password' and make a salted md5 from given hash. Those where then prefixed with 'M'.
-                    // SaltFactory->get($value) only recognizes these salts if we cut off the M again.
+                    // PasswordHashFactory->get($value) only recognizes these salts if we cut off the M again.
                     // @todo @deprecated: $isDeprecatedSaltedHash should be removed in v10.0 as dedicated breaking patch, similar
                     // @todo to authUser() of AuthenticationService::class
                     $isDeprecatedSaltedHash = $hashMethod === 'M$';
                     $tempValue = $isDeprecatedSaltedHash ? substr($value, 1) : $value;
-                    $hashFactory = GeneralUtility::makeInstance(SaltFactory::class);
+                    $hashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
                     $mode = $table === 'fe_users' ? 'FE' : 'BE';
                     try {
                         $hashFactory->get($tempValue, $mode);
-                    } catch (InvalidSaltException $e) {
+                    } catch (InvalidPasswordHashException $e) {
                         // We got no salted password instance, incoming value must be a new plaintext password
                         // Get an instance of the current configured salted password strategy and hash the value
                         $newHashInstance = $hashFactory->getDefaultHashInstance($mode);

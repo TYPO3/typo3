@@ -18,6 +18,8 @@ namespace TYPO3\CMS\Install\Tests\Unit\Service;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
@@ -25,8 +27,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
-use TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt;
-use TYPO3\CMS\Saltedpasswords\Salt\BcryptSalt;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -831,12 +831,12 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             ->shouldBeCalled()->willReturn(['thereIs' => 'something']);
         $configurationManagerProphecy->getLocalConfigurationValueByPath('EXT/extConf/saltedpasswords')
             ->shouldBeCalled()->willThrow($configurationManagerException);
-        $argonBeProphecy = $this->prophesize(Argon2iSalt::class);
+        $argonBeProphecy = $this->prophesize(Argon2iPasswordHash::class);
         $argonBeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
-        GeneralUtility::addInstance(Argon2iSalt::class, $argonBeProphecy->reveal());
-        $argonFeProphecy = $this->prophesize(Argon2iSalt::class);
+        GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonBeProphecy->reveal());
+        $argonFeProphecy = $this->prophesize(Argon2iPasswordHash::class);
         $argonFeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
-        GeneralUtility::addInstance(Argon2iSalt::class, $argonFeProphecy->reveal());
+        GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonFeProphecy->reveal());
         $configurationManagerProphecy->removeLocalConfigurationKeysByPath(['EXTENSIONS/saltedpasswords'])
             ->shouldBeCalled();
         $silentConfigurationUpgradeService = $this->getAccessibleMock(
@@ -860,12 +860,12 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             ->shouldBeCalled()->willThrow($configurationManagerException);
         $configurationManagerProphecy->getLocalConfigurationValueByPath('EXT/extConf/saltedpasswords')
             ->shouldBeCalled()->willReturn('someConfiguration');
-        $argonBeProphecy = $this->prophesize(Argon2iSalt::class);
+        $argonBeProphecy = $this->prophesize(Argon2iPasswordHash::class);
         $argonBeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
-        GeneralUtility::addInstance(Argon2iSalt::class, $argonBeProphecy->reveal());
-        $argonFeProphecy = $this->prophesize(Argon2iSalt::class);
+        GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonBeProphecy->reveal());
+        $argonFeProphecy = $this->prophesize(Argon2iPasswordHash::class);
         $argonFeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
-        GeneralUtility::addInstance(Argon2iSalt::class, $argonFeProphecy->reveal());
+        GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonFeProphecy->reveal());
         $configurationManagerProphecy->removeLocalConfigurationKeysByPath(['EXT/extConf/saltedpasswords'])
             ->shouldBeCalled();
         $silentConfigurationUpgradeService = $this->getAccessibleMock(
@@ -888,21 +888,21 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             ->shouldBeCalled()->willReturn(['thereIs' => 'something']);
         $configurationManagerProphecy->getLocalConfigurationValueByPath('EXT/extConf/saltedpasswords')
             ->shouldBeCalled()->willReturn('someConfiguration');
-        $argonBeProphecy = $this->prophesize(Argon2iSalt::class);
+        $argonBeProphecy = $this->prophesize(Argon2iPasswordHash::class);
         $argonBeProphecy->isAvailable()->shouldBeCalled()->willReturn(false);
-        GeneralUtility::addInstance(Argon2iSalt::class, $argonBeProphecy->reveal());
-        $bcryptBeProphecy = $this->prophesize(BcryptSalt::class);
+        GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonBeProphecy->reveal());
+        $bcryptBeProphecy = $this->prophesize(BcryptPasswordHash::class);
         $bcryptBeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
-        GeneralUtility::addInstance(BcryptSalt::class, $bcryptBeProphecy->reveal());
-        $argonFeProphecy = $this->prophesize(Argon2iSalt::class);
+        GeneralUtility::addInstance(BcryptPasswordHash::class, $bcryptBeProphecy->reveal());
+        $argonFeProphecy = $this->prophesize(Argon2iPasswordHash::class);
         $argonFeProphecy->isAvailable()->shouldBeCalled()->willReturn(false);
-        GeneralUtility::addInstance(Argon2iSalt::class, $argonFeProphecy->reveal());
-        $bcryptFeProphecy = $this->prophesize(BcryptSalt::class);
+        GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonFeProphecy->reveal());
+        $bcryptFeProphecy = $this->prophesize(BcryptPasswordHash::class);
         $bcryptFeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
-        GeneralUtility::addInstance(BcryptSalt::class, $bcryptFeProphecy->reveal());
+        GeneralUtility::addInstance(BcryptPasswordHash::class, $bcryptFeProphecy->reveal());
         $configurationManagerProphecy->setLocalConfigurationValuesByPathValuePairs([
-            'BE/passwordHashing/className' => BcryptSalt::class,
-            'FE/passwordHashing/className' => BcryptSalt::class,
+            'BE/passwordHashing/className' => BcryptPasswordHash::class,
+            'FE/passwordHashing/className' => BcryptPasswordHash::class,
         ])->shouldBeCalled();
         $configurationManagerProphecy->removeLocalConfigurationKeysByPath(['EXTENSIONS/saltedpasswords', 'EXT/extConf/saltedpasswords'])
             ->shouldBeCalled();

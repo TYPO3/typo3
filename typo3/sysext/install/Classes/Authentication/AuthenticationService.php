@@ -16,11 +16,11 @@ namespace TYPO3\CMS\Install\Authentication;
  */
 
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\SessionService;
-use TYPO3\CMS\Saltedpasswords\Exception\InvalidSaltException;
-use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
  * Authenticates a user (currently comparing it through the install tool password, but could be extended)
@@ -51,11 +51,11 @@ class AuthenticationService
         $validPassword = false;
         if ($password !== null && $password !== '') {
             $installToolPassword = $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'];
-            $hashFactory = GeneralUtility::makeInstance(SaltFactory::class);
+            $hashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
             try {
                 $hashInstance = $hashFactory->get($installToolPassword, 'BE');
                 $validPassword = $hashInstance->checkPassword($password, $installToolPassword);
-            } catch (InvalidSaltException $e) {
+            } catch (InvalidPasswordHashException $e) {
                 // Given hash in global configuration is not a valid salted password
                 if (md5($password) === $installToolPassword) {
                     // Update configured install tool hash if it is still "MD5" and password matches

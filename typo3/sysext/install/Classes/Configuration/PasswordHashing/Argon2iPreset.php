@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Install\Configuration\PasswordHashing;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Configuration\AbstractPreset;
-use TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt;
 
 /**
  * Preset for password hashing method "argon2i"
@@ -38,9 +38,9 @@ class Argon2iPreset extends AbstractPreset
      * @var array Configuration values handled by this preset
      */
     protected $configurationValues = [
-        'BE/passwordHashing/className' => Argon2iSalt::class,
+        'BE/passwordHashing/className' => Argon2iPasswordHash::class,
         'BE/passwordHashing/options' => [],
-        'FE/passwordHashing/className' => Argon2iSalt::class,
+        'FE/passwordHashing/className' => Argon2iPasswordHash::class,
         'FE/passwordHashing/options' => [],
     ];
 
@@ -49,8 +49,8 @@ class Argon2iPreset extends AbstractPreset
      *
      * @return bool
      */
-    public function isAvailable()
+    public function isAvailable(): bool
     {
-        return GeneralUtility::makeInstance(Argon2iSalt::class)->isAvailable();
+        return GeneralUtility::makeInstance(Argon2iPasswordHash::class)->isAvailable();
     }
 }

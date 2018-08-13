@@ -18,6 +18,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -25,7 +26,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
-use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
  * Plugin 'Website User Login' for the 'felogin' extension.
@@ -353,7 +353,7 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
                         );
                     } else {
                         // Hash password using configured salted passwords hash mechanism for FE
-                        $hashInstance = GeneralUtility::makeInstance(SaltFactory::class)->getDefaultHashInstance('FE');
+                        $hashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE');
                         $newPass = $hashInstance->getHashedPassword($postData['password1']);
 
                         // Call a hook for further password processing

@@ -23,3 +23,60 @@ namespace TYPO3\CMS\Sv {
     {
     }
 }
+
+namespace TYPO3\CMS\Saltedpasswords {
+    class SaltedPasswordsService extends \TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordService
+    {
+    }
+}
+
+namespace TYPO3\CMS\Saltedpasswords\Exception {
+    class InvalidSaltException extends \TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException
+    {
+    }
+}
+
+namespace TYPO3\CMS\Saltedpasswords\Salt {
+    class AbstractSalt extends \TYPO3\CMS\Core\Crypto\PasswordHashing\AbstractComposedSalt
+    {
+    }
+    class AbstractComposedSalt extends \TYPO3\CMS\Core\Crypto\PasswordHashing\AbstractComposedSalt
+    {
+    }
+    class Argon2iSalt extends \TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash
+    {
+    }
+    class BcryptSalt extends \TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash
+    {
+    }
+    class BlowfishSalt extends \TYPO3\CMS\Core\Crypto\PasswordHashing\BlowfishPasswordHash
+    {
+    }
+    class ComposedSaltInterface extends \TYPO3\CMS\Core\Crypto\PasswordHashing\ComposedPasswordHashInterface
+    {
+    }
+    class Md5Salt extends \TYPO3\CMS\Core\Crypto\PasswordHashing\Md5PasswordHash
+    {
+    }
+    class SaltFactory extends \TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory
+    {
+    }
+    class SaltInterface extends \TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface
+    {
+    }
+    class Pbkdf2Salt extends \TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash
+    {
+    }
+    class PhpassSalt extends \TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash
+    {
+    }
+}
+
+namespace TYPO3\CMS\Saltedpasswords\Utility {
+    class ExensionManagerConfigurationUtility extends \TYPO3\CMS\Core\Crypto\PasswordHashing\ExtensionManagerConfigurationUtility
+    {
+    }
+    class SaltedPasswordsUtility extends \TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordsUtility
+    {
+    }
+}

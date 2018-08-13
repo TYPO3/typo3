@@ -14,14 +14,14 @@ namespace TYPO3\CMS\Core\Authentication;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Saltedpasswords\Exception\InvalidSaltException;
-use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
-use TYPO3\CMS\Saltedpasswords\Salt\SaltInterface;
 
 /**
  * Authentication services class
@@ -118,20 +118,20 @@ class AuthenticationService extends AbstractAuthenticationService
         $isReHashNeeded = false;
         $isDomainLockMet = false;
 
-        $saltFactory = GeneralUtility::makeInstance(SaltFactory::class);
+        $saltFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
 
         // Get a hashed password instance for the hash stored in db of this user
         try {
             $hashInstance = $saltFactory->get($passwordHashInDatabase, TYPO3_MODE);
-        } catch (InvalidSaltException $e) {
+        } catch (InvalidPasswordHashException $e) {
             // This can be refactored if the 'else' part below is gone in v10: Log and return 100 here
             $hashInstance = null;
         }
         // An instance of the currently configured salted password mechanism
-        // Don't catch InvalidSaltException here: Only install tool should handle those configuration failures
+        // Don't catch InvalidPasswordHashException here: Only install tool should handle those configuration failures
         $defaultHashInstance = $saltFactory->getDefaultHashInstance(TYPO3_MODE);
 
-        if ($hashInstance instanceof SaltInterface) {
+        if ($hashInstance instanceof PasswordHashInterface) {
             // We found a hash class that can handle this type of hash
             $isSaltedPassword = true;
             $isValidPassword = $hashInstance->checkPassword($submittedPassword, $passwordHashInDatabase);
@@ -156,7 +156,7 @@ class AuthenticationService extends AbstractAuthenticationService
             if (substr($user['password'], 0, 2) === 'M$') {
                 // If the stored db password starts with M$, it may be a md5 password that has been
                 // upgraded to a salted md5 using the old salted passwords scheduler task.
-                // See if a salt instance is returned if we cut off the M, so Md5Salt kicks in
+                // See if a salt instance is returned if we cut off the M, so Md5PasswordHash kicks in
                 try {
                     $hashInstance = $saltFactory->get(substr($passwordHashInDatabase, 1), TYPO3_MODE);
                     $isSaltedPassword = true;
@@ -172,7 +172,7 @@ class AuthenticationService extends AbstractAuthenticationService
                             $isDomainLockMet = true;
                         }
                     }
-                } catch (InvalidSaltException $e) {
+                } catch (InvalidPasswordHashException $e) {
                     // Still no instance found: $isSaltedPasswords is NOT set to true, logging and return done below
                 }
             }

@@ -95,7 +95,6 @@
 				"typo3/sysext/lowlevel/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/recordlist/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/reports/Migrations/Code/ClassAliasMap.php",
-				"typo3/sysext/saltedpasswords/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/t3editor/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/workspaces/Migrations/Code/ClassAliasMap.php"
 			]
@@ -167,7 +166,6 @@
 		"typo3/cms-reports": "self.version",
 		"typo3/cms-rsaauth": "self.version",
 		"typo3/cms-rte-ckeditor": "self.version",
-		"typo3/cms-saltedpasswords": "self.version",
 		"typo3/cms-scheduler": "self.version",
 		"typo3/cms-seo": "self.version",
 		"typo3/cms-setup": "self.version",
@@ -209,7 +207,6 @@
 			"TYPO3\\CMS\\Reports\\": "typo3/sysext/reports/Classes/",
 			"TYPO3\\CMS\\Rsaauth\\": "typo3/sysext/rsaauth/Classes/",
 			"TYPO3\\CMS\\RteCKEditor\\": "typo3/sysext/rte_ckeditor/Classes/",
-			"TYPO3\\CMS\\Saltedpasswords\\": "typo3/sysext/saltedpasswords/Classes/",
 			"TYPO3\\CMS\\Scheduler\\": "typo3/sysext/scheduler/Classes/",
 			"TYPO3\\CMS\\Seo\\": "typo3/sysext/seo/Classes/",
 			"TYPO3\\CMS\\Setup\\": "typo3/sysext/setup/Classes/",
@@ -253,7 +250,6 @@
 			"TYPO3\\CMS\\Recordlist\\Tests\\": "typo3/sysext/recordlist/Tests/",
 			"TYPO3\\CMS\\Reports\\Tests\\": "typo3/sysext/reports/Tests/",
 			"TYPO3\\CMS\\Rsaauth\\Tests\\": "typo3/sysext/rsaauth/Tests/",
-			"TYPO3\\CMS\\Saltedpasswords\\Tests\\": "typo3/sysext/saltedpasswords/Tests/",
 			"TYPO3\\CMS\\Scheduler\\Tests\\": "typo3/sysext/scheduler/Tests/",
 			"TYPO3\\CMS\\Seo\\Tests\\": "typo3/sysext/seo/Tests/",
 			"TYPO3\\CMS\\Setup\\Tests\\": "typo3/sysext/setup/Tests/",
