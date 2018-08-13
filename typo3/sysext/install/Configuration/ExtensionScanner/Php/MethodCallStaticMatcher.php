@@ -722,4 +722,11 @@ return [
             'Deprecation-85822-DeprecatePageGeneratorrenderContent.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getTCAtypes' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-85836-DeprecateBackendUtilitygetTCAtypes.rst',
+        ],
+    ],
 ];

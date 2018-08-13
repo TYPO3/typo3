@@ -67,6 +67,7 @@ class BackendUtility
      *
      * @var array
      * @see self::getTCAtypes()
+     * @deprecated since TYPO3 v9.4 will be removed in TYPO3 v10.0.
      */
     protected static $tcaTableTypeConfigurationCache = [];
 
@@ -636,9 +637,11 @@ class BackendUtility
      * @param array $rec Record from $table
      * @param bool $useFieldNameAsKey If $useFieldNameAsKey is set, then the fieldname is associative keys in the return array, otherwise just numeric keys.
      * @return array|null
+     * @deprecated since TYPO3 v9.4 will be removed in TYPO3 v10.0.
      */
     public static function getTCAtypes($table, $rec, $useFieldNameAsKey = false)
     {
+        trigger_error('BackendUtility::getTCAtypes will be removed in TYPO3 v10. The method is not in use anymore.', E_USER_DEPRECATED);
         if (isset($GLOBALS['TCA'][$table])) {
             // Get type value:
             $fieldValue = self::getTCAtypeValue($table, $rec);
@@ -727,7 +730,6 @@ class BackendUtility
      * @param array $row Record from $table
      * @throws \RuntimeException
      * @return string Field value
-     * @see getTCAtypes()
      */
     public static function getTCAtypeValue($table, $row)
     {
