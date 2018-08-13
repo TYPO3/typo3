@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 /*
@@ -13,12 +14,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Utility\CommandUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Test case for class \TYPO3\CMS\Core\Utility\CommandUtility
+ * Test case
  */
-class CommandUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class CommandUtilityTest extends UnitTestCase
 {
     /**
      * Data provider for getConfiguredApps
@@ -83,5 +86,121 @@ class CommandUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $commandUtilityMock = $this->getAccessibleMock(CommandUtility::class, ['dummy']);
         $result = $commandUtilityMock->_call('getConfiguredApps');
         $this->assertSame($expected, $result);
+    }
+
+    /**
+     * Data provider unQuoteFilenameUnquotesCorrectly
+     */
+    public function unQuoteFilenameUnquotesCorrectlyDataProvider(): array
+    {
+        return [
+            // Some theoretical tests first
+            [
+                '',
+                []
+            ],
+            [
+                'aa bb "cc" "dd"',
+                ['aa', 'bb', '"cc"', '"dd"']
+            ],
+            [
+                'aa bb "cc dd"',
+                ['aa', 'bb', '"cc dd"']
+            ],
+            [
+                '\'aa bb\' "cc dd"',
+                ['\'aa bb\'', '"cc dd"']
+            ],
+            [
+                '\'aa bb\' cc "dd"',
+                ['\'aa bb\'', 'cc', '"dd"']
+            ],
+            // Now test against some real world examples
+            [
+                '/opt/local/bin/gm.exe convert +profile \'*\' -geometry 170x136!  -negate "C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
+                [
+                    '/opt/local/bin/gm.exe',
+                    'convert',
+                    '+profile',
+                    '\'*\'',
+                    '-geometry',
+                    '170x136!',
+                    '-negate',
+                    '"C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
+                    '"C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
+                ]
+            ],
+            [
+                'C:/opt/local/bin/gm.exe convert +profile \'*\' -geometry 170x136!  -negate "C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
+                [
+                    'C:/opt/local/bin/gm.exe',
+                    'convert',
+                    '+profile',
+                    '\'*\'',
+                    '-geometry',
+                    '170x136!',
+                    '-negate',
+                    '"C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
+                    '"C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
+                ]
+            ],
+            [
+                '/usr/bin/gm convert +profile \'*\' -geometry 170x136!  -negate "/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
+                [
+                    '/usr/bin/gm',
+                    'convert',
+                    '+profile',
+                    '\'*\'',
+                    '-geometry',
+                    '170x136!',
+                    '-negate',
+                    '"/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
+                    '"/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
+                ]
+            ],
+            [
+                '/usr/bin/gm convert +profile \'*\' -geometry 170x136!  -negate "/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
+                [
+                    '/usr/bin/gm',
+                    'convert',
+                    '+profile',
+                    '\'*\'',
+                    '-geometry',
+                    '170x136!',
+                    '-negate',
+                    '"/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
+                    '"/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
+                ]
+            ],
+            [
+                '/usr/bin/gm convert +profile \'*\' -geometry 170x136!  -negate \'/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]\' \'/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif\'',
+                [
+                    '/usr/bin/gm',
+                    'convert',
+                    '+profile',
+                    '\'*\'',
+                    '-geometry',
+                    '170x136!',
+                    '-negate',
+                    '\'/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]\'',
+                    '\'/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif\''
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * Tests if the commands are exploded and unquoted correctly
+     *
+     * @dataProvider unQuoteFilenameUnquotesCorrectlyDataProvider
+     * @test
+     * @param string $source
+     * @param array $expectedQuoted
+     */
+    public function unQuoteFilenameUnquotesCorrectly(string $source, array $expectedQuoted): void
+    {
+        $commandUtilityMock = $this->getAccessibleMock(CommandUtility::class, ['dummy']);
+        $actualQuoted = $commandUtilityMock->_call('unQuoteFilenames', $source);
+        $this->assertEquals($expectedQuoted, $actualQuoted);
     }
 }
