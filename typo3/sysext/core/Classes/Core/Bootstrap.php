@@ -85,7 +85,7 @@ class Bootstrap
         if (!static::checkIfEssentialConfigurationExists($configurationManager, true)) {
             $failsafe = true;
         }
-        static::populateLocalConfiguration($configurationManager, true);
+        static::populateLocalConfiguration($configurationManager);
         static::initializeErrorHandling();
         static::initializeIO();
 
@@ -121,7 +121,7 @@ class Bootstrap
 
         if (!$failsafe) {
             static::loadTypo3LoadedExtAndExtLocalconf(true);
-            static::setFinalCachingFrameworkCacheConfiguration($cacheManager, true);
+            static::setFinalCachingFrameworkCacheConfiguration($cacheManager);
             static::unsetReservedGlobalVariables();
             static::loadBaseTca();
             static::checkEncryptionKey();
@@ -241,7 +241,6 @@ class Bootstrap
      */
     public static function getInstance()
     {
-        trigger_error('Bootstrap::getInstance() will be removed in TYPO3 v10.0 as most functionality is now static.', E_USER_DEPRECATED);
         if (static::$instance === null) {
             self::$instance = new static();
             self::$instance->defineTypo3RequestTypes();
@@ -287,11 +286,10 @@ class Bootstrap
      */
     public function configure()
     {
-        trigger_error('Bootstrap->configure() will be removed in TYPO3 v10.0. Use init() instead.', E_USER_DEPRECATED);
         $this->startOutputBuffering()
             ->loadConfigurationAndInitialize(true, \TYPO3\CMS\Core\Package\PackageManager::class, true)
             ->loadTypo3LoadedExtAndExtLocalconf(true)
-            ->setFinalCachingFrameworkCacheConfiguration(null, true)
+            ->setFinalCachingFrameworkCacheConfiguration()
             ->unsetReservedGlobalVariables()
             ->loadBaseTca()
             ->checkEncryptionKey();
@@ -316,7 +314,7 @@ class Bootstrap
         }
         // @deprecated: remove this code block in TYPO3 v10.0
         if (GeneralUtility::getApplicationContext() === null) {
-            SystemEnvironmentBuilder::run($entryPointLevel);
+            SystemEnvironmentBuilder::run($entryPointLevel ?? 0, PHP_SAPI === 'cli' ? SystemEnvironmentBuilder::REQUESTTYPE_CLI : SystemEnvironmentBuilder::REQUESTTYPE_FE);
         }
         if (!Environment::isComposerMode() && ClassLoadingInformation::isClassLoadingInformationAvailable()) {
             ClassLoadingInformation::registerClassLoadingInformation();
@@ -369,20 +367,15 @@ class Bootstrap
      * used to see if a redirect to the install tool is needed
      *
      * @param ConfigurationManager $configurationManager
-     * @param bool $internalCall Internally set to suppress deprecation log
      * @return bool TRUE when the essential configuration is available, otherwise FALSE
      * @internal This is not a public API method, do not use in own extensions
-     * @deprecated This method will be set to protected in v10
      */
-    public static function checkIfEssentialConfigurationExists(ConfigurationManager $configurationManager = null, bool $internalCall = false): bool
+    protected static function checkIfEssentialConfigurationExists(ConfigurationManager $configurationManager = null): bool
     {
-        if (!$internalCall) {
-            trigger_error('This methods will be set to protected in v10.', E_USER_DEPRECATED);
-        }
         if ($configurationManager === null) {
-            trigger_error('A configurationManager instance needs to be handed into Bootstrap::checkIfEssentialConfigurationExists and will become mandatory in TYPO3 v10.0.', E_USER_DEPRECATED);
+            // @deprecated A configurationManager instance needs to be handed into Bootstrap::checkIfEssentialConfigurationExists and will become mandatory in TYPO3 v10.0
             $configurationManager = new ConfigurationManager;
-            static::$instance->setEarlyInstance(ConfigurationManager::class, $configurationManager, true);
+            static::$instance->setEarlyInstance(ConfigurationManager::class, $configurationManager);
         }
         return file_exists($configurationManager->getLocalConfigurationFileLocation())
             && file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php');
@@ -395,15 +388,11 @@ class Bootstrap
      *
      * @param string $objectName Object name, as later used by the Object Manager
      * @param object $instance The instance to register
-     * @param bool $isInternalCall if set to true suppress the deprecation message
      * @internal This is not a public API method, do not use in own extensions
      * @deprecated since TYPO3 9.4, will be removed in TYPO3 v10.0 as this concept of early instances is not needed anymore
      */
-    public function setEarlyInstance($objectName, $instance, bool $isInternalCall = false)
+    public function setEarlyInstance($objectName, $instance)
     {
-        if (!$isInternalCall) {
-            trigger_error('Bootstrap->setEarlyInstance() will be removed in TYPO3 v10.0. Use a simple singleton instance instead.', E_USER_DEPRECATED);
-        }
         $this->earlyInstances[$objectName] = $instance;
     }
 
@@ -411,17 +400,13 @@ class Bootstrap
      * Returns an instance which was registered earlier through setEarlyInstance()
      *
      * @param string $objectName Object name of the registered instance
-     * @param bool $isInternalCall if set to true suppress the deprecation message
      * @return object
      * @throws \TYPO3\CMS\Core\Exception
      * @internal This is not a public API method, do not use in own extensions
      * @deprecated since TYPO3 9.4, will be removed in TYPO3 v10.0 as this concept of early instances is not needed anymore
      */
-    public function getEarlyInstance($objectName, bool $isInternalCall = false)
+    public function getEarlyInstance($objectName)
     {
-        if (!$isInternalCall) {
-            trigger_error('Bootstrap->getEarlyInstance() will be removed in TYPO3 v10.0. Use a simple singleton instance instead.', E_USER_DEPRECATED);
-        }
         if (!isset($this->earlyInstances[$objectName])) {
             throw new \TYPO3\CMS\Core\Exception('Unknown early instance "' . $objectName . '"', 1365167380);
         }
@@ -464,7 +449,7 @@ class Bootstrap
         }
 
         $configurationManager = static::createConfigurationManager();
-        static::populateLocalConfiguration($configurationManager, true);
+        static::populateLocalConfiguration($configurationManager);
         static::initializeErrorHandling();
 
         $cacheManager = static::createCacheManager(!$allowCaching);
@@ -519,7 +504,7 @@ class Bootstrap
         );
         GeneralUtility::setSingletonInstance(PackageManager::class, $packageManager);
         ExtensionManagementUtility::setPackageManager($packageManager);
-        $this->setEarlyInstance(PackageManager::class, $packageManager, true);
+        $this->setEarlyInstance(PackageManager::class, $packageManager);
 
         return $this;
     }
@@ -569,18 +554,14 @@ class Bootstrap
      * Since makeInstance relies on the object configuration, we create it here with new instead.
      *
      * @param ConfigurationManager $configurationManager
-     * @param bool $isInternalCall Set to true internally to suppress deprecation notices
      * @return Bootstrap
      * @internal This is not a public API method, do not use in own extensions
      */
-    public static function populateLocalConfiguration(ConfigurationManager $configurationManager = null, bool $isInternalCall = false)
+    protected static function populateLocalConfiguration(ConfigurationManager $configurationManager = null)
     {
-        if (!$isInternalCall) {
-            trigger_error('Bootstrap::populateLocalConfiguration() is deprecated and will be set to protected in v10', E_USER_DEPRECATED);
-        }
         if ($configurationManager === null) {
             $configurationManager = new ConfigurationManager();
-            static::$instance->setEarlyInstance(ConfigurationManager::class, $configurationManager, true);
+            static::$instance->setEarlyInstance(ConfigurationManager::class, $configurationManager);
         }
 
         $configurationManager->exportConfiguration();
@@ -598,7 +579,6 @@ class Bootstrap
      */
     public static function disableCoreCache()
     {
-        trigger_error('Bootstrap::disableCoreCache() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_core']['backend']
             = \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
         unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_core']['options']);
@@ -631,10 +611,9 @@ class Bootstrap
      */
     public function initializeCachingFramework(bool $allowCaching = true)
     {
-        trigger_error('Bootstrap->initializeCachingFramework() will be removed in TYPO3 v10.0, as this is not necessary anymore.', E_USER_DEPRECATED);
         $cacheManager = static::createCacheManager(!$allowCaching);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
-        $this->setEarlyInstance(CacheManager::class, $cacheManager, true);
+        $this->setEarlyInstance(CacheManager::class, $cacheManager);
         return $this;
     }
 
@@ -766,7 +745,6 @@ class Bootstrap
      */
     public function setRequestType($requestType)
     {
-        trigger_error('Bootstrap->setRequestType() will be removed in TYPO3 v10.0. Use SystemEnvironmentBuilder instead.', E_USER_DEPRECATED);
         if (defined('TYPO3_REQUESTTYPE')) {
             throw new \RuntimeException('TYPO3_REQUESTTYPE has already been set, cannot be called multiple times', 1450561878);
         }
@@ -782,11 +760,8 @@ class Bootstrap
      * @return Bootstrap|null
      * @internal This is not a public API method, do not use in own extensions
      */
-    public static function setFinalCachingFrameworkCacheConfiguration(CacheManager $cacheManager = null, bool $isInternalCall = false)
+    protected static function setFinalCachingFrameworkCacheConfiguration(CacheManager $cacheManager = null)
     {
-        if (!$isInternalCall) {
-            trigger_error('Boostrap::setFinalCachingFrameworkCacheConfiguration will be set to protected in v10', E_USER_DEPRECATED);
-        }
         if ($cacheManager === null) {
             $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         }
@@ -981,5 +956,41 @@ class Bootstrap
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
         $GLOBALS['LANG']->init($GLOBALS['BE_USER']->uc['lang']);
         return static::$instance;
+    }
+
+    /**
+     * Backwards compatibility for usages of now protected methods
+     *
+     * @param $methodName
+     * @param array $arguments
+     * @throws \Error
+     * @deprecated Will be removed in v10.0
+     * @return mixed
+     */
+    public static function __callStatic($methodName, array $arguments)
+    {
+        switch ($methodName) {
+            case 'checkIfEssentialConfigurationExists':
+            case 'setFinalCachingFrameworkCacheConfiguration':
+            case 'populateLocalConfiguration':
+                return call_user_func_array([self::class, $methodName], $arguments);
+                break;
+            default:
+                throw new \Error(sprintf('Call to undefined method "%s"', $methodName), 1534156090);
+        }
+    }
+
+    /**
+     * Backwards compatibility for usages of now protected methods
+     *
+     * @param string $methodName
+     * @param array $arguments
+     * @throws \Error
+     * @deprecated Will be removed in v10.0
+     * @return mixed
+     */
+    public function __call($methodName, array $arguments)
+    {
+        return self::__callStatic($methodName, $arguments);
     }
 }

@@ -2853,14 +2853,14 @@ return [
     ],
     'TYPO3\CMS\Core\Core\Boostrap->setEarlyInstance' => [
         'numberOfMandatoryArguments' => 2,
-        'maximumNumberOfArguments' => 3,
+        'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-85821-DeprecatedBoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Boostrap->getEarlyInstance' => [
         'numberOfMandatoryArguments' => 1,
-        'maximumNumberOfArguments' => 2,
+        'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85821-DeprecatedBoostrapMethods.rst',
         ],

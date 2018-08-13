@@ -675,7 +675,7 @@ return [
     ],
     'TYPO3\CMS\Core\Core\Boostrap::checkIfEssentialConfigurationExists' => [
         'numberOfMandatoryArguments' => 0,
-        'maximumNumberOfArguments' => 2,
+        'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85821-DeprecatedBoostrapMethods.rst',
         ],
@@ -689,7 +689,7 @@ return [
     ],
     'TYPO3\CMS\Core\Core\Boostrap::populateLocalConfiguration' => [
         'numberOfMandatoryArguments' => 0,
-        'maximumNumberOfArguments' => 2,
+        'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85821-DeprecatedBoostrapMethods.rst',
         ],
@@ -710,7 +710,7 @@ return [
     ],
     'TYPO3\CMS\Core\Core\Boostrap::setFinalCachingFrameworkCacheConfiguration' => [
         'numberOfMandatoryArguments' => 0,
-        'maximumNumberOfArguments' => 2,
+        'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85821-DeprecatedBoostrapMethods.rst',
         ],
