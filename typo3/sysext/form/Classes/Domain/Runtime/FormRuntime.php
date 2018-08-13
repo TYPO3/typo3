@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Form\Domain\Runtime;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -31,8 +32,7 @@ use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Property\Exception as PropertyException;
-use TYPO3\CMS\Form\Domain\Condition\ConditionContext;
-use TYPO3\CMS\Form\Domain\Condition\ConditionResolver;
+use TYPO3\CMS\Form\Domain\Condition\ConditionProvider;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherInterface;
@@ -1057,15 +1057,11 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
-     * @return ConditionResolver
+     * @return Resolver
      */
-    protected function getConditionResolver(): ConditionResolver
+    protected function getConditionResolver(): Resolver
     {
-        /** @var \TYPO3\CMS\Form\Domain\Condition\ConditionResolver $conditionResolver */
-        $conditionResolver = $this->objectManager->get(
-            ConditionResolver::class,
-            GeneralUtility::makeInstance(ConditionContext::class, $this)
-        );
+        $conditionResolver = GeneralUtility::makeInstance(Resolver::class, GeneralUtility::makeInstance(ConditionProvider::class, $this));
         return $conditionResolver;
     }
 

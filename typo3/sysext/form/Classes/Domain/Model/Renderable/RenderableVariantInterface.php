@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Renderable;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Form\Domain\Condition\ConditionResolver;
+use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 
 /**
  * Scope: frontend
@@ -42,8 +42,8 @@ interface RenderableVariantInterface
     public function isApplied(): bool;
 
     /**
-     * @param ConditionResolver $conditionResolver
+     * @param Resolver $conditionResolver
      * @return bool
      */
-    public function conditionMatches(ConditionResolver $conditionResolver): bool;
+    public function conditionMatches(Resolver $conditionResolver): bool;
 }

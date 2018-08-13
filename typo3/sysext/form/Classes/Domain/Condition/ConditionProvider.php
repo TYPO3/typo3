@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Form\Domain\Condition;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\ExpressionLanguage\AbstractProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Exception;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
@@ -27,19 +28,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * @internal
  */
-class ConditionContext
+class ConditionProvider extends AbstractProvider
 {
-
-    /**
-     * @var array
-     */
-    public $expressionLanguageProviders = [];
-
-    /**
-     * @var array
-     */
-    public $expressionLanguageVariables = [];
-
     /**
      * @param FormRuntime $formRuntime
      */
@@ -72,22 +62,6 @@ class ConditionContext
             /** @see https://symfony.com/doc/4.0/components/expression_language.html#passing-in-variables */
             $this->expressionLanguageVariables[$expressionLanguageVariableProvider->getVariableName()] = $expressionLanguageVariableProvider->getVariableValue();
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function getExpressionLanguageProviders(): array
-    {
-        return $this->expressionLanguageProviders;
-    }
-
-    /**
-     * @return array
-     */
-    public function getExpressionLanguageVariables(): array
-    {
-        return $this->expressionLanguageVariables;
     }
 
     /**
