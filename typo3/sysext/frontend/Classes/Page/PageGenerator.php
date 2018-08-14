@@ -90,10 +90,10 @@ class PageGenerator
         $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
 
         $pageRenderer = static::getPageRenderer();
-        if ($tsfe->config['config']['moveJsFromHeaderToFooter']) {
+        if ($tsfe->config['config']['moveJsFromHeaderToFooter'] ?? false) {
             $pageRenderer->enableMoveJsFromHeaderToFooter();
         }
-        if ($tsfe->config['config']['pageRendererTemplateFile']) {
+        if ($tsfe->config['config']['pageRendererTemplateFile'] ?? false) {
             try {
                 $file = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($tsfe->config['config']['pageRendererTemplateFile']);
                 $pageRenderer->setTemplateFile($file);
@@ -101,7 +101,7 @@ class PageGenerator
                 // do nothing
             }
         }
-        $headerComment = $tsfe->config['config']['headerComment'];
+        $headerComment = $tsfe->config['config']['headerComment'] ?? null;
         if (trim($headerComment)) {
             $pageRenderer->addInlineComment("\t" . str_replace(LF, LF . "\t", trim($headerComment)) . LF);
         }
@@ -110,10 +110,10 @@ class PageGenerator
         // Reset the content variables:
         $tsfe->content = '';
         $htmlTagAttributes = [];
-        $htmlLang = $tsfe->config['config']['htmlTag_langKey'] ?: ($tsfe->sys_language_isocode ?: 'en');
+        $htmlLang = $tsfe->config['config']['htmlTag_langKey'] ?? ($tsfe->sys_language_isocode ?: 'en');
         // Set content direction
         // More info: http://www.tau.ac.il/~danon/Hebrew/HTML_and_Hebrew.html)
-        $direction = $tsfe->config['config']['htmlTag_dir'];
+        $direction = $tsfe->config['config']['htmlTag_dir'] ?? null;
         if (self::getCurrentSiteLanguage()) {
             $direction = self::getCurrentSiteLanguage()->getDirection();
             $htmlLang = self::getCurrentSiteLanguage()->getTwoLetterIsoCode();
@@ -125,7 +125,7 @@ class PageGenerator
         $docTypeParts = [];
         $xmlDocument = true;
         // Part 1: XML prologue
-        switch ((string)$tsfe->config['config']['xmlprologue']) {
+        switch ((string)($tsfe->config['config']['xmlprologue'] ?? '')) {
             case 'none':
                 $xmlDocument = false;
                 break;
@@ -146,7 +146,7 @@ class PageGenerator
                 $docTypeParts[] = $tsfe->config['config']['xmlprologue'];
         }
         // Part 2: DTD
-        $doctype = $tsfe->config['config']['doctype'];
+        $doctype = $tsfe->config['config']['doctype'] ?? null;
         if ($doctype) {
             switch ($doctype) {
                 case 'xhtml_trans':
@@ -212,7 +212,7 @@ class PageGenerator
             }
         }
         // Swap XML and doctype order around (for MSIE / Opera standards compliance)
-        if ($tsfe->config['config']['doctypeSwitch']) {
+        if ($tsfe->config['config']['doctypeSwitch'] ?? false) {
             $docTypeParts = array_reverse($docTypeParts);
         }
         // Adding doctype parts:
@@ -220,7 +220,7 @@ class PageGenerator
             $pageRenderer->setXmlPrologAndDocType(implode(LF, $docTypeParts));
         }
         // Begin header section:
-        if ($tsfe->config['config']['htmlTag_setParams'] !== 'none') {
+        if (isset($tsfe->config['config']['htmlTag_setParams']) && $tsfe->config['config']['htmlTag_setParams'] !== 'none') {
             $_attr = $tsfe->config['config']['htmlTag_setParams'] ?: GeneralUtility::implodeAttributes($htmlTagAttributes);
         } else {
             $_attr = '';
@@ -231,7 +231,7 @@ class PageGenerator
         }
         $pageRenderer->setHtmlTag($htmlTag);
         // Head tag:
-        $headTag = $tsfe->pSetup['headTag'] ?: '<head>';
+        $headTag = $tsfe->pSetup['headTag'] ?? '<head>';
         if (isset($tsfe->pSetup['headTag.'])) {
             $headTag = $tsfe->cObj->stdWrap($headTag, $tsfe->pSetup['headTag.']);
         }
@@ -246,7 +246,7 @@ class PageGenerator
         if ($tsfe->baseUrl) {
             $pageRenderer->setBaseUrl($tsfe->baseUrl);
         }
-        if ($tsfe->pSetup['shortcutIcon']) {
+        if ($tsfe->pSetup['shortcutIcon'] ?? false) {
             try {
                 $favIcon = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($tsfe->pSetup['shortcutIcon']);
                 $iconFileInfo = GeneralUtility::makeInstance(ImageInfo::class, Environment::getPublicPath() . '/' . $favIcon);
@@ -263,7 +263,7 @@ class PageGenerator
             }
         }
         // Including CSS files
-        if (is_array($tsfe->tmpl->setup['plugin.'])) {
+        if (isset($tsfe->tmpl->setup['plugin.']) && is_array($tsfe->tmpl->setup['plugin.'])) {
             $stylesFromPlugins = '';
             foreach ($tsfe->tmpl->setup['plugin.'] as $key => $iCSScode) {
                 if (is_array($iCSScode)) {
@@ -292,7 +292,7 @@ class PageGenerator
         /**********************************************************************/
         /* config.includeCSS / config.includeCSSLibs
         /**********************************************************************/
-        if (is_array($tsfe->pSetup['includeCSS.'])) {
+        if (isset($tsfe->pSetup['includeCSS.']) && is_array($tsfe->pSetup['includeCSS.'])) {
             foreach ($tsfe->pSetup['includeCSS.'] as $key => $CSSfile) {
                 if (!is_array($CSSfile)) {
                     $cssFileConfig = &$tsfe->pSetup['includeCSS.'][$key . '.'];
@@ -334,7 +334,7 @@ class PageGenerator
                 }
             }
         }
-        if (is_array($tsfe->pSetup['includeCSSLibs.'])) {
+        if (isset($tsfe->pSetup['includeCSSLibs.']) && is_array($tsfe->pSetup['includeCSSLibs.'])) {
             foreach ($tsfe->pSetup['includeCSSLibs.'] as $key => $CSSfile) {
                 if (!is_array($CSSfile)) {
                     $cssFileConfig = &$tsfe->pSetup['includeCSSLibs.'][$key . '.'];
@@ -378,13 +378,13 @@ class PageGenerator
         }
 
         // CSS_inlineStyle from TS
-        $style = trim($tsfe->pSetup['CSS_inlineStyle']);
-        $style .= $tsfe->cObj->cObjGet($tsfe->pSetup['cssInline.'], 'cssInline.');
+        $style = trim($tsfe->pSetup['CSS_inlineStyle'] ?? '');
+        $style .= $tsfe->cObj->cObjGet($tsfe->pSetup['cssInline.'] ?? null, 'cssInline.');
         if (trim($style)) {
             self::addCssToPageRenderer($style, true, 'additionalTSFEInlineStyle');
         }
         // Javascript Libraries
-        if (is_array($tsfe->pSetup['javascriptLibs.'])) {
+        if (isset($tsfe->pSetup['javascriptLibs.']) && is_array($tsfe->pSetup['javascriptLibs.'])) {
             // @deprecated since TYPO3 v9, will be removed in TYPO3 v10, the setting page.javascriptLibs has been deprecated and will be removed in TYPO3 CMS 10.
             trigger_error('The setting page.javascriptLibs has been deprecated and will be removed in TYPO3 CMS 10', E_USER_DEPRECATED);
 
@@ -407,7 +407,7 @@ class PageGenerator
             }
         }
         // JavaScript library files
-        if (is_array($tsfe->pSetup['includeJSLibs.'])) {
+        if (isset($tsfe->pSetup['includeJSLibs.']) && is_array($tsfe->pSetup['includeJSLibs.'])) {
             foreach ($tsfe->pSetup['includeJSLibs.'] as $key => $JSfile) {
                 if (!is_array($JSfile)) {
                     if (isset($tsfe->pSetup['includeJSLibs.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJSLibs.'][$key . '.']['if.'])) {
@@ -451,7 +451,7 @@ class PageGenerator
                 }
             }
         }
-        if (is_array($tsfe->pSetup['includeJSFooterlibs.'])) {
+        if (isset($tsfe->pSetup['includeJSFooterlibs.']) && is_array($tsfe->pSetup['includeJSFooterlibs.'])) {
             foreach ($tsfe->pSetup['includeJSFooterlibs.'] as $key => $JSfile) {
                 if (!is_array($JSfile)) {
                     if (isset($tsfe->pSetup['includeJSFooterlibs.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJSFooterlibs.'][$key . '.']['if.'])) {
@@ -496,7 +496,7 @@ class PageGenerator
             }
         }
         // JavaScript files
-        if (is_array($tsfe->pSetup['includeJS.'])) {
+        if (isset($tsfe->pSetup['includeJS.']) && is_array($tsfe->pSetup['includeJS.'])) {
             foreach ($tsfe->pSetup['includeJS.'] as $key => $JSfile) {
                 if (!is_array($JSfile)) {
                     if (isset($tsfe->pSetup['includeJS.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJS.'][$key . '.']['if.'])) {
@@ -539,7 +539,7 @@ class PageGenerator
                 }
             }
         }
-        if (is_array($tsfe->pSetup['includeJSFooter.'])) {
+        if (isset($tsfe->pSetup['includeJSFooter.']) && is_array($tsfe->pSetup['includeJSFooter.'])) {
             foreach ($tsfe->pSetup['includeJSFooter.'] as $key => $JSfile) {
                 if (!is_array($JSfile)) {
                     if (isset($tsfe->pSetup['includeJSFooter.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJSFooter.'][$key . '.']['if.'])) {
@@ -583,11 +583,11 @@ class PageGenerator
             }
         }
         // Headerdata
-        if (is_array($tsfe->pSetup['headerData.'])) {
+        if (isset($tsfe->pSetup['headerData.']) && is_array($tsfe->pSetup['headerData.'])) {
             $pageRenderer->addHeaderData($tsfe->cObj->cObjGet($tsfe->pSetup['headerData.'], 'headerData.'));
         }
         // Footerdata
-        if (is_array($tsfe->pSetup['footerData.'])) {
+        if (isset($tsfe->pSetup['footerData.']) && is_array($tsfe->pSetup['footerData.'])) {
             $pageRenderer->addFooterData($tsfe->cObj->cObjGet($tsfe->pSetup['footerData.'], 'footerData.'));
         }
         $tsfe->generatePageTitle();
@@ -605,7 +605,7 @@ class PageGenerator
         );
 
         unset($tsfe->additionalHeaderData['JSCode']);
-        if (is_array($tsfe->config['INTincScript'])) {
+        if (isset($tsfe->config['INTincScript']) && is_array($tsfe->config['INTincScript'])) {
             $tsfe->additionalHeaderData['JSCode'] = $tsfe->JSCode;
             // Storing the JSCode vars...
             $tsfe->config['INTincScript_ext']['divKey'] = $tsfe->uniqueHash();
@@ -675,14 +675,14 @@ class PageGenerator
         }
         // defined in TS with page.inlineJS
         // Javascript inline code
-        $inline = $tsfe->cObj->cObjGet($tsfe->pSetup['jsInline.'], 'jsInline.');
+        $inline = $tsfe->cObj->cObjGet($tsfe->pSetup['jsInline.'] ?? null, 'jsInline.');
         if ($inline) {
             $inlineJS .= LF . $inline . LF;
         }
         // Javascript inline code for Footer
-        $inlineFooterJs = $tsfe->cObj->cObjGet($tsfe->pSetup['jsFooterInline.'], 'jsFooterInline.');
+        $inlineFooterJs = $tsfe->cObj->cObjGet($tsfe->pSetup['jsFooterInline.'] ?? null, 'jsFooterInline.');
         // Should minify?
-        if ($tsfe->config['config']['compressJs']) {
+        if ($tsfe->config['config']['compressJs'] ?? false) {
             $pageRenderer->enableCompressJavascript();
             $minifyErrorScript = ($minifyErrorInline = '');
             $scriptJsCode = GeneralUtility::minifyJavaScript($scriptJsCode, $minifyErrorScript);
@@ -702,7 +702,7 @@ class PageGenerator
                 }
             }
         }
-        if (!$tsfe->config['config']['removeDefaultJS']) {
+        if (!isset($tsfe->config['config']['removeDefaultJS']) || !$tsfe->config['config']['removeDefaultJS']) {
             // include default and inlineJS
             if ($scriptJsCode) {
                 $pageRenderer->addJsInlineCode('_scriptCode', $scriptJsCode, $tsfe->config['config']['compressJs']);
@@ -748,7 +748,7 @@ class PageGenerator
                 $pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $tsfe->config['config']['compressJs']);
             }
         }
-        if (is_array($tsfe->pSetup['inlineLanguageLabelFiles.'])) {
+        if (isset($tsfe->pSetup['inlineLanguageLabelFiles.']) && is_array($tsfe->pSetup['inlineLanguageLabelFiles.'])) {
             foreach ($tsfe->pSetup['inlineLanguageLabelFiles.'] as $key => $languageFile) {
                 if (is_array($languageFile)) {
                     continue;
@@ -764,25 +764,25 @@ class PageGenerator
                 );
             }
         }
-        if (is_array($tsfe->pSetup['inlineSettings.'])) {
+        if (isset($tsfe->pSetup['inlineSettings.']) && is_array($tsfe->pSetup['inlineSettings.'])) {
             $pageRenderer->addInlineSettingArray('TS', $tsfe->pSetup['inlineSettings.']);
         }
         // Compression and concatenate settings
-        if ($tsfe->config['config']['compressCss']) {
+        if ($tsfe->config['config']['compressCss'] ?? false) {
             $pageRenderer->enableCompressCss();
         }
-        if ($tsfe->config['config']['compressJs']) {
+        if ($tsfe->config['config']['compressJs'] ?? false) {
             $pageRenderer->enableCompressJavascript();
         }
-        if ($tsfe->config['config']['concatenateCss']) {
+        if ($tsfe->config['config']['concatenateCss'] ?? false) {
             $pageRenderer->enableConcatenateCss();
         }
-        if ($tsfe->config['config']['concatenateJs']) {
+        if ($tsfe->config['config']['concatenateJs'] ?? false) {
             $pageRenderer->enableConcatenateJavascript();
         }
         // Backward compatibility for old configuration
         // @deprecated - remove this option in TYPO3 v10.0.
-        if ($tsfe->config['config']['concatenateJsAndCss']) {
+        if ($tsfe->config['config']['concatenateJsAndCss'] ?? false) {
             trigger_error('Setting config.concatenateJsAndCss is deprecated in favor of config.concatenateJs and config.concatenateCss, and will have no effect anymore in TYPO3 v10.0.', E_USER_DEPRECATED);
             $pageRenderer->enableConcatenateCss();
             $pageRenderer->enableConcatenateJavascript();
@@ -797,12 +797,16 @@ class PageGenerator
         }
         // Header complete, now add content
         // Bodytag:
-        if ($tsfe->config['config']['disableBodyTag']) {
+        if ($tsfe->config['config']['disableBodyTag'] ?? false) {
             $bodyTag = '';
         } else {
-            $defBT = $tsfe->pSetup['bodyTagCObject'] ? $tsfe->cObj->cObjGetSingle($tsfe->pSetup['bodyTagCObject'], $tsfe->pSetup['bodyTagCObject.'], 'bodyTagCObject') : '<body>';
-            $bodyTag = $tsfe->pSetup['bodyTag'] ? $tsfe->pSetup['bodyTag'] : $defBT;
-            if (trim($tsfe->pSetup['bodyTagAdd'])) {
+            $defBT = (isset($tsfe->pSetup['bodyTagCObject']) && $tsfe->pSetup['bodyTagCObject'])
+                ? $tsfe->cObj->cObjGetSingle($tsfe->pSetup['bodyTagCObject'], $tsfe->pSetup['bodyTagCObject.'], 'bodyTagCObject')
+                : '<body>';
+            $bodyTag = (isset($tsfe->pSetup['bodyTag']) && $tsfe->pSetup['bodyTag'])
+                ? $tsfe->pSetup['bodyTag']
+                : $defBT;
+            if (trim($tsfe->pSetup['bodyTagAdd'] ?? '')) {
                 $bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim($tsfe->pSetup['bodyTagAdd']) . '>';
             }
         }
@@ -1019,7 +1023,8 @@ class PageGenerator
      */
     protected static function getCurrentSiteLanguage(): ?SiteLanguage
     {
-        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface
+        if (isset($GLOBALS['TYPO3_REQUEST'])
+            && $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface
             && $GLOBALS['TYPO3_REQUEST']->getAttribute('language') instanceof SiteLanguage) {
             return $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
         }

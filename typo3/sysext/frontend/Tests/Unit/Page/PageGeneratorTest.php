@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
 
 /*
@@ -28,11 +29,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class PageGeneratorTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * Tear down
      */
@@ -216,7 +212,9 @@ class PageGeneratorTest extends UnitTestCase
         $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();
-        $tsfe->config['config'] = [];
+        $tsfe->config = [
+            'config' => [],
+        ];
         $tsfe->page = [
             'title' => ''
         ];
@@ -253,7 +251,9 @@ class PageGeneratorTest extends UnitTestCase
         $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();
-        $tsfe->config['config'] = [];
+        $tsfe->config = [
+            'config' => [],
+        ];
         $tsfe->page = [
             'title' => ''
         ];
@@ -344,7 +344,9 @@ class PageGeneratorTest extends UnitTestCase
         $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();
-        $tsfe->config['config'] = [];
+        $tsfe->config = [
+            'config' => [],
+        ];
         $tsfe->page = [
             'title' => ''
         ];
