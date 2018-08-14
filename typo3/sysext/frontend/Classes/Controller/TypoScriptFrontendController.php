@@ -2718,7 +2718,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Setting sys_language_uid inside sys-page by creating a new page repository
         $this->sys_page = GeneralUtility::makeInstance(PageRepository::class, $this->context);
         // If default translation is not available:
-        if ((!$languageAspect->getContentId() || !$languageAspect->getId()) && GeneralUtility::hideIfDefaultLanguage($this->page['l18n_cfg'])) {
+        if ((!$languageAspect->getContentId() || !$languageAspect->getId())
+            && GeneralUtility::hideIfDefaultLanguage($this->page['l18n_cfg'] ?? 0)
+        ) {
             $message = 'Page is not available in default language.';
             $this->logger->error($message);
             $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
@@ -3402,7 +3404,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function preparePageContentGeneration()
     {
         $this->getTimeTracker()->push('Prepare page content generation');
-        if ($this->page['content_from_pid'] > 0) {
+        if (isset($this->page['content_from_pid']) && $this->page['content_from_pid'] > 0) {
             // make REAL copy of TSFE object - not reference!
             $temp_copy_TSFE = clone $this;
             // Set ->id to the content_from_pid value - we are going to evaluate this pid as was it a given id for a page-display!
@@ -3412,7 +3414,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->contentPid = (int)$temp_copy_TSFE->id;
             unset($temp_copy_TSFE);
         }
-        if ($this->config['config']['MP_defaults']) {
+        if ($this->config['config']['MP_defaults'] ?? false) {
             $temp_parts = GeneralUtility::trimExplode('|', $this->config['config']['MP_defaults'], true);
             foreach ($temp_parts as $temp_p) {
                 list($temp_idP, $temp_MPp) = explode(':', $temp_p, 2);
@@ -3423,20 +3425,19 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
         }
         // Global vars...
-        $this->indexedDocTitle = $this->page['title'];
+        $this->indexedDocTitle = $this->page['title'] ?? null;
         $this->debug = !empty($this->config['config']['debug']);
         // Base url:
         if (isset($this->config['config']['baseURL'])) {
             $this->baseUrl = $this->config['config']['baseURL'];
         }
         // Internal and External target defaults
-        $this->intTarget = '' . $this->config['config']['intTarget'];
-        $this->extTarget = '' . $this->config['config']['extTarget'];
-        $this->fileTarget = '' . $this->config['config']['fileTarget'];
-        if ($this->config['config']['spamProtectEmailAddresses'] === 'ascii') {
-            $this->spamProtectEmailAddresses = 'ascii';
-        } else {
-            $this->spamProtectEmailAddresses = MathUtility::forceIntegerInRange($this->config['config']['spamProtectEmailAddresses'], -10, 10, 0);
+        $this->intTarget = (string)($this->config['config']['intTarget'] ?? '');
+        $this->extTarget = (string)($this->config['config']['extTarget'] ?? '');
+        $this->fileTarget = (string)($this->config['config']['fileTarget'] ?? '');
+        $this->spamProtectEmailAddresses = $this->config['config']['spamProtectEmailAddresses'] ?? 0;
+        if ($this->spamProtectEmailAddresses !== 'ascii') {
+            $this->spamProtectEmailAddresses = MathUtility::forceIntegerInRange($this->spamProtectEmailAddresses, -10, 10, 0);
         }
         // calculate the absolute path prefix
         if (!empty($this->config['config']['absRefPrefix'])) {
@@ -3449,13 +3450,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         } else {
             $this->absRefPrefix = '';
         }
-        $this->ATagParams = trim($this->config['config']['ATagParams']) ? ' ' . trim($this->config['config']['ATagParams']) : '';
+        $this->ATagParams = trim($this->config['config']['ATagParams'] ?? '') ? ' ' . trim($this->config['config']['ATagParams']) : '';
         $this->initializeSearchWordDataInTsfe();
         // linkVars
         $this->calculateLinkVars();
         // Setting XHTML-doctype from doctype
-        if (!$this->config['config']['xhtmlDoctype']) {
-            $this->config['config']['xhtmlDoctype'] = $this->config['config']['doctype'];
+        if (!isset($this->config['config']['xhtmlDoctype']) || !$this->config['config']['xhtmlDoctype']) {
+            $this->config['config']['xhtmlDoctype'] = $this->config['config']['doctype'] ?? '';
         }
         if ($this->config['config']['xhtmlDoctype']) {
             $this->xhtmlDoctype = $this->config['config']['xhtmlDoctype'];
@@ -3581,11 +3582,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         $titleTagContent = $this->printTitle(
             $pageTitle,
-            (bool)$this->config['config']['noPageTitle'],
-            (bool)$this->config['config']['pageTitleFirst'],
+            (bool)($this->config['config']['noPageTitle'] ?? false),
+            (bool)($this->config['config']['pageTitleFirst'] ?? false),
             $pageTitleSeparator
         );
-        if ($this->config['config']['titleTagFunction']) {
+        if ($this->config['config']['titleTagFunction'] ?? false) {
             $titleTagContent = $this->cObj->callUserFunction(
                 $this->config['config']['titleTagFunction'],
                 [],
@@ -3598,7 +3599,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
 
         // config.noPageTitle = 2 - means do not render the page title
-        if ((int)$this->config['config']['noPageTitle'] === 2) {
+        if (isset($this->config['config']['noPageTitle']) && (int)$this->config['config']['noPageTitle'] === 2) {
             $titleTagContent = '';
         }
         if ($titleTagContent !== '') {
@@ -3643,10 +3644,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         // Deprecated stuff:
         // @deprecated: annotation added TYPO3 4.6
-        $this->additionalHeaderData = is_array($this->config['INTincScript_ext']['additionalHeaderData']) ? $this->config['INTincScript_ext']['additionalHeaderData'] : [];
-        $this->additionalFooterData = is_array($this->config['INTincScript_ext']['additionalFooterData']) ? $this->config['INTincScript_ext']['additionalFooterData'] : [];
-        $this->additionalJavaScript = $this->config['INTincScript_ext']['additionalJavaScript'];
-        $this->additionalCSS = $this->config['INTincScript_ext']['additionalCSS'];
+        $this->additionalHeaderData = (isset($this->config['INTincScript_ext']['additionalHeaderData']) && is_array($this->config['INTincScript_ext']['additionalHeaderData']))
+            ? $this->config['INTincScript_ext']['additionalHeaderData']
+            : [];
+        $this->additionalFooterData = (isset($this->config['INTincScript_ext']['additionalFooterData']) && is_array($this->config['INTincScript_ext']['additionalFooterData']))
+            ? $this->config['INTincScript_ext']['additionalFooterData']
+            : [];
+        $this->additionalJavaScript = $this->config['INTincScript_ext']['additionalJavaScript'] ?? null;
+        $this->additionalCSS = $this->config['INTincScript_ext']['additionalCSS'] ?? null;
         $this->divSection = '';
         if (empty($this->config['INTincScript_ext']['pageRenderer'])) {
             $this->initPageRenderer();
@@ -3692,7 +3697,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $INTiS_config = $this->config['INTincScript'];
             $this->INTincScript_process($INTiS_config);
             // Check if there were new items added to INTincScript during the previous execution:
-            $INTiS_config = array_diff_assoc($this->config['INTincScript'], $INTiS_config);
+            // array_diff_assoc throws notices if values are arrays but not strings. We suppress this here.
+            $INTiS_config = @array_diff_assoc($this->config['INTincScript'], $INTiS_config);
             $reprocess = count($INTiS_config) > 0;
         } while ($reprocess);
     }
@@ -4920,7 +4926,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function getCurrentSiteLanguage(): ?SiteLanguage
     {
-        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface
+        if (isset($GLOBALS['TYPO3_REQUEST'])
+            && $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface
             && $GLOBALS['TYPO3_REQUEST']->getAttribute('language') instanceof SiteLanguage) {
             return $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
         }

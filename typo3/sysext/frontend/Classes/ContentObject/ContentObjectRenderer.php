@@ -550,7 +550,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         $this->data = $data;
         $this->table = $table;
-        $this->currentRecord = $table !== '' ? $table . ':' . $this->data['uid'] : '';
+        $this->currentRecord = $table !== ''
+            ? $table . ':' . ($this->data['uid'] ?? '')
+            : '';
         $this->parameters = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'] ?? [] as $classArr) {
             $this->cObjHookObjectsRegistry[$classArr[0]] = $classArr[1];

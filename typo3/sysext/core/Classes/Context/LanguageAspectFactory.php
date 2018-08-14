@@ -36,11 +36,19 @@ class LanguageAspectFactory
     public static function createFromTypoScript(array $config): LanguageAspect
     {
         // Get values from TypoScript, if not set before
-        $languageId = (int)$config['sys_language_uid'];
-        list($fallbackMode, $fallbackOrder) = GeneralUtility::trimExplode(';', $config['sys_language_mode']);
+        $languageId = (int)($config['sys_language_uid'] ?? 0);
+        $fallbacks = GeneralUtility::trimExplode(';', $config['sys_language_mode'] ?? '');
+        $fallbackMode = null;
+        if (isset($fallbacks[0])) {
+            $fallbackMode = $fallbacks[0];
+        }
+        $fallbackOrder = null;
+        if (isset($fallbacks[1])) {
+            $fallbackOrder = $fallbacks[1];
+        }
 
         // Page resolving
-        switch ($fallbackMode ?? '') {
+        switch ($fallbackMode) {
             case 'strict':
                 $fallBackOrder = [];
                 break;
@@ -68,7 +76,7 @@ class LanguageAspectFactory
         }
 
         // Content fetching
-        switch ((string)$config['sys_language_overlay'] ?? '') {
+        switch ((string)($config['sys_language_overlay'] ?? '')) {
             case '1':
                 $overlayType = LanguageAspect::OVERLAYS_MIXED;
                 break;
