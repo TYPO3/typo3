@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -26,7 +27,6 @@ use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
  * Manage a page tree with all test / demo styleguide data
@@ -241,7 +241,7 @@ class Generator
             // These edge cases are ignored for now.
 
             // Add two be_users, one admin user, one non-admin user, both hidden and with a random password
-            $saltedpassword = SaltFactory::getSaltingInstance();
+            $passwordHash = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('BE');
             $random = GeneralUtility::makeInstance(Random::class);
             $fields = [
                 'pid' => 0,
@@ -250,14 +250,14 @@ class Generator
                 'tx_styleguide_isdemorecord' => 1,
                 'username' => 'styleguide demo user 1',
                 'usergroup' => implode(',', $demoGroupUids),
-                'password' => $saltedpassword->getHashedPassword($random->generateRandomBytes(10)),
+                'password' => $passwordHash->getHashedPassword($random->generateRandomBytes(10)),
             ];
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_users');
             $connection->insert('be_users', $fields);
             $fields['admin'] = 1;
             $fields['username'] = 'styleguide demo user 2';
             $fields['usergroup'] = '';
-            $fields['password'] = $saltedpassword->getHashedPassword($random->generateRandomBytes(10));
+            $fields['password'] = $passwordHash->getHashedPassword($random->generateRandomBytes(10));
             $connection->insert('be_users', $fields);
         }
 
