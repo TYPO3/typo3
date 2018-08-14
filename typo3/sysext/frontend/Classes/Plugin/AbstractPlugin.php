@@ -301,7 +301,7 @@ class AbstractPlugin
                 // now for stdWrap
                 foreach ($confNextLevel as $subKey => $subConfNextLevel) {
                     if (is_array($subConfNextLevel) && $subKey === 'stdWrap.') {
-                        $conf[$key] = $this->cObj->stdWrap($conf[$key], $conf[$key . '.']['stdWrap.']);
+                        $conf[$key] = $this->cObj->stdWrap($conf[$key] ?? '', $conf[$key . '.']['stdWrap.'] ?? []);
                         unset($conf[$key . '.']['stdWrap.']);
                         if (empty($conf[$key . '.'])) {
                             unset($conf[$key . '.']);
