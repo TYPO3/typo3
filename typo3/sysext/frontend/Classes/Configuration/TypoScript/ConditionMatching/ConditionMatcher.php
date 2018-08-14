@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -96,9 +97,8 @@ class ConditionMatcher extends AbstractConditionMatcher
                 }
                 break;
             case 'site':
-                $siteLanguage = $this->getCurrentSiteLanguage();
-                if ($siteLanguage instanceof SiteLanguage) {
-                    $site = $siteLanguage->getSite();
+                $site = $this->getCurrentSite();
+                if ($site instanceof Site) {
                     $values = GeneralUtility::trimExplode(',', $value, true);
                     foreach ($values as $test) {
                         $point = strcspn($test, '=');
@@ -297,6 +297,20 @@ class ConditionMatcher extends AbstractConditionMatcher
         if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface
             && $GLOBALS['TYPO3_REQUEST']->getAttribute('language') instanceof SiteLanguage) {
             return $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
+        }
+        return null;
+    }
+
+    /**
+     * Returns the currently configured site if a site is configured (= resolved) in the current request.
+     *
+     * @internal
+     */
+    protected function getCurrentSite(): ?Site
+    {
+        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface
+            && $GLOBALS['TYPO3_REQUEST']->getAttribute('site') instanceof Site) {
+            return $GLOBALS['TYPO3_REQUEST']->getAttribute('site');
         }
         return null;
     }

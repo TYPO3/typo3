@@ -22,11 +22,6 @@ namespace TYPO3\CMS\Core\Site\Entity;
 class SiteLanguage
 {
     /**
-     * @var SiteInterface
-     */
-    protected $site;
-
-    /**
      * The language mapped to the sys_language DB entry.
      *
      * @var int
@@ -112,15 +107,13 @@ class SiteLanguage
 
     /**
      * SiteLanguage constructor.
-     * @param SiteInterface $site
      * @param int $languageId
      * @param string $locale
      * @param string $base
      * @param array $attributes
      */
-    public function __construct(SiteInterface $site, int $languageId, string $locale, string $base, array $attributes)
+    public function __construct(int $languageId, string $locale, string $base, array $attributes)
     {
-        $this->site = $site;
         $this->languageId = $languageId;
         $this->locale = $locale;
         $this->base = $base;
@@ -176,14 +169,6 @@ class SiteLanguage
             'fallbackType' => $this->getFallbackType(),
             'fallbackLanguageIds' => $this->getFallbackLanguageIds(),
         ];
-    }
-
-    /**
-     * @return SiteInterface
-     */
-    public function getSite(): SiteInterface
-    {
-        return $this->site;
     }
 
     /**

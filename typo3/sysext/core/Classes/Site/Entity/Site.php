@@ -107,7 +107,6 @@ class Site implements SiteInterface
                 $base = $this->sanitizeBaseUrl(rtrim($this->base, '/') . '/');
             }
             $this->languages[$languageUid] = new SiteLanguage(
-                $this,
                 $languageUid,
                 $languageConfiguration['locale'],
                 $base,

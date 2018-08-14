@@ -793,7 +793,7 @@ class ConditionMatcherTest extends UnitTestCase
     {
         $site = new Site('angelo', 13, ['languages' => [], 'base' => 'https://typo3.org/']);
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
-        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('language', $site->getLanguageById(0));
+        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('site', $site);
         $subject = new ConditionMatcher(new Context());
         $this->assertTrue($subject->match('[site = identifier = angelo]'));
         $this->assertTrue($subject->match('[site = rootPageId = 13]'));
@@ -822,7 +822,7 @@ class ConditionMatcherTest extends UnitTestCase
             ]
         ]);
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
-        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('language', $site->getLanguageById(0));
+        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('site', $site);
         $subject = new ConditionMatcher(new Context());
         $this->assertFalse($subject->match('[site = identifier = berta]'));
         $this->assertFalse($subject->match('[site = rootPageId = 14, rootPageId=23]'));
