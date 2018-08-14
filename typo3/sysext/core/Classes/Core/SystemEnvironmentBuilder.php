@@ -174,7 +174,7 @@ class SystemEnvironmentBuilder
      */
     protected static function definePaths($entryPointLevel = 0)
     {
-        $isCli = PHP_SAPI === 'cli';
+        $isCli = PHP_SAPI === 'cli' && getenv('TYPO3_CONTEXT') !== 'Testing/Frontend';
         // Absolute path of the entry script that was called
         $scriptPath = GeneralUtility::fixWindowsFilePath(self::getPathThisScript($isCli));
         $rootPath = self::getRootPathFromScriptPath($scriptPath, $entryPointLevel);
@@ -276,27 +276,19 @@ class SystemEnvironmentBuilder
         $isCli = PHP_SAPI === 'cli' && (string)$context !== 'Testing/Frontend';
         // Absolute path of the entry script that was called
         $scriptPath = PATH_thisScript;
-        $rootPath = rtrim(PATH_site, '/');
+        $sitePath = rtrim(PATH_site, '/');
+
         if (getenv('TYPO3_PATH_ROOT')) {
-            $rootPath = GeneralUtility::fixWindowsFilePath(getenv('TYPO3_PATH_ROOT'));
-            $rootPath = rtrim($rootPath, '/');
-            // Check if the root path has been set in the environment (e.g. by the composer installer)
-            if ($isCli && self::usesComposerClassLoading() && StringUtility::endsWith($scriptPath, 'typo3')) {
-                // PATH_thisScript is used for various path calculations based on the document root
-                // Therefore we assume it is always a subdirectory of the document root, which is not the case
-                // in composer mode on cli, as the binary is in the composer bin directory.
-                // Because of that, we enforce the document root path of this binary to be set
-                $scriptName = '/typo3/sysext/core/bin/typo3';
-            } else {
-                // Base the script path on the path taken from the environment
-                // to make relative path calculations work in case only one of both is symlinked
-                // or has the real path
-                $scriptName = substr($scriptPath, strlen($rootPath));
+            $rootPathFromEnvironment = GeneralUtility::fixWindowsFilePath(getenv('TYPO3_PATH_ROOT'));
+            if ($sitePath !== $rootPathFromEnvironment) {
+                // This means, that we re-initialized the environment during a single request
+                // This currently only happens in custom code or during functional testing
+                // Once the constants are removed, we might be able to remove this code here as well and directly pass an environment to the application
+                $scriptPath = $rootPathFromEnvironment . substr($scriptPath, strlen($sitePath));
+                $sitePath = $rootPathFromEnvironment;
             }
-            $scriptPath = $rootPath . $scriptName;
         }
 
-        $sitePath = rtrim($rootPath, '/');
         $projectRootPath = GeneralUtility::fixWindowsFilePath(getenv('TYPO3_PATH_APP'));
         $isDifferentRootPath = ($projectRootPath && $projectRootPath !== $sitePath);
         Environment::initialize(
