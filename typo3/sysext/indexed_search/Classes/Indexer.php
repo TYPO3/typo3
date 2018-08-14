@@ -992,7 +992,7 @@ class Indexer
     protected function createLocalPathFromT3vars($sourcePath)
     {
         $localPath = '';
-        $indexLocalFiles = $GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles'];
+        $indexLocalFiles = $GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles'] ?? null;
         if (is_array($indexLocalFiles)) {
             $md5 = GeneralUtility::shortMD5($sourcePath);
             // Note: not using self::isAllowedLocalFile here because this method
@@ -1036,7 +1036,7 @@ class Indexer
     protected function createLocalPathUsingAbsRefPrefix($sourcePath)
     {
         $localPath = '';
-        if ($GLOBALS['TSFE'] instanceof \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController) {
+        if (isset($GLOBALS['TSFE']) && $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
             $absRefPrefix = $GLOBALS['TSFE']->config['config']['absRefPrefix'];
             $absRefPrefixLength = strlen($absRefPrefix);
             if ($absRefPrefixLength > 0 && substr($sourcePath, 0, $absRefPrefixLength) == $absRefPrefix) {
@@ -1097,7 +1097,7 @@ class Indexer
     protected static function isRelativeURL($url)
     {
         $urlParts = @parse_url($url);
-        return $urlParts['scheme'] == '' && $urlParts['path'][0] !== '/';
+        return (!isset($urlParts['scheme']) || $urlParts['scheme'] === '') && $urlParts['path'][0] !== '/';
     }
 
     /**
