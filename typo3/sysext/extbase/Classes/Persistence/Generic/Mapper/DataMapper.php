@@ -233,7 +233,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
         $classSchema = $this->reflectionService->getClassSchema($className);
         $dataMap = $this->getDataMap($className);
         $object->_setProperty('uid', (int)$row['uid']);
-        $object->_setProperty('pid', (int)$row['pid']);
+        $object->_setProperty('pid', (int)($row['pid'] ?? 0));
         $object->_setProperty('_localizedUid', (int)$row['uid']);
         $object->_setProperty('_versionedUid', (int)$row['uid']);
         if ($dataMap->getLanguageIdColumnName() !== null) {
@@ -254,7 +254,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
             $columnName = $columnMap->getColumnName();
             $propertyData = $classSchema->getProperty($propertyName);
             $propertyValue = null;
-            if ($row[$columnName] !== null) {
+            if (isset($row[$columnName])) {
                 switch ($propertyData['type']) {
                     case 'integer':
                         $propertyValue = (int)$row[$columnName];
