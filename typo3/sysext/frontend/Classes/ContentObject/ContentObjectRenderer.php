@@ -1546,7 +1546,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         // Cache handling
-        if (is_array($conf['cache.'])) {
+        if (isset($conf['cache.']) && is_array($conf['cache.'])) {
             $conf['cache.']['key'] = $this->stdWrap($conf['cache.']['key'], $conf['cache.']['key.']);
             $conf['cache.']['tags'] = $this->stdWrap($conf['cache.']['tags'], $conf['cache.']['tags.']);
             $conf['cache.']['lifetime'] = $this->stdWrap($conf['cache.']['lifetime'], $conf['cache.']['lifetime.']);
@@ -1566,7 +1566,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         // execute each function in the predefined order
         foreach ($sortedConf as $stdWrapName) {
             // eliminate the second key of a pair 'key'|'key.' to make sure functions get called only once and check if rendering has been stopped
-            if (!$isExecuted[$stdWrapName] && !$this->stopRendering[$this->stdWrapRecursionLevel]) {
+            if ((!isset($isExecuted[$stdWrapName]) || !$isExecuted[$stdWrapName]) && !$this->stopRendering[$this->stdWrapRecursionLevel]) {
                 $functionName = rtrim($stdWrapName, '.');
                 $functionProperties = $functionName . '.';
                 $functionType = $this->stdWrapOrder[$functionName];
@@ -1583,7 +1583,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     // Get just that part of $conf that is needed for the particular function
                     $singleConf = [
                         $functionName => $conf[$functionName],
-                        $functionProperties => $conf[$functionProperties]
+                        $functionProperties => $conf[$functionProperties] ?? null
                     ];
                     // Hand over the whole $conf array to the stdWrapHookObjects
                     if ($functionType === 'hook') {

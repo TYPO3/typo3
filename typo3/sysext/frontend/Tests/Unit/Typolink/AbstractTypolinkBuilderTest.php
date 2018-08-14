@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 
 /*
@@ -27,11 +28,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AbstractTypolinkBuilderTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var bool Reset singletons created by subject
      */

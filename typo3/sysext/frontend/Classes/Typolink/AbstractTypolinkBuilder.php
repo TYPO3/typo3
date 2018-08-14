@@ -138,8 +138,8 @@ abstract class AbstractTypolinkBuilder
         } elseif ($targetAttributeAllowed) {
             $target = $fallbackTarget;
         }
-        if ($conf[$name . '.']) {
-            $target = (string)$this->contentObjectRenderer->stdWrap($target, $conf[$name . '.']);
+        if (isset($conf[$name . '.']) && $conf[$name . '.']) {
+            $target = (string)$this->contentObjectRenderer->stdWrap($target, $conf[$name . '.'] ?? []);
         }
         return $target;
     }
