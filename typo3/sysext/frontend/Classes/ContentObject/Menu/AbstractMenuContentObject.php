@@ -1944,22 +1944,24 @@ abstract class AbstractMenuContentObject
         $languageId = $this->getCurrentLanguageAspect()->getId();
         foreach ($recs as $theRec) {
             // no valid subpage if the document type is excluded from the menu
-            if (GeneralUtility::inList($this->doktypeExcludeList, $theRec['doktype'])) {
+            if (GeneralUtility::inList($this->doktypeExcludeList, $theRec['doktype'] ?? '')) {
                 continue;
             }
             // No valid subpage if the page is hidden inside menus and
             // it wasn't forced to show such entries
-            if ($theRec['nav_hide'] && !$this->conf['includeNotInMenu']) {
+            if (isset($theRec['nav_hide']) && $theRec['nav_hide']
+                && (!isset($this->conf['includeNotInMenu']) || !$this->conf['includeNotInMenu'])
+            ) {
                 continue;
             }
             // No valid subpage if the default language should be shown and the page settings
             // are excluding the visibility of the default language
-            if (!$languageId && GeneralUtility::hideIfDefaultLanguage($theRec['l18n_cfg'])) {
+            if (!$languageId && GeneralUtility::hideIfDefaultLanguage($theRec['l18n_cfg'] ?? 0)) {
                 continue;
             }
             // No valid subpage if the alternative language should be shown and the page settings
             // are requiring a valid overlay but it doesn't exists
-            $hideIfNotTranslated = GeneralUtility::hideIfNotTranslated($theRec['l18n_cfg']);
+            $hideIfNotTranslated = GeneralUtility::hideIfNotTranslated($theRec['l18n_cfg'] ?? null);
             if ($languageId && $hideIfNotTranslated && !$theRec['_PAGES_OVERLAY']) {
                 continue;
             }
@@ -1987,7 +1989,7 @@ abstract class AbstractMenuContentObject
     {
         $natVal = false;
         // If any value is set for ITEM_STATE the normal evaluation is discarded
-        if ($this->menuArr[$key]['ITEM_STATE']) {
+        if ($this->menuArr[$key]['ITEM_STATE'] ?? false) {
             if ((string)$this->menuArr[$key]['ITEM_STATE'] === (string)$kind) {
                 $natVal = true;
             }
@@ -2138,7 +2140,7 @@ abstract class AbstractMenuContentObject
             return [];
         }
 
-        $banUidList = str_replace('current', $this->getTypoScriptFrontendController()->page['uid'], $excludeUidList);
+        $banUidList = str_replace('current', $this->getTypoScriptFrontendController()->page['uid'] ?? null, $excludeUidList);
         return GeneralUtility::intExplode(',', $banUidList);
     }
 
@@ -2173,7 +2175,7 @@ abstract class AbstractMenuContentObject
         if ($oTarget) {
             $conf['target'] = $oTarget;
         }
-        if ($page['sectionIndex_uid']) {
+        if ($page['sectionIndex_uid'] ?? false) {
             $conf['section'] = $page['sectionIndex_uid'];
         }
         $conf['linkAccessRestrictedPages'] = !empty($this->mconf['showAccessRestrictedPages']);
@@ -2202,10 +2204,12 @@ abstract class AbstractMenuContentObject
             return [];
         }
         $tsfe = $this->getTypoScriptFrontendController();
-        $configuration = $this->mconf['sectionIndex.'];
+        $configuration = $this->mconf['sectionIndex.'] ?? [];
         $useColPos = 0;
-        if (trim($configuration['useColPos']) !== '' || is_array($configuration['useColPos.'])) {
-            $useColPos = $tsfe->cObj->stdWrap($configuration['useColPos'], $configuration['useColPos.']);
+        if (trim($configuration['useColPos'] ?? '') !== ''
+            || (isset($configuration['useColPos.']) && is_array($configuration['useColPos.']))
+        ) {
+            $useColPos = $tsfe->cObj->stdWrap($configuration['useColPos'] ?? '', $configuration['useColPos.'] ?? []);
             $useColPos = (int)$useColPos;
         }
         $selectSetup = [
@@ -2222,7 +2226,7 @@ abstract class AbstractMenuContentObject
             $selectSetup['where'] = $expressionBuilder->eq('colPos', $useColPos);
         }
 
-        if ($basePageRow['content_from_pid']) {
+        if ($basePageRow['content_from_pid'] ?? false) {
             // If the page is configured to show content from a referenced page the sectionIndex contains only contents of
             // the referenced page
             $selectSetup['pidInList'] = $basePageRow['content_from_pid'];
@@ -2252,20 +2256,20 @@ abstract class AbstractMenuContentObject
                 }
             }
             if (is_array($row)) {
-                $uid = $row['uid'];
+                $uid = $row['uid'] ?? null;
                 $result[$uid] = $basePageRow;
                 $result[$uid]['title'] = $row['header'];
                 $result[$uid]['nav_title'] = $row['header'];
                 // Prevent false exclusion in filterMenuPages, thus: Always show tt_content records
                 $result[$uid]['nav_hide'] = 0;
-                $result[$uid]['subtitle'] = $row['subheader'];
-                $result[$uid]['starttime'] = $row['starttime'];
-                $result[$uid]['endtime'] = $row['endtime'];
-                $result[$uid]['fe_group'] = $row['fe_group'];
-                $result[$uid]['media'] = $row['media'];
-                $result[$uid]['header_layout'] = $row['header_layout'];
-                $result[$uid]['bodytext'] = $row['bodytext'];
-                $result[$uid]['image'] = $row['image'];
+                $result[$uid]['subtitle'] = $row['subheader'] ?? '';
+                $result[$uid]['starttime'] = $row['starttime'] ?? '';
+                $result[$uid]['endtime'] = $row['endtime'] ?? '';
+                $result[$uid]['fe_group'] = $row['fe_group'] ?? '';
+                $result[$uid]['media'] = $row['media'] ?? '';
+                $result[$uid]['header_layout'] = $row['header_layout'] ?? '';
+                $result[$uid]['bodytext'] = $row['bodytext'] ?? '';
+                $result[$uid]['image'] = $row['image'] ?? '';
                 $result[$uid]['sectionIndex_uid'] = $uid;
             }
         }
