@@ -98,7 +98,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
     {
         $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         // check, whether the current plugin is configured to handle the action
-        if ($extensionName === $frameworkConfiguration['extensionName']) {
+        if (!empty($frameworkConfiguration['extensionName']) && $extensionName === $frameworkConfiguration['extensionName']) {
             if (isset($frameworkConfiguration['controllerConfiguration'][$controllerName]) && in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerName]['actions'])) {
                 return $frameworkConfiguration['pluginName'];
             }
