@@ -513,7 +513,9 @@ class ExtensionManagementUtility
         if ($relativePosition !== '' && $relativePosition !== 'before' && $relativePosition !== 'after' && $relativePosition !== 'replace') {
             throw new \InvalidArgumentException('Relative position must be either empty or one of "before", "after", "replace".', 1303236967);
         }
-        if (!is_array($GLOBALS['TCA'][$table]['columns'][$field]['config']['items'])) {
+        if (!isset($GLOBALS['TCA'][$table]['columns'][$field]['config']['items'])
+            || !is_array($GLOBALS['TCA'][$table]['columns'][$field]['config']['items'])
+        ) {
             throw new \RuntimeException('Given select field item list was not found.', 1303237468);
         }
         // Make sure item keys are integers
@@ -1234,7 +1236,9 @@ class ExtensionManagementUtility
                 1404068038
             );
         }
-        if (!$itemArray[2] && isset($GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['ext_icon'])) {
+        if ((!isset($itemArray[2]) || !$itemArray[2])
+            && isset($GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['ext_icon'])
+        ) {
             $itemArray[2] = 'EXT:' . $extensionKey . '/' . $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['ext_icon'];
         }
         if (is_array($GLOBALS['TCA']['tt_content']['columns']) && is_array($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'])) {
