@@ -751,7 +751,9 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
                             // Allowed domains to redirect to, can be configured with plugin.tx_felogin_pi1.domains
                             // Thanks to plan2.net / Martin Kutschker for implementing this feature.
                             // also avoid redirect when logging in after changing password
-                            if ($this->conf['domains'] && $this->piVars['redirectReferrer'] !== 'off') {
+                            if (isset($this->conf['domains']) && $this->conf['domains']
+                                && (!isset($this->piVars['redirectReferrer']) || $this->piVars['redirectReferrer'] !== 'off')
+                            ) {
                                 $url = $this->referer;
                                 // Is referring url allowed to redirect?
                                 $match = [];
@@ -1052,7 +1054,7 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
             if ($parsedUrl['scheme'] === 'http' || $parsedUrl['scheme'] === 'https') {
                 $host = $parsedUrl['host'];
                 // Removes the last path segment and slash sequences like /// (if given):
-                $path = preg_replace('#/+[^/]*$#', '', $parsedUrl['path']);
+                $path = preg_replace('#/+[^/]*$#', '', $parsedUrl['path'] ?? '');
 
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_domain');
                 $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
