@@ -494,10 +494,10 @@ class GalleryProcessor implements DataProcessorInterface
                 $fileKey = (($row - 1) * $this->galleryData['count']['columns']) + $column - 1;
 
                 $this->galleryData['rows'][$row]['columns'][$column] = [
-                    'media' => $this->fileObjects[$fileKey],
+                    'media' => $this->fileObjects[$fileKey] ?? null,
                     'dimensions' => [
-                        'width' => $this->mediaDimensions[$fileKey]['width'],
-                        'height' => $this->mediaDimensions[$fileKey]['height']
+                        'width' => $this->mediaDimensions[$fileKey]['width'] ?? null,
+                        'height' => $this->mediaDimensions[$fileKey]['height'] ?? null
                     ]
                 ];
             }

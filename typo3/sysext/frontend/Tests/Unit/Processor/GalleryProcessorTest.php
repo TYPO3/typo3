@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\Processor;
 
 /*
@@ -17,17 +18,13 @@ use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\DataProcessing\GalleryProcessor;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Tests for  GalleryProcessor
  */
-class GalleryProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class GalleryProcessorTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject
      */
