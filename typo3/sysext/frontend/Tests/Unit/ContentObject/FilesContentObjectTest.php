@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 /*
@@ -33,10 +34,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FilesContentObjectTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
 
     /**
      * @var bool Reset singletons created by subject
@@ -53,6 +50,7 @@ class FilesContentObjectTest extends UnitTestCase
      */
     protected function setUp()
     {
+        $GLOBALS['SIM_ACCESS_TIME'] = 0;
         $templateService = $this->getMockBuilder(TemplateService::class)
             ->setMethods(['getFileName', 'linkData'])
             ->getMock();

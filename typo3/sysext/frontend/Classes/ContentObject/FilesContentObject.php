@@ -84,7 +84,7 @@ class FilesContentObject extends AbstractContentObject
         // so e.g. stdWrap is not working on the last current file applied, thus avoiding side-effects
         $this->cObj->setCurrentFile($originalFileInContentObject);
 
-        return $this->cObj->stdWrap($content, $conf['stdWrap.']);
+        return $this->cObj->stdWrap($content, $conf['stdWrap.'] ?? []);
     }
 
     /**
@@ -99,7 +99,7 @@ class FilesContentObject extends AbstractContentObject
         $fileCollector = $this->getFileCollector();
 
         // Getting the files
-        if ($conf['references'] || $conf['references.']) {
+        if ((isset($conf['references']) && $conf['references']) || (isset($conf['references.']) && $conf['references.'])) {
             /*
             The TypoScript could look like this:
             # all items related to the page.media field:
@@ -120,7 +120,7 @@ class FilesContentObject extends AbstractContentObject
             }
         }
 
-        if ($conf['files'] || $conf['files.']) {
+        if ((isset($conf['files']) && $conf['files']) || (isset($conf['files.']) && $conf['files.'])) {
             /*
             The TypoScript could look like this:
             # with sys_file UIDs:
@@ -131,19 +131,19 @@ class FilesContentObject extends AbstractContentObject
             $fileCollector->addFiles($fileUids);
         }
 
-        if ($conf['collections'] || $conf['collections.']) {
+        if ((isset($conf['collections']) && $conf['collections']) || (isset($conf['collections.']) && $conf['collections.'])) {
             $collectionUids = GeneralUtility::intExplode(',', $this->cObj->stdWrapValue('collections', $conf), true);
             $fileCollector->addFilesFromFileCollections($collectionUids);
         }
 
-        if ($conf['folders'] || $conf['folders.']) {
+        if ((isset($conf['folders']) && $conf['folders']) || (isset($conf['folders.']) && $conf['folders.'])) {
             $folderIdentifiers = GeneralUtility::trimExplode(',', $this->cObj->stdWrapValue('folders', $conf));
             $fileCollector->addFilesFromFolders($folderIdentifiers, !empty($conf['folders.']['recursive']));
         }
 
         // Enable sorting for multiple fileObjects
         $sortingProperty = '';
-        if ($conf['sorting'] || $conf['sorting.']) {
+        if ((isset($conf['sorting']) && $conf['sorting']) || (isset($conf['sorting.']) && $conf['sorting.'])) {
             $sortingProperty = $this->cObj->stdWrapValue('sorting', $conf);
         }
         if ($sortingProperty !== '') {
