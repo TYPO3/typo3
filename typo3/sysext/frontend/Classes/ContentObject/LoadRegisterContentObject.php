@@ -33,7 +33,7 @@ class LoadRegisterContentObject extends AbstractContentObject
             $isExecuted = [];
             foreach ($conf as $theKey => $theValue) {
                 $register = rtrim($theKey, '.');
-                if (!$isExecuted[$register]) {
+                if (!isset($isExecuted[$register]) || !$isExecuted[$register]) {
                     $registerProperties = $register . '.';
                     if (isset($conf[$register]) && isset($conf[$registerProperties])) {
                         $theValue = $this->cObj->stdWrap($conf[$register], $conf[$registerProperties]);

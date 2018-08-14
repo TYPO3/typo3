@@ -129,8 +129,9 @@ abstract class AbstractTypolinkBuilder
     protected function resolveTargetAttribute(array $conf, string $name, bool $respectFrameSetOption = false, string $fallbackTarget = ''): string
     {
         $tsfe = $this->getTypoScriptFrontendController();
-        $targetAttributeAllowed = (!$respectFrameSetOption || !$tsfe->config['config']['doctype'] ||
-            in_array((string)$tsfe->config['config']['doctype'], ['xhtml_trans', 'xhtml_basic', 'html5'], true));
+        $targetAttributeAllowed = !$respectFrameSetOption
+            || (!isset($tsfe->config['config']['doctype']) || !$tsfe->config['config']['doctype'])
+            || in_array((string)$tsfe->config['config']['doctype'], ['xhtml_trans', 'xhtml_basic', 'html5'], true);
 
         $target = '';
         if (isset($conf[$name])) {

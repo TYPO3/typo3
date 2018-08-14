@@ -847,7 +847,7 @@ class GeneralUtility
         }
         // @todo find out which locale is used for current BE user to cover the BE case as well
         $oldLocale = setlocale(LC_NUMERIC, 0);
-        $newLocale = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE']->config['config']['locale_all'] : '';
+        $newLocale = $GLOBALS['TSFE']->config['config']['locale_all'] ?? '';
         if ($newLocale) {
             setlocale(LC_NUMERIC, $newLocale);
         }
@@ -1319,7 +1319,7 @@ class GeneralUtility
                 // There are '' around the value. We look for the next ' ' or '>'
                 $reg = preg_split('/[[:space:]=]/', $tag_tmp, 2);
                 $value[] = trim($reg[0]);
-                $tag_tmp = trim(substr($tag_tmp, strlen($reg[0]), 1) . $reg[1]);
+                $tag_tmp = trim(substr($tag_tmp, strlen($reg[0]), 1) . ($reg[1] ?? ''));
             }
         }
         reset($value);

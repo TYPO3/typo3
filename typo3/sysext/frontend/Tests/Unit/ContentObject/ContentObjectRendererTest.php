@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 /*
@@ -71,11 +72,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class ContentObjectRendererTest extends UnitTestCase
 {
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @var bool Reset singletons created by subject
      */
     protected $resetSingletonInstances = true;
@@ -129,9 +125,11 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        $GLOBALS['SIM_ACCESS_TIME'] = 1534278180;
         $this->templateServiceMock =
             $this->getMockBuilder(TemplateService::class)
-                ->setMethods(['linkData'])->getMock();
+                ->setMethods(['linkData'])
+                ->getMock();
         $pageRepositoryMock =
             $this->getAccessibleMock(PageRepository::class, ['getRawRecord', 'getMountPointInfo']);
         $this->frontendControllerMock =
@@ -3825,7 +3823,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject
             ->expects($this->exactly($times))
             ->method('HTMLparser_TSbridge')
-            ->with($content, $conf['HTMLparser.'])
+            ->with($content, $conf['HTMLparser.'] ?? [])
             ->willReturn($will);
         $this->assertSame(
             $expect,
@@ -5181,8 +5179,8 @@ class ContentObjectRendererTest extends UnitTestCase
         $rteParseFunc = $this->getLibParseFunc_RTE();
 
         $conf = [
-            'encapsLines' => $rteParseFunc['parseFunc.']['nonTypoTagStdWrap.']['encapsLines'],
-            'encapsLines.' => $rteParseFunc['parseFunc.']['nonTypoTagStdWrap.']['encapsLines.'],
+            'encapsLines' => $rteParseFunc['parseFunc.']['nonTypoTagStdWrap.']['encapsLines'] ?? null,
+            'encapsLines.' => $rteParseFunc['parseFunc.']['nonTypoTagStdWrap.']['encapsLines.'] ?? null,
         ];
         // don't add an &nbsp; to tag without content
         $conf['encapsLines.']['innerStdWrap_all.']['ifBlank'] = '';
@@ -5867,7 +5865,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject
             ->expects($this->exactly($times))
             ->method('checkIf')
-            ->with($conf['if.'])
+            ->with($conf['if.'] ?? null)
             ->willReturn($will);
         $this->assertSame($expect, $subject->stdWrap_if($content, $conf));
         $this->assertSame($stop, $subject->_get('stopRendering')[1]);
@@ -6996,7 +6994,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject
             ->expects($this->exactly($times))
             ->method('prefixComment')
-            ->with($conf['prefixComment'], [], $content)
+            ->with($conf['prefixComment'] ?? null, [], $content)
             ->willReturn($will);
         $this->assertSame(
             $expect,

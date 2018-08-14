@@ -697,7 +697,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $timeTracker->push($TSkey, $name);
             }
             // Checking if the COBJ is a reference to another object. (eg. name of 'blabla.blabla = < styles.something')
-            if ($name[0] === '<') {
+            if (isset($name[0]) && $name[0] === '<') {
                 $key = trim(substr($name, 1));
                 $cF = GeneralUtility::makeInstance(TypoScriptParser::class);
                 // $name and $conf is loaded with the referenced values.
@@ -1121,7 +1121,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function getImageTagTemplate($layoutKey, $conf)
     {
         if ($layoutKey && isset($conf['layout.']) && isset($conf['layout.'][$layoutKey . '.'])) {
-            $imageTagLayout = $this->stdWrap($conf['layout.'][$layoutKey . '.']['element'], $conf['layout.'][$layoutKey . '.']['element.']);
+            $imageTagLayout = $this->stdWrap(
+                $conf['layout.'][$layoutKey . '.']['element'] ?? '',
+                $conf['layout.'][$layoutKey . '.']['element.'] ?? []
+            );
         } else {
             $imageTagLayout = '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###BORDER######SELFCLOSINGTAGSLASH###>';
         }
@@ -1140,7 +1143,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function getImageSourceCollection($layoutKey, $conf, $file)
     {
         $sourceCollection = '';
-        if ($layoutKey && $conf['sourceCollection.'] && ($conf['layout.'][$layoutKey . '.']['source'] || $conf['layout.'][$layoutKey . '.']['source.'])) {
+        if ($layoutKey
+            && isset($conf['sourceCollection.']) && $conf['sourceCollection.']
+            && (
+                isset($conf['layout.'][$layoutKey . '.']['source']) && $conf['layout.'][$layoutKey . '.']['source']
+                || isset($conf['layout.'][$layoutKey . '.']['source.']) && $conf['layout.'][$layoutKey . '.']['source.']
+            )
+        ) {
 
             // find active sourceCollection
             $activeSourceCollections = [];
@@ -1159,11 +1168,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
             // render sources
             foreach ($activeSourceCollections as $key => $sourceConfiguration) {
-                $sourceLayout = $this->stdWrap($srcLayoutOptionSplitted[$key]['source'], $srcLayoutOptionSplitted[$key]['source.']);
+                $sourceLayout = $this->stdWrap(
+                    $srcLayoutOptionSplitted[$key]['source'] ?? '',
+                    $srcLayoutOptionSplitted[$key]['source.'] ?? []
+                );
 
                 $sourceRenderConfiguration = [
                     'file' => $file,
-                    'file.' => $conf['file.']
+                    'file.' => $conf['file.'] ?? null
                 ];
 
                 if (isset($sourceConfiguration['quality']) || isset($sourceConfiguration['quality.'])) {
@@ -1177,15 +1189,24 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
 
                 if (isset($sourceConfiguration['pixelDensity'])) {
-                    $pixelDensity = (int)$this->stdWrap($sourceConfiguration['pixelDensity'], $sourceConfiguration['pixelDensity.']);
+                    $pixelDensity = (int)$this->stdWrap(
+                        $sourceConfiguration['pixelDensity'] ?? '',
+                        $sourceConfiguration['pixelDensity.'] ?? []
+                    );
                 } else {
                     $pixelDensity = 1;
                 }
                 $dimensionKeys = ['width', 'height', 'maxW', 'minW', 'maxH', 'minH', 'maxWidth', 'maxHeight', 'XY'];
                 foreach ($dimensionKeys as $dimensionKey) {
-                    $dimension = $this->stdWrap($sourceConfiguration[$dimensionKey], $sourceConfiguration[$dimensionKey . '.']);
+                    $dimension = $this->stdWrap(
+                        $sourceConfiguration[$dimensionKey] ?? '',
+                        $sourceConfiguration[$dimensionKey . '.'] ?? []
+                    );
                     if (!$dimension) {
-                        $dimension = $this->stdWrap($conf['file.'][$dimensionKey], $conf['file.'][$dimensionKey . '.']);
+                        $dimension = $this->stdWrap(
+                            $conf['file.'][$dimensionKey] ?? '',
+                            $conf['file.'][$dimensionKey . '.'] ?? []
+                        );
                     }
                     if ($dimension) {
                         if (strstr($dimension, 'c') !== false && ($dimensionKey === 'width' || $dimensionKey === 'height')) {
@@ -1387,11 +1408,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         $wrapArr = explode('|', $wrap);
         if (preg_match('/\\{([0-9]*)\\}/', $wrapArr[0], $reg)) {
-            if ($uid = $this->getTypoScriptFrontendController()->tmpl->rootLine[$reg[1]]['uid']) {
+            $uid = $this->getTypoScriptFrontendController()->tmpl->rootLine[$reg[1]]['uid'] ?? null;
+            if ($uid) {
                 $wrapArr[0] = str_replace($reg[0], $uid, $wrapArr[0]);
             }
         }
-        return trim($wrapArr[0]) . $content . trim($wrapArr[1]);
+        return trim($wrapArr[0] ?? '') . $content . trim($wrapArr[1] ?? '');
     }
 
     /**
@@ -1443,9 +1465,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function getATagParams($conf, $addGlobal = 1)
     {
         $aTagParams = '';
-        if ($conf['ATagParams.']) {
+        if ($conf['ATagParams.'] ?? false) {
             $aTagParams = ' ' . $this->stdWrap($conf['ATagParams'], $conf['ATagParams.']);
-        } elseif ($conf['ATagParams']) {
+        } elseif ($conf['ATagParams'] ?? false) {
             $aTagParams = ' ' . $conf['ATagParams'];
         }
         if ($addGlobal) {
@@ -1480,7 +1502,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function extLinkATagParams($URL, $TYPE)
     {
         $out = '';
-        if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['extLinkATagParamsHandler']) {
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['extLinkATagParamsHandler'])) {
             $extLinkATagParamsHandler = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['extLinkATagParamsHandler']);
             if (method_exists($extLinkATagParamsHandler, 'main')) {
                 $out .= trim($extLinkATagParamsHandler->main($URL, $TYPE, $this));
@@ -1571,20 +1593,22 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if ((!isset($isExecuted[$stdWrapName]) || !$isExecuted[$stdWrapName]) && !$this->stopRendering[$this->stdWrapRecursionLevel]) {
                 $functionName = rtrim($stdWrapName, '.');
                 $functionProperties = $functionName . '.';
-                $functionType = $this->stdWrapOrder[$functionName];
+                $functionType = $this->stdWrapOrder[$functionName] ?? null;
                 // If there is any code on the next level, check if it contains "official" stdWrap functions
                 // if yes, execute them first - will make each function stdWrap aware
                 // so additional stdWrap calls within the functions can be removed, since the result will be the same
                 if (!empty($conf[$functionProperties]) && !GeneralUtility::inList($stdWrapDisabledFunctionTypes, $functionType)) {
                     if (array_intersect_key($this->stdWrapOrder, $conf[$functionProperties])) {
-                        $conf[$functionName] = $this->stdWrap($conf[$functionName], $conf[$functionProperties]);
+                        $conf[$functionName] = $this->stdWrap($conf[$functionName] ?? '', $conf[$functionProperties] ?? []);
                     }
                 }
                 // Check if key is still containing something, since it might have been changed by next level stdWrap before
-                if ((isset($conf[$functionName]) || $conf[$functionProperties]) && ($functionType !== 'boolean' || $conf[$functionName])) {
+                if ((isset($conf[$functionName]) || $conf[$functionProperties])
+                    && ($functionType !== 'boolean' || $conf[$functionName])
+                ) {
                     // Get just that part of $conf that is needed for the particular function
                     $singleConf = [
-                        $functionName => $conf[$functionName],
+                        $functionName => $conf[$functionName] ?? null,
                         $functionProperties => $conf[$functionProperties] ?? null
                     ];
                     // Hand over the whole $conf array to the stdWrapHookObjects
@@ -1708,7 +1732,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_setCurrent($content = '', $conf = [])
     {
-        $this->data[$this->currentValKey] = $conf['setCurrent'];
+        $this->data[$this->currentValKey] = $conf['setCurrent'] ?? null;
         return $content;
     }
 
@@ -1723,7 +1747,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function stdWrap_lang($content = '', $conf = [])
     {
         $tsfe = $this->getTypoScriptFrontendController();
-        if (isset($conf['lang.']) && $tsfe->config['config']['language'] && isset($conf['lang.'][$tsfe->config['config']['language']])) {
+        if (
+            isset($conf['lang.'])
+            && isset($tsfe->config['config']['language'])
+            && $tsfe->config['config']['language']
+            && isset($conf['lang.'][$tsfe->config['config']['language']])
+        ) {
             $content = $conf['lang.'][$tsfe->config['config']['language']];
         }
         return $content;
@@ -1783,7 +1812,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_cObject($content = '', $conf = [])
     {
-        return $this->cObjGetSingle($conf['cObject'], $conf['cObject.'], '/stdWrap/.cObject');
+        return $this->cObjGetSingle($conf['cObject'] ?? '', $conf['cObject.'] ?? [], '/stdWrap/.cObject');
     }
 
     /**
@@ -1854,7 +1883,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_override($content = '', $conf = [])
     {
-        if (trim($conf['override'])) {
+        if (trim($conf['override'] ?? false)) {
             $content = $conf['override'];
         }
         return $content;
@@ -1871,7 +1900,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_preIfEmptyListNum($content = '', $conf = [])
     {
-        return $this->listNum($content, $conf['preIfEmptyListNum'], $conf['preIfEmptyListNum.']['splitChar']);
+        return $this->listNum($content, $conf['preIfEmptyListNum'] ?? null, $conf['preIfEmptyListNum.']['splitChar'] ?? null);
     }
 
     /**
@@ -1933,7 +1962,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_listNum($content = '', $conf = [])
     {
-        return $this->listNum($content, $conf['listNum'], $conf['listNum.']['splitChar']);
+        return $this->listNum($content, $conf['listNum'] ?? null, $conf['listNum.']['splitChar'] ?? null);
     }
 
     /**
@@ -2062,7 +2091,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_fieldRequired($content = '', $conf = [])
     {
-        if (!trim($this->data[$conf['fieldRequired']])) {
+        if (!trim($this->data[$conf['fieldRequired'] ?? null] ?? '')) {
             $content = '';
             $this->stopRendering[$this->stdWrapRecursionLevel] = true;
         }
@@ -2113,7 +2142,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_HTMLparser($content = '', $conf = [])
     {
-        if (is_array($conf['HTMLparser.'])) {
+        if (isset($conf['HTMLparser.']) && is_array($conf['HTMLparser.'])) {
             $content = $this->HTMLparser_TSbridge($content, $conf['HTMLparser.']);
         }
         return $content;
@@ -2158,7 +2187,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function stdWrap_prioriCalc($content = '', $conf = [])
     {
         $content = MathUtility::calculateWithParentheses($content);
-        if ($conf['prioriCalc'] === 'intval') {
+        if (!empty($conf['prioriCalc']) && $conf['prioriCalc'] === 'intval') {
             $content = (int)$content;
         }
         return $content;
@@ -2233,7 +2262,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_numberFormat($content = '', $conf = [])
     {
-        return $this->numberFormat($content, $conf['numberFormat.']);
+        return $this->numberFormat($content, $conf['numberFormat.'] ?? []);
     }
 
     /**
@@ -2261,7 +2290,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         // Check for zero length string to mimic default case of date/gmdate.
         $content = (string)$content === '' ? $GLOBALS['EXEC_TIME'] : (int)$content;
-        $content = $conf['date.']['GMT'] ? gmdate($conf['date'], $content) : date($conf['date'], $content);
+        $content = !empty($conf['date.']['GMT']) ? gmdate($conf['date'] ?? null, $content) : date($conf['date'] ?? null, $content);
         return $content;
     }
 
@@ -2278,7 +2307,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         // Check for zero length string to mimic default case of strtime/gmstrftime
         $content = (string)$content === '' ? $GLOBALS['EXEC_TIME'] : (int)$content;
-        $content = $conf['strftime.']['GMT'] ? gmstrftime($conf['strftime'], $content) : strftime($conf['strftime'], $content);
+        $content = (isset($conf['strftime.']['GMT']) && $conf['strftime.']['GMT'])
+            ? gmstrftime($conf['strftime'] ?? null, $content)
+            : strftime($conf['strftime'] ?? null, $content);
         if (!empty($conf['strftime.']['charset'])) {
             $output = mb_convert_encoding($content, 'utf-8', trim(strtolower($conf['strftime.']['charset'])));
             return $output ?: $content;
@@ -2312,7 +2343,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_age($content = '', $conf = [])
     {
-        return $this->calcAge((int)$GLOBALS['EXEC_TIME'] - (int)$content, $conf['age']);
+        return $this->calcAge((int)($GLOBALS['EXEC_TIME'] ?? 0) - (int)$content, $conf['age'] ?? null);
     }
 
     /**
@@ -2365,7 +2396,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_cropHTML($content = '', $conf = [])
     {
-        return $this->cropHTML($content, $conf['cropHTML']);
+        return $this->cropHTML($content, $conf['cropHTML'] ?? '');
     }
 
     /**
@@ -2447,7 +2478,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_doubleBrTag($content = '', $conf = [])
     {
-        return preg_replace('/\R{1,2}[\t\x20]*\R{1,2}/', $conf['doubleBrTag'], $content);
+        return preg_replace('/\R{1,2}[\t\x20]*\R{1,2}/', $conf['doubleBrTag'] ?? null, $content);
     }
 
     /**
@@ -2473,7 +2504,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_brTag($content = '', $conf = [])
     {
-        return str_replace(LF, $conf['brTag'], $content);
+        return str_replace(LF, $conf['brTag'] ?? null, $content);
     }
 
     /**
@@ -2513,7 +2544,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_innerWrap($content = '', $conf = [])
     {
-        return $this->wrap($content, $conf['innerWrap']);
+        return $this->wrap($content, $conf['innerWrap'] ?? null);
     }
 
     /**
@@ -2527,7 +2558,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_innerWrap2($content = '', $conf = [])
     {
-        return $this->wrap($content, $conf['innerWrap2']);
+        return $this->wrap($content, $conf['innerWrap2'] ?? null);
     }
 
     /**
@@ -2540,7 +2571,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_addParams($content = '', $conf = [])
     {
-        return $this->addParams($content, $conf['addParams.']);
+        return $this->addParams($content, $conf['addParams.'] ?? []);
     }
 
     /**
@@ -2554,7 +2585,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_filelink($content = '', $conf = [])
     {
-        return $this->filelink($content, $conf['filelink.']);
+        return $this->filelink($content, $conf['filelink.'] ?? []);
     }
 
     /**
@@ -2594,7 +2625,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_wrapAlign($content = '', $conf = [])
     {
-        $wrapAlign = trim($conf['wrapAlign']);
+        $wrapAlign = trim($conf['wrapAlign'] ?? '');
         if ($wrapAlign) {
             $content = $this->wrap($content, '<div style="text-align:' . htmlspecialchars($wrapAlign) . ';">|</div>');
         }
@@ -2630,7 +2661,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_wrap($content = '', $conf = [])
     {
-        return $this->wrap($content, $conf['wrap'], $conf['wrap.']['splitChar'] ? $conf['wrap.']['splitChar'] : '|');
+        return $this->wrap(
+            $content,
+            $conf['wrap'] ?? null,
+            $conf['wrap.']['splitChar'] ?? '|'
+        );
     }
 
     /**
@@ -2645,8 +2680,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function stdWrap_noTrimWrap($content = '', $conf = [])
     {
         $splitChar = isset($conf['noTrimWrap.']['splitChar.'])
-            ? $this->stdWrap($conf['noTrimWrap.']['splitChar'], $conf['noTrimWrap.']['splitChar.'])
-            : $conf['noTrimWrap.']['splitChar'];
+            ? $this->stdWrap($conf['noTrimWrap.']['splitChar'] ?? '', $conf['noTrimWrap.']['splitChar.'])
+            : $conf['noTrimWrap.']['splitChar'] ?? '';
         if ($splitChar === null || $splitChar === '') {
             $splitChar = '|';
         }
@@ -2669,7 +2704,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_wrap2($content = '', $conf = [])
     {
-        return $this->wrap($content, $conf['wrap2'], $conf['wrap2.']['splitChar'] ? $conf['wrap2.']['splitChar'] : '|');
+        return $this->wrap(
+            $content,
+            $conf['wrap2'] ?? null,
+            $conf['wrap2.']['splitChar'] ?? '|'
+        );
     }
 
     /**
@@ -2723,7 +2762,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_wrap3($content = '', $conf = [])
     {
-        return $this->wrap($content, $conf['wrap3'], $conf['wrap3.']['splitChar'] ? $conf['wrap3.']['splitChar'] : '|');
+        return $this->wrap(
+            $content,
+            $conf['wrap3'] ?? null,
+            $conf['wrap3.']['splitChar'] ?? '|'
+        );
     }
 
     /**
@@ -2738,7 +2781,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         $sortedKeysArray = ArrayUtility::filterAndSortByNumericKeys($conf['orderedStdWrap.'], true);
         foreach ($sortedKeysArray as $key) {
-            $content = $this->stdWrap($content, $conf['orderedStdWrap.'][$key . '.']);
+            $content = $this->stdWrap($content, $conf['orderedStdWrap.'][$key . '.'] ?? null);
         }
         return $content;
     }
@@ -2753,7 +2796,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_outerWrap($content = '', $conf = [])
     {
-        return $this->wrap($content, $conf['outerWrap']);
+        return $this->wrap($content, $conf['outerWrap'] ?? null);
     }
 
     /**
@@ -2814,7 +2857,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_prefixComment($content = '', $conf = [])
     {
-        if (!$this->getTypoScriptFrontendController()->config['config']['disablePrefixComment'] && !empty($conf['prefixComment'])) {
+        if (
+            (!isset($this->getTypoScriptFrontendController()->config['config']['disablePrefixComment']) || !$this->getTypoScriptFrontendController()->config['config']['disablePrefixComment'])
+            && !empty($conf['prefixComment'])
+        ) {
             $content = $this->prefixComment($conf['prefixComment'], [], $content);
         }
         return $content;
@@ -2831,7 +2877,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function stdWrap_editIcons($content = '', $conf = [])
     {
         if ($this->getTypoScriptFrontendController()->isBackendUserLoggedIn() && $conf['editIcons']) {
-            if (!is_array($conf['editIcons.'])) {
+            if (!isset($conf['editIcons.']) || !is_array($conf['editIcons.'])) {
                 $conf['editIcons.'] = [];
             }
             $content = $this->editIcons($content, $conf['editIcons'], $conf['editIcons.']);
@@ -3031,7 +3077,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
         }
         if ($flag) {
-            $value = isset($conf['value.']) ? trim($this->stdWrap($conf['value'], $conf['value.'])) : trim($conf['value']);
+            $value = isset($conf['value.'])
+                ? trim($this->stdWrap($conf['value'] ?? '', $conf['value.']))
+                : (trim($conf['value'] ?? ''));
             if (isset($conf['isGreaterThan']) || isset($conf['isGreaterThan.'])) {
                 $number = isset($conf['isGreaterThan.']) ? trim($this->stdWrap($conf['isGreaterThan'], $conf['isGreaterThan.'])) : trim($conf['isGreaterThan']);
                 if ($number <= $value) {
@@ -3057,7 +3105,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
             }
         }
-        if ($conf['negate']) {
+        if ($conf['negate'] ?? false) {
             $flag = !$flag;
         }
         return $flag;
@@ -3294,8 +3342,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         $options = explode('|', $options);
         $chars = (int)$options[0];
-        $afterstring = trim($options[1]);
-        $crop2space = trim($options[2]);
+        $afterstring = trim($options[1] ?? '');
+        $crop2space = trim($options[2] ?? '');
         if ($chars) {
             if (mb_strlen($content, 'utf-8') > abs($chars)) {
                 $truncatePosition = false;
@@ -3335,8 +3383,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $options = explode('|', $options);
         $chars = (int)$options[0];
         $absChars = abs($chars);
-        $replacementForEllipsis = trim($options[1]);
-        $crop2space = trim($options[2]) === '1';
+        $replacementForEllipsis = trim($options[1] ?? '');
+        $crop2space = trim($options[2] ?? '') === '1';
         // Split $content into an array(even items in the array are outside the tags, odd numbers are tag-blocks).
         $tags = 'a|abbr|address|area|article|aside|audio|b|bdi|bdo|blockquote|body|br|button|caption|cite|code|col|colgroup|data|datalist|dd|del|dfn|div|dl|dt|em|embed|fieldset|figcaption|figure|font|footer|form|h1|h2|h3|h4|h5|h6|header|hr|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|main|map|mark|meter|nav|object|ol|optgroup|option|output|p|param|pre|progress|q|rb|rp|rt|rtc|ruby|s|samp|section|select|small|source|span|strong|sub|sup|table|tbody|td|textarea|tfoot|th|thead|time|tr|track|u|ul|ut|var|video|wbr';
         $tagsRegEx = '
@@ -3479,10 +3527,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
         $key = 1;
         $parts = explode('<', $content);
-        if ((int)$conf['_offset']) {
+        if (isset($conf['_offset']) && (int)$conf['_offset']) {
             $key = (int)$conf['_offset'] < 0 ? count($parts) + (int)$conf['_offset'] : (int)$conf['_offset'];
         }
-        $subparts = explode('>', $parts[$key]);
+        $subparts = explode('>', $parts[$key] ?? '');
         if (trim($subparts[0])) {
             // Get attributes and name
             $attribs = GeneralUtility::get_tag_attributes('<' . $subparts[0] . '>');
@@ -3519,17 +3567,19 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function filelink($theValue, $conf)
     {
-        $conf['path'] = isset($conf['path.']) ? $this->stdWrap($conf['path'], $conf['path.']) : $conf['path'];
+        $conf['path'] = isset($conf['path.'])
+            ? $this->stdWrap($conf['path'] ?? '', $conf['path.'])
+            : ($conf['path'] ?? '');
         $theFile = trim($conf['path']) . $theValue;
         if (!@is_file($theFile)) {
             return '';
         }
         $theFileEnc = str_replace('%2F', '/', rawurlencode($theFile));
-        $title = $conf['title'];
+        $title = $conf['title'] ?? '';
         if (isset($conf['title.'])) {
             $title = $this->stdWrap($title, $conf['title.']);
         }
-        $target = $conf['target'];
+        $target = $conf['target'] ?? '';
         if (isset($conf['target.'])) {
             $target = $this->stdWrap($target, $conf['target.']);
         }
@@ -3553,7 +3603,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $theSize = filesize($theFile);
         $fI = GeneralUtility::split_fileref($theFile);
         $icon = '';
-        if ($conf['icon']) {
+        if ($conf['icon'] ?? false) {
             $conf['icon.']['path'] = isset($conf['icon.']['path.'])
                 ? $this->stdWrap($conf['icon.']['path'], $conf['icon.']['path.'])
                 : $conf['icon.']['path'];
@@ -3630,19 +3680,21 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $icon = isset($conf['icon.']) ? $this->stdWrap($icon, $conf['icon.']) : $icon;
         }
         $size = '';
-        if ($conf['size']) {
+        if ($conf['size'] ?? false) {
             $size = isset($conf['size.']) ? $this->stdWrap($theSize, $conf['size.']) : $theSize;
         }
         // Wrapping file label
-        if ($conf['removePrependedNumbers']) {
+        if ($conf['removePrependedNumbers'] ?? false) {
             $theValue = preg_replace('/_[0-9][0-9](\\.[[:alnum:]]*)$/', '\\1', $theValue);
         }
         if (isset($conf['labelStdWrap.'])) {
             $theValue = $this->stdWrap($theValue, $conf['labelStdWrap.']);
         }
         // Wrapping file
-        $wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
-        if ($conf['combinedLink']) {
+        $wrap = isset($conf['wrap.'])
+            ? $this->stdWrap($conf['wrap'] ?? '', $conf['wrap.'])
+            : ($conf['wrap'] ?? '');
+        if ($conf['combinedLink'] ?? false) {
             $theValue = $icon . $theValue;
             if ($conf['ATagBeforeWrap']) {
                 $theValue = $this->wrap($this->wrap($theValue, $wrap), $theLinkWrap);
@@ -3653,7 +3705,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             // output
             $output = $file . $size;
         } else {
-            if ($conf['ATagBeforeWrap']) {
+            if ($conf['ATagBeforeWrap'] ?? false) {
                 $theValue = $this->wrap($this->wrap($theValue, $wrap), $theLinkWrap);
             } else {
                 $theValue = $this->wrap($this->wrap($theValue, $theLinkWrap), $wrap);
@@ -3745,7 +3797,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $valArr = explode($conf['token'], $value);
 
         // return value directly by returnKey. No further processing
-        if (!empty($valArr) && (MathUtility::canBeInterpretedAsInteger($conf['returnKey']) || $conf['returnKey.'])) {
+        if (!empty($valArr) && (MathUtility::canBeInterpretedAsInteger($conf['returnKey'] ?? null) || ($conf['returnKey.'] ?? false))
+        ) {
             $key = isset($conf['returnKey.']) ? (int)$this->stdWrap($conf['returnKey'], $conf['returnKey.']) : (int)$conf['returnKey'];
             return $valArr[$key] ?? '';
         }
@@ -3827,9 +3880,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ((isset($configuration['search']) || isset($configuration['search.'])) && (isset($configuration['replace']) || isset($configuration['replace.']))) {
             // Gets the strings
             $search = isset($configuration['search.']) ? $this->stdWrap($configuration['search'], $configuration['search.']) : $configuration['search'];
-            $replace = isset($configuration['replace.']) ? $this->stdWrap($configuration['replace'], $configuration['replace.']) : $configuration['replace'];
+            $replace = isset($configuration['replace.'])
+                ? $this->stdWrap($configuration['replace'] ?? null, $configuration['replace.'])
+                : $configuration['replace'] ?? null;
             // Determines whether regular expression shall be used
-            if (isset($configuration['useRegExp']) || $configuration['useRegExp.']) {
+            if (isset($configuration['useRegExp'])
+                || (isset($configuration['useRegExp.']) && $configuration['useRegExp.'])
+            ) {
                 $useRegularExpression = isset($configuration['useRegExp.']) ? $this->stdWrap($configuration['useRegExp'], $configuration['useRegExp.']) : $configuration['useRegExp'];
             }
             // Determines whether replace-pattern uses option-split
@@ -3897,8 +3954,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     protected function round($content, array $conf = [])
     {
-        $decimals = isset($conf['decimals.']) ? $this->stdWrap($conf['decimals'], $conf['decimals.']) : $conf['decimals'];
-        $type = isset($conf['roundType.']) ? $this->stdWrap($conf['roundType'], $conf['roundType.']) : $conf['roundType'];
+        $decimals = isset($conf['decimals.'])
+            ? $this->stdWrap($conf['decimals'] ?? '', $conf['decimals.'])
+            : ($conf['decimals'] ?? null);
+        $type = isset($conf['roundType.'])
+            ? $this->stdWrap($conf['roundType'] ?? '', $conf['roundType.'])
+            : ($conf['roundType'] ?? null);
         $floatVal = (float)$content;
         switch ($type) {
             case 'ceil':
@@ -3925,9 +3986,15 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function numberFormat($content, $conf)
     {
-        $decimals = isset($conf['decimals.']) ? (int)$this->stdWrap($conf['decimals'], $conf['decimals.']) : (int)$conf['decimals'];
-        $dec_point = isset($conf['dec_point.']) ? $this->stdWrap($conf['dec_point'], $conf['dec_point.']) : $conf['dec_point'];
-        $thousands_sep = isset($conf['thousands_sep.']) ? $this->stdWrap($conf['thousands_sep'], $conf['thousands_sep.']) : $conf['thousands_sep'];
+        $decimals = isset($conf['decimals.'])
+            ? (int)$this->stdWrap($conf['decimals'] ?? '', $conf['decimals.'])
+            : (int)($conf['decimals'] ?? 0);
+        $dec_point = isset($conf['dec_point.'])
+            ? $this->stdWrap($conf['dec_point'] ?? '', $conf['dec_point.'])
+            : ($conf['dec_point'] ?? null);
+        $thousands_sep = isset($conf['thousands_sep.'])
+            ? $this->stdWrap($conf['thousands_sep'] ?? '', $conf['thousands_sep.'])
+            : ($conf['thousands_sep'] ?? null);
         return number_format((float)$content, $decimals, $dec_point, $thousands_sep);
     }
 
@@ -3962,7 +4029,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $conf = $temp_conf['parseFunc.'];
         }
         // Process:
-        if ((string)$conf['externalBlocks'] === '') {
+        if ((string)($conf['externalBlocks'] ?? '') === '') {
             return $this->_parseFunc($theValue, $conf);
         }
         $tags = strtolower(implode(',', GeneralUtility::trimExplode(',', $conf['externalBlocks'])));
@@ -4069,8 +4136,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $stripNL = 0;
         $contentAccum = [];
         $contentAccumP = 0;
-        $allowTags = strtolower(str_replace(' ', '', $conf['allowTags']));
-        $denyTags = strtolower(str_replace(' ', '', $conf['denyTags']));
+        $allowTags = strtolower(str_replace(' ', '', $conf['allowTags'] ?? ''));
+        $denyTags = strtolower(str_replace(' ', '', $conf['denyTags'] ?? ''));
         $totalLen = strlen($theValue);
         do {
             if (!$inside) {
@@ -4106,7 +4173,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     if (!is_array($currentTag)) {
                         // Constants
                         $tsfe = $this->getTypoScriptFrontendController();
-                        $tmpConstants = $tsfe->tmpl->setup['constants.'];
+                        $tmpConstants = $tsfe->tmpl->setup['constants.'] ?? null;
                         if ($conf['constants'] && is_array($tmpConstants)) {
                             foreach ($tmpConstants as $key => $val) {
                                 if (is_string($val)) {
@@ -4115,7 +4182,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             }
                         }
                         // Short
-                        if (is_array($conf['short.'])) {
+                        if (isset($conf['short.']) && is_array($conf['short.'])) {
                             $shortWords = $conf['short.'];
                             krsort($shortWords);
                             foreach ($shortWords as $key => $val) {
@@ -4125,17 +4192,17 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             }
                         }
                         // stdWrap
-                        if (is_array($conf['plainTextStdWrap.'])) {
+                        if (isset($conf['plainTextStdWrap.']) && is_array($conf['plainTextStdWrap.'])) {
                             $data = $this->stdWrap($data, $conf['plainTextStdWrap.']);
                         }
                         // userFunc
-                        if ($conf['userFunc']) {
+                        if ($conf['userFunc'] ?? false) {
                             $data = $this->callUserFunction($conf['userFunc'], $conf['userFunc.'], $data);
                         }
                         // Makelinks: (Before search-words as we need the links to be generated when searchwords go on...!)
-                        if ($conf['makelinks']) {
+                        if ($conf['makelinks'] ?? false) {
                             $data = $this->http_makelinks($data, $conf['makelinks.']['http.']);
-                            $data = $this->mailto_makelinks($data, $conf['makelinks.']['mailto.']);
+                            $data = $this->mailto_makelinks($data, $conf['makelinks.']['mailto.'] ?? []);
                         }
                         // Search Words:
                         if ($tsfe->no_cache && $conf['sword'] && is_array($tsfe->sWordList) && $tsfe->sWordRegEx) {
@@ -4168,7 +4235,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             $data = $newstring;
                         }
                     }
-                    $contentAccum[$contentAccumP] .= $data;
+                    $contentAccum[$contentAccumP] = isset($contentAccum[$contentAccumP])
+                        ? $contentAccum[$contentAccumP] . $data
+                        : $data;
                 }
                 $inside = true;
             } else {
@@ -4186,11 +4255,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $tag[0] = substr($tag[0], 1);
                     $tag['out'] = 1;
                 }
-                if ($conf['tags.'][$tag[0]]) {
+                if ($conf['tags.'][$tag[0]] ?? false) {
                     $treated = false;
                     $stripNL = false;
                     // in-tag
-                    if (!$currentTag && !$tag['out']) {
+                    if (!$currentTag && (!isset($tag['out']) || !$tag['out'])) {
                         // $currentTag (array!) is the tag we are currently processing
                         $currentTag = $tag;
                         $contentAccumP++;
@@ -4201,13 +4270,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         }
                     }
                     // out-tag
-                    if ($currentTag[0] === $tag[0] && $tag['out']) {
+                    if ($currentTag[0] === $tag[0] && isset($tag['out']) && $tag['out']) {
                         $theName = $conf['tags.'][$tag[0]];
                         $theConf = $conf['tags.'][$tag[0] . '.'];
                         // This flag indicates, that NL- (13-10-chars) should be stripped first and last.
-                        $stripNL = (bool)$theConf['stripNL'];
+                        $stripNL = (bool)($theConf['stripNL'] ?? false);
                         // This flag indicates, that this TypoTag section should NOT be included in the nonTypoTag content.
-                        $breakOut = (bool)$theConf['breakoutTypoTagContent'];
+                        $breakOut = (bool)($theConf['breakoutTypoTagContent'] ?? false);
                         $this->parameters = [];
                         if ($currentTag[1]) {
                             $params = GeneralUtility::get_tag_attributes($currentTag[1]);
@@ -4232,7 +4301,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $contentAccumP++;
                         // If the TypoTag section
                         if (!$breakOut) {
-                            $contentAccum[$contentAccumP - 2] .= $contentAccum[$contentAccumP - 1] . $contentAccum[$contentAccumP];
+                            if (!isset($contentAccum[$contentAccumP - 2])) {
+                                $contentAccum[$contentAccumP - 2] = '';
+                            }
+                            $contentAccum[$contentAccumP - 2] .= ($contentAccum[$contentAccumP - 1] ?? '') . ($contentAccum[$contentAccumP] ?? '');
                             unset($contentAccum[$contentAccumP]);
                             unset($contentAccum[$contentAccumP - 1]);
                             $contentAccumP -= 2;
@@ -4248,9 +4320,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     // If a tag was not a typo tag, then it is just added to the content
                     $stripNL = false;
                     if (GeneralUtility::inList($allowTags, $tag[0]) || $denyTags !== '*' && !GeneralUtility::inList($denyTags, $tag[0])) {
-                        $contentAccum[$contentAccumP] .= $data;
+                        $contentAccum[$contentAccumP] = isset($contentAccum[$contentAccumP])
+                            ? $contentAccum[$contentAccumP] . $data
+                            : $data;
                     } else {
-                        $contentAccum[$contentAccumP] .= htmlspecialchars($data);
+                        $contentAccum[$contentAccumP] = isset($contentAccum[$contentAccumP])
+                            ? $contentAccum[$contentAccumP] . htmlspecialchars($data)
+                            : htmlspecialchars($data);
                     }
                 }
                 $inside = false;
@@ -4263,11 +4339,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
         for ($a = 0; $a < $contentAccumCount; $a++) {
             if ($a % 2 != 1) {
                 // stdWrap
-                if (is_array($conf['nonTypoTagStdWrap.'])) {
+                if (isset($conf['nonTypoTagStdWrap.']) && is_array($conf['nonTypoTagStdWrap.'])) {
                     $contentAccum[$a] = $this->stdWrap($contentAccum[$a], $conf['nonTypoTagStdWrap.']);
                 }
                 // userFunc
-                if ($conf['nonTypoTagUserFunc']) {
+                if (!empty($conf['nonTypoTagUserFunc'])) {
                     $contentAccum[$a] = $this->callUserFunction($conf['nonTypoTagUserFunc'], $conf['nonTypoTagUserFunc.'], $contentAccum[$a]);
                 }
             }
@@ -4299,8 +4375,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $encapTags = GeneralUtility::trimExplode(',', strtolower($conf['encapsTagList']), true);
         $nonWrappedTag = $conf['nonWrappedTag'];
         $defaultAlign = isset($conf['defaultAlign.'])
-            ? trim($this->stdWrap($conf['defaultAlign'], $conf['defaultAlign.']))
-            : trim($conf['defaultAlign']);
+            ? trim($this->stdWrap($conf['defaultAlign'] ?? '', $conf['defaultAlign.']))
+            : trim($conf['defaultAlign'] ?? '');
 
         $str_content = '';
         foreach ($lParts as $k => $l) {
@@ -4310,7 +4386,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $attrib = [];
             $nonWrapped = false;
             $tagName = '';
-            if ($l[0] === '<' && substr($l, -1) === '>') {
+            if (isset($l[0]) && $l[0] === '<' && substr($l, -1) === '>') {
                 $fwParts = explode('>', substr($l, 1), 2);
                 list($tagName) = explode(' ', $fwParts[0], 2);
                 if (!$fwParts[1]) {
@@ -4331,7 +4407,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
             if ($sameBeginEnd && in_array(strtolower($tagName), $encapTags)) {
                 $uTagName = strtoupper($tagName);
-                $uTagName = strtoupper($conf['remapTag.'][$uTagName] ? $conf['remapTag.'][$uTagName] : $uTagName);
+                $uTagName = strtoupper($conf['remapTag.'][$uTagName] ?? $uTagName);
             } else {
                 $uTagName = strtoupper($nonWrappedTag);
                 // The line will be wrapped: $uTagName should not be an empty tag
@@ -4346,11 +4422,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
             if ($uTagName) {
                 // Setting common attributes
-                if (is_array($conf['addAttributes.'][$uTagName . '.'])) {
+                if (isset($conf['addAttributes.'][$uTagName . '.']) && is_array($conf['addAttributes.'][$uTagName . '.'])) {
                     foreach ($conf['addAttributes.'][$uTagName . '.'] as $kk => $vv) {
                         if (!is_array($vv)) {
                             if ((string)$conf['addAttributes.'][$uTagName . '.'][$kk . '.']['setOnly'] === 'blank') {
-                                if ((string)$attrib[$kk] === '') {
+                                if ((string)($attrib[$kk] ?? '') === '') {
                                     $attrib[$kk] = $vv;
                                 }
                             } elseif ((string)$conf['addAttributes.'][$uTagName . '.'][$kk . '.']['setOnly'] === 'exists') {
@@ -4364,15 +4440,15 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     }
                 }
                 // Wrapping all inner-content:
-                if (is_array($conf['encapsLinesStdWrap.'][$uTagName . '.'])) {
+                if (isset($conf['encapsLinesStdWrap.'][$uTagName . '.']) && is_array($conf['encapsLinesStdWrap.'][$uTagName . '.'])) {
                     $str_content = $this->stdWrap($str_content, $conf['encapsLinesStdWrap.'][$uTagName . '.']);
                 }
                 // Default align
-                if (!$attrib['align'] && $defaultAlign) {
+                if ((!isset($attrib['align']) || !$attrib['align']) && $defaultAlign) {
                     $attrib['align'] = $defaultAlign;
                 }
                 $params = GeneralUtility::implodeAttributes($attrib, true);
-                if (!$conf['removeWrapping'] || ($emptyTag && $conf['removeWrapping.']['keepSingleTag'])) {
+                if (!isset($conf['removeWrapping']) || !$conf['removeWrapping'] || ($emptyTag && $conf['removeWrapping.']['keepSingleTag'])) {
                     $selfClosingTagList = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
                     if ($emptyTag && in_array(strtolower($uTagName), $selfClosingTagList, true)) {
                         $str_content = '<' . strtolower($uTagName) . (trim($params) ? ' ' . trim($params) : '') . ' />';
@@ -4381,7 +4457,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     }
                 }
             }
-            if ($nonWrapped && $conf['wrapNonWrappedLines']) {
+            if ($nonWrapped && isset($conf['wrapNonWrappedLines']) && $conf['wrapNonWrappedLines']) {
                 $str_content = $this->wrap($str_content, $conf['wrapNonWrappedLines']);
             }
             $lParts[$k] = $str_content;
@@ -4561,7 +4637,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $fileObject = $file->getOriginalFile();
             } else {
                 try {
-                    if ($fileArray['import.']) {
+                    if (isset($fileArray['import.']) && $fileArray['import.']) {
                         $importedFile = trim($this->stdWrap('', $fileArray['import.']));
                         if (!empty($importedFile)) {
                             $file = $importedFile;
@@ -4767,12 +4843,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Returns the value for the field from $this->data. If "//" is found in the $field value that token will split the field values apart and the first field having a non-blank value will be returned.
      *
      * @param string $field The fieldname, eg. "title" or "navtitle // title" (in the latter case the value of $this->data[navtitle] is returned if not blank, otherwise $this->data[title] will be)
-     * @return string
+     * @return string|null
      */
     public function getFieldVal($field)
     {
         if (!strstr($field, '//')) {
-            return $this->data[trim($field)];
+            return $this->data[trim($field)] ?? null;
         }
         $sections = GeneralUtility::trimExplode('//', $field, true);
         foreach ($sections as $k) {
@@ -4807,7 +4883,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $parts = explode(':', $secVal, 2);
             $type = strtolower(trim($parts[0]));
             $typesWithOutParameters = ['level', 'date', 'current', 'pagelayout'];
-            $key = trim($parts[1]);
+            $key = trim($parts[1] ?? '');
             if (($key != '') || in_array($type, $typesWithOutParameters)) {
                 switch ($type) {
                     case 'gp':
@@ -4835,7 +4911,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $retVal = $this->parameters[$key];
                         break;
                     case 'register':
-                        $retVal = $tsfe->register[$key];
+                        $retVal = $tsfe->register[$key] ?? null;
                         break;
                     case 'global':
                         $retVal = $this->getGlobal($key);
@@ -4846,12 +4922,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     case 'leveltitle':
                         $keyParts = GeneralUtility::trimExplode(',', $key);
                         $numericKey = $this->getKey($keyParts[0], $tsfe->tmpl->rootLine);
-                        $retVal = $this->rootLineValue($numericKey, 'title', strtolower($keyParts[1]) === 'slide');
+                        $retVal = $this->rootLineValue($numericKey, 'title', strtolower($keyParts[1] ?? '') === 'slide');
                         break;
                     case 'levelmedia':
                         $keyParts = GeneralUtility::trimExplode(',', $key);
                         $numericKey = $this->getKey($keyParts[0], $tsfe->tmpl->rootLine);
-                        $retVal = $this->rootLineValue($numericKey, 'media', strtolower($keyParts[1]) === 'slide');
+                        $retVal = $this->rootLineValue($numericKey, 'media', strtolower($keyParts[1] ?? '') === 'slide');
                         break;
                     case 'leveluid':
                         $numericKey = $this->getKey($key, $tsfe->tmpl->rootLine);
@@ -4860,13 +4936,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     case 'levelfield':
                         $keyParts = GeneralUtility::trimExplode(',', $key);
                         $numericKey = $this->getKey($keyParts[0], $tsfe->tmpl->rootLine);
-                        $retVal = $this->rootLineValue($numericKey, $keyParts[1], strtolower($keyParts[2]) === 'slide');
+                        $retVal = $this->rootLineValue($numericKey, $keyParts[1], strtolower($keyParts[2] ?? '') === 'slide');
                         break;
                     case 'fullrootline':
                         $keyParts = GeneralUtility::trimExplode(',', $key);
                         $fullKey = (int)$keyParts[0] - count($tsfe->tmpl->rootLine) + count($tsfe->rootLine);
                         if ($fullKey >= 0) {
-                            $retVal = $this->rootLineValue($fullKey, $keyParts[1], stristr($keyParts[2], 'slide'), $tsfe->rootLine);
+                            $retVal = $this->rootLineValue($fullKey, $keyParts[1], stristr($keyParts[2] ?? '', 'slide'), $tsfe->rootLine);
                         }
                         break;
                     case 'date':
@@ -4914,7 +4990,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         }
                         break;
                     case 'current':
-                        $retVal = $this->data[$this->currentValKey];
+                        $retVal = $this->data[$this->currentValKey] ?? null;
                         break;
                     case 'db':
                         $selectParts = GeneralUtility::trimExplode(':', $key);
@@ -5189,8 +5265,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $linkParameterParts = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($mixedLinkParameter);
 
         // Check for link-handler keyword
-        list($linkHandlerKeyword, $linkHandlerValue) = explode(':', $linkParameterParts['url'], 2);
-        if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword] && (string)$linkHandlerValue !== '') {
+        $linkHandlerExploded = explode(':', $linkParameterParts['url'], 2);
+        $linkHandlerKeyword = $linkHandlerExploded[0] ?? null;
+        $linkHandlerValue = $linkHandlerExploded[1] ?? null;
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword])
+            && (string)$linkHandlerValue !== ''
+        ) {
             $linkHandlerObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword]);
             if (method_exists($linkHandlerObj, 'main')) {
                 return $linkHandlerObj->main($linkText, $configuration, $linkHandlerKeyword, $linkHandlerValue, $mixedLinkParameter, $this);
@@ -5255,7 +5335,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $linkText = (string)$linkText;
         $tsfe = $this->getTypoScriptFrontendController();
 
-        $linkParameter = trim(isset($conf['parameter.']) ? $this->stdWrap($conf['parameter'], $conf['parameter.']) : $conf['parameter']);
+        $linkParameter = trim(
+            (isset($conf['parameter.']) ?? '')
+            ? $this->stdWrap($conf['parameter'] ?? '', $conf['parameter.'])
+            : ($conf['parameter'] ?? '')
+        );
         $this->lastTypoLinkUrl = '';
         $this->lastTypoLinkTarget = '';
 
@@ -5322,8 +5406,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         // Title attribute
         if (empty($title)) {
-            $title = $conf['title'];
-            if ($conf['title.']) {
+            $title = $conf['title'] ?? '';
+            if (isset($conf['title.']) && is_array($conf['title.'])) {
                 $title = $this->stdWrap($title, $conf['title.']);
             }
         }
@@ -5383,7 +5467,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $this->lastTypoLinkTarget = $target;
 
         // Call user function:
-        if ($conf['userFunc']) {
+        if ($conf['userFunc'] ?? false) {
             $finalTagParts['TAG'] = $finalAnchorTag;
             $finalAnchorTag = $this->callUserFunction($conf['userFunc'], $conf['userFunc.'], $finalTagParts);
         }
@@ -5402,7 +5486,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         // If flag "returnLastTypoLinkUrl" set, then just return the latest URL made:
-        if ($conf['returnLast']) {
+        if ($conf['returnLast'] ?? false) {
             switch ($conf['returnLast']) {
                 case 'url':
                     return $this->lastTypoLinkUrl;
@@ -5413,9 +5497,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
         }
 
-        $wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
+        $wrap = isset($conf['wrap.'])
+            ? $this->stdWrap($conf['wrap'] ?? '', $conf['wrap.'])
+            : $conf['wrap'] ?? '';
 
-        if ($conf['ATagBeforeWrap']) {
+        if ($conf['ATagBeforeWrap'] ?? false) {
             return $finalAnchorTag . $this->wrap($linkText, $wrap) . '</a>';
         }
         return $this->wrap($finalAnchorTag . $linkText . '</a>', $wrap);
@@ -5724,7 +5810,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function getQueryArguments($conf, $overruleQueryArguments = [], $forceOverruleArguments = false)
     {
-        switch ((string)$conf['method']) {
+        $method = (string)($conf['method'] ?? '');
+        switch ($method) {
             case 'GET':
                 $currentQueryArray = GeneralUtility::_GET();
                 break;
@@ -5743,7 +5830,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $currentQueryArray = [];
                 parse_str($this->getEnvironmentVariable('QUERY_STRING'), $currentQueryArray);
         }
-        if ($conf['exclude']) {
+        if ($conf['exclude'] ?? false) {
             $excludeString = str_replace(',', '&', $conf['exclude']);
             $excludedQueryParts = [];
             parse_str($excludeString, $excludedQueryParts);
@@ -5777,7 +5864,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         if ($wrap) {
             $wrapArr = explode($char, $wrap);
-            $content = trim($wrapArr[0]) . $content . trim($wrapArr[1]);
+            $content = trim($wrapArr[0] ?? '') . $content . trim($wrapArr[1] ?? '');
         }
         return $content;
     }
@@ -5961,7 +6048,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $seconds = $sign * $val . ($val == 1 ? $labelArr[6] : $labelArr[2]);
         } else {
             $val = round($absSeconds / (365 * 24 * 3600));
-            $seconds = $sign * $val . ($val == 1 ? $labelArr[7] : $labelArr[3]);
+            $seconds = $sign * $val . ($val == 1 ? ($labelArr[7] ?? null) : ($labelArr[3] ?? null));
         }
         return $seconds;
     }
