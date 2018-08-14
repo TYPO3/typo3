@@ -24,18 +24,14 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * Testcase
  */
-class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FluidTemplateContentObjectTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
     /**
      * @var bool Reset singletons created by subject
      */
@@ -76,7 +72,9 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
         );
         /** @var $tsfe TypoScriptFrontendController */
         $tsfe = $this->createMock(TypoScriptFrontendController::class);
-        $tsfe->tmpl = $this->getMockBuilder(TemplateService::class)->getMock();
+        $tsfe->tmpl = $this->getMockBuilder(TemplateService::class)
+            ->disableOriginalConstructor(true)
+            ->getMock();
         $GLOBALS['TSFE'] = $tsfe;
     }
 

@@ -172,7 +172,9 @@ class FluidTemplateContentObject extends AbstractContentObject
             $this->view->setTemplateSource($templateSource);
         } else {
             // Fetch the Fluid template by file stdWrap
-            $file = isset($conf['file.']) ? $this->cObj->stdWrap($conf['file'], $conf['file.']) : $conf['file'];
+            $file = isset($conf['file.'])
+                ? $this->cObj->stdWrap($conf['file'] ?? '', $conf['file.'])
+                : ($conf['file'] ?? '');
             // Get the absolute file name
             $templatePathAndFilename = GeneralUtility::getFileAbsFileName($file);
             $this->view->setTemplatePathAndFilename($templatePathAndFilename);
@@ -231,7 +233,9 @@ class FluidTemplateContentObject extends AbstractContentObject
      */
     protected function setFormat(array $conf)
     {
-        $format = isset($conf['format.']) ? $this->cObj->stdWrap($conf['format'], $conf['format.']) : $conf['format'];
+        $format = isset($conf['format.'])
+            ? $this->cObj->stdWrap($conf['format'] ?? '', $conf['format.'])
+            : ($conf['format'] ?? '');
         if ($format) {
             $this->view->setFormat($format);
         }
@@ -245,19 +249,27 @@ class FluidTemplateContentObject extends AbstractContentObject
     protected function setExtbaseVariables(array $conf)
     {
         /** @var $request \TYPO3\CMS\Extbase\Mvc\Request */
-        $requestPluginName = isset($conf['extbase.']['pluginName.']) ? $this->cObj->stdWrap($conf['extbase.']['pluginName'], $conf['extbase.']['pluginName.']) : $conf['extbase.']['pluginName'];
+        $requestPluginName = isset($conf['extbase.']['pluginName.'])
+            ? $this->cObj->stdWrap($conf['extbase.']['pluginName'] ?? '', $conf['extbase.']['pluginName.'])
+            : ($conf['extbase.']['pluginName'] ?? '');
         if ($requestPluginName) {
             $this->view->getRequest()->setPluginName($requestPluginName);
         }
-        $requestControllerExtensionName = isset($conf['extbase.']['controllerExtensionName.']) ? $this->cObj->stdWrap($conf['extbase.']['controllerExtensionName'], $conf['extbase.']['controllerExtensionName.']) : $conf['extbase.']['controllerExtensionName'];
+        $requestControllerExtensionName = isset($conf['extbase.']['controllerExtensionName.'])
+            ? $this->cObj->stdWrap($conf['extbase.']['controllerExtensionName'] ?? '', $conf['extbase.']['controllerExtensionName.'])
+            : ($conf['extbase.']['controllerExtensionName'] ?? '');
         if ($requestControllerExtensionName) {
             $this->view->getRequest()->setControllerExtensionName($requestControllerExtensionName);
         }
-        $requestControllerName = isset($conf['extbase.']['controllerName.']) ? $this->cObj->stdWrap($conf['extbase.']['controllerName'], $conf['extbase.']['controllerName.']) : $conf['extbase.']['controllerName'];
+        $requestControllerName = isset($conf['extbase.']['controllerName.'])
+            ? $this->cObj->stdWrap($conf['extbase.']['controllerName'] ?? '', $conf['extbase.']['controllerName.'])
+            : ($conf['extbase.']['controllerName'] ?? '');
         if ($requestControllerName) {
             $this->view->getRequest()->setControllerName($requestControllerName);
         }
-        $requestControllerActionName = isset($conf['extbase.']['controllerActionName.']) ? $this->cObj->stdWrap($conf['extbase.']['controllerActionName'], $conf['extbase.']['controllerActionName.']) : $conf['extbase.']['controllerActionName'];
+        $requestControllerActionName = isset($conf['extbase.']['controllerActionName.'])
+            ? $this->cObj->stdWrap($conf['extbase.']['controllerActionName'] ?? '', $conf['extbase.']['controllerActionName.'])
+            : ($conf['extbase.']['controllerActionName'] ?? '');
         if ($requestControllerActionName) {
             $this->view->getRequest()->setControllerActionName($requestControllerActionName);
         }
@@ -301,7 +313,7 @@ class FluidTemplateContentObject extends AbstractContentObject
         $variables = [];
         $reservedVariables = ['data', 'current'];
         // Accumulate the variables to be process and loop them through cObjGetSingle
-        $variablesToProcess = (array)$conf['variables.'];
+        $variablesToProcess = (array)($conf['variables.'] ?? []);
         foreach ($variablesToProcess as $variableName => $cObjType) {
             if (is_array($cObjType)) {
                 continue;
@@ -316,7 +328,7 @@ class FluidTemplateContentObject extends AbstractContentObject
             }
         }
         $variables['data'] = $this->cObj->data;
-        $variables['current'] = $this->cObj->data[$this->cObj->currentValKey];
+        $variables['current'] = $this->cObj->data[$this->cObj->currentValKey ?? null] ?? null;
         return $variables;
     }
 
