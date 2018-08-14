@@ -360,10 +360,10 @@ BE:
                 className:
                     type: dropdown
                     allowedValues:
-                        'TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt': 'Good password hash mechanism. Used by default if available.'
-                        'TYPO3\CMS\Saltedpasswords\Salt\BcryptSalt': 'Good password hash mechanism.'
-                        'TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt': 'Fallback hash mechanism if argon and bcrypt are not available.'
-                        'TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt': 'Fallback hash mechanism if none of the above are avalaible.'
+                        'TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash': 'Good password hash mechanism. Used by default if available.'
+                        'TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash': 'Good password hash mechanism.'
+                        'TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash': 'Fallback hash mechanism if argon and bcrypt are not available.'
+                        'TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash': 'Fallback hash mechanism if none of the above are available.'
                 options:
                     type: array
                     description: 'Special settings for specific hashes.'
@@ -500,10 +500,10 @@ FE:
                 className:
                     type: dropdown
                     allowedValues:
-                        'TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt': 'Good password hash mechanism. Used by default if available.'
-                        'TYPO3\CMS\Saltedpasswords\Salt\BcryptSalt': 'Good password hash mechanism.'
-                        'TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt': 'Fallback hash mechanism if argon and bcrypt are not available.'
-                        'TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt': 'Fallback hash mechanism if none of the above are avalaible.'
+                        'TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash': 'Good password hash mechanism. Used by default if available.'
+                        'TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash': 'Good password hash mechanism.'
+                        'TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash': 'Fallback hash mechanism if argon and bcrypt are not available.'
+                        'TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash': 'Fallback hash mechanism if none of the above are available.'
                 options:
                     type: array
                     description: 'Special settings for specific hashes.'
