@@ -343,9 +343,9 @@ define(
                 currentDepth = currentNode.depth;
               }
             }
-          } else if (node.hasChildren) {
-            node.expanded = true;
           }
+
+          node.canToggle = node.hasChildren;
 
           // create stateIdentifier if doesn't exist (for category tree)
           if (!node.stateIdentifier) {
@@ -362,6 +362,16 @@ define(
           _this.dispatch.call('prepareLoadedNode', _this, node);
           return node;
         });
+
+        // get nodes with depth 0, if there is only 1 then open it and disable toggle
+        var nodeDepths = nodes.filter(function(node) {
+          return node.depth === 0;
+        });
+
+        if (nodeDepths.length === 1) {
+          nodes[0].expanded = true;
+          nodes[0].canToggle = false;
+        }
 
         _this.nodes = nodes;
       },
@@ -920,7 +930,7 @@ define(
        * @returns {String}
        */
       getToggleVisibility: function(node) {
-        return node.hasChildren ? 'visible' : 'hidden';
+        return node.canToggle ? 'visible' : 'hidden';
       },
 
       /**
