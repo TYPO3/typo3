@@ -103,7 +103,7 @@ class DatabaseRecordLinkBuilderTest extends UnitTestCase
      * @param string $parameterFromDb
      * @param string $expectedParameter
      */
-    public function attributesSetInRecordLinkOverwriteConfiguredAttributes(string $parameterFromTypoScript, string $parameterFromDb, string $expectedParameter): void
+    public function attributesSetInRecordLinkOverwriteConfiguredAttributes(string $parameterFromTypoScript, string $parameterFromDb, string $expectedParameter)
     {
         $confFromDb = [
             'parameter' => $parameterFromDb,
