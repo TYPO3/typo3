@@ -54,11 +54,16 @@ class FrontendEditInitiator implements MiddlewareInterface
                         } else {
                             $controllerKey = 'default';
                         }
-                        $controllerClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['frontendEditingController'][$controllerKey];
-                        if ($controllerClass) {
-                            $GLOBALS['BE_USER']->frontendEdit = GeneralUtility::makeInstance($controllerClass);
-                            if ($controllerClass instanceof FrontendEditingController) {
-                                $GLOBALS['BE_USER']->frontendEdit->initConfigOptions();
+                        $controllerClassName = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['frontendEditingController'][$controllerKey] ?? '';
+                        if (!empty($controllerClassName)) {
+                            $frontendEditingController = GeneralUtility::makeInstance($controllerClassName);
+                            $GLOBALS['BE_USER']->frontendEdit = $frontendEditingController;
+                            if ($GLOBALS['BE_USER']->frontendEdit instanceof FrontendEditingController) {
+                                $GLOBALS['BE_USER']->frontendEdit->TSFE_EDIT = $request->getParsedBody()['TSFE_EDIT'] ?? $request->getQueryParams()['TSFE_EDIT'] ?? null;
+                                // Include classes for editing IF editing module in Admin Panel is open
+                                if (((int)$GLOBALS['TSFE']->displayEditIcons === 1 || (int)$GLOBALS['TSFE']->displayFieldEditIcons === 1) && $this->isValidEditAction($GLOBALS['BE_USER']->frontendEdit->TSFE_EDIT)) {
+                                    $GLOBALS['BE_USER']->frontendEdit->editAction();
+                                }
                             }
                         }
                         break;
@@ -67,5 +72,28 @@ class FrontendEditInitiator implements MiddlewareInterface
             }
         }
         return $handler->handle($request);
+    }
+
+    /**
+     * Returns TRUE if an edit-action is sent from the Admin Panel
+     *
+     * @param array|null $parameters
+     * @return bool
+     */
+    protected function isValidEditAction(array &$parameters = null): bool
+    {
+        if (!is_array($parameters)) {
+            return false;
+        }
+        if ($parameters['cancel']) {
+            unset($parameters['cmd']);
+        } else {
+            $cmd = (string)$parameters['cmd'];
+            if (($cmd !== 'edit' || is_array($parameters['data']) && ($parameters['doSave'] || $parameters['update'] || $parameters['update_close'])) && $cmd !== 'new') {
+                // $cmd can be a command like "hide" or "move". If $cmd is "edit" or "new" it's an indication to show the formfields. But if data is sent with update-flag then $cmd = edit is accepted because edit may be sent because of .keepGoing flag.
+                return true;
+            }
+        }
+        return false;
     }
 }
