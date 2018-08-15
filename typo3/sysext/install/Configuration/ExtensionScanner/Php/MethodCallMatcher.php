@@ -3318,6 +3318,13 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Resource\File->_getMetaData' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85895-DeprecateFile_getMetaData.rst',
+        ],
+    ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->initFEuser' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,

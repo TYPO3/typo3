@@ -1193,9 +1193,6 @@ class ResourceStorage implements ResourceStorageInterface
         if ($replaceExisting && $file instanceof File) {
             $this->getIndexer()->updateIndexEntry($file);
         }
-        if ($this->autoExtractMetadataEnabled()) {
-            $this->getIndexer()->extractMetaData($file);
-        }
 
         $this->emitPostFileAddSignal($file, $targetFolder);
 
@@ -1970,9 +1967,6 @@ class ResourceStorage implements ResourceStorageInterface
         $this->driver->replaceFile($file->getIdentifier(), $localFilePath);
         if ($file instanceof File) {
             $this->getIndexer()->updateIndexEntry($file);
-        }
-        if ($this->autoExtractMetadataEnabled()) {
-            $this->getIndexer()->extractMetaData($file);
         }
         $this->emitPostFileReplaceSignal($file, $localFilePath);
 

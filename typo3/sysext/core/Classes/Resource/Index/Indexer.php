@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Resource\Service\ExtractorService;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -43,9 +44,9 @@ class Indexer
     protected $storage;
 
     /**
-     * @var ExtractorInterface[]
+     * @var ExtractorService
      */
-    protected $extractionServices;
+    protected $extractorService;
 
     /**
      * @param ResourceStorage $storage
@@ -62,19 +63,25 @@ class Indexer
      * @return File
      * @throws \InvalidArgumentException
      */
-    public function createIndexEntry($identifier)
+    public function createIndexEntry($identifier): File
     {
         if (!isset($identifier) || !is_string($identifier) || $identifier === '') {
-            throw new \InvalidArgumentException('Invalid file identifier given. It must be of type string and not empty. "' . gettype($identifier) . '" given.', 1401732565);
+            throw new \InvalidArgumentException(
+                'Invalid file identifier given. It must be of type string and not empty. "' . gettype($identifier) . '" given.',
+                1401732565
+            );
         }
+
         $fileProperties = $this->gatherFileInformationArray($identifier);
         $record = $this->getFileIndexRepository()->addRaw($fileProperties);
+
         $fileObject = $this->getResourceFactory()->getFileObject($record['uid'], $record);
-        $this->extractRequiredMetaData($fileObject);
+        $metaData = $this->extractRequiredMetaData($fileObject);
 
         if ($this->storage->autoExtractMetadataEnabled()) {
-            $this->extractMetaData($fileObject);
+            $metaData = array_merge($metaData, $this->getExtractorService()->extractMetaData($fileObject));
         }
+        $fileObject->getMetaData()->add($metaData)->save();
 
         return $fileObject;
     }
@@ -83,13 +90,21 @@ class Indexer
      * Update index entry
      *
      * @param File $fileObject
+     * @return File
      */
-    public function updateIndexEntry(File $fileObject)
+    public function updateIndexEntry(File $fileObject): File
     {
         $updatedInformation = $this->gatherFileInformationArray($fileObject->getIdentifier());
         $fileObject->updateProperties($updatedInformation);
+
         $this->getFileIndexRepository()->update($fileObject);
-        $this->extractRequiredMetaData($fileObject);
+        $metaData = $this->extractRequiredMetaData($fileObject);
+
+        if ($this->storage->autoExtractMetadataEnabled()) {
+            $metaData = array_merge($metaData, $this->getExtractorService()->extractMetaData($fileObject));
+        }
+        $fileObject->getMetaData()->add($metaData)->save();
+        return $fileObject;
     }
 
     /**
@@ -135,41 +150,13 @@ class Indexer
      */
     public function extractMetaData(File $fileObject)
     {
-        $newMetaData = [
-            0 => $fileObject->_getMetaData()
-        ];
+        $metaData = array_merge([
+            $fileObject->getMetaData()->get()
+        ], $this->getExtractorService()->extractMetaData($fileObject));
 
-        // Loop through available extractors and fetch metadata for the given file.
-        foreach ($this->getExtractionServices() as $service) {
-            if ($this->isFileTypeSupportedByExtractor($fileObject, $service) && $service->canProcess($fileObject)) {
-                $newMetaData[$service->getPriority()] = $service->extractMetaData($fileObject, $newMetaData);
-            }
-        }
+        $fileObject->getMetaData()->add($metaData)->save();
 
-        // Sort metadata by priority so that merging happens in order of precedence.
-        ksort($newMetaData);
-
-        // Merge the collected metadata.
-        $metaData = [];
-        foreach ($newMetaData as $data) {
-            $metaData = array_merge($metaData, $data);
-        }
-        $fileObject->_updateMetaDataProperties($metaData);
-        $this->getMetaDataRepository()->update($fileObject->getUid(), $metaData);
         $this->getFileIndexRepository()->updateIndexingTime($fileObject->getUid());
-    }
-
-    /**
-     * Get available extraction services
-     *
-     * @return ExtractorInterface[]
-     */
-    protected function getExtractionServices()
-    {
-        if ($this->extractionServices === null) {
-            $this->extractionServices = $this->getExtractorRegistry()->getExtractorsWithDriverSupport($this->storage->getDriverType());
-        }
-        return $this->extractionServices;
     }
 
     /**
@@ -280,27 +267,28 @@ class Indexer
      * This should be called after every "content" update and "record" creation
      *
      * @param File $fileObject
+     * @return array
      */
-    protected function extractRequiredMetaData(File $fileObject)
+    protected function extractRequiredMetaData(File $fileObject): array
     {
+        $metaData = [];
+
         // since the core desperately needs image sizes in metadata table do this manually
         // prevent doing this for remote storages, remote storages must provide the data with extractors
-        if ($fileObject->getType() == File::FILETYPE_IMAGE && $this->storage->getDriverType() === 'Local') {
+        if ($fileObject->getType() === File::FILETYPE_IMAGE && $this->storage->getDriverType() === 'Local') {
             $rawFileLocation = $fileObject->getForLocalProcessing(false);
             $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $rawFileLocation);
             $metaData = [
                 'width' => $imageInfo->getWidth(),
                 'height' => $imageInfo->getHeight(),
             ];
-            $this->getMetaDataRepository()->update($fileObject->getUid(), $metaData);
-            $fileObject->_updateMetaDataProperties($metaData);
         }
+
+        return $metaData;
     }
 
     /****************************
-     *
      *         UTILITY
-     *
      ****************************/
 
     /**
@@ -359,7 +347,6 @@ class Indexer
      * Therefore a mapping must happen.
      *
      * @param array $fileInfo
-     *
      * @return array
      */
     protected function transformFromDriverFileInfoArrayToFileObjectFormat(array $fileInfo)
@@ -416,12 +403,13 @@ class Indexer
     }
 
     /**
-     * Returns an instance of the FileIndexRepository
-     *
-     * @return ExtractorRegistry
+     * @return ExtractorService
      */
-    protected function getExtractorRegistry()
+    protected function getExtractorService(): ExtractorService
     {
-        return ExtractorRegistry::getInstance();
+        if ($this->extractorService === null) {
+            $this->extractorService = GeneralUtility::makeInstance(ExtractorService::class);
+        }
+        return $this->extractorService;
     }
 }

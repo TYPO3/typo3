@@ -956,7 +956,7 @@ class FileList
     {
         try {
             if ($fileObject instanceof File && $fileObject->isIndexed() && $fileObject->checkActionPermission('editMeta') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')) {
-                $metaData = $fileObject->_getMetaData();
+                $metaData = $fileObject->getMetaData()->get();
                 $urlParameters = [
                     'edit' => [
                         'sys_file_metadata' => [
@@ -1050,7 +1050,7 @@ class FileList
                         break;
                     case '_LOCALIZATION_':
                         if (!empty($systemLanguages) && $fileObject->isIndexed() && $fileObject->checkActionPermission('editMeta') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')) {
-                            $metaDataRecord = $fileObject->_getMetaData();
+                            $metaDataRecord = $fileObject->getMetaData()->get();
                             $translations = $this->getTranslationsForMetaData($metaDataRecord);
                             $languageCode = '';
 
@@ -1315,7 +1315,7 @@ class FileList
 
         // Edit metadata of file
         if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('editMeta') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')) {
-            $metaData = $fileOrFolderObject->_getMetaData();
+            $metaData = $fileOrFolderObject->getMetaData()->get();
             $urlParameters = [
                 'edit' => [
                     'sys_file_metadata' => [

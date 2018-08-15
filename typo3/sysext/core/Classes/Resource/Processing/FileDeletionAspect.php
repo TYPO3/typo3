@@ -125,7 +125,7 @@ class FileDeletionAspect
     protected function cleanupCategoryReferences(File $fileObject)
     {
         // Retrieve the file metadata uid which is different from the file uid.
-        $metadataProperties = $fileObject->_getMetaData();
+        $metadataProperties = $fileObject->getMetaData()->get();
         $metaDataUid = $metadataProperties['_ORIG_uid'] ?? $metadataProperties['uid'];
 
         GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_category_record_mm')

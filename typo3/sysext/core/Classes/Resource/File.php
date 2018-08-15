@@ -22,29 +22,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class File extends AbstractFile
 {
     /**
-     * @var bool
-     */
-    protected $metaDataLoaded = false;
-
-    /**
-     * @var array
-     */
-    protected $metaDataProperties = [];
-
-    /**
-     * Set to TRUE while this file is being indexed - used to prevent some endless loops
-     *
-     * @var bool
-     */
-    protected $indexingInProgress = false;
-
-    /**
      * Contains the names of all properties that have been update since the
      * instantiation of this object
      *
      * @var array
      */
     protected $updatedProperties = [];
+
+    /**
+     * @var MetaDataAspect
+     */
+    private $metaDataAspect;
 
     /**
      * Constructor for a file object. Should normally not be used directly, use
@@ -60,9 +48,9 @@ class File extends AbstractFile
         $this->name = $fileData['name'] ?? '';
         $this->properties = $fileData;
         $this->storage = $storage;
+
         if (!empty($metaData)) {
-            $this->metaDataLoaded = true;
-            $this->metaDataProperties = $metaData;
+            $this->getMetaData()->add($metaData);
         }
     }
 
@@ -80,8 +68,7 @@ class File extends AbstractFile
         if (parent::hasProperty($key)) {
             return parent::getProperty($key);
         }
-        $metaData = $this->_getMetaData();
-        return $metaData[$key] ?? null;
+        return $this->getMetaData()[$key];
     }
 
     /**
@@ -91,10 +78,10 @@ class File extends AbstractFile
      * @param string $key
      * @return bool
      */
-    public function hasProperty($key)
+    public function hasProperty($key): bool
     {
         if (!parent::hasProperty($key)) {
-            return array_key_exists($key, $this->_getMetaData());
+            return isset($this->getMetaData()[$key]);
         }
         return true;
     }
@@ -104,9 +91,9 @@ class File extends AbstractFile
      *
      * @return array
      */
-    public function getProperties()
+    public function getProperties(): array
     {
-        return array_merge(parent::getProperties(), array_diff_key($this->_getMetaData(), parent::getProperties()));
+        return array_merge(parent::getProperties(), array_diff_key($this->getMetaData()->get(), parent::getProperties()));
     }
 
     /**
@@ -114,13 +101,15 @@ class File extends AbstractFile
      *
      * @return array
      * @internal
+     * @deprecated
      */
     public function _getMetaData()
     {
-        if (!$this->metaDataLoaded) {
-            $this->loadMetaData();
-        }
-        return $this->metaDataProperties;
+        trigger_error(
+            'The method ' . __CLASS__ . '::' . __METHOD__ . ' has been marked as deprecated and will be removed in TYPO3 v11. Use `->getMetaData()->get()` instead.',
+            E_USER_DEPRECATED
+        );
+        return $this->getMetaData()->get();
     }
 
     /******************
@@ -175,19 +164,6 @@ class File extends AbstractFile
     }
 
     /**
-     * Loads MetaData from Repository
-     */
-    protected function loadMetaData()
-    {
-        if (!$this->indexingInProgress) {
-            $this->indexingInProgress = true;
-            $this->metaDataProperties = $this->getMetaDataRepository()->findByFile($this);
-            $this->metaDataLoaded = true;
-            $this->indexingInProgress = false;
-        }
-    }
-
-    /**
      * Updates the properties of this file, e.g. after re-indexing or moving it.
      * By default, only properties that exist as a key in the $properties array
      * are overwritten. If you want to explicitly unset a property, set the
@@ -230,18 +206,6 @@ class File extends AbstractFile
         if (array_key_exists('storage', $properties) && in_array('storage', $this->updatedProperties)) {
             $this->storage = ResourceFactory::getInstance()->getStorageObject($properties['storage']);
         }
-    }
-
-    /**
-     * Updates MetaData properties
-     *
-     * @internal Do not use outside the FileAbstraction Layer classes
-     *
-     * @param array $properties
-     */
-    public function _updateMetaDataProperties(array $properties)
-    {
-        $this->metaDataProperties = array_merge($this->metaDataProperties, $properties);
     }
 
     /**
@@ -370,28 +334,11 @@ class File extends AbstractFile
     }
 
     /**
-     * @return Index\MetaDataRepository
-     */
-    protected function getMetaDataRepository()
-    {
-        return GeneralUtility::makeInstance(Index\MetaDataRepository::class);
-    }
-
-    /**
      * @return Index\FileIndexRepository
      */
     protected function getFileIndexRepository()
     {
         return GeneralUtility::makeInstance(Index\FileIndexRepository::class);
-    }
-
-    /**
-     * @param bool $indexingState
-     * @internal Only for usage in Indexer
-     */
-    public function setIndexingInProgess($indexingState)
-    {
-        $this->indexingInProgress = (bool)$indexingState;
     }
 
     /**
@@ -402,5 +349,18 @@ class File extends AbstractFile
     public function _getPropertyRaw($key)
     {
         return parent::getProperty($key);
+    }
+
+    /**
+     * Loads the metadata of a file in an encapsulated aspect
+     *
+     * @return MetaDataAspect
+     */
+    public function getMetaData(): MetaDataAspect
+    {
+        if ($this->metaDataAspect === null) {
+            $this->metaDataAspect = GeneralUtility::makeInstance(MetaDataAspect::class, $this);
+        }
+        return $this->metaDataAspect;
     }
 }

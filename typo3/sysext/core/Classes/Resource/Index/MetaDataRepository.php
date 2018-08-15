@@ -109,7 +109,7 @@ class MetaDataRepository implements SingletonInterface
             ->fetch();
 
         if (empty($record)) {
-            $record = $this->createMetaDataRecord($uid);
+            return [];
         }
 
         $passedData = new \ArrayObject($record);
@@ -135,6 +135,7 @@ class MetaDataRepository implements SingletonInterface
             'cruser_id' => isset($GLOBALS['BE_USER']->user['uid']) ? (int)$GLOBALS['BE_USER']->user['uid'] : 0,
             'l10n_diffsource' => ''
         ];
+        $additionalFields = array_intersect_key($additionalFields, $this->getTableFields());
         $emptyRecord = array_merge($emptyRecord, $additionalFields);
 
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->tableName);
@@ -162,13 +163,7 @@ class MetaDataRepository implements SingletonInterface
      */
     public function update($fileUid, array $data)
     {
-        if (empty($this->tableFields)) {
-            $this->tableFields = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable($this->tableName)
-                ->getSchemaManager()
-                ->listTableColumns($this->tableName);
-        }
-        $updateRow = array_intersect_key($data, $this->tableFields);
+        $updateRow = array_intersect_key($data, $this->getTableFields());
         if (array_key_exists('uid', $updateRow)) {
             unset($updateRow['uid']);
         }
@@ -185,13 +180,13 @@ class MetaDataRepository implements SingletonInterface
                 }
             }
             $connection->update(
-                    $this->tableName,
-                    $updateRow,
-                    [
-                        'uid' => (int)$row['uid']
-                    ],
-                    $types
-                );
+                $this->tableName,
+                $updateRow,
+                [
+                    'uid' => (int)$row['uid']
+                ],
+                $types
+            );
 
             $this->emitRecordUpdatedSignal(array_merge($row, $updateRow));
         }
@@ -275,6 +270,23 @@ class MetaDataRepository implements SingletonInterface
     protected function emitRecordDeletedSignal($fileUid)
     {
         $this->getSignalSlotDispatcher()->dispatch(self::class, 'recordDeleted', [$fileUid]);
+    }
+
+    /**
+     * Gets the fields that are available in the table
+     *
+     * @return array
+     */
+    protected function getTableFields(): array
+    {
+        if (empty($this->tableFields)) {
+            $this->tableFields = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable($this->tableName)
+                ->getSchemaManager()
+                ->listTableColumns($this->tableName);
+        }
+
+        return $this->tableFields;
     }
 
     /**

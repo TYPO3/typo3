@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
+use TYPO3\CMS\Core\Resource\MetaDataAspect;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -250,9 +251,20 @@ class FileTest extends UnitTestCase
      */
     public function hasPropertyReturnsTrueIfMetadataPropertyExists(): void
     {
-        $fixture = $this->getAccessibleMock(File::class, ['dummy'], [[], $this->storageMock]);
-        $fixture->_set('metaDataLoaded', true);
-        $fixture->_set('metaDataProperties', ['testproperty' => 'testvalue']);
+        $fixture = $this->getMockBuilder(File::class)
+            ->setConstructorArgs([[], $this->storageMock])
+            ->setMethods(['getMetaData'])
+            ->getMock();
+
+        $metaDataAspectMock = $this->getMockBuilder(MetaDataAspect::class)
+            ->setConstructorArgs([$fixture])
+            ->setMethods(['get'])
+            ->getMock();
+
+        $metaDataAspectMock->expects($this->any())->method('get')->willReturn(['testproperty' => 'testvalue']);
+        $fixture->expects($this->any())->method('getMetaData')->willReturn($metaDataAspectMock);
+
         $this->assertTrue($fixture->hasProperty('testproperty'));
+        $this->assertSame('testvalue', $fixture->getProperty('testproperty'));
     }
 }
