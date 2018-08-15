@@ -1557,7 +1557,7 @@ class GeneralUtility
                     $content = htmlspecialchars($v);
                     $dType = gettype($v);
                     if ($dType === 'string') {
-                        if ($options['useCDATA'] && $content != $v) {
+                        if (isset($options['useCDATA']) && $options['useCDATA'] && $content != $v) {
                             $content = '<![CDATA[' . $v . ']]>';
                         }
                     } elseif (!$options['disableTypeAttrib']) {

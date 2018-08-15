@@ -32,10 +32,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DataHandlerTest extends UnitTestCase
 {
-    /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
 
     /**
      * @var bool Reset singletons created by subject
@@ -955,12 +951,10 @@ class DataHandlerTest extends UnitTestCase
      */
     public function checkValueForInputConvertsNullToEmptyString()
     {
-        $previousLanguageService = $GLOBALS['LANG'];
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
         $GLOBALS['LANG']->init('default');
         $expectedResult = ['value' => ''];
         $this->assertSame($expectedResult, $this->subject->_call('checkValueForInput', null, ['type' => 'string', 'max' => 40], 'tt_content', 'NEW55c0e67f8f4d32.04974534', 89, 'table_caption'));
-        $GLOBALS['LANG'] = $previousLanguageService;
     }
 
     /**

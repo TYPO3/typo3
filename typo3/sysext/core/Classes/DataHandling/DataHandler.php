@@ -1102,11 +1102,11 @@ class DataHandler implements LoggerAwareInterface
                         $this->newlog('recordEditAccessInternals() check failed. [' . $this->BE_USER->errorMsg . ']', 1);
                     } else {
                         // Here we fetch the PID of the record that we point to...
-                        $tempdata = $this->recordInfo($table, $id, 'pid' . ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] ? ',t3ver_wsid,t3ver_stage' : ''));
+                        $tempdata = $this->recordInfo($table, $id, 'pid' . (!empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) ? ',t3ver_wsid,t3ver_stage' : ''));
                         $theRealPid = $tempdata['pid'];
                         // Use the new id of the versionized record we're trying to write to:
                         // (This record is a child record of a parent and has already been versionized.)
-                        if ($this->autoVersionIdMap[$table][$id]) {
+                        if (!empty($this->autoVersionIdMap[$table][$id])) {
                             // For the reason that creating a new version of this record, automatically
                             // created related child records (e.g. "IRRE"), update the accordant field:
                             $this->getVersionizedIncomingFieldArray($table, $id, $incomingFieldArray, $registerDBList);
@@ -1140,7 +1140,7 @@ class DataHandler implements LoggerAwareInterface
                                 $tce->process_cmdmap();
                                 $this->errorLog = array_merge($this->errorLog, $tce->errorLog);
                                 // If copying was successful, share the new uids (also of related children):
-                                if ($tce->copyMappingArray[$table][$id]) {
+                                if (!empty($tce->copyMappingArray[$table][$id])) {
                                     foreach ($tce->copyMappingArray as $origTable => $origIdArray) {
                                         foreach ($origIdArray as $origId => $newId) {
                                             $this->uploadedFileArray[$origTable][$newId] = $this->uploadedFileArray[$origTable][$origId];
@@ -1861,7 +1861,7 @@ class DataHandler implements LoggerAwareInterface
             }
         }
         // Secures the string-length to be less than max.
-        if ((int)$tcaFieldConf['max'] > 0) {
+        if (isset($tcaFieldConf['max']) && (int)$tcaFieldConf['max'] > 0) {
             $value = mb_substr((string)$value, 0, (int)$tcaFieldConf['max'], 'utf-8');
         }
 
@@ -1876,7 +1876,7 @@ class DataHandler implements LoggerAwareInterface
                 $this->runtimeCache->set($cacheId, $evalCodesArray);
             }
 
-            $res = $this->checkValue_input_Eval($value, $evalCodesArray, $tcaFieldConf['is_in'], $table);
+            $res = $this->checkValue_input_Eval($value, $evalCodesArray, $tcaFieldConf['is_in'] ?? '', $table);
             if (isset($tcaFieldConf['dbType']) && isset($res['value']) && !$res['value']) {
                 // set the value to null if we have an empty value for a native field
                 $res['value'] = null;
@@ -1896,7 +1896,11 @@ class DataHandler implements LoggerAwareInterface
 
         // Checking range of value:
         // @todo: The "checkbox" option was removed for type=input, this check could be probably relaxed?
-        if ($tcaFieldConf['range'] && $res['value'] != $tcaFieldConf['checkbox'] && (int)$res['value'] !== (int)$tcaFieldConf['default']) {
+        if (
+            isset($tcaFieldConf['range']) && $tcaFieldConf['range']
+            && (!isset($tcaFieldConf['checkbox']) || $res['value'] != $tcaFieldConf['checkbox'])
+            && (!isset($tcaFieldConf['default']) || (int)$res['value'] !== (int)$tcaFieldConf['default'])
+        ) {
             if (isset($tcaFieldConf['range']['upper']) && (int)$res['value'] > (int)$tcaFieldConf['range']['upper']) {
                 $res['value'] = (int)$tcaFieldConf['range']['upper'];
             }
@@ -1928,7 +1932,7 @@ class DataHandler implements LoggerAwareInterface
     protected function checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field)
     {
         $items = $tcaFieldConf['items'];
-        if ($tcaFieldConf['itemsProcFunc']) {
+        if (!empty($tcaFieldConf['itemsProcFunc'])) {
             /** @var ItemProcessingService $processingService */
             $processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
             $items = $processingService->getProcessingItems(
@@ -2485,7 +2489,7 @@ class DataHandler implements LoggerAwareInterface
             }
             // Remove all old meta for languages...
             // Evaluation of input values:
-            $value['data'] = $this->checkValue_flex_procInData($value['data'], $currentValueArray['data'], $uploadedFiles['data'], $dataStructureArray, [$table, $id, $curValue, $status, $realPid, $recFID, $tscPID]);
+            $value['data'] = $this->checkValue_flex_procInData($value['data'] ?? [], $currentValueArray['data'] ?? [], $uploadedFiles['data'] ?? [], $dataStructureArray, [$table, $id, $curValue, $status, $realPid, $recFID, $tscPID]);
             // Create XML from input value:
             $xmlValue = $this->checkValue_flexArray2Xml($value, true);
 
@@ -6468,7 +6472,7 @@ class DataHandler implements LoggerAwareInterface
      */
     public function checkModifyAccessList($table)
     {
-        $res = $this->admin || !$this->tableAdminOnly($table) && GeneralUtility::inList($this->BE_USER->groupData['tables_modify'], $table);
+        $res = $this->admin || (!$this->tableAdminOnly($table) && isset($this->BE_USER->groupData['tables_modify']) && GeneralUtility::inList($this->BE_USER->groupData['tables_modify'], $table));
         // Hook 'checkModifyAccessList': Post-processing of the state of access
         foreach ($this->getCheckModifyAccessListHookObjects() as $hookObject) {
             /** @var $hookObject DataHandlerCheckModifyAccessListHookInterface */
@@ -6762,7 +6766,7 @@ class DataHandler implements LoggerAwareInterface
     public function tableAdminOnly($table)
     {
         // Returns TRUE if table is admin-only
-        return (bool)$GLOBALS['TCA'][$table]['ctrl']['adminOnly'];
+        return !empty($GLOBALS['TCA'][$table]['ctrl']['adminOnly']);
     }
 
     /**
@@ -6812,16 +6816,19 @@ class DataHandler implements LoggerAwareInterface
     public function getExcludeListArray()
     {
         $list = [];
-        $nonExcludeFieldsArray = array_flip(GeneralUtility::trimExplode(',', $this->BE_USER->groupData['non_exclude_fields']));
-        foreach ($GLOBALS['TCA'] as $table => $tableConfiguration) {
-            if (isset($tableConfiguration['columns'])) {
-                foreach ($tableConfiguration['columns'] as $field => $config) {
-                    if ($config['exclude'] && !isset($nonExcludeFieldsArray[$table . ':' . $field])) {
-                        $list[] = $table . '-' . $field;
+        if (isset($this->BE_USER->groupData['non_exclude_fields'])) {
+            $nonExcludeFieldsArray = array_flip(GeneralUtility::trimExplode(',', $this->BE_USER->groupData['non_exclude_fields']));
+            foreach ($GLOBALS['TCA'] as $table => $tableConfiguration) {
+                if (isset($tableConfiguration['columns'])) {
+                    foreach ($tableConfiguration['columns'] as $field => $config) {
+                        if ($config['exclude'] && !isset($nonExcludeFieldsArray[$table . ':' . $field])) {
+                            $list[] = $table . '-' . $field;
+                        }
                     }
                 }
             }
         }
+
         return $list;
     }
 
