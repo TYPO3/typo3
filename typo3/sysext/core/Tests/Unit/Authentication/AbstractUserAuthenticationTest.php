@@ -68,4 +68,30 @@ class AbstractUserAuthenticationTest extends UnitTestCase
         $result = $mock->getAuthInfoArray();
         $this->assertEquals('', $result['db_user']['checkPidList']);
     }
+
+    /**
+     * @test
+     */
+    public function getHttpHeadersReturnsNormalNoCacheHeadersForNonIe()
+    {
+        GeneralUtility::flushInternalRuntimeCaches();
+        $_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (Windows NT 6.2; rv:22.0) Gecko/20130405 Firefox/23.0';
+        $_SERVER['HTTPS'] = 'on';
+        $subject = $this->getAccessibleMockForAbstractClass(AbstractUserAuthentication::class);
+        $result = $subject->_call('getHttpHeaders');
+        $this->assertEquals($result['Pragma'], 'no-cache');
+    }
+
+    /**
+     * @test
+     */
+    public function getHttpHeadersReturnsSpecialNoCacheHeadersForIe()
+    {
+        GeneralUtility::flushInternalRuntimeCaches();
+        $_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (Windows; U; MSIE 9.0; WIndows NT 9.0; en-US)';
+        $_SERVER['HTTPS'] = 'on';
+        $subject = $this->getAccessibleMockForAbstractClass(AbstractUserAuthentication::class);
+        $result = $subject->_call('getHttpHeaders');
+        $this->assertEquals($result['Pragma'], 'private');
+    }
 }

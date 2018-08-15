@@ -2985,9 +2985,11 @@ class GeneralUtility
      *
      * @param string $useragent Alternative User Agent string (if empty, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT') is used)
      * @return array Parsed information about the HTTP_USER_AGENT in categories BROWSER, VERSION, SYSTEM
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     public static function clientInfo($useragent = '')
     {
+        trigger_error('GeneralUtility::clientInfo() will be removed in TYPO3 v10.0. Use your own detection via HTTP_USER_AGENT Server string', E_USER_DEPRECATED);
         if (!$useragent) {
             $useragent = self::getIndpEnv('HTTP_USER_AGENT');
         }

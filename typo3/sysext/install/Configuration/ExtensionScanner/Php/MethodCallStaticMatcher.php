@@ -729,4 +729,11 @@ return [
             'Deprecation-85836-DeprecateBackendUtilitygetTCAtypes.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::clientInfo' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85858-GeneralUtilityclientInfo.rst',
+        ],
+    ],
 ];
