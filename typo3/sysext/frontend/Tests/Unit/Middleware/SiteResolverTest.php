@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Frontend\Middleware\SiteResolver;
+use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\PhpError;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -371,5 +372,49 @@ class SiteResolverTest extends UnitTestCase
             $this->assertEquals($expectedLanguageId, $result['language-id']);
             $this->assertEquals($expectedBase, $result['language-base']);
         }
+    }
+
+    /**
+     * @test
+     */
+    public function checkIf404IsSiteLanguageIsDisabledInFrontend()
+    {
+        $this->siteFinder->_set('sites', [
+            'mixed-site' => new Site('mixed-site', 13, [
+                'base' => '/',
+                'errorHandling' => [
+                    [
+                        'errorCode' => 404,
+                        'errorHandler' => 'PHP',
+                        'errorPhpClassFQCN' => PhpError::class
+                    ]
+                ],
+                'languages' => [
+                    0 => [
+                        'languageId' => 0,
+                        'locale' => 'en_US.UTF-8',
+                        'base' => '/en/',
+                        'enabled' => false
+                    ],
+                    1 => [
+                        'languageId' => 1,
+                        'locale' => 'fr_CA.UTF-8',
+                        'base' => '/fr/',
+                        'enabled' => true
+                    ]
+                ]
+            ]),
+        ]);
+
+        // Reqest to default page
+        $request = new ServerRequest('https://twenty.one/en/pilots/', 'GET');
+        $subject = new SiteResolver($this->siteFinder);
+        $response = $subject->process($request, $this->siteFoundRequestHandler);
+        $this->assertEquals(404, $response->getStatusCode());
+
+        $request = new ServerRequest('https://twenty.one/fr/pilots/', 'GET');
+        $subject = new SiteResolver($this->siteFinder);
+        $response = $subject->process($request, $this->siteFoundRequestHandler);
+        $this->assertEquals(200, $response->getStatusCode());
     }
 }

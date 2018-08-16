@@ -273,6 +273,8 @@ class SiteConfigurationController
                                 $childRowData[$childFieldName] = $childFieldValue;
                             } elseif ($type === 'select') {
                                 $childRowData[$childFieldName] = $childFieldValue;
+                            } elseif ($type === 'check') {
+                                $childRowData[$childFieldName] = (bool)$childFieldValue;
                             } else {
                                 throw new \RuntimeException('TCA type ' . $type . ' not implemented in site handling', 1521555340);
                             }

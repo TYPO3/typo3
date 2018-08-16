@@ -100,6 +100,11 @@ class SiteLanguage
     protected $fallbackLanguageIds = [];
 
     /**
+     * @var bool
+     */
+    protected $enabled = true;
+
+    /**
      * Additional parameters configured for this site language
      * @var array
      */
@@ -107,6 +112,7 @@ class SiteLanguage
 
     /**
      * SiteLanguage constructor.
+     *
      * @param int $languageId
      * @param string $locale
      * @param string $base
@@ -145,6 +151,9 @@ class SiteLanguage
         if (!empty($attributes['fallbacks'])) {
             $this->fallbackLanguageIds = $attributes['fallbacks'];
         }
+        if (isset($attributes['enabled'])) {
+            $this->enabled = (bool)$attributes['enabled'];
+        }
     }
 
     /**
@@ -167,6 +176,7 @@ class SiteLanguage
             'typo3Language' => $this->getTypo3Language(),
             'flagIdentifier' => $this->getFlagIdentifier(),
             'fallbackType' => $this->getFallbackType(),
+            'hidden' => $this->isEnabled(),
             'fallbackLanguageIds' => $this->getFallbackLanguageIds(),
         ];
     }
@@ -255,6 +265,16 @@ class SiteLanguage
     public function getDirection(): string
     {
         return $this->direction;
+    }
+
+    /**
+     * Returns true if the language is available in frontend usage
+     *
+     * @return bool
+     */
+    public function enabled(): bool
+    {
+        return $this->enabled;
     }
 
     /**

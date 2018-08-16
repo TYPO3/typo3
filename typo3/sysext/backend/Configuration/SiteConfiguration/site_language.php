@@ -74,6 +74,20 @@ return [
                 'placeholder' => 'en-US',
             ],
         ],
+        'enabled' => [
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.enabled',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'default' => 1,
+                'items' => [
+                    [
+                        0 => '',
+                        1 => ''
+                    ]
+                ]
+            ],
+        ],
         'direction' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.direction',
             'config' => [
@@ -394,7 +408,7 @@ return [
     ],
     'types' => [
         '1' => [
-            'showitem' => 'languageId, title, navigationTitle, base, locale, iso-639-1, hreflang, direction, typo3Language, flag, fallbackType, fallbacks',
+            'showitem' => 'languageId, title, navigationTitle, base, locale, iso-639-1, hreflang, direction, typo3Language, flag, fallbackType, fallbacks, enabled',
         ],
     ],
 ];

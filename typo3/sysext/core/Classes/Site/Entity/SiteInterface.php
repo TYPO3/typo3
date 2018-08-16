@@ -29,7 +29,7 @@ interface SiteInterface
     public function getRootPageId(): int;
 
     /**
-     * Returns all available languages of this site
+     * Returns all available languages of this site visible in the frontend
      *
      * @return SiteLanguage[]
      */

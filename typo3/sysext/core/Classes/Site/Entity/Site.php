@@ -158,6 +158,22 @@ class Site implements SiteInterface
      */
     public function getLanguages(): array
     {
+        $languages = [];
+        foreach ($this->languages as $languageId => $language) {
+            if ($language->enabled()) {
+                $languages[$languageId] = $language;
+            }
+        }
+        return $languages;
+    }
+
+    /**
+     * Returns all available languages of this site, even the ones disabled for frontend usages
+     *
+     * @return SiteLanguage[]
+     */
+    public function getAllLanguages(): array
+    {
         return $this->languages;
     }
 

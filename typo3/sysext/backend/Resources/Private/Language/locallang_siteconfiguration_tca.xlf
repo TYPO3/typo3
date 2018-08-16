@@ -52,6 +52,9 @@
 			<trans-unit id="site_language.hreflang">
 				<source>Language tag defined by RFC 1766 / 3066 for "lang" and "hreflang" attributes</source>
 			</trans-unit>
+			<trans-unit id="site_language.enabled">
+				<source>Language visible in frontend</source>
+			</trans-unit>
 			<trans-unit id="site_language.direction">
 				<source>Language direction for "dir" attribute</source>
 			</trans-unit>

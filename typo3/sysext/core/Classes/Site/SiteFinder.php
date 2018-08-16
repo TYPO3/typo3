@@ -80,7 +80,7 @@ class SiteFinder
         $collection = new RouteCollection();
         $groupedRoutes = [];
         foreach ($this->sites as $site) {
-            foreach ($site->getLanguages() as $siteLanguage) {
+            foreach ($site->getAllLanguages() as $siteLanguage) {
                 $urlParts = parse_url($siteLanguage->getBase());
                 $route = new Route(
                     ($urlParts['path'] ?? '/') . '{next}',

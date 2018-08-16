@@ -22,6 +22,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\NormalizedParams;
@@ -29,6 +30,8 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\ErrorController;
+use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 
 /**
  * Identifies if a site is configured for the request, based on "id" and "L" GET/POST parameters, or the requested
@@ -76,6 +79,15 @@ class SiteResolver implements MiddlewareInterface
             try {
                 $site = $this->finder->getSiteByPageId((int)$pageId);
                 $language = $site->getLanguageById((int)$languageId);
+                // language is hidden but also not visible to the BE user, this needs to fail
+                if ($language && !$this->isLanguageEnabled($language, $GLOBALS['BE_USER'] ?? null)) {
+                    $request = $request->withAttribute('site', $site);
+                    return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                        $request,
+                        'Page is not available in the requested language.',
+                        ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE]
+                    );
+                }
             } catch (SiteNotFoundException $e) {
                 // No site found by ID
             }
@@ -101,6 +113,15 @@ class SiteResolver implements MiddlewareInterface
                 $result = $matcher->match($request->getUri()->getPath());
                 $site = $result['site'];
                 $language = $result['language'];
+                // language is found, and hidden but also not visible to the BE user, this needs to fail
+                if ($language && !$this->isLanguageEnabled($language, $GLOBALS['BE_USER'] ?? null)) {
+                    $request = $request->withAttribute('site', $site);
+                    return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                        $request,
+                        'Page is not available in the requested language.',
+                        ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE]
+                    );
+                }
             } catch (ResourceNotFoundException $e) {
                 // No site found
             }
@@ -199,5 +220,21 @@ class SiteResolver implements MiddlewareInterface
             ->execute()
             ->fetch();
         return $row ? (int)$row['pid'] : null;
+    }
+
+    /**
+     * Checks if the language is allowed in Frontend, if not, check if there is valid BE user
+     *
+     * @param SiteLanguage|null $language
+     * @param BackendUserAuthentication|null $user
+     * @return bool
+     */
+    protected function isLanguageEnabled(SiteLanguage $language, BackendUserAuthentication $user = null): bool
+    {
+        // language is hidden, check if a possible backend user is allowed to access the language
+        if ($language->enabled() || ($user instanceof BackendUserAuthentication && $user->checkLanguageAccess($language->getLanguageId()))) {
+            return true;
+        }
+        return false;
     }
 }

@@ -444,7 +444,12 @@ class LanguageMenuProcessor implements DataProcessorInterface
         $site = $this->getCurrentSite();
 
         // Throws InvalidArgumentException in case language is not found which is fine
-        $language = $site->getLanguageById((int)$conf['language'])->toArray();
+        $language = $site->getLanguageById((int)$conf['language']);
+        if ($language->enabled()) {
+            $language = $language->toArray();
+        } else {
+            $language = null;
+        }
 
         // Check field for return exists
         if ($language !== null && !isset($language[$conf['field']])) {
