@@ -23,6 +23,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Feedit\DataHandling\FrontendEditDataHandler;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -56,14 +57,15 @@ class FrontendEditInitiator implements MiddlewareInterface
                         }
                         $controllerClassName = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['frontendEditingController'][$controllerKey] ?? '';
                         if (!empty($controllerClassName)) {
-                            $frontendEditingController = GeneralUtility::makeInstance($controllerClassName);
-                            $GLOBALS['BE_USER']->frontendEdit = $frontendEditingController;
-                            if ($GLOBALS['BE_USER']->frontendEdit instanceof FrontendEditingController) {
-                                $GLOBALS['BE_USER']->frontendEdit->TSFE_EDIT = $request->getParsedBody()['TSFE_EDIT'] ?? $request->getQueryParams()['TSFE_EDIT'] ?? null;
-                                // Include classes for editing IF editing module in Admin Panel is open
-                                if (((int)$GLOBALS['TSFE']->displayEditIcons === 1 || (int)$GLOBALS['TSFE']->displayFieldEditIcons === 1) && $this->isValidEditAction($GLOBALS['BE_USER']->frontendEdit->TSFE_EDIT)) {
-                                    $GLOBALS['BE_USER']->frontendEdit->editAction();
-                                }
+                            $parameters = $request->getParsedBody()['TSFE_EDIT'] ?? $request->getQueryParams()['TSFE_EDIT'] ?? null;
+                            $isValidEditAction = $this->isValidEditAction($parameters);
+                            $GLOBALS['BE_USER']->frontendEdit = GeneralUtility::makeInstance(
+                                $controllerClassName,
+                                $parameters
+                            );
+                            // Include classes for editing IF editing module in Admin Panel is open
+                            if ($GLOBALS['BE_USER']->frontendEdit instanceof FrontendEditingController && $isValidEditAction) {
+                                GeneralUtility::makeInstance(FrontendEditDataHandler::class, $parameters)->editAction();
                             }
                         }
                         break;
