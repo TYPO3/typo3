@@ -85,7 +85,7 @@ class SiteFinder
                 $route = new Route(
                     ($urlParts['path'] ?? '/') . '{next}',
                     ['next' => '', 'site' => $site, 'language' => $siteLanguage],
-                    array_filter(['next' => '.*', 'port' => $urlParts['port'] ?? null]),
+                    array_filter(['next' => '.*', 'port' => (string)($urlParts['port'] ?? '')]),
                     ['utf8' => true],
                     $urlParts['host'] ?? '',
                     !empty($urlParts['scheme']) ? [$urlParts['scheme']] : null
