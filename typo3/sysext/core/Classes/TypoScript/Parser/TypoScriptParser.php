@@ -602,7 +602,7 @@ class TypoScriptParser
                     $fakeThis = false;
                     $newValue = GeneralUtility::callUserFunction($hookMethod, $params, $fakeThis);
                 } else {
-                    $this->getLogger()->warning('Missing function definition for ' . $modifierName . ' on TypoScript');
+                    self::getLogger()->warning('Missing function definition for ' . $modifierName . ' on TypoScript');
                 }
         }
         return $newValue;
