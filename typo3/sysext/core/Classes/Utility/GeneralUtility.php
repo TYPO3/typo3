@@ -189,7 +189,9 @@ class GeneralUtility
      */
     public static function _GET($var = null)
     {
-        $value = $var === null ? $_GET : (empty($var) ? null : $_GET[$var]);
+        $value = $var === null
+            ? $_GET
+            : (empty($var) ? null : ($_GET[$var] ?? null));
         // This is there for backwards-compatibility, in order to avoid NULL
         if (isset($value) && !is_array($value)) {
             $value = (string)$value;
@@ -814,7 +816,9 @@ class GeneralUtility
      */
     public static function isFirstPartOfStr($str, $partStr)
     {
-        return $partStr != '' && strpos((string)$str, (string)$partStr, 0) === 0;
+        $str = is_array($str) ? '' : (string)$str;
+        $partStr = is_array($partStr) ? '' : (string)$partStr;
+        return $partStr !== '' && strpos($str, $partStr, 0) === 0;
     }
 
     /**

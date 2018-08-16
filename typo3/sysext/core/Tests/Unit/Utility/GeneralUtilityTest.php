@@ -48,11 +48,6 @@ class GeneralUtilityTest extends UnitTestCase
     const NO_FIX_PERMISSIONS_ON_WINDOWS = 'fixPermissions() not available on Windows (method does nothing)';
 
     /**
-     * Subject is not notice free, disable E_NOTICES
-     */
-    protected static $suppressNotices = true;
-
-    /**
      * @var bool Reset singletons created by subject
      */
     protected $resetSingletonInstances = true;
