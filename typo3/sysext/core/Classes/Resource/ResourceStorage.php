@@ -1575,7 +1575,7 @@ class ResourceStorage implements ResourceStorageInterface
                 if (empty($processingFolderIdentifier) || (int)$storageUid !== $this->getUid()) {
                     continue;
                 }
-                $potentialProcessingFolder = $this->getResourceFactoryInstance()->getInstance()->createFolderObject($this, $processingFolderIdentifier, $processingFolderIdentifier);
+                $potentialProcessingFolder = $this->getResourceFactoryInstance()->createFolderObject($this, $processingFolderIdentifier, $processingFolderIdentifier);
                 if ($potentialProcessingFolder->getStorage() === $this && $potentialProcessingFolder->getIdentifier() !== $this->getProcessingFolder()->getIdentifier()) {
                     $this->processingFolders[] = $potentialProcessingFolder;
                 }
