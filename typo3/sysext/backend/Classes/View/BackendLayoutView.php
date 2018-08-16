@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\View;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -350,11 +351,11 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         if (!empty($backendLayout)) {
-            /** @var $parser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
-            $parser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+            /** @var $parser TypoScriptParser */
+            $parser = GeneralUtility::makeInstance(TypoScriptParser::class);
             /** @var \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher $conditionMatcher */
             $conditionMatcher = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class);
-            $parser->parse($parser->checkIncludeLines($backendLayout->getConfiguration()), $conditionMatcher);
+            $parser->parse(TypoScriptParser::checkIncludeLines($backendLayout->getConfiguration()), $conditionMatcher);
 
             $backendLayoutData = [];
             $backendLayoutData['config'] = $backendLayout->getConfiguration();
