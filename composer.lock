@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2d4286e7d7266515cb472a37beeeffe7",
+    "content-hash": "90a79f71bd2e0de6652bd2bcd7492614",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -4752,16 +4752,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "4.3.3",
+            "version": "4.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "745260ecd80446e3e1b88cb581eb62d45f39be6c"
+                "reference": "45b4b0bc28382e03f5c7738d5417ee1ee848034f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/745260ecd80446e3e1b88cb581eb62d45f39be6c",
-                "reference": "745260ecd80446e3e1b88cb581eb62d45f39be6c",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/45b4b0bc28382e03f5c7738d5417ee1ee848034f",
+                "reference": "45b4b0bc28382e03f5c7738d5417ee1ee848034f",
                 "shasum": ""
             },
             "require": {
@@ -4776,7 +4776,6 @@
             },
             "suggest": {
                 "codeception/codeception": "^2.4",
-                "typo3/cms-saltedpasswords": "^9.3",
                 "typo3/cms-styleguide": "^9.0"
             },
             "type": "library",
@@ -4808,7 +4807,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2018-08-12T16:38:27+00:00"
+            "time": "2018-08-16T11:07:05+00:00"
         },
         {
             "name": "webmozart/assert",
