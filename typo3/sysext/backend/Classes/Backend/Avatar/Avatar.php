@@ -59,7 +59,7 @@ class Avatar
             (string)$showIcon
         );
 
-        $avatar = static::getCache()->get($cacheId);
+        $avatar = $this->getCache()->get($cacheId);
 
         if (!$avatar) {
             $this->validateSortAndInitiateAvatarProviders();
@@ -71,7 +71,7 @@ class Avatar
                 'backendUser' => $backendUser
             ]);
             $avatar = $view->render();
-            static::getCache()->set($cacheId, $avatar);
+            $this->getCache()->set($cacheId, $avatar);
         }
 
         return $avatar;
