@@ -1,0 +1,40 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<p>
+	Enable and disable certain core features. Feature toggles in the core are used to globally
+	use new features of TYPO3 that may be activated on new installations but upgrading installations
+	can still use the old behaviour.
+</p>
+
+<div class="t3js-features-content" data-features-save-token="{featuresSaveToken}">
+	<strong>Available features:</strong>
+	<form method="post" class="form-horizontal">
+		<f:for each="{features}" as="feature">
+			<div class="checkbox checkbox-type-labeled-toggle">
+				<input type="checkbox" class="checkbox-input"
+					value="1"
+					name="install[values][{feature.name}]"
+					id="t3-install-tool-features-{feature.name}"
+					{f:if(condition: '{feature.value} == 1', then: 'checked="checked"')}
+				>
+				<label class="checkbox-label" for="t3-install-tool-features-{feature.name}">
+					<span class="checkbox-label-switch">
+						<span class="checkbox-label-switch-checked">On</span>
+						<span class="checkbox-label-switch-unchecked">Off</span>
+					</span>
+					<span class="checkbox-label-text">
+						{feature.name} (default {f:if(condition: '{feature.default} == 1', then: 'on', else: 'off')}): {feature.description}
+					</span>
+				</label>
+			</div>
+		</f:for>
+
+		<button
+			class="btn btn-default t3js-features-save"
+			type="button"
+		>
+			Save
+		</button>
+	</form>
+</div>
+</html>

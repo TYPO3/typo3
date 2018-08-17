@@ -215,9 +215,12 @@ SYS:
             type: container
             description: 'New features of TYPO3 that are activated on new installations but upgrading installations can still use the old behaviour'
             items:
+              redirects.hitCount:
+                type: bool
+                description: 'If on, and if extension "redirects" is loaded, each performed redirect is counted and last hit time is logged to the database.'
               unifiedPageTranslationHandling:
                 type: bool
-                description: 'If activated, TCA configuration for pages_language_overlay will never be loaded, and the database table "pages_language_overlay" will not be created.'
+                description: 'If on, TCA configuration for pages_language_overlay is never loaded and the database table "pages_language_overlay" is not created by core. Enable this feature if no extensions fiddles with table pages_language_overlay to have a slightly quicker system with less deprecation log entries.'
         availablePasswordHashAlgorithms:
             type: array
             description: 'A list of available password hash mechanisms. Extensions may register additional mechanisms here. This is usually not extended in LocalConfiguration.php.'

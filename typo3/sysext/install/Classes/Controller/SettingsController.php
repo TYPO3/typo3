@@ -19,6 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\Connection;
@@ -388,6 +389,83 @@ class SettingsController extends AbstractController
         $messages = [
             new FlashMessage(
                 'Successfully saved configuration for extension "' . $extensionKey . '"',
+                '',
+                FlashMessage::OK
+            )
+        ];
+        return new JsonResponse([
+            'success' => true,
+            'status' => $messages,
+        ]);
+    }
+
+    /**
+     * Render feature toggles
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function featuresGetContentAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
+        $configurationDescription = GeneralUtility::makeInstance(YamlFileLoader::class)
+            ->load($configurationManager->getDefaultConfigurationDescriptionFileLocation());
+        $allFeatures = $GLOBALS['TYPO3_CONF_VARS']['SYS']['features'] ?? [];
+        $features = [];
+        foreach ($allFeatures as $featureName => $featureValue) {
+            // Only features that have a .yml description will be listed. There is currently no
+            // way for extensions to extend this, so feature toggles of non-core extensions are
+            // not listed here.
+            if (isset($configurationDescription['SYS']['items']['features']['items'][$featureName]['description'])) {
+                $default = $configurationManager->getDefaultConfigurationValueByPath('SYS/features/' . $featureName);
+                $features[] = [
+                    'name' => $featureName,
+                    'description' => $configurationDescription['SYS']['items']['features']['items'][$featureName]['description'],
+                    'default' => $default,
+                    'value' => $featureValue,
+                ];
+            }
+        }
+        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $view = $this->initializeStandaloneView($request, 'Settings/FeaturesGetContent.html');
+        $view->assignMultiple([
+            'features' => $features,
+            'featuresSaveToken' => $formProtection->generateToken('installTool', 'featuresSave'),
+        ]);
+        return new JsonResponse([
+            'success' => true,
+            'html' => $view->render(),
+        ]);
+    }
+
+    /**
+     * Update feature toggles state
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function featuresSaveAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
+        $enabledFeaturesFromPost = $request->getParsedBody()['install']['values'] ?? [];
+        $allFeatures = array_keys($GLOBALS['TYPO3_CONF_VARS']['SYS']['features'] ?? []);
+        $configurationDescription = GeneralUtility::makeInstance(YamlFileLoader::class)
+            ->load($configurationManager->getDefaultConfigurationDescriptionFileLocation());
+        foreach ($allFeatures as $featureName) {
+            // Only features that have a .yml description will be listed. There is currently no
+            // way for extensions to extend this, so feature toggles of non-core extensions are
+            // not considered.
+            if (isset($configurationDescription['SYS']['items']['features']['items'][$featureName]['description'])) {
+                if (isset($enabledFeaturesFromPost[$featureName])) {
+                    $configurationManager->enableFeature($featureName);
+                } else {
+                    $configurationManager->disableFeature($featureName);
+                }
+            }
+        }
+        $messages = [
+            new FlashMessage(
+                'Successfully updated feature toggles',
                 '',
                 FlashMessage::OK
             )
