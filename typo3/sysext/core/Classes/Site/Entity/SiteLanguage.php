@@ -176,7 +176,7 @@ class SiteLanguage
             'typo3Language' => $this->getTypo3Language(),
             'flagIdentifier' => $this->getFlagIdentifier(),
             'fallbackType' => $this->getFallbackType(),
-            'hidden' => $this->isEnabled(),
+            'enabled' => $this->enabled(),
             'fallbackLanguageIds' => $this->getFallbackLanguageIds(),
         ];
     }
