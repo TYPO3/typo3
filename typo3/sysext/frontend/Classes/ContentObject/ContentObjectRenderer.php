@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
@@ -437,11 +438,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     protected $typoScriptFrontendController;
 
     /**
-     * @var MarkerBasedTemplateService
-     */
-    protected $templateService;
-
-    /**
      * Indicates that object type is USER.
      *
      * @see ContentObjectRender::$userObjectType
@@ -461,7 +457,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         $this->typoScriptFrontendController = $typoScriptFrontendController;
         $this->contentObjectClassMap = $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'];
-        $this->templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
     }
 
     /**
@@ -474,7 +469,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function __sleep()
     {
         $vars = get_object_vars($this);
-        unset($vars['typoScriptFrontendController']);
+        unset($vars['typoScriptFrontendController'], $vars['logger']);
         if ($this->currentFile instanceof FileReference) {
             $this->currentFile = 'FileReference:' . $this->currentFile->getUid();
         } elseif ($this->currentFile instanceof File) {
@@ -507,6 +502,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $this->currentFile = null;
             }
         }
+        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
     }
 
     /**
@@ -1073,7 +1069,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
             'selfClosingTagSlash' => !empty($tsfe->xhtmlDoctype) ? ' /' : '',
         ];
 
-        $theValue = $this->templateService->substituteMarkerArray($imageTagTemplate, $imageTagValues, '###|###', true, true);
+        $markerTemplateEngine = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
+        $theValue = $markerTemplateEngine->substituteMarkerArray($imageTagTemplate, $imageTagValues, '###|###', true, true);
 
         $linkWrap = isset($conf['linkWrap.']) ? $this->stdWrap($conf['linkWrap'], $conf['linkWrap.']) : $conf['linkWrap'];
         if ($linkWrap) {
@@ -1240,7 +1237,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $sourceConfiguration['src'] = htmlspecialchars($urlPrefix . $sourceInfo[3]);
                     $sourceConfiguration['selfClosingTagSlash'] = !empty($tsfe->xhtmlDoctype) ? ' /' : '';
 
-                    $oneSourceCollection = $this->templateService->substituteMarkerArray($sourceLayout, $sourceConfiguration, '###|###', true, true);
+                    $markerTemplateEngine = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
+                    $oneSourceCollection = $markerTemplateEngine->substituteMarkerArray($sourceLayout, $sourceConfiguration, '###|###', true, true);
 
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImageSourceCollection'] ?? [] as $className) {
                         $hookObject = GeneralUtility::makeInstance($className);
