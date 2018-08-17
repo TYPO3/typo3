@@ -2845,72 +2845,84 @@ return [
         ],
     ],
     'TYPO3\CMS\Core\Core\Boostrap->configure' => [
+        'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-85821-DeprecatedBoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Boostrap->setEarlyInstance' => [
+        'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-85821-DeprecatedBoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Boostrap->getEarlyInstance' => [
+        'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-85821-DeprecatedBoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Boostrap->getEarlyInstances' => [
+        'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-85821-DeprecatedBoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Boostrap->initializePackageManagement' => [
+        'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85821-DeprecatedBoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Boostrap->setRequestType' => [
+        'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85821-DeprecatedBoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->initFEuser' => [
+        'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-85878-EidUtilityAndVariousTSFEMethods.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sendCacheHeaders' => [
+        'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-85878-EidUtilityAndVariousTSFEMethods.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->storeSessionData' => [
+        'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-85878-EidUtilityAndVariousTSFEMethods.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->hook_eofe' => [
+        'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-85878-EidUtilityAndVariousTSFEMethods.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->previewInfo' => [
-        'maximumNumberOfArguments' => 0,
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85878-EidUtilityAndVariousTSFEMethods.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->addTempContentHttpHeaders' => [
+        'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-85878-EidUtilityAndVariousTSFEMethods.rst',
