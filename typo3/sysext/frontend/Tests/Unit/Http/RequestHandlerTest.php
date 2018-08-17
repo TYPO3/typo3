@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
+namespace TYPO3\CMS\Frontend\Tests\Unit\Http;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,27 +17,18 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
 
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Page\PageGenerator;
+use TYPO3\CMS\Frontend\Http\RequestHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class PageGeneratorTest extends UnitTestCase
+class RequestHandlerTest extends UnitTestCase
 {
-    /**
-     * Tear down
-     */
-    protected function tearDown()
-    {
-        GeneralUtility::purgeInstances();
-        parent::tearDown();
-    }
-
     /**
      * @return array
      */
@@ -108,9 +99,9 @@ class PageGeneratorTest extends UnitTestCase
                 ],
                 '',
                 [
-                        'type' => 'name',
-                        'name' => 'DC.author',
-                        'content' => 'Markus Klein'
+                    'type' => 'name',
+                    'name' => 'DC.author',
+                    'content' => 'Markus Klein'
                 ]
             ],
             'meta with colon' => [
@@ -183,12 +174,12 @@ class PageGeneratorTest extends UnitTestCase
         $tsfe->pSetup = [
             'meta.' => $typoScript
         ];
-        $GLOBALS['TSFE'] = $tsfe->reveal();
 
         $pageRendererProphecy = $this->prophesize(PageRenderer::class);
-        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRendererProphecy->reveal());
-
-        PageGenerator::renderContentWithHeader('');
+        $subject = $this->getAccessibleMock(RequestHandler::class, ['getPageRenderer'], [], '', false);
+        $subject->expects($this->any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
+        $subject->_set('timeTracker', new TimeTracker(false));
+        $subject->_call('generatePageContentWithHeader', $tsfe->reveal(), null);
 
         $pageRendererProphecy->setMetaTag($expectedTags['type'], $expectedTags['name'], $expectedTags['content'])->willThrow(\InvalidArgumentException::class);
     }
@@ -221,12 +212,11 @@ class PageGeneratorTest extends UnitTestCase
         $tsfe->pSetup = [
             'meta.' => $typoScript
         ];
-        $GLOBALS['TSFE'] = $tsfe->reveal();
-
         $pageRendererProphecy = $this->prophesize(PageRenderer::class);
-        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRendererProphecy->reveal());
-
-        PageGenerator::renderContentWithHeader('');
+        $subject = $this->getAccessibleMock(RequestHandler::class, ['getPageRenderer'], [], '', false);
+        $subject->expects($this->any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
+        $subject->_set('timeTracker', new TimeTracker(false));
+        $subject->_call('generatePageContentWithHeader', $tsfe->reveal(), null);
 
         $pageRendererProphecy->setMetaTag($expectedTags['type'], $expectedTags['name'], $expectedTags['content'], [], false)->shouldHaveBeenCalled();
     }
@@ -260,12 +250,12 @@ class PageGeneratorTest extends UnitTestCase
         $tsfe->pSetup = [
             'meta.' => $typoScript
         ];
-        $GLOBALS['TSFE'] = $tsfe->reveal();
 
         $pageRendererProphecy = $this->prophesize(PageRenderer::class);
-        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRendererProphecy->reveal());
-
-        PageGenerator::renderContentWithHeader('');
+        $subject = $this->getAccessibleMock(RequestHandler::class, ['getPageRenderer'], [], '', false);
+        $subject->expects($this->any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
+        $subject->_set('timeTracker', new TimeTracker(false));
+        $subject->_call('generatePageContentWithHeader', $tsfe->reveal(), null);
 
         $pageRendererProphecy->setMetaTag(null, null, null)->shouldNotBeCalled();
     }
@@ -353,12 +343,11 @@ class PageGeneratorTest extends UnitTestCase
         $tsfe->pSetup = [
             'meta.' => $typoScript
         ];
-        $GLOBALS['TSFE'] = $tsfe->reveal();
-
         $pageRendererProphecy = $this->prophesize(PageRenderer::class);
-        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRendererProphecy->reveal());
-
-        PageGenerator::renderContentWithHeader('');
+        $subject = $this->getAccessibleMock(RequestHandler::class, ['getPageRenderer'], [], '', false);
+        $subject->expects($this->any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
+        $subject->_set('timeTracker', new TimeTracker(false));
+        $subject->_call('generatePageContentWithHeader', $tsfe->reveal(), null);
 
         $pageRendererProphecy->setMetaTag($expectedTags[0]['type'], $expectedTags[0]['name'], $expectedTags[0]['content'], [], false)->shouldHaveBeenCalled();
         $pageRendererProphecy->setMetaTag($expectedTags[1]['type'], $expectedTags[1]['name'], $expectedTags[1]['content'], [], false)->shouldHaveBeenCalled();

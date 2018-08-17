@@ -32,6 +32,7 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
  * Class for starting TypoScript page generation
  *
  * The class is not instantiated as an objects but called directly with the "::" operator.
+ * @deprecated this class will be removed in TYPO3 v10.0, as all functionality has been built in RequestHandler already.
  */
 class PageGenerator
 {
@@ -80,9 +81,11 @@ class PageGenerator
      * Rendering normal HTML-page with header by wrapping the generated content ($pageContent) in body-tags and setting the header accordingly.
      *
      * @param string $pageContent The page content which TypoScript objects has generated
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. This functionality is now within TYPO3's Frontend Request Handler.
      */
     public static function renderContentWithHeader($pageContent)
     {
+        trigger_error('PageGenerator::renderContentWithHeader() will be removed in TYPO3 v10.0. This logic is now built in TYPO3s Frontend RequestHandler.', E_USER_DEPRECATED);
         /** @var TypoScriptFrontendController $tsfe */
         $tsfe = $GLOBALS['TSFE'];
 
@@ -855,9 +858,11 @@ class PageGenerator
      * @param string $str CSS styles / JavaScript to write to file.
      * @param string $ext Extension: "css" or "js
      * @return string <script> or <link> tag for the file.
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. This functionality is now within TYPO3's Frontend Request Handler.
      */
     public static function inline2TempFile($str, $ext)
     {
+        trigger_error('PageGenerator::inline2TempFile() will be removed in TYPO3 v10.0. This logic is now built in TYPO3s Frontend RequestHandler.', E_USER_DEPRECATED);
         // Create filename / tags:
         $script = '';
         switch ($ext) {

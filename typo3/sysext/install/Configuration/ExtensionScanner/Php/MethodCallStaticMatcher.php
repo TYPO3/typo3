@@ -719,7 +719,21 @@ return [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-85822-DeprecatePageGeneratorrenderContent.rst',
+            'Deprecation-85822-PageGenerator.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Page\PageGenerator::renderContentWithHeader' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85822-PageGenerator.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Page\PageGenerator::inline2TempFile' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85822-PageGenerator.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::getTCAtypes' => [

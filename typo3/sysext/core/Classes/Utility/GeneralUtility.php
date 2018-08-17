@@ -2549,6 +2549,38 @@ class GeneralUtility
         return $fullName;
     }
 
+    /**
+     * Writes string to a temporary file named after the md5-hash of the string
+     * Quite useful for extensions adding their custom built JavaScript during runtime.
+     *
+     * @param string $content JavaScript to write to file.
+     * @return string filename to include in the <script> tag
+     */
+    public static function writeJavaScriptContentToTemporaryFile(string $content)
+    {
+        $script = 'typo3temp/assets/js/' . GeneralUtility::shortMD5($content) . '.js';
+        if (!@is_file(Environment::getPublicPath() . '/' . $script)) {
+            self::writeFileToTypo3tempDir(Environment::getPublicPath() . '/' . $script, $content);
+        }
+        return $script;
+    }
+
+    /**
+     * Writes string to a temporary file named after the md5-hash of the string
+     * Quite useful for extensions adding their custom built StyleSheet during runtime.
+     *
+     * @param string $content CSS styles to write to file.
+     * @return string filename to include in the <link> tag
+     */
+    public static function writeStyleSheetContentToTemporaryFile(string $content)
+    {
+        $script = 'typo3temp/assets/css/' . self::shortMD5($content) . '.css';
+        if (!@is_file(Environment::getPublicPath() . '/' . $script)) {
+            self::writeFileToTypo3tempDir(Environment::getPublicPath() . '/' . $script, $content);
+        }
+        return $script;
+    }
+
     /*************************
      *
      * SYSTEM INFORMATION
