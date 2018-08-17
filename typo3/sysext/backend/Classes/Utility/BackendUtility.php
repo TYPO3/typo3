@@ -1050,8 +1050,8 @@ class BackendUtility
      * - if the current BE_USER is admin, then all groups are returned, otherwise only groups that the current user is member of (usergroup_cached_list) will be returned.
      *
      * @param string $fields Field list; $fields specify the fields selected (default: title,uid)
-     * @return    array
-     * @deprecated
+     * @return array
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public static function getListGroupNames($fields = 'title, uid')
     {

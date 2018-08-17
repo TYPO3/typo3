@@ -316,7 +316,7 @@ class Bootstrap
         if (!defined('TYPO3_REQUESTTYPE')) {
             throw new \RuntimeException('No Request Type was set, TYPO3 does not know in which context it is run.', 1450561838);
         }
-        // @deprecated: remove this code block in TYPo3 v10.0
+        // @deprecated: remove this code block in TYPO3 v10.0
         if (GeneralUtility::getApplicationContext() === null) {
             $applicationContext = static::createApplicationContext();
             SystemEnvironmentBuilder::run($entryPointLevel);

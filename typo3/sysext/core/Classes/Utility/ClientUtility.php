@@ -24,7 +24,7 @@ class ClientUtility
      *
      * @param string $userAgent The useragent string, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
      * @return array Contains keys "browser", "version", "system
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public static function getBrowserInfo($userAgent)
     {
@@ -173,7 +173,7 @@ class ClientUtility
      *
      * @param string $version A string with version number, eg. "/7.32 blablabla
      * @return float Returns double value, eg. "7.32
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public static function getVersion($version)
     {

@@ -942,7 +942,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /*****************************************************/
     /**
      * Adds meta data
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      * @param string $meta Meta data (complete metatag)
      */
     public function addMetaTag($meta)

@@ -180,7 +180,7 @@ abstract class AbstractService implements LoggerAwareInterface
      * @param string $msg Debug message
      * @param int $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
      * @param array|bool $dataVar additional data you want to pass to the logger.
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function devLog($msg, $severity = 0, $dataVar = false)
     {

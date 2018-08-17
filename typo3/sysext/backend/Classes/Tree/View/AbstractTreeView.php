@@ -1050,6 +1050,7 @@ abstract class AbstractTreeView
      *
      * @param array $treeArr Content for $this->data
      * @param array $treeLookupArr Content for $this->dataLookup
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function setDataFromTreeArray(&$treeArr, &$treeLookupArr)
     {

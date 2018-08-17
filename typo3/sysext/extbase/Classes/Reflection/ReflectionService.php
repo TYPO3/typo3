@@ -85,7 +85,7 @@ class ReflectionService implements SingletonInterface
      *
      * @param string $className Name of the class
      * @return array An array of tags and their values or an empty array if no tags were found
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function getClassTagsValues($className): array
     {
@@ -109,7 +109,7 @@ class ReflectionService implements SingletonInterface
      * @param string $className Name of the class containing the property
      * @param string $tag Tag to return the values of
      * @return array An array of values or an empty array if the tag was not found
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function getClassTagValues($className, $tag): array
     {
@@ -132,7 +132,7 @@ class ReflectionService implements SingletonInterface
      *
      * @param string $className Name of the class to return the property names of
      * @return array An array of property names or an empty array if none exist
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function getClassPropertyNames($className): array
     {
@@ -173,7 +173,7 @@ class ReflectionService implements SingletonInterface
      * @param string $className Name of the class containing the method
      * @param string $methodName Name of the method
      * @return bool
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function hasMethod($className, $methodName): bool
     {
@@ -197,7 +197,7 @@ class ReflectionService implements SingletonInterface
      * @param string $className Name of the class containing the method
      * @param string $methodName Name of the method to return the tags and values of
      * @return array An array of tags and their values or an empty array of no tags were found
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function getMethodTagsValues($className, $methodName): array
     {
@@ -222,7 +222,7 @@ class ReflectionService implements SingletonInterface
      * @param string $className Name of the class containing the method
      * @param string $methodName Name of the method to return parameter information of
      * @return array An array of parameter names and additional information or an empty array of no parameters were found
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function getMethodParameters($className, $methodName): array
     {
@@ -246,7 +246,7 @@ class ReflectionService implements SingletonInterface
      * @param string $className Name of the class containing the property
      * @param string $propertyName Name of the property to return the tags and values of
      * @return array An array of tags and their values or an empty array of no tags were found
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function getPropertyTagsValues($className, $propertyName): array
     {
@@ -271,7 +271,7 @@ class ReflectionService implements SingletonInterface
      * @param string $propertyName Name of the tagged property
      * @param string $tag Tag to return the values of
      * @return array An array of values or an empty array if the tag was not found
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function getPropertyTagValues($className, $propertyName, $tag): array
     {
@@ -295,7 +295,7 @@ class ReflectionService implements SingletonInterface
      * @param string $className Name of the class
      * @param string $tag Tag to check for
      * @return bool TRUE if the class is tagged with $tag, otherwise FALSE
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function isClassTaggedWith($className, $tag): bool
     {
@@ -326,7 +326,7 @@ class ReflectionService implements SingletonInterface
      * @param string $propertyName Name of the property
      * @param string $tag Tag to check for
      * @return bool TRUE if the class property is tagged with $tag, otherwise FALSE
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function isPropertyTaggedWith($className, $propertyName, $tag): bool
     {

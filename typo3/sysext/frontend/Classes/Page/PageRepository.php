@@ -1125,7 +1125,7 @@ class PageRepository implements LoggerAwareInterface
      * @throws \RuntimeException
      * @return array Array with page records from the root line as values. The array is ordered with the outer records first and root record in the bottom. The keys are numeric but in reverse order. So if you traverse/sort the array by the numeric keys order you will get the order from root and out. If an error is found (like eternal looping or invalid mountpoint) it will return an empty array.
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getPageAndRootline()
-     * @deprecated since TYPO3 v10.0.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function getRootLine($uid, $MP = '', $ignoreMPerrors = null)
     {

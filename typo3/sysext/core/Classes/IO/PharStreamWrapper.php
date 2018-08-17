@@ -486,7 +486,7 @@ class PharStreamWrapper
      *
      * @param string $path
      * @return bool
-     * @deprecated Currently not used
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     protected function isBaseFile(string $path): bool
     {

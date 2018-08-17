@@ -322,7 +322,7 @@ class Argument
 
     /**
      * @return \TYPO3\CMS\Extbase\Error\Result Validation errors which have occurred.
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function getValidationResults()
     {

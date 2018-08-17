@@ -1880,7 +1880,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param string $reason Reason text
      * @param string $header HTTP header to send
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function pageUnavailableAndExit($reason = '', $header = '')
     {
@@ -1895,7 +1895,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param string $reason Reason text
      * @param string $header HTTP header to send
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function pageNotFoundAndExit($reason = '', $header = '')
     {
@@ -1910,7 +1910,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * and devIPMask must not match the current visitor's IP address.
      *
      * @return bool TRUE/FALSE whether the pageUnavailable_handler should be used.
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function checkPageUnavailableHandler()
     {
@@ -1935,7 +1935,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param mixed $code See ['FE']['pageUnavailable_handling'] for possible values
      * @param string $header If set, this is passed directly to the PHP function, header()
      * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function pageUnavailableHandler($code, $header, $reason)
     {
@@ -1949,7 +1949,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param mixed $code See docs of ['FE']['pageNotFound_handling'] for possible values
      * @param string $header If set, this is passed directly to the PHP function, header()
      * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function pageNotFoundHandler($code, $header = '', $reason = '')
     {
@@ -1965,7 +1965,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param string $header If set, this is passed directly to the PHP function, header()
      * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
      * @throws \RuntimeException
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function pageErrorHandler($code, $header = '', $reason = '')
     {

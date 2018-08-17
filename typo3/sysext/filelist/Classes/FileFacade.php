@@ -62,7 +62,7 @@ class FileFacade
 
     /**
      * @return string
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function getIcon(): string
     {

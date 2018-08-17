@@ -127,7 +127,7 @@ class CoreUpdateService
     /**
      * Wrapper method for CoreVersionService
      *
-     * @deprecated Since TYPO3v9 and will be removed in v10 - use REST api directly (see https://get.typo3.org/v1/api/doc)
+     * @deprecated Since TYPO3 v9 and will be removed in v10 - use REST api directly (see https://get.typo3.org/v1/api/doc)
      * @return bool TRUE on success
      */
     public function updateVersionMatrix()

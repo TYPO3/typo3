@@ -359,7 +359,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Additionally adds the table definitions for the cache tables
      *
      * @param array $extension
-     * @deprecated since TYPO3v9, will be removed with TYPO3v10
+     * @deprecated since TYPO3 v9, will be removed with TYPO3v10
      */
     public function processDatabaseUpdates(array $extension)
     {
@@ -390,7 +390,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $extensionKey
      * @throws ExtensionManagerException
      * @return mixed
-     * @deprecated since TYPO3v9, will be removed with TYPO3v10
+     * @deprecated since TYPO3 v9, will be removed with TYPO3v10
      * @see \TYPO3\CMS\Core\Database\Schema\SqlReader::emitTablesDefinitionIsBeingBuiltSignal
      */
     protected function emitTablesDefinitionIsBeingBuiltSignal($extensionKey)
@@ -490,7 +490,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Update database / process db updates from ext_tables
      *
      * @param string $rawDefinitions The raw SQL statements from ext_tables.sql
-     * @deprecated since TYPO3v9, will be removed with TYPO3v10
+     * @deprecated since TYPO3 v9, will be removed with TYPO3v10
      */
     public function updateDbWithExtTablesSql($rawDefinitions)
     {

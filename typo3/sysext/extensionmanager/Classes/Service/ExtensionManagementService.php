@@ -435,7 +435,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @param string $extensionKey
-     * @deprecated since TYPO3v9, will be removed with TYPO3v10
+     * @deprecated since TYPO3 v9, will be removed with TYPO3v10
      */
     protected function emitHasInstalledExtensionSignal($extensionKey)
     {

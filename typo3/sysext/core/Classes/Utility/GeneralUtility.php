@@ -3573,7 +3573,7 @@ class GeneralUtility
      * @param string $className Class name
      * @return object The instance of the class asked for. Instance is created with GeneralUtility::makeInstance
      * @see callUserFunction()
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public static function getUserObj($className)
     {
@@ -3942,7 +3942,7 @@ class GeneralUtility
      * @param string $msg Message (in English).
      * @param string $extKey Extension key (from which extension you are calling the log) or "Core"
      * @param int $severity \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_* constant
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public static function sysLog($msg, $extKey, $severity = 0)
     {
@@ -3985,7 +3985,7 @@ class GeneralUtility
      * @param string $extKey Extension key (from which extension you are calling the log)
      * @param int $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
      * @param mixed $dataVar Additional data you want to pass to the logger.
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public static function devLog($msg, $extKey, $severity = 0, $dataVar = false)
     {
@@ -4003,7 +4003,7 @@ class GeneralUtility
      * Writes a message to the deprecation log.
      *
      * @param string $msg Message (in English).
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public static function deprecationLog($msg)
     {
@@ -4034,7 +4034,7 @@ class GeneralUtility
      * @param string $property
      * @param RenderingContextInterface $renderingContext
      * @param string $additionalMessage
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public static function logDeprecatedViewHelperAttribute(string $property, RenderingContextInterface $renderingContext, string $additionalMessage = '')
     {
@@ -4056,7 +4056,7 @@ class GeneralUtility
      * Gets the absolute path to the deprecation log file.
      *
      * @return string Absolute path to the deprecation log file
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public static function getDeprecationLogFileName()
     {
@@ -4067,7 +4067,7 @@ class GeneralUtility
     /**
      * Logs a call to a deprecated function.
      * The log message will be taken from the annotation.
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public static function logDeprecatedFunction()
     {
@@ -4237,7 +4237,7 @@ class GeneralUtility
 
     /**
      * @param string $msg
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     private static function writeDeprecationLogFileEntry($msg)
     {

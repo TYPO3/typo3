@@ -4136,7 +4136,7 @@ class PageLayoutView implements LoggerAwareInterface
      * Method used to log deprecated usage of old buildQueryParametersPostProcess hook arguments
      *
      * @param string $index
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     protected function logDeprecation(string $index)
     {

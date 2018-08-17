@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 /**
  * A validator which accepts any input.
  *
- * @deprecated
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
  */
 class RawValidator extends AbstractValidator
 {

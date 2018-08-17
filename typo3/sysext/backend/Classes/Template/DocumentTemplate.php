@@ -412,7 +412,7 @@ function jumpToUrl(URL) {
      * @param bool $textarea A flag you can set for textareas - DEPRECATED as there is no difference any more between the two
      * @param string $styleOverride A string which will be returned as attribute-value for style="" instead of the calculated width (if CSS is enabled)
      * @return string Tag attributes for an <input> tag (regarding width)
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function formWidth($size = 48, $textarea = false, $styleOverride = '')
     {
@@ -726,7 +726,7 @@ function jumpToUrl(URL) {
 
     /**
      * Returns X-UA-Compatible meta tag
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      *
      * @param string $content Content of the compatible tag (default: IE-8)
      * @return string <meta http-equiv="X-UA-Compatible" content="???" />

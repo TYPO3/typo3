@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * template and comes with a simple dispatcher method.
  *
  * @internal Experimental for now
- * @deprecated
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
  */
 class AbstractModule
 {

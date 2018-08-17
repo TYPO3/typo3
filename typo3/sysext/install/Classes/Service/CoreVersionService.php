@@ -192,7 +192,7 @@ class CoreVersionService
     /**
      * Update version matrix from remote and store in registry
      *
-     * @deprecated Since TYPO3v9 and will be removed in v10 - use new REST API directly (see https://get.typo3.org/v1/api/doc)
+     * @deprecated Since TYPO3 v9 and will be removed in v10 - use new REST API directly (see https://get.typo3.org/v1/api/doc)
      * @throws Exception\RemoteFetchException
      */
     public function updateVersionMatrix(): void
@@ -218,7 +218,7 @@ class CoreVersionService
     /**
      * Youngest development patch release, e.g., 6.2.0alpha3 or 6.2-snapshot-20131004
      *
-     * @deprecated Since TYPO3v9 and will be removed in v10 - TYPO3 release cycles do not contain development releases anymore
+     * @deprecated Since TYPO3 v9 and will be removed in v10 - TYPO3 release cycles do not contain development releases anymore
      * @return string
      * @throws \TYPO3\CMS\Install\Service\Exception\RemoteFetchException
      */
@@ -234,7 +234,7 @@ class CoreVersionService
     /**
      * Returns TRUE if a younger patch level release exists in version matrix that may be a development release.
      *
-     * @deprecated Since TYPO3v9 and will be removed in v10 - TYPO3 release cycles do not contain development releases anymore
+     * @deprecated Since TYPO3 v9 and will be removed in v10 - TYPO3 release cycles do not contain development releases anymore
      * @return bool TRUE if younger patch release is exists
      * @throws \TYPO3\CMS\Install\Service\Exception\RemoteFetchException
      */
@@ -248,7 +248,7 @@ class CoreVersionService
     }
 
     /**
-     * @deprecated Since TYPO3v9 and will be removed in v10, use 'https://get.typo3.org' directly
+     * @deprecated Since TYPO3 v9 and will be removed in v10, use 'https://get.typo3.org' directly
      * @return string
      */
     public function getDownloadBaseUrl(): string

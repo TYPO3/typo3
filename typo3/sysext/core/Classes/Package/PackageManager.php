@@ -127,7 +127,7 @@ class PackageManager implements SingletonInterface
 
     /**
      * @param DependencyResolver $dependencyResolver
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function injectDependencyResolver(DependencyResolver $dependencyResolver)
     {

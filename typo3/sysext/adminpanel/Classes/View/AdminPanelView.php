@@ -209,8 +209,7 @@ class AdminPanelView
     /**
      * Creates the tool bar links for the "edit" section of the Admin Panel.
      *
-     * @deprecated Since TYPO3 v9 - use EditToolbarService instead or create buttons via fluid
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Use EditToolbarService instead or create buttons via fluid
      * @return string A string containing images wrapped in <a>-tags linking them to proper functions.
      */
     public function ext_makeToolBar(): string

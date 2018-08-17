@@ -83,13 +83,13 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      * General flag which is set if the adminpanel is enabled at all.
      *
      * @var bool
-     * @deprecated since TYPO3v9, property will be removed in TYPO3 v10 - see extension "adminpanel" for new API
+     * @deprecated since TYPO3 v9, property will be removed in TYPO3 v10 - see extension "adminpanel" for new API
      */
     public $extAdmEnabled = false;
 
     /**
      * @var \TYPO3\CMS\Adminpanel\View\AdminPanelView Instance of admin panel
-     * @deprecated since TYPO3v9, property will be removed in TYPO3 v10 - see extension "adminpanel" for new API
+     * @deprecated since TYPO3 v9, property will be removed in TYPO3 v10 - see extension "adminpanel" for new API
      */
     public $adminPanel;
 
@@ -100,14 +100,14 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
 
     /**
      * @var array
-     * @deprecated since TYPO3v9, property will be removed in TYPO3 v10 - see extension "adminpanel" for new API
+     * @deprecated since TYPO3 v9, property will be removed in TYPO3 v10 - see extension "adminpanel" for new API
      */
     public $extAdminConfig = [];
 
     /**
      * Initializes the admin panel.
      *
-     * @deprecated since TYPO3v9 - rewritten as middleware
+     * @deprecated since TYPO3 v9 - rewritten as middleware
      */
     public function initializeAdminPanel()
     {
@@ -117,7 +117,7 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
     /**
      * Initializes frontend editing.
      *
-     * @deprecated since TYPO3v9 - rewritten as middleware
+     * @deprecated since TYPO3 v9 - rewritten as middleware
      */
     public function initializeFrontendEdit()
     {
@@ -143,7 +143,7 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
     /**
      * Delegates to the appropriate view and renders the admin panel content.
      *
-     * @deprecated since TYPO3v9 - see ext "adminpanel" for new API
+     * @deprecated since TYPO3 v9 - see ext "adminpanel" for new API
      * @return string.
      */
     public function displayAdminPanel()
@@ -155,7 +155,7 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
     /**
      * Determines whether the admin panel is enabled and visible.
      *
-     * @deprecated since TYPO3v9 - see ext "adminpanel" for new API
+     * @deprecated since TYPO3 v9 - see ext "adminpanel" for new API
      * @return bool true if the admin panel is enabled and visible
      */
     public function isAdminPanelVisible()

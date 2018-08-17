@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
 /**
  * Test case for the Abstract Validator
- * @deprecated
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
  */
 abstract class AbstractValidatorTestcase extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
@@ -38,7 +38,7 @@ abstract class AbstractValidatorTestcase extends \TYPO3\TestingFramework\Core\Un
     protected $validator;
 
     /**
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     protected function setUp()
     {
@@ -48,7 +48,7 @@ abstract class AbstractValidatorTestcase extends \TYPO3\TestingFramework\Core\Un
     /**
      * @param array $options
      * @return mixed
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     protected function getValidator($options = [])
     {
@@ -63,7 +63,7 @@ abstract class AbstractValidatorTestcase extends \TYPO3\TestingFramework\Core\Un
 
     /**
      * @param array $options
-     * @deprecated
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     protected function validatorOptions($options)
     {
