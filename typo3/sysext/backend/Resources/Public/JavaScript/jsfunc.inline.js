@@ -767,6 +767,9 @@ var inline = {
         if (TBE_EDITOR) {
           TBE_EDITOR.fieldChanged_fName(objectName, formObj);
         }
+
+        $(formObj).addClass('has-change');
+        $(document).trigger('change');
         return parts.length;
       }
     }
