@@ -18,10 +18,10 @@ namespace TYPO3\CMS\Backend\Controller\File;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class ThumbnailController
@@ -29,35 +29,88 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 class ThumbnailController
 {
     /**
+     * @var array
+     */
+    protected $defaultConfiguration = [
+        'width' => 64,
+        'height' => 64,
+        'crop' => null,
+    ];
+
+    /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function render(ServerRequestInterface $request): ResponseInterface
     {
-        $fileObject = $this->getFileObjectByCombinedIdentifier($request->getQueryParams()['fileIdentifier']);
-        if (!$fileObject->isMissing()) {
-            $processingInstructions = [
-                'width' => 64,
-                'height' => 64,
-                'crop' => null,
-            ];
-            ArrayUtility::mergeRecursiveWithOverrule($processingInstructions, $request->getQueryParams()['processingInstructions']);
-            $processedImage = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingInstructions);
-            $filePath = $processedImage->getForLocalProcessing(false);
-            return new Response($filePath, 200, [
-                'Content-Type' => $processedImage->getMimeType()
-            ]);
+        try {
+            $parameters = $this->extractParameters($request->getQueryParams());
+            $response = $this->generateThumbnail(
+                $parameters['fileId'] ?? null,
+                $parameters['configuration'] ?? []
+            );
+        } catch (\TYPO3\CMS\Core\Resource\Exception $exception) {
+            // catch and handle only resource related exceptions
+            $response = $this->generateNotFoundResponse();
         }
-        return new Response('', 404);
+
+        return $response;
     }
 
     /**
-     * @param string $combinedIdentifier
-     * @return File
-     * @throws \InvalidArgumentException
+     * @param array $queryParameters
+     * @return array|null
      */
-    protected function getFileObjectByCombinedIdentifier(string $combinedIdentifier): File
+    protected function extractParameters(array $queryParameters)
     {
-        return ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier($combinedIdentifier);
+        $expectedHash = GeneralUtility::hmac(
+            $queryParameters['parameters'] ?? '',
+            ThumbnailController::class
+        );
+        if (!hash_equals($expectedHash, $queryParameters['hmac'] ?? '')) {
+            throw new \InvalidArgumentException(
+                'HMAC could not be verified',
+                1534484203
+            );
+        }
+
+        return json_decode($queryParameters['parameters'] ?? null, true);
+    }
+
+    /**
+     * @param mixed|int $fileId
+     * @param array $configuration
+     * @return Response
+     * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
+     */
+    protected function generateThumbnail($fileId, array $configuration): ResponseInterface
+    {
+        $file = ResourceFactory::getInstance()->getFileObject($fileId);
+        if (empty($file) || $file->isMissing()) {
+            return $this->generateNotFoundResponse();
+        }
+
+        $processingConfiguration = $this->defaultConfiguration;
+        ArrayUtility::mergeRecursiveWithOverrule(
+            $processingConfiguration,
+            $configuration
+        );
+
+        $processedImage = $file->process(
+            ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
+            $processingConfiguration
+        );
+        $filePath = $processedImage->getForLocalProcessing(false);
+        return new Response($filePath, 200, [
+            'Content-Type' => $processedImage->getMimeType()
+        ]);
+    }
+
+    /**
+     * @return ResponseInterface
+     */
+    protected function generateNotFoundResponse(): ResponseInterface
+    {
+        return new Response('', 404);
     }
 }
