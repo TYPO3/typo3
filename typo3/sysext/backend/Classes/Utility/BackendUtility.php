@@ -1726,16 +1726,23 @@ class BackendUtility
                 ) {
                     $cropVariantCollection = CropVariantCollection::create((string)$fileReferenceObject->getProperty('crop'));
                     $cropArea = $cropVariantCollection->getCropArea();
-                    $processingInformation = [
-                        'width' => $sizeParts[0],
-                        'height' => $sizeParts[1] . 'c',
-                        'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($fileReferenceObject)
+                    $parameters = json_encode([
+                        'fileId' => $fileObject->getUid(),
+                        'configuration' => [
+                            'width' => $sizeParts[0],
+                            'height' => $sizeParts[1] . 'c',
+                            'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($fileReferenceObject),
+                        ]
+                    ]);
+                    $uriParameters = [
+                        'parameters' => $parameters,
+                        'hmac' => GeneralUtility::hmac(
+                            $parameters,
+                            \TYPO3\CMS\Backend\Controller\File\ThumbnailController::class
+                        ),
                     ];
                     $imageUrl = (string)GeneralUtility::makeInstance(UriBuilder::class)
-                        ->buildUriFromRoute('thumbnails', [
-                            'fileIdentifier' => $fileObject->getCombinedIdentifier(),
-                            'processingInstructions' => $processingInformation
-                        ]);
+                        ->buildUriFromRoute('thumbnails', $uriParameters);
                     $attributes = [
                         'src' => $imageUrl,
                         'width' => (int)$sizeParts[0],
