@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
@@ -64,6 +63,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\Compatibility\LegacyDomainResolver;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Http\UrlHandlerInterface;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
@@ -758,13 +758,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @var CacheHashCalculator
      */
     protected $cacheHash;
-
-    /**
-     * Runtime cache of domains per processed page ids.
-     *
-     * @var array
-     */
-    protected $domainDataCache = [];
 
     /**
      * Content type HTTP header being sent in the request.
@@ -4711,56 +4704,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Fetches/returns the cached contents of the sys_domain database table.
-     *
-     * @return array Domain data
-     */
-    protected function getSysDomainCache()
-    {
-        $entryIdentifier = 'core-database-sys_domain-complete';
-        /** @var $runtimeCache \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend */
-        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
-
-        $sysDomainData = [];
-        if ($runtimeCache->has($entryIdentifier)) {
-            $sysDomainData = $runtimeCache->get($entryIdentifier);
-        } else {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_domain');
-            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(DefaultRestrictionContainer::class));
-            $result = $queryBuilder
-                ->select('uid', 'pid', 'domainName')
-                ->from('sys_domain')
-                ->orderBy('sorting', 'ASC')
-                ->execute();
-
-            while ($row = $result->fetch()) {
-                // If there is already an entry for this pid, we should not override it
-                // Except if it is the current domain
-                if (isset($sysDomainData[$row['pid']]) && !$this->domainNameMatchesCurrentRequest($row['domainName'])) {
-                    continue;
-                }
-
-                // as we passed all previous checks, we save this domain for the current pid
-                $sysDomainData[$row['pid']] = [
-                    'uid' => $row['uid'],
-                    'pid' => $row['pid'],
-                    'domainName' => rtrim($row['domainName'], '/'),
-                ];
-            }
-            $runtimeCache->set($entryIdentifier, $sysDomainData);
-        }
-        return $sysDomainData;
-    }
-
-    /**
      * Whether the given domain name (potentially including a path segment) matches currently requested host or
      * the host including the path segment
      *
      * @param string $domainName
      * @return bool
+     * @deprecated will be removed in TYPO3 v10.
      */
     public function domainNameMatchesCurrentRequest($domainName)
     {
+        trigger_error('This method will be removed in TYPO3 v10, use LegacyDomainResolver instead.', E_USER_DEPRECATED);
         $currentDomain = GeneralUtility::getIndpEnv('HTTP_HOST');
         $currentPathSegment = trim(preg_replace('|/[^/]*$|', '', GeneralUtility::getIndpEnv('SCRIPT_NAME')));
         return $currentDomain === $domainName || $currentDomain . $currentPathSegment === $domainName;
@@ -4772,32 +4725,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param int $targetPid Target page id
      * @return mixed Return domain data or NULL
+     * @deprecated will be removed in TYPO3 v10.
      */
     public function getDomainDataForPid($targetPid)
     {
-        // Using array_key_exists() here, nice $result can be NULL
-        // (happens, if there's no domain records defined)
-        if (!array_key_exists($targetPid, $this->domainDataCache)) {
-            $result = null;
-            $sysDomainData = $this->getSysDomainCache();
-            try {
-                $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $targetPid, null, $this->context)->get();
-                // walk the rootline downwards from the target page
-                // to the root page, until a domain record is found
-                foreach ($rootLine as $pageInRootline) {
-                    $pidInRootline = $pageInRootline['uid'];
-                    if (isset($sysDomainData[$pidInRootline])) {
-                        $result = $sysDomainData[$pidInRootline];
-                        break;
-                    }
-                }
-            } catch (RootLineException $e) {
-                // Do nothing
-            }
-            $this->domainDataCache[$targetPid] = $result;
-        }
-
-        return $this->domainDataCache[$targetPid];
+        trigger_error('This method will be removed in TYPO3 v10, use LegacyDomainResolver instead.', E_USER_DEPRECATED);
+        return GeneralUtility::makeInstance(LegacyDomainResolver::class)->matchPageId((int)$targetPid, $GLOBALS['TYPO3_REQUEST']);
     }
 
     /**
@@ -4806,12 +4739,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param int $targetPid Target page id
      * @return mixed Return domain name or NULL if not found
-     * @deprecated will be removed in TYPO3 v10, as getDomainDataForPid could work
+     * @deprecated will be removed in TYPO3 v10.
      */
     public function getDomainNameForPid($targetPid)
     {
-        trigger_error('This method will be removed in TYPO3 v10, use $TSFE->getDomainDataForPid() instead.', E_USER_DEPRECATED);
-        $domainData = $this->getDomainDataForPid($targetPid);
+        trigger_error('This method will be removed in TYPO3 v10, use LegacyDomainResolver instead.', E_USER_DEPRECATED);
+        $domainData = GeneralUtility::makeInstance(LegacyDomainResolver::class)->matchPageId((int)$targetPid, $GLOBALS['TYPO3_REQUEST']);
         return $domainData ? $domainData['domainName'] : null;
     }
 

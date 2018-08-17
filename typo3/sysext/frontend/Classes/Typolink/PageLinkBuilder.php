@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Frontend\Compatibility\LegacyDomainResolver;
 use TYPO3\CMS\Frontend\ContentObject\TypolinkModifyLinkConfigForPageLinksHookInterface;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -154,12 +155,13 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                     $page = $page2;
                 }
             }
-
-            $targetDomainRecord = $tsfe->getDomainDataForPid($page['uid']);
-            $targetDomain = $targetDomainRecord ? $targetDomainRecord['domainName'] : null;
+            // @todo: This obviously needs more detection with Site Handling, to detect the site language ID
+            $domainResolver = GeneralUtility::makeInstance(LegacyDomainResolver::class);
+            $targetDomainRecord = $domainResolver->matchPageId((int)$page['uid'], $GLOBALS['TYPO3_REQUEST']);
+            $targetDomain = '';
             // Do not prepend the domain if it is the current hostname
-            if (!$targetDomain || $tsfe->domainNameMatchesCurrentRequest($targetDomain)) {
-                $targetDomain = '';
+            if (!empty($targetDomainRecord) && !$targetDomainRecord['isCurrentDomain']) {
+                $targetDomain = $targetDomainRecord['domainName'];
             }
         }
         if ($conf['useCacheHash']) {

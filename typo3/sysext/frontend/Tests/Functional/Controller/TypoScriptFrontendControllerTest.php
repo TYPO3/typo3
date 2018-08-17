@@ -14,10 +14,6 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Doctrine\DBAL\Platforms\SQLServerPlatform;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -86,62 +82,6 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $currentDomain
-     * @test
-     * @dataProvider getSysDomainCacheDataProvider
-     */
-    public function getSysDomainCacheReturnsCurrentDomainRecord($currentDomain)
-    {
-        GeneralUtility::flushInternalRuntimeCaches();
-
-        $_SERVER['HTTP_HOST'] = $currentDomain;
-        $domainRecords = [
-            'typo3.org' => [
-                'uid' => '1',
-                'pid' => '1',
-                'domainName' => 'typo3.org',
-            ],
-            'foo.bar' => [
-                'uid' => '2',
-                'pid' => '1',
-                'domainName' => 'foo.bar',
-            ],
-            'example.com' => [
-                'uid' => '3',
-                'pid' => '1',
-                'domainName' => 'example.com',
-            ],
-        ];
-
-        $connection = (new ConnectionPool())->getConnectionForTable('sys_domain');
-
-        $sqlServerIdentityDisabled = false;
-        if ($connection->getDatabasePlatform() instanceof SQLServerPlatform) {
-            $connection->exec('SET IDENTITY_INSERT sys_domain ON');
-            $sqlServerIdentityDisabled = true;
-        }
-
-        foreach ($domainRecords as $domainRecord) {
-            $connection->insert(
-                'sys_domain',
-                $domainRecord
-            );
-        }
-
-        if ($sqlServerIdentityDisabled) {
-            $connection->exec('SET IDENTITY_INSERT sys_domain OFF');
-        }
-
-        GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime')->flush();
-        $expectedResult = [
-            $domainRecords[$currentDomain]['pid'] => $domainRecords[$currentDomain],
-        ];
-
-        $actualResult = $this->tsFrontendController->_call('getSysDomainCache');
-        $this->assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
      * @param string $tablePid
      * @param int $now
      * @return int
@@ -149,23 +89,5 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
     public function getFirstTimeValueForRecordCall($tablePid, $now)
     {
         return $this->tsFrontendController->_call('getFirstTimeValueForRecord', $tablePid, $now);
-    }
-
-    /**
-     * @return array
-     */
-    public function getSysDomainCacheDataProvider()
-    {
-        return [
-            'typo3.org' => [
-                'typo3.org',
-            ],
-            'foo.bar' => [
-                'foo.bar',
-            ],
-            'example.com' => [
-                'example.com',
-            ],
-        ];
     }
 }

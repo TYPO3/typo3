@@ -771,4 +771,18 @@ return [
             'Deprecation-85878-EidUtilityAndVariousTSFEMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getDomainStartPage' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-85892-VariousMethodsRegardingSysDomainResolving.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::firstDomainRecord' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85892-VariousMethodsRegardingSysDomainResolving.rst',
+        ],
+    ],
 ];

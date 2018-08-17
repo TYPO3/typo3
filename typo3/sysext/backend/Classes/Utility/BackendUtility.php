@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
@@ -50,6 +51,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Frontend\Compatibility\LegacyDomainResolver;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -2825,13 +2827,24 @@ class BackendUtility
                     $domainName = $previewDomainConfig;
                 }
             } else {
-                $domainName = self::firstDomainRecord($rootLine);
+                $domainResolver = GeneralUtility::makeInstance(LegacyDomainResolver::class);
+                foreach ($rootLine as $row) {
+                    $domainRecord = $domainResolver->matchRootPageId($row['uid']);
+                    if (is_array($domainRecord)) {
+                        $domainName = rtrim($domainRecord['domainName'], '/');
+                        break;
+                    }
+                }
             }
             if ($domainName) {
                 $domain = $domainName;
             } else {
-                $domainRecord = self::getDomainStartPage($urlParts['host'], $urlParts['path']);
-                $domain = $domainRecord['domainName'];
+                $domainResolver = GeneralUtility::makeInstance(LegacyDomainResolver::class);
+                $rootPageId = $domainResolver->matchRequest(new ServerRequest($domain));
+                if ($rootPageId > 0) {
+                    $domainRecord = $domainResolver->matchRootPageId($rootPageId);
+                    $domain = $domainRecord['domainName'];
+                }
             }
             if ($domain) {
                 $domain = $protocol . '://' . $domain;
@@ -3552,37 +3565,16 @@ class BackendUtility
      *
      * @param array $rootLine Root line array
      * @return string|null Domain name or NULL
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. Use Link Generation / Router instead.
      */
     public static function firstDomainRecord($rootLine)
     {
-        $queryBuilder = static::getQueryBuilderForTable('sys_domain');
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-
-        $queryBuilder->select('domainName')
-            ->from('sys_domain')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'pid',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT, ':pid')
-                ),
-                $queryBuilder->expr()->eq(
-                    'hidden',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                )
-            )
-            ->setMaxResults(1)
-            ->orderBy('sorting');
-
+        trigger_error('BackendUtility::firstDomainRecord() will be removed in TYPO3 v10.0. Use the new LigetDomainStartPagenk Generation functionality instead.', E_USER_DEPRECATED);
+        $domainResolver = GeneralUtility::makeInstance(LegacyDomainResolver::class);
         foreach ($rootLine as $row) {
-            $domainName = $queryBuilder->setParameter('pid', $row['uid'], \PDO::PARAM_INT)
-                ->execute()
-                ->fetchColumn(0);
-
-            if ($domainName) {
-                return rtrim($domainName, '/');
+            $domain = $domainResolver->matchRootPageId($row['uid']);
+            if (is_array($domain)) {
+                return rtrim($domain['domainName'], '/');
             }
         }
         return null;
@@ -3594,9 +3586,11 @@ class BackendUtility
      * @param string $domain Domain name
      * @param string $path Appended path
      * @return array|bool Domain record, if found, false otherwise
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. Use Link Generation / Router instead.
      */
     public static function getDomainStartPage($domain, $path = '')
     {
+        trigger_error('BackendUtility::getDomainStartPage() will be removed in TYPO3 v10.0. Use the new Link Generation functionality instead.', E_USER_DEPRECATED);
         $domain = explode(':', $domain);
         $domain = strtolower(preg_replace('/\\.$/', '', $domain[0]));
         // Path is calculated.

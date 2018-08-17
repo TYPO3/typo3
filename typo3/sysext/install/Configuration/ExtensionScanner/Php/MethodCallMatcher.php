@@ -2928,4 +2928,18 @@ return [
             'Deprecation-85878-EidUtilityAndVariousTSFEMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->domainNameMatchesCurrentRequest' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85892-VariousMethodsRegardingSysDomainResolving.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getDomainDataForPid' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85892-VariousMethodsRegardingSysDomainResolving.rst',
+        ],
+    ],
 ];

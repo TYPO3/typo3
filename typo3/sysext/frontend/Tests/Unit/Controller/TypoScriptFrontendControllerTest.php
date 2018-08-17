@@ -145,64 +145,6 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     }
 
     /**
-     * Tests concerning domainNameMatchesCurrentRequest
-     */
-
-    /**
-     * @return array
-     */
-    public function domainNameMatchesCurrentRequestDataProvider()
-    {
-        return [
-            'same domains' => [
-                'typo3.org',
-                'typo3.org',
-                '/index.php',
-                true,
-            ],
-            'same domains with subdomain' => [
-                'www.typo3.org',
-                'www.typo3.org',
-                '/index.php',
-                true,
-            ],
-            'different domains' => [
-                'foo.bar',
-                'typo3.org',
-                '/index.php',
-                false,
-            ],
-            'domain record with script name' => [
-                'typo3.org',
-                'typo3.org/foo/bar',
-                '/foo/bar/index.php',
-                true,
-            ],
-            'domain record with wrong script name' => [
-                'typo3.org',
-                'typo3.org/foo/bar',
-                '/bar/foo/index.php',
-                false,
-            ],
-        ];
-    }
-
-    /**
-     * @param string $currentDomain
-     * @param string $domainRecord
-     * @param string $scriptName
-     * @param bool $expectedResult
-     * @test
-     * @dataProvider domainNameMatchesCurrentRequestDataProvider
-     */
-    public function domainNameMatchesCurrentRequest($currentDomain, $domainRecord, $scriptName, $expectedResult)
-    {
-        $_SERVER['HTTP_HOST'] = $currentDomain;
-        $_SERVER['SCRIPT_NAME'] = $scriptName;
-        $this->assertEquals($expectedResult, $this->subject->domainNameMatchesCurrentRequest($domainRecord));
-    }
-
-    /**
      * @return array
      */
     public function baseUrlWrapHandlesDifferentUrlsDataProvider()
