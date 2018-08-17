@@ -76,7 +76,7 @@ class LiveSearch
     protected $userPermissions = '';
 
     /**
-     * @var \TYPO3\CMS\Backend\Search\LiveSearch\QueryParser
+     * @var QueryParser
      */
     protected $queryParser;
 
@@ -86,7 +86,7 @@ class LiveSearch
     public function __construct()
     {
         $this->userPermissions = $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW);
-        $this->queryParser = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Search\LiveSearch\QueryParser::class);
+        $this->queryParser = GeneralUtility::makeInstance(QueryParser::class);
     }
 
     /**
@@ -137,7 +137,7 @@ class LiveSearch
     /**
      * Find records from all registered TCA table & column values.
      *
-     * @param string $pageIdList Comma separated list of page IDs
+     * @param array $pageIdList Comma separated list of page IDs
      * @return array Records found in the database matching the searchQuery
      */
     protected function findByGlobalTableList($pageIdList)
@@ -147,18 +147,19 @@ class LiveSearch
         foreach ($GLOBALS['TCA'] as $tableName => $value) {
             // if no access for the table (read or write) or table is hidden, skip this table
             if (
+                (isset($value['ctrl']['hideTable']) && $value['ctrl']['hideTable'])
+                ||
                 (
                     !$GLOBALS['BE_USER']->check('tables_select', $tableName) &&
                     !$GLOBALS['BE_USER']->check('tables_modify', $tableName)
-                ) ||
-                (isset($value['ctrl']['hideTable']) && $value['ctrl']['hideTable'])
+                )
             ) {
                 continue;
             }
             $recordArray = $this->findByTable($tableName, $pageIdList, 0, $limit);
             $recordCount = count($recordArray);
             if ($recordCount) {
-                $limit = $limit - $recordCount;
+                $limit -= $recordCount;
                 $getRecordArray[] = $recordArray;
                 if ($limit <= 0) {
                     break;
@@ -172,7 +173,7 @@ class LiveSearch
      * Find records by given table name.
      *
      * @param string $tableName Database table name
-     * @param string $pageIdList Comma separated list of page IDs
+     * @param array $pageIdList Comma separated list of page IDs
      * @param int $firstResult
      * @param int $maxResults
      * @return array Records found in the database matching the searchQuery
@@ -396,7 +397,7 @@ class LiveSearch
                 // Assemble the search condition only if the field makes sense to be searched
                 if ($fieldType === 'text'
                     || $fieldType === 'flex'
-                    || $fieldType === 'input' && (!$evalRules || !preg_match('/date|time|int/', $evalRules))
+                    || ($fieldType === 'input' && (!$evalRules || !preg_match('/date|time|int/', $evalRules)))
                 ) {
                     if ($searchConstraint->count() !== 0) {
                         $constraints[] = $searchConstraint;
@@ -488,7 +489,6 @@ class LiveSearch
         $tree->ids[] = $id;
         // add workspace pid - workspace permissions are taken into account by where clause later
         $tree->ids[] = -1;
-        $idList = implode(',', $tree->ids);
-        return $idList;
+        return implode(',', $tree->ids);
     }
 }
