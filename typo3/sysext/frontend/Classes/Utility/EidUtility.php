@@ -43,7 +43,7 @@ class EidUtility
      */
     public static function initFeUser()
     {
-        trigger_error('EidUtility::initFeUser() will be removed in TYPO3 v10. Ensure to intantiate the LanguageService by yourself.', E_USER_DEPRECATED);
+        trigger_error('EidUtility::initFeUser() will be removed in TYPO3 v10. Use a PSR-15 middleware instead.', E_USER_DEPRECATED);
         // Get TSFE instance. It knows how to initialize the user.
         $tsfe = self::getTSFE();
         $tsfe->fe_user = GeneralUtility::makeInstance(FrontendUserAuthentication::class);
@@ -118,7 +118,7 @@ class EidUtility
      */
     public static function initExtensionTCA($extensionKey)
     {
-        trigger_error('This method will be removed in TYPO3 v10 as it is discouraged to only load ext_tables.php of one extension. Use ExtensionManagementUtility instead.', E_USER_DEPRECATED);
+        trigger_error('EidUtility::initExtensionTCA() will be removed in TYPO3 v10 as it is discouraged to only load ext_tables.php of one extension. Use ExtensionManagementUtility instead.', E_USER_DEPRECATED);
         $extTablesPath = ExtensionManagementUtility::extPath($extensionKey, 'ext_tables.php');
         if (file_exists($extTablesPath)) {
             $GLOBALS['_EXTKEY'] = $extensionKey;
