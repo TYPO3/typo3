@@ -3824,7 +3824,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Process the output before it's actually outputted. Sends headers also.
      *
      * This includes substituting the "username" comment, sending additional headers
-     * (as defined in the TypoScript "config.additionalheaders" object), XHTML cleaning content (if configured)
+     * (as defined in the TypoScript "config.additionalHeaders" object), XHTML cleaning content (if configured)
      * Works on $this->content.
      */
     public function processOutput()
@@ -3846,8 +3846,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 header($header . ': ' . $value);
             }
         }
-        // Set headers, if any
-        $this->sendAdditionalHeaders();
+        // Set additional headers if any have been configured via TypoScript
+        $additionalHeaders = $this->getAdditionalHeaders();
+        foreach ($additionalHeaders as $headerConfig) {
+            header(
+                $headerConfig['header'],
+                // "replace existing headers" is turned on by default, unless turned off
+                $headerConfig['replace'],
+                $headerConfig['statusCode']
+            );
+        }
         // Send appropriate status code in case of temporary content
         if ($this->tempContent) {
             header('HTTP/1.0 503 Service unavailable');
@@ -4891,13 +4899,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Send additional headers from config.additionalHeaders
      *
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::processOutput()
+     * @see processOutput()
      */
-    protected function sendAdditionalHeaders()
+    protected function getAdditionalHeaders(): array
     {
         if (!isset($this->config['config']['additionalHeaders.'])) {
-            return;
+            return [];
         }
+        $additionalHeaders = [];
         ksort($this->config['config']['additionalHeaders.']);
         foreach ($this->config['config']['additionalHeaders.'] as $options) {
             if (!is_array($options)) {
@@ -4920,13 +4929,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 : $httpResponseCode;
             $httpResponseCode = (int)$httpResponseCode;
 
-            header(
-                $header,
+            $additionalHeaders[] = [
+                'header' => $header,
                 // "replace existing headers" is turned on by default, unless turned off
-                $replace !== '0',
-                $httpResponseCode ?: null
-            );
+                'replace' => $replace !== '0',
+                'statusCode' => $httpResponseCode ?: null
+            ];
         }
+        return $additionalHeaders;
     }
 
     /**
