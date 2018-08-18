@@ -15,10 +15,8 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
-use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\PhpError;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataMapFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -30,12 +28,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
  */
 class SiteRequestTest extends AbstractRequestTest
 {
-    protected const LANGUAGE_PRESETS = [
-        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US', 'direction' => ''],
-        'FR' => ['id' => 1, 'title' => 'French', 'locale' => 'fr_FR.UTF8', 'iso' => 'fr', 'hrefLang' => 'fr-FR', 'direction' => ''],
-        'FR-CA' => ['id' => 2, 'title' => 'Franco-Canadian', 'locale' => 'fr_CA.UTF8', 'iso' => 'fr', 'hrefLang' => 'fr-CA', 'direction' => ''],
-    ];
-
     /**
      * @var string
      */
@@ -75,7 +67,7 @@ class SiteRequestTest extends AbstractRequestTest
         );
 
         $this->setUpFrontendRootPage(
-            101,
+            1000,
             [
                 'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
                 'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
@@ -109,7 +101,7 @@ class SiteRequestTest extends AbstractRequestTest
 
         $queries = [
             '?',
-            '?id=101',
+            '?id=1000',
             '?id=acme-root'
         ];
 
@@ -130,7 +122,7 @@ class SiteRequestTest extends AbstractRequestTest
     {
         $this->writeSiteConfiguration(
             'website-local',
-            $this->buildSiteConfiguration(101, 'https://website.local/')
+            $this->buildSiteConfiguration(1000, 'https://website.local/')
         );
 
         $expectedStatusCode = 307;
@@ -163,7 +155,7 @@ class SiteRequestTest extends AbstractRequestTest
         ];
 
         $queries = [
-            '?id=102',
+            '?id=1100',
             '?id=acme-first',
         ];
 
@@ -195,7 +187,7 @@ class SiteRequestTest extends AbstractRequestTest
     {
         $this->writeSiteConfiguration(
             'website-local',
-            $this->buildSiteConfiguration(101, 'https://website.local/'),
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en-en/'),
                 $this->buildLanguageConfiguration('FR', '/fr-fr/', ['EN']),
@@ -239,7 +231,7 @@ class SiteRequestTest extends AbstractRequestTest
         ];
 
         $queries = [
-            '?id=102',
+            '?id=1100',
             '?id=acme-first',
         ];
 
@@ -271,7 +263,7 @@ class SiteRequestTest extends AbstractRequestTest
     {
         $this->writeSiteConfiguration(
             'website-local',
-            $this->buildSiteConfiguration(101, 'https://website.local/'),
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', 'https://website.us/'),
                 $this->buildLanguageConfiguration('FR', 'https://website.fr/', ['EN']),
@@ -312,9 +304,9 @@ class SiteRequestTest extends AbstractRequestTest
 
         $queries = [
             '?',
-            '?id=101',
+            '?id=1000',
             '?id=acme-root',
-            '?id=102',
+            '?id=1100',
             '?id=acme-first',
         ];
 
@@ -341,7 +333,7 @@ class SiteRequestTest extends AbstractRequestTest
     {
         $this->writeSiteConfiguration(
             'website-local',
-            $this->buildSiteConfiguration(101, 'https://website.local/')
+            $this->buildSiteConfiguration(1000, 'https://website.local/')
         );
 
         $this->expectExceptionCode(1518472189);
@@ -395,7 +387,7 @@ class SiteRequestTest extends AbstractRequestTest
     {
         $this->writeSiteConfiguration(
             'website-local',
-            $this->buildSiteConfiguration(101, 'https://website.local/'),
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
             [],
             $this->buildErrorHandlingConfiguration('Fluid', [404])
         );
@@ -429,7 +421,7 @@ class SiteRequestTest extends AbstractRequestTest
     {
         $this->writeSiteConfiguration(
             'website-local',
-            $this->buildSiteConfiguration(101, 'https://website.local/'),
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
             [],
             $this->buildErrorHandlingConfiguration('Page', [404])
         );
@@ -455,7 +447,7 @@ class SiteRequestTest extends AbstractRequestTest
     {
         $this->writeSiteConfiguration(
             'website-local',
-            $this->buildSiteConfiguration(101, 'https://website.local/'),
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
             [],
             $this->buildErrorHandlingConfiguration('PHP', [404])
         );
@@ -493,11 +485,11 @@ class SiteRequestTest extends AbstractRequestTest
         // cHash has been calculated with encryption key set to
         // '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6'
         $queries = [
-            // @todo Currently fails since cHash is verified after(!) redirect to page 102
-            // '?&cHash=814ea11ad629c7e24cfd031cea2779f4&id=101',
-            // '?&cHash=814ea11ad629c7e24cfd031cea2779f4id=acme-root',
-            '?&cHash=126d2980c12f4759fed1bb7429db2dff&id=102',
-            '?&cHash=126d2980c12f4759fed1bb7429db2dff&id=acme-first',
+            // @todo Currently fails since cHash is verified after(!) redirect to page 1100
+            // '?&cHash=7d1f13fa91159dac7feb3c824936b39d&id=1000',
+            // '?&cHash=7d1f13fa91159dac7feb3c824936b39d=acme-root',
+            '?&cHash=f42b850e435f0cedd366f5db749fc1af&id=1100',
+            '?&cHash=f42b850e435f0cedd366f5db749fc1af&id=acme-first',
         ];
 
         $customQueries = [
@@ -523,7 +515,7 @@ class SiteRequestTest extends AbstractRequestTest
     {
         $this->writeSiteConfiguration(
             'website-local',
-            $this->buildSiteConfiguration(101, 'https://website.local/')
+            $this->buildSiteConfiguration(1000, 'https://website.local/')
         );
 
         $response = $this->executeFrontendRequest(
@@ -537,168 +529,5 @@ class SiteRequestTest extends AbstractRequestTest
             '1',
             $responseStructure->getScopePath('getpost/testing.value')
         );
-    }
-
-    /**
-     * @param string $identifier
-     * @param array $site
-     * @param array $languages
-     * @param array $errorHandling
-     */
-    private function writeSiteConfiguration(
-        string $identifier,
-        array $site = [],
-        array $languages = [],
-        array $errorHandling = []
-    ) {
-        $configuration = [
-            'site' => $site,
-        ];
-        if (!empty($languages)) {
-            $configuration['site']['languages'] = $languages;
-        }
-        if (!empty($errorHandling)) {
-            $configuration['site']['errorHandling'] = $errorHandling;
-        }
-
-        $siteConfiguration = new SiteConfiguration(
-            $this->instancePath . '/typo3conf/sites/'
-        );
-
-        try {
-            $siteConfiguration->write($identifier, $configuration);
-        } catch (\Exception $exception) {
-            $this->markTestSkipped($exception->getMessage());
-        }
-    }
-
-    /**
-     * @param int $rootPageId
-     * @param string $base
-     * @return array
-     */
-    private function buildSiteConfiguration(
-        int $rootPageId,
-        string $base = ''
-    ): array {
-        return [
-            'rootPageId' => $rootPageId,
-            'base' => $base,
-        ];
-    }
-
-    /**
-     * @param string $identifier
-     * @param string $base
-     * @return array
-     */
-    private function buildDefaultLanguageConfiguration(
-        string $identifier,
-        string $base
-    ): array {
-        $configuration = $this->buildLanguageConfiguration($identifier, $base);
-        $configuration['typo3Language'] = 'default';
-        $configuration['flag'] = 'global';
-        unset($configuration['fallbackType']);
-        return $configuration;
-    }
-
-    /**
-     * @param string $identifier
-     * @param string $base
-     * @param array $fallbackIdentifiers
-     * @return array
-     */
-    private function buildLanguageConfiguration(
-        string $identifier,
-        string $base,
-        array $fallbackIdentifiers = []
-    ): array {
-        $preset = $this->resolveLanguagePreset($identifier);
-
-        $configuration = [
-            'languageId' => $preset['id'],
-            'title' => $preset['title'],
-            'navigationTitle' => $preset['title'],
-            'base' => $base,
-            'locale' => $preset['locale'],
-            'iso-639-1' => $preset['iso'],
-            'hreflang' => $preset['hrefLang'],
-            'direction' => $preset['direction'],
-            'typo3Language' => $preset['iso'],
-            'flag' => $preset['iso'],
-            'fallbackType' => 'strict',
-        ];
-
-        if (!empty($fallbackIdentifiers)) {
-            $fallbackIds = array_map(
-                function (string $fallbackIdentifier) {
-                    $preset = $this->resolveLanguagePreset($fallbackIdentifier);
-                    return $preset['id'];
-                },
-                $fallbackIdentifiers
-            );
-            $configuration['fallbackType'] = 'fallback';
-            $configuration['fallbackType'] = implode(',', $fallbackIds);
-        }
-
-        return $configuration;
-    }
-
-    /**
-     * @param string $handler
-     * @param array $codes
-     * @return array
-     */
-    private function buildErrorHandlingConfiguration(
-        string $handler,
-        array $codes
-    ): array {
-        if ($handler === 'Page') {
-            $baseConfiguration = [
-                'errorContentSource' => '404',
-            ];
-        } elseif ($handler === 'Fluid') {
-            $baseConfiguration = [
-                'errorFluidTemplate' => 'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/FluidError.html',
-                'errorFluidTemplatesRootPath' => '',
-                'errorFluidLayoutsRootPath' => '',
-                'errorFluidPartialsRootPath' => '',
-            ];
-        } elseif ($handler === 'PHP') {
-            $baseConfiguration = [
-                'errorPhpClassFQCN' => PhpError::class,
-            ];
-        } else {
-            throw new \LogicException(
-                sprintf('Invalid handler "%s"', $handler),
-                1533894782
-            );
-        }
-
-        $baseConfiguration['errorHandler'] = $handler;
-
-        return array_map(
-            function (int $code) use ($baseConfiguration) {
-                $baseConfiguration['errorCode'] = $code;
-                return $baseConfiguration;
-            },
-            $codes
-        );
-    }
-
-    /**
-     * @param string $identifier
-     * @return mixed
-     */
-    private function resolveLanguagePreset(string $identifier)
-    {
-        if (!isset(static::LANGUAGE_PRESETS[$identifier])) {
-            throw new \LogicException(
-                sprintf('Undefined preset identifier "%s"', $identifier),
-                1533893665
-            );
-        }
-        return static::LANGUAGE_PRESETS[$identifier];
     }
 }

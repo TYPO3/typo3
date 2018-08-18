@@ -67,13 +67,24 @@ class PlainRequestTest extends AbstractRequestTest
         );
 
         $this->setUpFrontendRootPage(
-            101,
+            1000,
             [
                 'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
                 'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
             ],
             [
                 'title' => 'ACME Root',
+                'sitetitle' => $this->siteTitle,
+            ]
+        );
+        $this->setUpFrontendRootPage(
+            3000,
+            [
+                'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
+                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
+            ],
+            [
+                'title' => 'ACME Archive',
                 'sitetitle' => $this->siteTitle,
             ]
         );
@@ -103,7 +114,7 @@ class PlainRequestTest extends AbstractRequestTest
 
         $queries = [
             '?',
-            '?id=101',
+            '?id=1000',
             '?id=acme-root'
         ];
 
@@ -147,7 +158,7 @@ class PlainRequestTest extends AbstractRequestTest
         ];
 
         $queries = [
-            '?id=102',
+            '?id=1100',
             '?id=acme-first',
         ];
 
@@ -209,6 +220,56 @@ class PlainRequestTest extends AbstractRequestTest
     /**
      * @return array
      */
+    public function pageIsRenderedWithDomainsDataProvider(): array
+    {
+        $uris = [
+            'https://archive.acme.com/?id=3100' => 'EN: Statistics',
+            'https://archive.acme.com/?id=3110' => 'EN: Markets',
+            'https://archive.acme.com/?id=3120' => 'EN: Products',
+            'https://archive.acme.com/?id=3130' => 'EN: Partners',
+        ];
+
+        $data = [];
+        foreach ($uris as $uri => $expectation) {
+            $data[$uri] = [$uri, $expectation];
+        }
+        return $data;
+    }
+
+    /**
+     * @param string $uri
+     * @param string $expectedPageTitle
+     *
+     * @test
+     * @dataProvider pageIsRenderedWithDomainsDataProvider
+     */
+    public function pageIsRenderedWithDomains(string $uri, string $expectedPageTitle)
+    {
+        $response = $this->executeFrontendRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+        );
+        $responseStructure = ResponseContent::fromString(
+            (string)$response->getBody()
+        );
+
+        static::assertSame(
+            200,
+            $response->getStatusCode()
+        );
+        static::assertSame(
+            $this->siteTitle,
+            $responseStructure->getScopePath('template/sitetitle')
+        );
+        static::assertSame(
+            $expectedPageTitle,
+            $responseStructure->getScopePath('page/title')
+        );
+    }
+
+    /**
+     * @return array
+     */
     public function pageRenderingStopsWithInvalidCacheHashDataProvider(): array
     {
         $domainPaths = [
@@ -221,9 +282,9 @@ class PlainRequestTest extends AbstractRequestTest
 
         $queries = [
             '?',
-            '?id=101',
+            '?id=1000',
             '?id=acme-root',
-            '?id=102',
+            '?id=1100',
             '?id=acme-first',
         ];
 
@@ -306,11 +367,11 @@ class PlainRequestTest extends AbstractRequestTest
         // cHash has been calculated with encryption key set to
         // '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6'
         $queries = [
-            // @todo Currently fails since cHash is verified after(!) redirect to page 102
-            // '?&cHash=814ea11ad629c7e24cfd031cea2779f4&id=101',
-            // '?&cHash=814ea11ad629c7e24cfd031cea2779f4id=acme-root',
-            '?&cHash=126d2980c12f4759fed1bb7429db2dff&id=102',
-            '?&cHash=126d2980c12f4759fed1bb7429db2dff&id=acme-first',
+            // @todo Currently fails since cHash is verified after(!) redirect to page 1100
+            // '?&cHash=7d1f13fa91159dac7feb3c824936b39d&id=1000',
+            // '?&cHash=7d1f13fa91159dac7feb3c824936b39d=acme-root',
+            '?&cHash=f42b850e435f0cedd366f5db749fc1af&id=1100',
+            '?&cHash=f42b850e435f0cedd366f5db749fc1af&id=acme-first',
         ];
 
         $customQueries = [
