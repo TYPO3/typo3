@@ -216,7 +216,11 @@ class ClassSchema
 
             if ($docCommentParser->isTaggedWith('validate')) {
                 trigger_error(
-                    'Tagging properties with @validate is deprecated and will be removed in TYPO3 v10.0.',
+                    sprintf(
+                        'Property %s::%s is tagged with @validate which is deprecated and will be removed in TYPO3 v10.0.',
+                        $reflectionClass->getName(),
+                        $reflectionProperty->getName()
+                    ),
                     E_USER_DEPRECATED
                 );
 
@@ -245,7 +249,11 @@ class ClassSchema
             if ($docCommentParser->isTaggedWith('lazy')) {
                 $this->properties[$propertyName]['annotations']['lazy'] = true;
                 trigger_error(
-                    'Tagging properties with @lazy is deprecated and will be removed in TYPO3 v10.0.',
+                    sprintf(
+                        'Property %s::%s is tagged with @lazy which is deprecated and will be removed in TYPO3 v10.0.',
+                        $reflectionClass->getName(),
+                        $reflectionProperty->getName()
+                    ),
                     E_USER_DEPRECATED
                 );
             }
@@ -257,7 +265,11 @@ class ClassSchema
             if ($docCommentParser->isTaggedWith('transient')) {
                 $this->properties[$propertyName]['annotations']['transient'] = true;
                 trigger_error(
-                    'Tagging properties with @transient is deprecated and will be removed in TYPO3 v10.0.',
+                    sprintf(
+                        'Property %s::%s is tagged with @transient which is deprecated and will be removed in TYPO3 v10.0.',
+                        $reflectionClass->getName(),
+                        $reflectionProperty->getName()
+                    ),
                     E_USER_DEPRECATED
                 );
             }
@@ -278,7 +290,11 @@ class ClassSchema
 
             if ($propertyName !== 'settings' && $docCommentParser->isTaggedWith('inject')) {
                 trigger_error(
-                    'Tagging properties with @inject is deprecated and will be removed in TYPO3 v10.0.',
+                    sprintf(
+                        'Property %s::%s is tagged with @inject which is deprecated and will be removed in TYPO3 v10.0.',
+                        $reflectionClass->getName(),
+                        $reflectionProperty->getName()
+                    ),
                     E_USER_DEPRECATED
                 );
                 try {
@@ -289,7 +305,11 @@ class ClassSchema
 
                     if (!$reflectionProperty->isPublic()) {
                         trigger_error(
-                            'Using @inject with non-public properties is deprecated since TYPO3 v9.0 and will stop working in TYPO3 v10.0.',
+                            sprintf(
+                                'Property %s::%s is not public and tagged with @inject which is deprecated and will stop working in TYPO3 v10.0.',
+                                $reflectionClass->getName(),
+                                $reflectionProperty->getName()
+                            ),
                             E_USER_DEPRECATED
                         );
                     }
@@ -308,7 +328,11 @@ class ClassSchema
 
                 if ($this->properties[$propertyName]['annotations']['cascade'] !== null) {
                     trigger_error(
-                        'Tagging properties with @cascade is deprecated and will be removed in TYPO3 v10.0.',
+                        sprintf(
+                            'Property %s::%s is tagged with @cascade which is deprecated and will be removed in TYPO3 v10.0.',
+                            $reflectionClass->getName(),
+                            $reflectionProperty->getName()
+                        ),
                         E_USER_DEPRECATED
                     );
                 }
@@ -392,13 +416,21 @@ class ClassSchema
             foreach ($docCommentParser->getTagsValues() as $tag => $values) {
                 if ($tag === 'ignorevalidation') {
                     trigger_error(
-                        'Tagging methods with @ignorevalidation is deprecated and will be removed in TYPO3 v10.0.',
+                        sprintf(
+                            'Method %s::%s is tagged with @ignorevalidation which is deprecated and will be removed in TYPO3 v10.0.',
+                            $reflectionClass->getName(),
+                            $reflectionMethod->getName()
+                        ),
                         E_USER_DEPRECATED
                     );
                 }
                 if ($tag === 'validate' && $this->isController && $this->methods[$methodName]['isAction']) {
                     trigger_error(
-                        'Tagging methods with @validate is deprecated and will be removed in TYPO3 v10.0.',
+                        sprintf(
+                            'Method %s::%s is tagged with @validate which is deprecated and will be removed in TYPO3 v10.0.',
+                            $reflectionClass->getName(),
+                            $reflectionMethod->getName()
+                        ),
                         E_USER_DEPRECATED
                     );
 
