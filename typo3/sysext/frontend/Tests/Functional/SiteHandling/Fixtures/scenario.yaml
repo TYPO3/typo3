@@ -28,6 +28,8 @@ entitySettings:
     columnNames: {title: 'header', type: 'CType'}
   domain:
     tableName: 'sys_domain'
+  workspace:
+    tableName: 'sys_workspace'
   language:
     tableName: 'sys_language'
     columnNames: {code: 'language_isocode'}
@@ -43,6 +45,8 @@ entitySettings:
         site: {root: 1, clear: 1}
 
 entities:
+  workspace:
+    - self: {id: 1, title: 'Workspace'}
   language:
     - self: {id: 1, title: 'French', code: 'fr'}
     - self: {id: 2, title: 'Franco-Canadian', code: 'fr'}
@@ -53,6 +57,8 @@ entities:
           languageVariants:
             - self: {id: 1101, title: 'FR: Welcome', language: 1}
             - self: {id: 1102, title: 'FR-CA: Welcome', language: 2}
+          versionVariants:
+            - version: {title: 'EN: Welcome to ACME Inc', workspace: 1}
           entities:
             content:
               - self: {title: 'EN: Content Element #1', type: *contentText}
@@ -64,7 +70,7 @@ entities:
               - self: {title: 'EN: Content Element #2', type: *contentText}
         - self: {id: 1200, title: 'EN: Features'}
           children:
-            - self: {id: 1121, title: 'EN: Frontend Editing'}
+            - self: {id: 1210, title: 'EN: Frontend Editing'}
         - self: {id: 1300, title: 'EN: Products', root: true}
           children:
             - self: {id: 1310, title: 'EN: Planets'}
@@ -75,7 +81,7 @@ entities:
             - self: {id: 1510, title: 'Whitepapers', visitorGroups: -2, extendToSubpages: true}
               children:
                 - self: {id: 1511, title: 'Products'}
-                - self: {id: 1512, title: 'Solutions'}
+                - self: {id: 1512, title: 'Solutions', visitorGroups: 10}
                 - self: {id: 1515, title: 'Research', visitorGroups: 20}
             - self: {id: 1520, title: 'Forecasts', visitorGroups: 20, extendToSubpages: true}
               children:
@@ -84,10 +90,12 @@ entities:
                 - self: {id: 1523, title: 'Five Years'}
         - self: {id: 1600, title: 'About us'}
         - self: {id: 1700, title: 'Announcements & News', type: *pageMount, mount: 7100}
-        - self: {id: 404, title: 'Page not found'}
           entities:
             content:
               - self: {title: 'EN: Page not found', type: *contentText}
+        - self: {id: 404, title: 'Page not found'}
+        - self: {id: 1930, title: 'Our Blog', type: *pageShortcut, shortcut: 2000}
+        - version: {id: 1950, title: 'EN: Goodbye', workspace: 1}
         - self: {id: 1990, title: 'Storage', type: *pageFolder}
           entities:
             visitorGroup:
@@ -108,6 +116,7 @@ entities:
               children:
                 - self: {id: 2121, title: 'About'}
         - self: {id: 2700, title: 'Announcements & News', type: *pageMount, mount: 7100}
+        - self: {id: 2930, title: 'ACME Inc', type: *pageShortcut, shortcut: 1000}
     - self: {id: 3000, title: 'ACME Archive', type: *pageShortcut, shortcut: 'first', root: true}
       children:
         - self: {id: 3100, title: 'EN: Statistics'}

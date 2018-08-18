@@ -13,4 +13,6 @@ if (TYPO3_MODE === 'FE') {
         \TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Hook\FrontendUserHandler::class . '->initialize';
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser']['FunctionalTest'] =
         \TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Hook\BackendUserHandler::class . '->initialize';
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Core/TypoScript/TemplateService']['runThroughTemplatesPostProcessing']['FunctionalTest'] =
+        \TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Hook\TypoScriptInstructionModifier::class . '->apply';
 }

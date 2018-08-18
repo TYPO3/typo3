@@ -17,8 +17,8 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
-use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
-use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataMapFactory;
+use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
+use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 /**
  * Test case for frontend requests without having site handling configured
  */
-class PlainRequestTest extends AbstractRequestTest
+class PlainRequestTest extends AbstractTestCase
 {
     /**
      * @var string
@@ -38,11 +38,6 @@ class PlainRequestTest extends AbstractRequestTest
      */
     private $internalRequestContext;
 
-    /**
-     * @var ActionService
-     */
-    private $actionService;
-
     protected function setUp()
     {
         parent::setUp();
@@ -51,19 +46,15 @@ class PlainRequestTest extends AbstractRequestTest
         $this->internalRequestContext = (new InternalRequestContext())
             ->withGlobalSettings(['TYPO3_CONF_VARS' => static::TYPO3_CONF_VARS]);
 
-        $this->setUpBackendUserFromFixture(1);
-        $this->actionService = new ActionService();
+        $backendUser = $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
 
         $scenarioFile = __DIR__ . '/Fixtures/scenario.yaml';
-        $factory = DataMapFactory::fromYamlFile($scenarioFile);
-        $this->actionService->invoke(
-            $factory->getDataMap(),
-            [],
-            $factory->getSuggestedIds()
-        );
+        $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
+        $writer = DataHandlerWriter::withBackendUser($backendUser);
+        $writer->invokeFactory($factory);
         static::failIfArrayIsNotEmpty(
-            $this->actionService->getDataHandler()->errorLog
+            $writer->getErrors()
         );
 
         $this->setUpFrontendRootPage(
@@ -92,10 +83,7 @@ class PlainRequestTest extends AbstractRequestTest
 
     protected function tearDown()
     {
-        unset(
-            $this->actionService,
-            $this->internalRequestContext
-        );
+        unset($this->internalRequestContext);
         parent::tearDown();
     }
 
@@ -222,18 +210,14 @@ class PlainRequestTest extends AbstractRequestTest
      */
     public function pageIsRenderedWithDomainsDataProvider(): array
     {
-        $uris = [
-            'https://archive.acme.com/?id=3100' => 'EN: Statistics',
-            'https://archive.acme.com/?id=3110' => 'EN: Markets',
-            'https://archive.acme.com/?id=3120' => 'EN: Products',
-            'https://archive.acme.com/?id=3130' => 'EN: Partners',
+        $instructions = [
+            ['https://archive.acme.com/?id=3100', 'EN: Statistics'],
+            ['https://archive.acme.com/?id=3110', 'EN: Markets'],
+            ['https://archive.acme.com/?id=3120', 'EN: Products'],
+            ['https://archive.acme.com/?id=3130', 'EN: Partners'],
         ];
 
-        $data = [];
-        foreach ($uris as $uri => $expectation) {
-            $data[$uri] = [$uri, $expectation];
-        }
-        return $data;
+        return $this->keysFromTemplate($instructions, '%1$s');
     }
 
     /**
@@ -264,6 +248,154 @@ class PlainRequestTest extends AbstractRequestTest
         static::assertSame(
             $expectedPageTitle,
             $responseStructure->getScopePath('page/title')
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function restrictedPageIsRenderedDataProvider(): array
+    {
+        $instructions = [
+            // frontend user 1
+            ['https://website.local/?id=1510', 1, 'Whitepapers'],
+            ['https://website.local/?id=1511', 1, 'Products'],
+            ['https://website.local/?id=1512', 1, 'Solutions'],
+            // frontend user 2
+            ['https://website.local/?id=1510', 2, 'Whitepapers'],
+            ['https://website.local/?id=1511', 2, 'Products'],
+            ['https://website.local/?id=1515', 2, 'Research'],
+            ['https://website.local/?id=1520', 2, 'Forecasts'],
+            ['https://website.local/?id=1521', 2, 'Current Year'],
+            // frontend user 3
+            ['https://website.local/?id=1510', 3, 'Whitepapers'],
+            ['https://website.local/?id=1511', 3, 'Products'],
+            ['https://website.local/?id=1512', 3, 'Solutions'],
+            ['https://website.local/?id=1515', 3, 'Research'],
+            ['https://website.local/?id=1520', 3, 'Forecasts'],
+            ['https://website.local/?id=1521', 3, 'Current Year'],
+        ];
+
+        return $this->keysFromTemplate($instructions, '%1$s (user:%2$s)');
+    }
+
+    /**
+     * @param string $uri
+     * @param int $frontendUserId
+     * @param string $expectedPageTitle
+     *
+     * @test
+     * @dataProvider restrictedPageIsRenderedDataProvider
+     */
+    public function restrictedPageIsRendered(string $uri, int $frontendUserId, string $expectedPageTitle)
+    {
+        $response = $this->executeFrontendRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+                ->withFrontendUserId($frontendUserId)
+        );
+        $responseStructure = ResponseContent::fromString(
+            (string)$response->getBody()
+        );
+
+        static::assertSame(
+            200,
+            $response->getStatusCode()
+        );
+        static::assertSame(
+            $this->siteTitle,
+            $responseStructure->getScopePath('template/sitetitle')
+        );
+        static::assertSame(
+            $expectedPageTitle,
+            $responseStructure->getScopePath('page/title')
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider(): array
+    {
+        $instructions = [
+            // no frontend user given
+            ['https://website.local/?id=1510', 0],
+            ['https://website.local/?id=1511', 0],
+            ['https://website.local/?id=1512', 0],
+            ['https://website.local/?id=1515', 0],
+            ['https://website.local/?id=1520', 0],
+            ['https://website.local/?id=1521', 0],
+            // frontend user 1
+            ['https://website.local/?id=1515', 1],
+            ['https://website.local/?id=1520', 1],
+            ['https://website.local/?id=1521', 1],
+            // frontend user 2
+            ['https://website.local/?id=1512', 2],
+        ];
+
+        return $this->keysFromTemplate($instructions, '%1$s (user:%2$s)');
+    }
+
+    /**
+     * @param string $uri
+     * @param int $frontendUserId
+     *
+     * @test
+     * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
+     */
+    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorUsingDefaultErrorHandling(string $uri, int $frontendUserId)
+    {
+        $response = $this->executeFrontendRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+                ->withFrontendUserId($frontendUserId)
+        );
+
+        static::assertSame(
+            403,
+            $response->getStatusCode()
+        );
+        static::assertThat(
+            (string)$response->getBody(),
+            static::logicalOr(
+                static::stringContains('Reason: ID was not an accessible page'),
+                static::stringContains('Reason: Subsection was found and not accessible')
+            )
+        );
+    }
+
+    /**
+     * @param string $uri
+     * @param int $frontendUserId
+     *
+     * @test
+     * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
+     */
+    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorUsingCustomErrorHandling(string $uri, int $frontendUserId)
+    {
+        $response = $this->executeFrontendRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+                ->withFrontendUserId($frontendUserId)
+                ->withMergedGlobalSettings([
+                    'TYPO3_CONF_VARS' => [
+                        'FE' => [
+                            'pageNotFound_handling' => 'READFILE:typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/PageError.txt',
+                        ]
+                    ]
+                ])
+        );
+
+        static::assertSame(
+            403,
+            $response->getStatusCode()
+        );
+        static::assertThat(
+            (string)$response->getBody(),
+            static::logicalOr(
+                static::stringContains('reason: ID was not an accessible page'),
+                static::stringContains('reason: Subsection was found and not accessible')
+            )
         );
     }
 

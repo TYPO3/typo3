@@ -1,5 +1,3 @@
 uri: {request.uri}
 message: {message}
-<f:for each="{reasons}" as="reason">
-	reason: {reason}
-</f:for>
+reasons: <f:for each="{reasons}" as="reason" key="key">{key},</f:for>

@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 /**
  * Abstract test case for frontend requests
  */
-abstract class AbstractRequestTest extends FunctionalTestCase
+abstract class AbstractTestCase extends FunctionalTestCase
 {
     protected const ENCRYPTION_KEY = '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6';
 
@@ -46,9 +46,16 @@ abstract class AbstractRequestTest extends FunctionalTestCase
     ];
 
     /**
-     * @var array
+     * @var string[]
      */
-    protected $coreExtensionsToLoad = ['frontend'];
+    protected $coreExtensionsToLoad = ['frontend', 'workspaces'];
+
+    /**
+     * @var string[]
+     */
+    protected $pathsToLinkInTestInstance = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/AdditionalConfiguration.php' => 'typo3conf/AdditionalConfiguration.php',
+    ];
 
     /**
      * Combines string values of multiple array as cross-product into flat items.
@@ -98,12 +105,51 @@ abstract class AbstractRequestTest extends FunctionalTestCase
     }
 
     /**
-     * @param array $array
+     * @param string[] $array
      * @return array
      */
     protected function keysFromValues(array $array): array
     {
         return array_combine($array, $array);
+    }
+
+    /**
+     * Generates key names based on a template and array items as arguments.
+     *
+     * + keysFromTemplate([[1, 2, 3], [11, 22, 33]], '%1$d->%2$d (user:%3$d)')
+     * + returns the following array with generated keys
+     *   [
+     *     '1->2 (user:3)'    => [1, 2, 3],
+     *     '11->22 (user:33)' => [11, 22, 33],
+     *   ]
+     *
+     * @param array $array
+     * @param string $template
+     * @param callable|null $callback
+     * @return array
+     */
+    protected function keysFromTemplate(array $array, string $template, callable $callback = null): array
+    {
+        $keys = array_unique(
+            array_map(
+                function (array $values) use ($template, $callback) {
+                    if ($callback !== null) {
+                        $values = call_user_func($callback, $values);
+                    }
+                    return vsprintf($template, $values);
+                },
+                $array
+            )
+        );
+
+        if (count($keys) !== count($array)) {
+            throw new \LogicException(
+                'Amount of generated keys does not match to item count.',
+                1534682840
+            );
+        }
+
+        return array_combine($keys, $array);
     }
 
     /**
