@@ -53,6 +53,7 @@ class PageModuleCest
 
         $I->click('Page');
         $pageTree->openPath([$currentPageTitle]);
+        $I->wait(0.2);
         $I->switchToContentFrame();
 
         // Rename the page
