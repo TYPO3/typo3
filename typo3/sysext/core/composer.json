@@ -45,7 +45,7 @@
 		"typo3fluid/fluid": "^2.5.2"
 	},
 	"require-dev": {
-		"codeception/codeception": "^2.4.4",
+		"codeception/codeception": "^2.4.5",
 		"enm1989/chromedriver": "~2.30",
 		"fiunchinho/phpunit-randomizer": "^4.0",
 		"friendsofphp/php-cs-fixer": "^2.12.2",
