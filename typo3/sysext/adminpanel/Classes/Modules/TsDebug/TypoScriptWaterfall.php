@@ -119,8 +119,7 @@ class TypoScriptWaterfall extends AbstractSubModule
                     'content' => (int)$this->getConfigurationOption('displayContent'),
                 ],
                 'trackContentRendering' => (int)$this->getConfigurationOption('LR'),
-                'forceTemplateParsing' => (int)$this->getConfigurationOption('forceTemplateParsing'),
-                'typoScriptLog' => $this->renderTypoScriptLog(),
+                'forceTemplateParsing' => (int)$this->getConfigurationOption('forceTemplateParsing')
             ]
         );
 

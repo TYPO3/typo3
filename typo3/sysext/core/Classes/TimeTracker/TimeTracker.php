@@ -476,17 +476,17 @@ class TimeTracker implements SingletonInterface
         foreach ($arr as $k => $v) {
             if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($k)) {
                 $c++;
-                $deeper = is_array($arr[$k . '.']);
+                $deeper = isset($arr[$k . '.']);
                 $LN = $ac == $c ? 'blank' : 'line';
 
                 $BTM = $ac == $c ? 'bottom' : '';
-                $PM = is_array($arr[$k . '.']) ? '<i class="fa fa-' . ($deeper ? 'minus' : 'plus') . '-square-o"></i>' : '<span class="treeline-icon treeline-icon-join' . ($BTM ? 'bottom' : '') . '"></span>';
+                $PM = $deeper ? '<i class="fa fa-' . ($deeper ? 'minus' : 'plus') . '-square-o"></i>' : '<span class="treeline-icon treeline-icon-join' . ($BTM ? 'bottom' : '') . '"></span>';
 
                 $this->tsStackLog[$v]['icons'] = $depthData . ($first ? '' : $PM);
                 if ($this->tsStackLog[$v]['content'] !== '') {
                     $content = str_replace($this->tsStackLog[$v]['content'], $v, $content);
                 }
-                if (is_array($arr[$k . '.'])) {
+                if ($deeper) {
                     $this->tsStackLog[$v]['content'] = $this->fixContent($arr[$k . '.'], $this->tsStackLog[$v]['content'], $depthData . ($first ? '' : '<span class="treeline-icon treeline-icon-' . $LN . '"></span>'), 0, $v);
                 } else {
                     $this->tsStackLog[$v]['content'] = $this->fixCLen($this->tsStackLog[$v]['content'], $this->tsStackLog[$v]['value']);

@@ -159,7 +159,7 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
             GeneralUtility::callUserFunction($_funcRef, $_params, $controller);
         }
 
-        // Finish timetracking
+        // Finish time tracking (started in TYPO3\CMS\Frontend\Middleware\TimeTrackerInitialization)
         $this->timeTracker->pull();
 
         if ($isOutputting) {

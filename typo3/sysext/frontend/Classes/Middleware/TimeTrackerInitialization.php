@@ -39,10 +39,13 @@ class TimeTrackerInitialization implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
-        GeneralUtility::makeInstance(
+        $timeTracker = GeneralUtility::makeInstance(
             TimeTracker::class,
             $request->getCookieParams()[$configuredCookieName] ? true : false
-        )->start();
+        );
+        $timeTracker->start();
+        $timeTracker->push('');
+
         return $handler->handle($request);
     }
 }
