@@ -170,12 +170,9 @@ class DragDrop {
     const newColumn = DragDrop.getColumnPositionForElement($droppableElement);
 
     $droppableElement.removeClass(DragDrop.dropPossibleHoverClass);
-    const $pasteAction = typeof $draggableElement === 'number';
 
     // send an AJAX requst via the AjaxDataHandler
-    const contentElementUid: number = $pasteAction === true ?
-      <number>$draggableElement :
-      parseInt((<JQuery>$draggableElement).data('uid'), 10);
+    const contentElementUid: number = parseInt((<JQuery>$draggableElement).data('uid'), 10);
 
     if (typeof(contentElementUid) === 'number' && contentElementUid > 0) {
       let parameters: Parameters = {};
@@ -213,27 +210,15 @@ class DragDrop {
           }
         };
         // TODO Make sure we actually have a JQuery object here, not only cast it
-        DragDrop.ajaxAction($droppableElement, <JQuery>$draggableElement, parameters, copyAction, $pasteAction);
+        DragDrop.ajaxAction($droppableElement, <JQuery>$draggableElement, parameters, copyAction);
       } else {
         parameters.data.tt_content[contentElementUid] = {
           colPos: colPos,
           sys_language_uid: language
         };
-        if ($pasteAction) {
-          parameters = {
-            CB: {
-              paste: 'tt_content|' + targetPid,
-              update: {
-                colPos: colPos,
-                sys_language_uid: language
-              }
-            }
-          };
-        } else {
-          parameters.cmd.tt_content[contentElementUid] = {move: targetPid};
-        }
+        parameters.cmd.tt_content[contentElementUid] = {move: targetPid};
         // fire the request, and show a message if it has failed
-        DragDrop.ajaxAction($droppableElement, <JQuery>$draggableElement, parameters, copyAction, $pasteAction);
+        DragDrop.ajaxAction($droppableElement, <JQuery>$draggableElement, parameters, copyAction);
       }
     }
   }
@@ -241,31 +226,29 @@ class DragDrop {
   /**
    * this method does the actual AJAX request for both, the move and the copy action.
    *
-   * @param $droppableElement
-   * @param $draggableElement
-   * @param parameters
-   * @param $copyAction
-   * @param $pasteAction
+   * @param {JQuery} $droppableElement
+   * @param {JQuery} $draggableElement
+   * @param {Parameters} parameters
+   * @param {boolean} copyAction
    * @private
    */
-  public static ajaxAction($droppableElement: JQuery, $draggableElement: JQuery, parameters: Parameters,
-                           $copyAction: boolean, $pasteAction: boolean): void {
+  public static ajaxAction($droppableElement: JQuery, $draggableElement: JQuery, parameters: Parameters, copyAction: boolean): void {
     DataHandler.process(parameters).done(function(result: ResponseInterface): void {
       if (result.hasErrors) {
         return;
       }
 
       // insert draggable on the new position
-      if (!$pasteAction) {
-        if (!$droppableElement.parent().hasClass(DragDrop.contentIdentifier.substring(1))) {
-          $draggableElement.detach().css({top: 0, left: 0})
-            .insertAfter($droppableElement.closest(DragDrop.dropZoneIdentifier));
-        } else {
-          $draggableElement.detach().css({top: 0, left: 0})
-            .insertAfter($droppableElement.closest(DragDrop.contentIdentifier));
-        }
+      if (!$droppableElement.parent().hasClass(DragDrop.contentIdentifier.substring(1))) {
+        $draggableElement.detach().css({top: 0, left: 0})
+          .insertAfter($droppableElement.closest(DragDrop.dropZoneIdentifier));
+      } else {
+        $draggableElement.detach().css({top: 0, left: 0})
+          .insertAfter($droppableElement.closest(DragDrop.contentIdentifier));
       }
-      self.location.reload(true);
+      if (copyAction) {
+        self.location.reload(true);
+      }
     });
   }
 

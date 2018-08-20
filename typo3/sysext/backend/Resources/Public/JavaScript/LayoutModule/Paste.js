@@ -17,10 +17,10 @@
  * based on jQuery UI
  */
 define(['jquery',
-  'TYPO3/CMS/Backend/LayoutModule/DragDrop',
+  'TYPO3/CMS/Backend/AjaxDataHandler',
   'TYPO3/CMS/Backend/Modal',
   'TYPO3/CMS/Backend/Severity'
-], function($, DragDrop, Modal, Severity) {
+], function($, DataHandler, Modal, Severity) {
   'use strict';
 
   /**
@@ -29,7 +29,8 @@ define(['jquery',
    * @exports TYPO3/CMS/Backend/LayoutModule/Paste
    */
   var Paste = {
-    openedPopupWindow: []
+    openedPopupWindow: [],
+    elementIdentifier: '.t3js-page-ce'
   };
 
   /**
@@ -63,7 +64,7 @@ define(['jquery',
         });
       }
     });
-  }
+  };
 
   /**
    * generates the paste into / paste after modal
@@ -89,7 +90,7 @@ define(['jquery',
           btnClass: 'btn-' + Severity.getCssClass(severity),
           trigger: function() {
             Modal.currentModal.trigger('modal-dismiss');
-            DragDrop.onDrop($element.data('content'), $element, null);
+            Paste.execute($element);
           }
         }
       ];
@@ -109,7 +110,7 @@ define(['jquery',
           btnClass: 'btn-' + Severity.getCssClass(severity),
           trigger: function() {
             Modal.currentModal.trigger('modal-dismiss');
-            DragDrop.onDrop($element.data('content'), $element, null);
+            Paste.execute($element);
           }
         }
       ];
@@ -121,7 +122,55 @@ define(['jquery',
     } else {
       Modal.show(title, content, severity, buttons);
     }
-  }
+  };
+
+  /**
+   * @param {jQuery} $element
+   * @returns number
+   */
+  Paste.determineColumn = function($element) {
+    const $columnContainer = $element.closest('[data-colpos]');
+    if ($columnContainer.length && $columnContainer.data('colpos') !== 'undefined') {
+      return $columnContainer.data('colpos');
+    }
+
+    return 0;
+  };
+
+  /**
+   * Send an AJAX requst via the AjaxDataHandler
+   *
+   * @param {jQuery} $element
+   */
+  Paste.execute = function($element) {
+    const colPos = Paste.determineColumn($element);
+    const closestElement = $element.closest(Paste.elementIdentifier);
+    const targetFound = closestElement.data('uid');
+    let targetPid;
+    if (typeof targetFound === 'undefined') {
+      targetPid = parseInt(closestElement.data('page'), 10);
+    } else {
+      targetPid = 0 - parseInt(targetFound, 10);
+    }
+    const language = parseInt($element.closest('[data-language-uid]').data('language-uid'), 10);
+    const parameters = {
+      CB: {
+        paste: 'tt_content|' + targetPid,
+        update: {
+          colPos: colPos,
+          sys_language_uid: language
+        }
+      }
+    };
+
+    DataHandler.process(parameters).done(function(result) {
+      if (result.hasErrors) {
+        return;
+      }
+
+      window.location.reload(true);
+    });
+  };
 
   $(Paste.initialize);
   return Paste;
