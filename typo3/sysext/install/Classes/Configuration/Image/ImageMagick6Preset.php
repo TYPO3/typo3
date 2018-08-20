@@ -68,10 +68,6 @@ class ImageMagick6Preset extends AbstractImagePreset implements Configuration\Pr
         foreach ($searchPaths as $path) {
             if (TYPO3_OS === 'WIN') {
                 $executable = 'identify.exe';
-
-                if (!@is_file($path . $executable)) {
-                    $executable = 'magick.exe';
-                }
             } else {
                 $executable = 'identify';
             }
