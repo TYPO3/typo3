@@ -17,6 +17,7 @@ use TYPO3\CMS\Adminpanel\Service\EditToolbarService;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -102,14 +103,14 @@ class FrontendEditPanel
             $panel .= $editToolbarService->createToolbar();
         }
         if (isset($allow['edit'])) {
-            $icon = '<span title="' . $this->backendUser->extGetLL('p_editRecord') . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render('inline') . '</span>';
+            $icon = '<span title="' . $this->getLabel('p_editRecord') . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render('inline') . '</span>';
             $panel .= $this->editPanelLinkWrap($icon, $formName, 'edit', $dataArr['_LOCALIZED_UID'] ? $table . ':' . $dataArr['_LOCALIZED_UID'] : $currentRecord);
         }
         // Hiding in workspaces because implementation is incomplete
         if (isset($allow['move']) && $sortField && $this->backendUser->workspace === 0) {
-            $icon = '<span title="' . $this->backendUser->extGetLL('p_moveUp') . '">' . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render('inline') . '</span>';
+            $icon = '<span title="' . $this->getLabel('p_moveUp') . '">' . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render('inline') . '</span>';
             $panel .= $this->editPanelLinkWrap($icon, $formName, 'up');
-            $icon = '<span title="' . $this->backendUser->extGetLL('p_moveDown') . '">' . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render('inline') . '</span>';
+            $icon = '<span title="' . $this->getLabel('p_moveDown') . '">' . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render('inline') . '</span>';
             $panel .= $this->editPanelLinkWrap($icon, $formName, 'down');
         }
         // Hiding in workspaces because implementation is incomplete
@@ -120,17 +121,17 @@ class FrontendEditPanel
                 $panel .= $this->editPanelLinkWrap($icon, $formName, 'unhide');
             } else {
                 $icon = $this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL)->render('inline');
-                $panel .= $this->editPanelLinkWrap($icon, $formName, 'hide', '', $this->backendUser->extGetLL('p_hideConfirm'));
+                $panel .= $this->editPanelLinkWrap($icon, $formName, 'hide', '', $this->getLabel('p_hideConfirm'));
             }
         }
         if (isset($allow['new'])) {
             if ($table === 'pages') {
-                $icon = '<span title="' . $this->backendUser->extGetLL('p_newSubpage') . '">'
+                $icon = '<span title="' . $this->getLabel('p_newSubpage') . '">'
                     . $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)->render('inline')
                     . '</span>';
                 $panel .= $this->editPanelLinkWrap($icon, $formName, 'new', $currentRecord, '');
             } else {
-                $icon = '<span title="' . $this->backendUser->extGetLL('p_newRecordAfter') . '">'
+                $icon = '<span title="' . $this->getLabel('p_newRecordAfter') . '">'
                     . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render('inline')
                     . '</span>';
                 $panel .= $this->editPanelLinkWrap($icon, $formName, 'new', $currentRecord, '', $newUID);
@@ -139,10 +140,10 @@ class FrontendEditPanel
         // Hiding in workspaces because implementation is incomplete
         // Hiding for localizations because it is unknown what should be the function in that case
         if (isset($allow['delete']) && $this->backendUser->workspace === 0 && !$dataArr['_LOCALIZED_UID']) {
-            $icon = '<span title="' . $this->backendUser->extGetLL('p_delete') . '">'
+            $icon = '<span title="' . $this->getLabel('p_delete') . '">'
                 . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render('inline')
                 . '</span>';
-            $panel .= $this->editPanelLinkWrap($icon, $formName, 'delete', '', $this->backendUser->extGetLL('p_deleteConfirm'));
+            $panel .= $this->editPanelLinkWrap($icon, $formName, 'delete', '', $this->getLabel('p_deleteConfirm'));
         }
         // Final
         $labelTxt = $this->cObj->stdWrap($conf['label'], $conf['label.']);
@@ -328,5 +329,34 @@ class FrontendEditPanel
         }
 
         return $status;
+    }
+
+    /**
+     * Returns the label for key. If a translation for the language set in $this->uc['lang']
+     * is found that is returned, otherwise the default value.
+     * If the global variable $LOCAL_LANG is NOT an array (yet) then this function loads
+     * the global $LOCAL_LANG array with the content of "EXT:core/Resources/Private/Language/locallang_tsfe.xlf"
+     * such that the values therein can be used for labels in the Admin Panel
+     *
+     * @param string $key Key for a label in the $GLOBALS['LOCAL_LANG'] array of "EXT:core/Resources/Private/Language/locallang_tsfe.xlf
+     * @return string The value for the $key
+     */
+    protected function getLabel(string $key): string
+    {
+        if (!is_array($GLOBALS['LOCAL_LANG'])) {
+            $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_tsfe.xlf');
+            if (!is_array($GLOBALS['LOCAL_LANG'])) {
+                $GLOBALS['LOCAL_LANG'] = [];
+            }
+        }
+        return htmlspecialchars($this->getLanguageService()->getLL($key));
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

@@ -69,7 +69,7 @@ class EditToolbarService
                 'returnUrl' => $returnUrl,
             ]
         );
-        $title = $this->extGetLL('edit_recordHistory');
+        $title = $this->getLabel('edit_recordHistory');
         $output[] = '<a class="' .
                     $classes .
                     '" href="' .
@@ -91,7 +91,7 @@ class EditToolbarService
             }
             $link = (string)$uriBuilder->buildUriFromRoute($moduleName, $linkParameters);
             $icon = $iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render();
-            $title = $this->extGetLL('edit_newContentElement');
+            $title = $this->getLabel('edit_newContentElement');
             $output[] = '<a class="' .
                         $classes .
                         '" href="' .
@@ -114,7 +114,7 @@ class EditToolbarService
                 ]
             );
             $icon = $iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL)->render();
-            $title = $this->extGetLL('edit_move_page');
+            $title = $this->getLabel('edit_move_page');
             $output[] = '<a class="' .
                         $classes .
                         '" href="' .
@@ -137,7 +137,7 @@ class EditToolbarService
                 ]
             );
             $icon = $iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)->render();
-            $title = $this->extGetLL('edit_newPage');
+            $title = $this->getLabel('edit_newPage');
             $output[] = '<a class="' .
                         $classes .
                         '" href="' .
@@ -160,7 +160,7 @@ class EditToolbarService
                 ]
             );
             $icon = $iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render();
-            $title = $this->extGetLL('edit_editPageProperties');
+            $title = $this->getLabel('edit_editPageProperties');
             $output[] = '<a class="' .
                         $classes .
                         '" href="' .
@@ -205,7 +205,7 @@ class EditToolbarService
                 );
                 $icon = $iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL)
                     ->render();
-                $title = $this->extGetLL('edit_editPageOverlay');
+                $title = $this->getLabel('edit_editPageOverlay');
                 $output[] = '<a class="' .
                             $classes .
                             '" href="' .
@@ -228,7 +228,7 @@ class EditToolbarService
                 ]
             );
             $icon = $iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render();
-            $title = $this->extGetLL('edit_db_list');
+            $title = $this->getLabel('edit_db_list');
             $output[] = '<a class="' .
                         $classes .
                         '" href="' .
@@ -248,17 +248,12 @@ class EditToolbarService
     /**
      * Translate given key
      *
-     * @param string $key Key for a label in the $LOCAL_LANG array of "sysext/lang/Resources/Private/Language/locallang_tsfe.xlf
-     * @param bool $convertWithHtmlspecialchars If TRUE the language-label will be sent through htmlspecialchars
+     * @param string $key Key for a label in the $LOCAL_LANG array of "sysext/core/Resources/Private/Language/locallang_tsfe.xlf
      * @return string The value for the $key
      */
-    protected function extGetLL($key, $convertWithHtmlspecialchars = true): ?string
+    protected function getLabel($key): ?string
     {
-        $labelStr = $this->getLanguageService()->getLL($key);
-        if ($convertWithHtmlspecialchars) {
-            $labelStr = htmlspecialchars($labelStr, ENT_QUOTES | ENT_HTML5);
-        }
-        return $labelStr;
+        return htmlspecialchars($this->getLanguageService()->getLL($key), ENT_QUOTES | ENT_HTML5);
     }
 
     /**
