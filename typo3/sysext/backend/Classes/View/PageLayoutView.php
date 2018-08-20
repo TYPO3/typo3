@@ -648,7 +648,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                                 . $row['uid'] . '" data-table="tt_content" data-uid="' . $row['uid'] . '"' . $displayNone . '>' . $singleElementHTML . '</div>';
 
                             if ($this->tt_contentConfig['languageMode']) {
-                                $singleElementHTML .= '<div class="t3-page-ce t3js-page-ce">';
+                                $singleElementHTML .= '<div class="t3-page-ce" data-colpos="' . $columnId . '">';
                             }
                             $singleElementHTML .= '<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $columnId . '-' . 'page-' . $id .
                                 '-' . StringUtility::getUniqueId() . '">';
