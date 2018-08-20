@@ -321,7 +321,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $cacheTimeOutDefault = false;
 
     /**
-     * Set internally if cached content is fetched from the database
+     * Set internally if cached content is fetched from the database. No matter if it is temporary
+     * content (tempContent) or already generated page content.
+     *
      * @var bool
      * @internal
      */
@@ -386,8 +388,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $no_cacheBeforePageGen = false;
 
     /**
-     * This flag indicates if temporary content went into the cache during
-     * page-generation.
+     * This flag indicates if temporary content went into the cache during page-generation.
+     * When the message is set to "this page is being generated", TYPO3 Frontend indicates this way
+     * that the current page request is fully cached, and needs no page generation.
      * @var mixed
      */
     public $tempContent = false;
