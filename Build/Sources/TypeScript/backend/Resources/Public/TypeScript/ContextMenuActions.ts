@@ -177,6 +177,34 @@ class ContextMenuActions {
    * @param {string} table
    * @param {number} uid
    */
+  public static showInMenus(table: string, uid: number): void {
+    Viewport.ContentContainer.setUrl(
+      top.TYPO3.settings.RecordCommit.moduleUrl
+      + '&data[' + table + '][' + uid + '][nav_hide]=0'
+      + '&redirect=' + ContextMenuActions.getReturnUrl(),
+    ).done((): void => {
+      Viewport.NavigationContainer.PageTree.refreshTree();
+    });
+  }
+
+  /**
+   * @param {string} table
+   * @param {number} uid
+   */
+  public static hideInMenus(table: string, uid: number): void {
+    Viewport.ContentContainer.setUrl(
+      top.TYPO3.settings.RecordCommit.moduleUrl
+      + '&data[' + table + '][' + uid + '][nav_hide]=1'
+      + '&redirect=' + ContextMenuActions.getReturnUrl(),
+    ).done((): void => {
+      Viewport.NavigationContainer.PageTree.refreshTree();
+    });
+  }
+
+  /**
+   * @param {string} table
+   * @param {number} uid
+   */
   public static deleteRecord(table: string, uid: number): void {
     const $anchorElement = $(this);
     const $modal = Modal.confirm(

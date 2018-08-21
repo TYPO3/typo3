@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\ContextMenu\ItemProviders;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Context menu item provider for pages table
@@ -120,6 +121,16 @@ class PageProvider extends RecordProvider
                     'iconIdentifier' => 'actions-pagetree-mountroot',
                     'callbackAction' => 'mountAsTreeRoot',
                 ],
+                'showInMenus' => [
+                    'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:CM_showInMenus',
+                    'iconIdentifier' => 'actions-view',
+                    'callbackAction' => 'showInMenus',
+                ],
+                'hideInMenus' => [
+                    'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:CM_hideInMenus',
+                    'iconIdentifier' => 'actions-ban',
+                    'callbackAction' => 'hideInMenus',
+                ],
             ],
         ],
         'divider3' => [
@@ -204,6 +215,12 @@ class PageProvider extends RecordProvider
                 break;
             case 'disable':
                 $canRender = $this->canBeDisabled();
+                break;
+            case 'showInMenus':
+                $canRender = $this->canBeToggled('nav_hide', 1);
+                break;
+            case 'hideInMenus':
+                $canRender = $this->canBeToggled('nav_hide', 0);
                 break;
             case 'delete':
                 $canRender = $this->canBeDeleted();
@@ -480,5 +497,25 @@ class PageProvider extends RecordProvider
     protected function getPreviewPid(): int
     {
         return (int)$this->record['uid'];
+    }
+
+    /**
+     * Checks if user has access to this column
+     * and the page doktype is lower than 200 (exclude sys_folder, ...)
+     * and it contains given value
+     *
+     * @param string $fieldName
+     * @param int $value
+     * @return bool
+     */
+    protected function canBeToggled(string $fieldName, int $value): bool
+    {
+        if (!empty($GLOBALS['TCA'][$this->table]['columns'][$fieldName]['exclude'])
+            && $this->record['doktype'] <= PageRepository::DOKTYPE_SPACER
+            && $this->backendUser->check('non_exclude_fields', $this->table . ':' . $fieldName)
+        ) {
+            return (int)$this->record[$fieldName] === $value;
+        }
+        return false;
     }
 }

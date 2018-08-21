@@ -246,6 +246,12 @@
 			<trans-unit id="CM_history">
 				<source>History/Undo</source>
 			</trans-unit>
+			<trans-unit id="CM_hideInMenus">
+				<source>Hide in menu</source>
+			</trans-unit>
+			<trans-unit id="CM_showInMenus">
+				<source>Show in menu</source>
+			</trans-unit>
 			<trans-unit id="CM_perms">
 				<source>Access</source>
 			</trans-unit>
