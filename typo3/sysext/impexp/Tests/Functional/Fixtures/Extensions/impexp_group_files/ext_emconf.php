@@ -3,7 +3,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Impexp test extension',
     'description' => '',
     'category' => '',
-    'version' => '8.7.19',
+    'version' => '8.7.20',
     'state' => 'beta',
     'uploadfolder' => 1,
     'createDirs' => '',
@@ -13,7 +13,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '8.7.19',
+            'typo3' => '8.7.20',
         ],
         'conflicts' => [
         ],
