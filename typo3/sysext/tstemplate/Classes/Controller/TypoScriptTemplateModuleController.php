@@ -20,8 +20,9 @@ use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 
@@ -202,21 +204,31 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
             $this->getButtons();
             $this->generateMenu();
         } else {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $workspaceId = $this->getBackendUser()->workspace;
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('sys_template');
             $queryBuilder->getRestrictions()
                 ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-
-            $result = $queryBuilder->select('sys_template.uid')
-                ->addSelect(
-                    'sys_template.pid',
-                    'sys_template.title',
-                    'sys_template.sitetitle',
-                    'sys_template.root',
-                    'sys_template.hidden',
-                    'sys_template.starttime',
-                    'sys_template.endtime'
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $this->applyWorkspaceConstraint(
+                $queryBuilder,
+                'sys_template',
+                $workspaceId
+            );
+            $result = $queryBuilder
+                ->select(
+                    'uid',
+                    'pid',
+                    'title',
+                    'sitetitle',
+                    'root',
+                    'hidden',
+                    'starttime',
+                    'endtime',
+                    't3ver_oid',
+                    't3ver_wsid',
+                    't3ver_state',
+                    't3ver_move_id'
                 )
                 ->from('sys_template')
                 ->orderBy('sys_template.pid')
@@ -224,6 +236,10 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                 ->execute();
             $pArray = [];
             while ($record = $result->fetch()) {
+                BackendUtility::workspaceOL('sys_template', $record, $workspaceId, true);
+                if (empty($record) || VersionState::cast($record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+                    continue;
+                }
                 $additionalFieldsForRootline = ['sorting', 'hidden', 'fe_group', 'starttime', 'endtime', 'shortcut', 'nav_hide', 'module', 'content_from_pid'];
                 $rootline = BackendUtility::BEgetRootLine($record['pid'], '', true, $additionalFieldsForRootline);
                 $this->setInPageArray($pArray, $rootline, $record);
@@ -639,6 +655,36 @@ page.10.value = HELLO WORLD!
         $view->getRenderingContext()->setControllerAction($templateName);
         $view->getRequest()->setControllerExtensionName('tstemplate');
         return $view;
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param string $tableName
+     * @param int $workspaceId
+     */
+    protected function applyWorkspaceConstraint(
+        QueryBuilder $queryBuilder,
+        string $tableName,
+        int $workspaceId
+    ) {
+        if (empty($GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'])) {
+            return;
+        }
+
+        $workspaceIds = [0];
+        if ($workspaceId > 0) {
+            $workspaceIds[] = $workspaceId;
+        }
+        $queryBuilder->andWhere(
+            $queryBuilder->expr()->in(
+                't3ver_wsid',
+                $queryBuilder->createNamedParameter($workspaceIds, Connection::PARAM_INT_ARRAY)
+            ),
+            $queryBuilder->expr()->neq(
+                'pid',
+                $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+            )
+        );
     }
 
     /**
