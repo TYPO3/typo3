@@ -138,8 +138,6 @@ return [
                 ],
                 'foreign_table' => 'tx_styleguide_staticdata',
                 'foreign_table_where' => 'AND tx_styleguide_staticdata.value_1 LIKE \'%foo%\' ORDER BY uid',
-                // @todo: docu of rootLevel says, foreign_table_where is *ignored*, which is NOT true.
-                'rootLevel' => 1,
                 'foreign_table_prefix' => 'A prefix: ',
             ],
         ],
@@ -472,7 +470,6 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'tx_styleguide_staticdata',
-                'rootLevel' => 1,
                 'size' => 5,
                 'autoSizeMax' => 20,
                 'fieldControl' => [
@@ -803,7 +800,6 @@ return [
                                                         <type>select</type>
                                                         <renderType>selectMultipleSideBySide</renderType>
                                                         <foreign_table>tx_styleguide_staticdata</foreign_table>
-                                                        <rootLevel>1</rootLevel>
                                                         <size>5</size>
                                                         <autoSizeMax>5</autoSizeMax>
                                                         <minitems>0</minitems>
