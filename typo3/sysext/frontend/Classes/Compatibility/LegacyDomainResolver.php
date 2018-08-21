@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
  * or a pageId is given or a rootpage Id is given (= if there is a sys_domain record on that specific page).
  * Always keeps the sorting in line.
  *
- * @todo: would be nice to flush caches if sys_domain has been touched in DataHandler
  * @internal as this should ideally be wrapped inside the "main" site router in the future.
  */
 class LegacyDomainResolver implements SingletonInterface
@@ -42,6 +41,11 @@ class LegacyDomainResolver implements SingletonInterface
      * @var array
      */
     protected $domainDataCache = [];
+
+    /**
+     * @var string
+     */
+    protected $cacheIdentifier = 'legacy-domains';
 
     /**
      * @var FrontendInterface
@@ -65,7 +69,7 @@ class LegacyDomainResolver implements SingletonInterface
      */
     protected function populate()
     {
-        if ($data = $this->cache->get('legacy-domains')) {
+        if ($data = $this->cache->get($this->cacheIdentifier)) {
             // Due to the nature of PhpFrontend, the `<?php` and `#` wraps have to be removed
             $data = preg_replace('/^<\?php\s*|\s*#$/', '', $data);
             $this->groupedDomainsPerPage = json_decode($data, true);
@@ -83,7 +87,7 @@ class LegacyDomainResolver implements SingletonInterface
                 $this->groupedDomainsPerPage[(int)$row['pid']][] = $row;
             }
 
-            $this->cache->set('legacy-domains', json_encode($this->groupedDomainsPerPage));
+            $this->cache->set($this->cacheIdentifier, json_encode($this->groupedDomainsPerPage));
         }
     }
 

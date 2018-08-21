@@ -37,6 +37,11 @@ use TYPO3\CMS\Frontend\Compatibility\LegacyDomainResolver;
 class PseudoSiteFinder implements SingletonInterface
 {
     /**
+     * @var string
+     */
+    protected $cacheIdentifier = 'pseudo-sites';
+
+    /**
      * @var FrontendInterface
      */
     protected $cache;
@@ -58,12 +63,12 @@ class PseudoSiteFinder implements SingletonInterface
      */
     protected function populate()
     {
-        $data = $this->cache->get('pseudo-sites');
+        $data = $this->cache->get($this->cacheIdentifier);
         if (empty($data)) {
             $allLanguages = $this->getAllLanguageRecords();
             $groupedDomains = GeneralUtility::makeInstance(LegacyDomainResolver::class)->getGroupedDomainsPerPage();
             $availablePages = $this->getAllRootPagesWithoutSiteConfiguration();
-            $this->cache->set('pseudo-sites', json_encode([$allLanguages, $groupedDomains, $availablePages]));
+            $this->cache->set($this->cacheIdentifier, json_encode([$allLanguages, $groupedDomains, $availablePages]));
         } else {
             // Due to the nature of PhpFrontend, the `<?php` and `#` wraps have to be removed
             $data = preg_replace('/^<\?php\s*|\s*#$/', '', $data);
