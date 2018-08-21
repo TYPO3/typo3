@@ -190,7 +190,7 @@ class ActionController extends AbstractController
         $registry = GeneralUtility::makeInstance(Registry::class);
         $registry->remove('extensionDataImport', $registryKey);
 
-        $this->installUtility->processExtensionSetup($extension);
+        $this->installUtility->processExtensionSetup($extension['key']);
 
         $this->redirect('index', 'List');
     }
