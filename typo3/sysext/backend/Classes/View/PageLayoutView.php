@@ -39,12 +39,10 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\FlexFormService;
-use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Site\PseudoSiteFinder;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -4406,12 +4404,7 @@ class PageLayoutView implements LoggerAwareInterface
      */
     protected function resolveSiteLanguages(int $pageId)
     {
-        try {
-            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageId);
-        } catch (SiteNotFoundException $e) {
-            // Check for a pseudo site
-            $site = GeneralUtility::makeInstance(PseudoSiteFinder::class)->getSiteByPageId($pageId);
-        }
+        $site = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId($pageId);
         $this->siteLanguages = $site->getAvailableLanguages($this->getBackendUser(), false, $pageId);
     }
 

@@ -16,31 +16,17 @@ namespace TYPO3\CMS\Core\Site\Entity;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
-use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
- * Entity representing a site with legacy configuration (sys_domain) and all available languages in the system (sys_language)
+ * Entity representing a site with legacy configuration (sys_domain) and all available
+ * languages in the system (sys_language)
+ * @internal this class will likely be removed in TYPO3 v10.0. Please use SiteMatcher and SiteInterface to work with Sites in your own code.
  */
-class PseudoSite implements SiteInterface
+class PseudoSite extends NullSite implements SiteInterface
 {
     /**
      * @var string[]
      */
     protected $entryPoints;
-
-    /**
-     * @var int
-     */
-    protected $rootPageId;
-
-    /**
-     * @var SiteLanguage[]
-     */
-    protected $languages;
 
     /**
      * attached sys_domain records
@@ -89,7 +75,7 @@ class PseudoSite implements SiteInterface
      */
     public function getIdentifier(): string
     {
-        return 'PSEUDO_' . $this->rootPageId;
+        return '#PSEUDO_' . $this->rootPageId;
     }
 
     /**
@@ -121,101 +107,6 @@ class PseudoSite implements SiteInterface
     }
 
     /**
-     * Returns all available languages of this site
-     *
-     * @return SiteLanguage[]
-     */
-    public function getLanguages(): array
-    {
-        return $this->languages;
-    }
-
-    /**
-     * Returns a language of this site, given by the sys_language_uid
-     *
-     * @param int $languageId
-     * @return SiteLanguage
-     * @throws \InvalidArgumentException
-     */
-    public function getLanguageById(int $languageId): SiteLanguage
-    {
-        if (isset($this->languages[$languageId])) {
-            return $this->languages[$languageId];
-        }
-        throw new \InvalidArgumentException(
-            'Language ' . $languageId . ' does not exist on site ' . $this->getIdentifier() . '.',
-            1522965188
-        );
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDefaultLanguage(): SiteLanguage
-    {
-        return reset($this->languages);
-    }
-
-    /**
-     * This takes pageTSconfig into account (unlike Site interface) to find
-     * mod.SHARED.disableLanguages and mod.SHARED.defaultLanguageLabel
-     *
-     * @inheritdoc
-     */
-    public function getAvailableLanguages(BackendUserAuthentication $user, bool $includeAllLanguagesFlag = false, int $pageId = null): array
-    {
-        $availableLanguages = [];
-
-        // Check if we need to add language "-1"
-        if ($includeAllLanguagesFlag && $user->checkLanguageAccess(-1)) {
-            $availableLanguages[-1] = new SiteLanguage(-1, '', $this->getBase(), [
-                'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages'),
-                'flag' => 'flag-multiple'
-            ]);
-        }
-        $pageTs = BackendUtility::getPagesTSconfig($pageId);
-        $pageTs = $pageTs['mod.']['SHARED.'] ?? [];
-
-        $disabledLanguages = GeneralUtility::intExplode(',', $pageTs['disableLanguages'] ?? '', true);
-        // Do not add the ones that are not allowed by the user
-        foreach ($this->languages as $language) {
-            if ($user->checkLanguageAccess($language->getLanguageId()) && !in_array($language->getLanguageId(), $disabledLanguages, true)) {
-                if ($language->getLanguageId() === 0) {
-                    // 0: "Default" language
-                    $defaultLanguageLabel = 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage';
-                    $defaultLanguageLabel = $this->getLanguageService()->sL($defaultLanguageLabel);
-                    if (isset($pageTs['defaultLanguageLabel'])) {
-                        $defaultLanguageLabel = $pageTs['defaultLanguageLabel'] . ' (' . $defaultLanguageLabel . ')';
-                    }
-                    $defaultLanguageFlag = '';
-                    if (isset($pageTs['defaultLanguageFlag'])) {
-                        $defaultLanguageFlag = 'flags-' . $pageTs['defaultLanguageFlag'];
-                    }
-                    $language = new SiteLanguage(0, '', $language->getBase(), [
-                        'title' => $defaultLanguageLabel,
-                        'flag' => $defaultLanguageFlag,
-                    ]);
-                }
-                $availableLanguages[$language->getLanguageId()] = $language;
-            }
-        }
-
-        return $availableLanguages;
-    }
-
-    /**
-     * Returns a ready-to-use error handler, to be used within the ErrorController
-     *
-     * @param int $statusCode
-     * @return PageErrorHandlerInterface
-     * @throws \RuntimeException
-     */
-    public function getErrorHandler(int $statusCode): PageErrorHandlerInterface
-    {
-        throw new \RuntimeException('No error handler given for the status code "' . $statusCode . '".', 1522495102);
-    }
-
-    /**
      * If a site base contains "/" or "www.domain.com", it is ensured that
      * parse_url() can handle this kind of configuration properly.
      *
@@ -238,14 +129,5 @@ class PseudoSite implements SiteInterface
             }
         }
         return $base;
-    }
-
-    /**
-     * Shorthand functionality for fetching the language service
-     * @return LanguageService
-     */
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }

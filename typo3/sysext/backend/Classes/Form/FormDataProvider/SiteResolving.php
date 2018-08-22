@@ -16,9 +16,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Site\PseudoSiteFinder;
-use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -39,12 +37,7 @@ class SiteResolving implements FormDataProviderInterface
     public function addData(array $result): array
     {
         $pageIdDefaultLanguage = $result['defaultLanguagePageRow']['uid'] ?? $result['effectivePid'];
-        try {
-            $result['site'] = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageIdDefaultLanguage);
-        } catch (SiteNotFoundException $e) {
-            // Check for a pseudo site
-            $result['site'] = GeneralUtility::makeInstance(PseudoSiteFinder::class)->getSiteByPageId($pageIdDefaultLanguage);
-        }
+        $result['site'] = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId($pageIdDefaultLanguage);
         return $result;
     }
 }

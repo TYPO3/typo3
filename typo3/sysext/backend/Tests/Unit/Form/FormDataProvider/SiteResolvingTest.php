@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\SiteResolving;
+use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -26,16 +26,18 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SiteResolvingTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
+
     /**
      * @test
      */
     public function addDataAddsSiteObjectOfDefaultLanguageRow()
     {
-        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinderProphecy->reveal());
+        $siteMatcherProphecy = $this->prophesize(SiteMatcher::class);
+        GeneralUtility::setSingletonInstance(SiteMatcher::class, $siteMatcherProphecy->reveal());
         $siteProphecy = $this->prophesize(Site::class);
         $siteProphecyRevelation = $siteProphecy->reveal();
-        $siteFinderProphecy->getSiteByPageId(23)->willReturn($siteProphecyRevelation);
+        $siteMatcherProphecy->matchByPageId(23)->willReturn($siteProphecyRevelation);
         $input = [
             'defaultLanguagePageRow' => [
                 'uid' => 23,
@@ -53,11 +55,11 @@ class SiteResolvingTest extends UnitTestCase
      */
     public function addDataAddsSiteObjectOfEffectivePid()
     {
-        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinderProphecy->reveal());
+        $siteMatcherProphecy = $this->prophesize(SiteMatcher::class);
+        GeneralUtility::setSingletonInstance(SiteMatcher::class, $siteMatcherProphecy->reveal());
         $siteProphecy = $this->prophesize(Site::class);
         $siteProphecyRevelation = $siteProphecy->reveal();
-        $siteFinderProphecy->getSiteByPageId(42)->willReturn($siteProphecyRevelation);
+        $siteMatcherProphecy->matchByPageId(42)->willReturn($siteProphecyRevelation);
         $input = [
             'effectivePid' => 42,
             'site' => $siteProphecyRevelation,

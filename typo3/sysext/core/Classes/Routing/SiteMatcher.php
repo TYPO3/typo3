@@ -24,6 +24,9 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Site\Entity\PseudoSite;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\PseudoSiteFinder;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -36,8 +39,11 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  *
  * The main usage is the ->matchRequest() functionality, which receives a request object and boots up
  * Symfony Routing to find the proper route with its defaults / attributes.
+ *
+ * On top, this is also commonly used throughout TYPO3 to fetch a site by a given pageId.
+ * ->matchPageId()
  */
-class SiteMatcher
+class SiteMatcher implements SingletonInterface
 {
     /**
      * @var SiteFinder
@@ -45,12 +51,19 @@ class SiteMatcher
     protected $finder;
 
     /**
-     * Injects necessary objects
+     * @var PseudoSiteFinder
+     */
+    protected $pseudoSiteFinder;
+
+    /**
+     * Injects necessary objects. PseudoSiteFinder is not injectable as this will be become obsolete in the future.
+     *
      * @param SiteFinder|null $finder
      */
     public function __construct(SiteFinder $finder = null)
     {
         $this->finder = $finder ?? GeneralUtility::makeInstance(SiteFinder::class);
+        $this->pseudoSiteFinder = GeneralUtility::makeInstance(PseudoSiteFinder::class);
     }
 
     /**
@@ -142,6 +155,23 @@ class SiteMatcher
     }
 
     /**
+     * If a given page ID is handed in, a Site/PseudoSite/NullSite is returned.
+     *
+     * @param int $pageId the page ID (must be a page in the default language)
+     * @param array|null $rootLine an alternative root line, if already at and.
+     * @return SiteInterface
+     */
+    public function matchByPageId(int $pageId, array $rootLine = null): SiteInterface
+    {
+        try {
+            return $this->finder->getSiteByPageId($pageId, $rootLine);
+        } catch (SiteNotFoundException $e) {
+            // Check for a pseudo / null site
+            return $this->pseudoSiteFinder->getSiteByPageId($pageId, $rootLine);
+        }
+    }
+
+    /**
      * Returns a Symfony RouteCollection containing all routes to all sites.
      *
      * {next} is not evaluated yet, but set as suffix and will change in the future.
@@ -178,9 +208,12 @@ class SiteMatcher
      */
     protected function getRouteCollectionForVisibleSysDomains(): RouteCollection
     {
-        $sites = GeneralUtility::makeInstance(PseudoSiteFinder::class)->findAll();
+        $sites = $this->pseudoSiteFinder->findAll();
         $groupedRoutes = [];
         foreach ($sites as $site) {
+            if (!$site instanceof PseudoSite) {
+                continue;
+            }
             foreach ($site->getEntryPoints() as $domainName) {
                 // Site has no sys_domain record, it is not valid for a routing entrypoint, but only available
                 // via "id" GET parameter which is handled before

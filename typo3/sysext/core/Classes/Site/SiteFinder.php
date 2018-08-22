@@ -68,9 +68,10 @@ class SiteFinder
     /**
      * Find a site by given root page id
      *
-     * @param int $rootPageId
+     * @param int $rootPageId the page ID (default language)
      * @return SiteInterface
      * @throws SiteNotFoundException
+     * @internal only for usage in some places for managing Site Configuration, might be removed without further notice
      */
     public function getSiteByRootPageId(int $rootPageId): SiteInterface
     {
@@ -116,12 +117,8 @@ class SiteFinder
             }
         }
         foreach ($rootLine as $pageInRootLine) {
-            if ($pageInRootLine['uid'] > 0) {
-                try {
-                    return $this->getSiteByRootPageId((int)$pageInRootLine['uid']);
-                } catch (SiteNotFoundException $e) {
-                    // continue looping
-                }
+            if (isset($this->mappingRootPageIdToIdentifier[(int)$pageInRootLine['uid']])) {
+                return $this->sites[$this->mappingRootPageIdToIdentifier[(int)$pageInRootLine['uid']]];
             }
         }
         throw new SiteNotFoundException('No site found in root line of page  ' . $pageId, 1521716622);

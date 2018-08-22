@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\PseudoSite;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -32,9 +32,9 @@ use TYPO3\CMS\Frontend\Compatibility\LegacyDomainResolver;
 
 /**
  * Methods related to "pseudo-sites" = sites that do not have a configuration yet.
- * @internal
+ * @internal this class will likely be removed in TYPO3 v10.0. Please use SiteMatcher and not the PseudoSiteFinder directly to make use of caching etc.
  */
-class PseudoSiteFinder implements SingletonInterface
+class PseudoSiteFinder
 {
     /**
      * @var string
@@ -54,7 +54,6 @@ class PseudoSiteFinder implements SingletonInterface
     public function __construct()
     {
         $this->cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core');
-        $this->populate();
     }
 
     /**
@@ -96,7 +95,7 @@ class PseudoSiteFinder implements SingletonInterface
         }
 
         // Now lets an empty Pseudo-Site for visiting things on pid=0
-        $this->pseudoSites[0] = new PseudoSite(0, ['languages' => $allLanguages]);
+        $this->pseudoSites[0] = new NullSite($allLanguages);
     }
 
     /**

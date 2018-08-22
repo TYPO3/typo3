@@ -30,6 +30,13 @@ interface SiteInterface
     public function getRootPageId(): int;
 
     /**
+     * Returns an identifier for the site / configuration
+     *
+     * @return string
+     */
+    public function getIdentifier(): string;
+
+    /**
      * Returns all available languages of this site visible in the frontend
      *
      * @return SiteLanguage[]

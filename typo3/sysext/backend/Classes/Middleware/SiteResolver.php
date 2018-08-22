@@ -20,10 +20,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
-use TYPO3\CMS\Core\Site\PseudoSiteFinder;
-use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -49,25 +46,14 @@ class SiteResolver implements MiddlewareInterface
         $site = null;
         $pageId = (int)($request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0);
 
-        // Check if we have a _GET/_POST parameter for "id", then a site information can be resolved based.
+        $rootLine = null;
         if ($pageId > 0) {
-            try {
-                $finder = GeneralUtility::makeInstance(SiteFinder::class);
-                $site = $finder->getSiteByPageId($pageId);
-            } catch (SiteNotFoundException $e) {
-                // Check for pseudo sites, based on given ID
-                $finder = GeneralUtility::makeInstance(PseudoSiteFinder::class);
-                $rootLine = BackendUtility::BEgetRootLine($pageId);
-                $site = $finder->getSiteByPageId($pageId, $rootLine);
-            }
-        } else {
-            $finder = GeneralUtility::makeInstance(PseudoSiteFinder::class);
-            $site = $finder->getSiteByPageId(0);
+            // Check if we have a _GET/_POST parameter for "id", then a site information can be resolved based.
+            $rootLine = BackendUtility::BEgetRootLine($pageId);
         }
-        if ($site instanceof SiteInterface) {
-            $request = $request->withAttribute('site', $site);
-            $GLOBALS['TYPO3_REQUEST'] = $request;
-        }
+        $site = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId($pageId, $rootLine);
+        $request = $request->withAttribute('site', $site);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
         return $handler->handle($request);
     }
 }
