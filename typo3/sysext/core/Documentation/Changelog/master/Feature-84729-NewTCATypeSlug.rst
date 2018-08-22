@@ -29,12 +29,13 @@ If a TCA table contains a field called "slug", it needs to be filled for every e
 be shown and edited via regular Backend Forms, and is also evaluated during persistence via DataHandler.
 
 The default behaviour of a slug is as follows:
-- A slug only contains characters which are allowed within URLs. Spaces, commas and other special characters
- are converted to a fallback character.
-- A slug is always lower-cased.
-- A slug is unicode-aware.
+* A slug only contains characters which are allowed within URLs. Spaces, commas and other special characters are
+  converted to a fallback character.
+* A slug is always lower-cased.
+* A slug is unicode-aware.
 
-The following options apply to the new TCA type:
+The following options apply to the new TCA type::
+
 	'type' => 'slug',
 	'config' => [
 		'generatorOptions' => [
@@ -46,7 +47,7 @@ The following options apply to the new TCA type:
 		'eval' => 'uniqueInSite'
 	]
 
-In addition the new 'eval' option 'uniqueInSite' to evaluate if a record is unique in a page tree (specific to a
+In addition the new `eval` option `uniqueInSite` to evaluate if a record is unique in a page tree (specific to a
 language).
 
 The new slug TCA type allows for two `eval` options `uniqueInSite` or `uniqueInPid` (useful for third-party
@@ -56,6 +57,9 @@ recommended not to do so.
 It is possible to build a default value from the rootline (very helpful for pages, or categorized slugs),
 but also to just generate a "speaking" segment from e.g. a news title.
 
-Sanitization and Validation configuration options apply when persisting a record via DataHandler.
+Sanitation and Validation configuration options apply when persisting a record via DataHandler.
+
+In the backend forms a validation happens by an AJAX call, which immediately check any input by the user and receive
+a new proposal in case the slug is already used.
 
 .. index:: TCA, ext:core

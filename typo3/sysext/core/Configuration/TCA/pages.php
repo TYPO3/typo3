@@ -157,6 +157,7 @@ return [
             'displayCond' => 'USER:' . \TYPO3\CMS\Core\Compatibility\PseudoSiteTcaDisplayCondition::class . '->isInPseudoSite:pages:false',
             'config' => [
                 'type' => 'slug',
+                'size' => 50,
                 'generatorOptions' => [
                     'fields' => ['title'],
                     'fieldSeparator' => '/',

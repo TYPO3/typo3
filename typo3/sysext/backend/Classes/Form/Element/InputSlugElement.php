@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Controller\FormSlugAjaxController;
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -74,22 +76,6 @@ class InputSlugElement extends AbstractFormElement
         // Convert UTF-8 characters back (that is important, see Slug class when sanitizing)
         $itemValue = rawurldecode($itemValue);
 
-        $idAttribute = StringUtility::getUniqueId('formengine-input-');
-        $attributes = [
-            'value' => '',
-            'id' => $idAttribute,
-            'class' => 'form-control',
-            'disabled' => 'disabled',
-            'placeholder' => '/',
-            'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
-            'data-formengine-input-params' => json_encode([
-                'field' => $parameterArray['itemFormElName'],
-                'evalList' => implode(',', $evalList),
-                'is_in' => trim($config['is_in'] ?? '')
-            ]),
-            'data-formengine-input-name' => $parameterArray['itemFormElName'],
-        ];
-
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
@@ -101,33 +87,100 @@ class InputSlugElement extends AbstractFormElement
         $fieldWizardResult = $this->renderFieldWizard();
         $fieldWizardHtml = $fieldWizardResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
+        $toggleButtonTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.toggleSlugExplanation');
 
+        $thisSlugId = 't3js-form-field-slug-id' . StringUtility::getUniqueId();
         $mainFieldHtml = [];
         $mainFieldHtml[] = '<div class="formengine-field-item t3js-formengine-field-item">';
-        $mainFieldHtml[] = $fieldInformationHtml;
-        $mainFieldHtml[] = '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
-        $mainFieldHtml[] =  '<div class="form-wizards-wrap">';
-        $mainFieldHtml[] =      '<div class="form-wizards-element">';
-        $mainFieldHtml[] =          '<div class="input-group">' . ($baseUrl ? '<span class="input-group-addon">' . htmlspecialchars($baseUrl) . '</span>' : '') . '<input type="text"' . GeneralUtility::implodeAttributes($attributes, true) . ' /></div>';
-        $mainFieldHtml[] =          '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($itemValue) . '" />';
-        $mainFieldHtml[] =      '</div>';
+        $mainFieldHtml[] =  $fieldInformationHtml;
+        $mainFieldHtml[] =  '<div class="form-control-wrap" style="max-width: ' . $width . 'px" id="' . htmlspecialchars($thisSlugId) . '">';
+        $mainFieldHtml[] =      '<div class="form-wizards-wrap">';
+        $mainFieldHtml[] =          '<div class="form-wizards-element">';
+        $mainFieldHtml[] =              '<div class="input-group">';
+        $mainFieldHtml[] =                  ($baseUrl ? '<span class="input-group-addon">' . htmlspecialchars($baseUrl) . '</span>' : '');
+        // We deal with 3 fields here: a readonly field for current / default values, an input
+        // field to manipulate the value, and the final hidden field used to send the value
+        $mainFieldHtml[] =                  '<input';
+        $mainFieldHtml[] =                      ' class="form-control t3js-form-field-slug-readonly"';
+        $mainFieldHtml[] =                      ' data-toggle="tooltip"';
+        $mainFieldHtml[] =                      ' data-title="' . htmlspecialchars($itemValue) . '"';
+        $mainFieldHtml[] =                      ' value="' . htmlspecialchars($itemValue) . '"';
+        $mainFieldHtml[] =                      ' readonly';
+        $mainFieldHtml[] =                  ' />';
+        $mainFieldHtml[] =                  '<input type="text"';
+        $mainFieldHtml[] =                      ' id="' . htmlspecialchars(StringUtility::getUniqueId('formengine-input-')) . '"';
+        $mainFieldHtml[] =                      ' class="form-control t3js-form-field-slug-input hidden"';
+        $mainFieldHtml[] =                      ' placeholder="' . htmlspecialchars($row['slug'] ?? '/') . '"';
+        $mainFieldHtml[] =                      ' data-formengine-validation-rules="' . htmlspecialchars($this->getValidationDataAsJsonString($config)) . '"';
+        $mainFieldHtml[] =                      ' data-formengine-input-params="' . htmlspecialchars(json_encode(['field' => $parameterArray['itemFormElName'], 'evalList' => implode(',', $evalList)])) . '"';
+        $mainFieldHtml[] =                      ' data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"';
+        $mainFieldHtml[] =                  ' />';
+        $mainFieldHtml[] =                  '<span class="input-group-btn">';
+        $mainFieldHtml[] =                      '<button class="btn btn-default t3js-form-field-slug-toggle" type="button" title="' . htmlspecialchars($toggleButtonTitle) . '">';
+        $mainFieldHtml[] =                          $this->iconFactory->getIcon('actions-version-workspaces-preview-link', Icon::SIZE_SMALL)->render();
+        $mainFieldHtml[] =                      '</button>';
+        $mainFieldHtml[] =                  '</span>';
+        $mainFieldHtml[] =                  '<input type="hidden"';
+        $mainFieldHtml[] =                      ' class="t3js-form-field-slug-hidden"';
+        $mainFieldHtml[] =                      ' name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"';
+        $mainFieldHtml[] =                      ' value="' . htmlspecialchars($itemValue) . '"';
+        $mainFieldHtml[] =                  ' />';
+        $mainFieldHtml[] =              '</div>';
+        $mainFieldHtml[] =          '</div>';
         if (!empty($fieldControlHtml)) {
-            $mainFieldHtml[] =  '<div class="form-wizards-items-aside">';
-            $mainFieldHtml[] =      '<div class="btn-group">';
-            $mainFieldHtml[] =          $fieldControlHtml;
+            $mainFieldHtml[] =      '<div class="form-wizards-items-aside">';
+            $mainFieldHtml[] =          '<div class="btn-group">';
+            $mainFieldHtml[] =              $fieldControlHtml;
+            $mainFieldHtml[] =          '</div>';
             $mainFieldHtml[] =      '</div>';
-            $mainFieldHtml[] =  '</div>';
         }
-        if (!empty($fieldWizardHtml)) {
-            $mainFieldHtml[] =  '<div class="form-wizards-items-bottom">';
-            $mainFieldHtml[] =      $fieldWizardHtml;
-            $mainFieldHtml[] =  '</div>';
-        }
+        $mainFieldHtml[] =          '<div class="form-wizards-items-bottom">';
+        $mainFieldHtml[] =              '<span class="t3js-form-proposal-accepted hidden label label-success">Congrats, this page will look like ' . htmlspecialchars($baseUrl) . '<span>/abc/</span></span>';
+        $mainFieldHtml[] =              '<span class="t3js-form-proposal-different hidden label label-warning">Hmm, that is taken, how about ' . htmlspecialchars($baseUrl) . '<span>/abc/</span></span>';
+        $mainFieldHtml[] =              $fieldWizardHtml;
+        $mainFieldHtml[] =          '</div>';
+        $mainFieldHtml[] =      '</div>';
         $mainFieldHtml[] =  '</div>';
-        $mainFieldHtml[] = '</div>';
         $mainFieldHtml[] = '</div>';
 
         $resultArray['html'] = implode(LF, $mainFieldHtml);
+
+        list($commonElementPrefix) = GeneralUtility::revExplode('[', $parameterArray['itemFormElName'], 2);
+        $validInputNamesToListenTo = [];
+        foreach ($config['generatorOptions']['fields'] ?? [] as $listenerFieldName) {
+            $validInputNamesToListenTo[$listenerFieldName] = $commonElementPrefix . '[' . htmlspecialchars($listenerFieldName) . ']';
+        }
+        $signature = GeneralUtility::hmac(
+            implode(
+                '',
+                [
+                    $table,
+                    $this->data['vanillaUid'] < 0 ? abs($this->data['vanillaUid']) : $this->data['effectivePid'],
+                    $row['uid'],
+                    $languageId,
+                    $this->data['fieldName'],
+                    $this->data['command'],
+                ]
+            ),
+            FormSlugAjaxController::class
+        );
+        $optionsForModule = [
+            'pageId' => $this->data['vanillaUid'] < 0 ? abs($this->data['vanillaUid']) : $this->data['effectivePid'],
+            'recordId' => $row['uid'],
+            'tableName' => $table,
+            'fieldName' => $this->data['fieldName'],
+            'config' => $config,
+            'listenerFieldNames' => $validInputNamesToListenTo,
+            'language' => $languageId,
+            'originalValue' => $itemValue,
+            'signature' => $signature,
+            'command' => $this->data['command']
+        ];
+        $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/SlugElement' => '
+            function(SlugElement) {
+                SlugElement.initialize(' . GeneralUtility::quoteJSvalue('#' . $thisSlugId) . ', ' . json_encode($optionsForModule) . ');
+            }'
+        ];
         return $resultArray;
     }
 

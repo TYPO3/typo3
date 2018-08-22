@@ -59,6 +59,12 @@ return [
         'target' => Controller\SiteInlineAjaxController::class . '::newInlineChildAction'
     ],
 
+    // Validate slug input
+    'record_slug_suggest' => [
+        'path' => '/record/slug/suggest',
+        'target' => Controller\FormSlugAjaxController::class . '::suggestAction'
+    ],
+
     // Site configuration inline open existing "record" route
     'site_configuration_inline_details' => [
         'path' => '/siteconfiguration/inline/details',
