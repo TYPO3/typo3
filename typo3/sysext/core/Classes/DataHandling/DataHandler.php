@@ -1536,7 +1536,7 @@ class DataHandler implements LoggerAwareInterface
                 default:
                     if (isset($GLOBALS['TCA'][$table]['columns'][$field])) {
                         // Evaluating the value
-                        $res = $this->checkValue($table, $field, $fieldValue, $id, $status, $realPid, $tscPID);
+                        $res = $this->checkValue($table, $field, $fieldValue, $id, $status, $realPid, $tscPID, $incomingFieldArray);
                         if (array_key_exists('value', $res)) {
                             $fieldArray[$field] = $res['value'];
                         }
@@ -1602,9 +1602,10 @@ class DataHandler implements LoggerAwareInterface
      * @param string $status 'update' or 'new' flag
      * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted. If $realPid is -1 it means that a new version of the record is being inserted.
      * @param int $tscPID TSconfig PID
+     * @param array $incomingFieldArray the fields being explicitly set by the outside (unlike $fieldArray)
      * @return array Returns the evaluated $value as key "value" in this array. Can be checked with isset($res['value']) ...
      */
-    public function checkValue($table, $field, $value, $id, $status, $realPid, $tscPID)
+    public function checkValue($table, $field, $value, $id, $status, $realPid, $tscPID, $incomingFieldArray = [])
     {
         // Result array
         $res = [];
@@ -1661,7 +1662,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // Perform processing:
-        $res = $this->checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $this->uploadedFileArray[$table][$id][$field], $tscPID);
+        $res = $this->checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $this->uploadedFileArray[$table][$id][$field], $tscPID, ['incomingFieldArray' => $incomingFieldArray]);
         return $res;
     }
 
@@ -1703,6 +1704,9 @@ class DataHandler implements LoggerAwareInterface
                 break;
             case 'input':
                 $res = $this->checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field);
+                break;
+            case 'slug':
+                $res = $this->checkValueForSlug((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $field, $additionalData['incomingFieldArray'] ?? []);
                 break;
             case 'check':
                 $res = $this->checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field);
@@ -1915,6 +1919,54 @@ class DataHandler implements LoggerAwareInterface
             $res['value'] = $res['value'] ? gmdate($format, $res['value']) : $emptyValue;
         }
         return $res;
+    }
+
+    /**
+     * Evaluate "slug" type values.
+     *
+     * @param string $value The value to set.
+     * @param array $tcaFieldConf Field configuration from TCA
+     * @param string $table Table name
+     * @param int $id UID of record
+     * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted. If $realPid is -1 it means that a new version of the record is being inserted.
+     * @param string $field Field name
+     * @param array $incomingFieldArray the fields being explicitly set by the outside (unlike $fieldArray) for the record
+     * @return array $res The result array. The processed value (if any!) is set in the "value" key.
+     */
+    protected function checkValueForSlug(string $value, array $tcaFieldConf, string $table, $id, int $realPid, string $field, array $incomingFieldArray = []): array
+    {
+        $workspaceId = $this->BE_USER->workspace;
+        $helper = GeneralUtility::makeInstance(SlugHelper::class, $table, $field, $tcaFieldConf, $workspaceId);
+        $fullRecord = array_replace_recursive($this->checkValue_currentRecord, $incomingFieldArray ?? []);
+        // Generate a value if there is none, otherwise ensure that all characters are cleaned up
+        if (empty($value)) {
+            $value = $helper->generate($fullRecord, $realPid);
+        } else {
+            $value = $helper->sanitize($value);
+        }
+
+        $languageId = (int)$fullRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
+        $evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], true);
+
+        // In case a workspace is given, and the $realPid(!) still is negative
+        // this is most probably triggered by versionizeRecord() and a raw record
+        // copy - thus, uniqueness cannot be determined without having the
+        // real information
+        // @todo This is still not explicit, but probably should be
+        if ($workspaceId > 0 && $realPid === -1
+            && !MathUtility::canBeInterpretedAsInteger($id)
+        ) {
+            return ['value' => $value];
+        }
+
+        if (in_array('uniqueInSite', $evalCodesArray, true)) {
+            $value = $helper->buildSlugForUniqueInSite($value, $id, $realPid, $languageId);
+        }
+        if (in_array('uniqueInPid', $evalCodesArray, true)) {
+            $value = $helper->buildSlugForUniqueInPid($value, $id, $realPid, $languageId);
+        }
+
+        return ['value' => $value];
     }
 
     /**
@@ -3866,7 +3918,7 @@ class DataHandler implements LoggerAwareInterface
         foreach ($fieldArray as $field => $fieldValue) {
             if (isset($GLOBALS['TCA'][$table]['columns'][$field])) {
                 // Evaluating the value.
-                $res = $this->checkValue($table, $field, $fieldValue, $id, 'new', $realPid, 0);
+                $res = $this->checkValue($table, $field, $fieldValue, $id, 'new', $realPid, 0, $fieldArray);
                 if (isset($res['value'])) {
                     $fieldArray[$field] = $res['value'];
                 }

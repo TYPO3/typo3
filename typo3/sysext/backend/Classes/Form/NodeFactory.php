@@ -92,6 +92,7 @@ class NodeFactory
         'unknown' => Element\UnknownElement::class,
         'user' => Element\UserElement::class,
         'fileInfo' => Element\FileInfoElement::class,
+        'slug' => Element\InputSlugElement::class,
 
         // Default classes to enrich single elements
         'fieldControl' => NodeExpansion\FieldControl::class,
