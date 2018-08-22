@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 /*
@@ -20,8 +21,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -29,6 +28,16 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DatabaseSystemLanguageRowsTest extends UnitTestCase
 {
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfSiteObjectIsNotSet()
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(1534952559);
+        (new DatabaseSystemLanguageRows())->addData([]);
+    }
+
     /**
      * @test
      */
@@ -40,10 +49,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
 
-        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinderProphecy->reveal());
         $siteProphecy = $this->prophesize(Site::class);
-        $siteFinderProphecy->getSiteByPageId(42)->willReturn($siteProphecy->reveal());
         $siteLanguageMinusOne = $this->prophesize(SiteLanguage::class);
         $siteLanguageMinusOne->getLanguageId()->willReturn(-1);
         $siteLanguageMinusOne->getTitle()->willReturn('All');
@@ -64,8 +70,8 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         ];
         $siteProphecy->getAvailableLanguages(Argument::cetera())->willReturn($siteLanguages);
         $input = [
-            'pageTsConfig' => [],
             'effectivePid' => 42,
+            'site' => $siteProphecy->reveal(),
         ];
         $expected = [
             'systemLanguageRows' => [

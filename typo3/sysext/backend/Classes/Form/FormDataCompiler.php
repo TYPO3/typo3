@@ -169,6 +169,8 @@ class FormDataCompiler
             'effectivePid' => 0,
             // Rootline of page the record that is handled is located at as created by BackendUtility::BEgetRootline()
             'rootline' => [],
+            // The resolved SiteInterface object of the page or page given record is located on.
+            'site' => null,
             // For "edit", this is the permission bitmask of the page that is edited, or of the page a record is located at
             // For "new", this is the permission bitmask of the page the record is added to
             // @todo: Remove if not needed on a lower level

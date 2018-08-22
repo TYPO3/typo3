@@ -16,12 +16,10 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Site\PseudoSiteFinder;
-use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -34,17 +32,18 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
      *
      * @param array $result
      * @return array
-     * @throws \UnexpectedValueException
+     * @throws \LogicException
      */
     public function addData(array $result)
     {
-        $pageIdDefaultLanguage = $result['defaultLanguagePageRow']['uid'] ?? $result['effectivePid'];
-        try {
-            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageIdDefaultLanguage);
-        } catch (SiteNotFoundException $e) {
-            // Check for a pseudo site
-            $site = GeneralUtility::makeInstance(PseudoSiteFinder::class)->getSiteByPageId($pageIdDefaultLanguage);
+        $site = $result['site'] ?? null;
+        if (!$site instanceof SiteInterface) {
+            throw new \LogicException(
+                'No valid site object found in $result[\'site\']',
+                1534952559
+            );
         }
+        $pageIdDefaultLanguage = $result['defaultLanguagePageRow']['uid'] ?? $result['effectivePid'];
         $languages = $site->getAvailableLanguages($this->getBackendUser(), true, $pageIdDefaultLanguage);
 
         $languageRows = [];
