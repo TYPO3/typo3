@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Routing;
  */
 
 use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -92,9 +93,22 @@ class PageUriBuilder implements SingletonInterface
         // Only if a language is configured for the site, build a URL with a site prefix / base
         if ($siteLanguage) {
             unset($options['legacyUrlPrefix']);
-            $prefix = $siteLanguage->getBase() . '?id=' . $alternativePageId;
+            // Ensure to fetch the path segment / slug if it exists
+            if ($siteLanguage->getLanguageId() > 0) {
+                $pageLocalizations = BackendUtility::getRecordLocalization('pages', $pageId, $siteLanguage->getLanguageId());
+                $pageRecord = $pageLocalizations[0] ?? false;
+            } else {
+                $pageRecord = BackendUtility::getRecord('pages', $pageId);
+            }
+            $prefix = $siteLanguage->getBase();
+            if (!empty($pageRecord['slug'] ?? '')) {
+                $prefix = rtrim($prefix, '/') . '/' . ltrim($pageRecord['slug'], '/');
+            } else {
+                $prefix .= '?id=' . $alternativePageId;
+            }
         } else {
             // If nothing is found, use index.php?id=123&additionalParams
+            // This usually kicks in with "PseudoSites" where no language object can be determined.
             $prefix = $options['legacyUrlPrefix'] ?? null;
             if ($prefix === null) {
                 $prefix = $referenceType === self::ABSOLUTE_URL ? GeneralUtility::getIndpEnv('TYPO3_SITE_URL') : '';
@@ -107,7 +121,15 @@ class PageUriBuilder implements SingletonInterface
 
         // Add the query parameters as string
         $queryString = http_build_query($queryParameters, '', '&', PHP_QUERY_RFC3986);
-        $uri = new Uri($prefix . ($queryString ? '&' . $queryString : ''));
+        $prefix = rtrim($prefix, '?');
+        if (!empty($queryString)) {
+            if (strpos($prefix, '?') === false) {
+                $prefix .= '?';
+            } else {
+                $prefix .= '&';
+            }
+        }
+        $uri = new Uri($prefix . $queryString);
         if ($fragment) {
             $uri = $uri->withFragment($fragment);
         }

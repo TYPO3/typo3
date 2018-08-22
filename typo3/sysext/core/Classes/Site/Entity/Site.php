@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Error\PageErrorHandler\PageContentErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Routing\PageRouter;
+use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -315,6 +317,18 @@ class Site implements SiteInterface
             }
         }
         return $base;
+    }
+
+    /**
+     * Returns applicable routers for this site
+     *
+     * @return RouterInterface[]
+     */
+    public function getRouters(): array
+    {
+        return [
+            new PageRouter()
+        ];
     }
 
     /**

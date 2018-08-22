@@ -16,6 +16,9 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Middleware;
  * The TYPO3 project - inspiring people to share!
  */
 
+use PHPUnit\Framework\MockObject\MockObject;
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -23,6 +26,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Routing\PageRouter;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -45,13 +49,22 @@ class SiteResolverTest extends UnitTestCase
      */
     protected $siteFinder;
 
+    /**
+     * @var RequestHandlerInterface
+     */
     protected $siteFoundRequestHandler;
+
+    /**
+     * @var PageRouter|ObjectProphecy
+     */
+    protected $pageRouterProphecy;
 
     /**
      * Set up
      */
     protected function setUp(): void
     {
+        $GLOBALS['TSFE'] = new \stdClass();
         $this->siteFinder = $this->getAccessibleMock(SiteFinder::class, ['dummy'], [], '', false);
 
         // A request handler which expects a site to be found.
@@ -75,6 +88,9 @@ class SiteResolverTest extends UnitTestCase
                 return new NullResponse();
             }
         };
+
+        $this->pageRouterProphecy = $this->prophesize(PageRouter::class);
+        $this->pageRouterProphecy->matchRoute(Argument::cetera())->willReturn(['page' => ['uid' => 13, 'l10n_parent' => 0]]);
 
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
@@ -105,9 +121,13 @@ class SiteResolverTest extends UnitTestCase
             ])
         ]);
 
+        $subject = $this->createSiteResolverMock(
+            new SiteMatcher($this->siteFinder)
+        );
+
         $request = new ServerRequest($incomingUrl, 'GET');
-        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
         $response = $subject->process($request, $this->siteFoundRequestHandler);
+
         if ($response instanceof NullResponse) {
             $this->fail('No site configuration found in URL ' . $incomingUrl . '.');
         } else {
@@ -156,8 +176,11 @@ class SiteResolverTest extends UnitTestCase
             ]),
         ]);
 
+        $subject = $this->createSiteResolverMock(
+            new SiteMatcher($this->siteFinder)
+        );
+
         $request = new ServerRequest($incomingUrl, 'GET');
-        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
         $response = $subject->process($request, $this->siteFoundRequestHandler);
         if ($response instanceof NullResponse) {
             $this->fail('No site configuration found in URL ' . $incomingUrl . '.');
@@ -245,9 +268,13 @@ class SiteResolverTest extends UnitTestCase
             ]),
         ]);
 
+        $subject = $this->createSiteResolverMock(
+            new SiteMatcher($this->siteFinder)
+        );
+
         $request = new ServerRequest($incomingUrl, 'GET');
-        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
         $response = $subject->process($request, $this->siteFoundRequestHandler);
+
         if ($response instanceof NullResponse) {
             $this->fail('No site configuration found in URL ' . $incomingUrl . '.');
         } else {
@@ -299,7 +326,7 @@ class SiteResolverTest extends UnitTestCase
                 0,
                 '/'
             ],
-             */
+             * This case does not work as we now resolve the rest of the URL
             'matches a subsite with translation in first site' => [
                 'https://www.random-result.com/fr/products/pampers/',
                 'outside-site',
@@ -307,6 +334,7 @@ class SiteResolverTest extends UnitTestCase
                 1,
                 '/fr/'
             ],
+             */
         ];
     }
 
@@ -363,9 +391,13 @@ class SiteResolverTest extends UnitTestCase
             ]),
         ]);
 
+        $subject = $this->createSiteResolverMock(
+            new SiteMatcher($this->siteFinder)
+        );
+
         $request = new ServerRequest($incomingUrl, 'GET');
-        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
         $response = $subject->process($request, $this->siteFoundRequestHandler);
+
         if ($response instanceof NullResponse) {
             $this->fail('No site configuration found in URL ' . $incomingUrl . '.');
         } else {
@@ -379,10 +411,27 @@ class SiteResolverTest extends UnitTestCase
     }
 
     /**
-     * @test
+     * @return array
      */
-    public function checkIf404IsSiteLanguageIsDisabledInFrontend()
+    public function checkIf404IsSiteLanguageIsDisabledInFrontendDataProvider(): array
     {
+        return [
+            'disabled site language' => ['https://twenty.one/en/pilots/', 404],
+            'enabled site language' => ['https://twenty.one/fr/pilots/', 200],
+        ];
+    }
+
+    /**
+     * @param string $url
+     * @param int $expectedStatusCode
+     *
+     * @test
+     * @dataProvider checkIf404IsSiteLanguageIsDisabledInFrontendDataProvider
+     */
+    public function checkIf404IsSiteLanguageIsDisabledInFrontend(
+        string $url,
+        int $expectedStatusCode
+    ) {
         $this->siteFinder->_set('sites', [
             'mixed-site' => new Site('mixed-site', 13, [
                 'base' => '/',
@@ -410,15 +459,30 @@ class SiteResolverTest extends UnitTestCase
             ]),
         ]);
 
-        // Reqest to default page
-        $request = new ServerRequest('https://twenty.one/en/pilots/', 'GET');
-        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
-        $response = $subject->process($request, $this->siteFoundRequestHandler);
-        $this->assertEquals(404, $response->getStatusCode());
+        $subject = $this->createSiteResolverMock(
+            new SiteMatcher($this->siteFinder)
+        );
 
-        $request = new ServerRequest('https://twenty.one/fr/pilots/', 'GET');
-        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
+        // Request to default page
+        $request = new ServerRequest($url, 'GET');
         $response = $subject->process($request, $this->siteFoundRequestHandler);
-        $this->assertEquals(200, $response->getStatusCode());
+        static::assertEquals($expectedStatusCode, $response->getStatusCode());
+    }
+
+    /**
+     * @param SiteMatcher|null $matcher
+     * @return MockObject|SiteResolver
+     */
+    private function createSiteResolverMock(SiteMatcher $matcher = null): MockObject
+    {
+        $mock = $this->getAccessibleMock(
+            SiteResolver::class,
+            ['getPageRouter'],
+            [$matcher]
+        );
+        $mock->expects(static::any())
+            ->method('getPageRouter')
+            ->willReturn($this->pageRouterProphecy->reveal());
+        return $mock;
     }
 }

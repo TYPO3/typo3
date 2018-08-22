@@ -20,6 +20,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Routing\PageRouter;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\Entity\PseudoSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -65,6 +67,7 @@ class SiteResolver implements MiddlewareInterface
         $routeResult = $this->matcher->matchRequest($request);
         $site = $routeResult['site'] ?? null;
         $language = $routeResult['language'] ?? null;
+        $routePath = $routeResult['next'] ?? '';
 
         // language is found, and hidden but also not visible to the BE user, this needs to fail
         if ($language instanceof SiteLanguage && !$this->isLanguageEnabled($language, $GLOBALS['BE_USER'] ?? null)) {
@@ -85,15 +88,51 @@ class SiteResolver implements MiddlewareInterface
             $queryParams['L'] = $language->getLanguageId();
             $request = $request->withQueryParams($queryParams);
             $_GET['L'] = $queryParams['L'];
-            // At this point, we later get further route modifiers
-            // for bw-compat we update $GLOBALS[TYPO3_REQUEST] to be used later in TSFE.
-            $GLOBALS['TYPO3_REQUEST'] = $request;
+
+            $routePath = ltrim($routePath, '/');
+            if (!empty($routePath)) {
+                // Check for the route
+                $routeResult = $this->getPageRouter()
+                    ->matchRoute($request, $routePath, $site, $language);
+                if (is_array($routeResult)) {
+                    $page = $routeResult['page'];
+                    $pageId = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $page['uid']);
+                    // @todo: we could move the middleware earlier which will make A LOT OF things easier
+                    $GLOBALS['TSFE']->id = $pageId;
+                    $_GET['id'] = $pageId;
+                    $queryParams = $request->getQueryParams();
+                    $queryParams['id'] = $pageId;
+                    $request = $request->withQueryParams($queryParams);
+                    if (!empty($routeResult['next'] ?? '')) {
+                        if ($routeResult['next'] === '/') {
+                            // a URL was called via "/mysite/" but the page is actually called "/mysite"
+                            // let's do a redirect
+                            $uri = $request->getUri();
+                            $path = rtrim($uri->getPath(), '/');
+                            $uri = $uri->withPath($path);
+                            return new RedirectResponse($uri, 301);
+                        }
+                        // @todo: kick in the resolvers for the RouteEnhancers at this point
+                        return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                            $request,
+                            'The requested page does not exist',
+                            ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
+                        );
+                    }
+                } else {
+                    return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                        $request,
+                        'The requested page does not exist',
+                        ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
+                    );
+                }
+            }
         } elseif ($site instanceof PseudoSite) {
             $request = $request->withAttribute('site', $site);
-            // At this point, we later get further route modifiers
-            // for bw-compat we update $GLOBALS[TYPO3_REQUEST] to be used later in TSFE.
-            $GLOBALS['TYPO3_REQUEST'] = $request;
         }
+        // At this point, we later get further route modifiers
+        // for bw-compat we update $GLOBALS[TYPO3_REQUEST] to be used later in TSFE.
+        $GLOBALS['TYPO3_REQUEST'] = $request;
 
         return $handler->handle($request);
     }
@@ -112,5 +151,13 @@ class SiteResolver implements MiddlewareInterface
             return true;
         }
         return false;
+    }
+
+    /**
+     * @return PageRouter
+     */
+    protected function getPageRouter(): PageRouter
+    {
+        return GeneralUtility::makeInstance(PageRouter::class);
     }
 }
