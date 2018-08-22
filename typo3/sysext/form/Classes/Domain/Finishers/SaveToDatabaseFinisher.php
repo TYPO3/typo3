@@ -53,7 +53,7 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
  *   Each key within options.elements has to match with a
  *   form element identifier within your form definition.
  *   The value for each key within options.elements is an array with
- *   additional informations.
+ *   additional information.
  *
  * options.elements.<elementIdentifier>.mapOnDatabaseColumn (mandatory)
  * --------------------------------------------------------
@@ -81,7 +81,7 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
  *   Each key within options.databaseColumnMappings has to match with a
  *   existing database column.
  *   The value for each key within options.databaseColumnMappings is an
- *   array with additional informations.
+ *   array with additional information.
  *
  *   This mapping is done *before* the options.elements mapping.
  *   This means if you map a database column to a value through
@@ -138,7 +138,7 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
  * Multiple database operations
  * ============================
  *
- * You can write options as an array to perform multiple database oprtations.
+ * You can write options as an array to perform multiple database operations.
  *
  *  finishers:
  *    -
@@ -157,11 +157,11 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
  *            pid: 1
  *          databaseColumnMappings:
  *            some_other_column:
- *              uid_foreign: '{SaveToDatabase.insertedUids.1}'
+ *              value: '{SaveToDatabase.insertedUids.1}'
  *
  * This would perform 2 database operations.
  * One insert and one update.
- * You cann access the inserted uids with '{SaveToDatabase.insertedUids.<theArrayKeyNumberWithinOptions>}'
+ * You can access the inserted uids with '{SaveToDatabase.insertedUids.<theArrayKeyNumberWithinOptions>}'
  * If you perform an insert operation, the value of the inserted database row will be stored
  * within the FinisherVariableProvider.
  * <theArrayKeyNumberWithinOptions> references to the numeric key within options

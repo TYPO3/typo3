@@ -2620,7 +2620,7 @@ or create manually (not preferred)::
    $formDefinition->addFinisher($saveToDatabaseFinisher);
 
 
-This perform 2 database operations.
+This performs 2 database operations.
 One insert and one update.
 You can access the inserted uids through '{SaveToDatabase.insertedUids.<theArrayKeyNumberWithinOptions>}'
 If you perform a insert operation, the value of the inserted database row will be stored within the FinisherVariableProvider.
