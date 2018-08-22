@@ -1136,7 +1136,7 @@ class DataHandler implements LoggerAwareInterface
                                     // Default is to create a version of the individual records... element versioning that is.
                                     'label' => 'Auto-created for WS #' . $this->BE_USER->workspace
                                 ];
-                                $tce->start([], $cmd);
+                                $tce->start([], $cmd, $this->BE_USER);
                                 $tce->process_cmdmap();
                                 $this->errorLog = array_merge($this->errorLog, $tce->errorLog);
                                 // If copying was successful, share the new uids (also of related children):
@@ -5029,7 +5029,7 @@ class DataHandler implements LoggerAwareInterface
             /** @var DataHandler $tce */
             $tce = GeneralUtility::makeInstance(__CLASS__);
             $tce->enableLogging = $this->enableLogging;
-            $tce->start([], $removeArray);
+            $tce->start([], $removeArray, $this->BE_USER);
             $tce->process_cmdmap();
             unset($tce);
         }
@@ -5465,7 +5465,7 @@ class DataHandler implements LoggerAwareInterface
                 $dataHandler = GeneralUtility::makeInstance(__CLASS__);
                 $dataHandler->enableLogging = $this->enableLogging;
                 $dataHandler->neverHideAtCopy = true;
-                $dataHandler->start([], $command);
+                $dataHandler->start([], $command, $this->BE_USER);
                 $dataHandler->process_cmdmap();
                 unset($dataHandler);
 
