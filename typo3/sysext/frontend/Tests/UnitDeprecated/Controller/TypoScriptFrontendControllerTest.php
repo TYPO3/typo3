@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Frontend\Tests\UnitDeprecated\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -32,7 +31,6 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     protected function setUp()
     {
         parent::setUp();
-        GeneralUtility::flushInternalRuntimeCaches();
         $this->subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
     }
 

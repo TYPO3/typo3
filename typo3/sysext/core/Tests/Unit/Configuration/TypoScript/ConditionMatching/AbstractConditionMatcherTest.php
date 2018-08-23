@@ -59,7 +59,6 @@ class AbstractConditionMatcherTest extends UnitTestCase
 
         $this->resetSingletonInstances = true;
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
-        GeneralUtility::flushInternalRuntimeCaches();
 
         $typoScriptConditionProvider = GeneralUtility::makeInstance(TypoScriptConditionProvider::class);
 

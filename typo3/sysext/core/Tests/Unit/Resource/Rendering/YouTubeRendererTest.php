@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\YouTubeHelper;
 use TYPO3\CMS\Core\Resource\Rendering\YouTubeRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -38,7 +37,6 @@ class YouTubeRendererTest extends UnitTestCase
     protected function setUp()
     {
         parent::setUp();
-        GeneralUtility::flushInternalRuntimeCaches();
         $_SERVER['HTTP_HOST'] = 'test.server.org';
 
         /** @var YouTubeHelper|\PHPUnit_Framework_MockObject_MockObject $youTubeHelper */

@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -50,7 +49,6 @@ class ImageScriptServiceTest extends UnitTestCase
     {
         $this->environmentService = $this->createMock(EnvironmentService::class);
         $this->subject = new ImageService($this->environmentService);
-        GeneralUtility::flushInternalRuntimeCaches();
         $_SERVER['HTTP_HOST'] = 'foo.bar';
     }
 

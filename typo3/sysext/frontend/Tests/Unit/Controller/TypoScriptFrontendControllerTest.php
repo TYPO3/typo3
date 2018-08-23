@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -40,7 +39,6 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
 
     protected function setUp()
     {
-        GeneralUtility::flushInternalRuntimeCaches();
         $this->subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
         $this->subject->_set('context', new Context());
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '170928423746123078941623042360abceb12341234231';
@@ -240,7 +238,6 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
             $this->subject->config = ['config' => ['sword_standAlone' => 1]];
         }
 
-        GeneralUtility::flushInternalRuntimeCaches();
         $request = ServerRequestFactory::fromGlobals();
         $this->subject->preparePageContentGeneration($request);
         $this->assertEquals($this->subject->sWordRegEx, $expectedRegex);

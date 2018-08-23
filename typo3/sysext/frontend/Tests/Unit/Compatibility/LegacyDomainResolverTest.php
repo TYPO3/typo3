@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Compatibility;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Compatibility\LegacyDomainResolver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -37,7 +36,6 @@ class LegacyDomainResolverTest extends UnitTestCase
     {
         parent::setUp();
         $this->subject = $this->getAccessibleMock(LegacyDomainResolver::class, ['dummy'], [], '', false);
-        GeneralUtility::flushInternalRuntimeCaches();
     }
 
     /**

@@ -62,7 +62,6 @@ class GeneralUtilityTest extends UnitTestCase
      */
     protected function setUp()
     {
-        GeneralUtilityFixture::flushInternalRuntimeCaches();
         GeneralUtilityFixture::$isAllowedHostHeaderValueCallCount = 0;
         GeneralUtilityFixture::setAllowHostHeaderValue(false);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL;
@@ -1537,7 +1536,6 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function getIndpEnvTypo3HostOnlyParsesHostnamesAndIpAdresses($httpHost, $expectedIp)
     {
-        GeneralUtility::flushInternalRuntimeCaches();
         $_SERVER['HTTP_HOST'] = $httpHost;
         $this->assertEquals($expectedIp, GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'));
     }
@@ -1729,7 +1727,6 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1396795884);
-
         $_SERVER['HTTP_HOST'] = $httpHost;
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = $hostNamePattern;
         GeneralUtilityFixture::getIndpEnv('HTTP_HOST');
@@ -2027,7 +2024,6 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $_SERVER['HTTP_HOST'] = $host;
         $_SERVER['SCRIPT_NAME'] = $subDirectory . 'typo3/index.php';
-        GeneralUtility::flushInternalRuntimeCaches();
         $this->assertEquals($url, GeneralUtility::sanitizeLocalUrl($url));
     }
 
@@ -2042,7 +2038,6 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $_SERVER['HTTP_HOST'] = $host;
         $_SERVER['SCRIPT_NAME'] = $subDirectory . 'typo3/index.php';
-        GeneralUtility::flushInternalRuntimeCaches();
         $this->assertEquals(rawurlencode($url), GeneralUtility::sanitizeLocalUrl(rawurlencode($url)));
     }
 

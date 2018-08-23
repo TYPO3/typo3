@@ -49,7 +49,6 @@ class ConditionMatcherTest extends UnitTestCase
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
 
         $this->testGlobalNamespace = $this->getUniqueId('TEST');
-        GeneralUtility::flushInternalRuntimeCaches();
         $GLOBALS[$this->testGlobalNamespace] = [];
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->page = [];
