@@ -2646,7 +2646,7 @@ class GeneralUtility
      */
     public static function getIndpEnv($getEnvName)
     {
-        if (isset(self::$indpEnvCache[$getEnvName])) {
+        if (array_key_exists($getEnvName, self::$indpEnvCache)) {
             return self::$indpEnvCache[$getEnvName];
         }
 
