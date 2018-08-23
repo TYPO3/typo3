@@ -34,7 +34,7 @@ Either one of the following:
 
 + ensure to use a valid cHash, e.g. by removing the
   :html:`noCacheHash="1"` argument from link view-helpers
-+ disable the :ts:`feature.requireCHashArgumentForActionArguments`
-  setting for the particular extension
++ disable the :ts:`features.requireCHashArgumentForActionArguments`
+  setting for the particular extension, e.g. :ts:`plugin.tx_indexedsearch.features.requireCHashArgumentForActionArguments = 0`
 
 .. index:: Frontend, PHP-API, ext:extbase
