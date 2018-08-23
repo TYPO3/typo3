@@ -144,9 +144,9 @@ class SlugHelper
             $rootLine = BackendUtility::BEgetRootLine($pid, '', true, ['nav_title']);
             $parentPageRecord = reset($rootLine);
             if ($languageId > 0) {
-                $parentPageRecord = BackendUtility::getRecordLocalization('pages', $parentPageRecord['uid'], $languageId);
-                if (!empty($parentPageRecord)) {
-                    $parentPageRecord = reset($parentPageRecord);
+                $localizedParentPageRecord = BackendUtility::getRecordLocalization('pages', $parentPageRecord['uid'], $languageId);
+                if (!empty($localizedParentPageRecord)) {
+                    $parentPageRecord = reset($localizedParentPageRecord);
                 }
             }
             if (is_array($parentPageRecord)) {
