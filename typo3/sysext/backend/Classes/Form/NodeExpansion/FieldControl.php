@@ -114,7 +114,7 @@ class FieldControl extends AbstractNode
             if (!isset($linkAttributes['class'])) {
                 $linkAttributes['class'] = 'btn btn-default';
             } else {
-                $linkAttributes['class'] .= 'btn btn-default';
+                $linkAttributes['class'] .= ' btn btn-default';
             }
             if (!isset($linkAttributes['href'])) {
                 $linkAttributes['href'] = '#';
