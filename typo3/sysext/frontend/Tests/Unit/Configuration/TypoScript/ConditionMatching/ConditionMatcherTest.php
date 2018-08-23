@@ -39,7 +39,6 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     protected function setUp()
     {
         $this->testGlobalNamespace = $this->getUniqueId('TEST');
-        GeneralUtility::flushInternalRuntimeCaches();
         $GLOBALS[$this->testGlobalNamespace] = [];
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->tmpl = new \stdClass();

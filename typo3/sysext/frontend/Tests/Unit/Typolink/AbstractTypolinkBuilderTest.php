@@ -49,8 +49,6 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
      */
     protected function setUp()
     {
-        GeneralUtility::flushInternalRuntimeCaches();
-
         $this->singletonInstances = GeneralUtility::getSingletonInstances();
         $this->createMockedLoggerAndLogManager();
 

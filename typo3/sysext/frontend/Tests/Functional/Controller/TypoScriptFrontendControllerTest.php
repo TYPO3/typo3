@@ -92,8 +92,6 @@ class TypoScriptFrontendControllerTest extends \TYPO3\TestingFramework\Core\Func
      */
     public function getSysDomainCacheReturnsCurrentDomainRecord($currentDomain)
     {
-        GeneralUtility::flushInternalRuntimeCaches();
-
         $_SERVER['HTTP_HOST'] = $currentDomain;
         $domainRecords = [
             'typo3.org' => [
@@ -151,8 +149,6 @@ class TypoScriptFrontendControllerTest extends \TYPO3\TestingFramework\Core\Func
      */
     public function getSysDomainCacheReturnsForcedDomainRecord($currentDomain)
     {
-        GeneralUtility::flushInternalRuntimeCaches();
-
         $_SERVER['HTTP_HOST'] = $currentDomain;
         $domainRecords = [
             'typo3.org' => [

@@ -45,8 +45,6 @@ class AbstractConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     {
         require_once('Fixtures/ConditionMatcherUserFuncs.php');
 
-        GeneralUtility::flushInternalRuntimeCaches();
-
         $this->backupApplicationContext = GeneralUtility::getApplicationContext();
         $this->conditionMatcher = $this->getMockForAbstractClass(AbstractConditionMatcher::class);
         $this->evaluateConditionCommonMethod = new \ReflectionMethod(AbstractConditionMatcher::class, 'evaluateConditionCommon');

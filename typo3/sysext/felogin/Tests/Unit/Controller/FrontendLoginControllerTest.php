@@ -89,7 +89,6 @@ class FrontendLoginControllerTest extends \TYPO3\TestingFramework\Core\Unit\Unit
      */
     protected function setUpFakeSitePathAndHost()
     {
-        GeneralUtility::flushInternalRuntimeCaches();
         $_SERVER['ORIG_PATH_INFO'] = $_SERVER['PATH_INFO'] = $_SERVER['ORIG_SCRIPT_NAME'] = $_SERVER['SCRIPT_NAME'] = $this->testSitePath . TYPO3_mainDir;
         $_SERVER['HTTP_HOST'] = $this->testHostName;
     }
