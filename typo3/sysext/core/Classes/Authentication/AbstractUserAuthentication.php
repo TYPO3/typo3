@@ -1400,9 +1400,11 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * @param array $loginData Login data array
      * @param string $passwordCompareStrategy Alternative passwordCompareStrategy. Used when authentication services wants to override the default.
      * @return bool TRUE if login data matched
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function compareUident($user, $loginData, $passwordCompareStrategy = '')
     {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         return (string)$loginData['uident_text'] !== '' && (string)$loginData['uident_text'] === (string)$user[$this->userident_column];
     }
 

@@ -2991,4 +2991,18 @@ return [
             'Deprecation-85164-LanguageRelatedMethods.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->compareUident' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-85960-CompareUidentDeprecated.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractAuthenticationService->compareUident' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-85960-CompareUidentDeprecated.rst'
+        ],
+    ],
 ];
