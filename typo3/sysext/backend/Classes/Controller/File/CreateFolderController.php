@@ -126,7 +126,6 @@ class CreateFolderController
     public function __construct()
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $GLOBALS['SOBE'] = $this;
         // @deprecated since v9, will be moved out of __construct() in v10
         $this->init($GLOBALS['TYPO3_REQUEST']);
     }
