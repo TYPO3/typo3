@@ -81,7 +81,7 @@ class SaltedPasswordService extends AbstractAuthenticationService
      */
     public function init()
     {
-        $this->extConf = TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordsUtility::returnExtConf();
+        $this->extConf = SaltedPasswordsUtility::returnExtConf();
         parent::init();
         return true;
     }
@@ -109,7 +109,7 @@ class SaltedPasswordService extends AbstractAuthenticationService
             if (!$validPasswd) {
                 $this->authenticationFailed = true;
             }
-            $defaultHashingClassName = TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordsUtility::getDefaultSaltingHashingMethod();
+            $defaultHashingClassName = SaltedPasswordsUtility::getDefaultSaltingHashingMethod();
             $skip = false;
             // Test for wrong salted hashing method (only if current method is not related to default method)
             if ($validPasswd && get_class($this->objInstanceSaltedPW) !== $defaultHashingClassName && !is_subclass_of($this->objInstanceSaltedPW, $defaultHashingClassName)) {
