@@ -154,6 +154,7 @@ return [
         'slug' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:pages.slug',
+            'displayCond' => 'USER:' . \TYPO3\CMS\Core\Compatibility\PseudoSiteTcaDisplayCondition::class . '->isInPseudoSite:pages:false',
             'config' => [
                 'type' => 'slug',
                 'generatorOptions' => [
@@ -434,7 +435,12 @@ return [
         ],
         'alias' => [
             'exclude' => true,
-            'displayCond' => 'VERSION:IS:false',
+            'displayCond' => [
+                'AND' => [
+                    'VERSION:IS:false',
+                    'USER:' . \TYPO3\CMS\Core\Compatibility\PseudoSiteTcaDisplayCondition::class . '->isInPseudoSite:pages:true',
+                ],
+            ],
             'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.alias',
             'config' => [
