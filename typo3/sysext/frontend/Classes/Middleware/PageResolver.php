@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -45,6 +46,11 @@ class PageResolver implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        // First, resolve the root page of the site, the Page ID of the current domain
+        if (($site = $request->getAttribute('site', null)) instanceof SiteInterface) {
+            $GLOBALS['TSFE']->domainStartPage = $site->getRootPageId();
+        }
+
         $GLOBALS['TSFE']->siteScript = $request->getAttribute('normalizedParams')->getSiteScript();
         $this->checkAlternativeIdMethods($GLOBALS['TSFE']);
         $GLOBALS['TSFE']->determineId();

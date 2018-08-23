@@ -52,8 +52,6 @@ class SiteResolverTest extends UnitTestCase
      */
     protected function setUp(): void
     {
-        // Make global object available, however it is not actively used
-        $GLOBALS['TSFE'] = new \stdClass();
         $this->siteFinder = $this->getAccessibleMock(SiteFinder::class, ['dummy'], [], '', false);
 
         // A request handler which expects a site to be found.
@@ -70,7 +68,7 @@ class SiteResolverTest extends UnitTestCase
                             'site' => $site->getIdentifier(),
                             'language-id' => $language->getLanguageId(),
                             'language-base' => $language->getBase(),
-                            'rootpage' => $GLOBALS['TSFE']->domainStartPage
+                            'rootpage' => $site->getRootPageId()
                         ]
                     );
                 }

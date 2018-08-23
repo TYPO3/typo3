@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\Entity\PseudoSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -94,11 +93,6 @@ class SiteResolver implements MiddlewareInterface
             // At this point, we later get further route modifiers
             // for bw-compat we update $GLOBALS[TYPO3_REQUEST] to be used later in TSFE.
             $GLOBALS['TYPO3_REQUEST'] = $request;
-        }
-
-        // Now resolve the root page of the site, the page_id of the current domain
-        if ($site instanceof SiteInterface) {
-            $GLOBALS['TSFE']->domainStartPage = $site->getRootPageId();
         }
 
         return $handler->handle($request);
