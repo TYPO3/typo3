@@ -638,6 +638,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     public function genericGetVariablesSucceedsWithNamespaceIENV()
     {
         $_SERVER['HTTP_HOST'] = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY') . ':1234567';
+        GeneralUtility::flushInternalRuntimeCaches();
         $this->assertTrue($this->matchCondition->match('[globalString = IENV:TYPO3_PORT = 1234567]'));
     }
 
