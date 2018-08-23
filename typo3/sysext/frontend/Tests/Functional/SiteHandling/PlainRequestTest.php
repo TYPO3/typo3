@@ -94,9 +94,7 @@ class PlainRequestTest extends AbstractTestCase
     {
         $domainPaths = [
             '/',
-            'http://localhost/',
             'https://localhost/',
-            'http://website.local/',
             'https://website.local/',
         ];
 
@@ -139,9 +137,7 @@ class PlainRequestTest extends AbstractTestCase
     {
         $domainPaths = [
             '/',
-            'http://localhost/',
             'https://localhost/',
-            'http://website.local/',
             'https://website.local/',
         ];
 
@@ -406,9 +402,7 @@ class PlainRequestTest extends AbstractTestCase
     {
         $domainPaths = [
             '/',
-            'http://localhost/',
             'https://localhost/',
-            'http://website.local/',
             'https://website.local/',
         ];
 
@@ -490,9 +484,7 @@ class PlainRequestTest extends AbstractTestCase
     {
         $domainPaths = [
             '/',
-            'http://localhost/',
             'https://localhost/',
-            'http://website.local/',
             'https://website.local/',
         ];
 

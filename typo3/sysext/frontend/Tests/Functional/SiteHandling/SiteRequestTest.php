@@ -453,6 +453,8 @@ class SiteRequestTest extends AbstractTestCase
      */
     public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPageErrorHandling(string $uri, int $frontendUserId)
     {
+        $this->markTestSkipped('Skipped until PageContentErrorHandler::handlePageError does not use HTTP anymore');
+
         $this->writeSiteConfiguration(
             'website-local',
             $this->buildSiteConfiguration(1000, 'https://website.local/'),
@@ -634,6 +636,8 @@ class SiteRequestTest extends AbstractTestCase
      */
     public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingPageErrorHandling(string $uri)
     {
+        $this->markTestSkipped('Skipped until PageContentErrorHandler::handlePageError does not use HTTP anymore');
+
         $this->writeSiteConfiguration(
             'website-local',
             $this->buildSiteConfiguration(1000, 'https://website.local/'),
