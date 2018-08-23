@@ -577,12 +577,12 @@ class Uri implements UriInterface
         $uri = '';
 
         if (!empty($this->scheme)) {
-            $uri .= $this->scheme . '://';
+            $uri .= $this->scheme . ':';
         }
 
         $authority = $this->getAuthority();
         if (!empty($authority)) {
-            $uri .= $authority;
+            $uri .= '//' . $authority;
         }
 
         $path = $this->getPath();

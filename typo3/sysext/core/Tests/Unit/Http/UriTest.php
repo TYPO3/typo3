@@ -485,6 +485,19 @@ class UriTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
+    public function withEmptySchemeReturnsNewInstanceWithAbsoluteUri()
+    {
+        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
+        $new = $uri->withScheme('');
+        $this->assertNotSame($uri, $new);
+        $this->assertNotSame((string)$uri, (string)$new);
+        $this->assertEquals('', $new->getScheme());
+        $this->assertEquals('//user:pass@local.example.com:3001/foo?bar=baz#quz', (string)$new);
+    }
+
+    /**
+     * @test
+     */
     public function withPathNotSlashPrefixedIsEmittedWithSlashDelimiterWhenUriIsCastToString()
     {
         $uri = new Uri('http://example.com');
