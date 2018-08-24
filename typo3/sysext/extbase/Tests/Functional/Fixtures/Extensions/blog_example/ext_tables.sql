@@ -19,12 +19,16 @@ CREATE TABLE tx_blogexample_domain_model_post (
 
 	title varchar(255) DEFAULT '' NOT NULL,
 	date int(11) DEFAULT '0' NOT NULL,
-	author int(255) DEFAULT '0' NOT NULL,
-	reviewer int(255) DEFAULT '0' NOT NULL,
+	author int(11) DEFAULT '0' NOT NULL,
+	second_author int(11) DEFAULT '0' NOT NULL,
+	reviewer int(11) DEFAULT '0' NOT NULL,
 	content text NOT NULL,
 	tags int(11) unsigned DEFAULT '0' NOT NULL,
 	comments int(11) unsigned DEFAULT '0' NOT NULL,
-	related_posts int(11) unsigned DEFAULT '0' NOT NULL
+	related_posts int(11) unsigned DEFAULT '0' NOT NULL,
+	additional_name varchar(255) DEFAULT '' NOT NULL,
+	additional_info int(11) DEFAULT '0' NOT NULL,
+	additional_comments varchar(255) DEFAULT '' NOT NULL
 );
 
 #
@@ -106,4 +110,12 @@ CREATE TABLE tx_blogexample_domain_model_dateexample (
 	datetime_int int(11) DEFAULT '0' NOT NULL,
 	datetime_text varchar(255) DEFAULT '' NOT NULL,
 	datetime_datetime datetime
+);
+
+#
+# Table structure for table 'tx_blogexample_domain_model_info'
+#
+CREATE TABLE tx_blogexample_domain_model_info (
+	name varchar(255) DEFAULT '' NOT NULL,
+	post int(11) DEFAULT '0' NOT NULL
 );

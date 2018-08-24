@@ -9,6 +9,8 @@ return [
         'crdate' => 'crdate',
         'versioningWS' => true,
         'origUid' => 't3_origuid',
+        'languageField' => 'sys_language_uid',
+        'transOrigPointerField' => 'l10n_parent',
         'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
         'delete' => 'deleted',
         'enablecolumns' => [
@@ -20,6 +22,37 @@ return [
         'showRecordFieldList' => 'firstname, lastname, email, avatar'
     ],
     'columns' => [
+        'sys_language_uid' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'special' => 'languages',
+                'items' => [
+                    [
+                        'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
+                        -1,
+                        'flags-multiple'
+                    ],
+                ],
+                'default' => 0
+            ]
+        ],
+        'l10n_parent' => [
+            'displayCond' => 'FIELD:sys_language_uid:>:0',
+            'exclude' => true,
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    ['', 0],
+                ],
+                'foreign_table' => 'tx_blogexample_domain_model_person',
+                'foreign_table_where' => 'AND tx_blogexample_domain_model_person.uid=###REC_FIELD_l10n_parent### AND tx_blogexample_domain_model_person.sys_language_uid IN (-1,0)',
+            ]
+        ],
         'hidden' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
@@ -91,7 +124,7 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'firstname, lastname, email, avatar, tags, tags_special']
+        '1' => ['showitem' => 'sys_language_uid, firstname, lastname, email, avatar, tags, tags_special']
     ],
     'palettes' => [
         '1' => ['showitem' => '']
