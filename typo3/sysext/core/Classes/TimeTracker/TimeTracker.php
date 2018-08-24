@@ -350,7 +350,7 @@ class TimeTracker implements SingletonInterface
             $this->createHierarchyArray($arr, $data['level'], $uniqueId);
         }
         // Parsing the registeret content and create icon-html for the tree
-        $this->tsStackLog[$arr['0.'][0]]['content'] = $this->fixContent($arr['0.'], $this->tsStackLog[$arr['0.'][0]]['content'], '', 0, $arr['0.'][0]);
+        $this->tsStackLog[$arr['0.'][0]]['content'] = $this->fixContent($arr['0.'], $this->tsStackLog[$arr['0.'][0]]['content'], '', $arr['0.'][0]);
         // Displaying the tree:
         $outputArr = [];
         $outputArr[] = $this->fw('TypoScript Key');
@@ -457,11 +457,10 @@ class TimeTracker implements SingletonInterface
      * @param array $arr Array which is modified with content. Reference
      * @param string $content Current content string for the level
      * @param string $depthData Prefixed icons for new PM icons
-     * @param bool $first Set this for the first call from outside.
      * @param string $vKey Seems to be the previous tsStackLog key
      * @return string Returns the $content string generated/modified. Also the $arr array is modified!
      */
-    protected function fixContent(&$arr, $content, $depthData = '', $first = 0, $vKey = '')
+    protected function fixContent(&$arr, $content, $depthData = '', $vKey = '')
     {
         $ac = 0;
         $c = 0;
@@ -482,12 +481,12 @@ class TimeTracker implements SingletonInterface
                 $BTM = $ac == $c ? 'bottom' : '';
                 $PM = $deeper ? '<i class="fa fa-' . ($deeper ? 'minus' : 'plus') . '-square-o"></i>' : '<span class="treeline-icon treeline-icon-join' . ($BTM ? 'bottom' : '') . '"></span>';
 
-                $this->tsStackLog[$v]['icons'] = $depthData . ($first ? '' : $PM);
+                $this->tsStackLog[$v]['icons'] = $depthData . $PM;
                 if ($this->tsStackLog[$v]['content'] !== '') {
                     $content = str_replace($this->tsStackLog[$v]['content'], $v, $content);
                 }
                 if ($deeper) {
-                    $this->tsStackLog[$v]['content'] = $this->fixContent($arr[$k . '.'], $this->tsStackLog[$v]['content'], $depthData . ($first ? '' : '<span class="treeline-icon treeline-icon-' . $LN . '"></span>'), 0, $v);
+                    $this->tsStackLog[$v]['content'] = $this->fixContent($arr[$k . '.'], $this->tsStackLog[$v]['content'], $depthData . '<span class="treeline-icon treeline-icon-' . $LN . '"></span>', $v);
                 } else {
                     $this->tsStackLog[$v]['content'] = $this->fixCLen($this->tsStackLog[$v]['content'], $this->tsStackLog[$v]['value']);
                     $this->tsStackLog[$v]['subtime'] = '';
