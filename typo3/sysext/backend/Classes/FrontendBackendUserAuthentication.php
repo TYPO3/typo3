@@ -14,8 +14,11 @@ namespace TYPO3\CMS\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -264,6 +267,122 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
             }
         }
         return $theList;
+    }
+
+    /**
+     * Edit Access
+     */
+
+    /**
+     * Checks whether the user has access to edit the language for the
+     * requested record.
+     *
+     * @param string $table The name of the table.
+     * @param array $currentRecord The record.
+     * @return bool
+     */
+    public function allowedToEditLanguage($table, array $currentRecord): bool
+    {
+        // If no access right to record languages, return immediately
+        /** @var LanguageAspect $languageAspect */
+        $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
+        if ($table === 'pages') {
+            $languageId = $languageAspect->getId();
+        } elseif ($table === 'tt_content') {
+            $languageId = $languageAspect->getContentId();
+        } elseif ($GLOBALS['TCA'][$table]['ctrl']['languageField']) {
+            $languageId = $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
+        } else {
+            $languageId = -1;
+        }
+        return $this->checkLanguageAccess($languageId);
+    }
+
+    /**
+     * Checks whether the user is allowed to edit the requested table.
+     *
+     * @param string $table The name of the table.
+     * @param array $dataArray The data array.
+     * @param array $conf The configuration array for the edit panel.
+     * @param bool $checkEditAccessInternals Boolean indicating whether recordEditAccessInternals should not be checked. Defaults
+     * @return bool
+     */
+    public function allowedToEdit(string $table, array $dataArray, array $conf, bool $checkEditAccessInternals): bool
+    {
+        // Unless permissions specifically allow it, editing is not allowed.
+        $mayEdit = false;
+        if ($checkEditAccessInternals) {
+            $editAccessInternals = $this->recordEditAccessInternals($table, $dataArray, false, false);
+        } else {
+            $editAccessInternals = true;
+        }
+        if ($editAccessInternals) {
+            if ($table === 'pages') {
+                if ($this->isAdmin() || $this->doesUserHaveAccess($dataArray, Permission::PAGE_EDIT)) {
+                    $mayEdit = true;
+                }
+            } else {
+                if ($this->isAdmin() || $this->doesUserHaveAccess(BackendUtility::getRecord('pages', $dataArray['pid']), Permission::CONTENT_EDIT)) {
+                    $mayEdit = true;
+                }
+            }
+            if (!$conf['onlyCurrentPid'] || $dataArray['pid'] == $GLOBALS['TSFE']->id) {
+                // Permissions:
+                $perms = $this->calcPerms($GLOBALS['TSFE']->page);
+                if ($table === 'pages') {
+                    $allow = $this->getAllowedEditActions($table, $conf, $dataArray['pid']);
+                    // Can only display editbox if there are options in the menu
+                    if (!empty($allow)) {
+                        $mayEdit = true;
+                    }
+                } else {
+                    $types = GeneralUtility::trimExplode(',', strtolower($conf['allow']), true);
+                    $allow = array_flip($types);
+                    $mayEdit = !empty($allow) && $perms & Permission::CONTENT_EDIT;
+                }
+            }
+        }
+        return $mayEdit;
+    }
+
+    /**
+     * Takes an array of generally allowed actions and filters that list based on page and content permissions.
+     *
+     * @param string $table The name of the table.
+     * @param array $conf The configuration array.
+     * @param int $pid The PID where editing will occur.
+     * @return array
+     */
+    public function getAllowedEditActions($table, array $conf, $pid): array
+    {
+        $types = GeneralUtility::trimExplode(',', strtolower($conf['allow']), true);
+        $allow = array_flip($types);
+        if (!$conf['onlyCurrentPid'] || $pid == $GLOBALS['TSFE']->id) {
+            // Permissions
+            $types = GeneralUtility::trimExplode(',', strtolower($conf['allow']), true);
+            $allow = array_flip($types);
+            $perms = $this->calcPerms($GLOBALS['TSFE']->page);
+            if ($table === 'pages') {
+                // Rootpage
+                if (count($GLOBALS['TSFE']->config['rootLine']) === 1) {
+                    unset($allow['move']);
+                    unset($allow['hide']);
+                    unset($allow['delete']);
+                }
+                if (!($perms & Permission::PAGE_EDIT) || !$this->checkLanguageAccess(0)) {
+                    unset($allow['edit']);
+                    unset($allow['move']);
+                    unset($allow['hide']);
+                }
+                if (!($perms & Permission::PAGE_DELETE)) {
+                    unset($allow['delete']);
+                }
+                if (!($perms & Permission::PAGE_NEW)) {
+                    unset($allow['new']);
+                }
+            }
+        }
+        return $allow;
     }
 
     /*****************************************************

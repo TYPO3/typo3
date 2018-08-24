@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
-use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
@@ -7146,20 +7145,57 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $content A content string containing the content related to the edit panel. For cObject "EDITPANEL" this is empty but not so for the stdWrap property. The edit panel is appended to this string and returned.
      * @param array $conf TypoScript configuration properties for the editPanel
      * @param string $currentRecord The "table:uid" of the record being shown. If empty string then $this->currentRecord is used. For new records (set by $conf['newRecordFromTable']) it's auto-generated to "[tablename]:NEW
-     * @param array $dataArr Alternative data array to use. Default is $this->data
+     * @param array $dataArray Alternative data array to use. Default is $this->data
      * @return string The input content string with the editPanel appended. This function returns only an edit panel appended to the content string if a backend user is logged in (and has the correct permissions). Otherwise the content string is directly returned.
      */
-    public function editPanel($content, $conf, $currentRecord = '', $dataArr = [])
+    public function editPanel($content, $conf, $currentRecord = '', $dataArray = [])
     {
-        if ($this->getTypoScriptFrontendController()->isBackendUserLoggedIn() && $this->getFrontendBackendUser()->frontendEdit instanceof FrontendEditingController) {
-            if (!$currentRecord) {
-                $currentRecord = $this->currentRecord;
+        if (!$this->getTypoScriptFrontendController()->isBackendUserLoggedIn()) {
+            return $content;
+        }
+        if (!$this->getTypoScriptFrontendController()->displayEditIcons) {
+            return $content;
+        }
+
+        if (!$currentRecord) {
+            $currentRecord = $this->currentRecord;
+        }
+        if (empty($dataArray)) {
+            $dataArray = $this->data;
+        }
+
+        if ($conf['newRecordFromTable']) {
+            $currentRecord = $conf['newRecordFromTable'] . ':NEW';
+            $conf['allow'] = 'new';
+            $checkEditAccessInternals = false;
+        } else {
+            $checkEditAccessInternals = true;
+        }
+        list($table, $uid) = explode(':', $currentRecord);
+        // Page ID for new records, 0 if not specified
+        $newRecordPid = (int)$conf['newRecordInPid'];
+        $newUid = null;
+        if (!$conf['onlyCurrentPid'] || $dataArray['pid'] == $this->getTypoScriptFrontendController()->id) {
+            if ($table === 'pages') {
+                $newUid = $uid;
+            } else {
+                if ($conf['newRecordFromTable']) {
+                    $newUid = $this->getTypoScriptFrontendController()->id;
+                    if ($newRecordPid) {
+                        $newUid = $newRecordPid;
+                    }
+                } else {
+                    $newUid = -1 * $uid;
+                }
             }
-            if (empty($dataArr)) {
-                $dataArr = $this->data;
+        }
+        if ($table && $this->getFrontendBackendUser()->allowedToEdit($table, $dataArray, $conf, $checkEditAccessInternals) && $this->getFrontendBackendUser()->allowedToEditLanguage($table, $dataArray)) {
+            $editClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit'];
+            if ($editClass) {
+                $edit = GeneralUtility::makeInstance($editClass);
+                $allowedActions = $this->getFrontendBackendUser()->getAllowedEditActions($table, $conf, $dataArray['pid']);
+                $content = $edit->editPanel($content, $conf, $currentRecord, $dataArray, $table, $allowedActions, $newUid, []);
             }
-            // Delegate rendering of the edit panel to the frontend edit
-            $content = $this->getFrontendBackendUser()->frontendEdit->displayEditPanel($content, $conf, $currentRecord, $dataArr);
         }
         return $content;
     }
@@ -7172,21 +7208,46 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $params The parameters defining which table and fields to edit. Syntax is [tablename]:[fieldname],[fieldname],[fieldname],... OR [fieldname],[fieldname],[fieldname],... (basically "[tablename]:" is optional, default table is the one of the "current record" used in the function). The fieldlist is sent as "&columnsOnly=" parameter to FormEngine
      * @param array $conf TypoScript properties for configuring the edit icons.
      * @param string $currentRecord The "table:uid" of the record being shown. If empty string then $this->currentRecord is used. For new records (set by $conf['newRecordFromTable']) it's auto-generated to "[tablename]:NEW
-     * @param array $dataArr Alternative data array to use. Default is $this->data
+     * @param array $dataArray Alternative data array to use. Default is $this->data
      * @param string $addUrlParamStr Additional URL parameters for the link pointing to FormEngine
      * @return string The input content string, possibly with edit icons added (not necessarily in the end but just after the last string of normal content.
      */
-    public function editIcons($content, $params, array $conf = [], $currentRecord = '', $dataArr = [], $addUrlParamStr = '')
+    public function editIcons($content, $params, array $conf = [], $currentRecord = '', $dataArray = [], $addUrlParamStr = '')
     {
-        if ($this->getTypoScriptFrontendController()->isBackendUserLoggedIn() && $this->getFrontendBackendUser()->frontendEdit instanceof FrontendEditingController) {
-            if (!$currentRecord) {
-                $currentRecord = $this->currentRecord;
+        if (!$this->getTypoScriptFrontendController()->isBackendUserLoggedIn()) {
+            return $content;
+        }
+        if (!$this->getTypoScriptFrontendController()->displayFieldEditIcons) {
+            return $content;
+        }
+        if (!$currentRecord) {
+            $currentRecord = $this->currentRecord;
+        }
+        if (empty($dataArray)) {
+            $dataArray = $this->data;
+        }
+        // Check incoming params:
+        list($currentRecordTable, $currentRecordUID) = explode(':', $currentRecord);
+        list($fieldList, $table) = array_reverse(GeneralUtility::trimExplode(':', $params, true));
+        // Reverse the array because table is optional
+        if (!$table) {
+            $table = $currentRecordTable;
+        } elseif ($table != $currentRecordTable) {
+            // If the table is set as the first parameter, and does not match the table of the current record, then just return.
+            return $content;
+        }
+
+        $editUid = $dataArray['_LOCALIZED_UID'] ?: $currentRecordUID;
+        // Edit icons imply that the editing action is generally allowed, assuming page and content element permissions permit it.
+        if (!array_key_exists('allow', $conf)) {
+            $conf['allow'] = 'edit';
+        }
+        if ($table && $this->getFrontendBackendUser()->allowedToEdit($table, $dataArray, $conf, true) && $fieldList && $this->getFrontendBackendUser()->allowedToEditLanguage($table, $dataArray)) {
+            $editClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit'];
+            if ($editClass) {
+                $edit = GeneralUtility::makeInstance($editClass);
+                $content = $edit->editIcons($content, $params, $conf, $currentRecord, $dataArray, $addUrlParamStr, $table, $editUid, $fieldList);
             }
-            if (empty($dataArr)) {
-                $dataArr = $this->data;
-            }
-            // Delegate rendering of the edit panel to frontend edit class.
-            $content = $this->getFrontendBackendUser()->frontendEdit->displayEditIcons($content, $params, $conf, $currentRecord, $dataArr, $addUrlParamStr);
         }
         return $content;
     }
