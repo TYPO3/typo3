@@ -68,7 +68,7 @@ class TypoScriptWaterfall extends AbstractSubModule
         if ($typoScriptFrontend->forceTemplateParsing) {
             $typoScriptFrontend->set_no_cache('Admin Panel: Force template parsing', true);
         }
-        $this->getTimeTracker()->LR = $this->getConfigurationOption('LR');
+        $this->getTimeTracker()->LR = (bool)$this->getConfigurationOption('LR');
     }
 
     /**

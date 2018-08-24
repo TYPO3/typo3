@@ -44,7 +44,7 @@ class TimeTracker implements SingletonInterface
      *
      * @var bool
      */
-    public $LR = 1;
+    public $LR = true;
 
     /**
      * @var array
