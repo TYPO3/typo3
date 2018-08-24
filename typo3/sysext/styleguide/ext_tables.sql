@@ -442,11 +442,6 @@ CREATE TABLE tx_styleguide_inline_mm_child_rel (
 	sorting_foreign int(11) DEFAULT '0' NOT NULL,
 	ident varchar(255) DEFAULT '' NOT NULL,
 
-	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l10n_parent int(11) DEFAULT '0' NOT NULL,
-	l10n_source int(11) DEFAULT '0' NOT NULL,
-	l10n_diffsource mediumtext,
-
 	KEY uid_local (uid_local),
 	KEY uid_foreign (uid_foreign),
 	PRIMARY KEY (uid)
@@ -468,11 +463,6 @@ CREATE TABLE tx_styleguide_inline_mm_child_childchild_rel (
 	sorting int(11) DEFAULT '0' NOT NULL,
 	sorting_foreign int(11) DEFAULT '0' NOT NULL,
 	ident varchar(255) DEFAULT '' NOT NULL,
-
-	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l10n_parent int(11) DEFAULT '0' NOT NULL,
-	l10n_source int(11) DEFAULT '0' NOT NULL,
-	l10n_diffsource mediumtext,
 
 	KEY uid_local (uid_local),
 	KEY uid_foreign (uid_foreign),
