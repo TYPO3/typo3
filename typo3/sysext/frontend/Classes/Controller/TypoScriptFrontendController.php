@@ -3146,7 +3146,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->calculateLinkVars();
         // Instantiate \TYPO3\CMS\Frontend\ContentObject to generate the correct target URL
         /** @var $cObj ContentObjectRenderer */
-        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this);
         $parameter = $this->page['uid'];
         $type = GeneralUtility::_GET('type');
         if ($type && MathUtility::canBeInterpretedAsInteger($type)) {
@@ -4082,7 +4082,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function newCObj()
     {
-        $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this);
         $this->cObj->start($this->page, 'pages');
     }
 
