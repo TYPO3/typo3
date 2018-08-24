@@ -24,7 +24,7 @@ return [
         'maxSingleDBListItems' => 500
     ],
     'types' => [
-        '1' => ['showitem' => 'sys_language_uid, hidden, blog, title, date, author, content, tags, comments, related_posts']
+        '1' => ['showitem' => 'sys_language_uid, hidden, blog, title, date, author, second_author, content, tags, comments, related_posts, additional_name, additional_info, additional_comments']
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -64,7 +64,7 @@ return [
         ],
         'hidden' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xml:LGL.hidden',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => [
                 'type' => 'check'
             ]
@@ -115,6 +115,28 @@ return [
                         'options' => [
                             'setValue' => 'prepend',
                         ],
+                    ],
+                ],
+            ],
+        ],
+        'second_author' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_post.second_author',
+            'config' => [
+                'type' => 'group',
+                'internal_type' => 'db',
+                'allowed' => 'tx_blogexample_domain_model_person',
+                'foreign_table' => 'tx_blogexample_domain_model_person',
+                'maxitems' => 1,
+                'fieldControl' => [
+                    'editPopup' => [
+                        'disabled' => false,
+                    ],
+                    'addRecord' => [
+                        'disabled' => false,
+                    ],
+                    'listModule' => [
+                        'disabled' => false,
                     ],
                 ],
             ],
@@ -193,6 +215,37 @@ return [
                 'MM' => 'tx_blogexample_post_post_mm',
                 'MM_opposite_field' => 'related_posts',
             ]
+        ],
+        'additional_name' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_post.additional_name',
+            'config' => [
+                'type' => 'inline', // this will store the info uid in the additional_name field (CSV)
+                'foreign_table' => 'tx_blogexample_domain_model_info',
+                'minitems' => 0,
+                'maxitems' => 1,
+            ],
+        ],
+        'additional_info' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_post.additional_info',
+            'config' => [
+                'type' => 'inline', // this will store the post uid in the post field of the info table
+                'foreign_table' => 'tx_blogexample_domain_model_info',
+                'foreign_field' => 'post',
+                'minitems' => 0,
+                'maxitems' => 1,
+            ],
+        ],
+        'additional_comments' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_post.additional_comments',
+            'config' => [
+                'type' => 'inline', // this will store the comments uids in the additional_comments field (CSV)
+                'foreign_table' => 'tx_blogexample_domain_model_comment',
+                'minitems' => 0,
+                'maxitems' => 200,
+            ],
         ],
     ]
 ];

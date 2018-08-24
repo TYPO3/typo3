@@ -43,6 +43,11 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @var \ExtbaseTeam\BlogExample\Domain\Model\Person
      */
+    protected $secondAuthor;
+
+    /**
+     * @var \ExtbaseTeam\BlogExample\Domain\Model\Person
+     */
     protected $reviewer = null;
 
     /**
@@ -75,6 +80,25 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $relatedPosts = null;
 
     /**
+     * 1:1 relation stored as CSV value in this class
+     * @var \ExtbaseTeam\BlogExample\Domain\Model\Info
+     */
+    protected $additionalName;
+
+    /**
+     * 1:1 relation stored as foreign key in Info class
+     * @var \ExtbaseTeam\BlogExample\Domain\Model\Info
+     */
+    protected $additionalInfo;
+
+    /**
+     * 1:n relation stored as CSV value
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Comment>
+     * @lazy
+     */
+    protected $additionalComments;
+
+    /**
      * Constructs this post
      */
     public function __construct()
@@ -84,6 +108,7 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->comments = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
         $this->relatedPosts = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
         $this->date = new \DateTime();
+        $this->additionalComments = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
     }
 
     /**
@@ -259,6 +284,22 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return \ExtbaseTeam\BlogExample\Domain\Model\Person
      */
+    public function getSecondAuthor()
+    {
+        return $this->secondAuthor;
+    }
+
+    /**
+     * @param \ExtbaseTeam\BlogExample\Domain\Model\Person $secondAuthor
+     */
+    public function setSecondAuthor(\ExtbaseTeam\BlogExample\Domain\Model\Person $secondAuthor)
+    {
+        $this->secondAuthor = $secondAuthor;
+    }
+
+    /**
+     * @return \ExtbaseTeam\BlogExample\Domain\Model\Person
+     */
     public function getReviewer()
     {
         return $this->reviewer;
@@ -378,6 +419,79 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function getRelatedPosts()
     {
         return $this->relatedPosts;
+    }
+
+    /**
+     * @return Info|null
+     */
+    public function getAdditionalName()
+    {
+        return $this->additionalName;
+    }
+
+    /**
+     * @param Info $additionalName
+     */
+    public function setAdditionalName(Info $additionalName)
+    {
+        $this->additionalName = $additionalName;
+    }
+
+    /**
+     * @return Info|null
+     */
+    public function getAdditionalInfo()
+    {
+        return $this->additionalInfo;
+    }
+
+    /**
+     * @param Info $additionalInfo
+     */
+    public function setAdditionalInfo(Info $additionalInfo)
+    {
+        $this->additionalInfo = $additionalInfo;
+    }
+
+    /**
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+     */
+    public function getAdditionalComments(): \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+    {
+        return $this->additionalComments;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $additionalComments
+     */
+    public function setAdditionalComments(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $additionalComments)
+    {
+        $this->additionalComments = $additionalComments;
+    }
+
+    /**
+     * @param Comment $comment
+     */
+    public function addAdditionalComment(Comment $comment)
+    {
+        $this->additionalComments->attach($comment);
+    }
+
+    /**
+     * Remove all additional Comments
+     */
+    public function removeAllAdditionalComments()
+    {
+        $comments = clone $this->additionalComments;
+        $this->additionalComments->removeAll($comments);
+    }
+
+    /**
+     * @param Comment $comment
+     */
+    public function removeAdditionalComment(Comment $comment)
+    {
+        $this->additionalComments->detach($comment);
     }
 
     /**

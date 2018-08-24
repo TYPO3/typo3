@@ -18,12 +18,17 @@
 			<label index="tx_blogexample_domain_model_post.subtitle">Title</label>
 			<label index="tx_blogexample_domain_model_post.date">Date</label>
 			<label index="tx_blogexample_domain_model_post.author">Author</label>
+			<label index="tx_blogexample_domain_model_post.second_author">Second author</label>
+			<label index="tx_blogexample_domain_model_post.reviewer">Reviewer</label>
 			<label index="tx_blogexample_domain_model_post.content">Content</label>
 			<label index="tx_blogexample_domain_model_post.votes">Votes</label>
 			<label index="tx_blogexample_domain_model_post.published">Published</label>
 			<label index="tx_blogexample_domain_model_post.tags">Tags</label>
 			<label index="tx_blogexample_domain_model_post.comments">Comments</label>
 			<label index="tx_blogexample_domain_model_post.related">Related posts</label>
+			<label index="tx_blogexample_domain_model_post.additional_info">Additional info (inline 1:1 foreign_field)</label>
+			<label index="tx_blogexample_domain_model_post.additional_name">Additional name (inline 1:1 csv)</label>
+			<label index="tx_blogexample_domain_model_post.additional_comments">Additional comments (inline 1:n csv)</label>
 			<label index="tx_blogexample_domain_model_person">Person</label>
 			<label index="tx_blogexample_domain_model_person.firstname">Firstname</label>
 			<label index="tx_blogexample_domain_model_person.lastname">Lastname</label>
@@ -40,6 +45,9 @@
 			<label index="tx_blogexample_domain_model_tag">Tag</label>
 			<label index="tx_blogexample_domain_model_tag.name">Name</label>
 			<label index="tx_blogexample_domain_model_tag.posts">Related posts</label>
+			<label index="tx_blogexample_domain_model_info">Additional Info</label>
+			<label index="tx_blogexample_domain_model_info.name">Additional name</label>
+			<label index="tx_blogexample_domain_model_info.post">Post - parent</label>
 			<label index="tx_blogexample_domain_model_dateexample">Date example</label>
 			<label index="fe_users.tx_extbase_type.ExtbaseTeam\BlogExample\Domain\Model\Administrator">Blog Admin (BlogExample)</label>
 		</languageKey>
