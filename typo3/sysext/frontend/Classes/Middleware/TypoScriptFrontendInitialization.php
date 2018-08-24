@@ -56,11 +56,14 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface, LoggerAwa
             null,
             GeneralUtility::_GP('id'),
             GeneralUtility::_GP('type'),
-            GeneralUtility::_GP('no_cache'),
+            null,
             GeneralUtility::_GP('cHash'),
             null,
             GeneralUtility::_GP('MP')
         );
+        if (GeneralUtility::_GP('no_cache')) {
+            $GLOBALS['TSFE']->set_no_cache('&no_cache=1 has been supplied, so caching is disabled! URL: "' . (string)$request->getUri() . '"');
+        }
 
         // Set up the database connection and see if the connection can be established
         try {

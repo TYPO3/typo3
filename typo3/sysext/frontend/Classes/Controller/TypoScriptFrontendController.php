@@ -807,27 +807,29 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param array $_ unused, previously defined to set TYPO3_CONF_VARS
      * @param mixed $id The value of GeneralUtility::_GP('id')
      * @param int $type The value of GeneralUtility::_GP('type')
-     * @param bool|string $no_cache The value of GeneralUtility::_GP('no_cache'), evaluated to 1/0
+     * @param bool|string $no_cache The value of GeneralUtility::_GP('no_cache'), evaluated to 1/0, will be unused in TYPO3 v10.0.
      * @param string $cHash The value of GeneralUtility::_GP('cHash')
      * @param string $_2 previously was used to define the jumpURL
      * @param string $MP The value of GeneralUtility::_GP('MP')
-     * @see \TYPO3\CMS\Frontend\Http\RequestHandler
      */
-    public function __construct($_ = null, $id, $type, $no_cache = '', $cHash = '', $_2 = null, $MP = '')
+    public function __construct($_ = null, $id, $type, $no_cache = null, $cHash = '', $_2 = null, $MP = '')
     {
         // Setting some variables:
         $this->id = $id;
         $this->type = $type;
-        if ($no_cache) {
-            if ($GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter']) {
-                $warning = '&no_cache=1 has been ignored because $TYPO3_CONF_VARS[\'FE\'][\'disableNoCacheParameter\'] is set!';
-                $this->getTimeTracker()->setTSlogMessage($warning, 2);
-            } else {
-                $warning = '&no_cache=1 has been supplied, so caching is disabled! URL: "' . GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '"';
-                $this->disableCache();
+        if ($no_cache !== null) {
+            trigger_error('Calling TypoScriptFrontendController->__construct() with $no_cache argument set will be removed in TYPO3 v10.0. Use ->set_no_cache() instead.', E_USER_DEPRECATED);
+            if ($no_cache) {
+                if ($GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter']) {
+                    $warning = '&no_cache=1 has been ignored because $TYPO3_CONF_VARS[\'FE\'][\'disableNoCacheParameter\'] is set!';
+                    $this->getTimeTracker()->setTSlogMessage($warning, 2);
+                } else {
+                    $warning = '&no_cache=1 has been supplied, so caching is disabled! URL: "' . GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '"';
+                    $this->disableCache();
+                }
+                // note: we need to instantiate the logger manually here since the injection happens after the constructor
+                GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__)->warning($warning);
             }
-            // note: we need to instantiate the logger manually here since the injection happens after the constructor
-            GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__)->warning($warning);
         }
         $this->cHash = $cHash;
         $this->MP = $GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] ? (string)$MP : '';
@@ -4350,7 +4352,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $warning .= ' Caching is disabled!';
             $this->disableCache();
         }
-        if ($internal && isset($GLOBALS['BE_USER'])) {
+        if ($internal && $this->isBackendUserLoggedIn()) {
             $this->logger->notice($warning);
         } else {
             $this->logger->warning($warning);
