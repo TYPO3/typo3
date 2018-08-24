@@ -3019,4 +3019,11 @@ return [
             'Deprecation-85978-DeprecateGraphicalFunctions-initMethod.rst'
         ],
     ],
+    'TYPO3\CMS\Frontend\Page\PageRepository->getFirstWebPage' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85971-DeprecatePageRepository-getFirstWebPage.rst'
+        ],
+    ],
 ];

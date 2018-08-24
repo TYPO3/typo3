@@ -396,9 +396,11 @@ class PageRepository implements LoggerAwareInterface
      * @param int $uid The page id for which to fetch first subpages (PID)
      * @return mixed If found: The page record (with overlaid localized fields, if any). If NOT found: blank value (not array!)
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::fetch_the_id()
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Use getMenu() to fetch all subpages of a page.
      */
     public function getFirstWebPage($uid)
     {
+        trigger_error('PageRepository->getFirstWebPage() will be removed in TYPO3 v10.0. Use "getMenu()" instead.', E_USER_DEPRECATED);
         $output = '';
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll();
