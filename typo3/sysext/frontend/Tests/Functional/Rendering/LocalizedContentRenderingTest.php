@@ -253,7 +253,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFiles)));
 
-        $visibleFiles = ['Kasper'];
+        $visibleFiles = ['Kasper2'];
         $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':298')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFiles));
@@ -412,7 +412,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
@@ -434,7 +434,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
@@ -457,7 +457,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
@@ -477,7 +477,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
@@ -497,7 +497,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
@@ -664,11 +664,11 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => 'Regular Element #3',
-                        'image' => [],
+                        'image' => ['Kasper'],
                     ],
                 ],
                 'pageTitle' => 'Default language Page',
@@ -687,11 +687,11 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => 'Regular Element #3',
-                        'image' => [],
+                        'image' => ['Kasper'],
                     ],
                 ],
                 'pageTitle' => 'Default language Page',
@@ -767,11 +767,11 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => 'Regular Element #3',
-                        'image' => [],
+                        'image' => ['Kasper'],
                     ],
                 ],
                 'pageTitle' => 'Default language Page',
@@ -791,11 +791,11 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => 'Regular Element #3',
-                        'image' => [],
+                        'image' => ['Kasper'],
                     ],
                 ],
                 'pageTitle' => 'Default language Page',
@@ -816,7 +816,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
@@ -850,11 +850,11 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => 'Regular Element #3',
-                        'image' => [],
+                        'image' => ['Kasper'],
                     ],
                 ],
                 'pageTitle' => 'Default language Page',
@@ -873,11 +873,11 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => 'Regular Element #3',
-                        'image' => [],
+                        'image' => ['Kasper'],
                     ],
                 ],
                 'pageTitle' => 'Default language Page',
@@ -896,11 +896,11 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => 'Regular Element #3',
-                        'image' => [],
+                        'image' => ['Kasper'],
                     ],
                 ],
                 'pageTitle' => 'Default language Page',
@@ -1225,6 +1225,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             '[T3BOARD] Image added in Dansk (without parent)',
             '[T3BOARD] Image added to DK element without default language',
             '[T3BOARD] image translated to DE from DK',
+            'Kasper2',
         ];
         return array_diff($allElements, $visibleTitles);
     }

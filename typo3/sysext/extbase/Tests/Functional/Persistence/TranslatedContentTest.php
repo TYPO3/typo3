@@ -199,7 +199,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
             ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFiles)));
 
-        $visibleFiles = ['Kasper'];
+        $visibleFiles = ['Kasper2'];
         $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':298')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFiles));
@@ -234,6 +234,8 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                 'typoScript' => 'config.sys_language_overlay = 0
                                     config.sys_language_mode =',
                 'visibleRecords' => [
+                    // todo all uids are wrong, these should be the uids of the translations
+                    // todo the images are wrong as these should be translated
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => ['T3BOARD'],
@@ -241,11 +243,11 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => [],
+                        'image' => ['Kasper'],
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
@@ -261,19 +263,19 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = content_fallback',
                 'visibleRecords' => [
+                    // todo as above, the wrong elements are shown and the images are not translated
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => ['T3BOARD'],
                         'categories' => ['[Translate to Dansk:] Category 1', 'Category 3 - not translated'],
-
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper']
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
@@ -289,6 +291,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = content_fallback;1,0',
                 'visibleRecords' => [
+                    // todo just wrong see other cases
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => ['T3BOARD'],
@@ -296,11 +299,11 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper']
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
@@ -316,6 +319,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = strict',
                 'visibleRecords' => [
+                    // todo just wrong see other cases
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => [],
@@ -323,7 +327,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper']
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
@@ -335,19 +339,19 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = ignore',
                 'visibleRecords' => [
+                    // todo just wrong see other cases
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => ['T3BOARD'],
                         'categories' => ['[Translate to Dansk:] Category 1', 'Category 3 - not translated'],
-
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper']
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
@@ -363,6 +367,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode =',
                 'visibleRecords' => [
+                    // todo just wrong see other cases
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => ['T3BOARD'],
@@ -371,11 +376,11 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper']
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
@@ -393,6 +398,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = content_fallback',
                 'visibleRecords' => [
+                    // todo just wrong see other cases
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => ['T3BOARD'],
@@ -401,11 +407,11 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper']
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
@@ -423,6 +429,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = content_fallback;1,0',
                 'visibleRecords' => [
+                    // todo just wrong see other cases
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => ['T3BOARD'],
@@ -430,11 +437,11 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper']
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
@@ -450,6 +457,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = strict',
                 'visibleRecords' => [
+                    // todo just wrong see other cases
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => [],
@@ -457,7 +465,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper']
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
@@ -469,6 +477,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = ignore',
                 'visibleRecords' => [
+                    // todo just wrong see other cases
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => ['T3BOARD'],
@@ -476,11 +485,11 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper']
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
@@ -500,6 +509,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode =',
                 'visibleRecords' => [
+                    // todo too many records and wrong images
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => ['T3BOARD'],
@@ -507,11 +517,11 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper']
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
@@ -527,6 +537,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = content_fallback',
                 'visibleRecords' => [
+                    // todo same as #10
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => ['T3BOARD'],
@@ -534,11 +545,11 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper']
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
@@ -554,6 +565,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = content_fallback;1,0',
                 'visibleRecords' => [
+                    // todo same as #10
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => ['T3BOARD'],
@@ -561,11 +573,11 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper']
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
@@ -584,6 +596,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = strict',
                 'visibleRecords' => [
+                    // todo same as #10
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => [],
@@ -591,7 +604,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper']
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
@@ -603,6 +616,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = ignore',
                 'visibleRecords' => [
+                    // todo same as #10
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => ['T3BOARD'],
@@ -610,11 +624,11 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper']
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
@@ -701,11 +715,11 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => 'Regular Element #3',
-                        'image' => [],
+                        'image' => ['Kasper'],
                     ],
                 ],
             ],
@@ -719,11 +733,11 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => 'Regular Element #3',
-                        'image' => [],
+                        'image' => ['Kasper'],
                     ],
                 ],
             ],
@@ -731,17 +745,18 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = content_fallback;1,0',
                 'visibleRecords' => [
+                    // todo there is something wrong with the result
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => ['T3BOARD'],
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper']
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
@@ -763,17 +778,18 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = ignore',
                 'visibleRecords' => [
+                    // todo there is something wrong with the result
                     297 => [
                         'header' => '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1',
                         'image' => ['T3BOARD'],
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => 'Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper']
                     ],
                     304 => [
                         'header' => '[DE] Without default language',
@@ -791,11 +807,11 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => 'Regular Element #3',
-                        'image' => [],
+                        'image' => ['Kasper'],
                     ],
                 ],
             ],
@@ -810,11 +826,11 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => 'Regular Element #3',
-                        'image' => [],
+                        'image' => ['Kasper'],
                     ],
                 ],
             ],
@@ -826,16 +842,17 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                 'visibleRecords' => [
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
-                        'image' => ['T3BOARD'],
+                        'image' => ['T3BOARD'], // todo this is wrong and should contain both translated images for #1
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper'] // todo this is wrong and should contain both translated images for #3
                     ],
+                    // todo those records shouldn't be here at all
                     303 => [
                         'header' => '[DK] Without default language',
                         'image' => ['[T3BOARD] Image added to DK element without default language'],
@@ -862,11 +879,11 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => 'Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper']
                     ],
                     304 => [
                         'header' => '[DE] Without default language',
@@ -884,11 +901,11 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => 'Regular Element #3',
-                        'image' => [],
+                        'image' => ['Kasper'],
                     ],
                 ],
             ],
@@ -902,11 +919,11 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => 'Regular Element #3',
-                        'image' => [],
+                        'image' => ['Kasper'],
                     ],
                 ],
             ],
@@ -914,17 +931,19 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = content_fallback;1,0',
                 'visibleRecords' => [
+                    // todo this is totally different to TS rendering, we shall see default content only
+                    // because the page is not translated and we have content_fallback active
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => ['T3BOARD'],
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper']
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
@@ -952,11 +971,11 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                     ],
                     298 => [
                         'header' => 'Regular Element #2',
-                        'image' => ['Kasper'],
+                        'image' => ['Kasper2'],
                     ],
                     299 => [
                         'header' => 'Regular Element #3',
-                        'image' => []
+                        'image' => ['Kasper']
                     ],
                     304 => [
                         'header' => '[DE] Without default language',
@@ -1184,6 +1203,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
             '[T3BOARD] Image added in Dansk (without parent)',
             '[T3BOARD] Image added to DK element without default language',
             '[T3BOARD] image translated to DE from DK',
+            'Kasper2'
         ];
         return array_diff($allElements, $visibleTitles);
     }
