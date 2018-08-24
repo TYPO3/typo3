@@ -216,6 +216,7 @@ CREATE TABLE tx_styleguide_elements_select (
 	select_single_12 text,
 	select_single_13 text,
 	select_single_14 text,
+	select_single_15 text,
 
 	select_singlebox_1 text,
 	select_singlebox_2 text,
@@ -232,6 +233,7 @@ CREATE TABLE tx_styleguide_elements_select (
 	select_multiplesidebyside_5 text,
 	select_multiplesidebyside_6 text,
 	select_multiplesidebyside_7 text,
+	select_multiplesidebyside_8 text,
 
 	select_tree_1 text,
 	select_tree_2 text,
@@ -248,6 +250,26 @@ CREATE TABLE tx_styleguide_elements_select (
 
 CREATE TABLE tx_styleguide_elements_select_single_12_foreign (
 	group_1 text
+);
+
+
+CREATE TABLE tx_styleguide_elements_select_single_15_mm (
+	uid_local int(11) DEFAULT '0' NOT NULL,
+	uid_foreign int(11) DEFAULT '0' NOT NULL,
+	sorting int(11) DEFAULT '0' NOT NULL,
+
+	KEY uid_local (uid_local),
+	KEY uid_foreign (uid_foreign)
+);
+
+
+CREATE TABLE tx_styleguide_elements_select_multiplesidebyside_8_mm (
+	uid_local int(11) DEFAULT '0' NOT NULL,
+	uid_foreign int(11) DEFAULT '0' NOT NULL,
+	sorting int(11) DEFAULT '0' NOT NULL,
+
+	KEY uid_local (uid_local),
+	KEY uid_foreign (uid_foreign)
 );
 
 
