@@ -275,7 +275,16 @@ return [
                 ],
             ],
         ],
-
+        'select_single_15' => [
+            'exclude' => 1,
+            'label' => 'select_single_15 foreign_table',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'foreign_table' => 'tx_styleguide_staticdata',
+                'MM' => 'tx_styleguide_elements_select_single_15_mm'
+            ],
+        ],
 
         'select_singlebox_1' => [
             'exclude' => 1,
@@ -507,8 +516,18 @@ return [
                 'multiple' => true,
             ],
         ],
-
-
+        'select_multiplesidebyside_8' => [
+            'exclude' => 1,
+            'label' => 'select_multiplesidebyside_8 foreign_table mm',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
+                'foreign_table' => 'tx_styleguide_staticdata',
+                'MM' => 'tx_styleguide_elements_select_multiplesidebyside_8_mm',
+                'size' => 3,
+                'autoSizeMax' => 5,
+            ],
+        ],
 
         'select_tree_1' => [
             'exclude' => 1,
@@ -904,7 +923,7 @@ return [
                 --div--;renderType=selectSingle,
                     select_single_1, select_single_2, select_single_3, select_single_4, select_single_5,
                     select_single_7, select_single_12, select_single_8, select_single_13, select_single_10,
-                    select_single_11, select_single_14,
+                    select_single_11, select_single_14, select_single_15,
                 --div--;renderType=selectSingleBox,
                     select_singlebox_1, select_singlebox_2,
                 --div--;renderType=selectCheckBox,
@@ -912,7 +931,7 @@ return [
                 --div--;renderType=selectMultipleSideBySide,
                     select_multiplesidebyside_1, select_multiplesidebyside_2, select_multiplesidebyside_3,
                     select_multiplesidebyside_4, select_multiplesidebyside_5, select_multiplesidebyside_6,
-                    select_multiplesidebyside_7,
+                    select_multiplesidebyside_7, select_multiplesidebyside_8,
                 --div--;renderType=selectTree,
                     select_tree_1, select_tree_2, select_tree_3, select_tree_4, select_tree_5, select_tree_6,
                 --div--;in flex,
