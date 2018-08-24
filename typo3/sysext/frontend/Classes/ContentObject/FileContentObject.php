@@ -21,6 +21,7 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 
 /**
  * Contains FILE class object.
+ * @deprecated FILE cObject will be removed in TYPO3 v10.0.
  */
 class FileContentObject extends AbstractContentObject
 {
@@ -32,6 +33,7 @@ class FileContentObject extends AbstractContentObject
      */
     public function render($conf = [])
     {
+        $this->getTypoScriptFrontendController()->logDeprecatedTyposcript('cObject FILE', 'Use IMAGE to show images instead.');
         $theValue = '';
         $file = isset($conf['file.']) ? $this->cObj->stdWrap($conf['file'], $conf['file.']) : $conf['file'];
         try {
