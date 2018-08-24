@@ -26,7 +26,7 @@ class EmConfUtility implements SingletonInterface
      * Returns the $EM_CONF array from an extensions ext_emconf.php file
      *
      * @param array $extension Extension information array
-     * @return array EMconf array values.
+     * @return array|bool EMconf array values or false if no ext_emconf.php found.
      */
     public function includeEmConf(array $extension)
     {
@@ -135,7 +135,7 @@ $EM_CONF[$_EXTKEY] = ' . $emConf . ';
      * as they are implicit and of no interest without the version number.
      *
      * @param mixed $dependency Either a string or an array listing dependencies.
-     * @return string A simple dependency list for display
+     * @return array A simple dependency list for display
      */
     public function stringToDependency($dependency)
     {
