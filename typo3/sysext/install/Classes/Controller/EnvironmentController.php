@@ -826,7 +826,6 @@ class EnvironmentController extends AbstractController
     protected function initializeImageProcessor(): GraphicalFunctions
     {
         $imageProcessor = GeneralUtility::makeInstance(GraphicalFunctions::class);
-        $imageProcessor->init();
         $imageProcessor->dontCheckForExistingTempFile = true;
         $imageProcessor->filenamePrefix = 'installTool-';
         $imageProcessor->dontCompress = true;

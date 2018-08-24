@@ -62,7 +62,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if (empty($page)) {
             throw new UnableToLinkException('Page id "' . $linkDetails['typoLinkParameter'] . '" was not found, so "' . $linkText . '" was not linked.', 1490987336, null, $linkText);
         }
-        $language = $page[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
+        $language = (int)$page[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
         if ($language === 0 && GeneralUtility::hideIfDefaultLanguage($page['l18n_cfg'])) {
             throw new UnableToLinkException('Default language of page  "' . $linkDetails['typoLinkParameter'] . '" is hidden, so "' . $linkText . '" was not linked.', 1529527301, null, $linkText);
         }

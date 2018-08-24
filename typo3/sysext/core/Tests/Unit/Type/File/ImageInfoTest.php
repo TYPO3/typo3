@@ -53,7 +53,6 @@ class ImageInfoTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         ];
 
         $graphicalFunctionsProphecy = $this->prophesize(GraphicalFunctions::class);
-        $graphicalFunctionsProphecy->init()->shouldBeCalled();
         $graphicalFunctionsProphecy->imageMagickIdentify($root->url() . '/' . $testFile)->willReturn(null);
         GeneralUtility::addInstance(GraphicalFunctions::class, $graphicalFunctionsProphecy->reveal());
 

@@ -14,24 +14,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
  * The TYPO3 project - inspiring people to share!
  */
 
-/**
- * Testcase for \TYPO3\CMS\Core\Imaging\GraphicalFunctions
- */
+use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+
 class GraphicalFunctionsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Core\Imaging\GraphicalFunctions
-     */
-    protected $subject;
-
-    /**
-     * Set up
-     */
-    protected function setUp()
-    {
-        $this->subject = new \TYPO3\CMS\Core\Imaging\GraphicalFunctions();
-    }
-
     /**
      * Dataprovider for getScaleForImage
      *
@@ -104,7 +90,8 @@ class GraphicalFunctionsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      */
     public function getScaleForImage($info, $width, $height, $options, $expected)
     {
-        $result = $this->subject->getImageScale($info, $width, $height, $options);
+        $this->resetSingletonInstances = true;
+        $result = (new GraphicalFunctions())->getImageScale($info, $width, $height, $options);
         $this->assertEquals($result, $expected);
     }
 }

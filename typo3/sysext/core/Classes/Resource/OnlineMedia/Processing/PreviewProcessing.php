@@ -165,9 +165,7 @@ class PreviewProcessing
     protected function cropScaleImage($originalFileName, $temporaryFileName, $configuration)
     {
         if (file_exists($originalFileName)) {
-            /** @var $gifBuilder GifBuilder */
             $gifBuilder = GeneralUtility::makeInstance(GifBuilder::class);
-            $gifBuilder->init();
 
             $options = $this->getConfigurationForImageCropScaleMask($configuration, $gifBuilder);
             $info = $gifBuilder->getImageDimensions($originalFileName);
@@ -245,10 +243,8 @@ class PreviewProcessing
     /**
      * @return GraphicalFunctions
      */
-    protected function getGraphicalFunctionsObject()
+    protected function getGraphicalFunctionsObject(): GraphicalFunctions
     {
-        $graphicalFunctionsObject = GeneralUtility::makeInstance(GraphicalFunctions::class);
-        $graphicalFunctionsObject->init();
-        return $graphicalFunctionsObject;
+        return GeneralUtility::makeInstance(GraphicalFunctions::class);
     }
 }

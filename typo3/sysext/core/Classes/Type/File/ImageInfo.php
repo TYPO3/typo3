@@ -95,7 +95,6 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
             // Fallback to IM/GM identify
             if ($this->imageSizes === false) {
                 $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
-                $graphicalFunctions->init();
                 $this->imageSizes = $graphicalFunctions->imageMagickIdentify($this->getPathname());
             }
 

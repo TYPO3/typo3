@@ -140,10 +140,8 @@ class LocalImageProcessor implements ProcessorInterface
     /**
      * @return GraphicalFunctions
      */
-    protected function getGraphicalFunctionsObject()
+    protected function getGraphicalFunctionsObject(): GraphicalFunctions
     {
-        $graphicalFunctionsObject = GeneralUtility::makeInstance(GraphicalFunctions::class);
-        $graphicalFunctionsObject->init();
-        return $graphicalFunctionsObject;
+        return GeneralUtility::makeInstance(GraphicalFunctions::class);
     }
 }

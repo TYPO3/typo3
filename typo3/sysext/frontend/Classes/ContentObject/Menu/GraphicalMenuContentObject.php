@@ -153,7 +153,6 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
             if ($isGD) {
                 // Pre-working the item
                 $gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
-                $gifCreator->init();
                 $gifCreator->start($val, $this->menuArr[$key]);
                 // If useLargestItemH/W is specified
                 if (!empty($totalWH) && ($this->mconf['useLargestItemX'] || $this->mconf['useLargestItemY'])) {
@@ -167,7 +166,6 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
                     // Regenerate the new values...
                     $val['XY'] = implode(',', $tempXY);
                     $gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
-                    $gifCreator->init();
                     $gifCreator->start($val, $this->menuArr[$key]);
                 }
                 // If distributeH/W is specified
@@ -188,7 +186,6 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
                     // Regenerate the new values...
                     $val['XY'] = implode(',', $tempXY);
                     $gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
-                    $gifCreator->init();
                     $gifCreator->start($val, $this->menuArr[$key]);
                 }
                 // If max dimensions are specified
@@ -205,7 +202,6 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
                     if ($maxFlag) {
                         $val['XY'] = implode(',', $tempXY);
                         $gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
-                        $gifCreator->init();
                         $gifCreator->start($val, $this->menuArr[$key]);
                     }
                 }
@@ -323,7 +319,6 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
             }
             $c++;
             $gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
-            $gifCreator->init();
             $gifCreator->start($val, $this->menuArr[$key]);
             if ($maxDim) {
                 $tempXY = explode(',', $val['XY']);
@@ -338,7 +333,6 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
                 if ($maxFlag) {
                     $val['XY'] = implode(',', $tempXY);
                     $gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
-                    $gifCreator->init();
                     $gifCreator->start($val, $this->menuArr[$key]);
                 }
             }

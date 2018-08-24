@@ -4618,9 +4618,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
         $imageResource = null;
         if ($file === 'GIFBUILDER') {
-            /** @var GifBuilder $gifCreator */
             $gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
-            $gifCreator->init();
             $theImage = '';
             if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
                 $gifCreator->start($fileArray, $this->data);
@@ -4725,9 +4723,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (!isset($imageResource)) {
             try {
                 $theImage = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize((string)$file);
-                $gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
-                $gifCreator->init();
-                $info = $gifCreator->imageMagickConvert($theImage, 'WEB');
+                $info = GeneralUtility::makeInstance(GifBuilder::class)->imageMagickConvert($theImage, 'WEB');
                 $info['origFile'] = $theImage;
                 // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder, ln 100ff in order for the setup-array to create a unique filename hash.
                 $info['origFile_mtime'] = @filemtime($theImage);

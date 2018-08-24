@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 
 /**
  * Helper for creating local image previews using TYPO3s image processing classes.
@@ -123,7 +124,6 @@ class LocalPreviewHelper
         ) {
             // Create a default image
             $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
-            $graphicalFunctions->init();
             $graphicalFunctions->getTemporaryImageWithText(
                 $targetFilePath,
                 'Not imagefile!',
@@ -137,9 +137,7 @@ class LocalPreviewHelper
 
         $originalFileName = $file->getForLocalProcessing(false);
         if ($file->getExtension() === 'svg') {
-            /** @var $gifBuilder \TYPO3\CMS\Frontend\Imaging\GifBuilder */
-            $gifBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
-            $gifBuilder->init();
+            $gifBuilder = GeneralUtility::makeInstance(GifBuilder::class);
             $info = $gifBuilder->getImageDimensions($originalFileName);
             $newInfo = $gifBuilder->getImageScale($info, $configuration['width'], $configuration['height'], []);
             $result = [
@@ -159,7 +157,6 @@ class LocalPreviewHelper
                 if (!file_exists($targetFilePath)) {
                     // Create an error gif
                     $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
-                    $graphicalFunctions->init();
                     $graphicalFunctions->getTemporaryImageWithText(
                         $targetFilePath,
                         'No thumb',

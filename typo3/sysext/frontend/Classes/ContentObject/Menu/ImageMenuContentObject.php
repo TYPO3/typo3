@@ -61,7 +61,6 @@ class ImageMenuContentObject extends AbstractMenuContentObject
         }
         if (is_array($this->mconf['main.'])) {
             $gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
-            $gifCreator->init();
             $itemsConf = $conf;
             $conf = $this->mconf['main.'];
             if (is_array($conf)) {
