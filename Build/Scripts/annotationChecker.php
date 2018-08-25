@@ -62,8 +62,10 @@ class NodeVisitor extends NodeVisitorAbstract
                     'env',
                     // PHPCheckStyle
                     'SuppressWarnings', 'noinspection',
-                    // Extbase related (deprecated)
-                    'transient', 'cli', 'flushesCaches',
+                    // Extbase related (deprecated), will be removed in TYPO3 v10.0
+                    'transient',
+                    'cli', // this is still used in Extbase\Tests\UnitDeprecated
+                    'flushesCaches',
                     // Extbase related
                     'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\Inject', 'Extbase\\\\Inject', 'Inject',
                     'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\Validate', 'Extbase\\\\Validate', 'Validate',

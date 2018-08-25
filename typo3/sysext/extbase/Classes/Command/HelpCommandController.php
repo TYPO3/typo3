@@ -63,7 +63,6 @@ class HelpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandCon
      * ./typo3/sysext/core/bin/typo3 extbase:help <command identifier>
      *
      * @param string $commandIdentifier Identifier of a command for more details
-     * @cli
      */
     public function helpCommand($commandIdentifier = null)
     {

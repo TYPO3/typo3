@@ -414,6 +414,16 @@ class ClassSchema
             }
 
             foreach ($docCommentParser->getTagsValues() as $tag => $values) {
+                if ($tag === 'cli') {
+                    trigger_error(
+                        sprintf(
+                            'Method %s::%s is tagged with @cli which is deprecated and will be removed in TYPO3 v10.0.',
+                            $reflectionClass->getName(),
+                            $reflectionMethod->getName()
+                        ),
+                        E_USER_DEPRECATED
+                    );
+                }
                 if ($tag === 'ignorevalidation') {
                     trigger_error(
                         sprintf(
