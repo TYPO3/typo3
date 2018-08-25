@@ -25,6 +25,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
  * Main call to register any Extbase command from Extbase command controllers
  *
  * Fetches all registered Extbase commands and adds them to the application as custom Extbase commands
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Use symfony/console commands instead.
  */
 class CoreCommand extends Command
 {

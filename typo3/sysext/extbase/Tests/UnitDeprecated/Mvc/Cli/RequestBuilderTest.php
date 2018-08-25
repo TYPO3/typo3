@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli;
+namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Mvc\Cli;
 
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *

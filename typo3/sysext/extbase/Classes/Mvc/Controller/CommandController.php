@@ -32,6 +32,7 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
  * A controller which processes requests from the command line
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Use symfony/console commands instead.
  */
 class CommandController implements CommandControllerInterface
 {
@@ -79,6 +80,11 @@ class CommandController implements CommandControllerInterface
      * @var ConsoleOutput
      */
     protected $output;
+
+    public function __construct()
+    {
+        trigger_error('Extbase Command Controllers will be removed in TYPO3 v10.0. Migrate to symfony/console commands instead.', E_USER_DEPRECATED);
+    }
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager

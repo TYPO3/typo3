@@ -21,6 +21,7 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * Scheduler task to execute CommandController commands
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Use symfony/console commands instead.
  */
 class Task extends AbstractTask
 {

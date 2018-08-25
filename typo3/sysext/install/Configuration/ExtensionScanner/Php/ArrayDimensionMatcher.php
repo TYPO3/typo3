@@ -175,4 +175,9 @@ return [
             'Deprecation-85878-EidUtilityAndVariousTSFEMethods.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'extbase\'][\'commandControllers\']' => [
+        'restFiles' => [
+            'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+        ],
+    ],
 ];

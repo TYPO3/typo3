@@ -20,10 +20,10 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use TYPO3\CMS\Core\Console\CommandRegistry;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
@@ -34,14 +34,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFieldProviderInterface
 {
     /**
-     * @var array|Command[]
+     * @var Command[]
      */
     protected $schedulableCommands = [];
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager
-     */
-    protected $commandManager;
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface

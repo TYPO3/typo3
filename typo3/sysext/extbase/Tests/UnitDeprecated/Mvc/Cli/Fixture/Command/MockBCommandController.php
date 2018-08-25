@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli\Fixture\Command;
+namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Mvc\Cli\Fixture\Command;
 
 /**
  * Another mock CLI Command

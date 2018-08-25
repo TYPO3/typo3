@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
+namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Mvc\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.

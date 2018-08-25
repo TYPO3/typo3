@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli;
+namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Mvc\Cli\Fixture\Command;
 
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
@@ -20,20 +20,19 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
- * Test case
+ * A mock CLI Command
  */
-class RequestTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class MockACommandController extends \TYPO3\CMS\Extbase\Mvc\Cli\Command
 {
-    /**
-     * @test
-     */
-    public function setControllerObjectNameProperlyResolvesExtensionNameWithNamespaces()
+    public function fooCommand()
     {
-        $mockCliRequest = new \TYPO3\CMS\Extbase\Mvc\Cli\Request;
-        $mockCliRequest->setControllerObjectName('TYPO3\CMS\Extbase\Command\NamespacedMockCommandController');
+    }
 
-        $this->assertSame('Extbase', $mockCliRequest->getControllerExtensionName());
+    /**
+     * @param mixed $someArgument
+     */
+    public function barCommand($someArgument)
+    {
     }
 }

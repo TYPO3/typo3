@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
 
 /**
  * Base command exception
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Use symfony/console commands instead.
  */
 class CommandException extends \TYPO3\CMS\Extbase\Mvc\Exception
 {

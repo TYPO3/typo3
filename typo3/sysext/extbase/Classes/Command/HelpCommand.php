@@ -22,6 +22,7 @@ use TYPO3\CMS\Extbase\Core\Bootstrap;
 
 /**
  * Extends the help command of symfony to show the specific help for Extbase commands
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Use symfony/console commands instead.
  */
 class HelpCommand extends \Symfony\Component\Console\Command\HelpCommand
 {

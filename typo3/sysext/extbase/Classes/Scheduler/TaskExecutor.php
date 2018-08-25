@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Scheduler;
  *
  * Takes a \TYPO3\CMS\Extbase\Scheduler\Task and executes the CommandController command
  * defined therein.
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Use symfony/console commands instead.
  */
 class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface
 {

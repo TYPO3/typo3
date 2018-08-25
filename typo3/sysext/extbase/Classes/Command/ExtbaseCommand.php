@@ -23,6 +23,7 @@ use TYPO3\CMS\Extbase\Core\Bootstrap;
 
 /**
  * Wrapper to wrap an Extbase command from a command controller into a Symfony Command
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Use symfony/console commands instead.
  */
 class ExtbaseCommand extends Command
 {

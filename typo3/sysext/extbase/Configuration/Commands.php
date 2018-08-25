@@ -4,6 +4,7 @@
  * is the name of the command (to be called as the first argument after typo3).
  * Required parameter is the "class" of the command which needs to be a subclass
  * of Symfony/Console/Command.
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Use symfony/console commands instead.
  */
 return [
     '_core_command' => [

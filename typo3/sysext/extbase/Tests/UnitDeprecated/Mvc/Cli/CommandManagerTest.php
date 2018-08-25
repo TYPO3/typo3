@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli;
+namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Mvc\Cli;
 
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
@@ -54,15 +54,15 @@ class CommandManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $commandManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Cli\CommandManager::class, ['dummy']);
         $commandManager->_set('objectManager', $this->mockObjectManager);
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'] = [
-            \TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli\Fixture\Command\MockACommandController::class,
-            \TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli\Fixture\Command\MockBCommandController::class
+            \TYPO3\CMS\Extbase\Tests\UnitDeprecated\Mvc\Cli\Fixture\Command\MockACommandController::class,
+            \TYPO3\CMS\Extbase\Tests\UnitDeprecated\Mvc\Cli\Fixture\Command\MockBCommandController::class
         ];
         $mockCommand1 = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class);
         $mockCommand2 = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class);
         $mockCommand3 = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class);
-        $this->mockObjectManager->expects($this->at(0))->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, \TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli\Fixture\Command\MockACommandController::class, 'foo')->will($this->returnValue($mockCommand1));
-        $this->mockObjectManager->expects($this->at(1))->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, \TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli\Fixture\Command\MockACommandController::class, 'bar')->will($this->returnValue($mockCommand2));
-        $this->mockObjectManager->expects($this->at(2))->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, \TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli\Fixture\Command\MockBCommandController::class, 'baz')->will($this->returnValue($mockCommand3));
+        $this->mockObjectManager->expects($this->at(0))->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, \TYPO3\CMS\Extbase\Tests\UnitDeprecated\Mvc\Cli\Fixture\Command\MockACommandController::class, 'foo')->will($this->returnValue($mockCommand1));
+        $this->mockObjectManager->expects($this->at(1))->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, \TYPO3\CMS\Extbase\Tests\UnitDeprecated\Mvc\Cli\Fixture\Command\MockACommandController::class, 'bar')->will($this->returnValue($mockCommand2));
+        $this->mockObjectManager->expects($this->at(2))->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, \TYPO3\CMS\Extbase\Tests\UnitDeprecated\Mvc\Cli\Fixture\Command\MockBCommandController::class, 'baz')->will($this->returnValue($mockCommand3));
         $commands = $commandManager->getAvailableCommands();
         $this->assertEquals(3, count($commands));
         $this->assertSame($mockCommand1, $commands[0]);
