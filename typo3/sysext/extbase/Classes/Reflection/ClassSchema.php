@@ -424,6 +424,16 @@ class ClassSchema
                         E_USER_DEPRECATED
                     );
                 }
+                if ($tag === 'internal' && $reflectionClass->isSubclassOf(\TYPO3\CMS\Extbase\Mvc\Controller\CommandController::class)) {
+                    trigger_error(
+                        sprintf(
+                            'Command method %s::%s is tagged with @internal which is deprecated and will be removed in TYPO3 v10.0.',
+                            $reflectionClass->getName(),
+                            $reflectionMethod->getName()
+                        ),
+                        E_USER_DEPRECATED
+                    );
+                }
                 if ($tag === 'ignorevalidation') {
                     trigger_error(
                         sprintf(
