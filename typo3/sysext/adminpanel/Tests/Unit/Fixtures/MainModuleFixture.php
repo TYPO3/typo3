@@ -16,11 +16,25 @@ namespace TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface;
-use TYPO3\CMS\Adminpanel\Modules\AdminPanelSubModuleInterface;
+use     Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ConfigurableInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\OnSubmitActorInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\PageSettingsProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ShortInfoProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\SubmoduleProviderInterface;
 
-class MainModuleFixture implements AdminPanelModuleInterface
+class MainModuleFixture implements
+    ModuleInterface,
+    ShortInfoProviderInterface,
+    SubmoduleProviderInterface,
+    InitializableInterface,
+               ResourceProviderInterface,
+    PageSettingsProviderInterface,
+    OnSubmitActorInterface,
+    ConfigurableInterface
 {
 
     /**
@@ -67,7 +81,7 @@ class MainModuleFixture implements AdminPanelModuleInterface
     /**
      * @return string
      */
-    public function getSettings(): string
+    public function getPageSettings(): string
     {
         return 'example settings';
     }
@@ -130,7 +144,7 @@ class MainModuleFixture implements AdminPanelModuleInterface
     /**
      * Set SubModules for current module
      *
-     * @param AdminPanelSubModuleInterface[] $subModules
+     * @param ModuleInterface[] $subModules
      */
     public function setSubModules(array $subModules): void
     {
@@ -139,7 +153,7 @@ class MainModuleFixture implements AdminPanelModuleInterface
     /**
      * Get SubModules for current module
      *
-     * @return AdminPanelSubModuleInterface[]
+     * @return ModuleInterface[]
      */
     public function getSubModules(): array
     {
@@ -147,11 +161,9 @@ class MainModuleFixture implements AdminPanelModuleInterface
     }
 
     /**
-     * Returns true if submodule has own settings
-     *
-     * @return bool
+     * @inheritdoc
      */
-    public function getHasSubmoduleSettings(): bool
+    public function hasSubmoduleSettings(): bool
     {
         return false;
     }

@@ -16,13 +16,15 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Adminpanel\ModuleApi\AbstractModule;
+use TYPO3\CMS\Adminpanel\ModuleApi\ShortInfoProviderInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Admin Panel Info Module
  */
-class InfoModule extends AbstractModule
+class InfoModule extends AbstractModule implements ShortInfoProviderInterface
 {
     /**
      * @inheritdoc

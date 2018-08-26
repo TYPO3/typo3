@@ -17,7 +17,11 @@ namespace TYPO3\CMS\Adminpanel\Modules\TsDebug;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Adminpanel\Modules\AbstractSubModule;
+use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
+use TYPO3\CMS\Adminpanel\ModuleApi\ContentProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleSettingsProviderInterface;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -26,7 +30,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
-class TypoScriptWaterfall extends AbstractSubModule
+/**
+ * Class TypoScriptWaterfall
+ *
+ * @internal
+ */
+class TypoScriptWaterfall extends AbstractSubModule implements InitializableInterface, ContentProviderInterface, ModuleSettingsProviderInterface
 {
     /**
      * @var ConfigurationService
@@ -74,9 +83,10 @@ class TypoScriptWaterfall extends AbstractSubModule
     /**
      * Creates the content for the "tsdebug" section ("module") of the Admin Panel
      *
+     * @param ModuleData $data
      * @return string HTML
      */
-    public function getContent(): string
+    public function getContent(ModuleData $data): string
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $templateNameAndPath = 'EXT:adminpanel/Resources/Private/Templates/Modules/TsDebug/TypoScript.html';

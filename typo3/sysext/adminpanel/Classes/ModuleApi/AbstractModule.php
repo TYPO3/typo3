@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Adminpanel\Modules;
+namespace TYPO3\CMS\Adminpanel\ModuleApi;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -25,14 +24,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract base class for Admin Panel Modules containing helper methods and default interface implementations
- *
  * Extend this class when writing own admin panel modules (or implement the Interface directly)
  */
-abstract class AbstractModule implements AdminPanelModuleInterface
+abstract class AbstractModule implements ModuleInterface, ConfigurableInterface, SubmoduleProviderInterface
 {
 
     /**
-     * @var AdminPanelSubModuleInterface[]
+     * @var ModuleInterface[]
      */
     protected $subModules = [];
 
@@ -52,29 +50,6 @@ abstract class AbstractModule implements AdminPanelModuleInterface
     {
         $this->configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $this->mainConfiguration = $this->configurationService->getMainConfiguration();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getSettings(): string
-    {
-        return '';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getIconIdentifier(): string
-    {
-        return '';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function initializeModule(ServerRequestInterface $request): void
-    {
     }
 
     /**
@@ -99,8 +74,35 @@ abstract class AbstractModule implements AdminPanelModuleInterface
     /**
      * @inheritdoc
      */
-    public function onSubmit(array $input, ServerRequestInterface $request): void
+    public function setSubModules(array $subModules): void
     {
+        $this->subModules = $subModules;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSubModules(): array
+    {
+        return $this->subModules;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function hasSubmoduleSettings(): bool
+    {
+        $hasSettings = false;
+        foreach ($this->subModules as $subModule) {
+            if ($subModule instanceof ModuleSettingsProviderInterface) {
+                $hasSettings = true;
+                break;
+            }
+            if ($subModule instanceof SubmoduleProviderInterface) {
+                $hasSettings = $subModule->hasSubmoduleSettings();
+            }
+        }
+        return $hasSettings;
     }
 
     /**
@@ -138,58 +140,5 @@ abstract class AbstractModule implements AdminPanelModuleInterface
             $result = true;
         }
         return $result;
-    }
-
-    /**
-     * @return array
-     */
-    public function getJavaScriptFiles(): array
-    {
-        return [];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getCssFiles(): array
-    {
-        return [];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getShortInfo(): string
-    {
-        return '';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setSubModules(array $subModules): void
-    {
-        $this->subModules = $subModules;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getSubModules(): array
-    {
-        return $this->subModules;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getHasSubmoduleSettings(): bool
-    {
-        foreach ($this->subModules as $subModule) {
-            if (!empty($subModule->getSettings())) {
-                return true;
-            }
-        }
-        return false;
     }
 }

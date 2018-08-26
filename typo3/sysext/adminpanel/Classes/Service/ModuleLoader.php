@@ -17,8 +17,9 @@ namespace TYPO3\CMS\Adminpanel\Service;
  */
 
 use TYPO3\CMS\Adminpanel\Exceptions\InvalidConfigurationException;
-use TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface;
-use TYPO3\CMS\Adminpanel\Modules\AdminPanelSubModuleInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ConfigurableInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\SubmoduleProviderInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -34,11 +35,10 @@ class ModuleLoader
      * Validates, sorts and initiates the registered modules
      *
      * @param array $modules
-     * @param string $type
-     * @return AdminPanelModuleInterface[]|AdminPanelSubModuleInterface[]
+     * @return \TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface[]
      * @throws \RuntimeException
      */
-    public function validateSortAndInitializeModules(array $modules, string $type = 'main'): array
+    public function validateSortAndInitializeModules(array $modules): array
     {
         if (empty($modules)) {
             return [];
@@ -55,7 +55,7 @@ class ModuleLoader
                 !class_exists($configuration['module']) ||
                 !is_subclass_of(
                     $configuration['module'],
-                    ($type === 'main' ? AdminPanelModuleInterface::class : AdminPanelSubModuleInterface::class),
+                    ModuleInterface::class,
                     true
                 )
             ) {
@@ -63,7 +63,7 @@ class ModuleLoader
                     'The module "' .
                     $identifier .
                     '" defines an invalid module class. Ensure the class exists and implements the "' .
-                    AdminPanelModuleInterface::class .
+                    ModuleInterface::class .
                     '".',
                     1519490112
                 );
@@ -75,23 +75,22 @@ class ModuleLoader
         );
 
         $moduleInstances = [];
-        foreach ($orderedModules as $module) {
-            $module = GeneralUtility::makeInstance($module['module']);
-            if ($module instanceof AdminPanelSubModuleInterface || ($module instanceof AdminPanelModuleInterface && $module->isEnabled())) {
-                $moduleInstances[] = $module;
+        foreach ($orderedModules as $moduleConfiguration) {
+            $module = GeneralUtility::makeInstance($moduleConfiguration['module']);
+            if (
+                $module instanceof ModuleInterface
+                && (
+                    ($module instanceof ConfigurableInterface && $module->isEnabled())
+                    || !($module instanceof ConfigurableInterface)
+                )
+            ) {
+                $moduleInstances[$module->getIdentifier()] = $module;
+            }
+            if ($module instanceof SubmoduleProviderInterface) {
+                $subModuleInstances = $this->validateSortAndInitializeModules($moduleConfiguration['submodules'] ?? []);
+                $module->setSubModules($subModuleInstances);
             }
         }
         return $moduleInstances;
-    }
-
-    /**
-     * Validates, sorts and initializes sub-modules
-     *
-     * @param array $modules
-     * @return AdminPanelSubModuleInterface[]
-     */
-    public function validateSortAndInitializeSubModules(array $modules): array
-    {
-        return $this->validateSortAndInitializeModules($modules, 'sub');
     }
 }

@@ -15,8 +15,11 @@ namespace TYPO3\CMS\Adminpanel\View;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ConfigurableInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
 use TYPO3\CMS\Adminpanel\Service\EditToolbarService;
+use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -39,7 +42,7 @@ class AdminPanelView
     /**
      * Array of adminPanel modules
      *
-     * @var AdminPanelModuleInterface[]
+     * @var \TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface[]
      */
     protected $modules = [];
 
@@ -58,17 +61,6 @@ class AdminPanelView
     public function setModules(array $modules): void
     {
         $this->modules = $modules;
-    }
-
-    /**
-     * Returns true if admin panel was activated
-     * (switched "on" via GUI)
-     *
-     * @return bool
-     */
-    protected function isAdminPanelActivated(): bool
-    {
-        return $this->getBackendUser()->uc['AdminPanel']['display_top'] ?? false;
     }
 
     /**
@@ -106,7 +98,7 @@ class AdminPanelView
     public function callDeprecatedHookObject(): string
     {
         $moduleContent = '';
-        if ($this->isAdminPanelActivated()) {
+        if (StateUtility::isOpen()) {
             foreach ($this->modules as $module) {
                 $moduleContent .= $this->getModule($module);
             }
@@ -144,14 +136,14 @@ class AdminPanelView
      * Render a single module with header panel
      *
      * @deprecated Since TYPO3 v9 - only used in deprecated hook call (which triggers the corresponding deprecation error)
-     * @param AdminPanelModuleInterface $module
+     * @param ModuleInterface $module
      * @return string
      */
-    protected function getModule(AdminPanelModuleInterface $module): string
+    protected function getModule(ModuleInterface $module): string
     {
         $output = [];
 
-        if ($module->isEnabled()) {
+        if ($module instanceof ConfigurableInterface && $module->isEnabled()) {
             $output[] = '<div class="typo3-adminPanel-section typo3-adminPanel-section-open">';
             $output[] = '  <div class="typo3-adminPanel-section-title">';
             $output[] = '    ' . $this->getSectionOpenerLink($module);
@@ -162,11 +154,13 @@ class AdminPanelView
             $output[] = '</div>';
         }
 
-        foreach ($module->getJavaScriptFiles() as $javaScriptFile) {
-            $output[] =
-                '<script src="' .
-                PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($javaScriptFile)) .
-                '"></script>';
+        if ($module instanceof DataProviderInterface) {
+            foreach ($module->getJavaScriptFiles() as $javaScriptFile) {
+                $output[] =
+                    '<script src="' .
+                    PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($javaScriptFile)) .
+                    '"></script>';
+            }
         }
 
         return implode('', $output);
@@ -180,10 +174,10 @@ class AdminPanelView
      * Wraps a string in a link which will open/close a certain part of the Admin Panel
      *
      * @deprecated Since TYPO3 v9 - only used in deprecated hook call (which triggers the corresponding deprecation error)
-     * @param AdminPanelModuleInterface $module
+     * @param ModuleInterface $module
      * @return string
      */
-    protected function getSectionOpenerLink(AdminPanelModuleInterface $module): string
+    protected function getSectionOpenerLink(ModuleInterface $module): string
     {
         $identifier = $module->getIdentifier();
         $onclick = 'document.TSFE_ADMIN_PANEL_FORM[' .
@@ -247,7 +241,12 @@ class AdminPanelView
      */
     public function getAdminPanelHeaderData()
     {
-        trigger_error('AdminPanelView->' . __METHOD__ . ' will be removed in TYPO3 v10.0. Implement AdminPanelModules via the new API (see AdminPanelModuleInterface).', E_USER_DEPRECATED);
+        trigger_error(
+            'AdminPanelView->' .
+            __METHOD__ .
+            ' will be removed in TYPO3 v10.0. Implement AdminPanelModules via the new API (see AdminPanelModuleInterface).',
+            E_USER_DEPRECATED
+        );
         $result = '';
         if (!empty($GLOBALS['TBE_STYLES']['stylesheets']['admPanel'])) {
             $stylesheet = GeneralUtility::locationHeaderUrl($GLOBALS['TBE_STYLES']['stylesheets']['admPanel']);
@@ -266,7 +265,12 @@ class AdminPanelView
      */
     public function isAdminModuleEnabled($key)
     {
-        trigger_error('AdminPanelView->' . __METHOD__ . ' will be removed in TYPO3 v10.0. Implement AdminPanelModules via the new API (see AdminPanelModuleInterface).', E_USER_DEPRECATED);
+        trigger_error(
+            'AdminPanelView->' .
+            __METHOD__ .
+            ' will be removed in TYPO3 v10.0. Implement AdminPanelModules via the new API (see AdminPanelModuleInterface).',
+            E_USER_DEPRECATED
+        );
         $result = false;
         // Returns TRUE if the module checked is "preview" and the forcePreview flag is set.
         if ($key === 'preview' && $this->ext_forcePreview) {
@@ -286,7 +290,12 @@ class AdminPanelView
      */
     public function saveConfigOptions()
     {
-        trigger_error('AdminPanelView->' . __METHOD__ . ' will be removed in TYPO3 v10.0. Implement AdminPanelModules via the new API (see AdminPanelModuleInterface).', E_USER_DEPRECATED);
+        trigger_error(
+            'AdminPanelView->' .
+            __METHOD__ .
+            ' will be removed in TYPO3 v10.0. Implement AdminPanelModules via the new API (see AdminPanelModuleInterface).',
+            E_USER_DEPRECATED
+        );
         $input = GeneralUtility::_GP('TSFE_ADMIN_PANEL');
         $beUser = $this->getBackendUser();
         if (is_array($input)) {
@@ -322,7 +331,12 @@ class AdminPanelView
      */
     public function extGetFeAdminValue($sectionName, $val = '')
     {
-        trigger_error('AdminPanelView->' . __METHOD__ . ' will be removed in TYPO3 v10.0. Implement AdminPanelModules via the new API (see AdminPanelModuleInterface).', E_USER_DEPRECATED);
+        trigger_error(
+            'AdminPanelView->' .
+            __METHOD__ .
+            ' will be removed in TYPO3 v10.0. Implement AdminPanelModules via the new API (see AdminPanelModuleInterface).',
+            E_USER_DEPRECATED
+        );
         trigger_error(
             'Deprecated since TYPO3 v9 - ',
             E_USER_DEPRECATED
@@ -370,7 +384,12 @@ class AdminPanelView
      */
     public function forcePreview()
     {
-        trigger_error('AdminPanelView->' . __METHOD__ . ' will be removed in TYPO3 v10.0. Use new AdminPanel Preview Module instead.', E_USER_DEPRECATED);
+        trigger_error(
+            'AdminPanelView->' .
+            __METHOD__ .
+            ' will be removed in TYPO3 v10.0. Use new AdminPanel Preview Module instead.',
+            E_USER_DEPRECATED
+        );
         $this->ext_forcePreview = true;
     }
 
@@ -383,7 +402,10 @@ class AdminPanelView
      */
     public function isAdminModuleOpen($key)
     {
-        trigger_error('AdminPanelView->' . __METHOD__ . ' will be removed in TYPO3 v10.0. Use new AdminPanel API instead.', E_USER_DEPRECATED);
+        trigger_error(
+            'AdminPanelView->' . __METHOD__ . ' will be removed in TYPO3 v10.0. Use new AdminPanel API instead.',
+            E_USER_DEPRECATED
+        );
         return $this->getBackendUser()->uc['AdminPanel']['display_top'] &&
                $this->getBackendUser()->uc['AdminPanel']['display_' . $key];
     }
@@ -403,7 +425,10 @@ class AdminPanelView
      */
     public function extGetItem($title, $content = '', $checkbox = '', $outerDivClass = null, $innerDivClass = null)
     {
-        trigger_error('AdminPanelView->' . __METHOD__ . ' will be removed in TYPO3 v10.0. Use new AdminPanel API instead.', E_USER_DEPRECATED);
+        trigger_error(
+            'AdminPanelView->' . __METHOD__ . ' will be removed in TYPO3 v10.0. Use new AdminPanel API instead.',
+            E_USER_DEPRECATED
+        );
         $title = $title ? '<label for="' . htmlspecialchars($title) . '">' . $this->extGetLL($title) . '</label>' : '';
         $out = '';
         $out .= (string)$outerDivClass ? '<div class="' . htmlspecialchars($outerDivClass) . '">' : '<div>';
@@ -424,7 +449,10 @@ class AdminPanelView
      */
     public function extGetHead($sectionSuffix)
     {
-        trigger_error('AdminPanelView->' . __METHOD__ . ' will be removed in TYPO3 v10.0. Use new AdminPanel API instead.', E_USER_DEPRECATED);
+        trigger_error(
+            'AdminPanelView->' . __METHOD__ . ' will be removed in TYPO3 v10.0. Use new AdminPanel API instead.',
+            E_USER_DEPRECATED
+        );
         return $this->linkSectionHeader($sectionSuffix, $this->extGetLL($sectionSuffix));
     }
 
@@ -440,7 +468,10 @@ class AdminPanelView
      */
     public function linkSectionHeader($sectionSuffix, $sectionTitle, $className = '')
     {
-        trigger_error('AdminPanelView->' . __METHOD__ . ' will be removed in TYPO3 v10.0. Use new AdminPanel API instead.', E_USER_DEPRECATED);
+        trigger_error(
+            'AdminPanelView->' . __METHOD__ . ' will be removed in TYPO3 v10.0. Use new AdminPanel API instead.',
+            E_USER_DEPRECATED
+        );
         $onclick = 'document.TSFE_ADMIN_PANEL_FORM[' .
                    GeneralUtility::quoteJSvalue('TSFE_ADMIN_PANEL[display_' . $sectionSuffix . ']') .
                    '].value=' .

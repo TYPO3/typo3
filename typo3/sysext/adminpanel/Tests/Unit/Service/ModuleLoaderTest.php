@@ -20,7 +20,6 @@ use TYPO3\CMS\Adminpanel\Exceptions\InvalidConfigurationException;
 use TYPO3\CMS\Adminpanel\Service\ModuleLoader;
 use TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures\DisabledMainModuleFixture;
 use TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures\MainModuleFixture;
-use TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures\SubModuleFixture;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -82,11 +81,6 @@ class ModuleLoaderTest extends UnitTestCase
                 [
                     'modulename' => ['module' => \stdClass::class],
                 ],
-            ],
-            'submodule class name given when main modules requested' => [
-                [
-                    'modulename' => ['module' => SubModuleFixture::class]
-                ]
             ]
         ];
     }
@@ -105,27 +99,8 @@ class ModuleLoaderTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider  invalidConfigurationDataProvider
-     */
-    public function validateSortAndInitializeModulesThrowsExceptionIfSubModuleRequestedButMainModuleGiven($configuration): void
-    {
-        $config = [
-            'module1' => [
-                'module' => MainModuleFixture::class
-            ]
-        ];
-
-        $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionCode(1519490112);
-
-        $moduleLoader = new ModuleLoader();
-        $moduleLoader->validateSortAndInitializeModules($config, 'sub');
-    }
-
-    /**
-     * @test
-     */
+    * @test
+    */
     public function validateSortAndInitializeModulesOrdersModulesWithDependencyOrderingService(): void
     {
         $config = [
@@ -166,33 +141,7 @@ class ModuleLoaderTest extends UnitTestCase
         $result = $moduleLoader->validateSortAndInitializeModules($config);
 
         self::assertCount(1, $result);
-        self::assertInstanceOf(MainModuleFixture::class, $result[0]);
-        self::assertNotInstanceOf(DisabledMainModuleFixture::class, $result[0]);
-    }
-
-    /**
-     * @test
-     */
-    public function validateSortAndInitializeSubModulesInstantiatesSubModules(): void
-    {
-        $config = [
-            'module1' => [
-                'module' => SubModuleFixture::class
-            ],
-            'module2' => [
-                'module' => SubModuleFixture::class
-            ]
-        ];
-
-        $dependencyOrderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
-        GeneralUtility::addInstance(DependencyOrderingService::class, $dependencyOrderingServiceProphecy->reveal());
-        $dependencyOrderingServiceProphecy->orderByDependencies($config)->willReturn($config);
-
-        $moduleLoader = new ModuleLoader();
-        $result = $moduleLoader->validateSortAndInitializeSubModules($config);
-
-        self::assertCount(2, $result);
-        self::assertInstanceOf(SubModuleFixture::class, $result[0]);
-        self::assertInstanceOf(SubModuleFixture::class, $result[1]);
+        self::assertInstanceOf(MainModuleFixture::class, $result['example']);
+        self::assertArrayNotHasKey('example-disabled', $result);
     }
 }

@@ -17,6 +17,11 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\AbstractModule;
+use TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\OnSubmitActorInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\PageSettingsProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Adminpanel\Repositories\FrontendGroupsRepository;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
@@ -31,7 +36,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /**
  * Admin Panel Preview Module
  */
-class PreviewModule extends AbstractModule
+class PreviewModule extends AbstractModule implements InitializableInterface, PageSettingsProviderInterface, OnSubmitActorInterface, ResourceProviderInterface
 {
     /**
      * module configuration, set on initialize
@@ -89,7 +94,7 @@ class PreviewModule extends AbstractModule
     /**
      * @inheritdoc
      */
-    public function getSettings(): string
+    public function getPageSettings(): string
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $templateNameAndPath = 'EXT:adminpanel/Resources/Private/Templates/Modules/Settings/Preview.html';
@@ -117,7 +122,7 @@ class PreviewModule extends AbstractModule
     }
 
     /**
-     * Clear page cache if fluid debug output is enabled
+     * Clear page cache if fluid debug output setting is changed
      *
      * @param array $input
      * @param ServerRequestInterface $request
@@ -232,5 +237,15 @@ class PreviewModule extends AbstractModule
             $simTime = $date->getTimestamp();
         }
         return $simTime ?? null;
+    }
+
+    /**
+     * Returns a string array with css files that will be rendered after the module
+     *
+     * @return array
+     */
+    public function getCssFiles(): array
+    {
+        return [];
     }
 }

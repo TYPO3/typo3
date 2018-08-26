@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Adminpanel\Modules;
+namespace TYPO3\CMS\Adminpanel\ModuleApi;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 
 /**
@@ -24,29 +23,8 @@ use TYPO3\CMS\Core\Localization\LanguageService;
  *
  * Extend this class when writing own sub modules
  */
-abstract class AbstractSubModule implements AdminPanelSubModuleInterface
+abstract class AbstractSubModule implements ModuleInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function getSettings(): string
-    {
-        return '';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function initializeModule(ServerRequestInterface $request): void
-    {
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function onSubmit(array $configurationToSave, ServerRequestInterface $request): void
-    {
-    }
 
     /**
      * Returns LanguageService

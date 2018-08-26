@@ -17,9 +17,16 @@ namespace TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ContentProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleSettingsProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\OnSubmitActorInterface;
 use TYPO3\CMS\Adminpanel\Modules\AdminPanelSubModuleInterface;
 
-class SubModuleFixture implements AdminPanelSubModuleInterface
+class SubModuleFixture implements ModuleInterface, InitializableInterface, ContentProviderInterface, ModuleSettingsProviderInterface, OnSubmitActorInterface, DataProviderInterface
 {
 
     /**
@@ -55,9 +62,10 @@ class SubModuleFixture implements AdminPanelSubModuleInterface
     /**
      * Sub-Module content as rendered HTML
      *
+     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData $data
      * @return string
      */
-    public function getContent(): string
+    public function getContent(ModuleData $data): string
     {
         return 'content';
     }
@@ -82,5 +90,14 @@ class SubModuleFixture implements AdminPanelSubModuleInterface
      */
     public function onSubmit(array $configurationToSave, ServerRequestInterface $request): void
     {
+    }
+
+    /**
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @return \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData
+     */
+    public function getDataToStore(ServerRequestInterface $request): ModuleData
+    {
+        return new ModuleData(['foo' => 'bar']);
     }
 }

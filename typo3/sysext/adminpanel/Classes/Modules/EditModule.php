@@ -17,6 +17,10 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\AbstractModule;
+use TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\PageSettingsProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Adminpanel\Service\EditToolbarService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -27,14 +31,14 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /**
  * Admin Panel Edit Module
  */
-class EditModule extends AbstractModule
+class EditModule extends AbstractModule implements PageSettingsProviderInterface, InitializableInterface, ResourceProviderInterface
 {
     /**
      * Creates the content for the "edit" section ("module") of the Admin Panel
      *
      * @return string HTML content for the section. Consists of a string with table-rows with four columns.
      */
-    public function getSettings(): string
+    public function getPageSettings(): string
     {
         $editToolbarService = GeneralUtility::makeInstance(EditToolbarService::class);
         $toolbar = $editToolbarService->createToolbar();
@@ -135,5 +139,15 @@ class EditModule extends AbstractModule
     public function getJavaScriptFiles(): array
     {
         return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Edit.js'];
+    }
+
+    /**
+     * Returns a string array with css files that will be rendered after the module
+     *
+     * @return array
+     */
+    public function getCssFiles(): array
+    {
+        return [];
     }
 }

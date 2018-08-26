@@ -2,9 +2,6 @@
 
 defined('TYPO3_MODE') or die();
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe'][]
-    = \TYPO3\CMS\Adminpanel\Hooks\RenderHook::class . '->renderAdminPanel';
-
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] = [
     'preview' => [
         'module' => \TYPO3\CMS\Adminpanel\Modules\PreviewModule::class,
@@ -60,3 +57,7 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['adminPanel_save']
     = \TYPO3\CMS\Adminpanel\Controller\AjaxController::class . '::saveDataAction';
 
 $GLOBALS['TYPO3_CONF_VARS']['LOG']['writerConfiguration'][\TYPO3\CMS\Core\Log\LogLevel::DEBUG][\TYPO3\CMS\Adminpanel\Log\InMemoryLogWriter::class] = [];
+
+if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['adminpanel_requestcache'])) {
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['adminpanel_requestcache'] = [];
+}

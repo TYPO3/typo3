@@ -16,7 +16,11 @@ namespace TYPO3\CMS\Adminpanel\Modules\Info;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Adminpanel\Modules\AbstractSubModule;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
+use TYPO3\CMS\Adminpanel\ModuleApi\ContentProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -27,26 +31,20 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /**
  * General information module displaying info about the current
  * request
+ *
+ * @internal
  */
-class GeneralInformation extends AbstractSubModule
+class GeneralInformation extends AbstractSubModule implements DataProviderInterface, ContentProviderInterface
 {
     /**
-     * Creates the content for the "info" section ("module") of the Admin Panel
-     *
-     * @return string HTML content for the section. Consists of a string with table-rows with four columns.
-     * @see display()
+     * @inheritdoc
      */
-    public function getContent(): string
+    public function getDataToStore(ServerRequestInterface $request): ModuleData
     {
         /** @var UserAspect $frontendUserAspect */
         $frontendUserAspect = GeneralUtility::makeInstance(Context::class)->getAspect('frontend.user');
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $templateNameAndPath = 'EXT:adminpanel/Resources/Private/Templates/Modules/Info/General.html';
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
-        $view->setPartialRootPaths(['EXT:adminpanel/Resources/Private/Partials']);
         $tsfe = $this->getTypoScriptFrontendController();
-
-        $view->assignMultiple(
+        return new ModuleData(
             [
                 'post' => $_POST,
                 'get' => $_GET,
@@ -61,13 +59,30 @@ class GeneralInformation extends AbstractSubModule
                     'totalParsetime' => $this->getTimeTracker()->getParseTime(),
                     'feUser' => [
                         'uid' => $frontendUserAspect->get('id') ?: 0,
-                        'username' => $frontendUserAspect->get('username') ?: ''
+                        'username' => $frontendUserAspect->get('username') ?: '',
                     ],
                     'imagesOnPage' => $this->collectImagesOnPage(),
-                    'documentSize' => $this->collectDocumentSize()
-                ]
+                    'documentSize' => $this->collectDocumentSize(),
+                ],
             ]
         );
+    }
+
+    /**
+     * Creates the content for the "info" section ("module") of the Admin Panel
+     *
+     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData $data
+     * @return string HTML content for the section. Consists of a string with table-rows with four columns.
+     * @see display()
+     */
+    public function getContent(ModuleData $data): string
+    {
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $templateNameAndPath = 'EXT:adminpanel/Resources/Private/Templates/Modules/Info/General.html';
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
+        $view->setPartialRootPaths(['EXT:adminpanel/Resources/Private/Partials']);
+
+        $view->assignMultiple($data->getArrayCopy());
 
         return $view->render();
     }
@@ -105,7 +120,7 @@ class GeneralInformation extends AbstractSubModule
             'files' => [],
             'total' => 0,
             'totalSize' => 0,
-            'totalSizeHuman' => GeneralUtility::formatSize(0)
+            'totalSizeHuman' => GeneralUtility::formatSize(0),
         ];
 
         if ($this->isNoCacheEnabled() === false) {
@@ -120,7 +135,7 @@ class GeneralInformation extends AbstractSubModule
                 $imagesOnPage['files'][] = [
                     'name' => $file,
                     'size' => $fileSize,
-                    'sizeHuman' => GeneralUtility::formatSize($fileSize)
+                    'sizeHuman' => GeneralUtility::formatSize($fileSize),
                 ];
                 $totalImageSize += $fileSize;
                 $count++;

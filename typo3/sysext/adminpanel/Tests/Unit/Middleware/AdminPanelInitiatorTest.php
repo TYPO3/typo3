@@ -22,7 +22,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Adminpanel\Controller\MainController;
 use TYPO3\CMS\Adminpanel\Middleware\AdminPanelInitiator;
-use TYPO3\CMS\Adminpanel\View\AdminPanelView;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -65,9 +64,9 @@ class AdminPanelInitiatorTest extends UnitTestCase
 
         $controller = $this->prophesize(MainController::class);
         GeneralUtility::setSingletonInstance(MainController::class, $controller->reveal());
-        GeneralUtility::addInstance(AdminPanelView::class, $this->prophesize(AdminPanelView::class)->reveal());
         $handler = $this->prophesizeHandler();
         $request = $this->prophesize(ServerRequestInterface::class);
+        $request->withAttribute(Argument::cetera())->willReturn($request);
         // Act
         $adminPanelInitiator = new AdminPanelInitiator();
         $adminPanelInitiator->process(

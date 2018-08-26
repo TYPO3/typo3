@@ -1,4 +1,7 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      xmlns:adm="http://typo3.org/ns/TYPO3/CMS/Adminpanel/ViewHelpers"
+      data-namespace-typo3-fluid="true">
 <div class="typo3-adminPanel-module{f:if(condition: uid, then: ' typo3-adminPanel-module-{uid}')}">
     <div class="typo3-adminPanel-module-trigger" data-typo3-role="typo3-adminPanel-module-trigger">
         <f:if condition="{icon}"><span class="typo3-adminPanel-module-trigger-icon">{icon -> f:format.raw()}</span></f:if>
@@ -17,7 +20,7 @@
                         <a href="#" class="typo3-adminPanel-content-header-item{f:if(condition: iteration.isFirst, then: ' typo3-adminPanel-content-header-item-active')}" data-typo3-role="typo3-adminPanel-content-tab" data-typo3-tab-target="{sub.identifier}">{sub.label}</a>
                     </f:for>
                 </div>
-                <f:if condition="{module.hasSubmoduleSettings}">
+                <f:if condition="{module.submoduleSettings}">
                     <button type="button" class="typo3-adminPanel-content-header-item typo3-adminPanel-content-header-settings" data-typo3-role="typo3-adminPanel-content-settings">
                         <core:icon identifier="actions-system-extension-configure" alternativeMarkupIdentifier="inline"/>
                     </button>
@@ -26,7 +29,7 @@
                     <core:icon identifier="actions-close" alternativeMarkupIdentifier="inline"/>
                 </button>
             </div>
-            <f:if condition="{module.hasSubmoduleSettings}">
+            <f:if condition="{module.submoduleSettings}">
                 <div class="typo3-adminPanel-content-settings">
                     <f:for each="{module.subModules}" as="sub">
                         <f:if condition="{sub.settings}">
@@ -53,7 +56,9 @@
                             <f:for each="{module.subModules}" as="sub" iteration="subModulesIterator">
                                 <div class="typo3-adminPanel-content-panes-item{f:if(condition:'{subModulesIterator.isFirst}',then:' typo3-adminPanel-content-panes-item-active')}" data-typo3-role="typo3-adminPanel-content-pane" data-typo3-tab-id="{sub.identifier}">
                                     <f:if condition="{sub.label}"><h1 class="typo3-adminPanel-headline">{sub.label}</h1></f:if>
-                                    <f:format.raw>{sub.content}</f:format.raw>
+                                    <f:format.raw>
+                                      <adm:subModuleRender data="{data}" module="{sub}"/>
+                                    </f:format.raw>
                                 </div>
                             </f:for>
                         </div>

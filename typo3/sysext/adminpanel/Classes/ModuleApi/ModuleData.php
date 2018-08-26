@@ -1,8 +1,6 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,15 +14,14 @@ namespace TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures;
  * The TYPO3 project - inspiring people to share!
  */
 
-class DisabledMainModuleFixture extends MainModuleFixture
-{
-    public function getIdentifier(): string
-    {
-        return 'example-disabled';
-    }
+namespace TYPO3\CMS\Adminpanel\ModuleApi;
 
-    public function isEnabled(): bool
-    {
-        return false;
-    }
+/**
+ * ModuleData is a simple wrapper object which extends ArrayObject
+ * which is used to hold Adminpanel module data
+ *
+ * It's a separate class to add semantic meaning to its' usage
+ */
+class ModuleData extends \ArrayObject
+{
 }

@@ -16,13 +16,16 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Adminpanel\ModuleApi\AbstractModule;
+use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ShortInfoProviderInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Admin Panel TypoScript Debug Module
  */
-class TsDebugModule extends AbstractModule
+class TsDebugModule extends AbstractModule implements ShortInfoProviderInterface, ResourceProviderInterface
 {
     /**
      * @inheritdoc
@@ -59,9 +62,12 @@ class TsDebugModule extends AbstractModule
         foreach ($this->getTimeTracker()->tsStackLog as $log) {
             $messageCount += count($log['message'] ?? []);
         }
-        return sprintf($this->getLanguageService()->sL(
-            'LLL:EXT:adminpanel/Resources/Private/Language/locallang_tsdebug.xlf:module.shortinfo'
-        ), $messageCount);
+        return sprintf(
+            $this->getLanguageService()->sL(
+                'LLL:EXT:adminpanel/Resources/Private/Language/locallang_tsdebug.xlf:module.shortinfo'
+            ),
+            $messageCount
+        );
     }
 
     /**
@@ -73,10 +79,18 @@ class TsDebugModule extends AbstractModule
     }
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getJavaScriptFiles(): array
     {
         return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/TsDebug.js'];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCssFiles(): array
+    {
+        return [];
     }
 }

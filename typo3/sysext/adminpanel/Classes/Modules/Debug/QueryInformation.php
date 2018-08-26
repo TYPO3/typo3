@@ -16,16 +16,22 @@ namespace TYPO3\CMS\Adminpanel\Modules\Debug;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\Log\DoctrineSqlLogger;
-use TYPO3\CMS\Adminpanel\Modules\AbstractSubModule;
+use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
+use TYPO3\CMS\Adminpanel\ModuleApi\ContentProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Admin Panel Query Information module for showing SQL Queries
+ *
+ * @internal
  */
-class QueryInformation extends AbstractSubModule
+class QueryInformation extends AbstractSubModule implements DataProviderInterface, ContentProviderInterface
 {
     /**
      * Identifier for this Sub-module,
@@ -51,28 +57,36 @@ class QueryInformation extends AbstractSubModule
     }
 
     /**
-     * @return string Returns content of admin panel
-     * @throws \UnexpectedValueException
-     * @throws \InvalidArgumentException
+     * @param ServerRequestInterface $request
+     * @return \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function getContent(): string
+    public function getDataToStore(ServerRequestInterface $request): ModuleData
+    {
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $connection = $connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $logger = $connection->getConfiguration()->getSQLLogger();
+        $data = [];
+        if ($logger instanceof DoctrineSqlLogger) {
+            $queries = $logger->getQueries();
+            $data['queries'] = $this->groupQueries($queries) ?? [];
+            $data['totalTime'] = array_sum(array_column($queries, 'executionMS')) * 1000;
+        }
+        return new ModuleData($data);
+    }
+
+    /**
+     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData $data
+     * @return string Returns content of admin panel
+     */
+    public function getContent(ModuleData $data): string
     {
         $view = new StandaloneView();
         $view->setTemplatePathAndFilename(
             'typo3/sysext/adminpanel/Resources/Private/Templates/Modules/Debug/QueryInformation.html'
         );
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $connection = $connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        $logger = $connection->getConfiguration()->getSQLLogger();
         $this->getLanguageService()->includeLLFile('EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf');
-        if ($logger instanceof DoctrineSqlLogger) {
-            $queries = $logger->getQueries();
-            $this->queryCount = \count($queries);
-            $groupedQueries = $this->groupQueries($queries);
-            $totalTime = array_sum(array_column($queries, 'executionMS')) * 1000;
-            $view->assign('queries', $groupedQueries ?? [])->assign('totalTime', $totalTime);
-        }
+        $view->assignMultiple($data->getArrayCopy());
         return $view->render();
     }
 

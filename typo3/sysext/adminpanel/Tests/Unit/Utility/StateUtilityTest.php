@@ -30,7 +30,7 @@ class StateUtilityTest extends UnitTestCase
     public function isEnabledReturnsFalseIfNoBackendUserExists(): void
     {
         $GLOBALS['BE_USER'] = false;
-        $isEnabled = StateUtility::isActivated();
+        $isEnabled = StateUtility::isActivatedForUser();
         self::assertFalse($isEnabled);
     }
 
@@ -40,7 +40,7 @@ class StateUtilityTest extends UnitTestCase
     public function isEnabledReturnsFalseIfNoBackendUserInFrontendContextIsLoggedIn(): void
     {
         $GLOBALS['BE_USER'] = $this->prophesize(BackendUserAuthentication::class)->reveal();
-        $isEnabled = StateUtility::isActivated();
+        $isEnabled = StateUtility::isActivatedForUser();
         self::assertFalse($isEnabled);
     }
 
@@ -78,7 +78,7 @@ class StateUtilityTest extends UnitTestCase
         $beUserProphecy = $this->prophesize(FrontendBackendUserAuthentication::class);
         $beUserProphecy->getTSConfig()->willReturn($tsConfig);
         $GLOBALS['BE_USER'] = $beUserProphecy->reveal();
-        $isEnabled = StateUtility::isActivated();
+        $isEnabled = StateUtility::isActivatedForUser();
         self::assertTrue($isEnabled);
     }
 
@@ -115,7 +115,7 @@ class StateUtilityTest extends UnitTestCase
         $beUserProphecy = $this->prophesize(FrontendBackendUserAuthentication::class);
         $beUserProphecy->getTSConfig()->willReturn($tsConfig);
         $GLOBALS['BE_USER'] = $beUserProphecy->reveal();
-        $isEnabled = StateUtility::isActivated();
+        $isEnabled = StateUtility::isActivatedForUser();
         self::assertFalse($isEnabled);
     }
 }

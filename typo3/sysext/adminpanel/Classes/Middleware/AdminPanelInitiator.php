@@ -44,7 +44,8 @@ class AdminPanelInitiator implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (StateUtility::isActivated() && StateUtility::isOpen()) {
+        if (StateUtility::isActivatedForUser() && StateUtility::isOpen()) {
+            $request = $request->withAttribute('adminPanelRequestId', substr(md5(uniqid('', true)), 0, 13));
             $adminPanelController = GeneralUtility::makeInstance(
                 MainController::class
             );

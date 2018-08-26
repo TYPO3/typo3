@@ -20,29 +20,36 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use TYPO3\CMS\Adminpanel\Log\DoctrineSqlLogger;
+use TYPO3\CMS\Adminpanel\Controller\MainController;
 use TYPO3\CMS\Adminpanel\Utility\StateUtility;
-use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * Enable sql logging for the admin panel
+ * Store request data of current request in cache for rendering in admin panel
  *
  * @internal
  */
-class SqlLogging implements MiddlewareInterface
+class AdminPanelDataPersister implements MiddlewareInterface
 {
-
     /**
-     * Enable SQL Logging as early as possible to catch all queries if the admin panel is active
+     * Render the admin panel if activated
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (StateUtility::isActivatedForUser() && StateUtility::isOpen()) {
-            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-            $connection = $connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-            $connection->getConfiguration()->setSQLLogger(GeneralUtility::makeInstance(DoctrineSqlLogger::class));
+        $response = $handler->handle($request);
+        if (
+            !($response instanceof NullResponse)
+            && $GLOBALS['TSFE'] instanceof TypoScriptFrontendController
+            && $GLOBALS['TSFE']->isOutputting()
+            && StateUtility::isActivatedForUser()
+            && StateUtility::isActivatedInTypoScript()
+            && !StateUtility::isHiddenForUser()
+        ) {
+            $mainController = GeneralUtility::makeInstance(MainController::class);
+            $mainController->storeData($request);
         }
-        return $handler->handle($request);
+        return $response;
     }
 }

@@ -30,7 +30,7 @@ class StateUtility
      *
      * @return bool
      */
-    public static function isActivated(): bool
+    public static function isActivatedForUser(): bool
     {
         $beUser = $GLOBALS['BE_USER'] ?? null;
         if ($beUser instanceof FrontendBackendUserAuthentication) {
@@ -55,5 +55,15 @@ class StateUtility
     {
         $beUser = $GLOBALS['BE_USER'] ?? null;
         return (bool)($beUser->uc['AdminPanel']['display_top'] ?? false);
+    }
+
+    public static function isActivatedInTypoScript(): bool
+    {
+        return (bool)($GLOBALS['TSFE']->config['config']['admPanel'] ?? false);
+    }
+
+    public static function isHiddenForUser(): bool
+    {
+        return (bool)($GLOBALS['BE_USER']->extAdminConfig['hide'] ?? false);
     }
 }

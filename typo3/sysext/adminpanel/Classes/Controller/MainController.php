@@ -17,15 +17,23 @@ namespace TYPO3\CMS\Adminpanel\Controller;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ConfigurableInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleDataStorageCollection;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\PageSettingsProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ShortInfoProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\SubmoduleProviderInterface;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Adminpanel\Service\ModuleLoader;
+use TYPO3\CMS\Adminpanel\Utility\ResourceUtility;
+use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Adminpanel\View\AdminPanelView;
-use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -36,7 +44,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 class MainController implements SingletonInterface
 {
     /**
-     * @var AdminPanelModuleInterface[]
+     * @var \TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface[]
      */
     protected $modules = [];
 
@@ -72,7 +80,9 @@ class MainController implements SingletonInterface
     ) {
         $this->moduleLoader = $moduleLoader ?? GeneralUtility::makeInstance(ModuleLoader::class);
         $this->uriBuilder = $uriBuilder ?? GeneralUtility::makeInstance(UriBuilder::class);
-        $this->configurationService = $configurationService ?? GeneralUtility::makeInstance(ConfigurationService::class);
+        $this->configurationService = $configurationService
+                                      ??
+                                      GeneralUtility::makeInstance(ConfigurationService::class);
         $this->adminPanelModuleConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
     }
 
@@ -86,37 +96,27 @@ class MainController implements SingletonInterface
         $this->modules = $this->moduleLoader->validateSortAndInitializeModules(
             $this->adminPanelModuleConfiguration
         );
-        $this->configurationService->saveConfiguration($this->modules, $request);
 
-        if ($this->isAdminPanelActivated()) {
-            foreach ($this->modules as $module) {
-                if ($module->isEnabled()) {
-                    $subModules = $this->moduleLoader->validateSortAndInitializeSubModules(
-                        $this->adminPanelModuleConfiguration[$module->getIdentifier()]['submodules'] ?? []
-                    );
-                    foreach ($subModules as $subModule) {
-                        $subModule->initializeModule($request);
-                    }
-                    $module->setSubModules($subModules);
-                    $module->initializeModule($request);
-                }
-            }
+        if (StateUtility::isActivatedForUser()) {
+            $this->initializeModules($request, $this->modules);
         }
     }
 
     /**
-     * Renders the admin panel
+     * Renders the admin panel - Called in PSR-15 Middleware
      *
+     * @see \TYPO3\CMS\Adminpanel\Middleware\AdminPanelRenderer
+     * @param \Psr\Http\Message\ServerRequestInterface $request
      * @return string
      */
-    public function render(): string
+    public function render(ServerRequestInterface $request): string
     {
         // legacy handling, deprecated, will be removed in TYPO3 v10.0.
         $adminPanelView = GeneralUtility::makeInstance(AdminPanelView::class);
         $hookObjectContent = $adminPanelView->callDeprecatedHookObject();
         // end legacy handling
 
-        $resources = $this->getResources();
+        $resources = ResourceUtility::getResources();
 
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $templateNameAndPath = 'EXT:adminpanel/Resources/Private/Templates/Main.html';
@@ -128,22 +128,58 @@ class MainController implements SingletonInterface
             [
                 'toggleActiveUrl' => $this->generateBackendUrl('ajax_adminPanel_toggle'),
                 'resources' => $resources,
-                'adminPanelActive' => $this->isAdminPanelActivated(),
+                'adminPanelActive' => StateUtility::isOpen(),
             ]
         );
-        if ($this->isAdminPanelActivated()) {
-            $moduleResources = $this->getAdditionalResourcesForModules($this->modules);
+        if (StateUtility::isOpen()) {
+            $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('adminpanel_requestcache');
+            $requestId = $request->getAttribute('adminPanelRequestId');
+            $data = $cache->get($requestId);
+            $moduleResources = ResourceUtility::getAdditionalResourcesForModules($this->modules);
+            $settingsModules = array_filter($this->modules, function (ModuleInterface $module) {
+                return $module instanceof PageSettingsProviderInterface;
+            });
+            $parentModules = array_filter(
+                $this->modules,
+                function (ModuleInterface $module) {
+                    return $module instanceof SubmoduleProviderInterface && $module instanceof ShortInfoProviderInterface;
+                }
+            );
             $view->assignMultiple(
                 [
                     'modules' => $this->modules,
+                    'settingsModules' => $settingsModules,
+                    'parentModules' => $parentModules,
                     'hookObjectContent' => $hookObjectContent,
                     'saveUrl' => $this->generateBackendUrl('ajax_adminPanel_saveForm'),
                     'moduleResources' => $moduleResources,
+                    'requestId' => $requestId,
+                    'data' => $data ?? [],
                 ]
             );
         }
-
         return $view->render();
+    }
+
+    /**
+     * Stores data for admin panel in cache - Called in PSR-15 Middleware
+     *
+     * @see \TYPO3\CMS\Adminpanel\Middleware\AdminPanelDataPersister
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     */
+    public function storeData(ServerRequestInterface $request): void
+    {
+        if (StateUtility::isOpen()) {
+            $data = $this->storeDataPerModule(
+                $request,
+                $this->modules,
+                GeneralUtility::makeInstance(ModuleDataStorageCollection::class)
+            );
+            $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('adminpanel_requestcache');
+            $cache->set($request->getAttribute('adminPanelRequestId'), $data);
+            $cache->collectGarbage();
+        }
     }
 
     /**
@@ -158,113 +194,50 @@ class MainController implements SingletonInterface
     }
 
     /**
-     * Get additional resources (css, js) from modules and merge it to
-     * one array - returns an array of full html tags
-     *
-     * @param AdminPanelModuleInterface[] $modules
-     * @return array
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface[] $modules
      */
-    protected function getAdditionalResourcesForModules(array $modules): array
+    protected function initializeModules(ServerRequestInterface $request, array $modules): void
     {
-        $result = [
-            'js' => '',
-            'css' => '',
-        ];
         foreach ($modules as $module) {
-            foreach ($module->getJavaScriptFiles() as $file) {
-                $result['js'] .= $this->getJsTag($file);
+            if (
+                ($module instanceof InitializableInterface)
+                && (
+                    (($module instanceof ConfigurableInterface) && $module->isEnabled())
+                    || (!($module instanceof ConfigurableInterface))
+                )
+            ) {
+                $module->initializeModule($request);
             }
-            foreach ($module->getCssFiles() as $file) {
-                $result['css'] .= $this->getCssTag($file);
+            if ($module instanceof SubmoduleProviderInterface) {
+                $this->initializeModules($request, $module->getSubModules());
             }
         }
-        return $result;
     }
 
     /**
-     * Returns a link tag with the admin panel stylesheet
-     * defined using TBE_STYLES
-     *
-     * @return string
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface[] $modules
+     * @param ModuleDataStorageCollection $data
+     * @return ModuleDataStorageCollection
      */
-    protected function getAdminPanelStylesheet(): string
+    protected function storeDataPerModule(ServerRequestInterface $request, array $modules, ModuleDataStorageCollection $data): ModuleDataStorageCollection
     {
-        $result = '';
-        if (!empty($GLOBALS['TBE_STYLES']['stylesheets']['admPanel'])) {
-            $stylesheet = GeneralUtility::locationHeaderUrl($GLOBALS['TBE_STYLES']['stylesheets']['admPanel']);
-            $result = '<link rel="stylesheet" type="text/css" href="' .
-                      htmlspecialchars($stylesheet, ENT_QUOTES | ENT_HTML5) . '" />';
+        foreach ($modules as $module) {
+            if (
+                ($module instanceof DataProviderInterface)
+                && (
+                    (($module instanceof ConfigurableInterface) && $module->isEnabled())
+                    || (!($module instanceof ConfigurableInterface))
+                )
+            ) {
+                $data->addModuleData($module, $module->getDataToStore($request));
+            }
+
+            if ($module instanceof SubmoduleProviderInterface) {
+                $this->storeDataPerModule($request, $module->getSubModules(), $data);
+            }
         }
-        return $result;
-    }
-
-    /**
-     * Returns the current BE user.
-     *
-     * @return FrontendBackendUserAuthentication
-     */
-    protected function getBackendUser(): FrontendBackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * Get a css tag for file - with absolute web path resolving
-     *
-     * @param string $cssFileLocation
-     * @return string
-     */
-    protected function getCssTag(string $cssFileLocation): string
-    {
-        $css = '<link type="text/css" rel="stylesheet" href="' .
-               htmlspecialchars(
-                   PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($cssFileLocation)),
-                   ENT_QUOTES | ENT_HTML5
-               ) .
-               '" media="all" />';
-        return $css;
-    }
-
-    /**
-     * Get a script tag for JavaScript with absolute paths
-     *
-     * @param string $jsFileLocation
-     * @return string
-     */
-    protected function getJsTag(string $jsFileLocation): string
-    {
-        $js = '<script type="text/javascript" src="' .
-              htmlspecialchars(
-                  PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($jsFileLocation)),
-                  ENT_QUOTES | ENT_HTML5
-              ) .
-              '"></script>';
-        return $js;
-    }
-
-    /**
-     * Return a string with tags for main admin panel resources
-     *
-     * @return string
-     */
-    protected function getResources(): string
-    {
-        $jsFileLocation = 'EXT:adminpanel/Resources/Public/JavaScript/AdminPanel.js';
-        $js = $this->getJsTag($jsFileLocation);
-        $cssFileLocation = 'EXT:adminpanel/Resources/Public/Css/adminpanel.css';
-        $css = $this->getCssTag($cssFileLocation);
-
-        return $css . $this->getAdminPanelStylesheet() . $js;
-    }
-
-    /**
-     * Returns true if admin panel was activated
-     * (switched "on" via GUI)
-     *
-     * @return bool
-     */
-    protected function isAdminPanelActivated(): bool
-    {
-        return (bool)($this->getBackendUser()->uc['AdminPanel']['display_top'] ?? false);
+        return $data;
     }
 }

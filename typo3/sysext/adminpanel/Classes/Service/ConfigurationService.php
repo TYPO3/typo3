@@ -17,7 +17,9 @@ namespace TYPO3\CMS\Adminpanel\Service;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ConfigurableInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\OnSubmitActorInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\SubmoduleProviderInterface;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -77,24 +79,15 @@ class ConfigurationService implements SingletonInterface
      * triggers onSubmit method of modules to enable each module
      * to enhance the save action
      *
-     * @param AdminPanelModuleInterface[] $modules
+     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface[] $modules
      * @param ServerRequestInterface $request
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
     public function saveConfiguration(array $modules, ServerRequestInterface $request): void
     {
         $configurationToSave = $request->getParsedBody()['TSFE_ADMIN_PANEL'] ?? [];
         $beUser = $this->getBackendUser();
+        $this->triggerOnSubmitActors($modules, $request, $configurationToSave);
 
-        // Trigger onSubmit
-        foreach ($modules as $module) {
-            if ($module->isEnabled()) {
-                $module->onSubmit($configurationToSave, $request);
-                foreach ($module->getSubModules() as $subModule) {
-                    $subModule->onSubmit($configurationToSave, $request);
-                }
-            }
-        }
         // Settings
         $beUser->uc['AdminPanel'] = array_merge(
             !is_array($beUser->uc['AdminPanel']) ? [] : $beUser->uc['AdminPanel'],
@@ -113,5 +106,31 @@ class ConfigurationService implements SingletonInterface
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @param array $modules
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param $configurationToSave
+     */
+    protected function triggerOnSubmitActors(
+        array $modules,
+        ServerRequestInterface $request,
+        $configurationToSave
+    ): void {
+        foreach ($modules as $module) {
+            if (
+                $module instanceof OnSubmitActorInterface
+                && (
+                    ($module instanceof ConfigurableInterface && $module->isEnabled())
+                    || !($module instanceof ConfigurableInterface)
+                )
+             ) {
+                $module->onSubmit($configurationToSave, $request);
+            }
+            if ($module instanceof SubmoduleProviderInterface) {
+                $this->triggerOnSubmitActors($module->getSubModules(), $request, $configurationToSave);
+            }
+        }
     }
 }

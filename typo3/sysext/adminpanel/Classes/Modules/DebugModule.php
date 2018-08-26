@@ -17,12 +17,14 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  */
 
 use TYPO3\CMS\Adminpanel\Log\InMemoryLogWriter;
+use TYPO3\CMS\Adminpanel\ModuleApi\AbstractModule;
+use TYPO3\CMS\Adminpanel\ModuleApi\ShortInfoProviderInterface;
 use TYPO3\CMS\Core\Log\LogRecord;
 
 /**
  * Debug Module of the AdminPanel
  */
-class DebugModule extends AbstractModule
+class DebugModule extends AbstractModule implements ShortInfoProviderInterface
 {
 
     /**
