@@ -14,10 +14,13 @@ namespace TYPO3\CMS\Core\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\IO\PharStreamWrapper;
+use TYPO3\CMS\Core\IO\PharStreamWrapperInterceptor;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\PharStreamWrapper\Behavior;
+use TYPO3\PharStreamWrapper\Manager;
+use TYPO3\PharStreamWrapper\PharStreamWrapper;
 
 /**
  * This class encapsulates bootstrap related methods.
@@ -683,6 +686,13 @@ class Bootstrap
     protected function initializeIO()
     {
         if (in_array('phar', stream_get_wrappers())) {
+            // destroy and re-initialize PharStreamWrapper for TYPO3 core
+            Manager::destroy();
+            Manager::initialize(
+                (new Behavior())
+                    ->withAssertion(new PharStreamWrapperInterceptor())
+            );
+
             stream_wrapper_unregister('phar');
             stream_wrapper_register('phar', PharStreamWrapper::class);
         }
