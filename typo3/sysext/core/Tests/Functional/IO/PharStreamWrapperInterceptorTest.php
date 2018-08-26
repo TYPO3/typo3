@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Core\Tests\Functional\IO;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\IO\PharStreamWrapper;
-use TYPO3\CMS\Core\IO\PharStreamWrapperException;
+use TYPO3\PharStreamWrapper\Exception;
+use TYPO3\PharStreamWrapper\Manager;
+use TYPO3\PharStreamWrapper\PharStreamWrapper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class PharStreamWrapperTest extends FunctionalTestCase
+class PharStreamWrapperInterceptorTest extends FunctionalTestCase
 {
     /**
      * @var array
@@ -45,11 +46,17 @@ class PharStreamWrapperTest extends FunctionalTestCase
 
         stream_wrapper_unregister('phar');
         stream_wrapper_register('phar', PharStreamWrapper::class);
+
+        Manager::initialize(
+            (new \TYPO3\PharStreamWrapper\Behavior())
+                ->withAssertion(new \TYPO3\CMS\Core\IO\PharStreamWrapperInterceptor())
+        );
     }
 
     protected function tearDown()
     {
         stream_wrapper_restore('phar');
+        Manager::destroy();
         parent::tearDown();
     }
 
@@ -151,7 +158,7 @@ class PharStreamWrapperTest extends FunctionalTestCase
      */
     public function directoryActionDeniesInvocation(string $path)
     {
-        self::expectException(PharStreamWrapperException::class);
+        self::expectException(Exception::class);
         self::expectExceptionCode(1530103998);
 
         $path = $this->instancePath . '/' . $path;
@@ -288,7 +295,7 @@ class PharStreamWrapperTest extends FunctionalTestCase
      */
     public function urlStatDeniesInvocation(string $functionName, string $path)
     {
-        self::expectException(PharStreamWrapperException::class);
+        self::expectException(Exception::class);
         self::expectExceptionCode(1530103998);
 
         $path = $this->instancePath . '/' . $path;
@@ -369,7 +376,7 @@ class PharStreamWrapperTest extends FunctionalTestCase
      */
     public function streamOpenDeniesInvocationForFileOpen()
     {
-        self::expectException(PharStreamWrapperException::class);
+        self::expectException(Exception::class);
         self::expectExceptionCode(1530103998);
 
         $allowedPath = $this->instancePath . '/fileadmin/bundle.phar';
@@ -381,7 +388,7 @@ class PharStreamWrapperTest extends FunctionalTestCase
      */
     public function streamOpenDeniesInvocationForFileGetContents()
     {
-        self::expectException(PharStreamWrapperException::class);
+        self::expectException(Exception::class);
         self::expectExceptionCode(1530103998);
 
         $allowedPath = $this->instancePath . '/fileadmin/bundle.phar';
@@ -393,7 +400,7 @@ class PharStreamWrapperTest extends FunctionalTestCase
      */
     public function streamOpenDeniesInvocationForInclude()
     {
-        self::expectException(PharStreamWrapperException::class);
+        self::expectException(Exception::class);
         self::expectExceptionCode(1530103998);
 
         $allowedPath = $this->instancePath . '/fileadmin/bundle.phar';

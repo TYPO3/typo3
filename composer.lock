@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0bf895df915462054fe6c1a396cf1a64",
+    "content-hash": "77ef91b6d63374021099cbe4a8506993",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -2038,6 +2038,41 @@
                 "typo3"
             ],
             "time": "2018-04-05T21:00:40+00:00"
+        },
+        {
+            "name": "typo3/phar-stream-wrapper",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TYPO3/phar-stream-wrapper.git",
+                "reference": "0db1ca7f8f9f6774dc76b1f7fedbb7e752e0eaa9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TYPO3/phar-stream-wrapper/zipball/0db1ca7f8f9f6774dc76b1f7fedbb7e752e0eaa9",
+                "reference": "0db1ca7f8f9f6774dc76b1f7fedbb7e752e0eaa9",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TYPO3\\PharStreamWrapper\\": "src/",
+                    "TYPO3\\PharStreamWrapper\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Interceptors for PHP's native phar:// stream handling",
+            "homepage": "https://typo3.org/",
+            "time": "2018-08-26T20:18:57+00:00"
         },
         {
             "name": "typo3fluid/fluid",

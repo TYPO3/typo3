@@ -22,13 +22,13 @@ use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
-use TYPO3\CMS\Core\IO\PharStreamWrapper;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\PharStreamWrapper\PharStreamWrapper;
 
 /**
  * This class encapsulates bootstrap related methods.
