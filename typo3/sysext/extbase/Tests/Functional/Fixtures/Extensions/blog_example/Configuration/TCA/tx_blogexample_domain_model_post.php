@@ -5,16 +5,16 @@ return [
         'label' => 'title',
         'label_alt' => 'author',
         'label_alt_force' => true,
-        'tstamp'   => 'tstamp',
-        'crdate'   => 'crdate',
+        'tstamp' => 'tstamp',
+        'crdate' => 'crdate',
         'versioningWS' => true,
         'origUid' => 't3_origuid',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l18n_parent',
         'transOrigDiffSourceField' => 'l18n_diffsource',
-        'delete'   => 'deleted',
+        'delete' => 'deleted',
         'sortby' => 'sorting',
-        'enablecolumns'  => [
+        'enablecolumns' => [
             'disabled' => 'hidden'
         ],
         'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_post.gif'
@@ -34,11 +34,13 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'foreign_table' => 'sys_language',
-                'foreign_table_where' => 'ORDER BY sys_language.title',
+                'special' => 'languages',
                 'items' => [
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0]
+                    [
+                        'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
+                        -1,
+                        'flags-multiple'
+                    ],
                 ],
                 'default' => 0
             ]
@@ -58,7 +60,7 @@ return [
             ]
         ],
         'l18n_diffsource' => [
-            'config'=>[
+            'config' => [
                 'type' => 'passthrough',
                 'default' => ''
             ]

@@ -5,10 +5,10 @@ return [
         'label' => 'date',
         'label_alt' => 'author',
         'label_alt_force' => true,
-        'tstamp'   => 'tstamp',
-        'crdate'   => 'crdate',
-        'delete'   => 'deleted',
-        'enablecolumns'  => [
+        'tstamp' => 'tstamp',
+        'crdate' => 'crdate',
+        'delete' => 'deleted',
+        'enablecolumns' => [
             'disabled' => 'hidden'
         ],
         'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_comment.gif'

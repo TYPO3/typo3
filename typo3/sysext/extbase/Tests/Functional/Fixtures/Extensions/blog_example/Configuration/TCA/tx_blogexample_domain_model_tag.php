@@ -2,12 +2,16 @@
 
 return [
     'ctrl' => [
-        'title'    => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_tag',
+        'title' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_tag',
         'label' => 'name',
-        'tstamp'   => 'tstamp',
-        'crdate'   => 'crdate',
-        'delete'   => 'deleted',
-        'enablecolumns'  => [
+        'tstamp' => 'tstamp',
+        'crdate' => 'crdate',
+        'versioningWS' => true,
+        'languageField' => 'sys_language_uid',
+        'transOrigPointerField' => 'l18n_parent',
+        'transOrigDiffSourceField' => 'l18n_diffsource',
+        'delete' => 'deleted',
+        'enablecolumns' => [
             'disabled' => 'hidden'
         ],
         'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_tag.gif'
@@ -22,11 +26,13 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'foreign_table' => 'sys_language',
-                'foreign_table_where' => 'ORDER BY sys_language.title',
+                'special' => 'languages',
                 'items' => [
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0]
+                    [
+                        'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
+                        -1,
+                        'flags-multiple'
+                    ],
                 ],
                 'default' => 0
             ]
@@ -46,7 +52,7 @@ return [
             ]
         ],
         'l18n_diffsource' => [
-            'config'=>[
+            'config' => [
                 'type' => 'passthrough',
                 'default' => '',
             ],
