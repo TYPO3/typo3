@@ -1019,7 +1019,7 @@ class DataMapProcessor
                 continue;
             }
             // only keep ancestors that were initially requested before expanding
-            if (in_array($ancestorId, $ids)) {
+            if (in_array($ancestorId, $ids, true)) {
                 $dependentIdMap[$ancestorId] = $dependentId;
             } elseif (!empty($ancestorIdMap[$ancestorId])) {
                 // resolve from previously expanded search criteria
@@ -1138,16 +1138,17 @@ class DataMapProcessor
      * Return only ids that are integer - so no "NEW..." values
      *
      * @param string[]|int[] $ids
-     * @return int[]|string[]
+     * @return int[]
      */
     protected function filterNumericIds(array $ids)
     {
-        return array_filter(
+        $ids = array_filter(
             $ids,
             function ($id) {
                 return MathUtility::canBeInterpretedAsInteger($id);
             }
         );
+        return array_map('intval', $ids);
     }
 
     /**
@@ -1184,22 +1185,21 @@ class DataMapProcessor
     }
 
     /**
-     * @param array $fieldNames
-     * @param array $element
-     * @return int|null
+     * @param array<string, string> $fieldNames
+     * @param array<string, mixed> $element
+     * @return int|null either a (non-empty) ancestor uid, or `null` if unresolved
      */
     protected function resolveAncestorId(array $fieldNames, array $element)
     {
-        // implicit: having source value different to parent value, use source pointer
-        if (
-            !empty($fieldNames['source'])
-            && $element[$fieldNames['source']] !== $element[$fieldNames['parent']]
-        ) {
-            return (int)$fieldNames['source'];
+        $sourceName = $fieldNames['source'] ?? null;
+        if ($sourceName !== null && !empty($element[$sourceName])) {
+            // implicit: use source pointer if given (not empty)
+            return (int)$element[$sourceName];
         }
-        if (!empty($fieldNames['parent'])) {
-            // implicit: use parent pointer if defined
-            return (int)$element[$fieldNames['parent']];
+        $parentName = $fieldNames['parent'] ?? null;
+        if ($parentName !== null && !empty($element[$parentName])) {
+            // implicit: use parent pointer if given (not empty)
+            return (int)$element[$parentName];
         }
         return null;
     }

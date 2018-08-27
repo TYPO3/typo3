@@ -9,6 +9,7 @@ return [
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l18n_parent',
         'transOrigDiffSourceField' => 'l18n_diffsource',
+        'translationSource' => 'l10n_source',
         'delete' => 'deleted',
         'enablecolumns' => [
             'disabled' => 'hidden',
