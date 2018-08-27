@@ -549,9 +549,9 @@ class DataMapProcessor
         // missing elements that are persisted at the language parent/source, but not translated yet
         $missingAncestorIds = array_diff($suggestedAncestorIds, array_keys($dependentIdMap));
         // persisted elements that should be copied or localized
-        $createAncestorIds = $this->filterNumericIds($missingAncestorIds, true);
+        $createAncestorIds = $this->filterNumericIds($missingAncestorIds);
         // non-persisted elements that should be duplicated in data-map directly
-        $populateAncestorIds = $this->filterNumericIds($missingAncestorIds, false);
+        $populateAncestorIds = array_diff($missingAncestorIds, $createAncestorIds);
         // this desired state map defines the final result of child elements in their parent translation
         $desiredIdMap = array_combine($suggestedAncestorIds, $suggestedAncestorIds);
         // update existing translations in the desired state map
@@ -907,8 +907,8 @@ class DataMapProcessor
         }
         $fieldNamesMap = array_combine($fieldNames, $fieldNames);
 
-        $persistedIds = $this->filterNumericIds($ids, true);
-        $createdIds = $this->filterNumericIds($ids, false);
+        $persistedIds = $this->filterNumericIds($ids);
+        $createdIds = array_diff($ids, $persistedIds);
         $dependentElements = $this->fetchDependentElements($tableName, $persistedIds, $fieldNames);
 
         foreach ($createdIds as $createdId) {
@@ -969,7 +969,7 @@ class DataMapProcessor
      */
     protected function fetchDependentIdMap(string $tableName, array $ids, int $desiredLanguage)
     {
-        $ids = $this->filterNumericIds($ids, true);
+        $ids = $this->filterNumericIds($ids);
         $isTranslatable = BackendUtility::isTableLocalizable($tableName);
         $originFieldName = ($GLOBALS['TCA'][$tableName]['ctrl']['origUid'] ?? null);
 
@@ -1049,8 +1049,6 @@ class DataMapProcessor
      */
     protected function fetchDependentElements(string $tableName, array $ids, array $fieldNames)
     {
-        $ids = $this->filterNumericIds($ids, true);
-
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($tableName);
         $queryBuilder->getRestrictions()
@@ -1059,7 +1057,7 @@ class DataMapProcessor
             ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class, $this->backendUser->workspace, false));
 
         $zeroParameter = $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT);
-        $ids = array_filter($ids, [MathUtility::class, 'canBeInterpretedAsInteger']);
+        $ids = $this->filterNumericIds($ids);
         $idsParameter = $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY);
 
         // fetch by language dependency
@@ -1140,15 +1138,14 @@ class DataMapProcessor
      * Return only ids that are integer - so no "NEW..." values
      *
      * @param string[]|int[] $ids
-     * @param bool $numeric
      * @return int[]|string[]
      */
-    protected function filterNumericIds(array $ids, bool $numeric = true)
+    protected function filterNumericIds(array $ids)
     {
         return array_filter(
             $ids,
-            function ($id) use ($numeric) {
-                return MathUtility::canBeInterpretedAsInteger($id) === $numeric;
+            function ($id) {
+                return MathUtility::canBeInterpretedAsInteger($id);
             }
         );
     }
