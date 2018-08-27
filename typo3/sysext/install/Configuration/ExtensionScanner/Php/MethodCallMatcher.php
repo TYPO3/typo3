@@ -3026,4 +3026,25 @@ return [
             'Deprecation-85971-DeprecatePageRepository-getFirstWebPage.rst'
         ],
     ],
+    'TYPO3\CMS\Extensionmanager\Command\ExtensionCommandController->installCommand' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85996-ExtensionManagerCommandController.rst'
+        ],
+    ],
+    'TYPO3\CMS\Extensionmanager\Command\ExtensionCommandController->uninstallCommand' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85996-ExtensionManagerCommandController.rst'
+        ],
+    ],
+    'TYPO3\CMS\Extensionmanager\Command\ExtensionCommandController->dumpClassLoadingInformationCommand' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85996-ExtensionManagerCommandController.rst'
+        ],
+    ],
 ];

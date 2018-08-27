@@ -15,8 +15,6 @@ if (!$offlineMode) {
 }
 unset($offlineMode);
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = \TYPO3\CMS\Extensionmanager\Command\ExtensionCommandController::class;
-
 if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) {
     $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
     $signalSlotDispatcher->connect(

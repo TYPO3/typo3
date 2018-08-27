@@ -824,4 +824,9 @@ return [
             'Deprecation-86001-WorkspacesTasksMigratedToSymfonyCommands.rst',
         ],
     ],
+    'TYPO3\CMS\Extensionmanager\Command\ExtensionCommandController' => [
+        'restFiles' => [
+            'Deprecation-85996-ExtensionManagerCommandController.rst'
+        ],
+    ],
 ];
