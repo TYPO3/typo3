@@ -673,10 +673,8 @@ class PageLayoutView implements LoggerAwareInterface
         switch ($table) {
                 case 'pages':
                     return $this->getTable_pages($id);
-                    break;
                 case 'tt_content':
                     return $this->getTable_tt_content($id);
-                    break;
                 default:
                     return '';
             }

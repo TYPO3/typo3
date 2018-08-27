@@ -318,7 +318,7 @@ class StagesService implements SingletonInterface
         $workspaceStageRecs = $this->getStagesForWS();
         if (is_array($workspaceStageRecs) && !empty($workspaceStageRecs)) {
             reset($workspaceStageRecs);
-            while ($workspaceStageRecKey = key($workspaceStageRecs) !== null) {
+            while (key($workspaceStageRecs) !== null) {
                 $workspaceStageRec = current($workspaceStageRecs);
                 if ($workspaceStageRec['uid'] == $stageId) {
                     $nextStage = next($workspaceStageRecs);
@@ -385,7 +385,7 @@ class StagesService implements SingletonInterface
         $workspaceStageRecs = $this->getStagesForWS();
         if (is_array($workspaceStageRecs) && !empty($workspaceStageRecs)) {
             end($workspaceStageRecs);
-            while ($workspaceStageRecKey = key($workspaceStageRecs) !== null) {
+            while (key($workspaceStageRecs) !== null) {
                 $workspaceStageRec = current($workspaceStageRecs);
                 if ($workspaceStageRec['uid'] == $stageId) {
                     $prevStage = prev($workspaceStageRecs);

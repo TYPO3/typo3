@@ -898,7 +898,6 @@ class ExtendedFileUtility extends BasicFileUtility
             $this->addMessageToFlashMessageQueue('FileUtility.DestinationWasNotADirectory', [$cmds['target']]);
             return false;
         }
-        $resultObject = null;
         $folderName = $cmds['data'];
         try {
             $resultObject = $targetFolderObject->createFolder($folderName);

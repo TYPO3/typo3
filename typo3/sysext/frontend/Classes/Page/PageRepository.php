@@ -540,7 +540,6 @@ class PageRepository implements LoggerAwareInterface
             trigger_error('Calling getPagesOverlay() with "-1" as languageId is discouraged and will be unsupported in TYPO3 v10.0. Omit the parameter or use "null" instead.', E_USER_DEPRECATED);
             $languageUid = $this->sys_language_uid;
         }
-        $row = null;
         foreach ($pagesInput as &$origPage) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'] ?? [] as $className) {
                 $hookObject = GeneralUtility::makeInstance($className);

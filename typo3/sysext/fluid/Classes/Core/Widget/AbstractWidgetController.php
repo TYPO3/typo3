@@ -62,7 +62,6 @@ abstract class AbstractWidgetController extends \TYPO3\CMS\Extbase\Mvc\Controlle
         $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $widgetViewHelperClassName = $this->request->getWidgetContext()->getWidgetViewHelperClassName();
         $templatePaths = new TemplatePaths($this->controllerContext->getRequest()->getControllerExtensionKey());
-        $widgetViewConfiguration = null;
         $parentConfiguration = $view->getTemplatePaths()->toArray();
         $rootConfiguration = $templatePaths->toArray();
         $pluginConfiguration = $extbaseFrameworkConfiguration['view']['widget'][$widgetViewHelperClassName] ?? [];

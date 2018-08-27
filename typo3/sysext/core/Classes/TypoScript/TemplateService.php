@@ -741,7 +741,7 @@ class TemplateService
 
         // Process extension static files if not done yet, but explicitly requested
         if (!$this->extensionStaticsProcessed && $this->processExtensionStatics) {
-            $this->addExtensionStatics('sys_0', 'sys_0', 0, []);
+            $this->addExtensionStatics('sys_0', 'sys_0', 0);
         }
 
         // Add the global default TypoScript from the TYPO3_CONF_VARS
@@ -932,7 +932,7 @@ class TemplateService
         // If "Include before all static templates if root-flag is set" is set:
         $staticFileMode = $row['static_file_mode'] ?? null;
         if ($staticFileMode == 3 && strpos($templateID, 'sys_') === 0 && $row['root']) {
-            $this->addExtensionStatics($idList, $templateID, $pid, $row);
+            $this->addExtensionStatics($idList, $templateID, $pid);
         }
         // Static Template Files (Text files from extensions): include_static_file is a list of static files to include (from extensions)
         if (trim($row['include_static_file'] ?? '')) {
@@ -964,7 +964,7 @@ class TemplateService
         // If "Default (include before if root flag is set)" is set OR
         // "Always include before this template record" AND root-flag are set
         if ($staticFileMode == 1 || $staticFileMode == 0 && substr($templateID, 0, 4) === 'sys_' && $row['root']) {
-            $this->addExtensionStatics($idList, $templateID, $pid, $row);
+            $this->addExtensionStatics($idList, $templateID, $pid);
         }
         // Include Static Template Records after all other TypoScript has been included.
         $_params = [
@@ -1004,11 +1004,10 @@ class TemplateService
      * @param string $idList A list of already processed template ids including the current; The list is on the form "[prefix]_[uid]" where [prefix] is "sys" for "sys_template" records and "ext_" for static include files (from extensions). The list is used to check that the recursive inclusion of templates does not go into circles: Simply it is used to NOT include a template record/file which has already BEEN included somewhere in the recursion.
      * @param string $templateID The id of the current template. Same syntax as $idList ids, eg. "sys_123
      * @param int $pid The PID of the input template record
-     * @param array $row A full TypoScript template record
      * @access private
      * @see includeStaticTypoScriptSources()
      */
-    public function addExtensionStatics($idList, $templateID, $pid, $row)
+    public function addExtensionStatics($idList, $templateID, $pid)
     {
         $this->extensionStaticsProcessed = true;
 

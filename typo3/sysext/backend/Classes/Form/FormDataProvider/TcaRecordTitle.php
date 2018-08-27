@@ -164,7 +164,7 @@ class TcaRecordTitle implements FormDataProviderInterface
                 $recordTitle = $this->getRecordTitleForSelectType($rawValue, $fieldConfig);
                 break;
             case 'group':
-                $recordTitle = $this->getRecordTitleForGroupType($rawValue, $fieldConfig);
+                $recordTitle = $this->getRecordTitleForGroupType($rawValue);
                 break;
             case 'check':
                 $recordTitle = $this->getRecordTitleForCheckboxType($rawValue, $fieldConfig);
@@ -251,10 +251,9 @@ class TcaRecordTitle implements FormDataProviderInterface
      * Return the record title for database records
      *
      * @param mixed $value Current database value of this field
-     * @param array $fieldConfig TCA field configuration
      * @return string
      */
-    protected function getRecordTitleForGroupType($value, $fieldConfig)
+    protected function getRecordTitleForGroupType($value)
     {
         $labelParts = [];
         foreach ($value as $singleValue) {

@@ -136,9 +136,8 @@ class LogManager implements SingletonInterface, LogManagerInterface
         $configuration = $this->getConfigurationForLogger(self::CONFIGURATION_TYPE_WRITER, $logger->getName());
         foreach ($configuration as $severityLevel => $writer) {
             foreach ($writer as $logWriterClassName => $logWriterOptions) {
-                /** @var $logWriter \TYPO3\CMS\Core\Log\Writer\WriterInterface */
-                $logWriter = null;
                 try {
+                    /** @var $logWriter \TYPO3\CMS\Core\Log\Writer\WriterInterface */
                     $logWriter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($logWriterClassName, $logWriterOptions);
                     $logger->addWriter($severityLevel, $logWriter);
                 } catch (\Psr\Log\InvalidArgumentException $e) {
@@ -160,9 +159,8 @@ class LogManager implements SingletonInterface, LogManagerInterface
         $configuration = $this->getConfigurationForLogger(self::CONFIGURATION_TYPE_PROCESSOR, $logger->getName());
         foreach ($configuration as $severityLevel => $processor) {
             foreach ($processor as $logProcessorClassName => $logProcessorOptions) {
-                /** @var $logProcessor \TYPO3\CMS\Core\Log\Processor\ProcessorInterface */
-                $logProcessor = null;
                 try {
+                    /** @var $logProcessor \TYPO3\CMS\Core\Log\Processor\ProcessorInterface */
                     $logProcessor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($logProcessorClassName, $logProcessorOptions);
                     $logger->addProcessor($severityLevel, $logProcessor);
                 } catch (\Psr\Log\InvalidArgumentException $e) {

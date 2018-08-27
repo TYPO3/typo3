@@ -54,7 +54,6 @@ class UpdateScriptViewHelper extends ActionViewHelper
     public function render()
     {
         $extensionKey = $this->arguments['extensionKey'];
-        $tag = '';
 
         // If the "class.ext_update.php" file exists, build link to the update script screen
         /** @var $updateScriptUtility \TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility */

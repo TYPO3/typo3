@@ -4761,8 +4761,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     protected function getCropAreaFromFileReference(FileReference $fileReference, array $fileArray)
     {
-        /** @var Area $cropArea */
-        $cropArea = null;
         // Use cropping area from file reference if nothing is configured in TypoScript.
         if (!isset($fileArray['crop']) && !isset($fileArray['crop.'])) {
             // Set crop variant from TypoScript settings. If not set, use default.
@@ -5484,10 +5482,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
             switch ($conf['returnLast']) {
                 case 'url':
                     return $this->lastTypoLinkUrl;
-                    break;
                 case 'target':
                     return $this->lastTypoLinkTarget;
-                    break;
             }
         }
 

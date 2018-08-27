@@ -51,11 +51,9 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
      * Init
      *
      * @param TypoScriptTemplateModuleController $pObj
-     * @param array $conf
      */
-    public function init(&$pObj, $conf)
+    public function init($pObj)
     {
-        parent::init($pObj, $conf);
         $this->localLanguageFilePath = 'EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf';
         $this->pObj->modMenu_setDefaultList .= ',ts_analyzer_checkLinenum,ts_analyzer_checkSyntax';
     }

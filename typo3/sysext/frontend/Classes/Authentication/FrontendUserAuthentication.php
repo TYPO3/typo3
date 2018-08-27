@@ -449,7 +449,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     protected function performLogoff()
     {
-        $oldSession = [];
         $sessionData = [];
         try {
             // Session might not be loaded at this point, so fetch it

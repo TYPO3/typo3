@@ -76,7 +76,7 @@ class SplitButton extends AbstractButton
      */
     public function addItem(AbstractButton $item, $primaryAction = false)
     {
-        if (!$item->isValid($item)) {
+        if (!$item->isValid()) {
             throw new \InvalidArgumentException(
                 'Only valid items may be assigned to a split Button. "' .
                 $item->getType() .

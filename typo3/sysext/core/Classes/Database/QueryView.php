@@ -458,7 +458,7 @@ class QueryView
                     } elseif ($mQ === 'count') {
                         $queryBuilder = $connection->createQueryBuilder();
                         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                        $dataRows = $queryBuilder->count('*')
+                        $queryBuilder->count('*')
                             ->from($queryGenerator->table)
                             ->where(QueryHelper::stripLogicalOperatorPrefix($queryString));
                         $fullQueryString = $queryBuilder->getSQL();
@@ -518,7 +518,7 @@ class QueryView
                 if (!empty($rowArr)) {
                     $cPR['header'] = 'Result';
                     $out .= '<table class="table table-striped table-hover">'
-                        . $this->resultRowTitles($dataRow, $GLOBALS['TCA'][$table], $table) . implode(LF, $rowArr)
+                        . $this->resultRowTitles($dataRow, $GLOBALS['TCA'][$table]) . implode(LF, $rowArr)
                         . '</table>';
                 } else {
                     $this->renderNoResultsFoundMessage();
@@ -657,7 +657,7 @@ class QueryView
                     $markup[] = htmlspecialchars($this->languageService->sL($conf['ctrl']['title'])) . ' (' . $count . ')';
                     $markup[] = '  </div>';
                     $markup[] = '  <table class="table table-striped table-hover">';
-                    $markup[] = $this->resultRowTitles($lastRow, $conf, $table);
+                    $markup[] = $this->resultRowTitles($lastRow, $conf);
                     $markup[] = implode(LF, $rowArr);
                     $markup[] = '  </table>';
                     $markup[] = '</div>';
@@ -1158,10 +1158,9 @@ class QueryView
      *
      * @param array $row Table columns
      * @param array $conf Table TCA
-     * @param string $table Table name
      * @return string HTML of table header
      */
-    public function resultRowTitles($row, $conf, $table)
+    public function resultRowTitles($row, $conf)
     {
         $tableHeader = [];
         // Start header row
@@ -1195,10 +1194,10 @@ class QueryView
      *
      * @param array $row
      * @param array $conf
-     * @param mixed $table Not used
      * @return string
+     * @todo Unused?
      */
-    public function csvRowTitles($row, $conf, $table)
+    public function csvRowTitles($row, $conf)
     {
         $out = '';
         foreach ($row as $fieldName => $fieldValue) {

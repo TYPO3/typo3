@@ -222,7 +222,7 @@ If you want to get more detailed information, use the --verbose option.')
             }
 
             // Looking for a reference from a field which is NOT a soft reference (thus, only fields with a proper TCA/Flexform configuration)
-            $result = $queryBuilder
+            $queryBuilder
                 ->select('hash')
                 ->from('sys_refindex')
                 ->where(

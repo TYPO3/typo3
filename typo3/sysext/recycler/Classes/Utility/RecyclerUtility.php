@@ -82,7 +82,7 @@ class RecyclerUtility
     public static function getRecordPath($uid)
     {
         $uid = (int)$uid;
-        $output = ($fullOutput = '/');
+        $output = '/';
         if ($uid === 0) {
             return $output;
         }

@@ -321,7 +321,7 @@ class Clipboard
 
             // Clear clipboard
             $optionArray[] = [
-                'label' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clipboard.clear_clipboard', true),
+                'label' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clipboard.clear_clipboard'),
                 'uri' => $removeAllUrl . '#clip_head'
             ];
             $this->view->assign('optionArray', $optionArray);

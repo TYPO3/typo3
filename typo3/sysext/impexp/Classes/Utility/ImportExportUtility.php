@@ -44,7 +44,7 @@ class ImportExportUtility
         }
         /** @var $import Import */
         $import = GeneralUtility::makeInstance(Import::class);
-        $import->init(0, 'import');
+        $import->init();
 
         $this->emitAfterImportExportInitialisationSignal($import);
 

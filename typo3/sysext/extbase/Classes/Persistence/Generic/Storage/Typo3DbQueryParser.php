@@ -1020,7 +1020,7 @@ class Typo3DbQueryParser
             $this->suggestDistinctQuery = true;
         } elseif ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
             $relationTableName = $columnMap->getRelationTableName();
-            $relationTableAlias = $relationTableAlias = $this->getUniqueAlias($relationTableName, $fullPropertyPath . '_mm');
+            $relationTableAlias = $this->getUniqueAlias($relationTableName, $fullPropertyPath . '_mm');
 
             $joinConditionExpression = $this->queryBuilder->expr()->andX(
                 $this->queryBuilder->expr()->eq(

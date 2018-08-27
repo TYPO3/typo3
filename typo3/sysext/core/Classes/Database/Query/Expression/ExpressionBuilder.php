@@ -305,14 +305,12 @@ class ExpressionBuilder
                         $this->literal(',')
                     )
                 );
-                break;
             case 'oci8':
             case 'pdo_oracle':
                 throw new \RuntimeException(
                     'FIND_IN_SET support for database platform "Oracle" not yet implemented.',
                     1459696680
                 );
-                break;
             case 'sqlsrv':
             case 'pdo_sqlsrv':
             case 'mssql':
@@ -373,7 +371,6 @@ class ExpressionBuilder
                     )
                 );
                 return $comparison;
-                break;
             default:
                 return sprintf(
                     'FIND_IN_SET(%s, %s)',

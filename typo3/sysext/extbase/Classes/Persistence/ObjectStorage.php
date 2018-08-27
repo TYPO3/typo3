@@ -312,10 +312,9 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Dummy method to avoid unserialization.
      *
-     * @param string $serialized
      * @throws \RuntimeException
      */
-    public function unserialize($serialized)
+    public function unserialize()
     {
         throw new \RuntimeException('A ObjectStorage instance cannot be unserialized.', 1267700870);
     }

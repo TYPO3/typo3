@@ -124,16 +124,16 @@ class SoftReferenceIndex
                 $retVal = $resultArray;
                 break;
             case 'images':
-                $retVal = $this->findRef_images($content, $spParams);
+                $retVal = $this->findRef_images($content);
                 break;
             case 'typolink':
                 $retVal = $this->findRef_typolink($content, $spParams);
                 break;
             case 'typolink_tag':
-                $retVal = $this->findRef_typolink_tag($content, $spParams);
+                $retVal = $this->findRef_typolink_tag($content);
                 break;
             case 'ext_fileref':
-                $retVal = $this->findRef_extension_fileref($content, $spParams);
+                $retVal = $this->findRef_extension_fileref($content);
                 break;
             case 'email':
                 $retVal = $this->findRef_email($content, $spParams);
@@ -154,10 +154,9 @@ class SoftReferenceIndex
      * Any "clear.gif" images are ignored.
      *
      * @param string $content The input content to analyse
-     * @param array $spParams Parameters set for the softref parser key in TCA/columns
      * @return array Result array on positive matches, see description above. Otherwise FALSE
      */
-    public function findRef_images($content, $spParams)
+    public function findRef_images($content)
     {
         // Start HTML parser and split content by image tag:
         $htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
@@ -252,11 +251,10 @@ class SoftReferenceIndex
      * Will search for <link ...> and <a> tags in the content string and process any found.
      *
      * @param string $content The input content to analyse
-     * @param array $spParams Parameters set for the softref parser key in TCA/columns
      * @return array Result array on positive matches, see description above. Otherwise FALSE
      * @see \TYPO3\CMS\Frontend\ContentObject::typolink(), getTypoLinkParts()
      */
-    public function findRef_typolink_tag($content, $spParams)
+    public function findRef_typolink_tag($content)
     {
         // Parse string for special TYPO3 <link> tag:
         $htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
@@ -396,10 +394,9 @@ class SoftReferenceIndex
      * Finding reference to files from extensions in content, but only to notify about their existence. No substitution
      *
      * @param string $content The input content to analyse
-     * @param array $spParams Parameters set for the softref parser key in TCA/columns
      * @return array Result array on positive matches, see description above. Otherwise FALSE
      */
-    public function findRef_extension_fileref($content, $spParams)
+    public function findRef_extension_fileref($content)
     {
         // Files starting with EXT:
         $parts = preg_split('/([^[:alnum:]"\']+)(EXT:[[:alnum:]_]+\\/[^[:space:]"\',]*)/', ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);

@@ -352,10 +352,10 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
             if ($object->_isNew()) {
                 $this->insertObject($object);
             }
-            $this->persistObject($object, null);
+            $this->persistObject($object);
         }
         foreach ($this->changedEntities as $object) {
-            $this->persistObject($object, null);
+            $this->persistObject($object);
         }
     }
 

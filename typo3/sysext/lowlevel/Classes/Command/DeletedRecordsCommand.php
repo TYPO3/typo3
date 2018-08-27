@@ -137,7 +137,7 @@ class DeletedRecordsCommand extends Command
 
         $pageId = (int)$pageId;
         if ($pageId > 0) {
-            $pageRecordIsDeleted = $queryBuilderForPages
+            $queryBuilderForPages
                 ->select('uid', 'deleted')
                 ->from('pages')
                 ->where(

@@ -1258,7 +1258,6 @@ class PageLayoutController
     {
         if (count($this->MOD_MENU['language']) > 1) {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $lang = $this->getLanguageService();
             $languageMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
             $languageMenu->setIdentifier('languageMenu');
             foreach ($this->MOD_MENU['language'] as $key => $language) {

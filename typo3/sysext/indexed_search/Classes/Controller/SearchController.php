@@ -607,10 +607,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         switch ((string)$this->searchData['sortOrder']) {
             case 'rank_count':
                 return $row['order_val'] . ' ' . LocalizationUtility::translate('result.ratingMatches', 'IndexedSearch');
-                break;
             case 'rank_first':
                 return ceil(MathUtility::forceIntegerInRange(255 - $row['order_val'], 1, 255) / 255 * 100) . '%';
-                break;
             case 'rank_flag':
                 if ($this->firstRow['order_val2']) {
                     // (3 MSB bit, 224 is highest value of order_val1 currently)
@@ -625,13 +623,10 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 $max = 10000;
                 $total = MathUtility::forceIntegerInRange($row['order_val'], 0, $max);
                 return ceil(log($total) / log($max) * 100) . '%';
-                break;
             case 'crdate':
                 return $GLOBALS['TSFE']->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_crdate'], 0);
-                break;
             case 'mtime':
                 return $GLOBALS['TSFE']->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_mtime'], 0);
-                break;
             default:
                 return ' ';
         }

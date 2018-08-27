@@ -253,7 +253,7 @@ class GifBuilder extends GraphicalFunctions
             $this->setup['workArea'] = $this->calcOffset($this->setup['workArea']);
             foreach ($sKeyArray as $theKey) {
                 $theValue = $this->setup[$theKey];
-                if ((int)$theKey && ($conf = $this->setup[$theKey . '.'])) {
+                if ((int)$theKey && $this->setup[$theKey . '.']) {
                     switch ($theValue) {
                         case 'TEXT':
 
@@ -722,16 +722,12 @@ class GifBuilder extends GraphicalFunctions
     {
         switch (strtolower($this->setup['format'])) {
             case 'jpg':
-
             case 'jpeg':
                 return 'jpg';
-                break;
             case 'png':
                 return 'png';
-                break;
             case 'gif':
                 return 'gif';
-                break;
             default:
                 return $this->gifExtension;
         }

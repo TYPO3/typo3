@@ -72,7 +72,6 @@ class TcaFlexPrepare implements FormDataProviderInterface
         if (!isset($result['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier'])) {
             $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
 
-            $dataStructureIdentifier = '';
             $dataStructureArray = ['sheets' => ['sDEF' => []]];
 
             try {

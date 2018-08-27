@@ -482,11 +482,11 @@ class PagePositionMap
                     // Render header
                     $table .= '<p>';
                     if (isset($columnConfig['colPos']) && $head) {
-                        $table .= '<strong>' . $this->wrapColumnHeader($head, '', '') . '</strong>';
+                        $table .= '<strong>' . $this->wrapColumnHeader($head, '') . '</strong>';
                     } elseif ($columnConfig['colPos']) {
-                        $table .= '<em>' . $this->wrapColumnHeader($this->getLanguageService()->getLL('noAccess'), '', '') . '</em>';
+                        $table .= '<em>' . $this->wrapColumnHeader($this->getLanguageService()->getLL('noAccess'), '') . '</em>';
                     } else {
-                        $table .= '<em>' . $this->wrapColumnHeader(($this->getLanguageService()->sL($columnConfig['name']) ?: '') . ' (' . $this->getLanguageService()->getLL('notAssigned') . ')', '', '') . '</em>';
+                        $table .= '<em>' . $this->wrapColumnHeader(($this->getLanguageService()->sL($columnConfig['name']) ?: '') . ' (' . $this->getLanguageService()->getLL('notAssigned') . ')', '') . '</em>';
                     }
                     $table .= '</p>';
                     // Render lines

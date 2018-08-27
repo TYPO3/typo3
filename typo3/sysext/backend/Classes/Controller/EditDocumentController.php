@@ -1222,7 +1222,6 @@ class EditDocumentController
         $this->errorC = 0;
         $this->newC = 0;
         $editForm = '';
-        $trData = null;
         $beUser = $this->getBackendUser();
         // Traverse the GPvar edit array tables
         foreach ($this->editconf as $table => $conf) {

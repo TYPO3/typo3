@@ -81,7 +81,7 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
         // usually that does not happen, but if the proxy is held from outside
         // its parent ... the result would be weird.
         if ($this->parentObject->_getProperty($this->propertyName) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
-            $objects = $this->dataMapper->fetchRelated($this->parentObject, $this->propertyName, $this->fieldValue, false, false);
+            $objects = $this->dataMapper->fetchRelated($this->parentObject, $this->propertyName, $this->fieldValue, false);
             $propertyValue = $this->dataMapper->mapResultToPropertyValue($this->parentObject, $this->propertyName, $objects);
             $this->parentObject->_setProperty($this->propertyName, $propertyValue);
             $this->parentObject->_memorizeCleanState($this->propertyName);

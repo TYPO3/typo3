@@ -638,7 +638,6 @@ class Query implements QueryInterface
      *
      * @param string $propertyName The name of the multivalued property to compare against
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a single-valued property
      * @return bool
      * @api
      */

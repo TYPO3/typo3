@@ -86,7 +86,7 @@ class FrontendEditPanel
      */
     public function editPanel($content, array $conf, $currentRecord = '', array $dataArr = [], $table = '', array $allow = [], $newUID = 0, array $hiddenFields = [])
     {
-        $hiddenFieldString = $command = '';
+        $hiddenFieldString = '';
 
         // Special content is about to be shown, so the cache must be disabled.
         $this->frontendController->set_no_cache('Frontend edit panel is shown', true);

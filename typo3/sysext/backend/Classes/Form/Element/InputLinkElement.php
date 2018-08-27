@@ -413,10 +413,6 @@ class InputLinkElement extends AbstractFormElement
                         'icon' => $this->iconFactory->getIconForRecord($table, $record, Icon::SIZE_SMALL)->render(),
                     ];
                 } else {
-                    $icon = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['default'];
-                    if (empty($icon)) {
-                        $icon = 'tcarecords-' . $table . '-default';
-                    }
                     $data = [
                         'text' => sprintf('%s', $linkData['uid']),
                         'icon' => $this->iconFactory->getIcon('tcarecords-' . $table . '-default', Icon::SIZE_SMALL, 'overlay-missing')->render(),

@@ -1080,7 +1080,6 @@ class SetupModuleController
 
         // If password is updated, output whether it failed or was OK.
         if ($this->passwordIsSubmitted) {
-            $flashMessage = null;
             switch ($this->passwordIsUpdated) {
                 case self::PASSWORD_OLD_WRONG:
                     $flashMessages[] = $this->getFlashMessage('oldPassword_failed', 'newPassword', FlashMessage::ERROR);

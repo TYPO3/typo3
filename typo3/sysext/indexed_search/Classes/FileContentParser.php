@@ -282,7 +282,6 @@ class FileContentParser
             case 'tif':
                 // TIF images (EXIF comment)
                 return true;
-                break;
         }
         return false;
     }
@@ -398,24 +397,19 @@ class FileContentParser
             case 'tif':
                 // PHP EXIF
                 return sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:extension.Images'), $extension);
-                break;
             case 'html':
             case 'htm':
                 // PHP strip-tags()
                 return sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:extension.HTML'), $extension);
-                break;
             case 'txt':
                 // Raw text
                 return sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:extension.TXT'), $extension);
-                break;
             case 'csv':
                 // Raw text
                 return sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:extension.CSV'), $extension);
-                break;
             case 'xml':
                 // PHP strip-tags()
                 return sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:extension.XML'), $extension);
-                break;
             default:
                 // Do nothing
         }
@@ -434,7 +428,6 @@ class FileContentParser
         switch ((string)$extension) {
             case 'pdf':
                 return true;
-                break;
         }
         return false;
     }

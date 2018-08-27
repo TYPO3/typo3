@@ -551,7 +551,6 @@ class Rfc822AddressesParser
     {
         // A couple of defaults.
         $phrase = '';
-        $comment = '';
         $comments = [];
         // Catch any RFC822 comments and store them separately.
         $_mailbox = $mailbox;

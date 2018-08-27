@@ -209,7 +209,6 @@ abstract class AbstractConditionMatcher
                     }
                 }
                 return false;
-                break;
             case 'language':
                 if (GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE') === $value) {
                     return true;
@@ -227,17 +226,14 @@ abstract class AbstractConditionMatcher
                     }
                 }
                 return false;
-                break;
             case 'IP':
                 if ($value === 'devIP') {
                     $value = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
                 }
 
                 return (bool)GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value);
-                break;
             case 'hostname':
                 return (bool)GeneralUtility::cmpFQDN(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value);
-                break;
             case 'hour':
             case 'minute':
             case 'month':
@@ -285,10 +281,8 @@ abstract class AbstractConditionMatcher
                     }
                 }
                 return false;
-                break;
             case 'compatVersion':
                 return VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) >= VersionNumberUtility::convertVersionNumberToInteger($value);
-                break;
             case 'loginUser':
                 if ($this->isUserLoggedIn()) {
                     $values = GeneralUtility::trimExplode(',', $value, true);
@@ -301,7 +295,6 @@ abstract class AbstractConditionMatcher
                     return true;
                 }
                 return false;
-                break;
             case 'page':
                 if ($keyParts[1]) {
                     $page = $this->getPage();
@@ -311,7 +304,6 @@ abstract class AbstractConditionMatcher
                     }
                 }
                 return false;
-                break;
             case 'globalVar':
                 $values = GeneralUtility::trimExplode(',', $value, true);
                 foreach ($values as $test) {
@@ -324,7 +316,6 @@ abstract class AbstractConditionMatcher
                     }
                 }
                 return false;
-                break;
             case 'globalString':
                 $values = GeneralUtility::trimExplode(',', $value, true);
                 foreach ($values as $test) {
@@ -337,7 +328,6 @@ abstract class AbstractConditionMatcher
                     }
                 }
                 return false;
-                break;
             case 'userFunc':
                 $matches = [];
                 preg_match_all('/^\s*([^\(\s]+)\s*(?:\((.*)\))?\s*$/', $value, $matches);
@@ -347,7 +337,6 @@ abstract class AbstractConditionMatcher
                     return true;
                 }
                 return false;
-                break;
         }
         return null;
     }

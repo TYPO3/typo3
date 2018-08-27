@@ -113,11 +113,10 @@ abstract class AbstractFunctionModule
      * Initialize the object
      *
      * @param BaseScriptClass $pObj A reference to the parent (calling) object
-     * @param array $conf The configuration set for this module - from global array TBE_MODULES_EXT
      * @throws \RuntimeException
      * @see \TYPO3\CMS\Backend\Module\BaseScriptClass::checkExtObj()
      */
-    public function init(&$pObj, $conf)
+    public function init($pObj)
     {
         $this->pObj = $pObj;
         // Local lang:

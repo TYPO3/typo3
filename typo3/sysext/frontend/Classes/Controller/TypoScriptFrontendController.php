@@ -4980,7 +4980,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             case 'sys_language_contentOL':
                 trigger_error('Property $TSFE->sys_language_contentOL is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
                 return $this->context->getPropertyFromAspect('language', 'legacyOverlayType', '0');
-                break;
             case 'sys_language_mode':
                 trigger_error('Property $TSFE->sys_language_mode is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
                 return $this->context->getPropertyFromAspect('language', 'legacyLanguageMode', '');

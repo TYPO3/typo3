@@ -82,7 +82,7 @@ class Bootstrap
         static::startOutputBuffering();
 
         $configurationManager = static::createConfigurationManager();
-        if (!static::checkIfEssentialConfigurationExists($configurationManager, true)) {
+        if (!static::checkIfEssentialConfigurationExists($configurationManager)) {
             $failsafe = true;
         }
         static::populateLocalConfiguration($configurationManager);
@@ -974,7 +974,6 @@ class Bootstrap
             case 'setFinalCachingFrameworkCacheConfiguration':
             case 'populateLocalConfiguration':
                 return call_user_func_array([self::class, $methodName], $arguments);
-                break;
             default:
                 throw new \Error(sprintf('Call to undefined method "%s"', $methodName), 1534156090);
         }

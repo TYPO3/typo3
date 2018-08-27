@@ -55,11 +55,10 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
      * Init
      *
      * @param TypoScriptTemplateModuleController $pObj
-     * @param array $conf
      */
-    public function init(&$pObj, $conf)
+    public function init($pObj)
     {
-        parent::init($pObj, $conf);
+        parent::init($pObj);
         $this->pObj->modMenu_dontValidateList .= ',ts_browser_toplevel_setup,ts_browser_toplevel_const,ts_browser_TLKeys_setup,ts_browser_TLKeys_const';
         $this->pObj->modMenu_setDefaultList .= ',ts_browser_fixedLgd,ts_browser_showComments';
         $this->localLanguageFilePath = 'EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf';

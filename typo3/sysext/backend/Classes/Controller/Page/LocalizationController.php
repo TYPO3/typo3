@@ -211,7 +211,7 @@ class LocalizationController
         array $transmittedUidList
     ): array {
         // Get all valid uids that can be processed
-        $validUidList = $result = $this->localizationRepository->getRecordsToCopyDatabaseResult(
+        $validUidList = $this->localizationRepository->getRecordsToCopyDatabaseResult(
             $pageId,
             $destLanguageId,
             $srcLanguageId,
