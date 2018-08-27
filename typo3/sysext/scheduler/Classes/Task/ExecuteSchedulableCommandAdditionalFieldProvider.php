@@ -34,18 +34,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFieldProviderInterface
 {
     /**
-     * Commands that should not be schedulable, like scheduler:run,
-     * which would start a recursion.
-     *
-     * @var array
-     */
-    protected static $blacklistedCommands = [
-        \TYPO3\CMS\Scheduler\Command\SchedulerCommand::class, // scheduler:run
-        \TYPO3\CMS\Extbase\Command\CoreCommand::class, // _core_command
-        \TYPO3\CMS\Extbase\Command\HelpCommand::class, // _extbase_help
-    ];
-
-    /**
      * @var array|Command[]
      */
     protected $schedulableCommands = [];
@@ -73,10 +61,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     public function __construct()
     {
         $commandRegistry = GeneralUtility::makeInstance(CommandRegistry::class);
-        foreach ($commandRegistry as $commandIdentifier => $command) {
-            if (in_array(get_class($command), static::$blacklistedCommands, true)) {
-                continue;
-            }
+        foreach ($commandRegistry->getSchedulableCommands() as $commandIdentifier => $command) {
             $this->schedulableCommands[$commandIdentifier] = $command;
         }
 

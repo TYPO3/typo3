@@ -7,10 +7,12 @@
  */
 return [
     '_core_command' => [
-        'class' => \TYPO3\CMS\Extbase\Command\CoreCommand::class
+        'class' => \TYPO3\CMS\Extbase\Command\CoreCommand::class,
+        'schedulable' => false,
     ],
     // Overriding Symfony Help command to use Extbase-specific output
     '_extbase_help' => [
-        'class' => \TYPO3\CMS\Extbase\Command\HelpCommand::class
+        'class' => \TYPO3\CMS\Extbase\Command\HelpCommand::class,
+        'schedulable' => false,
     ]
 ];

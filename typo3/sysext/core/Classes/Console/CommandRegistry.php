@@ -38,6 +38,13 @@ class CommandRegistry implements \IteratorAggregate, SingletonInterface
     protected $commands = [];
 
     /**
+     * Map of command configurations with the command name as key
+     *
+     * @var array[]
+     */
+    protected $commandConfigurations = [];
+
+    /**
      * @param PackageManager $packageManager
      */
     public function __construct(PackageManager $packageManager = null)
@@ -53,6 +60,21 @@ class CommandRegistry implements \IteratorAggregate, SingletonInterface
         $this->populateCommandsFromPackages();
         foreach ($this->commands as $commandName => $command) {
             yield $commandName => $command;
+        }
+    }
+
+    /**
+     * Get all commands which are allowed for scheduling recurring commands.
+     *
+     * @return \Generator
+     */
+    public function getSchedulableCommands(): \Generator
+    {
+        $this->populateCommandsFromPackages();
+        foreach ($this->commands as $commandName => $command) {
+            if ($this->commandConfigurations[$commandName]['schedulable'] ?? true) {
+                yield $commandName => $command;
+            }
         }
     }
 
@@ -114,6 +136,7 @@ class CommandRegistry implements \IteratorAggregate, SingletonInterface
                             );
                         }
                         $this->commands[$commandName] = GeneralUtility::makeInstance($commandConfig['class'], $commandName);
+                        $this->commandConfigurations[$commandName] = $commandConfig;
                     }
                 }
             }

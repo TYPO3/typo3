@@ -7,6 +7,8 @@
  */
 return [
     'scheduler:run' => [
-        'class' => \TYPO3\CMS\Scheduler\Command\SchedulerCommand::class
+        'class' => \TYPO3\CMS\Scheduler\Command\SchedulerCommand::class,
+        // command must not be schedulable, otherwise we'll get an endless recursion
+        'schedulable' => false,
     ]
 ];
