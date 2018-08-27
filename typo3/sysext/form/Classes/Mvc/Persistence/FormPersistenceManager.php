@@ -17,11 +17,14 @@ namespace TYPO3\CMS\Form\Mvc\Persistence;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -29,6 +32,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\FileWriteException;
+use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\NoUniqueIdentifierException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\NoUniquePersistenceIdentifierException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
@@ -64,6 +68,16 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     protected $filePersistenceSlot;
 
     /**
+     * @var FrontendInterface
+     */
+    protected $runtimeCache;
+
+    /**
+     * @var ResourceFactory
+     */
+    protected $resourceFactory;
+
+    /**
      * @param \TYPO3\CMS\Form\Mvc\Configuration\YamlSource $yamlSource
      * @internal
      */
@@ -82,11 +96,19 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * @param FilePersistenceSlot $filePersistenceSlot
+     * @param \TYPO3\CMS\Form\Slot\FilePersistenceSlot $filePersistenceSlot
      */
-    public function injectFilePersistenceSlot(FilePersistenceSlot $filePersistenceSlot)
+    public function injectFilePersistenceSlot(\TYPO3\CMS\Form\Slot\FilePersistenceSlot $filePersistenceSlot)
     {
         $this->filePersistenceSlot = $filePersistenceSlot;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Core\Resource\ResourceFactory $resourceFactory
+     */
+    public function injectResourceFactory(\TYPO3\CMS\Core\Resource\ResourceFactory $resourceFactory)
+    {
+        $this->resourceFactory = $resourceFactory;
     }
 
     /**
@@ -97,6 +119,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         $this->formSettings = GeneralUtility::makeInstance(ObjectManager::class)
             ->get(ConfigurationManagerInterface::class)
             ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
+        $this->runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
     }
 
     /**
@@ -105,34 +128,22 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      *
      * @param string $persistenceIdentifier
      * @return array
-     * @throws PersistenceManagerException
      * @internal
      */
     public function load(string $persistenceIdentifier): array
     {
-        if (pathinfo($persistenceIdentifier, PATHINFO_EXTENSION) !== 'yaml') {
-            throw new PersistenceManagerException(sprintf('The file "%s" could not be loaded.', $persistenceIdentifier), 1477679819);
+        $cacheKey = 'formLoad' . md5($persistenceIdentifier);
+
+        $yaml = $this->runtimeCache->get($cacheKey);
+        if ($yaml !== false) {
+            return $yaml;
         }
 
-        if (strpos($persistenceIdentifier, 'EXT:') === 0) {
-            if (!array_key_exists(pathinfo($persistenceIdentifier, PATHINFO_DIRNAME) . '/', $this->getAccessibleExtensionFolders())) {
-                throw new PersistenceManagerException(sprintf('The file "%s" could not be loaded.', $persistenceIdentifier), 1484071985);
-            }
-            $file = $persistenceIdentifier;
-        } else {
-            $file = $this->getFileByIdentifier($persistenceIdentifier);
-        }
+        $file = $this->retrieveFileByPersistenceIdentifier($persistenceIdentifier);
 
         try {
             $yaml = $this->yamlSource->load([$file]);
-
-            if (isset($yaml['identifier'], $yaml['type'])
-                && $yaml['type'] === 'Form'
-                && !$this->hasValidFileExtension($persistenceIdentifier)
-                && strpos($persistenceIdentifier, 'EXT:') !== 0
-            ) {
-                throw new PersistenceManagerException(sprintf('Form definition "%s" does not end with ".form.yaml".', $persistenceIdentifier), 1531160649);
-            }
+            $this->generateErrorsIfFormDefinitionIsValidButHasInvalidFileExtension($yaml, $persistenceIdentifier);
         } catch (\Exception $e) {
             $yaml = [
                 'type' => 'Form',
@@ -141,6 +152,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                 'invalid' => true,
             ];
         }
+        $this->runtimeCache->set($cacheKey, $yaml);
 
         return $yaml;
     }
@@ -168,8 +180,9 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             if (!$this->formSettings['persistenceManager']['allowSaveToExtensionPaths']) {
                 throw new PersistenceManagerException('Save to extension paths is not allowed.', 1477680881);
             }
-            if (!array_key_exists(pathinfo($persistenceIdentifier, PATHINFO_DIRNAME) . '/', $this->getAccessibleExtensionFolders())) {
-                throw new PersistenceManagerException(sprintf('The file "%s" could not be saved.', $persistenceIdentifier), 1484073571);
+            if (!$this->isFileWithinAccessibleExtensionFolders($persistenceIdentifier)) {
+                $message = sprintf('The file "%s" could not be saved. Please check your configuration option "persistenceManager.allowedExtensionPaths"', $persistenceIdentifier);
+                throw new PersistenceManagerException($message, 1484073571);
             }
             $fileToSave = GeneralUtility::getFileAbsFileName($persistenceIdentifier);
         } else {
@@ -207,8 +220,9 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             if (!$this->formSettings['persistenceManager']['allowDeleteFromExtensionPaths']) {
                 throw new PersistenceManagerException(sprintf('The file "%s" could not be removed.', $persistenceIdentifier), 1472239536);
             }
-            if (!array_key_exists(pathinfo($persistenceIdentifier, PATHINFO_DIRNAME) . '/', $this->getAccessibleExtensionFolders())) {
-                throw new PersistenceManagerException(sprintf('The file "%s" could not be removed.', $persistenceIdentifier), 1484073878);
+            if (!$this->isFileWithinAccessibleExtensionFolders($persistenceIdentifier)) {
+                $message = sprintf('The file "%s" could not be removed. Please check your configuration option "persistenceManager.allowedExtensionPaths"', $persistenceIdentifier);
+                throw new PersistenceManagerException($message, 1484073878);
             }
             $fileToDelete = GeneralUtility::getFileAbsFileName($persistenceIdentifier);
             unlink($fileToDelete);
@@ -235,7 +249,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         $exists = false;
         if ($this->hasValidFileExtension($persistenceIdentifier)) {
             if (strpos($persistenceIdentifier, 'EXT:') === 0) {
-                if (array_key_exists(pathinfo($persistenceIdentifier, PATHINFO_DIRNAME) . '/', $this->getAccessibleExtensionFolders())) {
+                if ($this->isFileWithinAccessibleExtensionFolders($persistenceIdentifier)) {
                     $exists = file_exists(GeneralUtility::getFileAbsFileName($persistenceIdentifier));
                 }
             } else {
@@ -263,13 +277,13 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         $forms = [];
 
         foreach ($this->retrieveYamlFilesFromStorageFolders() as $file) {
-            $persistenceIdentifier = $file->getCombinedIdentifier();
+            $form = $this->loadMetaData($file);
 
-            $form = $this->load($persistenceIdentifier);
-            if (empty($form['identifier']) || ($form['type'] ?? null) !== 'Form') {
+            if (!$this->looksLikeAFormDefinition($form)) {
                 continue;
             }
 
+            $persistenceIdentifier = $file->getCombinedIdentifier();
             if ($this->hasValidFileExtension($persistenceIdentifier)) {
                 $forms[] = [
                     'identifier' => $form['identifier'],
@@ -280,6 +294,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                     'location' => 'storage',
                     'duplicateIdentifier' => false,
                     'invalid' => $form['invalid'],
+                    'fileUid' => $form['fileUid'],
                 ];
                 $identifiers[$form['identifier']]++;
             } else {
@@ -293,13 +308,15 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                     'duplicateIdentifier' => false,
                     'invalid' => false,
                     'deprecatedFileExtension' => true,
+                    'fileUid' => $form['fileUid'],
                 ];
             }
         }
 
         foreach ($this->retrieveYamlFilesFromExtensionFolders() as $fullPath => $fileName) {
-            $form = $this->load($fullPath);
-            if (isset($form['identifier'], $form['type']) && $form['type'] === 'Form') {
+            $form = $this->loadMetaData($fullPath);
+
+            if ($this->looksLikeAFormDefinition($form)) {
                 if ($this->hasValidFileExtension($fileName)) {
                     $forms[] = [
                         'identifier' => $form['identifier'],
@@ -310,6 +327,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                         'location' => 'extension',
                         'duplicateIdentifier' => false,
                         'invalid' => $form['invalid'],
+                        'fileUid' => $form['fileUid'],
                     ];
                     $identifiers[$form['identifier']]++;
                 } else {
@@ -323,6 +341,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                         'duplicateIdentifier' => false,
                         'invalid' => false,
                         'deprecatedFileExtension' => true,
+                        'fileUid' => $form['fileUid'],
                     ];
                 }
             }
@@ -454,12 +473,19 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      */
     public function getAccessibleExtensionFolders(): array
     {
+        $extensionFolders = $this->runtimeCache->get('formAccessibleExtensionFolders');
+
+        if ($extensionFolders !== false) {
+            return $extensionFolders;
+        }
+
         $extensionFolders = [];
         if (
             !isset($this->formSettings['persistenceManager']['allowedExtensionPaths'])
             || !is_array($this->formSettings['persistenceManager']['allowedExtensionPaths'])
             || empty($this->formSettings['persistenceManager']['allowedExtensionPaths'])
         ) {
+            $this->runtimeCache->set('formAccessibleExtensionFolders', $extensionFolders);
             return $extensionFolders;
         }
 
@@ -475,6 +501,8 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             $allowedExtensionPath = rtrim($allowedExtensionPath, '/') . '/';
             $extensionFolders[$allowedExtensionPath] = $allowedExtensionFullPath;
         }
+
+        $this->runtimeCache->set('formAccessibleExtensionFolders', $extensionFolders);
         return $extensionFolders;
     }
 
@@ -564,24 +592,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * Returns a File object for a given $persistenceIdentifier
-     *
-     * @param string $persistenceIdentifier
-     * @return File
-     * @throws PersistenceManagerException
-     */
-    protected function getFileByIdentifier(string $persistenceIdentifier): File
-    {
-        list($storageUid, $fileIdentifier) = explode(':', $persistenceIdentifier, 2);
-        $storage = $this->getStorageByUid((int)$storageUid);
-        $file = $storage->getFile($fileIdentifier);
-        if (!$storage->checkFileActionPermission('read', $file)) {
-            throw new PersistenceManagerException(sprintf('No read access to file "%s".', $persistenceIdentifier), 1471630578);
-        }
-        return $file;
-    }
-
-    /**
      * Returns a File object for a given $persistenceIdentifier.
      * If no file for this identifier exists a new object will be
      * created.
@@ -642,11 +652,149 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
+     * @param string|File $persistenceIdentifier
+     * @return array
+     * @throws NoSuchFileException
+     */
+    protected function loadMetaData($persistenceIdentifier): array
+    {
+        if ($persistenceIdentifier instanceof File) {
+            $file = $persistenceIdentifier;
+            $persistenceIdentifier = $file->getCombinedIdentifier();
+        } else {
+            $file = $this->retrieveFileByPersistenceIdentifier($persistenceIdentifier);
+        }
+
+        try {
+            $rawYamlContent = $file->getContents();
+
+            if ($rawYamlContent === false) {
+                throw new NoSuchFileException(sprintf('YAML file "%s" could not be loaded', $persistenceIdentifier), 1524684462);
+            }
+
+            $yaml = $this->extractMetaDataFromCouldBeFormDefinition($rawYamlContent);
+            $this->generateErrorsIfFormDefinitionIsValidButHasInvalidFileExtension($yaml, $persistenceIdentifier);
+            $yaml['fileUid'] = $file->getUid();
+        } catch (\Exception $e) {
+            $yaml = [
+                'type' => 'Form',
+                'identifier' => $persistenceIdentifier,
+                'label' => $e->getMessage(),
+                'invalid' => true,
+            ];
+        }
+
+        return $yaml;
+    }
+
+    /**
+     * @param string $maybeRawFormDefinition
+     * @return array
+     */
+    protected function extractMetaDataFromCouldBeFormDefinition(string $maybeRawFormDefinition): array
+    {
+        $metaDataProperties = ['identifier', 'type', 'label', 'prototypeName'];
+        $metaData = [];
+        foreach (explode(LF, $maybeRawFormDefinition) as $line) {
+            if (empty($line) || $line[0] === ' ') {
+                continue;
+            }
+
+            list($key, $value) = explode(':', $line);
+            if (
+                empty($key)
+                || empty($value)
+                || !in_array($key, $metaDataProperties, true)
+            ) {
+                continue;
+            }
+
+            $value = trim($value, ' \'"');
+            $metaData[$key] = $value;
+        }
+
+        return $metaData;
+    }
+
+    /**
+     * @param array $formDefinition
+     * @param string $persistenceIdentifier
+     * @throws PersistenceManagerException
+     */
+    protected function generateErrorsIfFormDefinitionIsValidButHasInvalidFileExtension(array $formDefinition, string $persistenceIdentifier)
+    {
+        if (
+            $this->looksLikeAFormDefinition($formDefinition)
+            && !$this->hasValidFileExtension($persistenceIdentifier)
+            && strpos($persistenceIdentifier, 'EXT:') !== 0
+        ) {
+            throw new PersistenceManagerException(sprintf('Form definition "%s" does not end with ".form.yaml".', $persistenceIdentifier), 1531160649);
+        }
+    }
+
+    /**
+     * @param string $persistenceIdentifier
+     * @return File
+     * @throws PersistenceManagerException
+     * @throws NoSuchFileException
+     */
+    protected function retrieveFileByPersistenceIdentifier(string $persistenceIdentifier): File
+    {
+        if (pathinfo($persistenceIdentifier, PATHINFO_EXTENSION) !== 'yaml') {
+            throw new PersistenceManagerException(sprintf('The file "%s" could not be loaded.', $persistenceIdentifier), 1477679819);
+        }
+
+        if (
+            strpos($persistenceIdentifier, 'EXT:') === 0
+            && !$this->isFileWithinAccessibleExtensionFolders($persistenceIdentifier)
+        ) {
+            $message = sprintf('The file "%s" could not be loaded. Please check your configuration option "persistenceManager.allowedExtensionPaths"', $persistenceIdentifier);
+            throw new PersistenceManagerException($message, 1484071985);
+        }
+
+        try {
+            $file = $this->resourceFactory->retrieveFileOrFolderObject($persistenceIdentifier);
+        } catch (\Exception $e) {
+            // Top level catch to ensure useful following exception handling, because FAL throws top level exceptions.
+            $file = null;
+        }
+
+        if ($file === null) {
+            throw new NoSuchFileException(sprintf('YAML file "%s" could not be loaded', $persistenceIdentifier), 1524684442);
+        }
+
+        if (!$file->getStorage()->checkFileActionPermission('read', $file)) {
+            throw new PersistenceManagerException(sprintf('No read access to file "%s".', $persistenceIdentifier), 1471630578);
+        }
+
+        return $file;
+    }
+
+    /**
      * @param string $fileName
      * @return bool
      */
     protected function hasValidFileExtension(string $fileName): bool
     {
         return StringUtility::endsWith($fileName, self::FORM_DEFINITION_FILE_EXTENSION);
+    }
+
+    /**
+     * @param string $fileName
+     * @return bool
+     */
+    protected function isFileWithinAccessibleExtensionFolders(string $fileName): bool
+    {
+        $dirName = rtrim(PathUtility::pathinfo($fileName, PATHINFO_DIRNAME), '/') . '/';
+        return array_key_exists($dirName, $this->getAccessibleExtensionFolders());
+    }
+
+    /**
+     * @param array $data
+     * @return bool
+     */
+    protected function looksLikeAFormDefinition(array $data): bool
+    {
+        return isset($data['identifier'], $data['type']) && !empty($data['identifier']) && $data['type'] === 'Form';
     }
 }

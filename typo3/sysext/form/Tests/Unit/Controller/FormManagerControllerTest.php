@@ -23,6 +23,7 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Controller\FormManagerController;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
+use TYPO3\CMS\Form\Service\DatabaseService;
 use TYPO3\CMS\Form\Service\TranslationService;
 
 /**
@@ -189,11 +190,14 @@ class FormManagerControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
     public function getAvailableFormDefinitionsReturnsProcessedArray()
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
-            'getReferences'
+            'dummy'
         ], [], '', false);
 
         $formPersistenceManagerProphecy = $this->prophesize(FormPersistenceManager::class);
         $mockController->_set('formPersistenceManager', $formPersistenceManagerProphecy->reveal());
+
+        $databaseService = $this->prophesize(DatabaseService::class);
+        $mockController->_set('databaseService', $databaseService->reveal());
 
         $formPersistenceManagerProphecy->listForms(Argument::cetera())->willReturn([
             0 => [
@@ -207,13 +211,13 @@ class FormManagerControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
             ],
         ]);
 
-        $mockController
-            ->expects($this->any())
-            ->method('getReferences')
-            ->willReturn([
-                'someRow',
-                'anotherRow',
-            ]);
+        $databaseService->getAllReferencesForFileUid(Argument::cetera())->willReturn([
+            0 => 0,
+        ]);
+
+        $databaseService->getAllReferencesForPersistenceIdentifier(Argument::cetera())->willReturn([
+            '1:/user_uploads/someFormName.yaml' => 2,
+        ]);
 
         $expected = [
             0 => [
@@ -255,8 +259,17 @@ class FormManagerControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
             'getModuleUrl',
             'getRecord',
             'getRecordTitle',
-            'getReferences',
         ], [], '', false);
+
+        $databaseService = $this->prophesize(DatabaseService::class);
+        $mockController->_set('databaseService', $databaseService->reveal());
+
+        $databaseService->getReferencesByPersistenceIdentifier(Argument::cetera())->willReturn([
+            0 => [
+                'tablename' => 'tt_content',
+                'recuid' => -1,
+            ],
+        ]);
 
         $mockController
             ->expects($this->any())
@@ -272,16 +285,6 @@ class FormManagerControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
             ->expects($this->any())
             ->method('getRecordTitle')
             ->willReturn('record title');
-
-        $mockController
-            ->expects($this->any())
-            ->method('getReferences')
-            ->willReturn([
-                0 => [
-                    'tablename' => 'tt_content',
-                    'recuid' => -1,
-                ],
-            ]);
 
         $expected = [
             0 => [

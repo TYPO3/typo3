@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Persistence;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\NoUniqueIdentifierException;
@@ -39,6 +41,18 @@ class FormPersistenceManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
             'dummy'
         ], [], '', false);
 
+        $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
+            ->setMethods(['get', 'set'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $runtimeCache
+            ->expects($this->any())
+            ->method('get')
+            ->willReturn(false);
+
+        $mockFormPersistenceManager->_set('runtimeCache', $runtimeCache);
+
         $input = '-1:/user_uploads/_example.php';
         $mockFormPersistenceManager->_call('load', $input);
     }
@@ -54,6 +68,18 @@ class FormPersistenceManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
             'dummy'
         ], [], '', false);
+
+        $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
+            ->setMethods(['get', 'set'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $runtimeCache
+            ->expects($this->any())
+            ->method('get')
+            ->willReturn(false);
+
+        $mockFormPersistenceManager->_set('runtimeCache', $runtimeCache);
 
         $mockFormPersistenceManager->_set('formSettings', [
             'persistenceManager' => [
@@ -114,6 +140,18 @@ class FormPersistenceManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
             'dummy'
         ], [], '', false);
+
+        $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
+            ->setMethods(['get', 'set'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $runtimeCache
+            ->expects($this->any())
+            ->method('get')
+            ->willReturn(false);
+
+        $mockFormPersistenceManager->_set('runtimeCache', $runtimeCache);
 
         $mockFormPersistenceManager->_set('formSettings', [
             'persistenceManager' => [
@@ -202,6 +240,18 @@ class FormPersistenceManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
             'exists'
         ], [], '', false);
 
+        $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
+            ->setMethods(['get', 'set'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $runtimeCache
+            ->expects($this->any())
+            ->method('get')
+            ->willReturn(false);
+
+        $mockFormPersistenceManager->_set('runtimeCache', $runtimeCache);
+
         $mockFormPersistenceManager
             ->expects($this->any())
             ->method('exists')
@@ -268,6 +318,18 @@ class FormPersistenceManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
             'dummy'
         ], [], '', false);
+
+        $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
+            ->setMethods(['get', 'set'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $runtimeCache
+            ->expects($this->any())
+            ->method('get')
+            ->willReturn(false);
+
+        $mockFormPersistenceManager->_set('runtimeCache', $runtimeCache);
 
         $mockFormPersistenceManager->_set('formSettings', [
             'persistenceManager' => [
@@ -557,37 +619,39 @@ class FormPersistenceManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function getFileByIdentifierThrowsExceptionIfReadFromStorageIsNotAllowed()
+    public function retrieveFileByPersistenceIdentifierThrowsExceptionIfReadFromStorageIsNotAllowed()
     {
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1471630578);
 
         $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'getStorageByUid',
+            'dummy',
         ], [], '', false);
 
-        $mockStorage = $this->getMockBuilder(ResourceStorage::class)
+        $storage = $this->getMockBuilder(ResourceStorage::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $mockStorage
+        $storage
             ->expects($this->any())
             ->method('checkFileActionPermission')
             ->willReturn(false);
 
-        $file = new File(['identifier' => '', 'mime_type' => ''], $mockStorage);
-        $mockStorage
+        $file = new File(['identifier' => '', 'mime_type' => ''], $storage);
+
+        $resourceFactory = $this->getMockBuilder(ResourceFactory::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $resourceFactory
             ->expects($this->any())
-            ->method('getFile')
+            ->method('retrieveFileOrFolderObject')
             ->willReturn($file);
 
-        $mockFormPersistenceManager
-            ->expects($this->any())
-            ->method('getStorageByUid')
-            ->willReturn($mockStorage);
+        $mockFormPersistenceManager->_set('resourceFactory', $resourceFactory);
 
         $input = '-1:/user_uploads/example.yaml';
-        $mockFormPersistenceManager->_call('getFileByIdentifier', $input);
+        $mockFormPersistenceManager->_call('retrieveFileByPersistenceIdentifier', $input);
     }
 
     /**

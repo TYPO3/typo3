@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 use TYPO3\CMS\Form\Slot\FilePersistenceSlot;
 use TYPO3\CMS\Install\Updates\AbstractUpdate;
@@ -48,11 +47,6 @@ class FormFileExtensionUpdate extends AbstractUpdate
      * @var FormPersistenceManager
      */
     protected $persistenceManager;
-
-    /**
-     * @var YamlSource
-     */
-    protected $yamlSource;
 
     /**
      * @var ResourceFactory
@@ -86,7 +80,6 @@ class FormFileExtensionUpdate extends AbstractUpdate
         $information = [];
 
         $this->persistenceManager = $this->getObjectManager()->get(FormPersistenceManager::class);
-        $this->yamlSource = $this->getObjectManager()->get(YamlSource::class);
         $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
         foreach ($this->getFormDefinitionsInformation() as $formDefinitionInformation) {
@@ -164,7 +157,6 @@ class FormFileExtensionUpdate extends AbstractUpdate
 
         $this->connection = $connectionPool->getConnectionForTable('tt_content');
         $this->persistenceManager = $this->getObjectManager()->get(FormPersistenceManager::class);
-        $this->yamlSource = $this->getObjectManager()->get(YamlSource::class);
         $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
         $this->referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
         $this->flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
@@ -684,7 +676,8 @@ class FormFileExtensionUpdate extends AbstractUpdate
     protected function getFormDefinition(File $file): array
     {
         try {
-            $formDefinition = $this->yamlSource->load([$file]);
+            $rawYamlContent = $file->getContents();
+            $formDefinition = $this->extractMetaDataFromCouldBeFormDefinition($rawYamlContent);
 
             if (!$this->looksLikeAFormDefinition($formDefinition)) {
                 $formDefinition = [];
@@ -694,6 +687,35 @@ class FormFileExtensionUpdate extends AbstractUpdate
         }
 
         return $formDefinition;
+    }
+
+    /**
+     * @param string $maybeRawFormDefinition
+     * @return array
+     */
+    protected function extractMetaDataFromCouldBeFormDefinition(string $maybeRawFormDefinition): array
+    {
+        $metaDataProperties = ['identifier', 'type', 'label', 'prototypeName'];
+        $metaData = [];
+        foreach (explode("\n", $maybeRawFormDefinition) as $line) {
+            if (empty($line) || $line[0] === ' ') {
+                continue;
+            }
+
+            list($key, $value) = explode(':', $line);
+            if (
+                empty($key)
+                || empty($value)
+                || !in_array($key, $metaDataProperties)
+            ) {
+                continue;
+            }
+
+            $value = trim($value, ' \'"');
+            $metaData[$key] = $value;
+        }
+
+        return $metaData;
     }
 
     /**
