@@ -20,18 +20,17 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
+use TYPO3\CMS\Form\Service\DatabaseService;
 use TYPO3\CMS\Form\Service\TranslationService;
 
 /**
@@ -41,6 +40,20 @@ use TYPO3\CMS\Form\Service\TranslationService;
  */
 class FormManagerController extends AbstractBackendController
 {
+
+    /**
+     * @var DatabaseService
+     */
+    protected $databaseService;
+
+    /**
+     * @param \TYPO3\CMS\Form\Service\DatabaseService $databaseService
+     * @internal
+     */
+    public function injectDatabaseService(\TYPO3\CMS\Form\Service\DatabaseService $databaseService)
+    {
+        $this->databaseService = $databaseService;
+    }
 
     /**
      * Default View Container
@@ -237,7 +250,7 @@ class FormManagerController extends AbstractBackendController
      */
     public function deleteAction(string $formPersistenceIdentifier)
     {
-        if (empty($this->getReferences($formPersistenceIdentifier))) {
+        if (empty($this->databaseService->getReferencesByPersistenceIdentifier($formPersistenceIdentifier))) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDelete'] ?? [] as $className) {
                 $hookObj = GeneralUtility::makeInstance($className);
                 if (method_exists($hookObj, 'beforeFormDelete')) {
@@ -335,12 +348,25 @@ class FormManagerController extends AbstractBackendController
      */
     protected function getAvailableFormDefinitions(): array
     {
+        $allReferencesForFileUid = $this->databaseService->getAllReferencesForFileUid();
+        $allReferencesForPersistenceIdentifier = $this->databaseService->getAllReferencesForPersistenceIdentifier();
+
         $availableFormDefinitions = [];
         foreach ($this->formPersistenceManager->listForms() as $formDefinition) {
-            $referenceCount = count($this->getReferences($formDefinition['persistenceIdentifier']));
+            $referenceCount  = 0;
+            if (
+                isset($formDefinition['fileUid'])
+                && array_key_exists($formDefinition['fileUid'], $allReferencesForFileUid)
+            ) {
+                $referenceCount = $allReferencesForFileUid[$formDefinition['fileUid']];
+            } elseif (array_key_exists($formDefinition['persistenceIdentifier'], $allReferencesForPersistenceIdentifier)) {
+                $referenceCount = $allReferencesForPersistenceIdentifier[$formDefinition['persistenceIdentifier']];
+            }
+
             $formDefinition['referenceCount'] = $referenceCount;
             $availableFormDefinitions[] = $formDefinition;
         }
+
         return $availableFormDefinitions;
     }
 
@@ -361,7 +387,7 @@ class FormManagerController extends AbstractBackendController
         $references = [];
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
-        $referenceRows = $this->getReferences($persistenceIdentifier);
+        $referenceRows = $this->databaseService->getReferencesByPersistenceIdentifier($persistenceIdentifier);
         foreach ($referenceRows as &$referenceRow) {
             $record = $this->getRecord($referenceRow['tablename'], $referenceRow['recuid']);
             if (!$record) {
@@ -386,41 +412,6 @@ class FormManagerController extends AbstractBackendController
             ];
         }
         return $references;
-    }
-
-    /**
-     * Returns an array with all sys_refindex database rows which be
-     * connected to a formDefinition identified by $persistenceIdentifier
-     *
-     * @param string $persistenceIdentifier
-     * @return array
-     * @throws \InvalidArgumentException
-     */
-    protected function getReferences(string $persistenceIdentifier): array
-    {
-        if (empty($persistenceIdentifier)) {
-            throw new \InvalidArgumentException('$persistenceIdentifier must not be empty.', 1472238493);
-        }
-
-        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-        $file = $resourceFactory->retrieveFileOrFolderObject($persistenceIdentifier);
-
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
-        $referenceRows = $queryBuilder
-            ->select('*')
-            ->from('sys_refindex')
-            ->where(
-                $queryBuilder->expr()->eq('deleted', 0),
-                $queryBuilder->expr()->eq('softref_key', $queryBuilder->createNamedParameter('formPersistenceIdentifier', \PDO::PARAM_STR)),
-                $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->eq('ref_string', $queryBuilder->createNamedParameter($persistenceIdentifier, \PDO::PARAM_STR)),
-                    $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($file->getUid(), \PDO::PARAM_INT))
-                ),
-                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter('tt_content', \PDO::PARAM_STR))
-            )
-            ->execute()
-            ->fetchAll();
-        return $referenceRows;
     }
 
     /**

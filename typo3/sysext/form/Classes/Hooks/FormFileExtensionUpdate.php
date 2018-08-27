@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 use TYPO3\CMS\Form\Slot\FilePersistenceSlot;
 use TYPO3\CMS\Install\Updates\ChattyInterface;
@@ -51,11 +50,6 @@ class FormFileExtensionUpdate implements ChattyInterface, UpgradeWizardInterface
      * @var FormPersistenceManager
      */
     protected $persistenceManager;
-
-    /**
-     * @var YamlSource
-     */
-    protected $yamlSource;
 
     /**
      * @var ResourceFactory
@@ -139,7 +133,6 @@ class FormFileExtensionUpdate implements ChattyInterface, UpgradeWizardInterface
         $updateNeeded = false;
 
         $this->persistenceManager = $this->getObjectManager()->get(FormPersistenceManager::class);
-        $this->yamlSource = $this->getObjectManager()->get(YamlSource::class);
         $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
         foreach ($this->getFormDefinitionsInformation() as $formDefinitionInformation) {
@@ -212,7 +205,6 @@ class FormFileExtensionUpdate implements ChattyInterface, UpgradeWizardInterface
 
         $this->connection = $connectionPool->getConnectionForTable('tt_content');
         $this->persistenceManager = $this->getObjectManager()->get(FormPersistenceManager::class);
-        $this->yamlSource = $this->getObjectManager()->get(YamlSource::class);
         $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
         $this->referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
         $this->flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
@@ -728,7 +720,8 @@ class FormFileExtensionUpdate implements ChattyInterface, UpgradeWizardInterface
     protected function getFormDefinition(File $file): array
     {
         try {
-            $formDefinition = $this->yamlSource->load([$file]);
+            $rawYamlContent = $file->getContents();
+            $formDefinition = $this->extractMetaDataFromCouldBeFormDefinition($rawYamlContent);
 
             if (!$this->looksLikeAFormDefinition($formDefinition)) {
                 $formDefinition = [];
@@ -738,6 +731,35 @@ class FormFileExtensionUpdate implements ChattyInterface, UpgradeWizardInterface
         }
 
         return $formDefinition;
+    }
+
+    /**
+     * @param string $maybeRawFormDefinition
+     * @return array
+     */
+    protected function extractMetaDataFromCouldBeFormDefinition(string $maybeRawFormDefinition): array
+    {
+        $metaDataProperties = ['identifier', 'type', 'label', 'prototypeName'];
+        $metaData = [];
+        foreach (explode("\n", $maybeRawFormDefinition) as $line) {
+            if (empty($line) || $line[0] === ' ') {
+                continue;
+            }
+
+            [$key, $value] = explode(':', $line);
+            if (
+                empty($key)
+                || empty($value)
+                || !in_array($key, $metaDataProperties)
+            ) {
+                continue;
+            }
+
+            $value = trim($value, ' \'"');
+            $metaData[$key] = $value;
+        }
+
+        return $metaData;
     }
 
     /**
