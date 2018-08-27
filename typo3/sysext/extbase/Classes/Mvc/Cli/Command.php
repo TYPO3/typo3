@@ -243,8 +243,6 @@ class Command
      * Tells if this command is meant to be used on CLI only.
      *
      * @return bool
-     *
-     * todo: deprecate/remove method in TYPO3 10.x while refactoring the scheduler implementation
      */
     public function isCliOnly()
     {

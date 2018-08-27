@@ -18,6 +18,13 @@ class MockCCommandController extends \TYPO3\CMS\Extbase\Mvc\Cli\Command
     }
 
     /**
+     * @cli
+     */
+    public function cliOnlyCommand()
+    {
+    }
+
+    /**
      * @flushesCaches
      */
     public function flushingCachesCommand()

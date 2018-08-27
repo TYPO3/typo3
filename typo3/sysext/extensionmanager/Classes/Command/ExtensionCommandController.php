@@ -48,6 +48,7 @@ class ExtensionCommandController extends CommandController
      * recognised extension folder paths in TYPO3.
      *
      * @param string $extensionKey
+     * @cli
      */
     public function installCommand($extensionKey)
     {
@@ -65,6 +66,7 @@ class ExtensionCommandController extends CommandController
      * recognised extension folder paths in TYPO3.
      *
      * @param string $extensionKey
+     * @cli
      */
     public function uninstallCommand($extensionKey)
     {
@@ -78,6 +80,8 @@ class ExtensionCommandController extends CommandController
      *
      * This command is only needed during development. The extension manager takes care
      * creating or updating this info properly during extension (de-)activation.
+     *
+     * @cli
      */
     public function dumpClassLoadingInformationCommand()
     {

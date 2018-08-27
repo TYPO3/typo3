@@ -107,6 +107,25 @@ class CommandTest extends UnitTestCase
         static::assertTrue($commandController->isInternal());
     }
 
+    public function testIsCliOnly()
+    {
+        $commandController = GeneralUtility::makeInstance(ObjectManager::class)->get(
+            Command::class,
+            MockCCommandController::class,
+            'empty'
+        );
+
+        static::assertFalse($commandController->isCliOnly());
+
+        $commandController = GeneralUtility::makeInstance(ObjectManager::class)->get(
+            Command::class,
+            MockCCommandController::class,
+            'cliOnly'
+        );
+
+        static::assertTrue($commandController->isCliOnly());
+    }
+
     public function testIsFlushinCaches()
     {
         $commandController = GeneralUtility::makeInstance(ObjectManager::class)->get(

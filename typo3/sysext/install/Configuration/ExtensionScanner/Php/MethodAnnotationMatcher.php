@@ -6,9 +6,4 @@ return [
             'Deprecation-83094-ReplaceIgnorevalidationWithTYPO3CMSExtbaseAnnotationIgnoreValidation.rst',
         ],
     ],
-    '@cli' => [
-        'restFiles' => [
-            'Deprecation-85977-DeprecateCliAnnotation.rst',
-        ],
-    ],
 ];
