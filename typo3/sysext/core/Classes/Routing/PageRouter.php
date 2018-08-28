@@ -47,23 +47,26 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * And create route candidates for that.
  *
- * PageRouter does not restrict the HTTP method or is bound to any domain constraints,
+ * Please note: PageRouter does not restrict the HTTP method or is bound to any domain constraints,
  * as the SiteMatcher has done that already.
  *
+ * The concept of the PageRouter is to *resolve*, and not build URIs. On top, it is a facade to hide the
+ * dependency to symfony and to not expose its logic.
+
  * @internal This API is not public yet and might change in the future, until TYPO3 v9 or TYPO3 v10.
  */
 class PageRouter
 {
     /**
      * @param ServerRequestInterface $request
-     * @param string $routePath
+     * @param string $routePathTail
      * @param SiteInterface $site
      * @param SiteLanguage $language
-     * @return array|null
+     * @return RouteResult
      */
-    public function matchRoute(ServerRequestInterface $request, string $routePath, SiteInterface $site, SiteLanguage $language): ?array
+    public function matchRoute(ServerRequestInterface $request, string $routePathTail, SiteInterface $site, SiteLanguage $language): RouteResult
     {
-        $slugCandidates = $this->getCandidateSlugsFromRoutePath($routePath);
+        $slugCandidates = $this->getCandidateSlugsFromRoutePath($routePathTail);
         if (empty($slugCandidates)) {
             return null;
         }
@@ -77,9 +80,9 @@ class PageRouter
         foreach ($pageCandidates ?? [] as $page) {
             $path = $page['slug'];
             $route = new Route(
-                $path . '{next}',
-                ['page' => $page, 'next' => ''],
-                ['next' => '.*'],
+                $path . '{tail}',
+                ['page' => $page, 'tail' => ''],
+                ['tail' => '.*'],
                 ['utf8' => true]
             );
             $collection->add('page_' . $page['uid'], $route);
@@ -88,10 +91,12 @@ class PageRouter
         $context = new RequestContext('/', $request->getMethod(), $request->getUri()->getHost());
         $matcher = new UrlMatcher($collection, $context);
         try {
-            return $matcher->match('/' . $routePath);
+            $result = $matcher->match('/' . $routePathTail);
+            return new RouteResult($request->getUri(), $site, $language, $result['tail'], $result);
         } catch (ResourceNotFoundException $e) {
-            return null;
+            // do nothing
         }
+        return new RouteResult($request->getUri(), $site, $language);
     }
 
     /**

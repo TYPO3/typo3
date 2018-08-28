@@ -41,7 +41,10 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  * Symfony Routing to find the proper route with its defaults / attributes.
  *
  * On top, this is also commonly used throughout TYPO3 to fetch a site by a given pageId.
- * ->matchPageId()
+ * ->matchPageId().
+ *
+ * The concept of the SiteMatcher is to *resolve*, and not build URIs. On top, it is a facade to hide the
+ * dependency to symfony and to not expose its logic.
  */
 class SiteMatcher implements SingletonInterface
 {
@@ -77,9 +80,9 @@ class SiteMatcher implements SingletonInterface
      * a sys_domain record, and match against them.
      *
      * @param ServerRequestInterface $request
-     * @return array
+     * @return RouteResult
      */
-    public function matchRequest(ServerRequestInterface $request): array
+    public function matchRequest(ServerRequestInterface $request): RouteResult
     {
         $site = null;
         $language = null;
@@ -124,7 +127,8 @@ class SiteMatcher implements SingletonInterface
             );
             $matcher = new UrlMatcher($collection, $context);
             try {
-                return $matcher->match($request->getUri()->getPath());
+                $result = $matcher->match($request->getUri()->getPath());
+                return new RouteResult($request->getUri(), $result['site'], $result['language'], $result['tail']);
             } catch (NoConfigurationException | ResourceNotFoundException $e) {
                 // No site found
             }
@@ -139,19 +143,24 @@ class SiteMatcher implements SingletonInterface
             while (count($host)) {
                 $context->setHost(implode('.', $host));
                 try {
-                    return $matcher->match($request->getUri()->getPath());
+                    $result = $matcher->match($request->getUri()->getPath());
+                    return new RouteResult($request->getUri(), $result['site'], $result['language'], $result['tail']);
                 } catch (NoConfigurationException | ResourceNotFoundException $e) {
                     array_shift($host);
                 }
             }
         } else {
             try {
-                return $matcher->match($request->getUri()->getPath());
+                $result = $matcher->match($request->getUri()->getPath());
+                return new RouteResult($request->getUri(), $result['site'], $result['language'], $result['tail']);
             } catch (NoConfigurationException | ResourceNotFoundException $e) {
                 // No domain record found
             }
         }
-        return ['site' => $site, 'language' => $language];
+        if ($site == null) {
+            $site = $this->pseudoSiteFinder->getSiteByPageId(0);
+        }
+        return new RouteResult($request->getUri(), $site, $language);
     }
 
     /**
@@ -174,20 +183,31 @@ class SiteMatcher implements SingletonInterface
     /**
      * Returns a Symfony RouteCollection containing all routes to all sites.
      *
-     * {next} is not evaluated yet, but set as suffix and will change in the future.
-     *
      * @return RouteCollection
      */
     protected function getRouteCollectionForAllSites(): RouteCollection
     {
         $groupedRoutes = [];
         foreach ($this->finder->getAllSites() as $site) {
+            // Add the site as entrypoint
+            $urlParts = parse_url($site->getBase());
+            $route = new Route(
+                ($urlParts['path'] ?? '/') . '{tail}',
+                ['site' => $site, 'language' => null, 'tail' => ''],
+                array_filter(['tail' => '.*', 'port' => (string)($urlParts['port'] ?? '')]),
+                ['utf8' => true],
+                $urlParts['host'] ?? '',
+                !empty($urlParts['scheme']) ? [$urlParts['scheme']] : null
+            );
+            $identifier = 'site_' . $site->getIdentifier();
+            $groupedRoutes[($urlParts['scheme'] ?? '-') . ($urlParts['host'] ?? '-')][$urlParts['path'] ?? '/'][$identifier] = $route;
+            // Add all languages
             foreach ($site->getAllLanguages() as $siteLanguage) {
                 $urlParts = parse_url($siteLanguage->getBase());
                 $route = new Route(
-                    ($urlParts['path'] ?? '/') . '{next}',
-                    ['site' => $site, 'language' => $siteLanguage, 'next' => ''],
-                    array_filter(['next' => '.*', 'port' => (string)($urlParts['port'] ?? '')]),
+                    ($urlParts['path'] ?? '/') . '{tail}',
+                    ['site' => $site, 'language' => $siteLanguage, 'tail' => ''],
+                    array_filter(['tail' => '.*', 'port' => (string)($urlParts['port'] ?? '')]),
                     ['utf8' => true],
                     $urlParts['host'] ?? '',
                     !empty($urlParts['scheme']) ? [$urlParts['scheme']] : null
@@ -222,9 +242,9 @@ class SiteMatcher implements SingletonInterface
                 }
                 $urlParts = parse_url($domainName);
                 $route = new Route(
-                    ($urlParts['path'] ?? '/') . '{next}',
-                    ['site' => $site, 'language' => null, 'next' => ''],
-                    array_filter(['next' => '.*', 'port' => (string)($urlParts['port'] ?? '')]),
+                    ($urlParts['path'] ?? '/') . '{tail}',
+                    ['site' => $site, 'language' => null, 'tail' => ''],
+                    array_filter(['tail' => '.*', 'port' => (string)($urlParts['port'] ?? '')]),
                     ['utf8' => true],
                     $urlParts['host'] ?? '',
                     !empty($urlParts['scheme']) ? [$urlParts['scheme']] : null
@@ -237,7 +257,7 @@ class SiteMatcher implements SingletonInterface
     }
 
     /**
-     * As the {next} parameter is greedy, it needs to be ensured that the one with the
+     * As the {tail} parameter is greedy, it needs to be ensured that the one with the
      * most specific part matches first.
      *
      * @param array $groupedRoutes

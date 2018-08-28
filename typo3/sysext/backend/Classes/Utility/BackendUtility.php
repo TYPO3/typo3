@@ -2848,9 +2848,8 @@ class BackendUtility
                 // available sys_domain record.
                 $siteMatcher = GeneralUtility::makeInstance(SiteMatcher::class);
                 $result = $siteMatcher->matchRequest(new ServerRequest($domain));
-                if (isset($result['site']) && $result['site'] instanceof PseudoSite) {
-                    /** @var PseudoSite $site */
-                    $site = $result['site'];
+                $site = $result->getSite();
+                if ($site instanceof PseudoSite) {
                     $domain = $site->getBase();
                     $domain = ltrim($domain, '/');
                 }

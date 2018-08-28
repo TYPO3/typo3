@@ -28,7 +28,7 @@ be properly resolved which is a requirement to resolve the page path part
 of the URL.
 
 Note #2: If a page has the path segment "/team/about-us", but there is no
-other page with a path segment "/team/about-us/", then an automatic 301
+other page with a path segment "/team/about-us/", then an automatic 307
 HTTP redirect to the proper URI is triggered.
 
 Impact

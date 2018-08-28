@@ -136,7 +136,6 @@ class SiteRequestTest extends AbstractTestCase
         ];
 
         $languagePaths = [
-            '',
             'en-en/',
             'fr-fr/',
             'fr-ca/',
@@ -211,7 +210,8 @@ class SiteRequestTest extends AbstractTestCase
     public function pageIsRenderedWithDomainsDataProvider(): array
     {
         $domainPaths = [
-            'https://website.local/',
+            // @todo: This turns into a redirect to the default language (".us") making this function obsolete
+            // 'https://website.local/',
             'https://website.us/',
             'https://website.fr/',
             'https://website.ca/',

@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Middleware;
  * The TYPO3 project - inspiring people to share!
  */
 
-use PHPUnit\Framework\MockObject\MockObject;
-use Prophecy\Argument;
-use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -26,7 +23,6 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Routing\PageRouter;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -55,16 +51,10 @@ class SiteResolverTest extends UnitTestCase
     protected $siteFoundRequestHandler;
 
     /**
-     * @var PageRouter|ObjectProphecy
-     */
-    protected $pageRouterProphecy;
-
-    /**
      * Set up
      */
     protected function setUp(): void
     {
-        $GLOBALS['TSFE'] = new \stdClass();
         $this->siteFinder = $this->getAccessibleMock(SiteFinder::class, ['dummy'], [], '', false);
 
         // A request handler which expects a site to be found.
@@ -88,9 +78,6 @@ class SiteResolverTest extends UnitTestCase
                 return new NullResponse();
             }
         };
-
-        $this->pageRouterProphecy = $this->prophesize(PageRouter::class);
-        $this->pageRouterProphecy->matchRoute(Argument::cetera())->willReturn(['page' => ['uid' => 13, 'l10n_parent' => 0]]);
 
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
@@ -121,9 +108,7 @@ class SiteResolverTest extends UnitTestCase
             ])
         ]);
 
-        $subject = $this->createSiteResolverMock(
-            new SiteMatcher($this->siteFinder)
-        );
+        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $response = $subject->process($request, $this->siteFoundRequestHandler);
@@ -176,9 +161,7 @@ class SiteResolverTest extends UnitTestCase
             ]),
         ]);
 
-        $subject = $this->createSiteResolverMock(
-            new SiteMatcher($this->siteFinder)
-        );
+        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $response = $subject->process($request, $this->siteFoundRequestHandler);
@@ -268,9 +251,7 @@ class SiteResolverTest extends UnitTestCase
             ]),
         ]);
 
-        $subject = $this->createSiteResolverMock(
-            new SiteMatcher($this->siteFinder)
-        );
+        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $response = $subject->process($request, $this->siteFoundRequestHandler);
@@ -303,13 +284,6 @@ class SiteResolverTest extends UnitTestCase
                 2,
                 '/mysubsite/'
             ],
-            'matches second site because third site language prefix did not match' => [
-                'https://www.random-result.com/mysubsite/micro-site/oh-yes-you-do/',
-                'sub-site',
-                14,
-                2,
-                '/mysubsite/'
-            ],
             'matches third site' => [
                 'https://www.random-result.com/mysubsite/micro-site/ru/oh-yes-you-do/',
                 'subsub-site',
@@ -317,24 +291,20 @@ class SiteResolverTest extends UnitTestCase
                 13,
                 '/mysubsite/micro-site/ru/'
             ],
-            /**
-             * This case does not work, as no language prefix is defined.
-            'matches a subsite in first site' => [
-                'https://www.random-result.com/products/pampers/',
+            'matches a subpage in first site' => [
+                'https://www.random-result.com/en/products/pampers/',
                 'outside-site',
                 13,
                 0,
-                '/'
+                '/en/'
             ],
-             * This case does not work as we now resolve the rest of the URL
-            'matches a subsite with translation in first site' => [
+            'matches a subpage with translation in first site' => [
                 'https://www.random-result.com/fr/products/pampers/',
                 'outside-site',
                 13,
                 1,
                 '/fr/'
             ],
-             */
         ];
     }
 
@@ -391,9 +361,7 @@ class SiteResolverTest extends UnitTestCase
             ]),
         ]);
 
-        $subject = $this->createSiteResolverMock(
-            new SiteMatcher($this->siteFinder)
-        );
+        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $response = $subject->process($request, $this->siteFoundRequestHandler);
@@ -408,6 +376,72 @@ class SiteResolverTest extends UnitTestCase
             $this->assertEquals($expectedLanguageId, $result['language-id']);
             $this->assertEquals($expectedBase, $result['language-base']);
         }
+    }
+
+    public function doRedirectOnMissingOrSuperfluousRequestUrlDataProvider()
+    {
+        return [
+            'redirect to first language' => [
+                'https://twenty.one/',
+                'https://twenty.one/en/',
+            ],
+            'redirect to first language adding a slash' => [
+                'https://twenty.one/en',
+                'https://twenty.one/en/',
+            ],
+            'redirect to second language removing a slash' => [
+                'https://twenty.one/fr/',
+                'https://twenty.one/fr',
+            ],
+            'redirect to subsite by adding a slash' => [
+                'https://twenty.one/mysubsite',
+                'https://twenty.one/mysubsite/',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $incomingUrl
+     * @param string $expectedRedirectUrl
+     * @dataProvider doRedirectOnMissingOrSuperfluousRequestUrlDataProvider
+     * @test
+     */
+    public function doRedirectOnMissingOrSuperfluousRequestUrl(string $incomingUrl, string $expectedRedirectUrl)
+    {
+        $this->siteFinder->_set('sites', [
+            'outside-site' => new Site('outside-site', 13, [
+                'base' => 'https://twenty.one/',
+                'languages' => [
+                    0 => [
+                        'languageId' => 0,
+                        'locale' => 'en_US.UTF-8',
+                        'base' => '/en/'
+                    ],
+                    1 => [
+                        'languageId' => 1,
+                        'locale' => 'fr_CA.UTF-8',
+                        'base' => '/fr'
+                    ]
+                ]
+            ]),
+            'sub-site' => new Site('sub-site', 14, [
+                'base' => 'https://twenty.one/mysubsite/',
+                'languages' => [
+                    2 => [
+                        'languageId' => 2,
+                        'locale' => 'it_IT.UTF-8',
+                        'base' => '/'
+                    ]
+                ]
+            ]),
+        ]);
+
+        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
+
+        $request = new ServerRequest($incomingUrl, 'GET');
+        $response = $subject->process($request, $this->siteFoundRequestHandler);
+        $this->assertEquals(307, $response->getStatusCode());
+        $this->assertEquals($expectedRedirectUrl, $response->getHeader('Location')[0] ?? '');
     }
 
     /**
@@ -459,30 +493,11 @@ class SiteResolverTest extends UnitTestCase
             ]),
         ]);
 
-        $subject = $this->createSiteResolverMock(
-            new SiteMatcher($this->siteFinder)
-        );
+        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
 
         // Request to default page
         $request = new ServerRequest($url, 'GET');
         $response = $subject->process($request, $this->siteFoundRequestHandler);
         static::assertEquals($expectedStatusCode, $response->getStatusCode());
-    }
-
-    /**
-     * @param SiteMatcher|null $matcher
-     * @return MockObject|SiteResolver
-     */
-    private function createSiteResolverMock(SiteMatcher $matcher = null): MockObject
-    {
-        $mock = $this->getAccessibleMock(
-            SiteResolver::class,
-            ['getPageRouter'],
-            [$matcher]
-        );
-        $mock->expects(static::any())
-            ->method('getPageRouter')
-            ->willReturn($this->pageRouterProphecy->reveal());
-        return $mock;
     }
 }

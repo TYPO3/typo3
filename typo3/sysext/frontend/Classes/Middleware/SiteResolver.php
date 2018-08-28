@@ -21,9 +21,8 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Routing\PageRouter;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
-use TYPO3\CMS\Core\Site\Entity\PseudoSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -65,78 +64,49 @@ class SiteResolver implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $routeResult = $this->matcher->matchRequest($request);
-        $site = $routeResult['site'] ?? null;
-        $language = $routeResult['language'] ?? null;
-        $routePath = $routeResult['next'] ?? '';
+        $site = $routeResult->getSite();
+        $language = $routeResult->getLanguage();
 
+        $request = $request->withAttribute('site', $site);
+        $request = $request->withAttribute('routing', $routeResult);
+
+        // Usually called when "https://www.example.com" was entered, but all sites have "https://www.example.com/lang-key/"
+        // So a redirect to the first possible language is done.
+        if ($site instanceof Site && !($language instanceof SiteLanguage)) {
+            $language = $site->getDefaultLanguage();
+            $uri = new Uri($language->getBase());
+            return new RedirectResponse($uri, 307);
+        }
         // language is found, and hidden but also not visible to the BE user, this needs to fail
-        if ($language instanceof SiteLanguage && !$this->isLanguageEnabled($language, $GLOBALS['BE_USER'] ?? null)) {
-            $request = $request->withAttribute('site', $site);
-            return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                $request,
-                'Page is not available in the requested language.',
-                ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE]
-            );
-        }
-
-        // Add language+site information to the PSR-7 request object.
-        if ($language instanceof SiteLanguage && $site instanceof Site) {
-            $request = $request->withAttribute('site', $site);
-            $request = $request->withAttribute('language', $language);
-            $queryParams = $request->getQueryParams();
-            // necessary to calculate the proper hash base
-            $queryParams['L'] = $language->getLanguageId();
-            $request = $request->withQueryParams($queryParams);
-            $_GET['L'] = $queryParams['L'];
-
-            $routePath = ltrim($routePath, '/');
-            if (!empty($routePath)) {
-                // Check for the route
-                $routeResult = $this->getPageRouter()
-                    ->matchRoute($request, $routePath, $site, $language);
-                if (is_array($routeResult)) {
-                    $page = $routeResult['page'];
-                    $pageId = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $page['uid']);
-                    // @todo: we could move the middleware earlier which will make A LOT OF things easier
-                    $GLOBALS['TSFE']->id = $pageId;
-                    $_GET['id'] = $pageId;
-                    $queryParams = $request->getQueryParams();
-                    $queryParams['id'] = $pageId;
-                    $request = $request->withQueryParams($queryParams);
-                    if (!empty($routeResult['next'] ?? '')) {
-                        if ($routeResult['next'] === '/') {
-                            // a URL was called via "/mysite/" but the page is actually called "/mysite"
-                            // let's do a redirect
-                            $uri = $request->getUri();
-                            $path = rtrim($uri->getPath(), '/');
-                            $uri = $uri->withPath($path);
-                            return new RedirectResponse($uri, 301);
-                        }
-                        // @todo: kick in the resolvers for the RouteEnhancers at this point
-                        return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                            $request,
-                            'The requested page does not exist',
-                            ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
-                        );
-                    }
-                } else {
-                    return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                        $request,
-                        'The requested page does not exist',
-                        ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
-                    );
-                }
+        if ($language instanceof SiteLanguage) {
+            if (!$this->isLanguageEnabled($language, $GLOBALS['BE_USER'] ?? null)) {
+                return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                    $request,
+                    'Page is not available in the requested language.',
+                    ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE]
+                );
             }
-        } elseif ($site instanceof PseudoSite) {
-            $request = $request->withAttribute('site', $site);
+            $requestedUri = $request->getUri();
+            $tail = $routeResult->getTail();
+            // a URL was called via "/fr-FR/" but the page is actually called "/fr-FR", let's do a redirect
+            if ($tail === '/') {
+                $uri = $requestedUri->withPath(rtrim($requestedUri->getPath(), '/'));
+                return new RedirectResponse($uri, 307);
+            }
+            // Request was "/fr-FR" but the site is actually called "/fr-FR/", let's do a redirect
+            if ($tail === '' && (string)(new Uri($language->getBase()))->getPath() !== (string)$requestedUri->getPath()) {
+                $uri = $requestedUri->withPath($requestedUri->getPath() . '/');
+                return new RedirectResponse($uri, 307);
+            }
+            $request = $request->withAttribute('language', $language);
         }
+
         // At this point, we later get further route modifiers
         // for bw-compat we update $GLOBALS[TYPO3_REQUEST] to be used later in TSFE.
         $GLOBALS['TYPO3_REQUEST'] = $request;
 
         return $handler->handle($request);
     }
-
     /**
      * Checks if the language is allowed in Frontend, if not, check if there is valid BE user
      *
@@ -151,13 +121,5 @@ class SiteResolver implements MiddlewareInterface
             return true;
         }
         return false;
-    }
-
-    /**
-     * @return PageRouter
-     */
-    protected function getPageRouter(): PageRouter
-    {
-        return GeneralUtility::makeInstance(PageRouter::class);
     }
 }
