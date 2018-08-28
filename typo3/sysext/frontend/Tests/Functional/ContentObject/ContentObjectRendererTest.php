@@ -414,9 +414,8 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
 
         $typoScriptFrontendController = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->setConstructorArgs([null, 1, 0])
-            ->setMethods(['getDomainDataForPid'])
+            ->setMethods(['dummy'])
             ->getMock();
-        $typoScriptFrontendController->expects($this->any())->method('getDomainDataForPid')->willReturn(null);
         $typoScriptFrontendController->config = [
             'config' => [],
         ];
@@ -473,9 +472,8 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
 
         $typoScriptFrontendController = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->setConstructorArgs([null, 1, 0])
-            ->setMethods(['getDomainDataForPid'])
+            ->setMethods(['dummy'])
             ->getMock();
-        $typoScriptFrontendController->expects($this->any())->method('getDomainDataForPid')->willReturn(null);
         $typoScriptFrontendController->config = [
             'config' => [],
         ];

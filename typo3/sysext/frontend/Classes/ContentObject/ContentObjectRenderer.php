@@ -1426,7 +1426,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         $altText = isset($conf['altText.']) ? trim($this->stdWrap($conf['altText'], $conf['altText.'])) : trim($conf['altText']);
         $titleText = isset($conf['titleText.']) ? trim($this->stdWrap($conf['titleText'], $conf['titleText.'])) : trim($conf['titleText']);
-        if (isset($conf['longdescURL.']) && $this->getTypoScriptFrontendController()->config['config']['doctype'] != 'html5') {
+        if (isset($conf['longdescURL.']) && $this->getTypoScriptFrontendController()->config['config']['doctype'] !== 'html5') {
             $longDescUrl = $this->typoLink_URL($conf['longdescURL.']);
         } else {
             $longDescUrl = trim($conf['longdescURL']);
@@ -4952,7 +4952,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         //   field = backend_layout
                         //   ifEmpty.data = levelfield:-2, backend_layout_next_level, slide
                         //   ifEmpty.ifEmpty = default
-                        $retVal = $GLOBALS['TSFE']->page['backend_layout'];
+                        $retVal = $tsfe->page['backend_layout'];
 
                         // If it is set to "none" - don't use any
                         if ($retVal === '-1') {
