@@ -21,14 +21,22 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Automatic publishing of workspaces.
+ *
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. This job is a one-time functionality now built into the "autopublish" functionality.
  */
 class AutoPublishService
 {
+    public function __construct()
+    {
+        trigger_error('AutoPublishService will be removed in TYPO3 v10.0. Use the symfony command "workspaces:autopublish" instead.', E_USER_DEPRECATED);
+    }
+
     /**
      * This method is called by the Scheduler task that triggers
      * the autopublication process
      * It searches for workspaces whose publication date is in the past
      * and publishes them
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function autoPublishWorkspaces()
     {

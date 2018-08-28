@@ -8,5 +8,11 @@
 return [
     'cleanup:versions' => [
         'class' => \TYPO3\CMS\Workspaces\Command\WorkspaceVersionRecordsCommand::class,
-    ]
+    ],
+    'cleanup:previewlinks' => [
+        'class' => \TYPO3\CMS\Workspaces\Command\CleanupPreviewLinksCommand::class,
+    ],
+    'workspace:autopublish' => [
+        'class' => \TYPO3\CMS\Workspaces\Command\AutoPublishCommand::class,
+    ],
 ];

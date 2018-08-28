@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Workspaces\Task;
 /**
  * This class provides a wrapper around the autopublication
  * mechanism of workspaces, as a Scheduler task
+ *
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
  */
 class AutoPublishTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {
@@ -29,6 +31,7 @@ class AutoPublishTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     public function execute()
     {
+        trigger_error('This scheduler task is not in use anymore, please re-create the task within TYPO3 Scheduler by using the symfony command "Workspace Auto-Publish".', E_USER_DEPRECATED);
         $autopubObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\AutoPublishService::class);
         // Publish the workspaces that need to be
         $autopubObj->autoPublishWorkspaces();

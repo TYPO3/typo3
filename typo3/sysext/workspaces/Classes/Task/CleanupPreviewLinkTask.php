@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This class provides a task to cleanup ol preview links.
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
  */
 class CleanupPreviewLinkTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {
@@ -29,6 +30,7 @@ class CleanupPreviewLinkTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     public function execute()
     {
+        trigger_error('This scheduler task is not in use anymore, please re-create the task within TYPO3 Scheduler by using the symfony command "Cleanup Preview Links".', E_USER_DEPRECATED);
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_preview');
         $queryBuilder
             ->delete('sys_preview')

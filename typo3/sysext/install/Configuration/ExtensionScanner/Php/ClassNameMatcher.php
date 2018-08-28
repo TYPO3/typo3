@@ -809,4 +809,19 @@ return [
             'Deprecation-85833-ExtensionSaltedpasswordsMergedIntoCoreExtension.rst',
         ],
     ],
+    'TYPO3\CMS\Workspaces\Service\AutoPublishService' => [
+        'restFiles' => [
+            'Deprecation-86001-WorkspacesTasksMigratedToSymfonyCommands.rst',
+        ],
+    ],
+    'TYPO3\CMS\Workspaces\Task\AutoPublishTask' => [
+        'restFiles' => [
+            'Deprecation-86001-WorkspacesTasksMigratedToSymfonyCommands.rst',
+        ],
+    ],
+    'TYPO3\CMS\Workspaces\Task\CleanupPreviewLinkTask' => [
+        'restFiles' => [
+            'Deprecation-86001-WorkspacesTasksMigratedToSymfonyCommands.rst',
+        ],
+    ],
 ];

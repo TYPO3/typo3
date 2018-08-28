@@ -9,6 +9,7 @@ tx_version.workspaces.stageNotificationEmail.message = LLL:EXT:workspaces/Resour
 ');
 
 // Register the autopublishing task
+// This will be removed in favor of the CLI command workspace:autopublish
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Workspaces\Task\AutoPublishTask::class] = [
     'extension' => 'workspaces',
     'title' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:autopublishTask.name',
@@ -16,6 +17,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Works
 ];
 
 // Register the cleanup preview links task
+// This will be removed in favor of the CLI command cleanup:previewlinks
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Workspaces\Task\CleanupPreviewLinkTask::class] = [
     'extension' => 'workspaces',
     'title' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:cleanupPreviewLinkTask.name',
