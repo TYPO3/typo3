@@ -278,6 +278,16 @@ class SiteLanguage
     }
 
     /**
+     * Helper so fluid can work with this as well.
+     *
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    /**
      * @return string
      */
     public function getFallbackType(): string
