@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="{xslFile}"?>
+
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:f="http://typo3.org/ns/fluid/ViewHelpers">
+    <f:for each="{sitemaps}" as="sitemap">
+        <sitemap>
+            <loc><f:uri.page additionalParams="{type: type, sitemap: sitemap.key }" absolute="true" noCacheHash="true" /></loc>
+            <lastmod>{sitemap.lastMod -> f:format.date(format: 'c')}</lastmod>
+        </sitemap>
+    </f:for>
+</sitemapindex>

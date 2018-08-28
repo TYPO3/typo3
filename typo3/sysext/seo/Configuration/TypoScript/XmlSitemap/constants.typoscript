@@ -1,0 +1,10 @@
+plugin.tx_seo {
+  view {
+    # cat=plugin.tx_seo/file; type=string; label=Path to template root (FE)
+    templateRootPath = EXT:seo/Resources/Private/Templates/
+    # cat=plugin.tx_seo/file; type=string; label=Path to template partials (FE)
+    partialRootPath = EXT:seo/Resources/Private/Partials/
+    # cat=plugin.tx_seo/file; type=string; label=Path to template layouts (FE)
+    layoutRootPath = EXT:seo/Resources/Private/Layouts/
+  }
+}
