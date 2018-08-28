@@ -41,6 +41,18 @@ class LinkGeneratorTest extends AbstractTestCase
      */
     private $internalRequestContext;
 
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+        static::initializeDatabaseSnapshot();
+    }
+
+    public static function tearDownAfterClass()
+    {
+        static::destroyDatabaseSnapshot();
+        parent::tearDownAfterClass();
+    }
+
     protected function setUp()
     {
         parent::setUp();
@@ -49,6 +61,39 @@ class LinkGeneratorTest extends AbstractTestCase
         $this->internalRequestContext = (new InternalRequestContext())
             ->withGlobalSettings(['TYPO3_CONF_VARS' => static::TYPO3_CONF_VARS]);
 
+        $this->withDatabaseSnapshot(function () {
+            $this->setUpDatabase();
+        });
+
+        $this->writeSiteConfiguration(
+            'acme-com',
+            $this->buildSiteConfiguration(1000, 'https://acme.com/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', 'https://acme.us/'),
+                $this->buildLanguageConfiguration('FR', 'https://acme.fr/', ['EN']),
+                $this->buildLanguageConfiguration('FR-CA', 'https://acme.ca/', ['FR', 'EN']),
+            ]
+        );
+        $this->writeSiteConfiguration(
+            'products-acme-com',
+            $this->buildSiteConfiguration(1300, 'https://products.acme.com/')
+        );
+        $this->writeSiteConfiguration(
+            'blog-acme-com',
+            $this->buildSiteConfiguration(2000, 'https://blog.acme.com/')
+        );
+        $this->writeSiteConfiguration(
+            'john-blog-acme-com',
+            $this->buildSiteConfiguration(2110, 'https://blog.acme.com/john/')
+        );
+        $this->writeSiteConfiguration(
+            'jane-blog-acme-com',
+            $this->buildSiteConfiguration(2120, 'https://blog.acme.com/jane/')
+        );
+    }
+
+    protected function setUpDatabase()
+    {
         $backendUser = $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
 
@@ -79,32 +124,6 @@ class LinkGeneratorTest extends AbstractTestCase
                 'title' => 'ACME Root',
                 'sitetitle' => $this->siteTitle,
             ]
-        );
-
-        $this->writeSiteConfiguration(
-            'acme-com',
-            $this->buildSiteConfiguration(1000, 'https://acme.com/'),
-            [
-                $this->buildDefaultLanguageConfiguration('EN', 'https://acme.us/'),
-                $this->buildLanguageConfiguration('FR', 'https://acme.fr/', ['EN']),
-                $this->buildLanguageConfiguration('FR-CA', 'https://acme.ca/', ['FR', 'EN']),
-            ]
-        );
-        $this->writeSiteConfiguration(
-            'products-acme-com',
-            $this->buildSiteConfiguration(1300, 'https://products.acme.com/')
-        );
-        $this->writeSiteConfiguration(
-            'blog-acme-com',
-            $this->buildSiteConfiguration(2000, 'https://blog.acme.com/')
-        );
-        $this->writeSiteConfiguration(
-            'john-blog-acme-com',
-            $this->buildSiteConfiguration(2110, 'https://blog.acme.com/john/')
-        );
-        $this->writeSiteConfiguration(
-            'jane-blog-acme-com',
-            $this->buildSiteConfiguration(2120, 'https://blog.acme.com/jane/')
         );
     }
 

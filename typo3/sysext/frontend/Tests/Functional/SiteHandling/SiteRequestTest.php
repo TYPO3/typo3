@@ -38,6 +38,18 @@ class SiteRequestTest extends AbstractTestCase
      */
     private $internalRequestContext;
 
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+        static::initializeDatabaseSnapshot();
+    }
+
+    public static function tearDownAfterClass()
+    {
+        static::destroyDatabaseSnapshot();
+        parent::tearDownAfterClass();
+    }
+
     protected function setUp()
     {
         parent::setUp();
@@ -46,6 +58,13 @@ class SiteRequestTest extends AbstractTestCase
         $this->internalRequestContext = (new InternalRequestContext())
             ->withGlobalSettings(['TYPO3_CONF_VARS' => static::TYPO3_CONF_VARS]);
 
+        $this->withDatabaseSnapshot(function () {
+            $this->setUpDatabase();
+        });
+    }
+
+    protected function setUpDatabase()
+    {
         $backendUser = $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
 
