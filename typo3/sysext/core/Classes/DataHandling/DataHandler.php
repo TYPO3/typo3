@@ -4745,7 +4745,7 @@ class DataHandler
                 || $table === 'pages_language_overlay')
             && $table !== 'pages') {
             if ($this->enableLogging) {
-                $this->newlog('Localization failed; "languageField" and "transOrigPointerField" must be defined for the table!', 1);
+                $this->newlog('Localization failed; "languageField" and "transOrigPointerField" must be defined for the table ' . $table, 1);
             }
             return false;
         }
@@ -4759,7 +4759,7 @@ class DataHandler
 
         if (!$this->doesRecordExist($table, $uid, 'show')) {
             if ($this->enableLogging) {
-                $this->newlog('Attempt to localize record without permission', 1);
+                $this->newlog('Attempt to localize record ' . $table . ':' . $uid . ' without permission.', 1);
             }
             return false;
         }
@@ -4768,7 +4768,7 @@ class DataHandler
         $row = BackendUtility::getRecordWSOL($table, $uid);
         if (!is_array($row)) {
             if ($this->enableLogging) {
-                $this->newlog('Attempt to localize record that did not exist!', 1);
+                $this->newlog('Attempt to localize record ' . $table . ':' . $uid . ' that did not exist!', 1);
             }
             return false;
         }
@@ -4784,7 +4784,7 @@ class DataHandler
             );
             if ((int)$localizationParentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] !== 0) {
                 if ($this->enableLogging) {
-                    $this->newlog('Localization failed; Source record contained a reference to an original record that is not a default record (which is strange)!', 1);
+                    $this->newlog('Localization failed; Source record ' . $table . ':' . $localizationParentRecord['uid'] . ' contained a reference to an original record that is not a default record (which is strange)!', 1);
                 }
                 return false;
             }
@@ -4795,7 +4795,7 @@ class DataHandler
             && (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] === 0
             && $table !== 'pages') {
             if ($this->enableLogging) {
-                $this->newlog('Localization failed; Source record contained a reference to an original default record but is a default record itself (which is strange)!', 1);
+                $this->newlog('Localization failed; Source record ' . $table . ':' . $row['uid'] . ' contained a reference to an original default record but is a default record itself (which is strange)!', 1);
             }
             return false;
         }
@@ -4832,7 +4832,7 @@ class DataHandler
 
         if (!$pass) {
             if ($this->enableLogging) {
-                $this->newlog('Localization failed; There already was a localization for this language of the record!', 1);
+                $this->newlog('Localization failed; There already was a localization for this language of the record ' . $table . ':' . $uid . '!', 1);
             }
             return false;
         }
