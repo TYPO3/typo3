@@ -2441,7 +2441,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         // Ensure the language base is used for the hash base calculation as well, otherwise TypoScript and page-related rendering
         // is not cached properly as we don't have any language-specific conditions anymore
-        $siteBase = $this->getCurrentSiteLanguage() ? $this->getCurrentSiteLanguage()->getBase() : '';
+        $siteBase = $this->getCurrentSiteLanguage() ? (string)$this->getCurrentSiteLanguage()->getBase() : '';
 
         // Fetch the list of user groups
         /** @var UserAspect $userAspect */

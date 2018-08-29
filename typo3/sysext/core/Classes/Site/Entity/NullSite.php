@@ -16,9 +16,11 @@ namespace TYPO3\CMS\Core\Site\Entity;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -48,11 +50,10 @@ class NullSite implements SiteInterface
             $languageUid = (int)$languageConfiguration['languageId'];
             // Language configuration does not have a base defined
             // So the main site base is used (usually done for default languages)
-            $base = '/';
             $this->languages[$languageUid] = new SiteLanguage(
                 $languageUid,
                 $languageConfiguration['locale'] ?? '',
-                $base,
+                new Uri('/'),
                 $languageConfiguration
             );
         }
@@ -71,9 +72,9 @@ class NullSite implements SiteInterface
     /**
      * Always "/"
      */
-    public function getBase(): string
+    public function getBase(): UriInterface
     {
-        return '/';
+        return new Uri('/');
     }
 
     /**

@@ -16,12 +16,14 @@ namespace TYPO3\CMS\Core\Site\Entity;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Error\PageErrorHandler\FluidPageErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\InvalidPageErrorHandlerException;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageContentErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Routing\PageRouter;
 use TYPO3\CMS\Core\Routing\RouterInterface;
@@ -42,7 +44,7 @@ class Site implements SiteInterface
     protected $identifier;
 
     /**
-     * @var string
+     * @var UriInterface
      */
     protected $base;
 
@@ -92,23 +94,21 @@ class Site implements SiteInterface
                 'direction' => '',
             ]
         ];
-        $this->base = $this->sanitizeBaseUrl($configuration['base'] ?? '');
+        $this->base = new Uri($this->sanitizeBaseUrl($configuration['base'] ?? ''));
         foreach ($configuration['languages'] as $languageConfiguration) {
             $languageUid = (int)$languageConfiguration['languageId'];
             // site language has defined its own base, this is the case most of the time.
             if (!empty($languageConfiguration['base'])) {
-                $base = $languageConfiguration['base'];
-                $base = $this->sanitizeBaseUrl($base);
-                $baseParts = parse_url($base);
+                $base = new Uri($this->sanitizeBaseUrl($languageConfiguration['base']));
                 // no host given by the language-specific base, so lets prefix the main site base
-                if (empty($baseParts['scheme']) && empty($baseParts['host'])) {
-                    $base = rtrim($this->base, '/') . '/' . ltrim($base, '/');
-                    $base = $this->sanitizeBaseUrl($base);
+                if ($base->getScheme() === null && $base->getHost() === '') {
+                    $base = rtrim((string)$this->base, '/') . '/' . ltrim((string)$base, '/');
+                    $base = new Uri($this->sanitizeBaseUrl($base));
                 }
             } else {
                 // Language configuration does not have a base defined
                 // So the main site base is used (usually done for default languages)
-                $base = $this->sanitizeBaseUrl(rtrim($this->base, '/') . '/');
+                $base = new Uri($this->sanitizeBaseUrl(rtrim((string)$this->base, '/') . '/'));
             }
             if (!empty($languageConfiguration['flag'])) {
                 if ($languageConfiguration['flag'] === 'global') {
@@ -145,9 +145,9 @@ class Site implements SiteInterface
     /**
      * Returns the base URL of this site
      *
-     * @return string
+     * @return UriInterface
      */
-    public function getBase(): string
+    public function getBase(): UriInterface
     {
         return $this->base;
     }

@@ -190,30 +190,30 @@ class SiteMatcher implements SingletonInterface
         $groupedRoutes = [];
         foreach ($this->finder->getAllSites() as $site) {
             // Add the site as entrypoint
-            $urlParts = parse_url($site->getBase());
+            $uri = $site->getBase();
             $route = new Route(
-                ($urlParts['path'] ?? '/') . '{tail}',
+                ($uri->getPath() ?: '/') . '{tail}',
                 ['site' => $site, 'language' => null, 'tail' => ''],
-                array_filter(['tail' => '.*', 'port' => (string)($urlParts['port'] ?? '')]),
+                array_filter(['tail' => '.*', 'port' => (string)$uri->getPort()]),
                 ['utf8' => true],
-                $urlParts['host'] ?? '',
-                !empty($urlParts['scheme']) ? [$urlParts['scheme']] : null
+                $uri->getHost() ?: '',
+                $uri->getScheme()
             );
             $identifier = 'site_' . $site->getIdentifier();
-            $groupedRoutes[($urlParts['scheme'] ?? '-') . ($urlParts['host'] ?? '-')][$urlParts['path'] ?? '/'][$identifier] = $route;
+            $groupedRoutes[($uri->getScheme() ?: '-') . ($uri->getHost() ?: '-')][$uri->getPath() ?: '/'][$identifier] = $route;
             // Add all languages
             foreach ($site->getAllLanguages() as $siteLanguage) {
-                $urlParts = parse_url($siteLanguage->getBase());
+                $uri = $siteLanguage->getBase();
                 $route = new Route(
-                    ($urlParts['path'] ?? '/') . '{tail}',
+                    ($uri->getPath() ?: '/') . '{tail}',
                     ['site' => $site, 'language' => $siteLanguage, 'tail' => ''],
-                    array_filter(['tail' => '.*', 'port' => (string)($urlParts['port'] ?? '')]),
+                    array_filter(['tail' => '.*', 'port' => (string)$uri->getPort()]),
                     ['utf8' => true],
-                    $urlParts['host'] ?? '',
-                    !empty($urlParts['scheme']) ? [$urlParts['scheme']] : null
+                    $uri->getHost() ?: '',
+                    $uri->getScheme()
                 );
                 $identifier = 'site_' . $site->getIdentifier() . '_' . $siteLanguage->getLanguageId();
-                $groupedRoutes[($urlParts['scheme'] ?? '-') . ($urlParts['host'] ?? '-')][$urlParts['path'] ?? '/'][$identifier] = $route;
+                $groupedRoutes[($uri->getScheme() ?: '-') . ($uri->getHost() ?: '-')][$uri->getPath() ?: '/'][$identifier] = $route;
             }
         }
         return $this->createRouteCollectionFromGroupedRoutes($groupedRoutes);
@@ -234,23 +234,22 @@ class SiteMatcher implements SingletonInterface
             if (!$site instanceof PseudoSite) {
                 continue;
             }
-            foreach ($site->getEntryPoints() as $domainName) {
+            foreach ($site->getEntryPoints() as $uri) {
                 // Site has no sys_domain record, it is not valid for a routing entrypoint, but only available
-                // via "id" GET parameter which is handled before
-                if ($domainName === '/') {
+                // via "id" GET parameter which is handled separately
+                if (!$uri->getHost()) {
                     continue;
                 }
-                $urlParts = parse_url($domainName);
                 $route = new Route(
-                    ($urlParts['path'] ?? '/') . '{tail}',
+                    ($uri->getPath() ?: '/') . '{tail}',
                     ['site' => $site, 'language' => null, 'tail' => ''],
-                    array_filter(['tail' => '.*', 'port' => (string)($urlParts['port'] ?? '')]),
+                    array_filter(['tail' => '.*', 'port' => (string)$uri->getPort()]),
                     ['utf8' => true],
-                    $urlParts['host'] ?? '',
-                    !empty($urlParts['scheme']) ? [$urlParts['scheme']] : null
+                    $uri->getHost(),
+                    $uri->getScheme()
                 );
-                $identifier = 'site_' . $site->getIdentifier() . '_' . $domainName;
-                $groupedRoutes[($urlParts['scheme'] ?? '-') . ($urlParts['host'] ?? '-')][$urlParts['path'] ?? '/'][$identifier] = $route;
+                $identifier = 'site_' . $site->getIdentifier() . '_' . (string)$uri;
+                $groupedRoutes[($uri->getScheme() ?: '-') . ($uri->getHost() ?: '-')][$uri->getPath() ?: '/'][$identifier] = $route;
             }
         }
         return $this->createRouteCollectionFromGroupedRoutes($groupedRoutes);

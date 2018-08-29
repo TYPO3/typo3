@@ -16,6 +16,9 @@ namespace TYPO3\CMS\Core\Site\Entity;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Core\Http\Uri;
+
 /**
  * Entity representing a site with legacy configuration (sys_domain) and all available
  * languages in the system (sys_language)
@@ -48,21 +51,20 @@ class PseudoSite extends NullSite implements SiteInterface
                 continue;
             }
             $this->domainRecords[] = $domain;
-            $this->entryPoints[] = $this->sanitizeBaseUrl($domain['domainName'] ?: '');
+            $this->entryPoints[] = new Uri($this->sanitizeBaseUrl($domain['domainName'] ?: ''));
         }
         if (empty($this->entryPoints)) {
-            $this->entryPoints = ['/'];
+            $this->entryPoints = [new Uri('/')];
         }
         $baseEntryPoint = reset($this->entryPoints);
         foreach ($configuration['languages'] as $languageConfiguration) {
             $languageUid = (int)$languageConfiguration['languageId'];
             // Language configuration does not have a base defined
             // So the main site base is used (usually done for default languages)
-            $base = $this->sanitizeBaseUrl(rtrim($baseEntryPoint, '/') . '/');
             $this->languages[$languageUid] = new SiteLanguage(
                 $languageUid,
                 $languageConfiguration['locale'] ?? '',
-                $base,
+                $baseEntryPoint,
                 $languageConfiguration
             );
         }
@@ -81,15 +83,15 @@ class PseudoSite extends NullSite implements SiteInterface
     /**
      * Returns the first base URL of this site, falls back to "/"
      */
-    public function getBase(): string
+    public function getBase(): UriInterface
     {
-        return $this->entryPoints[0] ?? '/';
+        return $this->entryPoints[0] ?? new Uri('/');
     }
 
     /**
      * Returns the base URLs of this site, if none given, it's always "/"
      *
-     * @return array
+     * @return UriInterface[]
      */
     public function getEntryPoints(): array
     {

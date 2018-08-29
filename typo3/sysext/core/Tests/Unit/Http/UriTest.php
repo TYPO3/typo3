@@ -203,6 +203,33 @@ class UriTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
+    public function standardPortAndSchemeDoesNotRenderPort()
+    {
+        $subject = new Uri('http://www.example.com:80');
+        $this->assertEquals('http://www.example.com', (string)$subject);
+    }
+
+    /**
+     * @test
+     */
+    public function standardPortAndNoSchemeDoesRenderPort()
+    {
+        $subject = new Uri('www.example.com:80');
+        $this->assertEquals('//www.example.com:80', (string)$subject);
+    }
+
+    /**
+     * @test
+     */
+    public function noPortAndNoSchemeDoesNotRenderPort()
+    {
+        $subject = new Uri('www.example.com');
+        $this->assertEquals('/www.example.com', (string)$subject);
+    }
+
+    /**
+     * @test
+     */
     public function withPathReturnsNewInstanceWithProvidedPath()
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');

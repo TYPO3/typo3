@@ -70,7 +70,7 @@ class SiteResolverTest extends UnitTestCase
                         [
                             'site' => $site->getIdentifier(),
                             'language-id' => $language->getLanguageId(),
-                            'language-base' => $language->getBase(),
+                            'language-base' => (string)$language->getBase(),
                             'rootpage' => $site->getRootPageId()
                         ]
                     );

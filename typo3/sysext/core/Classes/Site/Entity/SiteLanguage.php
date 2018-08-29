@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Core\Site\Entity;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\UriInterface;
+
 /**
  * Entity representing a site_language configuration of a site object.
  */
@@ -38,7 +40,7 @@ class SiteLanguage
     /**
      * The Base URL for this language
      *
-     * @var string
+     * @var UriInterface
      */
     protected $base;
 
@@ -115,10 +117,10 @@ class SiteLanguage
      *
      * @param int $languageId
      * @param string $locale
-     * @param string $base
+     * @param UriInterface $base
      * @param array $attributes
      */
-    public function __construct(int $languageId, string $locale, string $base, array $attributes)
+    public function __construct(int $languageId, string $locale, UriInterface $base, array $attributes)
     {
         $this->languageId = $languageId;
         $this->locale = $locale;
@@ -167,7 +169,7 @@ class SiteLanguage
         return [
             'languageId' => $this->getLanguageId(),
             'locale' => $this->getLocale(),
-            'base' => $this->getBase(),
+            'base' => (string)$this->getBase(),
             'title' => $this->getTitle(),
             'navigationTitle' => $this->getNavigationTitle(),
             'twoLetterIsoCode' => $this->getTwoLetterIsoCode(),
@@ -198,9 +200,9 @@ class SiteLanguage
     }
 
     /**
-     * @return string
+     * @return UriInterface
      */
-    public function getBase(): string
+    public function getBase(): UriInterface
     {
         return $this->base;
     }

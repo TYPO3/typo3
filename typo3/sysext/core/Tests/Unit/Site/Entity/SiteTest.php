@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Error\PageErrorHandler\InvalidPageErrorHandlerException;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageContentErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -55,7 +56,7 @@ class SiteTest extends UnitTestCase
             'base' => $input,
             'languages' => []
         ]);
-        $this->assertEquals($expected, $subject->getBase());
+        $this->assertEquals(new Uri($expected), $subject->getBase());
     }
 
     /**
@@ -119,7 +120,7 @@ class SiteTest extends UnitTestCase
                 ]
             ]
         ]);
-        $this->assertEquals($expected, $subject->getLanguageById(0)->getBase());
+        $this->assertEquals(new Uri($expected), $subject->getLanguageById(0)->getBase());
     }
 
     /**

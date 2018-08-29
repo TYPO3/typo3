@@ -100,7 +100,7 @@ class PageUriBuilder implements SingletonInterface
             } else {
                 $pageRecord = BackendUtility::getRecord('pages', $pageId);
             }
-            $prefix = $siteLanguage->getBase();
+            $prefix = (string)$siteLanguage->getBase();
             if (!empty($pageRecord['slug'] ?? '')) {
                 $prefix = rtrim($prefix, '/') . '/' . ltrim($pageRecord['slug'], '/');
             } else {

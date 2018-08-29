@@ -610,7 +610,7 @@ class Uri implements UriInterface
     protected function isNonStandardPort($scheme, $host, $port)
     {
         if (empty($scheme)) {
-            return true;
+            return empty($host) || !empty($port);
         }
 
         if (empty($host) || empty($port)) {

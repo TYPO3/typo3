@@ -21,7 +21,6 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -74,7 +73,7 @@ class SiteResolver implements MiddlewareInterface
         // So a redirect to the first possible language is done.
         if ($site instanceof Site && !($language instanceof SiteLanguage)) {
             $language = $site->getDefaultLanguage();
-            $uri = new Uri($language->getBase());
+            $uri = $language->getBase();
             return new RedirectResponse($uri, 307);
         }
         // language is found, and hidden but also not visible to the BE user, this needs to fail
@@ -94,7 +93,7 @@ class SiteResolver implements MiddlewareInterface
                 return new RedirectResponse($uri, 307);
             }
             // Request was "/fr-FR" but the site is actually called "/fr-FR/", let's do a redirect
-            if ($tail === '' && (string)(new Uri($language->getBase()))->getPath() !== (string)$requestedUri->getPath()) {
+            if ($tail === '' && $language->getBase()->getPath() !== $requestedUri->getPath()) {
                 $uri = $requestedUri->withPath($requestedUri->getPath() . '/');
                 return new RedirectResponse($uri, 307);
             }

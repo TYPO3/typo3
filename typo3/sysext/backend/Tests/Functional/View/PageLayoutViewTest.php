@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\View;
 
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
@@ -42,16 +43,16 @@ class PageLayoutViewTest extends FunctionalTestCase
 
         $this->subject = $this->getAccessibleMock(PageLayoutView::class, ['dummy']);
         $this->subject->_set('siteLanguages', [
-            0 => new SiteLanguage(0, '', '/', [
+            0 => new SiteLanguage(0, '', new Uri('/'), [
                 'title' => 'default',
             ]),
-            1 => new SiteLanguage(1, '', '/', [
+            1 => new SiteLanguage(1, '', new Uri('/'), [
                 'title' => 'german',
             ]),
-            2 => new SiteLanguage(2, '', '/', [
+            2 => new SiteLanguage(2, '', new Uri('/'), [
                 'title' => 'french',
             ]),
-            3 => new SiteLanguage(3, '', '/', [
+            3 => new SiteLanguage(3, '', new Uri('/'), [
                 'title' => 'polish',
             ]),
         ]);
