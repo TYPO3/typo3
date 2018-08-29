@@ -567,6 +567,7 @@ class DataMapFactoryTest extends UnitTestCase
             [['type' => 'user'], TableColumnType::USER, null],
             [['type' => 'flex'], TableColumnType::FLEX, null],
             [['type' => 'inline'], TableColumnType::INLINE, null],
+            [['type' => 'slug'], TableColumnType::SLUG, null],
         ];
     }
 

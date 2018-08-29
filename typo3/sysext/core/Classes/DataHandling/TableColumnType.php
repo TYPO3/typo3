@@ -38,6 +38,7 @@ final class TableColumnType extends Enumeration
     const FLEX = 'FLEX';
     const INLINE = 'INLINE';
     const IMAGEMANIPULATION = 'IMAGEMANIPULATION';
+    const SLUG = 'SLUG';
 
     /**
      * @param mixed $type
