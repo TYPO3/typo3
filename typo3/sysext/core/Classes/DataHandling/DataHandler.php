@@ -4813,7 +4813,7 @@ class DataHandler implements LoggerAwareInterface
 
         $this->registerNestedElementCall($table, $uid, 'localize');
         if (!$GLOBALS['TCA'][$table]['ctrl']['languageField'] || !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
-            $this->newlog('Localization failed; "languageField" and "transOrigPointerField" must be defined for the table!', 1);
+            $this->newlog('Localization failed; "languageField" and "transOrigPointerField" must be defined for the table ' . $table, 1);
             return false;
         }
         $langRec = BackendUtility::getRecord('sys_language', (int)$language, 'uid,title');
@@ -4823,14 +4823,14 @@ class DataHandler implements LoggerAwareInterface
         }
 
         if (!$this->doesRecordExist($table, $uid, 'show')) {
-            $this->newlog('Attempt to localize record without permission', 1);
+            $this->newlog('Attempt to localize record ' . $table . ':' . $uid . ' without permission.', 1);
             return false;
         }
 
         // Getting workspace overlay if possible - this will localize versions in workspace if any
         $row = BackendUtility::getRecordWSOL($table, $uid);
         if (!is_array($row)) {
-            $this->newlog('Attempt to localize record that did not exist!', 1);
+            $this->newlog('Attempt to localize record ' . $table . ':' . $uid . ' that did not exist!', 1);
             return false;
         }
 
@@ -4843,7 +4843,7 @@ class DataHandler implements LoggerAwareInterface
                 $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]
             );
             if ((int)$localizationParentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] !== 0) {
-                $this->newlog('Localization failed; Source record contained a reference to an original record that is not a default record (which is strange)!', 1);
+                $this->newlog('Localization failed; Source record ' . $table . ':' . $localizationParentRecord['uid'] . ' contained a reference to an original record that is not a default record (which is strange)!', 1);
                 return false;
             }
         }
@@ -4851,14 +4851,14 @@ class DataHandler implements LoggerAwareInterface
         // Default language records must never have a localization parent as they are the origin of any translation.
         if ((int)$row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] !== 0
             && (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] === 0) {
-            $this->newlog('Localization failed; Source record contained a reference to an original default record but is a default record itself (which is strange)!', 1);
+            $this->newlog('Localization failed; Source record ' . $table . ':' . $row['uid'] . ' contained a reference to an original default record but is a default record itself (which is strange)!', 1);
             return false;
         }
 
         $pass = !BackendUtility::getRecordLocalization($table, $uid, $language, 'AND pid=' . (int)$row['pid']);
 
         if (!$pass) {
-            $this->newlog('Localization failed; There already was a localization for this language of the record!', 1);
+            $this->newlog('Localization failed; There already was a localization for this language of the record ' . $table . ':' . $uid . '!', 1);
             return false;
         }
 
