@@ -31,6 +31,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Controller class for frontend editing.
+ *
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Functionality has been moved to EXT:feedit, FrontendBackendUserAuthentication and ContentObjectRenderer.
  */
 class FrontendEditingController
 {
@@ -41,6 +43,11 @@ class FrontendEditingController
      * @var array
      */
     public $TSFE_EDIT;
+
+    public function __construct()
+    {
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v10.0. Functionality has been moved to EXT:feedit, FrontendBackendUserAuthentication and ContentObjectRenderer.', E_USER_DEPRECATED);
+    }
 
     /**
      * Initializes configuration options.

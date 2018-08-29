@@ -359,6 +359,11 @@ return [
             'Important-82229-FluidImplementationOfCmsVariableProviderRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\FrontendEditing\FrontendEditingController' => [
+        'restFiles' => [
+            'Deprecation-86110-FrontendEditingController.rst',
+        ],
+    ],
     'TYPO3\CMS\Core\ExtDirect\ExtDirectDebug' => [
         'restFiles' => [
             'Breaking-37180-RemovedExtDirectDebugAndGLOBALSerror.rst',

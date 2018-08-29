@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -33,18 +32,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FrontendBackendUserAuthentication extends BackendUserAuthentication
 {
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * Properties which have been moved to protected status from public
-     *
-     * @var array
-     */
-    protected $deprecatedPublicProperties = [
-        'extAdmEnabled' => 'Using $extAdmEnabled of class FrontendBackendUserAuthentication from the outside is discouraged, as this variable is only used for internal storage.',
-        'adminPanel' => 'Using $adminPanel of class FrontendBackendUserAuthentication from the outside is discouraged, as this variable is only used for internal storage.',
-        'extAdminConfig' => 'Using $extAdminConfig of class FrontendBackendUserAuthentication from the outside is discouraged, as this variable is only used for internal storage.',
-    ];
 
     /**
      * Form field with login name.
@@ -98,6 +85,7 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
 
     /**
      * @var \TYPO3\CMS\Core\FrontendEditing\FrontendEditingController
+     * @deprecated since TYPO3 v9, property will be removed in TYPO3 v10 - see extension "feedit" how the functionality could be used.
      */
     public $frontendEdit;
 
