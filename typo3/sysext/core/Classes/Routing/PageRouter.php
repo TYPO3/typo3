@@ -62,9 +62,9 @@ class PageRouter
      * @param string $routePathTail
      * @param SiteInterface $site
      * @param SiteLanguage $language
-     * @return RouteResult
+     * @return RouteResult|null
      */
-    public function matchRoute(ServerRequestInterface $request, string $routePathTail, SiteInterface $site, SiteLanguage $language): RouteResult
+    public function matchRoute(ServerRequestInterface $request, string $routePathTail, SiteInterface $site, SiteLanguage $language): ?RouteResult
     {
         $slugCandidates = $this->getCandidateSlugsFromRoutePath($routePathTail);
         if (empty($slugCandidates)) {
