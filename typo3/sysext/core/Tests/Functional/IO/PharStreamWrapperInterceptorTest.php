@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\IO;
  */
 
 use TYPO3\PharStreamWrapper\Exception;
-use TYPO3\PharStreamWrapper\Manager;
-use TYPO3\PharStreamWrapper\PharStreamWrapper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class PharStreamWrapperInterceptorTest extends FunctionalTestCase
@@ -39,25 +37,12 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
     protected function setUp()
     {
         parent::setUp();
-
         if (!in_array('phar', stream_get_wrappers())) {
             $this->markTestSkipped('Phar stream wrapper is not registered');
         }
-
-        stream_wrapper_unregister('phar');
-        stream_wrapper_register('phar', PharStreamWrapper::class);
-
-        Manager::initialize(
-            (new \TYPO3\PharStreamWrapper\Behavior())
-                ->withAssertion(new \TYPO3\CMS\Core\IO\PharStreamWrapperInterceptor())
-        );
-    }
-
-    protected function tearDown()
-    {
-        stream_wrapper_restore('phar');
-        Manager::destroy();
-        parent::tearDown();
+        // PharStreamWrapper is not initialized here since it relies on being
+        // properly defined in \TYPO3\CMS\Core\Core\Bootstrap - thus, it tests
+        // are expected to fail in case PharStreamWrapper is not initialized
     }
 
     public function directoryActionAllowsInvocationDataProvider()

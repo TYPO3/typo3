@@ -22,12 +22,15 @@ use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\IO\PharStreamWrapperInterceptor;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\PharStreamWrapper\Behavior;
+use TYPO3\PharStreamWrapper\Manager;
 use TYPO3\PharStreamWrapper\PharStreamWrapper;
 
 /**
@@ -697,6 +700,13 @@ class Bootstrap
     protected static function initializeIO()
     {
         if (in_array('phar', stream_get_wrappers())) {
+            // destroy and re-initialize PharStreamWrapper for TYPO3 core
+            Manager::destroy();
+            Manager::initialize(
+                (new Behavior())
+                    ->withAssertion(new PharStreamWrapperInterceptor())
+            );
+
             stream_wrapper_unregister('phar');
             stream_wrapper_register('phar', PharStreamWrapper::class);
         }
