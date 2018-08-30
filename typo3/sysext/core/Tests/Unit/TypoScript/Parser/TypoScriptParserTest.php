@@ -468,6 +468,17 @@ class TypoScriptParserTest extends UnitTestCase
     public function importFilesDataProvider(): array
     {
         return [
+            'Found include file as single file is imported' => [
+                // Input TypoScript
+                '@import "EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt"'
+                ,
+                // Expected
+                '
+### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt\' begin ###
+test.Core.TypoScript = 1
+### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt\' end ###
+'
+            ],
             'Found include file is imported' => [
                 // Input TypoScript
                 'bennilove = before
@@ -477,6 +488,7 @@ class TypoScriptParserTest extends UnitTestCase
                 // Expected
                 '
 bennilove = before
+
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt\' begin ###
 test.Core.TypoScript = 1
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt\' end ###
@@ -506,6 +518,7 @@ bennilove = before
                 // Expected
                 '
 bennilove = before
+
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt\' begin ###
 test.Core.TypoScript = 1
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt\' end ###
@@ -520,6 +533,7 @@ test.Core.TypoScript = 1
                 // Expected
                 '
 bennilove = before
+
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' begin ###
 test.TYPO3Forever.TypoScript = 1
 
@@ -535,6 +549,7 @@ test.TYPO3Forever.TypoScript = 1
                 // Expected
                 '
 bennilove = before
+
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/badfilename.php\' begin ###
 
 ###
@@ -542,9 +557,13 @@ bennilove = before
 ###
 
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/badfilename.php\' end ###
+
+
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt\' begin ###
 test.Core.TypoScript = 1
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt\' end ###
+
+
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/recursive_includes_setup.typoscript\' begin ###
 
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' begin ###
@@ -553,6 +572,8 @@ test.TYPO3Forever.TypoScript = 1
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' end ###
 
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/recursive_includes_setup.typoscript\' end ###
+
+
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' begin ###
 test.TYPO3Forever.TypoScript = 1
 
@@ -568,6 +589,7 @@ test.TYPO3Forever.TypoScript = 1
                 // Expected
                 '
 bennilove = before
+
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/recursive_includes_setup.typoscript\' begin ###
 
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' begin ###
@@ -576,6 +598,8 @@ test.TYPO3Forever.TypoScript = 1
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' end ###
 
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/recursive_includes_setup.typoscript\' end ###
+
+
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' begin ###
 test.TYPO3Forever.TypoScript = 1
 
@@ -591,6 +615,7 @@ test.TYPO3Forever.TypoScript = 1
                 // Expected
                 '
 bennilove = before
+
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/recursive_includes_setup.typoscript\' begin ###
 
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' begin ###
@@ -599,6 +624,8 @@ test.TYPO3Forever.TypoScript = 1
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' end ###
 
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/recursive_includes_setup.typoscript\' end ###
+
+
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' begin ###
 test.TYPO3Forever.TypoScript = 1
 
@@ -629,6 +656,7 @@ bennilove = before
                 // Expected
                 '
 bennilove = before
+
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' begin ###
 test.TYPO3Forever.TypoScript = 1
 

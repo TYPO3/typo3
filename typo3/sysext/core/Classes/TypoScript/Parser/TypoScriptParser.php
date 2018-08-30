@@ -1017,7 +1017,7 @@ class TypoScriptParser
         foreach ($finder as $fileObject) {
             // Clean filename output for comments
             $readableFileName = rtrim($readableFilePrefix, '/') . '/' . $fileObject->getFilename();
-            $content .= '### @import \'' . $readableFileName . '\' begin ###' . LF;
+            $content .= LF . '### @import \'' . $readableFileName . '\' begin ###' . LF;
             // Check for allowed files
             if (!GeneralUtility::verifyFilenameAgainstDenyPattern($fileObject->getFilename())) {
                 $content .= self::typoscriptIncludeError('File "' . $readableFileName . '" was not included since it is not allowed due to fileDenyPattern.');
@@ -1033,7 +1033,7 @@ class TypoScriptParser
                 }
                 $content .= $included_text . LF;
             }
-            $content .= '### @import \'' . $readableFileName . '\' end ###' . LF;
+            $content .= '### @import \'' . $readableFileName . '\' end ###' . LF . LF;
 
             // load default TypoScript for content rendering templates like
             // fluid_styled_content if those have been included through e.g.
