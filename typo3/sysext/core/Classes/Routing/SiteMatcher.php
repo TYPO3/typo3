@@ -88,25 +88,25 @@ class SiteMatcher implements SingletonInterface
         $language = null;
 
         $pageId = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0;
-        $languageId = $request->getQueryParams()['L'] ?? $request->getParsedBody()['L'] ?? null;
 
         if (!empty($pageId) && !MathUtility::canBeInterpretedAsInteger($pageId)) {
             $pageId = (int)GeneralUtility::makeInstance(PageRepository::class)->getPageIdFromAlias($pageId);
         }
         // First, check if we have a _GET/_POST parameter for "id", then a site information can be resolved based.
-        if ($pageId > 0 && $languageId !== null) {
+        if ($pageId > 0) {
             // Loop over the whole rootline without permissions to get the actual site information
             try {
                 $site = $this->finder->getSiteByPageId((int)$pageId);
                 // If a "L" parameter is given, we take that one into account.
+                $languageId = $request->getQueryParams()['L'] ?? $request->getParsedBody()['L'] ?? null;
                 if ($languageId !== null) {
                     $language = $site->getLanguageById((int)$languageId);
-                } else {
-                    $allLanguages = $site->getLanguages();
-                    $language = reset($allLanguages);
                 }
             } catch (SiteNotFoundException $e) {
-                // No site found by ID
+                // No site found by the given page
+            } catch (\InvalidArgumentException $e) {
+                // The language fetched by getLanguageById() was not available, now the PSR-15 middleware
+                // redirects to the default page.
             }
         }
 
@@ -130,8 +130,13 @@ class SiteMatcher implements SingletonInterface
                 $result = $matcher->match($request->getUri()->getPath());
                 return new RouteResult($request->getUri(), $result['site'], $result['language'], $result['tail']);
             } catch (NoConfigurationException | ResourceNotFoundException $e) {
-                // No site found
+                // No site+language combination found so far
             }
+            // At this point we discard a possible found site via ?id=123
+            // Because ?id=123 _can_ only work if the actual domain/site base works
+            // so www.domain-without-site-configuration/index.php?id=123 (where 123 is a page referring
+            // to a page within a site configuration will never be resolved here) properly
+            $site = null;
         }
 
         // Check against any sys_domain records
@@ -157,8 +162,10 @@ class SiteMatcher implements SingletonInterface
                 // No domain record found
             }
         }
+        // No domain record found, use the first "pseudo-site" found
         if ($site == null) {
-            $site = $this->pseudoSiteFinder->getSiteByPageId(0);
+            $allPseudoSites = $this->pseudoSiteFinder->findAll();
+            $site = reset($allPseudoSites);
         }
         return new RouteResult($request->getUri(), $site, $language);
     }

@@ -101,8 +101,9 @@ class SiteRequestTest extends AbstractTestCase
     public function shortcutsAreRedirectedDataProvider(): array
     {
         $domainPaths = [
-            '/',
-            'https://localhost/',
+            // @todo Implicit strict mode handling when calling non-existent site
+            // '/',
+            // 'https://localhost/',
             'https://website.local/',
         ];
 
@@ -129,11 +130,14 @@ class SiteRequestTest extends AbstractTestCase
     {
         $this->writeSiteConfiguration(
             'website-local',
-            $this->buildSiteConfiguration(1000, 'https://website.local/')
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en-en/'),
+            ]
         );
 
         $expectedStatusCode = 307;
-        $expectedHeaders = ['location' => ['/?id=acme-first']];
+        $expectedHeaders = ['location' => ['https://website.local/en-en/']];
 
         $response = $this->executeFrontendRequest(
             new InternalRequest($uri),
@@ -153,7 +157,10 @@ class SiteRequestTest extends AbstractTestCase
     {
         $this->writeSiteConfiguration(
             'website-local',
-            $this->buildSiteConfiguration(1000, 'https://website.local/')
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en-en/'),
+            ]
         );
 
         $expectedStatusCode = 200;
@@ -273,7 +280,8 @@ class SiteRequestTest extends AbstractTestCase
             'https://website.us/',
             'https://website.fr/',
             'https://website.ca/',
-            'https://website.other/',
+            // @todo Implicit strict mode handling when calling non-existent site
+            // 'https://website.other/',
         ];
 
         $queries = [
@@ -754,8 +762,9 @@ class SiteRequestTest extends AbstractTestCase
     public function pageIsRenderedWithValidCacheHashDataProvider(): array
     {
         $domainPaths = [
-            '/',
-            'https://localhost/',
+            // @todo Implicit strict mode handling when calling non-existent site
+            // '/',
+            // 'https://localhost/',
             'https://website.local/',
         ];
 

@@ -50,6 +50,7 @@ use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -3155,7 +3156,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         return GeneralUtility::makeInstance(ContentObjectRenderer::class, $this)->typoLink_URL([
             'parameter' => $parameter,
             'addQueryString' => true,
-            'addQueryString.' => ['exclude' => 'id']
+            'addQueryString.' => ['exclude' => 'id'],
+            // ensure absolute URL is generated when having a valid Site
+            'forceAbsoluteUrl' => $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface
+                && $GLOBALS['TYPO3_REQUEST']->getAttribute('site') instanceof Site
         ]);
     }
 

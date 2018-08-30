@@ -140,39 +140,40 @@ class LinkGeneratorTest extends AbstractTestCase
     {
         $instructions = [
             // acme.com -> acme.com (same site)
-            [1100, 1000, '/?id=acme-root'],
-            [1100, 1100, '/?id=acme-first'],
-            [1100, 1200, '/?id=1200'],
-            [1100, 1210, '/?id=1210'],
-            [1100, 404, '/?id=404'],
+            ['https://acme.us/', 1100, 1000, '/?id=acme-root'],
+            ['https://acme.us/', 1100, 1100, '/?id=acme-first'],
+            ['https://acme.us/', 1100, 1200, '/?id=1200'],
+            ['https://acme.us/', 1100, 1210, '/?id=1210'],
+            ['https://acme.us/', 1100, 404, '/?id=404'],
             // acme.com -> products.acme.com (nested sub-site)
-            [1100, 1300, '/?id=1300'],
-            [1100, 1310, '/?id=1310'],
+            ['https://acme.us/', 1100, 1300, '/?id=1300'],
+            ['https://acme.us/', 1100, 1310, '/?id=1310'],
             // acme.com -> blog.acme.com (different site)
             // @todo https://blog.acme.com/ not prefixed
-            [1100, 2000, '/?id=blog-root'],
-            [1100, 2100, '/?id=2100'],
-            [1100, 2110, '/john/?id=2110'],
-            [1100, 2111, '/john/?id=2111'],
+            ['https://acme.us/', 1100, 2000, '/?id=blog-root'],
+            ['https://acme.us/', 1100, 2100, '/?id=2100'],
+            ['https://acme.us/', 1100, 2110, '/john/?id=2110'],
+            ['https://acme.us/', 1100, 2111, '/john/?id=2111'],
             // blog.acme.com -> acme.com (different site)
             // @todo https://acme.com/ not prefixed
-            [2100, 1000, '/?id=acme-root'],
-            [2100, 1100, '/?id=acme-first'],
-            [2100, 1200, '/?id=1200'],
-            [2100, 1210, '/?id=1210'],
-            [2100, 404, '/?id=404'],
+            ['https://blog.acme.com/', 2100, 1000, '/?id=acme-root'],
+            ['https://blog.acme.com/', 2100, 1100, '/?id=acme-first'],
+            ['https://blog.acme.com/', 2100, 1200, '/?id=1200'],
+            ['https://blog.acme.com/', 2100, 1210, '/?id=1210'],
+            ['https://blog.acme.com/', 2100, 404, '/?id=404'],
             // blog.acme.com -> products.acme.com (different sub-site)
-            [2100, 1300, '/?id=1300'],
-            [2100, 1310, '/?id=1310'],
+            ['https://blog.acme.com/', 2100, 1300, '/?id=1300'],
+            ['https://blog.acme.com/', 2100, 1310, '/?id=1310'],
         ];
 
         return $this->keysFromTemplate(
             $instructions,
-            '%1$d->%2$d'
+            '%2$d->%3$d'
         );
     }
 
     /**
+     * @param string $hostPrefix
      * @param int $sourcePageId
      * @param int $targetPageId
      * @param string $expectation
@@ -180,10 +181,10 @@ class LinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkIsGeneratedDataProvider
      */
-    public function linkIsGenerated(int $sourcePageId, int $targetPageId, string $expectation)
+    public function linkIsGenerated(string $hostPrefix, int $sourcePageId, int $targetPageId, string $expectation)
     {
         $response = $this->executeFrontendRequest(
-            (new InternalRequest())
+            (new InternalRequest($hostPrefix))
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
@@ -203,41 +204,41 @@ class LinkGeneratorTest extends AbstractTestCase
     {
         $instructions = [
             // acme.com -> acme.com (same site)
-            [[7100, 1700], 7110, 1000, '/?id=acme-root'],
-            [[7100, 1700], 7110, 1100, '/?id=acme-first'],
-            [[7100, 1700], 7110, 1200, '/?id=1200'],
-            [[7100, 1700], 7110, 1210, '/?id=1210'],
-            [[7100, 1700], 7110, 404, '/?id=404'],
+            ['https://acme.us/', [7100, 1700], 7110, 1000, '/?id=acme-root'],
+            ['https://acme.us/', [7100, 1700], 7110, 1100, '/?id=acme-first'],
+            ['https://acme.us/', [7100, 1700], 7110, 1200, '/?id=1200'],
+            ['https://acme.us/', [7100, 1700], 7110, 1210, '/?id=1210'],
+            ['https://acme.us/', [7100, 1700], 7110, 404, '/?id=404'],
             // acme.com -> products.acme.com (nested sub-site)
-            [[7100, 1700], 7110, 1300, '/?id=1300'],
-            [[7100, 1700], 7110, 1310, '/?id=1310'],
+            ['https://acme.us/', [7100, 1700], 7110, 1300, '/?id=1300'],
+            ['https://acme.us/', [7100, 1700], 7110, 1310, '/?id=1310'],
             // acme.com -> blog.acme.com (different site)
             // @todo https://blog.acme.com/ not prefixed
-            [[7100, 1700], 7110, 2000, '/?id=blog-root'],
-            [[7100, 1700], 7110, 2100, '/?id=2100'],
-            [[7100, 1700], 7110, 2110, '/john/?id=2110'],
-            [[7100, 1700], 7110, 2111, '/john/?id=2111'],
+            ['https://acme.us/', [7100, 1700], 7110, 2000, '/?id=blog-root'],
+            ['https://acme.us/', [7100, 1700], 7110, 2100, '/?id=2100'],
+            ['https://acme.us/', [7100, 1700], 7110, 2110, '/john/?id=2110'],
+            ['https://acme.us/', [7100, 1700], 7110, 2111, '/john/?id=2111'],
             // blog.acme.com -> acme.com (different site)
             // @todo https://acme.com/ not prefixed
-            [[7100, 2700], 7110, 1000, '/?id=acme-root'],
-            [[7100, 2700], 7110, 1100, '/?id=acme-first'],
-            [[7100, 2700], 7110, 1200, '/?id=1200'],
-            [[7100, 2700], 7110, 1210, '/?id=1210'],
-            [[7100, 2700], 7110, 404, '/?id=404'],
+            ['https://blog.acme.com/', [7100, 2700], 7110, 1000, '/?id=acme-root'],
+            ['https://blog.acme.com/', [7100, 2700], 7110, 1100, '/?id=acme-first'],
+            ['https://blog.acme.com/', [7100, 2700], 7110, 1200, '/?id=1200'],
+            ['https://blog.acme.com/', [7100, 2700], 7110, 1210, '/?id=1210'],
+            ['https://blog.acme.com/', [7100, 2700], 7110, 404, '/?id=404'],
             // blog.acme.com -> products.acme.com (different sub-site)
-            [[7100, 2700], 7110, 1300, '/?id=1300'],
-            [[7100, 2700], 7110, 1310, '/?id=1310'],
+            ['https://blog.acme.com/', [7100, 2700], 7110, 1300, '/?id=1300'],
+            ['https://blog.acme.com/', [7100, 2700], 7110, 1310, '/?id=1310'],
         ];
 
         return $this->keysFromTemplate(
             $instructions,
-            '%2$d->%3$d (mount:%1$s)',
+            '%3$d->%4$d (mount:%2$s)',
             function (array $items) {
                 array_splice(
                     $items,
-                    0,
                     1,
-                    [implode('->', $items[0])]
+                    1,
+                    [implode('->', $items[1])]
                 );
                 return $items;
             }
@@ -245,6 +246,7 @@ class LinkGeneratorTest extends AbstractTestCase
     }
 
     /**
+     * @param string $hostPrefix
      * @param array $pageMount
      * @param int $sourcePageId
      * @param int $targetPageId
@@ -253,10 +255,10 @@ class LinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkIsGeneratedFromMountPointDataProvider
      */
-    public function linkIsGeneratedFromMountPoint(array $pageMount, int $sourcePageId, int $targetPageId, string $expectation)
+    public function linkIsGeneratedFromMountPoint(string $hostPrefix, array $pageMount, int $sourcePageId, int $targetPageId, string $expectation)
     {
         $response = $this->executeFrontendRequest(
-            (new InternalRequest())
+            (new InternalRequest($hostPrefix))
                 ->withMountPoint(...$pageMount)
                 ->withPageId($sourcePageId)
                 ->withInstructions([
@@ -278,47 +280,48 @@ class LinkGeneratorTest extends AbstractTestCase
         // @todo L-parameter is not applied
         $instructions = [
             // acme.com -> acme.com (same site)
-            [1100, 1100, 0, '/?id=acme-first'],
-            [1100, 1100, 1, '/?id=acme-first'],
-            [1100, 1100, 2, '/?id=acme-first'],
+            ['https://acme.us/', 1100, 1100, 0, '/?id=acme-first'],
+            ['https://acme.us/', 1100, 1100, 1, '/?id=acme-first'],
+            ['https://acme.us/', 1100, 1100, 2, '/?id=acme-first'],
             // @todo Configuration bug on duplicating alias names and uniqueness
-            [1100, 1101, 0, '/?id=acme-first0'],
-            [1100, 1102, 0, '/?id=acme-first1'],
+            ['https://acme.us/', 1100, 1101, 0, '/?id=acme-first0'],
+            ['https://acme.us/', 1100, 1102, 0, '/?id=acme-first1'],
             // acme.com -> products.acme.com (nested sub-site)
-            [1100, 1300, 0, '/?id=1300'],
-            [1100, 1310, 0, '/?id=1310'],
+            ['https://acme.us/', 1100, 1300, 0, '/?id=1300'],
+            ['https://acme.us/', 1100, 1310, 0, '/?id=1310'],
             // acme.com -> archive (outside site)
-            [1100, 3100, 0, 'index.php?id=3100&L=0'],
-            [1100, 3100, 1, 'index.php?id=3100&L=1'],
-            [1100, 3100, 2, 'index.php?id=3100&L=2'],
-            [1100, 3101, 0, 'index.php?id=3101&L=0'],
-            [1100, 3102, 0, 'index.php?id=3102&L=0'],
+            ['https://acme.us/', 1100, 3100, 0, '/index.php?id=3100&L=0'],
+            ['https://acme.us/', 1100, 3100, 1, '/index.php?id=3100&L=1'],
+            ['https://acme.us/', 1100, 3100, 2, '/index.php?id=3100&L=2'],
+            ['https://acme.us/', 1100, 3101, 0, '/index.php?id=3101&L=0'],
+            ['https://acme.us/', 1100, 3102, 0, '/index.php?id=3102&L=0'],
             // blog.acme.com -> acme.com (different site)
             // @todo https://acme.com/ not prefixed
-            [2100, 1100, 0, '/?id=acme-first'],
-            [2100, 1100, 1, '/?id=acme-first'],
-            [2100, 1100, 2, '/?id=acme-first'],
+            ['https://blog.acme.com/', 2100, 1100, 0, '/?id=acme-first'],
+            ['https://blog.acme.com/', 2100, 1100, 1, '/?id=acme-first'],
+            ['https://blog.acme.com/', 2100, 1100, 2, '/?id=acme-first'],
             // @todo Configuration bug on duplicating alias names and uniqueness
-            [2100, 1101, 0, '/?id=acme-first0'],
-            [2100, 1102, 0, '/?id=acme-first1'],
+            ['https://blog.acme.com/', 2100, 1101, 0, '/?id=acme-first0'],
+            ['https://blog.acme.com/', 2100, 1102, 0, '/?id=acme-first1'],
             // blog.acme.com -> archive (outside site)
-            [2100, 3100, 0, 'index.php?id=3100&L=0'],
-            [2100, 3100, 1, 'index.php?id=3100&L=1'],
-            [2100, 3100, 2, 'index.php?id=3100&L=2'],
-            [2100, 3101, 0, 'index.php?id=3101&L=0'],
-            [2100, 3102, 0, 'index.php?id=3102&L=0'],
+            ['https://blog.acme.com/', 2100, 3100, 0, '/index.php?id=3100&L=0'],
+            ['https://blog.acme.com/', 2100, 3100, 1, '/index.php?id=3100&L=1'],
+            ['https://blog.acme.com/', 2100, 3100, 2, '/index.php?id=3100&L=2'],
+            ['https://blog.acme.com/', 2100, 3101, 0, '/index.php?id=3101&L=0'],
+            ['https://blog.acme.com/', 2100, 3102, 0, '/index.php?id=3102&L=0'],
             // blog.acme.com -> products.acme.com (different sub-site)
-            [2100, 1300, 0, '/?id=1300'],
-            [2100, 1310, 0, '/?id=1310'],
+            ['https://blog.acme.com/', 2100, 1300, 0, '/?id=1300'],
+            ['https://blog.acme.com/', 2100, 1310, 0, '/?id=1310'],
         ];
 
         return $this->keysFromTemplate(
             $instructions,
-            '%1$d->%2$d (lang:%3$d)'
+            '%2$d->%3$d (lang:%4$d)'
         );
     }
 
     /**
+     * @param string $hostPrefix
      * @param int $sourcePageId
      * @param int $targetPageId
      * @param int $targetLanguageId
@@ -327,10 +330,10 @@ class LinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkIsGeneratedForLanguageDataProvider
      */
-    public function linkIsGeneratedForLanguage(int $sourcePageId, int $targetPageId, int $targetLanguageId, string $expectation)
+    public function linkIsGeneratedForLanguage(string $hostPrefix, int $sourcePageId, int $targetPageId, int $targetLanguageId, string $expectation)
     {
         $response = $this->executeFrontendRequest(
-            (new InternalRequest())
+            (new InternalRequest($hostPrefix))
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
@@ -351,39 +354,40 @@ class LinkGeneratorTest extends AbstractTestCase
     {
         $instructions = [
             // acme.com -> acme.com (same site)
-            [1100, 1000, '/?id=acme-root&testing%5Bvalue%5D=1&cHash=7d1f13fa91159dac7feb3c824936b39d'],
-            [1100, 1100, '/?id=acme-first&testing%5Bvalue%5D=1&cHash=f42b850e435f0cedd366f5db749fc1af'],
-            [1100, 1200, '/?id=1200&testing%5Bvalue%5D=1&cHash=784e11c50ea1a13fd7d969df4ec53ea3'],
-            [1100, 1210, '/?id=1210&testing%5Bvalue%5D=1&cHash=ccb7067022b9835ebfd8f720722bc708'],
-            [1100, 404, '/?id=404&testing%5Bvalue%5D=1&cHash=864e96f586a78a53452f3bf0f4d24591'],
+            ['https://acme.us/', 1100, 1000, '/?id=acme-root&testing%5Bvalue%5D=1&cHash=7d1f13fa91159dac7feb3c824936b39d'],
+            ['https://acme.us/', 1100, 1100, '/?id=acme-first&testing%5Bvalue%5D=1&cHash=f42b850e435f0cedd366f5db749fc1af'],
+            ['https://acme.us/', 1100, 1200, '/?id=1200&testing%5Bvalue%5D=1&cHash=784e11c50ea1a13fd7d969df4ec53ea3'],
+            ['https://acme.us/', 1100, 1210, '/?id=1210&testing%5Bvalue%5D=1&cHash=ccb7067022b9835ebfd8f720722bc708'],
+            ['https://acme.us/', 1100, 404, '/?id=404&testing%5Bvalue%5D=1&cHash=864e96f586a78a53452f3bf0f4d24591'],
             // acme.com -> products.acme.com (nested sub-site)
-            [1100, 1300, '/?id=1300&testing%5Bvalue%5D=1&cHash=dbd6597d72ed5098cce3d03eac1eeefe'],
-            [1100, 1310, '/?id=1310&testing%5Bvalue%5D=1&cHash=e64bfc7ab7dd6b70d161e4d556be9726'],
+            ['https://acme.us/', 1100, 1300, '/?id=1300&testing%5Bvalue%5D=1&cHash=dbd6597d72ed5098cce3d03eac1eeefe'],
+            ['https://acme.us/', 1100, 1310, '/?id=1310&testing%5Bvalue%5D=1&cHash=e64bfc7ab7dd6b70d161e4d556be9726'],
             // acme.com -> blog.acme.com (different site)
             // @todo https://blog.acme.com/ not prefixed
-            [1100, 2000, '/?id=blog-root&testing%5Bvalue%5D=1&cHash=a14da633e46dba71640cb85226cd12c5'],
-            [1100, 2100, '/?id=2100&testing%5Bvalue%5D=1&cHash=d23d74cb50383f8788a9930ec8ba679f'],
-            [1100, 2110, '/john/?id=2110&testing%5Bvalue%5D=1&cHash=bf25eea89f44a9a79dabdca98f38a432'],
-            [1100, 2111, '/john/?id=2111&testing%5Bvalue%5D=1&cHash=42dbaeb9172b6b1ca23b49941e194db2'],
+            ['https://acme.us/', 1100, 2000, '/?id=blog-root&testing%5Bvalue%5D=1&cHash=a14da633e46dba71640cb85226cd12c5'],
+            ['https://acme.us/', 1100, 2100, '/?id=2100&testing%5Bvalue%5D=1&cHash=d23d74cb50383f8788a9930ec8ba679f'],
+            ['https://acme.us/', 1100, 2110, '/john/?id=2110&testing%5Bvalue%5D=1&cHash=bf25eea89f44a9a79dabdca98f38a432'],
+            ['https://acme.us/', 1100, 2111, '/john/?id=2111&testing%5Bvalue%5D=1&cHash=42dbaeb9172b6b1ca23b49941e194db2'],
             // blog.acme.com -> acme.com (different site)
             // @todo https://acme.com/ not prefixed
-            [2100, 1000, '/?id=acme-root&testing%5Bvalue%5D=1&cHash=7d1f13fa91159dac7feb3c824936b39d'],
-            [2100, 1100, '/?id=acme-first&testing%5Bvalue%5D=1&cHash=f42b850e435f0cedd366f5db749fc1af'],
-            [2100, 1200, '/?id=1200&testing%5Bvalue%5D=1&cHash=784e11c50ea1a13fd7d969df4ec53ea3'],
-            [2100, 1210, '/?id=1210&testing%5Bvalue%5D=1&cHash=ccb7067022b9835ebfd8f720722bc708'],
-            [2100, 404, '/?id=404&testing%5Bvalue%5D=1&cHash=864e96f586a78a53452f3bf0f4d24591'],
+            ['https://blog.acme.com/', 2100, 1000, '/?id=acme-root&testing%5Bvalue%5D=1&cHash=7d1f13fa91159dac7feb3c824936b39d'],
+            ['https://blog.acme.com/', 2100, 1100, '/?id=acme-first&testing%5Bvalue%5D=1&cHash=f42b850e435f0cedd366f5db749fc1af'],
+            ['https://blog.acme.com/', 2100, 1200, '/?id=1200&testing%5Bvalue%5D=1&cHash=784e11c50ea1a13fd7d969df4ec53ea3'],
+            ['https://blog.acme.com/', 2100, 1210, '/?id=1210&testing%5Bvalue%5D=1&cHash=ccb7067022b9835ebfd8f720722bc708'],
+            ['https://blog.acme.com/', 2100, 404, '/?id=404&testing%5Bvalue%5D=1&cHash=864e96f586a78a53452f3bf0f4d24591'],
             // blog.acme.com -> products.acme.com (different sub-site)
-            [2100, 1300, '/?id=1300&testing%5Bvalue%5D=1&cHash=dbd6597d72ed5098cce3d03eac1eeefe'],
-            [2100, 1310, '/?id=1310&testing%5Bvalue%5D=1&cHash=e64bfc7ab7dd6b70d161e4d556be9726'],
+            ['https://blog.acme.com/', 2100, 1300, '/?id=1300&testing%5Bvalue%5D=1&cHash=dbd6597d72ed5098cce3d03eac1eeefe'],
+            ['https://blog.acme.com/', 2100, 1310, '/?id=1310&testing%5Bvalue%5D=1&cHash=e64bfc7ab7dd6b70d161e4d556be9726'],
         ];
 
         return $this->keysFromTemplate(
             $instructions,
-            '%1$d->%2$d'
+            '%2$d->%3$d'
         );
     }
 
     /**
+     * @param string $hostPrefix
      * @param int $sourcePageId
      * @param int $targetPageId
      * @param string $expectation
@@ -391,10 +395,10 @@ class LinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkIsGeneratedWithQueryParametersDataProvider
      */
-    public function linkIsGeneratedWithQueryParameters(int $sourcePageId, int $targetPageId, string $expectation)
+    public function linkIsGeneratedWithQueryParameters(string $hostPrefix, int $sourcePageId, int $targetPageId, string $expectation)
     {
         $response = $this->executeFrontendRequest(
-            (new InternalRequest())
+            (new InternalRequest($hostPrefix))
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
@@ -415,42 +419,43 @@ class LinkGeneratorTest extends AbstractTestCase
     public function linkIsGeneratedForRestrictedPageDataProvider(): array
     {
         $instructions = [
-            [1100, 1510, 0, ''],
-            // [1100, 1511, 0, ''], // @todo Fails, not expanded to sub-pages
-            [1100, 1512, 0, ''],
-            [1100, 1515, 0, ''],
-            [1100, 1520, 0, ''],
-            // [1100, 1521, 0, ''], // @todo Fails, not expanded to sub-pages
+            ['https://acme.us/', 1100, 1510, 0, ''],
+            // ['https://acme.us/', 1100, 1511, 0, ''], // @todo Fails, not expanded to sub-pages
+            ['https://acme.us/', 1100, 1512, 0, ''],
+            ['https://acme.us/', 1100, 1515, 0, ''],
+            ['https://acme.us/', 1100, 1520, 0, ''],
+            // ['https://acme.us/', 1100, 1521, 0, ''], // @todo Fails, not expanded to sub-pages
             //
-            [1100, 1510, 1, '/?id=1510'],
-            [1100, 1511, 1, '/?id=1511'],
-            [1100, 1512, 1, '/?id=1512'],
-            [1100, 1515, 1, ''],
-            [1100, 1520, 1, ''],
-            // [1100, 1521, 1, ''], // @todo Fails, not expanded to sub-pages
+            ['https://acme.us/', 1100, 1510, 1, '/?id=1510'],
+            ['https://acme.us/', 1100, 1511, 1, '/?id=1511'],
+            ['https://acme.us/', 1100, 1512, 1, '/?id=1512'],
+            ['https://acme.us/', 1100, 1515, 1, ''],
+            ['https://acme.us/', 1100, 1520, 1, ''],
+            // ['https://acme.us/', 1100, 1521, 1, ''], // @todo Fails, not expanded to sub-pages
             //
-            [1100, 1510, 2, '/?id=1510'],
-            [1100, 1511, 2, '/?id=1511'],
-            [1100, 1512, 2, ''],
-            [1100, 1515, 2, '/?id=1515'],
-            [1100, 1520, 2, '/?id=1520'],
-            [1100, 1521, 2, '/?id=1521'],
+            ['https://acme.us/', 1100, 1510, 2, '/?id=1510'],
+            ['https://acme.us/', 1100, 1511, 2, '/?id=1511'],
+            ['https://acme.us/', 1100, 1512, 2, ''],
+            ['https://acme.us/', 1100, 1515, 2, '/?id=1515'],
+            ['https://acme.us/', 1100, 1520, 2, '/?id=1520'],
+            ['https://acme.us/', 1100, 1521, 2, '/?id=1521'],
             //
-            [1100, 1510, 3, '/?id=1510'],
-            [1100, 1511, 3, '/?id=1511'],
-            [1100, 1512, 3, '/?id=1512'],
-            [1100, 1515, 3, '/?id=1515'],
-            [1100, 1520, 3, '/?id=1520'],
-            [1100, 1521, 3, '/?id=1521'],
+            ['https://acme.us/', 1100, 1510, 3, '/?id=1510'],
+            ['https://acme.us/', 1100, 1511, 3, '/?id=1511'],
+            ['https://acme.us/', 1100, 1512, 3, '/?id=1512'],
+            ['https://acme.us/', 1100, 1515, 3, '/?id=1515'],
+            ['https://acme.us/', 1100, 1520, 3, '/?id=1520'],
+            ['https://acme.us/', 1100, 1521, 3, '/?id=1521'],
         ];
 
         return $this->keysFromTemplate(
             $instructions,
-            '%1$d->%2$d (user:%3$d)'
+            '%2$d->%3$d (user:%4$d)'
         );
     }
 
     /**
+     * @param string $hostPrefix
      * @param int $sourcePageId
      * @param int $targetPageId
      * @param int $frontendUserId
@@ -459,10 +464,10 @@ class LinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkIsGeneratedForRestrictedPageDataProvider
      */
-    public function linkIsGeneratedForRestrictedPage(int $sourcePageId, int $targetPageId, int $frontendUserId, string $expectation)
+    public function linkIsGeneratedForRestrictedPage(string $hostPrefix, int $sourcePageId, int $targetPageId, int $frontendUserId, string $expectation)
     {
         $response = $this->executeFrontendRequest(
-            (new InternalRequest())
+            (new InternalRequest($hostPrefix))
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
@@ -483,42 +488,43 @@ class LinkGeneratorTest extends AbstractTestCase
     {
         $instructions = [
             // no frontend user given
-            [1100, 1510, 1500, 0, '/?id=1500&pageId=1510'],
-            // [1100, 1511, 1500, 0, '/?id=1500&pageId=1511'], // @todo Fails, not expanded to sub-pages
-            [1100, 1512, 1500, 0, '/?id=1500&pageId=1512'],
-            [1100, 1515, 1500, 0, '/?id=1500&pageId=1515'],
-            [1100, 1520, 1500, 0, '/?id=1500&pageId=1520'],
-            // [1100, 1521, 1500, 0, '/?id=1500&pageId=1521'], // @todo Fails, not expanded to sub-pages
+            ['https://acme.us/', 1100, 1510, 1500, 0, '/?id=1500&pageId=1510'],
+            // ['https://acme.us/', 1100, 1511, 1500, 0, '/?id=1500&pageId=1511'], // @todo Fails, not expanded to sub-pages
+            ['https://acme.us/', 1100, 1512, 1500, 0, '/?id=1500&pageId=1512'],
+            ['https://acme.us/', 1100, 1515, 1500, 0, '/?id=1500&pageId=1515'],
+            ['https://acme.us/', 1100, 1520, 1500, 0, '/?id=1500&pageId=1520'],
+            // ['https://acme.us/', 1100, 1521, 1500, 0, '/?id=1500&pageId=1521'], // @todo Fails, not expanded to sub-pages
             // frontend user 1
-            [1100, 1510, 1500, 1, '/?id=1510'],
-            [1100, 1511, 1500, 1, '/?id=1511'],
-            [1100, 1512, 1500, 1, '/?id=1512'],
-            [1100, 1515, 1500, 1, '/?id=1500&pageId=1515'],
-            [1100, 1520, 1500, 1, '/?id=1500&pageId=1520'],
-            // [1100, 1521, 1500, 1, '/?id=1500&pageId=1521'], // @todo Fails, not expanded to sub-pages
+            ['https://acme.us/', 1100, 1510, 1500, 1, '/?id=1510'],
+            ['https://acme.us/', 1100, 1511, 1500, 1, '/?id=1511'],
+            ['https://acme.us/', 1100, 1512, 1500, 1, '/?id=1512'],
+            ['https://acme.us/', 1100, 1515, 1500, 1, '/?id=1500&pageId=1515'],
+            ['https://acme.us/', 1100, 1520, 1500, 1, '/?id=1500&pageId=1520'],
+            // ['https://acme.us/', 1100, 1521, 1500, 1, '/?id=1500&pageId=1521'], // @todo Fails, not expanded to sub-pages
             // frontend user 2
-            [1100, 1510, 1500, 2, '/?id=1510'],
-            [1100, 1511, 1500, 2, '/?id=1511'],
-            [1100, 1512, 1500, 2, '/?id=1500&pageId=1512'],
-            [1100, 1515, 1500, 2, '/?id=1515'],
-            [1100, 1520, 1500, 2, '/?id=1520'],
-            [1100, 1521, 1500, 2, '/?id=1521'],
+            ['https://acme.us/', 1100, 1510, 1500, 2, '/?id=1510'],
+            ['https://acme.us/', 1100, 1511, 1500, 2, '/?id=1511'],
+            ['https://acme.us/', 1100, 1512, 1500, 2, '/?id=1500&pageId=1512'],
+            ['https://acme.us/', 1100, 1515, 1500, 2, '/?id=1515'],
+            ['https://acme.us/', 1100, 1520, 1500, 2, '/?id=1520'],
+            ['https://acme.us/', 1100, 1521, 1500, 2, '/?id=1521'],
             // frontend user 3
-            [1100, 1510, 1500, 3, '/?id=1510'],
-            [1100, 1511, 1500, 3, '/?id=1511'],
-            [1100, 1512, 1500, 3, '/?id=1512'],
-            [1100, 1515, 1500, 3, '/?id=1515'],
-            [1100, 1520, 1500, 3, '/?id=1520'],
-            [1100, 1521, 1500, 3, '/?id=1521'],
+            ['https://acme.us/', 1100, 1510, 1500, 3, '/?id=1510'],
+            ['https://acme.us/', 1100, 1511, 1500, 3, '/?id=1511'],
+            ['https://acme.us/', 1100, 1512, 1500, 3, '/?id=1512'],
+            ['https://acme.us/', 1100, 1515, 1500, 3, '/?id=1515'],
+            ['https://acme.us/', 1100, 1520, 1500, 3, '/?id=1520'],
+            ['https://acme.us/', 1100, 1521, 1500, 3, '/?id=1521'],
         ];
 
         return $this->keysFromTemplate(
             $instructions,
-            '%1$d->%2$d (via: %3$d, user:%4$d)'
+            '%2$d->%3$d (via: %4$d, user:%5$d)'
         );
     }
 
     /**
+     * @param string $hostPrefix
      * @param int $sourcePageId
      * @param int $targetPageId
      * @param int $loginPageId
@@ -528,10 +534,10 @@ class LinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkIsGeneratedForRestrictedPageUsingLoginPageDataProvider
      */
-    public function linkIsGeneratedForRestrictedPageUsingLoginPage(int $sourcePageId, int $targetPageId, int $loginPageId, int $frontendUserId, string $expectation)
+    public function linkIsGeneratedForRestrictedPageUsingLoginPage(string $hostPrefix, int $sourcePageId, int $targetPageId, int $loginPageId, int $frontendUserId, string $expectation)
     {
         $response = $this->executeFrontendRequest(
-            (new InternalRequest())
+            (new InternalRequest($hostPrefix))
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     (new TypoScriptInstruction(TemplateService::class))
@@ -558,25 +564,26 @@ class LinkGeneratorTest extends AbstractTestCase
         // -> most probably since pid=-1 is not correctly resolved
         $instructions = [
             // acme.com -> acme.com (same site)
-            [1100, 1100, false, '/?id=acme-first'],
-            [1100, 1100, true, 'index.php?id=acme-first'],
-            // [1100, 1950, false, '/?id=1950'], // @todo Not generated for new-placeholder
-            [1100, 1950, true, 'index.php?id={targetPageId}'],
+            ['https://acme.us/', 1100, 1100, false, '/?id=acme-first'],
+            ['https://acme.us/', 1100, 1100, true, '/index.php?id=acme-first&L=0'],
+            // ['https://acme.us/', 1100, 1950, false, '/?id=1950'], // @todo Not generated for new-placeholder
+            ['https://acme.us/', 1100, 1950, true, '/index.php?id={targetPageId}&L=0'],
             // blog.acme.com -> acme.com (different site)
             // @todo https://acme.com/ not prefixed
-            [2100, 1100, false, '/?id=acme-first'],
-            [2100, 1100, true, 'index.php?id=acme-first'],
-            // [2100, 1950, false, '/?id=1950'], // @todo Not generated for new-placeholder
-            [2100, 1950, true, 'index.php?id={targetPageId}'],
+            ['https://blog.acme.com/', 2100, 1100, false, '/?id=acme-first'],
+            ['https://blog.acme.com/', 2100, 1100, true, '/index.php?id=acme-first&L=0'],
+            // ['https://blog.acme.com/', 2100, 1950, false, '/?id=1950'], // @todo Not generated for new-placeholder
+            ['https://blog.acme.com/', 2100, 1950, true, '/index.php?id={targetPageId}&L=0'],
         ];
 
         return $this->keysFromTemplate(
             $instructions,
-            '%1$d->%2$d (resolve:%3$d)'
+            '%2$d->%3$d (resolve:%4$d)'
         );
     }
 
     /**
+     * @param string $hostPrefix
      * @param int $sourcePageId
      * @param int $targetPageId
      * @param bool $resolveVersion
@@ -585,7 +592,7 @@ class LinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkIsGeneratedForPageVersionDataProvider
      */
-    public function linkIsGeneratedForPageVersion(int $sourcePageId, int $targetPageId, bool $resolveVersion, string $expectation)
+    public function linkIsGeneratedForPageVersion(string $hostPrefix, int $sourcePageId, int $targetPageId, bool $resolveVersion, string $expectation)
     {
         $workspaceId = 1;
         if ($resolveVersion) {
@@ -598,7 +605,7 @@ class LinkGeneratorTest extends AbstractTestCase
         }
 
         $response = $this->executeFrontendRequest(
-            (new InternalRequest())
+            (new InternalRequest($hostPrefix))
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
@@ -622,6 +629,7 @@ class LinkGeneratorTest extends AbstractTestCase
     {
         return [
             'ACME Inc' => [
+                'https://acme.us/',
                 1100,
                 [
                     ['title' => 'EN: Welcome', 'link' => '/?id=acme-first'],
@@ -661,15 +669,15 @@ class LinkGeneratorTest extends AbstractTestCase
                         'children' => [
                             [
                                 'title' => 'Markets',
-                                'link' => 'index.php?id=7110&MP=7100-1700',
+                                'link' => '/index.php?id=7110&MP=7100-1700&L=0',
                             ],
                             [
                                 'title' => 'Products',
-                                'link' => 'index.php?id=7120&MP=7100-1700',
+                                'link' => '/index.php?id=7120&MP=7100-1700&L=0',
                             ],
                             [
                                 'title' => 'Partners',
-                                'link' => 'index.php?id=7130&MP=7100-1700',
+                                'link' => '/index.php?id=7130&MP=7100-1700&L=0',
                             ],
                         ],
                     ],
@@ -679,6 +687,7 @@ class LinkGeneratorTest extends AbstractTestCase
                 ]
             ],
             'ACME Blog' => [
+                'https://blog.acme.com/',
                 2100,
                 [
                     [
@@ -702,15 +711,15 @@ class LinkGeneratorTest extends AbstractTestCase
                             'children' => [
                                 [
                                     'title' => 'Markets',
-                                    'link' => 'index.php?id=7110&MP=7100-2700',
+                                    'link' => '/index.php?id=7110&MP=7100-2700&L=0',
                                 ],
                                 [
                                     'title' => 'Products',
-                                    'link' => 'index.php?id=7120&MP=7100-2700',
+                                    'link' => '/index.php?id=7120&MP=7100-2700&L=0',
                                 ],
                                 [
                                     'title' => 'Partners',
-                                    'link' => 'index.php?id=7130&MP=7100-2700',
+                                    'link' => '/index.php?id=7130&MP=7100-2700&L=0',
                                 ],
                             ],
                         ],
@@ -722,16 +731,17 @@ class LinkGeneratorTest extends AbstractTestCase
     }
 
     /**
+     * @param string $hostPrefix
      * @param int $sourcePageId
      * @param array $expectation
      *
      * @test
      * @dataProvider menuIsGeneratedDataProvider
      */
-    public function menuIsGenerated(int $sourcePageId, array $expectation)
+    public function menuIsGenerated(string $hostPrefix, int $sourcePageId, array $expectation)
     {
         $response = $this->executeFrontendRequest(
-            (new InternalRequest())
+            (new InternalRequest($hostPrefix))
                 ->withPageId($sourcePageId)
                 ->withInstructions([
                     $this->createMenuProcessorInstruction([
