@@ -223,8 +223,8 @@ class PageGenerator
             $pageRenderer->setXmlPrologAndDocType(implode(LF, $docTypeParts));
         }
         // Begin header section:
-        if (isset($tsfe->config['config']['htmlTag_setParams']) && $tsfe->config['config']['htmlTag_setParams'] !== 'none') {
-            $_attr = $tsfe->config['config']['htmlTag_setParams'] ?: GeneralUtility::implodeAttributes($htmlTagAttributes);
+        if (($tsfe->config['config']['htmlTag_setParams'] ?? '') !== 'none') {
+            $_attr = $tsfe->config['config']['htmlTag_setParams'] ?? GeneralUtility::implodeAttributes($htmlTagAttributes);
         } else {
             $_attr = '';
         }

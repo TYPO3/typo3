@@ -330,8 +330,8 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
             $pageRenderer->setXmlPrologAndDocType(implode(LF, $docTypeParts));
         }
         // Begin header section:
-        if (isset($controller->config['config']['htmlTag_setParams']) && $controller->config['config']['htmlTag_setParams'] !== 'none') {
-            $_attr = $controller->config['config']['htmlTag_setParams'] ?: GeneralUtility::implodeAttributes($htmlTagAttributes);
+        if (($controller->config['config']['htmlTag_setParams'] ?? '') !== 'none') {
+            $_attr = $controller->config['config']['htmlTag_setParams'] ?? GeneralUtility::implodeAttributes($htmlTagAttributes);
         } else {
             $_attr = '';
         }
