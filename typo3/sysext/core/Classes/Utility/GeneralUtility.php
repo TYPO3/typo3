@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Utility;
  */
 
 use GuzzleHttp\Exception\RequestException;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -245,6 +246,9 @@ class GeneralUtility
         } elseif (is_array($inputGet)) {
             $_GET = $inputGet;
             $GLOBALS['HTTP_GET_VARS'] = $inputGet;
+            if (isset($GLOBALS['TYPO3_REQUEST']) && $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
+                $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withQueryParams($inputGet);
+            }
         }
     }
 

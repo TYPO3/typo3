@@ -14,4 +14,25 @@ return [
             'Deprecation-84109-DeprecateDependencyResolver.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->calculateLinkVars' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86046-AdditionalArgumentsInSeveralTypoScriptFrontendControllerMethods.rst'
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->makeCacheHash' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86046-AdditionalArgumentsInSeveralTypoScriptFrontendControllerMethods.rst'
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->preparePageContentGeneration' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86046-AdditionalArgumentsInSeveralTypoScriptFrontendControllerMethods.rst'
+        ],
+    ],
 ];

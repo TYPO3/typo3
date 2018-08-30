@@ -91,7 +91,7 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         if ($controller->isGeneratePage()) {
             $this->timeTracker->push('Page generation');
             $controller->generatePage_preProcessing();
-            $controller->preparePageContentGeneration();
+            $controller->preparePageContentGeneration($request);
 
             // Content generation
             $this->timeTracker->incStackPointer();
@@ -117,7 +117,7 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         if ($controller->isINTincScript()) {
             if (!$controller->isGeneratePage()) {
                 // When page was generated, this was already called. Avoid calling this twice.
-                $controller->preparePageContentGeneration();
+                $controller->preparePageContentGeneration($request);
             }
             $this->timeTracker->push('Non-cached objects');
             $controller->INTincScript();

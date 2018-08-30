@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
+use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\LockFactory;
@@ -2172,14 +2173,22 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * This is used to cache pages with more parameters than just id and type.
      *
      * @see reqCHash()
+     * @param ServerRequestInterface $request
      */
-    public function makeCacheHash()
+    public function makeCacheHash(ServerRequestInterface $request = null)
     {
+        if ($request === null) {
+            trigger_error('TSFE->makeCacheHash() requires a ServerRequestInterface as first argument, add this argument in order to avoid this deprecation error.', E_USER_DEPRECATED);
+        }
         // No need to test anything if caching was already disabled.
         if ($this->no_cache && !$GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError']) {
             return;
         }
-        $GET = GeneralUtility::_GET();
+        if ($request === null) {
+            $GET = GeneralUtility::_GET();
+        } else {
+            $GET = $request->getQueryParams();
+        }
         if ($this->cHash && is_array($GET)) {
             // Make sure we use the page uid and not the page alias
             $GET['id'] = $this->id;
@@ -2935,11 +2944,17 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Calculates and sets the internal linkVars based upon the current
-     * $_GET parameters and the setting "config.linkVars".
+     * Calculates and sets the internal linkVars based upon the current request parameters
+     * and the setting "config.linkVars".
+     *
+     * @param array $queryParams $_GET (usually called with a PSR-7 $request->getQueryParams())
      */
-    public function calculateLinkVars()
+    public function calculateLinkVars(array $queryParams = null)
     {
+        if ($queryParams === null) {
+            trigger_error('Calling TSFE->calculateLinkVars() without first argument is deprecated, and needs to be an array.', E_USER_DEPRECATED);
+            $queryParams = GeneralUtility::_GET();
+        }
         $this->linkVars = '';
         if (empty($this->config['config']['linkVars'])) {
             return;
@@ -2950,7 +2965,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if (empty($linkVars)) {
             return;
         }
-        $getData = GeneralUtility::_GET();
         foreach ($linkVars as $linkVar) {
             $test = $value = '';
             if (preg_match('/^(.*)\\((.+)\\)$/', $linkVar, $match)) {
@@ -2961,10 +2975,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $keys = explode('|', $linkVar);
             $numberOfLevels = count($keys);
             $rootKey = trim($keys[0]);
-            if (!isset($getData[$rootKey])) {
+            if (!isset($queryParams[$rootKey])) {
                 continue;
             }
-            $value = $getData[$rootKey];
+            $value = $queryParams[$rootKey];
             for ($i = 1; $i < $numberOfLevels; $i++) {
                 $currentKey = trim($keys[$i]);
                 if (isset($value[$currentKey])) {
@@ -3069,11 +3083,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * If the current page is of type mountpoint and should be overlaid with the contents of the mountpoint page
      * and is accessed directly, the user will be redirected to the mountpoint context.
      * @internal
+     * @param ServerRequestInterface $request
+     * @return string|null
      */
-    public function getRedirectUriForMountPoint(): ?string
+    public function getRedirectUriForMountPoint(ServerRequestInterface $request): ?string
     {
         if (!empty($this->originalMountPointPage) && (int)$this->originalMountPointPage['doktype'] === PageRepository::DOKTYPE_MOUNTPOINT) {
-            return $this->getUriToCurrentPageForRedirect();
+            return $this->getUriToCurrentPageForRedirect($request);
         }
 
         return null;
@@ -3099,12 +3115,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * If the current page is of type shortcut and accessed directly via its URL,
      * the user will be redirected to shortcut target.
+     *
      * @internal
+     * @param ServerRequestInterface $request
+     * @return string|null
      */
-    public function getRedirectUriForShortcut(): ?string
+    public function getRedirectUriForShortcut(ServerRequestInterface $request): ?string
     {
         if (!empty($this->originalShortcutPage) && $this->originalShortcutPage['doktype'] == PageRepository::DOKTYPE_SHORTCUT) {
-            return $this->getUriToCurrentPageForRedirect();
+            return $this->getUriToCurrentPageForRedirect($request);
         }
 
         return null;
@@ -3133,7 +3152,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected function redirectToCurrentPage()
     {
         trigger_error('Method ' . __FUNCTION__ . 'is deprecated.', E_USER_DEPRECATED);
-        $redirectUrl = $this->getUriToCurrentPageForRedirect();
+        $redirectUrl = $this->getUriToCurrentPageForRedirect($GLOBALS['TYPO3_REQUEST']);
         // Prevent redirection loop
         if (!empty($redirectUrl) && GeneralUtility::getIndpEnv('REQUEST_URI') !== '/' . $redirectUrl) {
             // redirect and exit
@@ -3144,11 +3163,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Instantiate \TYPO3\CMS\Frontend\ContentObject to generate the correct target URL
      *
+     * @param ServerRequestInterface $request
      * @return string
      */
-    protected function getUriToCurrentPageForRedirect(): string
+    protected function getUriToCurrentPageForRedirect(ServerRequestInterface $request): string
     {
-        $this->calculateLinkVars();
+        $this->calculateLinkVars($request->getQueryParams());
         $parameter = $this->page['uid'];
         if ($this->type && MathUtility::canBeInterpretedAsInteger($this->type)) {
             $parameter .= ',' . $this->type;
@@ -3402,9 +3422,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Previously located in static method in PageGenerator::init. Is solely used to set up TypoScript
      * config. options and set properties in $TSFE for that.
+     *
+     * @param ServerRequestInterface $request
      */
-    public function preparePageContentGeneration()
+    public function preparePageContentGeneration(ServerRequestInterface $request = null)
     {
+        if ($request === null) {
+            trigger_error('TSFE->preparePageContentGeneration() requires a ServerRequestInterface as first argument, add this argument in order to avoid this deprecation error.', E_USER_DEPRECATED);
+            $request = ServerRequestFactory::fromGlobals();
+        }
         $this->getTimeTracker()->push('Prepare page content generation');
         if (isset($this->page['content_from_pid']) && $this->page['content_from_pid'] > 0) {
             // make REAL copy of TSFE object - not reference!
@@ -3453,9 +3479,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->absRefPrefix = '';
         }
         $this->ATagParams = trim($this->config['config']['ATagParams'] ?? '') ? ' ' . trim($this->config['config']['ATagParams']) : '';
-        $this->initializeSearchWordData(GeneralUtility::_GP('sword_list'));
+        $this->initializeSearchWordData($request->getParsedBody()['sword_list'] ?? $request->getQueryParams()['sword_list'] ?? null);
         // linkVars
-        $this->calculateLinkVars();
+        $this->calculateLinkVars($request->getQueryParams());
         // Setting XHTML-doctype from doctype
         if (!isset($this->config['config']['xhtmlDoctype']) || !$this->config['config']['xhtmlDoctype']) {
             $this->config['config']['xhtmlDoctype'] = $this->config['config']['doctype'] ?? '';

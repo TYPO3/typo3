@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
  */
 
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -189,7 +190,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     /**
      * @return array
      */
-    public function initializeSearchWordDataInTsfeBuildsCorrectRegexDataProvider()
+    public function initializeSearchWordDataBuildsCorrectRegexDataProvider()
     {
         return [
             'one simple search word' => [
@@ -222,22 +223,26 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider initializeSearchWordDataInTsfeBuildsCorrectRegexDataProvider
+     * @dataProvider initializeSearchWordDataBuildsCorrectRegexDataProvider
      *
      * @param array $searchWordGetParameters The values that should be loaded in the sword_list GET parameter.
      * @param bool $enableStandaloneSearchWords If TRUE the sword_standAlone option will be enabled.
      * @param string $expectedRegex The expected regex after processing the search words.
      */
-    public function initializeSearchWordDataInTsfeBuildsCorrectRegex(array $searchWordGetParameters, $enableStandaloneSearchWords, $expectedRegex)
+    public function initializeSearchWordDataBuildsCorrectRegex(array $searchWordGetParameters, $enableStandaloneSearchWords, $expectedRegex)
     {
         $_GET['sword_list'] = $searchWordGetParameters;
+        $_SERVER['HTTP_HOST'] = 'localhost';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
 
         $this->subject->page = [];
         if ($enableStandaloneSearchWords) {
             $this->subject->config = ['config' => ['sword_standAlone' => 1]];
         }
 
-        $this->subject->preparePageContentGeneration();
+        GeneralUtility::flushInternalRuntimeCaches();
+        $request = ServerRequestFactory::fromGlobals();
+        $this->subject->preparePageContentGeneration($request);
         $this->assertEquals($this->subject->sWordRegEx, $expectedRegex);
     }
 
@@ -369,9 +374,8 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      */
     public function calculateLinkVarsConsidersCorrectVariables(string $linkVars, array $getVars, string $expected)
     {
-        $_GET = $getVars;
         $this->subject->config['config']['linkVars'] = $linkVars;
-        $this->subject->calculateLinkVars();
+        $this->subject->calculateLinkVars($getVars);
         $this->assertEquals($expected, $this->subject->linkVars);
     }
 

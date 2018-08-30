@@ -43,7 +43,7 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Check for shortcut page and mount point redirect
-        $redirectToUri = $this->getRedirectUri();
+        $redirectToUri = $this->getRedirectUri($request);
         if ($redirectToUri !== null && $redirectToUri !== (string)$request->getUri()) {
             return new RedirectResponse($redirectToUri, 307);
         }
@@ -63,13 +63,13 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface
         return $handler->handle($request);
     }
 
-    protected function getRedirectUri(): ?string
+    protected function getRedirectUri(ServerRequestInterface $request): ?string
     {
-        $redirectToUri = $this->controller->getRedirectUriForShortcut();
+        $redirectToUri = $this->controller->getRedirectUriForShortcut($request);
         if ($redirectToUri !== null) {
             return $redirectToUri;
         }
-        return $this->controller->getRedirectUriForMountPoint();
+        return $this->controller->getRedirectUriForMountPoint($request);
     }
 
     /**

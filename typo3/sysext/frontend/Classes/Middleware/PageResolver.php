@@ -132,7 +132,7 @@ class PageResolver implements MiddlewareInterface
         }
 
         // Evaluate the cache hash parameter
-        $this->controller->makeCacheHash();
+        $this->controller->makeCacheHash($request);
 
         return $handler->handle($request);
     }
