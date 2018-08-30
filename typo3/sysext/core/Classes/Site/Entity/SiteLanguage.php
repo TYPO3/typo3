@@ -151,7 +151,7 @@ class SiteLanguage
             $this->fallbackType = $attributes['fallbackType'];
         }
         if (!empty($attributes['fallbacks'])) {
-            $this->fallbackLanguageIds = $attributes['fallbacks'];
+            $this->fallbackLanguageIds = is_array($attributes['fallbacks']) ? $attributes['fallbacks'] : explode(',', $attributes['fallbacks']);
         }
         if (isset($attributes['enabled'])) {
             $this->enabled = (bool)$attributes['enabled'];
