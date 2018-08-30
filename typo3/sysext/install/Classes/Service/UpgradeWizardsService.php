@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Install\Service;
 
 /*
@@ -18,6 +19,7 @@ namespace TYPO3\CMS\Install\Service;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
+use Symfony\Component\Console\Output\StreamOutput;
 use TYPO3\CMS\Core\Cache\DatabaseSchemaService;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
@@ -27,13 +29,24 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Updates\AbstractUpdate;
+use TYPO3\CMS\Install\Updates\ChattyInterface;
+use TYPO3\CMS\Install\Updates\ConfirmableInterface;
+use TYPO3\CMS\Install\Updates\RepeatableInterface;
 use TYPO3\CMS\Install\Updates\RowUpdater\RowUpdaterInterface;
+use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 /**
  * Service class helping managing upgrade wizards
  */
 class UpgradeWizardsService
 {
+    private $output;
+
+    public function __construct()
+    {
+        $this->output = new StreamOutput(fopen('php://temp', 'wb'));
+    }
+
     /**
      * Force creation / update of caching framework tables that are needed by some update wizards
      *
@@ -158,7 +171,7 @@ class UpgradeWizardsService
         $adds = [];
         foreach ($databaseDifferences as $schemaDiff) {
             foreach ($schemaDiff->newTables as $newTable) {
-                /** @var Table $newTable*/
+                /** @var Table $newTable */
                 if (!is_array($adds['tables'])) {
                     $adds['tables'] = [];
                 }
@@ -264,15 +277,30 @@ class UpgradeWizardsService
             $wizardInstance = GeneralUtility::makeInstance($class);
 
             // $explanation is changed by reference in Update objects!
+            // @todo deprecate once all wizards are migrated
             $explanation = '';
-            $wizardInstance->checkForUpdate($explanation);
+            $shouldRenderWizard = false;
+            if (!($wizardInstance instanceof UpgradeWizardInterface) && $wizardInstance instanceof AbstractUpdate) {
+                $wizardInstance->checkForUpdate($explanation);
+                $shouldRenderWizard = $wizardInstance->shouldRenderWizard();
+            }
+            if ($wizardInstance instanceof UpgradeWizardInterface) {
+                if ($wizardInstance instanceof ChattyInterface) {
+                    $wizardInstance->setOutput($this->output);
+                }
+                $shouldRenderWizard = $wizardInstance->updateNecessary();
+            }
 
             $wizards[] = [
                 'class' => $class,
                 'identifier' => $identifier,
                 'title' => $wizardInstance->getTitle(),
-                'shouldRenderWizard' => $wizardInstance->shouldRenderWizard(),
-                'markedDoneInRegistry' => GeneralUtility::makeInstance(Registry::class)->get('installUpdate', $class, false),
+                'shouldRenderWizard' => $shouldRenderWizard,
+                'markedDoneInRegistry' => GeneralUtility::makeInstance(Registry::class)->get(
+                    'installUpdate',
+                    $class,
+                    false
+                ),
                 'explanation' => $explanation,
             ];
         }
@@ -301,7 +329,32 @@ class UpgradeWizardsService
         $updateObject = GeneralUtility::makeInstance($class);
         $wizardHtml = '';
         if (method_exists($updateObject, 'getUserInput')) {
-            $wizardHtml = $updateObject->getUserInput('install[values][' . $identifier . ']');
+            $wizardHtml = $updateObject->getUserInput('install[values][' . htmlspecialchars($identifier) . ']');
+        } elseif ($updateObject instanceof UpgradeWizardInterface && $updateObject instanceof ConfirmableInterface) {
+            $wizardHtml = '
+            <div class="panel panel-danger">
+                <div class="panel-heading">' .
+                          htmlspecialchars($updateObject->getConfirmationTitle()) .
+                          '</div>
+                <div class="panel-body">
+                    ' .
+                          nl2br(htmlspecialchars($updateObject->getConfirmationMessage())) .
+                          '
+                    <div class="btn-group clearfix" data-toggle="buttons">
+                        <label class="btn btn-default active">
+                            <input type="radio" name="install[values][' .
+                          htmlspecialchars($updateObject->getIdentifier()) .
+                          '][install]" value="0" checked="checked" /> no
+                        </label>
+                        <label class="btn btn-default">
+                            <input type="radio" name="install[values][' .
+                          htmlspecialchars($updateObject->getIdentifier()) .
+                          '][install]" value="1" /> yes
+                        </label>
+                    </div>
+                </div>
+            </div>
+        ';
         }
 
         $result = [
@@ -337,14 +390,18 @@ class UpgradeWizardsService
         $messages = new FlashMessageQueue('install');
         // $wizardInputErrorMessage is given as reference to wizard object!
         $wizardInputErrorMessage = '';
-        if (method_exists($updateObject, 'checkUserInput') && !$updateObject->checkUserInput($wizardInputErrorMessage)) {
-            $messages->enqueue(new FlashMessage(
-                $wizardInputErrorMessage ?: 'Something went wrong!',
-                'Input parameter broken',
-                FlashMessage::ERROR
-            ));
+        if (method_exists($updateObject, 'checkUserInput') &&
+            !$updateObject->checkUserInput($wizardInputErrorMessage)) {
+            // @todo deprecate, unused
+            $messages->enqueue(
+                new FlashMessage(
+                    $wizardInputErrorMessage ?: 'Something went wrong!',
+                    'Input parameter broken',
+                    FlashMessage::ERROR
+                )
+            );
         } else {
-            if (!method_exists($updateObject, 'performUpdate')) {
+            if (!($updateObject instanceof UpgradeWizardInterface) && !method_exists($updateObject, 'performUpdate')) {
                 throw new \RuntimeException(
                     'No performUpdate method in update wizard with identifier ' . $identifier,
                     1371035200
@@ -354,30 +411,93 @@ class UpgradeWizardsService
             // Both variables are used by reference in performUpdate()
             $message = '';
             $databaseQueries = [];
-            $performResult = $updateObject->performUpdate($databaseQueries, $message);
-
-            if ($performResult) {
-                $messages->enqueue(new FlashMessage(
-                    '',
-                    'Update successful'
-                ));
+            if ($updateObject instanceof UpgradeWizardInterface) {
+                $requestParams = GeneralUtility::_GP('install');
+                if ($updateObject instanceof ConfirmableInterface
+                    && (
+                        isset($requestParams['values'][$updateObject->getIdentifier()]['install'])
+                        && empty($requestParams['values'][$updateObject->getIdentifier()]['install'])
+                    )
+                ) {
+                    // confirmation was set to "no"
+                    $performResult = true;
+                } else {
+                    // confirmation yes or non-confirmable
+                    if ($updateObject instanceof ChattyInterface) {
+                        $updateObject->setOutput($this->output);
+                    }
+                    $performResult = $updateObject->executeUpdate();
+                }
             } else {
-                $messages->enqueue(new FlashMessage(
-                    '',
-                    'Update failed!',
-                    FlashMessage::ERROR
-                ));
+                // @todo deprecate
+                $performResult = $updateObject->performUpdate($databaseQueries, $message);
+            }
+
+            $stream = $this->output->getStream();
+            rewind($stream);
+            if ($performResult) {
+                if ($updateObject instanceof UpgradeWizardInterface && !($updateObject instanceof RepeatableInterface)) {
+                    // mark wizard as done if it's not repeatable and was successful
+                    $this->markWizardAsDone($updateObject->getIdentifier());
+                }
+                $messages->enqueue(
+                    new FlashMessage(
+                        stream_get_contents($stream),
+                        'Update successful'
+                    )
+                );
+            } else {
+                $messages->enqueue(
+                    new FlashMessage(
+                        stream_get_contents($stream),
+                        'Update failed!',
+                        FlashMessage::ERROR
+                    )
+                );
             }
             if ($showDatabaseQueries) {
+                // @todo deprecate
                 foreach ($databaseQueries as $query) {
-                    $messages->enqueue(new FlashMessage(
-                        $query,
-                        '',
-                        FlashMessage::INFO
-                    ));
+                    $messages->enqueue(
+                        new FlashMessage(
+                            $query,
+                            '',
+                            FlashMessage::INFO
+                        )
+                    );
                 }
             }
         }
         return $messages;
+    }
+
+    /**
+     * Marks some wizard as being "seen" so that it not shown again.
+     * Writes the info in LocalConfiguration.php
+     *
+     * @param string $identifier
+     */
+    public function markWizardAsDone(string $identifier): void
+    {
+        GeneralUtility::makeInstance(Registry::class)->set('installUpdate', $identifier, 1);
+    }
+
+    /**
+     * @param string $identifier
+     */
+    public function markWizardAsUndone(string $identifier): void
+    {
+        GeneralUtility::makeInstance(Registry::class)->set('installUpdate', $identifier, 1);
+    }
+
+    /**
+     * Checks if this wizard has been "done" before
+     *
+     * @param string $identifier
+     * @return bool TRUE if wizard has been done before, FALSE otherwise
+     */
+    public function isWizardDone(string $identifier): bool
+    {
+        return (bool)GeneralUtility::makeInstance(Registry::class)->get('installUpdate', $identifier, false);
     }
 }

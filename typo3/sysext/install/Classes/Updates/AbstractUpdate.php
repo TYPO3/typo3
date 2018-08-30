@@ -50,7 +50,7 @@ abstract class AbstractUpdate
      *
      * @return string The title of this update wizard
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         if ($this->title) {
             return $this->title;
@@ -73,7 +73,7 @@ abstract class AbstractUpdate
      *
      * @return string The identifier of this update wizard
      */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }

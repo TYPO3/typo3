@@ -10,5 +10,8 @@
 return [
     'language:update' => [
         'class' => \TYPO3\CMS\Install\Command\LanguagePackCommand::class
+    ],
+    'install:update' => [
+        'class' => \TYPO3\CMS\Install\Command\UpgradeWizardCommand::class
     ]
 ];

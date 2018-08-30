@@ -17,52 +17,29 @@ namespace TYPO3\CMS\Install\Updates;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Service\UpgradeWizardsService;
 
 /**
  * Merge access rights from be_groups concerning pages_language_overlay
  * into pages
  */
-class MigratePagesLanguageOverlayBeGroupsAccessRights extends AbstractUpdate
+class MigratePagesLanguageOverlayBeGroupsAccessRights implements UpgradeWizardInterface, ConfirmableInterface
 {
-    /**
-     * The human-readable title of the upgrade wizard
-     *
-     * @var string
-     */
-    protected $title = 'Merge be_groups access rights from pages_language_overlay to pages';
-
-    /**
-     * Checks whether updates are required.
-     *
-     * @param string &$description The description for the update
-     * @return bool Whether an update is required (TRUE) or not (FALSE)
-     */
-    public function checkForUpdate(&$description)
+    public function getIdentifier(): string
     {
-        $description = 'The table pages_language_overlay will be removed to align the translation ' .
-            'handling for pages with the rest of the core. This wizard transfers all be_groups with ' .
-            'access restrictions to pages_language_overlay into pages.';
-
-        $updateNeeded = false;
-
-        if (!$this->isWizardDone()) {
-            $updateNeeded = true;
-        }
-
-        return $updateNeeded;
+        return self::class;
     }
 
-    /**
-     * Performs the accordant updates.
-     *
-     * @param array &$dbQueries Queries done in this update
-     * @param string &$customMessage Custom message
-     * @return bool Whether everything went smoothly or not
-     * @throws \InvalidArgumentException
-     */
-    public function performUpdate(array &$dbQueries, &$customMessage)
+    public function getTitle(): string
     {
-        $beGroupsQueryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_groups');
+        return 'Merge be_groups access rights from pages_language_overlay to pages';
+    }
+
+    public function executeUpdate(): bool
+    {
+        $beGroupsQueryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(
+            'be_groups'
+        );
         $beGroupsQueryBuilder->getRestrictions()->removeAll();
         $beGroupsRows = $beGroupsQueryBuilder
             ->select('uid', 'non_exclude_fields', 'tables_modify')
@@ -104,7 +81,8 @@ class MigratePagesLanguageOverlayBeGroupsAccessRights extends AbstractUpdate
                 $newExcludeFields = [];
             }
             if ($updateNeeded) {
-                $updateBeGroupsQueryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_groups');
+                $updateBeGroupsQueryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('be_groups');
                 $updateBeGroupsQueryBuilder
                     ->update('be_groups')
                     ->set('tables_modify', implode(',', $newTablesArray))
@@ -118,7 +96,40 @@ class MigratePagesLanguageOverlayBeGroupsAccessRights extends AbstractUpdate
                     ->execute();
             }
         }
-        $this->markWizardAsDone();
         return true;
+    }
+
+    public function updateNecessary(): bool
+    {
+        return !(new UpgradeWizardsService())->isWizardDone($this->getIdentifier());
+    }
+
+    public function getPrerequisites(): array
+    {
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
+    }
+
+    public function getDescription(): string
+    {
+        return 'The table pages_language_overlay will be removed to align the translation ' .
+               'handling for pages with the rest of the core. This wizard transfers all be_groups with ' .
+               'access restrictions to pages_language_overlay into pages.';
+    }
+
+    public function getConfirmationTitle(): string
+    {
+        return 'Are you sure?';
+    }
+
+    public function getConfirmationMessage(): string
+    {
+        return 'Do you want to continue?';
+    }
+
+    public function getConfirmationDefault(): bool
+    {
+        return false;
     }
 }
