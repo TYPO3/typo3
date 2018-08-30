@@ -3141,25 +3141,22 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
+     * Instantiate \TYPO3\CMS\Frontend\ContentObject to generate the correct target URL
+     *
      * @return string
      */
     protected function getUriToCurrentPageForRedirect(): string
     {
         $this->calculateLinkVars();
-        // Instantiate \TYPO3\CMS\Frontend\ContentObject to generate the correct target URL
-        /** @var $cObj ContentObjectRenderer */
-        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this);
         $parameter = $this->page['uid'];
-        $type = GeneralUtility::_GET('type');
-        if ($type && MathUtility::canBeInterpretedAsInteger($type)) {
-            $parameter .= ',' . $type;
+        if ($this->type && MathUtility::canBeInterpretedAsInteger($this->type)) {
+            $parameter .= ',' . $this->type;
         }
-        $redirectUrl = $cObj->typoLink_URL([
+        return GeneralUtility::makeInstance(ContentObjectRenderer::class, $this)->typoLink_URL([
             'parameter' => $parameter,
             'addQueryString' => true,
             'addQueryString.' => ['exclude' => 'id']
         ]);
-        return $redirectUrl;
     }
 
     /********************************************
