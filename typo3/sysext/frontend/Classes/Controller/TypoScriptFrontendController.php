@@ -3452,7 +3452,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->absRefPrefix = '';
         }
         $this->ATagParams = trim($this->config['config']['ATagParams'] ?? '') ? ' ' . trim($this->config['config']['ATagParams']) : '';
-        $this->initializeSearchWordDataInTsfe();
+        $this->initializeSearchWordData(GeneralUtility::_GP('sword_list'));
         // linkVars
         $this->calculateLinkVars();
         // Setting XHTML-doctype from doctype
@@ -3492,21 +3492,23 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Fills the sWordList property and builds the regular expression in TSFE that can be used to split
      * strings by the submitted search words.
      *
+     * @param mixed $searchWords - usually an array, but we can't be sure (yet)
      * @see sWordList
      * @see sWordRegEx
      */
-    protected function initializeSearchWordDataInTsfe()
+    protected function initializeSearchWordData($searchWords)
     {
         $this->sWordRegEx = '';
-        $this->sWordList = GeneralUtility::_GP('sword_list');
+        $this->sWordList = $searchWords === null ? '' : $searchWords;
         if (is_array($this->sWordList)) {
-            $space = !empty($this->config['config']['sword_standAlone']) ? '[[:space:]]' : '';
+            $space = !empty($this->config['config']['sword_standAlone'] ?? null) ? '[[:space:]]' : '';
+            $regexpParts = [];
             foreach ($this->sWordList as $val) {
                 if (trim($val) !== '') {
-                    $this->sWordRegEx .= $space . preg_quote($val, '/') . $space . '|';
+                    $regexpParts[] = $space . preg_quote($val, '/') . $space;
                 }
             }
-            $this->sWordRegEx = rtrim($this->sWordRegEx, '|');
+            $this->sWordRegEx = implode('|', $regexpParts);
         }
     }
 

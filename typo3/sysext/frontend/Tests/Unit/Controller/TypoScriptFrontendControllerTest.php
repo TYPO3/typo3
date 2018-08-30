@@ -413,4 +413,60 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
             ],
         ];
     }
+
+    /**
+     * @test
+     */
+    public function initializeSearchWordDataDoesNothingWithNullValue()
+    {
+        $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
+        $subject->_call('initializeSearchWordData', null);
+        $this->assertEquals('', $subject->sWordRegEx);
+        $this->assertEquals('', $subject->sWordList);
+    }
+
+    /**
+     * @test
+     */
+    public function initializeSearchWordDataDoesNothingWithEmptyStringValue()
+    {
+        $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
+        $subject->_call('initializeSearchWordData', '');
+        $this->assertEquals('', $subject->sWordRegEx);
+        $this->assertEquals('', $subject->sWordList);
+    }
+
+    /**
+     * @test
+     */
+    public function initializeSearchWordDataDoesNothingWithEmptyArrayValue()
+    {
+        $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
+        $subject->_call('initializeSearchWordData', []);
+        $this->assertEquals('', $subject->sWordRegEx);
+        $this->assertEquals([], $subject->sWordList);
+    }
+
+    /**
+     * @test
+     */
+    public function initializeSearchWordDataFillsProperRegexpWithArray()
+    {
+        $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
+        $subject->_call('initializeSearchWordData', ['stop', 'word']);
+        $this->assertEquals('stop|word', $subject->sWordRegEx);
+        $this->assertEquals(['stop', 'word'], $subject->sWordList);
+    }
+
+    /**
+     * @test
+     */
+    public function initializeSearchWordDataFillsProperRegexpWithArrayAndStandaloneOption()
+    {
+        $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
+        $subject->config['config']['sword_standAlone'] = 1;
+        $subject->_call('initializeSearchWordData', ['stop', 'word']);
+        $this->assertEquals('[[:space:]]stop[[:space:]]|[[:space:]]word[[:space:]]', $subject->sWordRegEx);
+        $this->assertEquals(['stop', 'word'], $subject->sWordList);
+    }
 }
