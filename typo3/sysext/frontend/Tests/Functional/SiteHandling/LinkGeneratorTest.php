@@ -97,7 +97,7 @@ class LinkGeneratorTest extends AbstractTestCase
         $backendUser = $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
 
-        $scenarioFile = __DIR__ . '/Fixtures/scenario.yaml';
+        $scenarioFile = __DIR__ . '/Fixtures/PlainScenario.yaml';
         $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
         $writer = DataHandlerWriter::withBackendUser($backendUser);
         $writer->invokeFactory($factory);
@@ -121,7 +121,7 @@ class LinkGeneratorTest extends AbstractTestCase
                 'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript',
             ],
             [
-                'title' => 'ACME Root',
+                'title' => 'ACME Blog',
                 'sitetitle' => $this->siteTitle,
             ]
         );

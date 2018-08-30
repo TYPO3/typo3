@@ -68,7 +68,7 @@ class PlainRequestTest extends AbstractTestCase
         $backendUser = $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
 
-        $scenarioFile = __DIR__ . '/Fixtures/scenario.yaml';
+        $scenarioFile = __DIR__ . '/Fixtures/PlainScenario.yaml';
         $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
         $writer = DataHandlerWriter::withBackendUser($backendUser);
         $writer->invokeFactory($factory);
@@ -109,7 +109,7 @@ class PlainRequestTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function requestsAreRedirectedDataProvider(): array
+    public function shortcutsAreRedirectedDataProvider(): array
     {
         $domainPaths = [
             '/',
@@ -134,9 +134,9 @@ class PlainRequestTest extends AbstractTestCase
      * @param string $uri
      *
      * @test
-     * @dataProvider requestsAreRedirectedDataProvider
+     * @dataProvider shortcutsAreRedirectedDataProvider
      */
-    public function requestsAreRedirected(string $uri)
+    public function shortcutsAreRedirectedToFirstSubPage(string $uri)
     {
         $expectedStatusCode = 307;
         $expectedHeaders = ['location' => ['index.php?id=acme-first']];
@@ -147,6 +147,40 @@ class PlainRequestTest extends AbstractTestCase
         );
         static::assertSame($expectedStatusCode, $response->getStatusCode());
         static::assertSame($expectedHeaders, $response->getHeaders());
+    }
+
+    /**
+     * @param string $uri
+     *
+     * @test
+     * @dataProvider shortcutsAreRedirectedDataProvider
+     */
+    public function shortcutsAreRedirectedAndRenderFirstSubPage(string $uri)
+    {
+        $expectedStatusCode = 200;
+        $expectedPageTitle = 'EN: Welcome';
+
+        $response = $this->executeFrontendRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext,
+            true
+        );
+        $responseStructure = ResponseContent::fromString(
+            (string)$response->getBody()
+        );
+
+        static::assertSame(
+            $expectedStatusCode,
+            $response->getStatusCode()
+        );
+        static::assertSame(
+            $this->siteTitle,
+            $responseStructure->getScopePath('template/sitetitle')
+        );
+        static::assertSame(
+            $expectedPageTitle,
+            $responseStructure->getScopePath('page/title')
+        );
     }
 
     /**

@@ -90,10 +90,10 @@ entities:
                 - self: {id: 1523, title: 'Five Years'}
         - self: {id: 1600, title: 'About us'}
         - self: {id: 1700, title: 'Announcements & News', type: *pageMount, mount: 7100}
+        - self: {id: 404, title: 'Page not found'}
           entities:
             content:
               - self: {title: 'EN: Page not found', type: *contentText}
-        - self: {id: 404, title: 'Page not found'}
         - self: {id: 1930, title: 'Our Blog', type: *pageShortcut, shortcut: 2000}
         - version: {id: 1950, title: 'EN: Goodbye', workspace: 1}
         - self: {id: 1990, title: 'Storage', type: *pageFolder}
