@@ -24,7 +24,7 @@ Basic code components
 TYPO3\\CMS\\Form\\Domain\\Model\\FormDefinition
 -----------------------------------------------
 
-The class ``TYPO3\\CMS\\Form\\Domain\\Model\\FormDefinition`` encapsulates
+The class ``TYPO3\CMS\Form\Domain\Model\FormDefinition`` encapsulates
 a complete ``form definition``, with all of its
 
 - pages,
