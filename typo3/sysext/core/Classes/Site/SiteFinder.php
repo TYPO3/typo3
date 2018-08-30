@@ -121,6 +121,6 @@ class SiteFinder
                 return $this->sites[$this->mappingRootPageIdToIdentifier[(int)$pageInRootLine['uid']]];
             }
         }
-        throw new SiteNotFoundException('No site found in root line of page  ' . $pageId, 1521716622);
+        throw new SiteNotFoundException('No site found in root line of page ' . $pageId, 1521716622);
     }
 }

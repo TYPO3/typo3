@@ -174,7 +174,7 @@ class PseudoSiteFinder
                 return $this->pseudoSites[(int)$pageInRootLine['uid']];
             }
         }
-        throw new SiteNotFoundException('No pseudo-site found in root line of page  ' . $pageId, 1534710048);
+        throw new SiteNotFoundException('No pseudo-site found in root line of page ' . $pageId, 1534710048);
     }
 
     /**
