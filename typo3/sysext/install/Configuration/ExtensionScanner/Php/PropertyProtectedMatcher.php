@@ -862,4 +862,34 @@ return [
             'Deprecation-86110-FrontendEditingController.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ADMCMD_preview_BEUSER_uid' => [
+        'restFiles' => [
+            'Deprecation-86047-TSFEPropertiesMethodsAndChangeVisibility.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->workspacePreview' => [
+        'restFiles' => [
+            'Deprecation-86047-TSFEPropertiesMethodsAndChangeVisibility.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->loginAllowedInBranch' => [
+        'restFiles' => [
+            'Deprecation-86047-TSFEPropertiesMethodsAndChangeVisibility.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->MP_defaults' => [
+        'restFiles' => [
+            'Deprecation-86047-TSFEPropertiesMethodsAndChangeVisibility.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->debug' => [
+        'restFiles' => [
+            'Deprecation-86047-TSFEPropertiesMethodsAndChangeVisibility.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->pageAccessFailureHistory' => [
+        'restFiles' => [
+            'Deprecation-86047-TSFEPropertiesMethodsAndChangeVisibility.rst',
+        ],
+    ],
 ];

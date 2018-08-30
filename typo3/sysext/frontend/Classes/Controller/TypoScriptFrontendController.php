@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Charset\UnknownCharsetException;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -93,6 +94,16 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 class TypoScriptFrontendController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+    use PublicMethodDeprecationTrait;
+
+    protected $deprecatedPublicMethods = [
+        'tempPageCacheContent' => 'Using $TSFE->tempPageCacheContent() has been marked as internal as its purpose is to be managed from within TSFE directly.',
+        'realPageCacheContent' => 'Using $TSFE->realPageCacheContent() has been marked as internal as its purpose is to be managed from within TSFE directly.',
+        'setPageCacheContent' => 'Using $TSFE->setPageCacheContent() has been marked as internal as its purpose is to be managed from within TSFE directly.',
+        'clearPageCacheContent_pidList' => 'Using $TSFE->clearPageCacheContent_pidList() has been marked as internal as its purpose is to be managed from within TSFE directly.',
+        'setSysLastChanged' => 'Using $TSFE->setSysLastChanged() has been marked as internal as its purpose is to be managed from within TSFE directly.',
+        'contentStrReplace' => 'Using $TSFE->contentStrReplace() has been marked as internal as its purpose is to be managed from within TSFE directly.',
+    ];
 
     /**
      * The page id (int)
@@ -190,8 +201,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Array containing a history of why a requested page was not accessible.
      * @var array
+     * @deprecated this value has a protected visibility now, as it is only used for internal purpose. Use "getPageAccessFailureReasons()" instead.
      */
-    public $pageAccessFailureHistory = [];
+    protected $pageAccessFailureHistory = [];
 
     /**
      * @var string
@@ -251,14 +263,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Integer, that indicates which workspace is being previewed.
      * Not in use anymore, as this is part of the workspace preview functionality, use $TSFE->whichWorkspace() instead.
      * @var int
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. User the information within the context "workspace" aspect.
      */
-    public $workspacePreview = 0;
+    protected $workspacePreview = 0;
 
     /**
      * Shows whether logins are allowed in branch
      * @var bool
      */
-    public $loginAllowedInBranch = true;
+    protected $loginAllowedInBranch = true;
 
     /**
      * Shows specific mode (all or groups)
@@ -269,8 +282,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Set to backend user ID to initialize when keyword-based preview is used
      * @var int
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. User the information within the context "backend.user" aspect.
      */
-    public $ADMCMD_preview_BEUSER_uid = 0;
+    protected $ADMCMD_preview_BEUSER_uid = 0;
 
     /**
      * Flag indication that preview is active. This is based on the login of a
@@ -472,8 +486,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Debug flag. If TRUE special debug-output maybe be shown (which includes html-formatting).
      * @var bool
+     * @deprecated this property is not in use anymore and will be removed in TYPO3 v10.0.
      */
-    public $debug = false;
+    protected $debug = false;
 
     /**
      * Default internal target
@@ -497,8 +512,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Keys are page ids and values are default &MP (mount point) values to set
      * when using the linking features...)
      * @var array
+     * @deprecated this property is not in use anymore and will be removed in TYPO3 v10.0.
      */
-    public $MP_defaults = [];
+    protected $MP_defaults = [];
 
     /**
      * If set, typolink() function encrypts email addresses. Is set in pagegen-class.
@@ -3210,9 +3226,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Temp cache content
-     * The temporary cache will expire after a few seconds (typ. 30) or will be cleared by the rendered page, which will also clear and rewrite the cache.
+     * The temporary cache will expire after a few seconds (typ. 30) or will be cleared by the rendered page,
+     * which will also clear and rewrite the cache.
      */
-    public function tempPageCacheContent()
+    protected function tempPageCacheContent()
     {
         $this->tempContent = false;
         if (!$this->no_cache) {
@@ -3265,7 +3282,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Set cache content to $this->content
      */
-    public function realPageCacheContent()
+    protected function realPageCacheContent()
     {
         // seconds until a cached page is too old
         $cacheTimeout = $this->get_cache_timeout();
@@ -3298,7 +3315,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param int $expirationTstamp Expiration timestamp
      * @see realPageCacheContent(), tempPageCacheContent()
      */
-    public function setPageCacheContent($content, $data, $expirationTstamp)
+    protected function setPageCacheContent($content, $data, $expirationTstamp)
     {
         $cacheData = [
             'identifier' => $this->newHash,
@@ -3343,7 +3360,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param string $pidList A list of INTEGER numbers which points to page uids for which to clear entries in the cache_pages cache (page content cache)
      */
-    public function clearPageCacheContent_pidList($pidList)
+    protected function clearPageCacheContent_pidList($pidList)
     {
         $pageIds = GeneralUtility::trimExplode(',', $pidList);
         foreach ($pageIds as $pageId) {
@@ -3357,7 +3374,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @see ContentObjectRenderer::lastChanged()
      */
-    public function setSysLastChanged()
+    protected function setSysLastChanged()
     {
         // We only update the info if browsing the live workspace
         if (!$this->doWorkspacePreview() && $this->page['SYS_LASTCHANGED'] < (int)$this->register['SYS_LASTCHANGED']) {
@@ -3997,7 +4014,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Substitute various tokens in content. This should happen only if the content is not cached by proxies or client browsers.
      */
-    public function contentStrReplace()
+    protected function contentStrReplace()
     {
         $search = [];
         $replace = [];
@@ -4954,7 +4971,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Deprecation messages for TYPO3 v9 - public properties of TSFE which have been moved as
-     * @todo: ensure that TypoScript conditions make use of this as well.
      */
 
     /**
@@ -4997,6 +5013,21 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 return isset($this->$propertyName);
             case 'showHiddenRecords':
                 trigger_error('Property $TSFE->showHiddenRecords is not in use anymore as this information is now stored within the visibility aspect.', E_USER_DEPRECATED);
+                return isset($this->$propertyName);
+            case 'ADMCMD_preview_BEUSER_uid':
+                trigger_error('Property $TSFE->ADMCMD_preview_BEUSER_uid is not in use anymore as this information is now stored within the backend.user aspect.', E_USER_DEPRECATED);
+                return isset($this->$propertyName);
+            case 'workspacePreview':
+                trigger_error('Property $TSFE->workspacePreview is not in use anymore as this information is now stored within the workspace aspect.', E_USER_DEPRECATED);
+                return isset($this->$propertyName);
+            case 'loginAllowedInBranch':
+                trigger_error('Property $TSFE->loginAllowedInBranch is marked as protected now as it only contains internal state. Use checkIfLoginAllowedInBranch() instead.', E_USER_DEPRECATED);
+                return isset($this->$propertyName);
+            // Regular deprecations / property visibility changes
+            case 'MP_defaults':
+            case 'debug':
+            case 'pageAccessFailureHistory':
+                trigger_error('Property $TSFE->' . $propertyName . ' is marked as protected now as it only contains internal state.', E_USER_DEPRECATED);
                 return isset($this->$propertyName);
         }
         return false;
@@ -5041,6 +5072,21 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             case 'showHiddenRecords':
                 trigger_error('Property $TSFE->showHiddenRecords is not in use anymore as this information is now stored within the visibility aspect.', E_USER_DEPRECATED);
                 return $this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false);
+            case 'ADMCMD_preview_BEUSER_uid':
+                trigger_error('Property $TSFE->ADMCMD_preview_BEUSER_uid is not in use anymore as this information is now stored within the backend.user aspect.', E_USER_DEPRECATED);
+                return $this->context->getPropertyFromAspect('backend.user', 'id', 0);
+            case 'workspacePreview':
+                trigger_error('Property $TSFE->workspacePreview is not in use anymore as this information is now stored within the workspace aspect.', E_USER_DEPRECATED);
+                return $this->context->getPropertyFromAspect('workspace', 'id', 0);
+            case 'loginAllowedInBranch':
+                trigger_error('Property $TSFE->loginAllowedInBranch is marked as protected now as it only contains internal state. Use checkIfLoginAllowedInBranch() instead.', E_USER_DEPRECATED);
+                break;
+            // Regular deprecations / property visibility changes
+            case 'MP_defaults':
+            case 'debug':
+            case 'pageAccessFailureHistory':
+                trigger_error('Property $TSFE->' . $propertyName . ' is marked as protected now as it only contains internal state.', E_USER_DEPRECATED);
+                break;
         }
         return $this->$propertyName;
     }
@@ -5155,6 +5201,23 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 }
                 $this->context->setAspect('visibility', $newAspect);
                 break;
+            case 'ADMCMD_preview_BEUSER_uid':
+                trigger_error('Property $TSFE->ADMCMD_preview_BEUSER_uid is not in use anymore as this information is now stored within the backend.user aspect.', E_USER_DEPRECATED);
+                // No need to update an aspect here
+                break;
+            case 'workspacePreview':
+                trigger_error('Property $TSFE->workspacePreview is not in use anymore as this information is now stored within the workspace aspect.', E_USER_DEPRECATED);
+                $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, (int)$propertyValue));
+                break;
+            case 'loginAllowedInBranch':
+                trigger_error('Property $TSFE->loginAllowedInBranch is marked as protected now as it only contains internal state. Use checkIfLoginAllowedInBranch() instead.', E_USER_DEPRECATED);
+                break;
+            // Regular deprecations / property visibility changes
+            case 'MP_defaults':
+            case 'debug':
+            case 'pageAccessFailureHistory':
+                trigger_error('Property $TSFE->' . $propertyName . ' is marked as protected now as it only contains internal state.', E_USER_DEPRECATED);
+                break;
         }
         $this->$propertyName = $propertyValue;
     }
@@ -5213,6 +5276,23 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $newAspect = GeneralUtility::makeInstance(VisibilityAspect::class, $aspect->includeHiddenPages(), false, $aspect->includeDeletedRecords());
                 }
                 $this->context->setAspect('visibility', $newAspect);
+                break;
+            case 'ADMCMD_preview_BEUSER_uid':
+                trigger_error('Property $TSFE->ADMCMD_preview_BEUSER_uid is not in use anymore as this information is now stored within the backend.user aspect.', E_USER_DEPRECATED);
+                // No need to update an aspect here
+                break;
+            case 'workspacePreview':
+                trigger_error('Property $TSFE->workspacePreview is not in use anymore as this information is now stored within the workspace aspect.', E_USER_DEPRECATED);
+                $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, 0));
+                break;
+            case 'loginAllowedInBranch':
+                trigger_error('Property $TSFE->loginAllowedInBranch is marked as protected now as it only contains internal state. Use checkIfLoginAllowedInBranch() instead.', E_USER_DEPRECATED);
+                break;
+            // Regular deprecations / property visibility changes
+            case 'MP_defaults':
+            case 'debug':
+            case 'pageAccessFailureHistory':
+                trigger_error('Property $TSFE->' . $propertyName . ' is marked as protected now as it only contains internal state.', E_USER_DEPRECATED);
                 break;
         }
         unset($this->$propertyName);
