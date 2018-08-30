@@ -91,7 +91,8 @@ class PageRouter
         $context = new RequestContext('/', $request->getMethod(), $request->getUri()->getHost());
         $matcher = new UrlMatcher($collection, $context);
         try {
-            $result = $matcher->match('/' . $routePathTail);
+            $result = $matcher->match('/' . ltrim($routePathTail, '/'));
+            unset($result['_route']);
             return new RouteResult($request->getUri(), $site, $language, $result['tail'], $result);
         } catch (ResourceNotFoundException $e) {
             // do nothing
