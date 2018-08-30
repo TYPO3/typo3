@@ -1,0 +1,107 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+			data-namespace-typo3-fluid="true">
+
+<script type="text/javascript">
+	function goToPage(formObject) {
+		var formField = formObject.elements['paginator-target-page'];
+		var url = formField.dataset.url;
+		var numberOfPages = parseInt(formField.dataset.numberOfPages);
+		var page = parseInt(formField.value);
+		if (page > numberOfPages) {
+			page = numberOfPages;
+		} else if (page < 1) {
+			page = 1;
+		}
+		url = url.replace('987654322', page);
+		self.location.href = url;
+		return false;
+	}
+</script>
+
+<nav class="pagination-wrap">
+	<ul class="pagination pagination-block">
+		<f:if condition="{pagination.hasLessPages}">
+			<f:then>
+				<li>
+					<a href="{f:be.uri(route:'site_redirects', parameters: {action: 'overview', demand: demand.parameters, page: 1})}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.first')}">
+						<core:icon identifier="actions-view-paging-first" />
+					</a>
+				</li>
+				<li>
+					<a href="{f:be.uri(route:'site_redirects', parameters: {action: 'overview', demand: demand.parameters, page: pagination.previousPage})}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.previous')}">
+						<core:icon identifier="actions-view-paging-previous" />
+					</a>
+				</li>
+			</f:then>
+			<f:else>
+				<li class="disabled">
+						<span>
+							<core:icon identifier="actions-view-paging-first" />
+						</span>
+				</li>
+				<li class="disabled">
+						<span>
+							<core:icon identifier="actions-view-paging-previous" />
+						</span>
+				</li>
+			</f:else>
+		</f:if>
+		<li>
+				<span>
+					Redirects
+					{pagination.startRecord} - {pagination.endRecord}
+				</span>
+		</li>
+		<li>
+				<span>
+					<f:translate extensionName="fluid" key="widget.pagination.page" />
+						<f:variable name="gotToPageUrl">
+							<f:be.uri route="site_redirects" parameters="{action: 'overview', demand: demand.parameters, page: 987654322}" />
+						</f:variable>
+						<form onsubmit="return goToPage(this);" style="display:inline;">
+							<f:form.textfield
+								additionalAttributes="{min: 1, max: pagination.numberOfPages}"
+								data="{number-of-pages: pagination.numberOfPages, url: gotToPageUrl}"
+								name="paginator-target-page"
+								class="form-control input-sm paginator-input"
+								value="{pagination.current}"
+								type="number" />
+						</form>
+					/ {pagination.numberOfPages}
+				</span>
+		</li>
+		<f:if condition="{pagination.hasMorePages}">
+			<f:then>
+				<li>
+					<a href="{f:be.uri(route:'site_redirects', parameters: {action: 'overview', demand: demand.parameters, page: pagination.nextPage})}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.next')}">
+						<core:icon identifier="actions-view-paging-next" />
+					</a>
+				</li>
+				<li>
+					<a href="{f:be.uri(route:'site_redirects', parameters: {action: 'overview', demand: demand.parameters, page: pagination.numberOfPages})}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.last')}">
+						<core:icon identifier="actions-view-paging-last" />
+					</a>
+				</li>
+			</f:then>
+			<f:else>
+				<li class="disabled">
+						<span>
+							<core:icon identifier="actions-view-paging-next" />
+						</span>
+				</li>
+				<li class="disabled">
+						<span>
+							<core:icon identifier="actions-view-paging-last" />
+						</span>
+				</li>
+			</f:else>
+		</f:if>
+		<li>
+			<a href="{f:be.uri(route:'site_redirects', parameters: {action: 'overview', demand: demand.parameters, page: demand.page})}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.refresh')}">
+				<core:icon identifier="actions-refresh" />
+			</a>
+		</li>
+	</ul>
+</nav>
+
+</html>

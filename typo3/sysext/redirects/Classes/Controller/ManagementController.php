@@ -28,7 +28,8 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Redirects\Service\RedirectCacheService;
+use TYPO3\CMS\Redirects\Repository\Demand;
+use TYPO3\CMS\Redirects\Repository\RedirectRepository;
 use TYPO3\CMS\Redirects\Service\UrlService;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
@@ -92,20 +93,56 @@ class ManagementController
 
     /**
      * Show all redirects, and add a button to create a new redirect
+     * @param ServerRequestInterface $request
      */
-    protected function overviewAction()
+    protected function overviewAction(ServerRequestInterface $request)
     {
         $this->getButtons();
-
-        $redirects = GeneralUtility::makeInstance(RedirectCacheService::class)->getAllRedirects();
-        $defaultUrl = GeneralUtility::makeInstance(UrlService::class)->getDefaultUrl();
-        $showHitCounter = GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount');
+        $demand = Demand::createFromRequest($request);
+        $redirectRepository = GeneralUtility::makeInstance(RedirectRepository::class, $demand);
+        $count = $redirectRepository->countRedirectsByByDemand();
 
         $this->view->assignMultiple([
-            'redirects' => $redirects,
-            'defaultUrl' => $defaultUrl,
-            'showHitCounter' => $showHitCounter,
+            'redirects' => $redirectRepository->findRedirectsByDemand(),
+            'hosts' => $redirectRepository->findHostsOfRedirects(),
+            'statusCodes' => $redirectRepository->findStatusCodesOfRedirects(),
+            'demand' => $demand,
+            'defaultUrl' => GeneralUtility::makeInstance(UrlService::class)->getDefaultUrl(),
+            'showHitCounter' => GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount'),
+            'pagination' => $this->preparePagination($demand, $count),
         ]);
+    }
+
+    /**
+     * Prepares information for the pagination of the module
+     *
+     * @param Demand $demand
+     * @param int $count
+     * @return array
+     */
+    protected function preparePagination(Demand $demand, int $count): array
+    {
+        $numberOfPages = ceil($count / $demand->getLimit());
+        $endRecord = $demand->getOffset() + $demand->getLimit();
+        if ($endRecord > $count) {
+            $endRecord = $count;
+        }
+
+        $pagination = [
+            'current' => $demand->getPage(),
+            'numberOfPages' => $numberOfPages,
+            'hasLessPages' => $demand->getPage() > 1,
+            'hasMorePages' => $demand->getPage() < $numberOfPages,
+            'startRecord' => $demand->getOffset() + 1,
+            'endRecord' => $endRecord
+        ];
+        if ($pagination['current'] < $pagination['numberOfPages']) {
+            $pagination['nextPage'] = $pagination['current'] + 1;
+        }
+        if ($pagination['current'] > 1) {
+            $pagination['previousPage'] = $pagination['current'] - 1;
+        }
+        return $pagination;
     }
 
     /**

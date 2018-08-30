@@ -88,31 +88,6 @@ class RedirectCacheService
     }
 
     /**
-     * Used within the backend module, which also includes the hidden records
-     * @return array
-     */
-    public function getAllRedirects(): array
-    {
-        $redirects = [];
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_redirect');
-        $queryBuilder->getRestrictions()->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        $statement = $queryBuilder
-            ->select('*')
-            ->from('sys_redirect')
-            ->execute();
-        while ($row = $statement->fetch()) {
-            $host = $row['source_host'] ?: '*';
-            if ($row['is_regexp']) {
-                $redirects[$host]['regexp'][$row['source_path']][$row['uid']] = $row;
-            } else {
-                $redirects[$host]['flat'][rtrim($row['source_path'], '/') . '/'][$row['uid']] = $row;
-            }
-        }
-        return $redirects;
-    }
-
-    /**
      * Flushes all redirects from the cache
      */
     protected function flush()

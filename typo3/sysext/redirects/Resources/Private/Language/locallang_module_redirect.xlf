@@ -33,6 +33,28 @@
 				<source>Create new redirect</source>
 			</trans-unit>
 
+			<trans-unit id="redirect_not_found_with_filter.title">
+				<source>No redirects found!</source>
+			</trans-unit>
+			<trans-unit id="redirect_not_found_with_filter.message">
+				<source>With the current set of filters applied, no redirect could be found.</source>
+			</trans-unit>
+			<trans-unit id="redirect_no_filter">
+				<source>Remove all filter</source>
+			</trans-unit>
+			<trans-unit id="filter.source_host.showAll">
+				<source>Show All</source>
+			</trans-unit>
+			<trans-unit id="filter.destination">
+				<source>Destination (Path or Page ID)</source>
+			</trans-unit>
+			<trans-unit id="filter.targetStatusCode">
+				<source>Status Code</source>
+			</trans-unit>
+			<trans-unit id="filter.sendButton">
+				<source>Send</source>
+			</trans-unit>
+
 			<trans-unit id="record_disabled">
 				<source>Redirect is not activated!</source>
 			</trans-unit>
@@ -47,6 +69,9 @@
 			</trans-unit>
 			<trans-unit id="destination">
 				<source>Destination</source>
+			</trans-unit>
+			<trans-unit id="pageID">
+				<source>Page ID</source>
 			</trans-unit>
 			<trans-unit id="destination_status_code">
 				<source>Status Code</source>
@@ -74,6 +99,9 @@
 			</trans-unit>
 			<trans-unit id="hit_last_never">
 				<source>Never</source>
+			</trans-unit>
+			<trans-unit id="visit_destination">
+				<source>Go to</source>
 			</trans-unit>
 		</body>
 	</file>
