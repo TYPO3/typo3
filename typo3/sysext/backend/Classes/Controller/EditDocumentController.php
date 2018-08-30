@@ -2425,10 +2425,22 @@ class EditDocumentController
      */
     protected function getLanguages(int $id, string $table): array
     {
-        $site = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId($id);
+        // This usually happens when a non-pages record is added after another, so we are fetching the proper page ID
+        if ($id < 0 && $table !== 'pages') {
+            $pageId = $this->pageinfo['uid'] ?? null;
+            if ($pageId !== null) {
+                $pageId = (int)$pageId;
+            } else {
+                $fullRecord = BackendUtility::getRecord($table, abs($id));
+                $pageId = (int)$fullRecord['pid'];
+            }
+        } else {
+            $pageId = $id;
+        }
+        $site = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId($pageId);
 
         // Fetch the current translations of this page, to only show the ones where there is a page translation
-        $allLanguages = $site->getAvailableLanguages($this->getBackendUser(), false, $id);
+        $allLanguages = $site->getAvailableLanguages($this->getBackendUser(), false, $pageId);
         if ($table !== 'pages' && $id > 0) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()->removeAll()
@@ -2439,7 +2451,7 @@ class EditDocumentController
                 ->where(
                     $queryBuilder->expr()->eq(
                         $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
                     )
                 )
                 ->execute();
