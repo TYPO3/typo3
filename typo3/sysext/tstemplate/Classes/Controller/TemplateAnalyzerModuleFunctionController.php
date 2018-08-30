@@ -54,6 +54,7 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
      */
     public function init($pObj)
     {
+        parent::init($pObj);
         $this->localLanguageFilePath = 'EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf';
         $this->pObj->modMenu_setDefaultList .= ',ts_analyzer_checkLinenum,ts_analyzer_checkSyntax';
     }
