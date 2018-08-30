@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bfda1455cb3e384b6cb53ffcb627c6f6",
+    "content-hash": "23130fa85b9e60141315739df703117b",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -4787,16 +4787,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "4.7.1",
+            "version": "4.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "aac9e26c9c942a2becc4b363641ad32463a22e70"
+                "reference": "6c13dfeb2d88cb34a065909192d6238b55ee6066"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/aac9e26c9c942a2becc4b363641ad32463a22e70",
-                "reference": "aac9e26c9c942a2becc4b363641ad32463a22e70",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/6c13dfeb2d88cb34a065909192d6238b55ee6066",
+                "reference": "6c13dfeb2d88cb34a065909192d6238b55ee6066",
                 "shasum": ""
             },
             "require": {
@@ -4842,7 +4842,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2018-08-29T13:58:43+00:00"
+            "time": "2018-08-30T07:18:39+00:00"
         },
         {
             "name": "webmozart/assert",
