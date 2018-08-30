@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Core\Compatibility;
  */
 
 use TYPO3\CMS\Core\Routing\SiteMatcher;
-use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\PseudoSite;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -56,18 +56,25 @@ class PseudoSiteTcaDisplayCondition
             );
         }
 
+        // uid is set if we're editing an existing page
+        // This resolves to 0 if the page is 'new'
         $defaultLanguagePageId = (int)$parameters['record']['uid'];
         if (!empty($parameters['record']['l10n_parent'][0])) {
+            // But if the page is a localized page, we take the l10n_parent as uid for the sitematcher
+            // This is 0 if the page in a default language page
             $defaultLanguagePageId = (int)$parameters['record']['l10n_parent'][0];
         }
-
-        // Catch all: If not a "Site" object, it must be a PseudoSite or NullSite or whatever
-        // we may have invented. To be as robust as possible we just say "yes pseudo" here.
-        $isInPseudoSite = true;
-        $site = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId($defaultLanguagePageId);
-        if ($site instanceof Site) {
-            $isInPseudoSite = false;
+        // If still 0, this is probably a 'new' page somewhere, so we take the pid
+        // For additional fun, pid can be -1*real-pid, if the new page is created "after" an existing page
+        if ($defaultLanguagePageId === 0) {
+            $defaultLanguagePageId = abs((int)$parameters['record']['pid']);
         }
+        // And if now still 0, this is a 'new' page below pid 0. This will resolve to a 'NullSite' object
+
+        // If not a Site or a NullSite object, it must be a PseudoSite. We show the slug for
+        // NullSites (new pages below root) to simplify the editing workflow a bit.
+        $site = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId($defaultLanguagePageId);
+        $isInPseudoSite = ($site instanceof PseudoSite);
 
         if ($parameters['conditionParameters'][1] === 'false') {
             // Negate if requested

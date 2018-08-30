@@ -166,7 +166,7 @@ class SiteMatcher implements SingletonInterface
     /**
      * If a given page ID is handed in, a Site/PseudoSite/NullSite is returned.
      *
-     * @param int $pageId the page ID (must be a page in the default language)
+     * @param int $pageId uid of a page in default language
      * @param array|null $rootLine an alternative root line, if already at and.
      * @return SiteInterface
      */

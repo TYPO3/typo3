@@ -48,7 +48,6 @@ class PagesVisibleFieldsTest extends FunctionalTestCase
         'backend_layout',
         'backend_layout_next_level',
         'content_from_pid',
-        'alias',
         'target',
         'cache_timeout',
         'cache_tags',
