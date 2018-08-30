@@ -16,11 +16,16 @@ namespace TYPO3\CMS\Frontend\Typolink;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Routing\PageUriBuilder;
+use TYPO3\CMS\Core\Routing\SiteMatcher;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -160,93 +165,51 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             }
             unset($params);
         }
-        $targetDomain = '';
-        $currentDomain = (string)GeneralUtility::getIndpEnv('HTTP_HOST');
-        if (!empty($MPvarAcc)) {
-            // @todo: This obviously needs more detection with Site Handling, to detect the site language ID
-            $domainResolver = GeneralUtility::makeInstance(LegacyDomainResolver::class);
-            $targetDomainRecord = $domainResolver->matchPageId((int)$page['uid'], $GLOBALS['TYPO3_REQUEST']);
-            // Do not prepend the domain if it is the current hostname
-            if (!empty($targetDomainRecord) && !$targetDomainRecord['isCurrentDomain']) {
-                $targetDomain = $targetDomainRecord['domainName'];
-            }
-        }
-        $absoluteUrlScheme = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https' : 'http';
-        // URL shall be absolute:
-        if (isset($conf['forceAbsoluteUrl']) && $conf['forceAbsoluteUrl']) {
-            // Override scheme:
-            if (isset($conf['forceAbsoluteUrl.']['scheme']) && $conf['forceAbsoluteUrl.']['scheme']) {
-                $absoluteUrlScheme = $conf['forceAbsoluteUrl.']['scheme'];
-            }
-            // If no domain records are defined, use current domain
-            $targetDomain = $targetDomain ?: $currentDomain;
-            // If go for an absolute link, add site path if it's not taken care about by absRefPrefix
-            if (!$tsfe->absRefPrefix && $targetDomain === $currentDomain) {
-                $targetDomain = $currentDomain . rtrim(GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'), '/');
-            }
-        }
-        // If target page has a different domain and the current domain's linking scheme (e.g. RealURL/...) should not be used
-        if ($targetDomain !== '' && $targetDomain !== $currentDomain && !$enableLinksAcrossDomains) {
-            $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', false, $tsfe->extTarget);
-            // Convert IDNA-like domain (if any)
-            if (!preg_match('/^[a-z0-9.\\-]*$/i', $targetDomain)) {
-                $targetDomain = GeneralUtility::idnaEncode($targetDomain);
-            }
-            $url = $absoluteUrlScheme . '://' . $targetDomain . '/index.php?id=' . $page['uid'] . $addQueryParams;
-        } else {
-            // Internal link or current domain's linking scheme should be used
-            // Internal target:
-            $target = (isset($page['target']) && trim($page['target'])) ? $page['target'] : $target;
-            if (empty($target)) {
-                $target = $this->resolveTargetAttribute($conf, 'target', true, $tsfe->intTarget);
-            }
-            $LD = $this->createTotalUrlAndLinkData($page, $target, $conf['no_cache'], $addQueryParams, $pageType, $targetDomain);
-            if ($targetDomain !== '') {
-                // We will add domain only if URL does not have it already.
-                if ($enableLinksAcrossDomains && $targetDomain !== $currentDomain && !empty($tsfe->absRefPrefix)) {
-                    // Get rid of the absRefPrefix if necessary. absRefPrefix is applicable only
-                    // to the current web site. If we have domain here it means we link across
-                    // domains. absRefPrefix can contain domain name, which will screw up
-                    // the link to the external domain.
-                    $prefixLength = strlen($tsfe->absRefPrefix);
-                    if (substr($LD['totalURL'], 0, $prefixLength) === $tsfe->absRefPrefix) {
-                        $LD['totalURL'] = substr($LD['totalURL'], $prefixLength);
-                    }
-                }
-                $urlParts = parse_url($LD['totalURL']);
-                if (empty($urlParts['host'])) {
-                    $LD['totalURL'] = $absoluteUrlScheme . '://' . $targetDomain . ($LD['totalURL'][0] === '/' ? '' : '/') . $LD['totalURL'];
-                }
-            }
-            $url = $LD['totalURL'];
-        }
-        $url .= $sectionMark;
-        // If sectionMark is set, there is no baseURL AND the current page is the page the link is to,
-        // check if there are any additional parameters or addQueryString parameters and if not, drop the url.
-        if ($sectionMark
-            && !$tsfe->config['config']['baseURL']
-            && (int)$page['uid'] === (int)$tsfe->id
-            && !trim($addQueryParams)
-            && (empty($conf['addQueryString']) || !isset($conf['addQueryString.']))
-        ) {
-            $currentQueryArray = [];
-            parse_str(GeneralUtility::getIndpEnv('QUERY_STRING'), $currentQueryArray);
-            $currentQueryParams = GeneralUtility::implodeArrayForUrl('', $currentQueryArray, '', false, true);
 
-            if (!trim($currentQueryParams)) {
-                list(, $URLparams) = explode('?', $url);
-                list($URLparams) = explode('#', (string)$URLparams);
-                parse_str($URLparams . $LD['orig_type'], $URLparamsArray);
-                // Type nums must match as well as page ids
-                if ((int)$URLparamsArray['type'] === (int)$tsfe->type) {
-                    unset($URLparamsArray['id']);
-                    unset($URLparamsArray['type']);
-                    // If there are no parameters left.... set the new url.
-                    if (empty($URLparamsArray)) {
-                        $url = $sectionMark;
-                    }
+        // Check if the target page has a site configuration
+        try {
+            $siteOfTargetPage = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId((int)$page['uid']);
+            $currentSite = $this->getCurrentSite();
+        } catch (SiteNotFoundException $e) {
+            // Usually happens in tests, as Pseudo Sites should be available everywhere.
+            $siteOfTargetPage = null;
+            $currentSite = null;
+        }
+        // Link to a page that has a site configuration
+        if ($siteOfTargetPage instanceof Site) {
+            $queryParameters = [];
+            parse_str($addQueryParams, $queryParameters);
+            unset($queryParameters['id'], $queryParameters['L']);
+            if ($pageType) {
+                $queryParameters['type'] = (int)$pageType;
+            }
+
+            // Generate the URL
+            $url = $this->generateUrlForPageWithSiteConfiguration($page, $siteOfTargetPage, $queryParameters, $sectionMark, $conf);
+
+            $treatAsExternalLink = true;
+            // no scheme => always not external
+            if (!$url->getScheme() || !$url->getHost()) {
+                $treatAsExternalLink = false;
+            } else {
+                // URL has a scheme, possibly because someone requested a full URL. So now lets check if the URL
+                // is on the same site pagetree. If this is the case, we'll treat it as internal
+                if ($currentSite instanceof Site && $currentSite->getRootPageId() === $siteOfTargetPage->getRootPageId()) {
+                    $treatAsExternalLink = false;
                 }
             }
+
+            $url = (string)$url;
+            if ($treatAsExternalLink) {
+                $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', false, $tsfe->extTarget);
+            } else {
+                $target = (isset($page['target']) && trim($page['target'])) ? $page['target'] : $target;
+                if (empty($target)) {
+                    $target = $this->resolveTargetAttribute($conf, 'target', true, $tsfe->intTarget);
+                }
+            }
+        } else {
+            list($url, $target) = $this->generateUrlForPageWithoutSiteConfiguration($page, $addQueryParams, $conf, $pageType, $sectionMark, $target, $MPvarAcc);
         }
 
         // If link is to an access restricted page which should be redirected, then find new URL:
@@ -275,6 +238,173 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         // Setting title if blank value to link
         $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, $page['title']);
         return [$url, $linkText, $target];
+    }
+
+    /**
+     * Create a UriInterface object when linking to a page with a site configuration
+     *
+     * @param array $page
+     * @param Site $siteOfTargetPage
+     * @param array $queryParameters
+     * @param string $fragment
+     * @param array $conf
+     * @return UriInterface
+     * @throws UnableToLinkException
+     */
+    protected function generateUrlForPageWithSiteConfiguration(array $page, Site $siteOfTargetPage, array $queryParameters, string $fragment, array $conf): UriInterface
+    {
+        $currentSite = $this->getCurrentSite();
+        $currentSiteLanguage = $this->getCurrentSiteLanguage();
+        // Happens when currently on a pseudo-site configuration
+        // We assume to use the default language then
+        if (!($currentSiteLanguage instanceof SiteLanguage)) {
+            $currentSiteLanguage = $currentSite->getDefaultLanguage();
+        }
+
+        $targetLanguageId = $conf['language'] ?? 'current';
+        if ($targetLanguageId === 'current') {
+            $targetLanguageId = $currentSiteLanguage ? $currentSiteLanguage->getLanguageId() : 0;
+        } else {
+            $targetLanguageId = (int)$targetLanguageId;
+        }
+        try {
+            $siteLanguageOfTargetPage = $siteOfTargetPage->getLanguageById($targetLanguageId);
+        } catch (\InvalidArgumentException $e) {
+            throw new UnableToLinkException('The target page does not have a language with ID ' . $targetLanguageId . ' configured in its site configuration.', 1535477406);
+        }
+
+        // By default, it is assumed to ab an internal link or current domain's linking scheme should be used
+        // Use the config option to override this.
+        $useAbsoluteUrl = $conf['forceAbsoluteUrl'] ?? false;
+        // Check if the current page equal to the site of the target page, now only set the absolute URL
+        if ($currentSite->getRootPageId() !== $siteOfTargetPage->getRootPageId()) {
+            $useAbsoluteUrl = true;
+        // @todo: let's only check for host / scheme once we use the Uri interface
+        } elseif ($siteLanguageOfTargetPage->getBase() !== $currentSiteLanguage->getBase()) {
+            $useAbsoluteUrl = true;
+        }
+
+        $targetPageId = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $page['uid']);
+
+        $uri = GeneralUtility::makeInstance(PageUriBuilder::class)->buildUri(
+            $targetPageId,
+            $queryParameters,
+            $fragment,
+            ['site' => $siteOfTargetPage, 'language' => $siteLanguageOfTargetPage],
+            $useAbsoluteUrl ? PageUriBuilder::ABSOLUTE_URL : PageUriBuilder::ABSOLUTE_PATH
+        );
+        // Override scheme, but only if the site does not define a scheme yet AND the site defines a domain/host
+        if ($useAbsoluteUrl && !$uri->getScheme() && $uri->getHost()) {
+            $scheme = $conf['forceAbsoluteUrl.']['scheme'] ?? 'https';
+            $uri = $uri->withScheme($scheme);
+        }
+        return $uri;
+    }
+
+    /**
+     * Generate a URL for a page without site configuration
+     *
+     * @param array $page
+     * @param string $additionalQueryParams
+     * @param array $conf
+     * @param string $pageType
+     * @param string $sectionMark
+     * @param string $target
+     * @param array $MPvarAcc
+     * @return array
+     */
+    protected function generateUrlForPageWithoutSiteConfiguration(array $page, string $additionalQueryParams, array $conf, string $pageType, string $sectionMark, string $target, array $MPvarAcc): array
+    {
+        $tsfe = $this->getTypoScriptFrontendController();
+        $enableLinksAcrossDomains = $tsfe->config['config']['typolinkEnableLinksAcrossDomains'];
+        $targetDomain = '';
+        $currentDomain = (string)GeneralUtility::getIndpEnv('HTTP_HOST');
+        if (!empty($MPvarAcc)) {
+            $domainResolver = GeneralUtility::makeInstance(LegacyDomainResolver::class);
+            $targetDomainRecord = $domainResolver->matchPageId((int)$page['uid'], $GLOBALS['TYPO3_REQUEST']);
+            // Do not prepend the domain if it is the current hostname
+            if (!empty($targetDomainRecord) && !$targetDomainRecord['isCurrentDomain']) {
+                $targetDomain = $targetDomainRecord['domainName'];
+            }
+        }
+        $absoluteUrlScheme = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https' : 'http';
+        // URL shall be absolute:
+        if (isset($conf['forceAbsoluteUrl']) && $conf['forceAbsoluteUrl']) {
+            // Override scheme:
+            if (isset($conf['forceAbsoluteUrl.']['scheme']) && $conf['forceAbsoluteUrl.']['scheme']) {
+                $absoluteUrlScheme = $conf['forceAbsoluteUrl.']['scheme'];
+            }
+            // If no domain records are defined, use current domain
+            $targetDomain = $targetDomain ?: $currentDomain;
+            // If go for an absolute link, add site path if it's not taken care about by absRefPrefix
+            if (!$tsfe->absRefPrefix && $targetDomain === $currentDomain) {
+                $targetDomain = $currentDomain . rtrim(GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'), '/');
+            }
+        }
+        // If target page has a different domain and the current domain's linking scheme (e.g. RealURL/...) should not be used
+        if ($targetDomain !== '' && $targetDomain !== $currentDomain && !$enableLinksAcrossDomains) {
+            $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', false, $tsfe->extTarget);
+            // Convert IDNA-like domain (if any)
+            if (!preg_match('/^[a-z0-9.\\-]*$/i', $targetDomain)) {
+                $targetDomain = GeneralUtility::idnaEncode($targetDomain);
+            }
+            $url = $absoluteUrlScheme . '://' . $targetDomain . '/index.php?id=' . $page['uid'] . $additionalQueryParams;
+        } else {
+            // Internal link or current domain's linking scheme should be used
+            // Internal target:
+            $target = (isset($page['target']) && trim($page['target'])) ? $page['target'] : $target;
+            if (empty($target)) {
+                $target = $this->resolveTargetAttribute($conf, 'target', true, $tsfe->intTarget);
+            }
+            $LD = $this->createTotalUrlAndLinkData($page, $target, $conf['no_cache'], $additionalQueryParams, $pageType, $targetDomain);
+            if ($targetDomain !== '') {
+                // We will add domain only if URL does not have it already.
+                if ($enableLinksAcrossDomains && $targetDomain !== $currentDomain && !empty($tsfe->absRefPrefix)) {
+                    // Get rid of the absRefPrefix if necessary. absRefPrefix is applicable only
+                    // to the current web site. If we have domain here it means we link across
+                    // domains. absRefPrefix can contain domain name, which will screw up
+                    // the link to the external domain.
+                    $prefixLength = strlen($tsfe->absRefPrefix);
+                    if (substr($LD['totalURL'], 0, $prefixLength) === $tsfe->absRefPrefix) {
+                        $LD['totalURL'] = substr($LD['totalURL'], $prefixLength);
+                    }
+                }
+                $urlParts = parse_url($LD['totalURL']);
+                if (empty($urlParts['host'])) {
+                    $LD['totalURL'] = $absoluteUrlScheme . '://' . $targetDomain . ($LD['totalURL'][0] === '/' ? '' : '/') . $LD['totalURL'];
+                }
+            }
+            $url = $LD['totalURL'];
+        }
+        $url .= $sectionMark;
+        // If sectionMark is set, there is no baseURL AND the current page is the page the link is to,
+        // check if there are any additional parameters or addQueryString parameters and if not, drop the url.
+        if ($sectionMark
+            && !$tsfe->config['config']['baseURL']
+            && (int)$page['uid'] === (int)$tsfe->id
+            && !trim($additionalQueryParams)
+            && (empty($conf['addQueryString']) || !isset($conf['addQueryString.']))
+        ) {
+            $currentQueryArray = [];
+            parse_str(GeneralUtility::getIndpEnv('QUERY_STRING'), $currentQueryArray);
+            $currentQueryParams = GeneralUtility::implodeArrayForUrl('', $currentQueryArray, '', false, true);
+
+            if (!trim($currentQueryParams)) {
+                list(, $URLparams) = explode('?', $url);
+                list($URLparams) = explode('#', (string)$URLparams);
+                parse_str($URLparams . $LD['orig_type'], $URLparamsArray);
+                // Type nums must match as well as page ids
+                if ((int)$URLparamsArray['type'] === (int)$tsfe->type) {
+                    unset($URLparamsArray['id']);
+                    unset($URLparamsArray['type']);
+                    // If there are no parameters left.... set the new url.
+                    if (empty($URLparamsArray)) {
+                        $url = $sectionMark;
+                    }
+                }
+            }
+        }
+        return [$url, $target];
     }
 
     /**
@@ -500,7 +630,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      */
     protected function createTotalUrlAndLinkData($page, $target, $no_cache, $addParams = '', $typeOverride = '', $targetDomain = '')
     {
-        $allQueryParameters = [];
         $LD = [];
         // Adding Mount Points, "&MP=", parameter for the current page if any is set
         // but non other set explicitly
@@ -519,9 +648,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         }
         // typeNum
         $typeNum = $this->getTypoScriptFrontendController()->tmpl->setup[$target . '.']['typeNum'];
-        $config = $this->getTypoScriptFrontendController()->config;
-        if (!MathUtility::canBeInterpretedAsInteger($typeOverride) && !empty($config['config']['forceTypeValue']) && (int)$config['config']['forceTypeValue']) {
-            $typeOverride = (int)$config['config']['forceTypeValue'];
+        if (!MathUtility::canBeInterpretedAsInteger($typeOverride) && (int)$this->getTypoScriptFrontendController()->config['config']['forceTypeValue']) {
+            $typeOverride = (int)$this->getTypoScriptFrontendController()->config['config']['forceTypeValue'];
         }
         if ((string)$typeOverride !== '') {
             $typeNum = $typeOverride;
@@ -529,67 +657,25 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         // Override...
         if ($typeNum) {
             $LD['type'] = '&type=' . (int)$typeNum;
-            $allQueryParameters['type'] = (int)$typeNum;
         } else {
             $LD['type'] = '';
         }
         // Preserving the type number.
         $LD['orig_type'] = $LD['type'];
         // noCache
-        if ($no_cache) {
-            $LD['no_cache'] = '&no_cache=1';
-            $allQueryParameters['no_cache'] = 1;
-        } else {
-            $LD['no_cache'] = '';
-        }
+        $LD['no_cache'] = $no_cache ? '&no_cache=1' : '';
         // linkVars
-        $queryParameters = GeneralUtility::explodeUrl2Array($this->getTypoScriptFrontendController()->linkVars . $addParams);
-        if (!empty($queryParameters)) {
-            $allQueryParameters = array_replace_recursive($queryParameters, $allQueryParameters);
-            $LD['linkVars'] = GeneralUtility::implodeArrayForUrl('', $queryParameters, '', false, true);
+        if ($addParams) {
+            $LD['linkVars'] = GeneralUtility::implodeArrayForUrl('', GeneralUtility::explodeUrl2Array($this->getTypoScriptFrontendController()->linkVars . $addParams), '', false, true);
+        } else {
+            $LD['linkVars'] = $this->getTypoScriptFrontendController()->linkVars;
         }
         // Add absRefPrefix if exists.
-        $absRefPrefix = $this->getTypoScriptFrontendController()->absRefPrefix;
-        $LD['url'] = $absRefPrefix . $LD['url'];
+        $LD['url'] = $this->getTypoScriptFrontendController()->absRefPrefix . $LD['url'];
         // If the special key 'sectionIndex_uid' (added 'manually' in tslib/menu.php to the page-record) is set, then the link jumps directly to a section on the page.
         $LD['sectionIndex'] = $page['sectionIndex_uid'] ? '#c' . $page['sectionIndex_uid'] : '';
-
-        // Compile the total url
-        $urlParts = parse_url($LD['url']);
-
-        // Now see if the URL can be replaced by a URL generated by the Site-based Page Builder,
-        // but first find out if a language has been set explicitly
-        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
-            $currentSiteLanguage = $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
-            if ($currentSiteLanguage instanceof SiteLanguage) {
-                $languageId = $currentSiteLanguage->getLanguageId();
-            }
-        }
-        $languageId = $queryParameters['L'] ?? $languageId ?? null;
-        $totalUrl = (string)GeneralUtility::makeInstance(PageUriBuilder::class)->buildUri(
-            (int)$page['uid'],
-            $allQueryParameters,
-            $LD['sectionIndex'],
-            ['language' => $languageId, 'alternativePageId' => $page['alias'] ?: $page['uid'], 'legacyUrlPrefix' => $absRefPrefix],
-            (!$urlParts['scheme'] && !$urlParts['host']) ? PageUriBuilder::ABSOLUTE_PATH : PageUriBuilder::ABSOLUTE_URL
-        );
-
-        // $totalUri contains /index.php for legacy URLs, as previously "it was index.php"
-        // In case an URI has is prefixed with "/" which is not the absRefPrefix, remove it.
-        // this might change in the future
-        if (strpos($totalUrl, '/index.php') === 0 && $absRefPrefix !== '/') {
-            $totalUrl = substr($totalUrl, 1);
-        }
-
-        // Add the method url id token later-on
-        if ($this->getTypoScriptFrontendController()->getMethodUrlIdToken) {
-            if (strpos($totalUrl, '#') !== false) {
-                $totalUrl = str_replace('#', $this->getTypoScriptFrontendController()->getMethodUrlIdToken . '#', $totalUrl);
-            } else {
-                $totalUrl .= $this->getTypoScriptFrontendController()->getMethodUrlIdToken;
-            }
-        }
-        $LD['totalURL'] = $totalUrl;
+        // Compile the normal total url
+        $LD['totalURL'] = rtrim($LD['url'] . $LD['type'] . $LD['no_cache'] . $LD['linkVars'] . $this->getTypoScriptFrontendController()->getMethodUrlIdToken, '?') . $LD['sectionIndex'];
         // Call post processing function for link rendering:
         $_params = [
             'LD' => &$LD,
@@ -600,5 +686,37 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             GeneralUtility::callUserFunction($_funcRef, $_params, $this->getTypoScriptFrontendController()->tmpl);
         }
         return $LD;
+    }
+
+    /**
+     * Check if we have a site object in the current request. if null, this usually means that
+     * this class was called from CLI context.
+     *
+     * @return SiteInterface|null
+     */
+    protected function getCurrentSite(): ?SiteInterface
+    {
+        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
+            return $GLOBALS['TYPO3_REQUEST']->getAttribute('site', null);
+        }
+        if (MathUtility::canBeInterpretedAsInteger($GLOBALS['TSFE']->id) && $GLOBALS['TSFE']->id > 0) {
+            $matcher = GeneralUtility::makeInstance(SiteMatcher::class);
+            return $matcher->matchByPageId((int)$GLOBALS['TSFE']->id);
+        }
+        return null;
+    }
+
+    /**
+     * If the current request has a site language, this means that the SiteResolver has detected a
+     * page with a site configuration and a selected language, so let's choose that one.
+     *
+     * @return SiteLanguage|null
+     */
+    protected function getCurrentSiteLanguage(): ?SiteLanguage
+    {
+        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
+            return $GLOBALS['TYPO3_REQUEST']->getAttribute('language', null);
+        }
+        return null;
     }
 }

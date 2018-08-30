@@ -21,6 +21,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -71,27 +73,42 @@ class PageUriBuilder implements SingletonInterface
     public function buildUri(int $pageId, array $queryParameters = [], string $fragment = null, array $options = [], string $referenceType = self::ABSOLUTE_PATH): UriInterface
     {
         // Resolve site
-        $languageOption = isset($options['language']) ? (int)$options['language'] : null;
+        $site = null;
+        $siteLanguage = null;
+        $languageOption = $options['language'] ?? null;
         $languageQueryParameter = isset($queryParameters['L']) ? (int)$queryParameters['L'] : null;
+
+        if (isset($options['site']) && $options['site'] instanceof Site) {
+            $site = $options['site'];
+        }
+        if (isset($options['language'])) {
+            if ($options['language'] instanceof SiteLanguage) {
+                $siteLanguage = $options['language'];
+                $languageOption = $siteLanguage->getLanguageId();
+            } else {
+                $languageOption = (int)$languageOption;
+            }
+        }
         $languageId = $languageOption ?? $languageQueryParameter ?? null;
 
         // alternative page ID - Used to set as alias as well
         $alternativePageId = $options['alternativePageId'] ?? $pageId;
-        $siteLanguage = null;
-        try {
-            $site = $this->siteFinder->getSiteByPageId($pageId, $options['rootLine'] ?? null);
-            if ($site) {
-                // Resolve language (based on the options / query parameters, and remove it from GET variables,
-                // as the language is determined by the language path
-                unset($queryParameters['L']);
-                $siteLanguage = $site->getLanguageById($languageId ?? 0);
+        if (!($site instanceof Site)) {
+            try {
+                $site = $this->siteFinder->getSiteByPageId($pageId, $options['rootLine'] ?? null);
+                if ($site) {
+                    // Resolve language (based on the options / query parameters, and remove it from GET variables,
+                    // as the language is determined by the language path
+                    unset($queryParameters['L']);
+                    $siteLanguage = $site->getLanguageById($languageId ?? 0);
+                }
+            } catch (SiteNotFoundException | \InvalidArgumentException $e) {
             }
-        } catch (SiteNotFoundException | \InvalidArgumentException $e) {
         }
 
         // If something is found, use /en/?id=123&additionalParams
         // Only if a language is configured for the site, build a URL with a site prefix / base
-        if ($siteLanguage) {
+        if ($site && $siteLanguage) {
             unset($options['legacyUrlPrefix']);
             // Ensure to fetch the path segment / slug if it exists
             if ($siteLanguage->getLanguageId() > 0) {

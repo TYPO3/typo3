@@ -140,30 +140,28 @@ class LinkGeneratorTest extends AbstractTestCase
     {
         $instructions = [
             // acme.com -> acme.com (same site)
-            ['https://acme.us/', 1100, 1000, '/?id=acme-root'],
-            ['https://acme.us/', 1100, 1100, '/?id=acme-first'],
+            ['https://acme.us/', 1100, 1000, '/?id=1000'],
+            ['https://acme.us/', 1100, 1100, '/?id=1100'],
             ['https://acme.us/', 1100, 1200, '/?id=1200'],
             ['https://acme.us/', 1100, 1210, '/?id=1210'],
             ['https://acme.us/', 1100, 404, '/?id=404'],
             // acme.com -> products.acme.com (nested sub-site)
-            ['https://acme.us/', 1100, 1300, '/?id=1300'],
-            ['https://acme.us/', 1100, 1310, '/?id=1310'],
+            ['https://acme.us/', 1100, 1300, 'https://products.acme.com/?id=1300'],
+            ['https://acme.us/', 1100, 1310, 'https://products.acme.com/?id=1310'],
             // acme.com -> blog.acme.com (different site)
-            // @todo https://blog.acme.com/ not prefixed
-            ['https://acme.us/', 1100, 2000, '/?id=blog-root'],
-            ['https://acme.us/', 1100, 2100, '/?id=2100'],
-            ['https://acme.us/', 1100, 2110, '/john/?id=2110'],
-            ['https://acme.us/', 1100, 2111, '/john/?id=2111'],
+            ['https://acme.us/', 1100, 2000, 'https://blog.acme.com/?id=2000'],
+            ['https://acme.us/', 1100, 2100, 'https://blog.acme.com/?id=2100'],
+            ['https://acme.us/', 1100, 2110, 'https://blog.acme.com/john/?id=2110'],
+            ['https://acme.us/', 1100, 2111, 'https://blog.acme.com/john/?id=2111'],
             // blog.acme.com -> acme.com (different site)
-            // @todo https://acme.com/ not prefixed
-            ['https://blog.acme.com/', 2100, 1000, '/?id=acme-root'],
-            ['https://blog.acme.com/', 2100, 1100, '/?id=acme-first'],
-            ['https://blog.acme.com/', 2100, 1200, '/?id=1200'],
-            ['https://blog.acme.com/', 2100, 1210, '/?id=1210'],
-            ['https://blog.acme.com/', 2100, 404, '/?id=404'],
+            ['https://blog.acme.com/', 2100, 1000, 'https://acme.us/?id=1000'],
+            ['https://blog.acme.com/', 2100, 1100, 'https://acme.us/?id=1100'],
+            ['https://blog.acme.com/', 2100, 1200, 'https://acme.us/?id=1200'],
+            ['https://blog.acme.com/', 2100, 1210, 'https://acme.us/?id=1210'],
+            ['https://blog.acme.com/', 2100, 404, 'https://acme.us/?id=404'],
             // blog.acme.com -> products.acme.com (different sub-site)
-            ['https://blog.acme.com/', 2100, 1300, '/?id=1300'],
-            ['https://blog.acme.com/', 2100, 1310, '/?id=1310'],
+            ['https://blog.acme.com/', 2100, 1300, 'https://products.acme.com/?id=1300'],
+            ['https://blog.acme.com/', 2100, 1310, 'https://products.acme.com/?id=1310'],
         ];
 
         return $this->keysFromTemplate(
@@ -204,30 +202,28 @@ class LinkGeneratorTest extends AbstractTestCase
     {
         $instructions = [
             // acme.com -> acme.com (same site)
-            ['https://acme.us/', [7100, 1700], 7110, 1000, '/?id=acme-root'],
-            ['https://acme.us/', [7100, 1700], 7110, 1100, '/?id=acme-first'],
+            ['https://acme.us/', [7100, 1700], 7110, 1000, '/?id=1000'],
+            ['https://acme.us/', [7100, 1700], 7110, 1100, '/?id=1100'],
             ['https://acme.us/', [7100, 1700], 7110, 1200, '/?id=1200'],
             ['https://acme.us/', [7100, 1700], 7110, 1210, '/?id=1210'],
             ['https://acme.us/', [7100, 1700], 7110, 404, '/?id=404'],
             // acme.com -> products.acme.com (nested sub-site)
-            ['https://acme.us/', [7100, 1700], 7110, 1300, '/?id=1300'],
-            ['https://acme.us/', [7100, 1700], 7110, 1310, '/?id=1310'],
+            ['https://acme.us/', [7100, 1700], 7110, 1300, 'https://products.acme.com/?id=1300'],
+            ['https://acme.us/', [7100, 1700], 7110, 1310, 'https://products.acme.com/?id=1310'],
             // acme.com -> blog.acme.com (different site)
-            // @todo https://blog.acme.com/ not prefixed
-            ['https://acme.us/', [7100, 1700], 7110, 2000, '/?id=blog-root'],
-            ['https://acme.us/', [7100, 1700], 7110, 2100, '/?id=2100'],
-            ['https://acme.us/', [7100, 1700], 7110, 2110, '/john/?id=2110'],
-            ['https://acme.us/', [7100, 1700], 7110, 2111, '/john/?id=2111'],
+            ['https://acme.us/', [7100, 1700], 7110, 2000, 'https://blog.acme.com/?id=2000'],
+            ['https://acme.us/', [7100, 1700], 7110, 2100, 'https://blog.acme.com/?id=2100'],
+            ['https://acme.us/', [7100, 1700], 7110, 2110, 'https://blog.acme.com/john/?id=2110'],
+            ['https://acme.us/', [7100, 1700], 7110, 2111, 'https://blog.acme.com/john/?id=2111'],
             // blog.acme.com -> acme.com (different site)
-            // @todo https://acme.com/ not prefixed
-            ['https://blog.acme.com/', [7100, 2700], 7110, 1000, '/?id=acme-root'],
-            ['https://blog.acme.com/', [7100, 2700], 7110, 1100, '/?id=acme-first'],
-            ['https://blog.acme.com/', [7100, 2700], 7110, 1200, '/?id=1200'],
-            ['https://blog.acme.com/', [7100, 2700], 7110, 1210, '/?id=1210'],
-            ['https://blog.acme.com/', [7100, 2700], 7110, 404, '/?id=404'],
+            ['https://blog.acme.com/', [7100, 2700], 7110, 1000, 'https://acme.us/?id=1000'],
+            ['https://blog.acme.com/', [7100, 2700], 7110, 1100, 'https://acme.us/?id=1100'],
+            ['https://blog.acme.com/', [7100, 2700], 7110, 1200, 'https://acme.us/?id=1200'],
+            ['https://blog.acme.com/', [7100, 2700], 7110, 1210, 'https://acme.us/?id=1210'],
+            ['https://blog.acme.com/', [7100, 2700], 7110, 404, 'https://acme.us/?id=404'],
             // blog.acme.com -> products.acme.com (different sub-site)
-            ['https://blog.acme.com/', [7100, 2700], 7110, 1300, '/?id=1300'],
-            ['https://blog.acme.com/', [7100, 2700], 7110, 1310, '/?id=1310'],
+            ['https://blog.acme.com/', [7100, 2700], 7110, 1300, 'https://products.acme.com/?id=1300'],
+            ['https://blog.acme.com/', [7100, 2700], 7110, 1310, 'https://products.acme.com/?id=1310'],
         ];
 
         return $this->keysFromTemplate(
@@ -277,18 +273,17 @@ class LinkGeneratorTest extends AbstractTestCase
      */
     public function linkIsGeneratedForLanguageDataProvider(): array
     {
-        // @todo L-parameter is not applied
+        // @todo L-parameter is not applied in all cases
         $instructions = [
             // acme.com -> acme.com (same site)
-            ['https://acme.us/', 1100, 1100, 0, '/?id=acme-first'],
-            ['https://acme.us/', 1100, 1100, 1, '/?id=acme-first'],
-            ['https://acme.us/', 1100, 1100, 2, '/?id=acme-first'],
-            // @todo Configuration bug on duplicating alias names and uniqueness
-            ['https://acme.us/', 1100, 1101, 0, '/?id=acme-first0'],
-            ['https://acme.us/', 1100, 1102, 0, '/?id=acme-first1'],
+            ['https://acme.us/', 1100, 1100, 0, '/?id=1100'],
+            ['https://acme.us/', 1100, 1100, 1, '/?id=1100'],
+            ['https://acme.us/', 1100, 1100, 2, '/?id=1100'],
+            ['https://acme.us/', 1100, 1101, 0, '/?id=1100'], // @todo Language missing
+            ['https://acme.us/', 1100, 1102, 0, '/?id=1100'], // @todo Language missing
             // acme.com -> products.acme.com (nested sub-site)
-            ['https://acme.us/', 1100, 1300, 0, '/?id=1300'],
-            ['https://acme.us/', 1100, 1310, 0, '/?id=1310'],
+            ['https://acme.us/', 1100, 1300, 0, 'https://products.acme.com/?id=1300'],
+            ['https://acme.us/', 1100, 1310, 0, 'https://products.acme.com/?id=1310'],
             // acme.com -> archive (outside site)
             ['https://acme.us/', 1100, 3100, 0, '/index.php?id=3100&L=0'],
             ['https://acme.us/', 1100, 3100, 1, '/index.php?id=3100&L=1'],
@@ -296,13 +291,11 @@ class LinkGeneratorTest extends AbstractTestCase
             ['https://acme.us/', 1100, 3101, 0, '/index.php?id=3101&L=0'],
             ['https://acme.us/', 1100, 3102, 0, '/index.php?id=3102&L=0'],
             // blog.acme.com -> acme.com (different site)
-            // @todo https://acme.com/ not prefixed
-            ['https://blog.acme.com/', 2100, 1100, 0, '/?id=acme-first'],
-            ['https://blog.acme.com/', 2100, 1100, 1, '/?id=acme-first'],
-            ['https://blog.acme.com/', 2100, 1100, 2, '/?id=acme-first'],
-            // @todo Configuration bug on duplicating alias names and uniqueness
-            ['https://blog.acme.com/', 2100, 1101, 0, '/?id=acme-first0'],
-            ['https://blog.acme.com/', 2100, 1102, 0, '/?id=acme-first1'],
+            ['https://blog.acme.com/', 2100, 1100, 0, 'https://acme.us/?id=1100'],
+            ['https://blog.acme.com/', 2100, 1100, 1, 'https://acme.us/?id=1100'],
+            ['https://blog.acme.com/', 2100, 1100, 2, 'https://acme.us/?id=1100'],
+            ['https://blog.acme.com/', 2100, 1101, 0, 'https://acme.us/?id=1100'], // @todo Language missing
+            ['https://blog.acme.com/', 2100, 1102, 0, 'https://acme.us/?id=1100'], // @todo Language missing
             // blog.acme.com -> archive (outside site)
             ['https://blog.acme.com/', 2100, 3100, 0, '/index.php?id=3100&L=0'],
             ['https://blog.acme.com/', 2100, 3100, 1, '/index.php?id=3100&L=1'],
@@ -310,8 +303,8 @@ class LinkGeneratorTest extends AbstractTestCase
             ['https://blog.acme.com/', 2100, 3101, 0, '/index.php?id=3101&L=0'],
             ['https://blog.acme.com/', 2100, 3102, 0, '/index.php?id=3102&L=0'],
             // blog.acme.com -> products.acme.com (different sub-site)
-            ['https://blog.acme.com/', 2100, 1300, 0, '/?id=1300'],
-            ['https://blog.acme.com/', 2100, 1310, 0, '/?id=1310'],
+            ['https://blog.acme.com/', 2100, 1300, 0, 'https://products.acme.com/?id=1300'],
+            ['https://blog.acme.com/', 2100, 1310, 0, 'https://products.acme.com/?id=1310'],
         ];
 
         return $this->keysFromTemplate(
@@ -354,30 +347,28 @@ class LinkGeneratorTest extends AbstractTestCase
     {
         $instructions = [
             // acme.com -> acme.com (same site)
-            ['https://acme.us/', 1100, 1000, '/?id=acme-root&testing%5Bvalue%5D=1&cHash=7d1f13fa91159dac7feb3c824936b39d'],
-            ['https://acme.us/', 1100, 1100, '/?id=acme-first&testing%5Bvalue%5D=1&cHash=f42b850e435f0cedd366f5db749fc1af'],
+            ['https://acme.us/', 1100, 1000, '/?id=1000&testing%5Bvalue%5D=1&cHash=7d1f13fa91159dac7feb3c824936b39d'],
+            ['https://acme.us/', 1100, 1100, '/?id=1100&testing%5Bvalue%5D=1&cHash=f42b850e435f0cedd366f5db749fc1af'],
             ['https://acme.us/', 1100, 1200, '/?id=1200&testing%5Bvalue%5D=1&cHash=784e11c50ea1a13fd7d969df4ec53ea3'],
             ['https://acme.us/', 1100, 1210, '/?id=1210&testing%5Bvalue%5D=1&cHash=ccb7067022b9835ebfd8f720722bc708'],
             ['https://acme.us/', 1100, 404, '/?id=404&testing%5Bvalue%5D=1&cHash=864e96f586a78a53452f3bf0f4d24591'],
             // acme.com -> products.acme.com (nested sub-site)
-            ['https://acme.us/', 1100, 1300, '/?id=1300&testing%5Bvalue%5D=1&cHash=dbd6597d72ed5098cce3d03eac1eeefe'],
-            ['https://acme.us/', 1100, 1310, '/?id=1310&testing%5Bvalue%5D=1&cHash=e64bfc7ab7dd6b70d161e4d556be9726'],
+            ['https://acme.us/', 1100, 1300, 'https://products.acme.com/?id=1300&testing%5Bvalue%5D=1&cHash=dbd6597d72ed5098cce3d03eac1eeefe'],
+            ['https://acme.us/', 1100, 1310, 'https://products.acme.com/?id=1310&testing%5Bvalue%5D=1&cHash=e64bfc7ab7dd6b70d161e4d556be9726'],
             // acme.com -> blog.acme.com (different site)
-            // @todo https://blog.acme.com/ not prefixed
-            ['https://acme.us/', 1100, 2000, '/?id=blog-root&testing%5Bvalue%5D=1&cHash=a14da633e46dba71640cb85226cd12c5'],
-            ['https://acme.us/', 1100, 2100, '/?id=2100&testing%5Bvalue%5D=1&cHash=d23d74cb50383f8788a9930ec8ba679f'],
-            ['https://acme.us/', 1100, 2110, '/john/?id=2110&testing%5Bvalue%5D=1&cHash=bf25eea89f44a9a79dabdca98f38a432'],
-            ['https://acme.us/', 1100, 2111, '/john/?id=2111&testing%5Bvalue%5D=1&cHash=42dbaeb9172b6b1ca23b49941e194db2'],
+            ['https://acme.us/', 1100, 2000, 'https://blog.acme.com/?id=2000&testing%5Bvalue%5D=1&cHash=a14da633e46dba71640cb85226cd12c5'],
+            ['https://acme.us/', 1100, 2100, 'https://blog.acme.com/?id=2100&testing%5Bvalue%5D=1&cHash=d23d74cb50383f8788a9930ec8ba679f'],
+            ['https://acme.us/', 1100, 2110, 'https://blog.acme.com/john/?id=2110&testing%5Bvalue%5D=1&cHash=bf25eea89f44a9a79dabdca98f38a432'],
+            ['https://acme.us/', 1100, 2111, 'https://blog.acme.com/john/?id=2111&testing%5Bvalue%5D=1&cHash=42dbaeb9172b6b1ca23b49941e194db2'],
             // blog.acme.com -> acme.com (different site)
-            // @todo https://acme.com/ not prefixed
-            ['https://blog.acme.com/', 2100, 1000, '/?id=acme-root&testing%5Bvalue%5D=1&cHash=7d1f13fa91159dac7feb3c824936b39d'],
-            ['https://blog.acme.com/', 2100, 1100, '/?id=acme-first&testing%5Bvalue%5D=1&cHash=f42b850e435f0cedd366f5db749fc1af'],
-            ['https://blog.acme.com/', 2100, 1200, '/?id=1200&testing%5Bvalue%5D=1&cHash=784e11c50ea1a13fd7d969df4ec53ea3'],
-            ['https://blog.acme.com/', 2100, 1210, '/?id=1210&testing%5Bvalue%5D=1&cHash=ccb7067022b9835ebfd8f720722bc708'],
-            ['https://blog.acme.com/', 2100, 404, '/?id=404&testing%5Bvalue%5D=1&cHash=864e96f586a78a53452f3bf0f4d24591'],
+            ['https://blog.acme.com/', 2100, 1000, 'https://acme.us/?id=1000&testing%5Bvalue%5D=1&cHash=7d1f13fa91159dac7feb3c824936b39d'],
+            ['https://blog.acme.com/', 2100, 1100, 'https://acme.us/?id=1100&testing%5Bvalue%5D=1&cHash=f42b850e435f0cedd366f5db749fc1af'],
+            ['https://blog.acme.com/', 2100, 1200, 'https://acme.us/?id=1200&testing%5Bvalue%5D=1&cHash=784e11c50ea1a13fd7d969df4ec53ea3'],
+            ['https://blog.acme.com/', 2100, 1210, 'https://acme.us/?id=1210&testing%5Bvalue%5D=1&cHash=ccb7067022b9835ebfd8f720722bc708'],
+            ['https://blog.acme.com/', 2100, 404, 'https://acme.us/?id=404&testing%5Bvalue%5D=1&cHash=864e96f586a78a53452f3bf0f4d24591'],
             // blog.acme.com -> products.acme.com (different sub-site)
-            ['https://blog.acme.com/', 2100, 1300, '/?id=1300&testing%5Bvalue%5D=1&cHash=dbd6597d72ed5098cce3d03eac1eeefe'],
-            ['https://blog.acme.com/', 2100, 1310, '/?id=1310&testing%5Bvalue%5D=1&cHash=e64bfc7ab7dd6b70d161e4d556be9726'],
+            ['https://blog.acme.com/', 2100, 1300, 'https://products.acme.com/?id=1300&testing%5Bvalue%5D=1&cHash=dbd6597d72ed5098cce3d03eac1eeefe'],
+            ['https://blog.acme.com/', 2100, 1310, 'https://products.acme.com/?id=1310&testing%5Bvalue%5D=1&cHash=e64bfc7ab7dd6b70d161e4d556be9726'],
         ];
 
         return $this->keysFromTemplate(
@@ -564,16 +555,17 @@ class LinkGeneratorTest extends AbstractTestCase
         // -> most probably since pid=-1 is not correctly resolved
         $instructions = [
             // acme.com -> acme.com (same site)
-            ['https://acme.us/', 1100, 1100, false, '/?id=acme-first'],
-            ['https://acme.us/', 1100, 1100, true, '/index.php?id=acme-first&L=0'],
+            ['https://acme.us/', 1100, 1100, false, '/?id=1100'],
+            ['https://acme.us/', 1100, 1100, true, '/index.php?id=acme-first'], // @todo Alias not removed, yet
             // ['https://acme.us/', 1100, 1950, false, '/?id=1950'], // @todo Not generated for new-placeholder
-            ['https://acme.us/', 1100, 1950, true, '/index.php?id={targetPageId}&L=0'],
+            ['https://acme.us/', 1100, 1950, true, '/index.php?id={targetPageId}'],
             // blog.acme.com -> acme.com (different site)
-            // @todo https://acme.com/ not prefixed
-            ['https://blog.acme.com/', 2100, 1100, false, '/?id=acme-first'],
-            ['https://blog.acme.com/', 2100, 1100, true, '/index.php?id=acme-first&L=0'],
+            ['https://blog.acme.com/', 2100, 1100, false, 'https://acme.us/?id=1100'],
+            // @todo https://acme.us/ not prefixed for resolved version
+            ['https://blog.acme.com/', 2100, 1100, true, '/index.php?id=acme-first'], // @todo Alias not removed, yet
             // ['https://blog.acme.com/', 2100, 1950, false, '/?id=1950'], // @todo Not generated for new-placeholder
-            ['https://blog.acme.com/', 2100, 1950, true, '/index.php?id={targetPageId}&L=0'],
+            // @todo https://acme.us/ not prefixed for resolved version
+            ['https://blog.acme.com/', 2100, 1950, true, '/index.php?id={targetPageId}'],
         ];
 
         return $this->keysFromTemplate(
@@ -632,7 +624,7 @@ class LinkGeneratorTest extends AbstractTestCase
                 'https://acme.us/',
                 1100,
                 [
-                    ['title' => 'EN: Welcome', 'link' => '/?id=acme-first'],
+                    ['title' => 'EN: Welcome', 'link' => '/?id=1100'],
                     [
                         'title' => 'EN: Features',
                         'link' => '/?id=1200',
@@ -645,19 +637,19 @@ class LinkGeneratorTest extends AbstractTestCase
                     ],
                     [
                         'title' => 'EN: Products',
-                        'link' => '/?id=1300',
+                        'link' => 'https://products.acme.com/?id=1300',
                         'children' => [
                             [
                                 'title' => 'EN: Planets',
-                                'link' => '/?id=1310',
+                                'link' => 'https://products.acme.com/?id=1310',
                             ],
                             [
                                 'title' => 'EN: Spaceships',
-                                'link' => '/?id=1320',
+                                'link' => 'https://products.acme.com/?id=1320',
                             ],
                             [
                                 'title' => 'EN: Dark Matter',
-                                'link' => '/?id=1330',
+                                'link' => 'https://products.acme.com/?id=1330',
                             ],
                         ],
                     ],
@@ -669,21 +661,20 @@ class LinkGeneratorTest extends AbstractTestCase
                         'children' => [
                             [
                                 'title' => 'Markets',
-                                'link' => '/index.php?id=7110&MP=7100-1700&L=0',
+                                'link' => '/index.php?id=7110&MP=7100-1700',
                             ],
                             [
                                 'title' => 'Products',
-                                'link' => '/index.php?id=7120&MP=7100-1700&L=0',
+                                'link' => '/index.php?id=7120&MP=7100-1700',
                             ],
                             [
                                 'title' => 'Partners',
-                                'link' => '/index.php?id=7130&MP=7100-1700&L=0',
+                                'link' => '/index.php?id=7130&MP=7100-1700',
                             ],
                         ],
                     ],
                     ['title' => 'Page not found', 'link' => '/?id=404'],
-                    // @todo Link should be prefixed with different site
-                    ['title' => 'Our Blog', 'link' => '/?id=2100'],
+                    ['title' => 'Our Blog', 'link' => 'https://blog.acme.com/?id=2100'],
                 ]
             ],
             'ACME Blog' => [
@@ -696,11 +687,11 @@ class LinkGeneratorTest extends AbstractTestCase
                         'children' => [
                             [
                                 'title' => 'John Doe',
-                                'link' => '/john/?id=2110',
+                                'link' => 'https://blog.acme.com/john/?id=2110',
                             ],
                             [
                                 'title' => 'Jane Doe',
-                                'link' => '/jane/?id=2120',
+                                'link' => 'https://blog.acme.com/jane/?id=2120',
                             ],
                         ],
                     ],
@@ -711,20 +702,19 @@ class LinkGeneratorTest extends AbstractTestCase
                             'children' => [
                                 [
                                     'title' => 'Markets',
-                                    'link' => '/index.php?id=7110&MP=7100-2700&L=0',
+                                    'link' => '/index.php?id=7110&MP=7100-2700',
                                 ],
                                 [
                                     'title' => 'Products',
-                                    'link' => '/index.php?id=7120&MP=7100-2700&L=0',
+                                    'link' => '/index.php?id=7120&MP=7100-2700',
                                 ],
                                 [
                                     'title' => 'Partners',
-                                    'link' => '/index.php?id=7130&MP=7100-2700&L=0',
+                                    'link' => '/index.php?id=7130&MP=7100-2700',
                                 ],
                             ],
                         ],
-                    // @todo Link should be prefixed with different site
-                    ['title' => 'ACME Inc', 'link' => '/?id=acme-first'],
+                    ['title' => 'ACME Inc', 'link' => 'https://acme.us/?id=1100'],
                 ]
             ]
         ];
