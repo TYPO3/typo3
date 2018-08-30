@@ -178,11 +178,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             if (isset($conf['forceAbsoluteUrl.']['scheme']) && $conf['forceAbsoluteUrl.']['scheme']) {
                 $absoluteUrlScheme = $conf['forceAbsoluteUrl.']['scheme'];
             }
-            // If no domain records are defined, use current domain:
-            $currentUrlScheme = parse_url(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), PHP_URL_SCHEME);
-            if ($targetDomain === '' && $absoluteUrlScheme !== $currentUrlScheme) {
-                $targetDomain = $currentDomain;
-            }
+            // If no domain records are defined, use current domain
+            $targetDomain = $targetDomain ?: $currentDomain;
             // If go for an absolute link, add site path if it's not taken care about by absRefPrefix
             if (!$tsfe->absRefPrefix && $targetDomain === $currentDomain) {
                 $targetDomain = $currentDomain . rtrim(GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'), '/');
