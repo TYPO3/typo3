@@ -151,7 +151,12 @@ class SlugHelper
                 }
             }
             if (is_array($parentPageRecord)) {
-                $rootLineItemSlug = $this->generate($parentPageRecord, (int)$parentPageRecord['pid']);
+                // If the parent page has a slug, use that instead of "re-generating" the slug from the parents' page title
+                if (!empty($parentPageRecord['slug'])) {
+                    $rootLineItemSlug = $parentPageRecord['slug'];
+                } else {
+                    $rootLineItemSlug = $this->generate($parentPageRecord, (int)$parentPageRecord['pid']);
+                }
                 $rootLineItemSlug = trim($rootLineItemSlug, '/');
                 if (!empty($rootLineItemSlug)) {
                     $prefix = $rootLineItemSlug;
