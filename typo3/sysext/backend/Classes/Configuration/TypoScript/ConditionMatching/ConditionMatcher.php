@@ -202,7 +202,7 @@ class ConditionMatcher extends AbstractConditionMatcher
     protected function getPage()
     {
         $pageId = $this->pageId ?? $this->determinePageId();
-        return BackendUtility::getRecord('pages', $pageId);
+        return BackendUtility::getRecord('pages', $pageId) ?? [];
     }
 
     /**

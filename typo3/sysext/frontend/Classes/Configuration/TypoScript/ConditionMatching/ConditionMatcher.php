@@ -266,7 +266,9 @@ class ConditionMatcher extends AbstractConditionMatcher
      */
     protected function getPage()
     {
-        return $this->getTypoScriptFrontendController()->page;
+        return is_array($this->getTypoScriptFrontendController()->page)
+            ? $this->getTypoScriptFrontendController()->page
+            : [];
     }
 
     /**
