@@ -73,7 +73,8 @@ return [
         'folderCreateMask' => '2775',
         'features' => [
             'redirects.hitCount' => false,
-            'unifiedPageTranslationHandling' => false
+            'unifiedPageTranslationHandling' => false,
+            'TypoScript.strictSyntax' => true,
         ],
         'createGroup' => '',
         'sitename' => 'TYPO3',

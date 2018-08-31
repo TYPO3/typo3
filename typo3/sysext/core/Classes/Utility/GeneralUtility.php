@@ -2637,6 +2637,18 @@ class GeneralUtility
     }
 
     /**
+     * This method is only for testing and should never be used outside tests-
+     *
+     * @param $envName
+     * @param $value
+     * @internal
+     */
+    public static function setIndpEnv($envName, $value)
+    {
+        self::$indpEnvCache[$envName] = $value;
+    }
+
+    /**
      * Abstraction method which returns System Environment Variables regardless of server OS, CGI/MODULE version etc. Basically this is SERVER variables for most of them.
      * This should be used instead of getEnv() and $_SERVER/ENV_VARS to get reliable values for all situations.
      *

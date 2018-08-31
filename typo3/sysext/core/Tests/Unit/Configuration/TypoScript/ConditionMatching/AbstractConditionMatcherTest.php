@@ -60,9 +60,13 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->resetSingletonInstances = true;
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
 
-        $typoScriptConditionProvider = GeneralUtility::makeInstance(TypoScriptConditionProvider::class);
-
+        $this->initConditionMatcher();
         $this->backupApplicationContext = GeneralUtility::getApplicationContext();
+    }
+
+    protected function initConditionMatcher()
+    {
+        $typoScriptConditionProvider = GeneralUtility::makeInstance(TypoScriptConditionProvider::class);
         $this->conditionMatcher = $this->getMockForAbstractClass(AbstractConditionMatcher::class, [$typoScriptConditionProvider]);
         $this->evaluateConditionCommonMethod = new \ReflectionMethod(AbstractConditionMatcher::class, 'evaluateConditionCommon');
         $this->evaluateConditionCommonMethod->setAccessible(true);
@@ -309,11 +313,9 @@ class AbstractConditionMatcherTest extends UnitTestCase
         // Do not trigger proxy stuff of GeneralUtility::getIndPEnv
         unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP']);
 
-        $_SERVER['REMOTE_ADDR'] = $actualIp;
+        GeneralUtility::setIndpEnv('REMOTE_ADDR', $actualIp);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = $devIpMask;
-
-        $this->assertSame($expectedResult, $this->evaluateConditionCommonMethod->invokeArgs($this->conditionMatcher, ['IP', 'devIP']));
-        // Test expression language
+        $this->initConditionMatcher();
         $this->assertSame($expectedResult, $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['ip("devIP")']));
     }
 

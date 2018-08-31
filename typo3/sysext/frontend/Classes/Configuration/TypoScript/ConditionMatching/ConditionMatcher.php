@@ -75,9 +75,14 @@ class ConditionMatcher extends AbstractConditionMatcher
      * @return bool Whether the condition matched
      * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::parse()
      * @throws \TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function evaluateCondition($string)
     {
+        if ($this->strictSyntaxEnabled()) {
+            trigger_error('The old condition syntax has been deprecated and will be removed in TYPO3 CMS 10, use the new expression language. condition: [' . $string . ']', E_USER_DEPRECATED);
+        }
+
         list($key, $value) = GeneralUtility::trimExplode('=', $string, false, 2);
         $result = $this->evaluateConditionCommon($key, $value);
         if (is_bool($result)) {
@@ -179,6 +184,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      *
      * @param string $var Identifier
      * @return mixed|null The value of the variable pointed to or NULL if variable did not exist
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function getVariable($var)
     {
@@ -215,6 +221,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      *
      * @param string $var Session key
      * @return mixed|null The value of the variable pointed to or NULL if variable did not exist
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function getSessionVariable(string $var)
     {
@@ -241,6 +248,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      * Get the usergroup list of the current user.
      *
      * @return string The usergroup list of the current user
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function getGroupList(): string
     {
@@ -253,6 +261,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      * Determines the current page Id.
      *
      * @return int The current page Id
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function determinePageId()
     {
@@ -263,6 +272,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      * Gets the properties for the current page.
      *
      * @return array The properties for the current page.
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function getPage()
     {
@@ -275,6 +285,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      * Determines the rootline for the current page.
      *
      * @return array The rootline for the current page.
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function determineRootline()
     {
@@ -285,6 +296,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      * Get the id of the current user.
      *
      * @return int The id of the current user
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function getUserId(): int
     {
@@ -296,6 +308,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      * Determines if a user is logged in.
      *
      * @return bool Determines if a user is logged in
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function isUserLoggedIn(): bool
     {
@@ -306,6 +319,7 @@ class ConditionMatcher extends AbstractConditionMatcher
 
     /**
      * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function getTypoScriptFrontendController()
     {
@@ -315,7 +329,7 @@ class ConditionMatcher extends AbstractConditionMatcher
     /**
      * Returns the currently configured "site language" if a site is configured (= resolved) in the current request.
      *
-     * @internal
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function getCurrentSiteLanguage(): ?SiteLanguage
     {
@@ -329,7 +343,7 @@ class ConditionMatcher extends AbstractConditionMatcher
     /**
      * Returns the currently configured site if a site is configured (= resolved) in the current request.
      *
-     * @internal
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function getCurrentSite(): ?Site
     {

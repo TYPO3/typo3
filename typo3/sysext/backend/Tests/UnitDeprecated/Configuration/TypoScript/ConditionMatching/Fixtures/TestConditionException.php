@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Tests\Unit\Configuration\TypoScript\ConditionMatching\Fixtures;
+namespace TYPO3\CMS\Backend\Tests\UnitDeprecated\Configuration\TypoScript\ConditionMatching\Fixtures;
 
 /*
  * This file is part of the TYPO3 CMS project.

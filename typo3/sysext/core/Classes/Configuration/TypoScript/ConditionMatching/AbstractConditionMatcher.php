@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\ExpressionLanguage\TypoScriptConditionProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -71,6 +72,14 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
     public function __construct(TypoScriptConditionProvider $typoScriptConditionProvider)
     {
         $this->expressionLanguageResolver = GeneralUtility::makeInstance(Resolver::class, $typoScriptConditionProvider);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function strictSyntaxEnabled(): bool
+    {
+        return GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('TypoScript.strictSyntax');
     }
 
     /**
@@ -146,6 +155,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
      *
      * @param string $expression The expression to be normalized (e.g. "[A] && [B] OR [C]")
      * @return string The normalized expression (e.g. "[A]&&[B]||[C]")
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function normalizeExpression($expression)
     {
@@ -189,8 +199,14 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
         if ($normalizedExpression[0] === '[' && substr($normalizedExpression, -1) === ']') {
             $innerExpression = substr($normalizedExpression, 1, -1);
             $orParts = explode(']||[', $innerExpression);
+            if ($this->strictSyntaxEnabled() && count($orParts) > 1) {
+                trigger_error('Multiple conditions blocks combined with AND, OR, && or || have been deprecated and will be removed in TYPO3 CMS 10, use the new expression language.', E_USER_DEPRECATED);
+            }
             foreach ($orParts as $orPart) {
                 $andParts = explode(']&&[', $orPart);
+                if ($this->strictSyntaxEnabled() && count($andParts) > 1) {
+                    trigger_error('Multiple conditions blocks combined with AND, OR, && or || have been deprecated and will be removed in TYPO3 CMS 10, use the new expression language.', E_USER_DEPRECATED);
+                }
                 foreach ($andParts as $andPart) {
                     $result = $this->evaluateExpression($andPart);
                     if (!is_bool($result)) {
@@ -241,6 +257,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
      * @param string $key The condition to match against its criteria.
      * @param string $value
      * @return bool|null Result of the evaluation; NULL if condition could not be evaluated
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function evaluateConditionCommon($key, $value)
     {
@@ -394,6 +411,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
      * @param string $condition The condition to match
      * @return bool|null Result of the evaluation; NULL if condition could not be evaluated
      * @throws \TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function evaluateCustomDefinedCondition($condition)
     {
@@ -427,6 +445,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
      *
      * @param string $arguments
      * @return array
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function parseUserFuncArguments($arguments)
     {
@@ -466,6 +485,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
      *
      * @param array $vars
      * @return mixed Whatever value. If none, then NULL.
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function getVariableCommon(array $vars)
     {
@@ -514,6 +534,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
      * @param string $test The value to compare with on the form [operator][number]. Eg. "< 123
      * @param float $leftValue The value on the left side
      * @return bool If $value is "50" and $test is "< 123" then it will return TRUE.
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function compareNumber($test, $leftValue)
     {
@@ -570,6 +591,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
      * @param string $haystack The string in which to find $needle.
      * @param string $needle The string to find in $haystack
      * @return bool Returns TRUE if $needle matches or is found in (according to wildcards) in $haystack. Eg. if $haystack is "Netscape 6.5" and $needle is "Net*" or "Net*ape" then it returns TRUE.
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function searchStringWildcard($haystack, $needle)
     {
@@ -583,6 +605,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
      * @param string $var Global var key, eg. "HTTP_GET_VAR" or "HTTP_GET_VARS|id" to get the GET parameter "id" back.
      * @param array $source Alternative array than $GLOBAL to get variables from.
      * @return mixed Whatever value. If none, then blank string.
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function getGlobal($var, $source = null)
     {
@@ -615,6 +638,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
      * @param string $string The condition to match against its criteria.
      * @return bool Whether the condition matched
      * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::parse()
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     abstract protected function evaluateCondition($string);
 
@@ -629,6 +653,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
      *
      * @param string $name The name of the variable to fetch the value from
      * @return mixed The value of the given variable (string) or NULL if variable did not exist
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     abstract protected function getVariable($name);
 
@@ -636,6 +661,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
      * Gets the usergroup list of the current user.
      *
      * @return string The usergroup list of the current user
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     abstract protected function getGroupList();
 
@@ -643,6 +669,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
      * Determines the current page Id.
      *
      * @return int The current page Id
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     abstract protected function determinePageId();
 
@@ -650,6 +677,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
      * Gets the properties for the current page.
      *
      * @return array The properties for the current page.
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     abstract protected function getPage();
 
@@ -657,6 +685,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
      * Determines the rootline for the current page.
      *
      * @return array The rootline for the current page.
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     abstract protected function determineRootline();
 
@@ -664,6 +693,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
      * Gets the id of the current user.
      *
      * @return int The id of the current user
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     abstract protected function getUserId();
 
@@ -671,6 +701,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
      * Determines if a user is logged in.
      *
      * @return bool Determines if a user is logged in
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     abstract protected function isUserLoggedIn();
 }

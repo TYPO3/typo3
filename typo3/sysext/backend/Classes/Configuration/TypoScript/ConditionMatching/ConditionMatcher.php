@@ -69,9 +69,14 @@ class ConditionMatcher extends AbstractConditionMatcher
      * @param string $string The condition to match against its criteria.
      * @return bool Whether the condition matched
      * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::parse()
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function evaluateCondition($string)
     {
+        if ($this->strictSyntaxEnabled()) {
+            trigger_error('The old condition syntax has been deprecated and will be removed in TYPO3 CMS 10, use the new expression language. condition: [' . $string . ']', E_USER_DEPRECATED);
+        }
+
         list($key, $value) = GeneralUtility::trimExplode('=', $string, false, 2);
         $result = $this->evaluateConditionCommon($key, $value);
         if (is_bool($result)) {
@@ -134,7 +139,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      *
      * @param string $var Identifier
      * @return mixed The value of the variable pointed to or NULL if variable did not exist
-     * @access private
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function getVariable($var)
     {
@@ -146,6 +151,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      * Get the usergroup list of the current user.
      *
      * @return string The usergroup list of the current user
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function getGroupList()
     {
@@ -159,6 +165,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      * the accordant conditions (e.g. PIDinRootline) will return "FALSE"
      *
      * @return int The determined page id or otherwise 0
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function determinePageId()
     {
@@ -198,6 +205,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      * Gets the properties for the current page.
      *
      * @return array The properties for the current page.
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function getPage()
     {
@@ -212,6 +220,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      * @param int $id Id of the accordant record
      * @param bool $ignoreTable Whether to ignore the page, if TRUE a positive
      * @return int Id of the page the record is persisted on
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function getPageIdByRecord($table, $id, $ignoreTable = false)
     {
@@ -234,6 +243,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      *
      * @param int $pageId The pid the check for as parent page
      * @return bool TRUE if the is currently a new page record being edited with $pid as uid of the parent page
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function isNewPageWithPageId($pageId)
     {
@@ -271,6 +281,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      * Determines the rootline for the current page.
      *
      * @return array The rootline for the current page.
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function determineRootline()
     {
@@ -282,6 +293,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      * Get the id of the current user.
      *
      * @return int The id of the current user
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function getUserId()
     {
@@ -292,6 +304,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      * Determines if a user is logged in.
      *
      * @return bool Determines if a user is logged in
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function isUserLoggedIn()
     {
@@ -302,6 +315,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      * Determines whether the current user is admin.
      *
      * @return bool Whether the current user is admin
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function isAdminUser()
     {
@@ -310,6 +324,7 @@ class ConditionMatcher extends AbstractConditionMatcher
 
     /**
      * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     protected function getBackendUserAuthentication()
     {

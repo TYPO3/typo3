@@ -221,6 +221,9 @@ SYS:
               unifiedPageTranslationHandling:
                 type: bool
                 description: 'If on, TCA configuration for pages_language_overlay is never loaded and the database table "pages_language_overlay" is not created by core. Enable this feature if no extensions fiddles with table pages_language_overlay to have a slightly quicker system with less deprecation log entries.'
+              TypoScript.strictSyntax:
+                type: bool
+                description: 'If on, TypoScript is parsed in strict syntax modes. Enabling this feature means old condition syntax (which is deprecated) will trigger deprecation messages.'
         availablePasswordHashAlgorithms:
             type: array
             description: 'A list of available password hash mechanisms. Extensions may register additional mechanisms here. This is usually not extended in LocalConfiguration.php.'

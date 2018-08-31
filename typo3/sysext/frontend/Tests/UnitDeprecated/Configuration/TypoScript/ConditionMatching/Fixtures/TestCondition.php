@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Tests\Unit\Configuration\TypoScript\ConditionMatching\Fixtures;
+namespace TYPO3\CMS\Frontend\Tests\UnitDeprecated\Configuration\TypoScript\ConditionMatching\Fixtures;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -30,7 +30,7 @@ class TestCondition extends \TYPO3\CMS\Core\Configuration\TypoScript\ConditionMa
     {
         // Throw an exception if everything is fine, this exception is *expected* in the according unit test
         if ($conditionParameters[0] === '= 7' && $conditionParameters[1] === '!= 6') {
-            throw new TestConditionException('All Ok', 1476109533);
+            throw new TestConditionException('All Ok', 1411581139);
         }
     }
 }
