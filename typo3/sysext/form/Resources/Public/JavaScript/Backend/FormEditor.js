@@ -976,15 +976,12 @@ define(['jquery',
        *
        * @param object additionalViewModelModules
        * @return void
-       * @throws 1475379752
        * @throws 1475492374
        */
       function _viewSetup(additionalViewModelModules) {
         assert('function' === $.type(_viewModel.bootstrap), 'The view model does not implement the method "bootstrap"', 1475492374);
 
-        if (!getUtility().isUndefinedOrNull(additionalViewModelModules)) {
-          assert('array' === $.type(additionalViewModelModules), 'Invalid parameter "additionalViewModelModules"', 1475379752);
-        } else {
+        if (getUtility().isUndefinedOrNull(additionalViewModelModules)) {
           additionalViewModelModules = [];
         }
         _viewModel.bootstrap(_formEditorInstance, additionalViewModelModules);
