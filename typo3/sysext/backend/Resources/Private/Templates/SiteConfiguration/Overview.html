@@ -27,7 +27,10 @@
 									<f:then>
 										<a href="#" class="t3js-contextmenutrigger" data-table="pages" data-uid="{rootLinePage.uid}">
 											<core:iconForRecord table="pages" row="{rootLinePage}" />
-										</a> {rootLinePage.title} [ID: {page.uid}]
+										</a>
+										<f:be.link route="site_configuration" parameters="{action: 'edit', site: page.siteIdentifier}" title="Edit">
+											{rootLinePage.title} [ID: {page.uid}]
+										</f:be.link>
 									</f:then>
 									<f:else>
 										<core:iconForRecord table="pages" row="{rootLinePage}" />
