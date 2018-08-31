@@ -3964,7 +3964,7 @@ A simple example that registers a custom ``inspector editor`` called 'Inspector-
              formEditor:
                dynamicRequireJsModules:
                  additionalViewModelModules:
-                   - 'TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel'
+                   10: 'TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel'
                formEditorFluidConfiguration:
                  partialRootPaths:
                    100: 'EXT:my_site_package/Resources/Private/Backend/Partials/FormEditor/'
@@ -4648,7 +4648,7 @@ In this example, 'GenderSelect' is basically a radio button form element with so
              formEditor:
                dynamicRequireJsModules:
                  additionalViewModelModules:
-                   - 'TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel'
+                   10: 'TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel'
                formEditorPartials:
                  FormElement-GenderSelect: 'Stage/SelectTemplate'
              formElementsDefinition:

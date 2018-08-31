@@ -175,7 +175,7 @@ The following YAML configuration registers an additional JavaScript module.
              formEditor:
                dynamicRequireJsModules:
                  additionalViewModelModules:
-                   - 'TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel'
+                   10: 'TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel'
 
 According to the example shown above, the JavaScript files have to be stored
 within the folder ``my_site_package/Resources/Public/JavaScript/Backend/FormEditor/ViewModel.js``.

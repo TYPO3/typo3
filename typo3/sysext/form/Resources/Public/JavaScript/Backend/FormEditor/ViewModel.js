@@ -268,9 +268,21 @@ define(['jquery',
      * @throws 1475425785
      */
     function _loadAdditionalModules(additionalViewModelModules) {
-      var additionalViewModelModulesLength, isLastElement, loadedAdditionalViewModelModules;
+      var additionalViewModelModulesLength, converted, isLastElement, loadedAdditionalViewModelModules;
+
+      if ('object' === $.type(additionalViewModelModules)) {
+        converted = [];
+        for (var key in additionalViewModelModules) {
+          if (!additionalViewModelModules.hasOwnProperty(key)) {
+            continue;
+          }
+          converted.push(additionalViewModelModules[key]);
+        }
+        additionalViewModelModules = converted;
+      }
 
       if ('array' !== $.type(additionalViewModelModules)) {
+        getPublisherSubscriber().publish('view/ready');
         return;
       }
       additionalViewModelModulesLength = additionalViewModelModules.length;
