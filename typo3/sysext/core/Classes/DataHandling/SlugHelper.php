@@ -107,8 +107,9 @@ class SlugHelper
         $slug = rawurlencode($slug);
         // @todo: add a test and see if we need this
         $slug = str_replace('%2F', '/', $slug);
-        // Remove trailing and beginning slashes
-        $slug = '/' . $this->extract($slug);
+        // Remove trailing and beginning slashes, except if the trailing slash was added, then we'll re-add it
+        $appendTrailingSlash = substr($slug, -1) === '/';
+        $slug = '/' . $this->extract($slug) . ($appendTrailingSlash ? '/' : '');
         return $slug;
     }
 

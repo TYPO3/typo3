@@ -80,20 +80,20 @@ class SlugHelperTest extends UnitTestCase
                 '/1/2',
                 '/1/2',
             ],
-            'remove trailing slash' => [
+            'do not remove trailing slash' => [
                 [],
                 '1/2/',
-                '/1/2',
+                '/1/2/',
             ],
             'keep pending slash and remove fallback' => [
                 [],
                 '/-1/2',
                 '/1/2',
             ],
-            'remove trailing slash and fallback' => [
+            'do not remove trailing slash, but remove fallback' => [
                 [],
                 '1/2-/',
-                '/1/2',
+                '/1/2/',
             ],
             'reduce multiple fallback chars to one' => [
                 [],
