@@ -8,4 +8,8 @@ return [
     'swiftmailer:spool:send' => [
         'class' => \TYPO3\CMS\Core\Command\SendEmailCommand::class,
     ],
+    'extension:list' => [
+        'class' => \TYPO3\CMS\Core\Command\ExtensionListCommand::class,
+        'schedulable' => false
+    ],
 ];
