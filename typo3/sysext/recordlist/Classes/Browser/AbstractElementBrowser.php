@@ -58,13 +58,12 @@ abstract class AbstractElementBrowser
      * opens - thus allows us to make references back to the main window in which the form is.
      * Example value: "data[pages][39][bodytext]|||tt_content|"
      * or "data[tt_content][NEW3fba56fde763d][image]|||gif,jpg,jpeg,tif,bmp,pcx,tga,png,pdf,ai|"
-     *
      * Values:
      * 0: form field name reference, eg. "data[tt_content][123][image]"
      * 1: htmlArea RTE parameters: editorNo:contentTypo3Language
      * 2: RTE config parameters: RTEtsConfigParams
      * 3: allowed types. Eg. "tt_content" or "gif,jpg,jpeg,tif,bmp,pcx,tga,png,pdf,ai"
-     * 4: IRRE uniqueness: target level object-id to perform actions/checks on, eg. "data[79][tt_address][1][<field>][<foreign_table>]"
+     * 4: IRRE uniqueness: target level object-id to perform actions/checks on, eg. "data-4-pages-4-nav_icon-sys_file_reference" ("data-<uid>-<table>-<pid>-<field>-<foreign_table>")
      * 5: IRRE uniqueness: name of function in opener window that checks if element is already used, eg. "inline.checkUniqueElement"
      * 6: IRRE uniqueness: name of function in opener window that performs some additional(!) action, eg. "inline.setUniqueElement"
      * 7: IRRE uniqueness: name of function in opener window that performs action instead of using addElement/insertElement, eg. "inline.importElement"

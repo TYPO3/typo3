@@ -149,7 +149,8 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         // Or get the user's default upload folder
         if (!$this->selectedFolder) {
             try {
-                $this->selectedFolder = $backendUser->getDefaultUploadFolder();
+                list(, $pid, $table, , $field) = explode('-', explode('|', $this->bparams)[4]);
+                $this->selectedFolder = $backendUser->getDefaultUploadFolder($pid, $table, $field);
             } catch (\Exception $e) {
                 // The configured default user folder does not exist
             }
@@ -172,7 +173,8 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             $_MCONF['name'] = 'file_list';
             $_MOD_SETTINGS = BackendUtility::getModuleData($_MOD_MENU, GeneralUtility::_GP('SET'), $_MCONF['name']);
         }
-        $noThumbs = $noThumbs ?: !$_MOD_SETTINGS['displayThumbs'];
+        $displayThumbs = $_MOD_SETTINGS['displayThumbs'] ?? false;
+        $noThumbs = $noThumbs ?: !$displayThumbs;
         // Create folder tree:
         /** @var ElementBrowserFolderTreeView $folderTree */
         $folderTree = GeneralUtility::makeInstance(ElementBrowserFolderTreeView::class);
