@@ -18,6 +18,8 @@ namespace TYPO3\CMS\Frontend\Typolink;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
@@ -62,7 +64,13 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         }
 
         // Looking up the page record to verify its existence:
-        $page = $this->resolvePage($tsfe->sys_page, $linkDetails, $conf, $disableGroupAccessCheck);
+        $pageRepository = $this->buildPageRepository();
+        $page = $this->resolvePage(
+            $pageRepository,
+            $linkDetails,
+            $conf,
+            $disableGroupAccessCheck
+        );
 
         if (empty($page)) {
             throw new UnableToLinkException('Page id "' . $linkDetails['typoLinkParameter'] . '" was not found, so "' . $linkText . '" was not linked.', 1490987336, null, $linkText);
@@ -186,12 +194,24 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 $globalQueryParameters = [];
                 parse_str($tsfe->linkVars, $globalQueryParameters);
                 if (!empty($globalQueryParameters)) {
-                    $queryParameters = array_merge_recursive($globalQueryParameters, $queryParameters);
+                    // override $globalQueryParameters with $queryParameters
+                    $queryParameters = array_replace_recursive(
+                        $globalQueryParameters,
+                        $queryParameters
+                    );
                 }
+            }
+            // Override language property if not being set already
+            if (isset($queryParameters['L']) && !isset($conf['language'])) {
+                $conf['language'] = (int)$queryParameters['L'];
             }
             unset($queryParameters['id'], $queryParameters['L']);
             if ($pageType) {
                 $queryParameters['type'] = (int)$pageType;
+            }
+
+            if (isset($conf['language'])) {
+                $page = $tsfe->sys_page->getPageOverlay($page, (int)$conf['language']);
             }
 
             // Generate the URL
@@ -330,8 +350,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         // Check if the current page equal to the site of the target page, now only set the absolute URL
         if ($currentSite->getRootPageId() !== $siteOfTargetPage->getRootPageId()) {
             $useAbsoluteUrl = true;
-        // @todo: let's only check for host / scheme once we use the Uri interface
-        } elseif ($siteLanguageOfTargetPage->getBase() !== $currentSiteLanguage->getBase()) {
+        } elseif ($siteLanguageOfTargetPage->getBase()->getHost() !== $currentSiteLanguage->getBase()->getHost()) {
             $useAbsoluteUrl = true;
         }
 
@@ -783,5 +802,26 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             return $GLOBALS['TYPO3_REQUEST']->getAttribute('language', null);
         }
         return null;
+    }
+
+    /**
+     * Builds PageRepository instance without depending on global context, e.g.
+     * not automatically overlaying records based on current request language.
+     *
+     * @return PageRepository
+     */
+    protected function buildPageRepository(): PageRepository
+    {
+        // clone global context object (singleton)
+        $context = clone GeneralUtility::makeInstance(Context::class);
+        $context->setAspect(
+            'language',
+            GeneralUtility::makeInstance(LanguageAspect::class)
+        );
+        $pageRepository = GeneralUtility::makeInstance(
+            PageRepository::class,
+            $context
+        );
+        return $pageRepository;
     }
 }

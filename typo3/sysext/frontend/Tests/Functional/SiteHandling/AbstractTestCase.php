@@ -18,7 +18,9 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
+use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\LinkGeneratorController;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\PhpError;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\ArrayValueInstruction;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -354,5 +356,102 @@ abstract class AbstractTestCase extends FunctionalTestCase
 
         $GLOBALS['TYPO3_CONF_VARS'] = $configuration;
         return $cacheHash;
+    }
+
+    /**
+     * @param array $typoScript
+     * @return ArrayValueInstruction
+     */
+    protected function createTypoLinkUrlInstruction(array $typoScript): ArrayValueInstruction
+    {
+        return (new ArrayValueInstruction(LinkGeneratorController::class))
+            ->withArray([
+                '10' => 'TEXT',
+                '10.' => [
+                    'typolink.' => array_merge(
+                        $typoScript,
+                        ['returnLast' => 'url']
+                    )
+                ]
+            ]);
+    }
+
+    /**
+     * @param array $typoScript
+     * @return ArrayValueInstruction
+     */
+    protected function createHierarchicalMenuProcessorInstruction(array $typoScript): ArrayValueInstruction
+    {
+        return (new ArrayValueInstruction(LinkGeneratorController::class))
+            ->withArray([
+                '10' => 'FLUIDTEMPLATE',
+                '10.' => [
+                    'file' => 'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/FluidJson.html',
+                    'dataProcessing.' => [
+                        '1' => 'TYPO3\\CMS\\Frontend\\DataProcessing\\MenuProcessor',
+                        '1.' => array_merge(
+                            $typoScript,
+                            ['as' => 'results']
+                        )
+                    ],
+                ],
+            ]);
+    }
+
+    /**
+     * @param array $typoScript
+     * @return ArrayValueInstruction
+     */
+    protected function createLanguageMenuProcessorInstruction(array $typoScript): ArrayValueInstruction
+    {
+        return (new ArrayValueInstruction(LinkGeneratorController::class))
+            ->withArray([
+                '10' => 'FLUIDTEMPLATE',
+                '10.' => [
+                    'file' => 'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/FluidJson.html',
+                    'dataProcessing.' => [
+                        '1' => 'TYPO3\\CMS\\Frontend\\DataProcessing\\LanguageMenuProcessor',
+                        '1.' => array_merge(
+                            $typoScript,
+                            ['as' => 'results']
+                        )
+                    ],
+                ],
+            ]);
+    }
+
+    /**
+     * Filters and keeps only desired names.
+     *
+     * @param array $menu
+     * @param array $keepNames
+     * @return array
+     */
+    protected function filterMenu(
+        array $menu,
+        array $keepNames = ['title', 'link']
+    ): array {
+        if (!in_array('children', $keepNames)) {
+            $keepNames[] = 'children';
+        }
+        return array_map(
+            function (array $menuItem) use ($keepNames) {
+                $menuItem = array_filter(
+                    $menuItem,
+                    function (string $name) use ($keepNames) {
+                        return in_array($name, $keepNames);
+                    },
+                    ARRAY_FILTER_USE_KEY
+                );
+                if (is_array($menuItem['children'] ?? null)) {
+                    $menuItem['children'] = $this->filterMenu(
+                        $menuItem['children'],
+                        $keepNames
+                    );
+                }
+                return $menuItem;
+            },
+            $menu
+        );
     }
 }

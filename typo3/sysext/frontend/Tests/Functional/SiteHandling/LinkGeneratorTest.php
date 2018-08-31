@@ -18,10 +18,8 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
-use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\LinkGeneratorController;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\ArrayValueInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
@@ -273,12 +271,11 @@ class LinkGeneratorTest extends AbstractTestCase
      */
     public function linkIsGeneratedForLanguageDataProvider(): array
     {
-        // @todo L-parameter is not applied in all cases
         $instructions = [
             // acme.com -> acme.com (same site)
             ['https://acme.us/', 1100, 1100, 0, '/?id=1100'],
-            ['https://acme.us/', 1100, 1100, 1, '/?id=1100'],
-            ['https://acme.us/', 1100, 1100, 2, '/?id=1100'],
+            ['https://acme.us/', 1100, 1100, 1, 'https://acme.fr/?id=1100'],
+            ['https://acme.us/', 1100, 1100, 2, 'https://acme.ca/?id=1100'],
             ['https://acme.us/', 1100, 1101, 0, 'https://acme.fr/?id=1100'],
             ['https://acme.us/', 1100, 1102, 0, 'https://acme.ca/?id=1100'],
             // acme.com -> products.acme.com (nested sub-site)
@@ -292,8 +289,8 @@ class LinkGeneratorTest extends AbstractTestCase
             ['https://acme.us/', 1100, 3102, 0, '/index.php?id=3100&L=2'],
             // blog.acme.com -> acme.com (different site)
             ['https://blog.acme.com/', 2100, 1100, 0, 'https://acme.us/?id=1100'],
-            ['https://blog.acme.com/', 2100, 1100, 1, 'https://acme.us/?id=1100'],
-            ['https://blog.acme.com/', 2100, 1100, 2, 'https://acme.us/?id=1100'],
+            ['https://blog.acme.com/', 2100, 1100, 1, 'https://acme.fr/?id=1100'],
+            ['https://blog.acme.com/', 2100, 1100, 2, 'https://acme.ca/?id=1100'],
             ['https://blog.acme.com/', 2100, 1101, 0, 'https://acme.fr/?id=1100'],
             ['https://blog.acme.com/', 2100, 1102, 0, 'https://acme.ca/?id=1100'],
             // blog.acme.com -> archive (outside site)
@@ -617,7 +614,10 @@ class LinkGeneratorTest extends AbstractTestCase
         static::assertSame($expectation, (string)$response->getBody());
     }
 
-    public function menuIsGeneratedDataProvider(): array
+    /**
+     * @return array
+     */
+    public function hierarchicalMenuIsGeneratedDataProvider(): array
     {
         return [
             'ACME Inc' => [
@@ -726,15 +726,15 @@ class LinkGeneratorTest extends AbstractTestCase
      * @param array $expectation
      *
      * @test
-     * @dataProvider menuIsGeneratedDataProvider
+     * @dataProvider hierarchicalMenuIsGeneratedDataProvider
      */
-    public function menuIsGenerated(string $hostPrefix, int $sourcePageId, array $expectation)
+    public function hierarchicalMenuIsGenerated(string $hostPrefix, int $sourcePageId, array $expectation)
     {
         $response = $this->executeFrontendRequest(
             (new InternalRequest($hostPrefix))
                 ->withPageId($sourcePageId)
                 ->withInstructions([
-                    $this->createMenuProcessorInstruction([
+                    $this->createHierarchicalMenuProcessorInstruction([
                         'levels' => 2,
                         'entryLevel' => 0,
                         'expandAll' => 1,
@@ -753,74 +753,54 @@ class LinkGeneratorTest extends AbstractTestCase
     }
 
     /**
-     * @param array $typoScript
-     * @return ArrayValueInstruction
-     */
-    private function createTypoLinkUrlInstruction(array $typoScript): ArrayValueInstruction
-    {
-        return (new ArrayValueInstruction(LinkGeneratorController::class))
-            ->withArray([
-                '10' => 'TEXT',
-                '10.' => [
-                    'typolink.' => array_merge(
-                        $typoScript,
-                        ['returnLast' => 'url']
-                    )
-                ]
-            ]);
-    }
-
-    /**
-     * @param array $typoScript
-     * @return ArrayValueInstruction
-     */
-    private function createMenuProcessorInstruction(array $typoScript): ArrayValueInstruction
-    {
-        return (new ArrayValueInstruction(LinkGeneratorController::class))
-            ->withArray([
-                '10' => 'FLUIDTEMPLATE',
-                '10.' => [
-                    'file' => 'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/FluidJson.html',
-                    'dataProcessing.' => [
-                        '1' => 'TYPO3\\CMS\\Frontend\\DataProcessing\\MenuProcessor',
-                        '1.' => $typoScript
-                    ],
-                ],
-            ]);
-    }
-
-    /**
-     * Filters and keeps only desired names.
-     *
-     * @param array $menu
-     * @param array $keepNames
      * @return array
      */
-    private function filterMenu(
-        array $menu,
-        array $keepNames = ['title', 'link']
-    ): array {
-        if (!in_array('children', $keepNames)) {
-            $keepNames[] = 'children';
-        }
-        return array_map(
-            function (array $menuItem) use ($keepNames) {
-                $menuItem = array_filter(
-                    $menuItem,
-                    function (string $name) use ($keepNames) {
-                        return in_array($name, $keepNames);
-                    },
-                    ARRAY_FILTER_USE_KEY
-                );
-                if (is_array($menuItem['children'] ?? null)) {
-                    $menuItem['children'] = $this->filterMenu(
-                        $menuItem['children'],
-                        $keepNames
-                    );
-                }
-                return $menuItem;
-            },
-            $menu
+    public function languageMenuIsGeneratedDataProvider(): array
+    {
+        return [
+            'ACME Inc' => [
+                'https://acme.us/',
+                1100,
+                [
+                    ['title' => 'English', 'link' => '/?id=1100'],
+                    ['title' => 'French', 'link' => 'https://acme.fr/?id=1100'],
+                    ['title' => 'Franco-Canadian', 'link' => 'https://acme.ca/?id=1100'],
+                ]
+            ],
+            'ACME Blog' => [
+                'https://blog.acme.com/',
+                2100,
+                [
+                    ['title' => 'Default', 'link' => '/?id=2100']
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @param string $hostPrefix
+     * @param int $sourcePageId
+     * @param array $expectation
+     *
+     * @test
+     * @dataProvider languageMenuIsGeneratedDataProvider
+     */
+    public function languageMenuIsGenerated(string $hostPrefix, int $sourcePageId, array $expectation)
+    {
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest($hostPrefix))
+                ->withPageId($sourcePageId)
+                ->withInstructions([
+                    $this->createLanguageMenuProcessorInstruction([
+                        'languages' => 'auto',
+                    ])
+                ]),
+            $this->internalRequestContext
         );
+
+        $json = json_decode((string)$response->getBody(), true);
+        $json = $this->filterMenu($json);
+
+        static::assertSame($expectation, $json);
     }
 }

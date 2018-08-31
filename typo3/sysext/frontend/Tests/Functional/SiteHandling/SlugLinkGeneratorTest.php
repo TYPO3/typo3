@@ -18,10 +18,8 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
-use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\LinkGeneratorController;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\ArrayValueInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
@@ -273,7 +271,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
      */
     public function linkIsGeneratedForLanguageDataProvider(): array
     {
-        // @todo localized pages are not applied
         $instructions = [
             // acme.com -> acme.com (same site)
             ['https://acme.us/', 1100, 1100, 0, '/welcome'],
@@ -323,7 +320,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkIsGeneratedForLanguageDataProvider
      */
-    public function linkIsGeneratedForLanguage(string $hostPrefix, int $sourcePageId, int $targetPageId, int $targetLanguageId, string $expectation)
+    public function linkIsGeneratedForLanguageWithLanguageProperty(string $hostPrefix, int $sourcePageId, int $targetPageId, int $targetLanguageId, string $expectation)
     {
         $response = $this->executeFrontendRequest(
             (new InternalRequest($hostPrefix))
@@ -332,6 +329,33 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                     $this->createTypoLinkUrlInstruction([
                         'parameter' => $targetPageId,
                         'language' => $targetLanguageId,
+                    ])
+                ]),
+            $this->internalRequestContext
+        );
+
+        static::assertSame($expectation, (string)$response->getBody());
+    }
+
+    /**
+     * @param string $hostPrefix
+     * @param int $sourcePageId
+     * @param int $targetPageId
+     * @param int $targetLanguageId
+     * @param string $expectation
+     *
+     * @test
+     * @dataProvider linkIsGeneratedForLanguageDataProvider
+     */
+    public function linkIsGeneratedForLanguageWithLegacyProperty(string $hostPrefix, int $sourcePageId, int $targetPageId, int $targetLanguageId, string $expectation)
+    {
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest($hostPrefix))
+                ->withPageId($sourcePageId)
+                ->withInstructions([
+                    $this->createTypoLinkUrlInstruction([
+                        'parameter' => $targetPageId,
+                        'additionalParams' => '&L=' . $targetLanguageId,
                     ])
                 ]),
             $this->internalRequestContext
@@ -614,7 +638,10 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         static::assertSame($expectation, (string)$response->getBody());
     }
 
-    public function menuIsGeneratedDataProvider(): array
+    /**
+     * @return array
+     */
+    public function hierarchicalMenuIsGeneratedDataProvider(): array
     {
         return [
             'ACME Inc' => [
@@ -723,21 +750,20 @@ class SlugLinkGeneratorTest extends AbstractTestCase
      * @param array $expectation
      *
      * @test
-     * @dataProvider menuIsGeneratedDataProvider
+     * @dataProvider hierarchicalMenuIsGeneratedDataProvider
      */
-    public function menuIsGenerated(string $hostPrefix, int $sourcePageId, array $expectation)
+    public function hierarchicalMenuIsGenerated(string $hostPrefix, int $sourcePageId, array $expectation)
     {
         $response = $this->executeFrontendRequest(
             (new InternalRequest($hostPrefix))
                 ->withPageId($sourcePageId)
                 ->withInstructions([
-                    $this->createMenuProcessorInstruction([
+                    $this->createHierarchicalMenuProcessorInstruction([
                         'levels' => 2,
                         'entryLevel' => 0,
                         'expandAll' => 1,
                         'includeSpacer' => 1,
                         'titleField' => 'title',
-                        'as' => 'results',
                     ])
                 ]),
             $this->internalRequestContext
@@ -750,74 +776,72 @@ class SlugLinkGeneratorTest extends AbstractTestCase
     }
 
     /**
-     * @param array $typoScript
-     * @return ArrayValueInstruction
-     */
-    private function createTypoLinkUrlInstruction(array $typoScript): ArrayValueInstruction
-    {
-        return (new ArrayValueInstruction(LinkGeneratorController::class))
-            ->withArray([
-                '10' => 'TEXT',
-                '10.' => [
-                    'typolink.' => array_merge(
-                        $typoScript,
-                        ['returnLast' => 'url']
-                    )
-                ]
-            ]);
-    }
-
-    /**
-     * @param array $typoScript
-     * @return ArrayValueInstruction
-     */
-    private function createMenuProcessorInstruction(array $typoScript): ArrayValueInstruction
-    {
-        return (new ArrayValueInstruction(LinkGeneratorController::class))
-            ->withArray([
-                '10' => 'FLUIDTEMPLATE',
-                '10.' => [
-                    'file' => 'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/FluidJson.html',
-                    'dataProcessing.' => [
-                        '1' => 'TYPO3\\CMS\\Frontend\\DataProcessing\\MenuProcessor',
-                        '1.' => $typoScript
-                    ],
-                ],
-            ]);
-    }
-
-    /**
-     * Filters and keeps only desired names.
-     *
-     * @param array $menu
-     * @param array $keepNames
      * @return array
      */
-    private function filterMenu(
-        array $menu,
-        array $keepNames = ['title', 'link']
-    ): array {
-        if (!in_array('children', $keepNames)) {
-            $keepNames[] = 'children';
-        }
-        return array_map(
-            function (array $menuItem) use ($keepNames) {
-                $menuItem = array_filter(
-                    $menuItem,
-                    function (string $name) use ($keepNames) {
-                        return in_array($name, $keepNames);
-                    },
-                    ARRAY_FILTER_USE_KEY
-                );
-                if (is_array($menuItem['children'] ?? null)) {
-                    $menuItem['children'] = $this->filterMenu(
-                        $menuItem['children'],
-                        $keepNames
-                    );
-                }
-                return $menuItem;
-            },
-            $menu
+    public function languageMenuIsGeneratedDataProvider(): array
+    {
+        return [
+            'ACME Inc (EN)' => [
+                'https://acme.us/',
+                1100,
+                [
+                    ['title' => 'English', 'link' => '/welcome'],
+                    ['title' => 'French', 'link' => 'https://acme.fr/bienvenue'],
+                    ['title' => 'Franco-Canadian', 'link' => 'https://acme.ca/bienvenue'],
+                ]
+            ],
+            'ACME Inc (FR)' => [
+                'https://acme.fr/',
+                1100,
+                [
+                    ['title' => 'English', 'link' => 'https://acme.us/welcome'],
+                    ['title' => 'French', 'link' => '/bienvenue'],
+                    ['title' => 'Franco-Canadian', 'link' => 'https://acme.ca/bienvenue'],
+                ]
+            ],
+            'ACME Inc (FR-CA)' => [
+                'https://acme.ca/',
+                1100,
+                [
+                    ['title' => 'English', 'link' => 'https://acme.us/welcome'],
+                    ['title' => 'French', 'link' => 'https://acme.fr/bienvenue'],
+                    ['title' => 'Franco-Canadian', 'link' => '/bienvenue'],
+                ]
+            ],
+            'ACME Blog' => [
+                'https://blog.acme.com/',
+                2100,
+                [
+                    ['title' => 'Default', 'link' => '/authors']
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @param string $hostPrefix
+     * @param int $sourcePageId
+     * @param array $expectation
+     *
+     * @test
+     * @dataProvider languageMenuIsGeneratedDataProvider
+     */
+    public function languageMenuIsGenerated(string $hostPrefix, int $sourcePageId, array $expectation)
+    {
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest($hostPrefix))
+                ->withPageId($sourcePageId)
+                ->withInstructions([
+                    $this->createLanguageMenuProcessorInstruction([
+                        'languages' => 'auto',
+                    ])
+                ]),
+            $this->internalRequestContext
         );
+
+        $json = json_decode((string)$response->getBody(), true);
+        $json = $this->filterMenu($json);
+
+        static::assertSame($expectation, $json);
     }
 }
