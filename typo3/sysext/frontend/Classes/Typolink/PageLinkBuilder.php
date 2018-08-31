@@ -181,6 +181,14 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if ($siteOfTargetPage instanceof Site) {
             $queryParameters = [];
             parse_str($addQueryParams, $queryParameters);
+            // get config.linkVars and prepend
+            if ($tsfe->linkVars) {
+                $globalQueryParameters = [];
+                parse_str($tsfe->linkVars, $globalQueryParameters);
+                if (!empty($globalQueryParameters)) {
+                    $queryParameters = array_merge_recursive($globalQueryParameters, $queryParameters);
+                }
+            }
             unset($queryParameters['id'], $queryParameters['L']);
             if ($pageType) {
                 $queryParameters['type'] = (int)$pageType;
