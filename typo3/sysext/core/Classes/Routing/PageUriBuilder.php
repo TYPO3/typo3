@@ -73,64 +73,64 @@ class PageUriBuilder implements SingletonInterface
     public function buildUri(int $pageId, array $queryParameters = [], string $fragment = null, array $options = [], string $referenceType = self::ABSOLUTE_PATH): UriInterface
     {
         // Resolve site
-        $site = null;
+        $site = $options['site'] ?? null;
         $siteLanguage = null;
         $languageOption = $options['language'] ?? null;
         $languageQueryParameter = isset($queryParameters['L']) ? (int)$queryParameters['L'] : null;
 
-        if (isset($options['site']) && $options['site'] instanceof Site) {
-            $site = $options['site'];
+        if (!($site instanceof Site)) {
+            try {
+                $site = $this->siteFinder->getSiteByPageId($pageId, $options['rootLine'] ?? null);
+            } catch (SiteNotFoundException $e) {
+                // no site found, must be an pseudo site site
+            }
         }
-        if (isset($options['language'])) {
-            if ($options['language'] instanceof SiteLanguage) {
-                $siteLanguage = $options['language'];
-                $languageOption = $siteLanguage->getLanguageId();
+        if ($languageOption) {
+            if ($languageOption instanceof SiteLanguage) {
+                $siteLanguage = $languageOption;
+                $languageOption = $languageOption->getLanguageId();
             } else {
                 $languageOption = (int)$languageOption;
             }
         }
         $languageId = $languageOption ?? $languageQueryParameter ?? null;
 
-        // alternative page ID - Used to set as alias as well
-        $alternativePageId = $options['alternativePageId'] ?? $pageId;
-        if (!($site instanceof Site)) {
-            try {
-                $site = $this->siteFinder->getSiteByPageId($pageId, $options['rootLine'] ?? null);
-                if ($site) {
-                    // Resolve language (based on the options / query parameters, and remove it from GET variables,
-                    // as the language is determined by the language path
+        // Resolve language (based on the options / query parameters, and remove it
+        // from GET variables, as the language is determined by the language path
+        if ($site) {
+            if ($languageId !== null) {
+                try {
+                    $siteLanguage = $site->getLanguageById($languageId);
                     unset($queryParameters['L']);
-                    $siteLanguage = $site->getLanguageById($languageId ?? 0);
+                } catch (\InvalidArgumentException $e) {
+                    // No Language found, so do fallback linking
                 }
-            } catch (SiteNotFoundException | \InvalidArgumentException $e) {
+            } else {
+                $siteLanguage = $site->getDefaultLanguage();
+                unset($queryParameters['L']);
             }
         }
 
         // If something is found, use /en/?id=123&additionalParams
         // Only if a language is configured for the site, build a URL with a site prefix / base
         if ($site && $siteLanguage) {
-            unset($options['legacyUrlPrefix']);
             // Ensure to fetch the path segment / slug if it exists
+            $pageRecord = BackendUtility::getRecord('pages', $pageId);
             if ($siteLanguage->getLanguageId() > 0) {
                 $pageLocalizations = BackendUtility::getRecordLocalization('pages', $pageId, $siteLanguage->getLanguageId());
-                $pageRecord = $pageLocalizations[0] ?? false;
-            } else {
-                $pageRecord = BackendUtility::getRecord('pages', $pageId);
+                $pageRecord = $pageLocalizations[0] ?? $pageRecord;
             }
             $prefix = (string)$siteLanguage->getBase();
             if (!empty($pageRecord['slug'] ?? '')) {
                 $prefix = rtrim($prefix, '/') . '/' . ltrim($pageRecord['slug'], '/');
             } else {
-                $prefix .= '?id=' . $alternativePageId;
+                $prefix .= '?id=' . $pageId;
             }
         } else {
             // If nothing is found, use index.php?id=123&additionalParams
             // This usually kicks in with "PseudoSites" where no language object can be determined.
-            $prefix = $options['legacyUrlPrefix'] ?? null;
-            if ($prefix === null) {
-                $prefix = $referenceType === self::ABSOLUTE_URL ? GeneralUtility::getIndpEnv('TYPO3_SITE_URL') : '';
-            }
-            $prefix .= 'index.php?id=' . $alternativePageId;
+            $prefix = $referenceType === self::ABSOLUTE_URL ? GeneralUtility::getIndpEnv('TYPO3_SITE_URL') : '';
+            $prefix .= 'index.php?id=' . $pageId;
             if ($languageId !== null) {
                 $queryParameters['L'] = $languageId;
             }
@@ -150,7 +150,7 @@ class PageUriBuilder implements SingletonInterface
         if ($fragment) {
             $uri = $uri->withFragment($fragment);
         }
-        if ($referenceType === self::ABSOLUTE_PATH && !isset($options['legacyUrlPrefix'])) {
+        if ($referenceType === self::ABSOLUTE_PATH) {
             $uri = $uri->withScheme('')->withHost('')->withPort(null);
         }
         return $uri;

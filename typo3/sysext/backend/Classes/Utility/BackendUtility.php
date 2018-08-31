@@ -2663,7 +2663,7 @@ class BackendUtility
                 $additionalQueryParams = [];
                 parse_str($additionalGetVars, $additionalQueryParams);
                 $uriBuilder = GeneralUtility::makeInstance(PageUriBuilder::class);
-                $previewUrl = (string)$uriBuilder->buildUri($pageUid, $additionalQueryParams, $anchorSection, ['rootLine' => $rootLine], $uriBuilder::ABSOLUTE_URL);
+                $previewUrl = (string)$uriBuilder->buildUri($pageUid, $additionalQueryParams, $anchorSection, ['site' => $site, 'rootLine' => $rootLine], $uriBuilder::ABSOLUTE_URL);
             } catch (SiteNotFoundException $e) {
                 $previewUrl = self::createPreviewUrl($pageUid, $rootLine, $anchorSection, $additionalGetVars, $viewScript);
             }

@@ -21,7 +21,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Routing\PageUriBuilder;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -88,17 +87,12 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
         }
 
         // Build Url
-        $languageUid = null;
-        $siteLanguage = $request->getAttribute('language');
-        if ($siteLanguage instanceof SiteLanguage) {
-            $languageUid = $siteLanguage->getLanguageId();
-        }
         $uriBuilder = GeneralUtility::makeInstance(PageUriBuilder::class);
         return (string)$uriBuilder->buildUri(
             (int)$urlParams['pageuid'],
             [],
             null,
-            ['language' => $languageUid],
+            ['language' => $request->getAttribute('language', null)],
             PageUriBuilder::ABSOLUTE_URL
         );
     }
