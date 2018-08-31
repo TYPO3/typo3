@@ -62,12 +62,14 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         }
 
         // Looking up the page record to verify its existence:
-        $page = $tsfe->sys_page->getPage($linkDetails['pageuid'], $disableGroupAccessCheck);
+        $page = $this->resolvePage($tsfe->sys_page, $linkDetails, $conf, $disableGroupAccessCheck);
 
         if (empty($page)) {
             throw new UnableToLinkException('Page id "' . $linkDetails['typoLinkParameter'] . '" was not found, so "' . $linkText . '" was not linked.', 1490987336, null, $linkText);
         }
-        $language = (int)$page[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
+
+        $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? null;
+        $language = (int)($page[$languageField] ?? 0);
         if ($language === 0 && GeneralUtility::hideIfDefaultLanguage($page['l18n_cfg'])) {
             throw new UnableToLinkException('Default language of page  "' . $linkDetails['typoLinkParameter'] . '" is hidden, so "' . $linkText . '" was not linked.', 1529527301, null, $linkText);
         }
@@ -241,6 +243,47 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     }
 
     /**
+     * Resolves page and if a translated page was found, resolves that to it
+     * language parent, adjusts `$linkDetails['pageuid']` (for hook processing)
+     * and modifies `$configuration['language']` (for language URL generation).
+     *
+     * @param PageRepository $pageRepository
+     * @param array $linkDetails
+     * @param array $configuration
+     * @param bool $disableGroupAccessCheck
+     * @return array
+     */
+    protected function resolvePage(PageRepository $pageRepository, array &$linkDetails, array &$configuration, bool $disableGroupAccessCheck): array
+    {
+        // Looking up the page record to verify its existence:
+        $page = $pageRepository->getPage($linkDetails['pageuid'], $disableGroupAccessCheck);
+
+        if (empty($page) || !is_array($page)) {
+            return [];
+        }
+
+        $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? null;
+        $languageParentField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] ?? null;
+        $language = (int)($page[$languageField] ?? 0);
+
+        if ($language <= 0 || empty($page[$languageParentField])) {
+            return $page;
+        }
+
+        $languageParentPage = $pageRepository->getPage(
+            $page[$languageParentField],
+            $disableGroupAccessCheck
+        );
+        if (empty($languageParentPage)) {
+            return $page;
+        }
+
+        $linkDetails['pageuid'] = (int)$languageParentPage['uid'];
+        $configuration['language'] = $language;
+        return $languageParentPage;
+    }
+
+    /**
      * Create a UriInterface object when linking to a page with a site configuration
      *
      * @param array $page
@@ -315,6 +358,20 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      */
     protected function generateUrlForPageWithoutSiteConfiguration(array $page, string $additionalQueryParams, array $conf, string $pageType, string $sectionMark, string $target, array $MPvarAcc): array
     {
+        // new 'language' property takes precedence over '&L=1' if numeric
+        // here 'additionalParams=&L={language-value}' will be overridden
+        if (MathUtility::canBeInterpretedAsInteger($conf['language'] ?? '')) {
+            $queryParameters = [];
+            parse_str($additionalQueryParams, $queryParameters);
+            $queryParameters['L'] = $conf['language'];
+            $additionalQueryParams = http_build_query(
+                $queryParameters,
+                '',
+                '&',
+                PHP_QUERY_RFC3986
+            );
+        }
+
         $tsfe = $this->getTypoScriptFrontendController();
         $enableLinksAcrossDomains = $tsfe->config['config']['typolinkEnableLinksAcrossDomains'];
         $targetDomain = '';

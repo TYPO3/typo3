@@ -279,8 +279,8 @@ class LinkGeneratorTest extends AbstractTestCase
             ['https://acme.us/', 1100, 1100, 0, '/?id=1100'],
             ['https://acme.us/', 1100, 1100, 1, '/?id=1100'],
             ['https://acme.us/', 1100, 1100, 2, '/?id=1100'],
-            ['https://acme.us/', 1100, 1101, 0, '/?id=1100'], // @todo Language missing
-            ['https://acme.us/', 1100, 1102, 0, '/?id=1100'], // @todo Language missing
+            ['https://acme.us/', 1100, 1101, 0, 'https://acme.fr/?id=1100'],
+            ['https://acme.us/', 1100, 1102, 0, 'https://acme.ca/?id=1100'],
             // acme.com -> products.acme.com (nested sub-site)
             ['https://acme.us/', 1100, 1300, 0, 'https://products.acme.com/?id=1300'],
             ['https://acme.us/', 1100, 1310, 0, 'https://products.acme.com/?id=1310'],
@@ -288,20 +288,20 @@ class LinkGeneratorTest extends AbstractTestCase
             ['https://acme.us/', 1100, 3100, 0, '/index.php?id=3100&L=0'],
             ['https://acme.us/', 1100, 3100, 1, '/index.php?id=3100&L=1'],
             ['https://acme.us/', 1100, 3100, 2, '/index.php?id=3100&L=2'],
-            ['https://acme.us/', 1100, 3101, 0, '/index.php?id=3101&L=0'],
-            ['https://acme.us/', 1100, 3102, 0, '/index.php?id=3102&L=0'],
+            ['https://acme.us/', 1100, 3101, 0, '/index.php?id=3100&L=1'],
+            ['https://acme.us/', 1100, 3102, 0, '/index.php?id=3100&L=2'],
             // blog.acme.com -> acme.com (different site)
             ['https://blog.acme.com/', 2100, 1100, 0, 'https://acme.us/?id=1100'],
             ['https://blog.acme.com/', 2100, 1100, 1, 'https://acme.us/?id=1100'],
             ['https://blog.acme.com/', 2100, 1100, 2, 'https://acme.us/?id=1100'],
-            ['https://blog.acme.com/', 2100, 1101, 0, 'https://acme.us/?id=1100'], // @todo Language missing
-            ['https://blog.acme.com/', 2100, 1102, 0, 'https://acme.us/?id=1100'], // @todo Language missing
+            ['https://blog.acme.com/', 2100, 1101, 0, 'https://acme.fr/?id=1100'],
+            ['https://blog.acme.com/', 2100, 1102, 0, 'https://acme.ca/?id=1100'],
             // blog.acme.com -> archive (outside site)
             ['https://blog.acme.com/', 2100, 3100, 0, '/index.php?id=3100&L=0'],
             ['https://blog.acme.com/', 2100, 3100, 1, '/index.php?id=3100&L=1'],
             ['https://blog.acme.com/', 2100, 3100, 2, '/index.php?id=3100&L=2'],
-            ['https://blog.acme.com/', 2100, 3101, 0, '/index.php?id=3101&L=0'],
-            ['https://blog.acme.com/', 2100, 3102, 0, '/index.php?id=3102&L=0'],
+            ['https://blog.acme.com/', 2100, 3101, 0, '/index.php?id=3100&L=1'],
+            ['https://blog.acme.com/', 2100, 3102, 0, '/index.php?id=3100&L=2'],
             // blog.acme.com -> products.acme.com (different sub-site)
             ['https://blog.acme.com/', 2100, 1300, 0, 'https://products.acme.com/?id=1300'],
             ['https://blog.acme.com/', 2100, 1310, 0, 'https://products.acme.com/?id=1310'],
