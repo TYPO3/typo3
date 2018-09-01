@@ -47,6 +47,7 @@ define(['jquery'], function ($) {
   SlugElement.initialize = function (selector, options) {
     var self = this;
     var toggleButtonClass = '.t3js-form-field-slug-toggle';
+    var recreateButtonClass = '.t3js-form-field-slug-recreate';
     var inputFieldClass = '.t3js-form-field-slug-input';
     var readOnlyFieldClass = '.t3js-form-field-slug-readonly';
     var hiddenFieldClass = '.t3js-form-field-slug-hidden';
@@ -67,36 +68,30 @@ define(['jquery'], function ($) {
         $(document).on('keyup', '[data-formengine-input-name="' + field + '"]', function (e) {
           if (!self.manuallyChanged) {
             // manuallyChanged = true stops slug generation as soon as editor set a slug manually
-            SlugElement.sendSlugProposal(true);
+            SlugElement.sendSlugProposal('auto');
           }
         });
       });
     }
 
-    if (options.command === 'edit' && this.$hiddenField.val() === '') {
-      // If we're editing a page and the slug is currently empty for whatever reason,
-      // auto-generate the slug once.
-      // @todo: This currently happens if a page is localized via page / list module
-      // @todo: "Make new translation of this page" - DataHandler does not create slug in this case
-      // @todo: "justLocalized" This should probably be fixed in the DataHandler
-      SlugElement.sendSlugProposal(true);
-      // And also listen on the listener fields so slug is modified in this case, too
-      $.each(fieldsToListenOn, function (fieldName, field) {
-        $(document).on('keyup', '[data-formengine-input-name="' + field + '"]', function (e) {
-          if (!self.manuallyChanged) {
-            // manuallyChanged = true stops slug generation as soon as editor set a slug manually
-            SlugElement.sendSlugProposal(true);
-          }
-        });
-      });
-    }
+    // Clicking the recreate button makes new slug proposal created from 'title' field
+    $(document).on('click', recreateButtonClass, function (e) {
+      e.preventDefault();
+      if (self.$readOnlyField.hasClass('hidden')) {
+        // Switch to readonly version - similar to 'new' page where field is
+        // written on the fly with title change
+        self.$readOnlyField.toggleClass('hidden', false);
+        self.$inputField.toggleClass('hidden', true);
+      }
+      SlugElement.sendSlugProposal('recreate');
+    });
 
     // Scenario for new pages: Usually, slug is created from the page title. However, if user toggles the
     // input field and feeds an own slug, and then changes title again, the slug should stay. manuallyChanged
     // is used to track this.
     $(this.$inputField).on('keyup', function (e) {
       self.manuallyChanged = true;
-      SlugElement.sendSlugProposal(false);
+      SlugElement.sendSlugProposal('manual');
     });
 
     // Clicking the toggle button toggles the read only field and the input field.
@@ -117,9 +112,9 @@ define(['jquery'], function ($) {
     });
   };
 
-  SlugElement.sendSlugProposal = function (autoGeneration) {
+  SlugElement.sendSlugProposal = function (mode) {
     var input = {};
-    if (autoGeneration) {
+    if (mode === 'auto' || mode === 'recreate') {
       var fieldsToListenOn = SlugElement.options.listenerFieldNames || {};
       $.each(fieldsToListenOn, function (fieldName, field) {
         input[fieldName] = $('[data-formengine-input-name="' + field + '"]').val();
@@ -131,9 +126,10 @@ define(['jquery'], function ($) {
       TYPO3.settings.ajaxUrls['record_slug_suggest'],
       {
         values: input,
-        autoGeneration: autoGeneration,
+        mode: mode,
         tableName: SlugElement.options.tableName,
         pageId: SlugElement.options.pageId,
+        parentPageId: SlugElement.options.parentPageId,
         recordId: SlugElement.options.recordId,
         language: SlugElement.options.language,
         fieldName: SlugElement.options.fieldName,
@@ -147,7 +143,7 @@ define(['jquery'], function ($) {
           SlugElement.$fullElement.find('.t3js-form-proposal-accepted').removeClass('hidden').find('span').text(response.proposal);
           SlugElement.$fullElement.find('.t3js-form-proposal-different').addClass('hidden');
         }
-        if (autoGeneration) {
+        if (mode === 'auto' || mode === 'recreate') {
           SlugElement.$readOnlyField.val(response.proposal);
           SlugElement.$hiddenField.val(response.proposal);
         } else {

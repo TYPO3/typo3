@@ -88,6 +88,7 @@ class InputSlugElement extends AbstractFormElement
         $fieldWizardHtml = $fieldWizardResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
         $toggleButtonTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.toggleSlugExplanation');
+        $recreateButtonTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.recreateSlugExplanation');
 
         $thisSlugId = 't3js-form-field-slug-id' . StringUtility::getUniqueId();
         $mainFieldHtml = [];
@@ -118,6 +119,9 @@ class InputSlugElement extends AbstractFormElement
         $mainFieldHtml[] =                  '<span class="input-group-btn">';
         $mainFieldHtml[] =                      '<button class="btn btn-default t3js-form-field-slug-toggle" type="button" title="' . htmlspecialchars($toggleButtonTitle) . '">';
         $mainFieldHtml[] =                          $this->iconFactory->getIcon('actions-version-workspaces-preview-link', Icon::SIZE_SMALL)->render();
+        $mainFieldHtml[] =                      '</button>';
+        $mainFieldHtml[] =                      '<button class="btn btn-default t3js-form-field-slug-recreate" type="button" title="' . htmlspecialchars($recreateButtonTitle) . '">';
+        $mainFieldHtml[] =                          $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render();
         $mainFieldHtml[] =                      '</button>';
         $mainFieldHtml[] =                  '</span>';
         $mainFieldHtml[] =                  '<input type="hidden"';
@@ -150,6 +154,7 @@ class InputSlugElement extends AbstractFormElement
         foreach ($config['generatorOptions']['fields'] ?? [] as $listenerFieldName) {
             $validInputNamesToListenTo[$listenerFieldName] = $commonElementPrefix . '[' . htmlspecialchars($listenerFieldName) . ']';
         }
+        $parentPageId = $this->data['parentPageRow']['uid'] ?? 0;
         $signature = GeneralUtility::hmac(
             implode(
                 '',
@@ -160,6 +165,7 @@ class InputSlugElement extends AbstractFormElement
                     $languageId,
                     $this->data['fieldName'],
                     $this->data['command'],
+                    $parentPageId
                 ]
             ),
             FormSlugAjaxController::class
@@ -174,7 +180,8 @@ class InputSlugElement extends AbstractFormElement
             'language' => $languageId,
             'originalValue' => $itemValue,
             'signature' => $signature,
-            'command' => $this->data['command']
+            'command' => $this->data['command'],
+            'parentPageId' => $parentPageId,
         ];
         $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/SlugElement' => '
             function(SlugElement) {

@@ -60,9 +60,10 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
 
         $queryParameters = $request->getParsedBody() ?? [];
         $values = $queryParameters['values'];
-        $autoGeneration = $queryParameters['autoGeneration'] === 'true' ? true : false;
+        $mode = $queryParameters['mode'];
         $tableName = $queryParameters['tableName'];
         $pid = (int)$queryParameters['pageId'];
+        $parentPageId = (int)$queryParameters['parentPageId'];
         $recordId = (int)$queryParameters['recordId'];
         $languageId = (int)$queryParameters['language'];
         $fieldName = $queryParameters['fieldName'];
@@ -82,15 +83,22 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
         $hasConflict = false;
 
         $slug = GeneralUtility::makeInstance(SlugHelper::class, $tableName, $fieldName, $fieldConfig);
-        if ($autoGeneration) {
+        if ($mode === 'auto') {
             // New page - Feed incoming values to generator
             $recordData = $values;
             $recordData['pid'] = $pid;
             $recordData[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] = $languageId;
             $proposal = $slug->generate($recordData, $pid);
-        } else {
+        } elseif ($mode === 'recreate') {
+            $recordData = $values;
+            $recordData['pid'] = $pid;
+            $recordData[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] = $languageId;
+            $proposal = $slug->generate($recordData, $parentPageId);
+        } elseif ($mode === 'manual') {
             // Existing record - Fetch full record and only validate against the new "slug" field.
             $proposal = $slug->sanitize($values['manual']);
+        } else {
+            throw new \RuntimeException('mode must be either "auto", "recreate" or "manual"', 1535835666);
         }
 
         if ($hasToBeUniqueInSite && !$slug->isUniqueInSite($proposal, $recordId, $pid, $languageId)) {
@@ -103,7 +111,7 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
         }
 
         return new JsonResponse([
-            'hasConflicts' => !$autoGeneration && $hasConflict,
+            'hasConflicts' => !$mode && $hasConflict,
             'manual' => $values['manual'] ?? '',
             'proposal' => $proposal,
         ]);
@@ -126,6 +134,7 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
                     $queryParameters['language'],
                     $queryParameters['fieldName'],
                     $queryParameters['command'],
+                    $queryParameters['parentPageId'],
                 ]
             ),
             __CLASS__
