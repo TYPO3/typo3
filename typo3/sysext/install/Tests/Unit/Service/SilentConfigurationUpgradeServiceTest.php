@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Install\Tests\Unit\Service;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
-use TYPO3\CMS\Core\Core\ApplicationContext;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -47,12 +45,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     protected $backupPackageManager;
 
     /**
-     * restore Environment after each test
-     * @var bool
-     */
-    protected $backupEnvironment = true;
-
-    /**
      * Set up
      */
     protected function setUp()
@@ -78,50 +70,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         $this->configurationManager = $this->getMockBuilder(ConfigurationManager::class)
             ->setMethods($methods)
             ->getMock();
-    }
-
-    /**
-     * Moves existing files in PATH_site . typo3conf/ to a different location
-     * @test
-     */
-    public function configurationFilesAreMovedToConfigDirectoryIfEnvironmentVariableIsSet()
-    {
-        Environment::initialize(
-            new ApplicationContext('Development'),
-            true,
-            false,
-            rtrim(PATH_site, '/'),
-            rtrim(PATH_site, '/'),
-            PATH_site . 'var',
-            PATH_site . 'typo3temp/var/tests/' . uniqid('config', true),
-            PATH_thisScript,
-            'WINDOWS'
-        );
-
-        $filesToCreate = [
-            'LocalConfiguration.php',
-            'AdditionalConfiguration.php',
-            'AdditionalFactoryConfiguration.php',
-        ];
-
-        foreach ($filesToCreate as $fileToCreate) {
-            touch(PATH_typo3conf . $fileToCreate);
-        }
-
-        $this->createConfigurationManagerWithMockedMethods(['exportConfiguration']);
-        $this->configurationManager->expects($this->once())->method('exportConfiguration');
-
-        $subject = new SilentConfigurationUpgradeService($this->configurationManager);
-        $subject->migrateConfigurationFiles();
-
-        foreach ($filesToCreate as $file) {
-            $this->testFilesToDelete[] = Environment::getConfigPath() . '/' . $file;
-
-            // Check if the new file is placed
-            $this->assertFileExists(Environment::getConfigPath() . '/' . $file);
-            // Check if the old files do not exist anymore
-            $this->assertFileNotExists(PATH_typo3conf . $file);
-        }
     }
 
     /**
