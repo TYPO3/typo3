@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Error;
 
 /*
@@ -18,8 +19,6 @@ namespace TYPO3\CMS\Core\Error;
  * A basic but solid exception handler which catches everything which
  * falls through the other exception handlers and provides useful debugging
  * information.
- *
- * This file is a backport from TYPO3 Flow
  */
 class DebugExceptionHandler extends AbstractExceptionHandler
 {
@@ -39,60 +38,25 @@ class DebugExceptionHandler extends AbstractExceptionHandler
     public function echoExceptionWeb(\Throwable $exception)
     {
         $this->sendStatusHeaders($exception);
-        $filePathAndName = $exception->getFile();
-        $exceptionCodeNumber = $exception->getCode() > 0 ? '#' . $exception->getCode() . ': ' : '';
-        $moreInformationLink = $exceptionCodeNumber !== ''
-            ? '(<a href="' . TYPO3_URL_EXCEPTION . 'debug/' . $exception->getCode() . '" target="_blank">More information</a>)'
-            : '';
-        $backtraceCode = $this->getBacktraceCode($exception->getTrace());
         $this->writeLogEntries($exception, self::CONTEXT_WEB);
-        echo '<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html
-     PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-        <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-				<head>
-					<title>TYPO3 Exception</title>
-					<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-					<style type="text/css">
-						.ExceptionProperty {
-							color: #101010;
-						}
-						pre {
-							margin: 0;
-							font-size: 11px;
-							color: #515151;
-							background-color: #D0D0D0;
-							padding-left: 30px;
-						}
-					</style>
-				</head>
-				<body>
-					<div style="
-							position: absolute;
-							left: 10px;
-							background-color: #B9B9B9;
-							outline: 1px solid #515151;
-							color: #515151;
-							font-family: Arial, Helvetica, sans-serif;
-							font-size: 12px;
-							margin: 10px;
-							padding: 0;
-						">
-						<div style="width: 100%; background-color: #515151; color: white; padding: 2px; margin: 0 0 6px 0;">Uncaught TYPO3 Exception</div>
-						<div style="width: 100%; padding: 2px; margin: 0 0 6px 0;">
-							<strong style="color: #BE0027;">' . $exceptionCodeNumber . htmlspecialchars($exception->getMessage()) . '</strong> ' . $moreInformationLink . '<br />
-							<br />
-							<span class="ExceptionProperty">' . get_class($exception) . '</span> thrown in file<br />
-							<span class="ExceptionProperty">' . htmlspecialchars($filePathAndName) . '</span> in line
-							<span class="ExceptionProperty">' . $exception->getLine() . '</span>.<br />
-							<br />
-							' . $backtraceCode . '
-						</div>
-					</div>
-				</body>
-			</html>
-		';
+
+        $content = $this->getContent($exception);
+        $css = $this->getStylesheet();
+
+        echo <<<HTML
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>TYPO3 Exception</title>
+        <meta name="robots" content="noindex,nofollow" />
+        <style>$css</style>
+    </head>
+    <body>
+        $content
+    </body>
+</html>
+HTML;
     }
 
     /**
@@ -112,56 +76,310 @@ class DebugExceptionHandler extends AbstractExceptionHandler
     }
 
     /**
-     * Renders some backtrace
+     * Generates the HTML for the error output.
      *
-     * @param array $trace The trace
-     * @return string Backtrace information
+     * @param \Throwable $throwable
+     * @return string
      */
-    protected function getBacktraceCode(array $trace)
+    protected function getContent(\Throwable $throwable): string
     {
-        $backtraceCode = '';
-        if (!empty($trace)) {
-            foreach ($trace as $index => $step) {
-                $class = isset($step['class']) ? htmlspecialchars($step['class']) . '<span style="color:white;">::</span>' : '';
-                $arguments = '';
-                if (isset($step['args']) && is_array($step['args'])) {
-                    foreach ($step['args'] as $argument) {
-                        $arguments .= (string)$arguments === '' ? '' : '<span style="color:white;">,</span> ';
-                        if (is_object($argument)) {
-                            $arguments .= '<span style="color:#FF8700;"><em>' . htmlspecialchars(get_class($argument)) . '</em></span>';
-                        } elseif (is_string($argument)) {
-                            $preparedArgument = strlen($argument) < 100
-                                ? $argument
-                                : substr($argument, 0, 50) . '#tripleDot#' . substr($argument, -50);
-                            $preparedArgument = str_replace(
-                                [
-                                    '#tripleDot#',
-                                    LF],
-                                [
-                                    '<span style="color:white;">&hellip;</span>',
-                                    '<span style="color:white;">&crarr;</span>'
-                                ],
-                                htmlspecialchars($preparedArgument)
-                            );
-                            $arguments .= '"<span style="color:#FF8700;" title="' . htmlspecialchars($argument) . '">'
-                                . $preparedArgument . '</span>"';
-                        } elseif (is_numeric($argument)) {
-                            $arguments .= '<span style="color:#FF8700;">' . (string)$argument . '</span>';
-                        } else {
-                            $arguments .= '<span style="color:#FF8700;"><em>' . gettype($argument) . '</em></span>';
-                        }
-                    }
-                }
-                $backtraceCode .= '<pre style="color:#69A550; background-color: #414141; padding: 4px 2px 4px 2px;">';
-                $backtraceCode .= '<span style="color:white;">' . (count($trace) - $index) . '</span> ' . $class
-                    . $step['function'] . '<span style="color:white;">(' . $arguments . ')</span>';
-                $backtraceCode .= '</pre>';
-                if (isset($step['file'])) {
-                    $backtraceCode .= $this->getCodeSnippet($step['file'], $step['line']) . '<br />';
-                }
-            }
+        $content = '';
+
+        // exceptions can be chained
+        // for easier debugging, all exceptions are displayed to the developer
+        $throwables = $this->getAllThrowables($throwable);
+        $count = count($throwables);
+        foreach ($throwables as $position => $e) {
+            $content .= $this->getSingleThrowableContent($e, $position + 1, $count);
         }
-        return $backtraceCode;
+
+        $exceptionInfo = '';
+        if ($throwable->getCode() > 0) {
+            $wikiLink = TYPO3_URL_EXCEPTION . 'debug/' . $throwable->getCode();
+            $exceptionInfo = <<<INFO
+            <div class="container">
+                <div class="callout">
+                    <h4 class="callout-title">Get help in the TYPO3 Wiki</h4>
+                    <div class="callout-body">
+                        <p>
+                            If you need help solving this exception, you can have a look at the TYPO3 Wiki.
+                            There you can find solutions provided by the TYPO3 community.
+                            Once you have found a solution to the problem, help others by contributing to the wiki page.
+                        </p>
+                        <p>
+                            <a href="$wikiLink" target="_blank">Find a solution for this exception in the TYPO3 wiki.</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+INFO;
+        }
+
+        $typo3Logo = $this->getTypo3LogoAsSvg();
+
+        return <<<HTML
+            <div class="exception-summary">
+                <div class="container">
+                    <div class="exception-message-wrapper">
+                        <div class="exception-illustration hidden-xs-down">$typo3Logo</div>
+                        <h1 class="exception-message break-long-words">Whoops, looks like something went wrong.</h1>
+                    </div>
+                </div>
+            </div>
+
+            $exceptionInfo
+
+            <div class="container">
+                $content
+            </div>
+HTML;
+    }
+
+    /**
+     * Renders the HTML for a single throwable.
+     *
+     * @param \Throwable $throwable
+     * @param int $index
+     * @param int $total
+     * @return string
+     */
+    protected function getSingleThrowableContent(\Throwable $throwable, int $index, int $total): string
+    {
+        $exceptionTitle = $this->formatClass(get_class($throwable));
+        $exceptionMessage = $this->escapeHtml($throwable->getMessage());
+
+        // The trace does not contain the step where the exception is thrown.
+        // To display it as well it is added manually to the trace.
+        $trace = $throwable->getTrace();
+        array_unshift($trace, [
+            'file' => $throwable->getFile(),
+            'line' => $throwable->getLine(),
+            'args' => [],
+        ]);
+
+        $backtraceCode = $this->getBacktraceCode($trace);
+
+        return <<<HTML
+            <div class="trace">
+                <div class="trace-head">
+                    <h3 class="trace-class">
+                        <span class="text-muted">({$index}/{$total})</span>
+                        <span class="exception-title">{$exceptionTitle}</span>
+                    </h3>
+                    <p class="trace-message break-long-words">{$exceptionMessage}</p>
+                </div>
+                <div class="trace-body">
+                    {$backtraceCode}
+                </div>
+            </div>
+HTML;
+    }
+
+    /**
+     * Generates the stylesheet needed to display the error page.
+     *
+     * @return string
+     */
+    protected function getStylesheet(): string
+    {
+        return <<<STYLESHEET
+            body {
+                background-color: #ffffff;
+                color: #000000;
+                font: 100%/1.3 Verdana, Arial, Helvetica, sans-serif;
+                margin: 0;
+            }
+
+            a {
+                color: #f49800;
+                text-decoration: underline;
+            }
+
+            a:hover {
+                text-decoration: none;
+            }
+
+            abbr[title] {
+                border-bottom: none;
+                cursor: help;
+                text-decoration: none;
+            }
+
+            pre {
+                font: 100%/1.3 "Courier New", Courier, monospace;
+                background-color: #ffffff;
+                overflow-x: auto;
+                color: #000000;
+                line-height: 0;
+                border-top: 1px solid #b9b9b9;
+                border-bottom: 1px solid #b9b9b9;
+            }
+
+            pre span {
+                display: block;
+                line-height: 1.3em;
+            }
+
+            pre span:before {
+                display: inline-block;
+                content: attr(data-line);
+                border-right: 1px solid #b9b9b9;
+                margin-right: 0.5em;
+                padding-right: 0.5em;
+                background-color: #f4f4f4;
+                width: 4em;
+                text-align: right;
+                color: #515151;
+            }
+
+            pre span.highlight {
+                background-color: #e7f2fe;
+            }
+
+            .break-long-words {
+                -ms-word-break: break-all;
+                word-break: break-all;
+                word-break: break-word;
+                -webkit-hyphens: auto;
+                -moz-hyphens: auto;
+                hyphens: auto;
+            }
+
+            .callout {
+                background-color: #fafafa;
+                border-left: 3px solid #8c8c8c;
+                margin: 2em 0;
+                padding: 1em;
+            }
+
+            .callout-title {
+                margin: 0;
+            }
+
+            .callout-body p:last-child {
+                margin-bottom: 0;
+            }
+
+            .container {
+                max-width: 1024px;
+                margin: 0 auto;
+                padding: 0 15px;
+            }
+
+            .exception-illustration {
+                width: 3em;
+                height: 3em;
+                float: left;
+                margin-right: 1em;
+            }
+
+            .exception-illustration svg {
+                width: 100%;
+            }
+
+            .exception-illustration svg path {
+                fill: #f49800;
+            }
+
+            .exception-summary {
+                background: #000000;
+                color: #ffffff;
+                padding: 1.5em 0;
+                margin-bottom: 2em;
+            }
+
+            .exception-summary h1 {
+                margin: 0;
+            }
+
+            .text-muted {
+                color: #8c8c8c;
+            }
+
+            .trace {
+                background-color: #fafafa;
+                margin-bottom: 2em;
+                border: 1px solid #b9b9b9;
+                box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 1px;
+            }
+
+            .trace-arguments {
+                color: #8c8c8c;
+            }
+
+            .trace-body {
+            }
+
+            .trace-call {
+                margin-bottom: 1em;
+            }
+
+            .trace-class {
+                margin: 0;
+            }
+
+            .trace-file pre {
+                margin-top: 1em;
+                margin-bottom: 0;
+            }
+
+            .trace-head {
+                background-color: #eaeaea;
+                padding: 1em;
+            }
+
+            .trace-message {
+                margin-bottom: 0;
+            }
+
+            .trace-step {
+                padding: 1em;
+                border-bottom: 1px solid #b9b9b9;
+            }
+
+            .trace-step:nth-child(even)
+            {
+                background-color: #ffffff;
+            }
+
+            .trace-step:last-child {
+                border-bottom: none;
+            }
+STYLESHEET;
+    }
+
+    /**
+     * Renders the backtrace as HTML.
+     *
+     * @param array $trace
+     * @return string
+     */
+    protected function getBacktraceCode(array $trace): string
+    {
+        $content = '';
+
+        foreach ($trace as $index => $step) {
+            $content .= '<div class="trace-step">';
+            $args = $this->flattenArgs($step['args']);
+
+            if (isset($step['function'])) {
+                $content .= '<div class="trace-call">' . sprintf(
+                        'at <span class="trace-class">%s</span><span class="trace-type">%s</span><span class="trace-method">%s</span>(<span class="trace-arguments">%s</span>)',
+                        $this->formatClass($step['class'] ?? ''),
+                        $step['type'],
+                        $step['function'],
+                        $this->formatArgs($args)
+                    ) . '</div>';
+            }
+
+            if (isset($step['file']) && isset($step['line'])) {
+                $content .= $this->getCodeSnippet($step['file'], $step['line']);
+            }
+
+            $content .= '</div>';
+        }
+
+        return $content;
     }
 
     /**
@@ -171,31 +389,168 @@ class DebugExceptionHandler extends AbstractExceptionHandler
      * @param int $lineNumber Line number defining the center of the code snippet
      * @return string The code snippet
      */
-    protected function getCodeSnippet($filePathAndName, $lineNumber)
+    protected function getCodeSnippet(string $filePathAndName, int $lineNumber): string
     {
-        $codeSnippet = '<br />';
+        $showLinesAround = 4;
+
+        $content = '<div class="trace-file">';
+        $content .= '<div class="trace-file-head">' . $this->formatPath($filePathAndName, $lineNumber) . '</div>';
+
         if (@file_exists($filePathAndName)) {
             $phpFile = @file($filePathAndName);
             if (is_array($phpFile)) {
-                $startLine = $lineNumber > 2 ? $lineNumber - 2 : 1;
+                $startLine = $lineNumber > $showLinesAround ? $lineNumber - $showLinesAround : 1;
                 $phpFileCount = count($phpFile);
-                $endLine = $lineNumber < $phpFileCount - 2 ? $lineNumber + 3 : $phpFileCount + 1;
+                $endLine = $lineNumber < $phpFileCount - $showLinesAround ? $lineNumber + $showLinesAround + 1 : $phpFileCount + 1;
                 if ($endLine > $startLine) {
-                    $codeSnippet = '<br /><span style="font-size:10px;">' . htmlspecialchars($filePathAndName) . ':</span><br /><pre>';
+                    $content .= '<div class="trace-file-content">';
+                    $content .= '<pre>';
+
                     for ($line = $startLine; $line < $endLine; $line++) {
-                        $codeLine = str_replace("\t", ' ', $phpFile[$line - 1]);
+                        $codeLine = str_replace(TAB, ' ', $phpFile[$line - 1]);
+                        $spanClass = '';
                         if ($line === $lineNumber) {
-                            $codeSnippet .= '</pre><pre style="background-color: #F1F1F1; color: black;">';
+                            $spanClass = 'highlight';
                         }
-                        $codeSnippet .= sprintf('%05d', $line) . ': ' . htmlspecialchars($codeLine);
-                        if ($line === $lineNumber) {
-                            $codeSnippet .= '</pre><pre>';
-                        }
+
+                        $content .= '<span class="' . $spanClass . '" data-line="' . $line . '">' . $this->escapeHtml($codeLine) . '</span>';
                     }
-                    $codeSnippet .= '</pre>';
+
+                    $content .= '</pre>';
+                    $content .= '</div>';
                 }
             }
         }
-        return $codeSnippet;
+
+        $content .= '</div>';
+
+        return $content;
+    }
+
+    /**
+     * Formats a path adding a line number.
+     *
+     * @param string $path The full path of the file.
+     * @param int $line The line number.
+     * @return string
+     */
+    protected function formatPath(string $path, int $line): string
+    {
+        $file = $this->escapeHtml(preg_match('#[^/\\\\]*+$#', $path, $file) ? $file[0] : $path);
+
+        return sprintf(
+            '<span class="block trace-file-path">in <abbr title="%s%3$s"><strong>%s</strong>%s</abbr></span>',
+            $this->escapeHtml($path),
+            $file,
+            0 < $line ? ' line ' . $line : ''
+        );
+    }
+
+    /**
+     * Formats the arguments of a method call.
+     *
+     * @param array $args The flattened args of method/function call
+     * @return string
+     */
+    protected function formatArgs(array $args): string
+    {
+        $result = [];
+        foreach ($args as $key => $item) {
+            if ('object' === $item[0]) {
+                $formattedValue = sprintf('<em>object</em>(%s)', $this->formatClass($item[1]));
+            } elseif ('array' === $item[0]) {
+                $formattedValue = sprintf('<em>array</em>(%s)', is_array($item[1]) ? $this->formatArgs($item[1]) : $item[1]);
+            } elseif ('null' === $item[0]) {
+                $formattedValue = '<em>null</em>';
+            } elseif ('boolean' === $item[0]) {
+                $formattedValue = '<em>' . strtolower(var_export($item[1], true)) . '</em>';
+            } elseif ('resource' === $item[0]) {
+                $formattedValue = '<em>resource</em>';
+            } else {
+                $formattedValue = str_replace("\n", '', $this->escapeHtml(var_export($item[1], true)));
+            }
+
+            $result[] = \is_int($key) ? $formattedValue : sprintf("'%s' => %s", $this->escapeHtml($key), $formattedValue);
+        }
+
+        return implode(', ', $result);
+    }
+
+    protected function flattenArgs(array $args, int $level = 0, int &$count = 0): array
+    {
+        $result = [];
+        foreach ($args as $key => $value) {
+            if (++$count > 1e4) {
+                return ['array', '*SKIPPED over 10000 entries*'];
+            }
+            if ($value instanceof \__PHP_Incomplete_Class) {
+                // is_object() returns false on PHP<=7.1
+                $result[$key] = ['incomplete-object', $this->getClassNameFromIncomplete($value)];
+            } elseif (is_object($value)) {
+                $result[$key] = ['object', get_class($value)];
+            } elseif (is_array($value)) {
+                if ($level > 10) {
+                    $result[$key] = ['array', '*DEEP NESTED ARRAY*'];
+                } else {
+                    $result[$key] = ['array', $this->flattenArgs($value, $level + 1, $count)];
+                }
+            } elseif (null === $value) {
+                $result[$key] = ['null', null];
+            } elseif (is_bool($value)) {
+                $result[$key] = ['boolean', $value];
+            } elseif (is_int($value)) {
+                $result[$key] = ['integer', $value];
+            } elseif (is_float($value)) {
+                $result[$key] = ['float', $value];
+            } elseif (is_resource($value)) {
+                $result[$key] = ['resource', get_resource_type($value)];
+            } else {
+                $result[$key] = ['string', (string)$value];
+            }
+        }
+
+        return $result;
+    }
+
+    protected function getClassNameFromIncomplete(\__PHP_Incomplete_Class $value): string
+    {
+        $array = new \ArrayObject($value);
+
+        return $array['__PHP_Incomplete_Class_Name'];
+    }
+
+    protected function escapeHtml(string $str): string
+    {
+        return htmlspecialchars($str, ENT_COMPAT | ENT_SUBSTITUTE);
+    }
+
+    protected function formatClass(string $class): string
+    {
+        $parts = explode('\\', $class);
+        $shortClassName = array_pop($parts);
+
+        if (strpos($class, 'class@anonymous') === 0) {
+            $shortClassName = 'class@anonymous';
+        }
+
+        return sprintf('<abbr title="%s">%s</abbr>', $class, $shortClassName);
+    }
+
+    protected function getTypo3LogoAsSvg(): string
+    {
+        return <<<SVG
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M11.1 10.3c-.2 0-.3.1-.5.1C9 10.4 6.8 5 6.8 3.2c0-.7.2-.9.4-1.1-2 .2-4.2.9-4.9 1.8-.2.2-.3.6-.3 1 0 2.8 3 9.2 5.1 9.2 1 0 2.6-1.6 4-3.8m-1-8.4c1.9 0 3.9.3 3.9 1.4 0 2.2-1.4 4.9-2.1 4.9C10.6 8.3 9 4.7 9 2.9c0-.8.3-1 1.1-1"></path></svg>
+SVG;
+    }
+
+    protected function getAllThrowables(\Throwable $throwable): array
+    {
+        $all = [$throwable];
+
+        while ($throwable = $throwable->getPrevious()) {
+            $all[] = $throwable;
+        }
+
+        return $all;
     }
 }
