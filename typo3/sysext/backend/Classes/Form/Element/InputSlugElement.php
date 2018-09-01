@@ -155,7 +155,7 @@ class InputSlugElement extends AbstractFormElement
                 '',
                 [
                     $table,
-                    $this->data['vanillaUid'] < 0 ? abs($this->data['vanillaUid']) : $this->data['effectivePid'],
+                    $this->data['effectivePid'],
                     $row['uid'],
                     $languageId,
                     $this->data['fieldName'],
@@ -165,7 +165,7 @@ class InputSlugElement extends AbstractFormElement
             FormSlugAjaxController::class
         );
         $optionsForModule = [
-            'pageId' => $this->data['vanillaUid'] < 0 ? abs($this->data['vanillaUid']) : $this->data['effectivePid'],
+            'pageId' => $this->data['effectivePid'],
             'recordId' => $row['uid'],
             'tableName' => $table,
             'fieldName' => $this->data['fieldName'],
