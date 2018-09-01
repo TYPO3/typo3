@@ -2722,56 +2722,56 @@ return [
         'numberOfMandatoryArguments' => 3,
         'maximumNumberOfArguments' => 7,
         'restFiles' => [
-            'Deprecation-85699-DeprecateMethodsInPageRepository.rst',
+            'Deprecation-85699-MethodsInPageRepository.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\ModuleTemplate->loadJavascriptLib' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85701-DeprecateMethodsInModuleTemplate.rst',
+            'Deprecation-85701-MethodsInModuleTemplate.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\ModuleTemplate->icons' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85701-DeprecateMethodsInModuleTemplate.rst',
+            'Deprecation-85701-MethodsInModuleTemplate.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\DocumentTemplate->addStyleSheet' => [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 4,
         'restFiles' => [
-            'Deprecation-85735-DeprecateMethodAndPropertyInDocumentTemplate.rst',
+            'Deprecation-85735-MethodAndPropertyInDocumentTemplate.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepository->getFileReferences' => [
         'numberOfMandatoryArguments' => 3,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
-            'Deprecation-85699-DeprecateMethodsInPageRepository.rst',
+            'Deprecation-85699-MethodsInPageRepository.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepository->movePlhOL' => [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
-            'Deprecation-85699-DeprecateMethodsInPageRepository.rst',
+            'Deprecation-85699-MethodsInPageRepository.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepository->getMovePlaceholder' => [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
-            'Deprecation-85699-DeprecateMethodsInPageRepository.rst',
+            'Deprecation-85699-MethodsInPageRepository.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Service\EnvironmentService->isEnvironmentInCliMode' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-85807-DeprecateEnvironmentServiceisEnvironmentInCliMode.rst',
+            'Deprecation-85807-EnvironmentServiceisEnvironmentInCliMode.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt->getOptions' => [
@@ -3051,42 +3051,42 @@ return [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+            'Deprecation-85821-BoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Boostrap->setEarlyInstance' => [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
-            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+            'Deprecation-85821-BoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Boostrap->getEarlyInstance' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+            'Deprecation-85821-BoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Boostrap->getEarlyInstances' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+            'Deprecation-85821-BoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Boostrap->initializePackageManagement' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+            'Deprecation-85821-BoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Boostrap->setRequestType' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+            'Deprecation-85821-BoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->initFEuser' => [
@@ -3212,14 +3212,14 @@ return [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-85978-DeprecateGraphicalFunctions-initMethod.rst'
+            'Deprecation-85978-GraphicalFunctions-init.rst'
         ],
     ],
     'TYPO3\CMS\Frontend\Imaging\GifBuilder->init' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-85978-DeprecateGraphicalFunctions-initMethod.rst'
+            'Deprecation-85978-GraphicalFunctions-init.rst'
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepository->getFirstWebPage' => [

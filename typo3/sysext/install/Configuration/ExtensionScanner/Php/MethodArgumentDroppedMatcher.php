@@ -204,7 +204,7 @@ return [
     'TYPO3\CMS\Core\Page\PageRenderer->addInlineLanguageLabelArray' => [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85806-DeprecateSecondArgumentOfPageRendereraddInlineLanguageLabelArray.rst',
+            'Deprecation-85806-SecondArgumentOfPageRendereraddInlineLanguageLabelArray.rst',
         ],
     ],
 ];

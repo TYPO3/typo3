@@ -711,7 +711,7 @@ return [
     ],
     'TYPO3\CMS\Saltedpasswords\SaltedPasswordService' => [
         'restFiles' => [
-            'Deprecation-85761-DeprecatedSaltedPasswordService.rst',
+            'Deprecation-85761-SaltedPasswordService.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Service\FlexFormService' => [

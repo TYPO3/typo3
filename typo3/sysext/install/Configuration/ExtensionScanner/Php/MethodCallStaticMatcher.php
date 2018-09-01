@@ -614,14 +614,14 @@ return [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85759-DeprecateGeneralUtilitygetHostName.rst',
+            'Deprecation-85759-GeneralUtilitygetHostName.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::unQuoteFilenames' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
-            'Deprecation-85760-DeprecateGeneralUtilityunQuoteFilenames.rst',
+            'Deprecation-85760-GeneralUtilityunQuoteFilenames.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance' => [
@@ -663,56 +663,56 @@ return [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+            'Deprecation-85821-BoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Boostrap::getInstance' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+            'Deprecation-85821-BoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Boostrap::checkIfEssentialConfigurationExists' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+            'Deprecation-85821-BoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Boostrap::loadConfigurationAndInitialize' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
-            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+            'Deprecation-85821-BoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Boostrap::populateLocalConfiguration' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+            'Deprecation-85821-BoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Boostrap::disableCoreCache' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+            'Deprecation-85821-BoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Boostrap::initializeCachingFramework' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+            'Deprecation-85821-BoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Boostrap::setFinalCachingFrameworkCacheConfiguration' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85821-DeprecatedBoostrapMethods.rst',
+            'Deprecation-85821-BoostrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageGenerator::renderContent' => [
@@ -740,7 +740,7 @@ return [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
-            'Deprecation-85836-DeprecateBackendUtilitygetTCAtypes.rst',
+            'Deprecation-85836-BackendUtilitygetTCAtypes.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::clientInfo' => [
