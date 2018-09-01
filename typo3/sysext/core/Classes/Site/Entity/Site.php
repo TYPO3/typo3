@@ -112,7 +112,7 @@ class Site implements SiteInterface
             }
             if (!empty($languageConfiguration['flag'])) {
                 if ($languageConfiguration['flag'] === 'global') {
-                    $languageConfiguration['flag'] = 'flag-multiple';
+                    $languageConfiguration['flag'] = 'flags-multiple';
                 } elseif ($languageConfiguration['flag'] !== 'empty-empty') {
                     $languageConfiguration['flag'] = 'flags-' . $languageConfiguration['flag'];
                 }
