@@ -1,30 +1,53 @@
 <?php
 declare(strict_types = 1);
-
 namespace TYPO3\CMS\Install\Updates;
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class PrerequisiteCollection
+class PrerequisiteCollection implements \IteratorAggregate
 {
+    /**
+     * @var \ArrayObject
+     */
     protected $prerequisites;
 
     public function __construct()
     {
-        $this->prerequisites = new \SplObjectStorage();
+        $this->prerequisites = new \ArrayObject();
     }
 
-    public function addPrerequisite(string $prerequisiteClass): void
+    /**
+     * @param string $prerequisiteClass
+     */
+    public function add(string $prerequisiteClass): void
     {
-        if (class_exists($prerequisiteClass) && is_a($prerequisiteClass, Prerequisite::class, true)) {
-            $instance = GeneralUtility::makeInstance($prerequisiteClass);
-            if (!$this->prerequisites->contains($instance)) {
-                $this->prerequisites->attach($instance);
-            }
+        if (
+            !($this->prerequisites[$prerequisiteClass] ?? false)
+            && is_a($prerequisiteClass, Prerequisite::class, true)
+        ) {
+            $this->prerequisites[$prerequisiteClass] = GeneralUtility::makeInstance(
+                $prerequisiteClass
+            );
         }
     }
 
-    public function getPrerequisites(): \SplObjectStorage
+    /**
+     * @return \ArrayObject|\Traversable|Prerequisite[]
+     */
+    public function getIterator()
     {
         return $this->prerequisites;
     }

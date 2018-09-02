@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\Service;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
+use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\StreamOutput;
 use TYPO3\CMS\Core\Cache\DatabaseSchemaService;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -44,7 +45,7 @@ class UpgradeWizardsService
 
     public function __construct()
     {
-        $this->output = new StreamOutput(fopen('php://temp', 'wb'));
+        $this->output = new StreamOutput(fopen('php://temp', 'wb'), Output::VERBOSITY_NORMAL, false);
     }
 
     /**
@@ -209,12 +210,12 @@ class UpgradeWizardsService
     /**
      * Add missing tables, indexes and fields to DB.
      */
-    public function addMissingTablesAndFields()
+    public function addMissingTablesAndFields(): array
     {
         $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
         $databaseDefinitions = $sqlReader->getCreateTableStatementArray($sqlReader->getTablesDefinitionString());
         $schemaMigrator = GeneralUtility::makeInstance(SchemaMigrator::class);
-        $schemaMigrator->install($databaseDefinitions, true);
+        return $schemaMigrator->install($databaseDefinitions, true);
     }
 
     /**
@@ -289,6 +290,7 @@ class UpgradeWizardsService
                     $wizardInstance->setOutput($this->output);
                 }
                 $shouldRenderWizard = $wizardInstance->updateNecessary();
+                $explanation = $wizardInstance->getDescription();
             }
 
             $wizards[] = [
@@ -334,11 +336,11 @@ class UpgradeWizardsService
             $wizardHtml = '
             <div class="panel panel-danger">
                 <div class="panel-heading">' .
-                          htmlspecialchars($updateObject->getConfirmationTitle()) .
+                          htmlspecialchars($updateObject->getConfirmation()->getTitle()) .
                           '</div>
                 <div class="panel-body">
                     ' .
-                          nl2br(htmlspecialchars($updateObject->getConfirmationMessage())) .
+                          nl2br(htmlspecialchars($updateObject->getConfirmation()->getMessage())) .
                           '
                     <div class="btn-group clearfix" data-toggle="buttons">
                         <label class="btn btn-default active">
@@ -478,14 +480,6 @@ class UpgradeWizardsService
      * @param string $identifier
      */
     public function markWizardAsDone(string $identifier): void
-    {
-        GeneralUtility::makeInstance(Registry::class)->set('installUpdate', $identifier, 1);
-    }
-
-    /**
-     * @param string $identifier
-     */
-    public function markWizardAsUndone(string $identifier): void
     {
         GeneralUtility::makeInstance(Registry::class)->set('installUpdate', $identifier, 1);
     }

@@ -40,8 +40,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['rtehtmlareaE
     = \TYPO3\CMS\Install\Updates\RteHtmlAreaExtractionUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysLanguageSorting']
     = \TYPO3\CMS\Install\Updates\LanguageSortingUpdate::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['dummy']
-    = \TYPO3\CMS\Install\Updates\DummyWizard::class;
 
 // Add update wizards below this line
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['typo3DbLegacyExtension']

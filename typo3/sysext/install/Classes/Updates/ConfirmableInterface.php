@@ -23,7 +23,10 @@ namespace TYPO3\CMS\Install\Updates;
  */
 interface ConfirmableInterface
 {
-    public function getConfirmationTitle(): string;
-    public function getConfirmationMessage(): string;
-    public function getConfirmationDefault(): bool;
+    /**
+     * Return a confirmation message instance
+     *
+     * @return \TYPO3\CMS\Install\Updates\Confirmation
+     */
+    public function getConfirmation(): Confirmation;
 }

@@ -23,8 +23,34 @@ namespace TYPO3\CMS\Install\Updates;
  */
 interface Prerequisite
 {
-    public function getIdentifier(): string;
-    public function getName(): string;
-    public function ensure(): void;
-    public function met(): bool;
+    /**
+     * Get speaking name of this prerequisite
+     *
+     * @return string
+     */
+    public function getTitle(): string;
+
+    /**
+     * Ensure this prerequisite is fulfilled
+     *
+     * Gets called if "isFulfilled" returns false
+     * and should ensure the prerequisite
+     *
+     * Returns true on success, false on error
+     *
+     * @see isFulfilled
+     * @return bool
+     */
+    public function ensure(): bool;
+
+    /**
+     * Is this prerequisite met?
+     *
+     * Checks whether this prerequisite is fulfilled. If it is not,
+     * ensure should be called to fulfill it.
+     *
+     * @see ensure
+     * @return bool
+     */
+    public function isFulfilled(): bool;
 }

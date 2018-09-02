@@ -11,7 +11,10 @@ return [
     'language:update' => [
         'class' => \TYPO3\CMS\Install\Command\LanguagePackCommand::class
     ],
-    'install:update' => [
-        'class' => \TYPO3\CMS\Install\Command\UpgradeWizardCommand::class
+    'upgrade:run' => [
+        'class' => \TYPO3\CMS\Install\Command\UpgradeWizardRunCommand::class
+    ],
+    'upgrade:list' => [
+        'class' => \TYPO3\CMS\Install\Command\UpgradeWizardListCommand::class
     ]
 ];

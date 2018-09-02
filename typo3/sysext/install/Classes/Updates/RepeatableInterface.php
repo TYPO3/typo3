@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Install\Updates;
  */
 
 /**
- * Use if wizard may be run multiple times
+ * Use if wizard may be run multiple times (and should not be disabled after one run)
  *
  * Semantic interface only
  *

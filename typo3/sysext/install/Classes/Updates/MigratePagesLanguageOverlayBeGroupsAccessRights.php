@@ -27,7 +27,7 @@ class MigratePagesLanguageOverlayBeGroupsAccessRights implements UpgradeWizardIn
 {
     public function getIdentifier(): string
     {
-        return self::class;
+        return 'pagesLanguageOverlayBeGroupsAccessRights';
     }
 
     public function getTitle(): string
@@ -99,11 +99,17 @@ class MigratePagesLanguageOverlayBeGroupsAccessRights implements UpgradeWizardIn
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function updateNecessary(): bool
     {
         return !(new UpgradeWizardsService())->isWizardDone($this->getIdentifier());
     }
 
+    /**
+     * @return string[]
+     */
     public function getPrerequisites(): array
     {
         return [
@@ -118,18 +124,16 @@ class MigratePagesLanguageOverlayBeGroupsAccessRights implements UpgradeWizardIn
                'access restrictions to pages_language_overlay into pages.';
     }
 
-    public function getConfirmationTitle(): string
+    /**
+     * @return Confirmation
+     */
+    public function getConfirmation(): Confirmation
     {
-        return 'Are you sure?';
-    }
-
-    public function getConfirmationMessage(): string
-    {
-        return 'Do you want to continue?';
-    }
-
-    public function getConfirmationDefault(): bool
-    {
-        return false;
+        return GeneralUtility::makeInstance(
+            Confirmation::class,
+            'Are you sure?',
+            'Do you want to continue?',
+            false
+        );
     }
 }
