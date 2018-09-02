@@ -202,6 +202,7 @@ class ElementHistoryController
      * Displays settings evaluation
      *
      * @param ServerRequestInterface $request
+     * @return array
      */
     protected function prepareDisplaySettings(ServerRequestInterface $request)
     {

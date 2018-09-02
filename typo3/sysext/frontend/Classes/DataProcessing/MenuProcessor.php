@@ -451,6 +451,7 @@ class MenuProcessor implements DataProcessorInterface
      *
      * @param array $page
      * @param array $processorConfiguration
+     * @return array
      */
     protected function processAdditionalDataProcessors($page, $processorConfiguration)
     {
@@ -505,6 +506,7 @@ class MenuProcessor implements DataProcessorInterface
      *
      * @param array $menuItem
      * @param array $conf
+     * @return array
      */
     public function replacePlaceholderInRenderedMenuItem($menuItem, $conf)
     {
