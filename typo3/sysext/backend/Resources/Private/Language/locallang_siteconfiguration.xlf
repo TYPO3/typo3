@@ -27,6 +27,9 @@
 			<trans-unit id="overview.deleteSiteConfiguration">
 				<source>Delete site configuration</source>
 			</trans-unit>
+			<trans-unit id="overview.fullUrlPrefix">
+				<source>Full URL prefix</source>
+			</trans-unit>
 			<trans-unit id="overview.baseUrl">
 				<source>Base URLs</source>
 			</trans-unit>
