@@ -357,7 +357,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         }
         $this->systemInformation[] = [
             'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.operatingsystem',
-            'value' => php_uname('s') . ' ' . php_uname('r'),
+            'value' => PHP_OS . ' ' . php_uname('r'),
             'iconIdentifier' => 'information-os-' . $icon
         ];
     }
