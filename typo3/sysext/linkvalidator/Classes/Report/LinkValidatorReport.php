@@ -674,7 +674,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 
                         $translation = $this->getLanguageService()->getLL('hooks.' . $type) ?: $type;
 
-                        $checked = ($this->checkOpt[$prefix][$type]) ? 'checked="checked"' : '';
+                        $checked = $this->checkOpt[$prefix][$type] ? 'checked="checked"' : '';
 
                         $hookSectionMarker['option'] = '<input type="checkbox"' . $additionalAttr
                             . ' id="' . $prefix . '_SET_' . $type

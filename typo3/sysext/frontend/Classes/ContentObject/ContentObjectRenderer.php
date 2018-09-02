@@ -3076,7 +3076,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($flag) {
             $value = isset($conf['value.'])
                 ? trim($this->stdWrap($conf['value'] ?? '', $conf['value.']))
-                : (trim($conf['value'] ?? ''));
+                : trim($conf['value'] ?? '');
             if (isset($conf['isGreaterThan']) || isset($conf['isGreaterThan.'])) {
                 $number = isset($conf['isGreaterThan.']) ? trim($this->stdWrap($conf['isGreaterThan'], $conf['isGreaterThan.'])) : trim($conf['isGreaterThan']);
                 if ($number <= $value) {

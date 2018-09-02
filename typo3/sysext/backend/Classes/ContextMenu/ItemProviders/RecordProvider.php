@@ -461,7 +461,7 @@ class RecordProvider extends AbstractProvider
     protected function canShowHistory(): bool
     {
         $userTsConfig = $this->backendUser->getTSConfig();
-        return (bool)(\trim($userTsConfig['options.']['showHistory.'][$this->table] ?? $userTsConfig['options.']['showHistory'] ?? '1'));
+        return (bool)trim($userTsConfig['options.']['showHistory.'][$this->table] ?? $userTsConfig['options.']['showHistory'] ?? '1');
     }
 
     /**

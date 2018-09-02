@@ -226,7 +226,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getControlSection($tableName)
     {
-        return ((isset($GLOBALS['TCA'][$tableName]['ctrl'])) && is_array($GLOBALS['TCA'][$tableName]['ctrl']))
+        return (isset($GLOBALS['TCA'][$tableName]['ctrl']) && is_array($GLOBALS['TCA'][$tableName]['ctrl']))
             ? $GLOBALS['TCA'][$tableName]['ctrl']
             : null;
     }

@@ -109,7 +109,7 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface, Single
             $subPropertiesArray = [];
             foreach ($subProperties as $subPropertyKey => $subPropertyValue) {
                 if (isset($this->handledProperties[$property]['allowedSubProperties'][$subPropertyKey])) {
-                    $subPropertiesArray[$subPropertyKey] = (is_array($subPropertyValue)) ? $subPropertyValue : [$subPropertyValue];
+                    $subPropertiesArray[$subPropertyKey] = is_array($subPropertyValue) ? $subPropertyValue : [$subPropertyValue];
                 }
             }
             if (!isset($this->properties[$property]) || empty($this->properties[$property])) {

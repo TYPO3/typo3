@@ -2491,7 +2491,7 @@ class BackendUtility
             $helpText = self::helpText($table, $field);
         }
         // If there's a help text or some overload information, proceed with preparing an output
-        if ((!empty($helpText) || $hasHelpTextOverload)) {
+        if (!empty($helpText) || $hasHelpTextOverload) {
             // If no text was given, just use the regular help icon
             if ($text == '') {
                 $iconFactory = GeneralUtility::makeInstance(IconFactory::class);

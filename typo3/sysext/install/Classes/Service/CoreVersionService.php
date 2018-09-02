@@ -207,7 +207,7 @@ class CoreVersionService
         $installedMajorVersion = (int)$this->getInstalledMajorVersion();
 
         foreach ($versionArray as $versionNumber => $versionDetails) {
-            if (is_array($versionDetails) && (int)($this->getMajorVersion((string)$versionNumber)) < $installedMajorVersion) {
+            if (is_array($versionDetails) && (int)$this->getMajorVersion((string)$versionNumber) < $installedMajorVersion) {
                 unset($versionArray[$versionNumber]);
             }
         }
