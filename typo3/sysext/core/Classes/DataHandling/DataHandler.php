@@ -3968,7 +3968,7 @@ class DataHandler implements LoggerAwareInterface
         if ($this->isReferenceField($conf) || $inlineSubType === 'mm') {
             $value = $this->copyRecord_processManyToMany($table, $uid, $field, $value, $conf, $language);
         } elseif ($inlineSubType !== false) {
-            $value = $this->copyRecord_processInline($table, $uid, $field, $value, $row, $conf, $realDestPid, $language, $workspaceOptions, $inlineSubType);
+            $value = $this->copyRecord_processInline($table, $uid, $field, $value, $row, $conf, $realDestPid, $language, $workspaceOptions);
         }
         // For "flex" fieldtypes we need to traverse the structure for two reasons: If there are file references they have to be prepended with absolute paths and if there are database reference they MIGHT need to be remapped (still done in remapListedDBRecords())
         if ($conf['type'] === 'flex') {

@@ -616,7 +616,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
         $renderer->setControllerContext($controllerContext);
         $renderer->setFormRuntime($this);
-        return $renderer->render($this);
+        return $renderer->render();
     }
 
     /**

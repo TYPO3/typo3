@@ -152,7 +152,7 @@ class ConfigurationStatus implements StatusProviderInterface
                 }
                 $memcachedConnection = @memcache_connect($host, $port);
                 if ($memcachedConnection != null) {
-                    memcache_close($memcachedConnection);
+                    memcache_close();
                 } else {
                     $failedConnections[] = $configuredServer;
                 }
