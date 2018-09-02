@@ -966,6 +966,7 @@ class DataHandler implements LoggerAwareInterface
             $hookObjectsArr[] = $hookObject;
         }
         // Pre-process data-map and synchronize localization states
+        $this->datamap = GeneralUtility::makeInstance(SlugEnricher::class)->enrichDataMap($this->datamap);
         $this->datamap = DataMapProcessor::instance($this->datamap, $this->BE_USER)->process();
         // Organize tables so that the pages-table is always processed first. This is required if you want to make sure that content pointing to a new page will be created.
         $orderOfTables = [];
@@ -1931,6 +1932,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $field Field name
      * @param array $incomingFieldArray the fields being explicitly set by the outside (unlike $fieldArray) for the record
      * @return array $res The result array. The processed value (if any!) is set in the "value" key.
+     * @see SlugEnricher, SlugHelper
      */
     protected function checkValueForSlug(string $value, array $tcaFieldConf, string $table, $id, int $realPid, string $field, array $incomingFieldArray = []): array
     {
@@ -1938,7 +1940,7 @@ class DataHandler implements LoggerAwareInterface
         $helper = GeneralUtility::makeInstance(SlugHelper::class, $table, $field, $tcaFieldConf, $workspaceId);
         $fullRecord = array_replace_recursive($this->checkValue_currentRecord, $incomingFieldArray ?? []);
         // Generate a value if there is none, otherwise ensure that all characters are cleaned up
-        if (empty($value)) {
+        if ($value === '') {
             $value = $helper->generate($fullRecord, $realPid);
         } else {
             $value = $helper->sanitize($value);

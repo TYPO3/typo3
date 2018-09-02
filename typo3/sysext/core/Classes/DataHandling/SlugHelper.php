@@ -340,6 +340,10 @@ class SlugHelper
             $queryBuilder->expr()->in(
                 't3ver_wsid',
                 $queryBuilder->createNamedParameter($workspaceIds, Connection::PARAM_INT_ARRAY)
+            ),
+            $queryBuilder->expr()->in(
+                't3ver_state',
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
             )
         );
     }

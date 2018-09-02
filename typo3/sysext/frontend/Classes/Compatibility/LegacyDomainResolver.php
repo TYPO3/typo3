@@ -153,7 +153,7 @@ class LegacyDomainResolver implements SingletonInterface
         // walk the rootline downwards from the target page
         // to the root page, until a domain record is found
         foreach ($rootLine as $pageInRootline) {
-            $pidInRootline = $pageInRootline['uid'];
+            $pidInRootline = (int)$pageInRootline['uid'];
             if (empty($this->groupedDomainsPerPage[$pidInRootline])) {
                 continue;
             }

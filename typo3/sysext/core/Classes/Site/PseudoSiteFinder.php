@@ -92,7 +92,7 @@ class PseudoSiteFinder
                 'domains' => $domainRecords,
                 'languages' => $allLanguages
             ]);
-            $this->pseudoSites[$rootPageId] = $site;
+            $this->pseudoSites[(int)$rootPageId] = $site;
         }
 
         // Now lets an empty Pseudo-Site for visiting things on pid=0
@@ -135,7 +135,7 @@ class PseudoSiteFinder
             ->orderBy('sorting')
             ->execute();
         while ($row = $statement->fetch()) {
-            $uid = $row['uid'];
+            $uid = (int)$row['uid'];
             $languageRecords[$uid] = [
                 'languageId' => $uid,
                 'title' => $row['title'],
