@@ -330,7 +330,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                 ];
             }
 
-            /** @var $tce DataHandler */
+            /** @var DataHandler $tce */
             $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->start([], $cmd);
             $tce->process_cmdmap();

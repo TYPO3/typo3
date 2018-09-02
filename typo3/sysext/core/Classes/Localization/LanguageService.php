@@ -90,7 +90,7 @@ class LanguageService
     public function init($languageKey)
     {
         // Find the requested language in this list based on the $languageKey
-        /** @var $locales \TYPO3\CMS\Core\Localization\Locales */
+        /** @var \TYPO3\CMS\Core\Localization\Locales $locales */
         $locales = GeneralUtility::makeInstance(Locales::class);
         // Language is found. Configure it:
         if (in_array($languageKey, $locales->getLocales())) {
@@ -304,7 +304,7 @@ class LanguageService
             return $this->languageFileCache[$fileRef . $this->lang];
         }
 
-        /** @var $languageFactory LocalizationFactory */
+        /** @var LocalizationFactory $languageFactory */
         $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
 
         if ($this->lang !== 'default') {

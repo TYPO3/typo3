@@ -198,7 +198,7 @@ class GifBuilder extends GraphicalFunctions
                                     $this->setup[$theKey . '.']['file'] = $fileInfo['processedFile']->getForLocalProcessing(false);
                                 } elseif (!isset($fileInfo['origFile']) && $fileInfo['originalFile'] instanceof File) {
                                     // Use FAL file with getForLocalProcessing to circumvent problems with umlauts, if it is a FAL file (origFile not set)
-                                    /** @var $originalFile File */
+                                    /** @var File $originalFile */
                                     $originalFile = $fileInfo['originalFile'];
                                     $this->setup[$theKey . '.']['file'] = $originalFile->getForLocalProcessing(false);
                                 } else {
@@ -214,7 +214,7 @@ class GifBuilder extends GraphicalFunctions
                                         if ($maskInfo['processedFile'] instanceof ProcessedFile) {
                                             $this->setup[$theKey . '.']['mask'] = $maskInfo['processedFile']->getForLocalProcessing(false);
                                         } elseif (!isset($maskInfo['origFile']) && $maskInfo['originalFile'] instanceof File) {
-                                            /** @var $originalFile File */
+                                            /** @var File $originalFile */
                                             $originalFile = $maskInfo['originalFile'];
                                             $this->setup[$theKey . '.']['mask'] = $originalFile->getForLocalProcessing(false);
                                         } else {
@@ -701,7 +701,7 @@ class GifBuilder extends GraphicalFunctions
      */
     public function fileName($pre)
     {
-        /** @var $basicFileFunctions \TYPO3\CMS\Core\Utility\File\BasicFileUtility */
+        /** @var \TYPO3\CMS\Core\Utility\File\BasicFileUtility $basicFileFunctions */
         $basicFileFunctions = GeneralUtility::makeInstance(BasicFileUtility::class);
         $filePrefix = implode('_', array_merge($this->combinedTextStrings, $this->combinedFileNames));
         $filePrefix = $basicFileFunctions->cleanFileName(ltrim($filePrefix, '.'));

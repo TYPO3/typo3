@@ -3,7 +3,7 @@ defined('TYPO3_MODE') or die();
 
 // We set the default implementation for Storage Backend & Query Settings in Backend and Frontend.
 // The code below is NO PUBLIC API!
-/** @var $extbaseObjectContainer \TYPO3\CMS\Extbase\Object\Container\Container */
+/** @var \TYPO3\CMS\Extbase\Object\Container\Container $extbaseObjectContainer */
 $extbaseObjectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\Container::class);
 // Singleton
 $extbaseObjectContainer->registerImplementation(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class, \TYPO3\CMS\Extbase\Persistence\Generic\Query::class);

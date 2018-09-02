@@ -232,7 +232,7 @@ class PermissionController extends ActionController
         $beGroupArray = BackendUtility::getGroupNames();
         $this->view->assign('beGroups', $beGroupArray);
 
-        /** @var $tree PageTreeView */
+        /** @var PageTreeView $tree */
         $tree = GeneralUtility::makeInstance(PageTreeView::class);
         $tree->init();
         $tree->addField('perms_user', true);

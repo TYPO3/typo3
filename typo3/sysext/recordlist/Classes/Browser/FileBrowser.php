@@ -134,7 +134,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             $filterObject->setAllowedFileExtensions($allowedFileExtensions);
             // Set file extension filters on all storages
             $storages = $backendUser->getFileStorages();
-            /** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
+            /** @var \TYPO3\CMS\Core\Resource\ResourceStorage $storage */
             foreach ($storages as $storage) {
                 $storage->addFileAndFolderNameFilter([$filterObject, 'filterFileList']);
             }

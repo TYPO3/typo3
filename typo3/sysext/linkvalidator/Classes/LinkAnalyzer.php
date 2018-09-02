@@ -271,7 +271,7 @@ class LinkAnalyzer
 
         // Put together content of all relevant fields
         $haystack = '';
-        /** @var $htmlParser HtmlParser */
+        /** @var HtmlParser $htmlParser */
         $htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
         $idRecord = $record['uid'];
         // Get all references
@@ -293,7 +293,7 @@ class LinkAnalyzer
 
             // Traverse soft references
             foreach ($softRefs as $spKey => $spParams) {
-                /** @var $softRefObj \TYPO3\CMS\Core\Database\SoftReferenceIndex */
+                /** @var \TYPO3\CMS\Core\Database\SoftReferenceIndex $softRefObj */
                 $softRefObj = BackendUtility::softRefParserObj($spKey);
                 // If there is an object returned...
                 if (!is_object($softRefObj)) {
@@ -347,7 +347,7 @@ class LinkAnalyzer
                 continue;
             }
 
-            /** @var $hookObj \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype */
+            /** @var \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype $hookObj */
             foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
                 $type = $hookObj->fetchType($r, $type, $keyArr);
                 // Store the type that was found
@@ -405,7 +405,7 @@ class LinkAnalyzer
                 }
                 $title = strip_tags($linkTags[$i]);
             }
-            /** @var $hookObj \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype */
+            /** @var \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype $hookObj */
             foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
                 $type = $hookObj->fetchType($currentR, $type, $keyArr);
                 // Store the type that was found

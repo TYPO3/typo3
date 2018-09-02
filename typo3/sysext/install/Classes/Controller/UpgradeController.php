@@ -224,7 +224,7 @@ class UpgradeController extends AbstractController
     /**
      * Core Update Get Data Action
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function coreUpdateGetDataAction(ServerRequestInterface $request): ResponseInterface
@@ -460,7 +460,7 @@ class UpgradeController extends AbstractController
     /**
      * Create Extension Scanner Data action
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function extensionScannerGetDataAction(ServerRequestInterface $request): ResponseInterface
@@ -509,7 +509,7 @@ class UpgradeController extends AbstractController
         // A list of file names relative to extension directory
         $relativeFileNames = [];
         foreach ($files as $file) {
-            /** @var $file SplFileInfo */
+            /** @var SplFileInfo $file */
             $relativeFileNames[] = GeneralUtility::fixWindowsFilePath($file->getRelativePathname());
         }
         return new JsonResponse([
@@ -542,7 +542,7 @@ class UpgradeController extends AbstractController
         $fullyScannedRestFilesNotAffected = [];
         foreach ($restFiles as $restFile) {
             // Skip files in "8.x" directory
-            /** @var $restFile SplFileInfo */
+            /** @var SplFileInfo $restFile */
             if (strpos($restFile->getRelativePath(), '8') === 0) {
                 continue;
             }
@@ -688,7 +688,7 @@ class UpgradeController extends AbstractController
     /**
      * Check if loading ext_tables.php files still changes TCA
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function tcaExtTablesCheckAction(ServerRequestInterface $request): ResponseInterface

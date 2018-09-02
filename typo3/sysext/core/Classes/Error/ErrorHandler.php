@@ -160,16 +160,16 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
             return false;
         }
         if ($this->debugMode) {
-            /** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
+            /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(
                         \TYPO3\CMS\Core\Messaging\FlashMessage::class,
                         $message,
                         $errorLevels[$errorLevel],
                         $flashMessageSeverity
                     );
-            /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
-            /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }

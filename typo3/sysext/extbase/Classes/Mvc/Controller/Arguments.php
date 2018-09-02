@@ -138,7 +138,7 @@ class Arguments extends \ArrayObject
      */
     public function addNewArgument($name, $dataType = 'Text', $isRequired = false, $defaultValue = null)
     {
-        /** @var $argument Argument */
+        /** @var Argument $argument */
         $argument = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, $name, $dataType);
         $argument->setRequired($isRequired);
         $argument->setDefaultValue($defaultValue);

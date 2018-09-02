@@ -57,7 +57,7 @@ class BackendLogModuleBootstrap
         $_GET['tx_belog_system_beloglog']['controller'] = 'BackendLog';
         $_GET['tx_belog_system_beloglog']['pageId'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
         $_GET['tx_belog_system_beloglog']['layout'] = 'Plain';
-        /** @var $extbaseBootstrap \TYPO3\CMS\Extbase\Core\Bootstrap */
+        /** @var \TYPO3\CMS\Extbase\Core\Bootstrap $extbaseBootstrap */
         $extbaseBootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Core\Bootstrap::class);
         return $extbaseBootstrap->run('', $configuration);
     }

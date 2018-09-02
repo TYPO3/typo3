@@ -55,7 +55,7 @@ class PageTreeView extends BrowseTreeView
      */
     public function wrapIcon($thePageIcon, $row)
     {
-        /** @var $iconFactory IconFactory */
+        /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         // If the record is locked, present a warning sign.
         if ($lockInfo = BackendUtility::isRecordLocked('pages', $row['uid'])) {

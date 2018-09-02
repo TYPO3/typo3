@@ -24,7 +24,7 @@ class RepositoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     public function initializeObject()
     {
-        /** @var $defaultQuerySettings \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface */
+        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings */
         $defaultQuerySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
         $defaultQuerySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($defaultQuerySettings);
@@ -56,7 +56,7 @@ class RepositoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $allRepositories = $this->findAll();
         $typo3OrgRepository = null;
         foreach ($allRepositories as $repository) {
-            /** @var $repository \TYPO3\CMS\Extensionmanager\Domain\Model\Repository */
+            /** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Repository $repository */
             if ($repository->getTitle() === 'TYPO3.org Main Repository') {
                 $typo3OrgRepository = $repository;
                 break;

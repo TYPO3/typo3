@@ -663,7 +663,7 @@ class DataHandlerHook
                 $emailSubject = $templateService->substituteMarkerArray($emailSubject, $markers, '', true, true);
                 $emailMessage = $templateService->substituteMarkerArray($emailMessage, $markers, '', true, true);
                 // Send an email to the recipient
-                /** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
+                /** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
                 $mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
                 if (!empty($recipientData['realName'])) {
                     $recipient = [$recipientData['email'] => $recipientData['realName']];
@@ -1073,7 +1073,7 @@ class DataHandlerHook
             }
 
             //Update reference index for live workspace too:
-            /** @var $refIndexObj \TYPO3\CMS\Core\Database\ReferenceIndex */
+            /** @var \TYPO3\CMS\Core\Database\ReferenceIndex $refIndexObj */
             $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
             $refIndexObj->setWorkspaceId(0);
             $refIndexObj->updateRefIndexTable($table, $id);

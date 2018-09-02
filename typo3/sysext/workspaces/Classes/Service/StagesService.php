@@ -208,7 +208,7 @@ class StagesService implements SingletonInterface
             return $this->getStagesForWS();
         }
 
-        /** @var $allowedStages StageRecord[] */
+        /** @var StageRecord[] $allowedStages */
         $allowedStages = [];
         $stageRecords = $this->getWorkspaceRecord()->getStages();
 

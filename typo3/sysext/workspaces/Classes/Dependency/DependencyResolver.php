@@ -95,7 +95,7 @@ class DependencyResolver
     public function executeEventCallback($eventName, $caller, array $callerArguments = [])
     {
         if (isset($this->eventCallbacks[$eventName])) {
-            /** @var $callback EventCallback */
+            /** @var EventCallback $callback */
             $callback = $this->eventCallbacks[$eventName];
             return $callback->execute($callerArguments, $caller, $eventName);
         }
@@ -139,7 +139,7 @@ class DependencyResolver
     {
         if (!isset($this->outerMostParents)) {
             $this->outerMostParents = [];
-            /** @var $element ElementEntity */
+            /** @var ElementEntity $element */
             foreach ($this->elements as $element) {
                 $this->processOuterMostParent($element);
             }

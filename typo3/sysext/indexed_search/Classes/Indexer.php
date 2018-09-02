@@ -388,7 +388,7 @@ class Indexer
         // Group list (hardcoded for now...)
         // cHash values:
         if ($createCHash) {
-            /* @var $cacheHash \TYPO3\CMS\Frontend\Page\CacheHashCalculator */
+            /* @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator $cacheHash */
             $cacheHash = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class);
             $this->conf['cHash'] = $cacheHash->generateForParameters(GeneralUtility::implodeArrayForUrl('', $cHash_array));
         } else {

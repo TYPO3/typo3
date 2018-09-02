@@ -246,7 +246,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      */
     protected function buildRepresentationForNode(\TYPO3\CMS\Backend\Tree\TreeNode $basicNode, DatabaseTreeNode $parent = null, $level = 0)
     {
-        /** @var $node \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode */
+        /** @var \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode $node */
         $node = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode::class);
         $row = [];
         if ($basicNode->getId() == 0) {
@@ -267,7 +267,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         $node->setParentNode($parent);
         if ($basicNode->hasChildNodes()) {
             $node->setHasChildren(true);
-            /** @var $childNodes \TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection */
+            /** @var \TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection $childNodes */
             $childNodes = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection::class);
             $tempNodes = [];
             foreach ($basicNode->getChildNodes() as $child) {
@@ -346,7 +346,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         $storage = null;
         $children = $this->getRelatedRecords($nodeData);
         if (!empty($children)) {
-            /** @var $storage \TYPO3\CMS\Backend\Tree\TreeNodeCollection */
+            /** @var \TYPO3\CMS\Backend\Tree\TreeNodeCollection $storage */
             $storage = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\TreeNodeCollection::class);
             foreach ($children as $child) {
                 $node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\TreeNode::class);
@@ -400,7 +400,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 
             case 'select':
                 if ($this->columnConfiguration['MM']) {
-                    /** @var $dbGroup \TYPO3\CMS\Core\Database\RelationHandler */
+                    /** @var \TYPO3\CMS\Core\Database\RelationHandler $dbGroup */
                     $dbGroup = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
                     // Dummy field for setting "look from other site"
                     $this->columnConfiguration['MM_oppositeField'] = 'children';

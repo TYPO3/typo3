@@ -79,7 +79,7 @@ class MaintenanceController extends AbstractController
     /**
      * Clear typo3temp files statistics action
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function clearTypo3tempFilesStatsAction(ServerRequestInterface $request): ResponseInterface
@@ -159,7 +159,7 @@ class MaintenanceController extends AbstractController
     /**
      * Analyze current database situation
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function databaseAnalyzerAnalyzeAction(ServerRequestInterface $request): ResponseInterface
@@ -369,7 +369,7 @@ class MaintenanceController extends AbstractController
     /**
      * Clear table overview statistics action
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function clearTablesStatsAction(ServerRequestInterface $request): ResponseInterface
@@ -414,7 +414,7 @@ class MaintenanceController extends AbstractController
     /**
      * Create Admin Get Data action
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function createAdminGetDataAction(ServerRequestInterface $request): ResponseInterface
@@ -525,7 +525,7 @@ class MaintenanceController extends AbstractController
      * * list of available languages with details like active or not and last update
      * * list of loaded extensions
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function languagePacksGetDataAction(ServerRequestInterface $request): ResponseInterface

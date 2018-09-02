@@ -109,7 +109,7 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
 
         $pageinfo = BackendUtility::readPageAccess(GeneralUtility::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
-        /** @var $dblist \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList */
+        /** @var \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList $dblist */
         $dblist = GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList::class);
         $dblist->pageRow = $pageinfo;
         if ($readOnly === false) {

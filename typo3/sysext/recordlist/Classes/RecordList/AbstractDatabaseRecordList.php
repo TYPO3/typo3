@@ -592,7 +592,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      */
     public function getSearchBox($formFields = true)
     {
-        /** @var $iconFactory IconFactory */
+        /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $lang = $this->getLanguageService();
         // Setting form-elements, if applicable:

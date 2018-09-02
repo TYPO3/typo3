@@ -133,7 +133,7 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
     {
         $this->initializeLocalCache();
 
-        /** @var $driverRegistry Driver\DriverRegistry */
+        /** @var Driver\DriverRegistry $driverRegistry */
         $driverRegistry = GeneralUtility::makeInstance(Driver\DriverRegistry::class);
 
         $storageObjects = [];
@@ -163,7 +163,7 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
     {
         $this->initializeLocalCache();
 
-        /** @var $driverRegistry Driver\DriverRegistry */
+        /** @var Driver\DriverRegistry $driverRegistry */
         $driverRegistry = GeneralUtility::makeInstance(Driver\DriverRegistry::class);
 
         $storageObjects = [];
@@ -206,7 +206,7 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
             ]
         ];
 
-        /** @var $flexObj FlexFormTools */
+        /** @var FlexFormTools $flexObj */
         $flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
         $flexFormXml = $flexObj->flexArray2Xml($flexFormData, true);
 

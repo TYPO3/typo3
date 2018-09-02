@@ -36,7 +36,7 @@ abstract class AbstractBackendViewHelper extends AbstractViewHelper
         if ($this->viewHelperVariableContainer->exists(self::class, 'DocumentTemplate')) {
             $doc = $this->viewHelperVariableContainer->get(self::class, 'DocumentTemplate');
         } else {
-            /** @var $doc DocumentTemplate */
+            /** @var DocumentTemplate $doc */
             $doc = GeneralUtility::makeInstance(DocumentTemplate::class);
             $this->viewHelperVariableContainer->add(self::class, 'DocumentTemplate', $doc);
         }
@@ -55,7 +55,7 @@ abstract class AbstractBackendViewHelper extends AbstractViewHelper
         if ($this->viewHelperVariableContainer->exists(self::class, 'PageRenderer')) {
             $pageRenderer = $this->viewHelperVariableContainer->get(self::class, 'PageRenderer');
         } else {
-            /** @var $doc DocumentTemplate */
+            /** @var DocumentTemplate $doc */
             $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
             $this->viewHelperVariableContainer->add(self::class, 'PageRenderer', $pageRenderer);
         }

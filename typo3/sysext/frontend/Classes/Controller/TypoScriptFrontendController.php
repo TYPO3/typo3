@@ -3761,7 +3761,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $timeTracker->push($label);
                     $incContent = '';
                     $INTiS_cObj = unserialize($INTiS_config[$INTiS_key]['cObj']);
-                    /* @var $INTiS_cObj ContentObjectRenderer */
+                    /* @var ContentObjectRenderer $INTiS_cObj */
                     switch ($INTiS_config[$INTiS_key]['type']) {
                         case 'COA':
                             $incContent = $INTiS_cObj->cObjGetSingle('COA', $INTiS_config[$INTiS_key]['conf']);
@@ -4143,7 +4143,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             '"' . $this->absRefPrefix . TYPO3_mainDir . 'ext/',
             '"' . $this->absRefPrefix . TYPO3_mainDir . 'sysext/'
         ];
-        /** @var $storageRepository StorageRepository */
+        /** @var StorageRepository $storageRepository */
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
         $storages = $storageRepository->findAll();
         foreach ($storages as $storage) {
@@ -4420,7 +4420,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function get_cache_timeout()
     {
-        /** @var $runtimeCache \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend */
+        /** @var \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend $runtimeCache */
         $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
         $cachedCacheLifetimeIdentifier = 'core-tslib_fe-get_cache_timeout';
         $cachedCacheLifetime = $runtimeCache->get($cachedCacheLifetimeIdentifier);

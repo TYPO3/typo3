@@ -93,7 +93,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      */
     public function getDriverObject($driverIdentificationString, array $driverConfiguration)
     {
-        /** @var $driverRegistry Driver\DriverRegistry */
+        /** @var Driver\DriverRegistry $driverRegistry */
         $driverRegistry = GeneralUtility::makeInstance(Driver\DriverRegistry::class);
         $driverClass = $driverRegistry->getDriverClass($driverIdentificationString);
         $driverObject = GeneralUtility::makeInstance($driverClass, $driverConfiguration);
@@ -112,7 +112,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      */
     public function getDefaultStorage()
     {
-        /** @var $storageRepository StorageRepository */
+        /** @var StorageRepository $storageRepository */
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
 
         $allStorages = $storageRepository->findAll();
@@ -169,9 +169,9 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
                     'pathType' => 'relative'
                 ];
             } elseif (count($recordData) === 0 || (int)$recordData['uid'] !== $uid) {
-                /** @var $storageRepository StorageRepository */
+                /** @var StorageRepository $storageRepository */
                 $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-                /** @var $storage ResourceStorage */
+                /** @var ResourceStorage $storage */
                 $storageObject = $storageRepository->findByUid($uid);
             }
             if (!$storageObject instanceof ResourceStorage) {
@@ -244,9 +244,9 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      */
     protected function initializeLocalStorageCache()
     {
-        /** @var $storageRepository StorageRepository */
+        /** @var StorageRepository $storageRepository */
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-        /** @var $storageObjects ResourceStorage[] */
+        /** @var ResourceStorage[] $storageObjects */
         $storageObjects = $storageRepository->findByStorageType('Local');
 
         $storageCache = [];
@@ -320,7 +320,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      */
     public function createCollectionObject(array $collectionData)
     {
-        /** @var $registry Collection\FileCollectionRegistry */
+        /** @var Collection\FileCollectionRegistry $registry */
         $registry = GeneralUtility::makeInstance(Collection\FileCollectionRegistry::class);
 
         /** @var \TYPO3\CMS\Core\Collection\AbstractRecordCollection $class */

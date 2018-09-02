@@ -149,7 +149,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function createEntryFromRawData(array $module)
     {
-        /** @var $entry \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule */
+        /** @var \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $entry */
         $entry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Domain\Model\Module\BackendModule::class);
         if (!empty($module['name']) && is_string($module['name'])) {
             $entry->setName($module['name']);

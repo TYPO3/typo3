@@ -242,7 +242,7 @@ abstract class AbstractController implements ControllerInterface
      */
     protected function buildControllerContext()
     {
-        /** @var $controllerContext \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext */
+        /** @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext */
         $controllerContext = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class);
         $controllerContext->setRequest($this->request);
         $controllerContext->setResponse($this->response);

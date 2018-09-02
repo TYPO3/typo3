@@ -111,7 +111,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
     {
         $result = $this->fixSelf();
         foreach ($this->children as $child) {
-            /** @var $child NodeInterface */
+            /** @var NodeInterface $child */
             $result = array_merge($result, $child->fix());
         }
         return $result;
@@ -239,7 +239,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
     {
         $result = [];
         foreach ($this->children as $child) {
-            /** @var $child NodeInterface */
+            /** @var NodeInterface $child */
             $result = array_merge($result, $child->getStatus());
         }
         return $result;
@@ -294,7 +294,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
             }
             $name = $child['name'];
             foreach ($this->children as $existingChild) {
-                /** @var $existingChild NodeInterface */
+                /** @var NodeInterface $existingChild */
                 if ($existingChild->getName() === $name) {
                     throw new Exception\InvalidArgumentException(
                         'Child name must be unique',

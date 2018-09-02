@@ -301,7 +301,7 @@ class FolderTreeView extends AbstractTreeView
         $this->reset();
         // Go through all "root level folders" of this tree (can be the rootlevel folder or any file mount points)
         foreach ($rootLevelFolders as $rootLevelFolderInfo) {
-            /** @var $rootLevelFolder Folder */
+            /** @var Folder $rootLevelFolder */
             $rootLevelFolder = $rootLevelFolderInfo['folder'];
             $rootLevelFolderName = $rootLevelFolderInfo['name'];
             $folderHashSpecUID = GeneralUtility::md5int($rootLevelFolder->getCombinedIdentifier());
@@ -459,9 +459,9 @@ class FolderTreeView extends AbstractTreeView
                 $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:foldertreeview.noFolders.title'),
                 FlashMessage::INFO
             );
-            /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($message);
             return $defaultFlashMessageQueue->renderFlashMessages();
@@ -483,7 +483,7 @@ class FolderTreeView extends AbstractTreeView
         // so we know how many we have to close when all children are done rendering
         $closeDepth = [];
         foreach ($treeItems as $treeItem) {
-            /** @var $folderObject Folder */
+            /** @var Folder $folderObject */
             $folderObject = $treeItem['row']['folder'];
             $classAttr = $treeItem['row']['_CSSCLASS'] ?? '';
             $folderIdentifier = $folderObject->getCombinedIdentifier();

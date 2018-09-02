@@ -74,7 +74,7 @@ class FileProcessingService
             $configuration = Resource\Processing\LocalPreviewHelper::preProcessConfiguration($configuration);
         }
 
-        /** @var $processedFileRepository Resource\ProcessedFileRepository */
+        /** @var Resource\ProcessedFileRepository $processedFileRepository */
         $processedFileRepository = GeneralUtility::makeInstance(Resource\ProcessedFileRepository::class);
 
         $processedFile = $processedFileRepository->findOneByOriginalFileAndTaskTypeAndConfiguration($fileObject, $taskType, $configuration);
@@ -110,12 +110,12 @@ class FileProcessingService
         if ($processedFile->isNew() || (!$processedFile->usesOriginalFile() && !$processedFile->exists()) ||
             $processedFile->isOutdated()) {
             $task = $processedFile->getTask();
-            /** @var $processor Resource\Processing\LocalImageProcessor */
+            /** @var Resource\Processing\LocalImageProcessor $processor */
             $processor = GeneralUtility::makeInstance(Resource\Processing\LocalImageProcessor::class);
             $processor->processTask($task);
 
             if ($task->isExecuted() && $task->isSuccessful() && $processedFile->isProcessed()) {
-                /** @var $processedFileRepository Resource\ProcessedFileRepository */
+                /** @var Resource\ProcessedFileRepository $processedFileRepository */
                 $processedFileRepository = GeneralUtility::makeInstance(Resource\ProcessedFileRepository::class);
                 $processedFileRepository->add($processedFile);
             }

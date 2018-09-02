@@ -36,7 +36,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     public function initializeObject()
     {
         $this->beUserList = $this->getBackendUsers();
-        /** @var $defaultQuerySettings \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface */
+        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings */
         $defaultQuerySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
         $defaultQuerySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($defaultQuerySettings);
@@ -104,7 +104,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $pageIds = [];
         // Check if we should get a whole tree of pages and not only a single page
         if ($constraint->getDepth() > 0) {
-            /** @var $pageTree \TYPO3\CMS\Backend\Tree\View\PageTreeView */
+            /** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView $pageTree */
             $pageTree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageTreeView::class);
             $pageTree->init('AND ' . $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
             $pageTree->makeHTML = 0;

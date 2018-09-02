@@ -79,7 +79,7 @@ class ExtensionModelUtility
                     } else {
                         $highest = '';
                     }
-                    /** @var $dependencyObject \TYPO3\CMS\Extensionmanager\Domain\Model\Dependency */
+                    /** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependencyObject */
                     $dependencyObject = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency::class);
                     $dependencyObject->setType($dependencyType);
                     // dynamically migrate 'cms' dependency to 'core' dependency

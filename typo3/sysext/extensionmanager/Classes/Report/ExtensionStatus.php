@@ -92,7 +92,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
      */
     protected function getMainRepositoryStatus()
     {
-        /** @var $mainRepository \TYPO3\CMS\Extensionmanager\Domain\Model\Repository */
+        /** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Repository $mainRepository */
         $mainRepository = $this->repositoryRepository->findOneTypo3OrgRepository();
 
         if ($mainRepository === null) {
@@ -109,7 +109,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
             $severity = \TYPO3\CMS\Reports\Status::OK;
         }
 
-        /** @var $status \TYPO3\CMS\Reports\Status */
+        /** @var \TYPO3\CMS\Reports\Status $status */
         $status = $this->objectManager->get(
             \TYPO3\CMS\Reports\Status::class,
             $this->languageService->getLL('report.status.mainRepository.title'),
@@ -138,7 +138,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
                 array_key_exists('terObject', $information)
                 && $information['terObject'] instanceof \TYPO3\CMS\Extensionmanager\Domain\Model\Extension
             ) {
-                /** @var $terObject \TYPO3\CMS\Extensionmanager\Domain\Model\Extension */
+                /** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $terObject */
                 $terObject = $information['terObject'];
                 $insecureStatus = $terObject->getReviewState();
                 if ($insecureStatus === -1) {

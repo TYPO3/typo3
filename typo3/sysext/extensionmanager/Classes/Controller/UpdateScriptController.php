@@ -46,7 +46,7 @@ class UpdateScriptController extends AbstractModuleController
      */
     public function showAction($extensionKey)
     {
-        /** @var $updateScriptUtility \TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility */
+        /** @var \TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility $updateScriptUtility */
         $updateScriptUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility::class);
         $updateScriptResult = $updateScriptUtility->executeUpdateIfNeeded($extensionKey);
         $this->view

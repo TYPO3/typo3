@@ -52,7 +52,7 @@ class BackendConfigurationManager extends AbstractConfigurationManager
         $pageId = $this->getCurrentPageId();
 
         if (!array_key_exists($pageId, $this->typoScriptSetupCache)) {
-            /** @var $template TemplateService */
+            /** @var TemplateService $template */
             $template = GeneralUtility::makeInstance(TemplateService::class);
             // do not log time-performance information
             $template->tt_track = false;

@@ -511,7 +511,7 @@ class TemplateService
     public function matching($cc)
     {
         if (is_array($cc['all'])) {
-            /** @var $matchObj ConditionMatcher */
+            /** @var ConditionMatcher $matchObj */
             $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
             $matchObj->setRootline((array)$cc['rootLine']);
             $sectionsMatch = [];
@@ -631,7 +631,7 @@ class TemplateService
             if (!$isCached && !$this->simulationHiddenOrTime && !$this->getTypoScriptFrontendController()->no_cache) {
                 // Only save the data if we're not simulating by hidden/starttime/endtime
                 $mpvarHash = GeneralUtility::md5int($this->getTypoScriptFrontendController()->MP);
-                /** @var $pageSectionCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
+                /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $pageSectionCache */
                 $pageSectionCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_pagesection');
                 $pageSectionCache->set((int)$this->getTypoScriptFrontendController()->id . '_' . $mpvarHash, $cc, [
                     'pageId_' . (int)$this->getTypoScriptFrontendController()->id,
@@ -1122,11 +1122,11 @@ class TemplateService
         // Parse TypoScript Constants
         // ****************************
         // Initialize parser and match-condition classes:
-        /** @var $constants Parser\TypoScriptParser */
+        /** @var Parser\TypoScriptParser $constants */
         $constants = GeneralUtility::makeInstance(Parser\TypoScriptParser::class);
         $constants->breakPointLN = (int)$this->ext_constants_BRP;
         $constants->setup = $this->mergeConstantsFromPageTSconfig([]);
-        /** @var $matchObj ConditionMatcher */
+        /** @var ConditionMatcher $matchObj */
         $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
         $matchObj->setSimulateMatchConditions($this->matchAlternative);
         $matchObj->setSimulateMatchResult((bool)$this->matchAll);
@@ -1143,7 +1143,7 @@ class TemplateService
         // Parse TypoScript Setup (here called "config")
         // ***********************************************
         // Initialize parser and match-condition classes:
-        /** @var $config Parser\TypoScriptParser */
+        /** @var Parser\TypoScriptParser $config */
         $config = GeneralUtility::makeInstance(Parser\TypoScriptParser::class);
         $config->breakPointLN = (int)$this->ext_config_BRP;
         $config->regLinenumbers = $this->ext_regLinenumbers;
@@ -1286,7 +1286,7 @@ class TemplateService
         // Parsing the user TS (or getting from cache)
         $TSdataArray = Parser\TypoScriptParser::checkIncludeLines_array($TSdataArray);
         $userTS = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
-        /** @var $parseObj Parser\TypoScriptParser */
+        /** @var Parser\TypoScriptParser $parseObj */
         $parseObj = GeneralUtility::makeInstance(Parser\TypoScriptParser::class);
         $parseObj->parse($userTS);
         if (is_array($parseObj->setup['TSFE.']['constants.'])) {

@@ -86,7 +86,7 @@ class FrontendRequestHandler extends AbstractRequestHandler
             $this->cacheHashEnforcer->enforceForRequest($request, $pluginNamespace);
         }
 
-        /** @var $response \TYPO3\CMS\Extbase\Mvc\ResponseInterface */
+        /** @var \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response */
         $response = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Response::class);
         $this->dispatcher->dispatch($request, $response);
         return $response;

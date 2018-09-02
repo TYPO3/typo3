@@ -82,7 +82,7 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
                     '',
                     FlashMessage::ERROR
                 );
-                /** @var $flashMessageService FlashMessageService */
+                /** @var FlashMessageService $flashMessageService */
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                 $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
                 $defaultFlashMessageQueue->enqueue($flashMessage);

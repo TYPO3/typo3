@@ -367,7 +367,7 @@ class DatabaseIntegrityController
      */
     protected function func_records()
     {
-        /** @var $admin DatabaseIntegrityCheck */
+        /** @var DatabaseIntegrityCheck $admin */
         $admin = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
         $admin->genTree(0);
 

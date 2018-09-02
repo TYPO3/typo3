@@ -72,7 +72,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function __construct()
     {
-        /** @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManager */
+        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
         $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         /** @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository $repositoryRepository */
         $repositoryRepository = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class);
@@ -237,7 +237,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
             if ($forcedUpdateFromRemote || !is_file($this->getLocalMirrorListFile())) {
                 $this->fetchMirrorListFile();
             }
-            /** @var $objMirrorListImporter \TYPO3\CMS\Extensionmanager\Utility\Importer\MirrorListUtility */
+            /** @var \TYPO3\CMS\Extensionmanager\Utility\Importer\MirrorListUtility $objMirrorListImporter */
             $objMirrorListImporter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extensionmanager\Utility\Importer\MirrorListUtility::class);
             $this->repository->addMirrors($objMirrorListImporter->getMirrors($this->getLocalMirrorListFile()));
         }
@@ -311,7 +311,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
             // no further problems - start of import process
             if ($updateNecessity === 0) {
                 $uid = $this->repository->getUid();
-                /* @var $objExtListImporter \TYPO3\CMS\Extensionmanager\Utility\Importer\ExtensionListUtility */
+                /* @var \TYPO3\CMS\Extensionmanager\Utility\Importer\ExtensionListUtility $objExtListImporter */
                 $objExtListImporter = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\Importer\ExtensionListUtility::class);
                 $objExtListImporter->import($this->getLocalExtListFile(), $uid);
                 $updated = true;

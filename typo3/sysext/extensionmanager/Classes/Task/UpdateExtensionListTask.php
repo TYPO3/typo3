@@ -40,14 +40,14 @@ class UpdateExtensionListTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     protected function updateExtensionList()
     {
-        /** @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManager */
+        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
         $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 
-        /** @var $repositoryHelper \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper */
+        /** @var \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper $repositoryHelper */
         $repositoryHelper = $objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::class);
         $repositoryHelper->updateExtList();
 
-        /** @var $persistenceManager \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager */
+        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager */
         $persistenceManager = $objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
         $persistenceManager->persistAll();
     }

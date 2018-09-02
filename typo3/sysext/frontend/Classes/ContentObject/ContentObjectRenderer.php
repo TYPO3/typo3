@@ -728,7 +728,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                                 if (!$hookObject instanceof ContentObjectGetSingleHookInterface) {
                                     throw new \UnexpectedValueException('$hookObject must implement interface ' . ContentObjectGetSingleHookInterface::class, 1195043731);
                                 }
-                                /** @var $hookObject ContentObjectGetSingleHookInterface */
+                                /** @var ContentObjectGetSingleHookInterface $hookObject */
                                 $content .= $hookObject->getSingleContentObject($name, (array)$conf, $TSkey, $this);
                             }
                         } else {
@@ -820,7 +820,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($cacheConfiguration !== null) {
             $key = $this->calculateCacheKey($cacheConfiguration);
             if (!empty($key)) {
-                /** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
+                /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cacheFrontend */
                 $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
                 $tags = $this->calculateCacheTags($cacheConfiguration);
                 $lifetime = $this->calculateCacheLifetime($cacheConfiguration);
@@ -2914,7 +2914,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (empty($key)) {
             return $content;
         }
-        /** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
+        /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cacheFrontend */
         $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
         $tags = $this->calculateCacheTags($conf['cache.']);
         $lifetime = $this->calculateCacheLifetime($conf['cache.']);
@@ -6055,7 +6055,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function sendNotifyEmail($message, $recipients, $cc, $senderAddress, $senderName = '', $replyTo = '')
     {
-        /** @var $mail MailMessage */
+        /** @var MailMessage $mail */
         $mail = GeneralUtility::makeInstance(MailMessage::class);
         $senderName = trim($senderName);
         $senderAddress = trim($senderAddress);
@@ -6084,7 +6084,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $parsedCc = MailUtility::parseAddresses($cc);
             if (!empty($parsedCc)) {
                 $from = $mail->getFrom();
-                /** @var $mail MailMessage */
+                /** @var MailMessage $mail */
                 $mail = GeneralUtility::makeInstance(MailMessage::class);
                 if (!empty($parsedReplyTo)) {
                     $mail->setReplyTo($parsedReplyTo);
@@ -7306,7 +7306,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         $cacheKey = $this->calculateCacheKey($configuration);
         if (!empty($cacheKey)) {
-            /** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
+            /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cacheFrontend */
             $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)
                 ->getCache('cache_hash');
             $content = $cacheFrontend->get($cacheKey);

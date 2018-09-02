@@ -558,7 +558,7 @@ class NewRecordController
 
         if ($numberOfPages > 0) {
             $this->code .= '<h3>' . htmlspecialchars($this->getLanguageService()->getLL('selectPosition')) . ':</h3>';
-            /** @var $positionMap \TYPO3\CMS\Backend\Tree\View\PagePositionMap */
+            /** @var \TYPO3\CMS\Backend\Tree\View\PagePositionMap $positionMap */
             $positionMap = GeneralUtility::makeInstance(PagePositionMap::class, NewRecordPageTreeView::class);
             $this->code .= $positionMap->positionTree(
                 $this->id,

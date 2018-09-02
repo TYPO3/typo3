@@ -338,7 +338,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
             // If there are no available tasks, thrown an exception
             throw new \OutOfBoundsException('No task', 1247827244);
         }
-        /** @var $task Task\AbstractTask */
+        /** @var Task\AbstractTask $task */
         $task = unserialize($row['serialized_task_object']);
         if ($this->isValidTaskObject($task)) {
             // The task is valid, return it

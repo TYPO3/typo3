@@ -53,7 +53,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function initializeDataProviderCollection()
     {
-        /** @var $dataProviderCollection BackendLayout\DataProviderCollection */
+        /** @var BackendLayout\DataProviderCollection $dataProviderCollection */
         $dataProviderCollection = GeneralUtility::makeInstance(
             BackendLayout\DataProviderCollection::class
         );
@@ -353,7 +353,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         if (!empty($backendLayout)) {
-            /** @var $parser TypoScriptParser */
+            /** @var TypoScriptParser $parser */
             $parser = GeneralUtility::makeInstance(TypoScriptParser::class);
             /** @var \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher $conditionMatcher */
             $conditionMatcher = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class);

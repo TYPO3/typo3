@@ -248,7 +248,7 @@ class FluidTemplateContentObject extends AbstractContentObject
      */
     protected function setExtbaseVariables(array $conf)
     {
-        /** @var $request \TYPO3\CMS\Extbase\Mvc\Request */
+        /** @var \TYPO3\CMS\Extbase\Mvc\Request $request */
         $requestPluginName = isset($conf['extbase.']['pluginName.'])
             ? $this->cObj->stdWrap($conf['extbase.']['pluginName'] ?? '', $conf['extbase.']['pluginName.'])
             : ($conf['extbase.']['pluginName'] ?? '');
@@ -341,7 +341,7 @@ class FluidTemplateContentObject extends AbstractContentObject
     protected function assignSettings(array $conf)
     {
         if (isset($conf['settings.'])) {
-            /** @var $typoScriptService TypoScriptService */
+            /** @var TypoScriptService $typoScriptService */
             $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
             $settings = $typoScriptService->convertTypoScriptArrayToPlainArray($conf['settings.']);
             $this->view->assign('settings', $settings);

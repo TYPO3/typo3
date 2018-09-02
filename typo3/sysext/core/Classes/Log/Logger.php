@@ -183,7 +183,7 @@ class Logger implements \Psr\Log\LoggerInterface
         if ($level > $this->minimumLogLevel) {
             return $this;
         }
-        /** @var $record \TYPO3\CMS\Core\Log\LogRecord */
+        /** @var \TYPO3\CMS\Core\Log\LogRecord $record */
         $record = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(LogRecord::class, $this->name, $level, $message, $data, $this->requestId);
         $record = $this->callProcessors($record);
         $this->writeLog($record);

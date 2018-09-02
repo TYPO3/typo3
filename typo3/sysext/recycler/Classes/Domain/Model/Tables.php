@@ -56,7 +56,7 @@ class Tables
                     ->fetchColumn();
 
                 if ($deletedCount) {
-                    /* @var $deletedDataObject DeletedRecords */
+                    /* @var DeletedRecords $deletedDataObject */
                     $deletedDataObject = GeneralUtility::makeInstance(DeletedRecords::class);
                     $deletedData = $deletedDataObject->loadData($startUid, $tableName, $depth)->getDeletedRows();
                     if (isset($deletedData[$tableName])) {

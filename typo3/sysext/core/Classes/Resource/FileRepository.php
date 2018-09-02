@@ -106,7 +106,7 @@ class FileRepository extends AbstractRepository
                 $referenceUids[] = $row['uid'];
             }
         } else {
-            /** @var $relationHandler RelationHandler */
+            /** @var RelationHandler $relationHandler */
             $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
             $relationHandler->start(
                 '',

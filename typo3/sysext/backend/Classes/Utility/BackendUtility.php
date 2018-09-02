@@ -871,7 +871,7 @@ class BackendUtility
         }
         // Parsing the page TS-Config
         $pageTs = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
-        /* @var $parseObj \TYPO3\CMS\Backend\Configuration\TsConfigParser */
+        /* @var \TYPO3\CMS\Backend\Configuration\TsConfigParser $parseObj */
         $parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TsConfigParser::class);
         $res = $parseObj->parseTSconfig($pageTs, 'PAGES', $id, $rootLine);
         if ($res) {
@@ -1256,7 +1256,7 @@ class BackendUtility
         }
 
         $fileReferences = [];
-        /** @var $relationHandler RelationHandler */
+        /** @var RelationHandler $relationHandler */
         $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
         if ($workspaceId !== null) {
             $relationHandler->setWorkspaceId($workspaceId);
@@ -1957,7 +1957,7 @@ class BackendUtility
                                 }
                             }
                         }
-                        /** @var $dbGroup RelationHandler */
+                        /** @var RelationHandler $dbGroup */
                         $dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
                         $dbGroup->start(
                             $value,
@@ -2114,7 +2114,7 @@ class BackendUtility
                                     }
                                 }
                             }
-                            /** @var $dbGroup RelationHandler */
+                            /** @var RelationHandler $dbGroup */
                             $dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
                             $dbGroup->start(
                                 $value,

@@ -287,7 +287,7 @@ class RootlineUtility
             if (array_key_exists($column, $pageRecord) && $this->columnHasRelationToResolve($configuration)) {
                 $configuration = $configuration['config'];
                 if ($configuration['MM']) {
-                    /** @var $loadDBGroup \TYPO3\CMS\Core\Database\RelationHandler */
+                    /** @var \TYPO3\CMS\Core\Database\RelationHandler $loadDBGroup */
                     $loadDBGroup = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
                     $loadDBGroup->start(
                         $pageRecord[$column],

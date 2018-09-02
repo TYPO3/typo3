@@ -33,7 +33,7 @@ class PropertyMappingConfigurationBuilder implements \TYPO3\CMS\Core\SingletonIn
      */
     public function build($type = \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::class)
     {
-        /** @var $configuration \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration */
+        /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $configuration */
         $configuration = new $type();
 
         $configuration->setTypeConverterOptions(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, [

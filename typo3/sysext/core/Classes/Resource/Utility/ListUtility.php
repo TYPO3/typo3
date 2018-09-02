@@ -34,7 +34,7 @@ class ListUtility
         $lang = $GLOBALS['LANG'];
         $resolvedFolders = [];
 
-        /** @var $folder \TYPO3\CMS\Core\Resource\Folder */
+        /** @var \TYPO3\CMS\Core\Resource\Folder $folder */
         foreach ($folders as $folder) {
             $name = $folder->getName();
             $role = $folder->getRole();

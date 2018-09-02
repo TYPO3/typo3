@@ -31,7 +31,7 @@ class PhpBackend extends AbstractBackend
      */
     public function createNewKeyPair()
     {
-        /** @var $keyPair \TYPO3\CMS\Rsaauth\Keypair */
+        /** @var \TYPO3\CMS\Rsaauth\Keypair $keyPair */
         $keyPair = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Rsaauth\Keypair::class);
         if ($keyPair->isReady()) {
             return $keyPair;

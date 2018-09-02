@@ -1777,16 +1777,16 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Fills the marker array with the given strings and trims each value
      *
-     * @param $jsLibs string
-     * @param $jsFiles string
-     * @param $jsFooterFiles string
-     * @param $cssLibs string
-     * @param $cssFiles string
-     * @param $jsInline string
-     * @param $cssInline string
-     * @param $jsFooterInline string
-     * @param $jsFooterLibs string
-     * @param $metaTags string
+     * @param string $jsLibs
+     * @param string $jsFiles
+     * @param string $jsFooterFiles
+     * @param string $cssLibs
+     * @param string $cssFiles
+     * @param string $jsInline
+     * @param string $cssInline
+     * @param string $jsFooterInline
+     * @param string $jsFooterLibs
+     * @param string $metaTags
      * @return array Marker array
      */
     protected function getPreparedMarkerArray($jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs, $metaTags)
@@ -2306,7 +2306,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function readLLfile($fileRef)
     {
-        /** @var $languageFactory LocalizationFactory */
+        /** @var LocalizationFactory $languageFactory */
         $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
 
         if ($this->lang !== 'default') {
@@ -2632,15 +2632,15 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Execute postRenderHook for possible manipulation
      *
-     * @param $jsLibs string
-     * @param $jsFiles string
-     * @param $jsFooterFiles string
-     * @param $cssLibs string
-     * @param $cssFiles string
-     * @param $jsInline string
-     * @param $cssInline string
-     * @param $jsFooterInline string
-     * @param $jsFooterLibs string
+     * @param string $jsLibs
+     * @param string $jsFiles
+     * @param string $jsFooterFiles
+     * @param string $cssLibs
+     * @param string $cssFiles
+     * @param string $jsInline
+     * @param string $cssInline
+     * @param string $jsFooterInline
+     * @param string $jsFooterLibs
      */
     protected function executePostRenderHook(&$jsLibs, &$jsFiles, &$jsFooterFiles, &$cssLibs, &$cssFiles, &$jsInline, &$cssInline, &$jsFooterInline, &$jsFooterLibs)
     {

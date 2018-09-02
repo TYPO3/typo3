@@ -91,7 +91,7 @@ class PermissionAjaxController
 
         $content = '';
         // Init TCE for execution of update
-        /** @var $tce DataHandler */
+        /** @var DataHandler $tce */
         $tce = GeneralUtility::makeInstance(DataHandler::class);
         // Determine the scripts to execute
         switch ($this->conf['action']) {

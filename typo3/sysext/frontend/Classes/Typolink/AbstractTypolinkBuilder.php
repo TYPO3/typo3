@@ -37,7 +37,7 @@ abstract class AbstractTypolinkBuilder
     /**
      * AbstractTypolinkBuilder constructor.
      *
-     * @param $contentObjectRenderer ContentObjectRenderer
+     * @param ContentObjectRenderer $contentObjectRenderer
      */
     public function __construct(ContentObjectRenderer $contentObjectRenderer)
     {

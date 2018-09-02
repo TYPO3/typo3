@@ -637,7 +637,7 @@ class EditDocumentController
     /**
      * Do processing of data, submitting it to DataHandler. May return a RedirectResponse
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      * @return ResponseInterface|null
      */
     public function processData(ServerRequestInterface $request = null): ?ResponseInterface
@@ -828,7 +828,7 @@ class EditDocumentController
                 $relatedPageId = -$nRec['t3ver_oid'];
             }
 
-            /** @var $duplicateTce \TYPO3\CMS\Core\DataHandling\DataHandler */
+            /** @var \TYPO3\CMS\Core\DataHandling\DataHandler $duplicateTce */
             $duplicateTce = GeneralUtility::makeInstance(DataHandler::class);
 
             $duplicateCmd = [
@@ -897,7 +897,7 @@ class EditDocumentController
     /**
      * Initialize the view part of the controller logic.
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      */
     public function init(ServerRequestInterface $request = null): void
     {
@@ -1156,7 +1156,7 @@ class EditDocumentController
     /**
      * Main module operation
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      */
     public function main(ServerRequestInterface $request = null): void
     {
@@ -1391,7 +1391,7 @@ class EditDocumentController
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      */
     protected function getButtons(ServerRequestInterface $request): void
     {
@@ -2624,7 +2624,7 @@ class EditDocumentController
      * - other values will call setDocument with ->retUrl
      *
      * @param int $mode the close mode: one of self::DOCUMENT_CLOSE_MODE_*
-     * @param $request ServerRequestInterface Incoming request
+     * @param ServerRequestInterface $request Incoming request
      * @return ResponseInterface|null Redirect response if needed
      */
     public function closeDocument($mode = self::DOCUMENT_CLOSE_MODE_DEFAULT, ServerRequestInterface $request = null): ?ResponseInterface

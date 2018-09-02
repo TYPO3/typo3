@@ -59,7 +59,7 @@ class EnvironmentController extends AbstractController
     /**
      * System Information Get Data action
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function systemInformationGetDataAction(ServerRequestInterface $request): ResponseInterface
@@ -79,7 +79,7 @@ class EnvironmentController extends AbstractController
     /**
      * System Information Get Data action
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function phpInfoGetDataAction(ServerRequestInterface $request): ResponseInterface
@@ -94,7 +94,7 @@ class EnvironmentController extends AbstractController
     /**
      * Get environment status
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function environmentCheckGetStatusAction(ServerRequestInterface $request): ResponseInterface
@@ -129,7 +129,7 @@ class EnvironmentController extends AbstractController
     /**
      * Get folder structure status
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function folderStructureGetStatusAction(ServerRequestInterface $request): ResponseInterface
@@ -184,7 +184,7 @@ class EnvironmentController extends AbstractController
     /**
      * System Information Get Data action
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function mailTestGetDataAction(ServerRequestInterface $request): ResponseInterface
@@ -239,7 +239,7 @@ class EnvironmentController extends AbstractController
     /**
      * System Information Get Data action
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function imageProcessingGetDataAction(ServerRequestInterface $request): ResponseInterface

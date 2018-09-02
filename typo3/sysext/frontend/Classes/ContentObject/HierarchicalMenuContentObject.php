@@ -36,7 +36,7 @@ class HierarchicalMenuContentObject extends AbstractContentObject
         $theValue = '';
         $menuType = $conf[1];
         try {
-            /** @var $menuObjectFactory Menu\MenuContentObjectFactory */
+            /** @var Menu\MenuContentObjectFactory $menuObjectFactory */
             $menuObjectFactory = GeneralUtility::makeInstance(Menu\MenuContentObjectFactory::class);
             $menu = $menuObjectFactory->getMenuObjectByType($menuType);
             $GLOBALS['TSFE']->register['count_HMENU']++;

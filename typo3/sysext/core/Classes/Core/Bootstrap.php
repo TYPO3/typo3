@@ -853,7 +853,7 @@ class Bootstrap
     protected static function runExtTablesPostProcessingHooks()
     {
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'] ?? [] as $className) {
-            /** @var $hookObject \TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface */
+            /** @var \TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface $hookObject */
             $hookObject = GeneralUtility::makeInstance($className);
             if (!$hookObject instanceof \TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface) {
                 throw new \UnexpectedValueException(
@@ -877,7 +877,7 @@ class Bootstrap
         // See if the Routes.php from all active packages have been built together already
         $cacheIdentifier = 'BackendRoutesFromPackages_' . sha1(TYPO3_version . Environment::getProjectPath() . 'BackendRoutesFromPackages');
 
-        /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
+        /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $codeCache */
         $codeCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core');
         $routesFromPackages = [];
         if ($codeCache->has($cacheIdentifier)) {
@@ -932,7 +932,7 @@ class Bootstrap
      */
     public static function initializeBackendUser($className = \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class)
     {
-        /** @var $backendUser \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
+        /** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $backendUser */
         $backendUser = GeneralUtility::makeInstance($className);
         // The global must be available very early, because methods below
         // might trigger code which relies on it. See: #45625

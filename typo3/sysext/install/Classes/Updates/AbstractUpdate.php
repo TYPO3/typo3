@@ -144,7 +144,7 @@ abstract class AbstractUpdate
      */
     protected function installExtensions(array $extensionKeys)
     {
-        /** @var $installUtility \TYPO3\CMS\Extensionmanager\Utility\InstallUtility */
+        /** @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility */
         $installUtility = GeneralUtility::makeInstance(
             \TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class
         );

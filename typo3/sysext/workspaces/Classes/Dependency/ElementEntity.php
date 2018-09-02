@@ -362,7 +362,7 @@ class ElementEntity
                 $this->outerMostParent = $this;
             } else {
                 $this->outerMostParent = false;
-                /** @var $parent ReferenceEntity */
+                /** @var ReferenceEntity $parent */
                 foreach ($parents as $parent) {
                     $outerMostParent = $parent->getElement()->getOuterMostParent();
                     if ($outerMostParent instanceof ElementEntity) {
@@ -388,7 +388,7 @@ class ElementEntity
         if (!isset($this->nestedChildren)) {
             $this->nestedChildren = [];
             $children = $this->getChildren();
-            /** @var $child ReferenceEntity */
+            /** @var ReferenceEntity $child */
             foreach ($children as $child) {
                 $this->nestedChildren = array_merge($this->nestedChildren, [$child->getElement()->__toString() => $child->getElement()], $child->getElement()->getNestedChildren());
             }

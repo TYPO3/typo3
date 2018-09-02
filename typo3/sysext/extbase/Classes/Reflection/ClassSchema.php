@@ -480,7 +480,7 @@ class ClassSchema
             $this->methods[$methodName]['description'] = $docCommentParser->getDescription();
 
             foreach ($reflectionMethod->getParameters() as $parameterPosition => $reflectionParameter) {
-                /* @var $reflectionParameter \ReflectionParameter */
+                /* @var \ReflectionParameter $reflectionParameter */
 
                 $parameterName = $reflectionParameter->getName();
 

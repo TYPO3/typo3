@@ -139,7 +139,7 @@ class BackendUserConfiguration
     /**
      * Computes the subarray from dotted notation
      *
-     * @param $key string Dotted notation of subkeys like moduleData.module1.general.checked
+     * @param string $key Dotted notation of subkeys like moduleData.module1.general.checked
      * @return mixed value of the settings
      */
     protected function getFromDottedNotation(string $key)

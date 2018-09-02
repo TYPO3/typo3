@@ -342,9 +342,9 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         if (count($imgSplit) > 1) {
             $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
             $sitePath = str_replace(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), '', $siteUrl);
-            /** @var $resourceFactory Resource\ResourceFactory */
+            /** @var Resource\ResourceFactory $resourceFactory */
             $resourceFactory = Resource\ResourceFactory::getInstance();
-            /** @var $magicImageService Resource\Service\MagicImageService */
+            /** @var Resource\Service\MagicImageService $magicImageService */
             $magicImageService = GeneralUtility::makeInstance(Resource\Service\MagicImageService::class);
             $magicImageService->setMagicImageMaximumDimensions($this->tsConfig);
             foreach ($imgSplit as $k => $v) {
@@ -373,7 +373,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                     if ($attribArray['data-htmlarea-file-uid']) {
                         // An original image file uid is available
                         try {
-                            /** @var $originalImageFile Resource\File */
+                            /** @var Resource\File $originalImageFile */
                             $originalImageFile = $resourceFactory->getFileObject((int)$attribArray['data-htmlarea-file-uid']);
                         } catch (Resource\Exception\FileDoesNotExistException $fileDoesNotExistException) {
                             // Log the fact the file could not be retrieved.

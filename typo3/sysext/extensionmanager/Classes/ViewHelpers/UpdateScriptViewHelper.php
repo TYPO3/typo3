@@ -56,7 +56,7 @@ class UpdateScriptViewHelper extends ActionViewHelper
         $extensionKey = $this->arguments['extensionKey'];
 
         // If the "class.ext_update.php" file exists, build link to the update script screen
-        /** @var $updateScriptUtility \TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility */
+        /** @var \TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility $updateScriptUtility */
         $updateScriptUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility::class);
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);

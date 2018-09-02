@@ -316,7 +316,7 @@ class ValidatorTask extends AbstractTask
         $modTs = $this->loadModTsConfig($page);
         $searchFields = $this->getSearchField($modTs);
         $linkTypes = $this->getLinkTypes($modTs);
-        /** @var $processor LinkAnalyzer */
+        /** @var LinkAnalyzer $processor */
         $processor = GeneralUtility::makeInstance(LinkAnalyzer::class);
         if ($page === 0) {
             $rootLineHidden = false;
@@ -451,7 +451,7 @@ class ValidatorTask extends AbstractTask
             unset($params);
         }
         $content = $this->templateService->substituteMarkerArray($content, $markerArray, '###|###', true, true);
-        /** @var $mail MailMessage */
+        /** @var MailMessage $mail */
         $mail = GeneralUtility::makeInstance(MailMessage::class);
         if (empty($modTsConfig['mail.']['fromemail'])) {
             $modTsConfig['mail.']['fromemail'] = MailUtility::getSystemFromAddress();

@@ -171,7 +171,7 @@ class FileListController extends ActionController
 
         try {
             if ($combinedIdentifier) {
-                /** @var $resourceFactory ResourceFactory */
+                /** @var ResourceFactory $resourceFactory */
                 $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
                 $storage = $resourceFactory->getStorageObjectFromCombinedIdentifier($combinedIdentifier);
                 $identifier = substr($combinedIdentifier, strpos($combinedIdentifier, ':') + 1);
@@ -595,7 +595,7 @@ class FileListController extends ActionController
         /** @var IconFactory $iconFactory */
         $iconFactory = $this->view->getModuleTemplate()->getIconFactory();
 
-        /** @var $resourceFactory ResourceFactory */
+        /** @var ResourceFactory $resourceFactory */
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
         $lang = $this->getLanguageService();

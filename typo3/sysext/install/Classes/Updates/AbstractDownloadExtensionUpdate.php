@@ -54,10 +54,10 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
     protected function installExtension($extensionKey, &$customMessage)
     {
         $updateSuccessful = true;
-        /** @var $objectManager ObjectManager */
+        /** @var ObjectManager $objectManager */
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
 
-        /** @var $extensionListUtility ListUtility */
+        /** @var ListUtility $extensionListUtility */
         $extensionListUtility = $objectManager->get(ListUtility::class);
         $availableExtensions = $extensionListUtility->getAvailableExtensions();
         $extensionDetails = $this->getExtensionDetails($extensionKey);
@@ -66,7 +66,7 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
         $isComposerMode = Environment::isComposerMode();
 
         if (!$isComposerMode && !$isExtensionAvailable) {
-            /** @var $extensionTerUtility TerUtility */
+            /** @var TerUtility $extensionTerUtility */
             $extensionTerUtility = $objectManager->get(TerUtility::class);
             if (empty($extensionDetails)) {
                 $updateSuccessful = false;
@@ -83,7 +83,7 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
                 $customMessage .= 'The extension ' . $extensionKey . ' could not be extracted.';
             }
 
-            /** @var $extensionFileHandlingUtility FileHandlingUtility */
+            /** @var FileHandlingUtility $extensionFileHandlingUtility */
             $extensionFileHandlingUtility = $objectManager->get(FileHandlingUtility::class);
             $extensionFileHandlingUtility->unpackExtensionFromExtensionDataArray($t3xExtracted);
 
@@ -100,7 +100,7 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
         }
 
         if ($updateSuccessful) {
-            /** @var $extensionInstallUtility InstallUtility */
+            /** @var InstallUtility $extensionInstallUtility */
             $extensionInstallUtility = $objectManager->get(InstallUtility::class);
             $extensionInstallUtility->install($extensionKey);
         }

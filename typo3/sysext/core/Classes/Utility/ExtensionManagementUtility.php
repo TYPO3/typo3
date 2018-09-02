@@ -137,8 +137,8 @@ class ExtensionManagementUtility
     /**
      * Returns the absolute path to the extension with extension key $key.
      *
-     * @param $key string Extension key
-     * @param $script string $script is appended to the output if set.
+     * @param string $key Extension key
+     * @param string $script $script is appended to the output if set.
      * @throws \BadFunctionCallException
      * @return string
      */
@@ -1535,7 +1535,7 @@ tt_content.' . $key . $suffix . ' {
     {
         if ($allowCaching) {
             $cacheIdentifier = self::getExtLocalconfCacheIdentifier();
-            /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
+            /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $codeCache */
             $codeCache = self::getCacheManager()->getCache('cache_core');
             if ($codeCache->has($cacheIdentifier)) {
                 $codeCache->require($cacheIdentifier);
@@ -1634,7 +1634,7 @@ tt_content.' . $key . $suffix . ' {
     {
         if ($allowCaching) {
             $cacheIdentifier = static::getBaseTcaCacheIdentifier();
-            /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
+            /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $codeCache */
             $codeCache = static::getCacheManager()->getCache('cache_core');
             $cacheData = $codeCache->require($cacheIdentifier);
             if ($cacheData) {
@@ -1743,7 +1743,7 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function createBaseTcaCacheFile()
     {
-        /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
+        /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $codeCache */
         $codeCache = self::getCacheManager()->getCache('cache_core');
         $codeCache->set(
             static::getBaseTcaCacheIdentifier(),
@@ -1779,7 +1779,7 @@ tt_content.' . $key . $suffix . ' {
         if ($allowCaching && !self::$extTablesWasReadFromCacheOnce) {
             self::$extTablesWasReadFromCacheOnce = true;
             $cacheIdentifier = self::getExtTablesCacheIdentifier();
-            /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
+            /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $codeCache */
             $codeCache = self::getCacheManager()->getCache('cache_core');
             if ($codeCache->has($cacheIdentifier)) {
                 $codeCache->require($cacheIdentifier);

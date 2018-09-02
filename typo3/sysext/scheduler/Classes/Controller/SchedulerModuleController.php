@@ -549,7 +549,7 @@ class SchedulerModuleController
                 }
 
                 // Get the task object
-                /** @var $task \TYPO3\CMS\Scheduler\Task\AbstractTask */
+                /** @var \TYPO3\CMS\Scheduler\Task\AbstractTask $task */
                 $task = unserialize($taskRecord['serialized_task_object']);
 
                 // Set some task information
@@ -617,7 +617,7 @@ class SchedulerModuleController
         if ($process === 'add') {
             foreach ($registeredClasses as $class => $registrationInfo) {
                 if (!empty($registrationInfo['provider'])) {
-                    /** @var $providerObject AdditionalFieldProviderInterface */
+                    /** @var AdditionalFieldProviderInterface $providerObject */
                     $providerObject = GeneralUtility::makeInstance($registrationInfo['provider']);
                     if ($providerObject instanceof AdditionalFieldProviderInterface) {
                         $additionalFields = $providerObject->getAdditionalFields($taskInfo, null, $this);
@@ -903,7 +903,7 @@ class SchedulerModuleController
                 $isRunning = false;
                 $showAsDisabled = false;
                 // Restore the serialized task and pass it a reference to the scheduler object
-                /** @var $task \TYPO3\CMS\Scheduler\Task\AbstractTask|ProgressProviderInterface */
+                /** @var \TYPO3\CMS\Scheduler\Task\AbstractTask|ProgressProviderInterface $task */
                 $task = unserialize($schedulerRecord['serialized_task_object']);
                 $class = get_class($task);
                 if ($class === '__PHP_Incomplete_Class' && preg_match('/^O:[0-9]+:"(?P<classname>.+?)"/', $schedulerRecord['serialized_task_object'], $matches) === 1) {
@@ -996,7 +996,7 @@ class SchedulerModuleController
                     // Check if the last run failed
                     if (!empty($schedulerRecord['lastexecution_failure'])) {
                         // Try to get the stored exception array
-                        /** @var $exceptionArray array */
+                        /** @var array $exceptionArray */
                         $exceptionArray = @unserialize($schedulerRecord['lastexecution_failure']);
                         // If the exception could not be unserialized, issue a default error message
                         if (!is_array($exceptionArray) || empty($exceptionArray)) {
@@ -1057,7 +1057,7 @@ class SchedulerModuleController
         if (!empty($this->submittedData['uid'])) {
             try {
                 $taskRecord = $this->scheduler->fetchTaskRecord($this->submittedData['uid']);
-                /** @var $task \TYPO3\CMS\Scheduler\Task\AbstractTask */
+                /** @var \TYPO3\CMS\Scheduler\Task\AbstractTask $task */
                 $task = unserialize($taskRecord['serialized_task_object']);
             } catch (\OutOfBoundsException $e) {
                 // If the task could not be fetched, issue an error message
@@ -1089,7 +1089,7 @@ class SchedulerModuleController
             $task->setTaskGroup($this->submittedData['task_group']);
             // Save additional input values
             if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields'])) {
-                /** @var $providerObject AdditionalFieldProviderInterface */
+                /** @var AdditionalFieldProviderInterface $providerObject */
                 $providerObject = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields']);
                 if ($providerObject instanceof AdditionalFieldProviderInterface) {
                     $providerObject->saveAdditionalFields($this->submittedData, $task);
@@ -1106,7 +1106,7 @@ class SchedulerModuleController
         } else {
             // A new task is being created
             // Create an instance of chosen class
-            /** @var $task AbstractTask */
+            /** @var AbstractTask $task */
             $task = GeneralUtility::makeInstance($this->submittedData['class']);
             if ((int)$this->submittedData['type'] === AbstractTask::TYPE_SINGLE) {
                 // Set up single execution
@@ -1117,7 +1117,7 @@ class SchedulerModuleController
             }
             // Save additional input values
             if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields'])) {
-                /** @var $providerObject AdditionalFieldProviderInterface */
+                /** @var AdditionalFieldProviderInterface $providerObject */
                 $providerObject = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields']);
                 if ($providerObject instanceof AdditionalFieldProviderInterface) {
                     $providerObject->saveAdditionalFields($this->submittedData, $task);
@@ -1234,7 +1234,7 @@ class SchedulerModuleController
         }
         // Validate additional input fields
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields'])) {
-            /** @var $providerObject AdditionalFieldProviderInterface */
+            /** @var AdditionalFieldProviderInterface $providerObject */
             $providerObject = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields']);
             if ($providerObject instanceof AdditionalFieldProviderInterface) {
                 // The validate method will return true if all went well, but that must not

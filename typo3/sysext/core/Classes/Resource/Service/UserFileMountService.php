@@ -53,9 +53,9 @@ class UserFileMountService
             $storageUid = (int)$PA['row']['storage'][0];
         }
         if ($storageUid > 0 && in_array($storageUid, $allowedStorageIds, true)) {
-            /** @var $storageRepository StorageRepository */
+            /** @var StorageRepository $storageRepository */
             $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-            /** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
+            /** @var \TYPO3\CMS\Core\Resource\ResourceStorage $storage */
             $storage = $storageRepository->findByUid($storageUid);
             if ($storage === null) {
                 /** @var FlashMessageService $flashMessageService */

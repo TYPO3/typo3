@@ -551,7 +551,7 @@ class TranslationService implements SingletonInterface
         }
 
         if (!empty($locallangPathAndFilename)) {
-            /** @var $languageFactory LocalizationFactory */
+            /** @var LocalizationFactory $languageFactory */
             $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
             $this->LOCAL_LANG = $languageFactory->getParsedData($locallangPathAndFilename, $this->languageKey);
 
@@ -580,7 +580,7 @@ class TranslationService implements SingletonInterface
                 if (isset($this->getTypoScriptFrontendController()->config['config']['language_alt'])) {
                     $this->alternativeLanguageKeys[] = $this->getTypoScriptFrontendController()->config['config']['language_alt'];
                 } else {
-                    /** @var $locales \TYPO3\CMS\Core\Localization\Locales */
+                    /** @var \TYPO3\CMS\Core\Localization\Locales $locales */
                     $locales = GeneralUtility::makeInstance(Locales::class);
                     if (in_array($this->languageKey, $locales->getLocales(), true)) {
                         foreach ($locales->getLocaleDependencies($this->languageKey) as $language) {

@@ -215,7 +215,7 @@ class ConfigurationController
             $routes = $router->getRoutes();
             $renderArray = [];
             foreach ($routes as $identifier => $route) {
-                /** @var $route \TYPO3\CMS\Backend\Routing\Route */
+                /** @var \TYPO3\CMS\Backend\Routing\Route $route */
                 $renderArray[$identifier] = [
                     'path' => $route->getPath(),
                     'options' => $route->getOptions()

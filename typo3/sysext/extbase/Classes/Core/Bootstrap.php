@@ -158,7 +158,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
      */
     protected function handleRequest()
     {
-        /** @var $requestHandlerResolver \TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver */
+        /** @var \TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver $requestHandlerResolver */
         $requestHandlerResolver = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver::class);
         $requestHandler = $requestHandlerResolver->resolveRequestHandler();
 
@@ -203,7 +203,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
 
         $this->initialize($configuration);
 
-        /** @var $requestHandlerResolver \TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver */
+        /** @var \TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver $requestHandlerResolver */
         $requestHandlerResolver = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver::class);
         $requestHandler = $requestHandlerResolver->resolveRequestHandler();
         /** @var Response $extbaseResponse */

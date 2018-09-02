@@ -1046,9 +1046,9 @@ class DatabaseRecordList
                 FlashMessage::WARNING,
                 true
             );
-            /** @var $flashMessageService FlashMessageService */
+            /** @var FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }
@@ -3114,7 +3114,7 @@ class DatabaseRecordList
      */
     public function getSearchBox($formFields = true)
     {
-        /** @var $iconFactory IconFactory */
+        /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $lang = $this->getLanguageService();
         // Setting form-elements, if applicable:

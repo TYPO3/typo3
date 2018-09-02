@@ -192,7 +192,7 @@ class LoginController implements LoggerAwareInterface
      */
     protected function createLoginLogoutForm(ServerRequestInterface $request): string
     {
-        /** @var $pageRenderer PageRenderer */
+        /** @var PageRenderer $pageRenderer */
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Login');
 

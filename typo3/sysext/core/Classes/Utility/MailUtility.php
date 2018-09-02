@@ -199,7 +199,7 @@ class MailUtility
      */
     public static function parseAddresses($rawAddresses)
     {
-        /** @var $addressParser \TYPO3\CMS\Core\Mail\Rfc822AddressesParser */
+        /** @var \TYPO3\CMS\Core\Mail\Rfc822AddressesParser $addressParser */
         $addressParser = GeneralUtility::makeInstance(
             \TYPO3\CMS\Core\Mail\Rfc822AddressesParser::class,
             $rawAddresses

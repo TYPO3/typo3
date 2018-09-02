@@ -188,7 +188,7 @@ class BackendLogController extends ActionController
     protected function groupLogEntriesByPageAndDay(QueryResultInterface $logEntries, $groupByPage = false)
     {
         $targetStructure = [];
-        /** @var $entry LogEntry */
+        /** @var LogEntry $entry */
         foreach ($logEntries as $entry) {
             // Create page split list or flat list
             if ($groupByPage) {
@@ -253,7 +253,7 @@ class BackendLogController extends ActionController
         $workspaceArray[-99] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('any', 'Belog');
         $workspaceArray[0] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('live', 'Belog');
         $workspaces = $this->objectManager->get(\TYPO3\CMS\Belog\Domain\Repository\WorkspaceRepository::class)->findAll();
-        /** @var $workspace \TYPO3\CMS\Belog\Domain\Model\Workspace */
+        /** @var \TYPO3\CMS\Belog\Domain\Model\Workspace $workspace */
         foreach ($workspaces as $workspace) {
             $workspaceArray[$workspace->getUid()] = $workspace->getUid() . ': ' . $workspace->getTitle();
         }

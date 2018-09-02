@@ -100,9 +100,9 @@ class Typo3QuerySettings implements QuerySettingsInterface
      */
     public function initializeObject()
     {
-        /** @var $objectManager ObjectManager */
+        /** @var ObjectManager $objectManager */
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        /** @var $configurationManager ConfigurationManagerInterface */
+        /** @var ConfigurationManagerInterface $configurationManager */
         $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
         if (TYPO3_MODE === 'BE' && $configurationManager->isFeatureEnabled('ignoreAllEnableFieldsInBe')) {
             $this->setIgnoreEnableFields(true);

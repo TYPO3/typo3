@@ -485,7 +485,7 @@ class CommandMap
             $elementsToBeVersioned = $this->getElementEntityProcessor()->transformDependentElementsToUseLiveId($elementsToBeVersioned);
         }
         $outerMostParents = $dependency->getOuterMostParents();
-        /** @var $outerMostParent ElementEntity */
+        /** @var ElementEntity $outerMostParent */
         foreach ($outerMostParents as $outerMostParent) {
             $dependentElements = $dependency->getNestedElements($outerMostParent);
             if ($transformDependentElementsToUseLiveId) {
@@ -514,7 +514,7 @@ class CommandMap
         if ($this->getScopeData($scope, self::KEY_GetCommonPropertiesCallback)) {
             $commonProperties = $this->processCallback($this->getScopeData($scope, self::KEY_GetCommonPropertiesCallback), [$intersectingElement]);
         }
-        /** @var $element ElementEntity */
+        /** @var ElementEntity $element */
         foreach ($elements as $element) {
             $table = $element->getTable();
             $id = $this->processCallback($this->getScopeData($scope, self::KEY_UpdateGetIdCallback), [$element]);

@@ -116,7 +116,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
 
         try {
             $this->store->setConfiguration($fileReference, $languageKey);
-            /** @var $parser \TYPO3\CMS\Core\Localization\Parser\LocalizationParserInterface */
+            /** @var \TYPO3\CMS\Core\Localization\Parser\LocalizationParserInterface $parser */
             $parser = $this->store->getParserInstance($fileReference);
             // Get parsed data
             $LOCAL_LANG = $parser->getParsedData($this->store->getAbsoluteFileReference($fileReference), $languageKey);

@@ -536,7 +536,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
 
         $directoryEntries = [];
         while ($iterator->valid()) {
-            /** @var $entry \SplFileInfo */
+            /** @var \SplFileInfo $entry */
             $entry = $iterator->current();
             $isFile = $entry->isFile();
             $isDirectory = $isFile ? false : $entry->isDir();
@@ -1058,7 +1058,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
         $targetFolderPath = $this->getAbsolutePath($newFolderIdentifier);
 
         mkdir($targetFolderPath);
-        /** @var $iterator \RecursiveDirectoryIterator */
+        /** @var \RecursiveDirectoryIterator $iterator */
         $iterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($sourceFolderPath),
             \RecursiveIteratorIterator::SELF_FIRST,
@@ -1067,7 +1067,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
         // Rewind the iterator as this is important for some systems e.g. Windows
         $iterator->rewind();
         while ($iterator->valid()) {
-            /** @var $current \RecursiveDirectoryIterator */
+            /** @var \RecursiveDirectoryIterator $current */
             $current = $iterator->current();
             $fileName = $current->getFilename();
             $itemSubPath = GeneralUtility::fixWindowsFilePath($iterator->getSubPathname());

@@ -520,7 +520,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function getDependencies()
     {
         if (!is_object($this->dependencies)) {
-            /** @var $extensionModelUtility \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility */
+            /** @var \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility $extensionModelUtility */
             $extensionModelUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class);
             $this->setDependencies($extensionModelUtility->convertDependenciesToObjects($this->getSerializedDependencies()));
         }

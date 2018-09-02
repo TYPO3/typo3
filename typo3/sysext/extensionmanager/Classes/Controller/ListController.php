@@ -202,7 +202,7 @@ class ListController extends AbstractModuleController
         $importExportInstalled = ExtensionManagementUtility::isLoaded('impexp');
         if ($importExportInstalled) {
             try {
-                /** @var $repositoryHelper Helper */
+                /** @var Helper $repositoryHelper */
                 $repositoryHelper = $this->objectManager->get(Helper::class);
                 // Check if a TER update has been done at all, if not, fetch it directly
                 // Repository needs an update, but not because of the extension hash has changed

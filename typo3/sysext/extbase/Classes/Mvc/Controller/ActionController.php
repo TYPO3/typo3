@@ -362,7 +362,7 @@ class ActionController extends AbstractController
     {
         $viewObjectName = $this->resolveViewObjectName();
         if ($viewObjectName !== false) {
-            /** @var $view ViewInterface */
+            /** @var ViewInterface $view */
             $view = $this->objectManager->get($viewObjectName);
             $this->setViewConfiguration($view);
             if ($view->canRender($this->controllerContext) === false) {
@@ -370,7 +370,7 @@ class ActionController extends AbstractController
             }
         }
         if (!isset($view) && $this->defaultViewObjectName != '') {
-            /** @var $view ViewInterface */
+            /** @var ViewInterface $view */
             $view = $this->objectManager->get($this->defaultViewObjectName);
             $this->setViewConfiguration($view);
             if ($view->canRender($this->controllerContext) === false) {

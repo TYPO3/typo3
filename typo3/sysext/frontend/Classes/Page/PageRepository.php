@@ -2009,7 +2009,7 @@ class PageRepository implements LoggerAwareInterface
     public function getFileReferences($tableName, $fieldName, array $element)
     {
         trigger_error('The method `TYPO3\CMS\Frontend\Page::getFileReferences()` has been deprecated and should not be used any longer, this method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
-        /** @var $fileRepository FileRepository */
+        /** @var FileRepository $fileRepository */
         $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
         $currentId = !empty($element['uid']) ? $element['uid'] : 0;
 

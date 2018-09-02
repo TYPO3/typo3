@@ -447,7 +447,7 @@ class Result
         }
 
         foreach ($otherResult->getSubResults() as $subPropertyName => $subResult) {
-            /** @var $subResult Result */
+            /** @var Result $subResult */
             if (array_key_exists($subPropertyName, $this->propertyResults) && $this->propertyResults[$subPropertyName]->hasMessages()) {
                 $this->forProperty($subPropertyName)->merge($subResult);
             } else {

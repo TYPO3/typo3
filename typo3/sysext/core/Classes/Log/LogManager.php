@@ -88,7 +88,7 @@ class LogManager implements SingletonInterface, LogManagerInterface
      */
     public function getLogger($name = '')
     {
-        /** @var $logger \TYPO3\CMS\Core\Log\Logger */
+        /** @var \TYPO3\CMS\Core\Log\Logger $logger */
         $logger = null;
         // Transform namespaces and underscore class names to the dot-name style
         $separators = ['_', '\\'];
@@ -97,7 +97,7 @@ class LogManager implements SingletonInterface, LogManagerInterface
             $logger = $this->loggers[$name];
         } else {
             // Lazy instantiation
-            /** @var $logger \TYPO3\CMS\Core\Log\Logger */
+            /** @var \TYPO3\CMS\Core\Log\Logger $logger */
             $logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Logger::class, $name, $this->requestId);
             $this->loggers[$name] = $logger;
             $this->setWritersForLogger($logger);
@@ -137,7 +137,7 @@ class LogManager implements SingletonInterface, LogManagerInterface
         foreach ($configuration as $severityLevel => $writer) {
             foreach ($writer as $logWriterClassName => $logWriterOptions) {
                 try {
-                    /** @var $logWriter \TYPO3\CMS\Core\Log\Writer\WriterInterface */
+                    /** @var \TYPO3\CMS\Core\Log\Writer\WriterInterface $logWriter */
                     $logWriter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($logWriterClassName, $logWriterOptions);
                     $logger->addWriter($severityLevel, $logWriter);
                 } catch (\Psr\Log\InvalidArgumentException $e) {
@@ -160,7 +160,7 @@ class LogManager implements SingletonInterface, LogManagerInterface
         foreach ($configuration as $severityLevel => $processor) {
             foreach ($processor as $logProcessorClassName => $logProcessorOptions) {
                 try {
-                    /** @var $logProcessor \TYPO3\CMS\Core\Log\Processor\ProcessorInterface */
+                    /** @var \TYPO3\CMS\Core\Log\Processor\ProcessorInterface $logProcessor */
                     $logProcessor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($logProcessorClassName, $logProcessorOptions);
                     $logger->addProcessor($severityLevel, $logProcessor);
                 } catch (\Psr\Log\InvalidArgumentException $e) {

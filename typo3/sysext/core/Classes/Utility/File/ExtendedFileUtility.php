@@ -635,7 +635,7 @@ class ExtendedFileUtility extends BasicFileUtility
     protected function func_copy($cmds)
     {
         $sourceFileObject = $this->getFileObject($cmds['data']);
-        /** @var $targetFolderObject \TYPO3\CMS\Core\Resource\Folder */
+        /** @var \TYPO3\CMS\Core\Resource\Folder $targetFolderObject */
         $targetFolderObject = $this->getFileObject($cmds['target']);
         // Basic check
         if (!$targetFolderObject instanceof Folder) {
@@ -1081,7 +1081,7 @@ class ExtendedFileUtility extends BasicFileUtility
                 'size' => $uploadedFileData['size'][$i]
             ];
             try {
-                /** @var $fileObject File */
+                /** @var File $fileObject */
                 $fileObject = $targetFolderObject->addUploadedFile($fileInfo, (string)$this->existingFilesConflictMode);
                 $fileObject = ResourceFactory::getInstance()->getFileObjectByStorageAndIdentifier($targetFolderObject->getStorage()->getUid(), $fileObject->getIdentifier());
                 if ($this->existingFilesConflictMode->equals(DuplicationBehavior::REPLACE)) {
@@ -1202,10 +1202,10 @@ class ExtendedFileUtility extends BasicFileUtility
      */
     protected function addFlashMessage(FlashMessage $flashMessage)
     {
-        /** @var $flashMessageService FlashMessageService */
+        /** @var FlashMessageService $flashMessageService */
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
 
-        /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+        /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $defaultFlashMessageQueue->enqueue($flashMessage);
     }

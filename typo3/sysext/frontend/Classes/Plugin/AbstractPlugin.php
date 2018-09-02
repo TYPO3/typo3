@@ -263,7 +263,7 @@ class AbstractPlugin
         if (!empty($this->frontendController->config['config']['language'])) {
             $this->LLkey = $this->frontendController->config['config']['language'];
             if (empty($this->frontendController->config['config']['language_alt'])) {
-                /** @var $locales Locales */
+                /** @var Locales $locales */
                 $locales = GeneralUtility::makeInstance(Locales::class);
                 if (in_array($this->LLkey, $locales->getLocales())) {
                     $this->altLLkey = '';
@@ -982,7 +982,7 @@ class AbstractPlugin
             $languageFilePath = 'EXT:' . $this->extKey . '/' . PathUtility::dirname($this->scriptRelPath) . '/locallang.xlf';
         }
         if ($languageFilePath !== '') {
-            /** @var $languageFactory LocalizationFactory */
+            /** @var LocalizationFactory $languageFactory */
             $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
             $this->LOCAL_LANG = $languageFactory->getParsedData($languageFilePath, $this->LLkey);
             $alternativeLanguageKeys = GeneralUtility::trimExplode(',', $this->altLLkey, true);

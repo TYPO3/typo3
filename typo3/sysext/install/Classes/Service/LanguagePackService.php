@@ -290,7 +290,7 @@ class LanguagePackService
     /**
      * Format a timestamp to a formatted date string
      *
-     * @param $timestamp int|null
+     * @param int|null $timestamp
      * @return string|null
      */
     protected function getFormattedDate($timestamp)

@@ -32,7 +32,7 @@ class StaticRecordCollection extends AbstractRecordCollection implements Editabl
      */
     public static function create(array $collectionRecord, $fillItems = false)
     {
-        /** @var $collection StaticRecordCollection */
+        /** @var StaticRecordCollection $collection */
         $collection = GeneralUtility::makeInstance(
             self::class,
             $collectionRecord['table_name']

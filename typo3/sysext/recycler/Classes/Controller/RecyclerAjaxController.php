@@ -66,7 +66,7 @@ class RecyclerAjaxController
     public function dispatch(ServerRequestInterface $request): ResponseInterface
     {
         $extPath = ExtensionManagementUtility::extPath('recycler');
-        /* @var $view StandaloneView */
+        /* @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setPartialRootPaths(['default' => $extPath . 'Resources/Private/Partials']);
 
@@ -76,7 +76,7 @@ class RecyclerAjaxController
             case 'getTables':
                 $this->setDataInSession(['depthSelection' => $this->conf['depth']]);
 
-                /* @var $model Tables */
+                /* @var Tables $model */
                 $model = GeneralUtility::makeInstance(Tables::class);
                 $content = $model->getTables($this->conf['startUid'], $this->conf['depth']);
                 break;
@@ -87,7 +87,7 @@ class RecyclerAjaxController
                     'resultLimit' => $this->conf['limit'],
                 ]);
 
-                /* @var $model DeletedRecords */
+                /* @var DeletedRecords $model */
                 $model = GeneralUtility::makeInstance(DeletedRecords::class);
                 $model->loadData($this->conf['startUid'], $this->conf['table'], $this->conf['depth'], $this->conf['start'] . ',' . $this->conf['limit'], $this->conf['filterTxt']);
                 $deletedRowsArray = $model->getDeletedRows();
@@ -95,7 +95,7 @@ class RecyclerAjaxController
                 $model = GeneralUtility::makeInstance(DeletedRecords::class);
                 $totalDeleted = $model->getTotalCount($this->conf['startUid'], $this->conf['table'], $this->conf['depth'], $this->conf['filterTxt']);
 
-                /* @var $controller DeletedRecordsController */
+                /* @var DeletedRecordsController $controller */
                 $controller = GeneralUtility::makeInstance(DeletedRecordsController::class);
                 $recordsArray = $controller->transform($deletedRowsArray);
 
@@ -119,7 +119,7 @@ class RecyclerAjaxController
                     break;
                 }
 
-                /* @var $model DeletedRecords */
+                /* @var DeletedRecords $model */
                 $model = GeneralUtility::makeInstance(DeletedRecords::class);
                 $affectedRecords = $model->undeleteData($this->conf['records'], $this->conf['recursive']);
                 $messageKey = 'flashmessage.undo.' . ($affectedRecords !== false ? 'success' : 'failure') . '.' . ((int)$affectedRecords === 1 ? 'singular' : 'plural');
@@ -137,7 +137,7 @@ class RecyclerAjaxController
                     break;
                 }
 
-                /* @var $model DeletedRecords */
+                /* @var DeletedRecords $model */
                 $model = GeneralUtility::makeInstance(DeletedRecords::class);
                 $success = $model->deleteData($this->conf['records']);
                 $affectedRecords = count($this->conf['records']);

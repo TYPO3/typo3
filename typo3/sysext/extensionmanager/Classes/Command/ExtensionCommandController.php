@@ -58,7 +58,7 @@ class ExtensionCommandController extends CommandController
         trigger_error('Calling ExtensionCommandController->installCommand() is deprecated and will be removed in TYPO3 v10. Use the Symfony command "extension:activate" instead, to be called via the "typo3" CLI entrypoint.', E_USER_DEPRECATED);
         $this->emitPackagesMayHaveChangedSignal();
 
-        /** @var $service \TYPO3\CMS\Extensionmanager\Utility\InstallUtility */
+        /** @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility $service */
         $service = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class);
         $service->install($extensionKey);
     }
@@ -76,7 +76,7 @@ class ExtensionCommandController extends CommandController
     public function uninstallCommand($extensionKey)
     {
         trigger_error('Calling ExtensionCommandController->uninstallCommand() is deprecated and will be removed in TYPO3 v10. Use the Symfony command "extension:deactivate" instead, to be called via the "typo3" CLI entrypoint.', E_USER_DEPRECATED);
-        /** @var $service \TYPO3\CMS\Extensionmanager\Utility\InstallUtility */
+        /** @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility $service */
         $service = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class);
         $service->uninstall($extensionKey);
     }

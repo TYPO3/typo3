@@ -41,7 +41,7 @@ class Typo3tempFileService
         $dirsInAssets = $dirFinder->directories()->in($basePath)->depth(0)->sortByName();
         $stats = [];
         foreach ($dirsInAssets as $dirInAssets) {
-            /** @var $dirInAssets SplFileInfo */
+            /** @var SplFileInfo $dirInAssets */
             $fileFinder = new Finder();
             $fileCount = $fileFinder->files()->in($dirInAssets->getPathname())->count();
             $stats[] = [
@@ -92,7 +92,7 @@ class Typo3tempFileService
         $finder = new Finder();
         $files = $finder->files()->in($basePath)->depth(0)->sortByName();
         foreach ($files as $file) {
-            /** @var $file SplFileInfo */
+            /** @var SplFileInfo $file */
             $path = $file->getPathname();
             @unlink($path);
         }

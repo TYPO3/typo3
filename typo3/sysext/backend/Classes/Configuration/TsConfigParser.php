@@ -110,7 +110,7 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
      */
     protected function parseWithConditions($TSconfig)
     {
-        /** @var $matchObj \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher */
+        /** @var \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher $matchObj */
         $matchObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class);
         $matchObj->setRootline($this->rootLine);
         $matchObj->setPageId($this->id);
@@ -131,7 +131,7 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
     protected function matching(array $cc)
     {
         if (is_array($cc['sections'])) {
-            /** @var $matchObj \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher */
+            /** @var \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher $matchObj */
             $matchObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class);
             $matchObj->setRootline($this->rootLine);
             $matchObj->setPageId($this->id);

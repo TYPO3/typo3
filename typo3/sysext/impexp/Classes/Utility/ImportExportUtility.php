@@ -42,7 +42,7 @@ class ImportExportUtility
         if (!is_int($pid)) {
             throw new \InvalidArgumentException('Input parameter $int has to be of type integer', 1377625646);
         }
-        /** @var $import Import */
+        /** @var Import $import */
         $import = GeneralUtility::makeInstance(Import::class);
         $import->init();
 

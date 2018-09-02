@@ -86,7 +86,7 @@ class FileReference implements FileInterface
             throw new \InvalidArgumentException('Incorrect reference to original file given for FileReference.', 1300098528);
         }
         if (!$factory) {
-            /** @var $factory ResourceFactory */
+            /** @var ResourceFactory $factory */
             $factory = ResourceFactory::getInstance();
         }
         $this->originalFile = $factory->getFileObject($fileReferenceData['uid_local']);

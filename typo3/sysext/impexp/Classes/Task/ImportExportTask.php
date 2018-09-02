@@ -172,9 +172,9 @@ class ImportExportTask implements TaskInterface
                     $lang->getLL('.alttitle'),
                     FlashMessage::NOTICE
                 );
-                /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+                /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-                /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+                /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
                 $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
                 $defaultFlashMessageQueue->enqueue($flashMessage);
             }

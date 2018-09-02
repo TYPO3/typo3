@@ -149,7 +149,7 @@ class ImportExportController extends BaseScriptClass
 
         $templatePath = ExtensionManagementUtility::extPath('impexp') . 'Resources/Private/';
 
-        /* @var $view StandaloneView */
+        /* @var StandaloneView $view */
         $this->standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
         $this->standaloneView->setTemplateRootPaths([$templatePath . 'Templates/ImportExport/']);
         $this->standaloneView->setLayoutRootPaths([$templatePath . 'Layouts/']);
@@ -571,9 +571,9 @@ class ImportExportController extends BaseScriptClass
                         FlashMessage::ERROR
                     );
                 }
-                /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+                /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-                /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+                /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
                 $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
                 $defaultFlashMessageQueue->enqueue($flashMessage);
             }
@@ -686,9 +686,9 @@ class ImportExportController extends BaseScriptClass
                 $limitWarning,
                 FlashMessage::WARNING
             );
-            /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }
@@ -846,7 +846,7 @@ class ImportExportController extends BaseScriptClass
             if ($inData['new_import']) {
                 unset($inData['import_mode']);
             }
-            /** @var $import Import */
+            /** @var Import $import */
             $import = GeneralUtility::makeInstance(Import::class);
             $import->init();
             $import->update = $inData['do_update'];
@@ -1062,7 +1062,7 @@ class ImportExportController extends BaseScriptClass
         $folder = $this->getDefaultImportExportFolder();
         if ($folder !== null) {
 
-            /** @var $filter FileExtensionFilter */
+            /** @var FileExtensionFilter $filter */
             $filter = GeneralUtility::makeInstance(FileExtensionFilter::class);
             $filter->setAllowedFileExtensions(['t3d', 'xml']);
             $folder->getStorage()->addFileAndFolderNameFilter([$filter, 'filterFileList']);

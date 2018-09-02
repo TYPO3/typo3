@@ -39,7 +39,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
      */
     public static function create(array $collectionRecord, $fillItems = false)
     {
-        /** @var $collection \TYPO3\CMS\Frontend\Category\Collection\CategoryCollection */
+        /** @var \TYPO3\CMS\Frontend\Category\Collection\CategoryCollection $collection */
         $collection = GeneralUtility::makeInstance(
             __CLASS__,
             $collectionRecord['table_name'],

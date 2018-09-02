@@ -82,7 +82,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             if (!$hookObject instanceof TypolinkModifyLinkConfigForPageLinksHookInterface) {
                 throw new \UnexpectedValueException('$hookObject must implement interface ' . TypolinkModifyLinkConfigForPageLinksHookInterface::class, 1483114905);
             }
-            /** @var $hookObject TypolinkModifyLinkConfigForPageLinksHookInterface */
+            /** @var TypolinkModifyLinkConfigForPageLinksHookInterface $hookObject */
             $conf = $hookObject->modifyPageLinkConfiguration($conf, $linkDetails, $page);
         }
         $enableLinksAcrossDomains = $tsfe->config['config']['typolinkEnableLinksAcrossDomains'];

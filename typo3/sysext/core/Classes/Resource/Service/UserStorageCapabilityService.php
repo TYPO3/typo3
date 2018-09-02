@@ -45,9 +45,9 @@ class UserStorageCapabilityService
         if ((int)$propertyArray['row']['uid'] > 0) {
             /** @var LanguageService $lang */
             $lang = $GLOBALS['LANG'];
-            /** @var $flashMessageService FlashMessageService */
+            /** @var FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            /** @var $defaultFlashMessageQueue FlashMessageQueue */
+            /** @var FlashMessageQueue $defaultFlashMessageQueue */
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             try {
                 $storage = ResourceFactory::getInstance()->getStorageObject($fileRecord['uid']);

@@ -1598,7 +1598,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     protected function initializeFileStorages()
     {
         $this->fileStorages = [];
-        /** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
+        /** @var \TYPO3\CMS\Core\Resource\StorageRepository $storageRepository */
         $storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
         // Admin users have all file storages visible, without any filters
         if ($this->isAdmin()) {
@@ -2470,7 +2470,7 @@ This is a dump of the failures:
                         ) . ':  ' . @sprintf($row['details'], (string)$theData[0], (string)$theData[1], (string)$theData[2]);
                     $email_body .= LF;
                 }
-                /** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
+                /** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
                 $mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
                 $mail->setTo($email)->setSubject($subject)->setBody($email_body);
                 $mail->send();
@@ -2661,7 +2661,7 @@ This is a dump of the failures:
                 $prefix = '[AdminLoginWarning]';
             }
             if ($warn) {
-                /** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
+                /** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
                 $mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
                 $mail->setTo($GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'])->setSubject($prefix . ' ' . $subject)->setBody($msg);
                 $mail->send();
@@ -2669,7 +2669,7 @@ This is a dump of the failures:
         }
         // Trigger an email to the current BE user, if this has been enabled in the user configuration
         if ($this->uc['emailMeAtLogin'] && strstr($this->user['email'], '@')) {
-            /** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
+            /** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
             $mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
             $mail->setTo($this->user['email'])->setSubject($subject)->setBody($msg);
             $mail->send();

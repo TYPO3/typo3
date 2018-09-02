@@ -47,7 +47,7 @@ class NewMultiplePagesController
     /**
      * Constructor Method
      *
-     * @var $moduleTemplate ModuleTemplate
+     * @var ModuleTemplate $moduleTemplate
      */
     public function __construct(ModuleTemplate $moduleTemplate = null)
     {
@@ -57,7 +57,7 @@ class NewMultiplePagesController
     /**
      * Main function Handling input variables and rendering main view
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      * @return ResponseInterface Response
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface

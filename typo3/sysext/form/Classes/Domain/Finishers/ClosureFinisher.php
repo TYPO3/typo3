@@ -52,7 +52,7 @@ class ClosureFinisher extends AbstractFinisher
      */
     protected function executeInternal()
     {
-        /** @var $closure \Closure */
+        /** @var \Closure $closure */
         $closure = $this->parseOption('closure');
         if ($closure === null) {
             return;

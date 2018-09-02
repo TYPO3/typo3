@@ -44,7 +44,7 @@ class ContextMenu
         $items = [];
         $itemsProviders = $this->getAvailableProviders($table, $identifier, $context);
 
-        /** @var $provider \TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface */
+        /** @var \TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface $provider */
         foreach ($itemsProviders as $provider) {
             $items = $provider->addItems($items);
         }

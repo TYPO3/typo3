@@ -149,7 +149,7 @@ class Import extends ImportExport
      */
     protected function initializeStorageObjects()
     {
-        /** @var $storageRepository StorageRepository */
+        /** @var StorageRepository $storageRepository */
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
         $this->storageObjects = $storageRepository->findAll();
     }
@@ -387,7 +387,7 @@ class Import extends ImportExport
             // using a storage from the local storage is only allowed, if the uid is present in the
             // mapping. Only in this case we could be sure, that it's a local, online and writable storage.
             if ($useStorageFromStorageRecords && isset($storageRecords[$fileRecord['storage']])) {
-                /** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
+                /** @var \TYPO3\CMS\Core\Resource\ResourceStorage $storage */
                 $storage = ResourceFactory::getInstance()->getStorageObject($fileRecord['storage'], $storageRecords[$fileRecord['storage']]);
             } elseif ($this->isFallbackStorage($fileRecord['storage'])) {
                 $storage = ResourceFactory::getInstance()->getStorageObject(0);
@@ -437,7 +437,7 @@ class Import extends ImportExport
                 ]);
 
                 try {
-                    /** @var $newFile File */
+                    /** @var File $newFile */
                     $newFile = $storage->addFile($temporaryFile, $importFolder, $fileRecord['name']);
                 } catch (Exception $e) {
                     $this->error('Error: File could not be added to the storage: "' . $fileRecord['identifier'] . '" with storage uid "' . $fileRecord['storage'] . '"');
@@ -1290,7 +1290,7 @@ class Import extends ImportExport
                                         $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
                                         $currentValueArray = GeneralUtility::xml2array($origRecordRow[$field]);
                                         // Do recursive processing of the XML data:
-                                        /** @var $iteratorObj DataHandler */
+                                        /** @var DataHandler $iteratorObj */
                                         $iteratorObj = GeneralUtility::makeInstance(DataHandler::class);
                                         $iteratorObj->callBackObj = $this;
                                         $currentValueArray['data'] = $iteratorObj->checkValue_flex_procInData($currentValueArray['data'], [], [], $dataStructureArray, [$table, $uid, $field, $softRefCfgs], 'processSoftReferences_flexFormCallBack');

@@ -585,7 +585,7 @@ class ElementInformationController
             $selectTable = $table;
             $selectUid = $ref;
         }
-        /** @var $queryBuilder \TYPO3\CMS\Core\Database\Query\QueryBuilder */
+        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_refindex');
         $rows = $queryBuilder
@@ -667,7 +667,7 @@ class ElementInformationController
         $refFromLines = [];
         $lang = $this->getLanguageService();
 
-        /** @var $queryBuilder \TYPO3\CMS\Core\Database\Query\QueryBuilder */
+        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_refindex');
         $rows = $queryBuilder
@@ -729,7 +729,7 @@ class ElementInformationController
      */
     protected function transformFileReferenceToRecordReference(array $referenceRecord)
     {
-        /** @var $queryBuilder \TYPO3\CMS\Core\Database\Query\QueryBuilder */
+        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_file_reference');
         $queryBuilder->getRestrictions()->removeAll();

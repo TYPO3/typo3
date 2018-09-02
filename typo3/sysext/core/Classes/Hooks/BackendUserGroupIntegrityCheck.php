@@ -45,7 +45,7 @@ class BackendUserGroupIntegrityCheck
         foreach ($explicitAllowDenyFields as $value) {
             if ($value !== '' && strpos($value, 'tt_content:list_type:') === 0) {
                 if (!in_array('tt_content:CType:list:ALLOW', $explicitAllowDenyFields, true)) {
-                    /** @var $flashMessage FlashMessage */
+                    /** @var FlashMessage $flashMessage */
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
                         $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.backendUserGroupListTypeError.message'),
@@ -53,9 +53,9 @@ class BackendUserGroupIntegrityCheck
                         FlashMessage::WARNING,
                         true
                     );
-                    /** @var $flashMessageService FlashMessageService */
+                    /** @var FlashMessageService $flashMessageService */
                     $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-                    /** @var $defaultFlashMessageQueue FlashMessageQueue */
+                    /** @var FlashMessageQueue $defaultFlashMessageQueue */
                     $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
                     $defaultFlashMessageQueue->enqueue($flashMessage);
                 }

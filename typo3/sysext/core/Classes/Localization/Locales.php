@@ -135,7 +135,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
      */
     public static function initialize(): Locales
     {
-        /** @var $instance Locales */
+        /** @var Locales $instance */
         $instance = GeneralUtility::makeInstance(self::class);
         $instance->isoMapping = array_flip($instance->isoReverseMapping);
         // Allow user-defined locales

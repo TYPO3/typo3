@@ -1310,7 +1310,7 @@ class RelationHandler
     {
         $statisticsArray = [];
         if ($this->updateReferenceIndex) {
-            /** @var $refIndexObj \TYPO3\CMS\Core\Database\ReferenceIndex */
+            /** @var \TYPO3\CMS\Core\Database\ReferenceIndex $refIndexObj */
             $refIndexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
             if (BackendUtility::isTableWorkspaceEnabled($table)) {
                 $refIndexObj->setWorkspaceId($this->getWorkspaceId());
