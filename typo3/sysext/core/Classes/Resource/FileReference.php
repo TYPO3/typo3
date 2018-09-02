@@ -409,7 +409,6 @@ class FileReference implements FileInterface
      * (database table sys_file_reference) but leaves the original file untouched.
      *
      * @throws \BadMethodCallException
-     * @return bool TRUE if deletion succeeded
      */
     public function delete()
     {
@@ -424,7 +423,6 @@ class FileReference implements FileInterface
      *
      * @param string $newName The new name
      * @param string $conflictMode
-     * @return FileReference
      */
     public function rename($newName, $conflictMode = DuplicationBehavior::RENAME)
     {

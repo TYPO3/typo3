@@ -47,6 +47,7 @@ class DocumentationFile
     /**
      * DocumentationFile constructor.
      * @param Registry|null $registry
+     * @param string $changelogDir
      */
     public function __construct(Registry $registry = null, $changelogDir = '')
     {

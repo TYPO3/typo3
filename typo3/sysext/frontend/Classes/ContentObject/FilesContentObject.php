@@ -163,7 +163,6 @@ class FilesContentObject extends AbstractContentObject
      * @param array $configuration TypoScript configuration
      * @param array $element The parent element referencing to files
      * @param FileCollector $fileCollector
-     * @return array
      */
     protected function addFileReferences(array $configuration, array $element, FileCollector $fileCollector)
     {

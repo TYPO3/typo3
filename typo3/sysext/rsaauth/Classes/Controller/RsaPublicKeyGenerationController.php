@@ -33,6 +33,7 @@ class RsaPublicKeyGenerationController
 
     /**
      * Set up dependencies
+     * @param RsaEncryptionEncoder|null $encoder
      */
     public function __construct(RsaEncryptionEncoder $encoder = null)
     {

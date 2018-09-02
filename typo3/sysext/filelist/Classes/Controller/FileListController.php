@@ -584,8 +584,6 @@ class FileListController extends ActionController
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
-     *
-     * @return array All available buttons as an assoc. array
      */
     protected function registerButtons()
     {

@@ -360,7 +360,7 @@ class IndexSearchRepository
      * mysql fulltext specific helper method
      *
      * @param array $searchWordArray Search word array
-     * @return string Search string
+     * @return array Search string
      */
     protected function getSearchString($searchWordArray)
     {

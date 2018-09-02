@@ -253,9 +253,9 @@ class RequestHandler implements RequestHandlerInterface
     /**
      * Use form protection API to find out if protected POST forms are ok.
      *
+     * @param ServerRequestInterface $request
      * @param SessionService $session
      * @return bool
-     * @throws \RuntimeException
      */
     protected function checkSessionToken(ServerRequestInterface $request, SessionService $session): bool
     {

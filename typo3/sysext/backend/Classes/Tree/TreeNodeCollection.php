@@ -48,6 +48,9 @@ class TreeNodeCollection extends \ArrayObject
      *
      * @see \TYPO3\CMS\Backend\Tree\TreeNode::compareTo
      * @internal
+     * @param TreeNode $node
+     * @param TreeNode $otherNode
+     * @return int
      */
     public function nodeCompare(\TYPO3\CMS\Backend\Tree\TreeNode $node, \TYPO3\CMS\Backend\Tree\TreeNode $otherNode)
     {

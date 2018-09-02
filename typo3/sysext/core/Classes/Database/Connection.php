@@ -93,7 +93,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
     /**
      * Gets the DatabasePlatform for the connection and initializes custom types and event listeners.
      *
-     * @return \Doctrine\DBAL\Platforms\AbstractPlatform
+     * @return bool
      */
     public function connect(): bool
     {

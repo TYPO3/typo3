@@ -308,9 +308,8 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
     /**
      * Converts the given object into an array containing the identity of the domain object.
      *
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
      * @param object $object The object to be converted
-     * @return array
+     * @throws Exception\NotImplementedException
      * @api
      */
     public function convertObjectToIdentityArray($object)
@@ -324,7 +323,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      *
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
      * @param array $array The array to be iterated over
-     * @return array
      * @api
      * @see convertObjectToIdentityArray()
      */

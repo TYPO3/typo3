@@ -1309,9 +1309,8 @@ class DataHandler implements LoggerAwareInterface
 
     /**
      * @param string $table
-     * @param string $row
-     * @param string $key
-     *
+     * @param string $value
+     * @param string $dbType
      * @return string
      */
     protected function normalizeTimeFormat(string $table, string $value, string $dbType): string
@@ -2639,7 +2638,6 @@ class DataHandler implements LoggerAwareInterface
      * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
      * @param string $field Field name
      * @param array $additionalData Additional data to be forwarded to sub-processors
-     * @return array Modified $res array
      */
     public function checkValue_inline($res, $value, $tcaFieldConf, $PP, $field, array $additionalData = null)
     {
@@ -5935,7 +5933,6 @@ class DataHandler implements LoggerAwareInterface
      * @param string $dataValue_ext1 Not used.
      * @param string $dataValue_ext2 Not used.
      * @param string $path Path in flexforms
-     * @return array Result array with key "value" containing the value of the processing.
      * @see version_remapMMForVersionSwap(), checkValue_flex_procInData_travDS()
      */
     public function version_remapMMForVersionSwap_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $path)

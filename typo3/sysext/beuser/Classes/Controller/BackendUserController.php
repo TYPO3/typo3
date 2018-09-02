@@ -111,6 +111,7 @@ class BackendUserController extends ActionController
 
     /**
      * Assign default variables to view
+     * @param ViewInterface $view
      */
     public function initializeView(ViewInterface $view)
     {

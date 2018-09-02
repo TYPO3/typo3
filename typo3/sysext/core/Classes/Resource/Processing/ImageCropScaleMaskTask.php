@@ -42,7 +42,6 @@ class ImageCropScaleMaskTask extends AbstractGraphicalTask
      * are given, within the boundaries and don't conflict with each other.
      *
      * @param array $configuration
-     * @return bool
      */
     protected function isValidConfiguration(array $configuration)
     {

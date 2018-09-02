@@ -92,6 +92,7 @@ class FormDefinitionConversionService implements SingletonInterface
     }
 
     /**
+     * @param string $sessionToken
      */
     protected function persistSessionToken(string $sessionToken)
     {

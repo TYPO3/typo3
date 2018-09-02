@@ -107,7 +107,7 @@ class ControllerContext
     /**
      * Get the response of the controller
      *
-     * @return \TYPO3\CMS\Extbase\Mvc\Request
+     * @return \TYPO3\CMS\Extbase\Mvc\Response
      * @api
      */
     public function getResponse()

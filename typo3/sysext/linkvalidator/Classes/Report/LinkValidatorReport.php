@@ -530,7 +530,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
     /**
      * Displays the table header of the table with the broken links
      *
-     * @return string Code of content
+     * @return array Code of content
      */
     protected function startTable()
     {

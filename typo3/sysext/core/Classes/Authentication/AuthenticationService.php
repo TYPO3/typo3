@@ -298,7 +298,6 @@ class AuthenticationService extends AbstractAuthenticationService
      * @param string $grList Commalist of fe_groups uid numbers
      * @param string $idList List of already processed fe_groups-uids so the function will not fall into an eternal recursion.
      * @param array $groups
-     * @return array
      * @access private
      */
     public function getSubGroups($grList, $idList = '', &$groups)
@@ -350,14 +349,11 @@ class AuthenticationService extends AbstractAuthenticationService
             // Get row:
             $row = $groupRows[$uid];
             // Must be an array and $uid should not be in the idList, because then it is somewhere previously in the grouplist
-            if (is_array($row) && !GeneralUtility::inList($idList, $uid)) {
-                // Include sub groups
-                if (trim($row['subgroup'])) {
-                    // Make integer list
-                    $theList = implode(',', GeneralUtility::intExplode(',', $row['subgroup']));
-                    // Call recursively, pass along list of already processed groups so they are not processed again.
-                    $this->getSubGroups($theList, $idList . ',' . $uid, $groups);
-                }
+            if (is_array($row) && !GeneralUtility::inList($idList, $uid) && trim($row['subgroup'])) {
+                // Make integer list
+                $theList = implode(',', GeneralUtility::intExplode(',', $row['subgroup']));
+                // Call recursively, pass along list of already processed groups so they are not processed again.
+                $this->getSubGroups($theList, $idList . ',' . $uid, $groups);
             }
         }
     }

@@ -29,6 +29,7 @@ class OpenDocumentService
 
     /**
      * Constructor
+     * @param BackendUserAuthentication|null $backendUser
      */
     public function __construct(BackendUserAuthentication $backendUser = null)
     {

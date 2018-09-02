@@ -943,7 +943,6 @@ class PageGenerator
      * Generate meta tags from meta tag TypoScript
      *
      * @param array $metaTagTypoScript TypoScript configuration for meta tags (e.g. $GLOBALS['TSFE']->pSetup['meta.'])
-     * @param bool $xhtml Whether xhtml tag-style should be used. (e.g. pass $GLOBALS['TSFE']->xhtmlVersion here)
      * @param ContentObjectRenderer $cObj
      */
     protected static function generateMetaTagHtml(array $metaTagTypoScript, ContentObjectRenderer $cObj)

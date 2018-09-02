@@ -180,7 +180,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      * Gets the nodes
      *
      * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
-     * @return \TYPO3\CMS\Backend\Tree\TreeNodeCollection
      */
     public function getNodes(\TYPO3\CMS\Backend\Tree\TreeNode $node)
     {

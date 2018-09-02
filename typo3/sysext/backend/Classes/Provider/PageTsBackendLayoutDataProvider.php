@@ -164,6 +164,8 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
     /**
      * Generates a Backend Layout from PageTsConfig array
      *
+     * @param string $identifier
+     * @param array $data
      * @return mixed
      */
     protected function generateBackendLayoutFromTsConfig($identifier, $data)

@@ -76,7 +76,7 @@ class InaccessibleFolder extends Folder
      * @param bool $recursive
      * @param string $sort
      * @param bool $sortRev
-     * @return File[]
+     * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function getFiles($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = false, $sort = '', $sortRev = false)
     {
@@ -89,8 +89,7 @@ class InaccessibleFolder extends Folder
      *
      * @param array $filterMethods
      * @param bool $recursive
-     *
-     * @return int
+     * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function getFileCount(array $filterMethods = [], $recursive = false)
     {
@@ -101,9 +100,7 @@ class InaccessibleFolder extends Folder
      * Returns the object for a subfolder of the current folder, if it exists.
      *
      * @param string $name Name of the subfolder
-     *
-     * @throws \InvalidArgumentException
-     * @return Folder
+     * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function getSubfolder($name)
     {
@@ -117,7 +114,7 @@ class InaccessibleFolder extends Folder
      * @param int $numberOfItems The number of items to return
      * @param int $filterMode The filter mode to use for the filelist.
      * @param bool $recursive
-     * @return Folder[]
+     * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function getSubfolders($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = false)
     {
@@ -131,7 +128,7 @@ class InaccessibleFolder extends Folder
      * @param string $localFilePath
      * @param string $fileName
      * @param string $conflictMode a value of the DuplicationBehavior enumeration
-     * @return File The file object
+     * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function addFile($localFilePath, $fileName = null, $conflictMode = DuplicationBehavior::CANCEL)
     {
@@ -143,7 +140,7 @@ class InaccessibleFolder extends Folder
      *
      * @param array $uploadedFileData contains information about the uploaded file given by $_FILES['file1']
      * @param string $conflictMode a value of the DuplicationBehavior enumeration
-     * @return File The file object
+     * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function addUploadedFile(array $uploadedFileData, $conflictMode = DuplicationBehavior::CANCEL)
     {
@@ -154,7 +151,7 @@ class InaccessibleFolder extends Folder
      * Renames this folder.
      *
      * @param string $newName
-     * @return Folder
+     * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function rename($newName)
     {
@@ -165,7 +162,7 @@ class InaccessibleFolder extends Folder
      * Deletes this folder from its storage. This also means that this object becomes useless.
      *
      * @param bool $deleteRecursively
-     * @return bool TRUE if deletion succeeded
+     * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function delete($deleteRecursively = true)
     {
@@ -176,7 +173,7 @@ class InaccessibleFolder extends Folder
      * Creates a new blank file
      *
      * @param string $fileName
-     * @return File The new file object
+     * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function createFile($fileName)
     {
@@ -187,7 +184,7 @@ class InaccessibleFolder extends Folder
      * Creates a new folder
      *
      * @param string $folderName
-     * @return Folder The new folder object
+     * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function createFolder($folderName)
     {
@@ -200,7 +197,7 @@ class InaccessibleFolder extends Folder
      * @param Folder $targetFolder Target folder to copy to.
      * @param string $targetFolderName an optional destination fileName
      * @param string $conflictMode a value of the DuplicationBehavior enumeration
-     * @return Folder New (copied) folder object.
+     * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function copyTo(Folder $targetFolder, $targetFolderName = null, $conflictMode = DuplicationBehavior::RENAME)
     {
@@ -213,7 +210,7 @@ class InaccessibleFolder extends Folder
      * @param Folder $targetFolder Target folder to move to.
      * @param string $targetFolderName an optional destination fileName
      * @param string $conflictMode a value of the DuplicationBehavior enumeration
-     * @return Folder New (copied) folder object.
+     * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function moveTo(Folder $targetFolder, $targetFolderName = null, $conflictMode = DuplicationBehavior::RENAME)
     {
@@ -224,7 +221,7 @@ class InaccessibleFolder extends Folder
      * Checks if a file exists in this folder
      *
      * @param string $name
-     * @return bool
+     * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function hasFile($name)
     {
@@ -235,7 +232,7 @@ class InaccessibleFolder extends Folder
      * Checks if a folder exists in this folder.
      *
      * @param string $name
-     * @return bool
+     * @throws Exception\InsufficientFolderReadPermissionsException
      */
     public function hasFolder($name)
     {

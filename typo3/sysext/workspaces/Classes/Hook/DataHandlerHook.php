@@ -720,7 +720,7 @@ class DataHandlerHook
      * Setting stage of record
      *
      * @param string $table Table name
-     * @param int $integer Record UID
+     * @param int $id
      * @param int $stageId Stage ID to set
      * @param string $comment Comment that goes into log
      * @param bool $notificationEmailInfo Accumulate state changes in memory for compiled notification email?

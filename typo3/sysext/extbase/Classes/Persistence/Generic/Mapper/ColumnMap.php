@@ -172,7 +172,6 @@ class ColumnMap
      *
      * @param string $columnName The column name
      * @param string $propertyName The property name
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap
      */
     public function __construct($columnName, $propertyName)
     {

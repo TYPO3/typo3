@@ -36,7 +36,7 @@ class CategoryMenuUtility
      * @param string $selectedCategories Comma-separated list of system categories primary keys
      * @param array $configuration TypoScript configuration for the "special." keyword
      * @param \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject $parentObject Back-reference to the calling object
-     * @return string List of selected pages
+     * @return array List of selected pages
      */
     public function collectPages($selectedCategories, $configuration, $parentObject)
     {

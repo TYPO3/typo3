@@ -54,7 +54,7 @@ class IntrospectionProcessor extends AbstractProcessor
      * Set the number of levels to be shift from the backtrace
      *
      * @param int $shiftBackTraceLevel Numbers of levels to shift
-     * @return \TYPO3\CMS\Core\Log\Writer\AbstractWriter
+     * @return IntrospectionProcessor
      */
     public function setShiftBackTraceLevel($shiftBackTraceLevel)
     {
@@ -66,7 +66,7 @@ class IntrospectionProcessor extends AbstractProcessor
      * Set if the full backtrace should be added to the log or just the last item
      *
      * @param bool $appendFullBackTrace If the full backtrace should be added
-     * @return \TYPO3\CMS\Core\Log\Writer\AbstractWriter
+     * @return IntrospectionProcessor
      */
     public function setAppendFullBackTrace($appendFullBackTrace)
     {

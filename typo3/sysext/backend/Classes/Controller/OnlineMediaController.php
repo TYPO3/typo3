@@ -34,6 +34,7 @@ class OnlineMediaController
     /**
      * AJAX endpoint for storing the URL as a sys_file record
      *
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function createAction(ServerRequestInterface $request): ResponseInterface

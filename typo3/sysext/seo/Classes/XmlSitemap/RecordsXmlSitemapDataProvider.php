@@ -14,6 +14,7 @@ use TYPO3\CMS\Seo\XmlSitemap\Exception\MissingConfigurationException;
 class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
 {
     /**
+     * @param ServerRequestInterface $request
      * @param string $key
      * @param array $config
      * @param ContentObjectRenderer|null $cObj

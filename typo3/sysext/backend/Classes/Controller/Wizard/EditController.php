@@ -87,7 +87,7 @@ class EditController extends AbstractWizardController
     /**
      * Initialization of the script
      *
-     * @param  ServerRequestInterface
+     * @param ServerRequestInterface $request
      */
     protected function init(ServerRequestInterface $request)
     {

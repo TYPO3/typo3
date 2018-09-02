@@ -394,6 +394,10 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 
     /**
      * Add the URI arguments after postprocessing to the request hash as well.
+     * @param array $arguments
+     * @param array $results
+     * @param string $currentPrefix
+     * @param int $level
      */
     protected function postProcessUriArgumentsForRequestHash($arguments, &$results, $currentPrefix = '', $level = 0)
     {

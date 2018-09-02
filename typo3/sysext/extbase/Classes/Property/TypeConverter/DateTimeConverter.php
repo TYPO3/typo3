@@ -118,7 +118,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
      * @param string $targetType must be "DateTime"
      * @param array $convertedChildProperties not used currently
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-     * @return \DateTime
+     * @return \DateTime|\TYPO3\CMS\Extbase\Error\Error
      * @throws \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
      */
     public function convertFrom($source, $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)

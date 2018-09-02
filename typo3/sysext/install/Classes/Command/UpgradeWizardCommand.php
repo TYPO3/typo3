@@ -65,9 +65,6 @@ class UpgradeWizardCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @throws \InvalidArgumentException
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -114,7 +111,7 @@ class UpgradeWizardCommand extends Command
     /**
      * @param \Symfony\Component\Console\Input\InputInterface $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param $wizardToExecute
+     * @param UpgradeWizardInterface $instance
      * @return int
      */
     protected function runSingleWizard(
@@ -153,6 +150,8 @@ class UpgradeWizardCommand extends Command
     /**
      * Get list of registered upgrade wizards.
      *
+     * @param InputInterface $input
+     * @param OutputInterface $output
      * @return array List of upgrade wizards in correct order with detail information
      */
     public function runAllWizards(InputInterface $input, OutputInterface $output): array

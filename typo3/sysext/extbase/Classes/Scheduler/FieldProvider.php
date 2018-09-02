@@ -115,7 +115,7 @@ class FieldProvider implements AdditionalFieldProviderInterface
     /**
      * Get description of selected command
      *
-     * @return string
+     * @return array
      */
     protected function getCommandControllerActionDescriptionField()
     {

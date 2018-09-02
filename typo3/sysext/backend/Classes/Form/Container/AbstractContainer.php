@@ -105,6 +105,7 @@ abstract class AbstractContainer extends AbstractNode
      *
      * @param array $menuItems Tab elements, each element is an array with "label" and "content"
      * @param string $domId DOM id attribute, will be appended with an iteration number per tab.
+     * @param int $defaultTabIndex
      * @return string
      */
     protected function renderTabMenu(array $menuItems, $domId, $defaultTabIndex = 1)

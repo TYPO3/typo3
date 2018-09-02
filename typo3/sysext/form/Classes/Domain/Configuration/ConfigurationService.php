@@ -627,7 +627,7 @@ class ConfigurationService implements SingletonInterface
 
     /**
      * @param array $prototypeConfiguration
-     * @param array $configuration
+     * @param array $formElements
      * @return array
      */
     protected function translatePredefinedDefaults(array $prototypeConfiguration, array $formElements): array

@@ -297,7 +297,7 @@ class SaveToDatabaseFinisher extends AbstractFinisher
      * Save or insert the values from
      * $databaseData into the table $table
      *
-     * @param [] $databaseData
+     * @param array $databaseData
      * @param string $table
      * @param int $iterationCount
      */
@@ -348,7 +348,7 @@ class SaveToDatabaseFinisher extends AbstractFinisher
     /**
      * Returns the values of the submitted form
      *
-     * @return []
+     * @return array
      */
     protected function getFormValues(): array
     {

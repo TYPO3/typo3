@@ -2062,8 +2062,6 @@ class ResourceStorage implements ResourceStorageInterface
      * @param Folder $folderToMove
      * @param Folder $targetParentFolder
      * @param string $newFolderName
-     *
-     * @return bool
      * @throws NotImplementedMethodException
      */
     protected function moveFolderBetweenStorages(Folder $folderToMove, Folder $targetParentFolder, $newFolderName)
@@ -2119,8 +2117,6 @@ class ResourceStorage implements ResourceStorageInterface
      * @param Folder $folderToCopy
      * @param Folder $targetParentFolder
      * @param string $newFolderName
-     *
-     * @return bool
      * @throws NotImplementedMethodException
      */
     protected function copyFolderBetweenStorages(Folder $folderToCopy, Folder $targetParentFolder, $newFolderName)

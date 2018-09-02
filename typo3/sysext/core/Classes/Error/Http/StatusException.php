@@ -71,7 +71,7 @@ class StatusException extends \TYPO3\CMS\Core\Error\Exception
     /**
      * Getter for the Status Header.
      *
-     * @return string
+     * @return array
      */
     public function getStatusHeaders()
     {

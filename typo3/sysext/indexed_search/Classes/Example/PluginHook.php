@@ -66,7 +66,6 @@ class PluginHook
      * Providing an alternative search algorithm!
      *
      * @param array $sWArr Array of search words
-     * @return array Array of first row, result rows, count
      */
     public function getResultRows($sWArr)
     {

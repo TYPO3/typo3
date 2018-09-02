@@ -1187,7 +1187,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $splitChar The char used to split the allWrap value, default is "|"
      * @param bool $async Flag if property 'async="async"' should be added to JavaScript tags
      * @param string $integrity Subresource Integrity (SRI)
-     * @param string $defer Flag if property 'defer="defer"' should be added to JavaScript tags
+     * @param bool $defer Flag if property 'defer="defer"' should be added to JavaScript tags
      * @param string $crossorigin CORS settings attribute
      */
     public function addJsFooterFile($file, $type = 'text/javascript', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '')

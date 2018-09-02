@@ -154,7 +154,7 @@ class CropVariantCollection
     }
 
     /**
-     * @param CropVariant[] ...$cropVariants
+     * @param CropVariant[] $cropVariants
      * @throws \TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException
      */
     protected function setCropVariants(CropVariant ...$cropVariants)

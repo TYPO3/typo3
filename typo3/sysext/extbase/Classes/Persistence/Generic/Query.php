@@ -263,7 +263,7 @@ class Query implements QueryInterface
      * 'bar' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
      * )
      *
-     * @return array
+     * @return int
      * @api
      */
     public function getOrderings()
@@ -637,8 +637,7 @@ class Query implements QueryInterface
      * It matches if the multivalued property contains no values or is NULL.
      *
      * @param string $propertyName The name of the multivalued property to compare against
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
-     * @return bool
+     * @throws Exception\NotImplementedException
      * @api
      */
     public function isEmpty($propertyName)

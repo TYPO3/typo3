@@ -204,6 +204,7 @@ class EnvironmentController extends AbstractController
     /**
      *  Send a test mail
      *
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function mailTestAction(ServerRequestInterface $request): ResponseInterface

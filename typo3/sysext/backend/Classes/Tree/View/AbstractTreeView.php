@@ -967,7 +967,7 @@ abstract class AbstractTreeView
      *
      * @param mixed $res Data handle
      *
-     * @return array item data array OR FALSE if end of elements.
+     * @return array|bool item data array OR FALSE if end of elements.
      * @access private
      * @see getDataInit()
      */

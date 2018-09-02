@@ -167,7 +167,6 @@ class ProcessedFile extends AbstractFile
      * Replace the current file contents with the given string
      *
      * @param string $contents The contents to write to the file.
-     * @return File The file object (allows chaining).
      * @throws \BadMethodCallException
      */
     public function setContents($contents)

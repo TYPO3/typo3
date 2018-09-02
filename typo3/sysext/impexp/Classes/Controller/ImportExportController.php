@@ -306,8 +306,6 @@ class ImportExportController extends BaseScriptClass
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
-     *
-     * @return array all available buttons as an associated array
      */
     protected function getButtons()
     {

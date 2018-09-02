@@ -60,6 +60,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
 
     /**
      * Constructor
+     * @param \TYPO3\CMS\Taskcenter\Controller\TaskModuleController $taskObject
      */
     public function __construct(\TYPO3\CMS\Taskcenter\Controller\TaskModuleController $taskObject)
     {

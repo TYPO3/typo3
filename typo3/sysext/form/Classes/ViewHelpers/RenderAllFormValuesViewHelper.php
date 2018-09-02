@@ -229,6 +229,7 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param RenderableInterface $renderable
      * @return bool
      */
     public static function hasDisabledParent(RenderableInterface $renderable): bool

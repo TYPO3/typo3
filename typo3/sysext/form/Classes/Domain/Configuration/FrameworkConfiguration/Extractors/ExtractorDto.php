@@ -40,7 +40,7 @@ class ExtractorDto
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getPrototypeConfiguration(): array
     {
@@ -48,7 +48,7 @@ class ExtractorDto
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getResult(): array
     {
@@ -56,7 +56,7 @@ class ExtractorDto
     }
 
     /**
-     * @return string
+     * @param array $result
      * @return ExtractorDto
      */
     public function setResult(array $result): ExtractorDto
