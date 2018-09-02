@@ -113,8 +113,8 @@ functionality:
   * curl
   * mbstring
   * FreeType 2 (usually included within the PHP distribution)
-  * bcmath or gmp (needed if you'd like to use the openid system extension)
   * fileinfo (mandatory for proper file type detection)
+  * pdo_sqlite (required if SQLite should be used as the DBMS)
 
 * PHP access to /dev/urandom or /dev/random on Unix-like platforms for
   increased security. Make sure to add "/dev/random:/dev/urandom" to
