@@ -11,14 +11,11 @@ Description
 
 The following constants have been deprecated and should not be used any longer:
 
-* :php:`NUL`
-  Use :php:`"\0"` instead
+* :php:`NUL` (Use :php:`"\0"` instead)
 
-* :php:`TAB`
-  Use :php:`"\t"` instead
+* :php:`TAB` (Use :php:`"\t"` instead)
 
-* :php:`SUB`
-  Use :php:`chr(26)` instead
+* :php:`SUB` (Use :php:`chr(26)` instead)
 
 * :php:`TYPO3_URL_MAILINGLISTS`
 

@@ -12,6 +12,7 @@ Description
 The Utility class :php:`TYPO3\CMS\Frontend\Utility\EidUtility` has been marked as deprecated.
 
 The following methods have been marked as deprecated:
+
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->initFEuser()`
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->storeSessionData()`
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->previewInfo()`
@@ -20,7 +21,8 @@ The following methods have been marked as deprecated:
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sendCacheHeaders()`
 
 The following hook has been marked as deprecated:
-`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_previewInfo']`
+
+* `$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_previewInfo']`
 
 
 Impact
@@ -41,7 +43,7 @@ Migration
 As all functionality has been set up via PSR-15 middlewares, use a PSR-15 middleware instead.
 
 The methods :php:`addTempContentHttpHeaders()` and :php:`sendCacheHeaders()` are now incorporated
-within :php:`TSFE->processOutput()`, this function should be used, or rather add custom headers
+within :php:`TSFE->processOutput()`. This function should be used, or rather add custom headers
 to a PSR-15 Response object if available.
 
 On top, the hook is superseded by the Frontend Hook `hook_eofe` which is executed in the Frontend rendering

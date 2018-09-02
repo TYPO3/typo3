@@ -29,6 +29,6 @@ Any TYPO3 installation where this PHP class is in use within a TYPO3 extension.
 Migration
 =========
 
-Use the new namespace to reference the :php:`TYPO3\CMS\Core\Service\FlexFormService`
+Use the new namespace to reference the :php:`TYPO3\CMS\Core\Service\FlexFormService`.
 
 .. index:: PHP-API, FullyScanned, ext:extbase

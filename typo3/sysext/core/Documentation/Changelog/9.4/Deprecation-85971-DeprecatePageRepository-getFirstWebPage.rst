@@ -10,8 +10,10 @@ Description
 ===========
 
 The method php:`PageRepository->getFirstWebPage()` is only used when no "?id" parameter is given, and no rootpage was resolved.
-As this is the only use-case, a more generic "getMenu" method can be used, which does the same except for not "limiting" the query to one result, so there is a minimal memory penalty when doing so, however due to Pseudo-Site functionality
-this drawback only applies to rare cases.
+
+As this is the only use-case, a more generic "getMenu" method can be used, which does the
+same except for not "limiting" the query to one result, so there is a minimal memory penalty when doing so.
+However due to Pseudo-Site functionality this drawback only applies to rare cases.
 
 
 Impact

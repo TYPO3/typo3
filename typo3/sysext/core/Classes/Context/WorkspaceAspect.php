@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Core\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
 
 /**
- * The aspect contains the workspace ID.
+ * The aspect contains information about the currently accessed workspace.
  *
  * Allowed properties:
  * - id

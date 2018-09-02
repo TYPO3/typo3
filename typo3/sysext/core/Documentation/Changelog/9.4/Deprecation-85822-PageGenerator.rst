@@ -33,7 +33,8 @@ Migration
 Move the render logic to your own extension or use the RequestHandler to compile the functionality.
 
 The unrelated method :php:`PageRenderer::inline2TempFile()` has been moved into proper methods found at
-- :php:`GeneralUtility::writeJavaScriptContentToTemporaryFile($content)`
-- :php:`GeneralUtility::writeStyleSheetContentToTemporaryFile($content)`
+
+* :php:`GeneralUtility::writeJavaScriptContentToTemporaryFile($content)`
+* :php:`GeneralUtility::writeStyleSheetContentToTemporaryFile($content)`
 
 .. index:: Frontend, FullyScanned, ext:frontend

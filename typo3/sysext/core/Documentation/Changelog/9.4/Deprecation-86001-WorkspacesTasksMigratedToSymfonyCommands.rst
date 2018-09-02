@@ -17,6 +17,7 @@ The following tasks should not be used anymore:
 * Workspaces cleanup preview links
 
 The following related classes have been marked as deprecated:
+
 * :php:`TYPO3\CMS\Workspaces\Service\AutoPublishService`
 * :php:`TYPO3\CMS\Workspaces\Task\AutoPublishTask`
 * :php:`TYPO3\CMS\Workspaces\Task\CleanupPreviewLinkTask`

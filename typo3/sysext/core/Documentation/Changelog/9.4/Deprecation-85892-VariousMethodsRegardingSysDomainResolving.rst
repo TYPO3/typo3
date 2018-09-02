@@ -16,6 +16,7 @@ Instead, generating URLs should be done via the new PageUriBuilder and Routing A
 site handling and the specific sys_domain record.
 
 The following methods have been marked as deprecated:
+
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->domainNameMatchesCurrentRequest()`
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getDomainDataForPid()`
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getDomainStartPage()`

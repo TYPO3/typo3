@@ -16,6 +16,7 @@ nowadays - images with a fixed width, and text within images has various drawbac
 responsive renderings.
 
 The following PHP classes have been marked as deprecated:
+
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\ImageMenuContentObject`
 
@@ -23,22 +24,25 @@ The related TypoScript menu objects `GMENU` and `GMENUITEM` as well as `IMGMENU`
 marked as deprecated.
 
 On top the following TypoScript options within a MENU item, regarding TMENU have been marked as deprecated:
+
 * imgNamePrefix
 * imgNameNotRandom
 
 The following TMENU item properties should not be used anymore.
-- RO_chBgColor
-- beforeImg
-- beforeImgTagParams
-- beforeImgLink
-- beforeROImg
-- RO
-- afterImg
-- afterImgTagParams
-- afterImgLink
-- afterROImg
+
+* RO_chBgColor
+* beforeImg
+* beforeImgTagParams
+* beforeImgLink
+* beforeROImg
+* RO
+* afterImg
+* afterImgTagParams
+* afterImgLink
+* afterROImg
 
 The following item states have been marked as deprecated ("RO" for "rollover" in graphics-related items).
+
 * IFSUBRO
 * ACTRO
 * ACTIFSUBRO
@@ -51,6 +55,7 @@ The following item states have been marked as deprecated ("RO" for "rollover" in
 The following previously public properties are now marked as internal and trigger a PHP :php:`E_USER_DEPRECATED` error,
 partly due to preparations of refactoring the PHP code once GMENU functionality is removed, and partly
 due to the highly connected functionality within the PHP classes:
+
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->menuNumber`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->entryLevel`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->spacerIDList`
@@ -83,6 +88,7 @@ due to the highly connected functionality within the PHP classes:
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->nameAttribute`
 
 The following methods have changed visibility:
+
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->subMenu()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->link()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->procesItemStates()`
@@ -101,14 +107,12 @@ The following methods have changed visibility:
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->getBannedUids()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->menuTypoLink()`
 
-
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject->extProc_RO()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject->extProc_init()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject->extProc_beforeLinking()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject->extProc_afterLinking()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject->extProc_beforeAllWrap()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject->extProc_finish()`
-
 
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject->getBeforeAfter()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject->extProc_init()`
@@ -118,6 +122,7 @@ The following methods have changed visibility:
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject->extProc_finish()`
 
 The following functionality has been marked as deprecated as well:
+
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->setJS('mouseOver')`
 
 

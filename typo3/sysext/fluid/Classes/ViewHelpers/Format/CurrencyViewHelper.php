@@ -45,6 +45,13 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * (depending on the value of {someNumber})
  * </output>
  *
+ * <code title="use dash for decimals without value">
+ * <f:format.currency useDash="true">123.00</f:format.currency>
+ * </code>
+ * <output>
+ * 123,-
+ * </output>
+ *
  * @api
  */
 class CurrencyViewHelper extends AbstractViewHelper

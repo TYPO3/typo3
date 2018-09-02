@@ -10,9 +10,10 @@ Description
 ===========
 
 The following public methods within :php:`TypoScriptFrontendController` now expect an argument:
-- :php:`makeCacheHash(ServerRequestInterface $request)`
-- :php:`calculateLinkVars(array $queryParams)`
-- :php:`preparePageContentGeneration(ServerRequestInterface $request)`
+
+* :php:`makeCacheHash(ServerRequestInterface $request)`
+* :php:`calculateLinkVars(array $queryParams)`
+* :php:`preparePageContentGeneration(ServerRequestInterface $request)`
 
 This is necessary to avoid usage of the PHP global variables $_GET/$_POST.
 

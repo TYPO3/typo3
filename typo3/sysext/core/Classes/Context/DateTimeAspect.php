@@ -26,8 +26,8 @@ use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
  * Allowed properties:
  * - timestamp - unix timestamp number
  * - timezone - America/Los_Angeles
- * - iso - ISO 8601
- * - full - the DateTime object
+ * - iso - datetime as string in ISO 8601 format, e.g. `2004-02-12T15:19:21+00:00`
+ * - full - the DateTimeImmutable object
  */
 class DateTimeAspect implements AspectInterface
 {

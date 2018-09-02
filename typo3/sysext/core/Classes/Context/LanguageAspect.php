@@ -42,7 +42,7 @@ use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
  *   - "fallback" if current page is not available, check the fallbackChain"
  *   - "fallbackAndIgnore"
  *
- * "overlays"
+ * "overlayType"
  * - defines which way the records should be fetched from ($TSFE->sys_language_contentOL and config.sys_language_overlay)
  * - usually you fetch language 0 and -1, then take the "contentId" and "overlay" them
  *    - here you have two choices
