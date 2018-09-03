@@ -744,6 +744,7 @@ class InstallerController
                         'cruser_id' => 1,
                         'tstamp' => time(),
                         'title' => 'Home',
+                        'slug' => '/',
                         'doktype' => 1,
                         'is_siteroot' => 1,
                         'perms_userid' => 1,
