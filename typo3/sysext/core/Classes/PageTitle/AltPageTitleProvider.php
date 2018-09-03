@@ -18,6 +18,8 @@ namespace TYPO3\CMS\Core\PageTitle;
 
 /**
  * Class to handle $GLOBALS['TSFE']->altPageTitle as input for the page title
+ *
+ * @deprecated since TYPO3 v9.4 and will be removed in TYPO3 v10
  */
 class AltPageTitleProvider extends AbstractPageTitleProvider
 {
