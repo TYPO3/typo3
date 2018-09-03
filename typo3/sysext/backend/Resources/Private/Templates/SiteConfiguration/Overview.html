@@ -28,9 +28,16 @@
 										<a href="#" class="t3js-contextmenutrigger" data-table="pages" data-uid="{rootLinePage.uid}">
 											<core:iconForRecord table="pages" row="{rootLinePage}" />
 										</a>
-										<f:be.link route="site_configuration" parameters="{action: 'edit', site: page.siteIdentifier}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}">
-											{rootLinePage.title} [ID: {page.uid}]
-										</f:be.link>
+										<f:if condition="{page.siteIdentifier}">
+											<f:then>
+												<f:be.link route="site_configuration" parameters="{action: 'edit', site: page.siteIdentifier}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}">
+													{rootLinePage.title} [ID: {page.uid}]
+												</f:be.link>
+											</f:then>
+											<f:else>
+												{rootLinePage.title} [ID: {page.uid}]
+											</f:else>
+										</f:if>
 									</f:then>
 									<f:else>
 										<core:iconForRecord table="pages" row="{rootLinePage}" />
