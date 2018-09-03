@@ -245,7 +245,8 @@ return [
         'set_id' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.set_id',
             'config' => [
-                'type' => 'none'
+                'type' => 'input',
+                'readOnly' => true,
             ]
         ]
     ],
