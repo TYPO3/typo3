@@ -39,7 +39,8 @@ class LanguagePackCommand extends Command
         $this->setDescription('Update the language files of all activated extensions')
             ->addArgument(
                 'locales',
-                InputArgument::IS_ARRAY | InputArgument::OPTIONAL
+                InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
+                'Provide iso codes separated by space to update only selected language packs. Example `bin/typo3 language:update de ja`.'
             );
     }
 
@@ -61,9 +62,9 @@ class LanguagePackCommand extends Command
         }
 
         $languagePackService = GeneralUtility::makeInstance(LanguagePackService::class);
+
         try {
-            $localesToUpdate = $input->getArgument('locales');
-            $isos = GeneralUtility::trimExplode(',', $localesToUpdate[0], true);
+            $isos = $input->getArgument('locales');
         } catch (\Exception $e) {
             $isos = [];
         }
