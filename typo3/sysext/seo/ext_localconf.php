@@ -21,7 +21,7 @@ unset($metaTagManagerRegistry);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(trim('
     config.pageTitleProviders {
         seo {
-           provider = TYPO3\CMS\Seo\PageTitle\SeoTitlePageTitleProvider
+            provider = TYPO3\CMS\Seo\PageTitle\SeoTitlePageTitleProvider
             before = record
             after = altPageTitle
         }

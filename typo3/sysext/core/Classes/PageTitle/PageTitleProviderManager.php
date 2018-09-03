@@ -50,7 +50,7 @@ class PageTitleProviderManager implements SingletonInterface
         $pageTitle = '';
 
         $titleProviders = $this->getPageTitleProviderConfiguration();
-        $titleProviders =  $this->setProviderOrder($titleProviders);
+        $titleProviders = $this->setProviderOrder($titleProviders);
 
         $orderedTitleProviders = GeneralUtility::makeInstance(DependencyOrderingService::class)
             ->orderByDependencies($titleProviders);
