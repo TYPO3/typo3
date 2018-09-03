@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  *
  * This class does not use any TYPO3 instance specific configuration, it only
  * sets up things based on the server environment and core code. Even with a
- * missing LocalConfiguration.php this script will be successful.
+ * missing typo3conf/localconf.php this script will be successful.
  *
  * The script aborts execution with an error message if
  * some part fails or conditions are not met.

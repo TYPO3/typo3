@@ -26,8 +26,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * This class handles the access to the files
  * - EXT:core/Configuration/DefaultConfiguration.php (default TYPO3_CONF_VARS)
- * - LocalConfiguration.php (overrides of TYPO3_CONF_VARS)
- * - AdditionalConfiguration.php (optional additional local code blocks)
+ * - typo3conf/LocalConfiguration.php (overrides of TYPO3_CONF_VARS)
+ * - typo3conf/AdditionalConfiguration.php (optional additional local code blocks)
  *
  * IMPORTANT:
  *   This class is intended for internal core use ONLY.
@@ -48,14 +48,14 @@ class ConfigurationManager
     protected $defaultConfigurationDescriptionFile = 'typo3/sysext/core/Configuration/DefaultConfigurationDescription.yaml';
 
     /**
-     * @var string Path to local overload TYPO3_CONF_VARS file, relative to Environment::getConfigPath()
+     * @var string Path to local overload TYPO3_CONF_VARS file, relative to the public web folder
      */
-    protected $localConfigurationFile = 'LocalConfiguration.php';
+    protected $localConfigurationFile = 'typo3conf/LocalConfiguration.php';
 
     /**
-     * @var string Path to additional local file, relative to Environment::getConfigPath()
+     * @var string Path to additional local file, relative to the public web folder
      */
-    protected $additionalConfigurationFile = 'AdditionalConfiguration.php';
+    protected $additionalConfigurationFile = 'typo3conf/AdditionalConfiguration.php';
 
     /**
      * @var string Path to factory configuration file used during installation as LocalConfiguration boilerplate
@@ -65,7 +65,7 @@ class ConfigurationManager
     /**
      * @var string Path to possible additional factory configuration file delivered by packages
      */
-    protected $additionalFactoryConfigurationFile = 'AdditionalFactoryConfiguration.php';
+    protected $additionalFactoryConfigurationFile = 'typo3conf/AdditionalFactoryConfiguration.php';
 
     /**
      * Writing to these configuration paths is always allowed,
@@ -117,7 +117,7 @@ class ConfigurationManager
     }
 
     /**
-     * Return local configuration array Environment::getConfigPath() / LocalConfiguration.php
+     * Return local configuration array typo3conf/LocalConfiguration.php
      *
      * @return array Content array of local configuration file
      */
@@ -135,7 +135,7 @@ class ConfigurationManager
      */
     public function getLocalConfigurationFileLocation()
     {
-        return Environment::getConfigPath() . '/' . $this->localConfigurationFile;
+        return Environment::getPublicPath() . '/' . $this->localConfigurationFile;
     }
 
     /**
@@ -159,7 +159,7 @@ class ConfigurationManager
      */
     public function getAdditionalConfigurationFileLocation()
     {
-        return Environment::getConfigPath() . '/' . $this->additionalConfigurationFile;
+        return Environment::getPublicPath() . '/' . $this->additionalConfigurationFile;
     }
 
     /**
@@ -179,7 +179,7 @@ class ConfigurationManager
      */
     protected function getAdditionalFactoryConfigurationFileLocation()
     {
-        return Environment::getConfigPath() . '/' . $this->additionalFactoryConfigurationFile;
+        return Environment::getPublicPath() . '/' . $this->additionalFactoryConfigurationFile;
     }
 
     /**
@@ -321,7 +321,7 @@ class ConfigurationManager
     public function canWriteConfiguration()
     {
         $fileLocation = $this->getLocalConfigurationFileLocation();
-        return @is_writable(file_exists($fileLocation) ? $fileLocation : Environment::getConfigPath());
+        return @is_writable(file_exists($fileLocation) ? $fileLocation : Environment::getPublicPath() . '/typo3conf/');
     }
 
     /**
@@ -351,7 +351,7 @@ class ConfigurationManager
     }
 
     /**
-     * Write local configuration array to Environment::getConfigPath() . /LocalConfiguration.php
+     * Write local configuration array to typo3conf/LocalConfiguration.php
      *
      * @param array $configuration The local configuration to be written
      * @throws \RuntimeException
@@ -383,7 +383,7 @@ class ConfigurationManager
     }
 
     /**
-     * Write additional configuration array to Environment::getConfigPath() . /AdditionalConfiguration.php
+     * Write additional configuration array to typo3conf/AdditionalConfiguration.php
      *
      * @param array $additionalConfigurationLines The configuration lines to be written
      * @throws \RuntimeException
@@ -401,7 +401,7 @@ class ConfigurationManager
 
     /**
      * Uses FactoryConfiguration file and a possible AdditionalFactoryConfiguration
-     * file in Environment::getConfigPath() to create a basic LocalConfiguration.php. This is used
+     * file in typo3conf to create a basic LocalConfiguration.php. This is used
      * by the install tool in an early step.
      *
      * @throws \RuntimeException

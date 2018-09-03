@@ -1,8 +1,8 @@
 <?php
 /**
- * This is a boilerplate of LocalConfiguration.php. It is
+ * This is a boilerplate of typo3conf/LocalConfiguration.php. It is
  * used as base file during installation and can be overloaded with
- * a package specific file AdditionalFactoryConfiguration.php
+ * a package specific file typo3conf/AdditionalFactoryConfiguration.php
  * from eg. the government or introduction package.
  */
 return [

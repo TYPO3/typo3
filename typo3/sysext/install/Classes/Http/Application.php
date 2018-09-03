@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Http\AbstractApplication;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 
 /**
  * Entry point for the TYPO3 Install Tool
@@ -59,12 +58,7 @@ class Application extends AbstractApplication
      */
     protected function handle(ServerRequestInterface $request): ResponseInterface
     {
-        // Migrate LocalConfiguration.php to a new file location, if TYPO3_PATH_APP is used.
-        // The functionality will be removed in TYPO3 v11.
-        GeneralUtility::makeInstance(SilentConfigurationUpgradeService::class)->migrateConfigurationFiles();
-
         $this->initializeContext();
-
         foreach ($this->availableRequestHandlers as $handler) {
             if ($handler->canHandleRequest($request)) {
                 return $handler->handleRequest($request);
