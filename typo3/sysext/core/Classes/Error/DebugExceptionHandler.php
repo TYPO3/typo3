@@ -118,19 +118,21 @@ INFO;
         $typo3Logo = $this->getTypo3LogoAsSvg();
 
         return <<<HTML
-            <div class="exception-summary">
-                <div class="container">
-                    <div class="exception-message-wrapper">
-                        <div class="exception-illustration hidden-xs-down">$typo3Logo</div>
-                        <h1 class="exception-message break-long-words">Whoops, looks like something went wrong.</h1>
+            <div class="exception-page">
+                <div class="exception-summary">
+                    <div class="container">
+                        <div class="exception-message-wrapper">
+                            <div class="exception-illustration hidden-xs-down">$typo3Logo</div>
+                            <h1 class="exception-message break-long-words">Whoops, looks like something went wrong.</h1>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            $exceptionInfo
+                $exceptionInfo
 
-            <div class="container">
-                $content
+                <div class="container">
+                    $content
+                </div>
             </div>
 HTML;
     }
@@ -183,15 +185,27 @@ HTML;
     protected function getStylesheet(): string
     {
         return <<<STYLESHEET
+            html {
+                font-family: sans-serif;
+                line-height: 1.15;
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                -ms-overflow-style: scrollbar;
+                -webkit-tap-highlight-color: transparent;
+            }
             body {
-                background-color: #ffffff;
-                color: #000000;
-                font: 100%/1.3 Verdana, Arial, Helvetica, sans-serif;
                 margin: 0;
+                font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+                font-size: 1rem;
+                font-weight: 400;
+                line-height: 1.5;
+                color: #212121;
+                text-align: left;
+                background-color: #eaeaea;
             }
 
             a {
-                color: #f49800;
+                color: #ff8700;
                 text-decoration: underline;
             }
 
@@ -205,14 +219,18 @@ HTML;
                 text-decoration: none;
             }
 
+            code,
+            kbd,
+            pre,
+            samp {
+                font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+                font-size: 1em;
+            }
+
             pre {
-                font: 100%/1.3 "Courier New", Courier, monospace;
                 background-color: #ffffff;
                 overflow-x: auto;
-                color: #000000;
-                line-height: 0;
-                border-top: 1px solid #b9b9b9;
-                border-bottom: 1px solid #b9b9b9;
+                border: 1px solid rgba(0,0,0,0.125);
             }
 
             pre span {
@@ -233,7 +251,7 @@ HTML;
             }
 
             pre span.highlight {
-                background-color: #e7f2fe;
+                background-color: #cce5ff;
             }
 
             .break-long-words {
@@ -246,10 +264,11 @@ HTML;
             }
 
             .callout {
-                background-color: #fafafa;
+                padding: 1.5rem;
+                background-color: #fff;
+                margin-bottom: 2em;
+                box-shadow: 0 2px 1px rgba(0,0,0,.15);
                 border-left: 3px solid #8c8c8c;
-                margin: 2em 0;
-                padding: 1em;
             }
 
             .callout-title {
@@ -261,16 +280,23 @@ HTML;
             }
 
             .container {
-                max-width: 1024px;
+                max-width: 1140px;
                 margin: 0 auto;
-                padding: 0 15px;
+                padding: 0 30px;
+            }
+
+            .exception-page {
+                position: relative;
+                height: 100vh;
+                overflow-x: hidden;
+                overflow-y: scroll;
             }
 
             .exception-illustration {
                 width: 3em;
                 height: 3em;
                 float: left;
-                margin-right: 1em;
+                margin-right: 1rem;
             }
 
             .exception-illustration svg {
@@ -278,14 +304,14 @@ HTML;
             }
 
             .exception-illustration svg path {
-                fill: #f49800;
+                fill: #ff8700;
             }
 
             .exception-summary {
                 background: #000000;
-                color: #ffffff;
-                padding: 1.5em 0;
-                margin-bottom: 2em;
+                color: #fff;
+                padding: 1.5rem 0;
+                margin-bottom: 2rem;
             }
 
             .exception-summary h1 {
@@ -293,14 +319,13 @@ HTML;
             }
 
             .text-muted {
-                color: #8c8c8c;
+                opacity: 0.5;
             }
 
             .trace {
-                background-color: #fafafa;
-                margin-bottom: 2em;
-                border: 1px solid #b9b9b9;
-                box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 1px;
+                background-color: #fff;
+                margin-bottom: 2rem;
+                box-shadow: 0 2px 1px rgba(0,0,0,.15);
             }
 
             .trace-arguments {
@@ -311,7 +336,7 @@ HTML;
             }
 
             .trace-call {
-                margin-bottom: 1em;
+                margin-bottom: 1rem;
             }
 
             .trace-class {
@@ -319,13 +344,14 @@ HTML;
             }
 
             .trace-file pre {
-                margin-top: 1em;
+                margin-top: 1.5rem;
                 margin-bottom: 0;
             }
 
             .trace-head {
-                background-color: #eaeaea;
-                padding: 1em;
+                color: #721c24;
+                background-color: #f8d7da;
+                padding: 1.5rem;
             }
 
             .trace-message {
@@ -333,13 +359,21 @@ HTML;
             }
 
             .trace-step {
-                padding: 1em;
+                padding: 1.5rem;
                 border-bottom: 1px solid #b9b9b9;
+            }
+
+            .trace-step > *:first-child {
+                margin-top: 0;
+            }
+
+            .trace-step > *:last-child {
+                margin-bottom: 0;
             }
 
             .trace-step:nth-child(even)
             {
-                background-color: #ffffff;
+                background-color: #fafafa;
             }
 
             .trace-step:last-child {
