@@ -1575,6 +1575,28 @@ return [
                                     </ROOT>
                                 </sRadio>
 
+                                <sPassthrough>
+                                    <ROOT>
+                                        <type>array</type>
+                                        <TCEforms>
+                                            <sheetTitle>passthrough</sheetTitle>
+                                        </TCEforms>
+                                        <el>
+                                            <passthrough_1>
+                                                <TCEforms>
+                                                    <label>passthrough_1</label>
+                                                    <description>field description</description>
+                                                    <config>
+                                                        <type>passthrough</type>
+                                                    </config>
+                                                </TCEforms>
+                                            </passthrough_1>
+                                        </el>
+                                    </ROOT>
+                                </sPassthrough>
+
+
+
                             </sheets>
                         </T3DataStructure>
                     ',
