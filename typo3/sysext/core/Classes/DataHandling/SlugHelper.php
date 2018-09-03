@@ -142,8 +142,8 @@ class SlugHelper
             return '/';
         }
         $prefix = '';
-        $languageId = (int)$recordData[$GLOBALS['TCA'][$this->tableName]['ctrl']['languageField']];
         if ($this->configuration['generatorOptions']['prefixParentPageSlug'] ?? false) {
+            $languageId = (int)$recordData[$GLOBALS['TCA'][$this->tableName]['ctrl']['languageField']];
             $rootLine = BackendUtility::BEgetRootLine($pid, '', true, ['nav_title']);
             $parentPageRecord = reset($rootLine);
             if ($languageId > 0) {
@@ -174,8 +174,13 @@ class SlugHelper
             }
         }
         $slug = implode($fieldSeparator, $slugParts);
+        $slug = $this->sanitize($slug);
+        // No valid data found
+        if ($slug === '/') {
+            $slug .= 'default-' . GeneralUtility::shortMD5(json_encode($recordData));
+        }
         if (!empty($prefix)) {
-            $slug = $prefix . '/' . $slug;
+            $slug = $prefix . $slug;
         }
 
         return $this->sanitize($slug);

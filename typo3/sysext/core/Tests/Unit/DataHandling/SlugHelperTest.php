@@ -149,4 +149,46 @@ class SlugHelperTest extends UnitTestCase
             $subject->sanitize($input)
         );
     }
+
+    public function generateNeverDeliversEmptySlugDataProvider()
+    {
+        return [
+            'simple title' => [
+                'Products',
+                '/products'
+            ],
+            'title with spaces' => [
+                'Product Cow',
+                '/product-cow'
+            ],
+            'title with invalid characters' => [
+                'Products - Cows',
+                '/products-cows'
+            ],
+            'title with only invalid characters' => [
+                '!!!',
+                '/default-51cf35392c'
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider generateNeverDeliversEmptySlugDataProvider
+     * @param string $input
+     * @param string $expected
+     * @test
+     */
+    public function generateNeverDeliversEmptySlug(string $input, string $expected)
+    {
+        $GLOBALS['dummyTable']['ctrl'] = [];
+        $subject = new SlugHelper(
+            'dummyTable',
+            'dummyField',
+            ['generatorOptions' => ['fields' => ['title']]]
+        );
+        static::assertEquals(
+            $expected,
+            $subject->generate(['title' => $input, 'uid' => 13], 13)
+        );
+    }
 }
