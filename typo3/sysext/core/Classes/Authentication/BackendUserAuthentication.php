@@ -2719,7 +2719,25 @@ This is a dump of the failures:
     {
         if (isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER'] instanceof self && isset($GLOBALS['BE_USER']->user['uid'])) {
             \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->clean();
+            // Release the locked records
+            $this->releaseLockedRecords((int)$GLOBALS['BE_USER']->user['uid']);
         }
         parent::logoff();
+    }
+
+    /**
+     * Remove any "locked records" added for editing for the given user (= current backend user)
+     * @param int $userId
+     */
+    protected function releaseLockedRecords(int $userId)
+    {
+        if ($userId > 0) {
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('sys_lockedrecords')
+                ->delete(
+                    'sys_lockedrecords',
+                    ['userid' => $userId]
+                );
+        }
     }
 }

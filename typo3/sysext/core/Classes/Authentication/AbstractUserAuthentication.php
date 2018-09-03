@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Authentication;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
@@ -1018,8 +1017,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public function logoff()
     {
         $this->logger->debug('logoff: ses_id = ' . $this->id);
-        // Release the locked records
-        BackendUtility::lockRecords();
 
         $_params = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'] ?? [] as $_funcRef) {
