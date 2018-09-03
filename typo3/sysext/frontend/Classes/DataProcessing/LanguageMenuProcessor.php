@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Frontend\DataProcessing;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Routing\SiteMatcher;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -264,13 +264,13 @@ class LanguageMenuProcessor implements DataProcessorInterface
     /**
      * Returns the currently configured "site" if a site is configured (= resolved) in the current request.
      *
-     * @return Site
+     * @return SiteInterface
      * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
-    protected function getCurrentSite(): Site
+    protected function getCurrentSite(): SiteInterface
     {
-        $finder = GeneralUtility::makeInstance(SiteFinder::class);
-        return $finder->getSiteByPageId((int)$this->getTypoScriptFrontendController()->id);
+        $matcher = GeneralUtility::makeInstance(SiteMatcher::class);
+        return $matcher->matchByPageId((int)$this->getTypoScriptFrontendController()->id);
     }
 
     /**

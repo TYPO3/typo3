@@ -235,15 +235,28 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('Fluid', [404])
         );
 
-        // @todo Expected page not found response (404) instead
-        $this->expectException(\TYPO3\CMS\Core\Error\Http\ServiceUnavailableException::class);
-        $this->expectExceptionCode(1294587218);
+        $expectedStatusCode = 307;
+        $expectedHeaders = ['location' => ['https://website.local/en-en/welcome']];
 
         $uri = 'https://website.other/any/invalid/slug';
-        $this->executeFrontendRequest(
+        $response = $this->executeFrontendRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
+
+        static::assertSame(
+            $expectedStatusCode,
+            $response->getStatusCode()
+        );
+        static::assertSame(
+            $expectedHeaders,
+            $response->getHeaders()
+        );
+        // @todo Expected page not found response (404) instead
+        // static::assertContains(
+        //     'message: The requested page does not exist',
+        //    (string)$response->getBody()
+        // );
     }
 
     /**

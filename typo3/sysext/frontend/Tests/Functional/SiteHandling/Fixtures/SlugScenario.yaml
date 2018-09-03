@@ -96,7 +96,7 @@ entities:
               - self: {title: 'EN: Page not found', type: *contentText}
         - self: {id: 1930, title: 'Our Blog', type: *pageShortcut, shortcut: 2000, slug: '/blog'}
         - version: {id: 1950, title: 'EN: Goodbye', workspace: 1, slug: '/bye'}
-        - self: {id: 1990, title: 'Storage', type: *pageFolder}
+        - self: {id: 1990, title: 'Storage', type: *pageFolder, slug: '/internal/storage'}
           entities:
             visitorGroup:
               - self: {id: 10, title: 'Customers'}
@@ -117,20 +117,20 @@ entities:
                 - self: {id: 2121, title: 'About', slug: '/about-jane'}
         - self: {id: 2700, title: 'Announcements & News', type: *pageMount, mount: 7100, slug: '/news'}
         - self: {id: 2930, title: 'ACME Inc', type: *pageShortcut, shortcut: 1000, slug: '/acme'}
-    - self: {id: 3000, title: 'ACME Archive', type: *pageShortcut, shortcut: 'first', root: true}
+    - self: {id: 3000, title: 'ACME Archive', type: *pageShortcut, shortcut: 'first', root: true, slug: '/archive'}
       children:
-        - self: {id: 3100, title: 'EN: Statistics'}
+        - self: {id: 3100, title: 'EN: Statistics', slug: '/archive/statistics'}
           languageVariants:
-            - self: {id: 3101, title: 'FR: Statistics', language: 1}
-            - self: {id: 3102, title: 'FR-CA: Statistics', language: 2}
+            - self: {id: 3101, title: 'FR: Statistics', language: 1, slug: '/archive/statistics'}
+            - self: {id: 3102, title: 'FR-CA: Statistics', language: 2, slug: '/archive/statistics'}
           children:
-            - self: {id: 3110, title: 'EN: Markets'}
-            - self: {id: 3120, title: 'EN: Products'}
-            - self: {id: 3130, title: 'EN: Partners'}
+            - self: {id: 3110, title: 'EN: Markets', slug: '/archive/markets'}
+            - self: {id: 3120, title: 'EN: Products', slug: '/archive/products'}
+            - self: {id: 3130, title: 'EN: Partners', slug: '/archive/partners'}
       entities:
         domain:
           - self: {domainName: 'archive.acme.com'}
-    - self: {id: 7000, title: 'Common Collection', type: *pageFolder}
+    - self: {id: 7000, title: 'Common Collection', type: *pageFolder, slug: '/common'}
       children:
         - self: {id: 7100, title: 'Announcements & News', slug: '/common/news'}
           children:

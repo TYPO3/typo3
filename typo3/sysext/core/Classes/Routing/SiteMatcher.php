@@ -162,10 +162,16 @@ class SiteMatcher implements SingletonInterface
                 // No domain record found
             }
         }
-        // No domain record found, use the first "pseudo-site" found
+        // No domain record found, try resolving "pseudo-site" again
         if ($site == null) {
-            $allPseudoSites = $this->pseudoSiteFinder->findAll();
-            $site = reset($allPseudoSites);
+            try {
+                // use the matching "pseudo-site" for $pageId
+                $site = $this->pseudoSiteFinder->getSiteByPageId((int)$pageId);
+            } catch (SiteNotFoundException $exception) {
+                // use the first "pseudo-site" found
+                $allPseudoSites = $this->pseudoSiteFinder->findAll();
+                $site = reset($allPseudoSites);
+            }
         }
         return new RouteResult($request->getUri(), $site, $language);
     }
