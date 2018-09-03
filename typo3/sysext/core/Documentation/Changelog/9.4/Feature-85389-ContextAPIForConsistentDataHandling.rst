@@ -59,8 +59,7 @@ The new Context API replaces lots of places known for a very long time:
 * :php:`VisibilityAspect` replaces :php:`$GLOBALS['TSFE']->showHiddenPages` and :php:`$GLOBALS['TSFE']->showHiddenRecords`
 * :php:`WorkspaceAspect` replaces :php:`$GLOBALS['BE_USER']->workspace`
 * :php:`LanguageAspect` replaces various properties related to language Id, overlay and fallback logic, mostly within Frontend
-* :php:`UserAspect` replaces various calls and checks on :php:`$GLOBALS['BE_USER']` and :php:`$GLOBALS['TSFE']->fe_user`
-options when only some information is needed.
+* :php:`UserAspect` replaces various calls and checks on :php:`$GLOBALS['BE_USER']` and :php:`$GLOBALS['TSFE']->fe_user` options when only some information is needed.
 
 
 TYPO3 Core comes with the following Aspects within the global context:

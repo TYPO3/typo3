@@ -29,8 +29,8 @@ If a TCA table contains a field called "slug", it needs to be filled for every e
 be shown and edited via regular Backend Forms, and is also evaluated during persistence via DataHandler.
 
 The default behaviour of a slug is as follows:
-* A slug only contains characters which are allowed within URLs. Spaces, commas and other special characters are
-  converted to a fallback character.
+
+* A slug only contains characters which are allowed within URLs. Spaces, commas and other special characters are converted to a fallback character.
 * A slug is always lower-cased.
 * A slug is unicode-aware.
 

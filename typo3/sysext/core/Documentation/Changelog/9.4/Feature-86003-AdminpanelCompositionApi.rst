@@ -35,12 +35,9 @@ is initialized and rendered.
 
 Since TYPO3 v9 TYPO3 uses PSR-15 middlewares. The adminpanel brings three that are relevant to its rendering process:
 
-- :php:`AdminPanelInitiator` - Called early in the request stack to allow initialisation of modules to catch
-most of the request data (for example log entries)
-- :php:`AdminPanelDataPersister` - Called at nearly the end of a frontend request to store the collected data
-(this is where module data gets saved)
-- :php:`AdminPanelRenderer` - Called as one of the last steps in the rendering process, currently replacing
-the closing body tag with its own code (this is where module content gets rendered)
+* :php:`AdminPanelInitiator` - Called early in the request stack to allow initialisation of modules to catch most of the request data (for example log entries)
+* :php:`AdminPanelDataPersister` - Called at nearly the end of a frontend request to store the collected data (this is where module data gets saved)
+* :php:`AdminPanelRenderer` - Called as one of the last steps in the rendering process, currently replacing the closing body tag with its own code (this is where module content gets rendered)
 
 When building own modules keep in mind at which step your modules` methods get called.
 In the last step for example (the rendering), you should not depend on any data outside of
@@ -52,10 +49,9 @@ Current Design Considerations
 While the API of the adminpanel is very flexible in combining interfaces, the UI has a fixed structure
 and therefor a few things to consider when implementing own modules.
 
-- The bottom bar of the adminpanel will only be rendered for modules that have submodules
-and implement the :php:`SubmoduleProviderInterface`
-- ShortInfo (see below) is only displayed for "TopLevel" modules
-- Content is only rendered for submodules
+* The bottom bar of the adminpanel will only be rendered for modules that have submodules and implement the :php:`SubmoduleProviderInterface`
+* ShortInfo (see below) is only displayed for "TopLevel" modules
+* Content is only rendered for submodules
 
 
 How-To add own modules
@@ -63,9 +59,9 @@ How-To add own modules
 
 Adding custom adminpanel modules always follows these steps:
 
-1. Create a class implementing the basic :php:`ModuleInterface`
-2. Register the class in :file:`ext_localconf.php`
-3. Implement further interfaces for additional capabilities
+#. Create a class implementing the basic :php:`ModuleInterface`
+#. Register the class in :file:`ext_localconf.php`
+#. Implement further interfaces for additional capabilities
 
 
 1. Create module class
@@ -177,8 +173,8 @@ Adminpanel interface to denote that a module has content to be rendered
 Methods
 +++++++
 
-- :php:`getContent(ModuleData $data)` - Return content as HTML. For modules implementing the :php:`DataProviderInterface`
-the "ModuleData" object is automatically filled with the stored data - if no data is given a "fresh" ModuleData object is injected.
+* :php:`getContent(ModuleData $data)` - Return content as HTML. For modules implementing the :php:`DataProviderInterface`
+  the "ModuleData" object is automatically filled with the stored data - if no data is given a "fresh" ModuleData object is injected.
 
 Example implementation
 ++++++++++++++++++++++
@@ -248,7 +244,7 @@ Initialize is called in the PSR-15 middleware stack through adminpanel initialis
 Methods
 +++++++
 
-- :php:`initializeModule(ServerRequestInterface $request)` - Called on adminpanel initialization
+* :php:`initializeModule(ServerRequestInterface $request)` - Called on adminpanel initialization
 
 Example implementation
 ++++++++++++++++++++++
@@ -272,17 +268,17 @@ Purpose
 Adminpanel module settings interface denotes that a module has own settings.
 
 The adminpanel knows two types of settings:
-- ModuleSettings are relevant for the module itself and its representation (for example the log module provides settings
-  where displayed log level and grouping of the module can be configured)
-- PageSettings are relevant for rendering the page (for example the preview module provides settings showing or hiding
-  hidden content elements or simulating a specific rendering time)
+* ModuleSettings are relevant for the module itself and its representation (for example the log module provides
+  settings where displayed log level and grouping of the module can be configured)
+* PageSettings are relevant for rendering the page (for example the preview module provides settings showing or
+  hiding hidden content elements or simulating a specific rendering time)
 
 If a module provides settings relevant to its own content, use this interface.
 
 Methods
 +++++++
 
-- :php:`getSettings(): string` - Return settings as rendered HTML form elements
+* :php:`getSettings(): string` - Return settings as rendered HTML form elements
 
 Example implementation
 ++++++++++++++++++++++
@@ -321,8 +317,8 @@ OnSubmitActors are currently called upon persisting new configuration _before_ t
 Methods
 +++++++
 
-- :php:`onSubmit(array $configurationToSave, ServerRequestInterface $request)` - Can act when configuration gets saved.
-Configuration form vars are provided in :php:`$configurationToSave` as an array.
+* :php:`onSubmit(array $configurationToSave, ServerRequestInterface $request)` - Can act when configuration gets saved.
+  Configuration form vars are provided in :php:`$configurationToSave` as an array.
 
 Example implementation
 ++++++++++++++++++++++
@@ -358,9 +354,9 @@ Purpose
 Adminpanel page settings interface denotes that a module has settings regarding the page rendering.
 
 The adminpanel knows two types of settings:
-- ModuleSettings are relevant for the module itself and its representation (for example the log module provides settings
+* ModuleSettings are relevant for the module itself and its representation (for example the log module provides settings
   where displayed log level and grouping of the module can be configured)
-- PageSettings are relevant for rendering the page (for example the preview module provides settings showing or hiding
+* PageSettings are relevant for rendering the page (for example the preview module provides settings showing or hiding
   hidden content elements or simulating a specific rendering time)
 
 If a module provides settings changing the rendering of the main page request, use this interface.
@@ -368,7 +364,7 @@ If a module provides settings changing the rendering of the main page request, u
 Methods
 +++++++
 
-- :php:`getSettings(): string` - Return HTML form elements for settings
+* :php:`getSettings(): string` - Return HTML form elements for settings
 
 Example implementation
 ++++++++++++++++++++++
@@ -406,8 +402,8 @@ styling and JavaScript functionality
 Methods
 +++++++
 
-- :php:`getJavaScriptFiles(): array` - Returns a string array with javascript files that will be rendered after the module
-- :php:`getCssFiles(): array` - Returns a string array with CSS files that will be rendered after the module
+* :php:`getJavaScriptFiles(): array` - Returns a string array with javascript files that will be rendered after the module
+* :php:`getCssFiles(): array` - Returns a string array with CSS files that will be rendered after the module
 
 Example implementation
 ++++++++++++++++++++++
@@ -442,8 +438,8 @@ This will likely change in v10.
 Methods
 +++++++
 
-- :php:`getShortInfo(): string` - Info string (no HTML) that should be rendered
-- :php:`getIconIdentifier(): string` - An icon for this info line, needs to be registered in :php:`IconRegistry`
+* :php:`getShortInfo(): string` - Info string (no HTML) that should be rendered
+* :php:`getIconIdentifier(): string` - An icon for this info line, needs to be registered in :php:`IconRegistry`
 
 Example implementation
 ++++++++++++++++++++++
@@ -471,19 +467,19 @@ SubmoduleProviderInterface
 Purpose
 +++++++
 
- Adminpanel interface providing hierarchical functionality for modules.
+Adminpanel interface providing hierarchical functionality for modules.
 
- A module implementing this interface may have submodules. Be aware that the current implementation of the adminpanel
- renders a maximum level of 2 for modules. If you need to render more levels, write your own module and implement
- multi-hierarchical rendering in the getContent method.
+A module implementing this interface may have submodules. Be aware that the current implementation of the adminpanel
+renders a maximum level of 2 for modules. If you need to render more levels, write your own module and implement
+multi-hierarchical rendering in the getContent method.
 
 Methods
 +++++++
 
-- :php:`setSubModules(array $subModules)` - Sets array of module instances (instances of :php:`ModuleInterface`) as submodules
-- :php:`getSubModules(): array` - Returns an array of module instances
-- :php:`hasSubmoduleSettings(): bool` - Return true if any of the submodules has settings to be rendered
-(can be used to render settings in a central place)
+* :php:`setSubModules(array $subModules)` - Sets array of module instances (instances of :php:`ModuleInterface`) as submodules
+* :php:`getSubModules(): array` - Returns an array of module instances
+* :php:`hasSubmoduleSettings(): bool` - Return true if any of the submodules has settings to be rendered
+  (can be used to render settings in a central place)
 
 Example implementation
 ++++++++++++++++++++++

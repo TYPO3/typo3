@@ -16,7 +16,7 @@ with the version 4 symfony YAML parser.
 
 More information can be found in the Symfony_ docs.
 
-.. _Symfony:: http://symfony.com/doc/current/components/yaml/yaml_format.html#strings
+.. _Symfony: http://symfony.com/doc/current/components/yaml/yaml_format.html#strings
 
 
 .. index:: Backend, Frontend, ext:form, ext:rte_ckeditor

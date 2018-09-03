@@ -13,8 +13,8 @@ A new option :php:`logFileInfix` for the :php:`FileWriter` has been introduced.
 This allows to set a different name for the log file that is created by the :php:`FileWriter`
 without having to define a full path to the file.
 
-The example configuration will use the log file named :file:`typo3\_special\_<hash>.log`
-for any log message stemming from a class from the :php:`\Vendor\ExtName\` namespace.
+The example configuration will use the log file named :file:`typo3\_special\_\<hash>.log`
+for any log message stemming from a class from the :php:`Vendor\ExtName` namespace.
 
 .. code-block:: php
 
