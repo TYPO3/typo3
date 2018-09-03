@@ -100,6 +100,11 @@ class PopulatePageSlugs extends AbstractUpdate
             )
             // Ensure that fields with alias are managed first
             ->orderBy('alias', 'desc')
+            // Ensure that live workspace records are handled first
+            ->addOrderBy('t3ver_wsid', 'asc')
+            // Ensure that all pages are run through "per parent page" field, and in the correct sorting values
+            ->addOrderBy('pid', 'asc')
+            ->addOrderBy('sorting', 'asc')
             ->execute();
 
         // Check for existing slugs from realurl
