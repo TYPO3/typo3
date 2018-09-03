@@ -36,6 +36,21 @@ class SlugHelperTest extends UnitTestCase
                 '',
                 '/',
             ],
+            'existing base' => [
+                [],
+                '/',
+                '/',
+            ],
+            'invalid base' => [
+                [],
+                '//',
+                '/',
+            ],
+            'invalid slug' => [
+                [],
+                '/slug//',
+                '/slug/',
+            ],
             'lowercase characters' => [
                 [],
                 '1AZÄ',

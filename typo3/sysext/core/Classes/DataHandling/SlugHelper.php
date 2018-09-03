@@ -107,9 +107,11 @@ class SlugHelper
         $slug = rawurlencode($slug);
         // @todo: add a test and see if we need this
         $slug = str_replace('%2F', '/', $slug);
+        // Extract slug, thus it does not have wrapping fallback and slash characters
+        $extractedSlug = $this->extract($slug);
         // Remove trailing and beginning slashes, except if the trailing slash was added, then we'll re-add it
-        $appendTrailingSlash = substr($slug, -1) === '/';
-        $slug = '/' . $this->extract($slug) . ($appendTrailingSlash ? '/' : '');
+        $appendTrailingSlash = $extractedSlug !== '' && substr($slug, -1) === '/';
+        $slug = '/' . $extractedSlug . ($appendTrailingSlash ? '/' : '');
         return $slug;
     }
 
