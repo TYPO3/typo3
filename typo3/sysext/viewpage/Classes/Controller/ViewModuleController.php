@@ -29,6 +29,8 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Routing\PageUriBuilder;
+use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -150,11 +152,10 @@ class ViewModuleController
     {
         $pageId = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
         $languageId = $this->getCurrentLanguage($pageId, $request->getParsedBody()['language'] ?? $request->getQueryParams()['language'] ?? null);
-        $isHttps = $request->getAttribute('normalizedParams')->isHttps();
 
         $this->initializeView('show');
 
-        $targetUrl = $this->getTargetUrl($pageId, $languageId, $isHttps);
+        $targetUrl = $this->getTargetUrl($pageId, $languageId);
         $this->registerDocHeader($pageId, $languageId, $targetUrl);
 
         $this->moduleTemplate->setBodyTag('<body class="typo3-module-viewpage">');
@@ -195,41 +196,43 @@ class ViewModuleController
      *
      * @param int $pageId
      * @param int $languageId
-     * @param bool $isHttps
      * @return string
      */
-    protected function getTargetUrl(int $pageId, int $languageId, bool $isHttps): string
+    protected function getTargetUrl(int $pageId, int $languageId): string
     {
         $permissionClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
         $pageRecord = BackendUtility::readPageAccess($pageId, $permissionClause);
         if ($pageRecord) {
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageRecord);
-
-            $adminCommand = $this->getAdminCommand($pageId);
-            $domainName = $this->getDomainName($pageId);
-            $languageParameter = $languageId ? '&L=' . $languageId : '';
+            $rootLine = BackendUtility::BEgetRootLine($pageId);
             // Mount point overlay: Set new target page id and mp parameter
             $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-            $mountPointMpParameter = '';
+            $additionalGetVars = $this->getAdminCommand($pageId);
+            $siteMatcher = GeneralUtility::makeInstance(SiteMatcher::class);
+            $site = $siteMatcher->matchByPageId($pageId, $rootLine);
             $finalPageIdToShow = $pageId;
             $mountPointInformation = $pageRepository->getMountPointInfo($pageId);
             if ($mountPointInformation && $mountPointInformation['overlay']) {
                 // New page id
                 $finalPageIdToShow = $mountPointInformation['mount_pid'];
-                $mountPointMpParameter = '&MP=' . $mountPointInformation['MPvar'];
+                $additionalGetVars .= '&MP=' . $mountPointInformation['MPvar'];
             }
-            // Modify relative path to protocol with host if domain record is given
-            $protocolAndHost = '..';
-            if ($domainName) {
-                // TCEMAIN.previewDomain can contain the protocol, check prevents double protocol URLs
-                if (strpos($domainName, '://') !== false) {
-                    $protocolAndHost = $domainName;
-                } else {
-                    $protocol = $isHttps ? 'https' : 'http';
-                    $protocolAndHost = $protocol . '://' . $domainName;
-                }
-            }
-            return $protocolAndHost . '/index.php?id=' . $finalPageIdToShow . $this->getTypeParameterIfSet($finalPageIdToShow) . $mountPointMpParameter . $adminCommand . $languageParameter;
+            $additionalGetVars .= $this->getTypeParameterIfSet($finalPageIdToShow);
+            $additionalQueryParams = [];
+            parse_str($additionalGetVars, $additionalQueryParams);
+            $options = [
+                'site' => $site,
+                'rootLine' => $rootLine,
+                'language' => $languageId,
+            ];
+            $uriBuilder = GeneralUtility::makeInstance(PageUriBuilder::class);
+            return (string)$uriBuilder->buildUri(
+                $finalPageIdToShow,
+                $additionalQueryParams,
+                '',
+                $options,
+                $uriBuilder::ABSOLUTE_URL
+            );
         }
         return '#';
     }
