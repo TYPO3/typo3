@@ -87,7 +87,7 @@ class SlugEnricher
      * @param string $tableName
      * @return string[]
      */
-    protected function resolveSlugFieldNames(string $tableName): array
+    public function resolveSlugFieldNames(string $tableName): array
     {
         if (isset($this->slugFieldNamesPerTable[$tableName])) {
             return $this->slugFieldNamesPerTable[$tableName];

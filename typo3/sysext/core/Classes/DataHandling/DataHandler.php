@@ -1389,6 +1389,7 @@ class DataHandler implements LoggerAwareInterface
                 }
                 $shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['type'];
                 $shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['label'];
+                $shadowCols .= ',' . implode(',', GeneralUtility::makeInstance(SlugEnricher::class)->resolveSlugFieldNames($table));
                 $shadowColumns = array_unique(GeneralUtility::trimExplode(',', $shadowCols, true));
                 foreach ($shadowColumns as $fieldName) {
                     if ((string)$justStoredRecord[$fieldName] !== (string)$liveRec[$fieldName] && isset($GLOBALS['TCA'][$table]['columns'][$fieldName]) && $fieldName !== 'uid' && $fieldName !== 'pid') {
