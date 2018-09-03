@@ -24,7 +24,7 @@ use TYPO3\CMS\Install\Service\UpgradeWizardsService;
  *
  * @internal
  */
-class DatabaseUpdatedPrerequisite implements Prerequisite, ChattyInterface
+class DatabaseUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterface
 {
     /**
      * @var UpgradeWizardsService

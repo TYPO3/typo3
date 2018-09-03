@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal
  */
-class ReferenceIndexUpdatedPrerequisite implements Prerequisite, ChattyInterface
+class ReferenceIndexUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterface
 {
     /**
      * @var object|\TYPO3\CMS\Core\Database\ReferenceIndex

@@ -21,7 +21,7 @@ namespace TYPO3\CMS\Install\Updates;
  *
  * @internal
  */
-interface Prerequisite
+interface PrerequisiteInterface
 {
     /**
      * Get speaking name of this prerequisite

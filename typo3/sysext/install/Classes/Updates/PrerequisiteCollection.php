@@ -36,7 +36,7 @@ class PrerequisiteCollection implements \IteratorAggregate
     {
         if (
             !($this->prerequisites[$prerequisiteClass] ?? false)
-            && is_a($prerequisiteClass, Prerequisite::class, true)
+            && is_a($prerequisiteClass, PrerequisiteInterface::class, true)
         ) {
             $this->prerequisites[$prerequisiteClass] = GeneralUtility::makeInstance(
                 $prerequisiteClass
@@ -45,7 +45,7 @@ class PrerequisiteCollection implements \IteratorAggregate
     }
 
     /**
-     * @return \ArrayObject|\Traversable|Prerequisite[]
+     * @return \ArrayObject|\Traversable|PrerequisiteInterface[]
      */
     public function getIterator()
     {
