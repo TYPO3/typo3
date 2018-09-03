@@ -76,7 +76,7 @@ CREATE TABLE pages (
 	perms_group tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	perms_everybody tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	title varchar(255) DEFAULT '' NOT NULL,
-	slug text,
+	slug varchar(2048),
 	doktype int(11) unsigned DEFAULT '0' NOT NULL,
 	TSconfig text,
 	is_siteroot tinyint(4) DEFAULT '0' NOT NULL,
