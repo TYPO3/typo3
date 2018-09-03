@@ -293,7 +293,11 @@ class QueryGenerator
                 $fC = $GLOBALS['TCA'][$this->table]['columns'][$fieldName];
                 $this->fields[$fieldName] = $fC['config'];
                 $this->fields[$fieldName]['exclude'] = $fC['exclude'];
-                if ($this->fields[$fieldName]['type'] === 'user' && !isset($this->fields[$fieldName]['type']['userFunc'])) {
+                if ($this->fields[$fieldName]['type'] === 'user' && !isset($this->fields[$fieldName]['type']['userFunc'])
+                    || $this->fields[$fieldName]['type'] === 'none'
+                ) {
+                    // Do not list type=none "virtual" fields or query them from db,
+                    // and if type is user without defined userFunc
                     unset($this->fields[$fieldName]);
                     continue;
                 }

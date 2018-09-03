@@ -3811,10 +3811,13 @@ class DatabaseRecordList
             if (isset($GLOBALS['TCA'][$table]['columns']) && is_array($GLOBALS['TCA'][$table]['columns'])) {
                 // Traverse configured columns and add them to field array, if available for user.
                 foreach ($GLOBALS['TCA'][$table]['columns'] as $fN => $fieldValue) {
-                    if ($dontCheckUser || (!$fieldValue['exclude'] || $backendUser->check(
-                                'non_exclude_fields',
-                                $table . ':' . $fN
-                            )) && $fieldValue['config']['type'] !== 'passthrough') {
+                    if ($fieldValue['config']['type'] === 'none') {
+                        // Never render or fetch type=none fields from db
+                        continue;
+                    }
+                    if ($dontCheckUser
+                        || (!$fieldValue['exclude'] || $backendUser->check('non_exclude_fields', $table . ':' . $fN)) && $fieldValue['config']['type'] !== 'passthrough'
+                    ) {
                         $fieldListArr[] = $fN;
                     }
                 }
