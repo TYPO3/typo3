@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Generates, sanitizes and validates slugs for a TCA field
@@ -208,7 +209,11 @@ class SlugHelper
         $this->applyLanguageConstraint($queryBuilder, $languageId);
         $this->applyWorkspaceConstraint($queryBuilder);
         $statement = $queryBuilder->execute();
-        return $statement->rowCount() === 0;
+
+        $records = $this->resolveVersionOverlays(
+            $statement->fetchAll()
+        );
+        return count($records) === 0;
     }
 
     /**
@@ -233,7 +238,9 @@ class SlugHelper
         $this->applyWorkspaceConstraint($queryBuilder);
         $statement = $queryBuilder->execute();
 
-        $records = $statement->fetchAll();
+        $records = $this->resolveVersionOverlays(
+            $statement->fetchAll()
+        );
         if (count($records) === 0) {
             return true;
         }
@@ -318,12 +325,17 @@ class SlugHelper
      */
     protected function createPreparedQueryBuilder(): QueryBuilder
     {
+        $fieldNames = ['uid', 'pid', $this->fieldName];
+        if ($this->workspaceEnabled) {
+            $fieldNames[] = 't3ver_state';
+        }
+
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->tableName);
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $queryBuilder
-            ->select('uid', 'pid', $this->fieldName)
+            ->select(...$fieldNames)
             ->from($this->tableName);
         return $queryBuilder;
     }
@@ -346,9 +358,9 @@ class SlugHelper
                 't3ver_wsid',
                 $queryBuilder->createNamedParameter($workspaceIds, Connection::PARAM_INT_ARRAY)
             ),
-            $queryBuilder->expr()->in(
-                't3ver_state',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            $queryBuilder->expr()->neq(
+                'pid',
+                $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
             )
         );
     }
@@ -468,5 +480,35 @@ class SlugHelper
         }
 
         return (int)$liveVersion['pid'];
+    }
+
+    /**
+     * @param array $records
+     * @return array
+     */
+    protected function resolveVersionOverlays(array $records): array
+    {
+        if (!$this->workspaceEnabled) {
+            return $records;
+        }
+
+        return array_filter(
+            array_map(
+                function (array $record) {
+                    BackendUtility::workspaceOL(
+                        $this->tableName,
+                        $record,
+                        $this->workspaceId,
+                        true
+                    );
+                    if (VersionState::cast($record['t3ver_state'] ?? null)
+                        ->equals(VersionState::DELETE_PLACEHOLDER)) {
+                        return null;
+                    }
+                    return $record;
+                },
+                $records
+            )
+        );
     }
 }
