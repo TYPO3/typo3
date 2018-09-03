@@ -362,7 +362,6 @@ define([
         var self = this;
         var executeToken = self.currentModal.find(self.selectorModuleContent).data('upgrade-wizards-execute-token');
         var modalContent = this.currentModal.find(self.selectorModalBody);
-        console.log(identifier);
         var postData = {
           'install[action]': 'upgradeWizardsExecute',
           'install[token]': executeToken,
