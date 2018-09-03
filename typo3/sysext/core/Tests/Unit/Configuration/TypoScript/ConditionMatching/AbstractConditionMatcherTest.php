@@ -138,7 +138,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
      */
     public function checkConditionMatcherForDateFunction(string $format, int $expressionValue, bool $expected): void
     {
-        $GLOBALS['SIM_EXEC_TIME'] = mktime(11, 4, 0, 1, 17, 1945);
+        $GLOBALS['SIM_EXEC_TIME'] = gmmktime(11, 4, 0, 1, 17, 1945);
         GeneralUtility::makeInstance(Context::class)
             ->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['SIM_EXEC_TIME'])));
         $this->assertSame(
