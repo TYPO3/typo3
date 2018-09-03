@@ -15,10 +15,12 @@ namespace TYPO3\CMS\Form\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -575,17 +577,23 @@ class TranslationService implements SingletonInterface
 
         $this->alternativeLanguageKeys = [];
         if (TYPO3_MODE === 'FE') {
-            if (isset($this->getTypoScriptFrontendController()->config['config']['language'])) {
-                $this->languageKey = $this->getTypoScriptFrontendController()->config['config']['language'];
-                if (isset($this->getTypoScriptFrontendController()->config['config']['language_alt'])) {
-                    $this->alternativeLanguageKeys[] = $this->getTypoScriptFrontendController()->config['config']['language_alt'];
-                } else {
-                    /** @var \TYPO3\CMS\Core\Localization\Locales $locales */
-                    $locales = GeneralUtility::makeInstance(Locales::class);
-                    if (in_array($this->languageKey, $locales->getLocales(), true)) {
-                        foreach ($locales->getLocaleDependencies($this->languageKey) as $language) {
-                            $this->alternativeLanguageKeys[] = $language;
-                        }
+            $tsfe = $this->getTypoScriptFrontendController();
+
+            if ($this->getCurrentSiteLanguage() instanceof SiteLanguage) {
+                $this->languageKey = $this->getCurrentSiteLanguage()->getTypo3Language();
+            } elseif (isset($tsfe->config['config']['language'])) {
+                $this->languageKey = $tsfe->config['config']['language'];
+                if (isset($tsfe->config['config']['language_alt'])) {
+                    $this->alternativeLanguageKeys[] = $tsfe->config['config']['language_alt'];
+                }
+            }
+
+            if ($this->languageKey !== 'default' && empty($this->alternativeLanguageKeys)) {
+                /** @var \TYPO3\CMS\Core\Localization\Locales $locales */
+                $locales = GeneralUtility::makeInstance(Locales::class);
+                if (in_array($this->languageKey, $locales->getLocales(), true)) {
+                    foreach ($locales->getLocaleDependencies($this->languageKey) as $language) {
+                        $this->alternativeLanguageKeys[] = $language;
                     }
                 }
             }
@@ -689,6 +697,19 @@ class TranslationService implements SingletonInterface
         $this->configurationManager = GeneralUtility::makeInstance(ObjectManager::class)
             ->get(ConfigurationManagerInterface::class);
         return $this->configurationManager;
+    }
+
+    /**
+     * Returns the currently configured "site language" if a site is configured (= resolved) in the current request.
+     *
+     * @return SiteLanguage|null
+     */
+    protected function getCurrentSiteLanguage(): ?SiteLanguage
+    {
+        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
+            return $GLOBALS['TYPO3_REQUEST']->getAttribute('language', null);
+        }
+        return null;
     }
 
     /**
