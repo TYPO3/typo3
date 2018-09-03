@@ -29,6 +29,10 @@ that need to be adjusted.
 Migration
 =========
 
-Use :shell:`bin/typo3 lang:language:update` instead.
+Use :shell:`bin/typo3 language:update` instead.
+
+Notice that multiple language ISO codes must be separated by spaces instead of commas::
+
+   bin/typo3 language:update de fr it
 
 .. index:: CLI, NotScanned, ext:lang
