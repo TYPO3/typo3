@@ -80,7 +80,6 @@ class RadioElement extends AbstractFormElement
         $html[] = $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';
         $html[] =       '<div class="form-wizards-element">';
-
         foreach ($this->data['parameterArray']['fieldConf']['config']['items'] as $itemNumber => $itemLabelAndValue) {
             $label = $itemLabelAndValue[0];
             $value = $itemLabelAndValue[1];
@@ -101,6 +100,7 @@ class RadioElement extends AbstractFormElement
             $html[] =     '</label>';
             $html[] = '</div>';
         }
+        $html[] =       '</div>';
         if (!$disabled && !empty($fieldWizardHtml)) {
             $html[] =   '<div class="form-wizards-items-bottom">';
             $html[] =       $fieldWizardHtml;
