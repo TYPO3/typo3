@@ -282,10 +282,10 @@ $svgColors: (
 }
 
 .svg-toolbar {
-    min-height: 66px;
+    min-height: $module-docheader-height;
     padding: 4px 10px 0;
-    border-bottom: 1px solid #c3c3c3;
-    background-color: #eee;
+    border-bottom: 1px solid $module-docheader-border;
+    background-color: $module-docheader-bg;
 
     &__btn {
         padding: 0;
