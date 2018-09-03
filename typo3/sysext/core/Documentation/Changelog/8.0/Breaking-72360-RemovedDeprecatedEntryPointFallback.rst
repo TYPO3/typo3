@@ -10,7 +10,7 @@ See :issue:`72360`
 Description
 ===========
 
-The entry point fallback mechanism introduced with #68812 has been removed.
+The entry point fallback mechanism introduced with :issue:`68812` has been removed.
 
 The following entry points won't work anymore.
 
