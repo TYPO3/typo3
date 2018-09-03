@@ -93,6 +93,7 @@ class NodeFactory
         'user' => Element\UserElement::class,
         'fileInfo' => Element\FileInfoElement::class,
         'slug' => Element\InputSlugElement::class,
+        'passthrough' => Element\PassThroughElement::class,
 
         // Default classes to enrich single elements
         'fieldControl' => NodeExpansion\FieldControl::class,

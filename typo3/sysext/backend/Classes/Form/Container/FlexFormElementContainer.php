@@ -49,8 +49,6 @@ class FlexFormElementContainer extends AbstractContainer
                 !is_array($flexFormFieldArray)
                 // Not a section or container and not a list of single items
                 || (!isset($flexFormFieldArray['type']) && !is_array($flexFormFieldArray['config']))
-                // Type passthrough is not rendered
-                || (isset($flexFormFieldArray['config']['type']) && $flexFormFieldArray['config']['type'] === 'passthrough')
             ) {
                 continue;
             }
@@ -140,23 +138,23 @@ class FlexFormElementContainer extends AbstractContainer
                 }
                 $childResult = $this->nodeFactory->create($options)->render();
 
-                // Possible line breaks in the label through xml: \n => <br/>, usage of nl2br() not possible, so it's done through str_replace (?!)
-                $processedTitle = str_replace('\\n', '<br />', htmlspecialchars($fakeParameterArray['fieldConf']['label']));
-
-                $html = [];
-                $html[] = '<div class="form-section">';
-                $html[] =    '<div class="form-group t3js-formengine-palette-field t3js-formengine-validation-marker">';
-                $html[] =        '<label class="t3js-formengine-label">';
-                $html[] =            BackendUtility::wrapInHelp($parameterArray['_cshKey'], $flexFormFieldName, $processedTitle);
-                $html[] =        '</label>';
-                $html[] =        '<div class="formengine-field-item t3js-formengine-field-item">';
-                $html[] =            $childResult['html'];
-                $html[] =        '</div>';
-                $html[] =    '</div>';
-                $html[] = '</div>';
-
-                $resultArray['html'] .= implode(LF, $html);
-                $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childResult, false);
+                if (!empty($childResult['html'])) {
+                    // Possible line breaks in the label through xml: \n => <br/>, usage of nl2br() not possible, so it's done through str_replace (?!)
+                    $processedTitle = str_replace('\\n', '<br />', htmlspecialchars($fakeParameterArray['fieldConf']['label']));
+                    $html = [];
+                    $html[] = '<div class="form-section">';
+                    $html[] =   '<div class="form-group t3js-formengine-palette-field t3js-formengine-validation-marker">';
+                    $html[] =       '<label class="t3js-formengine-label">';
+                    $html[] =           BackendUtility::wrapInHelp($parameterArray['_cshKey'], $flexFormFieldName, $processedTitle);
+                    $html[] =       '</label>';
+                    $html[] =       '<div class="formengine-field-item t3js-formengine-field-item">';
+                    $html[] =           $childResult['html'];
+                    $html[] =       '</div>';
+                    $html[] =   '</div>';
+                    $html[] = '</div>';
+                    $resultArray['html'] .= implode(LF, $html);
+                    $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childResult, false);
+                }
             }
         }
 

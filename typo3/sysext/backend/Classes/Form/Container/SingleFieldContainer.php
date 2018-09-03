@@ -76,7 +76,6 @@ class SingleFieldContainer extends AbstractContainer
         // Check if this field is configured and editable according to exclude fields and other configuration
         if (// Return if BE-user has no access rights to this field, @todo: another user access rights check!
             $parameterArray['fieldConf']['exclude'] && !$backendUser->check('non_exclude_fields', $table . ':' . $fieldName)
-            || $parameterArray['fieldConf']['config']['type'] === 'passthrough'
             // Return if field should not be rendered in translated records
             || $isOverlay && empty($parameterArray['fieldConf']['l10n_display']) && $parameterArray['fieldConf']['l10n_mode'] === 'exclude'
             || $this->inlineFieldShouldBeSkipped()
