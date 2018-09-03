@@ -924,4 +924,9 @@ return [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Resource\Service\UserStorageCapabilityService' => [
+        'restFiles' => [
+            'Deprecation-86109-ClassUserStorageCapabilityService.rst',
+        ],
+    ],
 ];

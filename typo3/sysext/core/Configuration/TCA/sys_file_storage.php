@@ -74,7 +74,7 @@ return [
             'config' => [
                 'default' => true,
                 'type' => 'user',
-                'userFunc' => \TYPO3\CMS\Core\Resource\Service\UserStorageCapabilityService::class . '->renderIsPublic',
+                'renderType' => 'userSysFileStorageIsPublic',
             ]
         ],
         'is_writable' => [

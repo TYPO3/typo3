@@ -24,9 +24,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Utility class to render capabilities of the storage.
+ *
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
  */
 class UserStorageCapabilityService
 {
+    /**
+     * Constructor logs deprecation
+     */
+    public function __construct()
+    {
+        trigger_error('This class will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+    }
+
     /**
      * UserFunc function for rendering field "is_public".
      * There are some edge cases where "is_public" can never be marked as true in the BE,

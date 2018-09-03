@@ -91,6 +91,8 @@ class NodeFactory
         'textTable' => Element\TextTableElement::class,
         'unknown' => Element\UnknownElement::class,
         'user' => Element\UserElement::class,
+        // special renderType for type="user" on sys_file_storage is_public column
+        'userSysFileStorageIsPublic' => Element\UserSysFileStorageIsPublicElement::class,
         'fileInfo' => Element\FileInfoElement::class,
         'slug' => Element\InputSlugElement::class,
         'passthrough' => Element\PassThroughElement::class,

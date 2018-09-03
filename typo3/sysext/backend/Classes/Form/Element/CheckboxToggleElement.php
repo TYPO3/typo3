@@ -90,7 +90,7 @@ class CheckboxToggleElement extends AbstractFormElement
         // Traversing the array of items
         $items = $this->data['parameterArray']['fieldConf']['config']['items'];
 
-        $numberOfItems = \count($items);
+        $numberOfItems = count($items);
         if ($numberOfItems === 0) {
             $items[] = ['', ''];
             $numberOfItems = 1;
