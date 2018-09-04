@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Taskcenter;
+namespace TYPO3\CMS\Taskcenter\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 /**
  * Status of tasks
  */
-class TaskStatus
+class TaskStatusController
 {
     /**
      * Saves the section toggle state of tasks in the backend user's uc
