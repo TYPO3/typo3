@@ -51,9 +51,11 @@ class RootlineUtilityTest extends UnitTestCase
 
         $this->subject = $this->getAccessibleMock(
             RootlineUtility::class,
-            ['enrichWithRelationFields'],
+            ['enrichWithRelationFields', 'resolvePageId'],
             [1, '', new Context()]
         );
+
+        $this->subject->expects(static::any())->method('resolvePageId')->willReturnArgument(0);
     }
 
     /**
@@ -305,6 +307,8 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function getCacheIdentifierContainsAllContextParameters(): void
     {
+        $this->subject->expects(static::any())->method('resolvePageId')->willReturn(42);
+
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(15));
         $context->setAspect('language', new LanguageAspect(8, 8, LanguageAspect::OVERLAYS_OFF));
@@ -324,6 +328,8 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function getCacheIdentifierReturnsValidIdentifierWithCommasInMountPointParameter(): void
     {
+        $this->subject->expects(static::any())->method('resolvePageId')->willReturn(42);
+
         /** @var AbstractFrontend $cacheFrontendMock */
         $cacheFrontendMock = $this->getMockForAbstractClass(
             AbstractFrontend::class,

@@ -15,8 +15,10 @@ namespace TYPO3\CMS\Core\Utility;
  */
 
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\FetchMode;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Exception\Page\BrokenRootLineException;
@@ -24,6 +26,7 @@ use TYPO3\CMS\Core\Exception\Page\CircularRootLineException;
 use TYPO3\CMS\Core\Exception\Page\MountPointsDisabledException;
 use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
 use TYPO3\CMS\Core\Exception\Page\PagePropertyRelationNotFoundException;
+use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -129,7 +132,6 @@ class RootlineUtility
      */
     public function __construct($uid, $mountPointParameter = '', $context = null)
     {
-        $this->pageUid = (int)$uid;
         $this->mountPointParameter = trim($mountPointParameter);
         if ($context instanceof PageRepository) {
             trigger_error('Calling RootlineUtility with PageRepository as third parameter will be unsupported with TYPO3 v10.0. Use a Context object directly', E_USER_DEPRECATED);
@@ -151,6 +153,12 @@ class RootlineUtility
             }
             $this->parseMountPointParameter();
         }
+
+        $this->pageUid = $this->resolvePageId(
+            (int)$uid,
+            (int)$this->workspaceUid
+        );
+
         if (self::$cache === null) {
             self::$cache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_rootline');
         }
@@ -473,5 +481,110 @@ class RootlineUtility
             list($mountedPageUid, $mountPageUid) = GeneralUtility::intExplode('-', $mP);
             $this->parsedMountPointParameters[$mountedPageUid] = $mountPageUid;
         }
+    }
+
+    /**
+     * @param int $pageId
+     * @param int $workspaceId
+     * @return int
+     */
+    protected function resolvePageId(int $pageId, int $workspaceId): int
+    {
+        if ($pageId === 0 || $workspaceId === 0) {
+            return $pageId;
+        }
+
+        $page = $this->resolvePageRecord(
+            $pageId,
+            ['uid', 't3ver_oid', 't3ver_state']
+        );
+        if (!VersionState::cast($page['t3ver_state'])
+            ->equals(VersionState::MOVE_POINTER)) {
+            return $pageId;
+        }
+
+        $movePlaceholder = $this->resolveMovePlaceHolder(
+            (int)$page['t3ver_oid'],
+            ['uid'],
+            $workspaceId
+        );
+        if (empty($movePlaceholder['uid'])) {
+            return $pageId;
+        }
+
+        return (int)$movePlaceholder['uid'];
+    }
+
+    /**
+     * @param int $pageId
+     * @param array $fieldNames
+     * @return array|null
+     */
+    protected function resolvePageRecord(int $pageId, array $fieldNames): ?array
+    {
+        $queryBuilder = $this->createQueryBuilder('pages');
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $statement = $queryBuilder
+            ->from('pages')
+            ->select(...$fieldNames)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                )
+            )
+            ->setMaxResults(1)
+            ->execute();
+
+        $record = $statement->fetch(FetchMode::ASSOCIATIVE);
+        return $record ?: null;
+    }
+
+    /**
+     * @param int $liveId
+     * @param array $fieldNames
+     * @param int $workspaceId
+     * @return array|null
+     */
+    protected function resolveMovePlaceHolder(int $liveId, array $fieldNames, int $workspaceId): ?array
+    {
+        $queryBuilder = $this->createQueryBuilder('pages');
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $statement = $queryBuilder
+            ->from('pages')
+            ->select(...$fieldNames)
+            ->setMaxResults(1)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    't3ver_wsid',
+                    $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    't3ver_state',
+                    $queryBuilder->createNamedParameter(VersionState::MOVE_PLACEHOLDER, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    't3ver_move_id',
+                    $queryBuilder->createNamedParameter($liveId, \PDO::PARAM_INT)
+                )
+            )
+            ->execute();
+
+        $record = $statement->fetch(FetchMode::ASSOCIATIVE);
+        return $record ?: null;
+    }
+
+    /**
+     * @param string $tableName
+     * @return QueryBuilder
+     */
+    protected function createQueryBuilder(string $tableName): QueryBuilder
+    {
+        return GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($tableName);
     }
 }
