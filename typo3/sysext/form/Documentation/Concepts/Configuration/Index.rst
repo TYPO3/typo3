@@ -140,40 +140,16 @@ configuration of the backend ``module.tx_[pluginkey]`` is used.
 There are different ways to include the TypoScript configuration for the
 backend:
 
-- a) use a file called `ext_typoscript_setup.typoscript`,
-- b) use the API function ``\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup()``,
-- c) add the configuration to your existing TypoScript template.
-
-We recommend using methods a and b. Here is why. The file
-:file:`ext_typoscript_setup.typoscript` can be stored within the root folder of
-your own site package. It will be automatically loaded in both frontend and
-backend of your TYPO3 installation. The API call (method b) does pretty
-much the same.
+- a) use the API function ``\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup()``,
+- b) add the configuration to your existing TypoScript template.
 
 In both cases, the ``form editor`` will work as expected regardless the
-chosen page from the page tree. If using the aforementioned method c, the
+chosen page from the page tree. If using the aforementioned method b, the
 configuration would only be valid on a specific page tree, unless you add
 your configuration to all trees within your installation. Nevertheless,
 being on the root page (uid 0) would still be a problem.
 
 To sum it up: choose either method a or b, and you will be fine.
-
-
-.. _concepts-configuration-yamlregistration-backend-ext_typoscript_setup.txt:
-
-YAML registration for the backend via ext_typoscript_setup.typoscript
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-.. code-block:: typoscript
-
-   module.tx_form {
-       settings {
-           yamlConfigurations {
-               100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
-           }
-       }
-   }
-
 
 .. _concepts-configuration-yamlregistration-backend-addtyposcriptsetup:
 
