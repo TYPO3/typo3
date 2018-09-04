@@ -878,18 +878,21 @@ class BackendUtility
             $tsConfig = $res['TSconfig'];
         }
         $cacheHash = $res['hash'];
-        // Get User TSconfig overlay
-
-        $userTSconfig = static::getBackendUserAuthentication()->getTSConfig() ?? [];
+        // Get User TSconfig overlay, if no backend user is logged-in, this needs to be checked as well
+        if (static::getBackendUserAuthentication()) {
+            $userTSconfig = static::getBackendUserAuthentication()->getTSConfig() ?? [];
+        } else {
+            $userTSconfig = [];
+        }
         $isCacheHashExtendedWithUserUid = false;
-        if (is_array($userTSconfig['page.'])) {
+        if (is_array($userTSconfig['page.'] ?? null)) {
             ArrayUtility::mergeRecursiveWithOverrule($tsConfig, $userTSconfig['page.']);
             $isCacheHashExtendedWithUserUid = true;
             $cacheHash .= '_user' . static::getBackendUserAuthentication()->user['uid'];
         }
 
         // Overlay page "mod." ts with user ts in a special and deprecated way
-        if (is_array($userTSconfig['mod.'])) {
+        if (is_array($userTSconfig['mod.'] ?? null)) {
             // @deprecated This entire "if" and variable $isCacheHashExtendedWithUserUid can be deleted in v10
             trigger_error(
                 'Overriding page TSconfig "mod." with user TSconfig "mod." is deprecated. Use user TSconfig "page.mod." instead',
@@ -4565,6 +4568,6 @@ class BackendUtility
      */
     protected static function getBackendUserAuthentication()
     {
-        return $GLOBALS['BE_USER'];
+        return $GLOBALS['BE_USER'] ?? null;
     }
 }

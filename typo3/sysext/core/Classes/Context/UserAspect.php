@@ -103,7 +103,11 @@ class UserAspect implements AspectInterface
      */
     public function isAdmin(): bool
     {
-        return $this->user->user['admin'] === 1 ?? false;
+        $isAdmin = false;
+        if ($this->user instanceof BackendUserAuthentication) {
+            $isAdmin = $this->user->isAdmin();
+        }
+        return $isAdmin;
     }
 
     /**

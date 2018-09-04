@@ -16,11 +16,14 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
 
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
+use TYPO3\CMS\Backend\Configuration\TsConfigParser;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\LabelFromItemListMergedReturnsCorrectFieldsFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForGroupWithMultipleAllowedTablesFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForGroupWithOneAllowedTableFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForSelectWithMMRelationFixture;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -35,6 +38,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
+    /**
+     * @var bool
+     */
+    protected $resetSingletonInstances = true;
+
     ///////////////////////////////////////
     // Tests concerning calcAge
     ///////////////////////////////////////
@@ -954,5 +962,34 @@ class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $result = BackendUtility::splitTable_Uid($input);
         self::assertSame($expected, $result);
+    }
+
+    /**
+     * Tests if the method getPagesTSconfig can be called without having a GLOBAL['BE_USER'] object.
+     * However, this test also shows all the various other dependencies this method has.
+     *
+     * @test
+     */
+    public function getPagesTSconfigWorksWithoutInitializedBackendUser()
+    {
+        $expected = ['called.' => ['config']];
+        $pageId = 13;
+        $parserProphecy = $this->prophesize(TsConfigParser::class);
+        $parserProphecy->parseTSconfig(Argument::cetera())->willReturn(['hash' => $pageId, 'TSconfig' => $expected]);
+        GeneralUtility::addInstance(TsConfigParser::class, $parserProphecy->reveal());
+
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
+        $cacheHashProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->hasCache('extbase_reflection')->willReturn(false);
+        $cacheManagerProphecy->getCache('cache_hash')->willReturn($cacheHashProphecy->reveal());
+        $cacheProphecy->has(Argument::cetera())->willReturn(false);
+        $cacheProphecy->get(Argument::cetera())->willReturn(false);
+        $cacheProphecy->set(Argument::cetera())->willReturn(false);
+        $cacheProphecy->get('backendUtilityBeGetRootLine')->willReturn(['13--1' => []]);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $result = BackendUtility::getPagesTSconfig($pageId);
+        $this->assertEquals($expected, $result);
     }
 }
