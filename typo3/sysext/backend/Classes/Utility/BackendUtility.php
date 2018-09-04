@@ -2827,6 +2827,7 @@ class BackendUtility
         if (!empty($rootLine)) {
             $protocol = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https' : 'http';
             $previewDomainConfig = self::getPagesTSconfig($pageId)['TCEMAIN.']['previewDomain'] ?? '';
+            $domainName = null;
             if (!empty($previewDomainConfig)) {
                 if (strpos($previewDomainConfig, '://') !== false) {
                     list($protocol, $domainName) = explode('://', $previewDomainConfig);
@@ -2843,9 +2844,7 @@ class BackendUtility
                     }
                 }
             }
-            if ($domainName) {
-                $domain = $domainName;
-            } else {
+            if ($domainName === null) {
                 // Fetch the "sys_domain" record: First, check for the given domain,
                 // and find the "root page" = PseudoSite to that domain, then fetch the first
                 // available sys_domain record.
@@ -2853,17 +2852,13 @@ class BackendUtility
                 $result = $siteMatcher->matchRequest(new ServerRequest($domain));
                 $site = $result->getSite();
                 if ($site instanceof PseudoSite) {
-                    $domain = (string)$site->getBase();
-                    $domain = ltrim($domain, '/');
+                    $domainName = (string)$site->getBase();
+                    $domainName = ltrim($domainName, '/');
                 }
             }
-            if ($domain) {
-                // prepend the current protocol, if none is given
-                if (!parse_url($domain, PHP_URL_SCHEME)) {
-                    $domain = $protocol . '://' . $domain;
-                }
-            } else {
-                $domain = rtrim(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), '/');
+
+            if ($domainName) {
+                $domain = $protocol . '://' . $domainName;
             }
             // Append port number if lockSSLPort is not the standard port 443
             $portNumber = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'];
