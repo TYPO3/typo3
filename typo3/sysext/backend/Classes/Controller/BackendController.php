@@ -164,6 +164,8 @@ class BackendController
 
         $this->pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', BackendUtility::getModuleUrl('show_item'));
 
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf');
+
         $this->css = '';
 
         $this->initializeToolbarItems();
