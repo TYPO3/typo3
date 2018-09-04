@@ -2853,12 +2853,15 @@ class BackendUtility
                 $result = $siteMatcher->matchRequest(new ServerRequest($domain));
                 $site = $result->getSite();
                 if ($site instanceof PseudoSite) {
-                    $domain = $site->getBase();
+                    $domain = (string)$site->getBase();
                     $domain = ltrim($domain, '/');
                 }
             }
             if ($domain) {
-                $domain = $protocol . '://' . $domain;
+                // prepend the current protocol, if none is given
+                if (!parse_url($domain, PHP_URL_SCHEME)) {
+                    $domain = $protocol . '://' . $domain;
+                }
             } else {
                 $domain = rtrim(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), '/');
             }
