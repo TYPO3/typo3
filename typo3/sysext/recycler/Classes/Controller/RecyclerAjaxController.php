@@ -38,26 +38,6 @@ class RecyclerAjaxController
     protected $conf = [];
 
     /**
-     * The constructor of this class
-     */
-    public function __construct()
-    {
-        // Configuration, variable assignment
-        $this->conf['action'] = GeneralUtility::_GP('action');
-        $this->conf['table'] = GeneralUtility::_GP('table') ? GeneralUtility::_GP('table') : '';
-        $this->conf['limit'] = MathUtility::forceIntegerInRange(
-            (int)($this->getBackendUser()->getTSConfig()['mod.']['recycler.']['recordsPageLimit'] ?? 25),
-            1
-        );
-        $this->conf['start'] = GeneralUtility::_GP('start') ? (int)GeneralUtility::_GP('start') : 0;
-        $this->conf['filterTxt'] = GeneralUtility::_GP('filterTxt') ? GeneralUtility::_GP('filterTxt') : '';
-        $this->conf['startUid'] = GeneralUtility::_GP('startUid') ? (int)GeneralUtility::_GP('startUid') : 0;
-        $this->conf['depth'] = GeneralUtility::_GP('depth') ? (int)GeneralUtility::_GP('depth') : 0;
-        $this->conf['records'] = GeneralUtility::_GP('records') ? GeneralUtility::_GP('records') : null;
-        $this->conf['recursive'] = GeneralUtility::_GP('recursive') ? (bool)GeneralUtility::_GP('recursive') : false;
-    }
-
-    /**
      * The main dispatcher function. Collect data and prepare HTML output.
      *
      * @param ServerRequestInterface $request
@@ -65,6 +45,22 @@ class RecyclerAjaxController
      */
     public function dispatch(ServerRequestInterface $request): ResponseInterface
     {
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+
+        $this->conf['action'] = $parsedBody['action'] ?? $queryParams['action'] ?? null;
+        $this->conf['table'] = $parsedBody['table'] ?? $queryParams['table'] ?? '';
+        $this->conf['limit'] = MathUtility::forceIntegerInRange(
+            (int)($this->getBackendUser()->getTSConfig()['mod.']['recycler.']['recordsPageLimit'] ?? 25),
+            1
+        );
+        $this->conf['start'] = (int)($parsedBody['start'] ?? $queryParams['start'] ?? 0);
+        $this->conf['filterTxt'] = $parsedBody['filterTxt'] ?? $queryParams['filterTxt'] ?? '';
+        $this->conf['startUid'] = (int)($parsedBody['startUid'] ?? $queryParams['startUid'] ?? 0);
+        $this->conf['depth'] = (int)($parsedBody['depth'] ?? $queryParams['depth'] ?? 0);
+        $this->conf['records'] = $parsedBody['records'] ?? $queryParams['records'] ?? null;
+        $this->conf['recursive'] = (bool)($parsedBody['recursive'] ?? $queryParams['recursive'] ?? false);
+
         $extPath = ExtensionManagementUtility::extPath('recycler');
         /* @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
