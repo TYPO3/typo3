@@ -39,7 +39,7 @@ class LiveSearchController
      */
     public function liveSearchAction(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $queryString = $request->getQueryParams()['q'];
+        $queryString = trim($request->getQueryParams()['q']);
         $liveSearch = GeneralUtility::makeInstance(LiveSearch::class);
         $queryParser = GeneralUtility::makeInstance(QueryParser::class);
 
