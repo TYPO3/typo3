@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Http;
 
 /*
@@ -13,14 +14,15 @@ namespace TYPO3\CMS\Core\Http;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * An interface for dispatcher that delegate requests/responses to a certain callable, typically a
- * controller / action combination.
+ * An interface for dispatcher that delegate requests to a certain callable, typically a
+ * controller / action combination. Usually called from the RequestHandler.
  *
- * Is usually called from the RequestHandler,
+ * @internal This low level interface is used core internally only
  */
 interface DispatcherInterface
 {
@@ -28,8 +30,7 @@ interface DispatcherInterface
      * Main method to dispatch a request and its response to a callable object
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function dispatch(ServerRequestInterface $request, ResponseInterface $response);
+    public function dispatch(ServerRequestInterface $request): ResponseInterface;
 }

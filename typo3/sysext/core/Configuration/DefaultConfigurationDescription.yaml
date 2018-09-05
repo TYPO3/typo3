@@ -224,6 +224,9 @@ SYS:
               TypoScript.strictSyntax:
                 type: bool
                 description: 'If on, TypoScript is parsed in strict syntax modes. Enabling this feature means old condition syntax (which is deprecated) will trigger deprecation messages.'
+              simplifiedControllerActionDispatching:
+                type: bool
+                description: 'If on, controller actions of backend modules and eID scripts do not receive a deprecated prepared response object as second argument. Enabling this feature slightly improves performance.'
         availablePasswordHashAlgorithms:
             type: array
             description: 'A list of available password hash mechanisms. Extensions may register additional mechanisms here. This is usually not extended in LocalConfiguration.php.'

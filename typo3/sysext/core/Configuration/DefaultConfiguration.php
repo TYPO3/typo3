@@ -75,6 +75,7 @@ return [
             'redirects.hitCount' => false,
             'unifiedPageTranslationHandling' => false,
             'TypoScript.strictSyntax' => true,
+            'simplifiedControllerActionDispatching' => false,
         ],
         'createGroup' => '',
         'sitename' => 'TYPO3',
