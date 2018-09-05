@@ -62,14 +62,6 @@ class Connection extends \Doctrine\DBAL\Connection
     private $prepareConnectionCommands = [];
 
     /**
-     * Prevents the duplicate registration of event handlers and types for this connection.
-     * If true the events will not be initialized any more in the getDatabasePlatform() method.
-     *
-     * @var bool
-     */
-    private $customConnectSetupExecuted = false;
-
-    /**
      * Initializes a new instance of the Connection class.
      *
      * @param array $params The connection parameters.
@@ -93,7 +85,7 @@ class Connection extends \Doctrine\DBAL\Connection
     public function connect(): bool
     {
         // Early return if the connection is already open and custom setup has been done.
-        if ($this->customConnectSetupExecuted || !parent::connect()) {
+        if (!parent::connect()) {
             return false;
         }
 
@@ -106,8 +98,6 @@ class Connection extends \Doctrine\DBAL\Connection
                 );
             }
         }
-
-        $this->customConnectSetupExecuted = true;
 
         return true;
     }
