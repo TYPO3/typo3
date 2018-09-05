@@ -33,6 +33,12 @@
 			<trans-unit id="overview.baseUrl">
 				<source>Base URLs</source>
 			</trans-unit>
+			<trans-unit id="overview.unassignedSites.title">
+				<source>Unassigned site configurations</source>
+			</trans-unit>
+			<trans-unit id="overview.unassignedSites.description">
+				<source>The following sites don't belong to any page anymore and can be removed.</source>
+			</trans-unit>
 			<trans-unit id="validation.identifierRenamed.title">
 				<source>Renamed identifier</source>
 			</trans-unit>

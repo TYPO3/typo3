@@ -105,14 +105,20 @@ class SiteConfigurationController
         $this->configureOverViewDocHeader();
         $allSites = $this->siteFinder->getAllSites();
         $pages = $this->getAllSitePages();
+        $unassignedSites = [];
         foreach ($allSites as $identifier => $site) {
             $rootPageId = $site->getRootPageId();
             if (isset($pages[$rootPageId])) {
                 $pages[$rootPageId]['siteIdentifier'] = $identifier;
                 $pages[$rootPageId]['siteConfiguration'] = $site;
+            } else {
+                $unassignedSites[] = $site;
             }
         }
-        $this->view->assign('pages', $pages);
+        $this->view->assignMultiple([
+            'pages' => $pages,
+            'unassignedSites' => $unassignedSites
+        ]);
     }
 
     /**
