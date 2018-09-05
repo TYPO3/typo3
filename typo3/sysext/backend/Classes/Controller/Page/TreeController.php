@@ -21,11 +21,13 @@ use TYPO3\CMS\Backend\Configuration\BackendUserConfiguration;
 use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Site\PseudoSiteFinder;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -86,13 +88,6 @@ class TreeController
      * @var array
      */
     protected $expandedState = [];
-
-    /**
-     * Associative array containing all pageIds as key, and domain names as values.
-     *
-     * @var array|null
-     */
-    protected $domains;
 
     /**
      * Instance of the icon factory, to be used for generating the items.
@@ -271,7 +266,7 @@ class TreeController
         }
         $visibleText = GeneralUtility::fixed_lgd_cs($visibleText, (int)$this->getBackendUser()->uc['titleLen'] ?: 40);
 
-        if ($this->addDomainName) {
+        if ($this->addDomainName && $page['is_siteroot']) {
             $domain = $this->getDomainNameForPage($pageId);
             $suffix = $domain !== '' ? ' [' . $domain . ']' : '';
         }
@@ -386,24 +381,23 @@ class TreeController
      */
     protected function getDomainNameForPage(int $pageId): string
     {
-        if (!is_array($this->domains)) {
-            $this->domains = [];
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('sys_domain');
-            $result = $queryBuilder
-                ->select('domainName', 'pid')
-                ->from('sys_domain')
-                ->orderBy('sorting')
-                ->execute()
-                ->fetchAll();
-            foreach ($result as $domain) {
-                $domainPid = (int)$domain['pid'];
-                if (!isset($this->domains[$domainPid])) {
-                    $this->domains[$domainPid] = $domain['domainName'];
-                }
+        $domain = '';
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        try {
+            $site = $siteFinder->getSiteByRootPageId($pageId);
+            $domain = (string)$site->getBase();
+        } catch (SiteNotFoundException $e) {
+            // No site found, let's see if it is a legacy-pseudo-site
+            $pseudoSiteFinder = GeneralUtility::makeInstance(PseudoSiteFinder::class);
+            try {
+                $site = $pseudoSiteFinder->getSiteByRootPageId($pageId);
+                $domain = trim((string)$site->getBase(), '/');
+            } catch (SiteNotFoundException $e) {
+                // No pseudo-site found either
             }
         }
-        return $this->domains[$pageId] ?? '';
+
+        return $domain;
     }
 
     /**

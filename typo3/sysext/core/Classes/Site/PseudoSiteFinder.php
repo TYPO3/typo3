@@ -160,8 +160,8 @@ class PseudoSiteFinder
     public function getSiteByPageId(int $pageId, array $rootLine = null): SiteInterface
     {
         $this->findAll();
-        if ($pageId === 0) {
-            return $this->pseudoSites[0];
+        if (isset($this->pseudoSites[$pageId])) {
+            return $this->pseudoSites[$pageId];
         }
         if (!is_array($rootLine)) {
             try {
@@ -176,6 +176,24 @@ class PseudoSiteFinder
             }
         }
         throw new SiteNotFoundException('No pseudo-site found in root line of page ' . $pageId, 1534710048);
+    }
+
+    /**
+     * Find a site by given root page id
+     *
+     * @param int $rootPageId the page ID (default language)
+     * @return SiteInterface
+     * @throws SiteNotFoundException
+     */
+    public function getSiteByRootPageId(int $rootPageId): SiteInterface
+    {
+        if (empty($this->pseudoSites)) {
+            $this->populate();
+        }
+        if (isset($this->pseudoSites[$rootPageId])) {
+            return $this->pseudoSites[$rootPageId];
+        }
+        throw new SiteNotFoundException('No pseudo-site found for root page id ' . $rootPageId, 1521668982);
     }
 
     /**

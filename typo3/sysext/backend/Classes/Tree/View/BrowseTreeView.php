@@ -15,7 +15,9 @@ namespace TYPO3\CMS\Backend\Tree\View;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Site\PseudoSiteFinder;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -153,23 +155,21 @@ class BrowseTreeView extends AbstractTreeView
         if (!empty($row['is_siteroot'])
             && $this->getBackendUser()->getTSConfig()['options.']['pageTree.']['showDomainNameWithTitle'] ?? false
         ) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_domain');
-            $row = $queryBuilder
-                ->select('domainName', 'sorting')
-                ->from('sys_domain')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter($row['uid'], \PDO::PARAM_INT)
-                    )
-                )
-                ->orderBy('sorting')
-                ->setMaxResults(1)
-                ->execute()
-                ->fetch();
+            $pageId = (int)$row['uid'];
+            $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+            try {
+                $site = $siteFinder->getSiteByRootPageId($pageId);
+                $title .= ' [' . (string)$site->getBase() . ']';
+            } catch (SiteNotFoundException $e) {
+                // No site found, let's see if it is a legacy-pseudo-site
+                $pseudoSiteFinder = GeneralUtility::makeInstance(PseudoSiteFinder::class);
 
-            if ($row !== false) {
-                $title = sprintf('%s [%s]', $title, htmlspecialchars($row['domainName']));
+                try {
+                    $site = $pseudoSiteFinder->getSiteByRootPageId($pageId);
+                    $title .= ' [' . trim((string)$site->getBase(), '/') . ']';
+                } catch (SiteNotFoundException $e) {
+                    // No pseudo-site found either
+                }
             }
         }
         return $title;
