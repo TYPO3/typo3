@@ -159,8 +159,20 @@
 			<trans-unit id="label.group">
 				<source>Task group</source>
 			</trans-unit>
+			<trans-unit id="label.group.taskCount">
+			    <source>Amount of tasks in this scheduler task group</source>
+			</trans-unit>
 			<trans-unit id="label.noGroup">
 				<source>(no task group defined)</source>
+			</trans-unit>
+			<trans-unit id="label.noGroup.taskCount">
+				<source>Amount of tasks that are not assigned to any scheduler task group</source>
+			</trans-unit>
+			<trans-unit id="label.noClass">
+				<source>Tasks without registered classes</source>
+			</trans-unit>
+			<trans-unit id="label.noClass.taskCount">
+				<source>Amount of tasks without found class</source>
 			</trans-unit>
 			<trans-unit id="label.schedulableCommandName">
 				<source><![CDATA[Schedulable Command. <em>Save and reopen to define command arguments</em>]]></source>
@@ -274,10 +286,16 @@
 				<source>Please select at least one cache backend.</source>
 			</trans-unit>
 			<trans-unit id="msg.invalidTaskClass">
-				<source>The class of a registered task could not be found. You should re-install the extension that provided it or simply delete this task.</source>
+				<source><![CDATA[<strong>The following tasks can not be executed. No related class could be found for none of the following listed tasks.</strong> You should consider reinstalling the extension that provided them or simply deleting the tasks. Please check also if any of the listed tasks have to be recreated manually (which can be necessary after an extension update due to breaking changes or missing migration scripts).]]></source>
 			</trans-unit>
 			<trans-unit id="msg.invalidTaskClassEdit">
 				<source>The current class (%s) could not be found. Change it below or consider deleting this task altogether.</source>
+			</trans-unit>
+			<trans-unit id="msg.invalidTaskClass.infobox.title">
+				<source>%s registered scheduler tasks can not be executed</source>
+			</trans-unit>
+			<trans-unit id="msg.invalidTaskClass.infobox.message">
+				<source><![CDATA[<a href="#recordlist-task-group-missing">Please check the erroneous tasks!</a>]]></source>
 			</trans-unit>
 			<trans-unit id="msg.schedulerSetupCheck">
 				<source>This screen checks if the requisites for running the Scheduler as a cron job are fulfilled. It also displays information about the last run of the Scheduler.</source>

@@ -121,14 +121,14 @@ define(['jquery',
   };
 
   /**
-   * Toggle the visibility of task groups
+   * Toggle the visibility of task groups by clicking anywhere on the
+   * task group header
    *
    * @param {Object} theSelector
    */
   Scheduler.toggleTaskGroups = function(theSelector) {
     var taskGroup = theSelector.data('task-group-id');
-    var taskGroupClass = '.taskGroup_' + taskGroup;
-    $(taskGroupClass).toggleClass('taskGroup--close');
+    $('#recordlist-task-group-' + taskGroup).collapse('toggle');
   };
 
   /**
@@ -157,7 +157,7 @@ define(['jquery',
       Scheduler.toggleTaskGroups($(this));
     });
 
-    $('table.display').DataTable({
+    $('table.taskGroup-table').DataTable({
       "paging": false,
       "searching": false
     });

@@ -99,6 +99,10 @@ img.absmiddle {
     white-space: nowrap;
 }
 
+.nowrap-disabled {
+    white-space: normal !important;
+}
+
 //
 // TYPO3 styles for basic elements
 //

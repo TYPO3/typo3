@@ -176,6 +176,6 @@ class TasksCest
         $I->click('a[title="Cancel"]');
         $I->waitForElementVisible('div.tx_scheduler_mod1');
 
-        $I->canSee('new task group', 'tr.taskGroup');
+        $I->canSee('new task group', '.taskGroup');
     }
 }
