@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * Installs and downloads EXT:compatibility7 if needed
@@ -44,80 +44,94 @@ class Compatibility7ExtractionUpdate extends AbstractDownloadExtensionUpdate
     ];
 
     /**
-     * Checks if an update is needed
-     *
-     * @param string $description The description for the update
-     * @return bool Whether an update is needed (true) or not (false)
+     * @var \TYPO3\CMS\Install\Updates\ExtensionModel
      */
-    public function checkForUpdate(&$description)
+    protected $extension;
+
+    /**
+     * @var \TYPO3\CMS\Install\Updates\Confirmation
+     */
+    protected $confirmation;
+
+    public function __construct()
     {
-        $description = 'The extension "compatibility7" (Compatibility Mode for TYPO3 v7) was extracted into '
-            . 'the TYPO3 Extension Repository. This update downloads the TYPO3 Extension from the TER.';
+        $this->extension = new ExtensionModel(
+            'compatibility7',
+            'Compatibility Mode for TYPO3 v7',
+            '8.7.1',
+            'friendsoftypo3/compatibility7',
+            'Provides an additional backwards-compatibility layer with legacy functionality for sites that haven\'t fully migrated to TYPO3 v8 yet.'
+        );
 
-        $updateNeeded = false;
-
-        if (!$this->isWizardDone()) {
-            $updateNeeded = true;
-        }
-
-        return $updateNeeded;
+        $this->confirmation = new Confirmation(
+            'Are you sure?',
+            'The compatibility extensions come with a performance penalty, use only if needed. ' . $this->extension->getDescription(),
+            false
+        );
     }
 
     /**
-     * Second step: Ask user to install the extension
+     * Return a confirmation message instance
      *
-     * @param string $inputPrefix input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
-     * @return string HTML output
+     * @return \TYPO3\CMS\Install\Updates\Confirmation
      */
-    public function getUserInput($inputPrefix)
+    public function getConfirmation(): Confirmation
     {
-        return '
-            <div class="panel panel-danger">
-                <div class="panel-heading">Are you really sure?</div>
-                <div class="panel-body">
-                    <p>You should install EXT:compatibility7 only if you really need it.</p>
-                    <p>This update wizard cannot check if the extension was installed before the update.</p>
-                    <p>Are you really sure, you want to install EXT:compatibility7?</p>
-                    <div class="btn-group clearfix" data-toggle="buttons">
-                        <label class="btn btn-default active">
-                            <input type="radio" name="' . $inputPrefix . '[install]" value="0" checked="checked" /> no, don\'t install
-                        </label>
-                        <label class="btn btn-default">
-                            <input type="radio" name="' . $inputPrefix . '[install]" value="1" /> yes, please install
-                        </label>
-                    </div>
-                </div>
-            </div>
-        ';
+        return $this->confirmation;
     }
 
     /**
-     * Performs the update if EXT:compatibility7 should be installed.
+     * Return the identifier for this wizard
+     * This should be the same string as used in the ext_localconf class registration
      *
-     * @param array $databaseQueries Queries done in this update
-     * @param string $customMessage Custom message
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return 'compatibility7Extension';
+    }
+
+    /**
+     * Return the speaking name of this wizard
+     *
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return 'Install compatibility extension for TYPO3 7 compatibility';
+    }
+
+    /**
+     * Return the description for this wizard
+     *
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return 'The extension "compatibility7" (Compatibility Mode for TYPO3 v7) was extracted into '
+               . 'the TYPO3 Extension Repository. This update downloads the TYPO3 Extension from the TER.';
+    }
+
+    /**
+     * Is an update necessary?
+     * Is used to determine whether a wizard needs to be run.
+     *
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessage)
+    public function updateNecessary(): bool
     {
-        $requestParams = GeneralUtility::_GP('install');
-        if (!isset($requestParams['values']['compatibility7Extension']['install'])) {
-            return false;
-        }
-        $install = (int)$requestParams['values']['compatibility7Extension']['install'];
+        return !ExtensionManagementUtility::isLoaded('compatibility7');
+    }
 
-        if ($install === 1) {
-            // user decided to install extension, install and mark wizard as done
-            $updateSuccessful = $this->installExtension($this->extensionKey, $customMessage);
-            if ($updateSuccessful) {
-                $this->markWizardAsDone();
-                return true;
-            }
-        } else {
-            // user decided to not install extension, mark wizard as done
-            $this->markWizardAsDone();
-            return true;
-        }
-        return $updateSuccessful;
+    /**
+     * Returns an array of class names of Prerequisite classes
+     * This way a wizard can define dependencies like "database up-to-date" or
+     * "reference index updated"
+     *
+     * @return string[]
+     */
+    public function getPrerequisites(): array
+    {
+        return [];
     }
 }

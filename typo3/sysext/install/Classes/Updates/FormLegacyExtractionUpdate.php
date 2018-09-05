@@ -25,41 +25,83 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FormLegacyExtractionUpdate extends AbstractDownloadExtensionUpdate
 {
     /**
-     * @var string
+     * @var \TYPO3\CMS\Install\Updates\Confirmation
      */
-    protected $title = 'Install extension "form_legacy" from TER';
+    protected $confirmation;
 
-    /**
-     * @var string
-     */
-    protected $extensionKey = 'form_legacy';
-
-    /**
-     * @var array
-     */
-    protected $extensionDetails = [
-        'form_legacy' => [
-            'title' => 'Legacy form extension for TYPO3 v7 compatibility',
-            'description' => 'Provides an additional backwards-compatibility layer with legacy functionality for sites that used the form extension in TYPO3 v7.',
-            'versionString' => '8.7.0',
-            'composerName' => 'friendsoftypo3/form-legacy',
-        ],
-    ];
-
-    /**
-     * Checks if an update is needed
-     *
-     * @param string $description The description for the update
-     * @return bool Whether an update is needed (true) or not (false)
-     */
-    public function checkForUpdate(&$description)
+    public function __construct()
     {
-        $description = 'The extension "form" was rewritten in TYPO3 v8 and follows a new approach.'
-            . 'This update downloads the old implementation of the form extension as known from TYPO3 v7 from the TER.';
+        $this->extension = new ExtensionModel(
+            'form_legacy',
+            'Legacy form extension for TYPO3 v7 compatibility',
+            '8.7.0',
+            'friendsoftypo3/form-legacy',
+            'Provides an additional backwards-compatibility layer with legacy functionality for sites that used the form extension in TYPO3 v7.'
+        );
 
+        $this->confirmation = new Confirmation(
+            'Are you really sure, you want to install EXT:form_legacy?',
+            'You should install EXT:form_legacy only if you really need it.'
+                    . 'This update wizard checked all content elements and found at least one not deleted element based'
+                    . 'on the old form module. It is advised to manually convert those elements from the old form implementation'
+                    . 'to the new implementation of EXT:form. EXT:form_legacy should be unloaded and removed afterwards.',
+            true
+        );
+    }
+
+    /**
+     * Return a confirmation message instance
+     *
+     * @return \TYPO3\CMS\Install\Updates\Confirmation
+     */
+    public function getConfirmation(): Confirmation
+    {
+        return $this->confirmation;
+    }
+
+    /**
+     * Return the identifier for this wizard
+     * This should be the same string as used in the ext_localconf class registration
+     *
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return 'formLegacyExtractionUpdate';
+    }
+
+    /**
+     * Return the speaking name of this wizard
+     *
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return 'Install extension "form_legacy"';
+    }
+
+    /**
+     * Return the description for this wizard
+     *
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return 'The extension "form" was rewritten in TYPO3 v8 and follows a new approach.'
+        . 'This update downloads the old implementation of the form extension as known from TYPO3 v7 from the TER.';
+    }
+
+    /**
+     * Is an update necessary?
+     * Is used to determine whether a wizard needs to be run.
+     *
+     * @return bool
+     */
+    public function updateNecessary(): bool
+    {
         $updateNeeded = false;
 
-        if (!$this->isWizardDone() && !ExtensionManagementUtility::isLoaded('form_legacy')) {
+        if (!ExtensionManagementUtility::isLoaded('form_legacy')) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $count = $queryBuilder
@@ -72,67 +114,20 @@ class FormLegacyExtractionUpdate extends AbstractDownloadExtensionUpdate
                 $updateNeeded = true;
             }
         }
-
         return $updateNeeded;
     }
 
     /**
-     * Second step: Ask user to install the extension
+     * Returns an array of class names of Prerequisite classes
+     * This way a wizard can define dependencies like "database up-to-date" or
+     * "reference index updated"
      *
-     * @param string $inputPrefix input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
-     * @return string HTML output
+     * @return string[]
      */
-    public function getUserInput($inputPrefix)
+    public function getPrerequisites(): array
     {
-        return '
-            <div class="panel panel-danger">
-                <div class="panel-heading">Are you really sure?</div>
-                <div class="panel-body">
-                    <p>You should install EXT:form_legacy only if you really need it.</p>
-                    <p>This update wizard checked all content elements and found at least one not deleted element based
-                    on the old form module. It is advised to manually convert those elements from the old form implementation
-                    to the new implementation of EXT:form. EXT:form_legacy should be unloaded and removed afterwards.</p>
-                    <p>Are you really sure, you want to install EXT:form_legacy?</p>
-                    <div class="btn-group clearfix" data-toggle="buttons">
-                        <label class="btn btn-default active">
-                            <input type="radio" name="' . $inputPrefix . '[install]" value="0" checked="checked" /> no, don\'t install
-                        </label>
-                        <label class="btn btn-default">
-                            <input type="radio" name="' . $inputPrefix . '[install]" value="1" /> yes, please install
-                        </label>
-                    </div>
-                </div>
-            </div>
-        ';
-    }
-
-    /**
-     * Performs the update if EXT:form_legacy should be installed.
-     *
-     * @param array $databaseQueries Queries done in this update
-     * @param string $customMessage Custom message
-     * @return bool
-     */
-    public function performUpdate(array &$databaseQueries, &$customMessage)
-    {
-        $requestParams = GeneralUtility::_GP('install');
-        if (!isset($requestParams['values']['formLegacyExtractionUpdate']['install'])) {
-            return false;
-        }
-        $install = (int)$requestParams['values']['formLegacyExtractionUpdate']['install'];
-
-        if ($install === 1) {
-            // user decided to install extension, install and mark wizard as done
-            $updateSuccessful = $this->installExtension($this->extensionKey, $customMessage);
-            if ($updateSuccessful) {
-                $this->markWizardAsDone();
-                return true;
-            }
-        } else {
-            // user decided to not install extension, mark wizard as done
-            $this->markWizardAsDone();
-            return true;
-        }
-        return $updateSuccessful;
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
     }
 }

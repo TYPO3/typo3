@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Install\Updates;
 
 /*
@@ -14,6 +15,7 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -25,33 +27,48 @@ use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 /**
  * Download extension from TER
  */
-abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
+abstract class AbstractDownloadExtensionUpdate implements UpgradeWizardInterface, ConfirmableInterface, ChattyInterface
 {
-    /**
-     * @var string
-     */
-    protected $title = 'Install an Extension from the Extension Repository';
-
-    /**
-     * See subclasses for more information
-     * @var array
-     */
-    protected $extensionDetails = [];
-
     /**
      * @var string
      */
     protected $repositoryUrl = 'https://typo3.org/fileadmin/ter/@filename';
 
     /**
+     * @var OutputInterface
+     */
+    protected $output;
+
+    /**
+     * @var \TYPO3\CMS\Install\Updates\ExtensionModel
+     */
+    protected $extension;
+
+    public function setOutput(OutputInterface $output): void
+    {
+        $this->output = $output;
+    }
+
+    /**
+     * Execute the update
+     * Called when a wizard reports that an update is necessary
+     *
+     * @return bool
+     */
+    public function executeUpdate(): bool
+    {
+        return $this->installExtension($this->extension);
+    }
+
+    /**
      * This method can be called to install an extension following all proper processes
      * (e.g. installing in extList, respecting priority, etc.)
      *
-     * @param string $extensionKey
-     * @param string $customMessage
+     * @param \TYPO3\CMS\Install\Updates\ExtensionModel $extension
      * @return bool whether the installation worked or not
+     * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
      */
-    protected function installExtension($extensionKey, &$customMessage)
+    protected function installExtension(ExtensionModel $extension): bool
     {
         $updateSuccessful = true;
         /** @var ObjectManager $objectManager */
@@ -60,27 +77,23 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
         /** @var ListUtility $extensionListUtility */
         $extensionListUtility = $objectManager->get(ListUtility::class);
         $availableExtensions = $extensionListUtility->getAvailableExtensions();
-        $extensionDetails = $this->getExtensionDetails($extensionKey);
 
+        $extensionKey = $extension->getKey();
         $isExtensionAvailable = !empty($availableExtensions[$extensionKey]);
         $isComposerMode = Environment::isComposerMode();
 
         if (!$isComposerMode && !$isExtensionAvailable) {
             /** @var TerUtility $extensionTerUtility */
             $extensionTerUtility = $objectManager->get(TerUtility::class);
-            if (empty($extensionDetails)) {
-                $updateSuccessful = false;
-                $customMessage .= 'No version information for extension ' . $extensionKey . ' found. Can not install the extension.';
-            }
-            $t3xContent = $this->fetchExtension($extensionKey, $extensionDetails['versionString']);
+            $t3xContent = $this->fetchExtension($extensionKey, $extension->getVersionString());
             if (empty($t3xContent)) {
                 $updateSuccessful = false;
-                $customMessage .= 'The extension ' . $extensionKey . ' could not be downloaded.';
+                $this->output->writeln('<error>The extension ' . $extensionKey . ' could not be downloaded.</error>');
             }
             $t3xExtracted = $extensionTerUtility->decodeExchangeData($t3xContent);
             if (empty($t3xExtracted) || !is_array($t3xExtracted) || empty($t3xExtracted['extKey'])) {
                 $updateSuccessful = false;
-                $customMessage .= 'The extension ' . $extensionKey . ' could not be extracted.';
+                $this->output->writeln('<error>The extension ' . $extensionKey . ' could not be extracted.</error>');
             }
 
             /** @var FileHandlingUtility $extensionFileHandlingUtility */
@@ -93,10 +106,16 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
 
         if ($isComposerMode && !$isExtensionAvailable) {
             $updateSuccessful = false;
-            $customMessage .= 'The extension ' . $extensionKey . ' can not be downloaded since ' .
-              'Composer is used for package management. Please require this ' .
-              'extension as package via Composer: ' .
-              '"composer require ' . $extensionDetails['composerName'] . ':^' . $extensionDetails['versionString'] . '"';
+            $this->output->writeln('<warning>The extension ' .
+                              $extensionKey .
+                              ' can not be downloaded since ' .
+                              'Composer is used for package management. Please require this ' .
+                              'extension as package via Composer: ' .
+                              '"composer require ' .
+                              $extension->getComposerName() .
+                              ':^' .
+                              $extension->getVersionString() .
+                              '"</warning>');
         }
 
         if ($updateSuccessful) {
@@ -109,31 +128,14 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
     }
 
     /**
-     * Returns the details of a local or external extension
-     *
-     * @param string $extensionKey Key of the extension to check
-     *
-     * @return array Extension details
-     */
-    protected function getExtensionDetails($extensionKey)
-    {
-        if (array_key_exists($extensionKey, $this->extensionDetails)) {
-            return $this->extensionDetails[$extensionKey];
-        }
-
-        return [];
-    }
-
-    /**
      * Fetch extension from repository
      *
      * @param string $extensionKey The extension key to fetch
      * @param string $version The version to fetch
-     *
      * @throws \InvalidArgumentException
      * @return string T3X file content
      */
-    protected function fetchExtension($extensionKey, $version)
+    protected function fetchExtension($extensionKey, $version): string
     {
         if (empty($extensionKey) || empty($version)) {
             throw new \InvalidArgumentException(
@@ -150,17 +152,15 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
 
     /**
      * Open an URL and return the response
-     *
      * This wrapper method is required to try several download methods if
      * the configuration is not valid or initially written by the installer.
      *
      * @param string $url The URL to file
-     *
      * @throws \Exception
      * @throws \InvalidArgumentException
      * @return string File content
      */
-    protected function fetchUrl($url)
+    protected function fetchUrl($url): string
     {
         if (empty($url)) {
             throw new \InvalidArgumentException(

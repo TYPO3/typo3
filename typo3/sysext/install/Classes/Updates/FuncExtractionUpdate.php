@@ -14,112 +14,100 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * Installs and downloads EXT:func
  */
 class FuncExtractionUpdate extends AbstractDownloadExtensionUpdate
 {
-    /**
-     * @var string
-     */
-    protected $title = 'Install extension "func" from TER';
 
     /**
-     * @var string
+     * @var \TYPO3\CMS\Install\Updates\Confirmation
      */
-    protected $extensionKey = 'func';
+    protected $confirmation;
 
-    /**
-     * @var array
-     */
-    protected $extensionDetails = [
-        'func' => [
-            'title' => 'Web->Functions module',
-            'description' => 'Provides Web->Functions BE module used in previous TYPO3 versions for extensions that still rely on it.',
-            'versionString' => '9.0.1',
-            'composerName' => 'friendsoftypo3/cms-func',
-        ],
-    ];
-
-    /**
-     * Checks if an update is needed
-     *
-     * @param string $description The description for the update
-     * @return bool Whether an update is needed (true) or not (false)
-     */
-    public function checkForUpdate(&$description)
+    public function __construct()
     {
-        $description = 'The extension "func" that brings the "Web->Functions" backend module has been extracted to'
-            . ' the TYPO3 Extension Repository. This update downloads the TYPO3 extension func from the TER.'
-            . ' Use this if you\'re dealing with extensions in the instance that rely on "Web->Functions" and bring own'
-            . ' modules.';
+        $this->extension = new ExtensionModel(
+            'func',
+            'Web->Functions module',
+            '9.0.1',
+            'friendsoftypo3/cms-func',
+            'Provides Web->Functions BE module used in previous TYPO3 versions for extensions that still rely on it.'
+        );
 
-        $updateNeeded = false;
-
-        if (!$this->isWizardDone()) {
-            $updateNeeded = true;
-        }
-
-        return $updateNeeded;
+        $this->confirmation = new Confirmation(
+            'Are you sure?',
+            'You should install EXT:func only if you really need it. ' . $this->extension->getDescription(),
+            false
+        );
     }
 
     /**
-     * Second step: Ask user to install the extension
+     * Return a confirmation message instance
      *
-     * @param string $inputPrefix input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
-     * @return string HTML output
+     * @return \TYPO3\CMS\Install\Updates\Confirmation
      */
-    public function getUserInput($inputPrefix)
+    public function getConfirmation(): Confirmation
     {
-        return '
-            <div class="panel panel-danger">
-                <div class="panel-heading">Are you really sure?</div>
-                <div class="panel-body">
-                    <p>You should install EXT:func only if you really need it.</p>
-                    <p>This update wizard cannot check if the extension was installed before the update.</p>
-                    <p>Are you really sure, you want to install EXT:func?</p>
-                    <div class="btn-group clearfix" data-toggle="buttons">
-                        <label class="btn btn-default active">
-                            <input type="radio" name="' . $inputPrefix . '[install]" value="0" checked="checked" /> no, don\'t install
-                        </label>
-                        <label class="btn btn-default">
-                            <input type="radio" name="' . $inputPrefix . '[install]" value="1" /> yes, please install
-                        </label>
-                    </div>
-                </div>
-            </div>
-        ';
+        return $this->confirmation;
     }
 
     /**
-     * Performs the update if EXT:func should be installed.
+     * Return the identifier for this wizard
+     * This should be the same string as used in the ext_localconf class registration
      *
-     * @param array $databaseQueries Queries done in this update
-     * @param string $customMessage Custom message
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return 'funcExtension';
+    }
+
+    /**
+     * Return the speaking name of this wizard
+     *
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return 'Install extension "func" from TER';
+    }
+
+    /**
+     * Return the description for this wizard
+     *
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return 'The extension "func" that brings the "Web->Functions" backend module has been extracted to'
+               . ' the TYPO3 Extension Repository. This update downloads the TYPO3 extension func from the TER.'
+               . ' Use this if you\'re dealing with extensions in the instance that rely on "Web->Functions" and bring own'
+               . ' modules.';
+    }
+
+    /**
+     * Is an update necessary?
+     * Is used to determine whether a wizard needs to be run.
+     *
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessage)
+    public function updateNecessary(): bool
     {
-        $requestParams = GeneralUtility::_GP('install');
-        if (!isset($requestParams['values']['funcExtension']['install'])) {
-            return false;
-        }
-        $install = (int)$requestParams['values']['funcExtension']['install'];
+        return !ExtensionManagementUtility::isLoaded($this->extension->getKey());
+    }
 
-        if ($install === 1) {
-            // user decided to install extension, install and mark wizard as done
-            $updateSuccessful = $this->installExtension($this->extensionKey, $customMessage);
-            if ($updateSuccessful) {
-                $this->markWizardAsDone();
-                return true;
-            }
-        } else {
-            // user decided to not install extension, mark wizard as done
-            $this->markWizardAsDone();
-            return true;
-        }
-        return $updateSuccessful;
+    /**
+     * Returns an array of class names of Prerequisite classes
+     * This way a wizard can define dependencies like "database up-to-date" or
+     * "reference index updated"
+     *
+     * @return string[]
+     */
+    public function getPrerequisites(): array
+    {
+        return [];
     }
 }

@@ -15,8 +15,6 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -24,47 +22,82 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Installs EXT:redirect if sys_domain.redirectTo is filled, and migrates the values from redirectTo
  * to a proper sys_redirect entry.
  */
-class RedirectsExtensionUpdate extends AbstractDownloadExtensionUpdate implements LoggerAwareInterface
+class RedirectsExtensionUpdate extends AbstractDownloadExtensionUpdate
 {
-    use LoggerAwareTrait;
-
     /**
-     * @var string
+     * @var \TYPO3\CMS\Install\Updates\Confirmation
      */
-    protected $title = 'Install system extension "redirects" if a sys_domain entry with redirectTo is necessary';
+    protected $confirmation;
 
-    /**
-     * @var array
-     */
-    protected $extensionDetails = [
-        'redirects' => [
-            'title' => 'Redirects',
-            'description' => 'Manage redirects for your TYPO3-based website',
-            'versionString' => '9.2',
-            'composerName' => 'typo3/cms-redirects',
-        ],
-    ];
-
-    /**
-     * Checks if an update is needed
-     *
-     * @param string $description The description for the update
-     * @return bool Whether an update is needed (true) or not (false)
-     */
-    public function checkForUpdate(&$description): bool
+    public function __construct()
     {
-        $description = 'The extension "redirects" includes functionality to handle any kind of redirects. '
-            . 'The functionality superseds sys_domain entries with the only purpose of redirecting to a different domain or entry. '
-            . 'This upgrade wizard installs the redirect extension if necessary and migrates the sys_domain entries to standard redirects.';
+        $this->extension = new ExtensionModel(
+            'redirects',
+            'Redirects',
+            '9.2',
+            'typo3/cms-redirects',
+            'Manage redirects for your TYPO3-based website'
+        );
 
-        $updateNeeded = false;
+        $this->confirmation = new Confirmation(
+            'Are you sure?',
+            'You should install the "adminpanel" only if needed. ' . $this->extension->getDescription(),
+            true
+        );
+    }
 
-        // Check if table exists and table is not empty, and the wizard has not been run already
-        if ($this->checkIfWizardIsRequired() && !$this->isWizardDone()) {
-            $updateNeeded = true;
-        }
+    /**
+     * Return a confirmation message instance
+     *
+     * @return \TYPO3\CMS\Install\Updates\Confirmation
+     */
+    public function getConfirmation(): Confirmation
+    {
+        return $this->confirmation;
+    }
 
-        return $updateNeeded;
+    /**
+     * Return the identifier for this wizard
+     * This should be the same string as used in the ext_localconf class registration
+     *
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return 'redirects';
+    }
+
+    /**
+     * Return the speaking name of this wizard
+     *
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return 'Install system extension "redirects" if a sys_domain entry with redirectTo is necessary';
+    }
+
+    /**
+     * Return the description for this wizard
+     *
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return 'The extension "redirects" includes functionality to handle any kind of redirects. '
+               . 'The functionality superseds sys_domain entries with the only purpose of redirecting to a different domain or entry. '
+               . 'This upgrade wizard installs the redirect extension if necessary and migrates the sys_domain entries to standard redirects.';
+    }
+
+    /**
+     * Is an update necessary?
+     * Is used to determine whether a wizard needs to be run.
+     *
+     * @return bool
+     */
+    public function updateNecessary(): bool
+    {
+        return $this->checkIfWizardIsRequired();
     }
 
     /**
@@ -72,18 +105,15 @@ class RedirectsExtensionUpdate extends AbstractDownloadExtensionUpdate implement
      * - Install EXT:redirect
      * - Migrate DB records
      *
-     * @param array $databaseQueries Queries done in this update
-     * @param string $customMessage Custom message
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessage): bool
+    public function executeUpdate(): bool
     {
         // Install the EXT:redirects extension if not happened yet
-        $installationSuccessful = $this->installExtension('redirects', $customMessage);
+        $installationSuccessful = $this->installExtension($this->extension->getKey());
         if ($installationSuccessful) {
             // Migrate the database entries
             $this->migrateRedirectDomainsToSysRedirect();
-            $this->markWizardAsDone();
         }
         return $installationSuccessful;
     }
@@ -171,5 +201,19 @@ class RedirectsExtensionUpdate extends AbstractDownloadExtensionUpdate implement
             // Remove the sys_domain record (hard)
             $connDomains->delete('sys_domain', ['uid' => (int)$domainEntry['uid']]);
         }
+    }
+
+    /**
+     * Returns an array of class names of Prerequisite classes
+     * This way a wizard can define dependencies like "database up-to-date" or
+     * "reference index updated"
+     *
+     * @return string[]
+     */
+    public function getPrerequisites(): array
+    {
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
     }
 }

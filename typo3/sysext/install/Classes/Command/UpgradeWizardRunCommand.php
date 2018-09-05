@@ -108,8 +108,6 @@ class UpgradeWizardRunCommand extends Command
                 if ($upgradeWizard !== null) {
                     $this->handlePrerequisites([$upgradeWizard]);
                     $result = $this->runSingleWizard($upgradeWizard);
-                } else {
-                    $this->output->warning('Wizard ' . $wizardToExecute . ' is already done.');
                 }
             } else {
                 $this->output->error('No such wizard: ' . $wizardToExecute);
@@ -151,7 +149,12 @@ class UpgradeWizardRunCommand extends Command
             return null;
         }
 
-        return $wizardInstance->updateNecessary() ? $wizardInstance : null;
+        if ($wizardInstance->updateNecessary()) {
+            return $wizardInstance;
+        }
+        $this->output->note('Wizard ' . $identifier . ' does not need to make changes. Marking wizard as done.');
+        $this->upgradeWizardsService->markWizardAsDone($identifier);
+        return null;
     }
 
     /**
@@ -218,6 +221,7 @@ class UpgradeWizardRunCommand extends Command
             $helper = $this->getHelper('question');
             if (!$helper->ask($this->input, $this->output, $question)) {
                 $this->upgradeWizardsService->markWizardAsDone($instance->getIdentifier());
+                $this->output->note('No changes applied, marking wizard as done.');
                 return 0;
             }
         }

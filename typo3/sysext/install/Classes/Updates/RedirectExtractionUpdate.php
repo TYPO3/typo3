@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Updates;
  */
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -23,101 +24,84 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class RedirectExtractionUpdate extends AbstractDownloadExtensionUpdate
 {
     /**
-     * @var string
+     * @var \TYPO3\CMS\Install\Updates\ExtensionModel
      */
-    protected $title = 'Install extension "rdct" from TER if DB table cache_md5params is filled';
+    protected $extension;
 
     /**
-     * @var string
+     * @var \TYPO3\CMS\Install\Updates\Confirmation
      */
-    protected $extensionKey = 'rdct';
+    protected $confirmation;
 
-    /**
-     * @var array
-     */
-    protected $extensionDetails = [
-        'rdct' => [
-            'title' => 'Redirects based on &RDCT parameter',
-            'description' => 'Provides redirects based on "cache_md5params" and the GET parameter &RDCT for extensions that still rely on it.',
-            'versionString' => '1.0.0',
-            'composerName' => 'friendsoftypo3/rdct',
-        ],
-    ];
-
-    /**
-     * Checks if an update is needed
-     *
-     * @param string $description The description for the update
-     * @return bool Whether an update is needed (true) or not (false)
-     */
-    public function checkForUpdate(&$description)
+    public function __construct()
     {
-        $description = 'The extension "rdct" includes redirects based on the GET parameter &RDCT. The functionality has been extracted to'
-            . ' the TYPO3 Extension Repository. This update downloads the TYPO3 extension from the TER.'
-            . ' Use this if you are dealing with extensions in the instance that rely on this kind of redirects.';
+        $this->extension = new ExtensionModel(
+          'rdct',
+            'Redirects based on &RDCT parameter',
+            '1.0.0',
+            'friendsoftypo3/rdct',
+            'The extension provides redirects based on "cache_md5params" and the GET parameter &RDCT for extensions that still rely on it.'
+        );
 
-        $updateNeeded = false;
-
-        // Check if table exists and table is not empty, and the wizard has not been run already
-        if ($this->checkIfWizardIsRequired() && !$this->isWizardDone()) {
-            $updateNeeded = true;
-        }
-
-        return $updateNeeded;
+        $this->confirmation = new Confirmation(
+            'Are you sure?',
+            'You should install the Redirects extension only if needed. ' . $this->extension->getDescription(),
+            false
+        );
     }
 
     /**
-     * Second step: Ask user to install the extension
+     * Return a confirmation message instance
      *
-     * @param string $inputPrefix input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
-     * @return string HTML output
+     * @return \TYPO3\CMS\Install\Updates\Confirmation
      */
-    public function getUserInput($inputPrefix)
+    public function getConfirmation(): Confirmation
     {
-        return '
-            <div class="panel panel-danger">
-                <div class="panel-heading">Are you really sure?</div>
-                <div class="panel-body">
-                    <p>You should install EXT:rdct only if you really need it.</p>
-                    <p>If you have never heard of index.php?RDCT then we are 99% confident that you don\'t need to install this extension.</p>
-                    <p>Are you really sure, you want to install EXT:rdct?</p>
-                    <div class="btn-group clearfix" data-toggle="buttons">
-                        <label class="btn btn-default active">
-                            <input type="radio" name="' . $inputPrefix . '[install]" value="0" checked="checked" /> no, don\'t install
-                        </label>
-                        <label class="btn btn-default">
-                            <input type="radio" name="' . $inputPrefix . '[install]" value="1" /> yes, please install
-                        </label>
-                    </div>
-                </div>
-            </div>
-        ';
+        return $this->confirmation;
     }
 
     /**
-     * Performs the update if EXT:rdct should be installed.
+     * Return the identifier for this wizard
+     * This should be the same string as used in the ext_localconf class registration
      *
-     * @param array $databaseQueries Queries done in this update
-     * @param string $customMessage Custom message
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return 'rdctExtension';
+    }
+
+    /**
+     * Return the speaking name of this wizard
+     *
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return 'Install extension "rdct" from TER if DB table cache_md5params is filled';
+    }
+
+    /**
+     * Return the description for this wizard
+     *
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return 'The extension "rdct" includes redirects based on the GET parameter &RDCT. The functionality has been extracted to'
+               . ' the TYPO3 Extension Repository. This update downloads the TYPO3 extension from the TER.'
+               . ' Use this if you are dealing with extensions in the instance that rely on this kind of redirects.';
+    }
+
+    /**
+     * Is an update necessary?
+     * Is used to determine whether a wizard needs to be run.
+     *
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessage)
+    public function updateNecessary(): bool
     {
-        $requestParams = GeneralUtility::_GP('install');
-        if (!isset($requestParams['values']['rdctExtension']['install'])) {
-            return false;
-        }
-        $install = (int)$requestParams['values']['rdctExtension']['install'];
-
-        $updateSuccessful = true;
-        if ($install === 1) {
-            // user decided to install extension, install and mark wizard as done
-            $updateSuccessful = $this->installExtension($this->extensionKey, $customMessage);
-        }
-        if ($updateSuccessful) {
-            $this->markWizardAsDone();
-        }
-        return $updateSuccessful;
+        return !ExtensionManagementUtility::isLoaded('rdct') && $this->checkIfWizardIsRequired();
     }
 
     /**
@@ -143,5 +127,19 @@ class RedirectExtractionUpdate extends AbstractDownloadExtensionUpdate
         }
 
         return false;
+    }
+
+    /**
+     * Returns an array of class names of Prerequisite classes
+     * This way a wizard can define dependencies like "database up-to-date" or
+     * "reference index updated"
+     *
+     * @return string[]
+     */
+    public function getPrerequisites(): array
+    {
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
     }
 }

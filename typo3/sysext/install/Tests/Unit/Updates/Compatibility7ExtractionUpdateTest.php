@@ -58,53 +58,14 @@ class Compatibility7ExtractionUpdateTest extends UnitTestCase
     {
         $this->registry->get('installUpdate', Compatibility7ExtractionUpdate::class, false)->willReturn(false);
         $subject = new Compatibility7ExtractionUpdate();
-        $description = '';
-        $this->assertTrue($subject->checkForUpdate($description));
+        $this->assertTrue($subject->updateNecessary());
     }
 
     /**
      * @test
      */
-    public function checkForUpdateReturnsFalseIfWizardIsMarkedAsDone()
+    public function performUpdateInstallsExtensionUponRequest()
     {
-        $this->registry->get('installUpdate', Compatibility7ExtractionUpdate::class, false)->willReturn(true);
-        $subject = new Compatibility7ExtractionUpdate();
-        $description = '';
-        $this->assertFalse($subject->checkForUpdate($description));
-    }
-
-    /**
-     * @test
-     */
-    public function performUpdateReturnsFalseIfNoUserInputWasFound()
-    {
-        $_GET['install'] = [];
-        $subject = new Compatibility7ExtractionUpdate();
-        $databaseQueries = [];
-        $customMessage = '';
-        $this->assertFalse($subject->performUpdate($databaseQueries, $customMessage));
-    }
-
-    /**
-     * @test
-     */
-    public function performUpdateReturnsTrueIfUserDeclinesInstallAndMarksWizardDone()
-    {
-        $_GET['install']['values']['compatibility7Extension']['install'] = 0;
-        $subject = new Compatibility7ExtractionUpdate();
-        $databaseQueries = [];
-        $customMessage = '';
-        $this->assertTrue($subject->performUpdate($databaseQueries, $customMessage));
-        $this->registry->set('installUpdate', Compatibility7ExtractionUpdate::class, 1)->shouldHaveBeenCalled();
-    }
-
-    /**
-     * @test
-     */
-    public function performUpdateInstallsExtensionUponRequestAndMarksWizardDone()
-    {
-        $_GET['install']['values']['compatibility7Extension']['install'] = 1;
-
         $objectManager = $this->prophesize(ObjectManager::class);
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
 
@@ -115,12 +76,10 @@ class Compatibility7ExtractionUpdateTest extends UnitTestCase
         $extensionList = ['compatibility7' => ['foo' => 'bar']];
         $listUtility->getAvailableExtensions()->willReturn($extensionList);
         $listUtility->getAvailableAndInstalledExtensions($extensionList)->willReturn($extensionList);
-        $installUtility->install('compatibility7')->shouldBeCalled();
 
         $subject = new Compatibility7ExtractionUpdate();
-        $databaseQueries = [];
-        $customMessage = '';
-        $this->assertTrue($subject->performUpdate($databaseQueries, $customMessage));
-        $this->registry->set('installUpdate', Compatibility7ExtractionUpdate::class, 1)->shouldHaveBeenCalled();
+        $this->assertTrue($subject->executeUpdate());
+
+        $installUtility->install('compatibility7')->shouldHaveBeenCalled();
     }
 }
