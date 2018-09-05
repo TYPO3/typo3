@@ -101,6 +101,15 @@
 			<trans-unit id="site_errorhandling.errorHandler">
 				<source>How to handle errors</source>
 			</trans-unit>
+			<trans-unit id="site_errorhandling.errorHandler.fluid">
+				<source>Fluid Template</source>
+			</trans-unit>
+			<trans-unit id="site_errorhandling.errorHandler.page">
+				<source>Show Content from Page</source>
+			</trans-unit>
+			<trans-unit id="site_errorhandling.errorHandler.php">
+				<source>PHP Class (must implement the PageErrorHandlerInterface)</source>
+			</trans-unit>
 			<trans-unit id="site_errorhandling.errorFluidTemplate">
 				<source>Fluid Template File</source>
 			</trans-unit>

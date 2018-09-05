@@ -2,7 +2,9 @@
 
 return [
     'ctrl' => [
-        'label' => 'errorCode',
+        'label' => 'errorHandler',
+        'label_alt' => 'errorCode',
+        'label_alt_force' => true,
         'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.ctrl.title',
         'type' => 'errorHandler',
         'typeicon_column' => 'errorHandler',
@@ -43,11 +45,12 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
+                'required' => true,
                 'items' => [
-                    [' - select an handler type - ', ''],
-                    ['Fluid Template', 'Fluid'],
-                    ['Show Content from Page', 'Page'],
-                    ['PHP Class (must implement the PageErrorHandlerInterface)', 'PHP'],
+                    ['', ''],
+                    ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorHandler.fluid', 'Fluid'],
+                    ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorHandler.page', 'Page'],
+                    ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorHandler.php', 'PHP'],
                 ],
             ],
         ],
