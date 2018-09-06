@@ -467,6 +467,14 @@ class DatabaseIntegrityCheck
                         // It is quoted for keywords
                         $column = $tableColumns[strtolower($fieldName)]
                             ?? $tableColumns[$connection->quoteIdentifier(strtolower($fieldName))];
+                        if (!$column) {
+                            // Throw meaningful exception if field does not exist in DB - 'none' is not filtered here since the
+                            // method is only called with type=group fields
+                            throw new \RuntimeException(
+                                'Field ' . $fieldName . ' for table ' . $table . ' has been defined in TCA, but does not exist in DB',
+                                1536248936
+                            );
+                        }
                         $fieldType = $column->getType()->getName();
                         if (in_array(
                             $fieldType,
