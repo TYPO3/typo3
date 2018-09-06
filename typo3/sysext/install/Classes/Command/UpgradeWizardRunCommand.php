@@ -24,7 +24,6 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\UpgradeWizardsService;
 use TYPO3\CMS\Install\Updates\ChattyInterface;
@@ -132,14 +131,8 @@ class UpgradeWizardRunCommand extends Command
      */
     protected function getWizard(string $className, string $identifier): ?UpgradeWizardInterface
     {
-        $registry = GeneralUtility::makeInstance(Registry::class);
-        $markedDoneInRegistry = $registry->get(
-            'installUpdate',
-            $identifier,
-            false
-        );
         // already done
-        if ($markedDoneInRegistry) {
+        if ($this->upgradeWizardsService->isWizardDone($identifier)) {
             return null;
         }
 

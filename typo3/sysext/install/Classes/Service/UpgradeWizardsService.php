@@ -125,9 +125,12 @@ class UpgradeWizardsService
      *
      * @param string $identifier Wizard or RowUpdater identifier
      * @return bool True if wizard has been marked as undone
+     * @throws \RuntimeException
      */
     public function markWizardUndone(string $identifier): bool
     {
+        $this->assertIdentifierIsValid($identifier);
+
         $registry = GeneralUtility::makeInstance(Registry::class);
         $aWizardHasBeenMarkedUndone = false;
         $wizardsDoneList = $this->listOfWizardsDone();
@@ -318,15 +321,8 @@ class UpgradeWizardsService
      */
     public function getWizardUserInput(string $identifier): array
     {
-        // Validate identifier exists in upgrade wizard list
-        if (empty($identifier)
-            || !array_key_exists($identifier, $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])
-        ) {
-            throw new \RuntimeException(
-                'No valid wizard identifier given',
-                1502721731
-            );
-        }
+        $this->assertIdentifierIsValid($identifier);
+
         $class = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier];
         $updateObject = GeneralUtility::makeInstance($class);
         $wizardHtml = '';
@@ -378,14 +374,8 @@ class UpgradeWizardsService
      */
     public function executeWizard(string $identifier, int $showDatabaseQueries = null): FlashMessageQueue
     {
-        if (empty($identifier)
-            || !array_key_exists($identifier, $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])
-        ) {
-            throw new \RuntimeException(
-                'No valid wizard identifier given',
-                1502721732
-            );
-        }
+        $this->assertIdentifierIsValid($identifier);
+
         $class = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier];
         $updateObject = GeneralUtility::makeInstance($class);
 
@@ -478,10 +468,14 @@ class UpgradeWizardsService
      * Writes the info in LocalConfiguration.php
      *
      * @param string $identifier
+     * @throws \RuntimeException
      */
     public function markWizardAsDone(string $identifier): void
     {
-        GeneralUtility::makeInstance(Registry::class)->set('installUpdate', $identifier, 1);
+        $this->assertIdentifierIsValid($identifier);
+
+        $class = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier];
+        GeneralUtility::makeInstance(Registry::class)->set('installUpdate', $class, 1);
     }
 
     /**
@@ -489,9 +483,26 @@ class UpgradeWizardsService
      *
      * @param string $identifier
      * @return bool TRUE if wizard has been done before, FALSE otherwise
+     * @throws \RuntimeException
      */
     public function isWizardDone(string $identifier): bool
     {
-        return (bool)GeneralUtility::makeInstance(Registry::class)->get('installUpdate', $identifier, false);
+        $this->assertIdentifierIsValid($identifier);
+
+        $class = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier];
+        return (bool)GeneralUtility::makeInstance(Registry::class)->get('installUpdate', $class, false);
+    }
+
+    /**
+     * Validate identifier exists in upgrade wizard list
+     *
+     * @param string $identifier
+     * @throws \RuntimeException
+     */
+    protected function assertIdentifierIsValid(string $identifier): void
+    {
+        if ($identifier === '' || !isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier])) {
+            throw new \RuntimeException('No valid wizard identifier given', 1502721731);
+        }
     }
 }
