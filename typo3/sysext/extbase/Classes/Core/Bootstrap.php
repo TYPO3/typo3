@@ -18,7 +18,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Extbase\Mvc\Web\Response;
+use TYPO3\CMS\Extbase\Mvc\Cli\Response as CliResponse;
+use TYPO3\CMS\Extbase\Mvc\Web\Response as WebResponse;
 
 /**
  * Creates a request an dispatches it to the controller which was specified
@@ -178,7 +179,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
             $content = $response->shutdown();
             $this->resetSingletons();
             $this->objectManager->get(\TYPO3\CMS\Extbase\Service\CacheService::class)->clearCachesOfRegisteredPageIds();
-            if (Environment::isCli() && $response->getExitCode()) {
+            if ($response instanceof CliResponse && $response->getExitCode()) {
                 throw new \TYPO3\CMS\Extbase\Mvc\Exception\CommandException('The request has been terminated as the response defined an exit code.', $response->getExitCode());
             }
         }
@@ -212,7 +213,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
         /** @var \TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver $requestHandlerResolver */
         $requestHandlerResolver = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver::class);
         $requestHandler = $requestHandlerResolver->resolveRequestHandler();
-        /** @var Response $extbaseResponse */
+        /** @var WebResponse $extbaseResponse */
         $extbaseResponse = $requestHandler->handleRequest();
 
         // Convert to PSR-7 response and hand it back to TYPO3 Core
@@ -225,10 +226,10 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     /**
      * Converts a Extbase response object into a PSR-7 Response
      *
-     * @param Response $extbaseResponse
+     * @param WebResponse $extbaseResponse
      * @return ResponseInterface
      */
-    protected function convertExtbaseResponseToPsr7Response(Response $extbaseResponse): ResponseInterface
+    protected function convertExtbaseResponseToPsr7Response(WebResponse $extbaseResponse): ResponseInterface
     {
         $response = new \TYPO3\CMS\Core\Http\Response(
             'php://temp',
