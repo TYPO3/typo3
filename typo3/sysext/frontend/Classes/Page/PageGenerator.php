@@ -319,6 +319,10 @@ class PageGenerator
                             }
                             $pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($cssFileConfig['media']) . ';', empty($cssFileConfig['disableCompression']), (bool)$cssFileConfig['forceOnTop']);
                         } else {
+                            $crossorigin = $cssFileConfig['crossorigin'];
+                            if (!$crossorigin && $cssFileConfig['integrity'] && $cssFileConfig['external']) {
+                                $crossorigin = 'anonymous';
+                            }
                             $pageRenderer->addCssFile(
                                 $ss,
                                 $cssFileConfig['alternate'] ? 'alternate stylesheet' : 'stylesheet',
@@ -329,7 +333,9 @@ class PageGenerator
                                 $cssFileConfig['allWrap'],
                                 (bool)$cssFileConfig['excludeFromConcatenation'] || (bool)$cssFileConfig['inline'],
                                 $cssFileConfig['allWrap.']['splitChar'],
-                                $cssFileConfig['inline']
+                                $cssFileConfig['inline'],
+                                $cssFileConfig['integrity'],
+                                $crossorigin
                             );
                             unset($cssFileConfig);
                         }
@@ -361,6 +367,10 @@ class PageGenerator
                             }
                             $pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($cssFileConfig['media']) . ';', empty($cssFileConfig['disableCompression']), (bool)$cssFileConfig['forceOnTop']);
                         } else {
+                            $crossorigin = $cssFileConfig['crossorigin'];
+                            if (!$crossorigin && $cssFileConfig['integrity'] && $cssFileConfig['external']) {
+                                $crossorigin = 'anonymous';
+                            }
                             $pageRenderer->addCssLibrary(
                                 $ss,
                                 $cssFileConfig['alternate'] ? 'alternate stylesheet' : 'stylesheet',
@@ -371,7 +381,9 @@ class PageGenerator
                                 $cssFileConfig['allWrap'],
                                 (bool)$cssFileConfig['excludeFromConcatenation'] || (bool)$cssFileConfig['inline'],
                                 $cssFileConfig['allWrap.']['splitChar'],
-                                $cssFileConfig['inline']
+                                $cssFileConfig['inline'],
+                                $cssFileConfig['integrity'],
+                                $crossorigin
                             );
                             unset($cssFileConfig);
                         }
