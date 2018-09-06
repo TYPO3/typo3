@@ -14,9 +14,13 @@ namespace TYPO3\CMS\Info\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
+use TYPO3\CMS\Core\Site\Entity\PseudoSite;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -47,7 +51,9 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
             ]
         ];
 
-        $this->fillFieldConfiguration($this->pObj->id);
+        // Using $GLOBALS['TYPO3_REQUEST'] since $request is not available at this point
+        // @todo: Refactor AbstractFunctionModule mess and have $request available
+        $this->fillFieldConfiguration($this->pObj->id, $GLOBALS['TYPO3_REQUEST']);
         foreach ($this->fieldConfiguration as $key => $item) {
             $menu['pages'][$key] = $item['label'];
         }
@@ -61,7 +67,6 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
      */
     public function main()
     {
-        $this->fillFieldConfiguration($this->pObj->id);
         $theOutput = '<h1>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:page_title')) . '</h1>';
         $dblist = GeneralUtility::makeInstance(PageLayoutView::class);
         $dblist->descrTable = '_MOD_web_info';
@@ -136,13 +141,24 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
      * Generate configuration for field selection
      *
      * @param int $pageId current page id
+     * @param ServerRequestInterface $request
      */
-    protected function fillFieldConfiguration(int $pageId)
+    protected function fillFieldConfiguration(int $pageId, ServerRequestInterface $request)
     {
         $modTSconfig = BackendUtility::getPagesTSconfig($pageId)['mod.']['web_info.']['fieldDefinitions.'] ?? [];
         foreach ($modTSconfig as $key => $item) {
             $fieldList = str_replace('###ALL_TABLES###', $this->cleanTableNames(), $item['fields']);
             $fields = GeneralUtility::trimExplode(',', $fieldList, true);
+            if ((int)$key === 0) {
+                // If "Basic settings" is rendered, hide the alias field on trees that have a site configuration
+                // and hide the slug field on PseudoSites. On NullSites (pid 0), show both.
+                $site = $request->getAttribute('site');
+                if ($site instanceof PseudoSite) {
+                    $fields = array_diff($fields, ['slug']);
+                } elseif ($site instanceof Site && !$site instanceof NullSite) {
+                    $fields = array_diff($fields, ['alias']);
+                }
+            }
             $key = trim($key, '.');
             $this->fieldConfiguration[$key] = [
                 'label' => $item['label'] ? $GLOBALS['LANG']->sL($item['label']) : $key,

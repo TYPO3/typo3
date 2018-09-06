@@ -1218,7 +1218,7 @@ return [
             mod.web_info.fieldDefinitions {
                 0 {
                     label = LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:pages_0
-                    fields = title,uid,alias,slug,starttime,endtime,fe_group,target,url,shortcut,shortcut_mode
+                    fields = title,uid,slug,alias,starttime,endtime,fe_group,target,url,shortcut,shortcut_mode
                 }
                 1 {
                     label = LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:pages_1
