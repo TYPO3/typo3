@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Form\Element;
 
 /*
@@ -17,7 +18,11 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Generation of elements of the type "user"
+ * Generation of elements of the type "user". This is a dummy implementation.
+ *
+ * type="user" elements should be combined with a custom renderType to create custom output.
+ * This implementation registered for type="user" kicks in if no renderType is given and is just
+ * a fallback implementation to hint developers that the TCA registration is incomplete.
  */
 class UserElement extends AbstractFormElement
 {
@@ -28,9 +33,27 @@ class UserElement extends AbstractFormElement
      */
     public function render()
     {
+        $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
 
-        $parameterArray = $this->data['parameterArray'];
+        if (empty($parameterArray['fieldConf']['config']['userFunc'])) {
+            // If there is no (deprecated) userFunc, render some dummy output to explain this element
+            // should usually not be called at all.
+            // @deprecated The if can be removed in v10, keeping the body only.
+            $resultArray['html'] = '<div class="alert alert-warning">';
+            $resultArray['html'] .= 'This is dummy output: Field <code>' . htmlspecialchars($this->data['fieldName']) . '</code>';
+            $resultArray['html'] .= 'of table <code>' . htmlspecialchars($this->data['tableName']) . '</code>';
+            $resultArray['html'] .= ' is registered as type="user" element without a specific renderType.';
+            $resultArray['html'] .= ' Please look up details in TCA reference documentation for type="user".';
+            $resultArray['html'] .= '</div>';
+            return $resultArray;
+        }
+
+        // @deprecated since TYPO3 v9, everything below will be removed in v10.
+        trigger_error(
+            'Properties "userFunc", "noTableWrapping" and "parameters" have been deprecated in v9, will be removed in v10. Use a renderType instead.',
+            E_USER_DEPRECATED
+        );
         $parameterArray['table'] = $this->data['tableName'];
         $parameterArray['field'] = $this->data['fieldName'];
         $parameterArray['row'] = $this->data['databaseRow'];
