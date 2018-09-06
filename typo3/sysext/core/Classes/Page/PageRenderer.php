@@ -434,7 +434,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Sets the title
      *
-     * @param string $title	title of webpage
+     * @param string $title title of webpage
      */
     public function setTitle($title)
     {
@@ -1266,8 +1266,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param bool $excludeFromConcatenation
      * @param string $splitChar The char used to split the allWrap value, default is "|"
      * @param bool $inline
+     * @param string $integrity Subresource Integrity (SRI)
+     * @param string $crossorigin CORS settings attribute
      */
-    public function addCssFile($file, $rel = 'stylesheet', $media = 'all', $title = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $inline = false)
+    public function addCssFile($file, $rel = 'stylesheet', $media = 'all', $title = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $inline = false, $integrity = '', $crossorigin = '')
     {
         if (!isset($this->cssFiles[$file])) {
             $this->cssFiles[$file] = [
@@ -1280,7 +1282,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 'allWrap' => $allWrap,
                 'excludeFromConcatenation' => $excludeFromConcatenation,
                 'splitChar' => $splitChar,
-                'inline' => $inline
+                'inline' => $inline,
+                'integrity' => $integrity,
+                'crossorigin' => $crossorigin,
             ];
         }
     }
@@ -1298,8 +1302,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param bool $excludeFromConcatenation
      * @param string $splitChar The char used to split the allWrap value, default is "|"
      * @param bool $inline
+     * @param string $integrity Subresource Integrity (SRI)
+     * @param string $crossorigin CORS settings attribute
      */
-    public function addCssLibrary($file, $rel = 'stylesheet', $media = 'all', $title = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $inline = false)
+    public function addCssLibrary($file, $rel = 'stylesheet', $media = 'all', $title = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $inline = false, $integrity = '', $crossorigin = '')
     {
         if (!isset($this->cssLibs[$file])) {
             $this->cssLibs[$file] = [
@@ -1312,7 +1318,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 'allWrap' => $allWrap,
                 'excludeFromConcatenation' => $excludeFromConcatenation,
                 'splitChar' => $splitChar,
-                'inline' => $inline
+                'inline' => $inline,
+                'integrity' => $integrity,
+                'crossorigin' => $crossorigin,
             ];
         }
     }
@@ -1458,8 +1466,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Configuration will be merged recursive with overrule.
      *
      * To add another path mapping deliver the following configuration:
-     * 		'paths' => array(
-     *			'EXTERN/mybootstrapjs' => 'sysext/.../twbs/bootstrap.min',
+     *      'paths' => array(
+     *          'EXTERN/mybootstrapjs' => 'sysext/.../twbs/bootstrap.min',
      *      ),
      *
      * @param array $configuration The configuration that will be merged with existing one.
@@ -1480,11 +1488,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * this function only works for AMD-ready JS modules, used like "define('TYPO3/CMS/Backend/FormEngine..."
      * in the JS file
      *
-     *	TYPO3/CMS/Backend/FormEngine =>
-     * 		"TYPO3": Vendor Name
-     * 		"CMS": Product Name
-     *		"Backend": Extension Name
-     *		"FormEngine": FileName in the Resources/Public/JavaScript folder
+     *  TYPO3/CMS/Backend/FormEngine =>
+     *      "TYPO3": Vendor Name
+     *      "CMS": Product Name
+     *      "Backend": Extension Name
+     *      "FormEngine": FileName in the Resources/Public/JavaScript folder
      *
      * @param string $mainModuleName Must be in the form of "TYPO3/CMS/PackageName/ModuleName" e.g. "TYPO3/CMS/Backend/FormEngine"
      * @param string $callBackFunction loaded right after the requireJS loading, must be wrapped in function() {}
