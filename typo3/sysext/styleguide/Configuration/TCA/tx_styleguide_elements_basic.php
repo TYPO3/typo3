@@ -1322,22 +1322,10 @@ return [
             'label' => 'user_1 parameter=color=green',
             'config' => [
                 'type' => 'user',
-                'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeUser1->render',
+                'renderType' => 'user1Element',
                 'parameters' => [
                     'color' => 'green',
                 ],
-            ],
-        ],
-        'user_2' => [
-            'exclude' => 1,
-            'label' => 'user_2 noTableWrapping=true',
-            'config' => [
-                'type' => 'user',
-                'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeUser2->render',
-                'parameters' => [
-                    'color' => 'green',
-                ],
-                'noTableWrapping' => true,
             ],
         ],
 
@@ -1634,7 +1622,7 @@ return [
                 --div--;passthrough,
                     passthrough_1, passthrough_2,
                 --div--;user,
-                    user_1, user_2,
+                    user_1,
                 --div--;in flex,
                     flex_1,
                 --div--;meta,

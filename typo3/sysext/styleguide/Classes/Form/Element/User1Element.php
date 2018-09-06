@@ -1,5 +1,6 @@
 <?php
-namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
+declare(strict_types = 1);
+namespace TYPO3\CMS\Styleguide\Form\Element;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -14,28 +15,31 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
+
 /**
  * A user function rendering a type=user TCA type used in user_1
  */
-class TypeUser1
+class User1Element extends AbstractFormElement
 {
     /**
-     * @param array $parameters
-     * @param $parentObject
-     * @return string
+     * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render(array $parameters, $parentObject)
+    public function render()
     {
+        $result = $this->initializeResultArray();
+        $parameters = $this->data['parameterArray'];
         $html = array();
-        $html[] = '<div style="border: 1px dashed ' . $parameters['parameters']['color'] . '" >';
+        $html[] = '<div style="border: 1px dashed ' . $parameters['fieldConf']['config']['parameters']['color'] . '" >';
         $html[] = '<h2>Own form field using a parameter</h2>';
         $html[] = '<input'
             . ' type="input"'
-            . ' name="' . $parameters['itemFormElName'] . '"'
+            . ' name="' . htmlspecialchars($parameters['itemFormElName']) . '"'
             . ' value="' . htmlspecialchars($parameters['itemFormElValue']) . '"'
             . ' onchange="' . htmlspecialchars(implode('', $parameters['fieldChangeFunc'])) . '"' . $parameters['onFocus']
             . ' />';
         $html[] = '</div>';
-        return implode(LF, $html);
+        $result['html'] = implode(LF, $html);
+        return $result;
     }
 }

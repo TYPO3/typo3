@@ -128,7 +128,6 @@ CREATE TABLE tx_styleguide_elements_basic (
 	passthrough_2 text,
 
 	user_1 text,
-	user_2 text,
 
 	flex_1 text
 );
