@@ -895,8 +895,8 @@ class UpgradeController extends AbstractController
     {
         $this->loadExtLocalconfDatabaseAndExtTables();
         $upgradeWizardsService = new UpgradeWizardsService();
-        $wizardsDone = $upgradeWizardsService->listOfWizardsDoneInRegistry();
-        $rowUpdatersDone = $upgradeWizardsService->listOfRowUpdatersDoneInRegistry();
+        $wizardsDone = $upgradeWizardsService->listOfWizardsDone();
+        $rowUpdatersDone = $upgradeWizardsService->listOfRowUpdatersDone();
         $messages = new FlashMessageQueue('install');
         if (empty($wizardsDone) && empty($rowUpdatersDone)) {
             $messages->enqueue(new FlashMessage(
@@ -981,7 +981,7 @@ class UpgradeController extends AbstractController
         $this->loadExtLocalconfDatabaseAndExtTables();
         $wizardToBeMarkedAsUndoneIdentifier = $request->getParsedBody()['install']['identifier'];
         $upgradeWizardsService = new UpgradeWizardsService();
-        $result = $upgradeWizardsService->markWizardUndoneInRegistry($wizardToBeMarkedAsUndoneIdentifier);
+        $result = $upgradeWizardsService->markWizardUndone($wizardToBeMarkedAsUndoneIdentifier);
         $messages = new FlashMessageQueue('install');
         if ($result) {
             $messages->enqueue(new FlashMessage(

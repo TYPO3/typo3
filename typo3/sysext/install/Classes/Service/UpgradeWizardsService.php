@@ -71,7 +71,7 @@ class UpgradeWizardsService
     /**
      * @return array List of wizards marked as done in registry
      */
-    public function listOfWizardsDoneInRegistry(): array
+    public function listOfWizardsDone(): array
     {
         $wizardsDoneInRegistry = [];
         $registry = GeneralUtility::makeInstance(Registry::class);
@@ -92,7 +92,7 @@ class UpgradeWizardsService
      * @return array List of row updaters marked as done in registry
      * @throws \RuntimeException
      */
-    public function listOfRowUpdatersDoneInRegistry(): array
+    public function listOfRowUpdatersDone(): array
     {
         $registry = GeneralUtility::makeInstance(Registry::class);
         $rowUpdatersDoneClassNames = $registry->get('installUpdateRows', 'rowUpdatersDone', []);
@@ -126,11 +126,11 @@ class UpgradeWizardsService
      * @param string $identifier Wizard or RowUpdater identifier
      * @return bool True if wizard has been marked as undone
      */
-    public function markWizardUndoneInRegistry(string $identifier): bool
+    public function markWizardUndone(string $identifier): bool
     {
         $registry = GeneralUtility::makeInstance(Registry::class);
         $aWizardHasBeenMarkedUndone = false;
-        $wizardsDoneList = $this->listOfWizardsDoneInRegistry();
+        $wizardsDoneList = $this->listOfWizardsDone();
         foreach ($wizardsDoneList as $wizard) {
             if ($wizard['identifier'] === $identifier) {
                 $aWizardHasBeenMarkedUndone = true;
@@ -138,7 +138,7 @@ class UpgradeWizardsService
             }
         }
         if (!$aWizardHasBeenMarkedUndone) {
-            $rowUpdatersDoneList = $this->listOfRowUpdatersDoneInRegistry();
+            $rowUpdatersDoneList = $this->listOfRowUpdatersDone();
             $registryArray = $registry->get('installUpdateRows', 'rowUpdatersDone', []);
             foreach ($rowUpdatersDoneList as $rowUpdater) {
                 if ($rowUpdater['identifier'] === $identifier) {
