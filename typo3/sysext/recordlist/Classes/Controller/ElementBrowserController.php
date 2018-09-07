@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -30,6 +31,15 @@ use TYPO3\CMS\Recordlist\Browser\ElementBrowserInterface;
  */
 class ElementBrowserController
 {
+    use PublicMethodDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicMethods = [
+        'main' => 'Using ElementBrowserController::main() is deprecated and will not be possible anymore in TYPO3 v10.',
+    ];
+
     /**
      * The mode determines the main kind of output of the element browser.
      *
@@ -96,7 +106,7 @@ class ElementBrowserController
      *
      * @return string HTML content
      */
-    public function main()
+    protected function main()
     {
         $content = '';
 
