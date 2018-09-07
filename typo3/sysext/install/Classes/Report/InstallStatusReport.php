@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\Exception;
+use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 use TYPO3\CMS\Reports\Status;
 
 /**
@@ -152,16 +153,24 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
         // check if there are update wizards left to perform
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])) {
             $versionAsInt = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version);
+            $incompleteWizardFound = false;
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $className) {
                 $updateObject = GeneralUtility::makeInstance($className, $identifier, $versionAsInt, null, $this);
-                if ($updateObject->shouldRenderWizard()) {
-                    // at least one wizard was found
-                    $value = $languageService->getLL('status_updateIncomplete');
-                    $severity = Status::WARNING;
-                    $url = (string)$uriBuilder->buildUriFromRoute('tools_toolsupgrade');
-                    $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.install_update'), '<a href="' . htmlspecialchars($url) . '">', '</a>');
+                if (method_exists($updateObject, 'shouldRenderWizard') && $updateObject->shouldRenderWizard()) {
+                    $incompleteWizardFound = true;
                     break;
                 }
+                if ($updateObject instanceof UpgradeWizardInterface && $updateObject->updateNecessary()) {
+                    $incompleteWizardFound = true;
+                    break;
+                }
+            }
+            if ($incompleteWizardFound) {
+                // At least one incomplete wizard was found
+                $value = $languageService->getLL('status_updateIncomplete');
+                $severity = Status::WARNING;
+                $url = (string)$uriBuilder->buildUriFromRoute('tools_toolsupgrade');
+                $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.install_update'), '<a href="' . htmlspecialchars($url) . '">', '</a>');
             }
         }
 
