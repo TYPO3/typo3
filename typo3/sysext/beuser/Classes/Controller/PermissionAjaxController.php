@@ -37,7 +37,7 @@ class PermissionAjaxController
      *
      * @var array
      */
-    protected $conf = [];
+    protected $conf;
 
     /**
      * @var IconFactory
@@ -51,20 +51,6 @@ class PermissionAjaxController
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->getLanguageService()->includeLLFile('EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf');
-        // Configuration, variable assignment
-        $this->conf['page'] = GeneralUtility::_POST('page');
-        $this->conf['who'] = GeneralUtility::_POST('who');
-        $this->conf['mode'] = GeneralUtility::_POST('mode');
-        $this->conf['bits'] = (int)GeneralUtility::_POST('bits');
-        $this->conf['permissions'] = (int)GeneralUtility::_POST('permissions');
-        $this->conf['action'] = GeneralUtility::_POST('action');
-        $this->conf['ownerUid'] = (int)GeneralUtility::_POST('ownerUid');
-        $this->conf['username'] = GeneralUtility::_POST('username');
-        $this->conf['groupUid'] = (int)GeneralUtility::_POST('groupUid');
-        $this->conf['groupname'] = GeneralUtility::_POST('groupname');
-        $this->conf['editLockState'] = (int)GeneralUtility::_POST('editLockState');
-        $this->conf['new_owner_uid'] = (int)GeneralUtility::_POST('newOwnerUid');
-        $this->conf['new_group_uid'] = (int)GeneralUtility::_POST('newGroupUid');
     }
 
     /**
@@ -75,6 +61,23 @@ class PermissionAjaxController
      */
     public function dispatch(ServerRequestInterface $request): ResponseInterface
     {
+        $parsedBody = $request->getParsedBody();
+        $this->conf = [
+            'page' => $parsedBody['page'] ?? null,
+            'who' => $parsedBody['who'] ?? null,
+            'mode' => $parsedBody['mode'] ?? null,
+            'bits' => (int)($parsedBody['bits'] ?? 0),
+            'permissions' => (int)($parsedBody['permissions'] ?? 0),
+            'action' => $parsedBody['action'] ?? null,
+            'ownerUid' => (int)($parsedBody['ownerUid'] ?? 0),
+            'username' => $parsedBody['username'] ?? null,
+            'groupUid' => (int)($parsedBody['groupUid'] ?? 0),
+            'groupname' => $parsedBody['groupname'] ?? '',
+            'editLockState' => (int)($parsedBody['editLockState'] ?? 0),
+            'new_owner_uid' => (int)($parsedBody['newOwnerUid'] ?? 0),
+            'new_group_uid' => (int)($parsedBody['newGroupUid'] ?? 0),
+        ];
+
         $extPath = ExtensionManagementUtility::extPath('beuser');
 
         $view = GeneralUtility::makeInstance(StandaloneView::class);
@@ -91,7 +94,6 @@ class PermissionAjaxController
 
         $content = '';
         // Init TCE for execution of update
-        /** @var DataHandler $tce */
         $tce = GeneralUtility::makeInstance(DataHandler::class);
         // Determine the scripts to execute
         switch ($this->conf['action']) {
