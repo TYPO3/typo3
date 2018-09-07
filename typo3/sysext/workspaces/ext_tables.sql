@@ -48,7 +48,7 @@ CREATE TABLE sys_workspace_stage (
 	responsible_persons varchar(255) DEFAULT '' NOT NULL,
 	default_mailcomment text,
 	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable tinytext NOT NULL,
+	parenttable varchar(255) DEFAULT '' NOT NULL,
 	notification_defaults varchar(255) DEFAULT '' NOT NULL,
 	allow_notificaton_settings tinyint(3) DEFAULT '0' NOT NULL,
 	notification_preselection tinyint(3) DEFAULT '8' NOT NULL
