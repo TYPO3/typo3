@@ -20,6 +20,7 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * Class DefaultFunctionsProvider
@@ -33,10 +34,42 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
     public function getFunctions()
     {
         return [
+            $this->getIpFunction(),
+            $this->getCompatVersionFunction(),
             $this->getLikeFunction(),
             $this->getEnvFunction(),
             $this->getDateFunction(),
         ];
+    }
+
+    protected function getIpFunction(): ExpressionFunction
+    {
+        return new ExpressionFunction(
+            'ip',
+            function ($str) {
+                // Not implemented, we only use the evaluator
+            },
+            function ($arguments, $str) {
+                if ($str === 'devIP') {
+                    $str = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] ?? '');
+                }
+                return (bool)GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $str);
+            }
+        );
+    }
+
+    protected function getCompatVersionFunction(): ExpressionFunction
+    {
+        return new ExpressionFunction(
+            'compatVersion',
+            function ($str) {
+                // Not implemented, we only use the evaluator
+            },
+            function ($arguments, $str) {
+                return VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) >=
+                   VersionNumberUtility::convertVersionNumberToInteger($str);
+            }
+        );
     }
 
     protected function getLikeFunction(): ExpressionFunction

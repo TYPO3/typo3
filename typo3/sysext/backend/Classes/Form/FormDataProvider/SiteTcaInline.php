@@ -47,7 +47,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
                 continue;
             }
             $childTableName = $fieldConfig['config']['foreign_table'] ?? '';
-            if (!in_array($childTableName, ['site_errorhandling', 'site_language', 'site_route'])) {
+            if (!in_array($childTableName, ['site_errorhandling', 'site_language', 'site_route', 'site_base_variant'], true)) {
                 throw new \RuntimeException('Inline relation to other tables not implemented', 1522494737);
             }
             $result['processedTca']['columns'][$fieldName]['children'] = [];

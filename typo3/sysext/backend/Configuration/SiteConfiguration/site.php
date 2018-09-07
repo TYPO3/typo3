@@ -39,6 +39,18 @@ return [
                 'eval' => 'required',
             ],
         ],
+        'baseVariants' => [
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.baseVariants',
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'site_base_variant',
+                'appearance' => [
+                    'enabledControls' => [
+                        'info' => false,
+                    ],
+                ],
+            ],
+        ],
         'languages' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.languages',
             'config' => [
@@ -82,7 +94,7 @@ return [
     ],
     'types' => [
         '0' => [
-            'showitem' => 'identifier, rootPageId, base,
+            'showitem' => 'identifier, rootPageId, base,baseVariants,
                 --div--;LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.tab.languages, languages,
                 --div--;LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.tab.errorHandling, errorHandling,
                 --div--;LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.tab.routes, routes',

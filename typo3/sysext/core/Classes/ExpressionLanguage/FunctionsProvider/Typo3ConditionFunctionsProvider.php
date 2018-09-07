@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\ExpressionLanguage\RequestWrapper;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * Class TypoScriptConditionProvider
@@ -35,8 +34,6 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
     public function getFunctions()
     {
         return [
-            $this->getIpFunction(),
-            $this->getCompatVersionFunction(),
             $this->getLoginUserFunction(),
             $this->getTSFEFunction(),
             $this->getUsergroupFunction(),
@@ -44,27 +41,6 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
             $this->getSiteFunction(),
             $this->getSiteLanguageFunction(),
         ];
-    }
-
-    protected function getIpFunction(): ExpressionFunction
-    {
-        return new ExpressionFunction('ip', function ($str) {
-            // Not implemented, we only use the evaluator
-        }, function ($arguments, $str) {
-            if ($str === 'devIP') {
-                $str = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
-            }
-            return (bool)GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $str);
-        });
-    }
-
-    protected function getCompatVersionFunction(): ExpressionFunction
-    {
-        return new ExpressionFunction('compatVersion', function ($str) {
-            // Not implemented, we only use the evaluator
-        }, function ($arguments, $str) {
-            return VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) >= VersionNumberUtility::convertVersionNumberToInteger($str);
-        });
     }
 
     protected function getLoginUserFunction(): ExpressionFunction

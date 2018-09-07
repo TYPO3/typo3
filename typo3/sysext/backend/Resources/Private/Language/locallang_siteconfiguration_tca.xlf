@@ -15,6 +15,9 @@
 			<trans-unit id="site.base">
 				<source>Entry point (can be https://www.mydomain/ or just /, if it is just / you can not rely on TYPO3 creating full URLs)</source>
 			</trans-unit>
+			<trans-unit id="site.baseVariants">
+				<source>Variants for the entry point</source>
+			</trans-unit>
 			<trans-unit id="site.languages">
 				<source>Available Languages for this site</source>
 			</trans-unit>
@@ -75,6 +78,21 @@
 			</trans-unit>
 			<trans-unit id="site_language.fallbacks">
 				<source>Fallback to other language(s) - order is important!</source>
+			</trans-unit>
+			<trans-unit id="site_base_variant.ctrl.title">
+				<source>Base</source>
+			</trans-unit>
+			<trans-unit id="site_base_variant.base">
+				<source>Base</source>
+			</trans-unit>
+			<trans-unit id="site_base_variant.condition">
+				<source>Condition</source>
+			</trans-unit>
+			<trans-unit id="site_base_variant.condition.applicationContext">
+				<source>Application Context</source>
+			</trans-unit>
+			<trans-unit id="site_base_variant.condition.environmentVariable">
+				<source>Environment variable</source>
 			</trans-unit>
 
 			<trans-unit id="site_errorhandling.ctrl.title">

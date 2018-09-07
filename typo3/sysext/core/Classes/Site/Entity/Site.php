@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Error\PageErrorHandler\InvalidPageErrorHandlerException;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageContentErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
+use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Routing\PageRouter;
@@ -94,7 +95,23 @@ class Site implements SiteInterface
                 'direction' => '',
             ]
         ];
-        $this->base = new Uri($this->sanitizeBaseUrl($configuration['base'] ?? ''));
+        $baseUrl = $configuration['base'] ?? '';
+        if (isset($configuration['baseVariants']) && is_array($configuration['baseVariants'])) {
+            $expressionLanguageResolver = GeneralUtility::makeInstance(
+                Resolver::class,
+                'site',
+                []
+            );
+            foreach ($configuration['baseVariants'] as $baseVariant) {
+                $result = $expressionLanguageResolver->evaluate($baseVariant['condition']);
+                if ($result) {
+                    $baseUrl = $baseVariant['base'];
+                    break;
+                }
+            }
+        }
+        $this->base = new Uri($this->sanitizeBaseUrl($baseUrl));
+
         foreach ($configuration['languages'] as $languageConfiguration) {
             $languageUid = (int)$languageConfiguration['languageId'];
             // site language has defined its own base, this is the case most of the time.
