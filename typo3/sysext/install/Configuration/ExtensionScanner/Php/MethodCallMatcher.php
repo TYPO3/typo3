@@ -3257,4 +3257,11 @@ return [
             'Deprecation-86180-ProtectedMethodsInSetupModuleController.rst',
         ],
     ],
+    'TYPO3\CMS\Taskcenter\Controller\TaskModuleController->urlInIframe' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86182-ProtectedMethodsInTaskModuleController.rst',
+        ],
+    ],
 ];

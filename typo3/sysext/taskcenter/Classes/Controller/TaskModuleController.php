@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -31,6 +32,16 @@ use TYPO3\CMS\Taskcenter\TaskInterface;
  */
 class TaskModuleController extends BaseScriptClass
 {
+    use PublicMethodDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicMethods = [
+        'main' => 'Using TaskModuleController::main() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'urlInIframe' => 'Using SetupModuleController::urlInIframe() is deprecated. The method will be removed in TYPO3 v10.',
+    ];
+
     /**
      * @var array
      */
@@ -139,7 +150,7 @@ class TaskModuleController extends BaseScriptClass
      * Creates the module's content. In this case it rather acts as a kind of #
      * dispatcher redirecting requests to specific tasks.
      */
-    public function main()
+    protected function main()
     {
         $this->getButtons();
         $this->generateMenu();
@@ -445,8 +456,9 @@ class TaskModuleController extends BaseScriptClass
      *
      * @param string $url Url to display
      * @return string Code that inserts the iframe (HTML)
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Remember to remove the fluid template, too.
      */
-    public function urlInIframe($url)
+    protected function urlInIframe($url)
     {
         $urlView = GeneralUtility::makeInstance(StandaloneView::class);
         $urlView->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
