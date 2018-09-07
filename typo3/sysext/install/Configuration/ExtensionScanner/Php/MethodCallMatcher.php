@@ -3264,4 +3264,39 @@ return [
             'Deprecation-86182-ProtectedMethodsInTaskModuleController.rst',
         ],
     ],
+    'TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController->renderLinkAttributeFields' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86193-ProtectMethodsInAbstractLinkBrowserController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController->getDisplayedLinkHandlerId' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86193-ProtectMethodsInAbstractLinkBrowserController.rst',
+        ],
+    ],
+    'TYPO3\CMS\RteCKEditor\Controller\BrowseLinksController->renderLinkAttributeFields' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86193-ProtectMethodsInAbstractLinkBrowserController.rst',
+        ],
+    ],
+    'TYPO3\CMS\RteCKEditor\Controller\BrowseLinksController->getPageConfigLabel' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-86193-ProtectMethodsInAbstractLinkBrowserController.rst',
+        ],
+    ],
+    'TYPO3\CMS\RteCKEditor\Controller\BrowseLinksController->getDisplayedLinkHandlerId' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86193-ProtectMethodsInAbstractLinkBrowserController.rst',
+        ],
+    ],
 ];

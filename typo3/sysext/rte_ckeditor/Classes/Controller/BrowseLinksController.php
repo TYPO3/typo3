@@ -16,6 +16,7 @@ namespace TYPO3\CMS\RteCKEditor\Controller;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -28,6 +29,17 @@ use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
  */
 class BrowseLinksController extends AbstractLinkBrowserController
 {
+    use PublicMethodDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    protected $deprecatedPublicMethods = [
+        'renderLinkAttributeFields' => 'Using BrowseLinksController::renderLinkAttributeFields() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'getPageConfigLabel' => 'Using BrowseLinksController::getPageConfigLabel() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'getDisplayedLinkHandlerId' => 'Using BrowseLinksController::getDisplayedLinkHandlerId() is deprecated and will not be possible anymore in TYPO3 v10.',
+    ];
+
     /**
      * @var string
      */
@@ -186,7 +198,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
      *
      * @return string
      */
-    public function renderLinkAttributeFields()
+    protected function renderLinkAttributeFields()
     {
         // Processing the classes configuration
         if (!empty($this->buttonConfig['properties']['class']['allowedClasses'])) {
@@ -276,7 +288,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
      * @param bool $JScharCode If needs to be converted to an array of char numbers
      * @return string Localized string
      */
-    public function getPageConfigLabel($string, $JScharCode = true)
+    protected function getPageConfigLabel($string, $JScharCode = true)
     {
         if (strpos($string, 'LLL:') !== 0) {
             $label = $string;
