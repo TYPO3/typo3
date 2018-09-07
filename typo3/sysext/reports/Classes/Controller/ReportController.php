@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -33,6 +34,16 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
  */
 class ReportController
 {
+    use PublicMethodDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicMethods = [
+        'indexAction' => 'Using ReportController::indexAction() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'detailAction' => 'Using ReportController::detailAction() is deprecated and will not be possible anymore in TYPO3 v10.',
+    ];
+
     /**
      * ModuleTemplate object
      *
@@ -68,12 +79,11 @@ class ReportController
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $actionDefault = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'];
-        $action = $actionDefault ?: 'index';
+        $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'index';
         $extension = $request->getQueryParams()['extension'] ?? $request->getParsedBody()['extension'];
         $isRedirect = $request->getQueryParams()['redirect'] ?? $request->getParsedBody()['redirect'] ?? false;
 
-        if ($actionDefault !== 'index' && !$isRedirect && !$extension
+        if ($action !== 'index' && !$isRedirect && !$extension
             && is_array($GLOBALS['BE_USER']->uc['reports']['selection'])) {
             $previousSelection = $GLOBALS['BE_USER']->uc['reports']['selection'];
             if (!empty($previousSelection['extension']) && !empty($previousSelection['report'])) {
@@ -89,9 +99,15 @@ class ReportController
 
         $this->initializeView($action);
 
-        $result = call_user_func_array([$this, $action . 'Action'], [$request]);
-        if ($result instanceof ResponseInterface) {
-            return $result;
+        if ($action === 'index') {
+            $this->indexAction();
+        } elseif ($action === 'detail') {
+            $this->detailAction($request);
+        } else {
+            throw new \RuntimeException(
+                'Reports module has only "index" and "detail" action, ' . (string)$action . ' given',
+                1536322935
+            );
         }
 
         $this->generateMenu($request);
@@ -117,7 +133,7 @@ class ReportController
     /**
      * Overview
      */
-    public function indexAction()
+    protected function indexAction()
     {
         $this->view->assign('reports', $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']);
         $this->saveState();
@@ -128,7 +144,7 @@ class ReportController
      *
      * @param ServerRequestInterface $request
      */
-    public function detailAction(ServerRequestInterface $request)
+    protected function detailAction(ServerRequestInterface $request)
     {
         $content = $error = '';
         $extension = $request->getQueryParams()['extension'] ?? $request->getParsedBody()['extension'];
