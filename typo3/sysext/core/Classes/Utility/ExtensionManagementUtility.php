@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Utility;
 use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Category\CategoryRegistry;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
@@ -1528,19 +1529,19 @@ tt_content.' . $key . $suffix . ' {
      * extensions should not use it!
      *
      * @param bool $allowCaching Whether or not to load / create concatenated cache file
+     * @param FrontendInterface $codeCache
      * @access private
      */
-    public static function loadExtLocalconf($allowCaching = true)
+    public static function loadExtLocalconf($allowCaching = true, FrontendInterface $codeCache = null)
     {
         if ($allowCaching) {
+            $codeCache = $codeCache ?? self::getCacheManager()->getCache('cache_core');
             $cacheIdentifier = self::getExtLocalconfCacheIdentifier();
-            /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $codeCache */
-            $codeCache = self::getCacheManager()->getCache('cache_core');
             if ($codeCache->has($cacheIdentifier)) {
                 $codeCache->require($cacheIdentifier);
             } else {
                 self::loadSingleExtLocalconfFiles();
-                self::createExtLocalconfCacheEntry();
+                self::createExtLocalconfCacheEntry($codeCache);
             }
         } else {
             self::loadSingleExtLocalconfFiles();
@@ -1571,8 +1572,10 @@ tt_content.' . $key . $suffix . ' {
 
     /**
      * Create cache entry for concatenated ext_localconf.php files
+     *
+     * @param FrontendInterface $codeCache
      */
-    protected static function createExtLocalconfCacheEntry()
+    protected static function createExtLocalconfCacheEntry(FrontendInterface $codeCache)
     {
         $phpCodeToCache = [];
         // Set same globals as in loadSingleExtLocalconfFiles()
@@ -1606,7 +1609,7 @@ tt_content.' . $key . $suffix . ' {
         $phpCodeToCache = implode(LF, $phpCodeToCache);
         // Remove all start and ending php tags from content
         $phpCodeToCache = preg_replace('/<\\?php|\\?>/is', '', $phpCodeToCache);
-        self::getCacheManager()->getCache('cache_core')->set(self::getExtLocalconfCacheIdentifier(), $phpCodeToCache);
+        $codeCache->set(self::getExtLocalconfCacheIdentifier(), $phpCodeToCache);
     }
 
     /**
@@ -1632,12 +1635,11 @@ tt_content.' . $key . $suffix . ' {
      * @param bool $allowCaching Whether or not to load / create concatenated cache file
      * @access private
      */
-    public static function loadBaseTca($allowCaching = true)
+    public static function loadBaseTca($allowCaching = true, FrontendInterface $codeCache = null)
     {
         if ($allowCaching) {
+            $codeCache = $codeCache ?? self::getCacheManager()->getCache('cache_core');
             $cacheIdentifier = static::getBaseTcaCacheIdentifier();
-            /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $codeCache */
-            $codeCache = static::getCacheManager()->getCache('cache_core');
             $cacheData = $codeCache->require($cacheIdentifier);
             if ($cacheData) {
                 $GLOBALS['TCA'] = $cacheData['tca'];
@@ -1650,7 +1652,7 @@ tt_content.' . $key . $suffix . ' {
                 );
             } else {
                 static::buildBaseTcaFromSingleFiles();
-                static::createBaseTcaCacheFile();
+                static::createBaseTcaCacheFile($codeCache);
             }
         } else {
             static::buildBaseTcaFromSingleFiles();
@@ -1742,11 +1744,11 @@ tt_content.' . $key . $suffix . ' {
     /**
      * Cache base $GLOBALS['TCA'] to cache file to require the whole thing in one
      * file for next access instead of cycling through all extensions again.
+     *
+     * @param FrontendInterface $codeCache
      */
-    protected static function createBaseTcaCacheFile()
+    protected static function createBaseTcaCacheFile(FrontendInterface $codeCache)
     {
-        /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $codeCache */
-        $codeCache = self::getCacheManager()->getCache('cache_core');
         $codeCache->set(
             static::getBaseTcaCacheIdentifier(),
             'return '

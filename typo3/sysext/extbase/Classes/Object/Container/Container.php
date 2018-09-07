@@ -62,17 +62,6 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
     private $reflectionService;
 
     /**
-     * Constructor is protected since container should
-     * be a singleton.
-     *
-     * @see getContainer()
-     */
-    public function __construct()
-    {
-        $this->reflectionService = GeneralUtility::makeInstance(ReflectionService::class, GeneralUtility::makeInstance(CacheManager::class));
-    }
-
-    /**
      * Internal method to create the class instantiator, extracted to be mockable
      *
      * @return \Doctrine\Instantiator\InstantiatorInterface
@@ -109,7 +98,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
     public function getEmptyObject($className)
     {
         $className = $this->getImplementationClassName($className);
-        $classSchema = $this->reflectionService->getClassSchema($className);
+        $classSchema = $this->getReflectionService()->getClassSchema($className);
         $object = $this->getInstantiator()->instantiate($className);
         $this->injectDependencies($object, $classSchema);
         $this->initializeObject($object);
@@ -145,7 +134,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
             return $this->singletonInstances[$className];
         }
 
-        $classSchema = $this->reflectionService->getClassSchema($className);
+        $classSchema = $this->getReflectionService()->getClassSchema($className);
         $classIsSingleton = $classSchema->isSingleton();
         if (!$classIsSingleton) {
             if (array_key_exists($className, $this->prototypeObjectsWhichAreCurrentlyInstanciated) !== false) {
@@ -308,7 +297,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function isSingleton($className)
     {
-        return $this->reflectionService->getClassSchema($className)->isSingleton();
+        return $this->getReflectionService()->getClassSchema($className)->isSingleton();
     }
 
     /**
@@ -327,5 +316,18 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
     protected function getLogger()
     {
         return GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class);
+    }
+
+    /**
+     * Lazy load ReflectionService.
+     *
+     * Required as this class is being loaded in ext_localconf.php and we MUST not
+     * create caches in ext_localconf.php (which ReflectionService needs to do).
+     *
+     * @return ReflectionService
+     */
+    protected function getReflectionService(): ReflectionService
+    {
+        return $this->reflectionService ?? ($this->reflectionService = GeneralUtility::makeInstance(ReflectionService::class, GeneralUtility::makeInstance(CacheManager::class)));
     }
 }

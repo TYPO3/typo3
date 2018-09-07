@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies;
  */
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
@@ -52,9 +53,9 @@ class ExtensionManagementUtilityAccessibleProxy extends ExtensionManagementUtili
         self::$extTablesWasReadFromCacheOnce = false;
     }
 
-    public static function createExtLocalconfCacheEntry()
+    public static function createExtLocalconfCacheEntry(FrontendInterface $cache)
     {
-        parent::createExtLocalconfCacheEntry();
+        parent::createExtLocalconfCacheEntry($cache);
     }
 
     public static function createExtTablesCacheEntry()

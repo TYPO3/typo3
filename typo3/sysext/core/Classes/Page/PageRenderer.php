@@ -382,6 +382,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     protected $metaTagRegistry;
 
     /**
+     * @var FrontendInterface
+     */
+    protected static $cache = null;
+
+    /**
      * @param string $templateFile Declare the used template file. Omit this parameter will use default template
      */
     public function __construct($templateFile = '')
@@ -402,6 +407,14 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
         $this->metaTagRegistry = GeneralUtility::makeInstance(MetaTagManagerRegistry::class);
         $this->setMetaTag('name', 'generator', 'TYPO3 CMS');
+    }
+
+    /**
+     * @param FrontendInterface $cache
+     */
+    public static function setCache(FrontendInterface $cache)
+    {
+        static::$cache = $cache;
     }
 
     /**
@@ -1384,7 +1397,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $isDevelopment = GeneralUtility::getApplicationContext()->isDevelopment();
         $cacheIdentifier = 'requireJS_' . md5(implode(',', $loadedExtensions) . ($isDevelopment ? ':dev' : '') . GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT'));
         /** @var FrontendInterface $cache */
-        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('assets');
+        $cache = static::$cache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('assets');
         $this->requireJsConfig = $cache->get($cacheIdentifier);
 
         // if we did not get a configuration from the cache, compute and store it in the cache

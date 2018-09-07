@@ -22,11 +22,13 @@ use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\IO\PharStreamWrapperInterceptor;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\PharStreamWrapper\Behavior;
@@ -55,6 +57,11 @@ class Bootstrap
      * @var array List of early instances
      */
     protected $earlyInstances = [];
+
+    /**
+     * @var bool
+     */
+    protected $limbo = false;
 
     /**
      * Disable direct creation of this object.
@@ -94,9 +101,12 @@ class Bootstrap
 
         $logManager = new LogManager($requestId);
         $cacheManager = static::createCacheManager($failsafe ? true : false);
+        $coreCache = $cacheManager->getCache('cache_core');
+        $assetsCache = $cacheManager->getCache('assets');
+        $cacheManager->setLimbo(true);
         $packageManager = static::createPackageManager(
             $failsafe ? FailsafePackageManager::class : PackageManager::class,
-            $cacheManager->getCache('cache_core')
+            $coreCache
         );
 
         // Push singleton instances to GeneralUtility and ExtensionManagementUtility
@@ -123,12 +133,15 @@ class Bootstrap
         ];
 
         if (!$failsafe) {
-            static::loadTypo3LoadedExtAndExtLocalconf(true);
+            IconRegistry::setCache($assetsCache);
+            PageRenderer::setCache($assetsCache);
+            static::loadTypo3LoadedExtAndExtLocalconf(true, $coreCache);
             static::setFinalCachingFrameworkCacheConfiguration($cacheManager);
             static::unsetReservedGlobalVariables();
-            static::loadBaseTca();
+            static::loadBaseTca(true, $coreCache);
             static::checkEncryptionKey();
         }
+        $cacheManager->setLimbo(false);
 
         $defaultContainerEntries = [
             ClassLoader::class => $classLoader,
@@ -531,12 +544,16 @@ class Bootstrap
      * Load ext_localconf of extensions
      *
      * @param bool $allowCaching
+     * @param FrontendInterface $coreCache
      * @return Bootstrap|null
      * @internal This is not a public API method, do not use in own extensions
      */
-    public static function loadTypo3LoadedExtAndExtLocalconf($allowCaching = true)
+    public static function loadTypo3LoadedExtAndExtLocalconf($allowCaching = true, FrontendInterface $coreCache = null)
     {
-        ExtensionManagementUtility::loadExtLocalconf($allowCaching);
+        if ($allowCaching) {
+            $coreCache = $coreCache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core');
+        }
+        ExtensionManagementUtility::loadExtLocalconf($allowCaching, $coreCache);
         return static::$instance;
     }
 
@@ -805,12 +822,16 @@ class Bootstrap
      * This will mainly set up $TCA through extMgm API.
      *
      * @param bool $allowCaching True, if loading TCA from cache is allowed
+     * @param FrontendInterface $coreCache
      * @return Bootstrap|null
      * @internal This is not a public API method, do not use in own extensions
      */
-    public static function loadBaseTca(bool $allowCaching = true)
+    public static function loadBaseTca(bool $allowCaching = true, FrontendInterface $coreCache = null)
     {
-        ExtensionManagementUtility::loadBaseTca($allowCaching);
+        if ($allowCaching) {
+            $coreCache = $coreCache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core');
+        }
+        ExtensionManagementUtility::loadBaseTca($allowCaching, $coreCache);
         return static::$instance;
     }
 
