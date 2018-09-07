@@ -143,6 +143,10 @@ define(['jquery'], function ($) {
           SlugElement.$fullElement.find('.t3js-form-proposal-accepted').removeClass('hidden').find('span').text(response.proposal);
           SlugElement.$fullElement.find('.t3js-form-proposal-different').addClass('hidden');
         }
+        const isChanged = SlugElement.$hiddenField.val() !== response.proposal;
+        if (isChanged) {
+          SlugElement.$fullElement.find('input').trigger('change');
+        }
         if (mode === 'auto' || mode === 'recreate') {
           SlugElement.$readOnlyField.val(response.proposal);
           SlugElement.$hiddenField.val(response.proposal);
