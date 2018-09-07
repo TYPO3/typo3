@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
@@ -45,6 +46,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class SetupModuleController
 {
     use PublicPropertyDeprecationTrait;
+    use PublicMethodDeprecationTrait;
 
     /**
      * Flag if password has not been updated
@@ -72,13 +74,22 @@ class SetupModuleController
      *
      * @var array
      */
-    protected $deprecatedPublicProperties = [
+    private $deprecatedPublicProperties = [
         'OLD_BE_USER' => 'Using $OLD_BE_USER of class SetupModuleController from the outside is discouraged, the variable will be removed.',
         'MOD_MENU' => 'Using $MOD_MENU of class SetupModuleController from the outside is discouraged, the variable will be removed.',
         'MOD_SETTINGS' => 'Using $MOD_SETTINGS of class SetupModuleController from the outside is discouraged, the variable will be removed.',
         'content' => 'Using $content of class SetupModuleController from the outside is discouraged, as this variable is only used for internal storage.',
         'overrideConf' => 'Using $overrideConf of class SetupModuleController from the outside is discouraged, as this variable is only used for internal storage.',
         'languageUpdate' => 'Using $languageUpdate of class SetupModuleController from the outside is discouraged, as this variable is only used for internal storage.',
+    ];
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicMethods = [
+        'storeIncomingData' => 'Using SetupModuleController::storeIncomingData() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'main' => 'Using SetupModuleController::main() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'init' => 'Using SetupModuleController::init() is deprecated and will not be possible anymore in TYPO3 v10.',
     ];
 
     /**
@@ -215,7 +226,7 @@ class SetupModuleController
      * NOTICE: This method is called before the \TYPO3\CMS\Backend\Template\ModuleTemplate
      * is included. See bottom of document.
      */
-    public function storeIncomingData()
+    protected function storeIncomingData()
     {
         // First check if something is submitted in the data-array from POST vars
         $d = GeneralUtility::_POST('data');
@@ -342,7 +353,7 @@ class SetupModuleController
     /**
      * Initializes the module for display of the settings form.
      */
-    public function init()
+    protected function init()
     {
         $this->getLanguageService()->includeLLFile('EXT:setup/Resources/Private/Language/locallang.xlf');
         $backendUser = $this->getBackendUser();
@@ -376,7 +387,7 @@ class SetupModuleController
     /**
      * Generate the main settings form:
      */
-    public function main()
+    protected function main()
     {
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->content .= '<form action="' . (string)$uriBuilder->buildUriFromRoute('user_setup') . '" method="post" id="SetupModuleController" name="usersetup" enctype="multipart/form-data">';
@@ -655,7 +666,8 @@ class SetupModuleController
     }
 
     /**
-     * Return a select with available languages
+     * Return a select with available languages.
+     * This method is called from the setup module fake TCA userFunc.
      *
      * @return string Complete select as HTML string or warning box if something went wrong.
      */
@@ -697,7 +709,8 @@ class SetupModuleController
     }
 
     /**
-     * Returns a select with all modules for startup
+     * Returns a select with all modules for startup.
+     * This method is called from the setup module fake TCA userFunc.
      *
      * @return string Complete select as HTML string
      */

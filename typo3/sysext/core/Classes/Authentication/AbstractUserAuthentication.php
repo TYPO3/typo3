@@ -1454,7 +1454,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      *
      * @param int $uid The UID of the backend user to set in ->user
      * @internal
-     * @see SC_mod_tools_be_user_index::compareUsers(), \TYPO3\CMS\Setup\Controller\SetupModuleController::simulateUser(), freesite_admin::startCreate()
      */
     public function setBeUserByUid($uid)
     {

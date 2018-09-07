@@ -3250,4 +3250,11 @@ return [
             'Deprecation-85996-ExtensionManagerCommandController.rst'
         ],
     ],
+    'TYPO3\CMS\Setup\Controller\SetupModuleController->storeIncomingData' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86180-ProtectedMethodsInSetupModuleController.rst',
+        ],
+    ],
 ];
