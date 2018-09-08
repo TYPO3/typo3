@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Beuser\Controller;
  */
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -27,6 +28,15 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class BackendUserController extends ActionController
 {
+    use PublicMethodDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicMethods = [
+        'initializeView' => 'Using BackendUserController::initializeView() is deprecated and will not be possible anymore in TYPO3 v10.',
+    ];
+
     /**
      * @var int
      */
@@ -113,7 +123,7 @@ class BackendUserController extends ActionController
      * Assign default variables to view
      * @param ViewInterface $view
      */
-    public function initializeView(ViewInterface $view)
+    protected function initializeView(ViewInterface $view)
     {
         $view->assignMultiple([
             'shortcutLabel' => 'backendUsers',

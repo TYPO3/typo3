@@ -19,8 +19,12 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception;
@@ -42,29 +46,57 @@ use TYPO3\CMS\Filelist\FileList;
  */
 class FileListController extends ActionController
 {
-    /**
-     * @var array
-     */
-    public $MOD_MENU = [];
+    use PublicPropertyDeprecationTrait;
+    use PublicMethodDeprecationTrait;
+
+    private $deprecatedPublicProperties = [
+        'MOD_MENU' => 'Using FileListController::$MOD_MENU is deprecated and will not be possible anymore in TYPO3 v10.',
+        'MOD_SETTINGS' => 'Using FileListController::$MOD_SETTINGS is deprecated and will not be possible anymore in TYPO3 v10.',
+        'doc' => 'Using FileListController::$doc is deprecated, property will be removed in v10.',
+        'id' => 'Using FileListController::$id is deprecated and will not be possible anymore in TYPO3 v10.',
+        'pointer' => 'Using FileListController::$pointer is deprecated and will not be possible anymore in TYPO3 v10.',
+        'table' => 'Using FileListController::$table is deprecated, , property will be removed in v10.',
+        'imagemode' => 'Using FileListController::$imagemode is deprecated and will not be possible anymore in TYPO3 v10.',
+        'cmd' => 'Using FileListController::$cmd is deprecated and will not be possible anymore in TYPO3 v10.',
+        'filelist' => 'Using FileListController::$filelist is deprecated and will not be possible anymore in TYPO3 v10.',
+    ];
 
     /**
      * @var array
      */
-    public $MOD_SETTINGS = [];
+    private $deprecatedPublicMethods = [
+        'menuConfig' => 'Using FileListController::menuConfig() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'initializeView' => 'Using FileListController::initializeView() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'initializeIndexAction' => 'Using FileListController::initializeIndexAction() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'indexAction' => 'Using FileListController::indexAction() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'missingFolderAction' => 'Using FileListController::missingFolderAction() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'searchAction' => 'Using FileListController::searchAction() is deprecated and will not be possible anymore in TYPO3 v10.',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $MOD_MENU = [];
+
+    /**
+     * @var array
+     */
+    protected $MOD_SETTINGS = [];
 
     /**
      * Document template object
      *
      * @var DocumentTemplate
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
-    public $doc;
+    protected $doc;
 
     /**
      * "id" -> the path to list.
      *
      * @var string
      */
-    public $id;
+    protected $id;
 
     /**
      * @var Folder
@@ -81,25 +113,26 @@ class FileListController extends ActionController
      *
      * @var int
      */
-    public $pointer;
+    protected $pointer;
 
     /**
      * "Table"
      * @var string
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
-    public $table;
+    protected $table;
 
     /**
      * Thumbnail mode.
      *
      * @var string
      */
-    public $imagemode;
+    protected $imagemode;
 
     /**
      * @var string
      */
-    public $cmd;
+    protected $cmd;
 
     /**
      * Defines behaviour when uploading files with names that already exist; possible values are
@@ -114,7 +147,7 @@ class FileListController extends ActionController
      *
      * @var FileList
      */
-    public $filelist;
+    protected $filelist;
 
     /**
      * The name of the module
@@ -153,7 +186,6 @@ class FileListController extends ActionController
      * Incoming GET vars include id, pointer, table, imagemode
      *
      * @throws \RuntimeException
-     * @throws Exception\InsufficientFolderAccessPermissionsException
      */
     public function initializeObject()
     {
@@ -262,7 +294,7 @@ class FileListController extends ActionController
     /**
      * Setting the menu/session variables
      */
-    public function menuConfig()
+    protected function menuConfig()
     {
         // MENU-ITEMS:
         // If array, then it's a selector box menu
@@ -288,7 +320,7 @@ class FileListController extends ActionController
      *
      * @param ViewInterface $view The view
      */
-    public function initializeView(ViewInterface $view)
+    protected function initializeView(ViewInterface $view)
     {
         /** @var BackendTemplateView $view */
         parent::initializeView($view);
@@ -301,7 +333,7 @@ class FileListController extends ActionController
 
     /**
      */
-    public function initializeIndexAction()
+    protected function initializeIndexAction()
     {
         // Apply predefined values for hidden checkboxes
         // Set predefined value for DisplayBigControlPanel:
@@ -337,7 +369,7 @@ class FileListController extends ActionController
 
     /**
      */
-    public function indexAction()
+    protected function indexAction()
     {
         $pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
         $pageRenderer->setTitle($this->getLanguageService()->getLL('files'));
@@ -345,7 +377,7 @@ class FileListController extends ActionController
         // There there was access to this file path, continue, make the list
         if ($this->folderObject) {
             $userTsConfig = $this->getBackendUser()->getTSConfig();
-            // Create fileListing object
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Argument $this will be removed in v10.
             $this->filelist = GeneralUtility::makeInstance(FileList::class, $this);
             $this->filelist->thumbs = $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $this->MOD_SETTINGS['displayThumbs'];
             // Create clipboard object and initialize that
@@ -483,7 +515,7 @@ class FileListController extends ActionController
 
     /**
      */
-    public function missingFolderAction()
+    protected function missingFolderAction()
     {
         if ($this->errorMessage) {
             $this->errorMessage->setSeverity(FlashMessage::ERROR);
@@ -496,7 +528,7 @@ class FileListController extends ActionController
      *
      * @param string $searchWord
      */
-    public function searchAction($searchWord = '')
+    protected function searchAction($searchWord = '')
     {
         if (empty($searchWord)) {
             $this->forward('index');
@@ -593,12 +625,10 @@ class FileListController extends ActionController
         /** @var IconFactory $iconFactory */
         $iconFactory = $this->view->getModuleTemplate()->getIconFactory();
 
-        /** @var ResourceFactory $resourceFactory */
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
         $lang = $this->getLanguageService();
 
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 
         // Refresh page
@@ -719,9 +749,9 @@ class FileListController extends ActionController
     /**
      * Returns an instance of LanguageService
      *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
@@ -729,9 +759,9 @@ class FileListController extends ActionController
     /**
      * Returns the current BE user.
      *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

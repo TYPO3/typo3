@@ -264,6 +264,7 @@ class FileList
 
     /**
      * @var FileListController
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     protected $fileListController;
 
@@ -275,9 +276,9 @@ class FileList
     /**
      * Construct
      *
-     * @param FileListController $fileListController
+     * @param FileListController $fileListController @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
-    public function __construct(FileListController $fileListController)
+    public function __construct(FileListController $fileListController = null)
     {
         $backendUser = $this->getBackendUser();
         if (isset($backendUser->uc['titleLen']) && $backendUser->uc['titleLen'] > 0) {
