@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Updates;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -166,11 +167,13 @@ class PopulatePageSlugs implements UpgradeWizardInterface
                 $slug = $slugHelper->generate($record, $pid);
             }
 
-            if ($hasToBeUniqueInSite && !$slugHelper->isUniqueInSite($slug, $recordId, $pid, $languageId)) {
-                $slug = $slugHelper->buildSlugForUniqueInSite($slug, $recordId, $pid, $languageId);
+            $state = RecordStateFactory::forName($this->table)
+                ->fromArray($record, $pid, $recordId);
+            if ($hasToBeUniqueInSite && !$slugHelper->isUniqueInSite($slug, $state)) {
+                $slug = $slugHelper->buildSlugForUniqueInSite($slug, $state);
             }
-            if ($hasToBeUniqueInPid && !$slugHelper->isUniqueInPid($slug, $recordId, $pid, $languageId)) {
-                $slug = $slugHelper->buildSlugForUniqueInPid($slug, $recordId, $pid, $languageId);
+            if ($hasToBeUniqueInPid && !$slugHelper->isUniqueInPid($slug, $state)) {
+                $slug = $slugHelper->buildSlugForUniqueInPid($slug, $state);
             }
 
             $connection->update(

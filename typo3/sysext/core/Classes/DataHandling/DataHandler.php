@@ -47,6 +47,7 @@ use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\DataHandling\Localization\DataMapProcessor;
+use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -1976,9 +1977,6 @@ class DataHandler implements LoggerAwareInterface
             $value = $helper->sanitize($value);
         }
 
-        $languageId = (int)$fullRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
-        $evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], true);
-
         // In case a workspace is given, and the $realPid(!) still is negative
         // this is most probably triggered by versionizeRecord() and a raw record
         // copy - thus, uniqueness cannot be determined without having the
@@ -1990,11 +1988,19 @@ class DataHandler implements LoggerAwareInterface
             return ['value' => $value];
         }
 
+        // Return directly in case no evaluations are defined
+        if (empty($tcaFieldConf['eval'])) {
+            return ['value' => $value];
+        }
+
+        $state = RecordStateFactory::forName($table)
+            ->fromArray($fullRecord, $realPid, $id);
+        $evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], true);
         if (in_array('uniqueInSite', $evalCodesArray, true)) {
-            $value = $helper->buildSlugForUniqueInSite($value, $id, $realPid, $languageId);
+            $value = $helper->buildSlugForUniqueInSite($value, $state);
         }
         if (in_array('uniqueInPid', $evalCodesArray, true)) {
-            $value = $helper->buildSlugForUniqueInPid($value, $id, $realPid, $languageId);
+            $value = $helper->buildSlugForUniqueInPid($value, $state);
         }
 
         return ['value' => $value];

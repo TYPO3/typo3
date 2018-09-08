@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -55,6 +56,7 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
+     * @throws \RuntimeException
      */
     public function suggestAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -84,17 +86,17 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
 
         $hasConflict = false;
 
+        $recordData = $values;
+        $recordData['pid'] = $pid;
+        if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])) {
+            $recordData[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] = $languageId;
+        }
+
         $slug = GeneralUtility::makeInstance(SlugHelper::class, $tableName, $fieldName, $fieldConfig);
         if ($mode === 'auto') {
             // New page - Feed incoming values to generator
-            $recordData = $values;
-            $recordData['pid'] = $pid;
-            $recordData[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] = $languageId;
             $proposal = $slug->generate($recordData, $pid);
         } elseif ($mode === 'recreate') {
-            $recordData = $values;
-            $recordData['pid'] = $pid;
-            $recordData[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] = $languageId;
             $proposal = $slug->generate($recordData, $parentPageId);
         } elseif ($mode === 'manual') {
             // Existing record - Fetch full record and only validate against the new "slug" field.
@@ -103,13 +105,15 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
             throw new \RuntimeException('mode must be either "auto", "recreate" or "manual"', 1535835666);
         }
 
-        if ($hasToBeUniqueInSite && !$slug->isUniqueInSite($proposal, $recordId, $pid, $languageId)) {
+        $state = RecordStateFactory::forName($tableName)
+            ->fromArray($recordData, $pid, $recordId);
+        if ($hasToBeUniqueInSite && !$slug->isUniqueInSite($proposal, $state)) {
             $hasConflict = true;
-            $proposal = $slug->buildSlugForUniqueInSite($proposal, $recordId, $pid, $languageId);
+            $proposal = $slug->buildSlugForUniqueInSite($proposal, $state);
         }
-        if ($hasToBeUniqueInPid && !$slug->isUniqueInPid($proposal, $recordId, $pid, $languageId)) {
+        if ($hasToBeUniqueInPid && !$slug->isUniqueInPid($proposal, $state)) {
             $hasConflict = true;
-            $proposal = $slug->buildSlugForUniqueInPid($proposal, $recordId, $pid, $languageId);
+            $proposal = $slug->buildSlugForUniqueInPid($proposal, $state);
         }
 
         return new JsonResponse([
@@ -122,6 +126,7 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
     /**
      * @param ServerRequestInterface $request
      * @return bool
+     * @throws \InvalidArgumentException
      */
     protected function checkRequest(ServerRequestInterface $request): bool
     {

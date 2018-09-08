@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\DataHandling\Model\RecordState;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -206,13 +208,15 @@ class SlugHelper
      * Checks if there are other records with the same slug that are located on the same PID.
      *
      * @param string $slug
-     * @param string|int $recordId
-     * @param int $pageId
-     * @param int $languageId
+     * @param RecordState $state
      * @return bool
      */
-    public function isUniqueInPid(string $slug, $recordId, int $pageId, int $languageId): bool
+    public function isUniqueInPid(string $slug, RecordState $state): bool
     {
+        $pageId = (int)$state->resolveAggregateNodeIdentifier();
+        $recordId = $state->getSubject()->getIdentifier();
+        $languageId = $state->getContext()->getLanguageId();
+
         if ($pageId < 0) {
             $pageId = $this->resolveLivePageId($recordId);
         }
@@ -235,14 +239,16 @@ class SlugHelper
      * Check if there are other records with the same slug that are located on the same site.
      *
      * @param string $slug
-     * @param string|int $recordId
-     * @param int $pageId
-     * @param int $languageId
+     * @param RecordState $state
      * @return bool
      * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
-    public function isUniqueInSite(string $slug, $recordId, int $pageId, int $languageId): bool
+    public function isUniqueInSite(string $slug, RecordState $state): bool
     {
+        $pageId = (int)$state->resolveAggregateNodeIdentifier();
+        $recordId = $state->getSubject()->getIdentifier();
+        $languageId = $state->getContext()->getLanguageId();
+
         if ($pageId < 0) {
             $pageId = $this->resolveLivePageId($recordId);
         }
@@ -266,7 +272,13 @@ class SlugHelper
         $siteMatcher = GeneralUtility::makeInstance(SiteMatcher::class);
         $siteOfCurrentRecord = $siteMatcher->matchByPageId($pageId);
         foreach ($records as $record) {
-            $siteOfExistingRecord = $siteMatcher->matchByPageId((int)$record['uid']);
+            try {
+                $siteOfExistingRecord = $siteMatcher->matchByPageId((int)$record['uid']);
+            } catch (SiteNotFoundException $exception) {
+                // In case not site is found, the record is not
+                // organized in any site or pseudo-site
+                continue;
+            }
             if ($siteOfExistingRecord->getRootPageId() === $siteOfCurrentRecord->getRootPageId()) {
                 return false;
             }
@@ -280,13 +292,11 @@ class SlugHelper
      * Generate a slug with a suffix "/mytitle-1" if that is in use already.
      *
      * @param string $slug proposed slug
-     * @param mixed $recordId can be a new record (non-int) or an existing record ID
-     * @param int $realPid pageID (already workspace-resolved)
-     * @param int $languageId the language ID realm to be searched for
+     * @param RecordState $state
      * @return string
      * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
-    public function buildSlugForUniqueInSite(string $slug, $recordId, int $realPid, int $languageId): string
+    public function buildSlugForUniqueInSite(string $slug, RecordState $state): string
     {
         $slug = $this->sanitize($slug);
         $rawValue = $this->extract($slug);
@@ -294,9 +304,7 @@ class SlugHelper
         $counter = 0;
         while (!$this->isUniqueInSite(
                 $newValue,
-                $recordId,
-                $realPid,
-                $languageId
+                $state
             ) && $counter++ < 100
         ) {
             $newValue = $this->sanitize($rawValue . '-' . $counter);
@@ -311,12 +319,10 @@ class SlugHelper
      * Generate a slug with a suffix "/mytitle-1" if the suggested slug is in use already.
      *
      * @param string $slug proposed slug
-     * @param mixed $recordId can be a new record (non-int) or an existing record ID
-     * @param int $realPid pageID (already workspace-resolved)
-     * @param int $languageId the language ID realm to be searched for
+     * @param RecordState $state
      * @return string
      */
-    public function buildSlugForUniqueInPid(string $slug, $recordId, int $realPid, int $languageId): string
+    public function buildSlugForUniqueInPid(string $slug, RecordState $state): string
     {
         $slug = $this->sanitize($slug);
         $rawValue = $this->extract($slug);
@@ -324,9 +330,7 @@ class SlugHelper
         $counter = 0;
         while (!$this->isUniqueInPid(
                 $newValue,
-                $recordId,
-                $realPid,
-                $languageId
+                $state
             ) && $counter++ < 100
         ) {
             $newValue = $this->sanitize($rawValue . '-' . $counter);
