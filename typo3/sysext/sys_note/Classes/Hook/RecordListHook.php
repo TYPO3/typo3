@@ -15,8 +15,8 @@ namespace TYPO3\CMS\SysNote\Hook;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Recordlist\Controller\RecordListController;
 use TYPO3\CMS\SysNote\Controller\NoteController;
 use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
 
@@ -29,25 +29,29 @@ class RecordListHook
      * Add sys_notes as additional content to the header of the list module
      *
      * @param array $params
-     * @param RecordListController $parentObject
      * @return string
      */
-    public function renderInHeader(array $params = [], RecordListController $parentObject)
+    public function renderInHeader(array $params): string
     {
+        /** @var ServerRequestInterface $request */
+        $request = $params['request'];
+        $id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
         $controller = GeneralUtility::makeInstance(NoteController::class);
-        return $controller->listAction($parentObject->id, SysNoteRepository::SYS_NOTE_POSITION_TOP);
+        return $controller->listAction($id, SysNoteRepository::SYS_NOTE_POSITION_TOP);
     }
 
     /**
      * Add sys_notes as additional content to the footer of the list module
      *
      * @param array $params
-     * @param RecordListController $parentObject
      * @return string
      */
-    public function renderInFooter(array $params = [], RecordListController $parentObject)
+    public function renderInFooter(array $params): string
     {
+        /** @var ServerRequestInterface $request */
+        $request = $params['request'];
+        $id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
         $controller = GeneralUtility::makeInstance(NoteController::class);
-        return $controller->listAction($parentObject->id, SysNoteRepository::SYS_NOTE_POSITION_BOTTOM);
+        return $controller->listAction($id, SysNoteRepository::SYS_NOTE_POSITION_BOTTOM);
     }
 }

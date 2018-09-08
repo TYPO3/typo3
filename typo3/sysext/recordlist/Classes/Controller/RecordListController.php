@@ -23,6 +23,8 @@ use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -46,136 +48,177 @@ use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
  */
 class RecordListController
 {
+    use PublicPropertyDeprecationTrait;
+    use PublicMethodDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicProperties = [
+        'id' => 'Using RecordListController::$id is deprecated and will not be possible anymore in TYPO3 v10.',
+        'pointer' => 'Using RecordListController::$pointer is deprecated and will not be possible anymore in TYPO3 v10.',
+        'table' => 'Using RecordListController::$table is deprecated and will not be possible anymore in TYPO3 v10.',
+        'search_field' => 'Using RecordListController::$search_field is deprecated and will not be possible anymore in TYPO3 v10.',
+        'search_levels' => 'Using RecordListController::$search_levels is deprecated and will not be possible anymore in TYPO3 v10.',
+        'showLimit' => 'Using RecordListController::$showLimit is deprecated and will not be possible anymore in TYPO3 v10.',
+        'returnUrl' => 'Using RecordListController::$returnUrl is deprecated and will not be possible anymore in TYPO3 v10.',
+        'clear_cache' => 'Using RecordListController::$clear_cache is deprecated and will not be possible anymore in TYPO3 v10.',
+        'cmd' => 'Using RecordListController::$cmd is deprecated and will not be possible anymore in TYPO3 v10.',
+        'cmd_table' => 'Using RecordListController::$cmd_table is deprecated and will not be possible anymore in TYPO3 v10.',
+        'perms_clause' => 'Using RecordListController::$perms_clause is deprecated and will not be possible anymore in TYPO3 v10.',
+        'modTSconfig' => 'Using RecordListController::$modTSconfig is deprecated and will not be possible anymore in TYPO3 v10.',
+        'pageinfo' => 'Using RecordListController::$pageinfo is deprecated and will not be possible anymore in TYPO3 v10.',
+        'MOD_MENU' => 'Using RecordListController::$MOD_MENU is deprecated and will not be possible anymore in TYPO3 v10.',
+        'MOD_SETTINGS' => 'Using RecordListController::$MOD_SETTINGS is deprecated and will not be possible anymore in TYPO3 v10.',
+        'content' => 'Using RecordListController::$content is deprecated and will not be possible anymore in TYPO3 v10.',
+        'body' => 'Using RecordListController::$body is deprecated and will not be possible anymore in TYPO3 v10.',
+        'imagemode' => 'Using RecordListController::$imagemode is deprecated, property will be removed in TYPO3 v10.',
+        'doc' => 'Using RecordListController::$doc is deprecated, property will be removed in TYPO3 v10.',
+    ];
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicMethods = [
+        'init' => 'Using RecordListController::init() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'menuConfig' => 'Using RecordListController::menuConfig() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'clearCache' => 'Using RecordListController::clearCache() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'main' => 'Using RecordListController::main() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'getModuleTemplate' => 'Using RecordListController::getModuleTemplate() is deprecated and will not be possible anymore in TYPO3 v10.',
+    ];
+
     /**
      * Page Id for which to make the listing
      *
      * @var int
      */
-    public $id;
+    protected $id;
 
     /**
      * Pointer - for browsing list of records.
      *
      * @var int
      */
-    public $pointer;
+    protected $pointer;
 
     /**
      * Thumbnails or not
      *
      * @var string
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
-    public $imagemode;
+    protected $imagemode;
 
     /**
      * Which table to make extended listing for
      *
      * @var string
      */
-    public $table;
+    protected $table;
 
     /**
      * Search-fields
      *
      * @var string
      */
-    public $search_field;
+    protected $search_field;
 
     /**
      * Search-levels
      *
      * @var int
      */
-    public $search_levels;
+    protected $search_levels;
 
     /**
      * Show-limit
      *
      * @var int
      */
-    public $showLimit;
+    protected $showLimit;
 
     /**
      * Return URL
      *
      * @var string
      */
-    public $returnUrl;
+    protected $returnUrl;
 
     /**
      * Clear-cache flag - if set, clears page cache for current id.
      *
      * @var bool
      */
-    public $clear_cache;
+    protected $clear_cache;
 
     /**
      * Command: Eg. "delete" or "setCB" (for DataHandler / clipboard operations)
      *
      * @var string
      */
-    public $cmd;
+    protected $cmd;
 
     /**
      * Table on which the cmd-action is performed.
      *
      * @var string
      */
-    public $cmd_table;
+    protected $cmd_table;
 
     /**
      * Page select perms clause
      *
      * @var int
      */
-    public $perms_clause;
+    protected $perms_clause;
 
     /**
      * Module TSconfig
      *
      * @var array
      */
-    public $modTSconfig;
+    protected $modTSconfig;
 
     /**
      * Current ids page record
      *
      * @var mixed[]|bool
      */
-    public $pageinfo;
+    protected $pageinfo;
 
     /**
      * Document template object
      *
      * @var DocumentTemplate
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
-    public $doc;
+    protected $doc;
 
     /**
      * Menu configuration
      *
      * @var string[]
      */
-    public $MOD_MENU = [];
+    protected $MOD_MENU = [];
 
     /**
      * Module settings (session variable)
      *
      * @var string[]
      */
-    public $MOD_SETTINGS = [];
+    protected $MOD_SETTINGS = [];
 
     /**
      * Module output accumulation
      *
      * @var string
      */
-    public $content;
+    protected $content;
 
     /**
      * @var string
      */
-    public $body = '';
+    protected $body = '';
 
     /**
      * @var PageRenderer
@@ -219,7 +262,7 @@ class RecordListController
     /**
      * Initializing the module
      */
-    public function init()
+    protected function init()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $backendUser = $this->getBackendUserAuthentication();
@@ -230,6 +273,7 @@ class RecordListController
         // GPvars:
         $this->id = (int)GeneralUtility::_GP('id');
         $this->pointer = GeneralUtility::_GP('pointer');
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
         $this->imagemode = GeneralUtility::_GP('imagemode');
         $this->table = GeneralUtility::_GP('table');
         $this->search_field = GeneralUtility::_GP('search_field');
@@ -250,7 +294,7 @@ class RecordListController
     /**
      * Initialize function menu array
      */
-    public function menuConfig()
+    protected function menuConfig()
     {
         // MENU-ITEMS:
         $this->MOD_MENU = [
@@ -266,7 +310,7 @@ class RecordListController
     /**
      * Clears page cache for the current id, $this->id
      */
-    public function clearCache()
+    protected function clearCache()
     {
         if ($this->clear_cache) {
             $tce = GeneralUtility::makeInstance(DataHandler::class);
@@ -277,16 +321,27 @@ class RecordListController
 
     /**
      * Main function, starting the rendering of the list.
+     *
+     * @param ServerRequestInterface $request
      */
-    public function main()
+    protected function main(ServerRequestInterface $request = null)
     {
+        if ($request === null) {
+            // Missing argument? This method must have been called from outside.
+            // Method will be protected and $request mandatory in v10, giving core freedom to move stuff around
+            // New v10 signature: "protected function main(ServerRequestInterface $request)"
+            // @deprecated since TYPO3 v9, method argument $request will be set to mandatory
+            $request = $GLOBALS['TYPO3_REQUEST'];
+        }
+
         $backendUser = $this->getBackendUserAuthentication();
         $lang = $this->getLanguageService();
         // Loading current page record and checking access:
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
         $access = is_array($this->pageinfo);
-        // Start document template object:
-        // We need to keep this due to deeply nested dependencies
+
+        // Start document template object
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Instantiation will be removed.
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
@@ -467,7 +522,10 @@ class RecordListController
 
         // Additional header content
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawHeaderHook'] ?? [] as $hook) {
-            $params = [];
+            $params = [
+                'request' => $request,
+            ];
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10: Handing over $this as second constructor argument will be changed to $null = null;
             $this->body .= GeneralUtility::callUserFunction($hook, $params, $this);
         }
 
@@ -554,12 +612,15 @@ class RecordListController
         }
         // Additional footer content
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawFooterHook'] ?? [] as $hook) {
-            $params = [];
+            $params = [
+                'request' => $request,
+            ];
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10: Handing over $this as second constructor argument will be changed to $null = null;
             $this->body .= GeneralUtility::callUserFunction($hook, $params, $this);
         }
         // Setting up the buttons for docheader
         $dblist->getDocHeaderButtons($this->moduleTemplate);
-        // searchbox toolbar
+        // search box toolbar
         if (!$this->modTSconfig['properties']['disableSearchBox'] && ($dblist->HTMLcode || !empty($dblist->searchString))) {
             $this->content = $dblist->getSearchBox();
             $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
@@ -597,10 +658,11 @@ class RecordListController
         $this->site = $request->getAttribute('site');
         $this->siteLanguages = $this->site->getAvailableLanguages($this->getBackendUserAuthentication(), false, (int)$this->id);
         BackendUtility::lockRecords();
+        // @deprecated  since TYPO3 v9, will be removed in TYPO3 v10.0. Can be removed along with $this->doc.
         $GLOBALS['SOBE'] = $this;
         $this->init();
         $this->clearCache();
-        $this->main();
+        $this->main($request);
         $this->moduleTemplate->setContent($this->content);
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
@@ -677,7 +739,7 @@ class RecordListController
     /**
      * @return ModuleTemplate
      */
-    public function getModuleTemplate()
+    protected function getModuleTemplate(): ModuleTemplate
     {
         return $this->moduleTemplate;
     }
@@ -685,7 +747,7 @@ class RecordListController
     /**
      * @return BackendUserAuthentication
      */
-    protected function getBackendUserAuthentication()
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
@@ -693,7 +755,7 @@ class RecordListController
     /**
      * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
@@ -701,12 +763,11 @@ class RecordListController
     /**
      * @return PageRenderer
      */
-    protected function getPageRenderer()
+    protected function getPageRenderer(): PageRenderer
     {
         if ($this->pageRenderer === null) {
             $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         }
-
         return $this->pageRenderer;
     }
 }
