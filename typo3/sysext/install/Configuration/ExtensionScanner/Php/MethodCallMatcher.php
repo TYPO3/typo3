@@ -3299,4 +3299,53 @@ return [
             'Deprecation-86193-ProtectMethodsInAbstractLinkBrowserController.rst',
         ],
     ],
+    'TYPO3\CMS\Impexp\Controller\ImportExportController->addRecordsForPid' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-85031-ProtectedImportExportController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Impexp\Controller\ImportExportController->exec_listQueryPid' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-85031-ProtectedImportExportController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Impexp\Controller\ImportExportController->makeConfigurationForm' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85031-ProtectedImportExportController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Impexp\Controller\ImportExportController->makeAdvancedOptionsForm' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85031-ProtectedImportExportController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Impexp\Controller\ImportExportController->makeSaveForm' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85031-ProtectedImportExportController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Impexp\Controller\ImportExportController->getTableSelectOptions' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85031-ProtectedImportExportController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Impexp\Controller\ImportExportController->filterPageIds' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-85031-ProtectedImportExportController.rst',
+        ],
+    ],
 ];
