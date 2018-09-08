@@ -1,6 +1,20 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Seo\XmlSitemap;
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -39,33 +53,39 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
             );
         }
 
-        $pids = GeneralUtility::intExplode(',', $this->config['pid']) ?? $GLOBALS['TSFE']->id;
+        $pids = !empty($this->config['pid']) ? GeneralUtility::intExplode(',', $this->config['pid']) : [];
         $lastModifiedField = $this->config['lastModifiedField'] ?? 'tstamp';
         $sortField = $this->config['sortField'] ?? 'sorting';
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->config['table']);
 
-        $constraints = [
-            $queryBuilder->expr()->in('pid', $pids)
-        ];
+        $constraints = [];
+
+        if (!empty($pids)) {
+            $constraints[] = $queryBuilder->expr()->in('pid', $pids);
+        }
 
         if (!empty($this->config['additionalWhere'])) {
             $constraints[] = $this->config['additionalWhere'];
         }
 
-        $rows = $queryBuilder->select('*')
-            ->from($this->config['table'])
-            ->where(
+        $queryBuilder->select('*')
+            ->from($this->config['table']);
+
+        if (!empty($constraints)) {
+            $queryBuilder->where(
                 ...$constraints
-            )
-            ->orderBy($sortField)
+            );
+        }
+
+        $rows = $queryBuilder->orderBy($sortField)
             ->execute()
             ->fetchAll();
 
         foreach ($rows as $row) {
             $this->items[] = [
-                'loc' => $this->defineUrl($row),
+                'data' => $row,
                 'lastMod' => $row[$lastModifiedField]
             ];
         }
@@ -73,9 +93,9 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
 
     /**
      * @param array $data
-     * @return string
+     * @return array
      */
-    protected function defineUrl(array $data): string
+    protected function defineUrl(array $data): array
     {
         $pageId = $this->config['url']['pageId'] ?? $GLOBALS['TSFE']->id;
         $additionalParams = [];
@@ -97,7 +117,9 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
             'useCacheHash' => $this->config['url']['useCacheHash'] ?? 0
         ];
 
-        return $this->cObj->typoLink_URL($typoLinkConfig);
+        $data['loc'] = $this->cObj->typoLink_URL($typoLinkConfig);
+
+        return $data;
     }
 
     /**

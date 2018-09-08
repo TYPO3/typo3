@@ -39,8 +39,8 @@ plugin.tx_seo {
         pages {
           provider = TYPO3\CMS\Seo\XmlSitemap\PagesXmlSitemapDataProvider
           config {
-            excludedDoktypes =
-            additionalWhere = AND no_index = 0
+            excludedDoktypes = {$plugin.tx_seo.settings.xmlSitemap.sitemaps.pages.excludedDoktypes}
+            additionalWhere = {$plugin.tx_seo.settings.xmlSitemap.sitemaps.pages.additionalWhere}
           }
         }
       }

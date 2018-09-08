@@ -7,4 +7,15 @@ plugin.tx_seo {
     # cat=plugin.tx_seo/file; type=string; label=Path to template layouts (FE)
     layoutRootPath = EXT:seo/Resources/Private/Layouts/
   }
+
+  settings {
+    xmlSitemap {
+      sitemaps {
+        pages {
+          excludedDoktypes = 7, 3, 254, 255, 199
+          additionalWhere = no_index = 0
+        }
+      }
+    }
+  }
 }

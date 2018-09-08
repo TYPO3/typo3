@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Seo\XmlSitemap;
 
 /*
@@ -18,9 +19,12 @@ namespace TYPO3\CMS\Seo\XmlSitemap;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Class to generate a XML sitemap for pages
@@ -31,39 +35,17 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
     {
         parent::__construct($request, $key, $config, $cObj);
 
-        $this->generateItems($request);
+        $this->generateItems($this->request);
     }
 
     /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param ServerRequestInterface $request
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
     public function generateItems(ServerRequestInterface $request): void
     {
-        $site = $request->getAttribute('site');
-        $rootPageId = $site->getRootPageId();
-
-        $additionalWhere = $this->config['additionalWhere'] ?? '';
-        if (!empty($this->config['excludedDoktypes'])) {
-            $excludedDoktypes = GeneralUtility::trimExplode(',', $this->config['excludedDoktypes']);
-            if (!empty($excludedDoktypes)) {
-                $additionalWhere .= ' AND doktype NOT IN (' . implode(',', $excludedDoktypes) . ')';
-            }
-        }
-
-        $rootPage = $this->getTypoScriptFrontendController()->page;
-        $pages = [
-            [
-                'uid' => $rootPage['uid'],
-                'tstamp' => $rootPage['tstamp'],
-                'l18n_cfg' => $rootPage['l18n_cfg'],
-                'SYS_LASTCHANGED' => $rootPage['SYS_LASTCHANGED']
-            ]
-        ];
-
-        $pages = $this->getSubPages($rootPageId, $pages, ltrim($additionalWhere));
-
         $languageId = $this->getCurrentLanguageAspect()->getId();
-        foreach ($pages as $page) {
+        foreach ($this->getPages() as $page) {
             /**
              * @todo Checking if the page has to be shown/hidden should normally be handled by the
              * PageRepository but to prevent major breaking changes this is checked here for now
@@ -80,16 +62,10 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
                     && !$page['_PAGES_OVERLAY']
                 )
             ) {
-                $typoLinkConfig = [
-                    'parameter' => $page['uid'],
-                    'forceAbsoluteUrl' => 1,
-                ];
-
-                $loc = $this->cObj->typoLink_URL($typoLinkConfig);
                 $lastMod = $page['SYS_LASTCHANGED'] ?: $page['tstamp'];
 
                 $this->items[] = [
-                    'loc' => $loc,
+                    'uid' => $page['uid'],
                     'lastMod' => (int)$lastMod
                 ];
             }
@@ -97,37 +73,46 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
     }
 
     /**
-     * Get subpages
-     *
-     * @param int $parentPageId
-     * @param array $pages
-     * @param string $additionalWhere
      * @return array
      */
-    protected function getSubPages(int $parentPageId, array $pages = [], $additionalWhere = ''): array
+    protected function getPages(): array
     {
-        $subPages = $this->getTypoScriptFrontendController()->sys_page->getMenu(
-            $parentPageId,
-            'uid, tstamp, SYS_LASTCHANGED, l18n_cfg',
-            'sorting',
-            $additionalWhere,
-            false
-        );
-        $pages = array_merge($pages, $subPages);
-
-        foreach ($subPages as $subPage) {
-            $pages = $this->getSubPages((int)$subPage['uid'], $pages, $additionalWhere);
+        if (!empty($this->config['rootPage'])) {
+            $rootPageId = (int)$this->config['rootPage'];
+        } else {
+            $site = $this->request->getAttribute('site');
+            $rootPageId = $site->getRootPageId();
         }
 
-        return $pages;
-    }
+        $queryGenerator = GeneralUtility::makeInstance(QueryGenerator::class);
+        $treeList = $queryGenerator->getTreeList($rootPageId, 99);
 
-    /**
-     * @return TypoScriptFrontendController
-     */
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+
+        $constraints = [
+            $queryBuilder->expr()->in('uid', $treeList)
+        ];
+
+        if (!empty($this->config['additionalWhere'])) {
+            $constraints[] = QueryHelper::stripLogicalOperatorPrefix($this->config['additionalWhere']);
+        }
+
+        if (!empty($this->config['excludedDoktypes'])) {
+            $excludedDoktypes = GeneralUtility::intExplode(',', $this->config['excludedDoktypes']);
+            if (!empty($excludedDoktypes)) {
+                $constraints[] = $queryBuilder->expr()->notIn('doktype', implode(',', $excludedDoktypes));
+            }
+        }
+        $pages = $queryBuilder->select('*')
+            ->from('pages')
+            ->where(...$constraints)
+            ->orderBy('uid', 'ASC')
+            ->execute()
+            ->fetchAll();
+
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        return $pageRepository->getPagesOverlay($pages);
     }
 
     /**
@@ -137,5 +122,21 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
     protected function getCurrentLanguageAspect(): LanguageAspect
     {
         return GeneralUtility::makeInstance(Context::class)->getAspect('language');
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    protected function defineUrl(array $data): array
+    {
+        $typoLinkConfig = [
+            'parameter' => $data['uid'],
+            'forceAbsoluteUrl' => 1,
+        ];
+
+        $data['loc'] = $this->cObj->typoLink_URL($typoLinkConfig);
+
+        return $data;
     }
 }
