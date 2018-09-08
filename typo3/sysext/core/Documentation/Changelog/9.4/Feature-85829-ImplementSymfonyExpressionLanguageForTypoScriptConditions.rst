@@ -200,18 +200,23 @@ Extending the expression language with own functions (like old userFunc)
 ------------------------------------------------------------------------
 
 It is possible to extend the expression language with own functions like before userFunc in the old conditions.
-An example could be :php:`TYPO3\CMS\Core\ExpressionLanguage\TypoScriptConditionFunctionsProvider` which implements
+An example could be :php:`TYPO3\CMS\Core\ExpressionLanguage\FunctionsProvider\TypoScriptConditionFunctionsProvider` which implements
 the most core functions.
 
+Please read .. _the introduction: https://docs.typo3.org/typo3cms/extensions/core/Changelog/9.4/Feature-85828-MoveSymfonyExpressionLanguageHandlingIntoEXTcore.html first.
+
 Add new methods by implementing own providers which implement the :php:`ExpressionFunctionProviderInterface` and
-register the provider in :file:`ext_localconf.php`:
+register the provider for the key `typoscript` in your own :file:`Configuration\ExpressionLanguage.php` file:
 
 .. code-block:: php
 
-   if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Core\ExpressionLanguage\TypoScriptConditionProvider']['additionalExpressionLanguageProvider'])) {
-      $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Core\ExpressionLanguage\TypoScriptConditionProvider']['additionalExpressionLanguageProvider'] = [];
-   }
-   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Core\ExpressionLanguage\TypoScriptConditionProvider']['additionalExpressionLanguageProvider'][] = \My\NameSpace\Provider\TypoScriptConditionProvider::class;
+      return [
+         'typoscript' => [
+            \TYPO3\CMS\MyExt\ExpressionLanguage\MyCustomProvider::class,
+         ]
+      ];
 
+
+The code above will extend the TypoScript condition configuration with your own provider, which provide your own functions.
 
 .. index:: Backend, Frontend, TypoScript, ext:core

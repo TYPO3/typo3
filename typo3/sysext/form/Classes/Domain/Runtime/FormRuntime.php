@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Form\Domain\Runtime;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -32,7 +33,6 @@ use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Property\Exception as PropertyException;
-use TYPO3\CMS\Form\Domain\Condition\ConditionProvider;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherInterface;
@@ -1061,8 +1061,31 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      */
     protected function getConditionResolver(): Resolver
     {
-        $conditionResolver = GeneralUtility::makeInstance(Resolver::class, GeneralUtility::makeInstance(ConditionProvider::class, $this));
-        return $conditionResolver;
+        $formValues = array_replace_recursive(
+            $this->getFormState()->getFormValues(),
+            $this->getRequest()->getArguments()
+        );
+        $page = $this->getCurrentPage() ?? $this->getFormDefinition()->getPageByIndex(0);
+
+        $finisherIdentifier = '';
+        if ($this->getCurrentFinisher() !== null) {
+            $finisherIdentifier = (new \ReflectionClass($this->getCurrentFinisher()))->getShortName();
+            $finisherIdentifier = preg_replace('/Finisher$/', '', $finisherIdentifier);
+        }
+
+        return GeneralUtility::makeInstance(
+            Resolver::class,
+            'form',
+            [
+                // some shortcuts
+                'formRuntime' => $this,
+                'formValues' => $formValues,
+                'stepIdentifier' => $page->getIdentifier(),
+                'stepType' => $page->getType(),
+                'finisherIdentifier' => $finisherIdentifier,
+            ],
+            $GLOBALS['TYPO3_REQUEST'] ?? GeneralUtility::makeInstance(ServerRequest::class)
+        );
     }
 
     /**

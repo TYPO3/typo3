@@ -16,10 +16,10 @@ namespace TYPO3\CMS\Core\ExpressionLanguage;
  */
 
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class Resolver
- * @internal
  */
 class Resolver
 {
@@ -39,13 +39,31 @@ class Resolver
     public $expressionLanguageVariables = [];
 
     /**
-     * @param ProviderInterface $provider
+     * @param string $context
+     * @param array $variables
      */
-    public function __construct(ProviderInterface $provider)
+    public function __construct(string $context, array $variables)
     {
-        $this->provider = $provider;
-        $this->expressionLanguage = new ExpressionLanguage(null, $provider->getExpressionLanguageProviders());
-        $this->expressionLanguageVariables = $provider->getExpressionLanguageVariables();
+        $functionProviderInstances = [];
+        $providers = GeneralUtility::makeInstance(ProviderConfigurationLoader::class)->getExpressionLanguageProviders()[$context] ?? [];
+        // Always add default provider
+        array_unshift($providers, DefaultProvider::class);
+        $providers = array_unique($providers);
+        $functionProviders = [];
+        $generalVariables = [];
+        foreach ($providers as $provider) {
+            /** @var ProviderInterface $providerInstance */
+            $providerInstance = GeneralUtility::makeInstance($provider);
+            $functionProviders[] = $providerInstance->getExpressionLanguageProviders();
+            $generalVariables[] = $providerInstance->getExpressionLanguageVariables();
+        }
+        $functionProviders = array_merge(...$functionProviders);
+        $generalVariables = array_replace_recursive(...$generalVariables);
+        $this->expressionLanguageVariables = array_replace_recursive($generalVariables, $variables);
+        foreach ($functionProviders as $functionProvider) {
+            $functionProviderInstances[] = GeneralUtility::makeInstance($functionProvider);
+        }
+        $this->expressionLanguage = new ExpressionLanguage(null, $functionProviderInstances);
     }
 
     /**

@@ -15,10 +15,17 @@ namespace TYPO3\CMS\Core\Tests\Unit\ExpressionLanguage;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
-use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\ExpressionLanguage\DefaultProvider;
+use TYPO3\CMS\Core\ExpressionLanguage\FunctionsProvider\DefaultFunctionsProvider;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -26,6 +33,27 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ResolverTest extends UnitTestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+        $this->resetSingletonInstances = true;
+
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheFrontendProphecy->has(Argument::any())->willReturn(false);
+        $cacheFrontendProphecy->set(Argument::any(), Argument::any())->willReturn(null);
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheManagerProphecy->getCache('cache_core')->willReturn($cacheFrontendProphecy->reveal());
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+
+        $packageManagerProphecy = $this->prophesize(PackageManager::class);
+        $corePackageProphecy = $this->prophesize(PackageInterface::class);
+        $corePackageProphecy->getPackagePath()->willReturn(__DIR__ . '/../../../../../../../sysext/core/');
+        $packageManagerProphecy->getActivePackages()->willReturn([
+            $corePackageProphecy->reveal()
+        ]);
+        GeneralUtility::setSingletonInstance(PackageManager::class, $packageManagerProphecy->reveal());
+    }
+
     /**
      * @return array
      */
@@ -50,7 +78,8 @@ class ResolverTest extends UnitTestCase
      */
     public function basicExpressionHandlingResultsWorksAsExpected(string $expression, $expectedResult)
     {
-        $expressionLanguageResolver = new Resolver(new DefaultProvider());
+        $request = new ServerRequest();
+        $expressionLanguageResolver = new Resolver('default', [], $request);
         $this->assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
     }
 
@@ -86,7 +115,9 @@ class ResolverTest extends UnitTestCase
             'varTrue' => true,
             'varFalse' => false,
          ]);
-        $expressionLanguageResolver = new Resolver($contextProphecy->reveal());
+        $request = new ServerRequest();
+        GeneralUtility::addInstance(DefaultProvider::class, $contextProphecy->reveal());
+        $expressionLanguageResolver = new Resolver('default', [], $request);
         $this->assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
     }
 
@@ -111,7 +142,7 @@ class ResolverTest extends UnitTestCase
      */
     public function basicExpressionHandlingWithCustomVariablesAndExpressionLanguageProviderWorksAsExpected(string $expression, $expectedResult)
     {
-        $expressionProvider = $this->prophesize(ExpressionFunctionProviderInterface::class);
+        $expressionProvider = $this->prophesize(DefaultFunctionsProvider::class);
         $expressionProvider->getFunctions()->willReturn([
             new ExpressionFunction('testMeLowercase', function ($str) {
                 return sprintf('(is_string(%1$s) ? strtolower(%1$s) : %1$s)', $str);
@@ -120,12 +151,15 @@ class ResolverTest extends UnitTestCase
             })
         ]);
         $contextProphecy = $this->prophesize(DefaultProvider::class);
-        $contextProphecy->getExpressionLanguageProviders()->willReturn([$expressionProvider->reveal()]);
+        $contextProphecy->getExpressionLanguageProviders()->willReturn([DefaultFunctionsProvider::class]);
         $contextProphecy->getExpressionLanguageVariables()->willReturn([
             'var1' => 'FOO',
             'var2' => 'foo'
          ]);
-        $expressionLanguageResolver = new Resolver($contextProphecy->reveal());
+        $request = new ServerRequest();
+        GeneralUtility::addInstance(DefaultProvider::class, $contextProphecy->reveal());
+        GeneralUtility::addInstance(DefaultFunctionsProvider::class, $expressionProvider->reveal());
+        $expressionLanguageResolver = new Resolver('default', [], $request);
         $this->assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
     }
 }

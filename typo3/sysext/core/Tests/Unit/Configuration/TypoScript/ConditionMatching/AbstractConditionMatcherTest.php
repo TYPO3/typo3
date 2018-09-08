@@ -15,13 +15,18 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration\TypoScript\ConditionMatching;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Core\ApplicationContext;
-use TYPO3\CMS\Core\ExpressionLanguage\TypoScriptConditionProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -59,6 +64,20 @@ class AbstractConditionMatcherTest extends UnitTestCase
 
         $this->resetSingletonInstances = true;
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheFrontendProphecy->has(Argument::any())->willReturn(false);
+        $cacheFrontendProphecy->set(Argument::any(), Argument::any())->willReturn(null);
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheManagerProphecy->getCache('cache_core')->willReturn($cacheFrontendProphecy->reveal());
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+
+        $packageManagerProphecy = $this->prophesize(PackageManager::class);
+        $corePackageProphecy = $this->prophesize(PackageInterface::class);
+        $corePackageProphecy->getPackagePath()->willReturn(__DIR__ . '/../../../../../../../sysext/core/');
+        $packageManagerProphecy->getActivePackages()->willReturn([
+            $corePackageProphecy->reveal()
+        ]);
+        GeneralUtility::setSingletonInstance(PackageManager::class, $packageManagerProphecy->reveal());
 
         $this->initConditionMatcher();
         $this->backupApplicationContext = GeneralUtility::getApplicationContext();
@@ -66,8 +85,8 @@ class AbstractConditionMatcherTest extends UnitTestCase
 
     protected function initConditionMatcher()
     {
-        $typoScriptConditionProvider = GeneralUtility::makeInstance(TypoScriptConditionProvider::class);
-        $this->conditionMatcher = $this->getMockForAbstractClass(AbstractConditionMatcher::class, [$typoScriptConditionProvider]);
+        // test the abstract methods via the backend condition matcher
+        $this->conditionMatcher = $this->getAccessibleMock(ConditionMatcher::class, ['determineRootline']);
         $this->evaluateConditionCommonMethod = new \ReflectionMethod(AbstractConditionMatcher::class, 'evaluateConditionCommon');
         $this->evaluateConditionCommonMethod->setAccessible(true);
         $this->evaluateExpressionMethod = new \ReflectionMethod(AbstractConditionMatcher::class, 'evaluateExpression');
@@ -316,7 +335,8 @@ class AbstractConditionMatcherTest extends UnitTestCase
         GeneralUtility::setIndpEnv('REMOTE_ADDR', $actualIp);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = $devIpMask;
         $this->initConditionMatcher();
-        $this->assertSame($expectedResult, $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['ip("devIP")']));
+        $result = $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['ip("devIP")']);
+        $this->assertSame($expectedResult, $result);
     }
 
     /**

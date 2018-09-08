@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\ExpressionLanguage;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
@@ -25,6 +26,9 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  * This class provides access to some methods of the ServerRequest object.
  * To prevent access to all methods of the ServerRequest object within conditions,
  * this class was introduced to control which methods are exposed.
+ *
+ * Additionally this class can be used to simulate a request for condition matching in case the condition matcher calls
+ * should be simulated (for example simulating parsing of TypoScript on CLI)
  * @internal
  */
 class RequestWrapper
@@ -34,9 +38,9 @@ class RequestWrapper
      */
     protected $request;
 
-    public function __construct()
+    public function __construct(?ServerRequestInterface $request)
     {
-        $this->request = $GLOBALS['TYPO3_REQUEST'];
+        $this->request = $request ?? new ServerRequest();
     }
 
     public function getQueryParams(): array

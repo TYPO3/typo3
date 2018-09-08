@@ -16,11 +16,15 @@ namespace TYPO3\CMS\Frontend\Tests\UnitDeprecated\Configuration\TypoScript\Condi
  */
 
 use Prophecy\Argument;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
@@ -51,6 +55,20 @@ class ConditionMatcherTest extends UnitTestCase
     protected function setUp(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheFrontendProphecy->has(Argument::any())->willReturn(false);
+        $cacheFrontendProphecy->set(Argument::any(), Argument::any())->willReturn(null);
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheManagerProphecy->getCache('cache_core')->willReturn($cacheFrontendProphecy->reveal());
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+
+        $packageManagerProphecy = $this->prophesize(PackageManager::class);
+        $corePackageProphecy = $this->prophesize(PackageInterface::class);
+        $corePackageProphecy->getPackagePath()->willReturn(__DIR__ . '/../../../../../../../sysext/core/');
+        $packageManagerProphecy->getActivePackages()->willReturn([
+            $corePackageProphecy->reveal()
+        ]);
+        GeneralUtility::setSingletonInstance(PackageManager::class, $packageManagerProphecy->reveal());
 
         $this->testGlobalNamespace = $this->getUniqueId('TEST');
         $GLOBALS[$this->testGlobalNamespace] = [];
@@ -128,10 +146,6 @@ class ConditionMatcherTest extends UnitTestCase
         $this->getFreshConditionMatcher();
         $this->assertTrue($this->subject->match('[language = *de*]'));
         $this->assertTrue($this->subject->match('[language = *de-de*]'));
-        // Test expression language
-        // @TODO: not work yet, looks like test setup issue
-//        $this->assertTrue($this->subject->match('[like(request.getNormalizedParams().getHttpAcceptLanguage(), "**de*")]'));
-//        $this->assertTrue($this->subject->match('[like(request.getNormalizedParams().getHttpAcceptLanguage(), "**de-de*")]'));
     }
 
     /**
@@ -145,10 +159,6 @@ class ConditionMatcherTest extends UnitTestCase
         $this->getFreshConditionMatcher();
         $this->assertTrue($this->subject->match('[language = *en*,*de*]'));
         $this->assertTrue($this->subject->match('[language = *en-us*,*de-de*]'));
-        // Test expression language
-        // @TODO: not work yet, looks like test setup issue
-//        $this->assertTrue($this->subject->match('[like(request.getNormalizedParams().getHttpAcceptLanguage(), "*en*,*de*")]'));
-//        $this->assertTrue($this->subject->match('[like(request.getNormalizedParams().getHttpAcceptLanguage(), "*en-us*,*de-de*")]'));
     }
 
     /**
@@ -161,9 +171,6 @@ class ConditionMatcherTest extends UnitTestCase
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'de-de,de;q=0.8,en-us;q=0.5,en;q=0.3';
         $this->getFreshConditionMatcher();
         $this->assertTrue($this->subject->match('[language = de-de,de;q=0.8,en-us;q=0.5,en;q=0.3]'));
-        // Test expression language
-        // @TODO: not work yet, looks like test setup issue
-//        $this->assertTrue($this->subject->match('[request.getNormalizedParams().getHttpAcceptLanguage() == "de-de,de;q=0.8,en-us;q=0.5,en;q=0.3"]'));
     }
 
     /**
@@ -179,10 +186,6 @@ class ConditionMatcherTest extends UnitTestCase
         $loggerProphecy = $this->prophesize(Logger::class);
         $subject->setLogger($loggerProphecy->reveal());
         $this->assertTrue($subject->match('[usergroup = 13]'));
-        // Test expression language
-        $this->assertTrue($subject->match('[usergroup(13)]'));
-        $this->assertTrue($subject->match('[usergroup("13")]'));
-        $this->assertTrue($subject->match('[usergroup(\'13\')]'));
     }
 
     /**
@@ -198,10 +201,6 @@ class ConditionMatcherTest extends UnitTestCase
         $loggerProphecy = $this->prophesize(Logger::class);
         $subject->setLogger($loggerProphecy->reveal());
         $this->assertTrue($subject->match('[usergroup = 999,15,14,13]'));
-        // Test expression language
-        $this->assertFalse($subject->match('[usergroup(999,15,14,13)]'));
-        $this->assertTrue($subject->match('[usergroup("999,15,14,13")]'));
-        $this->assertTrue($subject->match('[usergroup(\'999,15,14,13\')]'));
     }
 
     /**
@@ -217,9 +216,6 @@ class ConditionMatcherTest extends UnitTestCase
         $loggerProphecy = $this->prophesize(Logger::class);
         $subject->setLogger($loggerProphecy->reveal());
         $this->assertFalse($subject->match('[usergroup = 0,-1]'));
-        // Test expression language
-        $this->assertFalse($subject->match('[usergroup("0,-1")]'));
-        $this->assertFalse($subject->match('[usergroup(\'0,-1\')]'));
     }
 
     /**
@@ -232,9 +228,6 @@ class ConditionMatcherTest extends UnitTestCase
         $this->getFreshConditionMatcher();
         // @TODO: not work yet, looks like test setup issue
         $this->assertTrue($this->subject->match('[loginUser = *]'));
-        // Test expression language
-        $this->assertTrue($this->subject->match('[loginUser("*")]'));
-        $this->assertTrue($this->subject->match('[loginUser(\'*\')]'));
     }
 
     /**
@@ -247,10 +240,6 @@ class ConditionMatcherTest extends UnitTestCase
         $this->getFreshConditionMatcher();
         // @TODO: not work yet, looks like test setup issue
         $this->assertTrue($this->subject->match('[loginUser = 13]'));
-        // Test expression language
-        $this->assertTrue($this->subject->match('[loginUser(13)]'));
-        $this->assertTrue($this->subject->match('[loginUser("13")]'));
-        $this->assertTrue($this->subject->match('[loginUser(\'13\')]'));
     }
 
     /**
@@ -263,9 +252,6 @@ class ConditionMatcherTest extends UnitTestCase
         $this->getFreshConditionMatcher();
         // @TODO: not work yet, looks like test setup issue
         $this->assertTrue($this->subject->match('[loginUser = 999,13]'));
-        // Test expression language
-        $this->assertTrue($this->subject->match('[loginUser("999,13")]'));
-        $this->assertTrue($this->subject->match('[loginUser(\'999,13\')]'));
     }
 
     /**
@@ -284,12 +270,6 @@ class ConditionMatcherTest extends UnitTestCase
         $subject->setLogger($loggerProphecy->reveal());
         $this->assertFalse($subject->match('[loginUser = *]'));
         $this->assertFalse($subject->match('[loginUser = 13]'));
-        // Test expression language
-        $this->assertFalse($subject->match('[loginUser("*")]'));
-        $this->assertTrue($subject->match('[loginUser("*") == false]'));
-        $this->assertFalse($subject->match('[loginUser("13")]'));
-        $this->assertFalse($subject->match('[loginUser(\'*\')]'));
-        $this->assertFalse($subject->match('[loginUser(\'13\')]'));
     }
 
     /**
@@ -306,9 +286,6 @@ class ConditionMatcherTest extends UnitTestCase
         $loggerProphecy = $this->prophesize(Logger::class);
         $subject->setLogger($loggerProphecy->reveal());
         $this->assertTrue($subject->match('[loginUser = ]'));
-        // Test expression language
-        $this->assertTrue($subject->match('[loginUser(\'*\') == false]'));
-        $this->assertTrue($subject->match('[loginUser("*") == false]'));
     }
 
     /**
@@ -322,8 +299,6 @@ class ConditionMatcherTest extends UnitTestCase
         $this->assertTrue($this->subject->match('[globalVar = LIT:10.1 = 10.1]'));
         $this->assertTrue($this->subject->match('[globalVar = LIT:10 == 10]'));
         $this->assertTrue($this->subject->match('[globalVar = LIT:10.1 == 10.1]'));
-        // Test expression language
-        // Access with LIT is not possible in expression language, because constants available as variable
     }
 
     /**
@@ -341,8 +316,6 @@ class ConditionMatcherTest extends UnitTestCase
         $this->assertTrue($this->subject->match('[globalVar = LIT:10.1 == 10.1|20.2|30.3]'));
         $this->assertTrue($this->subject->match('[globalVar = LIT:20 == 10|20|30]'));
         $this->assertTrue($this->subject->match('[globalVar = LIT:20.2 == 10.1|20.2|30.3]'));
-        // Test expression language
-        // Access with LIT is not possible in expression language, because constants available as variable
     }
 
     /**
@@ -354,8 +327,6 @@ class ConditionMatcherTest extends UnitTestCase
     {
         $this->assertTrue($this->subject->match('[globalVar = LIT:10 != 20]'));
         $this->assertTrue($this->subject->match('[globalVar = LIT:10.1 != 10.2]'));
-        // Test expression language
-        // Access with LIT is not possible in expression language, because constants available as variable
     }
 
     /**
@@ -366,8 +337,6 @@ class ConditionMatcherTest extends UnitTestCase
     public function globalVarConditionDoesNotMatchOnNotEqualExpression(): void
     {
         $this->assertFalse($this->subject->match('[globalVar = LIT:10 != 10]'));
-        // Test expression language
-        // Access with LIT is not possible in expression language, because constants available as variable
     }
 
     /**
@@ -379,8 +348,6 @@ class ConditionMatcherTest extends UnitTestCase
     {
         $this->assertTrue($this->subject->match('[globalVar = LIT:10 != 20|30]'));
         $this->assertTrue($this->subject->match('[globalVar = LIT:10.1 != 10.2|20.3]'));
-        // Test expression language
-        // Access with LIT is not possible in expression language, because constants available as variable
     }
 
     /**
@@ -392,8 +359,6 @@ class ConditionMatcherTest extends UnitTestCase
     {
         $this->assertTrue($this->subject->match('[globalVar = LIT:10 < 20]'));
         $this->assertTrue($this->subject->match('[globalVar = LIT:10.1 < 10.2]'));
-        // Test expression language
-        // Access with LIT is not possible in expression language, because constants available as variable
     }
 
     /**
@@ -407,8 +372,6 @@ class ConditionMatcherTest extends UnitTestCase
         $this->assertTrue($this->subject->match('[globalVar = LIT:10 <= 20]'));
         $this->assertTrue($this->subject->match('[globalVar = LIT:10.1 <= 10.1]'));
         $this->assertTrue($this->subject->match('[globalVar = LIT:10.1 <= 10.2]'));
-        // Test expression language
-        // Access with LIT is not possible in expression language, because constants available as variable
     }
 
     /**
@@ -420,8 +383,6 @@ class ConditionMatcherTest extends UnitTestCase
     {
         $this->assertTrue($this->subject->match('[globalVar = LIT:20 > 10]'));
         $this->assertTrue($this->subject->match('[globalVar = LIT:10.2 > 10.1]'));
-        // Test expression language
-        // Access with LIT is not possible in expression language, because constants available as variable
     }
 
     /**
@@ -435,8 +396,6 @@ class ConditionMatcherTest extends UnitTestCase
         $this->assertTrue($this->subject->match('[globalVar = LIT:20 >= 10]'));
         $this->assertTrue($this->subject->match('[globalVar = LIT:10.1 >= 10.1]'));
         $this->assertTrue($this->subject->match('[globalVar = LIT:10.2 >= 10.1]'));
-        // Test expression language
-        // Access with LIT is not possible in expression language, because constants available as variable
     }
 
     /**
@@ -488,8 +447,6 @@ class ConditionMatcherTest extends UnitTestCase
     {
         $this->assertTrue($this->subject->match('[globalString = LIT:TYPO3.Test.Condition = TYPO3.Test.Condition]'));
         $this->assertFalse($this->subject->match('[globalString = LIT:TYPO3.Test.Condition = TYPO3]'));
-        // Test expression language
-        // Access with LIT is not possible in expression language, because constants available as variable
     }
 
     /**
@@ -515,8 +472,6 @@ class ConditionMatcherTest extends UnitTestCase
     {
         $this->assertTrue($this->subject->match('[globalString = LIT:=]'));
         $this->assertTrue($this->subject->match('[globalString = LIT: = ]'));
-        // Test expression language
-        // Access with LIT is not possible in expression language, because constants available as variable
     }
 
     /**
@@ -529,8 +484,6 @@ class ConditionMatcherTest extends UnitTestCase
         $this->assertTrue($this->subject->match('[globalString = LIT:TYPO3.Test.Condition = TYPO3?Test?Condition]'));
         $this->assertTrue($this->subject->match('[globalString = LIT:TYPO3.Test.Condition = TYPO3.T*t.Condition]'));
         $this->assertTrue($this->subject->match('[globalString = LIT:TYPO3.Test.Condition = TYPO3?T*t?Condition]'));
-        // Test expression language
-        // Access with LIT is not possible in expression language, because constants available as variable
     }
 
     /**
@@ -543,8 +496,6 @@ class ConditionMatcherTest extends UnitTestCase
         $this->assertTrue($this->subject->match('[globalString = LIT:TYPO3.Test.Condition = /^[A-Za-z3.]+$/]'));
         $this->assertTrue($this->subject->match('[globalString = LIT:TYPO3.Test.Condition = /^TYPO3\\..+Condition$/]'));
         $this->assertFalse($this->subject->match('[globalString = LIT:TYPO3.Test.Condition = /^FALSE/]'));
-        // Test expression language
-        // Access with LIT is not possible in expression language, because constants available as variable
     }
 
     /**
@@ -557,8 +508,6 @@ class ConditionMatcherTest extends UnitTestCase
         $testKey = $this->getUniqueId('test');
         $GLOBALS['_SERVER'][$testKey] = '';
         $this->assertTrue($this->subject->match('[globalString = _SERVER|' . $testKey . ' = /^$/]'));
-        // Test expression language
-        // Access request by request() method
     }
 
     /**
@@ -569,8 +518,6 @@ class ConditionMatcherTest extends UnitTestCase
     public function treeLevelConditionMatchesSingleValue(): void
     {
         $this->assertTrue($this->subject->match('[treeLevel = 2]'));
-        // Test expression language
-        $this->assertTrue($this->subject->match('[tree.level == 2]'));
     }
 
     /**
@@ -581,8 +528,6 @@ class ConditionMatcherTest extends UnitTestCase
     public function treeLevelConditionMatchesMultipleValues(): void
     {
         $this->assertTrue($this->subject->match('[treeLevel = 999,998,2]'));
-        // Test expression language
-        $this->assertTrue($this->subject->match('[tree.level in [999,998,2]]'));
     }
 
     /**
@@ -593,8 +538,6 @@ class ConditionMatcherTest extends UnitTestCase
     public function treeLevelConditionDoesNotMatchFaultyValue(): void
     {
         $this->assertFalse($this->subject->match('[treeLevel = 999]'));
-        // Test expression language
-        $this->assertFalse($this->subject->match('[tree.level == 999]'));
     }
 
     /**
@@ -632,10 +575,6 @@ class ConditionMatcherTest extends UnitTestCase
         $GLOBALS['TSFE']->id = 121;
         $this->getFreshConditionMatcher();
         $this->assertTrue($this->subject->match('[PIDupinRootline = 111]'));
-        // Test expression language
-        $this->assertTrue($this->subject->match('[111 in tree.rootLineIds]'));
-        $this->assertTrue($this->subject->match('["111" in tree.rootLineIds]'));
-        $this->assertTrue($this->subject->match('[\'111\' in tree.rootLineIds]'));
     }
 
     /**
@@ -648,8 +587,6 @@ class ConditionMatcherTest extends UnitTestCase
         $GLOBALS['TSFE']->id = 121;
         $this->getFreshConditionMatcher();
         $this->assertTrue($this->subject->match('[PIDupinRootline = 999,111,101]'));
-        // Test expression language
-        $this->assertTrue($this->subject->match('[999 in tree.rootLineIds][111 in tree.rootLineIds][101 in tree.rootLineIds]'));
     }
 
     /**
@@ -662,8 +599,6 @@ class ConditionMatcherTest extends UnitTestCase
         $GLOBALS['TSFE']->id = 121;
         $this->getFreshConditionMatcher();
         $this->assertFalse($this->subject->match('[PIDupinRootline = 999]'));
-        // Test expression language
-        $this->assertFalse($this->subject->match('[999 in tree.rootLineIds]'));
     }
 
     /**
@@ -676,8 +611,6 @@ class ConditionMatcherTest extends UnitTestCase
         $GLOBALS['TSFE']->id = 121;
         $this->getFreshConditionMatcher();
         $this->assertFalse($this->subject->match('[PIDupinRootline = 121]'));
-        // Test expression language
-        $this->assertFalse($this->subject->match('[page.uid != 121 && 121 in rootLineUids]'));
     }
 
     /**
@@ -690,8 +623,6 @@ class ConditionMatcherTest extends UnitTestCase
         $GLOBALS['TSFE']->id = 121;
         $this->getFreshConditionMatcher();
         $this->assertTrue($this->subject->match('[PIDinRootline = 111]'));
-        // Test expression language
-        $this->assertTrue($this->subject->match('[111 in tree.rootLineIds]'));
     }
 
     /**
@@ -704,8 +635,6 @@ class ConditionMatcherTest extends UnitTestCase
         $GLOBALS['TSFE']->id = 121;
         $this->getFreshConditionMatcher();
         $this->assertTrue($this->subject->match('[PIDinRootline = 999,111,101]'));
-        // Test expression language
-        $this->assertTrue($this->subject->match('[999 in tree.rootLineIds][111 in tree.rootLineIds][101 in tree.rootLineIds]'));
     }
 
     /**
@@ -718,8 +647,6 @@ class ConditionMatcherTest extends UnitTestCase
         $GLOBALS['TSFE']->id = 121;
         $this->getFreshConditionMatcher();
         $this->assertTrue($this->subject->match('[PIDinRootline = 121]'));
-        // Test expression language
-        $this->assertTrue($this->subject->match('[121 in tree.rootLineIds]'));
     }
 
     /**
@@ -731,8 +658,6 @@ class ConditionMatcherTest extends UnitTestCase
     {
         $GLOBALS['TSFE']->id = 121;
         $this->assertFalse($this->subject->match('[PIDinRootline = 999]'));
-        // Test expression language
-        $this->assertFalse($this->subject->match('[999 in tree.rootLineIds]'));
     }
 
     /**
@@ -744,10 +669,6 @@ class ConditionMatcherTest extends UnitTestCase
     public function compatVersionConditionMatchesOlderRelease(): void
     {
         $this->assertTrue($this->subject->match('[compatVersion = 7.0]'));
-        // Test expression language
-        $this->assertTrue($this->subject->match('[compatVersion(7.0)]'));
-        $this->assertTrue($this->subject->match('[compatVersion("7.0")]'));
-        $this->assertTrue($this->subject->match('[compatVersion(\'7.0\')]'));
     }
 
     /**
@@ -759,8 +680,6 @@ class ConditionMatcherTest extends UnitTestCase
     public function compatVersionConditionMatchesSameRelease(): void
     {
         $this->assertTrue($this->subject->match('[compatVersion = ' . TYPO3_branch . ']'));
-        // Test expression language
-        $this->assertTrue($this->subject->match('[compatVersion(' . TYPO3_branch . ')]'));
     }
 
     /**
@@ -772,10 +691,6 @@ class ConditionMatcherTest extends UnitTestCase
     public function compatVersionConditionDoesNotMatchNewerRelease(): void
     {
         $this->assertFalse($this->subject->match('[compatVersion = 15.0]'));
-        // Test expression language
-        $this->assertFalse($this->subject->match('[compatVersion(15.0)]'));
-        $this->assertFalse($this->subject->match('[compatVersion("15.0")]'));
-        $this->assertFalse($this->subject->match('[compatVersion(\'15.0\')]'));
     }
 
     /**
@@ -806,9 +721,6 @@ class ConditionMatcherTest extends UnitTestCase
         $this->getFreshConditionMatcher();
         $this->assertTrue($this->subject->match('[globalString = TSFE:id = 1234567]'));
         $this->assertTrue($this->subject->match('[globalString = TSFE:testSimpleObject|testSimpleVariable = testValue]'));
-        // Test expression language
-        $this->assertTrue($this->subject->match('[getTSFE().id == 1234567]'));
-        $this->assertTrue($this->subject->match('[getTSFE().testSimpleObject.testSimpleVariable == "testValue"]'));
     }
 
     /**
@@ -824,8 +736,6 @@ class ConditionMatcherTest extends UnitTestCase
 
         $this->getFreshConditionMatcher();
         $this->assertTrue($this->subject->match('[globalString = session:foo|bar = 1234567]'));
-        // Test expression language
-        $this->assertTrue($this->subject->match('[session("foo|bar") == 1234567]'));
     }
 
     /**
@@ -839,8 +749,6 @@ class ConditionMatcherTest extends UnitTestCase
         putenv($testKey . '=testValue');
         $this->getFreshConditionMatcher();
         $this->assertTrue($this->subject->match('[globalString = ENV:' . $testKey . ' = testValue]'));
-        // Test expression language
-        $this->assertTrue($this->subject->match('[getenv("' . $testKey . '") == "testValue"]'));
     }
 
     /**
@@ -855,9 +763,6 @@ class ConditionMatcherTest extends UnitTestCase
         GeneralUtility::flushInternalRuntimeCaches();
         $this->getFreshConditionMatcher();
         $this->assertTrue($this->subject->match('[globalString = IENV:TYPO3_PORT = 1234567]'));
-        // Test expression language
-        // @TODO: not work yet, looks like test setup issue
-//        $this->assertTrue($this->subject->match('[request.getNormalizedParams().getRequestPort() == 1234567]'));
     }
 
     /**
@@ -902,9 +807,6 @@ class ConditionMatcherTest extends UnitTestCase
         $this->getFreshConditionMatcher();
         $this->assertTrue($this->subject->match('[siteLanguage = locale = en_US.UTF-8]'));
         $this->assertTrue($this->subject->match('[siteLanguage = locale = de_DE, locale = en_US.UTF-8]'));
-        // Test expression language
-        $this->assertTrue($this->subject->match('[siteLanguage("locale") == "en_US.UTF-8"]'));
-        $this->assertTrue($this->subject->match('[siteLanguage("locale") in ["de_DE", "en_US.UTF-8"]]'));
     }
 
     /**
@@ -933,9 +835,6 @@ class ConditionMatcherTest extends UnitTestCase
         $this->getFreshConditionMatcher();
         $this->assertFalse($this->subject->match('[siteLanguage = locale = en_UK.UTF-8]'));
         $this->assertFalse($this->subject->match('[siteLanguage = locale = de_DE, title = UK]'));
-        // Test expression language
-        $this->assertFalse($this->subject->match('[siteLanguage("locale") == "en_UK.UTF-8"]'));
-        $this->assertFalse($this->subject->match('[siteLanguage("locale") == "de_DE" && siteLanguage("title") == "UK"]'));
     }
 
     /**
@@ -952,10 +851,6 @@ class ConditionMatcherTest extends UnitTestCase
         $this->assertTrue($this->subject->match('[site = identifier = angelo]'));
         $this->assertTrue($this->subject->match('[site = rootPageId = 13]'));
         $this->assertTrue($this->subject->match('[site = base = https://typo3.org/]'));
-        // Test expression language
-        $this->assertTrue($this->subject->match('[site("identifier") == "angelo"]'));
-        $this->assertTrue($this->subject->match('[site("rootPageId") == 13]'));
-        $this->assertTrue($this->subject->match('[site("base") == "https://typo3.org/"]'));
     }
 
     /**
@@ -984,9 +879,6 @@ class ConditionMatcherTest extends UnitTestCase
         $this->getFreshConditionMatcher();
         $this->assertFalse($this->subject->match('[site = identifier = berta]'));
         $this->assertFalse($this->subject->match('[site = rootPageId = 14, rootPageId=23]'));
-        // Test expression language
-        $this->assertFalse($this->subject->match('[site("identifier") == "berta"]'));
-        $this->assertFalse($this->subject->match('[site("rootPageId") == 14 && site("rootPageId") == 23]'));
     }
 
     /**

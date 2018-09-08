@@ -16,11 +16,16 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatchi
  */
 
 use Prophecy\Argument;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -48,6 +53,20 @@ class ConditionMatcherTest extends UnitTestCase
     protected function setUp(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheFrontendProphecy->has(Argument::any())->willReturn(false);
+        $cacheFrontendProphecy->set(Argument::any(), Argument::any())->willReturn(null);
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheManagerProphecy->getCache('cache_core')->willReturn($cacheFrontendProphecy->reveal());
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+
+        $packageManagerProphecy = $this->prophesize(PackageManager::class);
+        $corePackageProphecy = $this->prophesize(PackageInterface::class);
+        $corePackageProphecy->getPackagePath()->willReturn(__DIR__ . '/../../../../../../../sysext/core/');
+        $packageManagerProphecy->getActivePackages()->willReturn([
+            $corePackageProphecy->reveal()
+        ]);
+        GeneralUtility::setSingletonInstance(PackageManager::class, $packageManagerProphecy->reveal());
 
         $this->testGlobalNamespace = $this->getUniqueId('TEST');
         $GLOBALS[$this->testGlobalNamespace] = [];
@@ -396,7 +415,6 @@ class ConditionMatcherTest extends UnitTestCase
                 ]
             ]
         ]);
-        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
         $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('language', $site->getLanguageById(0));
         $this->getFreshConditionMatcher();
         $this->assertTrue($this->subject->match('[siteLanguage("locale") == "en_US.UTF-8"]'));
@@ -424,7 +442,6 @@ class ConditionMatcherTest extends UnitTestCase
                 ]
             ]
         ]);
-        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
         $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('language', $site->getLanguageById(0));
         $this->getFreshConditionMatcher();
         $this->assertFalse($this->subject->match('[siteLanguage("locale") == "en_UK.UTF-8"]'));
@@ -439,7 +456,6 @@ class ConditionMatcherTest extends UnitTestCase
     public function siteMatchesCondition(): void
     {
         $site = new Site('angelo', 13, ['languages' => [], 'base' => 'https://typo3.org/']);
-        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
         $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('site', $site);
         $this->getFreshConditionMatcher();
         $this->assertTrue($this->subject->match('[site("identifier") == "angelo"]'));
@@ -468,7 +484,6 @@ class ConditionMatcherTest extends UnitTestCase
                 ]
             ]
         ]);
-        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
         $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('site', $site);
         $this->getFreshConditionMatcher();
         $this->assertFalse($this->subject->match('[site("identifier") == "berta"]'));

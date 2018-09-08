@@ -19,7 +19,6 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 
 /**
  * Interface ProviderInterface
- * @internal
  */
 interface ProviderInterface
 {

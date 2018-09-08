@@ -13,6 +13,7 @@
 		"sort-packages": true
 	},
 	"require": {
+		"psr/http-message": "~1.0",
 		"typo3/cms-core": "9.5.*@dev"
 	},
 	"conflict": {

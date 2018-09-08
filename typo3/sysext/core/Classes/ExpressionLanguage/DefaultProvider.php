@@ -15,10 +15,16 @@ namespace TYPO3\CMS\Core\ExpressionLanguage;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\ExpressionLanguage\FunctionsProvider\DefaultFunctionsProvider;
+
 /**
  * Class DefaultProvider
  * @internal
  */
 class DefaultProvider extends AbstractProvider
 {
+    public function __construct()
+    {
+        $this->expressionLanguageProviders[] = DefaultFunctionsProvider::class;
+    }
 }

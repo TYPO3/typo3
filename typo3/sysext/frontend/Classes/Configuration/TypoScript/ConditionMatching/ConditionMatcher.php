@@ -19,8 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
-use TYPO3\CMS\Core\ExpressionLanguage\TypoScriptConditionProvider;
-use TYPO3\CMS\Core\ExpressionLanguage\TypoScriptFrontendConditionFunctionsProvider;
+use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -57,14 +56,15 @@ class ConditionMatcher extends AbstractConditionMatcher
         $frontend->user->userId = $frontendUserAspect->get('id') ?? 0;
         $frontend->user->userGroupList = implode(',', $frontendUserAspect->get('groupIds'));
 
-        $typoScriptConditionProvider = GeneralUtility::makeInstance(TypoScriptConditionProvider::class, [
-            'tree' => $tree,
-            'frontend' => $frontend,
-            'page' => $this->getPage(),
-        ], [
-            GeneralUtility::makeInstance(TypoScriptFrontendConditionFunctionsProvider::class)
-        ]);
-        parent::__construct($typoScriptConditionProvider);
+        $this->expressionLanguageResolver = GeneralUtility::makeInstance(
+            Resolver::class,
+            'typoscript',
+            [
+                'tree' => $tree,
+                'frontend' => $frontend,
+                'page' => $this->getPage(),
+            ]
+        );
     }
 
     /**

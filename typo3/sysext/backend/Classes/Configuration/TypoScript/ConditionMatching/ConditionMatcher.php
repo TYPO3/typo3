@@ -18,7 +18,7 @@ use TYPO3\CMS\Backend\Controller\EditDocumentController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\ExpressionLanguage\TypoScriptConditionProvider;
+use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -55,12 +55,15 @@ class ConditionMatcher extends AbstractConditionMatcher
         $backend->user->userId = $backendUserAspect->get('id') ?? 0;
         $backend->user->userGroupList = implode(',', $backendUserAspect->get('groupIds'));
 
-        $typoScriptConditionProvider = GeneralUtility::makeInstance(TypoScriptConditionProvider::class, [
-            'tree' => $tree,
-            'backend' => $backend,
-            'page' => $this->getPage(),
-        ]);
-        parent::__construct($typoScriptConditionProvider);
+        $this->expressionLanguageResolver = GeneralUtility::makeInstance(
+            Resolver::class,
+            'typoscript',
+            [
+                'tree' => $tree,
+                'backend' => $backend,
+                'page' => $this->getPage(),
+            ]
+        );
     }
 
     /**

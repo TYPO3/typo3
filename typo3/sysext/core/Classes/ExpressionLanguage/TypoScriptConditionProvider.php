@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\ExpressionLanguage;
 
 /*
@@ -15,41 +16,29 @@ namespace TYPO3\CMS\Core\ExpressionLanguage;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
+use TYPO3\CMS\Core\ExpressionLanguage\FunctionsProvider\Typo3ConditionFunctionsProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class TypoScriptConditionProvider
+ *
  * @internal
  */
 class TypoScriptConditionProvider extends AbstractProvider
 {
-    public function __construct(array $expressionLanguageVariables = [], array $expressionLanguageProviders = [])
+    public function __construct()
     {
         $typo3 = new \stdClass();
         $typo3->version = TYPO3_version;
         $typo3->branch = TYPO3_branch;
         $typo3->devIpMask = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
-        $this->expressionLanguageVariables = array_merge([
-            'request' => GeneralUtility::makeInstance(RequestWrapper::class),
+        $this->expressionLanguageVariables = [
+            'request' => GeneralUtility::makeInstance(RequestWrapper::class, $GLOBALS['TYPO3_REQUEST'] ?? null),
             'applicationContext' => (string)GeneralUtility::getApplicationContext(),
             'typo3' => $typo3,
-        ], $expressionLanguageVariables);
-
-        $this->expressionLanguageProviders = $expressionLanguageProviders;
-        $this->initFunctions();
-    }
-
-    protected function initFunctions(): void
-    {
-        $this->expressionLanguageProviders[] = GeneralUtility::makeInstance(DefaultFunctionsProvider::class);
-        $this->expressionLanguageProviders[] = GeneralUtility::makeInstance(TypoScriptConditionFunctionsProvider::class);
-
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][__CLASS__]['additionalExpressionLanguageProvider'] ?? [] as $className) {
-            $expressionLanguageProvider = GeneralUtility::makeInstance($className);
-            if ($expressionLanguageProvider instanceof ExpressionFunctionProviderInterface) {
-                $this->expressionLanguageProviders[] = $expressionLanguageProvider;
-            }
-        }
+        ];
+        $this->expressionLanguageProviders = [
+            Typo3ConditionFunctionsProvider::class
+        ];
     }
 }

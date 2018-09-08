@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException;
 use TYPO3\CMS\Core\Error\Exception;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
-use TYPO3\CMS\Core\ExpressionLanguage\TypoScriptConditionProvider;
+use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
@@ -70,11 +70,6 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
      * @var Resolver
      */
     protected $expressionLanguageResolver;
-
-    public function __construct(TypoScriptConditionProvider $typoScriptConditionProvider)
-    {
-        $this->expressionLanguageResolver = GeneralUtility::makeInstance(Resolver::class, $typoScriptConditionProvider);
-    }
 
     /**
      * @return bool
@@ -245,10 +240,11 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
             if (strpos($exception->getMessage(), 'Unexpected character "="') !== false) {
                 $message .= ' It looks like an old condition with only one equal sign.';
             }
-            $this->logger->warning($message, [
-                'expression' => $expression,
-                'exception' => $exception
-            ]);
+            $this->logger->log(
+                $this->strictSyntaxEnabled() ? LogLevel::WARNING : LogLevel::INFO,
+                $message,
+                ['expression' => $expression]
+            );
         } catch (\Throwable $exception) {
             // The following error handling is required to mitigate a missing type check
             // in the Symfony Expression Language handling. In case a condition

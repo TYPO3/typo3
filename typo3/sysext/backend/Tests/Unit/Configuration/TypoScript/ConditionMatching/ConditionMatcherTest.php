@@ -14,12 +14,17 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Configuration\TypoScript\ConditionMatchin
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -58,6 +63,21 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     protected function setUp()
     {
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheFrontendProphecy->has(Argument::any())->willReturn(false);
+        $cacheFrontendProphecy->set(Argument::any(), Argument::any())->willReturn(null);
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheManagerProphecy->getCache('cache_core')->willReturn($cacheFrontendProphecy->reveal());
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+
+        $packageManagerProphecy = $this->prophesize(PackageManager::class);
+        $corePackageProphecy = $this->prophesize(PackageInterface::class);
+        $corePackageProphecy->getPackagePath()->willReturn(__DIR__ . '/../../../../../../../sysext/core/');
+        $packageManagerProphecy->getActivePackages()->willReturn([
+            $corePackageProphecy->reveal()
+        ]);
+        GeneralUtility::setSingletonInstance(PackageManager::class, $packageManagerProphecy->reveal());
+
         $this->testTableName = 'conditionMatcherTestTable';
         $this->testGlobalNamespace = $this->getUniqueId('TEST');
         $GLOBALS['TCA'][$this->testTableName] = ['ctrl' => []];
