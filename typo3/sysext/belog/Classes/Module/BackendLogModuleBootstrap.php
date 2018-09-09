@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Belog\Module;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Core\Bootstrap;
+
 /**
  * This class is a wrapper for WebInfo controller of belog.
  * It is registered in ext_tables.php with \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction()
@@ -24,20 +27,6 @@ namespace TYPO3\CMS\Belog\Module;
  */
 class BackendLogModuleBootstrap
 {
-    /**
-     * Dummy method, called by SCbase external object handling
-     */
-    public function init()
-    {
-    }
-
-    /**
-     * Dummy method, called by SCbase external object handling
-     */
-    public function checkExtObj()
-    {
-    }
-
     /**
      * Bootstrap extbase and jump to WebInfo controller
      *
@@ -55,10 +44,9 @@ class BackendLogModuleBootstrap
         // Overwriting $_GET was the most simple solution here until extbase
         // provides a clean way to solve this.
         $_GET['tx_belog_system_beloglog']['controller'] = 'BackendLog';
-        $_GET['tx_belog_system_beloglog']['pageId'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+        $_GET['tx_belog_system_beloglog']['pageId'] = GeneralUtility::_GP('id');
         $_GET['tx_belog_system_beloglog']['layout'] = 'Plain';
-        /** @var \TYPO3\CMS\Extbase\Core\Bootstrap $extbaseBootstrap */
-        $extbaseBootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Core\Bootstrap::class);
+        $extbaseBootstrap = GeneralUtility::makeInstance(Bootstrap::class);
         return $extbaseBootstrap->run('', $configuration);
     }
 }

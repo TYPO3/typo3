@@ -18,56 +18,106 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\PseudoSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class for displaying page information (records, page record properties)
+ * Class for displaying page information (records, page record properties) in Web -> Info
  */
-class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule
+class PageInformationController
 {
+    use PublicPropertyDeprecationTrait;
+    use PublicMethodDeprecationTrait;
 
-    /** @var array */
+    /**
+     * @var array
+     */
+    private $deprecatedPublicProperties = [
+        'pObj' => 'Using PageInformationController::$pObj is deprecated and will not be possible anymore in TYPO3 v10.',
+        'function_key' => 'Using PageInformationController::$function_key is deprecated, property will be removed in TYPO3 v10.',
+        'extClassConf' => 'Using PageInformationController::$extClassConf is deprecated, property will be removed in TYPO3 v10.',
+        'localLangFile' => 'Using PageInformationController::$localLangFile is deprecated, property will be removed in TYPO3 v10.',
+        'extObj' => 'Using PageInformationController::$extObj is deprecated, property will be removed in TYPO3 v10.',
+    ];
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicMethods = [
+        'modMenu' => 'Using PageInformationController::modMenu() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'extObjContent' => 'Using PageInformationController::extObjContent() is deprecated, method will be removed in TYPO3 v10.',
+    ];
+
+    /**
+     * @var array
+     */
     protected $fieldConfiguration = [];
 
     /**
-     * Returns the menu array
-     *
-     * @return array
+     * @var int Value of the GET/POST var 'id'
      */
-    public function modMenu()
-    {
-        $menu = [
-            'pages' => [],
-            'depth' => [
-                0 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0'),
-                1 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1'),
-                2 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),
-                3 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3'),
-                4 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
-                999 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi')
-            ]
-        ];
+    protected $id;
 
-        // Using $GLOBALS['TYPO3_REQUEST'] since $request is not available at this point
-        // @todo: Refactor AbstractFunctionModule mess and have $request available
-        $this->fillFieldConfiguration($this->pObj->id, $GLOBALS['TYPO3_REQUEST']);
-        foreach ($this->fieldConfiguration as $key => $item) {
-            $menu['pages'][$key] = $item['label'];
+    /**
+     * @var InfoModuleController Contains a reference to the parent calling object
+     */
+    protected $pObj;
+
+    /**
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
+     */
+    protected $extObj;
+
+    /**
+     * Can be hardcoded to the name of a locallang.xlf file (from the same directory as the class file) to use/load
+     * and is included / added to $GLOBALS['LOCAL_LANG']
+     *
+     * @var string
+     */
+    protected $localLangFile = '';
+
+    /**
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
+     */
+    protected $extClassConf;
+
+    /**
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
+     */
+    protected $function_key = '';
+
+    /**
+     * Init, called from parent object
+     *
+     * @param InfoModuleController $pObj A reference to the parent (calling) object
+     */
+    public function init($pObj)
+    {
+        $this->pObj = $pObj;
+        // Local lang:
+        if (!empty($this->localLangFile)) {
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
+            $this->getLanguageService()->includeLLFile($this->localLangFile);
         }
-        return $menu;
+        $this->id = (int)GeneralUtility::_GP('id');
+        // Setting MOD_MENU items as we need them for logging:
+        $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
     }
 
     /**
-     * MAIN function for page information display
+     * Main, called from parent object
      *
      * @return string Output HTML for the module.
      */
     public function main()
     {
-        $theOutput = '<h1>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:page_title')) . '</h1>';
+        $languageService = $this->getLanguageService();
+        $theOutput = '<h1>' . htmlspecialchars($languageService->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:page_title')) . '</h1>';
         $dblist = GeneralUtility::makeInstance(PageLayoutView::class);
         $dblist->descrTable = '_MOD_web_info';
         $dblist->thumbs = 0;
@@ -86,9 +136,9 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
         // PAGES:
         $this->pObj->MOD_SETTINGS['pages_levels'] = $this->pObj->MOD_SETTINGS['depth'];
         // ONLY for the sake of dblist module which uses this value.
-        $h_func = BackendUtility::getDropdownMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']);
-        $h_func .= BackendUtility::getDropdownMenu($this->pObj->id, 'SET[pages]', $this->pObj->MOD_SETTINGS['pages'], $this->pObj->MOD_MENU['pages']);
-        $dblist->start($this->pObj->id, 'pages', 0);
+        $h_func = BackendUtility::getDropdownMenu($this->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']);
+        $h_func .= BackendUtility::getDropdownMenu($this->id, 'SET[pages]', $this->pObj->MOD_SETTINGS['pages'], $this->pObj->MOD_MENU['pages']);
+        $dblist->start($this->id, 'pages', 0);
         $dblist->generateList();
 
         $theOutput .= '<div class="form-inline form-inline-spaced">'
@@ -101,10 +151,39 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 
         // Additional footer content
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook'] ?? [] as $hook) {
+            // @todo: request object should be submitted here as soon as it is available in v10.
             $params = [];
             $theOutput .= GeneralUtility::callUserFunction($hook, $params, $this);
         }
         return $theOutput;
+    }
+
+    /**
+     * Returns the menu array
+     *
+     * @return array
+     */
+    protected function modMenu()
+    {
+        $menu = [
+            'pages' => [],
+            'depth' => [
+                0 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0'),
+                1 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1'),
+                2 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),
+                3 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3'),
+                4 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
+                999 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi')
+            ]
+        ];
+
+        // Using $GLOBALS['TYPO3_REQUEST'] since $request is not available at this point
+        // @todo: Refactor mess and have $request available
+        $this->fillFieldConfiguration($this->id, $GLOBALS['TYPO3_REQUEST']);
+        foreach ($this->fieldConfiguration as $key => $item) {
+            $menu['pages'][$key] = $item['label'];
+        }
+        return $menu;
     }
 
     /**
@@ -168,10 +247,45 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
     }
 
     /**
+     * Called from InfoModuleController until deprecation removal in v10
+     *
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
+     */
+    public function checkExtObj()
+    {
+        if (is_array($this->extClassConf) && $this->extClassConf['name']) {
+            $this->extObj = GeneralUtility::makeInstance($this->extClassConf['name']);
+            $this->extObj->init($this->pObj, $this->extClassConf);
+            // Re-write:
+            $this->pObj->MOD_SETTINGS = BackendUtility::getModuleData($this->pObj->MOD_MENU, GeneralUtility::_GP('SET'), 'web_info');
+        }
+    }
+
+    /**
+     * Calls the main function inside ANOTHER sub-submodule which might exist.
+     *
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
+     */
+    protected function extObjContent()
+    {
+        if (is_object($this->extObj)) {
+            return $this->extObj->main();
+        }
+    }
+
+    /**
      * @return BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

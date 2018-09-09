@@ -1,5 +1,4 @@
 <?php
-
 namespace TYPO3\CMS\Info\Controller;
 
 /*
@@ -15,24 +14,54 @@ namespace TYPO3\CMS\Info\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class for displaying translation status of pages in the tree.
+ * Class for displaying translation status of pages in the tree in Web -> Info
  */
-class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule
+class TranslationStatusController
 {
+    use PublicPropertyDeprecationTrait;
+    use PublicMethodDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicProperties = [
+        'pObj' => 'Using TranslationStatusController::$pObj is deprecated and will not be possible anymore in TYPO3 v10.',
+        'function_key' => 'Using TranslationStatusController::function_key$ is deprecated, property will be removed in TYPO3 v10.',
+        'extClassConf' => 'Using TranslationStatusController::$extClassConf is deprecated, property will be removed in TYPO3 v10.',
+        'localLangFile' => 'Using TranslationStatusController::$localLangFile is deprecated, property will be removed in TYPO3 v10.',
+        'extObj' => 'Using TranslationStatusController::$extObj is deprecated, property will be removed in TYPO3 v10.',
+    ];
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicMethods = [
+        'getContentElementCount' => 'Using TranslationStatusController::getContentElementCount() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'getLangStatus' => 'Using TranslationStatusController::getLangStatus() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'renderL10nTable' => 'Using TranslationStatusController::renderL10nTable() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'modMenu' => 'Using TranslationStatusController::modMenu() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'extObjContent' => 'Using TranslationStatusController::extObjContent() is deprecated, method will be removed in TYPO3 v10.',
+    ];
+
     /**
      * @var IconFactory
      */
@@ -44,12 +73,97 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
     protected $siteLanguages;
 
     /**
-     * Construct for initialize class variables
+     * @var InfoModuleController Contains a reference to the parent calling object
      */
-    public function __construct()
+    protected $pObj;
+
+    /**
+     * @var int Value of the GET/POST var 'id'
+     */
+    protected $id;
+
+    /**
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
+     */
+    protected $extObj;
+
+    /**
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
+     */
+    protected $localLangFile = '';
+
+    /**
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
+     */
+    protected $extClassConf;
+
+    /**
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
+     */
+    protected $function_key = '';
+
+    /**
+     * Init, called from parent object
+     *
+     * @param InfoModuleController $pObj A reference to the parent (calling) object
+     */
+    public function init($pObj)
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $this->id = (int)GeneralUtility::_GP('id');
         $this->initializeSiteLanguages();
+        $this->pObj = $pObj;
+        // Local lang:
+        if (!empty($this->localLangFile)) {
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
+            $this->getLanguageService()->includeLLFile($this->localLangFile);
+        }
+        // Setting MOD_MENU items as we need them for logging:
+        $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
+    }
+
+    /**
+     * Main, called from parent object
+     *
+     * @return string Output HTML for the module.
+     */
+    public function main()
+    {
+        $theOutput = '<h1>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_title')) . '</h1>';
+        if ($this->id) {
+            $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Info/TranslationStatus');
+
+            // Depth selector:
+            $theOutput .= '<div class="form-inline form-inline-spaced">';
+            $h_func = BackendUtility::getDropdownMenu($this->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']);
+            $h_func .= BackendUtility::getDropdownMenu($this->id, 'SET[lang]', $this->pObj->MOD_SETTINGS['lang'], $this->pObj->MOD_MENU['lang']);
+            $theOutput .= $h_func;
+            // Add CSH:
+            $theOutput .= BackendUtility::cshItem('_MOD_web_info', 'lang', null, '<div class="form-group"><span class="btn btn-default btn-sm">|</span></div><br />');
+            $theOutput .= '</div>';
+            // Showing the tree:
+            // Initialize starting point of page tree:
+            $treeStartingPoint = (int)$this->id;
+            $treeStartingRecord = BackendUtility::getRecordWSOL('pages', $treeStartingPoint);
+            $depth = $this->pObj->MOD_SETTINGS['depth'];
+            // Initialize tree object:
+            $tree = GeneralUtility::makeInstance(PageTreeView::class);
+            $tree->init('AND ' . $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
+            $tree->addField('l18n_cfg');
+            // Creating top icon; the current page
+            $HTML = $this->iconFactory->getIconForRecord('pages', $treeStartingRecord, Icon::SIZE_SMALL)->render();
+            $tree->tree[] = [
+                'row' => $treeStartingRecord,
+                'HTML' => $HTML
+            ];
+            // Create the tree from starting point:
+            if ($depth) {
+                $tree->getTree($treeStartingPoint, $depth, '');
+            }
+            // Render information table:
+            $theOutput .= $this->renderL10nTable($tree);
+        }
+        return $theOutput;
     }
 
     /**
@@ -57,7 +171,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
      *
      * @return array
      */
-    public function modMenu()
+    protected function modMenu()
     {
         $lang = $this->getLanguageService();
         $menuArray = [
@@ -83,56 +197,12 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
     }
 
     /**
-     * MAIN function for page information of localization
-     *
-     * @return string Output HTML for the module.
-     */
-    public function main()
-    {
-        $theOutput = '<h1>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_title')) . '</h1>';
-        if ($this->pObj->id) {
-            $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Info/TranslationStatus');
-
-            // Depth selector:
-            $theOutput .= '<div class="form-inline form-inline-spaced">';
-            $h_func = BackendUtility::getDropdownMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']);
-            $h_func .= BackendUtility::getDropdownMenu($this->pObj->id, 'SET[lang]', $this->pObj->MOD_SETTINGS['lang'], $this->pObj->MOD_MENU['lang']);
-            $theOutput .= $h_func;
-            // Add CSH:
-            $theOutput .= BackendUtility::cshItem('_MOD_web_info', 'lang', null, '<div class="form-group"><span class="btn btn-default btn-sm">|</span></div><br />');
-            $theOutput .= '</div>';
-            // Showing the tree:
-            // Initialize starting point of page tree:
-            $treeStartingPoint = (int)$this->pObj->id;
-            $treeStartingRecord = BackendUtility::getRecordWSOL('pages', $treeStartingPoint);
-            $depth = $this->pObj->MOD_SETTINGS['depth'];
-            // Initialize tree object:
-            $tree = GeneralUtility::makeInstance(PageTreeView::class);
-            $tree->init('AND ' . $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
-            $tree->addField('l18n_cfg');
-            // Creating top icon; the current page
-            $HTML = $this->iconFactory->getIconForRecord('pages', $treeStartingRecord, Icon::SIZE_SMALL)->render();
-            $tree->tree[] = [
-                'row' => $treeStartingRecord,
-                'HTML' => $HTML
-            ];
-            // Create the tree from starting point:
-            if ($depth) {
-                $tree->getTree($treeStartingPoint, $depth, '');
-            }
-            // Render information table:
-            $theOutput .= $this->renderL10nTable($tree);
-        }
-        return $theOutput;
-    }
-
-    /**
      * Rendering the localization information table.
      *
      * @param array $tree The Page tree data
      * @return string HTML for the localization information table.
      */
-    public function renderL10nTable(&$tree)
+    protected function renderL10nTable(&$tree)
     {
         $lang = $this->getLanguageService();
         // Title length:
@@ -141,8 +211,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
         $output = '';
         $newOL_js = [];
         $langRecUids = [];
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         foreach ($tree->tree as $data) {
             $tCells = [];
             $langRecUids[0][] = $data['row']['uid'];
@@ -393,7 +462,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
      * @param int $langId Language UID to select for.
      * @return array translated pages record
      */
-    public function getLangStatus($pageId, $langId)
+    protected function getLangStatus($pageId, $langId)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
@@ -436,7 +505,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
      * @param int $sysLang Sys language uid
      * @return int Number of content elements from the PID where the language is set to a certain value.
      */
-    public function getContentElementCount($pageId, $sysLang)
+    protected function getContentElementCount($pageId, $sysLang)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('tt_content');
@@ -465,26 +534,6 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
     }
 
     /**
-     * Returns LanguageService
-     *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
-    }
-
-    /**
-     * Returns the current BE user.
-     *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-     */
-    protected function getBackendUser()
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
-    /**
      * Since the AbstractFunctionModule cannot access the current request yet, we'll do it "old school"
      * to fetch the Site based on the current ID.
      */
@@ -492,6 +541,59 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
     {
         /** @var SiteInterface $currentSite */
         $currentSite = $GLOBALS['TYPO3_REQUEST']->getAttribute('site');
-        $this->siteLanguages = $currentSite->getAvailableLanguages($this->getBackendUser(), false, (int)$this->pObj->id);
+        $this->siteLanguages = $currentSite->getAvailableLanguages($this->getBackendUser(), false, (int)$this->id);
+    }
+
+    /**
+     * Called from InfoModuleController until deprecation removal in v10
+     *
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
+     */
+    public function checkExtObj()
+    {
+        if (is_array($this->extClassConf) && $this->extClassConf['name']) {
+            $this->extObj = GeneralUtility::makeInstance($this->extClassConf['name']);
+            $this->extObj->init($this->pObj, $this->extClassConf);
+            // Re-write:
+            $this->pObj->MOD_SETTINGS = BackendUtility::getModuleData($this->pObj->MOD_MENU, GeneralUtility::_GP('SET'), 'web_info');
+        }
+    }
+
+    /**
+     * Calls the main function inside ANOTHER sub-submodule which might exist.
+     *
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
+     */
+    protected function extObjContent()
+    {
+        if (is_object($this->extObj)) {
+            return $this->extObj->main();
+        }
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Returns the current BE user.
+     *
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @return PageRenderer
+     */
+    protected function getPageRenderer(): PageRenderer
+    {
+        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }
