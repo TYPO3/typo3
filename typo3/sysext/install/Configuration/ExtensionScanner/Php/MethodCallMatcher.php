@@ -3261,7 +3261,7 @@ return [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-86182-ProtectedMethodsInTaskModuleController.rst',
+            'Deprecation-86182-ProtectedTaskModuleController.rst',
         ],
     ],
     'TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController->renderLinkAttributeFields' => [

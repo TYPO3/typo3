@@ -16,31 +16,177 @@ namespace TYPO3\CMS\Taskcenter\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Taskcenter\TaskInterface;
 
 /**
- * This class provides a taskcenter for BE users
+ * This class provides a task center for BE users
  */
-class TaskModuleController extends BaseScriptClass
+class TaskModuleController
 {
+    use PublicPropertyDeprecationTrait;
     use PublicMethodDeprecationTrait;
 
     /**
      * @var array
      */
-    private $deprecatedPublicMethods = [
-        'main' => 'Using TaskModuleController::main() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'urlInIframe' => 'Using SetupModuleController::urlInIframe() is deprecated. The method will be removed in TYPO3 v10.',
+    private $deprecatedPublicProperties = [
+        'MCONF' => 'Using TaskModuleController::$MCONF is deprecated and will not be possible anymore in TYPO3 v10.',
+        'id' => 'Using TaskModuleController::$id is deprecated and will not be possible anymore in TYPO3 v10.',
+        'MOD_MENU' => 'Using TaskModuleController::$MOD_MENU is deprecated and will not be possible anymore in TYPO3 v10.',
+        'modMenu_type' => 'Using TaskModuleController::$modMenu_type is deprecated and will not be possible anymore in TYPO3 v10.',
+        'modMenu_setDefaultList' => 'Using TaskModuleController::$$modMenu_setDefaultList is deprecated and will not be possible anymore in TYPO3 v10.',
+        'modMenu_dontValidateList' => 'Using TaskModuleController::$modMenu_dontValidateList is deprecated and will not be possible anymore in TYPO3 v10.',
+        'content' => 'Using TaskModuleController::$content is deprecated and will not be possible anymore in TYPO3 v10.',
+        'perms_clause' => 'Using TaskModuleController::$perms_clause is deprecated, the property will be removed in v10.',
+        'CMD' => 'Using TaskModuleController::$CMD is deprecated, the property will be removed in v10.',
+        'extClassConf' => 'Using TaskModuleController::$extClassConf is deprecated, the property will be removed in v10.',
+        'extObj' => 'Using TaskModuleController::$extObj is deprecated, the property will be removed in v10.',
     ];
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicMethods = [
+        'menuConfig' => 'Using TaskModuleController::menuConfig() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'mergeExternalItems' => 'Using TaskModuleController::mergeExternalItems() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'handleExternalFunctionValue' => 'Using TaskModuleController::handleExternalFunctionValue() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'getExternalItemConfig' => 'Using TaskModuleController::getExternalItemConfig() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'main' => 'Using TaskModuleController::main() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'urlInIframe' => 'Using TaskModuleController::urlInIframe() is deprecated. The method will be removed in TYPO3 v10.',
+        'extObjHeader' => 'Using TaskModuleController::extObjHeader() is deprecated. The method will be removed in TYPO3 v10.',
+        'checkSubExtObj' => 'Using TaskModuleController::checkSubExtObj() is deprecated. The method will be removed in TYPO3 v10.',
+        'checkExtObj' => 'Using TaskModuleController::checkExtObj() is deprecated. The method will be removed in TYPO3 v10.',
+        'extObjContent' => 'Using TaskModuleController::extObjContent() is deprecated. The method will be removed in TYPO3 v10.',
+        'getExtObjContent' => 'Using TaskModuleController::getExtObjContent() is deprecated. The method will be removed in TYPO3 v10.',
+    ];
+
+    /**
+     * Loaded with the global array $MCONF which holds some module configuration from the conf.php file of backend modules.
+     *
+     * @see init()
+     * @var array
+     */
+    protected $MCONF = [];
+
+    /**
+     * The integer value of the GET/POST var, 'id'. Used for submodules to the 'Web' module (page id)
+     *
+     * @see init()
+     * @var int
+     */
+    protected $id;
+
+    /**
+     * The value of GET/POST var, 'CMD'
+     *
+     * @see init()
+     * @var mixed
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     */
+    protected $CMD;
+
+    /**
+     * A WHERE clause for selection records from the pages table based on read-permissions of the current backend user.
+     *
+     * @see init()
+     * @var string
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     */
+    protected $perms_clause;
+
+    /**
+     * The module menu items array. Each key represents a key for which values can range between the items in the array of that key.
+     *
+     * @see init()
+     * @var array
+     */
+    protected $MOD_MENU = [
+        'function' => []
+    ];
+
+    /**
+     * Current settings for the keys of the MOD_MENU array
+     * Public since task objects use this.
+     *
+     * @see $MOD_MENU
+     * @var array
+     */
+    public $MOD_SETTINGS = [];
+
+    /**
+     * Module TSconfig based on PAGE TSconfig / USER TSconfig
+     * Public since task objects use this.
+     *
+     * @see menuConfig()
+     * @var array
+     */
+    public $modTSconfig;
+
+    /**
+     * If type is 'ses' then the data is stored as session-lasting data. This means that it'll be wiped out the next time the user logs in.
+     * Can be set from extension classes of this class before the init() function is called.
+     *
+     * @see menuConfig(), \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
+     * @var string
+     */
+    protected $modMenu_type = '';
+
+    /**
+     * dontValidateList can be used to list variables that should not be checked if their value is found in the MOD_MENU array. Used for dynamically generated menus.
+     * Can be set from extension classes of this class before the init() function is called.
+     *
+     * @see menuConfig(), \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
+     * @var string
+     */
+    protected $modMenu_dontValidateList = '';
+
+    /**
+     * List of default values from $MOD_MENU to set in the output array (only if the values from MOD_MENU are not arrays)
+     * Can be set from extension classes of this class before the init() function is called.
+     *
+     * @see menuConfig(), \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
+     * @var string
+     */
+    protected $modMenu_setDefaultList = '';
+
+    /**
+     * Contains module configuration parts from TBE_MODULES_EXT if found
+     *
+     * @see handleExternalFunctionValue()
+     * @var array
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     */
+    protected $extClassConf;
+
+    /**
+     * Generally used for accumulating the output content of backend modules
+     *
+     * @var string
+     */
+    protected $content = '';
+
+    /**
+     * May contain an instance of a 'Function menu module' which connects to this backend module.
+     *
+     * @see checkExtObj()
+     * @var \object
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     */
+    protected $extObj;
 
     /**
      * @var array
@@ -71,17 +217,28 @@ class TaskModuleController extends BaseScriptClass
         $this->MCONF = [
             'name' => $this->moduleName
         ];
-        parent::init();
+        // Name might be set from outside
+        if (!$this->MCONF['name']) {
+            $this->MCONF = $GLOBALS['MCONF'];
+        }
+        $this->id = (int)GeneralUtility::_GP('id');
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+        $this->CMD = GeneralUtility::_GP('CMD');
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+        $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
+        $this->menuConfig();
+        $this->handleExternalFunctionValue();
     }
 
     /**
      * Adds items to the ->MOD_MENU array. Used for the function menu selector.
      */
-    public function menuConfig()
+    protected function menuConfig()
     {
         $this->MOD_MENU = ['mode' => []];
-        $this->MOD_MENU['mode']['information'] = $this->getLanguageService()->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang.xlf:task_overview');
-        $this->MOD_MENU['mode']['tasks'] = $this->getLanguageService()->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang.xlf:task_tasks');
+        $languageService = $this->getLanguageService();
+        $this->MOD_MENU['mode']['information'] = $languageService->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang.xlf:task_overview');
+        $this->MOD_MENU['mode']['tasks'] = $languageService->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang.xlf:task_tasks');
         // Copied from parent::menuConfig, because parent is hardcoded to menu.function,
         // however menu.function is already used for the individual tasks. Therefore we use menu.mode here.
         // Page/be_user TSconfig settings and blinding of menu-items
@@ -93,7 +250,17 @@ class TaskModuleController extends BaseScriptClass
                 unset($this->MOD_MENU['mode'][$key]);
             }
         }
-        parent::menuConfig();
+        // Page / user TSconfig settings and blinding of menu-items
+        // Now overwrite the stuff again for unknown reasons
+        $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.'][$this->MCONF['name'] . '.'] ?? [];
+        $this->MOD_MENU['function'] = $this->mergeExternalItems($this->MCONF['name'], 'function', $this->MOD_MENU['function']);
+        $blindActions = $this->modTSconfig['properties']['menu.']['function.'] ?? [];
+        foreach ($blindActions as $key => $value) {
+            if (!$value && array_key_exists($key, $this->MOD_MENU['function'])) {
+                unset($this->MOD_MENU['function'][$key]);
+            }
+        }
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
     }
 
     /**
@@ -139,9 +306,10 @@ class TaskModuleController extends BaseScriptClass
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
         $GLOBALS['SOBE'] = $this;
-        $this->main();
 
+        $this->main();
         $this->moduleTemplate->setContent($this->content);
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
@@ -175,6 +343,7 @@ class TaskModuleController extends BaseScriptClass
      */
     protected function renderModuleContent()
     {
+        $languageService = $this->getLanguageService();
         $chosenTask = (string)$this->MOD_SETTINGS['function'];
         // Render the taskcenter task as default
         if (empty($chosenTask) || $chosenTask === 'index') {
@@ -193,8 +362,8 @@ class TaskModuleController extends BaseScriptClass
                 } else {
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
-                        $this->getLanguageService()->getLL('error-access'),
-                        $this->getLanguageService()->getLL('error_header'),
+                        $languageService->getLL('error-access'),
+                        $languageService->getLL('error_header'),
                         FlashMessage::ERROR
                     );
                 }
@@ -202,16 +371,16 @@ class TaskModuleController extends BaseScriptClass
                 // Error if the task is not an instance of \TYPO3\CMS\Taskcenter\TaskInterface
                 $flashMessage = GeneralUtility::makeInstance(
                     FlashMessage::class,
-                    sprintf($this->getLanguageService()->getLL('error_no-instance'), $taskClass, TaskInterface::class),
-                    $this->getLanguageService()->getLL('error_header'),
+                    sprintf($languageService->getLL('error_no-instance'), $taskClass, TaskInterface::class),
+                    $languageService->getLL('error_header'),
                     FlashMessage::ERROR
                 );
             }
         } else {
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
-                $this->getLanguageService()->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang_mod.xlf:mlang_labels_tabdescr'),
-                $this->getLanguageService()->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
+                $languageService->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang_mod.xlf:mlang_labels_tabdescr'),
+                $languageService->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
                 FlashMessage::INFO
             );
         }
@@ -262,6 +431,7 @@ class TaskModuleController extends BaseScriptClass
 
     /**
      * Render the headline of a task including a title and an optional description.
+     * Public since task objects use this.
      *
      * @param string $title Title
      * @param string $description Description
@@ -279,15 +449,14 @@ class TaskModuleController extends BaseScriptClass
     }
 
     /**
-     * Render a list of items as a nicely formatted definition list including a
-     * link, icon, title and description.
+     * Render a list of items as a nicely formatted definition list including a link, icon, title and description.
      * The keys of a single item are:
      * - title:             Title of the item
      * - link:              Link to the task
      * - icon:              Path to the icon or Icon as HTML if it begins with <img
      * - description:       Description of the task, using htmlspecialchars()
-     * - descriptionHtml:   Description allowing HTML tags which will override the
-     * description
+     * - descriptionHtml:   Description allowing HTML tags which will override the description
+     * Public since task objects use this.
      *
      * @param array $items List of items to be displayed in the definition list.
      * @param bool $mainMenu Set it to TRUE to render the main menu
@@ -360,6 +529,7 @@ class TaskModuleController extends BaseScriptClass
      */
     protected function indexAction()
     {
+        $languageService = $this->getLanguageService();
         $content = '';
         $tasks = [];
         $defaultIcon = 'EXT:taskcenter/Resources/Public/Icons/module-taskcenter.svg';
@@ -373,7 +543,7 @@ class TaskModuleController extends BaseScriptClass
                         continue;
                     }
                     $link = (string)$uriBuilder->buildUriFromRoute('user_task') . '&SET[function]=' . $extKey . '.' . $taskClass;
-                    $taskTitle = $this->getLanguageService()->sL($task['title']);
+                    $taskTitle = $languageService->sL($task['title']);
                     $taskDescriptionHtml = '';
 
                     if (class_exists($taskClass)) {
@@ -387,7 +557,7 @@ class TaskModuleController extends BaseScriptClass
                     $tasks[$uniqueKey] = [
                         'title' => $taskTitle,
                         'descriptionHtml' => $taskDescriptionHtml,
-                        'description' => $this->getLanguageService()->sL($task['description']),
+                        'description' => $languageService->sL($task['description']),
                         'icon' => !empty($task['icon']) ? $task['icon'] : $defaultIcon,
                         'link' => $link,
                         'uid' => $extKey . '.' . $taskClass
@@ -398,7 +568,7 @@ class TaskModuleController extends BaseScriptClass
         } else {
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
-                $this->getLanguageService()->getLL('no-tasks'),
+                $languageService->getLL('no-tasks'),
                 '',
                 FlashMessage::INFO
             );
@@ -485,9 +655,9 @@ class TaskModuleController extends BaseScriptClass
     /**
      * Returns the current BE user.
      *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
@@ -495,18 +665,171 @@ class TaskModuleController extends BaseScriptClass
     /**
      * Returns LanguageService
      *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
     /**
+     * Public since task objects use this.
+     *
      * @return ModuleTemplate
      */
-    public function getModuleTemplate()
+    public function getModuleTemplate(): ModuleTemplate
     {
         return $this->moduleTemplate;
+    }
+
+    /**
+     * Merges menu items from global array $TBE_MODULES_EXT
+     *
+     * @param string $modName Module name for which to find value
+     * @param string $menuKey Menu key, eg. 'function' for the function menu.
+     * @param array $menuArr The part of a MOD_MENU array to work on.
+     * @return array Modified array part.
+     * @access private
+     * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), menuConfig()
+     */
+    protected function mergeExternalItems($modName, $menuKey, $menuArr)
+    {
+        $mergeArray = $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
+        if (is_array($mergeArray)) {
+            foreach ($mergeArray as $k => $v) {
+                if (((string)$v['ws'] === '' || $this->getBackendUser()->workspace === 0 && GeneralUtility::inList($v['ws'], 'online')) || $this->getBackendUser()->workspace === -1 && GeneralUtility::inList($v['ws'], 'offline') || $this->getBackendUser()->workspace > 0 && GeneralUtility::inList($v['ws'], 'custom')) {
+                    $menuArr[$k] = $this->getLanguageService()->sL($v['title']);
+                }
+            }
+        }
+        return $menuArr;
+    }
+
+    /**
+     * Loads $this->extClassConf with the configuration for the CURRENT function of the menu.
+     *
+     * @param string $MM_key The key to MOD_MENU for which to fetch configuration. 'function' is default since it is first and foremost used to get information per "extension object" (I think that is what its called)
+     * @param string $MS_value The value-key to fetch from the config array. If NULL (default) MOD_SETTINGS[$MM_key] will be used. This is useful if you want to force another function than the one defined in MOD_SETTINGS[function]. Call this in init() function of your Script Class: handleExternalFunctionValue('function', $forcedSubModKey)
+     * @see getExternalItemConfig(), init()
+     */
+    protected function handleExternalFunctionValue($MM_key = 'function', $MS_value = null)
+    {
+        if ($MS_value === null) {
+            $MS_value = $this->MOD_SETTINGS[$MM_key];
+        }
+        $this->extClassConf = $this->getExternalItemConfig($this->MCONF['name'], $MM_key, $MS_value);
+    }
+
+    /**
+     * Returns configuration values from the global variable $TBE_MODULES_EXT for the module given.
+     * For example if the module is named "web_info" and the "function" key ($menuKey) of MOD_SETTINGS is "stat" ($value) then you will have the values of $TBE_MODULES_EXT['webinfo']['MOD_MENU']['function']['stat'] returned.
+     *
+     * @param string $modName Module name
+     * @param string $menuKey Menu key, eg. "function" for the function menu. See $this->MOD_MENU
+     * @param string $value Optionally the value-key to fetch from the array that would otherwise have been returned if this value was not set. Look source...
+     * @return mixed The value from the TBE_MODULES_EXT array.
+     * @see handleExternalFunctionValue()
+     */
+    protected function getExternalItemConfig($modName, $menuKey, $value = '')
+    {
+        if (isset($GLOBALS['TBE_MODULES_EXT'][$modName])) {
+            return (string)$value !== '' ? $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey][$value] : $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
+        }
+        return null;
+    }
+
+    /**
+     * Creates an instance of the class found in $this->extClassConf['name'] in $this->extObj if any (this should hold three keys, "name", "path" and "title" if a "Function menu module" tries to connect...)
+     * This value in extClassConf might be set by an extension (in an ext_tables/ext_localconf file) which thus "connects" to a module.
+     * The array $this->extClassConf is set in handleExternalFunctionValue() based on the value of MOD_SETTINGS[function]
+     * If an instance is created it is initiated with $this passed as value and $this->extClassConf as second argument. Further the $this->MOD_SETTING is cleaned up again after calling the init function.
+     *
+     * @see handleExternalFunctionValue(), \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), $extObj
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     */
+    protected function checkExtObj()
+    {
+        if (is_array($this->extClassConf) && $this->extClassConf['name']) {
+            $this->extObj = GeneralUtility::makeInstance($this->extClassConf['name']);
+            $this->extObj->init($this, $this->extClassConf);
+            // Re-write:
+            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
+        }
+    }
+
+    /**
+     * Calls the checkExtObj function in sub module if present.
+     *
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     */
+    protected function checkSubExtObj()
+    {
+        if (is_object($this->extObj)) {
+            $this->extObj->checkExtObj();
+        }
+    }
+
+    /**
+     * Calls the 'header' function inside the "Function menu module" if present.
+     * A header function might be needed to add JavaScript or other stuff in the head. This can't be done in the main function because the head is already written.
+     *
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     */
+    protected function extObjHeader()
+    {
+        if (is_callable([$this->extObj, 'head'])) {
+            $this->extObj->head();
+        }
+    }
+
+    /**
+     * Calls the 'main' function inside the "Function menu module" if present
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     */
+    protected function extObjContent()
+    {
+        if ($this->extObj === null) {
+            $flashMessage = GeneralUtility::makeInstance(
+                FlashMessage::class,
+                $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:no_modules_registered'),
+                $this->getLanguageService()->getLL('title'),
+                FlashMessage::ERROR
+            );
+            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
+            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
+            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue->enqueue($flashMessage);
+        } else {
+            $this->extObj->pObj = $this;
+            if (is_callable([$this->extObj, 'main'])) {
+                $this->content .= $this->extObj->main();
+            }
+        }
+    }
+
+    /**
+     * Return the content of the 'main' function inside the "Function menu module" if present
+     *
+     * @return string
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     */
+    protected function getExtObjContent()
+    {
+        $savedContent = $this->content;
+        $this->content = '';
+        $this->extObjContent();
+        $newContent = $this->content;
+        $this->content = $savedContent;
+        return $newContent;
+    }
+
+    /**
+     * @return PageRenderer
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     */
+    protected function getPageRenderer(): PageRenderer
+    {
+        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }

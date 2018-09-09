@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 
@@ -758,7 +759,11 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
         $dbAnalysis->getFromDB();
         // collect the records
         foreach ($dbAnalysis->itemArray as $el) {
-            $path = BackendUtility::getRecordPath($el['id'], $this->taskObject->perms_clause, $this->getBackendUser()->uc['titleLen']);
+            $path = BackendUtility::getRecordPath(
+                $el['id'],
+                $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW),
+                $this->getBackendUser()->uc['titleLen']
+            );
             $record = BackendUtility::getRecord($el['table'], $dbAnalysis->results[$el['table']][$el['id']]);
             $title = BackendUtility::getRecordTitle($el['table'], $dbAnalysis->results[$el['table']][$el['id']]);
             $description = htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$el['table']]['ctrl']['title']));
@@ -807,7 +812,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                 $fullsearch->noDownloadB = 1;
                 $type = $sql_query['qC']['search_query_makeQuery'];
                 if ($sql_query['qC']['labels_noprefix'] === 'on') {
-                    $GLOBALS['SOBE']->MOD_SETTINGS['labels_noprefix'] = 'on';
+                    $this->taskObject->MOD_SETTINGS['labels_noprefix'] = 'on';
                 }
                 $sqlQuery = $sql_query['qSelect'];
                 $queryIsEmpty = false;
@@ -818,8 +823,8 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                             ->executeQuery($sqlQuery)->fetchAll();
                         $fullsearch->formW = 48;
                         // Additional configuration
-                        $GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels'] = 1;
-                        $GLOBALS['SOBE']->MOD_SETTINGS['queryFields'] = $sql_query['qC']['queryFields'];
+                        $this->taskObject->MOD_SETTINGS['search_result_labels'] = 1;
+                        $this->taskObject->MOD_SETTINGS['queryFields'] = $sql_query['qC']['queryFields'];
                         $cP = $fullsearch->getQueryResultCode($type, $dataRows, $sql_query['qC']['queryTable']);
                         $actionContent = $cP['content'];
                         // If the result is rendered as csv or xml, show a download link
@@ -899,7 +904,10 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
             return $content;
         }
         // Loading current page record and checking access:
-        $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->taskObject->perms_clause);
+        $this->pageinfo = BackendUtility::readPageAccess(
+            $this->id,
+            $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
+        );
         $access = is_array($this->pageinfo);
         // If there is access to the page, then render the list contents and set up the document template object:
         if ($access) {
@@ -908,7 +916,6 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
             $dblist->script = GeneralUtility::getIndpEnv('REQUEST_URI');
             $dblist->calcPerms = $this->getBackendUser()->calcPerms($this->pageinfo);
             $dblist->thumbs = $this->getBackendUser()->uc['thumbnailsByDefault'];
-            $dblist->returnUrl = $this->taskObject->returnUrl;
             $dblist->allFields = 1;
             $dblist->showClipboard = 0;
             $dblist->disableSingleTableView = 1;
@@ -919,7 +926,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
             $dblist->dontShowClipControlPanels = (!$this->taskObject->MOD_SETTINGS['bigControlPanel'] && $dblist->clipObj->current === 'normal' && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers']);
             // Initialize the listing object, dblist, for rendering the list:
             $this->pointer = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(GeneralUtility::_GP('pointer'), 0, 100000);
-            $dblist->start($this->id, $this->table, $this->pointer, $this->taskObject->search_field, $this->taskObject->search_levels, $this->taskObject->showLimit);
+            $dblist->start($this->id, $this->table, $this->pointer);
             $dblist->setDispFields();
             // Render the list of tables:
             $dblist->generateList();

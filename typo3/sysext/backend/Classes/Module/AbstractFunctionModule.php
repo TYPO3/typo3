@@ -112,7 +112,7 @@ abstract class AbstractFunctionModule
     /**
      * Initialize the object
      *
-     * @param BaseScriptClass $pObj A reference to the parent (calling) object
+     * @param \object $pObj A reference to the parent (calling) object
      * @throws \RuntimeException
      * @see \TYPO3\CMS\Backend\Module\BaseScriptClass::checkExtObj()
      */
