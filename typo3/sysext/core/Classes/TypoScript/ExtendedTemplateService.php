@@ -423,7 +423,7 @@ class ExtendedTemplateService extends TemplateService
                 $HTML .= $depthData . '<li>';
                 if ($PM !== 'join') {
                     $urlParameters = [
-                        'id' => $GLOBALS['SOBE']->id,
+                        'id' => (int)GeneralUtility::_GP('id'),
                         'tsbr[' . $depth . ']' => $deeper ? 0 : 1
                     ];
                     if (GeneralUtility::_GP('breakPointLN')) {
@@ -439,7 +439,7 @@ class ExtendedTemplateService extends TemplateService
                 } else {
                     if ($this->linkObjects) {
                         $urlParameters = [
-                            'id' => $GLOBALS['SOBE']->id,
+                            'id' => (int)GeneralUtility::_GP('id'),
                             'sObj' => $depth
                         ];
                         if (GeneralUtility::_GP('breakPointLN')) {
@@ -659,13 +659,13 @@ class ExtendedTemplateService extends TemplateService
             $BTM = $a == $c ? 'top' : '';
             $HTML .= $depthData;
             $alttext = '[' . $row['templateID'] . ']';
-            $alttext .= $row['pid'] ? ' - ' . BackendUtility::getRecordPath($row['pid'], $GLOBALS['SOBE']->perms_clause, 20) : '';
+            $alttext .= $row['pid'] ? ' - ' . BackendUtility::getRecordPath($row['pid'], '1=1', 20) : '';
             $icon = strpos($row['templateID'], 'sys') === 0
                 ? '<span title="' . htmlspecialchars($alttext) . '">' . $iconFactory->getIconForRecord('sys_template', $row, Icon::SIZE_SMALL)->render() . '</span>'
                 : '<span title="' . htmlspecialchars($alttext) . '">' . $iconFactory->getIcon('mimetypes-x-content-template-static', Icon::SIZE_SMALL)->render() . '</span>';
             if (in_array($row['templateID'], $this->clearList_const) || in_array($row['templateID'], $this->clearList_setup)) {
                 $urlParameters = [
-                    'id' => $GLOBALS['SOBE']->id,
+                    'id' => (int)GeneralUtility::_GP('id'),
                     'template' => $row['templateID']
                 ];
                 $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);

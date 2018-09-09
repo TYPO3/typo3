@@ -16,10 +16,13 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Module\BaseScriptClass;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -27,6 +30,10 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,32 +45,78 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 /**
  * Module: TypoScript Tools
  */
-class TypoScriptTemplateModuleController extends BaseScriptClass
+class TypoScriptTemplateModuleController
 {
+    use PublicPropertyDeprecationTrait;
+    use PublicMethodDeprecationTrait;
+
     /**
-     * @var string
+     * @var array
      */
-    public $perms_clause;
+    private $deprecatedPublicProperties = [
+        'textExtensions' => 'Using TypoScriptTemplateModuleController::$textExtensions is deprecated and will not be possible anymore in TYPO3 v10.',
+        'pageinfo' => 'Using TypoScriptTemplateModuleController::$pageinfo is deprecated and will not be possible anymore in TYPO3 v10.',
+        'id' => 'Using TypoScriptTemplateModuleController::$id is deprecated and will not be possible anymore in TYPO3 v10.',
+        'modTSconfig' => 'Using TypoScriptTemplateModuleController::$modTSconfig is deprecated and will not be possible anymore in TYPO3 v10.',
+        'content' => 'Using TypoScriptTemplateModuleController::$content is deprecated and will not be possible anymore in TYPO3 v10.',
+        'extObj' => 'Using TypoScriptTemplateModuleController::$extObj is deprecated and will not be possible anymore in TYPO3 v10.',
+        'access' => 'Using TypoScriptTemplateModuleController::$access is deprecated and will not be possible anymore in TYPO3 v10.',
+        'perms_clause' => 'Using TypoScriptTemplateModuleController::$perms_clause is deprecated and will not be possible anymore in TYPO3 v10.',
+        'extClassConf' => 'Using TypoScriptTemplateModuleController::$extClassConf is deprecated and will not be possible anymore in TYPO3 v10.',
+        'edit' => 'Using TypoScriptTemplateModuleController::$edit is deprecated, property will be removed in TYPO3 v10.',
+        'modMenu_type' => 'Using TypoScriptTemplateModuleController::$modMenu_type is deprecated, property will be removed in TYPO3 v10.',
+        'MCONF' => 'Using TypoScriptTemplateModuleController::$MCONF is deprecated, property will be removed in TYPO3 v10.',
+        'CMD' => 'Using TypoScriptTemplateModuleController::$CMD is deprecated, property will be removed in TYPO3 v10.',
+        'sObj' => 'Using TypoScriptTemplateModuleController::$sObj is deprecated, property will be removed in TYPO3 v10.',
+    ];
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicMethods = [
+        'getExternalItemConfig' => 'Using TypoScriptTemplateModuleController::getExternalItemConfig() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'init' => 'Using TypoScriptTemplateModuleController::init() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'clearCache' => 'Using TypoScriptTemplateModuleController::clearCache() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'main' => 'Using TypoScriptTemplateModuleController::main() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'setInPageArray' => 'Using TypoScriptTemplateModuleController::setInPageArray() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'menuConfig' => 'Using TypoScriptTemplateModuleController::menuConfig() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'mergeExternalItems' => 'Using TypoScriptTemplateModuleController::mergeExternalItems() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'handleExternalFunctionValue' => 'Using TypoScriptTemplateModuleController::handleExternalFunctionValue() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'checkExtObj' => 'Using TypoScriptTemplateModuleController::checkExtObj() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'extObjContent' => 'Using TypoScriptTemplateModuleController::extObjContent() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'getExtObjContent' => 'Using TypoScriptTemplateModuleController::getExtObjContent() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'checkSubExtObj' => 'Using TypoScriptTemplateModuleController::checkSubExtObj() is deprecated, method will be removed in TYPO3 v10.',
+        'extObjHeader' => 'Using TypoScriptTemplateModuleController::extObjHeader() is deprecated, method will be removed in TYPO3 v10.',
+    ];
 
     /**
      * @var string
      */
-    public $sObj;
+    protected $perms_clause;
 
     /**
      * @var string
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
-    public $edit;
+    protected $sObj;
 
     /**
      * @var string
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
-    public $textExtensions = 'html,htm,txt,css,tmpl,inc,js';
+    protected $edit;
 
     /**
      * @var string
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
-    public $modMenu_type = '';
+    protected $textExtensions = 'html,htm,txt,css,tmpl,inc,js';
+
+    /**
+     * @var string Written by client classes.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Remove last usages, too.
+     */
+    protected $modMenu_type = '';
 
     /**
      * @var string
@@ -71,19 +124,19 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     public $modMenu_dontValidateList = '';
 
     /**
-     * @var string
+     * @var string Written by client classes
      */
     public $modMenu_setDefaultList = '';
 
     /**
      * @var array
      */
-    public $pageinfo = [];
+    protected $pageinfo = [];
 
     /**
      * @var bool
      */
-    public $access = false;
+    protected $access = false;
 
     /**
      * The name of the module
@@ -105,6 +158,75 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     protected $templateService;
 
     /**
+     * Loaded with the global array $MCONF which holds some module configuration from the conf.php file of backend modules.
+     *
+     * @var array
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     */
+    protected $MCONF = [];
+
+    /**
+     * @var int GET/POST var 'id'
+     */
+    protected $id;
+
+    /**
+     * The value of GET/POST var, 'CMD'
+     *
+     * @var mixed
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     */
+    protected $CMD;
+
+    /**
+     * The module menu items array. Each key represents a key for which values can range between the items in the array of that key.
+     * Written by client classes.
+     *
+     * @var array
+     */
+    public $MOD_MENU = [
+        'function' => []
+    ];
+
+    /**
+     * Current settings for the keys of the MOD_MENU array, used in client classes
+     *
+     * @see $MOD_MENU
+     * @var array
+     */
+    public $MOD_SETTINGS = [];
+
+    /**
+     * Module TSconfig based on PAGE TSconfig / USER TSconfig
+     *
+     * @var array
+     */
+    protected $modTSconfig;
+
+    /**
+     * Contains module configuration parts from TBE_MODULES_EXT if found
+     *
+     * @see handleExternalFunctionValue()
+     * @var array
+     */
+    protected $extClassConf;
+
+    /**
+     * Generally used for accumulating the output content of backend modules
+     *
+     * @var string
+     */
+    protected $content = '';
+
+    /**
+     * May contain an instance of a 'Function menu module' which connects to this backend module.
+     *
+     * @see checkExtObj()
+     * @var \object
+     */
+    protected $extObj;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -112,6 +234,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->getLanguageService()->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang.xlf');
 
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
         $this->MCONF = [
             'name' => $this->moduleName
         ];
@@ -129,11 +252,16 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     /**
      * Init
      */
-    public function init()
+    protected function init()
     {
-        parent::init();
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+        $this->CMD = GeneralUtility::_GP('CMD');
+        $this->menuConfig();
+        $this->handleExternalFunctionValue();
         $this->id = (int)GeneralUtility::_GP('id');
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
         $this->sObj = GeneralUtility::_GP('sObj');
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
         $this->edit = GeneralUtility::_GP('edit');
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
     }
@@ -141,10 +269,9 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     /**
      * Clear cache
      */
-    public function clearCache()
+    protected function clearCache()
     {
         if (GeneralUtility::_GP('clear_all_cache')) {
-            /** @var DataHandler $tce */
             $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->start([], []);
             $tce->clear_cacheCmd('all');
@@ -154,15 +281,14 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     /**
      * Main
      */
-    public function main()
+    protected function main()
     {
         // Access check...
         // The page will show only if there is a valid page and if this page may be viewed by the user
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
         $this->access = is_array($this->pageinfo);
         $view = $this->getFluidTemplateObject('tstemplate');
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         if ($this->id && $this->access) {
             $urlParameters = [
                 'id' => $this->id,
@@ -264,8 +390,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     {
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('WebFuncJumpMenu');
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         foreach ($this->MOD_MENU['function'] as $controller => $title) {
             $item = $menu
                 ->makeMenuItem()
@@ -298,7 +423,9 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
         $GLOBALS['SOBE'] = $this;
+
         $this->init();
 
         // Checking for first level external objects
@@ -339,8 +466,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     'template' => 'all',
                     'createExtension' => 'new'
                 ];
-                /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                 $newButton = $buttonBar->makeLinkButton()
                     ->setHref((string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters))
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.pagetitle'))
@@ -363,36 +489,34 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     ))
                     ->setShowLabelText(true);
                 $buttonBar->addButton($saveButton);
-            } elseif ($this->extClassConf['name'] === TypoScriptTemplateObjectBrowserModuleFunctionController::class) {
-                if (!empty($this->sObj)) {
-                    // BACK
-                    $urlParameters = [
-                        'id' => $this->id
-                    ];
-                    /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-                    $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-                    $backButton = $buttonBar->makeLinkButton()
-                        ->setHref((string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters))
-                        ->setClasses('typo3-goBack')
-                        ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-                        ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                            'actions-view-go-back',
-                            Icon::SIZE_SMALL
-                        ));
-                    $buttonBar->addButton($backButton);
-                }
+            } elseif ($this->extClassConf['name'] === TypoScriptTemplateObjectBrowserModuleFunctionController::class
+                && !empty(GeneralUtility::_GP('sObj'))
+            ) {
+                // back button in edit mode of object browser. "sObj" is set by ExtendedTemplateService
+                $urlParameters = [
+                    'id' => $this->id
+                ];
+                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                $backButton = $buttonBar->makeLinkButton()
+                    ->setHref((string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters))
+                    ->setClasses('typo3-goBack')
+                    ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
+                        'actions-view-go-back',
+                        Icon::SIZE_SMALL
+                    ));
+                $buttonBar->addButton($backButton);
             }
         }
         // Shortcut
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName($this->MCONF['name'])
+            ->setModuleName('web_ts')
             ->setGetVariables(['id', 'route']);
         $buttonBar->addButton($shortcutButton);
     }
 
-    // OTHER FUNCTIONS:
     /**
-     * Wrap title for link in template
+     * Wrap title for link in template, called from client classes.
      *
      * @param string $title
      * @param string $onlyKey
@@ -403,8 +527,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         $urlParameters = [
             'id' => $this->id
         ];
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
         if ($onlyKey) {
             $title = '<a href="' . htmlspecialchars($aHref . '&e[' . $onlyKey . ']=1&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateInformationModuleFunctionController') . '">' . htmlspecialchars($title) . '</a>';
@@ -415,7 +538,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     }
 
     /**
-     * No template
+     * No template, called from client classes.
      *
      * @param int $newStandardTemplate
      * @return string
@@ -455,8 +578,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
             $urlParameters = [
                 'id' => $previousPage['uid']
             ];
-            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $previousPage['aHref'] = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
             $moduleContent['previousPage'] = $previousPage;
         }
@@ -466,7 +588,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     }
 
     /**
-     * Render template menu
+     * Render template menu, called from client classes.
      *
      * @return string
      */
@@ -484,7 +606,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         $this->MOD_SETTINGS = BackendUtility::getModuleData(
             $this->MOD_MENU,
             GeneralUtility::_GP('SET'),
-            $this->MCONF['name'],
+            'web_ts',
             $this->modMenu_type,
             $this->modMenu_dontValidateList,
             $this->modMenu_setDefaultList
@@ -498,7 +620,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     }
 
     /**
-     * Create template
+     * Create template, called from client classes.
      *
      * @param int $id
      * @param int $actTemplateId
@@ -507,7 +629,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     public function createTemplate($id, $actTemplateId = 0)
     {
         $recData = [];
-        /** @var DataHandler $tce */
         $tce = GeneralUtility::makeInstance(DataHandler::class);
 
         if (GeneralUtility::_GP('createExtension')) {
@@ -561,7 +682,7 @@ page.10.value = HELLO WORLD!
      * @param array $rlArr Rootline array
      * @param array $row Record of sys_template
      */
-    public function setInPageArray(&$pArray, $rlArr, $row)
+    protected function setInPageArray(&$pArray, $rlArr, $row)
     {
         ksort($rlArr);
         reset($rlArr);
@@ -649,7 +770,6 @@ page.10.value = HELLO WORLD!
      */
     protected function getFluidTemplateObject($extensionName, $templateName = 'Main')
     {
-        /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName($extensionName);
         $view->getRenderingContext()->setControllerAction($templateName);
@@ -697,5 +817,192 @@ page.10.value = HELLO WORLD!
             return $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class][$action];
         }
         return null;
+    }
+
+    /**
+     * Initializes the internal MOD_MENU array setting and unsetting items based on various conditions. It also merges in external menu items from the global array TBE_MODULES_EXT (see mergeExternalItems())
+     * Then MOD_SETTINGS array is cleaned up (see \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()) so it contains only valid values. It's also updated with any SET[] values submitted.
+     * Also loads the modTSconfig internal variable.
+     *
+     * @see init(), $MOD_MENU, $MOD_SETTINGS, \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData(), mergeExternalItems()
+     */
+    protected function menuConfig()
+    {
+        // Page / user TSconfig settings and blinding of menu-items
+        $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_ts.'] ?? [];
+        $this->MOD_MENU['function'] = $this->mergeExternalItems('web_ts', 'function', $this->MOD_MENU['function']);
+        $blindActions = $this->modTSconfig['properties']['menu.']['function.'] ?? [];
+        foreach ($blindActions as $key => $value) {
+            if (!$value && array_key_exists($key, $this->MOD_MENU['function'])) {
+                unset($this->MOD_MENU['function'][$key]);
+            }
+        }
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), 'web_ts', $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
+    }
+
+    /**
+     * Merges menu items from global array $TBE_MODULES_EXT
+     *
+     * @param string $modName Module name for which to find value
+     * @param string $menuKey Menu key, eg. 'function' for the function menu.
+     * @param array $menuArr The part of a MOD_MENU array to work on.
+     * @return array Modified array part.
+     * @access private
+     * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), menuConfig()
+     */
+    protected function mergeExternalItems($modName, $menuKey, $menuArr)
+    {
+        $mergeArray = $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
+        if (is_array($mergeArray)) {
+            foreach ($mergeArray as $k => $v) {
+                if (((string)$v['ws'] === '' || $this->getBackendUser()->workspace === 0 && GeneralUtility::inList($v['ws'], 'online')) || $this->getBackendUser()->workspace === -1 && GeneralUtility::inList($v['ws'], 'offline') || $this->getBackendUser()->workspace > 0 && GeneralUtility::inList($v['ws'], 'custom')) {
+                    $menuArr[$k] = $this->getLanguageService()->sL($v['title']);
+                }
+            }
+        }
+        return $menuArr;
+    }
+
+    /**
+     * Loads $this->extClassConf with the configuration for the CURRENT function of the menu.
+     *
+     * @param string $MM_key The key to MOD_MENU for which to fetch configuration. 'function' is default since it is first and foremost used to get information per "extension object" (I think that is what its called)
+     * @param string $MS_value The value-key to fetch from the config array. If NULL (default) MOD_SETTINGS[$MM_key] will be used. This is useful if you want to force another function than the one defined in MOD_SETTINGS[function]. Call this in init() function of your Script Class: handleExternalFunctionValue('function', $forcedSubModKey)
+     * @see getExternalItemConfig(), init()
+     */
+    protected function handleExternalFunctionValue($MM_key = 'function', $MS_value = null)
+    {
+        if ($MS_value === null) {
+            $MS_value = $this->MOD_SETTINGS[$MM_key];
+        }
+        $this->extClassConf = $this->getExternalItemConfig('web_ts', $MM_key, $MS_value);
+    }
+
+    /**
+     * Returns configuration values from the global variable $TBE_MODULES_EXT for the module given.
+     * For example if the module is named "web_info" and the "function" key ($menuKey) of MOD_SETTINGS is "stat" ($value) then you will have the values of $TBE_MODULES_EXT['webinfo']['MOD_MENU']['function']['stat'] returned.
+     *
+     * @param string $modName Module name
+     * @param string $menuKey Menu key, eg. "function" for the function menu. See $this->MOD_MENU
+     * @param string $value Optionally the value-key to fetch from the array that would otherwise have been returned if this value was not set. Look source...
+     * @return mixed The value from the TBE_MODULES_EXT array.
+     * @see handleExternalFunctionValue()
+     */
+    protected function getExternalItemConfig($modName, $menuKey, $value = '')
+    {
+        if (isset($GLOBALS['TBE_MODULES_EXT'][$modName])) {
+            return (string)$value !== ''
+                ? $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey][$value]
+                : $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
+        }
+        return null;
+    }
+
+    /**
+     * Creates an instance of the class found in $this->extClassConf['name'] in $this->extObj if any (this should hold three keys, "name", "path" and "title" if a "Function menu module" tries to connect...)
+     * This value in extClassConf might be set by an extension (in an ext_tables/ext_localconf file) which thus "connects" to a module.
+     * The array $this->extClassConf is set in handleExternalFunctionValue() based on the value of MOD_SETTINGS[function]
+     * If an instance is created it is initiated with $this passed as value and $this->extClassConf as second argument. Further the $this->MOD_SETTING is cleaned up again after calling the init function.
+     *
+     * @see handleExternalFunctionValue(), \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), $extObj
+     */
+    protected function checkExtObj()
+    {
+        if (is_array($this->extClassConf) && $this->extClassConf['name']) {
+            $this->extObj = GeneralUtility::makeInstance($this->extClassConf['name']);
+            $this->extObj->init($this);
+            // Re-write:
+            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), 'web_ts', $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
+        }
+    }
+
+    /**
+     * Calls the checkExtObj function in sub module if present.
+     *
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     */
+    protected function checkSubExtObj()
+    {
+        if (is_object($this->extObj) && is_callable([$this->extObj, 'checkExtObj'])) {
+            $this->extObj->checkExtObj();
+        }
+    }
+
+    /**
+     * Calls the 'header' function inside the "Function menu module" if present.
+     * A header function might be needed to add JavaScript or other stuff in the head.
+     * This can't be done in the main function because the head is already written.
+     *
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     */
+    protected function extObjHeader()
+    {
+        if (is_callable([$this->extObj, 'head'])) {
+            $this->extObj->head();
+        }
+    }
+
+    /**
+     * Calls the 'main' function inside the "Function menu module" if present
+     */
+    protected function extObjContent()
+    {
+        if ($this->extObj === null) {
+            $flashMessage = GeneralUtility::makeInstance(
+                FlashMessage::class,
+                $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:no_modules_registered'),
+                $this->getLanguageService()->getLL('title'),
+                FlashMessage::ERROR
+            );
+            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
+            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue->enqueue($flashMessage);
+        } else {
+            if (is_callable([$this->extObj, 'main'])) {
+                $this->content .= $this->extObj->main();
+            }
+        }
+    }
+
+    /**
+     * Return the content of the 'main' function inside the "Function menu module" if present
+     *
+     * @return string
+     */
+    protected function getExtObjContent()
+    {
+        $savedContent = $this->content;
+        $this->content = '';
+        $this->extObjContent();
+        $newContent = $this->content;
+        $this->content = $savedContent;
+        return $newContent;
+    }
+
+    /**
+     * Returns the Language Service
+     * @return LanguageService
+     */
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Returns the Backend User
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @return PageRenderer
+     */
+    protected function getPageRenderer(): PageRenderer
+    {
+        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }
