@@ -4900,7 +4900,6 @@ class DataHandler implements LoggerAwareInterface
 
         // Initialize:
         $overrideValues = [];
-        $excludeFields = [];
         // Set override values:
         $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['languageField']] = $langRec['uid'];
         // If the translated record is a default language record, set it's uid as localization parent of the new record.
@@ -4946,14 +4945,6 @@ class DataHandler implements LoggerAwareInterface
                         $overrideValues[$fN] = $row[$fN];
                     }
                 }
-            } elseif (
-                ($fCfg['l10n_mode'] === 'exclude')
-                    && $fN != $GLOBALS['TCA'][$table]['ctrl']['languageField']
-                    && $fN != $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
-            ) {
-                // Otherwise, do not copy field (unless it is the language field or
-                // pointer to the original language)
-                $excludeFields[] = $fN;
             }
         }
 
@@ -4961,7 +4952,7 @@ class DataHandler implements LoggerAwareInterface
             // Get the uid of record after which this localized record should be inserted
             $previousUid = $this->getPreviousLocalizedRecordUid($table, $uid, $row['pid'], $language);
             // Execute the copy:
-            $newId = $this->copyRecord($table, $uid, -$previousUid, true, $overrideValues, implode(',', $excludeFields), $language);
+            $newId = $this->copyRecord($table, $uid, -$previousUid, true, $overrideValues, '', $language);
             $autoVersionNewId = $this->getAutoVersionId($table, $newId);
             if ($autoVersionNewId !== null) {
                 $this->triggerRemapAction($table, $newId, [$this, 'placeholderShadowing'], [$table, $autoVersionNewId], true);

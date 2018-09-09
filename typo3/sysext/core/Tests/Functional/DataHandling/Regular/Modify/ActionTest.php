@@ -166,9 +166,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
         ]);
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
         $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-            // @todo Currently the behavior is "correct", however might be enhanced in the future with https://review.typo3.org/#/c/58235/
-            // ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3', '[Translate to Dansk:] Regular Element #2'));
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3', ''));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', 'Regular Element #2 (copy 1)'));
     }
 
     /**
