@@ -2202,7 +2202,14 @@ class BackendUtility
                 }
                 break;
             case 'check':
-                if (!is_array($theColConf['items']) || count($theColConf['items']) === 1) {
+                if (!is_array($theColConf['items'])) {
+                    $l = $value ? $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes') : $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:no');
+                } elseif (count($theColConf['items']) === 1) {
+                    reset($theColConf['items']);
+                    $invertStateDisplay = current($theColConf['items'])['invertStateDisplay'] ?? false;
+                    if ($invertStateDisplay) {
+                        $value = !$value;
+                    }
                     $l = $value ? $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes') : $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:no');
                 } else {
                     $lA = [];

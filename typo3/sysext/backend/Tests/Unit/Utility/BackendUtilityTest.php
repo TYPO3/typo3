@@ -439,6 +439,65 @@ class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
+     * @test
+     */
+    public function getProcessedValueForCheckWithSingleItem()
+    {
+        $GLOBALS['TCA'] = [
+            'tt_content' => [
+                'columns' => [
+                    'hide' => [
+                        'config' => [
+                            'type' => 'check',
+                            'items' => [
+                                [
+                                    0 => '',
+                                    1 => '',
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        $languageServiceProphecy = $this->prophesize(\TYPO3\CMS\Core\Localization\LanguageService::class);
+        $languageServiceProphecy->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes')->willReturn('Yes');
+        $languageServiceProphecy->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:no')->willReturn('No');
+        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $this->assertSame('Yes', BackendUtility::getProcessedValue('tt_content', 'hide', 1));
+    }
+
+    /**
+     * @test
+     */
+    public function getProcessedValueForCheckWithSingleItemInvertStateDisplay()
+    {
+        $GLOBALS['TCA'] = [
+            'tt_content' => [
+                'columns' => [
+                    'hide' => [
+                        'config' => [
+                            'type' => 'check',
+                            'items' => [
+                                [
+                                    0 => '',
+                                    1 => '',
+                                    'invertStateDisplay' => true,
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        $languageServiceProphecy = $this->prophesize(\TYPO3\CMS\Core\Localization\LanguageService::class);
+        $languageServiceProphecy->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes')->willReturn('Yes');
+        $languageServiceProphecy->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:no')->willReturn('No');
+        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $this->assertSame('No', BackendUtility::getProcessedValue('tt_content', 'hide', 1));
+    }
+
+    /**
      * Tests concerning getCommonSelectFields
      */
 
