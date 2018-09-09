@@ -394,7 +394,7 @@ STYLESHEET;
 
         foreach ($trace as $index => $step) {
             $content .= '<div class="trace-step">';
-            $args = $this->flattenArgs($step['args']);
+            $args = $this->flattenArgs($step['args'] ?? []);
 
             if (isset($step['function'])) {
                 $content .= '<div class="trace-call">' . sprintf(
