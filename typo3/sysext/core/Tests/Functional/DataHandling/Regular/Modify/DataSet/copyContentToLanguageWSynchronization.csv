@@ -1,0 +1,10 @@
+"tt_content",,,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l10n_source","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","t3ver_move_id","header","l10n_state"
+,296,88,256,0,0,0,0,0,0,0,0,0,0,"Regular Element #0",
+,297,89,256,0,0,0,0,0,0,0,0,0,0,"Regular Element #1",
+,298,89,512,0,0,0,0,0,0,0,0,0,0,"Testing #1",\NULL
+,299,89,768,0,0,0,0,0,0,0,0,0,0,"Regular Element #3",
+,300,89,1024,0,1,299,299,299,0,0,0,0,0,"[Translate to Dansk:] Regular Element #3",
+,301,89,384,0,1,297,297,297,0,0,0,0,0,"[Translate to Dansk:] Regular Element #1",
+,302,89,448,0,2,297,301,301,0,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1",
+,303,89,416,0,1,0,298,298,0,0,0,0,0,"[Translate to Dansk:] Regular Element #2",
