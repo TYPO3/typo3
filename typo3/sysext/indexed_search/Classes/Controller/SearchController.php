@@ -20,7 +20,10 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Site\PseudoSiteFinder;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -1411,7 +1414,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                         }
                         // Check sys_domain
                         if ($this->settings['detectDomainRecords']) {
-                            $domainName = $this->getFirstSysDomainRecordForPage($v['uid']);
+                            $domainName = $this->getFirstDomainForPage((int)$v['uid']);
                             if ($domainName) {
                                 $this->domainRecords[$id][] = $domainName;
                                 // Set path accordingly
@@ -1436,30 +1439,28 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     }
 
     /**
-     * Gets the first sys_domain record for the page, $id
+     * Gets the first domain for the page
      *
      * @param int $id Page id
      * @return string Domain name
      */
-    protected function getFirstSysDomainRecordForPage($id)
+    protected function getFirstDomainForPage(int $id): string
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_domain');
-        $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
-        $row = $queryBuilder
-            ->select('domainName')
-            ->from('sys_domain')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'pid',
-                    $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
-                )
-            )
-            ->orderBy('sorting')
-            ->setMaxResults(1)
-            ->execute()
-            ->fetch();
-
-        return rtrim($row['domainName'], '/');
+        $domain = '';
+        try {
+            $domain = GeneralUtility::makeInstance(SiteFinder::class)
+                ->getSiteByRootPageId($id)
+                ->getBase()
+                ->getHost();
+        } catch (SiteNotFoundException $e) {
+            $pseudoSiteFinder = GeneralUtility::makeInstance(PseudoSiteFinder::class);
+            try {
+                $domain = trim((string)$pseudoSiteFinder->getSiteByPageId($id)->getBase(), '/');
+            } catch (SiteNotFoundException $e) {
+                // site was not found, we return an empty string as default
+            }
+        }
+        return $domain;
     }
 
     /**
