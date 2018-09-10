@@ -135,6 +135,44 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 
     /**
      * @test
+     * @see DataSet/copyContentToLanguageWSynchronization.csv
+     */
+    public function copyContentToLanguageWithLanguageSynchronization()
+    {
+        parent::copyContentToLanguageWithLanguageSynchronization();
+        $this->assertAssertionDataSet('copyContentToLanguageWSynchronization');
+
+        $this->setUpFrontendRootPage(1, [
+            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
+            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRendererNoOverlay.typoscript'
+        ]);
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3', '[Translate to Dansk:] Regular Element #2'));
+    }
+
+    /**
+     * @test
+     * @see DataSet/copyContentToLanguageWExclude.csv
+     */
+    public function copyContentToLanguageWithLocalizationExclude()
+    {
+        parent::copyContentToLanguageWithLocalizationExclude();
+        $this->assertAssertionDataSet('copyContentToLanguageWExclude');
+
+        $this->setUpFrontendRootPage(1, [
+            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
+            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRendererNoOverlay.typoscript'
+        ]);
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            // @todo Currently the behavior is "correct", however might be enhanced in the future with https://review.typo3.org/#/c/58235/
+            // ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3', '[Translate to Dansk:] Regular Element #2'));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3', ''));
+    }
+
+    /**
+     * @test
      * @see DataSet/copyContentToLanguageFromNonDefaultLanguage.csv
      */
     public function copyContentToLanguageFromNonDefaultLanguage()

@@ -121,6 +121,28 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
+     * @see DataSet/copyContentToLanguageWSynchronization.csv
+     */
+    public function copyContentToLanguageWithLanguageSynchronization()
+    {
+        $GLOBALS['TCA']['tt_content']['columns']['header']['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $copiedTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['header' => 'Testing #1']);
+    }
+
+    /**
+     * @see DataSet/copyContentToLanguageWExclude.csv
+     */
+    public function copyContentToLanguageWithLocalizationExclude()
+    {
+        $GLOBALS['TCA']['tt_content']['columns']['header']['l10n_mode'] = 'exclude';
+        $copiedTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['header' => 'Testing #1']);
+    }
+
+    /**
      * Free mode "translation" of a record in non default language
      *
      * @see DataSet/copyContentToLanguageFromNonDefaultLanguage.csv
