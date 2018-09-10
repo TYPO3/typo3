@@ -934,4 +934,14 @@ return [
             'Deprecation-86109-ClassUserStorageCapabilityService.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Module\BaseScriptClass' => [
+        'restFiles' => [
+            'Deprecation-86225-ClassesBaseScriptClassAndAbstractFunctionModule.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Module\AbstractFunctionModule' => [
+        'restFiles' => [
+            'Deprecation-86225-ClassesBaseScriptClassAndAbstractFunctionModule.rst',
+        ],
+    ],
 ];

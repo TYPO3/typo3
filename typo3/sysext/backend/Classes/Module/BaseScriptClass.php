@@ -65,6 +65,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * THEN WE CALL THE main() METHOD AND THIS SHOULD SPARK THE CREATION OF THE MODULE OUTPUT.
  * $GLOBALS['SOBE']->main();
+ *
+ * @deprecated since v9, will be removed in v10
  */
 class BaseScriptClass
 {
@@ -185,6 +187,17 @@ class BaseScriptClass
      * @var PageRenderer
      */
     protected $pageRenderer;
+
+    /**
+     * Constructor deprecates the class
+     */
+    public function __construct()
+    {
+        trigger_error(
+            'Class BaseScriptClass is deprecated and will be removed in TYPO3 v10',
+            E_USER_DEPRECATED
+        );
+    }
 
     /**
      * Initializes the backend module by setting internal variables, initializing the menu.
