@@ -1002,16 +1002,20 @@ class TypoScriptParser
             // Used for the TypoScript comments
             $readableFilePrefix = $filename;
         } else {
-            // Apparently this is not a folder, so the restriction
-            // is the folder so we restrict into this folder
-            $finder->in(PathUtility::dirname($absoluteFileName));
-            if (!is_file($absoluteFileName)
-                && strpos(PathUtility::basename($absoluteFileName), '*') === false
-                && substr(PathUtility::basename($absoluteFileName), -11) !== '.typoscript') {
-                $absoluteFileName .= '*.typoscript';
+            try {
+                // Apparently this is not a folder, so the restriction
+                // is the folder so we restrict into this folder
+                $finder->in(PathUtility::dirname($absoluteFileName));
+                if (!is_file($absoluteFileName)
+                    && strpos(PathUtility::basename($absoluteFileName), '*') === false
+                    && substr(PathUtility::basename($absoluteFileName), -11) !== '.typoscript') {
+                    $absoluteFileName .= '*.typoscript';
+                }
+                $finder->name(PathUtility::basename($absoluteFileName));
+                $readableFilePrefix = PathUtility::dirname($filename);
+            } catch (\InvalidArgumentException $e) {
+                return self::typoscriptIncludeError($e->getMessage());
             }
-            $finder->name(PathUtility::basename($absoluteFileName));
-            $readableFilePrefix = PathUtility::dirname($filename);
         }
 
         foreach ($finder as $fileObject) {
