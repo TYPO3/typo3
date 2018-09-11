@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Site\Entity;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
@@ -35,6 +36,13 @@ interface SiteInterface
      * @return string
      */
     public function getIdentifier(): string;
+
+    /**
+     * Returns the base URL
+     *
+     * @return UriInterface
+     */
+    public function getBase(): UriInterface;
 
     /**
      * Returns all available languages of this site visible in the frontend
