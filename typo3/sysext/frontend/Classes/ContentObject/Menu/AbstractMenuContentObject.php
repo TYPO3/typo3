@@ -1373,6 +1373,7 @@ abstract class AbstractMenuContentObject
                     // Checking if "&L" should be modified so links to non-accessible pages will not happen.
                     if ($this->conf['protectLvar']) {
                         if ($languageId && ($this->conf['protectLvar'] === 'all' || GeneralUtility::hideIfNotTranslated($data['l18n_cfg']))) {
+                            $tsfe = $this->getTypoScriptFrontendController();
                             $olRec = $tsfe->sys_page->getPageOverlay($data['uid'], $languageId);
                             if (empty($olRec)) {
                                 // If no page translation record then page can NOT be accessed in
