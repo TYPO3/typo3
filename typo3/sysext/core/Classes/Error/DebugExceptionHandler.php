@@ -147,7 +147,7 @@ HTML;
      */
     protected function getSingleThrowableContent(\Throwable $throwable, int $index, int $total): string
     {
-        $exceptionTitle = $this->formatClass(get_class($throwable));
+        $exceptionTitle = get_class($throwable);
         $exceptionMessage = $this->escapeHtml($throwable->getMessage());
 
         // The trace does not contain the step where the exception is thrown.
@@ -399,7 +399,7 @@ STYLESHEET;
             if (isset($step['function'])) {
                 $content .= '<div class="trace-call">' . sprintf(
                         'at <span class="trace-class">%s</span><span class="trace-type">%s</span><span class="trace-method">%s</span>(<span class="trace-arguments">%s</span>)',
-                        $this->formatClass($step['class'] ?? ''),
+                        $step['class'] ?? '',
                         $step['type'],
                         $step['function'],
                         $this->formatArgs($args)
@@ -470,12 +470,9 @@ STYLESHEET;
      */
     protected function formatPath(string $path, int $line): string
     {
-        $file = $this->escapeHtml(preg_match('#[^/\\\\]*+$#', $path, $file) ? $file[0] : $path);
-
         return sprintf(
-            '<span class="block trace-file-path">in <abbr title="%s%3$s"><strong>%s</strong>%s</abbr></span>',
+            '<span class="block trace-file-path">in <strong>%s</strong>%s</span>',
             $this->escapeHtml($path),
-            $file,
             0 < $line ? ' line ' . $line : ''
         );
     }
@@ -491,7 +488,7 @@ STYLESHEET;
         $result = [];
         foreach ($args as $key => $item) {
             if ('object' === $item[0]) {
-                $formattedValue = sprintf('<em>object</em>(%s)', $this->formatClass($item[1]));
+                $formattedValue = sprintf('<em>object</em>(%s)', $item[1]);
             } elseif ('array' === $item[0]) {
                 $formattedValue = sprintf('<em>array</em>(%s)', is_array($item[1]) ? $this->formatArgs($item[1]) : $item[1]);
             } elseif ('null' === $item[0]) {
@@ -556,18 +553,6 @@ STYLESHEET;
     protected function escapeHtml(string $str): string
     {
         return htmlspecialchars($str, ENT_COMPAT | ENT_SUBSTITUTE);
-    }
-
-    protected function formatClass(string $class): string
-    {
-        $parts = explode('\\', $class);
-        $shortClassName = array_pop($parts);
-
-        if (strpos($class, 'class@anonymous') === 0) {
-            $shortClassName = 'class@anonymous';
-        }
-
-        return sprintf('<abbr title="%s">%s</abbr>', $class, $shortClassName);
     }
 
     protected function getTypo3LogoAsSvg(): string
