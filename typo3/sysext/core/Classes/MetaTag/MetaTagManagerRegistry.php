@@ -86,9 +86,9 @@ class MetaTagManagerRegistry implements SingletonInterface
         );
 
         $managers = [];
-        foreach ($orderedManagers as $managerConfiguration) {
+        foreach ($orderedManagers as $manager => $managerConfiguration) {
             if (class_exists($managerConfiguration['module'])) {
-                $managers[] = GeneralUtility::makeInstance($managerConfiguration['module']);
+                $managers[$manager] = GeneralUtility::makeInstance($managerConfiguration['module']);
             }
         }
 

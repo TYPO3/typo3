@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Page;
  */
 
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -28,9 +29,12 @@ class PageRendererTest extends UnitTestCase
     public function renderMethodCallsResetInAnyCase()
     {
         $this->resetSingletonInstances = true;
+        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
+
         $pageRenderer = $this->getMockBuilder(PageRenderer::class)
-            ->setMethods(['reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray', 'getTemplateForPart'])
+            ->setMethods(['reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray', 'getTemplateForPart', 'getTypoScriptFrontendController'])
             ->getMock();
+        $pageRenderer->expects($this->any())->method('getTypoScriptFrontendController')->willReturn($tsfe->reveal());
         $pageRenderer->expects($this->exactly(3))->method('reset');
 
         $pageRenderer->render(PageRenderer::PART_COMPLETE);

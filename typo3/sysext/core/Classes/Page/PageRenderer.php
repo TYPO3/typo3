@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Page;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
@@ -1660,9 +1661,32 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     {
         $metaTags = [];
         $metaTagManagers = $this->metaTagRegistry->getAllManagers();
-        foreach ($metaTagManagers as $manager) {
-            if ($properties = $manager->renderAllProperties()) {
+        try {
+            $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_pages');
+        } catch (NoSuchCacheException $e) {
+            $cache = null;
+        }
+
+        foreach ($metaTagManagers as $manager => $managerObject) {
+            $cacheIdentifier =  $this->getTypoScriptFrontendController()->newHash . '-metatag-' . $manager;
+
+            $existingCacheEntry = false;
+            if ($cache instanceof FrontendInterface && $properties = $cache->get($cacheIdentifier)) {
+                $existingCacheEntry = true;
+            } else {
+                $properties = $managerObject->renderAllProperties();
+            }
+
+            if (!empty($properties)) {
                 $metaTags[] = $properties;
+
+                if ($cache instanceof FrontendInterface && !$existingCacheEntry) {
+                    $cache->set(
+                        $cacheIdentifier,
+                        $properties,
+                        ['pageId_' . $this->getTypoScriptFrontendController()->page['uid']]
+                    );
+                }
             }
         }
         return $metaTags;

@@ -108,8 +108,8 @@ class MetaTagManagerRegistryTest extends UnitTestCase
                     ]
                 ],
                 [
-                    new OpenGraphMetaTagManager(),
-                    new GenericMetaTagManager()
+                    'opengraph' => new OpenGraphMetaTagManager(),
+                    'generic' => new GenericMetaTagManager()
                 ]
             ],
             [
@@ -128,8 +128,8 @@ class MetaTagManagerRegistryTest extends UnitTestCase
                     ],
                 ],
                 [
-                    new OpenGraphMetaTagManager(),
-                    new GenericMetaTagManager()
+                    'opengraph' => new OpenGraphMetaTagManager(),
+                    'generic' => new GenericMetaTagManager()
                 ]
             ],
             [
@@ -148,9 +148,9 @@ class MetaTagManagerRegistryTest extends UnitTestCase
                     ],
                 ],
                 [
-                    new Html5MetaTagManager(),
-                    new OpenGraphMetaTagManager(),
-                    new GenericMetaTagManager()
+                    'html5' => new Html5MetaTagManager(),
+                    'opengraph' => new OpenGraphMetaTagManager(),
+                    'generic' => new GenericMetaTagManager()
                 ]
             ],
             [
@@ -169,9 +169,9 @@ class MetaTagManagerRegistryTest extends UnitTestCase
                     ],
                 ],
                 [
-                    new OpenGraphMetaTagManager(),
-                    new Html5MetaTagManager(),
-                    new GenericMetaTagManager()
+                    'opengraph' => new OpenGraphMetaTagManager(),
+                    'html5' => new Html5MetaTagManager(),
+                    'generic' => new GenericMetaTagManager()
                 ]
             ],
             [
@@ -190,9 +190,9 @@ class MetaTagManagerRegistryTest extends UnitTestCase
                     ],
                 ],
                 [
-                    new OpenGraphMetaTagManager(),
-                    new Html5MetaTagManager(),
-                    new GenericMetaTagManager()
+                    'opengraph' => new OpenGraphMetaTagManager(),
+                    'html5' => new Html5MetaTagManager(),
+                    'generic' => new GenericMetaTagManager()
                 ]
             ],
             [
@@ -217,16 +217,16 @@ class MetaTagManagerRegistryTest extends UnitTestCase
                     ],
                 ],
                 [
-                    new OpenGraphMetaTagManager(),
-                    new TwitterCardMetaTagManager(),
-                    new Html5MetaTagManager(),
-                    new GenericMetaTagManager()
+                    'opengraph' => new OpenGraphMetaTagManager(),
+                    'twitter' => new TwitterCardMetaTagManager(),
+                    'html5' => new Html5MetaTagManager(),
+                    'generic' => new GenericMetaTagManager()
                 ]
             ],
             [
                 [],
                 [
-                    new GenericMetaTagManager()
+                    'generic' => new GenericMetaTagManager()
                 ]
             ],
         ];
