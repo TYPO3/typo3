@@ -148,6 +148,7 @@ HTML;
     protected function getSingleThrowableContent(\Throwable $throwable, int $index, int $total): string
     {
         $exceptionTitle = get_class($throwable);
+        $exceptionCode = $throwable->getCode() ? '#' . $throwable->getCode() . ' ' : '';
         $exceptionMessage = $this->escapeHtml($throwable->getMessage());
 
         // The trace does not contain the step where the exception is thrown.
@@ -166,7 +167,7 @@ HTML;
                 <div class="trace-head">
                     <h3 class="trace-class">
                         <span class="text-muted">({$index}/{$total})</span>
-                        <span class="exception-title">{$exceptionTitle}</span>
+                        <span class="exception-title">{$exceptionCode}{$exceptionTitle}</span>
                     </h3>
                     <p class="trace-message break-long-words">{$exceptionMessage}</p>
                 </div>
