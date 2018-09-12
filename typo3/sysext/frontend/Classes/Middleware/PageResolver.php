@@ -115,7 +115,10 @@ class PageResolver implements MiddlewareInterface
         } else {
             // old-school page resolving for realurl, cooluri etc.
             $this->controller->siteScript = $request->getAttribute('normalizedParams')->getSiteScript();
-            $this->checkAlternativeIdMethods($this->controller);
+            if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkAlternativeIdMethods-PostProc'])) {
+                trigger_error('The "checkAlternativeIdMethods-PostProc" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
+                $this->checkAlternativeIdMethods($this->controller);
+            }
         }
 
         $this->controller->determineId();

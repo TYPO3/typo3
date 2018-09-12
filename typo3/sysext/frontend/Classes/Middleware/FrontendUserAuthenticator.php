@@ -65,9 +65,12 @@ class FrontendUserAuthenticator implements MiddlewareInterface
         // Call hook for possible manipulation of frontend user object
         // This hook is kept for compatibility reasons, however, it should be fairly simple to add a custom middleware
         // for this purpose
-        $_params = ['pObj' => &$GLOBALS['TSFE']];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $GLOBALS['TSFE']);
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser'])) {
+            trigger_error('The "initFEuser" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
+            $_params = ['pObj' => &$GLOBALS['TSFE']];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser'] as $_funcRef) {
+                GeneralUtility::callUserFunction($_funcRef, $_params, $GLOBALS['TSFE']);
+            }
         }
 
         // Register the frontend user as aspect

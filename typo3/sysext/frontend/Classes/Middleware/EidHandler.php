@@ -27,7 +27,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Lightweight alternative to regular frontend requests; used when $_GET[eID] is set.
- * In the future, logic from the EidUtility will be moved to this class.
+ * In the future, logic from the EidUtility will be moved to this class, however in most cases
+ * a custom PSR-15 middleware will be better suited for whatever job the eID functionality does currently.
+ *
+ * @internal
  */
 class EidHandler implements MiddlewareInterface
 {

@@ -11,21 +11,25 @@
  */
 return [
     'frontend' => [
+        /** internal: do not use or reference this middleware in your own code */
         'typo3/cms-frontend/timetracker' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\TimeTrackerInitialization::class,
         ],
+        /** internal: do not use or reference this middleware in your own code */
         'typo3/cms-core/normalized-params-attribute' => [
             'target' => \TYPO3\CMS\Core\Middleware\NormalizedParamsAttribute::class,
             'after' => [
                 'typo3/cms-frontend/timetracker',
             ]
         ],
+        /** internal: do not use or reference this middleware in your own code, as this will be possibly be removed */
         'typo3/cms-frontend/preprocessing' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\PreprocessRequestHook::class,
             'after' => [
                 'typo3/cms-core/normalized-params-attribute',
             ]
         ],
+        /** internal: do not use or reference this middleware in your own code, as this will be possibly be removed */
         'typo3/cms-frontend/eid' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\EidHandler::class,
             'after' => [
@@ -39,18 +43,21 @@ return [
                 'typo3/cms-frontend/eid'
             ]
         ],
+        /** internal: do not use or reference this middleware in your own code, as this will be possibly be removed */
         'typo3/cms-frontend/content-length-headers' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\ContentLengthResponseHeader::class,
             'after' => [
                 'typo3/cms-frontend/maintenance-mode'
             ]
         ],
+        /** internal: do not use or reference this middleware in your own code, as this will be possibly be removed */
         'typo3/cms-frontend/tsfe' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\TypoScriptFrontendInitialization::class,
             'after' => [
                 'typo3/cms-frontend/eid',
             ]
         ],
+        /** internal: do not use or reference this middleware in your own code, as this will be possibly be removed */
         'typo3/cms-frontend/output-compression' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\OutputCompression::class,
             'after' => [
@@ -90,12 +97,14 @@ return [
                 'typo3/cms-frontend/site',
             ]
         ],
+        /** internal: do not use or reference this middleware in your own code, as this will be possibly be removed */
         'typo3/cms-frontend/prepare-tsfe-rendering' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\PrepareTypoScriptFrontendRendering::class,
             'after' => [
                 'typo3/cms-frontend/page-resolver',
             ]
         ],
+        /** internal: do not use or reference this middleware in your own code, as this will be possibly be removed */
         'typo3/cms-frontend/shortcut-and-mountpoint-redirect' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\ShortcutAndMountPointRedirect::class,
             'after' => [

@@ -22,6 +22,8 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 
 /**
  * This class resolves middleware stacks from defined configuration in all active packages.
+ *
+ * @internal
  */
 class MiddlewareStackResolver
 {

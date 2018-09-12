@@ -35,7 +35,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  * For now, GeneralUtility::_GP() is used in favor of $request->getQueryParams() due to
  * hooks who could have $_GET/$_POST modified before.
  *
- * @internal
+ * @internal this middleware might get removed in TYPO3 v10.0.
  */
 class TypoScriptFrontendInitialization implements MiddlewareInterface, LoggerAwareInterface
 {
@@ -80,9 +80,12 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface, LoggerAwa
             }
         }
         // Call post processing function for DB connection:
-        $_params = ['pObj' => &$GLOBALS['TSFE']];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $GLOBALS['TSFE']);
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB'])) {
+            trigger_error('The "connectToDB" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
+            $_params = ['pObj' => &$GLOBALS['TSFE']];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB'] as $_funcRef) {
+                GeneralUtility::callUserFunction($_funcRef, $_params, $GLOBALS['TSFE']);
+            }
         }
 
         return $handler->handle($request);

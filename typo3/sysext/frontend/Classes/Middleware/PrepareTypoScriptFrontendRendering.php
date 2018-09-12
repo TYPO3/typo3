@@ -29,6 +29,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  * Initialization of TypoScriptFrontendController
  *
  * Do all necessary preparation steps for rendering
+ *
+ * @internal this middleware might get removed in TYPO3 v10.0.
  */
 class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
 {
@@ -99,8 +101,11 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
 
         // Hook for processing data submission to extensions
         // This is done at this point, because we need the config values
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'] ?? [] as $className) {
-            GeneralUtility::makeInstance($className)->checkDataSubmission($this->controller);
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'])) {
+            trigger_error('The "checkDataSubmission" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'] as $className) {
+                GeneralUtility::makeInstance($className)->checkDataSubmission($this->controller);
+            }
         }
 
         return $handler->handle($request);

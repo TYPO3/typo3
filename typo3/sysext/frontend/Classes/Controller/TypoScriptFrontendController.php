@@ -856,8 +856,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->uniqueString = md5(microtime());
         $this->initPageRenderer();
         // Call post processing function for constructor:
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc'])) {
+            trigger_error('The "tslib_fe-PostProc" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc'] as $_funcRef) {
+                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+            }
         }
         $this->cacheHash = GeneralUtility::makeInstance(CacheHashCalculator::class);
         $this->initCaches();
@@ -918,10 +921,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 throw new ServiceUnavailableException($message, 1301648782);
             }
         }
-        // Call post processing function for DB connection:
-        $_params = ['pObj' => &$this];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+        // Call post processing function for DB connection
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB'])) {
+            trigger_error('The "connectToDB" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
+            $_params = ['pObj' => &$this];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB'] as $_funcRef) {
+                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+            }
         }
     }
 
@@ -969,9 +975,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->fe_user->unpack_uc();
 
         // Call hook for possible manipulation of frontend user object
-        $_params = ['pObj' => &$this];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser'])) {
+            trigger_error('The "initFEuser" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
+            $_params = ['pObj' => &$this];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser'] as $_funcRef) {
+                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+            }
         }
     }
 
@@ -1094,9 +1103,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         trigger_error('The method "' . __METHOD__ . '" is deprecated, and will be removed in TYPO3 v10. Extensions should ensure that the BackendAuthenticator middleware is run to load a backend user.', E_USER_DEPRECATED);
         // PRE BE_USER HOOK
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'] ?? [] as $_funcRef) {
-            $_params = [];
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'])) {
+            trigger_error('The "preBeUser" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'] as $_funcRef) {
+                $_params = [];
+                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+            }
         }
         $backendUserObject = null;
         // If the backend cookie is set,
@@ -1122,16 +1134,19 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $backendUserObject));
         $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $backendUserObject ? $backendUserObject->workspace : 0));
         // POST BE_USER HOOK
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'])) {
-            $_params = [
-                'BE_USER' => &$backendUserObject
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'])) {
+            trigger_error('The "postBeUser" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'])) {
+                $_params = [
+                    'BE_USER' => &$backendUserObject
+                ];
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'] as $_funcRef) {
+                    GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+                }
+                // Set the aspect again, in case it got changed
+                $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $backendUserObject));
+                $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $backendUserObject ? $backendUserObject->workspace : 0));
             }
-            // Set the aspect again, in case it got changed
-            $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $backendUserObject));
-            $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $backendUserObject ? $backendUserObject->workspace : 0));
         }
         return $backendUserObject;
     }
@@ -2879,7 +2894,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function handleDataSubmission()
     {
-        trigger_error('The method "' . __METHOD__ . '" is deprecated since TYPO3 v9, and will be removed in TYPO3 v10. Implement the hooks directly, as they are still executed within TYPO3 via a PSR-15 middleware.', E_USER_DEPRECATED);
+        trigger_error('The method "' . __METHOD__ . '" is deprecated since TYPO3 v9, and will be removed in TYPO3 v10. Use a PSR-15 middleware. The hooks are still executed as PSR-15 middleware but will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         // Hook for processing data submission to extensions
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'] ?? [] as $className) {
             $_procObj = GeneralUtility::makeInstance($className);
@@ -3293,8 +3308,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // NOTE: as hooks are called in a loop, the last hook will have the final word (however each
         // hook receives the current status of the $usePageCache flag)
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['usePageCache'] ?? [] as $className) {
-            $_procObj = GeneralUtility::makeInstance($className);
-            $usePageCache = $_procObj->usePageCache($this, $usePageCache);
+            $usePageCache = GeneralUtility::makeInstance($className)->usePageCache($this, $usePageCache);
         }
         // Write the page to cache, if necessary
         if ($usePageCache) {
@@ -3302,8 +3316,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         // Hook for cache post processing (eg. writing static files!)
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'] ?? [] as $className) {
-            $_procObj = GeneralUtility::makeInstance($className);
-            $_procObj->insertPageIncache($this, $timeOutTime);
+            GeneralUtility::makeInstance($className)->insertPageIncache($this, $timeOutTime);
         }
     }
 
@@ -3595,8 +3608,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->content = $this->convOutputCharset($this->content);
         // Hook for indexing pages
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'] ?? [] as $className) {
-            $_procObj = GeneralUtility::makeInstance($className);
-            $_procObj->hook_indexContent($this);
+            GeneralUtility::makeInstance($className)->hook_indexContent($this);
         }
         // Storing for cache:
         if (!$this->no_cache) {

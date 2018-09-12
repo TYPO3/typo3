@@ -52,9 +52,12 @@ class BackendUserAuthenticator implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // PRE BE_USER HOOK
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'] ?? [] as $_funcRef) {
-            $_params = [];
-            GeneralUtility::callUserFunction($_funcRef, $_params, $GLOBALS['TSFE']);
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'])) {
+            trigger_error('The "preBeUser" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'] as $_funcRef) {
+                $_params = [];
+                GeneralUtility::callUserFunction($_funcRef, $_params, $GLOBALS['TSFE']);
+            }
         }
 
         // Initializing a possible logged-in Backend User
@@ -68,11 +71,14 @@ class BackendUserAuthenticator implements MiddlewareInterface
         $GLOBALS['BE_USER'] = $backendUserObject;
 
         // POST BE_USER HOOK
-        $_params = [
-            'BE_USER' => &$GLOBALS['BE_USER']
-        ];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $GLOBALS['TSFE']);
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'])) {
+            $_params = [
+                'BE_USER' => &$GLOBALS['BE_USER']
+            ];
+            trigger_error('The "postBeUser" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'] as $_funcRef) {
+                GeneralUtility::callUserFunction($_funcRef, $_params, $GLOBALS['TSFE']);
+            }
         }
 
         // Load specific dependencies which are necessary for a valid Backend User

@@ -25,6 +25,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * MiddlewareDispatcher
  *
  * This class manages and dispatches a PSR-15 middleware stack.
+ *
+ * @internal
  */
 class MiddlewareDispatcher implements RequestHandlerInterface
 {
