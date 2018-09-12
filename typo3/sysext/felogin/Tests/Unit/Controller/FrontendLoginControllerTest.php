@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -66,6 +68,11 @@ class FrontendLoginControllerTest extends UnitTestCase
         $this->accessibleFixture->cObj = $this->createMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
         $this->accessibleFixture->_set('frontendController', $this->createMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class));
         $this->accessibleFixture->setLogger(new NullLogger());
+
+        $mockedSiteFinder = $this->getAccessibleMock(SiteFinder::class, ['getSiteByPageId'], [], '', false, false);
+        $mockedSiteFinder->method('getSiteByPageId')->willThrowException(new SiteNotFoundException('Site not found', 1536819047));
+        $this->accessibleFixture->_set('siteFinder', $mockedSiteFinder);
+
         $this->setUpFakeSitePathAndHost();
     }
 

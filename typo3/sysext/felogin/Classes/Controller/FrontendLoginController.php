@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
@@ -92,6 +94,9 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
      */
     protected $logintype;
 
+    /** @var SiteFinder */
+    protected $siteFinder;
+
     /**
      * A list of page UIDs, either an integer or a comma-separated list of integers
      *
@@ -116,6 +121,8 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
      */
     public function main($content, $conf)
     {
+        $this->siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+
         // Loading TypoScript array into object variable:
         $this->conf = $conf;
         // Loading default pivars
@@ -1052,28 +1059,36 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
             $parsedUrl = parse_url($url);
             if ($parsedUrl['scheme'] === 'http' || $parsedUrl['scheme'] === 'https') {
                 $host = $parsedUrl['host'];
-                // Removes the last path segment and slash sequences like /// (if given):
-                $path = preg_replace('#/+[^/]*$#', '', $parsedUrl['path'] ?? '');
 
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_domain');
-                $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
-                $localDomains = $queryBuilder->select('domainName')
-                    ->from('sys_domain')
-                    ->execute()
-                    ->fetchAll();
+                try {
+                    $site = $this->siteFinder->getSiteByPageId((int)$this->frontendController->id);
+                    return $site->getBase()->getHost() === $host;
+                } catch (SiteNotFoundException $e) {
 
-                if (is_array($localDomains)) {
-                    foreach ($localDomains as $localDomain) {
-                        // strip trailing slashes (if given)
-                        $domainName = rtrim($localDomain['domainName'], '/');
-                        if (GeneralUtility::isFirstPartOfStr($host . $path . '/', $domainName . '/')) {
-                            $result = true;
-                            break;
+                    // Removes the last path segment and slash sequences like /// (if given):
+                    $path = preg_replace('#/+[^/]*$#', '', $parsedUrl['path'] ?? '');
+
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_domain');
+                    $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+                    $localDomains = $queryBuilder->select('domainName')
+                        ->from('sys_domain')
+                        ->execute()
+                        ->fetchAll();
+
+                    if (is_array($localDomains)) {
+                        foreach ($localDomains as $localDomain) {
+                            // strip trailing slashes (if given)
+                            $domainName = rtrim($localDomain['domainName'], '/');
+                            if (GeneralUtility::isFirstPartOfStr($host . $path . '/', $domainName . '/')) {
+                                $result = true;
+                                break;
+                            }
                         }
                     }
                 }
             }
         }
+
         return $result;
     }
 
