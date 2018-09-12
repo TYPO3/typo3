@@ -1652,15 +1652,18 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * If any page in the root line is blocking visibility, true is returend.
      *
      * All pages from the blocking page downwards are removed from the root
-     * line, so that the remaning pages can be used to relocate the page up
+     * line, so that the remaining pages can be used to relocate the page up
      * to lowest visible page.
      *
      * The blocking feature of a page must be turned on by setting the page
-     * record field 'extendToSubpages' to 1.
+     * record field 'extendToSubpages' to 1 in case of hidden, starttime,
+     * endtime or fe_group restrictions.
      *
-     * The following fields are evaluated then:
+     * Additionally this method checks for backend user sections in root line
+     * and if found evaluates if a backend user is logged in and has access.
      *
-     *      hidden, starttime, endtime, fe_group
+     * Recyclers are also checked and trigger page not found if found in root
+     * line.
      *
      * @todo Find a better name, i.e. checkVisibilityByRootLine
      * @todo Invert boolean return value. Return true if visible.
@@ -1710,6 +1713,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     // Don't go here, if there is no backend user logged in.
                     $removeTheRestFlag = true;
                 }
+            } elseif ((int)$this->rootLine[$a]['doktype'] === PageRepository::DOKTYPE_RECYCLER) {
+                // page is in a recycler
+                $removeTheRestFlag = true;
             }
             if ($removeTheRestFlag) {
                 // Page is 'not found' in case a subsection was found and not accessible, code 2
