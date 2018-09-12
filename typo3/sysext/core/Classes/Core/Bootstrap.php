@@ -133,7 +133,6 @@ class Bootstrap
         $defaultContainerEntries = [
             ClassLoader::class => $classLoader,
             'request.id' => $requestId,
-            ApplicationContext::class => $applicationContext,
             ConfigurationManager::class => $configurationManager,
             LogManager::class => $logManager,
             CacheManager::class => $cacheManager,
