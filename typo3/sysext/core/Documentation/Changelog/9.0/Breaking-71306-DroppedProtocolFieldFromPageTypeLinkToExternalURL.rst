@@ -21,7 +21,7 @@ The according PHP functionality has been removed:
 * The TCA definition for "pages.urltype" and "pages_language_overlay.urltype" has been removed.
 * The according database fields is not populated anymore, and will be removed when using the Database
   Scheme Migrations in the install tool. For new installations the fields are not created anymore.
-* The public PHP class property php:``PageRepository->urltypes`` has been removed.
+* The public PHP class property :php:`PageRepository->urltypes` has been removed.
 
 
 Impact

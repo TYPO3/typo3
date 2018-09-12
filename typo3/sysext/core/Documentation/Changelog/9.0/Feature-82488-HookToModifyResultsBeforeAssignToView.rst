@@ -17,13 +17,13 @@ The hook can modify all data just before it is passed to fluid.
 Basic Usage
 ===========
 
-Registration of the new hook in :php:``ext_localconf.php`` of your custom extension.
+Registration of the new hook in :file:`ext_localconf.php` of your custom extension.
 
 .. code-block:: php
 
    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks']['getDisplayResults_postProc'] = \Vendor\ExtensionName\Hooks\CustomHook::class;
 
-CustomHook class example :php:``\Vendor\ExtensionName\Hooks\CustomHook``
+CustomHook class example :php:`\Vendor\ExtensionName\Hooks\CustomHook`
 
 .. code-block:: php
 

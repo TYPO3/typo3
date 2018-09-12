@@ -33,21 +33,23 @@ upgrading an existing instance from from `utf8` to `utf8mb4`. One solution is to
 index length in ext_tables.sql of the affected extension: :php:`KEY myKey (myField(191))`, which
 in this case leads to 4*191 + 1 = 764 bytes as maximum used length.
 
-The basic settings to use `utf8mb4` in :file:`LocalConfiguration` are::
+The basic settings to use `utf8mb4` in :file:`LocalConfiguration.php` are:
 
-'DB' => [
-    'Connections' => [
-        'Default' => [
-            'driver' => 'mysqli',
-            ...
-            'charset' => 'utf8mb4',
-            'tableoptions' => [
-                 'charset' => 'utf8mb4',
-                 'collate' => 'utf8mb4_unicode_ci',
-            ],
-        ],
-    ],
-],
+.. code-block:: php
+
+   'DB' => [
+       'Connections' => [
+           'Default' => [
+               'driver' => 'mysqli',
+               ...
+               'charset' => 'utf8mb4',
+               'tableoptions' => [
+                    'charset' => 'utf8mb4',
+                    'collate' => 'utf8mb4_unicode_ci',
+               ],
+           ],
+       ],
+   ],
 
 
 Impact

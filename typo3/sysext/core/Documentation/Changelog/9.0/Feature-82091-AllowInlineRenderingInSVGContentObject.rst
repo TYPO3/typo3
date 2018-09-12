@@ -24,6 +24,6 @@ The :ts:`renderMode` property additionally has :ts:`stdWrap` capabilities.
 Impact
 ======
 
-SVG can now be rendered as :html:``<svg>`` tag.
+SVG can now be rendered as :html:`<svg>` tag.
 
 .. index:: Frontend, TypoScript

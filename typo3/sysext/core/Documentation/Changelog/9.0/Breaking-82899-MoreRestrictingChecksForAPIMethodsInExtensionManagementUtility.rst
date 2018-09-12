@@ -9,7 +9,7 @@ See :issue:`82899`
 Description
 ===========
 
-The following methods within :php:``ExtensionManagementUtility``, the primary API class for
+The following methods within :php:`ExtensionManagementUtility`, the primary API class for
 extensions registering additional components like plugins, modules or extending TCA functionality
 now throw Exceptions with invalid calls:
 
@@ -24,7 +24,7 @@ now throw Exceptions with invalid calls:
 Impact
 ======
 
-Calling any of the methods mentioned will trigger a "InvalidArgumentException".
+Calling any of the methods mentioned will trigger a `InvalidArgumentException`.
 
 
 Affected Installations
