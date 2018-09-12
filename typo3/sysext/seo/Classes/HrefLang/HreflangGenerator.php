@@ -17,12 +17,13 @@ namespace TYPO3\CMS\Seo\HrefLang;
  */
 
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor;
 
 /**
- * Class to add the metatags for the SEO fields in core
+ * Class to add the hreflang tags to the page
  *
  * @internal
  */
@@ -54,15 +55,36 @@ class HreflangGenerator
         if ($GLOBALS['TYPO3_REQUEST']->getAttribute('site') instanceof Site) {
             $languageMenu = GeneralUtility::makeInstance(LanguageMenuProcessor::class);
             $languages = $languageMenu->process($this->cObj, [], [], []);
-            $hreflangs = '' . LF;
+            $hreflangs = '';
             foreach ($languages['languagemenu'] as $language) {
-                if ($language['available'] == 1) {
-                    $hreflangs .= '<link rel="alternate" hreflang="' . $language['hreflang'] . '" href="' . $language['link'] . '"/>' . LF;
+                if ($language['available'] === 1) {
+                    $href = $this->getAbsoluteUrl($language['link']);
+                    $hreflangs .= '<link rel="alternate" hreflang="' . $language['hreflang'] . '" href="' . $href . '"/>' . LF;
                 }
             }
-            $hreflangs .= '<link rel="alternate" hreflang="x-default" href="' . $languages['languagemenu'][0]['link'] . '"/>' . LF;
+
+            $href = $this->getAbsoluteUrl($languages['languagemenu'][0]['link']);
+            $hreflangs .= '<link rel="alternate" hreflang="x-default" href="' . $href . '"/>' . LF;
+
             $GLOBALS['TSFE']->additionalHeaderData[] = $hreflangs;
         }
+
         return $hreflangs;
+    }
+
+    /**
+     * @param string $url
+     * @return string
+     */
+    protected function getAbsoluteUrl(string $url): string
+    {
+        /** @var SiteLanguage $siteLanguage */
+        $siteLanguage = $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
+
+        if (strpos($url, 'http') !== 0) {
+            $url = (string)$siteLanguage->getBase()->withPath($url);
+        }
+
+        return $url;
     }
 }
