@@ -184,6 +184,8 @@ define(['jquery', 'd3'], function($, d3) {
           }
           if (typeof node.checked == 'undefined') {
             node.checked = false;
+          }
+          if (node.selectable === false) {
             me.settings.unselectableElements.push(node.identifier);
           }
           //dispatch event
