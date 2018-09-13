@@ -258,6 +258,12 @@ class LinkGeneratorTest extends AbstractTestCase
             // acme.com -> products.acme.com (nested sub-site)
             [1100, 1300, 0, 'index.php?id=1300&L=0'],
             [1100, 1310, 0, 'index.php?id=1310&L=0'],
+            // acme.com -> products.acme.com (nested sub-site, l18n_cfg=1)
+            [1100, 1410, 0, ''],
+            [1100, 1410, 1, 'index.php?id=1410&L=1'],
+            [1100, 1410, 2, 'index.php?id=1410&L=2'],
+            [1100, 1411, 0, 'index.php?id=1410&L=1'],
+            [1100, 1412, 0, 'index.php?id=1410&L=2'],
             // acme.com -> archive (outside site)
             [1100, 3100, 0, 'index.php?id=3100&L=0'],
             [1100, 3100, 1, 'index.php?id=3100&L=1'],
@@ -627,6 +633,7 @@ class LinkGeneratorTest extends AbstractTestCase
                             ],
                         ],
                     ],
+                    ['title' => 'EN: ACME in your Region', 'link' => 'index.php?id=1400'],
                     ['title' => 'Internal', 'link' => 'index.php?id=1500'],
                     ['title' => 'About us', 'link' => 'index.php?id=1600'],
                     [

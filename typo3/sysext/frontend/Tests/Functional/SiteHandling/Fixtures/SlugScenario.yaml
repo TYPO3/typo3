@@ -76,6 +76,15 @@ entities:
             - self: {id: 1310, title: 'EN: Planets', slug: '/products/planets'}
             - self: {id: 1320, title: 'EN: Spaceships', slug: '/products/spaceships'}
             - self: {id: 1330, title: 'EN: Dark Matter', slug: '/products/dark-matter'}
+        - self: {id: 1400, title: 'EN: ACME in your Region', root: true, slug: '/acme-in-your-region'}
+          languageVariants:
+            - self: {id: 1401, title: 'FR: ACME in your Region', language: 1, slug: '/acme-dans-votre-region'}
+            - self: {id: 1402, title: 'FR-CA: ACME in your Region', language: 2, slug: '/acme-dans-votre-quebec'}
+          children:
+            - self: {id: 1410, title: 'EN: Groups', slug: '/acme-in-your-region/groups', l18n_cfg: 1}
+              languageVariants:
+                - self: {id: 1411, title: 'FR: Groups', language: 1, slug: '/acme-dans-votre-region/groupes'}
+                - self: {id: 1412, title: 'FR-CA: Groups', language: 2, slug: '/acme-dans-votre-quebec/groupes'}
         - self: {id: 1500, title: 'Internal', slug: '/my-acme'}
           children:
             - self: {id: 1510, title: 'Whitepapers', visitorGroups: -2, extendToSubpages: true, slug: '/my-acme/whitepapers'}

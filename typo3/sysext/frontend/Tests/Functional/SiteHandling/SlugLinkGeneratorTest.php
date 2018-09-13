@@ -281,6 +281,12 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             // acme.com -> products.acme.com (nested sub-site)
             ['https://acme.us/', 1100, 1300, 0, 'https://products.acme.com/products'],
             ['https://acme.us/', 1100, 1310, 0, 'https://products.acme.com/products/planets'],
+            // acme.com -> products.acme.com (nested sub-site, l18n_cfg=1)
+            ['https://acme.us/', 1100, 1410, 0, ''],
+            ['https://acme.us/', 1100, 1410, 1, 'https://acme.fr/acme-dans-votre-region/groupes'],
+            ['https://acme.us/', 1100, 1410, 2, 'https://acme.ca/acme-dans-votre-quebec/groupes'],
+            ['https://acme.us/', 1100, 1411, 0, 'https://acme.fr/acme-dans-votre-region/groupes'],
+            ['https://acme.us/', 1100, 1412, 0, 'https://acme.ca/acme-dans-votre-quebec/groupes'],
             // acme.com -> archive (outside site)
             ['https://acme.us/', 1100, 3100, 0, '/index.php?id=3100&L=0'],
             ['https://acme.us/', 1100, 3100, 1, '/index.php?id=3100&L=1'],
@@ -677,6 +683,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                             ],
                         ],
                     ],
+                    ['title' => 'EN: ACME in your Region', 'link' => '/acme-in-your-region'],
                     ['title' => 'Internal', 'link' => '/my-acme'],
                     ['title' => 'About us', 'link' => '/about'],
                     [

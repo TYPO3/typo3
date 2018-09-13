@@ -64,25 +64,10 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         }
 
         // Looking up the page record to verify its existence:
-        $pageRepository = $this->buildPageRepository();
-        $page = $this->resolvePage(
-            $pageRepository,
-            $linkDetails,
-            $conf,
-            $disableGroupAccessCheck
-        );
+        $page = $this->resolvePage($linkDetails, $conf, $disableGroupAccessCheck);
 
         if (empty($page)) {
             throw new UnableToLinkException('Page id "' . $linkDetails['typoLinkParameter'] . '" was not found, so "' . $linkText . '" was not linked.', 1490987336, null, $linkText);
-        }
-
-        $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? null;
-        $language = (int)($page[$languageField] ?? 0);
-        if ($language === 0 && GeneralUtility::hideIfDefaultLanguage($page['l18n_cfg'])) {
-            throw new UnableToLinkException('Default language of page  "' . $linkDetails['typoLinkParameter'] . '" is hidden, so "' . $linkText . '" was not linked.', 1529527301, null, $linkText);
-        }
-        if ($language > 0 && !isset($page['_PAGES_OVERLAY']) && GeneralUtility::hideIfNotTranslated($page['l18n_cfg'])) {
-            throw new UnableToLinkException('Fallback to default language of page "' . $linkDetails['typoLinkParameter'] . '" is disabled, so "' . $linkText . '" was not linked.', 1529527488, null, $linkText);
         }
 
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typolinkProcessing']['typolinkModifyParameterForPageLinks'] ?? [] as $classData) {
@@ -176,6 +161,27 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             unset($params);
         }
 
+        // get config.linkVars and prepend them before the actual GET parameters
+        $queryParameters = [];
+        parse_str($addQueryParams, $queryParameters);
+        if ($tsfe->linkVars) {
+            $globalQueryParameters = [];
+            parse_str($tsfe->linkVars, $globalQueryParameters);
+            $queryParameters = array_replace_recursive($globalQueryParameters, $queryParameters);
+        }
+        // Disable "?id=", for pages with no site configuration, this is added later-on anyway
+        unset($queryParameters['id']);
+
+        // Override language property if not being set already
+        if (isset($queryParameters['L']) && !isset($conf['language'])) {
+            $conf['language'] = (int)$queryParameters['L'];
+        }
+
+        // Now overlay the page in the target language, in order to have valid title attributes etc.
+        if (isset($conf['language']) && $conf['language'] > 0 && $conf['language'] !== 'current') {
+            $page = $tsfe->sys_page->getPageOverlay($page, (int)$conf['language']);
+        }
+
         // Check if the target page has a site configuration
         try {
             $siteOfTargetPage = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId((int)$page['uid']);
@@ -185,35 +191,14 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             $siteOfTargetPage = null;
             $currentSite = null;
         }
+
         // Link to a page that has a site configuration
         if ($siteOfTargetPage instanceof Site) {
-            $queryParameters = [];
-            parse_str($addQueryParams, $queryParameters);
-            // get config.linkVars and prepend
-            if ($tsfe->linkVars) {
-                $globalQueryParameters = [];
-                parse_str($tsfe->linkVars, $globalQueryParameters);
-                if (!empty($globalQueryParameters)) {
-                    // override $globalQueryParameters with $queryParameters
-                    $queryParameters = array_replace_recursive(
-                        $globalQueryParameters,
-                        $queryParameters
-                    );
-                }
-            }
-            // Override language property if not being set already
-            if (isset($queryParameters['L']) && !isset($conf['language'])) {
-                $conf['language'] = (int)$queryParameters['L'];
-            }
-            unset($queryParameters['id'], $queryParameters['L']);
+            // No need for any L parameter with Site handling
+            unset($queryParameters['L']);
             if ($pageType) {
                 $queryParameters['type'] = (int)$pageType;
             }
-
-            if (isset($conf['language'])) {
-                $page = $tsfe->sys_page->getPageOverlay($page, (int)$conf['language']);
-            }
-
             // Generate the URL
             $url = $this->generateUrlForPageWithSiteConfiguration($page, $siteOfTargetPage, $queryParameters, $sectionMark, $conf);
 
@@ -239,7 +224,21 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 }
             }
         } else {
-            list($url, $target) = $this->generateUrlForPageWithoutSiteConfiguration($page, $addQueryParams, $conf, $pageType, $sectionMark, $target, $MPvarAcc);
+            // If the typolink.language parameter was set, ensure that this is added to L query parameter
+            if (!isset($queryParameters['L']) && MathUtility::canBeInterpretedAsInteger($conf['language'] ?? false)) {
+                $queryParameters['L'] = $conf['language'];
+            }
+            list($url, $target) = $this->generateUrlForPageWithoutSiteConfiguration($page, $queryParameters, $conf, $pageType, $sectionMark, $target, $MPvarAcc);
+        }
+
+        $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? null;
+        $languageOfPageRecord = (int)($page[$languageField] ?? 0);
+
+        if ($languageOfPageRecord === 0 && GeneralUtility::hideIfDefaultLanguage($page['l18n_cfg'])) {
+            throw new UnableToLinkException('Default language of page  "' . $linkDetails['typoLinkParameter'] . '" is hidden, so "' . $linkText . '" was not linked.', 1529527301, null, $linkText);
+        }
+        if ($languageOfPageRecord > 0 && !isset($page['_PAGES_OVERLAY']) && GeneralUtility::hideIfNotTranslated($page['l18n_cfg'])) {
+            throw new UnableToLinkException('Fallback to default language of page "' . $linkDetails['typoLinkParameter'] . '" is disabled, so "' . $linkText . '" was not linked.', 1529527488, null, $linkText);
         }
 
         // If link is to an access restricted page which should be redirected, then find new URL:
@@ -275,15 +274,16 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      * language parent, adjusts `$linkDetails['pageuid']` (for hook processing)
      * and modifies `$configuration['language']` (for language URL generation).
      *
-     * @param PageRepository $pageRepository
      * @param array $linkDetails
      * @param array $configuration
      * @param bool $disableGroupAccessCheck
      * @return array
      */
-    protected function resolvePage(PageRepository $pageRepository, array &$linkDetails, array &$configuration, bool $disableGroupAccessCheck): array
+    protected function resolvePage(array &$linkDetails, array &$configuration, bool $disableGroupAccessCheck): array
     {
-        // Looking up the page record to verify its existence:
+        $pageRepository = $this->buildPageRepository();
+        // Looking up the page record to verify its existence
+        // This is used when a page to a translated page is executed directly.
         $page = $pageRepository->getPage($linkDetails['pageuid'], $disableGroupAccessCheck);
 
         if (empty($page) || !is_array($page)) {
@@ -294,10 +294,12 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         $languageParentField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] ?? null;
         $language = (int)($page[$languageField] ?? 0);
 
-        if ($language <= 0 || empty($page[$languageParentField])) {
+        // The page that should be linked is actually a default-language page, nothing to do here.
+        if ($language === 0 || empty($page[$languageParentField])) {
             return $page;
         }
 
+        // Let's fetch the default-language page now
         $languageParentPage = $pageRepository->getPage(
             $page[$languageParentField],
             $disableGroupAccessCheck
@@ -306,8 +308,10 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             return $page;
         }
 
+        // Set the "pageuid" to the default-language page ID.
         $linkDetails['pageuid'] = (int)$languageParentPage['uid'];
         $configuration['language'] = $language;
+        $linkDetails['parameters'] .= '&L=' . $language;
         return $languageParentPage;
     }
 
@@ -375,7 +379,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      * Generate a URL for a page without site configuration
      *
      * @param array $page
-     * @param string $additionalQueryParams
+     * @param array $additionalQueryParams
      * @param array $conf
      * @param string $pageType
      * @param string $sectionMark
@@ -383,20 +387,12 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      * @param array $MPvarAcc
      * @return array
      */
-    protected function generateUrlForPageWithoutSiteConfiguration(array $page, string $additionalQueryParams, array $conf, string $pageType, string $sectionMark, string $target, array $MPvarAcc): array
+    protected function generateUrlForPageWithoutSiteConfiguration(array $page, array $additionalQueryParams, array $conf, string $pageType, string $sectionMark, string $target, array $MPvarAcc): array
     {
-        // new 'language' property takes precedence over '&L=1' if numeric
-        // here 'additionalParams=&L={language-value}' will be overridden
-        if (MathUtility::canBeInterpretedAsInteger($conf['language'] ?? '')) {
-            $queryParameters = [];
-            parse_str($additionalQueryParams, $queryParameters);
-            $queryParameters['L'] = $conf['language'];
-            $additionalQueryParams = http_build_query(
-                $queryParameters,
-                '',
-                '&',
-                PHP_QUERY_RFC3986
-            );
+        // Build a string out of the query parameters
+        $additionalQueryParams = http_build_query($additionalQueryParams, '', '&', PHP_QUERY_RFC3986);
+        if (!empty($additionalQueryParams)) {
+            $additionalQueryParams = '&' . $additionalQueryParams;
         }
 
         $tsfe = $this->getTypoScriptFrontendController();

@@ -599,6 +599,7 @@ class PageRepository implements LoggerAwareInterface
                     // Unset vital fields that are NOT allowed to be overlaid:
                     unset($row['uid']);
                     unset($row['pid']);
+                    unset($row['alias']);
                     $overlays[$origUid] = $row;
                 }
             }
