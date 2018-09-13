@@ -19,6 +19,10 @@ $tca = [
             'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.palettes.twittercards',
             'showitem' => 'twitter_title, --linebreak--, twitter_description, --linebreak--, twitter_image',
         ],
+        'canonical' => [
+            'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.palettes.canonical',
+            'showitem' => 'canonical_link',
+        ],
     ],
     'columns' => [
         'seo_title' => [
@@ -162,6 +166,27 @@ $tca = [
                 $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
             )
         ],
+        'canonical_link' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.canonical_link',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'inputLink',
+                'size' => 50,
+                'max' => 1024,
+                'eval' => 'trim',
+                'fieldControl' => [
+                    'linkPopup' => [
+                        'options' => [
+                            'title' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.canonical_link',
+                            'blindLinkFields' => 'class,target,title',
+                            'blindLinkOptions' => 'mail,folder,file'
+                        ],
+                    ],
+                ],
+                'softref' => 'typolink'
+            ]
+        ],
     ],
 ];
 
@@ -173,7 +198,8 @@ $GLOBALS['TCA']['pages'] = array_replace_recursive($GLOBALS['TCA']['pages'], $tc
         --palette--;;seo,
         --palette--;;robots,
         --palette--;;opengraph,
-        --palette--;;twittercards,',
+        --palette--;;twittercards,
+        --palette--;;canonical,',
     (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT,
     'after:title'
 );

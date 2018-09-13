@@ -11,4 +11,5 @@ CREATE TABLE pages (
 	twitter_title varchar(255) DEFAULT '' NOT NULL,
 	twitter_description text,
 	twitter_image int(11) unsigned DEFAULT '0' NOT NULL,
+	canonical_link varchar(2048) DEFAULT '' NOT NULL,
 );
