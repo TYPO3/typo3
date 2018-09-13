@@ -277,6 +277,9 @@ class UpgradeWizardsService
     {
         $wizards = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $class) {
+            if ($this->isWizardDone($identifier)) {
+                continue;
+            }
             /** @var AbstractUpdate $wizardInstance */
             $wizardInstance = GeneralUtility::makeInstance($class);
 
@@ -301,11 +304,6 @@ class UpgradeWizardsService
                 'identifier' => $identifier,
                 'title' => $wizardInstance->getTitle(),
                 'shouldRenderWizard' => $shouldRenderWizard,
-                'markedDoneInRegistry' => GeneralUtility::makeInstance(Registry::class)->get(
-                    'installUpdate',
-                    $class,
-                    false
-                ),
                 'explanation' => $explanation,
             ];
         }
