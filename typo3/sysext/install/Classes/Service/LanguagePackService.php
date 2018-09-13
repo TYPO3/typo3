@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * Service class handling language pack details
@@ -221,6 +222,16 @@ class LanguagePackService
         if (empty($languagePackBaseUrl)) {
             throw new \RuntimeException('Language pack baseUrl not found', 1520169691);
         }
+        // Allow to modify the base url on the fly by calling a signal
+        $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
+        $signalSlotDispatcher->dispatch(
+            'TYPO3\\CMS\\Lang\\Service\\TranslationService',
+            'postProcessMirrorUrl',
+            [
+                'extensionKey' => $key,
+                'mirrorUrl' => &$languagePackBaseUrl,
+            ]
+        );
 
         $path = ExtensionManagementUtility::extPath($key);
         $majorVersion = explode('.', TYPO3_branch)[0];

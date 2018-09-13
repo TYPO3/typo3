@@ -697,6 +697,7 @@ class MaintenanceController extends AbstractController
      */
     public function languagePacksUpdatePackAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->loadExtLocalconfDatabaseAndExtTables();
         $iso = $request->getParsedBody()['install']['iso'];
         $key = $request->getParsedBody()['install']['extension'];
         $languagePackService = GeneralUtility::makeInstance(LanguagePackService::class);
