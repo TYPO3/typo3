@@ -32,7 +32,6 @@ define([
     selectorToggleAllTrigger: '.t3js-localConfiguration-toggleAll',
     selectorWriteTrigger: '.t3js-localConfiguration-write',
     selectorSearchTrigger: '.t3js-localConfiguration-search',
-    selectorOutputContainer: '.t3js-localConfiguration-output',
     currentModal: {},
 
     initialize: function(currentModal) {
@@ -91,7 +90,6 @@ define([
           }
         });
         currentModal.find('.searchhit').parent().collapse('show');
-        self.handleButtonScrolling();
         // Make search field clearable
         require(['jquery.clearable'], function() {
           var searchResultShown = ('' !== $searchInput.first().val());
@@ -162,40 +160,6 @@ define([
           Router.handleAjaxError(xhr);
         }
       });
-    },
-
-    /**
-     * Fix or unfix the "Write configuration" / "Toggle all" buttons at browser window
-     * bottom if a scrollbar is shown
-     */
-    handleButtonScrolling: function() {
-      var $fixedFooterHandler = $('#fixed-footer-handler');
-      if ($fixedFooterHandler.length > 0) {
-        var $fixedFooter = $('#fixed-footer');
-        if (!this.isScrolledIntoView($fixedFooterHandler)) {
-          $fixedFooter.addClass('fixed');
-          $fixedFooter.width($('.t3js-localConfiguration .panel-group').width());
-        } else {
-          $fixedFooter.removeClass('fixed');
-        }
-      }
-    },
-
-    /**
-     * Helper of handleButtonScrolling()
-     * See if an element is within current viewport.
-     *
-     * @param element
-     * @returns {boolean}
-     */
-    isScrolledIntoView: function(element) {
-      var $window = $(window);
-      var docViewTop = $window.scrollTop();
-      var docViewBottom = docViewTop + $window.height();
-      var $elem = $(element);
-      var elemTop = $elem.offset().top;
-      var elemBottom = elemTop + $elem.height();
-      return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
     }
   };
 });

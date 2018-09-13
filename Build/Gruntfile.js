@@ -110,11 +110,6 @@ module.exports = function (grunt) {
           "<%= paths.adminpanel %>Public/Css/adminpanel.css": "<%= paths.sass %>adminpanel.scss"
         }
       },
-      install: {
-        files: {
-          "<%= paths.install %>Public/Css/install.css": "<%= paths.sass %>install.scss"
-        }
-      },
       linkvalidator: {
         files: {
           "<%= paths.linkvalidator %>Public/Css/linkvalidator.css": "<%= paths.sass %>linkvalidator.scss"
@@ -182,9 +177,6 @@ module.exports = function (grunt) {
       },
       form: {
         src: '<%= paths.form %>Public/Css/*.css'
-      },
-      install: {
-        src: '<%= paths.install %>Public/Css/*.css'
       },
       linkvalidator: {
         src: '<%= paths.linkvalidator %>Public/Css/*.css'

@@ -15,6 +15,31 @@
     }
 }
 
+.install-tool-init {
+    // Styles for enable install tool and login view
+    .logo-pageheader {
+        img {
+            padding-bottom: 3px;
+            vertical-align: bottom;
+        }
+    }
+}
+
+.install-tool-installer {
+    // Styles for installer
+    .typo3-message > h4 {
+        margin-bottom: 0;
+    }
+
+    .typo3-message p {
+        margin-top: 9px;
+    }
+
+    .alert-notice {
+        @include alert-variant($btn-default-bg, $btn-default-border, $btn-default-color);
+    }
+}
+
 .install-tool-modal {
     .panel-group-flat,
     .panel-group-rst {
@@ -159,6 +184,63 @@
             a {
                 color: #fff;
             }
+        }
+    }
+
+    // Collapsibles clickable on full length
+    a[data-toggle="collapse"] {
+        display: block;
+    }
+
+    // Grey line on hr tags in modals
+    hr {
+        border-top: 1px solid $panel-default-heading-bg;
+    }
+
+    // Styles for specific modals: language pack handling
+    .t3-languagePacks-inactive {
+        color: #aaa;
+    }
+
+    // Styles for specific modals: image processing
+    .t3-install-displaytwinimageimages {
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+
+    .t3-install-displaytwinimagetextarea {
+        pre {
+            border-top: 0;
+        }
+    }
+
+    .bg-transparent-emulation {
+        padding: 10px;
+        text-align: center;
+        background: url("#{$path-sysext}/install/Resources/Public/Images/bg_transparent_emulation.png");
+
+        img {
+            max-width: 300px;
+        }
+    }
+
+    // Styles for specific modals: php info
+    #phpinfo table {
+        width: 100%;
+        table-layout: fixed;
+        word-wrap: break-word;
+        background: $table-bg;
+    }
+
+    // Styles for specific modals: Issue number in expand upgrade documentation item
+    .upgrade_analysis_item_to_filter pre a {
+        text-decoration: underline;
+    }
+
+    // Styles for specific modals: Upgrade wizard explanation line breaks
+    .upgradeWizards-wizards-output {
+        .row-explanation {
+            white-space: pre-wrap;
         }
     }
 }
