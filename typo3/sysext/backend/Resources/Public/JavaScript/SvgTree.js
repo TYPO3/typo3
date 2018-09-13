@@ -355,6 +355,8 @@ define(
 
           if (typeof node.checked === 'undefined') {
             node.checked = false;
+          }
+          if (node.selectable === false) {
             _this.settings.unselectableElements.push(node.identifier);
           }
 
