@@ -2591,6 +2591,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->set_no_cache('config.no_cache is set');
         }
         // Merge GET with defaultGetVars
+        // Please note that this code will get removed in TYPO3 v10.0 as it is done in the PSR-15 middleware.
         if (!empty($this->config['config']['defaultGetVars.'])) {
             $modifiedGetVars = GeneralUtility::removeDotsFromTS($this->config['config']['defaultGetVars.']);
             ArrayUtility::mergeRecursiveWithOverrule($modifiedGetVars, GeneralUtility::_GET());
