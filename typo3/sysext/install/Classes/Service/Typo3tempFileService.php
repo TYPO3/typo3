@@ -18,10 +18,12 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Service class to manage typo3temp/assets folder cleanup
+ * Service class to manage typo3temp/assets and FAL storage
+ * processed file statistics / cleanup.
  */
 class Typo3tempFileService
 {
@@ -30,40 +32,84 @@ class Typo3tempFileService
      *
      * @return array
      */
-    public function getDirectoryStatistics()
+    public function getDirectoryStatistics(): array
     {
-        $basePath = Environment::getPublicPath() . '/typo3temp/assets';
-        if (!is_dir($basePath)) {
-            return [];
-        }
+        return array_merge(
+            $this->statsFromTypo3temp(),
+            $this->statsFromStorages()
+        );
+    }
 
-        $dirFinder = new Finder();
-        $dirsInAssets = $dirFinder->directories()->in($basePath)->depth(0)->sortByName();
+    /**
+     * Directory statistics for typo3temp/assets folders with some
+     * special handling for legacy processed file storage _processed_
+     *
+     * @return array
+     */
+    protected function statsFromTypo3temp(): array
+    {
         $stats = [];
-        foreach ($dirsInAssets as $dirInAssets) {
-            /** @var SplFileInfo $dirInAssets */
-            $fileFinder = new Finder();
-            $fileCount = $fileFinder->files()->in($dirInAssets->getPathname())->count();
-            $stats[] = [
-                'directory' => $dirInAssets->getFilename(),
-                'numberOfFiles' => $fileCount,
-            ];
+        $typo3TempAssetsPath = '/typo3temp/assets/';
+        $basePath = Environment::getPublicPath() . $typo3TempAssetsPath;
+        if (is_dir($basePath)) {
+            $dirFinder = new Finder();
+            $dirsInAssets = $dirFinder->directories()->in($basePath)->depth(0)->sortByName();
+            foreach ($dirsInAssets as $dirInAssets) {
+                /** @var SplFileInfo $dirInAssets */
+                $fileFinder = new Finder();
+                $fileCount = $fileFinder->files()->in($dirInAssets->getPathname())->count();
+                $folderName = $dirInAssets->getFilename();
+                $stat = [
+                    'directory' => $typo3TempAssetsPath . $folderName,
+                    'numberOfFiles' => $fileCount,
+                ];
+                if ($folderName === '_processed_') {
+                    // The processed file storage for legacy files (eg. TCA type=group internal_type=file)
+                    // gets the storageUid set, so this one can be removed via FAL functionality
+                    $stat['storageUid'] = 0;
+                }
+                $stats[] = $stat;
+            }
         }
-
         return $stats;
     }
 
     /**
-     * Clear processed files
+     * Directory statistics for configured FAL storages.
      *
-     * The sys_file_processedfile table is truncated and the physical files of local storages are deleted.
-     *
-     * @return int 0 if all went well, if >0 this number of files couldn't be deleted
+     * @return array
      */
-    public function clearProcessedFiles()
+    protected function statsFromStorages(): array
+    {
+        $stats = [];
+        $processedFileRepository = GeneralUtility::makeInstance(ProcessedFileRepository::class);
+        $storages = GeneralUtility::makeInstance(StorageRepository::class)->findAll();
+        foreach ($storages as $storage) {
+            if ($storage->isOnline()) {
+                $storageConfiguration = $storage->getConfiguration();
+                $storageBasePath = rtrim($storageConfiguration['basePath'], '/');
+                $processedPath = '/' . $storageBasePath . $storage->getProcessingFolder()->getIdentifier();
+                $numberOfFiles = $processedFileRepository->countByStorage($storage);
+                $stats[] = [
+                    'directory' => $processedPath,
+                    'numberOfFiles' => $numberOfFiles,
+                    'storageUid' => $storage->getUid()
+                ];
+            }
+        }
+        return $stats;
+    }
+
+    /**
+     * Clear processed files. The sys_file_processedfile table is cleared for
+     * given storage uid and the physical files of local processed storages are deleted.
+     *
+     * @return int 0 if all went well, if >0 this number of files that could not be deleted
+     */
+    public function clearProcessedFiles(int $storageUid): int
     {
         $repository = GeneralUtility::makeInstance(ProcessedFileRepository::class);
-        return $repository->removeAll();
+        return $repository->removeAll($storageUid);
     }
 
     /**
@@ -75,8 +121,11 @@ class Typo3tempFileService
      */
     public function clearAssetsFolder(string $folderName)
     {
-        $basePath = Environment::getPublicPath() . '/typo3temp/assets/' . $folderName;
-        if (empty($folderName) || !GeneralUtility::isAllowedAbsPath($basePath)) {
+        $basePath = Environment::getPublicPath() . $folderName;
+        if (empty($folderName)
+            || !GeneralUtility::isAllowedAbsPath($basePath)
+            || strpos($folderName, '/typo3temp/assets/') !== 0
+        ) {
             throw new \RuntimeException(
                 'Path to folder ' . $folderName . ' not allowed.',
                 1501781453

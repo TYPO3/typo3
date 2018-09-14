@@ -99,7 +99,7 @@ class MaintenanceController extends AbstractController
     }
 
     /**
-     * Clear Processed Files
+     * Clear typo3temp/assets or FAL processed Files
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
@@ -109,8 +109,14 @@ class MaintenanceController extends AbstractController
         $messageQueue = new FlashMessageQueue('install');
         $typo3tempFileService = new Typo3tempFileService();
         $folder = $request->getParsedBody()['install']['folder'];
-        if ($folder === '_processed_') {
-            $failedDeletions = $typo3tempFileService->clearProcessedFiles();
+        // storageUid is an optional post param if FAL storages should be cleaned
+        $storageUid = $request->getParsedBody()['install']['storageUid'] ?? null;
+        if ($storageUid === null) {
+            $typo3tempFileService->clearAssetsFolder($folder);
+            $messageQueue->enqueue(new FlashMessage('Cleared files in "' . $folder . '" folder'));
+        } else {
+            $storageUid = (int)$storageUid;
+            $failedDeletions = $typo3tempFileService->clearProcessedFiles($storageUid);
             if ($failedDeletions) {
                 $messageQueue->enqueue(new FlashMessage(
                     'Failed to delete ' . $failedDeletions . ' processed files. See TYPO3 log (by default typo3temp/var/log/typo3_*.log)',
@@ -120,9 +126,6 @@ class MaintenanceController extends AbstractController
             } else {
                 $messageQueue->enqueue(new FlashMessage('Cleared processed files'));
             }
-        } else {
-            $typo3tempFileService->clearAssetsFolder($folder);
-            $messageQueue->enqueue(new FlashMessage('Cleared files in "' . $folder . '" folder'));
         }
         return new JsonResponse([
             'success' => true,

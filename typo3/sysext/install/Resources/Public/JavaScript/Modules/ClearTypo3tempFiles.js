@@ -52,8 +52,9 @@ define([
       });
       currentModal.on('click', this.selectorDeleteTrigger, function(e) {
         var folder = $(this).data('folder');
+        var storageUid = $(this).data('storage-uid');
         e.preventDefault();
-        self.delete(folder);
+        self.delete(folder, storageUid);
       });
     },
 
@@ -73,6 +74,7 @@ define([
                   aStat.find(self.selectorStatNumberOfFiles).text(element.numberOfFiles);
                   aStat.find(self.selectorStatDirectory).text(element.directory);
                   aStat.find(self.selectorDeleteTrigger).attr('data-folder', element.directory);
+                  aStat.find(self.selectorDeleteTrigger).attr('data-storage-uid', element.storageUid);
                   modalContent.find(self.selectorStatContainer).append(aStat.html());
                 }
               });
@@ -87,7 +89,7 @@ define([
       });
     },
 
-    delete: function(folder) {
+    delete: function(folder, storageUid) {
       var self = this;
       var executeToken = self.currentModal.find(this.selectorModuleContent).data('clear-typo3temp-delete-token');
       $.ajax({
@@ -98,7 +100,8 @@ define([
           'install': {
             'action': 'clearTypo3tempFiles',
             'token': executeToken,
-            'folder': folder
+            'folder': folder,
+            'storageUid': storageUid
           }
         },
         cache: false,

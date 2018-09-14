@@ -131,6 +131,31 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
         }
         return $processedFileObject;
     }
+
+    /**
+     * Count processed files by storage. This is used in the install tool
+     * to render statistics of processed files.
+     *
+     * @param ResourceStorage $storage
+     * @return int
+     */
+    public function countByStorage(ResourceStorage $storage): int
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->table);
+        return (int)$queryBuilder
+            ->count('uid')
+            ->from($this->table)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'storage',
+                    $queryBuilder->createNamedParameter($storage->getUid(), \PDO::PARAM_INT)
+                )
+            )
+            ->execute()
+            ->fetchColumn(0);
+    }
+
     /**
      * Adds a processedfile object in the database
      *
@@ -248,20 +273,29 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
     }
 
     /**
-     * Removes all processed files and also deletes the associated physical files
+     * Removes all processed files and also deletes the associated physical files.
+     * If a storageUid is given, only db entries and files of this storage are removed.
      *
      * @param int|null $storageUid If not NULL, only the processed files of the given storage are removed
      * @return int Number of failed deletions
      */
     public function removeAll($storageUid = null)
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->table);
+        $where = [
+            $queryBuilder->expr()->neq('identifier', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR))
+        ];
+        if ($storageUid !== null) {
+            $where[] = $queryBuilder->expr()->eq(
+                'storage',
+                $queryBuilder->createNamedParameter($storageUid, \PDO::PARAM_INT)
+            );
+        }
         $result = $queryBuilder
             ->select('*')
             ->from($this->table)
-            ->where(
-                $queryBuilder->expr()->neq('identifier', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR))
-            )
+            ->where(...$where)
             ->execute();
 
         $errorCount = 0;
@@ -285,9 +319,17 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
             }
         }
 
-        GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable($this->table)
-            ->truncate($this->table);
+        if ($storageUid === null) {
+            // Truncate entire table if not restricted to specific storage
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable($this->table)
+                ->truncate($this->table);
+        } else {
+            // else remove db rows of this storage only
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable($this->table)
+                ->delete($this->table, ['storage' => $storageUid], [\PDO::PARAM_INT]);
+        }
 
         return $errorCount;
     }

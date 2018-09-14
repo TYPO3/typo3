@@ -36,11 +36,11 @@ class Typo3tempFileServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function clearAssetsFolderThrowsWithNotExistingPath()
+    public function clearAssetsFolderThrowsIfPathDoesNotStartWithTypotempAssets()
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1501781454);
+        $this->expectExceptionCode(1501781453);
         $subject = new Typo3tempFileService();
-        $subject->clearAssetsFolder('bar');
+        $subject->clearAssetsFolder('typo3temp/foo');
     }
 }
