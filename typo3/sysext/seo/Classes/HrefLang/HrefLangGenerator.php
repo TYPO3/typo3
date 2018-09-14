@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Seo\HrefLang;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -27,7 +28,7 @@ use TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor;
  *
  * @internal
  */
-class HreflangGenerator
+class HrefLangGenerator
 {
     /**
      * The content object renderer
@@ -59,12 +60,12 @@ class HreflangGenerator
             foreach ($languages['languagemenu'] as $language) {
                 if ($language['available'] === 1) {
                     $href = $this->getAbsoluteUrl($language['link']);
-                    $hreflangs .= '<link rel="alternate" hreflang="' . $language['hreflang'] . '" href="' . $href . '"/>' . LF;
+                    $hreflangs .= '<link rel="alternate" hreflang="' . htmlspecialchars($language['hreflang']) . '" href="' . htmlspecialchars($href) . '"/>' . LF;
                 }
             }
 
             $href = $this->getAbsoluteUrl($languages['languagemenu'][0]['link']);
-            $hreflangs .= '<link rel="alternate" hreflang="x-default" href="' . $href . '"/>' . LF;
+            $hreflangs .= '<link rel="alternate" hreflang="x-default" href="' . htmlspecialchars($href) . '"/>' . LF;
 
             $GLOBALS['TSFE']->additionalHeaderData[] = $hreflangs;
         }
@@ -78,13 +79,19 @@ class HreflangGenerator
      */
     protected function getAbsoluteUrl(string $url): string
     {
-        /** @var SiteLanguage $siteLanguage */
-        $siteLanguage = $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
-
-        if (strpos($url, 'http') !== 0) {
-            $url = (string)$siteLanguage->getBase()->withPath($url);
+        $uri = new Uri($url);
+        if (empty($uri->getHost())) {
+            $url = (string)$this->getSiteLanguage()->getBase()->withPath($uri->getPath());
         }
 
         return $url;
+    }
+
+    /**
+     * @return SiteLanguage
+     */
+    protected function getSiteLanguage(): SiteLanguage
+    {
+        return $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
     }
 }

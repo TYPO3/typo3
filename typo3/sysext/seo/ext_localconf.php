@@ -4,7 +4,7 @@ defined('TYPO3_MODE') or die();
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Frontend\Page\PageGenerator']['generateMetaTags'][] =
     \TYPO3\CMS\Seo\MetaTag\MetaTagGenerator::class . '->generate';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Frontend\Page\PageGenerator']['generateMetaTags'][] =
-    \TYPO3\CMS\Seo\HrefLang\HreflangGenerator::class . '->generate';
+    \TYPO3\CMS\Seo\HrefLang\HrefLangGenerator::class . '->generate';
 
 $metaTagManagerRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry::class);
 $metaTagManagerRegistry->registerManager(
