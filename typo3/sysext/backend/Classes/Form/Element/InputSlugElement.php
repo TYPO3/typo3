@@ -149,7 +149,7 @@ class InputSlugElement extends AbstractFormElement
 
         $resultArray['html'] = implode(LF, $mainFieldHtml);
 
-        list($commonElementPrefix) = GeneralUtility::revExplode('[', $parameterArray['itemFormElName'], 2);
+        [$commonElementPrefix] = GeneralUtility::revExplode('[', $parameterArray['itemFormElName'], 2);
         $validInputNamesToListenTo = [];
         foreach ($config['generatorOptions']['fields'] ?? [] as $listenerFieldName) {
             $validInputNamesToListenTo[$listenerFieldName] = $commonElementPrefix . '[' . htmlspecialchars($listenerFieldName) . ']';
@@ -185,7 +185,7 @@ class InputSlugElement extends AbstractFormElement
         ];
         $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/SlugElement' => '
             function(SlugElement) {
-                SlugElement.initialize(' . GeneralUtility::quoteJSvalue('#' . $thisSlugId) . ', ' . json_encode($optionsForModule) . ');
+                new SlugElement(' . GeneralUtility::quoteJSvalue('#' . $thisSlugId) . ', ' . json_encode($optionsForModule) . ');
             }'
         ];
         return $resultArray;
