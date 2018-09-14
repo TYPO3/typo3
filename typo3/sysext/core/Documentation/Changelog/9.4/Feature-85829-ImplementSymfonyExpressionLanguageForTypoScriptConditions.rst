@@ -57,44 +57,58 @@ Variables
 
 The following variables are available. The values are context related.
 
-+---------------------+------------+----------------------------------------------------------------+
-| Variable            | Type       | Description                                                    |
-+=====================+============+================================================================+
-| applicationContext  | String     | current application context as string                          |
-+---------------------+------------+----------------------------------------------------------------+
-| page                | Array      | current page record as array                                   |
-+---------------------+------------+----------------------------------------------------------------+
-| {$foo.bar}          | Constant   | Any TypoScript constant is available like before.              |
-|                     |            | Depending on the type of the constant you have to use          |
-|                     |            | different conditions, see examples below:                      |
-|                     |            | - if constant is an integer:                                   |
-|                     |            | - [{$foo.bar} == 4711]                                         |
-|                     |            | - if constant is a string put constant in quotes:              |
-|                     |            | - ["{$foo.bar}" == "4711"]                                     |
-+---------------------+------------+----------------------------------------------------------------+
-| tree                | Object     | object with tree information                                   |
-| .level              | Integer    | current tree level                                             |
-| .rootLine           | Array      | array of arrays with uid and pid                               |
-| .rootLineIds        | Array      | an array with UIDs of the rootline                             |
-+---------------------+------------+----------------------------------------------------------------+
-| backend             | Object     | object with backend information (available in BE only)         |
-| .user               | Object     | object with current backend user information                   |
-| .user.isAdmin       | Boolean    | true if current user is admin                                  |
-| .user.isLoggedIn    | Boolean    | true if current user is logged in                              |
-| .user.userId        | Integer    | UID of current user                                            |
-| .user.userGroupList | String     | comma list of group UIDs                                       |
-+---------------------+------------+----------------------------------------------------------------+
-| frontend            | Object     | object with frontend information (available in FE only)        |
-| .user               | Object     | object with current frontend user information                  |
-| .user.isLoggedIn    | Boolean    | true if current user is logged in                              |
-| .user.userId        | Integer    | UID of current user                                            |
-| .user.userGroupList | String     | comma list of group UIDs                                       |
-+---------------------+------------+----------------------------------------------------------------+
-| typo3               | Object     | object with TYPO3 related information                          |
-| .version            | String     | TYPO3_version (e.g. 9.4.0-dev)                                 |
-| .branch             | String     | TYPO3_branch (e.g. 9.4)                                        |
-| .devIpMask          | String     | $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']                |
-+---------------------+------------+----------------------------------------------------------------+
++---------------------+------------+------------------------------------------------------------------------------+
+| Variable            | Type       | Description                                                                  |
++=====================+============+==============================================================================+
+| applicationContext  | String     | current application context as string                                        |
++---------------------+------------+------------------------------------------------------------------------------+
+| page                | Array      | current page record as array                                                 |
++---------------------+------------+------------------------------------------------------------------------------+
+| {$foo.bar}          | Constant   | Any TypoScript constant is available like before.                            |
+|                     |            | Depending on the type of the constant you have to use                        |
+|                     |            | different conditions, see examples below:                                    |
+|                     |            |                                                                              |
+|                     |            | * if constant is an integer: `[{$foo.bar} == 4711]`                          |
+|                     |            | * if constant is a string put constant in quotes: `["{$foo.bar}" == "4711"]` |
++---------------------+------------+------------------------------------------------------------------------------+
+| tree                | Object     | object with tree information                                                 |
+|                     |            |                                                                              |
+| .level              | Integer    | current tree level                                                           |
+|                     |            |                                                                              |
+| .rootLine           | Array      | array of arrays with uid and pid                                             |
+|                     |            |                                                                              |
+| .rootLineIds        | Array      | an array with UIDs of the rootline                                           |
++---------------------+------------+------------------------------------------------------------------------------+
+| backend             | Object     | object with backend information (available in BE only)                       |
+|                     |            |                                                                              |
+| .user               | Object     | object with current backend user information                                 |
+|                     |            |                                                                              |
+| .user.isAdmin       | Boolean    | true if current user is admin                                                |
+|                     |            |                                                                              |
+| .user.isLoggedIn    | Boolean    | true if current user is logged in                                            |
+|                     |            |                                                                              |
+| .user.userId        | Integer    | UID of current user                                                          |
+|                     |            |                                                                              |
+| .user.userGroupList | String     | comma list of group UIDs                                                     |
++---------------------+------------+------------------------------------------------------------------------------+
+| frontend            | Object     | object with frontend information (available in FE only)                      |
+|                     |            |                                                                              |
+| .user               | Object     | object with current frontend user information                                |
+|                     |            |                                                                              |
+| .user.isLoggedIn    | Boolean    | true if current user is logged in                                            |
+|                     |            |                                                                              |
+| .user.userId        | Integer    | UID of current user                                                          |
+|                     |            |                                                                              |
+| .user.userGroupList | String     | comma list of group UIDs                                                     |
++---------------------+------------+------------------------------------------------------------------------------+
+| typo3               | Object     | object with TYPO3 related information                                        |
+|                     |            |                                                                              |
+| .version            | String     | TYPO3_version (e.g. 9.4.0-dev)                                               |
+|                     |            |                                                                              |
+| .branch             | String     | TYPO3_branch (e.g. 9.4)                                                      |
+|                     |            |                                                                              |
+| .devIpMask          | String     | :php`$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']`                        |
++---------------------+------------+------------------------------------------------------------------------------+
 
 
 Functions
@@ -103,51 +117,53 @@ Functions
 Functions take over the logic of the old conditions which do more than a simple comparison check.
 The following functions are available in **any** context:
 
-+------------------------+-----------------------+--------------------------------------------------+
-| Function               | Parameter             | Description                                      |
-+========================+=======================+==================================================+
-| request                | Custom Object         | This object provides 4 methods                   |
-| .getQueryParams()      |                       | - [request.getQueryParams()['foo'] == 1]         |
-| .getParsedBody()       |                       | - [request.getParsedBody()['foo'] == 1]          |
-| .getHeaders()          |                       | - [request.getHeaders()['Accept'] == 'json']     |
-| .getCookieParams()     |                       | - [request.getCookieParams()['foo'] == 1]        |
-| .getNormalizedParams() |                       | - [request.getNormalizedParams().isHttps()]      |
-+------------------------+-----------------------+--------------------------------------------------+
-| date                   | String                | Get current date in given format.                |
-|                        |                       | Examples:                                        |
-|                        |                       | - true if day of current month is 7:             |
-|                        |                       | - [date("j") == 7]                               |
-|                        |                       | - true if day of current week is 7:              |
-|                        |                       | - [date("w") == 7]                               |
-|                        |                       | - true if day of current year is 7:              |
-|                        |                       | - [date("z") == 7]                               |
-|                        |                       | - true if current hour is 7:                     |
-|                        |                       | - [date("G") == 7]                               |
-+------------------------+-----------------------+--------------------------------------------------+
-| like                   | String                | This function has two parameters:                |
-|                        |                       | the first parameter is the string to search in   |
-|                        |                       | the second parameter is the search string        |
-|                        |                       | Example:                                         |
-|                        |                       | - [like("foobarbaz", "*bar*")]                   |
-+------------------------+-----------------------+--------------------------------------------------+
-| ip                     | String                | Value or Constraint, Wildcard or RegExp possible |
-|                        |                       | special value: devIP (match the devIPMask        |
-+------------------------+-----------------------+--------------------------------------------------+
-| compatVersion          | String                | version constraint, e.g. 9.4 or 9.4.0            |
-+------------------------+-----------------------+--------------------------------------------------+
-| loginUser              | String                | value or constraint, wildcard or RegExp possible |
-|                        |                       | Examples:                                        |
-|                        |                       | - [loginUser('*')]          // any logged in user|
-|                        |                       | - [loginUser(1)]            // user with uid 1   |
-|                        |                       | - [loginUser('1,3,5')]      // user 1, 3 or 5    |
-|                        |                       | - [loginUser('*') == false] // not logged in     |
-+------------------------+-----------------------+--------------------------------------------------+
-| getTSFE                | Object                | TypoScriptFrontendController ($GLOBALS['TSFE'])  |
-+------------------------+-----------------------+--------------------------------------------------+
-| getenv                 | String                | PHP function: getenv()                           |
-+------------------------+-----------------------+--------------------------------------------------+
-| usergroup              | String                | value or constraint, wildcard or RegExp possible |
-+------------------------+-----------------------+--------------------------------------------------+
++------------------------+-----------------------+---------------------------------------------------------+
+| Function               | Parameter             | Description                                             |
++========================+=======================+=========================================================+
+| request                | Custom Object         | This object provides 4 methods                          |
+|                        |                       |                                                         |
+| .getQueryParams()      |                       | `[request.getQueryParams()['foo'] == 1]`                |
+|                        |                       |                                                         |
+| .getParsedBody()       |                       | `[request.getParsedBody()['foo'] == 1]`                 |
+|                        |                       |                                                         |
+| .getHeaders()          |                       | `[request.getHeaders()['Accept'] == 'json']`            |
+|                        |                       |                                                         |
+| .getCookieParams()     |                       | `[request.getCookieParams()['foo'] == 1]`               |
+|                        |                       |                                                         |
+| .getNormalizedParams() |                       | `[request.getNormalizedParams().isHttps()]`             |
++------------------------+-----------------------+---------------------------------------------------------+
+| date                   | String                | Get current date in given format.                       |
+|                        |                       | Examples:                                               |
+|                        |                       |                                                         |
+|                        |                       | * true if day of current month is 7: `[date("j") == 7]` |
+|                        |                       | * true if day of current week is 7: `[date("w") == 7]`  |
+|                        |                       | * true if day of current year is 7: `[date("z") == 7]`  |
+|                        |                       | * true if current hour is 7: `[date("G") == 7]`         |
++------------------------+-----------------------+---------------------------------------------------------+
+| like                   | String                | This function has two parameters:                       |
+|                        |                       | the first parameter is the string to search in          |
+|                        |                       | the second parameter is the search string               |
+|                        |                       | Example: `[like("foobarbaz", "*bar*")]`                 |
++------------------------+-----------------------+---------------------------------------------------------+
+| ip                     | String                | Value or Constraint, Wildcard or RegExp possible        |
+|                        |                       | special value: devIP (match the devIPMask)              |
++------------------------+-----------------------+---------------------------------------------------------+
+| compatVersion          | String                | version constraint, e.g. `9.4` or `9.4.0`               |
++------------------------+-----------------------+---------------------------------------------------------+
+| loginUser              | String                | value or constraint, wildcard or RegExp possible        |
+|                        |                       | Examples:                                               |
+|                        |                       |                                                         |
+|                        |                       | * `[loginUser('*')]` // any logged in user              |
+|                        |                       | * `[loginUser(1)]` // user with uid 1                   |
+|                        |                       | * `[loginUser('1,3,5')]` // user 1, 3 or 5              |
+|                        |                       | * `[loginUser('*') == false]` // not logged in          |
++------------------------+-----------------------+---------------------------------------------------------+
+| getTSFE                | Object                | TypoScriptFrontendController (`$GLOBALS['TSFE']`)       |
++------------------------+-----------------------+---------------------------------------------------------+
+| getenv                 | String                | PHP function: :php:`getenv()`                           |
++------------------------+-----------------------+---------------------------------------------------------+
+| usergroup              | String                | value or constraint, wildcard or RegExp possible        |
++------------------------+-----------------------+---------------------------------------------------------+
 
 
 The following functions are only available in **frontend** context:
@@ -156,22 +172,27 @@ The following functions are only available in **frontend** context:
 | Function           | Parameter  | Description                                                     |
 +====================+============+=================================================================+
 | session            | String     | Get value from session                                          |
+|                    |            |                                                                 |
 |                    |            | Example, matches if session value = 1234567                     |
-|                    |            | - [session("session:foo|bar") == 1234567]                       |
+|                    |            | `[session("session:foo|bar") == 1234567]`                       |
 +--------------------+------------+-----------------------------------------------------------------+
 | site               | String     | get value from site configuration, or null if                   |
 |                    |            | no site was found or property does not exists                   |
+|                    |            |                                                                 |
 |                    |            | Example, matches if site identifier = foo                       |
-|                    |            | - [site("identifier") == "foo"]                                 |
-|                    |            | Example, matches if site base = http://localhost                |
-|                    |            | - [site("base") == "http://localhost"]                          |
+|                    |            | `[site("identifier") == "foo"]`                                 |
+|                    |            |                                                                 |
+|                    |            | Example, matches if site `base = http://localhost`              |
+|                    |            | `[site("base") == "http://localhost"]`                          |
 +--------------------+------------+-----------------------------------------------------------------+
 | siteLanguage       | String     | get vale from siteLanguage configuration, or                    |
 |                    |            | null if no site was found or property not exists                |
+|                    |            |                                                                 |
 |                    |            | Example, match if siteLanguage locale = foo                     |
-|                    |            | - [siteLanguage("locale") == "de_CH"]                           |
+|                    |            | `[siteLanguage("locale") == "de_CH"]`                           |
+|                    |            |                                                                 |
 |                    |            | Example, match if siteLanguage title = Italy                    |
-|                    |            | - [siteLanguage("title") == "Italy"]                            |
+|                    |            | `[siteLanguage("title") == "Italy"]`                            |
 +--------------------+------------+-----------------------------------------------------------------+
 
 
