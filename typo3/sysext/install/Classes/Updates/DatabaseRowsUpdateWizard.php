@@ -40,13 +40,8 @@ use TYPO3\CMS\Install\Updates\RowUpdater\RteLinkSyntaxUpdater;
  * the run process, so if for instance the PHP process runs into a timeout,
  * the job can restart at the position it stopped.
  */
-class DatabaseRowsUpdateWizard extends AbstractUpdate
+class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInterface
 {
-    /**
-     * @var string Title of this updater
-     */
-    protected $title = 'Execute database migrations on single rows';
-
     /**
      * @var array Single classes that may update rows
      */
@@ -57,24 +52,28 @@ class DatabaseRowsUpdateWizard extends AbstractUpdate
     ];
 
     /**
-     * Checks if an update is needed by looking up in registry if all
-     * registered update row classes are marked as done or not.
-     *
-     * @param string &$description The description for the update
-     * @return bool Whether an update is needed (TRUE) or not (FALSE)
+     * @return string Unique identifier of this updater
      */
-    public function checkForUpdate(&$description)
+    public function getIdentifier(): string
     {
-        $updateNeeded = false;
-        $rowUpdaterNotExecuted = $this->getRowUpdatersToExecute();
-        if (!empty($rowUpdaterNotExecuted)) {
-            $updateNeeded = true;
-        }
-        if (!$updateNeeded) {
-            return false;
-        }
+        return 'databaseRowsUpdateWizard';
+    }
 
-        $description = 'Some row updaters have not been executed:';
+    /**
+     * @return string Title of this updater
+     */
+    public function getTitle(): string
+    {
+        return 'Execute database migrations on single rows';
+    }
+
+    /**
+     * @return string Longer description of this updater
+     */
+    public function getDescription(): string
+    {
+        $rowUpdaterNotExecuted = $this->getRowUpdatersToExecute();
+        $description = 'Row updaters that have not been executed:';
         foreach ($rowUpdaterNotExecuted as $rowUpdateClassName) {
             $rowUpdater = GeneralUtility::makeInstance($rowUpdateClassName);
             if (!$rowUpdater instanceof RowUpdaterInterface) {
@@ -85,20 +84,35 @@ class DatabaseRowsUpdateWizard extends AbstractUpdate
             }
             $description .= LF . $rowUpdater->getTitle();
         }
+        return $description;
+    }
 
-        return $updateNeeded;
+    /**
+     * @return bool True if at least one row updater is not marked done
+     */
+    public function updateNecessary(): bool
+    {
+        return !empty($this->getRowUpdatersToExecute());
+    }
+
+    /**
+     * @return string[] All new fields and tables must exist
+     */
+    public function getPrerequisites(): array
+    {
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
     }
 
     /**
      * Performs the configuration update.
      *
-     * @param array &$databaseQueries Queries done in this update - not filled for this updater
-     * @param string &$customMessage Custom message
      * @return bool
      * @throws \Doctrine\DBAL\ConnectionException
      * @throws \Exception
      */
-    public function performUpdate(array &$databaseQueries, &$customMessage)
+    public function executeUpdate(): bool
     {
         $registry = GeneralUtility::makeInstance(Registry::class);
 

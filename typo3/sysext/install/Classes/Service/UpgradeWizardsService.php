@@ -269,7 +269,7 @@ class UpgradeWizardsService
     }
 
     /**
-     * Get list of registered upgrade wizards.
+     * Get list of registered upgrade wizards not marked done.
      *
      * @return array List of upgrade wizards in correct order with detail information
      */
