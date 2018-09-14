@@ -1,0 +1,77 @@
+"pages",,,,,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","t3ver_move_id","title",,,,,,
+,1,0,256,0,0,0,0,0,0,0,"FunctionalTest",,,,,,
+,20,1,256,0,0,0,0,0,0,0,"Blog example test",,,,,,
+"sys_language",,,,,,,,,,,,,,,,,
+,"uid","pid","hidden","title","flag",,,,,,,,,,,,
+,1,0,0,"Dansk","dk",,,,,,,,,,,,
+,2,0,0,"Deutsch","de",,,,,,,,,,,,
+"tx_blogexample_domain_model_blog",,,,,,,,,,,,,,,,,
+,"uid","pid","title","sys_language_uid","l18n_parent","administrator","subtitle","description","t3_origuid","deleted","hidden","posts","logo",,,,
+,1,20,"Blog 1",0,0,0,,,0,0,0,10,,,,,
+,2,20,"Blog 1 DK",1,1,0,,,1,0,0,6,,,,,
+"tx_blogexample_domain_model_post",,,,,,,,,,,,,,,,,
+,"uid","pid","sorting","title","sys_language_uid","l18n_parent","blog","tags","comments","content","author","second_author","reviewer","related_posts","t3_origuid","deleted","hidden"
+,1,20,256,"Post 1 - not translated",0,0,1,3,0,"G - content",1,3,1,0,0,0,0
+,2,20,512,"Post 2",0,0,1,3,0,"B - content",1,1,3,2,0,0,0
+,3,20,768,"Post 3",0,0,1,0,0,"I - content",1,1,1,0,0,0,0
+,4,20,1024,"Post 4",0,0,1,0,0,"A - content",1,1,1,0,0,0,0
+,5,20,1280,"Post 5",0,0,1,0,0,"Z - content",1,1,1,0,0,0,0
+,6,20,1536,"Post 6",0,0,1,0,0,"F - content",1,1,1,0,0,0,0
+,7,20,1792,"Post 7",0,0,1,0,0,"C - content",1,1,1,0,0,0,0
+,8,20,2048,"Post 8",0,0,1,0,0,"K - content",1,1,1,0,0,0,0
+,9,20,2304,"Post 9",0,0,1,0,0,"W - content",1,1,1,0,0,0,0
+,10,20,2560,"Post 10",0,0,1,0,0,"U - content",1,1,1,0,0,0,0
+,11,20,2816,"Post 2 - DK",1,2,2,5,0,"C - content",1,1,1,2,2,0,0
+,12,20,3072,"Post 4 - DK",1,4,2,0,0,"U - content",1,1,1,0,4,0,0
+,13,20,3328,"Post 5 - DK",1,5,2,0,0,"A - content",1,1,1,0,5,0,0
+,14,20,3584,"Post 7 - DK",1,7,2,0,0,"S - content",1,1,1,0,7,0,0
+,15,20,4096,"Post DK only",1,0,2,0,0,"B - content",1,1,1,0,10,0,0
+"tx_blogexample_domain_model_comment",,,,,,,,,,,,,,,,,
+,"uid","pid","content","post","author","deleted","hidden","date",,,,,,,,,
+,1,20,"Comment 1",2,,0,0,"2018-08-27 13:43:53",,,,,,,,,
+"tx_blogexample_domain_model_person",,,,,,,,,,,,,,,,,
+,"uid","pid","firstname","lastname","sys_language_uid","l10n_parent","email","tags","tags_special","deleted","hidden",,,,,,
+,1,20,"John","Doe",0,0,,0,0,0,0,,,,,,
+,2,20,"Translated John","Doe",1,1,,0,0,0,0,,,,,,
+,3,20,"Never translate me henry","Doe",0,0,,0,0,0,0,,,,,,
+"tx_blogexample_domain_model_tag",,,,,,,,,,,,,,,,,
+,"uid","pid","name","sys_language_uid","l18n_parent","deleted","hidden",,,,,,,,,,
+,1,20,"Tag1",0,0,0,0,,,,,,,,,,
+,2,20,"Tag2",0,0,0,0,,,,,,,,,,
+,3,20,"Tag3",0,0,0,0,,,,,,,,,,
+,4,20,"Tag4",0,0,0,0,,,,,,,,,,
+,5,20,"Tag5",0,0,0,0,,,,,,,,,,
+,6,20,"Tag6",0,0,0,0,,,,,,,,,,
+,7,20,"Tag7",0,0,0,0,,,,,,,,,,
+,8,20,"Tag8",0,0,0,0,,,,,,,,,,
+,9,20,"Tag9",0,0,0,0,,,,,,,,,,
+,10,20,"Tag10",0,0,0,0,,,,,,,,,,
+,11,20,"Tag11",0,0,0,0,,,,,,,,,,
+,12,20,"Tag12",0,0,0,0,,,,,,,,,,
+,13,20,"Tag13",1,0,0,0,,,,,,,,,,
+,14,20,"Tag14",1,0,0,0,,,,,,,,,,
+,15,20,"Tag15",1,0,0,0,,,,,,,,,,
+,16,20,"Tag 1 DK",1,1,0,0,,,,,,,,,,
+,17,20,"Tag 2 DK",1,2,0,0,,,,,,,,,,
+,18,20,"Tag 3 DK",1,3,0,0,,,,,,,,,,
+,19,20,"Tag 6 DK",1,6,0,0,,,,,,,,,,
+"tx_blogexample_post_tag_mm",,,,,,,,,,,,,,,,,
+,"uid_local","uid_foreign","sorting","sorting_foreign",,,,,,,,,,,,,
+,1,1,1,0,,,,,,,,,,,,,
+,1,2,2,0,,,,,,,,,,,,,
+,1,3,3,0,,,,,,,,,,,,,
+,2,2,1,0,,,,,,,,,,,,,
+,2,3,2,0,,,,,,,,,,,,,
+,2,4,3,0,,,,,,,,,,,,,
+,11,3,1,0,,,,,,,,,,,,,
+,11,4,2,0,,,,,,,,,,,,,
+,11,5,3,0,,,,,,,,,,,,,
+,11,6,4,0,,,,,,,,,,,,,
+,11,7,5,0,,,,,,,,,,,,,
+"tx_blogexample_post_post_mm",,,,,,,,,,,,,,,,,
+,"uid_local","uid_foreign","sorting","sorting_foreign",,,,,,,,,,,,,
+,1,2,0,1,,,,,,,,,,,,,
+,4,2,0,2,,,,,,,,,,,,,
+,1,11,0,1,,,,,,,,,,,,,
+,4,11,0,2,,,,,,,,,,,,,

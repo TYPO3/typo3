@@ -60,4 +60,26 @@
 		<deleted>0</deleted>
 		<l18n_diffsource></l18n_diffsource>
 	</tx_blogexample_domain_model_post>
+	<tx_blogexample_domain_model_post>
+		<uid>10</uid>
+		<pid>1</pid>
+		<blog>1</blog>
+		<content>Lorem ipsum</content>
+		<title>Post10</title>
+		<deleted>0</deleted>
+		<hidden>1</hidden>
+		<l18n_diffsource></l18n_diffsource>
+	</tx_blogexample_domain_model_post>
+	<tx_blogexample_domain_model_post>
+		<uid>11</uid>
+		<pid>1</pid>
+		<blog>1</blog>
+		<content>Lorem ipsum</content>
+		<title>GR:Post10</title>
+		<deleted>0</deleted>
+		<hidden>1</hidden>
+		<l18n_parent>10</l18n_parent>
+		<sys_language_uid>2</sys_language_uid>
+		<l18n_diffsource></l18n_diffsource>
+	</tx_blogexample_domain_model_post>
 </dataset>
