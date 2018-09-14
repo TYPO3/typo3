@@ -56,6 +56,8 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
          * Post2
          *   -> EN: Post2
          * Post3
+         * Post10 [hidden]
+         *   -> GR: Post10 [hidden]
          */
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
@@ -68,7 +70,7 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
     }
 
     /**
-     * Minimal frontent environment to satisfy Extbase Typo3DbBackend
+     * Minimal frontend environment to satisfy Extbase Typo3DbBackend
      */
     protected function setUpBasicFrontendEnvironment()
     {
@@ -217,5 +219,58 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $this->assertSame('A EN:Post2', $posts[0]->getTitle());
         $this->assertSame('B EN:Post1', $posts[1]->getTitle());
         $this->assertSame('Post3', $posts[2]->getTitle());
+    }
+
+    /**
+     * This test checks whether setIgnoreEnableFields(true) affects the query
+     * It's expected that when ignoring enable fields, the hidden record is also returned.
+     * This is related to https://forge.typo3.org/issues/68672
+     *
+     * @test
+     */
+    public function fetchingHiddenPostsWithIgnoreEnableField()
+    {
+        $query = $this->postRepository->createQuery();
+
+        $querySettings = $query->getQuerySettings();
+        $querySettings->setStoragePageIds([1]);
+        $querySettings->setRespectSysLanguage(true);
+        $querySettings->setIgnoreEnableFields(true);
+        $querySettings->setLanguageUid(0);
+
+        /** @var Post[] $posts */
+        $posts = $query->execute()->toArray();
+
+        $this->assertCount(4, $posts);
+        $this->assertSame('Post10', $posts[3]->getTitle());
+    }
+
+    /**
+     * This test checks whether setIgnoreEnableFields(true) affects translated record too.
+     * It's expected that when ignoring enable fields, the hidden translated record is shown.
+     * This is related to https://forge.typo3.org/issues/68672
+     *
+     * This tests documents current, buggy behaviour!
+     *
+     * @test
+     */
+    public function fetchingHiddenPostsReturnsHiddenOverlay()
+    {
+        $query = $this->postRepository->createQuery();
+
+        $querySettings = $query->getQuerySettings();
+        $querySettings->setStoragePageIds([1]);
+        $querySettings->setRespectSysLanguage(true);
+        $querySettings->setIgnoreEnableFields(true);
+        $querySettings->setLanguageUid(2);
+
+        /** @var Post[] $posts */
+        $posts = $query->execute()->toArray();
+
+        $this->assertCount(4, $posts);
+        //This assertion is wrong, once the issue https://forge.typo3.org/issues/68672
+        //is fixed, the following assertion should be used.
+        $this->assertSame('Post10', $posts[3]->getTitle());
+        //$this->assertSame('GR:Post10', $posts[3]->getTitle());
     }
 }
