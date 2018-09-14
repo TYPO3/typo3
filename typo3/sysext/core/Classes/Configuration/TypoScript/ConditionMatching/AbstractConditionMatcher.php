@@ -18,6 +18,8 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
 use TYPO3\CMS\Core\Configuration\Features;
+use TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException;
+use TYPO3\CMS\Core\Error\Exception;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\ExpressionLanguage\TypoScriptConditionProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -238,7 +240,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
                 return $result;
             }
         } catch (SyntaxError $exception) {
-            // Error means no support, let's try the fallback
+            // SyntaxException means no support, let's try the fallback
             $message = 'Expression could not be parsed, fallback kicks in.';
             if (strpos($exception->getMessage(), 'Unexpected character "="') !== false) {
                 $message .= ' It looks like an old condition with only one equal sign.';
@@ -247,6 +249,27 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
                 'expression' => $expression,
                 'exception' => $exception
             ]);
+        } catch (\Throwable $exception) {
+            // The following error handling is required to mitigate a missing type check
+            // in the Symfony Expression Language handling. In case a condition
+            // use "in" or "not in" check in combination with a non array a PHP Warning
+            // is thrown. Example: [1 in "foo"] or ["bar" in "foo,baz"]
+            // This conditions are wrong for sure, but they will break the complete installation
+            // including the backend. To mitigate the problem we do the following:
+            // 1) In FE an InvalidTypoScriptConditionException is thrown (if strictSyntax is enabled)
+            // 2) In FE silent catch this error and log it (if strictSyntax is disabled)
+            // 3) In BE silent catch this error and log it, but never break the backend.
+            $this->logger->error($exception->getMessage(), [
+                'expression' => $expression,
+                'exception' => $exception
+            ]);
+            if (TYPO3_MODE === 'FE'
+                && $exception instanceof Exception
+                && $this->strictSyntaxEnabled()
+                && strpos($exception->getMessage(), 'in_array() expects parameter 2 to be array') !== false
+            ) {
+                throw new InvalidTypoScriptConditionException('Invalid expression in condition: [' . $expression . ']', 1536950931);
+            }
         }
         return null;
     }
