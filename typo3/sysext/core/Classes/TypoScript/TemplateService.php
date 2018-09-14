@@ -792,9 +792,7 @@ class TemplateService
         }
         // Include files (from extensions) (#1/2)
         // NORMAL inclusion, The EXACT same code is found below the basedOn inclusion!!!
-        if (!isset($row['!$row[\'includeStaticAfterBasedOn\']']) ||
-            isset($row['includeStaticAfterBasedOn']) && !$row['includeStaticAfterBasedOn']
-        ) {
+        if (!isset($row['includeStaticAfterBasedOn']) || !$row['includeStaticAfterBasedOn']) {
             $this->includeStaticTypoScriptSources($idList, $templateID, $pid, $row);
         }
         // Include "Based On" sys_templates:
