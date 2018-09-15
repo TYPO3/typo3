@@ -118,6 +118,7 @@ define([
 
     executeSilentConfigurationUpdate: function() {
       var self = this;
+      self.updateLoadingInfo('Executing silent configuration update');
       $.ajax({
         url: this.getUrl('executeSilentConfigurationUpdate', 'layout'),
         cache: false,
@@ -143,6 +144,7 @@ define([
      */
     executeSilentLegacyExtConfExtensionConfigurationUpdate: function() {
       var self = this;
+      self.updateLoadingInfo('Executing silent extension configuration update');
       $.ajax({
         url: this.getUrl('executeSilentLegacyExtConfExtensionConfigurationUpdate', 'layout'),
         cache: false,
@@ -166,6 +168,7 @@ define([
      */
     executeSilentExtensionConfigurationSynchronization: function() {
       var self = this;
+      self.updateLoadingInfo('Executing silent extension configuration synchronization');
       $.ajax({
         url: this.getUrl('executeSilentExtensionConfigurationSynchronization', 'layout'),
         cache: false,
@@ -186,6 +189,7 @@ define([
     loadMainLayout: function() {
       var self = this;
       var $outputContainer = $(this.selectorBody);
+      self.updateLoadingInfo('Loading main layout');
       $.ajax({
         url: this.getUrl('mainLayout', 'layout'),
         cache: false,
@@ -350,6 +354,11 @@ define([
           self.handleAjaxError(xhr);
         }
       });
+    },
+
+    updateLoadingInfo: function(info) {
+      var $outputContainer = $(this.selectorBody);
+      $outputContainer.find('#t3js-ui-block-detail').text(info);
     }
   };
 });

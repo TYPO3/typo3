@@ -13,5 +13,12 @@
 	<script type="text/javascript" src="{f:uri.resource(path: 'JavaScript/Contrib/require.js', extensionName: 'Core')}?{time}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path: 'JavaScript/Install.js')}?{time}"></script>
 </head>
-<body class="backend install-tool-init t3js-body" data-controller="{controller}" data-context="{context}"></body>
+<body class="backend install-tool-init t3js-body" data-controller="{controller}" data-context="{context}">
+<div>
+	<div id="t3js-ui-block" class="ui-block">
+		<core:icon identifier="spinner-circle" size="large" />
+		<h2 id="t3js-ui-block-detail">Initializing</h2>
+	</div>
+</div>
+</body>
 </html>
