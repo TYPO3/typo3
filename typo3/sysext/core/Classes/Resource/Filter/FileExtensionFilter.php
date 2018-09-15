@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Resource\Filter;
 
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -63,13 +64,17 @@ class FileExtensionFilter
                 }
                 $parts = GeneralUtility::revExplode('_', $value, 2);
                 $fileReferenceUid = $parts[count($parts) - 1];
-                $fileReference = ResourceFactory::getInstance()->getFileReferenceObject($fileReferenceUid);
-                $file = $fileReference->getOriginalFile();
-                if ($this->isAllowed($file->getExtension())) {
-                    $cleanValues[] = $value;
-                } else {
-                    // Remove the erroneously created reference record again
-                    $dataHandler->deleteAction('sys_file_reference', $fileReferenceUid);
+                try {
+                    $fileReference = ResourceFactory::getInstance()->getFileReferenceObject($fileReferenceUid);
+                    $file = $fileReference->getOriginalFile();
+                    if ($this->isAllowed($file->getExtension())) {
+                        $cleanValues[] = $value;
+                    } else {
+                        // Remove the erroneously created reference record again
+                        $dataHandler->deleteAction('sys_file_reference', $fileReferenceUid);
+                    }
+                } catch (FileDoesNotExistException $e) {
+                    // do nothing
                 }
             }
         }
