@@ -70,11 +70,6 @@ class Package implements PackageInterface
     protected $packageMetaData;
 
     /**
-     * @var PackageManager
-     */
-    protected $packageManager;
-
-    /**
      * Constructor
      *
      * @param PackageManager $packageManager the package manager which knows this package
@@ -95,11 +90,11 @@ class Package implements PackageInterface
         if (substr($packagePath, -1, 1) !== '/') {
             throw new Exception\InvalidPackagePathException(sprintf('The package path "%s" provided for package "%s" has no trailing forward slash.', $packagePath, $packageKey), 1166633722);
         }
-        $this->packageManager = $packageManager;
         $this->packageKey = $packageKey;
         $this->packagePath = $packagePath;
         $this->composerManifest = $packageManager->getComposerManifest($this->packagePath);
         $this->loadFlagsFromComposerManifest();
+        $this->createPackageMetadata($packageManager);
     }
 
     /**
@@ -114,6 +109,40 @@ class Package implements PackageInterface
                 if (property_exists($this, $flagName)) {
                     $this->{$flagName} = $flagValue;
                 }
+            }
+        }
+    }
+
+    /**
+     * Creates the package meta data object of this package.
+     *
+     * @param PackageManager $packageManager
+     */
+    protected function createPackageMetaData(PackageManager $packageManager)
+    {
+        $this->packageMetaData = new MetaData($this->getPackageKey());
+        $this->packageMetaData->setDescription($this->getValueFromComposerManifest('description'));
+        $this->packageMetaData->setVersion($this->getValueFromComposerManifest('version'));
+        $requirements = $this->getValueFromComposerManifest('require');
+        if ($requirements !== null) {
+            foreach ($requirements as $requirement => $version) {
+                $packageKey = $packageManager->getPackageKeyFromComposerName($requirement);
+                // dynamically migrate 'cms' dependency to 'core' dependency
+                // see also \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::convertDependenciesToObjects
+                if ($packageKey === 'cms') {
+                    trigger_error('Extension "' . $this->packageKey . '" defines a dependency on ext:cms, which has been removed. Please remove the dependency.', E_USER_DEPRECATED);
+                    $packageKey = 'core';
+                }
+                $constraint = new MetaData\PackageConstraint(MetaData::CONSTRAINT_TYPE_DEPENDS, $packageKey);
+                $this->packageMetaData->addConstraint($constraint);
+            }
+        }
+        $suggestions = $this->getValueFromComposerManifest('suggest');
+        if ($suggestions !== null) {
+            foreach ($suggestions as $suggestion => $version) {
+                $packageKey = $packageManager->getPackageKeyFromComposerName($suggestion);
+                $constraint = new MetaData\PackageConstraint(MetaData::CONSTRAINT_TYPE_SUGGESTS, $packageKey);
+                $this->packageMetaData->addConstraint($constraint);
             }
         }
     }
@@ -185,33 +214,6 @@ class Package implements PackageInterface
      */
     public function getPackageMetaData()
     {
-        if ($this->packageMetaData === null) {
-            $this->packageMetaData = new MetaData($this->getPackageKey());
-            $this->packageMetaData->setDescription($this->getValueFromComposerManifest('description'));
-            $this->packageMetaData->setVersion($this->getValueFromComposerManifest('version'));
-            $requirements = $this->getValueFromComposerManifest('require');
-            if ($requirements !== null) {
-                foreach ($requirements as $requirement => $version) {
-                    $packageKey = $this->packageManager->getPackageKeyFromComposerName($requirement);
-                    // dynamically migrate 'cms' dependency to 'core' dependency
-                    // see also \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::convertDependenciesToObjects
-                    if ($packageKey === 'cms') {
-                        trigger_error('Extension "' . $this->packageKey . '" defines a dependency on ext:cms, which has been removed. Please remove the dependency.', E_USER_DEPRECATED);
-                        $packageKey = 'core';
-                    }
-                    $constraint = new MetaData\PackageConstraint(MetaData::CONSTRAINT_TYPE_DEPENDS, $packageKey);
-                    $this->packageMetaData->addConstraint($constraint);
-                }
-            }
-            $suggestions = $this->getValueFromComposerManifest('suggest');
-            if ($suggestions !== null) {
-                foreach ($suggestions as $suggestion => $version) {
-                    $packageKey = $this->packageManager->getPackageKeyFromComposerName($suggestion);
-                    $constraint = new MetaData\PackageConstraint(MetaData::CONSTRAINT_TYPE_SUGGESTS, $packageKey);
-                    $this->packageMetaData->addConstraint($constraint);
-                }
-            }
-        }
         return $this->packageMetaData;
     }
 
@@ -245,41 +247,5 @@ class Package implements PackageInterface
             $value = null;
         }
         return $value;
-    }
-
-    /**
-     * Added by TYPO3 CMS
-     *
-     * The package caching serializes package objects.
-     * The package manager instance may not be serialized
-     * as a fresh instance is created upon every request.
-     *
-     * This method will be removed once the package is
-     * released of the package manager dependency.
-     *
-     * @return array
-     */
-    public function __sleep()
-    {
-        $properties = get_class_vars(static::class);
-        unset($properties['packageManager']);
-        return array_keys($properties);
-    }
-
-    /**
-     * Added by TYPO3 CMS
-     *
-     * The package caching deserializes package objects.
-     * A fresh package manager instance has to be set
-     * during bootstrapping.
-     *
-     * This method will be removed once the package is
-     * released of the package manager dependency.
-     */
-    public function __wakeup()
-    {
-        if (isset($GLOBALS['TYPO3_currentPackageManager'])) {
-            $this->packageManager = $GLOBALS['TYPO3_currentPackageManager'];
-        }
     }
 }

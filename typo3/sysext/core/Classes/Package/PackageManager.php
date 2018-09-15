@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * The default TYPO3 Package Manager
@@ -157,7 +156,7 @@ class PackageManager implements SingletonInterface
         if ($this->cacheIdentifier === null) {
             $mTime = @filemtime($this->packageStatesPathAndFilename);
             if ($mTime !== false) {
-                $this->cacheIdentifier = md5($this->packageStatesPathAndFilename . $mTime);
+                $this->cacheIdentifier = md5(TYPO3_version . $this->packageStatesPathAndFilename . $mTime);
             } else {
                 $this->cacheIdentifier = null;
             }
@@ -181,17 +180,14 @@ class PackageManager implements SingletonInterface
     {
         $cacheEntryIdentifier = $this->getCacheEntryIdentifier();
         if ($cacheEntryIdentifier !== null && !$this->coreCache->has($cacheEntryIdentifier)) {
-            // Package objects get their own cache entry, so PHP does not have to parse the serialized string
-            $packageObjectsCacheEntryIdentifier = StringUtility::getUniqueId('PackageObjects_');
             // Build cache file
             $packageCache = [
                 'packageStatesConfiguration' => $this->packageStatesConfiguration,
                 'packageAliasMap' => $this->packageAliasMap,
                 'loadedExtArray' => $GLOBALS['TYPO3_LOADED_EXT'],
                 'composerNameToPackageKeyMap' => $this->composerNameToPackageKeyMap,
-                'packageObjectsCacheEntryIdentifier' => $packageObjectsCacheEntryIdentifier
+                'packageObjects' => serialize($this->packages),
             ];
-            $this->coreCache->set($packageObjectsCacheEntryIdentifier, serialize($this->packages));
             $this->coreCache->set(
                 $cacheEntryIdentifier,
                 'return ' . PHP_EOL . var_export($packageCache, true) . ';'
@@ -216,12 +212,15 @@ class PackageManager implements SingletonInterface
         }
         $this->packageAliasMap = $packageCache['packageAliasMap'];
         $this->composerNameToPackageKeyMap = $packageCache['composerNameToPackageKeyMap'];
+        $this->packages = unserialize($packageCache['packageObjects'], [
+            'allowed_classes' => [
+                Package::class,
+                MetaData::class,
+                MetaData\PackageConstraint::class,
+                \stdClass::class,
+            ]
+        ]);
         $GLOBALS['TYPO3_LOADED_EXT'] = $packageCache['loadedExtArray'];
-        $GLOBALS['TYPO3_currentPackageManager'] = $this;
-        // Strip off PHP Tags from Php Cache Frontend
-        $packageObjects = substr(substr($this->coreCache->get($packageCache['packageObjectsCacheEntryIdentifier']), 6), 0, -2);
-        $this->packages = unserialize($packageObjects);
-        unset($GLOBALS['TYPO3_currentPackageManager']);
     }
 
     /**
