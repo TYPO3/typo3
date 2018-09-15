@@ -912,7 +912,7 @@ class SchedulerModuleController
                 $tasks[$taskIndex]['tasks'][$recordIndex]['class'] = $class;
                 // Assemble information about last execution
                 if (!empty($schedulerRecord['lastexecution_time'])) {
-                    $lastExecution = date($dateFormat, $schedulerRecord['lastexecution_time']);
+                    $lastExecution = date($dateFormat, (int)$schedulerRecord['lastexecution_time']);
                     if ($schedulerRecord['lastexecution_context'] === 'CLI') {
                         $context = $this->getLanguageService()->getLL('label.cron');
                     } else {
@@ -950,7 +950,7 @@ class SchedulerModuleController
                     if ($isRunning || $schedulerRecord['disable']) {
                         $nextDate = '-';
                     } else {
-                        $nextDate = date($dateFormat, $schedulerRecord['nextexecution']);
+                        $nextDate = date($dateFormat, (int)$schedulerRecord['nextexecution']);
                         if (empty($schedulerRecord['nextexecution'])) {
                             $nextDate = $this->getLanguageService()->getLL('none');
                         } elseif ($schedulerRecord['nextexecution'] < $GLOBALS['EXEC_TIME']) {
