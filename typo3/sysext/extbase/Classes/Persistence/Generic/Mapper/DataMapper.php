@@ -24,7 +24,7 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 /**
  * A mapper to map database tables configured in $TCA on domain objects.
  */
-class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
+class DataMapper
 {
     /**
      * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
@@ -47,13 +47,6 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
      * @var \TYPO3\CMS\Frontend\Page\PageRepository
      */
     protected $pageSelectObject;
-
-    /**
-     * Cached data maps
-     *
-     * @var array
-     */
-    protected $dataMaps = [];
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
@@ -616,10 +609,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
         if (!is_string($className) || $className === '') {
             throw new Persistence\Generic\Exception('No class name was given to retrieve the Data Map for.', 1251315965);
         }
-        if (!isset($this->dataMaps[$className])) {
-            $this->dataMaps[$className] = $this->dataMapFactory->buildDataMap($className);
-        }
-        return $this->dataMaps[$className];
+        return $this->dataMapFactory->buildDataMap($className);
     }
 
     /**

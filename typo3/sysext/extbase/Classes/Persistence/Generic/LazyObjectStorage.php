@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  */
 
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 
 /**
  * A proxy that can replace any object and replaces itself in it's parent on
@@ -64,11 +66,16 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
     protected $isInitialized = false;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
+     * @var ObjectManagerInterface
      */
-    public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper)
+    protected $objectManager;
+
+    /**
+     * @param ObjectManagerInterface $objectManager
+     */
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
-        $this->dataMapper = $dataMapper;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -94,6 +101,14 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
         $this->propertyName = $propertyName;
         $this->fieldValue = $fieldValue;
         reset($this->storage);
+    }
+
+    /**
+     * Object initialization called when object is created with ObjectManager, after constructor
+     */
+    public function initializeObject()
+    {
+        $this->dataMapper = $this->objectManager->get(DataMapper::class);
     }
 
     /**

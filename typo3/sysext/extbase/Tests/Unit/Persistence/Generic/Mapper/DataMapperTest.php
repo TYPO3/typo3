@@ -91,9 +91,11 @@ class DataMapperTest extends UnitTestCase
             ->setMethods(['getClassSchema'])
             ->getMock();
         $mockReflectionService->expects($this->any())->method('getClassSchema')->will($this->returnValue($classSchema));
+        $dataMapFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class, ['dummy']);
+        $dataMapFactory->_set('dataMaps', $dataMaps);
         $dataMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class, ['dummy']);
-        $dataMapper->_set('dataMaps', $dataMaps);
         $dataMapper->_set('reflectionService', $mockReflectionService);
+        $dataMapper->_set('dataMapFactory', $dataMapFactory);
         $dataMapper->_call('thawProperties', $object, $row);
         $this->assertAttributeEquals('firstValue', 'firstProperty', $object);
         $this->assertAttributeEquals(1234, 'secondProperty', $object);

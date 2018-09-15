@@ -50,11 +50,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     protected $connectionPool;
 
     /**
-     * @var DataMapper
-     */
-    protected $dataMapper;
-
-    /**
      * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
@@ -81,14 +76,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      * @see clearPageCache()
      */
     protected $hasPidColumn = [];
-
-    /**
-     * @param DataMapper $dataMapper
-     */
-    public function injectDataMapper(DataMapper $dataMapper)
-    {
-        $this->dataMapper = $dataMapper;
-    }
 
     /**
      * @param ConfigurationManagerInterface $configurationManager
@@ -497,7 +484,8 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      */
     public function getUidOfAlreadyPersistedValueObject(AbstractValueObject $object)
     {
-        $dataMap = $this->dataMapper->getDataMap(get_class($object));
+        $dataMapper = $this->objectManager->get(DataMapper::class);
+        $dataMap = $dataMapper->getDataMap(get_class($object));
         $tableName = $dataMap->getTableName();
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
         if ($this->environmentService->isEnvironmentInFrontendMode()) {
@@ -513,7 +501,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 if ($propertyValue === null) {
                     $whereClause[] = $queryBuilder->expr()->isNull($fieldName);
                 } else {
-                    $whereClause[] = $queryBuilder->expr()->eq($fieldName, $queryBuilder->createNamedParameter($this->dataMapper->getPlainValue($propertyValue)));
+                    $whereClause[] = $queryBuilder->expr()->eq($fieldName, $queryBuilder->createNamedParameter($dataMapper->getPlainValue($propertyValue)));
                 }
             }
         }

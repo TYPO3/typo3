@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidRelationConfigurationException;
@@ -102,11 +103,24 @@ class Typo3DbQueryParser
     protected $suggestDistinctQuery = false;
 
     /**
-     * @param DataMapper $dataMapper
+     * @var ObjectManagerInterface
      */
-    public function injectDataMapper(DataMapper $dataMapper)
+    protected $objectManager;
+
+    /**
+     * @param ObjectManagerInterface $objectManager
+     */
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
-        $this->dataMapper = $dataMapper;
+        $this->objectManager = $objectManager;
+    }
+
+    /**
+     * Object initialization called when object is created with ObjectManager, after constructor
+     */
+    public function initializeObject()
+    {
+        $this->dataMapper = $this->objectManager->get(DataMapper::class);
     }
 
     /**

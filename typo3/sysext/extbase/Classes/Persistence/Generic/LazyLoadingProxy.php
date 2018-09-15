@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  */
 
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 
 /**
  * A proxy that can replace any object and replaces itself in it's parent on
@@ -23,7 +25,7 @@ use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Generic\LoadingStrategyInterface
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
+     * @var DataMapper
      */
     protected $dataMapper;
 
@@ -49,11 +51,16 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
     private $fieldValue;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
+     * @var ObjectManagerInterface
      */
-    public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper)
+    protected $objectManager;
+
+    /**
+     * @param ObjectManagerInterface $objectManager
+     */
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
-        $this->dataMapper = $dataMapper;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -68,6 +75,14 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
         $this->parentObject = $parentObject;
         $this->propertyName = $propertyName;
         $this->fieldValue = $fieldValue;
+    }
+
+    /**
+     * Object initialization called when object is created with ObjectManager, after constructor
+     */
+    public function initializeObject()
+    {
+        $this->dataMapper = $this->objectManager->get(DataMapper::class);
     }
 
     /**

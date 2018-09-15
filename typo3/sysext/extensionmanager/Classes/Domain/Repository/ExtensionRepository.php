@@ -30,19 +30,6 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     const TABLE_NAME = 'tx_extensionmanager_domain_model_extension';
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
-     */
-    protected $dataMapper;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
-     */
-    public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper)
-    {
-        $this->dataMapper = $dataMapper;
-    }
-
-    /**
      * Do not include pid in queries
      */
     public function initializeObject()
@@ -195,7 +182,8 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             ->execute()
             ->fetchAll();
 
-        return $this->dataMapper->map(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class, $result);
+        $dataMapper = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
+        return $dataMapper->map(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class, $result);
     }
 
     /**

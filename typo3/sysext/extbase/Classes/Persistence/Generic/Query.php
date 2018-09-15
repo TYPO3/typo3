@@ -54,9 +54,9 @@ class Query implements QueryInterface
     protected $objectManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
+     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
      */
-    protected $dataMapper;
+    protected $dataMapFactory;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
@@ -114,11 +114,11 @@ class Query implements QueryInterface
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
+     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory
      */
-    public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper)
+    public function injectDataMapFactory(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory)
     {
-        $this->dataMapper = $dataMapper;
+        $this->dataMapFactory = $dataMapFactory;
     }
 
     /**
@@ -218,7 +218,7 @@ class Query implements QueryInterface
     public function getSource()
     {
         if ($this->source === null) {
-            $this->source = $this->qomFactory->selector($this->getType(), $this->dataMapper->convertClassNameToTableName($this->getType()));
+            $this->source = $this->qomFactory->selector($this->getType(), $this->dataMapFactory->buildDataMap($this->getType())->getTableName());
         }
         return $this->source;
     }
@@ -609,7 +609,7 @@ class Query implements QueryInterface
     {
         $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $this->persistenceManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
-        $this->dataMapper = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
+        $this->dataMapFactory = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class);
         $this->qomFactory = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory::class);
     }
 

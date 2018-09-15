@@ -119,6 +119,13 @@ class Typo3DbBackendTest extends UnitTestCase
             '',
             false
         );
+        $mockObjectManager = $this->getAccessibleMock(ObjectManager::class, ['get']);
+        $mockObjectManager->expects($this->any())
+            ->method('get')
+            ->with(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class)
+            ->will($this->returnValue($mockDataMapper));
+
+        $mockTypo3DbBackend->_set('objectManager', $mockObjectManager);
         $mockTypo3DbBackend->_set('dataMapper', $mockDataMapper);
         $mockTypo3DbBackend->_set('connectionPool', $connectionPoolProphet->reveal());
         $mockTypo3DbBackend->_set('environmentService', $environmentServiceProphet->reveal());

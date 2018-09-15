@@ -22,7 +22,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Backend;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
-use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -39,7 +39,7 @@ class BackendTest extends UnitTestCase
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Backend|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $fixture = $this->getAccessibleMock(Backend::class, ['dummy'], [], '', false);
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper|\PHPUnit_Framework_MockObject_MockObject */
-        $dataMapper = $this->createMock(DataMapper::class);
+        $dataMapFactory = $this->createMock(DataMapFactory::class);
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap|\PHPUnit_Framework_MockObject_MockObject */
         $dataMap = $this->createMock(DataMap::class);
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap|\PHPUnit_Framework_MockObject_MockObject */
@@ -70,16 +70,16 @@ class BackendTest extends UnitTestCase
             ->expects($this->any())
             ->method('getColumnMap')
             ->will($this->returnValue($columnMap));
-        $dataMapper
+        $dataMapFactory
             ->expects($this->any())
-            ->method('getDataMap')
+            ->method('buildDataMap')
             ->will($this->returnValue($dataMap));
         $storageBackend
             ->expects($this->once())
             ->method('addRow')
             ->with(null, $expectedRow, true);
 
-        $fixture->_set('dataMapper', $dataMapper);
+        $fixture->_set('dataMapFactory', $dataMapFactory);
         $fixture->_set('storageBackend', $storageBackend);
         $fixture->_call('insertRelationInRelationtable', $domainObject, $domainObject, '');
     }
@@ -119,7 +119,7 @@ class BackendTest extends UnitTestCase
         $parentObject = new \stdClass();
         $proxy = $this->getMockBuilder(LazyLoadingProxy::class)
             ->setMethods(['_loadRealInstance'])
-            ->setConstructorArgs([$parentObject, 'y', 'z'])
+            ->disableOriginalConstructor()
             ->disableProxyingToOriginalMethods()
             ->getMock();
         $session = $this->getMockBuilder('stdClass')

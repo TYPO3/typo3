@@ -30,9 +30,9 @@ class QueryFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected $queryFactory;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper|\PHPUnit_Framework_MockObject_MockObject
+     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $dataMapper;
+    protected $dataMapFactory;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap|\PHPUnit_Framework_MockObject_MockObject
@@ -52,11 +52,11 @@ class QueryFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class)
         );
 
-        $this->dataMapper = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class)
-            ->setMethods(['getDataMap', 'convertClassNameToTableName'])
+        $this->dataMapFactory = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class)
+            ->setMethods(['buildDataMap', 'convertClassNameToTableName'])
             ->getMock();
-        $this->dataMapper->expects($this->any())->method('getDataMap')->will($this->returnValue($this->dataMap));
-        $this->queryFactory->_set('dataMapper', $this->dataMapper);
+        $this->dataMapFactory->expects($this->any())->method('buildDataMap')->will($this->returnValue($this->dataMap));
+        $this->queryFactory->_set('dataMapFactory', $this->dataMapFactory);
     }
 
     public function getStaticAndRootLevelAndExpectedResult()

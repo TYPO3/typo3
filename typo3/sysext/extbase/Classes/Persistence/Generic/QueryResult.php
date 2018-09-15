@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
@@ -49,11 +51,16 @@ class QueryResult implements QueryResultInterface
     protected $queryResult;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
+     * @var ObjectManagerInterface
      */
-    public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper)
+    protected $objectManager;
+
+    /**
+     * @param ObjectManagerInterface $objectManager
+     */
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
-        $this->dataMapper = $dataMapper;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -72,6 +79,14 @@ class QueryResult implements QueryResultInterface
     public function __construct(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query)
     {
         $this->query = $query;
+    }
+
+    /**
+     * Object initialization called when object is created with ObjectManager, after constructor
+     */
+    public function initializeObject()
+    {
+        $this->dataMapper = $this->objectManager->get(DataMapper::class);
     }
 
     /**
@@ -254,7 +269,6 @@ class QueryResult implements QueryResultInterface
     {
         $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $this->persistenceManager = $objectManager->get(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
-        $this->dataMapper = $objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
     }
 
     /**

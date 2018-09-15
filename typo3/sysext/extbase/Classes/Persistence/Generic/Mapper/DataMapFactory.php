@@ -47,6 +47,13 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
     protected $dataMapCache;
 
     /**
+     * Runtime cache for data maps, to reduce number of calls to cache backend.
+     *
+     * @var array
+     */
+    protected $dataMaps = [];
+
+    /**
      * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
      */
     public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService)
@@ -96,11 +103,15 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function buildDataMap($className)
     {
+        if (isset($this->dataMaps[$className])) {
+            return $this->dataMaps[$className];
+        }
         $dataMap = $this->dataMapCache->get(str_replace('\\', '%', $className));
         if ($dataMap === false) {
             $dataMap = $this->buildDataMapInternal($className);
             $this->dataMapCache->set(str_replace('\\', '%', $className), $dataMap);
         }
+        $this->dataMaps[$className] = $dataMap;
         return $dataMap;
     }
 
