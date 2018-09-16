@@ -77,7 +77,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
         }
         $this->initializeObjectManager();
         $this->initializeConfiguration($configuration);
-        $this->configureObjectManager();
+        $this->configureObjectManager(true);
         $this->initializePersistence();
     }
 
@@ -110,14 +110,20 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
      * Configures the object manager object configuration from
      * config.tx_extbase.objects and plugin.tx_foo.objects
      *
+     * @param bool $isInternalCall Set to true by Boostrap, not by extensions
      * @see initialize()
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
-    public function configureObjectManager()
+    public function configureObjectManager($isInternalCall = false)
     {
+        if (!$isInternalCall) {
+            trigger_error(self::class . '::configureObjectManager() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
+        }
         $frameworkSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         if (!isset($frameworkSetup['objects']) || !is_array($frameworkSetup['objects'])) {
             return;
         }
+        trigger_error('Overriding object implementations via TypoScript settings config.tx_extbase.objects and plugin.tx_%plugin%.objects will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $objectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\Container::class);
         foreach ($frameworkSetup['objects'] as $classNameWithDot => $classConfiguration) {
             if (isset($classConfiguration['className'])) {

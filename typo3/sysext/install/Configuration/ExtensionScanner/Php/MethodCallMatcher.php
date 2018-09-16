@@ -3390,4 +3390,18 @@ return [
             'Deprecation-86047-TSFEPropertiesMethodsAndChangeVisibility.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Core\Bootstrap->configureObjectManager' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86270-ExtbaseXclassViaTypoScriptSettings.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\Widget\Bootstrap->configureObjectManager' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86270-ExtbaseXclassViaTypoScriptSettings.rst',
+        ],
+    ],
 ];

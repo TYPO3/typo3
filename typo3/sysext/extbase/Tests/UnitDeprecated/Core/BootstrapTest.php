@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Unit\Core;
+namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Core;
 
 /*
  * This file is part of the TYPO3 CMS project.
