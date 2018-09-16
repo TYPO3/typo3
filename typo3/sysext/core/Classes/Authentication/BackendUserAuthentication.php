@@ -1433,11 +1433,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $this->groupData['file_permissions'] = GeneralUtility::uniqueList($this->dataLists['file_permissions']);
             $this->groupData['workspace_perms'] = $this->dataLists['workspace_perms'];
 
-            // Checking read access to webmounts:
-            if (trim($this->groupData['webmounts']) !== '') {
+            if (!empty(trim($this->groupData['webmounts']))) {
+                // Checking read access to web mounts if there are mounts points (not empty string, false or 0)
                 $webmounts = explode(',', $this->groupData['webmounts']);
-                // Explode mounts
-                // Selecting all webmounts with permission clause for reading
+                // Selecting all web mounts with permission clause for reading
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
                 $queryBuilder->getRestrictions()
                     ->removeAll()
