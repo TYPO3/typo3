@@ -25,12 +25,14 @@ use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Service\SessionService;
 
 /**
  * TYPO3 backend user authentication
@@ -2717,10 +2719,21 @@ This is a dump of the failures:
      */
     public function logoff()
     {
-        if (isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER'] instanceof self && isset($GLOBALS['BE_USER']->user['uid'])) {
-            \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->clean();
+        if (isset($GLOBALS['BE_USER'])
+            && $GLOBALS['BE_USER'] instanceof self
+            && isset($GLOBALS['BE_USER']->user['uid'])
+        ) {
+            FormProtectionFactory::get()->clean();
             // Release the locked records
             $this->releaseLockedRecords((int)$GLOBALS['BE_USER']->user['uid']);
+
+            if ($this->isSystemMaintainer()) {
+                // If user is system maintainer, destroy its possibly valid install tool session.
+                $session = new SessionService();
+                if ($session->hasSession()) {
+                    $session->destroySession();
+                }
+            }
         }
         parent::logoff();
     }
