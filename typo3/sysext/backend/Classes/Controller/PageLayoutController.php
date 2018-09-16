@@ -1188,6 +1188,9 @@ class PageLayoutController
      */
     protected function isPageEditable(): bool
     {
+        if ($this->getBackendUser()->isAdmin()) {
+            return true;
+        }
         return !$this->pageinfo['editlock'] && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::PAGE_EDIT);
     }
 
@@ -1208,6 +1211,9 @@ class PageLayoutController
      */
     protected function isContentEditable(): bool
     {
+        if ($this->getBackendUser()->isAdmin()) {
+            return true;
+        }
         return !$this->pageinfo['editlock'] && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT);
     }
 

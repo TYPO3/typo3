@@ -4478,6 +4478,9 @@ class PageLayoutView implements LoggerAwareInterface
      */
     protected function isPageEditable()
     {
+        if ($this->getBackendUser()->isAdmin()) {
+            return true;
+        }
         return !$this->pageinfo['editlock'] && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::PAGE_EDIT);
     }
 
@@ -4488,6 +4491,9 @@ class PageLayoutView implements LoggerAwareInterface
      */
     protected function isContentEditable()
     {
+        if ($this->getBackendUser()->isAdmin()) {
+            return true;
+        }
         return !$this->pageinfo['editlock'] && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT);
     }
 
