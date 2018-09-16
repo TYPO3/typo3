@@ -21,7 +21,7 @@ define(['jquery', 'TYPO3/CMS/Install/Severity'], function($, Severity) {
    * @type {{template: (*)}}
    */
   var ProgressBar = {
-    template: $('<div class="progress"><div class="t3js-progressbar progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"> <span class="sr-only"></span></div></div>')
+    template: $('<div class="progress"><div class="t3js-progressbar progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"> <span></span></div></div>')
   };
 
   /**
@@ -39,7 +39,7 @@ define(['jquery', 'TYPO3/CMS/Install/Severity'], function($, Severity) {
       progressBar.attr('aria-valuenow', progresss);
     }
     if (title) {
-      progressBar.find('.sr-only').text(title);
+      progressBar.find('span').text(title);
     }
     return progressBar;
   };

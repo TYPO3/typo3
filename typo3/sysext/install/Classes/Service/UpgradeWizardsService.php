@@ -329,23 +329,21 @@ class UpgradeWizardsService
         } elseif ($updateObject instanceof UpgradeWizardInterface && $updateObject instanceof ConfirmableInterface) {
             $wizardHtml = '
             <div class="panel panel-danger">
-                <div class="panel-heading">' .
-                          htmlspecialchars($updateObject->getConfirmation()->getTitle()) .
-                          '</div>
+                <div class="panel-heading">
+                ' . htmlspecialchars($updateObject->getConfirmation()->getTitle()) . '
+                </div>
                 <div class="panel-body">
-                    ' .
-                          nl2br(htmlspecialchars($updateObject->getConfirmation()->getMessage())) .
-                          '
-                    <div class="btn-group clearfix" data-toggle="buttons">
+                    <p>' . nl2br(htmlspecialchars($updateObject->getConfirmation()->getMessage())) . '</p>
+                    <div class="btn-group" data-toggle="buttons">
                         <label class="btn btn-default active">
                             <input type="radio" name="install[values][' .
-                          htmlspecialchars($updateObject->getIdentifier()) .
-                          '][install]" value="0" checked="checked" /> no
+                htmlspecialchars($updateObject->getIdentifier()) .
+                '][install]" value="0" checked="checked" /> No, skip wizard
                         </label>
                         <label class="btn btn-default">
                             <input type="radio" name="install[values][' .
-                          htmlspecialchars($updateObject->getIdentifier()) .
-                          '][install]" value="1" /> yes
+                htmlspecialchars($updateObject->getIdentifier()) .
+                '][install]" value="1" /> Yes, execute wizard
                         </label>
                     </div>
                 </div>
