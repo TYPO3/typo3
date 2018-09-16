@@ -207,6 +207,10 @@ class RootlineUtility
      */
     public function get()
     {
+        if ($this->pageUid === 0) {
+            // pageUid 0 has no root line, return empty array right away
+            return [];
+        }
         if (!isset(static::$localCache[$this->cacheIdentifier])) {
             $entry = static::$cache->get($this->cacheIdentifier);
             if (!$entry) {

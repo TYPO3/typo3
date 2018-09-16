@@ -106,6 +106,10 @@ class SiteFinder
      */
     public function getSiteByPageId(int $pageId, array $rootLine = null): SiteInterface
     {
+        if ($pageId === 0) {
+            // page uid 0 has no root line. We don't need to ask the root line resolver to know that.
+            $rootLine = [];
+        }
         if (!is_array($rootLine)) {
             try {
                 $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
