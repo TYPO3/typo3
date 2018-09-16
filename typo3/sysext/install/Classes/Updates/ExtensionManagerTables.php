@@ -23,76 +23,40 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Contains the update class for filling the basic repository record of the extension manager
  */
-class ExtensionManagerTables extends AbstractUpdate
+class ExtensionManagerTables implements UpgradeWizardInterface, RepeatableInterface
 {
     /**
-     * @var string
+     * @return string Unique identifier of this updater
      */
-    protected $title = 'Add the default Extension Manager database tables';
-
-    /**
-     * Gets all create, add and change queries from ext_tables.sql
-     *
-     * @return array
-     * @throws \BadFunctionCallException
-     * @throws \Doctrine\DBAL\DBALException
-     * @throws \Doctrine\DBAL\Schema\SchemaException
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
-     */
-    protected function getUpdateStatements()
+    public function getIdentifier(): string
     {
-        $updateStatements = [];
-
-        $emTableStatements = $this->getTableStatements();
-
-        if (count($emTableStatements)) {
-            $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
-            $updateSuggestions = $schemaMigrationService->getUpdateSuggestions($emTableStatements);
-            $updateStatements = array_merge_recursive(...array_values($updateSuggestions));
-        }
-
-        return $updateStatements;
+        return 'extensionManagerTables';
     }
 
     /**
-     * Get all CREATE TABLE statements from the ext_tables.sql file
-     *
-     * @return string[]
-     * @throws \BadFunctionCallException
-     * @throws \InvalidArgumentException
+     * @return string Title of this updater
      */
-    protected function getTableStatements(): array
+    public function getTitle(): string
     {
-        $rawDefinitions = file_get_contents(ExtensionManagementUtility::extPath('extensionmanager', 'ext_tables.sql'));
-        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
-        return $sqlReader->getCreateTableStatementArray($rawDefinitions);
+        return 'Add the default Extension Manager database tables';
+    }
+
+    /**
+     * @return string Longer description of this updater
+     */
+    public function getDescription(): string
+    {
+        return 'Creates necessary database tables and adds static data for the Extension Manager.';
     }
 
     /**
      * Checks if an update is needed
      *
-     * @param string &$description The description for the update
      * @return bool Whether an update is needed (TRUE) or not (FALSE)
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
-     * @throws \RuntimeException
-     * @throws \Doctrine\DBAL\Schema\SchemaException
-     * @throws \Doctrine\DBAL\DBALException
-     * @throws \BadFunctionCallException
-     * @throws \InvalidArgumentException
      */
-    public function checkForUpdate(&$description)
+    public function updateNecessary(): bool
     {
         $result = false;
-        $description = 'Creates necessary database tables and adds static data for the Extension Manager.';
-
         // First check necessary database update
         $updateStatements = array_filter($this->getUpdateStatements());
         if (count($updateStatements) === 0) {
@@ -107,22 +71,29 @@ class ExtensionManagerTables extends AbstractUpdate
         } else {
             $result = true;
         }
-
         return $result;
+    }
+
+    /**
+     * @return string[] All new fields and tables must exist
+     */
+    public function getPrerequisites(): array
+    {
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
     }
 
     /**
      * Performs the database update.
      *
-     * @param array &$dbQueries Queries done in this update
-     * @param string &$customMessage Custom message
      * @return bool Whether it worked (TRUE) or not (FALSE)
      */
-    public function performUpdate(array &$dbQueries, &$customMessage)
+    public function executeUpdate(): bool
     {
         $result = true;
-        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
 
+        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
         $createTableStatements = $this->getTableStatements();
 
         // First perform all create, add and change queries
@@ -135,16 +106,37 @@ class ExtensionManagerTables extends AbstractUpdate
         );
 
         $insertStatements = $sqlReader->getInsertStatementArray($rawDefinitions);
-        $results = $schemaMigrationService->importStaticData($insertStatements);
-
-        foreach ($results as $statement => $errorMessage) {
-            $dbQueries[] = $statement;
-            if ($errorMessage) {
-                $result = false;
-                $customMessage .= '<br /><br />SQL-ERROR: ' . htmlspecialchars($errorMessage);
-            }
-        }
+        $schemaMigrationService->importStaticData($insertStatements);
 
         return $result;
+    }
+
+    /**
+     * Gets all create, add and change queries from ext_tables.sql
+     *
+     * @return array
+     */
+    protected function getUpdateStatements()
+    {
+        $updateStatements = [];
+        $emTableStatements = $this->getTableStatements();
+        if (count($emTableStatements)) {
+            $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
+            $updateSuggestions = $schemaMigrationService->getUpdateSuggestions($emTableStatements);
+            $updateStatements = array_merge_recursive(...array_values($updateSuggestions));
+        }
+        return $updateStatements;
+    }
+
+    /**
+     * Get all CREATE TABLE statements from the ext_tables.sql file
+     *
+     * @return string[]
+     */
+    protected function getTableStatements(): array
+    {
+        $rawDefinitions = file_get_contents(ExtensionManagementUtility::extPath('extensionmanager', 'ext_tables.sql'));
+        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
+        return $sqlReader->getCreateTableStatementArray($rawDefinitions);
     }
 }

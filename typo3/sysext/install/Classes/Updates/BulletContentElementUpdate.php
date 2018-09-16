@@ -20,24 +20,39 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Migrate bullet content element rendering from layout to bullets_type
  */
-class BulletContentElementUpdate extends AbstractUpdate
+class BulletContentElementUpdate implements UpgradeWizardInterface
 {
     /**
-     * @var string
+     * @return string Unique identifier of this updater
      */
-    protected $title = '[Optional] Migrate bullet content element rendering selector from layout to bullets_type';
+    public function getIdentifier(): string
+    {
+        return 'bulletContentElementUpdate';
+    }
+
+    /**
+     * @return string Title of this updater
+     */
+    public function getTitle(): string
+    {
+        return 'Migrate bullet content element rendering selector from layout to bullets_type';
+    }
+
+    /**
+     * @return string Longer description of this updater
+     */
+    public function getDescription(): string
+    {
+        return 'Rendering type field has been streamlined with fluid_styled_content.';
+    }
 
     /**
      * Checks if an update is needed
      *
-     * @param string &$description The description for the update
      * @return bool Whether an update is needed (TRUE) or not (FALSE)
      */
-    public function checkForUpdate(&$description)
+    public function updateNecessary(): bool
     {
-        if ($this->isWizardDone()) {
-            return false;
-        }
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
         $queryBuilder->getRestrictions()->removeAll();
         $elementCount = $queryBuilder->count('uid')
@@ -46,21 +61,27 @@ class BulletContentElementUpdate extends AbstractUpdate
                 $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('bullets', \PDO::PARAM_STR)),
                 $queryBuilder->expr()->in('layout', [1, 2])
             )
-            ->execute()->fetchColumn(0);
-        if ($elementCount) {
-            $description = 'Rendering type field has been streamlined with fluid_styled_content.';
-        }
+            ->execute()
+            ->fetchColumn(0);
         return (bool)$elementCount;
+    }
+
+    /**
+     * @return string[] All new fields and tables must exist
+     */
+    public function getPrerequisites(): array
+    {
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
     }
 
     /**
      * Performs the database update
      *
-     * @param array &$databaseQueries Queries done in this update
-     * @param string &$customMessage Custom message
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessage)
+    public function executeUpdate(): bool
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
         $queryBuilder = $connection->createQueryBuilder();
@@ -83,10 +104,8 @@ class BulletContentElementUpdate extends AbstractUpdate
                 )
                 ->set('layout', 0, false)
                 ->set('bullets_type', $record['layout']);
-            $databaseQueries[] = $queryBuilder->getSQL();
             $queryBuilder->execute();
         }
-        $this->markWizardAsDone();
         return true;
     }
 }

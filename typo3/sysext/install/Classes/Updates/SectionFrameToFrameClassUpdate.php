@@ -20,24 +20,41 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Migrate the field 'section_frame' for all content elements to 'frame_class'
  */
-class SectionFrameToFrameClassUpdate extends AbstractUpdate
+class SectionFrameToFrameClassUpdate implements UpgradeWizardInterface
 {
     /**
-     * @var string
+     * @return string Unique identifier of this updater
      */
-    protected $title = 'Migrate the field "section_frame" for all content elements to "frame_class"';
+    public function getIdentifier(): string
+    {
+        return 'sectionFrameToFrameClassUpdate';
+    }
+
+    /**
+     * @return string Title of this updater
+     */
+    public function getTitle(): string
+    {
+        return 'Migrate the field "section_frame" for all content elements to "frame_class"';
+    }
+
+    /**
+     * @return string Longer description of this updater
+     */
+    public function getDescription(): string
+    {
+        return 'Section frames were used to control the wrapping of each content element in the frontend '
+            . 'output, stored as integers in the database. To get rid of a nessesary mapping of those values we '
+            . 'are now storing strings you can easily adjust that will simply passed to the rendering.';
+    }
 
     /**
      * Checks if an update is needed
      *
-     * @param string &$description The description for the update
      * @return bool Whether an update is needed (TRUE) or not (FALSE)
      */
-    public function checkForUpdate(&$description)
+    public function updateNecessary(): bool
     {
-        if ($this->isWizardDone()) {
-            return false;
-        }
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
         $tableColumns = $connection->getSchemaManager()->listTableColumns('tt_content');
         // Only proceed if section_frame field still exists
@@ -51,23 +68,27 @@ class SectionFrameToFrameClassUpdate extends AbstractUpdate
             ->where(
                 $queryBuilder->expr()->gt('section_frame', 0)
             )
-            ->execute()->fetchColumn(0);
-        if ($elementCount) {
-            $description = 'Section frames were used to control the wrapping of each content element in the frontend '
-                . 'output, stored as integers in the database. To get rid of a nessesary mapping of those values we '
-                . 'are now storing strings you can easily adjust that will simply passed to the rendering.';
-        }
+            ->execute()
+            ->fetchColumn(0);
         return (bool)$elementCount;
+    }
+
+    /**
+     * @return string[] All new fields and tables must exist
+     */
+    public function getPrerequisites(): array
+    {
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
     }
 
     /**
      * Performs the database update
      *
-     * @param array &$databaseQueries Queries done in this update
-     * @param string &$customMessage Custom message
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessage)
+    public function executeUpdate(): bool
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
         $queryBuilder = $connection->createQueryBuilder();
@@ -89,10 +110,8 @@ class SectionFrameToFrameClassUpdate extends AbstractUpdate
                 )
                 ->set('section_frame', 0, false)
                 ->set('frame_class', $this->mapSectionFrame($record['section_frame']));
-            $databaseQueries[] = $queryBuilder->getSQL();
             $queryBuilder->execute();
         }
-        $this->markWizardAsDone();
         return true;
     }
 

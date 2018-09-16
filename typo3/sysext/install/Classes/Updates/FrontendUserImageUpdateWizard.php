@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * Upgrade wizard which goes through all files referenced in fe_users::image
  * and creates sys_file records as well as sys_file_reference records for each hit.
  */
-class FrontendUserImageUpdateWizard extends AbstractUpdate implements LoggerAwareInterface
+class FrontendUserImageUpdateWizard implements UpgradeWizardInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -40,11 +40,6 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate implements LoggerAwar
      * Used to prevent memory overflows for huge databases
      */
     const RECORDS_PER_QUERY = 1000;
-
-    /**
-     * @var string
-     */
-    protected $title = 'Migrate all file relations from fe_users.image to sys_file_references';
 
     /**
      * @var ResourceStorage
@@ -96,9 +91,84 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate implements LoggerAwar
     protected $recordOffset = [];
 
     /**
+     * @return string Unique identifier of this updater
+     */
+    public function getIdentifier(): string
+    {
+        return 'frontendUserImageUpdateWizard';
+    }
+
+    /**
+     * @return string Title of this updater
+     */
+    public function getTitle(): string
+    {
+        return 'Migrate all file relations from fe_users.image to sys_file_references';
+    }
+
+    /**
+     * @return string Longer description of this updater
+     */
+    public function getDescription(): string
+    {
+        return 'This update wizard goes through all files that are referenced in the fe_users.image'
+            . ' field and adds the files to the FAL File Index. It also moves the files from'
+            . ' uploads/ to the fileadmin/_migrated/ path.';
+    }
+
+    /**
+     * Checks if an update is needed
+     *
+     * @return bool TRUE if an update is needed, FALSE otherwise
+     */
+    public function updateNecessary(): bool
+    {
+        $this->init();
+        return $this->recordOffset !== [];
+    }
+
+    /**
+     * @return string[] All new fields and tables must exist
+     */
+    public function getPrerequisites(): array
+    {
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
+    }
+
+    /**
+     * Performs the database update.
+     *
+     * @return bool TRUE on success, FALSE on error
+     */
+    public function executeUpdate(): bool
+    {
+        try {
+            $this->init();
+            if (!isset($this->recordOffset[$this->table])) {
+                $this->recordOffset[$this->table] = 0;
+            }
+            do {
+                $limit = $this->recordOffset[$this->table] . ',' . self::RECORDS_PER_QUERY;
+                $records = $this->getRecordsFromTable($limit);
+                foreach ($records as $record) {
+                    $this->migrateField($record);
+                }
+                $this->registry->set($this->registryNamespace, 'recordOffset', $this->recordOffset);
+            } while (count($records) === self::RECORDS_PER_QUERY);
+
+            $this->registry->remove($this->registryNamespace, 'recordOffset');
+        } catch (\Exception $e) {
+            // Silently catch db errors
+        }
+        return true;
+    }
+
+    /**
      * Initialize the storage repository.
      */
-    public function init()
+    protected function init()
     {
         $storages = GeneralUtility::makeInstance(StorageRepository::class)->findAll();
         $this->storage = $storages[0];
@@ -107,83 +177,22 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate implements LoggerAwar
     }
 
     /**
-     * Checks if an update is needed
-     *
-     * @param string &$description The description for the update
-     *
-     * @return bool TRUE if an update is needed, FALSE otherwise
-     */
-    public function checkForUpdate(&$description)
-    {
-        if ($this->isWizardDone()) {
-            return false;
-        }
-
-        $description = 'This update wizard goes through all files that are referenced in the fe_users.image field'
-            . ' and adds the files to the FAL File Index.<br />'
-            . 'It also moves the files from uploads/ to the fileadmin/_migrated/ path.';
-
-        $this->init();
-
-        return $this->recordOffset !== [];
-    }
-
-    /**
-     * Performs the database update.
-     *
-     * @param array &$dbQueries Queries done in this update
-     * @param string &$customMessage Custom message
-     * @return bool TRUE on success, FALSE on error
-     */
-    public function performUpdate(array &$dbQueries, &$customMessage)
-    {
-        $customMessage = '';
-        try {
-            $this->init();
-
-            if (!isset($this->recordOffset[$this->table])) {
-                $this->recordOffset[$this->table] = 0;
-            }
-
-            do {
-                $limit = $this->recordOffset[$this->table] . ',' . self::RECORDS_PER_QUERY;
-                $records = $this->getRecordsFromTable($limit, $dbQueries);
-                foreach ($records as $record) {
-                    $this->migrateField($record, $customMessage, $dbQueries);
-                }
-                $this->registry->set($this->registryNamespace, 'recordOffset', $this->recordOffset);
-            } while (count($records) === self::RECORDS_PER_QUERY);
-
-            $this->markWizardAsDone();
-            $this->registry->remove($this->registryNamespace, 'recordOffset');
-        } catch (\Exception $e) {
-            $customMessage .= PHP_EOL . $e->getMessage();
-        }
-
-        return empty($customMessage);
-    }
-
-    /**
      * Get records from table where the field to migrate is not empty (NOT NULL and != '')
      * and also not numeric (which means that it is migrated)
      *
      * @param int $limit Maximum number records to select
-     * @param array $dbQueries
-     *
      * @return array
      * @throws \RuntimeException
      */
-    protected function getRecordsFromTable($limit, &$dbQueries)
+    protected function getRecordsFromTable($limit)
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable($this->table);
-
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
         try {
-            $result = $queryBuilder
+            return $queryBuilder
                 ->select('uid', 'pid', $this->fieldToMigrate)
                 ->from($this->table)
                 ->where(
@@ -200,11 +209,8 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate implements LoggerAwar
                 )
                 ->orderBy('uid')
                 ->setFirstResult($limit)
-                ->execute();
-
-            $dbQueries[] = $queryBuilder->getSQL();
-
-            return $result->fetchAll();
+                ->execute()
+                ->fetchAll();
         } catch (DBALException $e) {
             throw new \RuntimeException(
                 'Database query failed. Error was: ' . $e->getPrevious()->getMessage(),
@@ -217,12 +223,8 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate implements LoggerAwar
      * Migrates a single field.
      *
      * @param array $row
-     * @param string $customMessage
-     * @param array $dbQueries
-     *
-     * @throws \Exception
      */
-    protected function migrateField($row, &$customMessage, &$dbQueries)
+    protected function migrateField($row)
     {
         $fieldItems = GeneralUtility::trimExplode(',', $row[$this->fieldToMigrate], true);
         if (empty($fieldItems) || is_numeric($row[$this->fieldToMigrate])) {
@@ -281,7 +283,6 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate implements LoggerAwar
                     $file = $this->storage->getFile($this->targetPath . $item);
                     $fileUid = $file->getUid();
                 } catch (\InvalidArgumentException $e) {
-
                     // no file found, no reference can be set
                     $this->logger->notice(
                         'File ' . $this->sourcePath . $item . ' does not exist. Reference was not migrated.',
@@ -291,16 +292,6 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate implements LoggerAwar
                             'field' => $this->fieldToMigrate,
                         ]
                     );
-
-                    $format = 'File \'%s\' does not exist. Referencing field: %s.%d.%s. The reference was not migrated.';
-                    $message = sprintf(
-                        $format,
-                        $this->sourcePath . $item,
-                        $this->table,
-                        $row['uid'],
-                        $this->fieldToMigrate
-                    );
-                    $customMessage .= PHP_EOL . $message;
                     continue;
                 }
             }
@@ -321,7 +312,6 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate implements LoggerAwar
 
                 $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_file_reference');
                 $queryBuilder->insert('sys_file_reference')->values($fields)->execute();
-                $dbQueries[] = str_replace(LF, ' ', $queryBuilder->getSQL());
                 ++$i;
             }
         }
@@ -336,7 +326,6 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate implements LoggerAwar
                     $queryBuilder->createNamedParameter($row['uid'], \PDO::PARAM_INT)
                 )
             )->set($this->fieldToMigrate, $i)->execute();
-            $dbQueries[] = str_replace(LF, ' ', $queryBuilder->getSQL());
         } else {
             $this->recordOffset[$this->table]++;
         }

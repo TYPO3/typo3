@@ -34,7 +34,7 @@ class ReferenceIndexUpdatedPrerequisite implements PrerequisiteInterface, Chatty
      */
     private $referenceIndex;
     /**
-     * @var \Symfony\Component\Console\Output\OutputInterface
+     * @var OutputInterface
      */
     protected $output;
 
@@ -83,7 +83,7 @@ class ReferenceIndexUpdatedPrerequisite implements PrerequisiteInterface, Chatty
     }
 
     /**
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param OutputInterface $output
      */
     public function setOutput(OutputInterface $output): void
     {

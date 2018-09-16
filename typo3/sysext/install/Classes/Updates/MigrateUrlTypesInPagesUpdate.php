@@ -1,6 +1,5 @@
 <?php
 declare(strict_types = 1);
-
 namespace TYPO3\CMS\Install\Updates;
 
 /*
@@ -22,39 +21,47 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Merge URLs divided in pages.urltype and pages.url into pages.url
  */
-class MigrateUrlTypesInPagesUpdate extends AbstractUpdate
+class MigrateUrlTypesInPagesUpdate implements UpgradeWizardInterface
 {
-    /**
-     * @var string
-     */
-    protected $title = 'Migrate pages.urltype to pages.url';
-
     private $databaseTables = ['pages', 'pages_language_overlay'];
     private $urltypes = ['', 'http://', 'ftp://', 'mailto:', 'https://'];
 
     /**
+     * @return string Unique identifier of this updater
+     */
+    public function getIdentifier(): string
+    {
+        return 'pagesUrltypeField';
+    }
+
+    /**
+     * @return string Title of this updater
+     */
+    public function getTitle(): string
+    {
+        return 'Migrate pages.urltype to pages.url';
+    }
+
+    /**
+     * @return string Longer description of this updater
+     */
+    public function getDescription(): string
+    {
+        return 'The page property "URL Protocol" for external URLs has been merged into the URL itself.'
+            . ' The update wizard takes care of properly populating all existing pages and page translations.';
+    }
+
+    /**
      * Checks if an update is needed
      *
-     * @param string $description The description for the update
      * @return bool Whether an update is needed (true) or not (false)
-     * @throws \InvalidArgumentException
      */
-    public function checkForUpdate(&$description): bool
+    public function updateNecessary(): bool
     {
-        if ($this->isWizardDone()) {
+        if (!$this->checkIfWizardIsRequired()) {
             return false;
         }
-
-        if ($this->checkIfWizardIsNotRequired()) {
-            $this->markWizardAsDone();
-            return false;
-        }
-
-        $description = '<p>The page property "URL Protocol" for external URLs has been merged into the URL itself.</p>
-The update wizard takes care of properly populating all existing pages and page translations.';
-
         $recordsToMigrate = 0;
-
         // Check if there is data to migrate
         foreach ($this->databaseTables as $databaseTable) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -73,46 +80,26 @@ The update wizard takes care of properly populating all existing pages and page 
                 break;
             }
         }
-
         return $recordsToMigrate > 0;
     }
 
     /**
-     * Check each table if the column exists
-     *
-     * @return bool
-     * @throws \InvalidArgumentException
+     * @return string[] All new fields and tables must exist
      */
-    protected function checkIfWizardIsNotRequired(): bool
+    public function getPrerequisites(): array
     {
-        foreach ($this->databaseTables as $key => $databaseTable) {
-            $columns = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable($databaseTable)
-                ->getSchemaManager()
-                ->listTableColumns($databaseTable);
-            if (!isset($columns['urltype'])) {
-                unset($this->databaseTables[$key]);
-            }
-        }
-
-        return count($this->databaseTables) === 0;
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
     }
 
     /**
      * Moves data from pages.urltype to pages.url
      *
-     * @param array $databaseQueries Queries done in this update
-     * @param string $customMessage Custom messages
      * @return bool
-     * @throws \InvalidArgumentException
-     * @throws \Doctrine\DBAL\DBALException
      */
-    public function performUpdate(array &$databaseQueries, &$customMessage): bool
+    public function executeUpdate(): bool
     {
-        if ($this->checkIfWizardIsNotRequired()) {
-            $this->markWizardAsDone();
-            return false;
-        }
         foreach ($this->databaseTables as $databaseTable) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable($databaseTable);
@@ -128,8 +115,6 @@ The update wizard takes care of properly populating all existing pages and page 
                 )
                 ->execute();
 
-            $databaseQueries[] = $queryBuilder->getSQL();
-
             while ($row = $statement->fetch()) {
                 $url = $this->urltypes[(int)$row['urltype']] . $row['url'];
                 $updateQueryBuilder = $connection->createQueryBuilder();
@@ -143,12 +128,28 @@ The update wizard takes care of properly populating all existing pages and page 
                     )
                     ->set('url', $updateQueryBuilder->createNamedParameter($url), false)
                     ->set('urltype', 0);
-
-                $databaseQueries[] = $updateQueryBuilder->getSQL();
                 $updateQueryBuilder->execute();
             }
         }
-        $this->markWizardAsDone();
         return true;
+    }
+
+    /**
+     * Check each table if the column exists
+     *
+     * @return bool
+     */
+    protected function checkIfWizardIsRequired(): bool
+    {
+        foreach ($this->databaseTables as $key => $databaseTable) {
+            $columns = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable($databaseTable)
+                ->getSchemaManager()
+                ->listTableColumns($databaseTable);
+            if (!isset($columns['urltype'])) {
+                unset($this->databaseTables[$key]);
+            }
+        }
+        return count($this->databaseTables) > 0;
     }
 }

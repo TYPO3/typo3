@@ -69,6 +69,7 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
 
     /**
      * @return string Longer description of this updater
+     * @throws \RuntimeException
      */
     public function getDescription(): string
     {

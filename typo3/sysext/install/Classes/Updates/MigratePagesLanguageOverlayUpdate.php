@@ -15,85 +15,109 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\LoadTcaService;
 
 /**
- * Class MigratePagesLanguageOverlayUpdate
+ * Merge pages_language_overlay rows into pages table
  */
-class MigratePagesLanguageOverlayUpdate extends AbstractUpdate
+class MigratePagesLanguageOverlayUpdate implements UpgradeWizardInterface, ChattyInterface
 {
     /**
-     * The human-readable title of the upgrade wizard
-     *
-     * @var string
+     * @var OutputInterface
      */
-    protected $title = 'Migrate content from pages_language_overlay to pages';
+    protected $output;
+
+    /**
+     * @return string Unique identifier of this updater
+     */
+    public function getIdentifier(): string
+    {
+        return 'pagesLanguageOverlay';
+    }
+
+    /**
+     * @return string Title of this updater
+     */
+    public function getTitle(): string
+    {
+        return 'Migrate content from pages_language_overlay to pages';
+    }
+
+    /**
+     * @return string Longer description of this updater
+     */
+    public function getDescription(): string
+    {
+        return 'The table pages_language_overlay will be removed to align the translation '
+            . 'handling for pages with the rest of the core. This wizard transfers all data to the pages '
+            . 'table by creating new entries and linking them to the l10n parent. This might take a while, '
+            . 'because max. (amount of pages) x (active languages) new entries need be created.';
+    }
 
     /**
      * Checks whether updates are required.
      *
-     * @param string &$description The description for the update
      * @return bool Whether an update is required (TRUE) or not (FALSE)
      */
-    public function checkForUpdate(&$description)
+    public function updateNecessary(): bool
     {
-        $description = 'The table pages_language_overlay will be removed to align the translation ' .
-            'handling for pages with the rest of the core. This wizard transfers all data to the pages ' .
-            'table by creating new entries and linking them to the l10n parent. This might take a while, ' .
-            'because max. (amount of pages) x (active languages) new entries need be created.';
-
-        $updateNeeded = false;
-
         // Check if the database table even exists
-        if ($this->checkIfWizardIsRequired() && !$this->isWizardDone()) {
-            $updateNeeded = true;
+        if ($this->checkIfWizardIsRequired()) {
+            return true;
         }
-
-        return $updateNeeded;
+        return false;
     }
 
     /**
-     * Shows information on the next step of the page
-     *
-     * @param string $formFieldNamePrefix
-     * @return string
+     * @return string[] All new fields and tables must exist
      */
-    public function getUserInput($formFieldNamePrefix)
+    public function getPrerequisites(): array
     {
-        $message = '';
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
+    }
+
+    /**
+     * Additional output if there are columns with mm config
+     *
+     * @param OutputInterface $output
+     */
+    public function setOutput(OutputInterface $output): void
+    {
+        $this->output = $output;
+    }
+
+    /**
+     * Performs the update.
+     *
+     * @return bool Whether everything went smoothly or not
+     */
+    public function executeUpdate(): bool
+    {
         // Warn for TCA relation configurations which are not migrated.
-        if (isset($GLOBALS['TCA']['pages_language_overlay']['columns']) && is_array($GLOBALS['TCA']['pages_language_overlay']['columns'])) {
+        if (isset($GLOBALS['TCA']['pages_language_overlay']['columns'])
+            && is_array($GLOBALS['TCA']['pages_language_overlay']['columns'])
+        ) {
             foreach ($GLOBALS['TCA']['pages_language_overlay']['columns'] as $fieldName => $fieldConfiguration) {
                 if (isset($fieldConfiguration['config']['MM'])) {
-                    $message .= '<p>The pages_language_overlay field ' . $fieldName
+                    $this->output->writeln('The pages_language_overlay field ' . $fieldName
                         . ' with its MM relation configuration can not be migrated'
                         . ' automatically. Existing data relations to this field have'
-                        . ' to be migrated manually.</p>';
+                        . ' to be migrated manually.');
                 }
             }
         }
-        return $message;
-    }
 
-    /**
-     * Performs the accordant updates.
-     *
-     * @param array &$dbQueries Queries done in this update
-     * @param string &$customMessage Custom message
-     * @return bool Whether everything went smoothly or not
-     * @throws \InvalidArgumentException
-     */
-    public function performUpdate(array &$dbQueries, &$customMessage)
-    {
         // Ensure pages_language_overlay is still available in TCA
         GeneralUtility::makeInstance(LoadTcaService::class)->loadExtensionTablesWithoutMigration();
         $this->mergePagesLanguageOverlayIntoPages();
         $this->updateInlineRelations();
         $this->updateSysHistoryRelations();
-        $this->markWizardAsDone();
         $this->enableFeatureFlag();
         return true;
     }
@@ -252,7 +276,6 @@ class MigratePagesLanguageOverlayUpdate extends AbstractUpdate
      *
      * @param int $pageId
      * @return array
-     * @throws \InvalidArgumentException
      */
     protected function fetchDefaultLanguagePageRecord(int $pageId): array
     {

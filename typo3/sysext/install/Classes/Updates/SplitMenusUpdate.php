@@ -20,24 +20,41 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Split menu types into dedicated content elements
  */
-class SplitMenusUpdate extends AbstractUpdate
+class SplitMenusUpdate implements UpgradeWizardInterface
 {
     /**
-     * @var string
+     * @return string Unique identifier of this updater
      */
-    protected $title = 'Split menu types into dedicated content elements';
+    public function getIdentifier(): string
+    {
+        return 'splitMenusUpdate';
+    }
+
+    /**
+     * @return string Title of this updater
+     */
+    public function getTitle(): string
+    {
+        return 'Split menu types into dedicated content elements';
+    }
+
+    /**
+     * @return string Longer description of this updater
+     */
+    public function getDescription(): string
+    {
+        return 'Menus have been split into dedicated content elements to provide '
+            . 'a better maintainability and more easy to adjustable template with single '
+            . 'responsibility for the rendering.';
+    }
 
     /**
      * Checks if an update is needed
      *
-     * @param string &$description The description for the update
      * @return bool Whether an update is needed (TRUE) or not (FALSE)
      */
-    public function checkForUpdate(&$description)
+    public function updateNecessary(): bool
     {
-        if ($this->isWizardDone()) {
-            return false;
-        }
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
         $tableColumns = $connection->getSchemaManager()->listTableColumns('tt_content');
         // Only proceed if menu_type field still exists
@@ -52,22 +69,25 @@ class SplitMenusUpdate extends AbstractUpdate
                 $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('menu', \PDO::PARAM_STR))
             )
             ->execute()->fetchColumn(0);
-        if ($elementCount) {
-            $description = 'Menus have been splitted into dedicated content elements to provide '
-                . 'a better maintainability and more easy to adjustable template with single '
-                . 'responsibility for the rendering.';
-        }
         return (bool)$elementCount;
+    }
+
+    /**
+     * @return string[] All new fields and tables must exist
+     */
+    public function getPrerequisites(): array
+    {
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
     }
 
     /**
      * Performs the database update
      *
-     * @param array &$databaseQueries Queries done in this update
-     * @param string &$customMessage Custom message
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessage)
+    public function executeUpdate(): bool
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
         $queryBuilder = $connection->createQueryBuilder();
@@ -91,10 +111,8 @@ class SplitMenusUpdate extends AbstractUpdate
                     )
                 )
                 ->set('CType', $this->mapMenuTypes($record['menu_type']));
-            $databaseQueries[] = $queryBuilder->getSQL();
             $queryBuilder->execute();
         }
-        $this->markWizardAsDone();
         return true;
     }
 

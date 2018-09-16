@@ -22,31 +22,43 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Update sys_language records to use the newly sorting column,
  * set default sorting from title
  */
-class LanguageSortingUpdate extends AbstractUpdate
+class LanguageSortingUpdate implements UpgradeWizardInterface
 {
     /**
-     * @var string
+     * @return string Unique identifier of this updater
      */
-    protected $title = 'Update sorting of sys_language records';
+    public function getIdentifier(): string
+    {
+        return 'sysLanguageSorting';
+    }
+
+    /**
+     * @return string Title of this updater
+     */
+    public function getTitle(): string
+    {
+        return 'Update sorting of sys_language records';
+    }
+
+    /**
+     * @return string Longer description of this updater
+     */
+    public function getDescription(): string
+    {
+        return 'The sys_language records have unsorted rows. '
+            . ' This upgrade wizard adds values depending on the language title';
+    }
 
     /**
      * Checks if an update is needed
      *
-     * @param string &$description The description for the update
-     *
      * @return bool Whether an update is needed (TRUE) or not (FALSE)
      */
-    public function checkForUpdate(&$description): bool
+    public function updateNecessary(): bool
     {
-        if ($this->isWizardDone()) {
-            $this->markWizardAsDone();
-
-            return false;
-        }
-
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_language');
-        $hasAffectedRows = (bool)$queryBuilder->count('uid')
+        return (bool)$queryBuilder->count('uid')
             ->from('sys_language')
             ->where(
                 $queryBuilder->expr()->eq('sorting', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
@@ -54,24 +66,24 @@ class LanguageSortingUpdate extends AbstractUpdate
             )
             ->execute()
             ->fetchColumn(0);
+    }
 
-        if ($hasAffectedRows === true) {
-            $description = 'The sys_language records have unsorted rows. '
-                . ' This upgrade wizard adds values depending on the language title';
-        }
-
-        return $hasAffectedRows;
+    /**
+     * @return string[] All new fields and tables must exist
+     */
+    public function getPrerequisites(): array
+    {
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
     }
 
     /**
      * Performs the database update if the sorting field is 0 or null
      *
-     * @param array &$databaseQueries Queries done in this update
-     * @param string &$customMessage Custom message
-     *
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessage): bool
+    public function executeUpdate(): bool
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_language');
@@ -93,13 +105,10 @@ class LanguageSortingUpdate extends AbstractUpdate
                         $queryBuilder->createNamedParameter($languageRecord['uid'], \PDO::PARAM_INT)
                     )
                 )
-                ->set('sorting', $sortCounter);
-            $databaseQueries[] = $queryBuilder->getSQL();
-            $queryBuilder->execute();
+                ->set('sorting', $sortCounter)
+                ->execute();
             $sortCounter *= 2;
         }
-        $this->markWizardAsDone();
-
         return true;
     }
 }

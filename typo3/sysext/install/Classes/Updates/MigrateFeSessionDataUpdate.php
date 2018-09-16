@@ -22,36 +22,46 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Merge sessions from old fe_session_data table into new structure from fe_sessions
  */
-class MigrateFeSessionDataUpdate extends AbstractUpdate
+class MigrateFeSessionDataUpdate implements UpgradeWizardInterface
 {
     /**
-     * @var string
+     * @return string Unique identifier of this updater
      */
-    protected $title = 'Migrates existing fe_session_data into fe_sessions';
+    public function getIdentifier(): string
+    {
+        return 'migrateFeSessionDataUpdate';
+    }
+
+    /**
+     * @return string Title of this updater
+     */
+    public function getTitle(): string
+    {
+        return 'Migrates existing fe_session_data into fe_sessions';
+    }
+
+    /**
+     * @return string Longer description of this updater
+     */
+    public function getDescription(): string
+    {
+        return 'With the new Session Framwework the session data is stored in fe_sessions.'
+            . ' To avoid that data is truncated, ensure the columns of fe_sessions have been updated.'
+            . ' This wizard migrates the existing data from fe_session_data into fe_sessions.'
+            . ' Existing entries in fe_sessions having an entry in fe_session_data are updated.'
+            . ' Entries in fe_session_data not found in fe_sessions are inserted with ses_anonymous = true';
+    }
 
     /**
      * Checks if an update is needed
      *
-     * @param string $description The description for the update
-     *
      * @return bool Whether an update is needed (true) or not (false)
      */
-    public function checkForUpdate(&$description)
+    public function updateNecessary(): bool
     {
-        if ($this->isWizardDone()) {
-            return false;
-        }
-
         if (!$this->checkIfTableExists('fe_session_data')) {
             return false;
         }
-
-        $description = 'With the new Session Framwework the session data is stored in fe_sessions.</p>'
-            . ' <b>To avoid that data is truncated, ensure the columns of fe_sessions have been updated.</b></p>'
-            . ' This wizard migrates the existing data from fe_session_data into fe_sessions.'
-            . ' Existing entries in fe_sessions having an entry in fe_session_data are updated.'
-            . ' Entries in fe_session_data not found in fe_sessions are inserted with ses_anonymous = true';
-
         // Check if there is data to migrate
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('fe_session_data');
@@ -65,14 +75,21 @@ class MigrateFeSessionDataUpdate extends AbstractUpdate
     }
 
     /**
+     * @return string[] All new fields and tables must exist
+     */
+    public function getPrerequisites(): array
+    {
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
+    }
+
+    /**
      * Moves data from fe_session_data into fe_sessions with respect to ses_anonymous
      *
-     * @param array $databaseQueries Queries done in this update
-     * @param string $customMessage Custom messages
      * @return bool
-     * @throws \Doctrine\DBAL\DBALException
      */
-    public function performUpdate(array &$databaseQueries, &$customMessage)
+    public function executeUpdate(): bool
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('fe_sessions');
 
@@ -90,7 +107,6 @@ class MigrateFeSessionDataUpdate extends AbstractUpdate
                 )
             )
             ->execute();
-        $databaseQueries[] = $queryBuilder->getSQL();
 
         $updateQueryBuilder = $connection->createQueryBuilder();
         $updateQueryBuilder->update('fe_sessions')
@@ -101,7 +117,6 @@ class MigrateFeSessionDataUpdate extends AbstractUpdate
                 )
             )
             ->set('ses_data', $updateQueryBuilder->createPositionalParameter('', \PDO::PARAM_STR), false);
-        $databaseQueries[] = $updateQueryBuilder->getSQL();
         $updateStatement = $connection->prepare($updateQueryBuilder->getSQL());
 
         $connection->beginTransaction();
@@ -141,7 +156,6 @@ class MigrateFeSessionDataUpdate extends AbstractUpdate
             $connection->quoteIdentifier('ses_anonymous'),
             $selectSQL
         );
-        $databaseQueries[] = $insertSQL;
 
         try {
             $connection->beginTransaction();
@@ -152,7 +166,22 @@ class MigrateFeSessionDataUpdate extends AbstractUpdate
             throw $e;
         }
 
-        $this->markWizardAsDone();
         return true;
+    }
+
+    /**
+     * Check if given table exists
+     *
+     * @param string $table
+     * @return bool
+     */
+    protected function checkIfTableExists($table): bool
+    {
+        $tableExists = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($table)
+            ->getSchemaManager()
+            ->tablesExist([$table]);
+
+        return $tableExists;
     }
 }

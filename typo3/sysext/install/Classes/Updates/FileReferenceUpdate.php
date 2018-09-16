@@ -1,6 +1,5 @@
 <?php
 declare(strict_types = 1);
-
 namespace TYPO3\CMS\Install\Updates;
 
 /*
@@ -26,50 +25,65 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Migrate file references that are stored in a wrong way to correct scheme
  */
-class FileReferenceUpdate extends AbstractUpdate
+class FileReferenceUpdate implements UpgradeWizardInterface
 {
     /**
-     * @var string
+     * @return string Unique identifier of this updater
      */
-    protected $title = 'Migrate file references that are stored in a wrong way to correct scheme';
+    public function getIdentifier(): string
+    {
+        return 'fileReferenceUpdate';
+    }
 
     /**
-     * Checks if an update is needed
-     *
-     * @param string &$description The description for the update
-     * @return bool Whether an update is needed (TRUE) or not (FALSE)
+     * @return string Title of this updater
      */
-    public function checkForUpdate(&$description)
+    public function getTitle(): string
     {
-        if ($this->isWizardDone()) {
-            return false;
-        }
+        return 'Migrate file references that are stored in a wrong way to correct scheme';
+    }
 
+    /**
+     * @return string Longer description of this updater
+     */
+    public function getDescription(): string
+    {
+        return 'File references were saved in a wrong way and references are not shown correctly in file list module.';
+    }
+
+    /**
+     * @return bool True if there are records to update
+     */
+    public function updateNecessary(): bool
+    {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
-        $count = $queryBuilder->count('hash')
+        return (bool)$queryBuilder->count('hash')
             ->from('sys_refindex')
             ->where(
                 $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('_FILE', \PDO::PARAM_STR)),
                 $queryBuilder->expr()->eq('softref_key', $queryBuilder->createNamedParameter('typolink_tag', \PDO::PARAM_STR)),
                 $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
-            ->execute()->fetchColumn(0);
-
-        if ($count) {
-            $description = 'File references were saved in a wrong way and references aren\'t shown correctly in file list module.';
-        }
-
-        return (bool)$count;
+            ->execute()
+            ->fetchColumn(0);
     }
 
     /**
-     * Performs the database update
+     * @return string[] All new fields and tables must exist
+     */
+    public function getPrerequisites(): array
+    {
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
+    }
+
+    /**
+     * Performs the update
      *
-     * @param array &$databaseQueries Queries done in this update
-     * @param string &$customMessage Custom message
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessage)
+    public function executeUpdate(): bool
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_refindex');
         $queryBuilder = $connection->createQueryBuilder();
@@ -92,6 +106,7 @@ class FileReferenceUpdate extends AbstractUpdate
                         $fileReference = $fileObject->getUid();
                     }
                 } catch (Exception $e) {
+                    // Silently catch if there is no file object
                 }
             }
 
@@ -112,11 +127,8 @@ class FileReferenceUpdate extends AbstractUpdate
                 $updateQueryBuilder->set('deleted', 1);
             }
 
-            $databaseQueries[] = $updateQueryBuilder->getSQL();
             $updateQueryBuilder->execute();
         }
-
-        $this->markWizardAsDone();
 
         return true;
     }

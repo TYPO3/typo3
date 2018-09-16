@@ -44,6 +44,9 @@ abstract class AbstractDownloadExtensionUpdate implements UpgradeWizardInterface
      */
     protected $extension;
 
+    /**
+     * @param OutputInterface $output
+     */
     public function setOutput(OutputInterface $output): void
     {
         $this->output = $output;
@@ -106,16 +109,12 @@ abstract class AbstractDownloadExtensionUpdate implements UpgradeWizardInterface
 
         if ($isComposerMode && !$isExtensionAvailable) {
             $updateSuccessful = false;
-            $this->output->writeln('<warning>The extension ' .
-                              $extensionKey .
-                              ' can not be downloaded since ' .
-                              'Composer is used for package management. Please require this ' .
-                              'extension as package via Composer: ' .
-                              '"composer require ' .
-                              $extension->getComposerName() .
-                              ':^' .
-                              $extension->getVersionString() .
-                              '"</warning>');
+            $this->output->writeln(
+                '<warning>The extension ' . $extensionKey
+                . ' can not be downloaded since Composer is used for package management. Please require this '
+                . 'extension as package via Composer: "composer require ' . $extension->getComposerName()
+                . ':^' . $extension->getVersionString() . '"</warning>'
+            );
         }
 
         if ($updateSuccessful) {

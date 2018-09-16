@@ -31,7 +31,7 @@ class DatabaseUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterf
      */
     protected $upgradeWizardsService;
     /**
-     * @var \Symfony\Component\Console\Output\OutputInterface
+     * @var OutputInterface
      */
     protected $output;
 
@@ -71,7 +71,7 @@ class DatabaseUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterf
     }
 
     /**
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param OutputInterface $output
      */
     public function setOutput(OutputInterface $output): void
     {

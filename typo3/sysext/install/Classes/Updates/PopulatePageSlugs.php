@@ -29,54 +29,71 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * - Check if realurl v1 (tx_realurl_pathcache) or v2 (tx_realurl_pathdata) has a page path, use that instead.
  * - If not -> generate the slug.
  */
-class PopulatePageSlugs extends AbstractUpdate
+class PopulatePageSlugs implements UpgradeWizardInterface
 {
-    /**
-     * The human-readable title of the upgrade wizard
-     *
-     * @var string
-     */
-    protected $title = 'Introduce URL parts ("slugs") to all existing pages';
-
     protected $table = 'pages';
 
     protected $fieldName = 'slug';
 
     /**
+     * @return string Unique identifier of this updater
+     */
+    public function getIdentifier(): string
+    {
+        return 'pagesSlugs';
+    }
+
+    /**
+     * @return string Title of this updater
+     */
+    public function getTitle(): string
+    {
+        return 'Introduce URL parts ("slugs") to all existing pages';
+    }
+
+    /**
+     * @return string Longer description of this updater
+     */
+    public function getDescription(): string
+    {
+        return 'TYPO3 includes native URL handling. Every page record has its own speaking URL path'
+            . ' called "slug" which can be edited in TYPO3 Backend. However, it is necessary that all pages have'
+            . ' a URL pre-filled. This is done by evaluating the page title / navigation title and all of its rootline.';
+    }
+
+    /**
      * Checks whether updates are required.
      *
-     * @param string &$description The description for the update
      * @return bool Whether an update is required (TRUE) or not (FALSE)
      */
-    public function checkForUpdate(&$description): bool
+    public function updateNecessary(): bool
     {
-        $description = 'TYPO3 includes native URL handling. Every page record has its own speaking URL path ' .
-            'called "slug" which can be edited in TYPO3 Backend. However, it is necessary that all pages have
-            a URL pre-filled. This is done by evaluating the page title / navigation title and all of its rootline.';
-
         $updateNeeded = false;
-
         // Check if the database table even exists
-        if ($this->checkIfWizardIsRequired() && !$this->isWizardDone()) {
+        if ($this->checkIfWizardIsRequired()) {
             $updateNeeded = true;
         }
-
         return $updateNeeded;
+    }
+
+    /**
+     * @return string[] All new fields and tables must exist
+     */
+    public function getPrerequisites(): array
+    {
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
     }
 
     /**
      * Performs the accordant updates.
      *
-     * @param array &$dbQueries Queries done in this update
-     * @param string &$customMessage Custom message
      * @return bool Whether everything went smoothly or not
-     * @throws \InvalidArgumentException
      */
-    public function performUpdate(array &$dbQueries, &$customMessage): bool
+    public function executeUpdate(): bool
     {
-        $results = $this->populateSlugs();
-        $customMessage .= implode('<br>', $results);
-        $this->markWizardAsDone();
+        $this->populateSlugs();
         return true;
     }
 
@@ -84,7 +101,7 @@ class PopulatePageSlugs extends AbstractUpdate
      * Fills the database table "pages" with slugs based on the page title and its configuration.
      * But also checks "legacy" functionality.
      */
-    protected function populateSlugs(): array
+    protected function populateSlugs()
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
         $queryBuilder = $connection->createQueryBuilder();
@@ -120,7 +137,6 @@ class PopulatePageSlugs extends AbstractUpdate
         $hasToBeUniqueInSite = in_array('uniqueInSite', $evalInfo, true);
         $hasToBeUniqueInPid = in_array('uniqueInPid', $evalInfo, true);
         $slugHelper = GeneralUtility::makeInstance(SlugHelper::class, $this->table, $this->fieldName, $fieldConfig);
-        $messages = [];
         while ($record = $statement->fetch()) {
             $recordId = (int)$record['uid'];
             $pid = (int)$record['pid'];
@@ -160,9 +176,7 @@ class PopulatePageSlugs extends AbstractUpdate
                 [$this->fieldName => $slug],
                 ['uid' => $recordId]
             );
-            $messages[] = 'Update record ' . $this->table . ':' . $recordId . ' with slug "' . htmlspecialchars($slug) . '"';
         }
-        return $messages;
     }
 
     /**
@@ -212,5 +226,21 @@ class PopulatePageSlugs extends AbstractUpdate
             $suggestedSlugs[(int)$row['page_id']][(int)$row['language_id']] = '/' . trim($row['pagepath'], '/') . '/';
         }
         return $suggestedSlugs;
+    }
+
+    /**
+     * Check if given table exists
+     *
+     * @param string $table
+     * @return bool
+     */
+    protected function checkIfTableExists($table)
+    {
+        $tableExists = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($table)
+            ->getSchemaManager()
+            ->tablesExist([$table]);
+
+        return $tableExists;
     }
 }

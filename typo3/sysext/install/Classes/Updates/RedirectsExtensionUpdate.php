@@ -110,7 +110,7 @@ class RedirectsExtensionUpdate extends AbstractDownloadExtensionUpdate
     public function executeUpdate(): bool
     {
         // Install the EXT:redirects extension if not happened yet
-        $installationSuccessful = $this->installExtension($this->extension->getKey());
+        $installationSuccessful = $this->installExtension($this->extension);
         if ($installationSuccessful) {
             // Migrate the database entries
             $this->migrateRedirectDomainsToSysRedirect();

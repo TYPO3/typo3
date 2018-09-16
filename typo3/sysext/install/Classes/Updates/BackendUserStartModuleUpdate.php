@@ -20,20 +20,40 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Update backend user setting startModule if set to "help_aboutmodules" or "help_CshmanualCshmanual"
  */
-class BackendUserStartModuleUpdate extends AbstractUpdate
+class BackendUserStartModuleUpdate implements UpgradeWizardInterface
 {
     /**
-     * @var string
+     * @return string Unique identifier of this updater
      */
-    protected $title = 'Update backend user setting "startModule"';
+    public function getIdentifier(): string
+    {
+        return 'cshmanualBackendUsers';
+    }
+
+    /**
+     * @return string Title of this updater
+     */
+    public function getTitle(): string
+    {
+        return 'Update backend user setting "startModule"';
+    }
+
+    /**
+     * @return string Longer description of this updater
+     */
+    public function getDescription(): string
+    {
+        return 'The backend user setting startModule is changed for the extensions about/aboutmodules'
+            . ' and help/cshmanual. Update all backend users that use EXT:aboutmodules and'
+            . ' EXT:cshmanual as startModule.';
+    }
 
     /**
      * Checks if an update is needed
      *
-     * @param string &$description The description for the update
      * @return bool Whether an update is needed (TRUE) or not (FALSE)
      */
-    public function checkForUpdate(&$description)
+    public function updateNecessary(): bool
     {
         $statement = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('be_users')
@@ -53,22 +73,26 @@ class BackendUserStartModuleUpdate extends AbstractUpdate
                 }
             }
         }
-        if ($needsExecution) {
-            $description = 'The backend user setting startModule is changed for the extensions about/aboutmodules and help/cshmanual. Update all'
-                . ' backend users that use EXT:aboutmodules and EXT:cshmanual as startModule.';
-        }
         return $needsExecution;
+    }
+
+    /**
+     * @return string[] All new fields and tables must exist
+     */
+    public function getPrerequisites(): array
+    {
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
     }
 
     /**
      * Performs the database update if backend user's startmodule is
      * "help_aboutmodules" or "help_AboutmodulesAboutmodules" or "help_CshmanualCshmanual"
      *
-     * @param array &$databaseQueries Queries done in this update
-     * @param string &$customMessage Custom message
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessage)
+    public function executeUpdate(): bool
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
         $statement = $queryBuilder->select('uid', 'uc')->from('be_users')->execute();
@@ -95,9 +119,8 @@ class BackendUserStartModuleUpdate extends AbstractUpdate
                         )
                         // Manual quoting and false as third parameter to have the final
                         // value in $databaseQueries and not a statement placeholder
-                        ->set('uc', serialize($userConfig));
-                    $databaseQueries[] = $queryBuilder->getSQL();
-                    $queryBuilder->execute();
+                        ->set('uc', serialize($userConfig))
+                        ->execute();
                 }
             }
         }

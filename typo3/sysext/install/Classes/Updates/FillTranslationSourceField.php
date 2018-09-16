@@ -20,24 +20,39 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Fill translation source field (l10n_source)
  */
-class FillTranslationSourceField extends AbstractUpdate
+class FillTranslationSourceField implements UpgradeWizardInterface
 {
     /**
-     * @var string
+     * @return string Unique identifier of this updater
      */
-    protected $title = 'Fill translation source field (l10n_source)';
+    public function getIdentifier(): string
+    {
+        return 'fillTranslationSourceField';
+    }
+
+    /**
+     * @return string Title of this updater
+     */
+    public function getTitle(): string
+    {
+        return 'Fill translation source field (l10n_source)';
+    }
+
+    /**
+     * @return string Longer description of this updater
+     */
+    public function getDescription(): string
+    {
+        return 'Fill translation source field (l10n_source) for tt_contents which have l18n_parent set.';
+    }
 
     /**
      * Checks if an update is needed
      *
-     * @param string &$description The description for the update
      * @return bool Whether an update is needed (TRUE) or not (FALSE)
      */
-    public function checkForUpdate(&$description)
+    public function updateNecessary(): bool
     {
-        if ($this->isWizardDone()) {
-            return false;
-        }
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('tt_content');
         $queryBuilder = $connection->createQueryBuilder();
@@ -48,22 +63,25 @@ class FillTranslationSourceField extends AbstractUpdate
                 $queryBuilder->expr()->gt('l18n_parent', $queryBuilder->createNamedParameter(0)),
                 $queryBuilder->expr()->eq('l10n_source', $queryBuilder->createNamedParameter(0))
             ));
-        $count = (int)$query->execute()->fetchColumn(0);
+        return (bool)$query->execute()->fetchColumn(0);
+    }
 
-        if ($count > 0) {
-            $description = 'Fill translation source field (l10n_source) for tt_contents which have l18n_parent set.';
-        }
-        return (bool)$count;
+    /**
+     * @return string[] All new fields and tables must exist
+     */
+    public function getPrerequisites(): array
+    {
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
     }
 
     /**
      * Performs the database update
      *
-     * @param array &$databaseQueries Queries done in this update
-     * @param string &$customMessage Custom message
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessage)
+    public function executeUpdate(): bool
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('tt_content');
@@ -74,10 +92,8 @@ class FillTranslationSourceField extends AbstractUpdate
             ->where($queryBuilder->expr()->andX(
                 $queryBuilder->expr()->gt('t.l18n_parent', $queryBuilder->createNamedParameter(0)),
                 $queryBuilder->expr()->eq('t.l10n_source', $queryBuilder->createNamedParameter(0))
-            ));
-        $databaseQueries[] = $queryBuilder->getSQL();
-        $queryBuilder->execute();
-        $this->markWizardAsDone();
+            ))
+            ->execute();
         return true;
     }
 }

@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Tests\Functional\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Updates\CommandLineBackendUserRemovalUpdate;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -32,9 +33,10 @@ class CommandLineBackendUserRemovalUpdateTest extends FunctionalTestCase
         $this->importCSVDataSet(GeneralUtility::getFileAbsFileName(
             'typo3/sysext/install/Tests/Functional/Updates/DataSet/CommandLineBackendUserRemovalBefore.csv'
         ));
-        $databaseQueries = [];
-        $customMessage = '';
-        (new CommandLineBackendUserRemovalUpdate())->performUpdate($databaseQueries, $customMessage);
+        $subject = new CommandLineBackendUserRemovalUpdate();
+        $outputProphecy = $this->prophesize(OutputInterface::class);
+        $subject->setOutput($outputProphecy->reveal());
+        $subject->executeUpdate();
         $this->assertCSVDataSet(GeneralUtility::getFileAbsFileName(
             'typo3/sysext/install/Tests/Functional/Updates/DataSet/CommandLineBackendUserRemovalAfter.csv'
         ));

@@ -28,7 +28,7 @@ interface ChattyInterface
     /**
      * Setter injection for output into upgrade wizards
      *
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param OutputInterface $output
      */
     public function setOutput(OutputInterface $output): void;
 }

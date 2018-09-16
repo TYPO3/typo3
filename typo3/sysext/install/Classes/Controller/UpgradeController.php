@@ -925,8 +925,7 @@ class UpgradeController extends AbstractController
         $this->loadExtLocalconfDatabaseAndExtTables();
         $upgradeWizardsService = new UpgradeWizardsService();
         $identifier = $request->getParsedBody()['install']['identifier'];
-        $showDatabaseQueries = (int)$request->getParsedBody()['install']['values']['showDatabaseQueries'];
-        $messages = $upgradeWizardsService->executeWizard($identifier, $showDatabaseQueries);
+        $messages = $upgradeWizardsService->executeWizard($identifier);
         return new JsonResponse([
             'success' => true,
             'status' => $messages,

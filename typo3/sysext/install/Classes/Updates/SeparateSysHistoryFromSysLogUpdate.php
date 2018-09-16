@@ -23,33 +23,44 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Merge data stored in sys_log that belongs to sys_history
  */
-class SeparateSysHistoryFromSysLogUpdate extends AbstractUpdate
+class SeparateSysHistoryFromSysLogUpdate implements UpgradeWizardInterface
 {
     /**
-     * @var string
+     * @return string Unique identifier of this updater
      */
-    protected $title = 'Migrates existing sys_log entries into sys_history';
+    public function getIdentifier(): string
+    {
+        return 'separateSysHistoryFromLog';
+    }
+
+    /**
+     * @return string Title of this updater
+     */
+    public function getTitle(): string
+    {
+        return 'Migrates existing sys_log entries into sys_history';
+    }
+
+    /**
+     * @return string Longer description of this updater
+     */
+    public function getDescription(): string
+    {
+        return 'The history of changes of a record is now solely stored within sys_history.'
+            . ' Previous data within sys_log needs to be migrated into sys_history now.';
+    }
 
     /**
      * Checks if an update is needed
      *
-     * @param string $description The description for the update
-     *
      * @return bool Whether an update is needed (true) or not (false)
      */
-    public function checkForUpdate(&$description)
+    public function updateNecessary(): bool
     {
-        if ($this->isWizardDone()) {
-            return false;
-        }
-
         // sys_log field has been removed, no need to do something.
         if (!$this->checkIfFieldInTableExists('sys_history', 'sys_log_uid')) {
             return false;
         }
-
-        $description = 'The history of changes of a record is now solely stored within sys_history. Previous data within sys_log needs to be'
-            . ' migrated into sys_history now.</p>';
 
         // Check if there is data to migrate
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -65,15 +76,22 @@ class SeparateSysHistoryFromSysLogUpdate extends AbstractUpdate
     }
 
     /**
+     * @return string[] All new fields and tables must exist
+     */
+    public function getPrerequisites(): array
+    {
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
+    }
+
+    /**
      * Moves data from sys_log into sys_history
      * where a reference is still there: sys_history.sys_log_uid > 0
      *
-     * @param array $databaseQueries Queries done in this update
-     * @param string $customMessage Custom messages
      * @return bool
-     * @throws \Doctrine\DBAL\DBALException
      */
-    public function performUpdate(array &$databaseQueries, &$customMessage)
+    public function executeUpdate(): bool
     {
         // update "modify" statements (= decoupling)
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_history');
@@ -133,7 +151,6 @@ class SeparateSysHistoryFromSysLogUpdate extends AbstractUpdate
 
         foreach ($result as $row) {
             $logData = unserialize($row['log_data']);
-            /** @var RecordHistoryStore $store */
             $store = GeneralUtility::makeInstance(
                 RecordHistoryStore::class,
                 RecordHistoryStore::USER_BACKEND,
@@ -152,7 +169,6 @@ class SeparateSysHistoryFromSysLogUpdate extends AbstractUpdate
                     break;
             }
         }
-        $this->markWizardAsDone();
         return true;
     }
 
@@ -169,7 +185,6 @@ class SeparateSysHistoryFromSysLogUpdate extends AbstractUpdate
             ->getConnectionForTable($table)
             ->getSchemaManager()
             ->listTableColumns($table);
-
         return isset($tableColumns[$fieldName]);
     }
 }

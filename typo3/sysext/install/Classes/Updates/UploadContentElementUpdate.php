@@ -20,24 +20,39 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Migrate upload content element rendering from layout to uploads_type
  */
-class UploadContentElementUpdate extends AbstractUpdate
+class UploadContentElementUpdate implements UpgradeWizardInterface
 {
     /**
-     * @var string
+     * @return string Unique identifier of this updater
      */
-    protected $title = '[Optional] Migrate upload content element rendering from layout to uploads_type';
+    public function getIdentifier(): string
+    {
+        return 'uploadContentElementUpdate';
+    }
+
+    /**
+     * @return string Title of this updater
+     */
+    public function getTitle(): string
+    {
+        return 'Migrate upload content element rendering from layout to uploads_type';
+    }
+
+    /**
+     * @return string Longer description of this updater
+     */
+    public function getDescription(): string
+    {
+        return 'Rendering type field has been streamlined with fluid_styled_content.';
+    }
 
     /**
      * Checks if an update is needed
      *
-     * @param string &$description The description for the update
      * @return bool Whether an update is needed (TRUE) or not (FALSE)
      */
-    public function checkForUpdate(&$description)
+    public function updateNecessary(): bool
     {
-        if ($this->isWizardDone()) {
-            return false;
-        }
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
         $queryBuilder->getRestrictions()->removeAll();
         $elementCount = $queryBuilder->count('uid')
@@ -46,21 +61,27 @@ class UploadContentElementUpdate extends AbstractUpdate
                 $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('uploads', \PDO::PARAM_STR)),
                 $queryBuilder->expr()->in('layout', [1, 2])
             )
-            ->execute()->fetchColumn(0);
-        if ($elementCount) {
-            $description = 'Rendering type field has been streamlined with fluid_styled_content.';
-        }
+            ->execute()
+            ->fetchColumn(0);
         return (bool)$elementCount;
+    }
+
+    /**
+     * @return string[] All new fields and tables must exist
+     */
+    public function getPrerequisites(): array
+    {
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
     }
 
     /**
      * Performs the database update
      *
-     * @param array &$databaseQueries Queries done in this update
-     * @param string &$customMessage Custom message
      * @return bool
      */
-    public function performUpdate(array &$databaseQueries, &$customMessage)
+    public function executeUpdate(): bool
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
         $queryBuilder = $connection->createQueryBuilder();
@@ -82,11 +103,9 @@ class UploadContentElementUpdate extends AbstractUpdate
                     )
                 )
                 ->set('layout', 0, false)
-                ->set('uploads_type', $record['layout']);
-            $databaseQueries[] = $queryBuilder->getSQL();
-            $queryBuilder->execute();
+                ->set('uploads_type', $record['layout'])
+                ->execute();
         }
-        $this->markWizardAsDone();
         return true;
     }
 }

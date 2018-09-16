@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Updates;
 use Doctrine\DBAL\DBALException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -30,14 +31,14 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * Upgrade wizard which goes through all files referenced in backend_layout.icon
  * and creates sys_file records as well as sys_file_reference records for each hit.
  */
-class BackendLayoutIconUpdateWizard extends AbstractUpdate implements LoggerAwareInterface
+class BackendLayoutIconUpdateWizard implements UpgradeWizardInterface, ChattyInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
     /**
-     * @var string
+     * @var OutputInterface
      */
-    protected $title = 'Migrate all file relations from backend_layout.icon to sys_file_references';
+    protected $output;
 
     /**
      * @var ResourceStorage
@@ -74,77 +75,93 @@ class BackendLayoutIconUpdateWizard extends AbstractUpdate implements LoggerAwar
     protected $targetPath = '_migrated/backend_layouts/';
 
     /**
-     * Checks if an update is needed
-     *
-     * @param string &$description The description for the update
-     *
-     * @return bool TRUE if an update is needed, FALSE otherwise
+     * @return string Unique identifier of this updater
      */
-    public function checkForUpdate(&$description)
+    public function getIdentifier(): string
     {
-        if ($this->isWizardDone()) {
-            return false;
-        }
-
-        // If there are no valid records, the wizard can be marked as done directly
-        $dbQueries = [];
-        $records = $this->getRecordsFromTable($dbQueries);
-        if (empty($records)) {
-            $this->markWizardAsDone();
-            return false;
-        }
-
-        $description = 'This update wizard goes through all files that are referenced in the backend_layout.icon field'
-            . ' and adds the files to the FAL File Index.<br />'
-            . 'It also moves the files from uploads/ to the fileadmin/_migrated/ path.';
-
-        return true;
+        return 'backendLayoutIcons';
     }
 
     /**
-     * Performs the database update.
-     *
-     * @param array &$dbQueries Queries done in this update
-     * @param string &$customMessage Custom message
-     * @return bool TRUE on success, FALSE on error
+     * @return string Title of this updater
      */
-    public function performUpdate(array &$dbQueries, &$customMessage)
+    public function getTitle(): string
     {
-        $customMessage = '';
+        return 'Migrate all file relations from backend_layout.icon to sys_file_references';
+    }
+
+    /**
+     * @return string Longer description of this updater
+     */
+    public function getDescription(): string
+    {
+        return 'This update wizard goes through all files that are referenced in the'
+            . ' backend_layout.icon field and adds the files to the FAL File Index.'
+            . ' It also moves the files from uploads/ to the fileadmin/_migrated/ path.';
+    }
+
+    /**
+     * @return bool True if there are records to update
+     */
+    public function updateNecessary(): bool
+    {
+        return !empty($this->getRecordsFromTable());
+    }
+
+    /**
+     * @return string[] All new fields and tables must exist
+     */
+    public function getPrerequisites(): array
+    {
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
+    }
+
+    /**
+     * @param OutputInterface $output
+     */
+    public function setOutput(OutputInterface $output): void
+    {
+        $this->output = $output;
+    }
+
+    /**
+     * Performs the configuration update.
+     *
+     * @return bool
+     */
+    public function executeUpdate(): bool
+    {
+        $result = true;
         try {
             $storages = GeneralUtility::makeInstance(StorageRepository::class)->findAll();
             $this->storage = $storages[0];
-
-            $records = $this->getRecordsFromTable($dbQueries);
+            $records = $this->getRecordsFromTable();
             foreach ($records as $record) {
-                $this->migrateField($record, $customMessage, $dbQueries);
+                $this->migrateField($record);
             }
-
-            $this->markWizardAsDone();
         } catch (\Exception $e) {
-            $customMessage .= PHP_EOL . $e->getMessage();
+            // If something goes wrong, migrateField() logs an error
+            $result = false;
         }
-
-        return empty($customMessage);
+        return $result;
     }
 
     /**
      * Get records from table where the field to migrate is not empty (NOT NULL and != '')
      * and also not numeric (which means that it is migrated)
      *
-     * @param array $dbQueries
-     *
      * @return array
      * @throws \RuntimeException
      */
-    protected function getRecordsFromTable(&$dbQueries)
+    protected function getRecordsFromTable()
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable($this->table);
         $queryBuilder->getRestrictions()->removeAll();
-
         try {
-            $result = $queryBuilder
+            return $queryBuilder
                 ->select('uid', 'pid', $this->fieldToMigrate)
                 ->from($this->table)
                 ->where(
@@ -160,11 +177,8 @@ class BackendLayoutIconUpdateWizard extends AbstractUpdate implements LoggerAwar
                     )
                 )
                 ->orderBy('uid')
-                ->execute();
-
-            $dbQueries[] = $queryBuilder->getSQL();
-
-            return $result->fetchAll();
+                ->execute()
+                ->fetchAll();
         } catch (DBALException $e) {
             throw new \RuntimeException(
                 'Database query failed. Error was: ' . $e->getPrevious()->getMessage(),
@@ -177,12 +191,9 @@ class BackendLayoutIconUpdateWizard extends AbstractUpdate implements LoggerAwar
      * Migrates a single field.
      *
      * @param array $row
-     * @param string $customMessage
-     * @param array $dbQueries
-     *
      * @throws \Exception
      */
-    protected function migrateField($row, &$customMessage, &$dbQueries)
+    protected function migrateField($row)
     {
         $fieldItems = GeneralUtility::trimExplode(',', $row[$this->fieldToMigrate], true);
         if (empty($fieldItems) || is_numeric($row[$this->fieldToMigrate])) {
@@ -240,7 +251,6 @@ class BackendLayoutIconUpdateWizard extends AbstractUpdate implements LoggerAwar
                     $file = $this->storage->getFile($this->targetPath . $item);
                     $fileUid = $file->getUid();
                 } catch (\InvalidArgumentException $e) {
-
                     // no file found, no reference can be set
                     $this->logger->notice(
                         'File ' . $this->sourcePath . $item . ' does not exist. Reference was not migrated.',
@@ -250,16 +260,14 @@ class BackendLayoutIconUpdateWizard extends AbstractUpdate implements LoggerAwar
                             'field' => $this->fieldToMigrate,
                         ]
                     );
-
                     $format = 'File \'%s\' does not exist. Referencing field: %s.%d.%s. The reference was not migrated.';
-                    $message = sprintf(
+                    $this->output->writeln(sprintf(
                         $format,
                         $this->sourcePath . $item,
                         $this->table,
                         $row['uid'],
                         $this->fieldToMigrate
-                    );
-                    $customMessage .= PHP_EOL . $message;
+                    ));
                     continue;
                 }
             }
@@ -280,7 +288,6 @@ class BackendLayoutIconUpdateWizard extends AbstractUpdate implements LoggerAwar
 
                 $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_file_reference');
                 $queryBuilder->insert('sys_file_reference')->values($fields)->execute();
-                $dbQueries[] = str_replace(LF, ' ', $queryBuilder->getSQL());
                 ++$i;
             }
         }
@@ -295,7 +302,6 @@ class BackendLayoutIconUpdateWizard extends AbstractUpdate implements LoggerAwar
                     $queryBuilder->createNamedParameter($row['uid'], \PDO::PARAM_INT)
                 )
             )->set($this->fieldToMigrate, $i)->execute();
-            $dbQueries[] = str_replace(LF, ' ', $queryBuilder->getSQL());
         }
     }
 }
