@@ -799,12 +799,12 @@ class PageLayoutView implements LoggerAwareInterface
                 }
                 switch ($field) {
                     case 'title':
-                        $theData[$field] = '&nbsp;' . $eI . '<strong>'
+                        $theData[$field] = $eI . '&nbsp;<strong>'
                             . $lang->sL($GLOBALS['TCA']['pages']['columns'][$field]['label'])
                             . '</strong>';
                         break;
                     case 'uid':
-                        $theData[$field] = '&nbsp;<strong>ID</strong>';
+                        $theData[$field] = '';
                         break;
                     default:
                         if (strpos($field, 'table_') === 0) {
@@ -818,7 +818,7 @@ class PageLayoutView implements LoggerAwareInterface
                                     '</span>';
                             }
                         } else {
-                            $theData[$field] = '&nbsp;&nbsp;' . $eI . '<strong>'
+                            $theData[$field] = $eI . '&nbsp;<strong>'
                                 . htmlspecialchars($lang->sL($GLOBALS['TCA']['pages']['columns'][$field]['label']))
                                 . '</strong>';
                         }
@@ -1765,6 +1765,8 @@ class PageLayoutView implements LoggerAwareInterface
      */
     public function pages_drawItem($row, $fieldArr)
     {
+        $userTsConfig = $this->getBackendUser()->getTSConfig();
+
         // Initialization
         $theIcon = $this->getIcon('pages', $row);
         // Preparing and getting the data-array
@@ -1772,8 +1774,9 @@ class PageLayoutView implements LoggerAwareInterface
         foreach ($fieldArr as $field) {
             switch ($field) {
                 case 'title':
+                    $showPageId = !empty($userTsConfig['options.']['pageTree.']['showPageIdWithTitle']);
                     $pTitle = htmlspecialchars(BackendUtility::getProcessedValue('pages', $field, $row[$field], 20));
-                    $theData[$field] = $row['treeIcons'] . $theIcon . $pTitle;
+                    $theData[$field] = $row['treeIcons'] . $theIcon . ($showPageId ? '[' . $row['uid'] . '] ' : '') . $pTitle;
                     break;
                 case 'php_tree_stop':
                     // Intended fall through

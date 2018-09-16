@@ -212,9 +212,14 @@ class TranslationStatusController
         $newOL_js = [];
         $langRecUids = [];
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+
+        $userTsConfig = $this->getBackendUser()->getTSConfig();
+        $showPageId = !empty($userTsConfig['options.']['pageTree.']['showPageIdWithTitle']);
+
         foreach ($tree->tree as $data) {
             $tCells = [];
             $langRecUids[0][] = $data['row']['uid'];
+            $pageTitle = ($showPageId ? '[' . (int)$data['row']['uid'] . '] ' : '') . GeneralUtility::fixed_lgd_cs($data['row']['title'], $titleLen);
             // Page icons / titles etc.
             $tCells[] = '<td' . ($data['row']['_CSSCLASS'] ? ' class="' . $data['row']['_CSSCLASS'] . '"' : '') . '>' .
                 ($data['depthData'] ?: '') .
@@ -222,7 +227,7 @@ class TranslationStatusController
                 '<a href="#" onclick="' . htmlspecialchars(
                     'top.loadEditId(' . (int)$data['row']['uid'] . ',"&SET[language]=0"); return false;'
                 ) . '" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editPage') . '">' .
-                htmlspecialchars(GeneralUtility::fixed_lgd_cs($data['row']['title'], $titleLen)) .
+                htmlspecialchars($pageTitle) .
                 '</a>' .
                 ((string)$data['row']['nav_title'] !== '' ? ' [Nav: <em>' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($data['row']['nav_title'], $titleLen)) . '</em>]' : '') .
                 '</td>';
@@ -284,7 +289,7 @@ class TranslationStatusController
                         $langRecUids[$languageId][] = $row['uid'];
                         $status = $row['_HIDDEN'] ? (GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) || GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? 'danger' : '') : 'success';
                         $icon = $this->iconFactory->getIconForRecord('pages', $row, Icon::SIZE_SMALL)->render();
-                        $info = $icon . htmlspecialchars(
+                        $info = $icon . ($showPageId ? ' [' . (int)$row['uid'] . ']' : '') . ' ' . htmlspecialchars(
                                 GeneralUtility::fixed_lgd_cs($row['title'], $titleLen)
                             ) . ((string)$row['nav_title'] !== '' ? ' [Nav: <em>' . htmlspecialchars(
                                 GeneralUtility::fixed_lgd_cs($row['nav_title'], $titleLen)
