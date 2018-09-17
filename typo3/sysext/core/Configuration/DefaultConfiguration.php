@@ -263,6 +263,7 @@ return [
             ],
             'overlayPriorities' => [
                 'hidden',
+                'deleted',
                 'starttime',
                 'endtime',
                 'futureendtime',
