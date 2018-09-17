@@ -404,7 +404,7 @@ class InputLinkElement extends AbstractFormElement
                 break;
             case LinkService::TYPE_RECORD:
                 $table = $this->data['pageTsConfig']['TCEMAIN.']['linkHandler.'][$linkData['identifier'] . '.']['configuration.']['table'];
-                $record = BackendUtility::getRecord($table, $linkData['uid']);
+                $record = BackendUtility::getRecord($table, $linkData['uid'],'*','',false);
                 if ($record) {
                     $recordTitle = BackendUtility::getRecordTitle($table, $record);
                     $tableTitle = $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title']);
