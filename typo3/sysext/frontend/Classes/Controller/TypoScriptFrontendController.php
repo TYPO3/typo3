@@ -580,14 +580,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @var int
      * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0 - use LanguageAspect->getId() instead.
      */
-    public $sys_language_uid = 0;
+    protected $sys_language_uid = 0;
 
     /**
      * Site language mode for content fall back.
      * @var string
      * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0 - use LanguageAspect->getFallbackChain() instead.
      */
-    public $sys_language_mode = '';
+    protected $sys_language_mode = '';
 
     /**
      * Site content selection uid (can be different from sys_language_uid if content
