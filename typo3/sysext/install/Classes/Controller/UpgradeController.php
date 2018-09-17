@@ -630,11 +630,12 @@ class UpgradeController extends AbstractController
         $traverser->traverse($statements);
 
         // Gather code matches
-        $matches = [];
+        $matches = [[]];
         foreach ($matchers as $matcher) {
             /** @var \TYPO3\CMS\Install\ExtensionScanner\CodeScannerInterface $matcher */
-            $matches = array_merge($matches, $matcher->getMatches());
+            $matches[] = $matcher->getMatches();
         }
+        $matches = array_merge(...$matches);
 
         // Prepare match output
         $restFilesBasePath = ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog';
