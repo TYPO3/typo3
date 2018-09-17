@@ -3404,4 +3404,32 @@ return [
             'Deprecation-86270-ExtbaseXclassViaTypoScriptSettings.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->checkBackendAccessSettingsFromInitPhp' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86288-FrontendBackendUserAuthenticationMethods.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extPageReadAccess' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86288-FrontendBackendUserAuthenticationMethods.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extGetTreeList' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-86288-FrontendBackendUserAuthenticationMethods.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extGetLL' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86288-FrontendBackendUserAuthenticationMethods.rst'
+        ],
+    ],
 ];

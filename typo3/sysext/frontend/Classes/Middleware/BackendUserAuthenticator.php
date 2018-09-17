@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -65,7 +66,7 @@ class BackendUserAuthenticator implements MiddlewareInterface
         // we proceed and check if a backend user is logged in.
         $backendUserObject = null;
         if (isset($request->getCookieParams()[BackendUserAuthentication::getCookieName()])) {
-            $backendUserObject = $this->initializeBackendUser();
+            $backendUserObject = $this->initializeBackendUser($request);
         }
 
         $GLOBALS['BE_USER'] = $backendUserObject;
@@ -97,9 +98,11 @@ class BackendUserAuthenticator implements MiddlewareInterface
     /**
      * Creates the backend user object and returns it.
      *
+     * @param ServerRequestInterface $request
      * @return FrontendBackendUserAuthentication|null the backend user object or null if there was no valid user found
+     * @throws \TYPO3\CMS\Core\Exception
      */
-    protected function initializeBackendUser()
+    protected function initializeBackendUser(ServerRequestInterface $request)
     {
         // New backend user object
         $backendUserObject = GeneralUtility::makeInstance(FrontendBackendUserAuthentication::class);
@@ -109,10 +112,31 @@ class BackendUserAuthenticator implements MiddlewareInterface
             $backendUserObject->fetchGroupData();
         }
         // Unset the user initialization if any setting / restriction applies
-        if (!$backendUserObject->checkBackendAccessSettingsFromInitPhp() || empty($backendUserObject->user['uid'])) {
+        if (!$this->isAuthenticated($backendUserObject, $request->getAttribute('normalizedParams'))) {
             $backendUserObject = null;
         }
         return $backendUserObject;
+    }
+
+    /**
+     * Implementing the access checks that the TYPO3 CMS bootstrap script does before a user is ever logged in.
+     *
+     * @param FrontendBackendUserAuthentication $user
+     * @param NormalizedParams $normalizedParams
+     * @return bool Returns TRUE if access is OK
+     */
+    protected function isAuthenticated(FrontendBackendUserAuthentication $user, NormalizedParams $normalizedParams)
+    {
+        // Check IP
+        $ipMask = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'] ?? '');
+        if ($ipMask && !GeneralUtility::cmpIP($normalizedParams->getRemoteAddress(), $ipMask)) {
+            return false;
+        }
+        // Check SSL (https)
+        if ((bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] && !$normalizedParams->isHttps()) {
+            return false;
+        }
+        return $user->backendCheckLogin();
     }
 
     /**

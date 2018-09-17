@@ -98,32 +98,32 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
     /**
      * Initializes the admin panel.
      *
-     * @deprecated since TYPO3 v9 - rewritten as middleware
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 - rewritten as middleware
      */
     public function initializeAdminPanel()
     {
-        trigger_error('Method will be removed in TYPO3 v10 - initialization is done via middleware.', E_USER_DEPRECATED);
+        trigger_error('FrontendBackendUserAuthentication->initializeAdminPanel() will be removed in TYPO3 v10 - initialization is done via middleware.', E_USER_DEPRECATED);
     }
 
     /**
      * Initializes frontend editing.
      *
-     * @deprecated since TYPO3 v9 - rewritten as middleware
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 - rewritten as middleware
      */
     public function initializeFrontendEdit()
     {
-        trigger_error('Method will be removed in TYPO3 v10 - initialization is done via middleware.', E_USER_DEPRECATED);
+        trigger_error('FrontendBackendUserAuthentication->initializeFrontendEdit() will be removed in TYPO3 v10 - initialization is done via middleware.', E_USER_DEPRECATED);
     }
 
     /**
      * Determines whether frontend editing is currently active.
      *
-     * @deprecated since TYPO3 v9 - see ext "feedit" for API
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 - see ext "feedit" for API
      * @return bool Whether frontend editing is active
      */
     public function isFrontendEditingActive()
     {
-        trigger_error('Method will be removed in TYPO3 v10 - use underlying TSFE directly.', E_USER_DEPRECATED);
+        trigger_error('FrontendBackendUserAuthentication->isFrontendEditingActive() will be removed in TYPO3 v10 - use underlying TSFE directly.', E_USER_DEPRECATED);
         return $this->extAdmEnabled && (
             $this->adminPanel->isAdminModuleEnabled('edit') ||
             (int)$GLOBALS['TSFE']->displayEditIcons === 1 ||
@@ -139,7 +139,7 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      */
     public function displayAdminPanel()
     {
-        trigger_error('Method will be removed in TYPO3 v10 - use MainController of adminpanel extension.', E_USER_DEPRECATED);
+        trigger_error('FrontendBackendUserAuthentication->displayAdminPanel() will be removed in TYPO3 v10 - use MainController of adminpanel extension.', E_USER_DEPRECATED);
         return $this->adminPanel->display();
     }
 
@@ -151,7 +151,7 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      */
     public function isAdminPanelVisible()
     {
-        trigger_error('Method will be removed in TYPO3 v10 - use new adminpanel API instead.', E_USER_DEPRECATED);
+        trigger_error('FrontendBackendUserAuthentication->isAdminPanelVisible() will be removed in TYPO3 v10 - use new adminpanel API instead.', E_USER_DEPRECATED);
         return $this->extAdmEnabled && !$this->extAdminConfig['hide'] && $GLOBALS['TSFE']->config['config']['admPanel'];
     }
 
@@ -165,9 +165,11 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      * Used in the frontend.
      *
      * @return bool Returns TRUE if access is OK
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
     public function checkBackendAccessSettingsFromInitPhp()
     {
+        trigger_error('FrontendBackendUserAuthentication->checkBackendAccessSettingsFromInitPhp() will be removed in TYPO3 v10.0. Use a PSR-15 middleware and backendCheckLogin() instead.', E_USER_DEPRECATED);
         // Check Hardcoded lock on BE
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] < 0) {
             return false;
@@ -191,6 +193,29 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
     }
 
     /**
+     * Implementing the access checks that the TYPO3 CMS bootstrap script does before a user is ever logged in.
+     * Used in the frontend.
+     *
+     * @param bool $proceedIfNoUserIsLoggedIn
+     * @return bool Returns TRUE if access is OK
+     */
+    public function backendCheckLogin($proceedIfNoUserIsLoggedIn = false)
+    {
+        if (empty($this->user['uid'])) {
+            return false;
+        }
+        // Check Hardcoded lock on BE
+        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] < 0) {
+            return false;
+        }
+        // Check IP mask based on TSconfig
+        if (!$this->checkLockToIP()) {
+            return false;
+        }
+        return $this->isUserAllowedToLogin();
+    }
+
+    /**
      * Evaluates if the Backend User has read access to the input page record.
      * The evaluation is based on both read-permission and whether the page is found in one of the users webmounts.
      * Only if both conditions match, will the function return TRUE.
@@ -201,9 +226,11 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      *
      * @param array $pageRec The page record to evaluate for
      * @return bool TRUE if read access
+     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. Use underlying calls directly.
      */
     public function extPageReadAccess($pageRec)
     {
+        trigger_error('FrontendBackendUserAuthentication->extPageReadAccess() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return $this->isInWebMount($pageRec['uid']) && $this->doesUserHaveAccess($pageRec, Permission::PAGE_SHOW);
     }
 
@@ -221,9 +248,11 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      * @param int $begin Is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
      * @param string $perms_clause Perms clause
      * @return string Returns the list with a comma in the end (if any pages selected!)
+     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0.
      */
     public function extGetTreeList($id, $depth, $begin = 0, $perms_clause)
     {
+        trigger_error('FrontendBackendUserAuthentication->extGetTreeList() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
@@ -387,9 +416,11 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      *
      * @param string $key Key for a label in the $GLOBALS['LOCAL_LANG'] array of "EXT:core/Resources/Private/Language/locallang_tsfe.xlf
      * @return string The value for the $key
+     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0.
      */
     public function extGetLL($key)
     {
+        trigger_error('FrontendBackendUserAuthentication->extGetLL() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         if (!is_array($GLOBALS['LOCAL_LANG'])) {
             $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_tsfe.xlf');
             if (!is_array($GLOBALS['LOCAL_LANG'])) {
