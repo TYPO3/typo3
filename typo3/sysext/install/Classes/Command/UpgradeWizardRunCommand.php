@@ -29,6 +29,7 @@ use TYPO3\CMS\Install\Service\UpgradeWizardsService;
 use TYPO3\CMS\Install\Updates\ChattyInterface;
 use TYPO3\CMS\Install\Updates\ConfirmableInterface;
 use TYPO3\CMS\Install\Updates\PrerequisiteCollection;
+use TYPO3\CMS\Install\Updates\RepeatableInterface;
 use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 /**
@@ -156,8 +157,12 @@ class UpgradeWizardRunCommand extends Command
         if ($wizardInstance->updateNecessary()) {
             return $wizardInstance;
         }
-        $this->output->note('Wizard ' . $identifier . ' does not need to make changes. Marking wizard as done.');
-        $this->upgradeWizardsService->markWizardAsDone($identifier);
+        if ($wizardInstance instanceof RepeatableInterface) {
+            $this->output->note('Wizard ' . $identifier . ' does not need to make changes.');
+        } else {
+            $this->output->note('Wizard ' . $identifier . ' does not need to make changes. Marking wizard as done.');
+            $this->upgradeWizardsService->markWizardAsDone($identifier);
+        }
         return null;
     }
 
@@ -224,14 +229,20 @@ class UpgradeWizardRunCommand extends Command
             );
             $helper = $this->getHelper('question');
             if (!$helper->ask($this->input, $this->output, $question)) {
-                $this->upgradeWizardsService->markWizardAsDone($instance->getIdentifier());
-                $this->output->note('No changes applied, marking wizard as done.');
+                if ($instance instanceof RepeatableInterface) {
+                    $this->output->note('No changes applied.');
+                } else {
+                    $this->upgradeWizardsService->markWizardAsDone($instance->getIdentifier());
+                    $this->output->note('No changes applied, marking wizard as done.');
+                }
                 return 0;
             }
         }
         if ($instance->executeUpdate()) {
             $this->output->success('Successfully ran wizard ' . $instance->getTitle());
-            $this->upgradeWizardsService->markWizardAsDone($instance->getIdentifier());
+            if (!$instance instanceof RepeatableInterface) {
+                $this->upgradeWizardsService->markWizardAsDone($instance->getIdentifier());
+            }
             return 0;
         }
         $this->output->error('<error>Something went wrong while running ' . $instance->getTitle() . '</error>');
