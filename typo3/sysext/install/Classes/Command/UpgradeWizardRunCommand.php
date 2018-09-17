@@ -106,8 +106,12 @@ class UpgradeWizardRunCommand extends Command
                 $className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$wizardToExecute];
                 $upgradeWizard = $this->getWizard($className, $wizardToExecute);
                 if ($upgradeWizard !== null) {
-                    $this->handlePrerequisites([$upgradeWizard]);
-                    $result = $this->runSingleWizard($upgradeWizard);
+                    $prerequisitesFulfilled = $this->handlePrerequisites([$upgradeWizard]);
+                    if ($prerequisitesFulfilled === true) {
+                        $result = $this->runSingleWizard($upgradeWizard);
+                    } else {
+                        $result = 1;
+                    }
                 }
             } else {
                 $this->output->error('No such wizard: ' . $wizardToExecute);

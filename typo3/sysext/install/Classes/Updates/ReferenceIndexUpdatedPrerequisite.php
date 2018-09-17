@@ -79,7 +79,7 @@ class ReferenceIndexUpdatedPrerequisite implements PrerequisiteInterface, Chatty
     {
         $this->referenceIndex->enableRuntimeCache();
         $result = $this->referenceIndex->updateIndex(true, false);
-        return $result['errorCount'] === 0;
+        return $result[2] === 0;
     }
 
     /**

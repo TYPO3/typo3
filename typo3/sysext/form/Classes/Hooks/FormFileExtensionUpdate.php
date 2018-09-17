@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Form\Hooks;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -31,18 +32,20 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 use TYPO3\CMS\Form\Slot\FilePersistenceSlot;
-use TYPO3\CMS\Install\Updates\AbstractUpdate;
+use TYPO3\CMS\Install\Updates\ChattyInterface;
+use TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite;
+use TYPO3\CMS\Install\Updates\ReferenceIndexUpdatedPrerequisite;
+use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 /**
  * Update wizard to migrate all forms currently in use to new ending
  */
-class FormFileExtensionUpdate extends AbstractUpdate
+class FormFileExtensionUpdate implements ChattyInterface, UpgradeWizardInterface
 {
-
     /**
-     * @var string
+     * @var OutputInterface
      */
-    protected $title = 'Rename form definition file extension from .yaml to .form.yaml';
+    protected $output;
 
     /**
      * @var FormPersistenceManager
@@ -75,15 +78,65 @@ class FormFileExtensionUpdate extends AbstractUpdate
     protected $connection;
 
     /**
+     * Return the identifier for this wizard
+     * This should be the same string as used in the ext_localconf class registration
+     *
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return 'formFileExtension';
+    }
+
+    /**
+     * Return the speaking name of this wizard
+     *
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return 'Rename form definition file extension from .yaml to .form.yaml';
+    }
+
+    /**
+     * Return the description for this wizard
+     *
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return 'Form definition files need to be named *.form.yaml to have a way of distinguishing form yaml ' .
+               'configuration files from other yaml configuration files. This wizard will analyze and rename found files.';
+    }
+
+    /**
+     * Returns an array of class names of Prerequisite classes
+     * This way a wizard can define dependencies like "database up-to-date" or
+     * "reference index updated"
+     *
+     * @return string[]
+     */
+    public function getPrerequisites(): array
+    {
+        return [
+            ReferenceIndexUpdatedPrerequisite::class,
+            DatabaseUpdatedPrerequisite::class
+        ];
+    }
+
+    public function setOutput(OutputInterface $output): void
+    {
+        $this->output = $output;
+    }
+
+    /**
      * Checks whether updates are required.
      *
-     * @param string &$description The description for the update
      * @return bool Whether an update is required (TRUE) or not (FALSE)
      */
-    public function checkForUpdate(&$description)
+    public function updateNecessary(): bool
     {
         $updateNeeded = false;
-        $information = [];
 
         $this->persistenceManager = $this->getObjectManager()->get(FormPersistenceManager::class);
         $this->yamlSource = $this->getObjectManager()->get(YamlSource::class);
@@ -111,7 +164,7 @@ class FormFileExtensionUpdate extends AbstractUpdate
                 && $formDefinitionInformation['location'] === 'storage'
             ) {
                 $updateNeeded = true;
-                $information['rename'] = 'Form definition files were found that should be migrated to be named .form.yaml.';
+                $this->output->writeln('Form definition files were found that should be migrated to be named .form.yaml.');
             }
 
             if (
@@ -119,7 +172,7 @@ class FormFileExtensionUpdate extends AbstractUpdate
                 && $formDefinitionInformation['hasReferencesForOldFileExtension']
             ) {
                 $updateNeeded = true;
-                $information['updateReference'] = 'Referenced form definition files found that should be updated.';
+                $this->output->writeln('Referenced form definition files found that should be updated.');
             }
 
             if (
@@ -128,21 +181,18 @@ class FormFileExtensionUpdate extends AbstractUpdate
             ) {
                 $updateNeeded = true;
                 if ($formDefinitionInformation['hasNewFileExtension'] === true) {
-                    $information['updateReference'] = 'Referenced form definition files found that should be updated.';
+                    $this->output->writeln('Referenced form definition files found that should be updated.');
+                } elseif ($formDefinitionInformation['location'] === 'storage') {
+                    $this->output->writeln('Referenced form definition files found that should be updated.');
                 } else {
-                    if ($formDefinitionInformation['location'] === 'storage') {
-                        $information['updateReference'] = 'Referenced form definition files found that should be updated.';
-                    } else {
-                        $information['manualStepsNeeded'] =
-                            'There are references to form definitions which are located in extensions and thus cannot be renamed automatically by this wizard.'
-                          . 'This form definitions from extensions that do not end with .form.yaml have to be renamed by hand!'
-                          . 'After that you can run this wizard again to migrate the references.';
-                    }
+                    $this->output->writeln(
+                        '<warning>There are references to form definitions which are located in extensions and thus cannot be renamed automatically by this wizard.'
+                      . 'This form definitions from extensions that do not end with .form.yaml have to be renamed by hand!'
+                      . 'After that you can run this wizard again to migrate the references.</warning>'
+                    );
                 }
             }
         }
-
-        $description = implode('<br>', $information);
 
         return $updateNeeded;
     }
@@ -150,13 +200,11 @@ class FormFileExtensionUpdate extends AbstractUpdate
     /**
      * Performs the accordant updates.
      *
-     * @param array &$dbQueries Queries done in this update
-     * @param string &$customMessage Custom message
      * @return bool Whether everything went smoothly or not
      */
-    public function performUpdate(array &$dbQueries, &$customMessage): bool
+    public function executeUpdate(): bool
     {
-        $messages = [];
+        $success = true;
 
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
@@ -242,11 +290,12 @@ class FormFileExtensionUpdate extends AbstractUpdate
                     $file->rename($newFileName, DuplicationBehavior::RENAME);
                     $newPersistenceIdentifier = $file->getCombinedIdentifier();
                 } catch (\Exception $e) {
-                    $messages[] = sprintf(
-                        'Failed to rename form definition "%s" to "%s".',
+                    $this->output->writeln(sprintf(
+                        '<error>Failed to rename form definition "%s" to "%s".</error>',
                         $formDefinitionInformation['persistenceIdentifier'],
                         $newFileName
-                    );
+                    ));
+                    $success = false;
                     continue;
                 }
 
@@ -293,12 +342,13 @@ class FormFileExtensionUpdate extends AbstractUpdate
                     }
                 }
             } else {
-                $messages[] = sprintf(
-                    'Failed to rename form definition "%s" to "%s". You have to be rename it by hand!. '
-                  . 'After that you can run this wizard again to migrate the references.',
+                $success = false;
+                $this->output->writeln(sprintf(
+                    '<error>Failed to rename form definition "%s" to "%s". You have to be rename it by hand!. '
+                  . 'After that you can run this wizard again to migrate the references.</error>',
                     $formDefinitionInformation['persistenceIdentifier'],
                     $this->getNewPersistenceIdentifier($formDefinitionInformation['persistenceIdentifier'])
-                );
+                ));
             }
         }
 
@@ -307,13 +357,7 @@ class FormFileExtensionUpdate extends AbstractUpdate
             null
         );
 
-        if (count($messages) > 0) {
-            $customMessage = 'The following issues occurred during performing updates:'
-                . '<br><ul><li>' . implode('</li><li>', $messages) . '</li></ul>';
-            return false;
-        }
-
-        return true;
+        return $success;
     }
 
     /**
@@ -542,13 +586,13 @@ class FormFileExtensionUpdate extends AbstractUpdate
     {
         $sheetIdentifiers = [];
         foreach ($this->getFinisherSheetsFromFlexform($flexform) as $sheetIdentifier => $sheetData) {
-            $firstSheetItemOptionPath = array_shift(array_keys($sheetData['lDEF']));
+            $itemOptionPath = array_keys($sheetData['lDEF']);
+            $firstSheetItemOptionPath = array_shift($itemOptionPath);
             preg_match('#^settings\.finishers\.(.*)\..+$#', $firstSheetItemOptionPath, $matches);
             if (!isset($matches[1])) {
                 continue;
             }
-            $finisherIdentifier = $matches[1];
-            $sheetIdentifiers[$sheetIdentifier] = $finisherIdentifier;
+            $sheetIdentifiers[$sheetIdentifier] = $matches[1];
         }
 
         return $sheetIdentifiers;

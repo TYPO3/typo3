@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Form\Tests\Functional\Hooks;
  */
 
 use Doctrine\DBAL\FetchMode;
+use Symfony\Component\Console\Output\NullOutput;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -84,7 +85,9 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
             $storage->getFolder($folderIdentifier)->delete(true);
         }
 
+        $output = new NullOutput();
         $this->subject = GeneralUtility::makeInstance(FormFileExtensionUpdate::class);
+        $this->subject->setOutput($output);
         $this->slot = GeneralUtility::makeInstance(FilePersistenceSlot::class);
         $this->flexForm = GeneralUtility::makeInstance(FlexFormTools::class);
         $this->referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
@@ -106,8 +109,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
      */
     private function invokeCheckForUpdate(): bool
     {
-        $description = '';
-        return $this->subject->checkForUpdate($description);
+        return $this->subject->updateNecessary();
     }
 
     /**
@@ -253,12 +255,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
 
     private function invokePerformUpdate(): bool
     {
-        $queries = [];
-        $messages = '';
-        return $this->subject->performUpdate(
-            $queries,
-            $messages
-        );
+        return $this->subject->executeUpdate();
     }
 
     /**
