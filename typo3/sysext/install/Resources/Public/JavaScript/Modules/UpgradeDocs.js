@@ -33,6 +33,8 @@ define([
     selectorRestFileItem: '.upgrade_analysis_item_to_filter',
     selectorFulltextSearch: '.t3js-upgradeDocs-fulltext-search',
     selectorChosenField: '.t3js-upgradeDocs-chosen-select',
+    selectorChangeLogsForVersionContainer: '.t3js-version-changes',
+    selectorChangeLogsForVersion: '.t3js-changelog-list',
 
     chosenField: null,
     fulltextSearchField: null,
@@ -40,7 +42,7 @@ define([
     initialize: function(currentModal) {
       var self = this;
       this.currentModal = currentModal;
-      var isInIframe = (window.location != window.parent.location) ? true : false;
+      var isInIframe = (window.location !== window.parent.location);
       if (isInIframe) {
         top.require(['TYPO3/CMS/Install/chosen.jquery.min'], function () {
           self.getContent();
@@ -75,41 +77,69 @@ define([
         success: function(data) {
           if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
             modalContent.empty().append(data.html);
-            modalContent.find('[data-toggle="tooltip"]').tooltip({container: 'body'});
-            self.chosenField = modalContent.find(self.selectorChosenField);
-            self.fulltextSearchField = modalContent.find(self.selectorFulltextSearch);
-            self.fulltextSearchField.clearable().focus();
+
+            self.initializeFullTextSearch();
             self.initializeChosenSelector();
-            self.chosenField.on('change', function() {
-              self.combinedFilterSearch();
-            });
-            self.fulltextSearchField.on('keyup', function() {
-              self.combinedFilterSearch();
-            });
-            self.renderTags();
-          } else {
-            Notification.error('Something went wrong');
+            self.loadChangelogs();
           }
-        },
-        error: function(xhr) {
-          Router.handleAjaxError(xhr);
         }
+      });
+    },
+
+    loadChangelogs: function() {
+      var self = this;
+      var promises = [];
+      this.currentModal.find(this.selectorChangeLogsForVersionContainer).each(function(index, el) {
+        var $request = $.ajax({
+          url: Router.getUrl('upgradeDocsGetChangelogForVersion'),
+          cache: false,
+          data: {
+            install: {
+              version: el.dataset.version
+            }
+          },
+          success: function(data) {
+            if (data.success === true) {
+              var $panelGroup = $(el);
+              var $container = $panelGroup.find(self.selectorChangeLogsForVersion);
+              $container.html(data.html);
+              self.renderTags($container);
+              self.moveNotRelevantDocuments($container);
+
+              // Remove loading spinner form panel
+              $panelGroup.find('.t3js-panel-loading').remove();
+            } else {
+              Notification.error('Something went wrong');
+            }
+          },
+          error: function(xhr) {
+            Router.handleAjaxError(xhr);
+          }
+        });
+
+        promises.push($request);
+      });
+
+      $.when.apply($, promises).done(function () {
+        self.fulltextSearchField.prop('disabled', false);
+        self.appendItemsToChosenSelector();
+      });
+    },
+
+    initializeFullTextSearch: function() {
+      var self = this;
+      this.fulltextSearchField = this.currentModal.find(this.selectorFulltextSearch);
+      this.fulltextSearchField.clearable().focus();
+      this.initializeChosenSelector();
+      this.fulltextSearchField.on('keyup', function() {
+        self.combinedFilterSearch();
       });
     },
 
     initializeChosenSelector: function() {
       var self = this;
-      var tagString = '';
-      $(self.currentModal.find(this.selectorRestFileItem)).each(function() {
-        tagString += $(this).data('item-tags') + ',';
-      });
-      var tagArray = this.trimExplodeAndUnique(',', tagString).sort(function(a, b) {
-        // Sort case-insensitive by name
-        return a.toLowerCase().localeCompare(b.toLowerCase());
-      });
-      $.each(tagArray, function(i, tag) {
-        self.chosenField.append('<option>' + tag + '</option>');
-      });
+      this.chosenField = this.currentModal.find(this.selectorModalBody).find(this.selectorChosenField);
+
       var config = {
         '.chosen-select': {width: "100%", placeholder_text_multiple: "tags"},
         '.chosen-select-deselect': {allow_single_deselect: true},
@@ -118,8 +148,30 @@ define([
         '.chosen-select-width': {width: "100%"}
       };
       for (var selector in config) {
-        self.currentModal.find(selector).chosen(config[selector]);
+        this.currentModal.find(selector).chosen(config[selector]);
       }
+      this.chosenField.on('change', function() {
+        self.combinedFilterSearch();
+      });
+    },
+
+    /**
+     * Appends tags to the chosen selector
+     */
+    appendItemsToChosenSelector: function() {
+      var self = this;
+      var tagString = '';
+      $(this.currentModal.find(this.selectorRestFileItem)).each(function() {
+        tagString += $(this).data('item-tags') + ',';
+      });
+      var tagArray = this.trimExplodeAndUnique(',', tagString).sort(function(a, b) {
+        // Sort case-insensitive by name
+        return a.toLowerCase().localeCompare(b.toLowerCase());
+      });
+      this.chosenField.prop('disabled', false);
+      $.each(tagArray, function(i, tag) {
+        self.chosenField.append('<option>' + tag + '</option>');
+      });
       this.chosenField.trigger('chosen:updated');
     },
 
@@ -188,8 +240,8 @@ define([
       });
     },
 
-    renderTags: function() {
-      $.each($(this.currentModal.find(this.selectorRestFileItem)), function() {
+    renderTags: function($container) {
+      $.each($container.find(this.selectorRestFileItem), function() {
         var $me = $(this);
         var tags = $me.data('item-tags').split(',');
         var $tagContainer = $me.find('.t3js-tags');
@@ -199,9 +251,19 @@ define([
       });
     },
 
+    /**
+     * Moves all documents that are either read or not affected
+     *
+     * @param {JQuery} $container
+     */
+    moveNotRelevantDocuments: function($container) {
+      $container.find('[data-item-state="read"]').appendTo(this.currentModal.find('.panel-body-read'));
+      $container.find('[data-item-state="notAffected"]').appendTo(this.currentModal.find('.panel-body-not-affected'));
+    },
+
     markRead: function(element) {
       var self = this;
-      var executeToken = self.currentModal.find(this.selectorModuleContent).data('upgrade-cocs-mark-read-token');
+      var executeToken = self.currentModal.find(this.selectorModuleContent).data('upgrade-docs-mark-read-token');
       var $button = $(element).closest('a');
       $button.toggleClass('t3js-upgradeDocs-unmarkRead t3js-upgradeDocs-markRead');
       $button.find('i').toggleClass('fa-check fa-ban');

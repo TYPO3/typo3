@@ -145,8 +145,8 @@ class DocumentationFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
             'master' => [],
         ];
 
-        $result = $this->documentationFileService->findDocumentationFiles(vfsStream::url('root/Changelog'));
-        self::assertEquals(array_keys($expected), array_keys($result));
+        $result = $this->documentationFileService->findDocumentationDirectories(vfsStream::url('root/Changelog'));
+        self::assertEquals(array_keys($expected), $result);
     }
 
     /**
@@ -154,8 +154,8 @@ class DocumentationFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      */
     public function findDocumentsRespectsFilesWithSameIssueNumber()
     {
-        $result = $this->documentationFileService->findDocumentationFiles(vfsStream::url('root/Changelog'));
-        $this->assertCount(2, $result['master']);
+        $result = $this->documentationFileService->findDocumentationFiles(vfsStream::url('root/Changelog/master'));
+        $this->assertCount(2, $result);
     }
 
     /**
@@ -167,9 +167,9 @@ class DocumentationFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
             'unittest',
             'cat:Important',
         ];
-        $result = $this->documentationFileService->findDocumentationFiles(vfsStream::url('root/Changelog'));
+        $result = $this->documentationFileService->findDocumentationFiles(vfsStream::url('root/Changelog/2.0'));
         $key = md5('vfs://root/Changelog/2.0/Important-98574-Issue.rst');
-        self::assertEquals($expected, $result['2.0'][$key]['tags']);
+        self::assertEquals($expected, $result[$key]['tags']);
     }
 
     /**
@@ -184,8 +184,8 @@ class DocumentationFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
             Argument::any()
         )->willReturn($ignoredFiles);
 
-        $result = $this->documentationFileService->findDocumentationFiles(vfsStream::url('root/Changelog'));
-        self::assertArrayNotHasKey(12345, $result['1.2']);
+        $result = $this->documentationFileService->findDocumentationFiles(vfsStream::url('root/Changelog/1.2'));
+        self::assertArrayNotHasKey(12345, $result);
     }
 
     /**

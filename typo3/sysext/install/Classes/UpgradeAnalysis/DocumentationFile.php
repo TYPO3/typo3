@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Install\UpgradeAnalysis;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -60,6 +62,34 @@ class DocumentationFile
     }
 
     /**
+     * Traverse given directory, select directories
+     *
+     * @param string $path
+     * @return string[] Version directories
+     * @throws \InvalidArgumentException
+     */
+    public function findDocumentationDirectories(string $path): array
+    {
+        if (strcasecmp($path, $this->changelogPath) < 0 || strpos($path, $this->changelogPath) === false) {
+            throw new \InvalidArgumentException('the given path does not belong to the changelog dir. Aborting', 1537158043);
+        }
+
+        $finder = new Finder();
+        $finder
+            ->depth(0)
+            ->sortByName()
+            ->in($path);
+
+        $directories = [];
+        foreach ($finder->directories() as $directory) {
+            /** @var $directory SplFileInfo */
+            $directories[] = $directory->getBasename();
+        }
+
+        return $directories;
+    }
+
+    /**
      * Traverse given directory, select files
      *
      * @param string $path
@@ -72,15 +102,7 @@ class DocumentationFile
             throw new \InvalidArgumentException('the given path does not belong to the changelog dir. Aborting', 1485425530);
         }
 
-        $documentationFiles = [];
-        $versionDirectories = scandir($path);
-
-        $fileInfo = pathinfo($path);
-        $absolutePath = str_replace('\\', '/', $fileInfo['dirname']) . '/' . $fileInfo['basename'];
-        foreach ($versionDirectories as $version) {
-            $directory = $absolutePath . '/' . $version;
-            $documentationFiles += $this->getDocumentationFilesForVersion($directory, $version);
-        }
+        $documentationFiles = $this->getDocumentationFilesForVersion($path);
         $this->tagsTotal = $this->collectTagTotal($documentationFiles);
 
         return $documentationFiles;
@@ -91,6 +113,7 @@ class DocumentationFile
      *
      * @param string $file Absolute path to documentation file
      * @return array
+     * @throws \InvalidArgumentException
      */
     public function getListEntry(string $file): array
     {
@@ -99,6 +122,7 @@ class DocumentationFile
         }
         $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         $headline = $this->extractHeadline($lines);
+        $entry['version'] = PathUtility::basename(PathUtility::dirname($file));
         $entry['headline'] = $headline;
         $entry['filepath'] = $file;
         $entry['tags'] = $this->extractTags($lines);
@@ -202,43 +226,36 @@ class DocumentationFile
     }
 
     /**
-     * True for real directories and a valid version
-     *
-     * @param string $versionDirectory
+     * @param string $docDirectory
      * @param string $version
      * @return bool
      */
-    protected function isRelevantDirectory(string $versionDirectory, string $version): bool
+    protected function versionHasDocumentationFiles(string $docDirectory, string $version): bool
     {
-        return is_dir($versionDirectory) && $version !== '.' && $version !== '..';
+        $absolutePath = str_replace('\\', '/', $docDirectory) . '/' . $version;
+        $finder = $this->getDocumentFinder()->in($absolutePath);
+
+        return $finder->files()->count() > 0;
     }
 
     /**
      * Handle a single directory
      *
      * @param string $docDirectory
-     * @param string $version
      * @return array
      */
-    protected function getDocumentationFilesForVersion(
-        string $docDirectory,
-        string $version
-    ): array {
-        $documentationFiles = [];
-        if ($this->isRelevantDirectory($docDirectory, $version)) {
-            $documentationFiles[$version] = [];
-            $absolutePath = str_replace('\\', '/', PathUtility::dirname($docDirectory)) . '/' . $version;
-            $rstFiles = scandir($docDirectory);
-            foreach ($rstFiles as $file) {
-                $fileInfo = pathinfo($file);
-                if ($this->isRelevantFile($fileInfo)) {
-                    $filePath = $absolutePath . '/' . $fileInfo['basename'];
-                    $documentationFiles[$version] += $this->getListEntry($filePath);
-                }
-            }
+    protected function getDocumentationFilesForVersion(string $docDirectory): array
+    {
+        $documentationFiles = [[]];
+        $absolutePath = str_replace('\\', '/', $docDirectory);
+        $finder = $this->getDocumentFinder()->in($absolutePath);
+
+        foreach ($finder->files() as $file) {
+            /** @var $file SplFileInfo */
+            $documentationFiles[] = $this->getListEntry($file->getPathname());
         }
 
-        return $documentationFiles;
+        return array_merge(...$documentationFiles);
     }
 
     /**
@@ -249,14 +266,12 @@ class DocumentationFile
      */
     protected function collectTagTotal($documentationFiles): array
     {
-        $tags = [];
-        foreach ($documentationFiles as $versionArray) {
-            foreach ($versionArray as $fileArray) {
-                $tags = array_merge(array_unique($tags), $fileArray['tags']);
-            }
+        $tags = [[]];
+        foreach ($documentationFiles as $fileArray) {
+            $tags[] = $fileArray['tags'];
         }
 
-        return array_unique($tags);
+        return array_unique(array_merge(...$tags));
     }
 
     /**
@@ -297,7 +312,6 @@ class DocumentationFile
      * @param string $rstContent
      *
      * @return string
-     * @throws \InvalidArgumentException
      */
     protected function parseContent(string $rstContent): string
     {
@@ -308,5 +322,18 @@ class DocumentationFile
         $content = preg_replace('/.. index::(.*)/', '', $content);
         $content = preg_replace('/.. include::(.*)/', '', $content);
         return trim($content);
+    }
+
+    /**
+     * @return Finder
+     */
+    protected function getDocumentFinder(): Finder
+    {
+        $finder = new Finder();
+        $finder
+            ->depth(0)
+            ->name('/^(Feature|Breaking|Deprecation|Important)\-\d+.+\.rst$/i');
+
+        return $finder;
     }
 }

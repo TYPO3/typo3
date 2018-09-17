@@ -751,7 +751,7 @@ class UpgradeController extends AbstractController
     }
 
     /**
-     * Render list of .rst files
+     * Render list of versions
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
@@ -759,11 +759,33 @@ class UpgradeController extends AbstractController
     public function upgradeDocsGetContentAction(ServerRequestInterface $request): ResponseInterface
     {
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
-        $documentationFiles = $this->getDocumentationFiles();
+        $documentationDirectories = $this->getDocumentationDirectories();
         $view = $this->initializeStandaloneView($request, 'Upgrade/UpgradeDocsGetContent.html');
         $view->assignMultiple([
             'upgradeDocsMarkReadToken' => $formProtection->generateToken('installTool', 'upgradeDocsMarkRead'),
             'upgradeDocsUnmarkReadToken' => $formProtection->generateToken('installTool', 'upgradeDocsUnmarkRead'),
+            'upgradeDocsVersions' => $documentationDirectories,
+        ]);
+        return new JsonResponse([
+            'success' => true,
+            'html' => $view->render(),
+        ]);
+    }
+
+    /**
+     * Render list of .rst files
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function upgradeDocsGetChangelogForVersionAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $version = $request->getQueryParams()['install']['version'] ?? '';
+        $this->assertValidVersion($version);
+
+        $documentationFiles = $this->getDocumentationFiles($version);
+        $view = $this->initializeStandaloneView($request, 'Upgrade/UpgradeDocsGetChangelogForVersion.html');
+        $view->assignMultiple([
             'upgradeDocsFiles' => $documentationFiles['normalFiles'],
             'upgradeDocsReadFiles' => $documentationFiles['readFiles'],
             'upgradeDocsNotAffectedFiles' => $documentationFiles['notAffectedFiles'],
@@ -1138,15 +1160,28 @@ class UpgradeController extends AbstractController
     }
 
     /**
+     * @return string[]
+     */
+    protected function getDocumentationDirectories(): array
+    {
+        $documentationFileService = new DocumentationFile();
+        $documentationDirectories = $documentationFileService->findDocumentationDirectories(
+            str_replace('\\', '/', realpath(ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog'))
+        );
+        return array_reverse($documentationDirectories);
+    }
+
+    /**
      * Get a list of '.rst' files and their details for "Upgrade documentation" view.
      *
+     * @param string $version
      * @return array
      */
-    protected function getDocumentationFiles(): array
+    protected function getDocumentationFiles(string $version): array
     {
         $documentationFileService = new DocumentationFile();
         $documentationFiles = $documentationFileService->findDocumentationFiles(
-            str_replace('\\', '/', realpath(ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog'))
+            str_replace('\\', '/', realpath(ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog/' . $version))
         );
         $documentationFiles = array_reverse($documentationFiles);
 
@@ -1184,24 +1219,14 @@ class UpgradeController extends AbstractController
         }
 
         $readFiles = [];
-        foreach ($documentationFiles as $section => &$files) {
-            foreach ($files as $fileId => $fileData) {
-                if (in_array($fileData['file_hash'], $hashesMarkedAsRead, true)) {
-                    $fileData['section'] = $section;
-                    $readFiles[$fileId] = $fileData;
-                    unset($files[$fileId]);
-                }
-            }
-        }
-
         $notAffectedFiles = [];
-        foreach ($documentationFiles as $section => &$files) {
-            foreach ($files as $fileId => $fileData) {
-                if (in_array($fileData['file_hash'], $hashesMarkedAsNotAffected, true)) {
-                    $fileData['section'] = $section;
-                    $notAffectedFiles[$fileId] = $fileData;
-                    unset($files[$fileId]);
-                }
+        foreach ($documentationFiles as $fileId => $fileData) {
+            if (in_array($fileData['file_hash'], $hashesMarkedAsRead, true)) {
+                $readFiles[$fileId] = $fileData;
+                unset($documentationFiles[$fileId]);
+            } elseif (in_array($fileData['file_hash'], $hashesMarkedAsNotAffected, true)) {
+                $notAffectedFiles[$fileId] = $fileData;
+                unset($documentationFiles[$fileId]);
             }
         }
 
@@ -1227,5 +1252,18 @@ class UpgradeController extends AbstractController
             $line = trim($fileContent[$lineNumber - 1]);
         }
         return $line;
+    }
+
+    /**
+     * Asserts that the given version is valid
+     *
+     * @param string $version
+     * @throws \InvalidArgumentException
+     */
+    protected function assertValidVersion(string $version): void
+    {
+        if ($version !== 'master' && !preg_match('/^\d+.\d+(?:.(?:\d+|x))?$/', $version)) {
+            throw new \InvalidArgumentException('Given version "' . $version . '" is invalid', 1537209128);
+        }
     }
 }
