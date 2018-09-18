@@ -79,6 +79,9 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
                 $content = implode(LF, $content);
             }
         }
+        if (isset($conf['stdWrap.'])) {
+            $content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+        }
         return $content;
     }
 

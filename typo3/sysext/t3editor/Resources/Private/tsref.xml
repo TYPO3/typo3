@@ -6854,6 +6854,16 @@ Example:
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="renderMode" type="string">
+			<description><![CDATA[The setting .renderMode can be set to "inline" to render an inline version of the SVG file.
+			]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="stdWrap" type="stdWrap">
+			<description><![CDATA[stdwrap properties, applied on the returned object.
+]]></description>
+		</property>
 	</type>
 	<type id="tags" extends="array">
 		<property name="[myHtmlTag]" type="cObject">
