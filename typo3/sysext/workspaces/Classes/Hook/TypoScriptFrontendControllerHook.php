@@ -66,7 +66,7 @@ class TypoScriptFrontendControllerHook
                 );
                 if ($pObj->doWorkspacePreview()) {
                     $urlForStoppingPreview = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php?ADMCMD_prev=LOGOUT&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
-                    $text .= '<br><a style="color: #000;" href="' . $urlForStoppingPreview . '">Stop preview</a>';
+                    $text .= '<br><a style="color: #000;pointer-events: auto;" href="' . $urlForStoppingPreview . '">Stop preview</a>';
                 }
                 $styles = [];
                 $styles[] = 'position: fixed';
