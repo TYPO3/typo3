@@ -266,7 +266,7 @@ class GalleryProcessor implements DataProcessorInterface
         $this->borderEnabled = (bool)$this->getConfigurationValue('borderEnabled', 'imageborder');
         $this->borderWidth = (int)$this->getConfigurationValue('borderWidth');
         $this->borderPadding = (int)$this->getConfigurationValue('borderPadding');
-        $this->cropVariant = (int)$this->getConfigurationValue('cropVariant') ?: 'default';
+        $this->cropVariant = $this->getConfigurationValue('cropVariant') ?: 'default';
 
         $this->determineGalleryPosition();
         $this->determineMaximumGalleryWidth();
