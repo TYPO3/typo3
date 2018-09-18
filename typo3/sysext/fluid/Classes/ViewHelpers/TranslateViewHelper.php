@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
 
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException;
-use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
-use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Translate a key from locallang. The files are loaded from the folder
@@ -73,6 +73,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class TranslateViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * Output is escaped already. We must not escape children, to avoid double encoding.
      *
@@ -97,59 +99,43 @@ class TranslateViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param string $argumentsName
-     * @param string $closureName
-     * @param string $initializationPhpCode
-     * @param ViewHelperNode $node
-     * @param TemplateCompiler $compiler
+     * Return array element by key.
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @throws InvalidVariableException
      * @return string
      */
-    public function compile($argumentsName, $closureName, &$initializationPhpCode, ViewHelperNode $node, TemplateCompiler $compiler)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        return sprintf(
-            '\\%1$s::translate(%2$s[\'key\'] ?? %2$s[\'id\'], %2$s[\'extensionName\'] ?? $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName(), %2$s[\'arguments\'], %2$s[\'languageKey\'], %2$s[\'alternativeLanguageKeys\']) ?? %2$s[\'default\'] ?? %3$s()',
-            LocalizationUtility::class,
-            $argumentsName,
-            $closureName
-        );
-    }
-
-    /**
-     * @return string|null
-     */
-    public function render()
-    {
-        $key = $this->arguments['key'];
-        $id = $this->arguments['id'];
-        $default = $this->arguments['default'];
-        $extensionName = $this->arguments['extensionName'];
-        $arguments = $this->arguments['arguments'];
-        $languageKey = $this->arguments['languageKey'];
-        $alternativeLanguageKeys = $this->arguments['alternativeLanguageKeys'];
-
-        if (empty($id) && empty($key)) {
-            throw new InvalidVariableException('Either "key" or "id" must be provided for f:translate', 1351584844);
-        }
+        $key = $arguments['key'];
+        $id = $arguments['id'];
+        $default = $arguments['default'];
+        $extensionName = $arguments['extensionName'];
+        $translateArguments = $arguments['arguments'];
 
         // Wrapper including a compatibility layer for TYPO3 Flow Translation
         if ($id === null) {
             $id = $key;
         }
 
-        $request = $this->renderingContext->getControllerContext()->getRequest();
+        if ((string)$id === '') {
+            throw new InvalidVariableException('An argument "key" or "id" has to be provided', 1351584844);
+        }
+
+        $request = $renderingContext->getControllerContext()->getRequest();
+        $extensionName = $extensionName ?? $request->getControllerExtensionName();
         try {
-            $value = $this->translate(
-                $key ?? $id,
-                $extensionName ?? $request->getControllerExtensionName(),
-                $arguments,
-                $languageKey,
-                $alternativeLanguageKeys
-            );
+            $value = static::translate($id, $extensionName, $translateArguments, $arguments['languageKey'], $arguments['alternativeLanguageKeys']);
         } catch (\InvalidArgumentException $e) {
             $value = null;
         }
         if ($value === null) {
-            $value = $default !== null ? $default : $this->renderChildren();
+            $value = $default ?? $renderChildrenClosure();
+            if (!empty($translateArguments)) {
+                $value = vsprintf($value, $translateArguments);
+            }
         }
         return $value;
     }
@@ -165,7 +151,7 @@ class TranslateViewHelper extends AbstractViewHelper
      *
      * @return string|null
      */
-    protected function translate($id, $extensionName, $arguments, $languageKey, $alternativeLanguageKeys)
+    protected static function translate($id, $extensionName, $arguments, $languageKey, $alternativeLanguageKeys)
     {
         return LocalizationUtility::translate($id, $extensionName, $arguments, $languageKey, $alternativeLanguageKeys);
     }

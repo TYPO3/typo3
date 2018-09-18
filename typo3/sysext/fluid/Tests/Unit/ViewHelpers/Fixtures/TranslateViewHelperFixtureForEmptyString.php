@@ -29,7 +29,7 @@ class TranslateViewHelperFixtureForEmptyString extends TranslateViewHelper
      * @param string $languageKey Language key to use for this translation
      * @param string[] $alternativeLanguageKeys Alternative language keys if no translation does exist
      */
-    protected function translate($id, $extensionName, $arguments, $languageKey, $alternativeLanguageKeys)
+    protected static function translate($id, $extensionName, $arguments, $languageKey, $alternativeLanguageKeys)
     {
         return null;
     }
