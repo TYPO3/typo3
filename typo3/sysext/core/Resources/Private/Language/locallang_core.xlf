@@ -1300,6 +1300,18 @@ Do you want to refresh it now?</source>
 			<trans-unit id="error.invalidEmail">
 				<source>"%s" is not a valid e-mail address.</source>
 			</trans-unit>
+			<trans-unit id="error.adminCanNotChangeSystemMaintainer">
+				<source>Only system maintainers can change the admin flag and password of other system maintainers. The value has not been updated.</source>
+			</trans-unit>
+			<trans-unit id="formEngine.beUser.admin.information.userIsSystemMaintainer">
+				<source>This user is a system maintainer</source>
+			</trans-unit>
+			<trans-unit id="formEngine.beUser.admin.information.userWillBecomeSystemMaintainer">
+				<source>This user is in the list of allowed system maintainers and will gain system level access if enabling admin access.</source>
+			</trans-unit>
+			<trans-unit id="formEngine.beUser.admin.information.userAdminAndPasswordChangeNotAllowed">
+				<source>This user is a system maintainer. Changing the admin flag and changing password is denied.</source>
+			</trans-unit>
 			<trans-unit id="error.backendUserGroupListTypeError.header">
 				<source>Possible misconfiguration detected</source>
 			</trans-unit>

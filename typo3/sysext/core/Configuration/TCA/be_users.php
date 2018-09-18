@@ -219,7 +219,12 @@ return [
                         1 => '',
                     ],
                 ],
-            ]
+                'fieldInformation' => [
+                    'adminIsSystemMaintainer' => [
+                        'renderType' => 'adminIsSystemMaintainer',
+                    ],
+                ],
+            ],
         ],
         'options' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.options',

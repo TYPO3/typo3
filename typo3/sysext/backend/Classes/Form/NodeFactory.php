@@ -104,6 +104,7 @@ class NodeFactory
 
         // Element information
         'tcaDescription' => FieldInformation\TcaDescription::class,
+        'adminIsSystemMaintainer' => FieldInformation\AdminIsSystemMaintainer::class,
 
         // Element wizards
         'defaultLanguageDifferences' => FieldWizard\DefaultLanguageDifferences::class,

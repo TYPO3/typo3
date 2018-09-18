@@ -878,13 +878,31 @@ class SetupModuleController
     protected function getFieldsFromShowItem()
     {
         $allowedFields = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_USER_SETTINGS']['showitem'], true);
-        // do not ask for current password if admin (unknown for other users and no security gain)
         if ($this->isAdmin) {
+            // Do not ask for current password if admin (unknown for other users and no security gain)
             $key = array_search('passwordCurrent', $allowedFields);
             if ($key !== false) {
                 unset($allowedFields[$key]);
             }
         }
+
+        $backendUser = $this->getBackendUser();
+        $systemMaintainers = array_map('intval', $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? []);
+        $isCurrentUserInSystemMaintainerList = in_array((int)$backendUser->user['uid'], $systemMaintainers, true);
+        $isInSimulateUserMode = (int)$backendUser->user['ses_backuserid'] !== 0;
+        if ($isInSimulateUserMode && $isCurrentUserInSystemMaintainerList) {
+            // DataHandler denies changing password of system maintainer users in switch user mode.
+            // Do not show the password fields is this case.
+            $key = array_search('password', $allowedFields);
+            if ($key !== false) {
+                unset($allowedFields[$key]);
+            }
+            $key = array_search('password2', $allowedFields);
+            if ($key !== false) {
+                unset($allowedFields[$key]);
+            }
+        }
+
         if (!is_array($this->tsFieldConf)) {
             return $allowedFields;
         }

@@ -1649,6 +1649,34 @@ class DataHandler implements LoggerAwareInterface
             }
         }
 
+        if ($table === 'be_users'
+            && ($field === 'admin' || $field === 'password')
+            && $status === 'update'
+        ) {
+            // Do not allow a non system maintainer admin to change admin flag and password of system maintainers
+            $systemMaintainers = array_map('intval', $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? []);
+            // False if current user is not in system maintainer list or if switch to user mode is active
+            $isCurrentUserSystemMaintainer = $this->BE_USER->isSystemMaintainer();
+            $isTargetUserInSystemMaintainerList = in_array((int)$id, $systemMaintainers, true);
+            if ($field === 'admin') {
+                $isFieldChanged = (int)$curValueRec[$field] !== (int)$value;
+            } else {
+                $isFieldChanged = $curValueRec[$field] !== $value;
+            }
+            if (!$isCurrentUserSystemMaintainer && $isTargetUserInSystemMaintainerList && $isFieldChanged) {
+                $value = $curValueRec[$field];
+                $message = GeneralUtility::makeInstance(
+                    FlashMessage::class,
+                    $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.adminCanNotChangeSystemMaintainer'),
+                    '',
+                    FlashMessage::ERROR,
+                    true
+                );
+                $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+                $flashMessageService->getMessageQueueByIdentifier()->enqueue($message);
+            }
+        }
+
         // Getting config for the field
         $tcaFieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 
