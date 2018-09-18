@@ -29,7 +29,7 @@ nbproject
 .php_cs.cache
 .sass-cache
 .session
-phantomjsdriver.log
+*.log
 #
 # Ignore build stuff
 /.ddev/*
