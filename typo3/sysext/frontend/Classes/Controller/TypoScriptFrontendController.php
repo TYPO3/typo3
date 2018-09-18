@@ -276,8 +276,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Shows specific mode (all or groups)
      * @var string
+     * @internal
      */
-    public $loginAllowedInBranch_mode = '';
+    protected $loginAllowedInBranch_mode = '';
 
     /**
      * Set to backend user ID to initialize when keyword-based preview is used
@@ -335,8 +336,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Is set to the time-to-live time of cached pages. If FALSE, default is
      * 60*60*24, which is 24 hours.
      * @var bool|int
+     * @internal
      */
-    public $cacheTimeOutDefault = false;
+    protected $cacheTimeOutDefault = false;
 
     /**
      * Set internally if cached content is fetched from the database. No matter if it is temporary
@@ -345,19 +347,21 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @var bool
      * @internal
      */
-    public $cacheContentFlag = false;
+    protected $cacheContentFlag = false;
 
     /**
      * Set to the expire time of cached content
      * @var int
+     * @internal
      */
-    public $cacheExpires = 0;
+    protected $cacheExpires = 0;
 
     /**
      * Set if cache headers allowing caching are sent.
      * @var bool
+     * @internal
      */
-    public $isClientCachable = false;
+    protected $isClientCachable = false;
 
     /**
      * Used by template fetching system. This array is an identification of
@@ -402,16 +406,18 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * This is done in order to make sure that php-code from pagegen does not falsely
      * clear the no_cache flag.
      * @var bool
+     * @internal
      */
-    public $no_cacheBeforePageGen = false;
+    protected $no_cacheBeforePageGen = false;
 
     /**
      * This flag indicates if temporary content went into the cache during page-generation.
      * When the message is set to "this page is being generated", TYPO3 Frontend indicates this way
      * that the current page request is fully cached, and needs no page generation.
      * @var mixed
+     * @internal
      */
-    public $tempContent = false;
+    protected $tempContent = false;
 
     /**
      * Passed to TypoScript template class and tells it to force template rendering
@@ -428,8 +434,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * May be set to the pagesTSconfig
      * @var array
+     * @internal
      */
-    public $pagesTSconfig = '';
+    protected $pagesTSconfig = '';
 
     /**
      * Eg. insert JS-functions in this array ($additionalHeaderData) to include them
@@ -683,13 +690,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Used to generate page-unique keys. Point is that uniqid() functions is very
      * slow, so a unikey key is made based on this, see function uniqueHash()
      * @var int
+     * @internal
      */
-    public $uniqueCounter = 0;
+    protected $uniqueCounter = 0;
 
     /**
      * @var string
+     * @internal
      */
-    public $uniqueString = '';
+    protected $uniqueString = '';
 
     /**
      * This value will be used as the title for the page in the indexer (if
@@ -742,8 +751,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Set to the system language key (used on the site)
      * @var string
+     * @internal
      */
-    public $lang = '';
+    protected $lang = '';
 
     /**
      * Internal calculations for labels
@@ -5036,6 +5046,17 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 trigger_error('Property $TSFE->loginAllowedInBranch is marked as protected now as it only contains internal state. Use checkIfLoginAllowedInBranch() instead.', E_USER_DEPRECATED);
                 return isset($this->$propertyName);
             // Regular deprecations / property visibility changes
+            case 'loginAllowedInBranch_mode':
+            case 'cacheTimeOutDefault':
+            case 'cacheContentFlag':
+            case 'cacheExpires':
+            case 'isClientCachable':
+            case 'no_cacheBeforePageGen':
+            case 'tempContent':
+            case 'pagesTSconfig':
+            case 'uniqueCounter':
+            case 'uniqueString':
+            case 'lang':
             case 'MP_defaults':
             case 'debug':
             case 'pageAccessFailureHistory':
@@ -5094,6 +5115,17 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 trigger_error('Property $TSFE->loginAllowedInBranch is marked as protected now as it only contains internal state. Use checkIfLoginAllowedInBranch() instead.', E_USER_DEPRECATED);
                 break;
             // Regular deprecations / property visibility changes
+            case 'loginAllowedInBranch_mode':
+            case 'cacheTimeOutDefault':
+            case 'cacheContentFlag':
+            case 'cacheExpires':
+            case 'isClientCachable':
+            case 'no_cacheBeforePageGen':
+            case 'tempContent':
+            case 'pagesTSconfig':
+            case 'uniqueCounter':
+            case 'uniqueString':
+            case 'lang':
             case 'MP_defaults':
             case 'debug':
             case 'pageAccessFailureHistory':
@@ -5225,6 +5257,17 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 trigger_error('Property $TSFE->loginAllowedInBranch is marked as protected now as it only contains internal state. Use checkIfLoginAllowedInBranch() instead.', E_USER_DEPRECATED);
                 break;
             // Regular deprecations / property visibility changes
+            case 'loginAllowedInBranch_mode':
+            case 'cacheTimeOutDefault':
+            case 'cacheContentFlag':
+            case 'cacheExpires':
+            case 'isClientCachable':
+            case 'no_cacheBeforePageGen':
+            case 'tempContent':
+            case 'pagesTSconfig':
+            case 'uniqueCounter':
+            case 'uniqueString':
+            case 'lang':
             case 'MP_defaults':
             case 'debug':
             case 'pageAccessFailureHistory':
@@ -5301,6 +5344,17 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 trigger_error('Property $TSFE->loginAllowedInBranch is marked as protected now as it only contains internal state. Use checkIfLoginAllowedInBranch() instead.', E_USER_DEPRECATED);
                 break;
             // Regular deprecations / property visibility changes
+            case 'loginAllowedInBranch_mode':
+            case 'cacheTimeOutDefault':
+            case 'cacheContentFlag':
+            case 'cacheExpires':
+            case 'isClientCachable':
+            case 'no_cacheBeforePageGen':
+            case 'tempContent':
+            case 'pagesTSconfig':
+            case 'uniqueCounter':
+            case 'uniqueString':
+            case 'lang':
             case 'MP_defaults':
             case 'debug':
             case 'pageAccessFailureHistory':

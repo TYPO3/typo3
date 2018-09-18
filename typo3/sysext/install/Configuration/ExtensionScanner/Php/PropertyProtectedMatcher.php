@@ -892,4 +892,59 @@ return [
             'Deprecation-86047-TSFEPropertiesMethodsAndChangeVisibility.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->loginAllowedInBranch_mode' => [
+        'restFiles' => [
+            'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cacheTimeOutDefault' => [
+        'restFiles' => [
+            'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cacheContentFlag' => [
+        'restFiles' => [
+            'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->isClientCachable' => [
+        'restFiles' => [
+            'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->no_cacheBeforePageGen' => [
+        'restFiles' => [
+            'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->tempContent' => [
+        'restFiles' => [
+            'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->pagesTSconfig' => [
+        'restFiles' => [
+            'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->uniqueCounter' => [
+        'restFiles' => [
+            'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->uniqueString' => [
+        'restFiles' => [
+            'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->lang' => [
+        'restFiles' => [
+            'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cacheExpires' => [
+        'restFiles' => [
+            'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+        ],
+    ],
 ];
