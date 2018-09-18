@@ -3,7 +3,7 @@
 <f:layout name="main" />
 
 <f:section name="headline">
-	<h1><f:translate key="installExtension">Install extension</f:translate></h1>
+	<h1><f:translate key="installExtension">Install extension</f:translate> <small>{f:translate(key: 'downloadExtension.dependencies.errorTitle')}</small></h1>
 </f:section>
 
 <f:section name="content">
@@ -14,7 +14,7 @@
 	<f:link.action action="index" class="btn btn-default onClickMaskExtensionManager">
 		Go back
 	</f:link.action>
-	<f:link.action action="installExtensionWithoutSystemDependencyCheck" controller="Action" arguments="{extensionKey: extension.extensionKey}" class="btn btn-primary t3js-dependencies disabled onClickMaskExtensionManager">
+	<f:link.action action="installExtensionWithoutSystemDependencyCheck" controller="Action" arguments="{extensionKey: extension.extensionKey}" class="btn btn-danger t3js-dependencies disabled onClickMaskExtensionManager">
 		 <f:translate key="dependencyCheck.unresolvedDependencies.proceed" />
 	</f:link.action>
 </f:section>
