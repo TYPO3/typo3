@@ -20,9 +20,9 @@
   dependencies:
     "@types/filesystem" "*"
 
-"@types/ckeditor@0.0.46":
-  version "0.0.46"
-  resolved "https://registry.yarnpkg.com/@types/ckeditor/-/ckeditor-0.0.46.tgz#9ab258c8344f3ff8a8847069dbab11fd5210bd61"
+"@types/ckeditor@4.9.1":
+  version "4.9.1"
+  resolved "https://registry.yarnpkg.com/@types/ckeditor/-/ckeditor-4.9.1.tgz#d8e81fb840c3f248772ab90efd508b6061cbd138"
 
 "@types/filesystem@*":
   version "0.0.28"
@@ -708,9 +708,9 @@ circular-json@^0.3.1:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.3.3.tgz#815c99ea84f6809529d2f45791bdf82711352d66"
 
-ckeditor@4.9.1:
-  version "4.9.1"
-  resolved "https://registry.yarnpkg.com/ckeditor/-/ckeditor-4.9.1.tgz#d73adb42f7235f4030ab837e8aee9882d9107e89"
+ckeditor@4.10.1:
+  version "4.10.1"
+  resolved "https://registry.yarnpkg.com/ckeditor/-/ckeditor-4.10.1.tgz#e0230b05a5470ef070be9ab9ba444fea418ebc78"
 
 clap@^1.0.9:
   version "1.2.3"
