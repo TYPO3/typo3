@@ -15,30 +15,28 @@ namespace TYPO3\CMS\Styleguide\Command;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 
 /**
- * Styleguide commands
+ * Kauderwelsch command writes some kauderwelsch string to console output
  */
-class StyleguideCommandController extends CommandController
+class KauderwelschCommand extends Command
 {
-    /**
-     * @var bool
-     */
-    protected $requestAdminPermissions = true;
-
     /**
      * Random Kauderwelsch quote
      *
-     * @return string
-     * @cli
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
      */
-    public function KauderwelschCommand()
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var $service KauderwelschService */
-        $service = $this->objectManager->get(KauderwelschService::class);
-        return $service->getLoremIpsumHtml();
+        $output->writeln(GeneralUtility::makeInstance(KauderwelschService::class)->getLoremIpsum());
+        return 0;
     }
 
 }
