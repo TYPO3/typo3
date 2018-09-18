@@ -1,5 +1,3 @@
-![TYPO3](http://typo3.org/typo3conf/ext/t3org_template/i/typo3-logo.png)
-
 TYPO3 CMS Backend Styleguide
 ============================
 
