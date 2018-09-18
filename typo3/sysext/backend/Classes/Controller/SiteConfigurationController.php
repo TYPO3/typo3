@@ -275,14 +275,17 @@ class SiteConfigurationController
                                 continue;
                             }
                             $type = $siteTca[$foreignTable]['columns'][$childFieldName]['config']['type'];
-                            if ($type === 'input') {
-                                $childRowData[$childFieldName] = $childFieldValue;
-                            } elseif ($type === 'select') {
-                                $childRowData[$childFieldName] = $childFieldValue;
-                            } elseif ($type === 'check') {
-                                $childRowData[$childFieldName] = (bool)$childFieldValue;
-                            } else {
-                                throw new \RuntimeException('TCA type ' . $type . ' not implemented in site handling', 1521555340);
+                            switch ($type) {
+                                case 'input':
+                                case 'select':
+                                case 'text':
+                                    $childRowData[$childFieldName] = $childFieldValue;
+                                    break;
+                                case 'check':
+                                    $childRowData[$childFieldName] = (bool)$childFieldValue;
+                                    break;
+                                default:
+                                    throw new \RuntimeException('TCA type ' . $type . ' not implemented in site handling', 1521555340);
                             }
                         }
                         $newSysSiteData[$fieldName][] = $childRowData;

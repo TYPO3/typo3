@@ -46,7 +46,7 @@ class SiteDatabaseEditRow implements FormDataProviderInterface
             $rowData = $siteFinder->getSiteByRootPageId($siteConfigurationForPageUid)->getConfiguration();
             $result['databaseRow']['uid'] = $rowData['rootPageId'];
             $result['databaseRow']['identifier'] = $result['customData']['siteIdentifier'];
-        } elseif ($tableName === 'site_errorhandling' || $tableName === 'site_language') {
+        } elseif (in_array($tableName, ['site_errorhandling', 'site_language', 'site_route'])) {
             $siteConfigurationForPageUid = (int)($result['inlineTopMostParentUid'] ?? $result['inlineParentUid']);
             $rowData = $siteFinder->getSiteByRootPageId($siteConfigurationForPageUid)->getConfiguration();
             $parentFieldName = $result['inlineParentFieldName'];

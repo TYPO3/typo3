@@ -88,6 +88,15 @@ return [
                 'typo3/cms-frontend/page-resolver'
             ]
         ],
+        'typo3/cms-frontend/static-route-resolver' => [
+            'target' => \TYPO3\CMS\Frontend\Middleware\StaticRouteResolver::class,
+            'after' => [
+                'typo3/cms-frontend/site',
+            ],
+            'before' => [
+                'typo3/cms-frontend/page-resolver'
+            ]
+        ],
         'typo3/cms-frontend/page-resolver' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\PageResolver::class,
             'after' => [

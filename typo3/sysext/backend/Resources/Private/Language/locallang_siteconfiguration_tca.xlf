@@ -21,11 +21,17 @@
 			<trans-unit id="site.errorHandling">
 				<source>Error Handling</source>
 			</trans-unit>
+			<trans-unit id="site.routes">
+				<source>Routes</source>
+			</trans-unit>
 			<trans-unit id="site.tab.languages">
 				<source>Languages</source>
 			</trans-unit>
 			<trans-unit id="site.tab.errorHandling">
 				<source>Error Handling</source>
+			</trans-unit>
+			<trans-unit id="site.tab.routes">
+				<source>Static Routes</source>
 			</trans-unit>
 
 			<trans-unit id="site_language.ctrl.title">
@@ -124,6 +130,21 @@
 			</trans-unit>
 			<trans-unit id="site_errorhandling.errorPhpClassFQCN">
 				<source>ErrorHandler Class Target (FQCN)</source>
+			</trans-unit>
+			<trans-unit id="site_route.ctrl.title">
+				<source>Routes</source>
+			</trans-unit>
+			<trans-unit id="site_route.type">
+				<source>Route Type</source>
+			</trans-unit>
+			<trans-unit id="site_route.staticText">
+				<source>Static Text</source>
+			</trans-unit>
+			<trans-unit id="site_route.source">
+				<source>Page, File or URL</source>
+			</trans-unit>
+			<trans-unit id="site_route.route">
+				<source>Static Route Name</source>
 			</trans-unit>
 		</body>
 	</file>
