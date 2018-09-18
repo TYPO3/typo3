@@ -621,7 +621,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
     protected function fixUsername($username, $prefix)
     {
         $prefix = trim($prefix);
-        if (strpos($username, $prefix) === 0) {
+        if ($prefix !== '' && strpos($username, $prefix) === 0) {
             $username = substr($username, strlen($prefix));
         }
         return $prefix . $username;
