@@ -245,14 +245,14 @@ class SiteConfigurationController
         try {
             $newSysSiteData = [];
             // Hard set rootPageId: This is TCA readOnly and not transmitted by FormEngine, but is also the "uid" of the site record
-            $newSysSiteData['site']['rootPageId'] = $pageId;
+            $newSysSiteData['rootPageId'] = $pageId;
             foreach ($sysSiteRow as $fieldName => $fieldValue) {
                 $type = $siteTca['site']['columns'][$fieldName]['config']['type'];
                 if ($type === 'input') {
                     $fieldValue = $this->validateAndProcessValue('site', $fieldName, $fieldValue);
-                    $newSysSiteData['site'][$fieldName] = $fieldValue;
+                    $newSysSiteData[$fieldName] = $fieldValue;
                 } elseif ($type === 'inline') {
-                    $newSysSiteData['site'][$fieldName] = [];
+                    $newSysSiteData[$fieldName] = [];
                     $childRowIds = GeneralUtility::trimExplode(',', $fieldValue, true);
                     if (!isset($siteTca['site']['columns'][$fieldName]['config']['foreign_table'])) {
                         throw new \RuntimeException('No foreign_table found for inline type', 1521555037);
@@ -263,7 +263,7 @@ class SiteConfigurationController
                         if (!isset($data[$foreignTable][$childRowId])) {
                             if (!empty($currentSiteConfiguration[$fieldName][$childRowId])) {
                                 // A collapsed inline record: Fetch data from existing config
-                                $newSysSiteData['site'][$fieldName][] = $currentSiteConfiguration[$fieldName][$childRowId];
+                                $newSysSiteData[$fieldName][] = $currentSiteConfiguration[$fieldName][$childRowId];
                                 continue;
                             }
                             throw new \RuntimeException('No data found for table ' . $foreignTable . ' with id ' . $childRowId, 1521555177);
@@ -285,15 +285,20 @@ class SiteConfigurationController
                                 throw new \RuntimeException('TCA type ' . $type . ' not implemented in site handling', 1521555340);
                             }
                         }
-                        $newSysSiteData['site'][$fieldName][] = $childRowData;
+                        $newSysSiteData[$fieldName][] = $childRowData;
                     }
                 } elseif ($type === 'select') {
-                    $newSysSiteData['site'][$fieldName] = (int)$fieldValue;
+                    $newSysSiteData[$fieldName] = (int)$fieldValue;
                 } else {
                     throw new \RuntimeException('TCA type ' . $type . ' not implemented in site handling', 1521032781);
                 }
             }
 
+            // keep root config objects not given via GUI
+            // this way extension authors are able to use their own objects on root level
+            // that are not configurable via GUI
+            // however: we overwrite the full subset of any GUI object to make sure we have a clean state
+            $newSysSiteData = array_merge($currentSiteConfiguration, $newSysSiteData);
             $newSiteConfiguration = $this->validateFullStructure($newSysSiteData);
 
             // Persist the configuration
@@ -457,10 +462,10 @@ class SiteConfigurationController
     {
         $languageService = $this->getLanguageService();
         // Verify there are not two error handlers with the same error code
-        if (isset($newSysSiteData['site']['errorHandling']) && is_array($newSysSiteData['site']['errorHandling'])) {
+        if (isset($newSysSiteData['errorHandling']) && is_array($newSysSiteData['errorHandling'])) {
             $uniqueCriteria = [];
             $validChildren = [];
-            foreach ($newSysSiteData['site']['errorHandling'] as $child) {
+            foreach ($newSysSiteData['errorHandling'] as $child) {
                 if (!isset($child['errorCode'])) {
                     throw new \RuntimeException('No errorCode found', 1521788518);
                 }
@@ -479,11 +484,11 @@ class SiteConfigurationController
                     $defaultFlashMessageQueue->enqueue($flashMessage);
                 }
             }
-            $newSysSiteData['site']['errorHandling'] = $validChildren;
+            $newSysSiteData['errorHandling'] = $validChildren;
         }
 
         // Verify there is only one inline child per sys_language record configured.
-        if (!isset($newSysSiteData['site']['languages']) || !is_array($newSysSiteData['site']['languages']) || count($newSysSiteData['site']['languages']) < 1) {
+        if (!isset($newSysSiteData['languages']) || !is_array($newSysSiteData['languages']) || count($newSysSiteData['languages']) < 1) {
             throw new \RuntimeException(
                 'No default language definition found. The interface does not allow this. Aborting',
                 1521789306
@@ -491,7 +496,7 @@ class SiteConfigurationController
         }
         $uniqueCriteria = [];
         $validChildren = [];
-        foreach ($newSysSiteData['site']['languages'] as $child) {
+        foreach ($newSysSiteData['languages'] as $child) {
             if (!isset($child['languageId'])) {
                 throw new \RuntimeException('languageId not found', 1521789455);
             }
@@ -510,7 +515,7 @@ class SiteConfigurationController
                 $defaultFlashMessageQueue->enqueue($flashMessage);
             }
         }
-        $newSysSiteData['site']['languages'] = $validChildren;
+        $newSysSiteData['languages'] = $validChildren;
 
         return $newSysSiteData;
     }

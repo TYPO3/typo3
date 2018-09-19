@@ -73,9 +73,9 @@ class SiteConfiguration
         $sites = [];
         $siteConfiguration = $this->getAllSiteConfigurationFromFiles();
         foreach ($siteConfiguration as $identifier => $configuration) {
-            $rootPageId = (int)($configuration['site']['rootPageId'] ?? 0);
+            $rootPageId = (int)($configuration['rootPageId'] ?? 0);
             if ($rootPageId > 0) {
-                $sites[$identifier] = GeneralUtility::makeInstance(Site::class, $identifier, $rootPageId, $configuration['site']);
+                $sites[$identifier] = GeneralUtility::makeInstance(Site::class, $identifier, $rootPageId, $configuration);
             }
         }
         return $sites;
@@ -108,6 +108,13 @@ class SiteConfiguration
             foreach ($finder as $fileInfo) {
                 $configuration = $loader->load(GeneralUtility::fixWindowsFilePath((string)$fileInfo));
                 $identifier = basename($fileInfo->getPath());
+                if (isset($configuration['site'])) {
+                    trigger_error(
+                        'Site configuration with key \'site\' has been deprecated, remove indentation level and site key.',
+                        E_USER_DEPRECATED
+                    );
+                    $configuration = $configuration['site'];
+                }
                 $siteConfiguration[$identifier] = $configuration;
             }
             $this->getCache()->set($this->cacheIdentifier, json_encode($siteConfiguration));
