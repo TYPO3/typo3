@@ -79,7 +79,7 @@ class ReportController
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'index';
+        $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? '';
         $extension = $request->getQueryParams()['extension'] ?? $request->getParsedBody()['extension'];
         $isRedirect = $request->getQueryParams()['redirect'] ?? $request->getParsedBody()['redirect'] ?? false;
 
@@ -95,6 +95,9 @@ class ReportController
                     'redirect' => 1,
                 ]), 303);
             }
+        }
+        if (empty($action)) {
+            $action = 'index';
         }
 
         $this->initializeView($action);
