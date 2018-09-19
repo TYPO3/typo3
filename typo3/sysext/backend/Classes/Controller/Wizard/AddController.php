@@ -209,7 +209,13 @@ class AddController extends AbstractWizardController
                         // Compile currentFlexFormData to functional string
                         $currentFlexFormValues = [];
                         foreach ($currentFlexFormValueByPath as $value) {
-                            $currentFlexFormValues[] = $value['table'] . '_' . $value['uid'];
+                            if (is_array($value)) {
+                                // group fields are always resolved to array
+                                $currentFlexFormValues[] = $value['table'] . '_' . $value['uid'];
+                            } else {
+                                // but select fields may be uids only
+                                $currentFlexFormValues[] = $value;
+                            }
                         }
                         $currentFlexFormValue = implode(',', $currentFlexFormValues);
 
