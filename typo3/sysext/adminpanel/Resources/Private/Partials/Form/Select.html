@@ -8,7 +8,7 @@
             <select name="TSFE_ADMIN_PANEL[{name}]" id="{name}" class="typo3-adminPanel-form-select-input">
                 <option value="0"></option>
                 <f:for each="{options}" as="option">
-                    <option value="{option.{optionValue}}" {f:if(condition:'{option.{optionValue}} === {value}', then: 'selected')}>
+                    <option value="{option.{optionValue}}" {f:if(condition:'{option.{optionValue}} == {value}', then: 'selected')}>
                         {option.{optionLabel}}
                     </option>
                 </f:for>

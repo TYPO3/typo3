@@ -114,7 +114,7 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
                 'simulateDate' => $this->config['simulateDate'],
                 'frontendUserGroups' => [
                     'availableGroups' => $frontendGroupsRepository->getAvailableFrontendUserGroups(),
-                    'selected' => $this->config['simulateUserGroup'],
+                    'selected' => (int)$this->config['simulateUserGroup'],
                 ],
             ]
         );
@@ -175,9 +175,10 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
         string $simulateUserGroup
     ): void {
         $context = GeneralUtility::makeInstance(Context::class);
-        $tsfe = $this->getTypoScriptFrontendController();
-        $tsfe->clear_preview();
-        $tsfe->fePreview = 1;
+        $typoScriptFrontendController = $this->getTypoScriptFrontendController();
+        $typoScriptFrontendController->clear_preview();
+        $typoScriptFrontendController->fePreview = 1;
+
         // Simulate date
         $simTime = null;
         if ($simulateDate) {
@@ -190,20 +191,20 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
         }
         $context->setAspect('visibility', GeneralUtility::makeInstance(VisibilityAspect::class, $showHiddenPages, $showHiddenRecords));
         // simulate user
-        $tsfe->simUserGroup = $simulateUserGroup;
-        if ($tsfe->simUserGroup) {
-            if ($tsfe->fe_user->user) {
-                $tsfe->fe_user->user[$tsfe->fe_user->usergroup_column] = $tsfe->simUserGroup;
+        $typoScriptFrontendController->simUserGroup = (int)$simulateUserGroup;
+        if ($typoScriptFrontendController->simUserGroup) {
+            if ($typoScriptFrontendController->fe_user->user) {
+                $typoScriptFrontendController->fe_user->user[$typoScriptFrontendController->fe_user->usergroup_column] = $typoScriptFrontendController->simUserGroup;
             } else {
-                $tsfe->fe_user = GeneralUtility::makeInstance(FrontendUserAuthentication::class);
-                $tsfe->fe_user->user = [
-                    $tsfe->fe_user->usergroup_column => $tsfe->simUserGroup,
+                $typoScriptFrontendController->fe_user = GeneralUtility::makeInstance(FrontendUserAuthentication::class);
+                $typoScriptFrontendController->fe_user->user = [
+                    $typoScriptFrontendController->fe_user->usergroup_column => $typoScriptFrontendController->simUserGroup,
                 ];
             }
-            $context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $tsfe->fe_user ?: null));
+            $context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $typoScriptFrontendController->fe_user ?: null));
         }
-        if (!$tsfe->simUserGroup && !$simTime && !$showHiddenPages && !$showHiddenRecords) {
-            $tsfe->fePreview = 0;
+        if (!$typoScriptFrontendController->simUserGroup && !$simTime && !$showHiddenPages && !$showHiddenRecords) {
+            $typoScriptFrontendController->fePreview = 0;
         }
     }
 

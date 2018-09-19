@@ -13,7 +13,8 @@ return [
         'typo3/cms-adminpanel/initiator' => [
             'target' => \TYPO3\CMS\Adminpanel\Middleware\AdminPanelInitiator::class,
             'before' => [
-                'typo3/cms-frontend/prepare-tsfe-rendering'
+                'typo3/cms-frontend/prepare-tsfe-rendering',
+                'typo3/cms-frontend/page-resolver'
             ],
             'after' => [
                 'typo3/cms-frontend/tsfe',
