@@ -256,9 +256,15 @@ class Command
      * Note that neither this method nor the @flushesCaches annotation is currently part of the official API.
      *
      * @return bool
+     *
+     * @deprecated will be removed in TYPO3 v10.
      */
     public function isFlushingCaches()
     {
+        trigger_error(
+            'Method isFlushingCaches() will be removed in v10. Do not call from other extension.',
+            E_USER_DEPRECATED
+        );
         return isset($this->classSchema->getMethod($this->controllerCommandMethod)['tags']['flushesCaches']);
     }
 

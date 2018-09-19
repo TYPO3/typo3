@@ -3432,4 +3432,11 @@ return [
             'Deprecation-86288-FrontendBackendUserAuthenticationMethods.rst'
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Cli\Command->isFlushingCaches' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-85981-AnnotationFlushesCaches.rst'
+        ],
+    ],
 ];

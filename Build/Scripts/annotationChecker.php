@@ -65,7 +65,7 @@ class NodeVisitor extends NodeVisitorAbstract
                     // Extbase related (deprecated), will be removed in TYPO3 v10.0
                     'transient',
                     'cli', // this is still used in Extbase\Tests\UnitDeprecated
-                    'flushesCaches',
+                    'flushesCaches', // still used in MockCCommandController test fixture, will be removed in TYPO3 v10.0
                     // Extbase related
                     'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\Inject', 'Extbase\\\\Inject', 'Inject',
                     'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\Validate', 'Extbase\\\\Validate', 'Validate',
