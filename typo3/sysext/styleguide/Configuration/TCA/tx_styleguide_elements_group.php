@@ -307,6 +307,23 @@ return [
                                                                 <orderBy>uid DESC</orderBy>
                                                             </default>
                                                         </suggestOptions>
+                                                        <fieldControl>
+                                                            <editPopup>
+                                                                <renderType>editPopup</renderType>
+                                                                <disabled>0</disabled>
+                                                            </editPopup>
+                                                            <addRecord>
+                                                                <renderType>addRecord</renderType>
+                                                                <disabled>0</disabled>
+                                                                <options>
+                                                                    <setValue>prepend</setValue>
+                                                                </options>
+                                                            </addRecord>
+                                                            <listModule>
+                                                                <renderType>listModule</renderType>
+                                                                <disabled>0</disabled>
+                                                            </listModule>
+                                                        </fieldControl>
                                                     </config>
                                                 </TCEforms>
                                             </group_db_2>
