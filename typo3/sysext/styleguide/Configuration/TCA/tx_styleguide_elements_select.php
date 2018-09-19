@@ -901,6 +901,56 @@ return [
                                                                     </config>
                                                                 </TCEforms>
                                                             </select_tree_1>
+                                                            <select_multiplesidebyside_1>
+                                                                <TCEforms>
+                                                                    <label>select_multiplesidebyside_1 description</label>
+                                                                    <description>field description</description>
+                                                                    <config>
+                                                                        <type>select</type>
+                                                                        <renderType>selectMultipleSideBySide</renderType>
+                                                                        <foreign_table>tx_styleguide_staticdata</foreign_table>
+                                                                        <size>5</size>
+                                                                        <autoSizeMax>5</autoSizeMax>
+                                                                        <minitems>0</minitems>
+                                                                        <enableMultiSelectFilterTextfield>1</enableMultiSelectFilterTextfield>
+                                                                        <multiSelectFilterItems>
+                                                                            <numIndex index="0">
+                                                                                <numIndex index="0"></numIndex>
+                                                                                <numIndex index="1"></numIndex>
+                                                                            </numIndex>
+                                                                            <numIndex index="1">
+                                                                                <numIndex index="0">foo</numIndex>
+                                                                                <numIndex index="1">foo</numIndex>
+                                                                            </numIndex>
+                                                                            <numIndex index="2">
+                                                                                <numIndex index="0">bar</numIndex>
+                                                                                <numIndex index="1">bar</numIndex>
+                                                                            </numIndex>
+                                                                        </multiSelectFilterItems>
+                                                                        <fieldControl>
+                                                                            <editPopup>
+                                                                                <renderType>editPopup</renderType>
+                                                                                <disabled>0</disabled>
+                                                                            </editPopup>
+                                                                            <addRecord>
+                                                                                <renderType>addRecord</renderType>
+                                                                                <disabled>0</disabled>
+                                                                                <options>
+                                                                                    <pid>0</pid>
+                                                                                    <setValue>prepend</setValue>
+                                                                                </options>
+                                                                            </addRecord>
+                                                                            <listModule>
+                                                                                <renderType>listModule</renderType>
+                                                                                <disabled>0</disabled>
+                                                                                <options>
+                                                                                    <pid>0</pid>
+                                                                                </options>
+                                                                            </listModule>
+                                                                        </fieldControl>
+                                                                    </config>
+                                                                </TCEforms>
+                                                            </select_multiplesidebyside_1>
                                                         </el>
                                                     </container_1>
                                                 </el>
