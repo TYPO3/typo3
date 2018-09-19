@@ -163,7 +163,7 @@ class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListH
                 $file = substr($file, strlen('sys_file_'));
             }
             $fileObject = ResourceFactory::getInstance()->getFileObject((int)$file);
-            $accessAllowed = $fileObject->checkActionPermission('write');
+            $accessAllowed = $fileObject->checkActionPermission('editMeta');
         }
         return $accessAllowed;
     }
