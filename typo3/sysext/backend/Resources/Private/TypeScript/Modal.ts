@@ -231,6 +231,7 @@ class Modal {
       type: Types.default,
       title,
       content,
+      severity,
       buttons,
       additionalCssClasses
     });
