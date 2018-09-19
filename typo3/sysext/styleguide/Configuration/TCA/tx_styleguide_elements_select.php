@@ -846,16 +846,12 @@ return [
                                                                 <renderType>addRecord</renderType>
                                                                 <disabled>0</disabled>
                                                                 <options>
-                                                                    <pid>0</pid>
                                                                     <setValue>prepend</setValue>
                                                                 </options>
                                                             </addRecord>
                                                             <listModule>
                                                                 <renderType>listModule</renderType>
                                                                 <disabled>0</disabled>
-                                                                <options>
-                                                                    <pid>0</pid>
-                                                                </options>
                                                             </listModule>
                                                         </fieldControl>
                                                     </config>
@@ -935,17 +931,10 @@ return [
                                                                             <addRecord>
                                                                                 <renderType>addRecord</renderType>
                                                                                 <disabled>0</disabled>
-                                                                                <options>
-                                                                                    <pid>0</pid>
-                                                                                    <setValue>prepend</setValue>
-                                                                                </options>
                                                                             </addRecord>
                                                                             <listModule>
                                                                                 <renderType>listModule</renderType>
                                                                                 <disabled>0</disabled>
-                                                                                <options>
-                                                                                    <pid>0</pid>
-                                                                                </options>
                                                                             </listModule>
                                                                         </fieldControl>
                                                                     </config>
