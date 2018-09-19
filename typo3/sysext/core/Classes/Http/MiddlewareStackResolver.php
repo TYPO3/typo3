@@ -92,18 +92,17 @@ class MiddlewareStackResolver
     protected function loadConfiguration(): array
     {
         $packages = $this->packageManager->getActivePackages();
-        $allMiddlewares = [];
+        $allMiddlewares = [[]];
         foreach ($packages as $package) {
             $packageConfiguration = $package->getPackagePath() . 'Configuration/RequestMiddlewares.php';
             if (file_exists($packageConfiguration)) {
                 $middlewaresInPackage = require $packageConfiguration;
                 if (is_array($middlewaresInPackage)) {
-                    $allMiddlewares = array_merge_recursive($allMiddlewares, $middlewaresInPackage);
+                    $allMiddlewares[] = $middlewaresInPackage;
                 }
             }
         }
-
-        return $allMiddlewares;
+        return array_replace_recursive(...$allMiddlewares);
     }
 
     /**

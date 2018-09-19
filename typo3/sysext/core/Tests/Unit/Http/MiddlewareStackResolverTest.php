@@ -60,6 +60,29 @@ class MiddlewareStackResolverTest extends UnitTestCase
     /**
      * @test
      */
+    public function resolveReturnsEmptyMiddlewareStackForZeroPackages()
+    {
+        $packageManagerProphecy = $this->prophesize(PackageManager::class);
+        $packageManagerProphecy->getActivePackages()->willReturn([]);
+        $dependencyOrderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
+        $dependencyOrderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
+        $phpFrontendCacheProphecy = $this->prophesize(PhpFrontend::class);
+        $phpFrontendCacheProphecy->has(Argument::cetera())->willReturn(false);
+        $phpFrontendCacheProphecy->set(Argument::cetera())->willReturn(false);
+
+        $subject = new MiddlewareStackResolver(
+            $packageManagerProphecy->reveal(),
+            $dependencyOrderingServiceProphecy->reveal(),
+            $phpFrontendCacheProphecy->reveal()
+        );
+        // empty array expected
+        $expected = [];
+        $this->assertEquals($expected, $subject->resolve('testStack'));
+    }
+
+    /**
+     * @test
+     */
     public function resolveAllowsDisablingAMiddleware()
     {
         $package1 = $this->prophesize(Package::class);
@@ -81,6 +104,36 @@ class MiddlewareStackResolverTest extends UnitTestCase
         );
         $expected = [
             // firstMiddleware is missing, RequestMiddlewares.php of Package2 sets disables=true on firstMiddleware
+            'secondMiddleware' => 'anotherClassName',
+        ];
+        $this->assertEquals($expected, $subject->resolve('testStack'));
+    }
+
+    /**
+     * @test
+     */
+    public function resolveAllowsReplacingAMiddleware()
+    {
+        $package1 = $this->prophesize(Package::class);
+        $package1->getPackagePath()->willReturn(__DIR__ . '/' . 'Fixtures/Package1/');
+        $package2 = $this->prophesize(Package::class);
+        $package2->getPackagePath()->willReturn(__DIR__ . '/' . 'Fixtures/Package2Replaces1/');
+        $packageManagerProphecy = $this->prophesize(PackageManager::class);
+        $packageManagerProphecy->getActivePackages()->willReturn([$package1->reveal(), $package2->reveal()]);
+        $dependencyOrderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
+        $dependencyOrderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
+        $phpFrontendCacheProphecy = $this->prophesize(PhpFrontend::class);
+        $phpFrontendCacheProphecy->has(Argument::cetera())->willReturn(false);
+        $phpFrontendCacheProphecy->set(Argument::cetera())->willReturn(false);
+
+        $subject = new MiddlewareStackResolver(
+            $packageManagerProphecy->reveal(),
+            $dependencyOrderingServiceProphecy->reveal(),
+            $phpFrontendCacheProphecy->reveal()
+        );
+        $expected = [
+            // firstMiddleware has been replaced, RequestMiddlewares.php of $package2 sets a new value for firstMiddleware
+            'firstMiddleware' => 'replacedClassName',
             'secondMiddleware' => 'anotherClassName',
         ];
         $this->assertEquals($expected, $subject->resolve('testStack'));
