@@ -28,7 +28,7 @@ class SessionTest extends UnitTestCase
     {
         $someObject = new \ArrayObject([]);
         $session = new Session();
-        $session->registerReconstitutedEntity($someObject, ['identifier' => 'fakeUuid']);
+        $session->registerReconstitutedEntity($someObject);
 
         $ReconstitutedEntities = $session->getReconstitutedEntities();
         $this->assertTrue($ReconstitutedEntities->contains($someObject));
@@ -42,7 +42,7 @@ class SessionTest extends UnitTestCase
         $someObject = new \ArrayObject([]);
         $session = new Session();
         $session->registerObject($someObject, 'fakeUuid');
-        $session->registerReconstitutedEntity($someObject, ['identifier' => 'fakeUuid']);
+        $session->registerReconstitutedEntity($someObject);
         $session->unregisterReconstitutedEntity($someObject);
 
         $ReconstitutedEntities = $session->getReconstitutedEntities();
@@ -140,7 +140,7 @@ class SessionTest extends UnitTestCase
     {
         $persistenceSession = new Session();
         $entity = $this->createMock(AbstractEntity::class);
-        $persistenceSession->registerReconstitutedEntity($entity, ['identifier' => 'fakeUuid']);
+        $persistenceSession->registerReconstitutedEntity($entity);
         $reconstitutedObjects = $persistenceSession->getReconstitutedEntities();
         $this->assertTrue($reconstitutedObjects->contains($entity), 'The object was not registered as reconstituted.');
     }
@@ -152,7 +152,7 @@ class SessionTest extends UnitTestCase
     {
         $persistenceSession = new Session();
         $entity = $this->createMock(AbstractEntity::class);
-        $persistenceSession->registerReconstitutedEntity($entity, ['identifier' => 'fakeUuid']);
+        $persistenceSession->registerReconstitutedEntity($entity);
         $persistenceSession->unregisterReconstitutedEntity($entity);
         $reconstitutedObjects = $persistenceSession->getReconstitutedEntities();
         $this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');

@@ -29,15 +29,6 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface
     protected $reconstitutedEntities;
 
     /**
-     * Reconstituted entity data (effectively their clean state)
-     * Currently unused in Extbase
-     * @todo make use of it in Extbase
-     *
-     * @var array
-     */
-    protected $reconstitutedEntitiesData = [];
-
-    /**
      * @var ObjectStorage
      */
     protected $objectMap;
@@ -63,12 +54,10 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface
      * "Documentation/PersistenceFramework object data format.txt"
      *
      * @param object $entity
-     * @param array $entityData
      */
-    public function registerReconstitutedEntity($entity, array $entityData = [])
+    public function registerReconstitutedEntity($entity)
     {
         $this->reconstitutedEntities->attach($entity);
-        $this->reconstitutedEntitiesData[$entityData['identifier']] = $entityData;
     }
 
     /**
@@ -92,7 +81,6 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface
     {
         if ($this->reconstitutedEntities->contains($entity)) {
             $this->reconstitutedEntities->detach($entity);
-            unset($this->reconstitutedEntitiesData[$this->getIdentifierByObject($entity)]);
         }
     }
 
@@ -206,6 +194,5 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface
         $this->identifierMap = [];
         $this->objectMap = new ObjectStorage();
         $this->reconstitutedEntities = new ObjectStorage();
-        $this->reconstitutedEntitiesData = [];
     }
 }
