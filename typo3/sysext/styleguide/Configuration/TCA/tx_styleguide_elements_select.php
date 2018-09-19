@@ -840,9 +840,11 @@ return [
                                                         <fieldControl>
                                                             <editPopup>
                                                                 <renderType>editPopup</renderType>
+                                                                <disabled>0</disabled>
                                                             </editPopup>
                                                             <addRecord>
                                                                 <renderType>addRecord</renderType>
+                                                                <disabled>0</disabled>
                                                                 <options>
                                                                     <pid>0</pid>
                                                                     <setValue>prepend</setValue>
@@ -850,6 +852,7 @@ return [
                                                             </addRecord>
                                                             <listModule>
                                                                 <renderType>listModule</renderType>
+                                                                <disabled>0</disabled>
                                                                 <options>
                                                                     <pid>0</pid>
                                                                 </options>
