@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -100,9 +101,26 @@ class EditController extends AbstractWizardController
         // Initialize:
         $table = $this->P['table'];
         $field = $this->P['field'];
-        $config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-        $fTable = $config['foreign_table'];
 
+        if (empty($this->P['flexFormDataStructureIdentifier'])) {
+            // If there is not flex data structure identifier, field config is found in globals
+            $config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+        } else {
+            // If there is a flex data structure identifier, parse that data structure and
+            // fetch config defined by given flex path
+            $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
+            $dataStructure = $flexFormTools->parseDataStructureByIdentifier($this->P['flexFormDataStructureIdentifier']);
+            $config = $flexFormTools->getArrayValueByPath($this->P['flexFormDataStructurePath'], $dataStructure);
+            if (!is_array($config)) {
+                throw new \RuntimeException(
+                    'Something went wrong finding flex path ' . $this->P['flexFormDataStructurePath']
+                    . ' in data structure identified by ' . $this->P['flexFormDataStructureIdentifier'],
+                    1537356346
+                );
+            }
+        }
+
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $urlParameters = [
             'returnUrl' => BackendUtility::getModuleUrl('wizard_edit', ['doClose' => 1])
         ];
@@ -111,11 +129,13 @@ class EditController extends AbstractWizardController
         if (is_array($config)
             && $config['type'] === 'select'
             && !$config['MM']
-            && $config['maxitems'] <= 1 && MathUtility::canBeInterpretedAsInteger($this->P['currentValue'])
-            && $this->P['currentValue'] && $fTable
+            && $config['maxitems'] <= 1
+            && MathUtility::canBeInterpretedAsInteger($this->P['currentValue'])
+            && $this->P['currentValue']
+            && $config['foreign_table']
         ) {
             // SINGLE value
-            $urlParameters['edit[' . $fTable . '][' . $this->P['currentValue'] . ']'] = 'edit';
+            $urlParameters['edit[' . $config['foreign_table'] . '][' . $this->P['currentValue'] . ']'] = 'edit';
             // Redirect to FormEngine
             $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
             HttpUtility::redirect($url);

@@ -42,11 +42,37 @@ class EditPopup extends AbstractNode
         $itemName = $parameterArray['itemFormElName'];
         $windowOpenParameters = $options['windowOpenParameters'] ?? 'height=800,width=600,status=0,menubar=0,scrollbars=1';
 
-        $urlParameters  = [
+        $flexFormDataStructureIdentifier = $this->data['flexFormDataStructureIdentifier'] ?? '';
+        $flexFormDataStructurePath = '';
+        if (!empty($flexFormDataStructureIdentifier)) {
+            if (empty($this->data['flexFormContainerName'])) {
+                // simple flex form element
+                $flexFormDataStructurePath = 'sheets/'
+                    . $this->data['flexFormSheetName']
+                    . '/ROOT/el/'
+                    . $this->data['flexFormFieldName']
+                    . '/TCEforms/config';
+            } else {
+                // flex form section container element
+                $flexFormDataStructurePath = 'sheets/'
+                    . $this->data['flexFormSheetName']
+                    . '/ROOT/el/'
+                    . $this->data['flexFormFieldName']
+                    . '/el/'
+                    . $this->data['flexFormContainerName']
+                    . '/el/'
+                    . $this->data['flexFormContainerFieldName']
+                    . '/TCEforms/config';
+            }
+        }
+
+        $urlParameters = [
             'P' => [
                 'table' => $this->data['tableName'],
                 'field' => $this->data['fieldName'],
                 'formName' => 'editform',
+                'flexFormDataStructureIdentifier' => $flexFormDataStructureIdentifier,
+                'flexFormDataStructurePath' => $flexFormDataStructurePath,
                 'hmac' => GeneralUtility::hmac('editform' . $itemName, 'wizard_js'),
                 'fieldChangeFunc' => $parameterArray['fieldChangeFunc'],
                 'fieldChangeFuncHash' => GeneralUtility::hmac(serialize($parameterArray['fieldChangeFunc'])),
