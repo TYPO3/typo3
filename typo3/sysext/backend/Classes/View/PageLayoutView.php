@@ -1897,6 +1897,7 @@ class PageLayoutView implements LoggerAwareInterface
         $pasteIcon = json_encode(
             ' <a data-content="' . htmlspecialchars($pasteItem) . '"'
             . ' data-title="' . htmlspecialchars($pasteTitle) . '"'
+            . ' data-severity="warning"'
             . ' class="t3js-paste t3js-paste' . htmlspecialchars($copyMode) . ' ' . htmlspecialchars($cssClass) . ' btn btn-default btn-sm"'
             . ' title="' . htmlspecialchars($this->getLanguageService()->getLL($title)) . '">'
             . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render()
