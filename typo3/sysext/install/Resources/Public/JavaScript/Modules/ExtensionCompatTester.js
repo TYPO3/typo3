@@ -36,7 +36,7 @@ define([
     initialize: function(currentModal) {
       var self = this;
       this.currentModal = currentModal;
-      self.getLoadedExtensionList();
+      this.getLoadedExtensionList();
 
       currentModal.on('click', this.selectorCheckTrigger, function(e) {
         currentModal.find(self.selectorUninstallTrigger).hide();
@@ -53,8 +53,8 @@ define([
       this.currentModal.find(this.selectorCheckTrigger).prop('disabled', true);
 
       this.currentModal.find('.modal-loading').hide();
-      const modalContent = this.currentModal.find(self.selectorModalBody);
-      const $outputContainer = this.currentModal.find(self.selectorOutputContainer);
+      const modalContent = this.currentModal.find(this.selectorModalBody);
+      const $outputContainer = this.currentModal.find(this.selectorOutputContainer);
       const message = ProgressBar.render(Severity.loading, 'Loading...', '');
       $outputContainer.append(message);
 
@@ -104,14 +104,13 @@ define([
           }
         },
         error: function (xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
 
     loadExtLocalconf: function(extension) {
-      var self = this;
-      var executeToken = self.currentModal.find(this.selectorModuleContent).data('extension-compat-tester-load-ext_localconf-token');
+      var executeToken = this.currentModal.find(this.selectorModuleContent).data('extension-compat-tester-load-ext_localconf-token');
       var $ajax = $.ajax({
         url: Router.getUrl(),
         method: 'POST',
@@ -134,8 +133,7 @@ define([
     },
 
     loadExtTables: function(extension) {
-      var self = this;
-      var executeToken = self.currentModal.find(this.selectorModuleContent).data('extension-compat-tester-load-ext_tables-token');
+      var executeToken = this.currentModal.find(this.selectorModuleContent).data('extension-compat-tester-load-ext_tables-token');
       var $ajax = $.ajax({
         url: Router.getUrl(),
         method: 'POST',
@@ -164,8 +162,8 @@ define([
      */
     uninstallExtension: function(extension) {
       var self = this;
-      var executeToken = self.currentModal.find(self.selectorModuleContent).data('extension-compat-tester-uninstall-extension-token');
-      var modalContent = self.currentModal.find(self.selectorModalBody);
+      var executeToken = this.currentModal.find(this.selectorModuleContent).data('extension-compat-tester-uninstall-extension-token');
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       var $outputContainer = $(this.selectorOutputContainer);
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
       $outputContainer.append(message);
@@ -196,7 +194,7 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     }

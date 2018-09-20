@@ -33,7 +33,7 @@ define([
     initialize: function(currentModal) {
       var self = this;
       this.currentModal = currentModal;
-      self.getData();
+      this.getData();
 
       currentModal.on('click', this.selectorChangeTrigger, function(e) {
         e.preventDefault();
@@ -45,8 +45,7 @@ define([
     },
 
     getData: function() {
-      var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       $.ajax({
         url: Router.getUrl('changeInstallToolPasswordGetData'),
         cache: false,
@@ -58,14 +57,15 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
 
     change: function() {
       var self = this;
-      var executeToken = self.currentModal.find(this.selectorModuleContent).data('install-tool-token');
+      var modalContent = this.currentModal.find(this.selectorModalBody);
+      var executeToken = this.currentModal.find(this.selectorModuleContent).data('install-tool-token');
       $.ajax({
         url: Router.getUrl(),
         method: 'POST',
@@ -88,7 +88,7 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         },
         complete: function() {
           self.currentModal.find('.t3js-changeInstallToolPassword-password,.t3js-changeInstallToolPassword-password-check').val('')

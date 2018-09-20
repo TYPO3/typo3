@@ -43,7 +43,7 @@ define([
     initialize: function(currentModal) {
       var self = this;
       this.currentModal = currentModal;
-      self.getStats();
+      this.getStats();
 
       currentModal.on('click', this.selectorStatsTrigger, function(e) {
         e.preventDefault();
@@ -60,7 +60,7 @@ define([
 
     getStats: function() {
       var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       $.ajax({
         url: Router.getUrl('clearTypo3tempFilesStats'),
         cache: false,
@@ -84,14 +84,14 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
 
     delete: function(folder, storageUid) {
-      var self = this;
-      var executeToken = self.currentModal.find(this.selectorModuleContent).data('clear-typo3temp-delete-token');
+      var modalContent = this.currentModal.find(this.selectorModalBody);
+      var executeToken = this.currentModal.find(this.selectorModuleContent).data('clear-typo3temp-delete-token');
       $.ajax({
         method: 'POST',
         url: Router.getUrl(),
@@ -116,7 +116,7 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     }

@@ -48,7 +48,7 @@ define(['jquery',
 
     getData: function() {
       var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       $.ajax({
         url: Router.getUrl('imageProcessingGetData'),
         cache: false,
@@ -61,14 +61,14 @@ define(['jquery',
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
 
     runTests: function() {
       var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       var $twinImageTemplate = this.currentModal.find(this.selectorTwinImageTemplate);
       modalContent.find(this.selectorTestContainer).each(function() {
         var $container = $(this);
@@ -109,7 +109,7 @@ define(['jquery',
             }
           },
           error: function(xhr) {
-            Router.handleAjaxError(xhr);
+            Router.handleAjaxError(xhr, modalContent);
           }
         });
       });

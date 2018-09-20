@@ -61,7 +61,7 @@ define([
       this.currentModal = currentModal;
 
       // Get configuration list on modal open
-      self.getData();
+      this.getData();
 
       currentModal.on('click', this.selectorAddLanguageToggle, function(e) {
         currentModal.find(self.selectorContentContainer + ' ' + self.selectorLanguageInactive).toggle();
@@ -89,7 +89,7 @@ define([
 
     getData: function() {
       var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       $.ajax({
         url: Router.getUrl('languagePacksGetData'),
         cache: false,
@@ -111,13 +111,14 @@ define([
           self.renderNotifications();
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
 
     activateLanguage: function(iso) {
       var self = this;
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       var $outputContainer = this.currentModal.find(this.selectorOutputContainer);
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
       $outputContainer.empty().append(message);
@@ -129,7 +130,7 @@ define([
         data: {
           'install': {
             'action': 'languagePacksActivateLanguage',
-            'token': self.currentModal.find(self.selectorModuleContent).data('language-packs-activate-language-token'),
+            'token': this.currentModal.find(this.selectorModuleContent).data('language-packs-activate-language-token'),
             'iso': iso
           }
         },
@@ -151,13 +152,14 @@ define([
           this.getData();
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
 
     deactivateLanguage: function(iso) {
       var self = this;
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       var $outputContainer = this.currentModal.find(this.selectorOutputContainer);
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
       $outputContainer.empty().append(message);
@@ -190,7 +192,7 @@ define([
           this.getData();
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
@@ -271,6 +273,7 @@ define([
 
     packUpdateDone: function(updateIsoTimes, isos) {
       var self = this;
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       var $outputContainer = this.currentModal.find(this.selectorOutputContainer);
       if (this.packsUpdateDetails.handled === this.packsUpdateDetails.toHandle) {
         // All done - create summary, update 'last update' of iso list, render main view
@@ -290,7 +293,7 @@ define([
             data: {
               'install': {
                 'action': 'languagePacksUpdateIsoTimes',
-                'token': self.currentModal.find(self.selectorModuleContent).data('language-packs-update-iso-times-token'),
+                'token': this.currentModal.find(this.selectorModuleContent).data('language-packs-update-iso-times-token'),
                 'isos': isos
               }
             },
@@ -304,7 +307,7 @@ define([
               }
             },
             error: function(xhr) {
-              Router.handleAjaxError(xhr);
+              Router.handleAjaxError(xhr, modalContent);
             }
           });
         } else {

@@ -43,7 +43,7 @@ define(['jquery',
       this.currentModal = currentModal;
 
       // Get status on initialize to have the badge and content ready
-      self.getStatus();
+      this.getStatus();
 
       currentModal.on('click', this.selectorErrorFixTrigger, function(e) {
         e.preventDefault();
@@ -53,7 +53,7 @@ define(['jquery',
 
     getStatus: function() {
       var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       var $errorBadge = $(this.selectorGridderBadge);
       $errorBadge.text('').hide();
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
@@ -98,13 +98,14 @@ define(['jquery',
           modalContent.find(self.selectorPermissionContainer).append(message);
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
 
     fix: function() {
       var self = this;
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       var $outputContainer = this.currentModal.find(this.selectorOutputContainer);
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
       $outputContainer.empty().html(message);
@@ -129,7 +130,7 @@ define(['jquery',
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },

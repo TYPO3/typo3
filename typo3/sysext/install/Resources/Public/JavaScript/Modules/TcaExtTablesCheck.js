@@ -31,9 +31,8 @@ define([
     selectorOutputContainer: '.t3js-tcaExtTablesCheck-output',
 
     initialize: function(currentModal) {
-      var self = this;
       this.currentModal = currentModal;
-      self.check();
+      this.check();
       currentModal.on('click',  this.selectorCheckTrigger, function(e) {
         e.preventDefault();
         self.check();
@@ -42,7 +41,7 @@ define([
 
     check: function() {
       var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       var $outputContainer = $(this.selectorOutputContainer);
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
       $outputContainer.empty().html(message);
@@ -73,7 +72,7 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     }

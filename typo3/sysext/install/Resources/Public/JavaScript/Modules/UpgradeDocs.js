@@ -49,7 +49,7 @@ define([
         });
       }
       else {
-        self.getContent();
+        this.getContent();
       }
 
       // Mark a file as read
@@ -70,7 +70,7 @@ define([
 
     getContent: function() {
       var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       $.ajax({
         url: Router.getUrl('upgradeDocsGetContent'),
         cache: false,
@@ -82,6 +82,9 @@ define([
             self.initializeChosenSelector();
             self.loadChangelogs();
           }
+        },
+        error: function(xhr) {
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
@@ -89,6 +92,7 @@ define([
     loadChangelogs: function() {
       var self = this;
       var promises = [];
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       this.currentModal.find(this.selectorChangeLogsForVersionContainer).each(function(index, el) {
         var $request = $.ajax({
           url: Router.getUrl('upgradeDocsGetChangelogForVersion'),
@@ -113,7 +117,7 @@ define([
             }
           },
           error: function(xhr) {
-            Router.handleAjaxError(xhr);
+            Router.handleAjaxError(xhr, modalContent);
           }
         });
 
@@ -176,8 +180,7 @@ define([
     },
 
     combinedFilterSearch: function() {
-      var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       var $items = modalContent.find('div.item');
       if (this.chosenField.val().length < 1 && this.fulltextSearchField.val().length < 1) {
         $('.panel-version:not(:first) > .panel-collapse').collapse('hide');
@@ -187,13 +190,13 @@ define([
       $items.addClass('hidden').removeClass('searchhit filterhit');
 
       // apply tags
-      if (self.chosenField.val().length > 0) {
+      if (this.chosenField.val().length > 0) {
         $items
           .addClass('hidden')
           .removeClass('filterhit');
         var orTags = [];
         var andTags = [];
-        $.each(self.chosenField.val(), function(index, item) {
+        $.each(this.chosenField.val(), function(index, item) {
           var tagFilter = '[data-item-tags*="' + item + '"]';
           if (item.indexOf(':') > 0) {
             orTags.push(tagFilter);
@@ -220,7 +223,7 @@ define([
           .removeClass('hidden');
       }
       // apply fulltext search
-      var typedQuery = self.fulltextSearchField.val();
+      var typedQuery = this.fulltextSearchField.val();
       modalContent.find('div.item.filterhit').each(function() {
         var $item = $(this);
         if ($(':contains(' + typedQuery + ')', $item).length > 0 || $('input[value*="' + typedQuery + '"]', $item).length > 0) {
@@ -262,12 +265,12 @@ define([
     },
 
     markRead: function(element) {
-      var self = this;
-      var executeToken = self.currentModal.find(this.selectorModuleContent).data('upgrade-docs-mark-read-token');
+      var modalContent = this.currentModal.find(this.selectorModalBody);
+      var executeToken = this.currentModal.find(this.selectorModuleContent).data('upgrade-docs-mark-read-token');
       var $button = $(element).closest('a');
       $button.toggleClass('t3js-upgradeDocs-unmarkRead t3js-upgradeDocs-markRead');
       $button.find('i').toggleClass('fa-check fa-ban');
-      $button.closest('.panel').appendTo(self.currentModal.find('.panel-body-read'));
+      $button.closest('.panel').appendTo(this.currentModal.find('.panel-body-read'));
       $.ajax({
         method: 'POST',
         url: Router.getUrl(),
@@ -279,19 +282,19 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
 
     unmarkRead: function(element) {
-      var self = this;
-      var executeToken = self.currentModal.find(this.selectorModuleContent).data('upgrade-docs-unmark-read-token');
+      var modalContent = this.currentModal.find(this.selectorModalBody);
+      var executeToken = this.currentModal.find(this.selectorModuleContent).data('upgrade-docs-unmark-read-token');
       var $button = $(element).closest('a');
       var version = $button.closest('.panel').data('item-version');
       $button.toggleClass('t3js-upgradeDocs-markRead t3js-upgradeDocs-unmarkRead');
       $button.find('i').toggleClass('fa-check fa-ban');
-      $button.closest('.panel').appendTo(self.currentModal.find('*[data-group-version="' + version + '"] .panel-body'));
+      $button.closest('.panel').appendTo(this.currentModal.find('*[data-group-version="' + version + '"] .panel-body'));
       $.ajax({
         method: 'POST',
         url: Router.getUrl(),
@@ -303,7 +306,7 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },

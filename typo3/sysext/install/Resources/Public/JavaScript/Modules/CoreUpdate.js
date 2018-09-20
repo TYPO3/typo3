@@ -85,9 +85,9 @@ define([
     initialize: function(currentModal) {
       var self = this;
       this.currentModal = currentModal;
-      self.getData();
+      this.getData();
 
-      var buttonTemplateSection = $(self.selectorTemplate);
+      var buttonTemplateSection = $(this.selectorTemplate);
       this.buttonTemplate = buttonTemplateSection.children().clone();
 
       $(document).on('click', '.t3js-coreUpdate-init', function(e) {
@@ -99,8 +99,7 @@ define([
     },
 
     getData: function() {
-      var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       $.ajax({
         url: Router.getUrl('coreUpdateGetData'),
         cache: false,
@@ -112,7 +111,7 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
@@ -188,6 +187,7 @@ define([
      */
     handleResult: function(data, successMessage) {
       var canContinue = false;
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       this.removeLoadingMessage();
       if (data.success === true) {
         canContinue = true;
@@ -201,7 +201,7 @@ define([
           this.addMessage(Severity.ok, successMessage);
         }
       } else {
-        Router.handleAjaxError(xhr);
+        Router.handleAjaxError(xhr, modalContent);
       }
       return canContinue;
     },

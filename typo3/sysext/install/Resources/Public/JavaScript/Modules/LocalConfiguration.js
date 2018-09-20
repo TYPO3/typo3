@@ -37,7 +37,7 @@ define([
     initialize: function(currentModal) {
       var self = this;
       this.currentModal = currentModal;
-      self.getContent();
+      this.getContent();
 
       // Write out new settings
       currentModal.on('click', this.selectorWriteTrigger, function() {
@@ -99,8 +99,7 @@ define([
     },
 
     getContent: function() {
-      var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       $.ajax({
         url: Router.getUrl('localConfigurationGetContent'),
         cache: false,
@@ -115,16 +114,16 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
 
     write: function() {
-      var self = this;
-      var executeToken = self.currentModal.find(this.selectorModuleContent).data('local-configuration-write-token');
+      var modalContent = this.currentModal.find(this.selectorModalBody);
+      var executeToken = this.currentModal.find(this.selectorModuleContent).data('local-configuration-write-token');
       var configurationValues = {};
-      self.currentModal.find('.t3js-localConfiguration-pathValue').each(function(i, element) {
+      this.currentModal.find('.t3js-localConfiguration-pathValue').each(function(i, element) {
         var $element = $(element);
         if ($element.attr('type') === 'checkbox') {
           if (element.checked) {
@@ -157,7 +156,7 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     }

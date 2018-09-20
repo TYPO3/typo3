@@ -46,7 +46,7 @@ define([
         });
       }
       else {
-        self.getList();
+        this.getList();
       }
 
       currentModal.on('click', this.selectorWriteTrigger, function(e) {
@@ -58,7 +58,7 @@ define([
 
     getList: function() {
       var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       $.ajax({
         url: Router.getUrl('systemMaintainerGetList'),
         cache: false,
@@ -97,7 +97,7 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
 
@@ -105,9 +105,9 @@ define([
     },
 
     write: function() {
-      var self = this;
-      var executeToken = self.currentModal.find(this.selectorModuleContent).data('system-maintainer-write-token');
-      var selectedUsers = self.currentModal.find(this.selectorChosenField).val();
+      var modalContent = this.currentModal.find(this.selectorModalBody);
+      var executeToken = this.currentModal.find(this.selectorModuleContent).data('system-maintainer-write-token');
+      var selectedUsers = this.currentModal.find(this.selectorChosenField).val();
       $.ajax({
         method: 'POST',
         url: Router.getUrl(),
@@ -130,7 +130,7 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     }

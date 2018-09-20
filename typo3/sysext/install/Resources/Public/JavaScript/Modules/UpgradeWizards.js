@@ -105,7 +105,7 @@ define([
             }
           },
           error: function (xhr) {
-            Router.handleAjaxError(xhr);
+            Router.handleAjaxError(xhr, $outputContainer);
           }
         });
       },
@@ -129,7 +129,7 @@ define([
             }
           },
           error: function (xhr) {
-            Router.handleAjaxError(xhr);
+            Router.handleAjaxError(xhr, $outputContainer);
           }
         });
       },
@@ -157,7 +157,7 @@ define([
             }
           },
           error: function (xhr) {
-            Router.handleAjaxError(xhr);
+            Router.handleAjaxError(xhr, $outputContainer);
           }
         });
       },
@@ -199,7 +199,7 @@ define([
             }
           },
           error: function (xhr) {
-            Router.handleAjaxError(xhr);
+            Router.handleAjaxError(xhr, $outputContainer);
           }
         });
       },
@@ -228,7 +228,7 @@ define([
             }
           },
           error: function (xhr) {
-            Router.handleAjaxError(xhr);
+            Router.handleAjaxError(xhr, $outputContainer);
           }
         });
       },
@@ -286,7 +286,7 @@ define([
             }
           },
           error: function (xhr) {
-            Router.handleAjaxError(xhr);
+            Router.handleAjaxError(xhr, $outputContainer);
           }
         });
       },
@@ -333,7 +333,7 @@ define([
             modalContent.find(self.selectorOutputWizardsContainer).append(input);
           },
           error: function (xhr) {
-            Router.handleAjaxError(xhr);
+            Router.handleAjaxError(xhr, $outputContainer);
           }
         });
       },
@@ -353,7 +353,7 @@ define([
         var $outputContainer = this.currentModal.find(this.selectorOutputWizardsContainer);
         // modalContent.find(self.selectorOutputWizardsContainer).empty();
         $outputContainer.empty().html(this.renderProgressBar('Executing "' + title + '"...'));
-        this.currentModal.find(self.selectorWizardsDoneRowMarkUndone).prop("disabled", true);
+        this.currentModal.find(this.selectorWizardsDoneRowMarkUndone).prop("disabled", true);
         $.ajax({
           method: 'POST',
           data: postData,
@@ -376,7 +376,7 @@ define([
             }
           },
           error: function (xhr) {
-            Router.handleAjaxError(xhr);
+            Router.handleAjaxError(xhr, $outputContainer);
           }
         });
       },
@@ -429,7 +429,7 @@ define([
             }
           },
           error: function (xhr) {
-            Router.handleAjaxError(xhr);
+            Router.handleAjaxError(xhr, $outputContainer);
           }
         });
       },
@@ -465,7 +465,7 @@ define([
             }
           },
           error: function (xhr) {
-            Router.handleAjaxError(xhr);
+            Router.handleAjaxError(xhr, $outputContainer);
           }
         });
       },

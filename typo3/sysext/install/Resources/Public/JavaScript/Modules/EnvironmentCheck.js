@@ -38,7 +38,7 @@ define([
       this.currentModal = currentModal;
 
       // Get status on initialize to have the badge and content ready
-      self.runTests();
+      this.runTests();
 
       currentModal.on('click', this.selectorExecuteTrigger, function(e) {
         e.preventDefault();
@@ -48,11 +48,11 @@ define([
 
     runTests: function() {
       var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       var $errorBadge = $(this.selectorGridderBadge);
       $errorBadge.text('').hide();
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      modalContent.find(self.selectorOutputContainer).empty().append(message);
+      modalContent.find(this.selectorOutputContainer).empty().append(message);
       $.ajax({
         url: Router.getUrl('environmentCheckGetStatus'),
         cache: false,
@@ -85,7 +85,7 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     }

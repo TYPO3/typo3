@@ -42,7 +42,7 @@ define([
     initialize: function(currentModal) {
       var self = this;
       this.currentModal = currentModal;
-      self.getStats();
+      this.getStats();
 
       currentModal.on('click', this.selectorStatsTrigger, function(e) {
         e.preventDefault();
@@ -59,7 +59,7 @@ define([
 
     getStats: function() {
       var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       $.ajax({
         url: Router.getUrl('clearTablesStats'),
         cache: false,
@@ -83,14 +83,14 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
 
     clear: function(table) {
-      var self = this;
-      var executeToken = self.currentModal.find(this.selectorModuleContent).data('clear-tables-clear-token');
+      var modalContent = this.currentModal.find(this.selectorModalBody);
+      var executeToken = this.currentModal.find(this.selectorModuleContent).data('clear-tables-clear-token');
       $.ajax({
         url: Router.getUrl(),
         method: 'POST',
@@ -114,7 +114,7 @@ define([
           this.getStats();
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     }

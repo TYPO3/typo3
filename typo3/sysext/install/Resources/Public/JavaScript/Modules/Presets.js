@@ -36,7 +36,7 @@ define([
     initialize: function(currentModal) {
       var self = this;
       this.currentModal = currentModal;
-      self.getContent();
+      this.getContent();
 
       // Load content with post data on click 'custom image executable path'
       currentModal.on('click', this.selectorImageExecutableTrigger, function(e) {
@@ -57,8 +57,7 @@ define([
     },
 
     getContent: function() {
-      var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       $.ajax({
         url: Router.getUrl('presetsGetContent'),
         cache: false,
@@ -70,15 +69,14 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
 
     getCustomImagePathContent: function() {
-      var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
-      var presetsContentToken = self.currentModal.find(this.selectorModuleContent).data('presets-content-token');
+      var modalContent = this.currentModal.find(this.selectorModalBody);
+      var presetsContentToken = this.currentModal.find(this.selectorModuleContent).data('presets-content-token');
       $.ajax({
         url: Router.getUrl(),
         method: 'POST',
@@ -88,7 +86,7 @@ define([
             'action': 'presetsGetContent',
             'values': {
               'Image': {
-                'additionalSearchPath': self.currentModal.find(this.selectorImageExecutable).val()
+                'additionalSearchPath': this.currentModal.find(this.selectorImageExecutable).val()
               }
             }
           }
@@ -102,16 +100,16 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
 
     activate: function() {
-      var self = this;
-      var executeToken = self.currentModal.find(this.selectorModuleContent).data('presets-activate-token');
+      var modalContent = this.currentModal.find(this.selectorModalBody);
+      var executeToken = this.currentModal.find(this.selectorModuleContent).data('presets-activate-token');
       var postData = {};
-      $(self.currentModal.find(this.selectorModuleContent + ' form').serializeArray()).each(function() {
+      $(this.currentModal.find(this.selectorModuleContent + ' form').serializeArray()).each(function() {
         postData[this.name] = this.value;
       });
       postData['install[action]'] = 'presetsActivate';
@@ -131,7 +129,7 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     }

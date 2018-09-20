@@ -32,14 +32,12 @@ define([
 
 
     initialize: function(currentModal) {
-      var self = this;
       this.currentModal = currentModal;
-      self.getData();
+      this.getData();
     },
 
     getData: function() {
-      var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       $.ajax({
         url: Router.getUrl('phpInfoGetData'),
         cache: false,
@@ -51,7 +49,7 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     }

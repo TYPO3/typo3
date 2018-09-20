@@ -30,7 +30,7 @@ define([
     initialize: function(currentModal) {
       var self = this;
       this.currentModal = currentModal;
-      self.getContent();
+      this.getContent();
 
       currentModal.on('click', this.selectorSaveTrigger, function(e) {
         e.preventDefault();
@@ -39,8 +39,7 @@ define([
     },
 
     getContent: function() {
-      var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       $.ajax({
         url: Router.getUrl('featuresGetContent'),
         cache: false,
@@ -52,16 +51,16 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
 
     save: function() {
-      var self = this;
-      var executeToken = self.currentModal.find(this.selectorModuleContent).data('features-save-token');
+      var modalContent = this.currentModal.find(this.selectorModalBody);
+      var executeToken = this.currentModal.find(this.selectorModuleContent).data('features-save-token');
       var postData = {};
-      $(self.currentModal.find(this.selectorModuleContent + ' form').serializeArray()).each(function() {
+      $(this.currentModal.find(this.selectorModuleContent + ' form').serializeArray()).each(function() {
         postData[this.name] = this.value;
       });
       postData['install[action]'] = 'featuresSave';
@@ -81,7 +80,7 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     }

@@ -31,7 +31,7 @@ define(['jquery',
     initialize: function(currentModal) {
       var self = this;
       this.currentModal = currentModal;
-      self.getData();
+      this.getData();
 
       currentModal.on('show.bs.collapse', self.selectorExtensionContainer, function(e) {
         // Scan a single extension by opening the panel
@@ -56,8 +56,7 @@ define(['jquery',
     },
 
     getData: function() {
-      var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       $.ajax({
         url: Router.getUrl('extensionScannerGetData'),
         cache: false,
@@ -69,7 +68,7 @@ define(['jquery',
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
@@ -87,14 +86,14 @@ define(['jquery',
      */
     scanAll: function($extensions) {
       var self = this;
-      self.currentModal.find(this.selectorExtensionContainer)
+      this.currentModal.find(this.selectorExtensionContainer)
         .removeClass('panel-danger panel-warning panel-success')
         .find('.panel-progress-bar')
         .css('width', 0)
         .attr('aria-valuenow', 0)
         .find('span')
         .text('0%');
-      self.setProgressForAll();
+      this.setProgressForAll();
       $extensions.each(function() {
         var $me = $(this);
         var extension = $me.data('extension');
@@ -135,13 +134,14 @@ define(['jquery',
     setProgressForAll: function() {
       var self = this;
       // var numberOfExtensions = $(this.selectorExtensionContainer).length;
-      var numberOfExtensions = self.currentModal.find(this.selectorExtensionContainer).length;
-      var numberOfSuccess = self.currentModal.find(this.selectorExtensionContainer + '.t3js-extensionscan-finished.panel-success').length;
-      var numberOfWarning = self.currentModal.find(this.selectorExtensionContainer + '.t3js-extensionscan-finished.panel-warning').length;
-      var numberOfError = self.currentModal.find(this.selectorExtensionContainer + '.t3js-extensionscan-finished.panel-danger').length;
+      var numberOfExtensions = this.currentModal.find(this.selectorExtensionContainer).length;
+      var numberOfSuccess = this.currentModal.find(this.selectorExtensionContainer + '.t3js-extensionscan-finished.panel-success').length;
+      var numberOfWarning = this.currentModal.find(this.selectorExtensionContainer + '.t3js-extensionscan-finished.panel-warning').length;
+      var numberOfError = this.currentModal.find(this.selectorExtensionContainer + '.t3js-extensionscan-finished.panel-danger').length;
       var numberOfScannedExtensions = numberOfSuccess + numberOfWarning + numberOfError;
       var percent = (numberOfScannedExtensions / numberOfExtensions) * 100;
-      self.currentModal.find('.t3js-extensionScanner-progress-all-extension .progress-bar')
+      var modalContent = this.currentModal.find(this.selectorModalBody);
+      this.currentModal.find('.t3js-extensionScanner-progress-all-extension .progress-bar')
         .css('width', percent + '%')
         .attr('aria-valuenow', percent)
         .find('span')
@@ -166,7 +166,7 @@ define(['jquery',
             }
           },
           error: function(xhr) {
-            Router.handleAjaxError(xhr);
+            Router.handleAjaxError(xhr, modalContent);
           }
         });
       }
@@ -191,8 +191,8 @@ define(['jquery',
      */
     scanSingleExtension: function(extension) {
       var self = this;
-      var executeToken = self.currentModal.find(this.selectorModuleContent).data('extension-scanner-files-token');
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var executeToken = this.currentModal.find(this.selectorModuleContent).data('extension-scanner-files-token');
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       var $extensionContainer = this.currentModal.find(this.getExtensionSelector(extension));
       var hitTemplate = '#t3js-extensionScanner-file-hit-template';
       var restTemplate = '#t3js-extensionScanner-file-hit-rest-template';
@@ -327,7 +327,7 @@ define(['jquery',
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     }

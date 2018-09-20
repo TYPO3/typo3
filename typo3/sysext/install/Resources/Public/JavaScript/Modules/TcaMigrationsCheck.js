@@ -33,7 +33,7 @@ define([
     initialize: function(currentModal) {
       var self = this;
       this.currentModal = currentModal;
-      self.check();
+      this.check();
       currentModal.on('click',  this.selectorCheckTrigger, function(e) {
         e.preventDefault();
         self.check();
@@ -43,7 +43,7 @@ define([
     check: function() {
       var self = this;
       var $outputContainer = $(this.selectorOutputContainer);
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
       $outputContainer.empty().html(message);
       $.ajax({
@@ -74,7 +74,7 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     }

@@ -41,7 +41,7 @@ define([
     initialize: function(currentModal) {
       var self = this;
       this.currentModal = currentModal;
-      self.analyzeAjax();
+      this.analyzeAjax();
 
       // Select / deselect all checkboxes
       currentModal.on('click', '.t3js-databaseAnalyzer-suggestion-block-checkbox', function(e) {
@@ -65,9 +65,9 @@ define([
 
     analyzeAjax: function() {
       var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      modalContent.find(self.selectorOutputContainer).append(message);
+      modalContent.find(this.selectorOutputContainer).append(message);
       $(this.selectorExecuteTrigger).prop('disabled', true);
       $(this.selectorAnalyzeTrigger).prop('disabled', true);
 
@@ -125,16 +125,17 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
 
     execute: function() {
       var self = this;
-      var executeToken = self.currentModal.find(self.selectorModuleContent).data('database-analyzer-execute-token');
+      var modalContent = this.currentModal.find(this.selectorModalBody);
+      var executeToken = this.currentModal.find(this.selectorModuleContent).data('database-analyzer-execute-token');
       var selectedHashes = [];
-      self.currentModal.find('.t3js-databaseAnalyzer-output .t3js-databaseAnalyzer-suggestion-line input:checked').each(function() {
+      this.currentModal.find('.t3js-databaseAnalyzer-output .t3js-databaseAnalyzer-suggestion-line input:checked').each(function() {
         selectedHashes.push($(this).data('hash'));
       });
       $(this.selectorExecuteTrigger).prop('disabled', true);
@@ -161,7 +162,7 @@ define([
           self.analyzeAjax();
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     }

@@ -47,7 +47,9 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          // If reset fails on server side (typically a 500), do not crash entire install tool
+          // but render an error notification instead.
+          Notification.error('Resetting backend user uc failed. Please check the system for missing database fields and try again.');
         },
         complete: function() {
           $trigger.removeClass('disabled');

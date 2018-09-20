@@ -48,7 +48,9 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          // In case the dump action fails (typically 500 from server), do not kill the entire
+          // install tool, instead show a notification that something went wrong.
+          Notification.error('Dumping autoload files went wrong on the server side. Check the system for broken extensions and try again')
         },
         complete: function() {
           $trigger.removeClass('disabled');

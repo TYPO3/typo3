@@ -35,9 +35,8 @@ define([
     currentModal: {},
 
     initialize: function(currentModal) {
-      var self = this;
       this.currentModal = currentModal;
-      self.getData();
+      this.getData();
 
       currentModal.on('click', this.selectorCreateTrigger, function(e) {
         e.preventDefault();
@@ -50,8 +49,7 @@ define([
     },
 
     getData: function() {
-      var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       $.ajax({
         url: Router.getUrl('createAdminGetData'),
         cache: false,
@@ -63,14 +61,15 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
 
     create: function() {
       var self = this;
-      var executeToken = self.currentModal.find(this.selectorModuleContent).data('create-admin-token');
+      var modalContent = this.currentModal.find(this.selectorModalBody);
+      var executeToken = this.currentModal.find(this.selectorModuleContent).data('create-admin-token');
       $.ajax({
         url: Router.getUrl(),
         method: 'POST',
@@ -100,13 +99,13 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
-      self.currentModal.find('.t3js-createAdmin-user').val('');
-      self.currentModal.find('.t3js-createAdmin-password').val('');
-      self.currentModal.find('.t3js-createAdmin-password-check').val('');
-      self.currentModal.find('.t3js-createAdmin-system-maintainer').prop('checked', false);
+      this.currentModal.find('.t3js-createAdmin-user').val('');
+      this.currentModal.find('.t3js-createAdmin-password').val('');
+      this.currentModal.find('.t3js-createAdmin-password-check').val('');
+      this.currentModal.find('.t3js-createAdmin-system-maintainer').prop('checked', false);
     }
   };
 });

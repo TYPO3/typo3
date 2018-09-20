@@ -118,7 +118,7 @@ define([
 
     executeSilentConfigurationUpdate: function() {
       var self = this;
-      self.updateLoadingInfo('Executing silent configuration update');
+      this.updateLoadingInfo('Executing silent configuration update');
       $.ajax({
         url: this.getUrl('executeSilentConfigurationUpdate', 'layout'),
         cache: false,
@@ -144,7 +144,7 @@ define([
      */
     executeSilentLegacyExtConfExtensionConfigurationUpdate: function() {
       var self = this;
-      self.updateLoadingInfo('Executing silent extension configuration update');
+      this.updateLoadingInfo('Executing silent extension configuration update');
       $.ajax({
         url: this.getUrl('executeSilentLegacyExtConfExtensionConfigurationUpdate', 'layout'),
         cache: false,
@@ -168,7 +168,7 @@ define([
      */
     executeSilentExtensionConfigurationSynchronization: function() {
       var self = this;
-      self.updateLoadingInfo('Executing silent extension configuration synchronization');
+      this.updateLoadingInfo('Executing silent extension configuration synchronization');
       $.ajax({
         url: this.getUrl('executeSilentExtensionConfigurationSynchronization', 'layout'),
         cache: false,
@@ -189,7 +189,7 @@ define([
     loadMainLayout: function() {
       var self = this;
       var $outputContainer = $(this.selectorBody);
-      self.updateLoadingInfo('Loading main layout');
+      this.updateLoadingInfo('Loading main layout');
       $.ajax({
         url: this.getUrl('mainLayout', 'layout'),
         cache: false,
@@ -213,7 +213,7 @@ define([
       });
     },
 
-    handleAjaxError: function(xhr) {
+    handleAjaxError: function(xhr, $outputContainer) {
       var message = '';
       if (xhr.status === 403) {
         // Install tool session expired - depending on context render error message or login
@@ -230,11 +230,44 @@ define([
       } else {
         // @todo Recovery tests should be started here
         var url = this.getUrl(undefined, 'upgrade');
-        message = '<div class="t3js-infobox callout callout-sm callout-danger"><div class="callout-body">'
-          + 'Something went wrong. Please use <b><a href="' + url + '">Check for broken'
-          + ' extensions</a></b> to see if a loaded extension breaks this part of the install tool'
-          + ' and unload it.</div></div>';
-        $(this.selectorBody).empty().html(message);
+        message =
+          '<div class="t3js-infobox callout callout-sm callout-danger">'
+            + '<div class="callout-body">'
+              + '<p>Something went wrong. Please use <b><a href="' + url + '">Check for broken'
+              + ' extensions</a></b> to see if a loaded extension breaks this part of the install tool'
+              + ' and unload it.</p>'
+              + '<p>The box below may additionally reveal further details on what went wrong depending on your debug settings.'
+              + ' It may help to temporarily switch to debug mode using <b>Settings > Configuration Presets > Debug settings.</b></p>'
+              + '<p>If this error happens at an early state and no full exception back trace is shown, it may also help'
+              + ' to manually increase debugging output in <code>typo3conf/LocalConfiguration.php</code>:'
+              + '<code>[\'BE\'][\'debug\'] => true</code>, <code>[\'SYS\'][\'devIPmask\'] => \'*\'</code>, <code>[\'SYS\'][\'displayErrors\'] => 1</code>,'
+              + '<code>[\'SYS\][\'systemLogLevel\'] => 0</code>, <code>[\'SYS\'][\'exceptionalErrors\'] => 12290</code></p>'
+            + '</div>'
+          + '</div>'
+          + '<div class="panel-group" role="tablist" aria-multiselectable="true">'
+            + '<div class="panel panel-default panel-flat searchhit">'
+              + '<div class="panel-heading" role="tab" id="heading-error">'
+                + '<h3 class="panel-title">'
+                  + '<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-error" aria-expanded="true" aria-controls="collapse-error" class="collapsed">'
+                    + '<span class="caret"></span>'
+                    + '<strong>Ajax error</strong>'
+                  + '</a>'
+                +'</h3>'
+              + '</div>'
+              + '<div id="collapse-error" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-error">'
+              + '<div class="panel-body">'
+                + xhr.responseText
+              + '</div>'
+            + '</div>'
+          + '</div>';
+
+        if (typeof $outputContainer !== 'undefined') {
+          // Write to given output container. This is typically a modal if given
+          $outputContainer.empty().html(message);
+        } else {
+          // Else write to main frame
+          $(this.selectorBody).empty().html(message);
+        }
       }
     },
 
@@ -249,6 +282,9 @@ define([
           } else {
             self.showEnableInstallTool();
           }
+        },
+        error: function(xhr) {
+          self.handleAjaxError(xhr);
         }
       });
     },
@@ -262,6 +298,9 @@ define([
           if (data.success === true) {
             $(self.selectorBody).empty().append(data.html);
           }
+        },
+        error: function(xhr) {
+          self.handleAjaxError(xhr);
         }
       });
     },
@@ -277,6 +316,9 @@ define([
           } else {
             self.showLogin();
           }
+        },
+        error: function(xhr) {
+          self.handleAjaxError(xhr);
         }
       });
     },
@@ -290,6 +332,9 @@ define([
           if (data.success === true) {
             $(self.selectorBody).empty().append(data.html);
           }
+        },
+        error: function(xhr) {
+          self.handleAjaxError(xhr);
         }
       });
     },
@@ -300,7 +345,7 @@ define([
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
       $outputContainer.empty().html(message);
       $.ajax({
-        url: self.getUrl(),
+        url: this.getUrl(),
         cache: false,
         method: 'POST',
         data: {
@@ -319,6 +364,9 @@ define([
               $outputContainer.empty().html(message);
             });
           }
+        },
+        error: function(xhr) {
+          self.handleAjaxError(xhr);
         }
       });
     },
@@ -332,6 +380,9 @@ define([
           if (data.success === true) {
             self.showEnableInstallTool();
           }
+        },
+        error: function(xhr) {
+          self.handleAjaxError(xhr);
         }
       });
     },

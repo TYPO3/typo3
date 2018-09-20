@@ -45,8 +45,7 @@ define([
     },
 
     getData: function() {
-      var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       $.ajax({
         url: Router.getUrl('mailTestGetData'),
         cache: false,
@@ -58,14 +57,13 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
 
     send: function() {
-      var self = this;
-      var executeToken = self.currentModal.find(this.selectorModuleContent).data('mail-test-token');
+      var executeToken = this.currentModal.find(this.selectorModuleContent).data('mail-test-token');
       var $outputContainer = this.currentModal.find(this.selectorOutputContainer);
       var message = ProgressBar.render(Severity.loading, 'Loading...', '');
       $outputContainer.empty().html(message);
@@ -76,7 +74,7 @@ define([
           'install': {
             'action': 'mailTest',
             'token': executeToken,
-            'email': self.currentModal.find('.t3js-mailTest-email').val()
+            'email': this.currentModal.find('.t3js-mailTest-email').val()
           }
         },
         cache: false,

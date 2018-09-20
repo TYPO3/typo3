@@ -36,7 +36,7 @@ define([
     initialize: function(currentModal) {
       var self = this;
       this.currentModal = currentModal;
-      self.getContent();
+      this.getContent();
 
       // Focus search field on certain user interactions
       currentModal.on('keydown', function(e) {
@@ -83,7 +83,7 @@ define([
 
     getContent: function() {
       var self = this;
-      var modalContent = this.currentModal.find(self.selectorModalBody);
+      var modalContent = this.currentModal.find(this.selectorModalBody);
       $.ajax({
         url: Router.getUrl('extensionConfigurationGetContent'),
         cache: false,
@@ -99,7 +99,7 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       });
     },
@@ -110,8 +110,8 @@ define([
      * @param {jQuery} $form The form of the current extension
      */
     write: function($form) {
-      var self = this;
-      var executeToken = self.currentModal.find(this.selectorModuleContent).data('extension-configuration-write-token');
+      var modalContent = this.currentModal.find(this.selectorModalBody);
+      var executeToken = this.currentModal.find(this.selectorModuleContent).data('extension-configuration-write-token');
       var extensionConfiguration = {};
       $.each($form.serializeArray(), function() {
         extensionConfiguration[this.name] = this.value;
@@ -138,7 +138,7 @@ define([
           }
         },
         error: function(xhr) {
-          Router.handleAjaxError(xhr);
+          Router.handleAjaxError(xhr, modalContent);
         }
       }).always(function() {
 
