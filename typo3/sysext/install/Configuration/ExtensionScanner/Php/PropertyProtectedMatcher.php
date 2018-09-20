@@ -342,11 +342,6 @@ return [
             'Deprecation-84307-ProtectedMethodsAndPropertiesInNewContentElementController.rst',
         ],
     ],
-    'TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->config' => [
-        'restFiles' => [
-            'Deprecation-84307-ProtectedMethodsAndPropertiesInNewContentElementController.rst',
-        ],
-    ],
     'TYPO3\CMS\Backend\Controller\File\FileUploadController->title' => [
         'restFiles' => [
             'Deprecation-84326-ProtectedMethodsAndPropertiesInFileUploadController.rst',
@@ -752,17 +747,7 @@ return [
             'Deprecation-85902-IMGMENUGMENU.rst',
         ],
     ],
-    'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->tmpl' => [
-        'restFiles' => [
-            'Deprecation-85902-IMGMENUGMENU.rst',
-        ],
-    ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->sys_page' => [
-        'restFiles' => [
-            'Deprecation-85902-IMGMENUGMENU.rst',
-        ],
-    ],
-    'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->id' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
         ],

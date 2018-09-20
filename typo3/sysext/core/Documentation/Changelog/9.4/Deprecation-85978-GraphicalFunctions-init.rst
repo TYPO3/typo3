@@ -29,4 +29,4 @@ Migration
 
 No migration is needed, the constructor of :php:`GraphicalFunctions/Gifbuilder` takes care of the initalization of all settings.
 
-.. index:: PHP-API, FullyScanned, ext:core
+.. index:: PHP-API, NotScanned, ext:core

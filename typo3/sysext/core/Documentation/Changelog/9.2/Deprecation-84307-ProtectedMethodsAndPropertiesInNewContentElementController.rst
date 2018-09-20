@@ -23,7 +23,7 @@ They will throw deprecation warnings if called public from outside:
 * [not scanned] :php:`doc`
 * [not scanned] :php:`content`
 * :php:`access`
-* :php:`config`
+* [not scanned] :php:`config`
 
 All methods not used as entry points by :php:`TYPO3\CMS\Backend\Http\RouteDispatcher` will be
 removed or set to protected in v10 and throw deprecation warnings if used from a third party:

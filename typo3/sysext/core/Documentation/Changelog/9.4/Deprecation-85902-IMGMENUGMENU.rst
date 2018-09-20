@@ -68,9 +68,9 @@ due to the highly connected functionality within the PHP classes:
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->MP_array`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->conf`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->mconf`
-* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->tmpl`
+* [not scanned] :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->tmpl`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->sys_page`
-* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->id`
+* [not scanned] :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->id`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->nextActive`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->menuArr`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->hash`

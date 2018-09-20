@@ -3208,20 +3208,6 @@ return [
             'Deprecation-85960-CompareUidentDeprecated.rst'
         ],
     ],
-    'TYPO3\CMS\Core\Imaging\GraphicalFunctions->init' => [
-        'numberOfMandatoryArguments' => 0,
-        'maximumNumberOfArguments' => 0,
-        'restFiles' => [
-            'Deprecation-85978-GraphicalFunctions-init.rst'
-        ],
-    ],
-    'TYPO3\CMS\Frontend\Imaging\GifBuilder->init' => [
-        'numberOfMandatoryArguments' => 0,
-        'maximumNumberOfArguments' => 0,
-        'restFiles' => [
-            'Deprecation-85978-GraphicalFunctions-init.rst'
-        ],
-    ],
     'TYPO3\CMS\Frontend\Page\PageRepository->getFirstWebPage' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,

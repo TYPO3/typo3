@@ -57,7 +57,7 @@ The following public PHP methods have now been removed or made protected.
 * :php:`TYPO3\CMS\Backend\History\RecordHistory->showInsertDelete` (moved into controller)
 * :php:`TYPO3\CMS\Backend\History\RecordHistory->element`
 * :php:`TYPO3\CMS\Backend\History\RecordHistory->lastSyslogId`
-* :php:`TYPO3\CMS\Backend\History\RecordHistory->returnUrl`
+* [not scanned] :php:`TYPO3\CMS\Backend\History\RecordHistory->returnUrl`
 * :php:`TYPO3\CMS\Backend\History\RecordHistory->showMarked`
 * :php:`TYPO3\CMS\Backend\History\RecordHistory->main()` (logic moved into controller)
 * :php:`TYPO3\CMS\Backend\History\RecordHistory->toggleHighlight()`

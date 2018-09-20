@@ -159,11 +159,6 @@ return [
             'Breaking-55298-DecoupledHistoryFunctionality.rst',
         ],
     ],
-    'TYPO3\CMS\Backend\History\RecordHistory->returnUrl' => [
-        'restFiles' => [
-            'Breaking-55298-DecoupledHistoryFunctionality.rst',
-        ],
-    ],
     'TYPO3\CMS\Backend\History\RecordHistory->showMarked' => [
         'restFiles' => [
             'Breaking-55298-DecoupledHistoryFunctionality.rst',
