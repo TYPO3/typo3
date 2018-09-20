@@ -80,7 +80,7 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
             'showHiddenPages' => (bool)$this->getConfigOptionForModule('showHiddenPages'),
             'simulateDate' => $this->getConfigOptionForModule('simulateDate'),
             'showHiddenRecords' => (bool)$this->getConfigOptionForModule('showHiddenRecords'),
-            'simulateUserGroup' => $this->getConfigOptionForModule('simulateUserGroup'),
+            'simulateUserGroup' => (int)$this->getConfigOptionForModule('simulateUserGroup'),
             'showFluidDebug' => (bool)$this->getConfigOptionForModule('showFluidDebug'),
         ];
         $this->initializeFrontendPreview(
@@ -166,44 +166,45 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
      * @param bool $showHiddenPages
      * @param bool $showHiddenRecords
      * @param string $simulateDate
-     * @param string $simulateUserGroup
+     * @param int $simulateUserGroup UID of the fe_group to simulate
      */
     protected function initializeFrontendPreview(
         bool $showHiddenPages,
         bool $showHiddenRecords,
         string $simulateDate,
-        string $simulateUserGroup
+        int $simulateUserGroup
     ): void {
         $context = GeneralUtility::makeInstance(Context::class);
         $typoScriptFrontendController = $this->getTypoScriptFrontendController();
         $typoScriptFrontendController->clear_preview();
         $typoScriptFrontendController->fePreview = 1;
 
+        // Modify visibility settings (hidden pages + hidden content)
+        $context->setAspect('visibility', GeneralUtility::makeInstance(VisibilityAspect::class, $showHiddenPages, $showHiddenRecords));
+
         // Simulate date
         $simTime = null;
         if ($simulateDate) {
             $simTime = $this->parseDate($simulateDate);
-        }
-        if ($simTime) {
-            $GLOBALS['SIM_EXEC_TIME'] = $simTime;
-            $GLOBALS['SIM_ACCESS_TIME'] = $simTime - $simTime % 60;
-            $context->setAspect('date', GeneralUtility::makeInstance(DateTimeAspect::class, new \DateTimeImmutable('@' . $GLOBALS['SIM_EXEC_TIME'])));
-        }
-        $context->setAspect('visibility', GeneralUtility::makeInstance(VisibilityAspect::class, $showHiddenPages, $showHiddenRecords));
-        // simulate user
-        $typoScriptFrontendController->simUserGroup = (int)$simulateUserGroup;
-        if ($typoScriptFrontendController->simUserGroup) {
-            if ($typoScriptFrontendController->fe_user->user) {
-                $typoScriptFrontendController->fe_user->user[$typoScriptFrontendController->fe_user->usergroup_column] = $typoScriptFrontendController->simUserGroup;
-            } else {
-                $typoScriptFrontendController->fe_user = GeneralUtility::makeInstance(FrontendUserAuthentication::class);
-                $typoScriptFrontendController->fe_user->user = [
-                    $typoScriptFrontendController->fe_user->usergroup_column => $typoScriptFrontendController->simUserGroup,
-                ];
+            if ($simTime) {
+                $GLOBALS['SIM_EXEC_TIME'] = $simTime;
+                $GLOBALS['SIM_ACCESS_TIME'] = $simTime - $simTime % 60;
+                $context->setAspect('date', GeneralUtility::makeInstance(DateTimeAspect::class, new \DateTimeImmutable('@' . $GLOBALS['SIM_EXEC_TIME'])));
             }
-            $context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $typoScriptFrontendController->fe_user ?: null));
         }
-        if (!$typoScriptFrontendController->simUserGroup && !$simTime && !$showHiddenPages && !$showHiddenRecords) {
+        // simulate usergroup
+        if ($simulateUserGroup) {
+            $typoScriptFrontendController->simUserGroup = $simulateUserGroup;
+            if (!$typoScriptFrontendController->fe_user instanceof FrontendUserAuthentication) {
+                $typoScriptFrontendController->fe_user = GeneralUtility::makeInstance(FrontendUserAuthentication::class);
+            }
+            if (!is_array($typoScriptFrontendController->fe_user->user)) {
+                $typoScriptFrontendController->fe_user->user = [];
+            }
+            $typoScriptFrontendController->fe_user->user[$typoScriptFrontendController->fe_user->usergroup_column] = $simulateUserGroup;
+            $context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $typoScriptFrontendController->fe_user ?: null, [$simulateUserGroup]));
+        }
+        if (!$simulateUserGroup && !$simTime && !$showHiddenPages && !$showHiddenRecords) {
             $typoScriptFrontendController->fePreview = 0;
         }
     }

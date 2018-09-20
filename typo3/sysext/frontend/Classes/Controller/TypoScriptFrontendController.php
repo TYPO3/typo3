@@ -315,6 +315,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Value that contains the simulated usergroup if any
      * @var int
+     * @internal only to be used in AdminPanel, and within TYPO3 Core
      */
     public $simUserGroup = 0;
 
@@ -1238,9 +1239,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if (!$backendUser) {
             return null;
         }
-        $originalFrontendUser = null;
+        $originalFrontendUserGroup = null;
         if ($this->fe_user->user) {
-            $originalFrontendUser = $this->fe_user->user[$this->fe_user->usergroup_column];
+            $originalFrontendUserGroup = $this->fe_user->user[$this->fe_user->usergroup_column];
         }
 
         // The preview flag is set if the current page turns out to be hidden
@@ -1255,7 +1256,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($this->whichWorkspace() > 0) {
             $this->fePreview = 1;
         }
-        return $this->simUserGroup ? $originalFrontendUser : null;
+        return $this->simUserGroup ? $originalFrontendUserGroup : null;
     }
 
     /**
