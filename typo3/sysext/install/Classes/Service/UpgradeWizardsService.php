@@ -21,7 +21,6 @@ use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\StreamOutput;
-use TYPO3\CMS\Core\Cache\DatabaseSchemaService;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
@@ -46,26 +45,6 @@ class UpgradeWizardsService
     public function __construct()
     {
         $this->output = new StreamOutput(fopen('php://temp', 'wb'), Output::VERBOSITY_NORMAL, false);
-    }
-
-    /**
-     * Force creation / update of caching framework tables that are needed by some update wizards
-     *
-     * @return array List of executed statements
-     */
-    public function silentCacheFrameworkTableSchemaMigration(): array
-    {
-        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
-        $cachingFrameworkDatabaseSchemaService = GeneralUtility::makeInstance(DatabaseSchemaService::class);
-        $createTableStatements = $sqlReader->getStatementArray(
-            $cachingFrameworkDatabaseSchemaService->getCachingFrameworkRequiredDatabaseSchema()
-        );
-        $statements = [];
-        if (!empty($createTableStatements)) {
-            $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
-            $statements = $schemaMigrationService->install($createTableStatements);
-        }
-        return $statements;
     }
 
     /**

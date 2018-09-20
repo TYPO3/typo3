@@ -1044,30 +1044,6 @@ class UpgradeController extends AbstractController
     }
 
     /**
-     * Execute silent database field adds like cache framework tables
-     *
-     * @return ResponseInterface
-     */
-    public function upgradeWizardsSilentUpgradesAction(): ResponseInterface
-    {
-        $this->loadExtLocalconfDatabaseAndExtTables();
-        // Perform silent cache framework table upgrade
-        $upgradeWizardsService = new UpgradeWizardsService();
-        $statements = $upgradeWizardsService->silentCacheFrameworkTableSchemaMigration();
-        $messages = new FlashMessageQueue('install');
-        if (!empty($statements)) {
-            $messages->enqueue(new FlashMessage(
-                '',
-                'Created some database cache tables.'
-            ));
-        }
-        return new JsonResponse([
-            'success' => true,
-            'status' => $messages,
-        ]);
-    }
-
-    /**
      * Initialize the core upgrade actions
      *
      * @throws \RuntimeException

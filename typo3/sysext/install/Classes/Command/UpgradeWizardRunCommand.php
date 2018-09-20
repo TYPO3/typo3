@@ -68,7 +68,6 @@ class UpgradeWizardRunCommand extends Command
         Bootstrap::initializeBackendAuthentication();
         $this->upgradeWizardsService = new UpgradeWizardsService();
         $this->upgradeWizardsService->isDatabaseCharsetUtf8() ?: $this->upgradeWizardsService->setDatabaseCharsetUtf8();
-        $this->upgradeWizardsService->silentCacheFrameworkTableSchemaMigration();
     }
 
     /**

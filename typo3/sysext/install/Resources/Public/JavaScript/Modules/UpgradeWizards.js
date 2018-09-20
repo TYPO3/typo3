@@ -99,32 +99,6 @@ define([
           success: function (data) {
             if (data.success === true) {
               modalContent.empty().append(data.html);
-              self.silentUpgrades();
-            } else {
-              Notification.error('Something went wrong');
-            }
-          },
-          error: function (xhr) {
-            Router.handleAjaxError(xhr);
-          }
-        });
-      },
-
-      silentUpgrades: function () {
-        var self = this;
-        var $outputContainer = this.currentModal.find(this.selectorOutputWizardsContainer);
-        $outputContainer.empty().html(this.renderProgressBar('Executing some silent upgrades...'));
-        $.ajax({
-          url: Router.getUrl('upgradeWizardsSilentUpgrades'),
-          cache: false,
-          success: function (data) {
-            if (data.success === true && Array.isArray(data.status)) {
-              if (data.status.length > 0) {
-                data.status.forEach((function (element) {
-                  var message = InfoBox.render(element.severity, element.title, element.message);
-                  $outputContainer.append(message);
-                }));
-              }
               self.blockingUpgradesDatabaseCharsetTest();
             } else {
               Notification.error('Something went wrong');
