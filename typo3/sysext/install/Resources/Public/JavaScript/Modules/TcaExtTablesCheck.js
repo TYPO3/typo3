@@ -31,6 +31,7 @@ define([
     selectorOutputContainer: '.t3js-tcaExtTablesCheck-output',
 
     initialize: function(currentModal) {
+      var self = this;
       this.currentModal = currentModal;
       this.check();
       currentModal.on('click',  this.selectorCheckTrigger, function(e) {

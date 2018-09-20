@@ -35,6 +35,7 @@ define([
     currentModal: {},
 
     initialize: function(currentModal) {
+      var self = this;
       this.currentModal = currentModal;
       this.getData();
 
