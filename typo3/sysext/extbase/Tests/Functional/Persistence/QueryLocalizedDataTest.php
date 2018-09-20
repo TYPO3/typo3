@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -65,6 +66,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $configuration = [
             'persistence' => [
+                'storagePid' => 20,
                 'classes' => [
                     'TYPO3\CMS\Extbase\Domain\Model\Category' => [
                         'mapping' => ['tableName' => 'sys_category']
@@ -75,10 +77,6 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $configurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
         $this->postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
-        $query = $this->postRepository->createQuery();
-        $querySettings = $query->getQuerySettings();
-        $querySettings->setStoragePageIds([20]);
-        $this->postRepository->setDefaultQuerySettings($querySettings);
         $this->persistenceManager = $this->objectManager->get(PersistenceManager::class);
     }
 
@@ -94,6 +92,9 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
             ->method('isEnvironmentInFrontendMode')
             ->willReturn(true);
         GeneralUtility::setSingletonInstance(EnvironmentService::class, $environmentServiceMock);
+
+        $context = GeneralUtility::makeInstance(Context::class);
+        $context->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON, []));
 
         $pageRepositoryFixture = new PageRepository();
         $frontendControllerMock = $this->createMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class);
@@ -311,18 +312,6 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $query->matching($query->equals('uid', 2));
         $post2 = $query->execute()->getFirst();
 
-        $this->assertNull($post2);
-
-        //this is needed because of https://forge.typo3.org/issues/59992
-        $this->persistenceManager->clearState();
-
-        $query = $this->postRepository->createQuery();
-        $querySettings = $query->getQuerySettings();
-        $querySettings->setLanguageUid(1);
-        $querySettings->setLanguageOverlayMode(true);
-        $query->matching($query->equals('uid', 11));
-        $post2 = $query->execute()->getFirst();
-
         $this->assertEquals(['Post 2 - DK', 2, 11, 'Blog 1', 1, 1, 'John', 1, 1], [
             $post2->getTitle(),
             $post2->getUid(),
@@ -334,6 +323,18 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
             $post2->getAuthor()->getUid(),
             $post2->getAuthor()->_getProperty('_localizedUid')
         ]);
+
+        //this is needed because of https://forge.typo3.org/issues/59992
+        $this->persistenceManager->clearState();
+
+        $query = $this->postRepository->createQuery();
+        $querySettings = $query->getQuerySettings();
+        $querySettings->setLanguageUid(1);
+        $querySettings->setLanguageOverlayMode(true);
+        $query->matching($query->equals('uid', 11));
+        $post2 = $query->execute()->getFirst();
+
+        $this->assertNull($post2);
     }
 
     /**
@@ -388,18 +389,6 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $query->matching($query->equals('uid', 2));
         $post2 = $query->execute()->getFirst();
 
-        $this->assertNull($post2);
-
-        //this is needed because of https://forge.typo3.org/issues/59992
-        $this->persistenceManager->clearState();
-
-        $query = $this->postRepository->createQuery();
-        $querySettings = $query->getQuerySettings();
-        $querySettings->setLanguageUid(1);
-        $querySettings->setLanguageOverlayMode(false);
-        $query->matching($query->equals('uid', 11));
-        $post2 = $query->execute()->getFirst();
-
         //the john is not translated but it should, see next query in this test
         $this->assertEquals(['Post 2 - DK', 2, 11, 'Blog 1', 1, 1, 'John', 1, 1], [
             $post2->getTitle(),
@@ -412,6 +401,18 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
             $post2->getAuthor()->getUid(),
             $post2->getAuthor()->_getProperty('_localizedUid')
         ]);
+
+        //this is needed because of https://forge.typo3.org/issues/59992
+        $this->persistenceManager->clearState();
+
+        $query = $this->postRepository->createQuery();
+        $querySettings = $query->getQuerySettings();
+        $querySettings->setLanguageUid(1);
+        $querySettings->setLanguageOverlayMode(false);
+        $query->matching($query->equals('uid', 11));
+        $post2 = $query->execute()->getFirst();
+
+        $this->assertNull($post2);
 
         //We're setting global context here to show that the result is different then one above.
         //this means that language which is set in global context influences overlays of relations
@@ -428,17 +429,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $query->matching($query->equals('uid', 11));
         $post2 = $query->execute()->getFirst();
 
-        $this->assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
-            $post2->getTitle(),
-            $post2->getUid(),
-            $post2->_getProperty('_localizedUid'),
-            $post2->getBlog()->getTitle(),
-            $post2->getBlog()->getUid(),
-            $post2->getBlog()->_getProperty('_localizedUid'),
-            $post2->getAuthor()->getFirstname(),
-            $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty('_localizedUid')
-        ]);
+        $this->assertNull($post2);
     }
 
     public function queryFirst5PostsDataProvider()
@@ -553,24 +544,9 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
                 'overlay' => true,
                 'expected' => [
                     [
-                        'title' => 'Post 5 - DK',
-                        'uid' => 5,
-                        '_localizedUid' => 13,
-                        'blog.title' => 'Blog 1',
-                        'blog.uid' => 1,
-                        'blog._localizedUid' => 1,
-                        'author.firstname' => 'John',
-                        'author.uid' => 1,
-                        'author._localizedUid' => 1,
-                        'secondAuthor.firstname' => 'John',
-                        'secondAuthor.uid' => 1,
-                        'secondAuthor._localizedUid' => 1,
-                        'tags' => [],
-                    ],
-                    [
-                        'title' => 'Post DK only',
-                        'uid' => 15,
-                        '_localizedUid' => 15,
+                        'title' => 'Post 4 - DK',
+                        'uid' => 4,
+                        '_localizedUid' => 12,
                         'blog.title' => 'Blog 1',
                         'blog.uid' => 1,
                         'blog._localizedUid' => 1,
@@ -606,9 +582,113 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
                         'tags.2._localizedUid' => 4,
                     ],
                     [
-                        'title' => 'Post 6',
-                        'uid' => 6,
-                        '_localizedUid' => 6,
+                        'title' => 'Post DK only',
+                        'uid' => 15,
+                        '_localizedUid' => 15,
+                        'blog.title' => 'Blog 1',
+                        'blog.uid' => 1,
+                        'blog._localizedUid' => 1,
+                        'author.firstname' => 'John',
+                        'author.uid' => 1,
+                        'author._localizedUid' => 1,
+                        'secondAuthor.firstname' => 'John',
+                        'secondAuthor.uid' => 1,
+                        'secondAuthor._localizedUid' => 1,
+                        'tags' => [],
+                    ],
+                    [
+                        'title' => 'Post 7 - DK',
+                        'uid' => 7,
+                        '_localizedUid' => 14,
+                        'blog.title' => 'Blog 1',
+                        'blog.uid' => 1,
+                        'blog._localizedUid' => 1,
+                        'author.firstname' => 'John',
+                        'author.uid' => 1,
+                        'author._localizedUid' => 1,
+                        'secondAuthor.firstname' => 'John',
+                        'secondAuthor.uid' => 1,
+                        'secondAuthor._localizedUid' => 1,
+                        'tags' => [],
+                    ],
+                    [
+                        'title' => 'Post 5 - DK',
+                        'uid' => 5,
+                        '_localizedUid' => 13,
+                        'blog.title' => 'Blog 1',
+                        'blog.uid' => 1,
+                        'blog._localizedUid' => 1,
+                        'author.firstname' => 'John',
+                        'author.uid' => 1,
+                        'author._localizedUid' => 1,
+                        'secondAuthor.firstname' => 'John',
+                        'secondAuthor.uid' => 1,
+                        'secondAuthor._localizedUid' => 1,
+                        'tags' => [],
+                    ],
+                ],
+            ],
+            [
+                'language' => 1,
+                'overlay' => 'hideNonTranslated',
+                'expected' => [
+                    [
+                        'title' => 'Post 4 - DK',
+                        'uid' => 4,
+                        '_localizedUid' => 12,
+                        'blog.title' => 'Blog 1',
+                        'blog.uid' => 1,
+                        'blog._localizedUid' => 1,
+                        'author.firstname' => 'John',
+                        'author.uid' => 1,
+                        'author._localizedUid' => 1,
+                        'secondAuthor.firstname' => 'John',
+                        'secondAuthor.uid' => 1,
+                        'secondAuthor._localizedUid' => 1,
+                        'tags' => [],
+                    ],
+                    [
+                        'title' => 'Post 2 - DK',
+                        'uid' => 2,
+                        '_localizedUid' => 11,
+                        'blog.title' => 'Blog 1',
+                        'blog.uid' => 1,
+                        'blog._localizedUid' => 1,
+                        'author.firstname' => 'John',
+                        'author.uid' => 1,
+                        'author._localizedUid' => 1,
+                        'secondAuthor.firstname' => 'John',
+                        'secondAuthor.uid' => 1,
+                        'secondAuthor._localizedUid' => 1,
+                        'tags.0.name' => 'Tag2',
+                        'tags.0.uid' => 2,
+                        'tags.0._localizedUid' => 2,
+                        'tags.1.name' => 'Tag3',
+                        'tags.1.uid' => 3,
+                        'tags.1._localizedUid' => 3,
+                        'tags.2.name' => 'Tag4',
+                        'tags.2.uid' => 4,
+                        'tags.2._localizedUid' => 4,
+                    ],
+                    [
+                        'title' => 'Post DK only',
+                        'uid' => 15,
+                        '_localizedUid' => 15,
+                        'blog.title' => 'Blog 1',
+                        'blog.uid' => 1,
+                        'blog._localizedUid' => 1,
+                        'author.firstname' => 'John',
+                        'author.uid' => 1,
+                        'author._localizedUid' => 1,
+                        'secondAuthor.firstname' => 'John',
+                        'secondAuthor.uid' => 1,
+                        'secondAuthor._localizedUid' => 1,
+                        'tags' => [],
+                    ],
+                    [
+                        'title' => 'Post 7 - DK',
+                        'uid' => 7,
+                        '_localizedUid' => 14,
                         'blog.title' => 'Blog 1',
                         'blog.uid' => 1,
                         'blog._localizedUid' => 1,
@@ -622,35 +702,6 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
 
                     ],
                     [
-                        'title' => 'Post 1 - not translated',
-                        'uid' => 1,
-                        '_localizedUid' => 1,
-                        'blog.title' => 'Blog 1',
-                        'blog.uid' => 1,
-                        'blog._localizedUid' => 1,
-                        'author.firstname' => 'John',
-                        'author.uid' => 1,
-                        'author._localizedUid' => 1,
-                        'secondAuthor.firstname' => 'Never translate me henry',
-                        'secondAuthor.uid' => 3,
-                        'secondAuthor._localizedUid' => 3,
-                        'tags.0.name' => 'Tag1',
-                        'tags.0.uid' => 1,
-                        'tags.0._localizedUid' => 1,
-                        'tags.1.name' => 'Tag2',
-                        'tags.1.uid' => 2,
-                        'tags.1._localizedUid' => 2,
-                        'tags.2.name' => 'Tag3',
-                        'tags.2.uid' => 3,
-                        'tags.2._localizedUid' => 3,
-                    ],
-                ],
-            ],
-            [
-                'language' => 1,
-                'overlay' => 'hideNonTranslated',
-                'expected' => [
-                    [
                         'title' => 'Post 5 - DK',
                         'uid' => 5,
                         '_localizedUid' => 13,
@@ -664,82 +715,6 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
                         'secondAuthor.uid' => 1,
                         'secondAuthor._localizedUid' => 1,
                         'tags' => [],
-                    ],
-                    [
-                        'title' => 'Post DK only',
-                        'uid' => 15,
-                        '_localizedUid' => 15,
-                        'blog.title' => 'Blog 1',
-                        'blog.uid' => 1,
-                        'blog._localizedUid' => 1,
-                        'author.firstname' => 'John',
-                        'author.uid' => 1,
-                        'author._localizedUid' => 1,
-                        'secondAuthor.firstname' => 'John',
-                        'secondAuthor.uid' => 1,
-                        'secondAuthor._localizedUid' => 1,
-                        'tags' => [],
-                    ],
-                    [
-                        'title' => 'Post 2 - DK',
-                        'uid' => 2,
-                        '_localizedUid' => 11,
-                        'blog.title' => 'Blog 1',
-                        'blog.uid' => 1,
-                        'blog._localizedUid' => 1,
-                        'author.firstname' => 'John',
-                        'author.uid' => 1,
-                        'author._localizedUid' => 1,
-                        'secondAuthor.firstname' => 'John',
-                        'secondAuthor.uid' => 1,
-                        'secondAuthor._localizedUid' => 1,
-                        'tags.0.name' => 'Tag2',
-                        'tags.0.uid' => 2,
-                        'tags.0._localizedUid' => 2,
-                        'tags.1.name' => 'Tag3',
-                        'tags.1.uid' => 3,
-                        'tags.1._localizedUid' => 3,
-                        'tags.2.name' => 'Tag4',
-                        'tags.2.uid' => 4,
-                        'tags.2._localizedUid' => 4,
-                    ],
-                    [
-                        'title' => 'Post 6',
-                        'uid' => 6,
-                        '_localizedUid' => 6,
-                        'blog.title' => 'Blog 1',
-                        'blog.uid' => 1,
-                        'blog._localizedUid' => 1,
-                        'author.firstname' => 'John',
-                        'author.uid' => 1,
-                        'author._localizedUid' => 1,
-                        'secondAuthor.firstname' => 'John',
-                        'secondAuthor.uid' => 1,
-                        'secondAuthor._localizedUid' => 1,
-                        'tags' => [],
-                    ],
-                    [
-                        'title' => 'Post 1 - not translated',
-                        'uid' => 1,
-                        '_localizedUid' => 1,
-                        'blog.title' => 'Blog 1',
-                        'blog.uid' => 1,
-                        'blog._localizedUid' => 1,
-                        'author.firstname' => 'John',
-                        'author.uid' => 1,
-                        'author._localizedUid' => 1,
-                        'secondAuthor.firstname' => 'Never translate me henry',
-                        'secondAuthor.uid' => 3,
-                        'secondAuthor._localizedUid' => 3,
-                        'tags.0.name' => 'Tag1',
-                        'tags.0.uid' => 1,
-                        'tags.0._localizedUid' => 1,
-                        'tags.1.name' => 'Tag2',
-                        'tags.1.uid' => 2,
-                        'tags.1._localizedUid' => 2,
-                        'tags.2.name' => 'Tag3',
-                        'tags.2.uid' => 3,
-                        'tags.2._localizedUid' => 3,
                     ],
                 ],
             ],
@@ -748,24 +723,9 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
                 'overlay' => false,
                 'expected' => [
                     [
-                        'title' => 'Post 5 - DK',
-                        'uid' => 5,
-                        '_localizedUid' => 13,
-                        'blog.title' => 'Blog 1',
-                        'blog.uid' => 1,
-                        'blog._localizedUid' => 1,
-                        'author.firstname' => 'John',
-                        'author.uid' => 1,
-                        'author._localizedUid' => 1,
-                        'secondAuthor.firstname' => 'John',
-                        'secondAuthor.uid' => 1,
-                        'secondAuthor._localizedUid' => 1,
-                        'tags' => [],
-                    ],
-                    [
-                        'title' => 'Post DK only',
-                        'uid' => 15,
-                        '_localizedUid' => 15,
+                        'title' => 'Post 4 - DK',
+                        'uid' => 4,
+                        '_localizedUid' => 12,
                         'blog.title' => 'Blog 1',
                         'blog.uid' => 1,
                         'blog._localizedUid' => 1,
@@ -801,9 +761,9 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
                         'tags.2._localizedUid' => 4,
                     ],
                     [
-                        'title' => 'Post 6',
-                        'uid' => 6,
-                        '_localizedUid' => 6,
+                        'title' => 'Post DK only',
+                        'uid' => 15,
+                        '_localizedUid' => 15,
                         'blog.title' => 'Blog 1',
                         'blog.uid' => 1,
                         'blog._localizedUid' => 1,
@@ -816,27 +776,34 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
                         'tags' => [],
                     ],
                     [
-                        'title' => 'Post 1 - not translated',
-                        'uid' => 1,
-                        '_localizedUid' => 1,
+                        'title' => 'Post 7 - DK',
+                        'uid' => 7,
+                        '_localizedUid' => 14,
                         'blog.title' => 'Blog 1',
                         'blog.uid' => 1,
                         'blog._localizedUid' => 1,
                         'author.firstname' => 'John',
                         'author.uid' => 1,
                         'author._localizedUid' => 1,
-                        'secondAuthor.firstname' => 'Never translate me henry',
-                        'secondAuthor.uid' => 3,
-                        'secondAuthor._localizedUid' => 3,
-                        'tags.0.name' => 'Tag1',
-                        'tags.0.uid' => 1,
-                        'tags.0._localizedUid' => 1,
-                        'tags.1.name' => 'Tag2',
-                        'tags.1.uid' => 2,
-                        'tags.1._localizedUid' => 2,
-                        'tags.2.name' => 'Tag3',
-                        'tags.2.uid' => 3,
-                        'tags.2._localizedUid' => 3,
+                        'secondAuthor.firstname' => 'John',
+                        'secondAuthor.uid' => 1,
+                        'secondAuthor._localizedUid' => 1,
+                        'tags' => [],
+                    ],
+                    [
+                        'title' => 'Post 5 - DK',
+                        'uid' => 5,
+                        '_localizedUid' => 13,
+                        'blog.title' => 'Blog 1',
+                        'blog.uid' => 1,
+                        'blog._localizedUid' => 1,
+                        'author.firstname' => 'John',
+                        'author.uid' => 1,
+                        'author._localizedUid' => 1,
+                        'secondAuthor.firstname' => 'John',
+                        'secondAuthor.uid' => 1,
+                        'secondAuthor._localizedUid' => 1,
+                        'tags' => [],
                     ],
                 ],
             ],
@@ -862,7 +829,10 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $querySettings->setLanguageUid($languageUid);
         $querySettings->setLanguageOverlayMode($overlay);
 
-        $query->setOrderings(['content' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING]);
+        $query->setOrderings([
+            'content' => QueryInterface::ORDER_ASCENDING,
+            'uid' => QueryInterface::ORDER_ASCENDING
+        ]);
         $query->setLimit(5);
         $query->setOffset(0);
         $posts = $query->execute()->toArray();
@@ -874,6 +844,20 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     public function queryPostsByPropertyDataProvider()
     {
         $lang0Expected = [
+            [
+                'title' => 'Post 5',
+                'uid' => 5,
+                '_localizedUid' => 5,
+                'blog.title' => 'Blog 1',
+                'blog.uid' => 1,
+                'blog._localizedUid' => 1,
+                'author.firstname' => 'John',
+                'author.uid' => 1,
+                'author._localizedUid' => 1,
+                'secondAuthor.firstname' => 'John',
+                'secondAuthor.uid' => 1,
+                'secondAuthor._localizedUid' => 1,
+            ],
             [
                 'title' => 'Post 6',
                 'uid' => 6,
@@ -890,6 +874,37 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
                 'tags' => [],
             ]
         ];
+        $lang1Expected = [
+                    [
+                        'title' => 'Post 5 - DK',
+                        'uid' => 5,
+                        '_localizedUid' => 13,
+                        'blog.title' => 'Blog 1',
+                        'blog.uid' => 1,
+                        'blog._localizedUid' => 1,
+                        'author.firstname' => 'John',
+                        'author.uid' => 1,
+                        'author._localizedUid' => 1,
+                        'secondAuthor.firstname' => 'John',
+                        'secondAuthor.uid' => 1,
+                        'secondAuthor._localizedUid' => 1,
+                    ],
+                    [
+                        'title' => 'Post DK only',
+                        'uid' => 15,
+                        '_localizedUid' => 15,
+                        'blog.title' => 'Blog 1',
+                        'blog.uid' => 1,
+                        'blog._localizedUid' => 1,
+                        'author.firstname' => 'John',
+                        'author.uid' => 1,
+                        'author._localizedUid' => 1,
+                        'secondAuthor.firstname' => 'John',
+                        'secondAuthor.uid' => 1,
+                        'secondAuthor._localizedUid' => 1,
+                    ],
+
+        ];
         return [
             [
                 'language' => 0,
@@ -898,78 +913,40 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
             ],
             [
                 'language' => 0,
+                'overlay' => 'hideNonTranslated',
+                'expected' => $lang0Expected
+            ],
+                    [
+                'language' => 0,
                 'overlay' => false,
                 'expected' => $lang0Expected
             ],
             [
                 'language' => 1,
                 'overlay' => true,
-                'expected' => [
-                    [
-                        'title' => 'Post 6',
-                        'uid' => 6,
-                        '_localizedUid' => 6,
-                        'blog.title' => 'Blog 1',
-                        'blog.uid' => 1,
-                        'blog._localizedUid' => 1,
-                        'author.firstname' => 'John',
-                        'author.uid' => 1,
-                        'author._localizedUid' => 1,
-                        'secondAuthor.firstname' => 'John',
-                        'secondAuthor.uid' => 1,
-                        'secondAuthor._localizedUid' => 1,
-                        'tags' => []
-
-                    ],
-                ],
+                'expected' => $lang1Expected
             ],
             [
                 'language' => 1,
                 'overlay' => 'hideNonTranslated',
-                'expected' => [
-                    [
-                        'title' => 'Post 6',
-                        'uid' => 6,
-                        '_localizedUid' => 6,
-                        'blog.title' => 'Blog 1',
-                        'blog.uid' => 1,
-                        'blog._localizedUid' => 1,
-                        'author.firstname' => 'John',
-                        'author.uid' => 1,
-                        'author._localizedUid' => 1,
-                        'secondAuthor.firstname' => 'John',
-                        'secondAuthor.uid' => 1,
-                        'secondAuthor._localizedUid' => 1,
-                        'tags' => [],
-                    ]
-                ],
+                'expected' => $lang1Expected,
             ],
             [
                 'language' => 1,
                 'overlay' => false,
-                'expected' => [
-                    [
-                        'title' => 'Post 6',
-                        'uid' => 6,
-                        '_localizedUid' => 6,
-                        'blog.title' => 'Blog 1',
-                        'blog.uid' => 1,
-                        'blog._localizedUid' => 1,
-                        'author.firstname' => 'John',
-                        'author.uid' => 1,
-                        'author._localizedUid' => 1,
-                        'secondAuthor.firstname' => 'John',
-                        'secondAuthor.uid' => 1,
-                        'secondAuthor._localizedUid' => 1,
-                        'tags' => [],
-                    ]
-                ],
+                'expected' => $lang1Expected,
             ],
         ];
     }
 
     /**
-     * This test check posts returned by repository, when changing language and languageOverlayMode
+     * This test check posts returned by repository, when filtering by property
+     *
+     * "Post 6" is not translated
+     * "Post 5" is translated as "Post 5 - DK"
+     * "Post DK only" has no translation parent
+     *
+     *
      *
      * @test
      * @dataProvider queryPostsByPropertyDataProvider
@@ -986,8 +963,13 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $querySettings->setLanguageOverlayMode($overlay);
 
         $query->matching(
-            $query->equals('title', 'Post 6')
+            $query->logicalOr(
+                $query->like('title', 'Post 5%'),
+                $query->like('title', 'Post 6%'),
+                $query->like('title', 'Post DK only')
+            )
         );
+        $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
         $posts = $query->execute()->toArray();
 
         $this->assertCount(count($expected), $posts);
@@ -1084,9 +1066,10 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
      * @dataProvider postsWithoutRespectingSysLanguageDataProvider
      * @param int $languageUid
      * @param string|bool $overlay
+     * @param string $languageMode
      * @param array $expected
      */
-    public function postsWithoutRespectingSysLanguage($languageUid, $overlay, $LanguageMode, $expected)
+    public function postsWithoutRespectingSysLanguage($languageUid, $overlay, $languageMode, $expected)
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('language', new LanguageAspect($languageUid, $languageUid, $overlay));
@@ -1094,8 +1077,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $blogRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository::class);
         $query = $blogRepository->createQuery();
         $querySettings = $query->getQuerySettings();
-        $querySettings->setStoragePageIds([20]);
-        $querySettings->setLanguageMode($LanguageMode);
+        $querySettings->setLanguageMode($languageMode);
         $querySettings->setRespectSysLanguage(false);
 
         $posts = $query->execute()->toArray();

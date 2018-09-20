@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
  */
 
 use ExtbaseTeam\BlogExample\Domain\Model\Post;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -70,10 +72,15 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
     }
 
     /**
-     * Minimal frontent environment to satisfy Extbase Typo3DbBackend
+     * Minimal frontend environment to satisfy Extbase Typo3DbBackend
      */
     protected function setUpBasicFrontendEnvironment()
     {
+        // in v9 overlay and language mode has different default values, so we need to set them here explicitely
+        // to match v8 behaviour
+        $context = GeneralUtility::makeInstance(Context::class);
+        $context->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_OFF, ['off']));
+
         $environmentServiceMock = $this->createMock(\TYPO3\CMS\Extbase\Service\EnvironmentService::class);
         $environmentServiceMock
             ->expects($this->atLeast(1))

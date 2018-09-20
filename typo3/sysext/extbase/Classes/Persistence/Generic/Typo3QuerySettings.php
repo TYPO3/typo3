@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Service\EnvironmentService;
 
 /**
  * Query settings. This class is NOT part of the TYPO3.Flow API.
@@ -95,6 +96,19 @@ class Typo3QuerySettings implements QuerySettingsInterface
     protected $languageUid = 0;
 
     /**
+     * @var EnvironmentService
+     */
+    protected $environmentService;
+
+    /**
+     * @param EnvironmentService $environmentService
+     */
+    public function injectEnvironmentService(EnvironmentService $environmentService)
+    {
+        $this->environmentService = $environmentService;
+    }
+
+    /**
      * As long as we use a feature flag ignoreAllEnableFieldsInBe to determine the default behavior, the
      * initializeObject is responsible for handling that.
      */
@@ -104,19 +118,21 @@ class Typo3QuerySettings implements QuerySettingsInterface
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var ConfigurationManagerInterface $configurationManager */
         $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
-        if (TYPO3_MODE === 'BE' && $configurationManager->isFeatureEnabled('ignoreAllEnableFieldsInBe')) {
+        if ($this->environmentService->isEnvironmentInBackendMode() && $configurationManager->isFeatureEnabled('ignoreAllEnableFieldsInBe')) {
             $this->setIgnoreEnableFields(true);
         }
         /** @var LanguageAspect $languageAspect */
         $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
         $this->setLanguageUid($languageAspect->getContentId());
-        if ($languageAspect->getContentId()) {
-            $this->setLanguageOverlayMode($languageAspect->getLegacyOverlayType() ?: false);
+        $this->setLanguageOverlayMode(false);
+
+        if ($this->environmentService->isEnvironmentInFrontendMode()) {
+            $overlayMode = $languageAspect->getLegacyOverlayType() === 'hideNonTranslated' ? 'hideNonTranslated' : (bool)$languageAspect->getLegacyOverlayType();
+            $this->setLanguageOverlayMode($overlayMode);
             $this->setLanguageMode($languageAspect->getLegacyLanguageMode() ?: null);
-        } else {
-            // Kept for backwards-compatibility
-            $this->setLanguageOverlayMode(false);
-            $this->setLanguageMode(null);
+        } elseif ((int)GeneralUtility::_GP('L')) {
+            // Set language from 'L' parameter
+            $this->setLanguageUid((int)GeneralUtility::_GP('L'));
         }
     }
 
