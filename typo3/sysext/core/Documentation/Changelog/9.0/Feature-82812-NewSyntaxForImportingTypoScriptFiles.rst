@@ -19,16 +19,16 @@ imports and works as follows:
 .. code-block:: typoscript
 
 	# Import a single file
-	@import 'EXT:myproject/TypoScript/Configuration/randomfile.typoscript'
+	@import 'EXT:myproject/Configuration/TypoScript/randomfile.typoscript'
 	
 	# Import multiple files in a single directory, sorted by file name
-	@import 'EXT:myproject/TypoScript/Configuration/*.typoscript'
+	@import 'EXT:myproject/Configuration/TypoScript/*.typoscript'
 	
 	# Import all files in a directory
-	@import 'EXT:myproject/TypoScript/Configuration/'
+	@import 'EXT:myproject/Configuration/TypoScript/'
 	
 	# It's possible to omit the file ending, then "typoscript" is automatically added
-	@import 'EXT:myproject/TypoScript/Configuration/'
+	@import 'EXT:myproject/Configuration/TypoScript/'
 
 The main benefits of `@import` over using `<INCLUDE_TYPOSCRIPT>` are:
 - Less error-prone when adding statements to TypoScript
