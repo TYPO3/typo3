@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Controller;
  */
 
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -40,8 +41,7 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
             false
         );
 
-        $pageContextMock = $this->getMockBuilder(\TYPO3\CMS\Frontend\Page\PageRepository::class)->getMock();
-        $this->tsFrontendController->_set('sys_page', $pageContextMock);
+        $this->tsFrontendController->_set('sys_page', new PageRepository());
     }
 
     /**

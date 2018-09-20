@@ -68,6 +68,7 @@ class PageRepository implements LoggerAwareInterface
      * @var array
      */
     protected $deprecatedPublicMethods = [
+        'init' => 'init() is now called implicitly on object creation, and is not necessary anymore to be called explicitly. Calling init() will throw an error in TYPO3 v10.',
         'movePlhOL' => 'Using movePlhOL is deprecated and will not be possible anymore in TYPO3 v10.',
         'getMovePlaceholder' => 'Using getMovePlaceholder is deprecated and will not be possible anymore in TYPO3 v10.'
     ];
@@ -229,9 +230,9 @@ class PageRepository implements LoggerAwareInterface
      * into account
      *
      * @param bool $show_hidden If $show_hidden is TRUE, the hidden-field is ignored!! Normally this should be FALSE. Is used for previewing.
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::fetch_the_id(), \TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerModuleFunctionController::initialize_editor()
+     * @internal
      */
-    public function init($show_hidden)
+    protected function init($show_hidden)
     {
         $this->where_groupAccess = '';
 

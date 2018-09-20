@@ -60,7 +60,6 @@ class CanonicalGenerator
         $this->typoScriptFrontendController = $typoScriptFrontendController;
         $this->signalSlotDispatcher = $signalSlotDispatcher;
         $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        $this->pageRepository->init(false);
     }
 
     /**
