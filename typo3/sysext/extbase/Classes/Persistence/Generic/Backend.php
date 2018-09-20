@@ -394,7 +394,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
                 }
             } elseif ($propertyValue instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface
                 && $object instanceof ObjectMonitoringInterface) {
-                if ($object->_isDirty()) {
+                if ($object->_isDirty($propertyName)) {
                     if ($propertyValue->_isNew()) {
                         $this->insertObject($propertyValue, $object, $propertyName);
                     }
