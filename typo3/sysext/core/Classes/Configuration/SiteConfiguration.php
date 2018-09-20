@@ -125,6 +125,23 @@ class SiteConfiguration
     }
 
     /**
+     * Load plain configuration
+     * This method should only be used in case the original configuration as it exists in the file should be loaded,
+     * for example for writing / editing configuration.
+     *
+     * All read related actions should be performed on the site entity.
+     *
+     * @param string $siteIdentifier
+     * @return array
+     */
+    public function load(string $siteIdentifier): array
+    {
+        $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->configFileName;
+        $loader = GeneralUtility::makeInstance(YamlFileLoader::class);
+        return $loader->load(GeneralUtility::fixWindowsFilePath($fileName), YamlFileLoader::PROCESS_IMPORTS);
+    }
+
+    /**
      * Add or update a site configuration
      *
      * @param string $siteIdentifier

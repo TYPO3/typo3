@@ -17,6 +17,9 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\SiteDatabaseEditRow;
+use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Core\ApplicationContext;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -27,6 +30,22 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SiteDatabaseEditRowTest extends UnitTestCase
 {
+    public function setUp()
+    {
+        $this->backupEnvironment = true;
+        parent::setUp();
+        Environment::initialize(
+            $this->prophesize(ApplicationContext::class)->reveal(),
+            true,
+            false,
+            '',
+            '',
+            '',
+            '',
+            '',
+            ''
+        );
+    }
     /**
      * @test
      */
@@ -93,7 +112,10 @@ class SiteDatabaseEditRowTest extends UnitTestCase
         GeneralUtility::addInstance(SiteFinder::class, $siteFinderProphecy->reveal());
         $siteProphecy = $this->prophesize(Site::class);
         $siteFinderProphecy->getSiteByRootPageId(23)->willReturn($siteProphecy->reveal());
-        $siteProphecy->getConfiguration()->willReturn($rowData);
+        $siteProphecy->getIdentifier()->willReturn('testident');
+        $siteConfiguration = $this->prophesize(SiteConfiguration::class);
+        $siteConfiguration->load('testident')->willReturn($rowData);
+        GeneralUtility::addInstance(SiteConfiguration::class, $siteConfiguration->reveal());
 
         $expected = $input;
         $expected['databaseRow'] = [
@@ -126,7 +148,10 @@ class SiteDatabaseEditRowTest extends UnitTestCase
         GeneralUtility::addInstance(SiteFinder::class, $siteFinderProphecy->reveal());
         $siteProphecy = $this->prophesize(Site::class);
         $siteFinderProphecy->getSiteByRootPageId(5)->willReturn($siteProphecy->reveal());
-        $siteProphecy->getConfiguration()->willReturn($rowData);
+        $siteProphecy->getIdentifier()->willReturn('testident');
+        $siteConfiguration = $this->prophesize(SiteConfiguration::class);
+        $siteConfiguration->load('testident')->willReturn($rowData);
+        GeneralUtility::addInstance(SiteConfiguration::class, $siteConfiguration->reveal());
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520886092);
@@ -152,7 +177,10 @@ class SiteDatabaseEditRowTest extends UnitTestCase
         GeneralUtility::addInstance(SiteFinder::class, $siteFinderProphecy->reveal());
         $siteProphecy = $this->prophesize(Site::class);
         $siteFinderProphecy->getSiteByRootPageId(5)->willReturn($siteProphecy->reveal());
-        $siteProphecy->getConfiguration()->willReturn($rowData);
+        $siteProphecy->getIdentifier()->willReturn('testident');
+        $siteConfiguration = $this->prophesize(SiteConfiguration::class);
+        $siteConfiguration->load('testident')->willReturn($rowData);
+        GeneralUtility::addInstance(SiteConfiguration::class, $siteConfiguration->reveal());
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520886092);
@@ -182,7 +210,10 @@ class SiteDatabaseEditRowTest extends UnitTestCase
         GeneralUtility::addInstance(SiteFinder::class, $siteFinderProphecy->reveal());
         $siteProphecy = $this->prophesize(Site::class);
         $siteFinderProphecy->getSiteByRootPageId(5)->willReturn($siteProphecy->reveal());
-        $siteProphecy->getConfiguration()->willReturn($rowData);
+        $siteProphecy->getIdentifier()->willReturn('testident');
+        $siteConfiguration = $this->prophesize(SiteConfiguration::class);
+        $siteConfiguration->load('testident')->willReturn($rowData);
+        GeneralUtility::addInstance(SiteConfiguration::class, $siteConfiguration->reveal());
 
         $expected = $input;
         $expected['databaseRow'] = [

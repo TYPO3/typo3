@@ -96,7 +96,7 @@ betterthanbefore: 2
      * Method checking for placeholders
      * @test
      */
-    public function loadWithPlacholders()
+    public function loadWithPlaceholders(): void
     {
         $fileName = 'Berta.yml';
         $fileContents = '
@@ -118,6 +118,101 @@ betterthanbefore: \'%firstset.myinitialversion%\'
                 'option2'
             ],
             'betterthanbefore' => 13
+        ];
+
+        // Accessible mock to $subject since getFileContents calls GeneralUtility methods
+        $subject = $this->getAccessibleMock(YamlFileLoader::class, ['getFileContents']);
+        $subject->expects($this->once())->method('getFileContents')->with($fileName)->willReturn($fileContents);
+        $output = $subject->load($fileName);
+        $this->assertSame($expected, $output);
+    }
+
+    public function loadWithEnvVarDataProvider(): array
+    {
+        return [
+            'plain' => [
+                'foo=heinz',
+                'carl: \'%env(foo)%\'',
+                ['carl' => 'heinz']
+            ],
+            'quoted var' => [
+                'foo=heinz',
+                "carl: '%env(''foo'')%'",
+                ['carl' => 'heinz']
+            ],
+            'double quoted var' => [
+                'foo=heinz',
+                "carl: '%env(\"foo\")%'",
+                ['carl' => 'heinz']
+            ],
+            'var in the middle' => [
+                'foo=heinz',
+                "carl: 'https://%env(foo)%/foo'",
+                ['carl' => 'https://heinz/foo']
+            ],
+            'quoted var in the middle' => [
+                'foo=heinz',
+                "carl: 'https://%env(''foo'')%/foo'",
+                ['carl' => 'https://heinz/foo']
+            ],
+            'double quoted var in the middle' => [
+                'foo=heinz',
+                "carl: 'https://%env(\"foo\")%/foo'",
+                ['carl' => 'https://heinz/foo']
+            ],
+        ];
+    }
+
+    /**
+     * Method checking for env placeholders
+     *
+     * @dataProvider loadWithEnvVarDataProvider
+     * @test
+     * @param string $env
+     * @param string $yamlContent
+     * @param array $expected
+     */
+    public function loadWithEnvVarPlaceholders(string $env, string $yamlContent, array $expected): void
+    {
+        putenv($env);
+        $fileName = 'Berta.yml';
+        $fileContents = $yamlContent;
+
+        // Accessible mock to $subject since getFileContents calls GeneralUtility methods
+        $subject = $this->getAccessibleMock(YamlFileLoader::class, ['getFileContents']);
+        $subject->expects($this->once())->method('getFileContents')->with($fileName)->willReturn($fileContents);
+        $output = $subject->load($fileName);
+        $this->assertSame($expected, $output);
+        putenv('foo=');
+    }
+
+    /**
+     * Method checking for env placeholders
+     *
+     * @test
+     */
+    public function loadWithEnvVarPlaceholdersDoesNotReplaceWithNonExistingValues(): void
+    {
+        $fileName = 'Berta.yml';
+        $fileContents = '
+
+firstset:
+  myinitialversion: 13
+options:
+    - option1
+    - option2
+betterthanbefore: \'%env(mynonexistingenv)%\'
+';
+
+        $expected = [
+            'firstset' => [
+                'myinitialversion' => 13
+            ],
+            'options' => [
+                'option1',
+                'option2'
+            ],
+            'betterthanbefore' => '%env(mynonexistingenv)%'
         ];
 
         // Accessible mock to $subject since getFileContents calls GeneralUtility methods

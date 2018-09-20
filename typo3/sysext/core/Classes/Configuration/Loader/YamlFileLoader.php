@@ -30,18 +30,22 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * - Special placeholder values set via %optionA.suboptionB% replace the value with the named path of the configuration
  *   The placeholders will act as a full replacement of this value.
+ *
+ * - Environment placeholder values set via %env(option)% will be replaced by env variables of the same name
  */
 class YamlFileLoader
 {
+    public const PROCESS_PLACEHOLDERS = 1;
+    public const PROCESS_IMPORTS = 2;
 
     /**
      * Loads and parses a YAML file, and returns an array with the found data
      *
      * @param string $fileName either relative to TYPO3's base project folder or prefixed with EXT:...
+     * @param int $flags Flags to configure behaviour of the loader: see public PROCESS_ constants above
      * @return array the configuration as array
-     * @throws \RuntimeException when the file is empty or is of invalid format
      */
-    public function load(string $fileName): array
+    public function load(string $fileName, int $flags = self::PROCESS_PLACEHOLDERS | self::PROCESS_IMPORTS): array
     {
         $content = $this->getFileContents($fileName);
         $content = Yaml::parse($content);
@@ -50,10 +54,13 @@ class YamlFileLoader
             throw new \RuntimeException('YAML file "' . $fileName . '" could not be parsed into valid syntax, probably empty?', 1497332874);
         }
 
-        $content = $this->processImports($content);
-
-        // Check for "%" placeholders
-        $content = $this->processPlaceholders($content, $content);
+        if (($flags & self::PROCESS_IMPORTS) === self::PROCESS_IMPORTS) {
+            $content = $this->processImports($content);
+        }
+        if (($flags & self::PROCESS_PLACEHOLDERS) === self::PROCESS_PLACEHOLDERS) {
+            // Check for "%" placeholders
+            $content = $this->processPlaceholders($content, $content);
+        }
 
         return $content;
     }
@@ -73,6 +80,25 @@ class YamlFileLoader
             throw new \RuntimeException('YAML File "' . $fileName . '" could not be loaded', 1485784246);
         }
         return file_get_contents($streamlinedFileName);
+    }
+
+    /**
+     * Return value from environment variable
+     *
+     * Environment variables may only contain word characters and underscores (a-zA-Z0-9_)
+     * to be compatible to shell environments.
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function getValueFromEnv(string $value): string
+    {
+        $matched = preg_match('/%env\([\'"]?(\w+)[\'"]?\)%/', $value, $matches);
+        if ($matched === 1) {
+            $envVar = getenv($matches[1]);
+            $value = $envVar ? str_replace($matches[0], $envVar, $value) : $value;
+        }
+        return $value;
     }
 
     /**
@@ -107,7 +133,9 @@ class YamlFileLoader
     protected function processPlaceholders(array $content, array $referenceArray): array
     {
         foreach ($content as $k => $v) {
-            if ($this->isPlaceholder($v)) {
+            if ($this->isEnvPlaceholder($v)) {
+                $content[$k] = $this->getValueFromEnv($v);
+            } elseif ($this->isPlaceholder($v)) {
                 $content[$k] = $this->getValueFromReferenceArray($v, $referenceArray);
             } elseif (is_array($v)) {
                 $content[$k] = $this->processPlaceholders($v, $referenceArray);
@@ -152,6 +180,17 @@ class YamlFileLoader
     protected function isPlaceholder($value): bool
     {
         return is_string($value) && strpos($value, '%') === 0 && substr($value, -1) === '%';
+    }
+
+    /**
+     * Checks if a value is a string and contains an env placeholder
+     *
+     * @param mixed $value the probe to check for
+     * @return bool
+     */
+    protected function isEnvPlaceholder($value): bool
+    {
+        return is_string($value) && (strpos($value, '%env(') !== false);
     }
 
     /**

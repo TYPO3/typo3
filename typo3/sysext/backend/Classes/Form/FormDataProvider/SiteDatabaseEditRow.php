@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -42,13 +44,13 @@ class SiteDatabaseEditRow implements FormDataProviderInterface
         $tableName = $result['tableName'];
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         if ($tableName === 'site') {
-            $siteConfigurationForPageUid = (int)$result['vanillaUid'];
-            $rowData = $siteFinder->getSiteByRootPageId($siteConfigurationForPageUid)->getConfiguration();
+            $rootPageId = (int)$result['vanillaUid'];
+            $rowData = $this->getRawConfigurationForSiteWithRootPageId($siteFinder, $rootPageId);
             $result['databaseRow']['uid'] = $rowData['rootPageId'];
             $result['databaseRow']['identifier'] = $result['customData']['siteIdentifier'];
         } elseif (in_array($tableName, ['site_errorhandling', 'site_language', 'site_route', 'site_base_variant'], true)) {
-            $siteConfigurationForPageUid = (int)($result['inlineTopMostParentUid'] ?? $result['inlineParentUid']);
-            $rowData = $siteFinder->getSiteByRootPageId($siteConfigurationForPageUid)->getConfiguration();
+            $rootPageId = (int)($result['inlineTopMostParentUid'] ?? $result['inlineParentUid']);
+            $rowData = $this->getRawConfigurationForSiteWithRootPageId($siteFinder, $rootPageId);
             $parentFieldName = $result['inlineParentFieldName'];
             if (!isset($rowData[$parentFieldName])) {
                 throw new \RuntimeException('Field "' . $parentFieldName . '" not found', 1520886092);
@@ -68,5 +70,21 @@ class SiteDatabaseEditRow implements FormDataProviderInterface
         // All "records" are always on pid 0
         $result['databaseRow']['pid'] = 0;
         return $result;
+    }
+
+    /**
+     * @param SiteFinder $siteFinder
+     * @param int $rootPageId
+     * @return array
+     */
+    protected function getRawConfigurationForSiteWithRootPageId(SiteFinder $siteFinder, int $rootPageId): array
+    {
+        $site = $siteFinder->getSiteByRootPageId($rootPageId);
+        $siteConfiguration = GeneralUtility::makeInstance(
+            SiteConfiguration::class,
+            Environment::getConfigPath() . '/sites'
+        );
+        // load config as it is stored on disk (without replacements)
+        return $siteConfiguration->load($site->getIdentifier());
     }
 }
