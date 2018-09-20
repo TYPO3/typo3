@@ -230,6 +230,7 @@ class SiteConfigurationController
             $currentSiteConfiguration = $currentSite->getConfiguration();
             $currentIdentifier = $currentSite->getIdentifier();
         } catch (SiteNotFoundException $e) {
+            $currentSiteConfiguration = [];
             $isNewConfiguration = true;
             $pageId = (int)$parsedBody['rootPageId'];
             if (!$pageId > 0) {
