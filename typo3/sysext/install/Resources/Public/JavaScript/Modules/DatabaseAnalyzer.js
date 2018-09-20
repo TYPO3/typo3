@@ -26,7 +26,6 @@ define([
   'use strict';
 
   return {
-
     selectorModalBody: '.t3js-modal-body',
     selectorModuleContent: '.t3js-module-content',
     selectorAnalyzeTrigger: '.t3js-databaseAnalyzer-analyze',
@@ -41,7 +40,7 @@ define([
     initialize: function(currentModal) {
       var self = this;
       this.currentModal = currentModal;
-      this.analyzeAjax();
+      this.getData();
 
       // Select / deselect all checkboxes
       currentModal.on('click', '.t3js-databaseAnalyzer-suggestion-block-checkbox', function(e) {
@@ -55,21 +54,44 @@ define([
         e.preventDefault();
         self.execute();
       });
+    },
 
+    getData: function() {
+      var self = this;
+      var modalContent = this.currentModal.find(this.selectorModalBody);
+      $.ajax({
+        url: Router.getUrl('databaseAnalyzer'),
+        cache: false,
+        success: function(data) {
+          if (data.success === true) {
+            modalContent.empty().append(data.html);
+            self.analyze();
+          } else {
+            Notification.error('Something went wrong');
+          }
+        },
+        error: function(xhr) {
+          Router.handleAjaxError(xhr, modalContent);
+        }
+      });
     },
 
     analyze: function() {
-      this.currentModal.find(this.selectorOutputContainer).empty();
-      this.analyzeAjax();
-    },
-
-    analyzeAjax: function() {
       var self = this;
       var modalContent = this.currentModal.find(this.selectorModalBody);
-      var message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      modalContent.find(this.selectorOutputContainer).append(message);
-      $(this.selectorExecuteTrigger).prop('disabled', true);
-      $(this.selectorAnalyzeTrigger).prop('disabled', true);
+      var outputContainer = modalContent.find(this.selectorOutputContainer);
+      var executeTrigger = modalContent.find(this.selectorExecuteTrigger);
+      var analyzeTrigger = modalContent.find(this.selectorAnalyzeTrigger);
+
+      outputContainer.empty().append(ProgressBar.render(Severity.loading, 'Analyzing current database schema...', ''));
+
+      analyzeTrigger.prop('disabled', true);
+      executeTrigger.prop('disabled', true);
+
+      outputContainer.on('change', 'input[type="checkbox"]', function() {
+        var hasCheckedCheckboxes = outputContainer.find(':checked').length > 0;
+        executeTrigger.prop('disabled', !hasCheckedCheckboxes);
+      });
 
       $.ajax({
         url: Router.getUrl('databaseAnalyzerAnalyze'),
@@ -77,13 +99,12 @@ define([
         success: function(data) {
           if (data.success === true) {
             if (Array.isArray(data.status)) {
+              outputContainer.find('.alert-loading').remove();
               data.status.forEach(function(element) {
                 var message = InfoBox.render(element.severity, element.title, element.message);
-                modalContent.find(self.selectorOutputContainer).find('.alert-loading').remove();
-                modalContent.find(self.selectorOutputContainer).append(message);
+                outputContainer.append(message);
               });
             }
-            modalContent.empty().append(data.html);
             if (Array.isArray(data.suggestions)) {
               data.suggestions.forEach(function(element) {
                 var aBlock = modalContent.find(self.selectorSuggestionBlock).clone();
@@ -115,10 +136,15 @@ define([
                   }
                   aBlock.find(self.selectorSuggestionList).append(aLine);
                 });
-                modalContent.find(self.selectorOutputContainer).append(aBlock.html());
+                outputContainer.append(aBlock.html());
               });
-              self.currentModal.find(self.selectorExecuteTrigger).prop('disabled', false);
-              self.currentModal.find(self.selectorAnalyzeTrigger).prop('disabled', false);
+
+              var isInitiallyDisabled = outputContainer.find(':checked').length === 0;
+              analyzeTrigger.prop('disabled', false);
+              executeTrigger.prop('disabled', isInitiallyDisabled);
+            }
+            if (data.suggestions.length === 0 && data.status.length === 0) {
+              outputContainer.append(InfoBox.render(Severity.ok, 'Database schema is up to date. Good job!', ''));
             }
           } else {
             Notification.error('Something went wrong');
@@ -134,12 +160,16 @@ define([
       var self = this;
       var modalContent = this.currentModal.find(this.selectorModalBody);
       var executeToken = this.currentModal.find(this.selectorModuleContent).data('database-analyzer-execute-token');
+      var outputContainer = modalContent.find(this.selectorOutputContainer);
       var selectedHashes = [];
-      this.currentModal.find('.t3js-databaseAnalyzer-output .t3js-databaseAnalyzer-suggestion-line input:checked').each(function() {
+
+      outputContainer.find('.t3js-databaseAnalyzer-suggestion-line input:checked').each(function() {
         selectedHashes.push($(this).data('hash'));
       });
-      $(this.selectorExecuteTrigger).prop('disabled', true);
-      $(this.selectorAnalyzeTrigger).prop('disabled', true);
+      outputContainer.empty().append(ProgressBar.render(Severity.loading, 'Executing database updates...', ''));
+      modalContent.find(this.selectorExecuteTrigger).prop('disabled', true);
+      modalContent.find(this.selectorAnalyzeTrigger).prop('disabled', true);
+
       $.ajax({
         url: Router.getUrl(),
         method: 'POST',
@@ -159,7 +189,7 @@ define([
               });
             }
           }
-          self.analyzeAjax();
+          self.analyze();
         },
         error: function(xhr) {
           Router.handleAjaxError(xhr, modalContent);

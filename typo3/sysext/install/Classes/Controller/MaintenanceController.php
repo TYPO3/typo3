@@ -160,6 +160,25 @@ class MaintenanceController extends AbstractController
     }
 
     /**
+     * Get main database analyzer modal HTML
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function databaseAnalyzerAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->initializeStandaloneView($request, 'Maintenance/DatabaseAnalyzer.html');
+        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $view->assignMultiple([
+            'databaseAnalyzerExecuteToken' => $formProtection->generateToken('installTool', 'databaseAnalyzerExecute'),
+        ]);
+        return new JsonResponse([
+            'success' => true,
+            'html' => $view->render(),
+        ]);
+    }
+
+    /**
      * Analyze current database situation
      *
      * @param ServerRequestInterface $request
@@ -167,14 +186,8 @@ class MaintenanceController extends AbstractController
      */
     public function databaseAnalyzerAnalyzeAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Maintenance/DatabaseAnalyzer.html');
-        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
-        $view->assignMultiple([
-            'databaseAnalyzerExecuteToken' => $formProtection->generateToken('installTool', 'databaseAnalyzerExecute'),
-        ]);
         $this->loadExtLocalconfDatabaseAndExtTables();
         $messageQueue = new FlashMessageQueue('install');
-
         $suggestions = [];
         try {
             $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
@@ -307,11 +320,6 @@ class MaintenanceController extends AbstractController
                 }
                 $suggestions[] = $suggestion;
             }
-
-            $messageQueue->enqueue(new FlashMessage(
-                '',
-                'Analyzed current database'
-            ));
         } catch (StatementException $e) {
             $messageQueue->enqueue(new FlashMessage(
                 $e->getMessage(),
@@ -323,7 +331,6 @@ class MaintenanceController extends AbstractController
             'success' => true,
             'status' => $messageQueue,
             'suggestions' => $suggestions,
-            'html' => $view->render(),
         ]);
     }
 
