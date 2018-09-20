@@ -186,7 +186,7 @@ class GeneralUtility
      *
      * @param string $var Optional pointer to value in GET array (basically name of GET var)
      * @return mixed If $var is set it returns the value of $_GET[$var]. If $var is NULL (default), returns $_GET itself. In any case *slashes are stipped from the output!*
-     * @see _POST(), _GP(), _GETset()
+     * @see _POST(), _GP()
      */
     public static function _GET($var = null)
     {
@@ -223,9 +223,11 @@ class GeneralUtility
      *
      * @param mixed $inputGet
      * @param string $key
+     * @deprecated since TYPO3 v9 LTS, will be removed in TYPO3 v10.0.
      */
     public static function _GETset($inputGet, $key = '')
     {
+        trigger_error('GeneralUtility::_GETset() will be removed in TYPO3 v10.0. Use a PSR-15 middleware to set query parameters on the request object or set $_GET directly.', E_USER_DEPRECATED);
         if ($key != '') {
             if (strpos($key, '|') !== false) {
                 $pieces = explode('|', $key);

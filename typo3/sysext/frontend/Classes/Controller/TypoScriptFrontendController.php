@@ -103,6 +103,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         'clearPageCacheContent_pidList' => 'Using $TSFE->clearPageCacheContent_pidList() has been marked as internal as its purpose is to be managed from within TSFE directly.',
         'setSysLastChanged' => 'Using $TSFE->setSysLastChanged() has been marked as internal as its purpose is to be managed from within TSFE directly.',
         'contentStrReplace' => 'Using $TSFE->contentStrReplace() has been marked as internal as its purpose is to be managed from within TSFE directly.',
+        'mergingWithGetVars' => '$TSFE->mergingWithGetVars() will be removed in TYPO3 v10.0. Use a middleware instead to override the PSR-7 request object AND set $_GET on top to achieve the same result.',
     ];
 
     /**
@@ -1663,7 +1664,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $languageId));
         $this->id = $this->page['uid'];
         // For common best-practice reasons, this is set, however, will be optional for new routing mechanisms
-        $this->mergingWithGetVars(['L' => $languageId]);
+        if (!$this->getCurrentSiteLanguage()) {
+            $_GET['L'] = $languageId;
+            $GLOBALS['HTTP_GET_VARS']['L'] = $languageId;
+        }
     }
 
     /**
@@ -2182,8 +2186,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Merging values into the global $_GET
      *
      * @param array $GET_VARS Array of key/value pairs that will be merged into the current GET-vars. (Non-escaped values)
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. This was mainly used in RealURL to set $id etc. but should be done manually instead.
      */
-    public function mergingWithGetVars($GET_VARS)
+    protected function mergingWithGetVars($GET_VARS)
     {
         if (is_array($GET_VARS)) {
             // Getting $_GET var, unescaped.
@@ -2193,8 +2198,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
             // Merge new values on top:
             ArrayUtility::mergeRecursiveWithOverrule($realGet, $GET_VARS);
-            // Write values back to $_GET:
-            GeneralUtility::_GETset($realGet);
+            // Write values back to $_GET
+            $_GET = $realGet;
+            $GLOBALS['HTTP_GET_VARS'] = $realGet;
             // Setting these specifically (like in the init-function):
             if (isset($GET_VARS['type'])) {
                 $this->type = (int)$GET_VARS['type'];
@@ -2638,7 +2644,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if (!empty($this->config['config']['defaultGetVars.'])) {
             $modifiedGetVars = GeneralUtility::removeDotsFromTS($this->config['config']['defaultGetVars.']);
             ArrayUtility::mergeRecursiveWithOverrule($modifiedGetVars, GeneralUtility::_GET());
-            GeneralUtility::_GETset($modifiedGetVars);
+            $_GET = $modifiedGetVars;
+            $GLOBALS['HTTP_GET_VARS'] = $modifiedGetVars;
         }
 
         // Auto-configure settings when a site is configured

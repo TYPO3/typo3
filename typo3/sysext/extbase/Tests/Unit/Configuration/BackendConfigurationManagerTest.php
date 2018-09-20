@@ -47,7 +47,7 @@ class BackendConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Unit\
      */
     public function getCurrentPageIdReturnsPageIdFromGet()
     {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(['id' => 123]);
+        $_GET['id'] = 123;
         $expectedResult = 123;
         $actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');
         $this->assertEquals($expectedResult, $actualResult);
@@ -58,7 +58,7 @@ class BackendConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Unit\
      */
     public function getCurrentPageIdReturnsPageIdFromPost()
     {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(['id' => 123]);
+        $_GET['id'] = 123;
         $_POST['id'] = 321;
         $expectedResult = 321;
         $actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');

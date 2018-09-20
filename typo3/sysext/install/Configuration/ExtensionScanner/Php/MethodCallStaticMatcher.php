@@ -785,4 +785,11 @@ return [
             'Deprecation-85892-VariousMethodsRegardingSysDomainResolving.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::_GETset' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-86389-GeneralUtility_GETsetAndTSFE-mergingWithGetVars.rst',
+        ],
+    ],
 ];

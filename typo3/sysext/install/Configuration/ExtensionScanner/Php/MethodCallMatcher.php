@@ -3523,4 +3523,11 @@ return [
             'Deprecation-86366-MethodsInAbstractUpdate.rst'
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->mergingWithGetVars' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86389-GeneralUtility_GETsetAndTSFE-mergingWithGetVars.rst',
+        ],
+    ],
 ];

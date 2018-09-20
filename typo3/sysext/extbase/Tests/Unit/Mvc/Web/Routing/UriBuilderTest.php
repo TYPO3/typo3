@@ -220,7 +220,9 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildBackendUriKeepsQueryParametersIfAddQueryStringIsSet()
     {
-        GeneralUtility::_GETset(['route' => '/test/Path', 'id' => 'pageId', 'foo' => 'bar']);
+        $_GET['route'] = '/test/Path';
+        $_GET['id'] = 'pageId';
+        $_GET['foo'] = 'bar';
         $_POST = [];
         $_POST['foo2'] = 'bar2';
         $this->uriBuilder->setAddQueryString(true);
@@ -235,7 +237,9 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildBackendUriKeepsQueryParametersIfAddQueryStringMethodIsNotSet()
     {
-        GeneralUtility::_GETset(['route' => '/test/Path', 'id' => 'pageId', 'foo' => 'bar']);
+        $_GET['route'] = '/test/Path';
+        $_GET['id'] = 'pageId';
+        $_GET['foo'] = 'bar';
         $_POST = [];
         $_POST['foo2'] = 'bar2';
         $this->uriBuilder->setAddQueryString(true);
@@ -330,7 +334,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildBackendUriRemovesSpecifiedQueryParametersIfArgumentsToBeExcludedFromQueryStringIsSet(array $parameters, array $postArguments, array $excluded, $expected)
     {
-        GeneralUtility::_GETset($parameters);
+        $_GET = array_replace_recursive($_GET, $parameters);
         $_POST = $postArguments;
         $this->uriBuilder->setAddQueryString(true);
         $this->uriBuilder->setAddQueryStringMethod('GET,POST');
@@ -344,7 +348,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildBackendUriKeepsModuleQueryParametersIfAddQueryStringIsNotSet()
     {
-        GeneralUtility::_GETset(['route' => '/test/Path', 'id' => 'pageId', 'foo' => 'bar']);
+        $_GET = (['route' => '/test/Path', 'id' => 'pageId', 'foo' => 'bar']);
         $expectedResult = '/typo3/index.php?route=%2Ftest%2FPath&token=dummyToken&id=pageId';
         $actualResult = $this->uriBuilder->buildBackendUri();
         $this->assertEquals($expectedResult, $actualResult);
@@ -355,7 +359,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildBackendUriMergesAndOverrulesQueryParametersWithArguments()
     {
-        GeneralUtility::_GETset(['route' => '/test/Path', 'id' => 'pageId', 'foo' => 'bar']);
+        $_GET = ['route' => '/test/Path', 'id' => 'pageId', 'foo' => 'bar'];
         $this->uriBuilder->setArguments(['route' => '/test/Path2', 'somePrefix' => ['bar' => 'baz']]);
         $expectedResult = '/typo3/index.php?route=%2Ftest%2FPath2&token=dummyToken&id=pageId&somePrefix%5Bbar%5D=baz';
         $actualResult = $this->uriBuilder->buildBackendUri();
@@ -367,7 +371,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildBackendUriConvertsDomainObjectsAfterArgumentsHaveBeenMerged()
     {
-        GeneralUtility::_GETset(['route' => '/test/Path']);
+        $_GET['route'] = '/test/Path';
         $mockDomainObject = $this->getAccessibleMock(AbstractEntity::class, ['dummy']);
         $mockDomainObject->_set('uid', '123');
         $this->uriBuilder->setArguments(['somePrefix' => ['someDomainObject' => $mockDomainObject]]);
@@ -381,7 +385,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildBackendUriRespectsSection()
     {
-        GeneralUtility::_GETset(['route' => '/test/Path']);
+        $_GET['route'] = '/test/Path';
         $this->uriBuilder->setSection('someSection');
         $expectedResult = '/typo3/index.php?route=%2Ftest%2FPath&token=dummyToken#someSection';
         $actualResult = $this->uriBuilder->buildBackendUri();
@@ -393,7 +397,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildBackendUriCreatesAbsoluteUrisIfSpecified()
     {
-        GeneralUtility::_GETset(['route' => '/test/Path']);
+        $_GET['route'] = '/test/Path';
         $_SERVER['HTTP_HOST'] = 'baseuri';
         $_SERVER['SCRIPT_NAME'] = '/typo3/index.php';
         $_SERVER['ORIG_SCRIPT_NAME'] = '/typo3/index.php';

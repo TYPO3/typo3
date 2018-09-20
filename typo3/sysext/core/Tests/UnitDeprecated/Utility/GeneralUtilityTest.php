@@ -270,4 +270,133 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $this->assertEquals($expected, GeneralUtility::explodeUrl2Array($input, true));
     }
+
+    ///////////////////////////////
+    // Tests concerning _GETset()
+    ///////////////////////////////
+    /**
+     * @test
+     */
+    public function getSetWritesArrayToGetSystemVariable()
+    {
+        $_GET = [];
+        $GLOBALS['HTTP_GET_VARS'] = [];
+        $getParameters = ['foo' => 'bar'];
+        GeneralUtility::_GETset($getParameters);
+        $this->assertSame($getParameters, $_GET);
+    }
+
+    /**
+     * @test
+     */
+    public function getSetWritesArrayToGlobalsHttpGetVars()
+    {
+        $_GET = [];
+        $GLOBALS['HTTP_GET_VARS'] = [];
+        $getParameters = ['foo' => 'bar'];
+        GeneralUtility::_GETset($getParameters);
+        $this->assertSame($getParameters, $GLOBALS['HTTP_GET_VARS']);
+    }
+
+    /**
+     * @test
+     */
+    public function getSetForArrayDropsExistingValues()
+    {
+        $_GET = [];
+        $GLOBALS['HTTP_GET_VARS'] = [];
+        GeneralUtility::_GETset(['foo' => 'bar']);
+        GeneralUtility::_GETset(['oneKey' => 'oneValue']);
+        $this->assertEquals(['oneKey' => 'oneValue'], $GLOBALS['HTTP_GET_VARS']);
+    }
+
+    /**
+     * @test
+     */
+    public function getSetAssignsOneValueToOneKey()
+    {
+        $_GET = [];
+        $GLOBALS['HTTP_GET_VARS'] = [];
+        GeneralUtility::_GETset('oneValue', 'oneKey');
+        $this->assertEquals('oneValue', $GLOBALS['HTTP_GET_VARS']['oneKey']);
+    }
+
+    /**
+     * @test
+     */
+    public function getSetForOneValueDoesNotDropUnrelatedValues()
+    {
+        $_GET = [];
+        $GLOBALS['HTTP_GET_VARS'] = [];
+        GeneralUtility::_GETset(['foo' => 'bar']);
+        GeneralUtility::_GETset('oneValue', 'oneKey');
+        $this->assertEquals(['foo' => 'bar', 'oneKey' => 'oneValue'], $GLOBALS['HTTP_GET_VARS']);
+    }
+
+    /**
+     * @test
+     */
+    public function getSetCanAssignsAnArrayToASpecificArrayElement()
+    {
+        $_GET = [];
+        $GLOBALS['HTTP_GET_VARS'] = [];
+        GeneralUtility::_GETset(['childKey' => 'oneValue'], 'parentKey');
+        $this->assertEquals(['parentKey' => ['childKey' => 'oneValue']], $GLOBALS['HTTP_GET_VARS']);
+    }
+
+    /**
+     * @test
+     */
+    public function getSetCanAssignAStringValueToASpecificArrayChildElement()
+    {
+        $_GET = [];
+        $GLOBALS['HTTP_GET_VARS'] = [];
+        GeneralUtility::_GETset('oneValue', 'parentKey|childKey');
+        $this->assertEquals(['parentKey' => ['childKey' => 'oneValue']], $GLOBALS['HTTP_GET_VARS']);
+    }
+
+    /**
+     * @test
+     */
+    public function getSetCanAssignAnArrayToASpecificArrayChildElement()
+    {
+        $_GET = [];
+        $GLOBALS['HTTP_GET_VARS'] = [];
+        GeneralUtility::_GETset(['key1' => 'value1', 'key2' => 'value2'], 'parentKey|childKey');
+        $this->assertEquals([
+            'parentKey' => [
+                'childKey' => ['key1' => 'value1', 'key2' => 'value2']
+            ]
+        ], $GLOBALS['HTTP_GET_VARS']);
+    }
+
+    /**
+     * @test
+     * @dataProvider getSetDataProvider
+     */
+    public function canSetNewGetInputValues($input, $key, $expected, $getPreset = [])
+    {
+        $_GET = $getPreset;
+        GeneralUtility::_GETset($input, $key);
+        $this->assertSame($expected, $_GET);
+    }
+
+    /**
+     * Data provider for canSetNewGetInputValues
+     *
+     * @return array
+     */
+    public function getSetDataProvider()
+    {
+        return [
+            'No input data used without target key' => [null, null, []],
+            'No input data used with target key' => ['', 'cake', ['cake' => '']],
+            'No target key used with string input data' => ['data', null, []],
+            'No target key used with array input data' => [['cake' => 'lie'], null, ['cake' => 'lie']],
+            'Target key and string input data' => ['lie', 'cake', ['cake' => 'lie']],
+            'Replace existing GET data' => ['lie', 'cake', ['cake' => 'lie'], ['cake' => 'is a lie']],
+            'Target key pointing to sublevels and string input data' => ['lie', 'cake|is', ['cake' => ['is' => 'lie']]],
+            'Target key pointing to sublevels and array input data' => [['a' => 'lie'], 'cake|is', ['cake' => ['is' => ['a' => 'lie']]]]
+        ];
+    }
 }
