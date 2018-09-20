@@ -9,7 +9,7 @@ See :issue:`20051`
 Description
 ===========
 
-TYPO3 will finally provide built-in support for the :html:`<link rel="canoncial" href="">` tag.
+TYPO3 will finally provide built-in support for the :html:`<link rel="canonical" href="">` tag.
 
 If the core extension "seo" is installed, it will automatically add the canonical link to the page.
 
