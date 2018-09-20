@@ -49,7 +49,7 @@
 		"codeception/codeception": "^2.4.5",
 		"fiunchinho/phpunit-randomizer": "^4.0",
 		"friendsofphp/php-cs-fixer": "^2.12.2",
-		"typo3/cms-styleguide": "~9.2.0",
+		"typo3/cms-styleguide": "~9.2.1",
 		"typo3/testing-framework": "~4.9.0"
 	},
 	"suggest": {
