@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a19861b85fd39ac72029439831396301",
+    "content-hash": "691851190de8716c182df21aff7ba2a9",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -4066,16 +4066,16 @@
         },
         {
             "name": "typo3/cms-styleguide",
-            "version": "8.0.14",
+            "version": "8.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "6fd8734e785d39d1f68f2211c814feda1d7fe464"
+                "reference": "49439d3a2adc22d3bd17850a2cf84f686b068800"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/6fd8734e785d39d1f68f2211c814feda1d7fe464",
-                "reference": "6fd8734e785d39d1f68f2211c814feda1d7fe464",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/49439d3a2adc22d3bd17850a2cf84f686b068800",
+                "reference": "49439d3a2adc22d3bd17850a2cf84f686b068800",
                 "shasum": ""
             },
             "replace": {
@@ -4089,7 +4089,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4111,7 +4111,7 @@
                 "typo3",
                 "typo3 backend"
             ],
-            "time": "2017-12-16T12:10:26+00:00"
+            "time": "2018-09-19T10:31:04+00:00"
         },
         {
             "name": "typo3/testing-framework",

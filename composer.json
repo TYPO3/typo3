@@ -60,7 +60,7 @@
 		"enm1989/chromedriver": "~2.30",
 		"fiunchinho/phpunit-randomizer": "~3.0.0",
 		"friendsofphp/php-cs-fixer": "^2.0",
-		"typo3/cms-styleguide": "~8.0.14",
+		"typo3/cms-styleguide": "~8.0.15",
 		"typo3/testing-framework": "~1.2.2"
 	},
 	"suggest": {
