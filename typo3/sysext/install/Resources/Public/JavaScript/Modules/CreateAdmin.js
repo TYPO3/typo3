@@ -30,7 +30,6 @@ define([
     selectorModalBody: '.t3js-modal-body',
     selectorModuleContent: '.t3js-module-content',
     selectorCreateForm: '#t3js-createAdmin-form',
-    selectorCreateTrigger: '.t3js-createAdmin-create',
     selectorOutputContainer: '.t3js-createAdmin-output',
     currentModal: {},
 
@@ -39,7 +38,7 @@ define([
       this.currentModal = currentModal;
       this.getData();
 
-      currentModal.on('click', this.selectorCreateTrigger, function(e) {
+      currentModal.on('submit', this.selectorCreateForm, function(e) {
         e.preventDefault();
         self.create();
       });

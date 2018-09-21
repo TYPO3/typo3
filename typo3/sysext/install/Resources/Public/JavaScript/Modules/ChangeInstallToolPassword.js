@@ -26,7 +26,7 @@ define([
   return {
     selectorModalBody: '.t3js-modal-body',
     selectorModuleContent: '.t3js-module-content',
-    selectorChangeTrigger: '.t3js-changeInstallToolPassword-change',
+    selectorChangeForm: '#t3js-changeInstallToolPassword-form',
     selectorOutputContainer: '.t3js-changeInstallToolPassword-output',
     currentModal: {},
 
@@ -35,7 +35,7 @@ define([
       this.currentModal = currentModal;
       this.getData();
 
-      currentModal.on('click', this.selectorChangeTrigger, function(e) {
+      currentModal.on('submit', this.selectorChangeForm, function(e) {
         e.preventDefault();
         self.change();
       });
