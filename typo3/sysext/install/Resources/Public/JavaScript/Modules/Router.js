@@ -118,7 +118,7 @@ define([
 
     executeSilentConfigurationUpdate: function() {
       var self = this;
-      this.updateLoadingInfo('Executing silent configuration update');
+      this.updateLoadingInfo('Checking session and executing silent configuration update');
       $.ajax({
         url: this.getUrl('executeSilentConfigurationUpdate', 'layout'),
         cache: false,
