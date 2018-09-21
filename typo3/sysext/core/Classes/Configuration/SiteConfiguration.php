@@ -91,6 +91,8 @@ class SiteConfiguration
     {
         // Check if the data is already cached
         if ($siteConfiguration = $this->getCache()->get($this->cacheIdentifier)) {
+            // Due to the nature of PhpFrontend, the `<?php` and `#` wraps have to be removed
+            $siteConfiguration = preg_replace('/^<\?php\s*|\s*#$/', '', $siteConfiguration);
             $siteConfiguration = json_decode($siteConfiguration, true);
         }
 
