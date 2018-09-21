@@ -46,7 +46,7 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
     {
         return new ExpressionFunction(
             'ip',
-            function ($str) {
+            function () {
                 // Not implemented, we only use the evaluator
             },
             function ($arguments, $str) {
@@ -62,7 +62,7 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
     {
         return new ExpressionFunction(
             'compatVersion',
-            function ($str) {
+            function () {
                 // Not implemented, we only use the evaluator
             },
             function ($arguments, $str) {
@@ -74,7 +74,7 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
 
     protected function getLikeFunction(): ExpressionFunction
     {
-        return new ExpressionFunction('like', function ($str) {
+        return new ExpressionFunction('like', function () {
             // Not implemented, we only use the evaluator
         }, function ($arguments, $haystack, $needle) {
             $result = StringUtility::searchStringWildcard((string)$haystack, (string)$needle);
@@ -89,7 +89,7 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
 
     protected function getDateFunction(): ExpressionFunction
     {
-        return new ExpressionFunction('date', function ($str) {
+        return new ExpressionFunction('date', function () {
             // Not implemented, we only use the evaluator
         }, function ($arguments, $format) {
             return GeneralUtility::makeInstance(Context::class)

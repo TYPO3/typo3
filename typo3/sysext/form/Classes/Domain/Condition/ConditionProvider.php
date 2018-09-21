@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Form\Domain\Condition;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\ExpressionLanguage\AbstractProvider;
 use TYPO3\CMS\Form\Domain\Condition\Functions\FormConditionFunctionsProvider;
 
@@ -27,9 +26,8 @@ use TYPO3\CMS\Form\Domain\Condition\Functions\FormConditionFunctionsProvider;
    */
 class ConditionProvider extends AbstractProvider
 {
-    public function __construct(ServerRequestInterface $request)
+    public function __construct()
     {
-        parent::__construct($request);
         $this->expressionLanguageProviders = [
             FormConditionFunctionsProvider::class
         ];

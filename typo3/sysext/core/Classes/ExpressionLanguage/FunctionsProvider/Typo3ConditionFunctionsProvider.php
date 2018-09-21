@@ -45,7 +45,7 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
 
     protected function getLoginUserFunction(): ExpressionFunction
     {
-        return new ExpressionFunction('loginUser', function ($str) {
+        return new ExpressionFunction('loginUser', function () {
             // Not implemented, we only use the evaluator
         }, function ($arguments, $str) {
             $user = $arguments['backend']->user ?? $arguments['frontend']->user;
@@ -62,7 +62,7 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
 
     protected function getTSFEFunction(): ExpressionFunction
     {
-        return new ExpressionFunction('getTSFE', function ($str) {
+        return new ExpressionFunction('getTSFE', function () {
             // Not implemented, we only use the evaluator
         }, function ($arguments) {
             return $GLOBALS['TSFE'];
@@ -71,7 +71,7 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
 
     protected function getUsergroupFunction(): ExpressionFunction
     {
-        return new ExpressionFunction('usergroup', function ($str) {
+        return new ExpressionFunction('usergroup', function () {
             // Not implemented, we only use the evaluator
         }, function ($arguments, $str) {
             $user = $arguments['backend']->user ?? $arguments['frontend']->user;
@@ -92,7 +92,7 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
     {
         return new ExpressionFunction(
             'session',
-            function ($str) {
+            function () {
                 // Not implemented, we only use the evaluator
             },
             function ($arguments, $str) {
@@ -122,7 +122,7 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
     {
         return new ExpressionFunction(
             'site',
-            function ($str) {
+            function () {
                 // Not implemented, we only use the evaluator
             },
             function ($arguments, $str) {
@@ -144,7 +144,7 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
     {
         return new ExpressionFunction(
             'siteLanguage',
-            function ($str) {
+            function () {
                 // Not implemented, we only use the evaluator
             },
             function ($arguments, $str) {

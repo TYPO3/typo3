@@ -15,15 +15,13 @@ namespace TYPO3\CMS\Core\ExpressionLanguage;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
-
 /**
  * Class AbstractProvider
  */
 abstract class AbstractProvider implements ProviderInterface
 {
     /**
-     * @var ExpressionFunctionProviderInterface[]
+     * @var array of class names which implements ExpressionFunctionProviderInterface
      */
     protected $expressionLanguageProviders = [];
 
@@ -33,9 +31,9 @@ abstract class AbstractProvider implements ProviderInterface
     protected $expressionLanguageVariables = [];
 
     /**
-     * An array of objects which implements the ExpressionFunctionProviderInterface
+     * An array of class names which implements the ExpressionFunctionProviderInterface
      *
-     * @return ExpressionFunctionProviderInterface[]
+     * @return array
      */
     public function getExpressionLanguageProviders(): array
     {

@@ -28,7 +28,7 @@ class FormConditionFunctionsProvider implements ExpressionFunctionProviderInterf
     {
         return new ExpressionFunction(
             'getFormValue',
-            function ($str) {
+            function () {
                 // Not implemented, we only use the evaluator
             },
             function ($arguments, $field) {

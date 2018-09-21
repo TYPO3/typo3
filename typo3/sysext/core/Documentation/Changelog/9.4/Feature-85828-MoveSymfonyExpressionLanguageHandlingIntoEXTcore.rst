@@ -57,7 +57,7 @@ Next implement your provider class :php:`\TYPO3\CMS\MyExt\ExpressionLanguage\MyC
 
    class MyCustomProvider extends \TYPO3\CMS\Core\ExpressionLanguage\AbstractProvider
    {
-      public function __construct(ServerRequestInterface $request)
+      public function __construct()
       {
          $this->expressionLanguageVariables = [
             'foo' => 1,
