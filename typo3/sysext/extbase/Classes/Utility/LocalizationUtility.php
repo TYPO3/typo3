@@ -240,7 +240,7 @@ class LocalizationUtility
         }
         self::$LOCAL_LANG_UNSET[$languageFilePath] = [];
         foreach ($frameworkConfiguration['_LOCAL_LANG'] as $languageKey => $labels) {
-            if (!(is_array($labels) && isset(self::$LOCAL_LANG[$languageFilePath][$languageKey]))) {
+            if (!is_array($labels)) {
                 continue;
             }
             foreach ($labels as $labelKey => $labelValue) {

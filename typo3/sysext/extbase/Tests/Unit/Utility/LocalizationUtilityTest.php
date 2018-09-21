@@ -509,4 +509,36 @@ class LocalizationUtilityTest extends UnitTestCase
         $this->expectExceptionCode(1498144052);
         LocalizationUtility::translate('foo/bar', '');
     }
+
+    /**
+     * @test
+     */
+    public function translateWillReturnLabelsFromTsEvenIfNoXlfFileExists()
+    {
+        $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
+
+        $typoScriptLocalLang = [
+            '_LOCAL_LANG' => [
+                'dk' => [
+                    'key1' => 'I am a new key and there is no xlf file',
+                ]
+            ]
+        ];
+
+        $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
+        $this->configurationManagerInterfaceProphecy
+            ->getConfiguration($configurationType, 'core', null)
+            ->shouldBeCalled()
+            ->willReturn($typoScriptLocalLang);
+
+        $method = $reflectionClass->getMethod('loadTypoScriptLabels');
+        $method->setAccessible(true);
+        $method->invoke(null, 'core', ''); // setting the language file path to an empty string here
+
+        $GLOBALS['LANG'] = $this->LOCAL_LANG;
+
+        $result = LocalizationUtility::translate('key1', 'core', null, 'dk');
+        $this->assertNotNull($result);
+        $this->assertEquals('I am a new key and there is no xlf file', $result);
+    }
 }
