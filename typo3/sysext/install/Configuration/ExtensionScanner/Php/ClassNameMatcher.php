@@ -944,4 +944,9 @@ return [
             'Deprecation-86225-ClassesBaseScriptClassAndAbstractFunctionModule.rst',
         ],
     ],
+    'TYPO3\CMS\Install\Updates\AbstractUpdate' => [
+        'restFiles' => [
+            'Deprecation-86366-MethodsInAbstractUpdate.rst'
+        ],
+    ],
 ];

@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Updates\AbstractUpdate;
 use TYPO3\CMS\Install\Updates\ChattyInterface;
 use TYPO3\CMS\Install\Updates\ConfirmableInterface;
 use TYPO3\CMS\Install\Updates\RepeatableInterface;
@@ -112,8 +111,7 @@ class UpgradeWizardsService
 
         $registry = GeneralUtility::makeInstance(Registry::class);
         $aWizardHasBeenMarkedUndone = false;
-        $wizardsDoneList = $this->listOfWizardsDone();
-        foreach ($wizardsDoneList as $wizard) {
+        foreach ($this->listOfWizardsDone() as $wizard) {
             if ($wizard['identifier'] === $identifier) {
                 $aWizardHasBeenMarkedUndone = true;
                 $registry->set('installUpdate', $wizard['class'], 0);
@@ -259,17 +257,12 @@ class UpgradeWizardsService
             if ($this->isWizardDone($identifier)) {
                 continue;
             }
-            /** @var AbstractUpdate $wizardInstance */
+            /** @var UpgradeWizardInterface $wizardInstance */
             $wizardInstance = GeneralUtility::makeInstance($class);
+            $explanation = '';
 
             // $explanation is changed by reference in Update objects!
-            // @todo deprecate once all wizards are migrated
-            $explanation = '';
             $shouldRenderWizard = false;
-            if (!($wizardInstance instanceof UpgradeWizardInterface) && $wizardInstance instanceof AbstractUpdate) {
-                $wizardInstance->checkForUpdate($explanation);
-                $shouldRenderWizard = $wizardInstance->shouldRenderWizard();
-            }
             if ($wizardInstance instanceof UpgradeWizardInterface) {
                 if ($wizardInstance instanceof ChattyInterface) {
                     $wizardInstance->setOutput($this->output);
@@ -305,6 +298,10 @@ class UpgradeWizardsService
         $wizardHtml = '';
         if (method_exists($updateObject, 'getUserInput')) {
             $wizardHtml = $updateObject->getUserInput('install[values][' . htmlspecialchars($identifier) . ']');
+            trigger_error(
+                'Deprecated since TYPO3 v9, will be removed in v10, use ConfirmableInterface directly.',
+                E_USER_DEPRECATED
+            );
         } elseif ($updateObject instanceof UpgradeWizardInterface && $updateObject instanceof ConfirmableInterface) {
             $wizardHtml = '
             <div class="panel panel-danger">
@@ -343,23 +340,28 @@ class UpgradeWizardsService
      * Execute a single update wizard
      *
      * @param string $identifier
-     * @param int $showDatabaseQueries
      * @return FlashMessageQueue
      * @throws \RuntimeException
      */
-    public function executeWizard(string $identifier, int $showDatabaseQueries = null): FlashMessageQueue
+    public function executeWizard(string $identifier): FlashMessageQueue
     {
         $this->assertIdentifierIsValid($identifier);
 
         $class = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier];
         $updateObject = GeneralUtility::makeInstance($class);
 
+        if ($updateObject instanceof ChattyInterface) {
+            $updateObject->setOutput($this->output);
+        }
         $messages = new FlashMessageQueue('install');
         // $wizardInputErrorMessage is given as reference to wizard object!
         $wizardInputErrorMessage = '';
         if (method_exists($updateObject, 'checkUserInput') &&
             !$updateObject->checkUserInput($wizardInputErrorMessage)) {
-            // @todo deprecate, unused
+            trigger_error(
+                'Deprecated since TYPO3 v9, will be removed in v10, use ConfirmableInterface.',
+                E_USER_DEPRECATED
+            );
             $messages->enqueue(
                 new FlashMessage(
                     $wizardInputErrorMessage ?: 'Something went wrong!',
@@ -368,16 +370,6 @@ class UpgradeWizardsService
                 )
             );
         } else {
-            if (!($updateObject instanceof UpgradeWizardInterface) && !method_exists($updateObject, 'performUpdate')) {
-                throw new \RuntimeException(
-                    'No performUpdate method in update wizard with identifier ' . $identifier,
-                    1371035200
-                );
-            }
-
-            // Both variables are used by reference in performUpdate()
-            $message = '';
-            $databaseQueries = [];
             if ($updateObject instanceof UpgradeWizardInterface) {
                 $requestParams = GeneralUtility::_GP('install');
                 if ($updateObject instanceof ConfirmableInterface
@@ -386,18 +378,13 @@ class UpgradeWizardsService
                         && empty($requestParams['values'][$updateObject->getIdentifier()]['install'])
                     )
                 ) {
+                    $this->output->writeln('No changes applied, marking wizard as done.');
                     // confirmation was set to "no"
                     $performResult = true;
                 } else {
                     // confirmation yes or non-confirmable
-                    if ($updateObject instanceof ChattyInterface) {
-                        $updateObject->setOutput($this->output);
-                    }
                     $performResult = $updateObject->executeUpdate();
                 }
-            } else {
-                // @todo deprecate
-                $performResult = $updateObject->performUpdate($databaseQueries, $message);
             }
 
             $stream = $this->output->getStream();
@@ -421,18 +408,6 @@ class UpgradeWizardsService
                         FlashMessage::ERROR
                     )
                 );
-            }
-            if ($showDatabaseQueries) {
-                // @todo deprecate
-                foreach ($databaseQueries as $query) {
-                    $messages->enqueue(
-                        new FlashMessage(
-                            $query,
-                            '',
-                            FlashMessage::INFO
-                        )
-                    );
-                }
             }
         }
         return $messages;

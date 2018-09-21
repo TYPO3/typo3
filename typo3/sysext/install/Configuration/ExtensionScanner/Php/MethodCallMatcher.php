@@ -3425,4 +3425,102 @@ return [
             'Deprecation-85981-AnnotationFlushesCaches.rst'
         ],
     ],
+    'TYPO3\CMS\Install\Updates\AbstractUpdate->getTitle' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86366-MethodsInAbstractUpdate.rst'
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\AbstractUpdate->setTitle' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86366-MethodsInAbstractUpdate.rst'
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\AbstractUpdate->getIdentifier' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86366-MethodsInAbstractUpdate.rst'
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\AbstractUpdate->setIdentifier' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86366-MethodsInAbstractUpdate.rst'
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\AbstractUpdate->getDescription' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86366-MethodsInAbstractUpdate.rst'
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\AbstractUpdate->executeUpdate' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86366-MethodsInAbstractUpdate.rst'
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\AbstractUpdate->updateNecessary' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86366-MethodsInAbstractUpdate.rst'
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\AbstractUpdate->getPrerequisites' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86366-MethodsInAbstractUpdate.rst'
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\AbstractUpdate->setOutput' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86366-MethodsInAbstractUpdate.rst'
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\AbstractUpdate->shouldRenderWizard' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86366-MethodsInAbstractUpdate.rst'
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\AbstractUpdate->checkIfTableExists' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86366-MethodsInAbstractUpdate.rst'
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\AbstractUpdate->installExtensions' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86366-MethodsInAbstractUpdate.rst'
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\AbstractUpdate->markWizardAsDone' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86366-MethodsInAbstractUpdate.rst'
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\AbstractUpdate->isWizardDone' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86366-MethodsInAbstractUpdate.rst'
+        ],
+    ],
 ];
