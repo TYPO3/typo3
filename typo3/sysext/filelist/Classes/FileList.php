@@ -1216,7 +1216,7 @@ class FileList
         if ($this->sort === $col) {
             // Check reverse sorting
             $params['SET']['reverse'] = ($this->sortRev ? '0' : '1');
-            $sortArrow = $this->iconFactory->getIcon('status-status-sorting-light-' . ($this->sortRev ? 'desc' : 'asc'), Icon::SIZE_SMALL)->render();
+            $sortArrow = $this->iconFactory->getIcon('status-status-sorting-' . ($this->sortRev ? 'desc' : 'asc'), Icon::SIZE_SMALL)->render();
         } else {
             $params['SET']['reverse'] = 0;
             $sortArrow = '';
