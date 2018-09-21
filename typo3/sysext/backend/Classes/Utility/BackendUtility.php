@@ -1525,15 +1525,19 @@ class BackendUtility
             }
             $parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['shortcut']['label']) . ' ' . $label;
         } elseif ($row['doktype'] == PageRepository::DOKTYPE_MOUNTPOINT) {
-            if ($perms_clause) {
-                $label = self::getRecordPath((int)$row['mount_pid'], $perms_clause, 20);
+            if ((int)$row['mount_pid'] > 0) {
+                if ($perms_clause) {
+                    $label = self::getRecordPath((int)$row['mount_pid'], $perms_clause, 20);
+                } else {
+                    $lRec = self::getRecordWSOL('pages', (int)$row['mount_pid'], 'title');
+                    $label = $lRec['title'] . ' (id=' . $row['mount_pid'] . ')';
+                }
+                $parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['mount_pid']['label']) . ' ' . $label;
+                if ($row['mount_pid_ol']) {
+                    $parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['mount_pid_ol']['label']);
+                }
             } else {
-                $lRec = self::getRecordWSOL('pages', (int)$row['mount_pid'], 'title');
-                $label = $lRec['title'] . ' (id=' . $row['mount_pid'] . ')';
-            }
-            $parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['mount_pid']['label']) . ' ' . $label;
-            if ($row['mount_pid_ol']) {
-                $parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['mount_pid_ol']['label']);
+                $parts[] = $lang->sl('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:no_mount_pid');
             }
         }
         if ($row['nav_hide']) {

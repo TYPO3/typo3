@@ -582,6 +582,9 @@
 			<trans-unit id="backend_layout.tabs.extended">
 				<source>Extended</source>
 			</trans-unit>
+			<trans-unit id="no_mount_pid">
+				<source>No Mount Point is set</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

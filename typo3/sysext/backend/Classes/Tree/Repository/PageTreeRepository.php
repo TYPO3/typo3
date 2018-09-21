@@ -68,6 +68,7 @@ class PageTreeRepository
         'perms_groupid',
         'perms_group',
         'perms_everybody',
+        'mount_pid'
     ];
 
     /**
