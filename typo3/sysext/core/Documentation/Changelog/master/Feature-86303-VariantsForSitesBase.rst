@@ -18,7 +18,7 @@ The expression language feature is used to define which variant is taken into ac
 Impact
 ======
 
-The base of a site can be changed depending on a conditiion. Typical examples are:
+The base of a site can be changed depending on a condition. Typical examples are:
 
 - :typoscript:`applicationContext == "Production"`: Check the application context
 - :typoscript:`getenv("mycontext") == "production`: Check a custom environment variable
