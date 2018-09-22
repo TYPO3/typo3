@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 
@@ -150,7 +151,9 @@ class RedirectService implements LoggerAwareInterface
     public function getTargetUrl(array $matchedRedirect, array $queryParams)
     {
         $this->logger->debug('Found a redirect to process', $matchedRedirect);
-        $linkDetails = $this->resolveLinkDetailsFromLinkTarget((string)$matchedRedirect['target']);
+        $linkParameterParts = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode((string)$matchedRedirect['target']);
+        $redirectTarget = $linkParameterParts['url'];
+        $linkDetails = $this->resolveLinkDetailsFromLinkTarget($redirectTarget);
         $this->logger->debug('Resolved link details for redirect', $linkDetails);
         // Do this for files, folders, external URLs
         if (!empty($linkDetails['url'])) {
