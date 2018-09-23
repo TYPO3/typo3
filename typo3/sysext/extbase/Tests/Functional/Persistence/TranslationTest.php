@@ -244,6 +244,8 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setIgnoreEnableFields(true);
         $querySettings->setLanguageUid(0);
+        //we need it to have stable results on pgsql
+        $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
 
         /** @var Post[] $posts */
         $posts = $query->execute()->toArray();
@@ -270,6 +272,8 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setIgnoreEnableFields(true);
         $querySettings->setLanguageUid(2);
+        //we need it to have stable results on pgsql
+        $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
 
         /** @var Post[] $posts */
         $posts = $query->execute()->toArray();
