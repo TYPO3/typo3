@@ -11,8 +11,8 @@ return [
         'typeicon_classes' => [
             'default' => 'default-not-found',
             'Fluid' => 'mimetypes-text-html',
-            'ContentFromPid' => 'apps-pagetree-page-content-from-page',
-            'ClassDispatcher' => 'mimetypes-text-php',
+            'Page' => 'apps-pagetree-page-content-from-page',
+            'PHP' => 'mimetypes-text-php',
         ],
     ],
     'columns' => [
