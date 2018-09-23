@@ -53,6 +53,7 @@ editor:
       - find
       - bidi
       - selectall
+      - autolink
 
     removePlugins:
       - image
