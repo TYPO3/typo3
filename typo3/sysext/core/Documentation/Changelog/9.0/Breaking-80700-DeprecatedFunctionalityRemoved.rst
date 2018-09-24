@@ -10,6 +10,7 @@ Description
 ===========
 
 The following PHP classes that have been previously deprecated for v8 have been removed:
+
 * :php:`RemoveXSS`
 * :php:`TYPO3\CMS\Backend\Console\Application`
 * :php:`TYPO3\CMS\Backend\Console\CliRequestHandler`
@@ -33,12 +34,15 @@ The following PHP classes that have been previously deprecated for v8 have been 
 * :php:`TYPO3\CMS\Lowlevel\CleanerCommand`
 
 The following PHP interfaces have been dropped:
+
 * :php:`TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface`
 
 The following PHP interface signatures have been changed:
+
 * :php:`TYPO3\CMS\Extbase\Persistence\Generic\QueryInterface->like()` - Third argument dropped
 
 The following PHP static class methods that have been previously deprecated for v8 have been removed:
+
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getAjaxUrl()`
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS()`
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getInlineLocalizationMode()`
@@ -92,6 +96,7 @@ The following PHP static class methods that have been previously deprecated for 
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository::storeHash()`
 
 The following PHP class methods that have been previously deprecated for v8 have been removed:
+
 * :php:`TYPO3\CMS\Backend\Clipboard\Clipboard->confirmMsg()`
 * :php:`TYPO3\CMS\Backend\Controller\BackendController->addCssFile()`
 * :php:`TYPO3\CMS\Backend\Controller\BackendController->addJavascript()`
@@ -228,6 +233,7 @@ The following PHP class methods that have been previously deprecated for v8 have
 * :php:`TYPO3\CMS\Taskcenter\Controller\TaskModuleController->printContent()`
 
 The following methods changed signature according to previous deprecations in v8 at the end of the argument list:
+
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->euc_char_mapping()` - Third and fourth argument dropped
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->sb_char_mapping()` - Third and fourth argument dropped
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->utf8_char_mapping()` - Second and third argument dropped
@@ -245,12 +251,14 @@ The following methods changed signature according to previous deprecations in v8
 * :php:`TYPO3\CMS\Lang\LanguageService->sL()` - Second argument dropped
 
 The following static methods changed signature according to previous deprecations in v8 at the end of the argument list:
+
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName()` - Second and third argument dropped
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS()` - Second argument dropped
 * :php:`TYPO3\CMS\Recycler\Utility\RecyclerUtility::getRecordPath()` - Second, third and fourth argument dropped
 
 The following methods changed signature according to previous deprecations in v8 which should be
 given as null if further arguments are added after the unused ones:
+
 * :php:`TYPO3\CMS\Core\Html\RteHtmlParser->RTE_transform()` - Second argument unused
 * :php:`TYPO3\CMS\Core\Localization\LocalizationFactory->getParsedData()` - Third and fourth argument unused
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->linkData()` - Fourth argument unused
@@ -258,9 +266,11 @@ given as null if further arguments are added after the unused ones:
 
 The following constructor arguments are unused and should be given as null if additional arguments are
 given after the unused one:
+
 * [NotScanned] :php:`TYPO3\CMS\Frontend\Plugin\AbstractPlugin->__constructor()` - First argument unused
 
 The following methods changed single argument details:
+
 * [NotScanned] :php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule` - Fifth argument ignores [labels][tabs_images][tab]
 * [NotScanned] :php:`TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction()` - Persistent or file prefix in first argument removed
 * [NotScanned] :php:`TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement` - support for \TYPO3\CMS\Core\Database\PreparedStatement as argument dropped
@@ -269,9 +279,11 @@ The following methods changed single argument details:
 * [NotScanned] :php:`TYPO3\CMS\Extbase\Mvc\Cli\ConsoleOutput->select()` - support for boolean as fifth argument removed
 
 The following methods have additional arguments:
+
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->searchWhere()` - Third parameter is now mandatory
 
 The following public class properties have been dropped:
+
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->localizationMode`
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->edit_record`
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->new_unique_uid`
@@ -297,6 +309,7 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Lang\LanguageService->parserFactory`
 
 The following class properties have changed visibility:
+
 * :php:`TYPO3\CMS\Core\DataHandling\DataHandler->recUpdateAccessCache` changed from public to protected
 * :php:`TYPO3\CMS\Core\DataHandling\DataHandler->recInsertAccessCache` changed from public to protected
 * :php:`TYPO3\CMS\Core\DataHandling\DataHandler->isRecordInWebMount_Cache` changed from public to protected
@@ -305,30 +318,35 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Core\DataHandling\DataHandler->pageCache` changed from public to protected
 
 The following public class constants have been dropped:
+
 * :php:`TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_ERROR`
 * :php:`TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_WARNING`
 * :php:`TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_NOTIFICATION`
 * :php:`TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_OK`
 
 The following configuration options are not evaluated anymore:
+
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL][cliKeys']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['noPHPscriptInclude']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['maxSessionDataSize']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS_extensionAdded']`
 
 The following hooks have been removed:
+
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSClass']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/div/class.t3lib_utility_client.php']['getDeviceType']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list.inc']['makeQueryArray']`
 
 The following entry points have been removed:
+
 * [NotScanned] :php:`typo3/cli_dispatch.phpsh`
 
 The following functionality has been removed:
+
 * [NotScanned] Support for legacy prepared statements within Extbase Persistence within Qom\Statement
 
-
 The following TypoScript options have been removed:
+
 * :ts:`stdWrap.fontTag`
 * :ts:`stdWrap.removeBadHTML`
 * :ts:`config.mainScript`
@@ -347,21 +365,25 @@ The following TypoScript options have been removed:
 * single slashes are no longer interpreted as comment
 
 The following TCA properties have been removed:
+
 * :code:`type=select` selectedListStyle
 * :code:`type=select` itemListStyle
 * :code:`type=inline` behaviour['localizationMode']
 
 The following PageTsConfig properties have been removed:
+
 * :ts:`TCEFORM.[table].[field].addItems.icon` - with icons not registered in IconRegistry
 * :ts:`TCEFORM.[table].[flexFormField].PAGE_TSCONFIG_ID`
 * :ts:`TCEFORM.[table].[flexFormField].PAGE_TSCONFIG_IDLIST`
 * :ts:`TCEFORM.[table].[flexFormField].PAGE_TSCONFIG_STR`
 
 The following icon identifiers have been removed:
+
 * :code:`actions-document-close`
 * :code:`actions-edit-add`
 
 The following Fluid ViewHelper arguments have been removed:
+
 * :php:`f:be.container->enableClickMenu`
 * :php:`f:be.container->loadExtJs`
 * :php:`f:be.container->loadExtJsTheme`
@@ -376,14 +398,17 @@ The following Fluid ViewHelper arguments have been removed:
 * :php:`f:case->default (use f:defaultCase instead)`
 
 The following requireJS modules have been removed:
+
 * :php:`TYPO3/CMS/Core/QueryGenerator`
 
 Further removal notes:
+
 * FormEngine result array ignores key `extJSCODE`
 * RTE transformation 'ts_css' dropped
 * Invalid flex form data structure wildcard matching `secondFieldValue,*` dropped
 
 The following JavaScript methods and options have been removed:
+
 * :javascript:`backend/Resources/Public/JavaScript/jsfunc.inline.js escapeSelectorObjectId`
 * :javascript:`TYPO3/CMS/Backend/Modal.getSeverityClass()`
 * :javascript:`TYPO3/CMS/Backend/Severity.information`
