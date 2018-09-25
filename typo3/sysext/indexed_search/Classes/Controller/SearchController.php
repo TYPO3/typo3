@@ -1603,23 +1603,19 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected function preparePageLink(int $pageUid, array $row, array $urlParameters): array
     {
         $target = '';
-        // If external domain, then link to that:
-        if (!empty($this->domainRecords[$pageUid])) {
-            $scheme = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
-            $firstDomain = reset($this->domainRecords[$pageUid]);
-            $additionalParams = '';
-            if (is_array($urlParameters) && !empty($urlParameters)) {
-                $additionalParams = GeneralUtility::implodeArrayForUrl('', $urlParameters);
-            }
-            $uri = $scheme . $firstDomain . '/index.php?id=' . $pageUid . $additionalParams;
-            $target = $this->settings['detectDomainRecords.']['target'];
-        } else {
-            $uriBuilder = $this->controllerContext->getUriBuilder();
-            $uri = $uriBuilder->setTargetPageUid($pageUid)
+        $uri = $this->controllerContext->getUriBuilder()
+                ->setTargetPageUid($pageUid)
                 ->setTargetPageType($row['data_page_type'])
                 ->setUseCacheHash(true)
                 ->setArguments($urlParameters)
                 ->build();
+
+        // If external domain, then link to that:
+        if (!empty($this->domainRecords[$pageUid])) {
+            $scheme = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
+            $firstDomain = reset($this->domainRecords[$pageUid]);
+            $uri = $scheme . $firstDomain . $uri;
+            $target = $this->settings['detectDomainRecords.']['target'];
         }
 
         return ['uri' => $uri, 'target' => $target];
