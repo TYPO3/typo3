@@ -180,6 +180,9 @@
 			<trans-unit id="tsRef">
 				<source>TSref reference</source>
 			</trans-unit>
+			<trans-unit id="undefined">
+				<source>Undefined</source>
+			</trans-unit>
 			<trans-unit id="up">
 				<source>Up</source>
 			</trans-unit>

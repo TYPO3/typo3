@@ -3,6 +3,7 @@
 return [
     'ctrl' => [
         'label' => 'route',
+        'label_userFunc' => \TYPO3\CMS\Backend\Configuration\TCA\UserFunctions::class . '->getRouteTitle',
         'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.ctrl.title',
         'type' => 'type',
         'typeicon_column' => 'type',

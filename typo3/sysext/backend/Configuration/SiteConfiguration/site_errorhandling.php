@@ -3,8 +3,7 @@
 return [
     'ctrl' => [
         'label' => 'errorHandler',
-        'label_alt' => 'errorCode',
-        'label_alt_force' => true,
+        'label_userFunc' => \TYPO3\CMS\Backend\Configuration\TCA\UserFunctions::class . '->getErrorHandlingTitle',
         'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.ctrl.title',
         'type' => 'errorHandler',
         'typeicon_column' => 'errorHandler',

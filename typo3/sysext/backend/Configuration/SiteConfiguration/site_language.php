@@ -3,6 +3,7 @@
 return [
     'ctrl' => [
         'label' => 'languageId',
+        'label_userFunc' => \TYPO3\CMS\Backend\Configuration\TCA\UserFunctions::class . '->getSiteLanguageTitle',
         'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.ctrl.title',
         'typeicon_classes' => [
             'default' => 'mimetypes-x-content-domain',

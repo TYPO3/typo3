@@ -61,6 +61,7 @@ return [
                 'size' => 4,
                 'minitems' => 1,
                 'appearance' => [
+                    'collapseAll' => true,
                     'enabledControls' => [
                         'info' => false,
                     ],
@@ -73,6 +74,7 @@ return [
                 'type' => 'inline',
                 'foreign_table' => 'site_errorhandling',
                 'appearance' => [
+                    'collapseAll' => true,
                     'enabledControls' => [
                         'info' => false,
                     ],
@@ -85,6 +87,7 @@ return [
                 'type' => 'inline',
                 'foreign_table' => 'site_route',
                 'appearance' => [
+                    'collapseAll' => true,
                     'enabledControls' => [
                         'info' => false,
                     ],
