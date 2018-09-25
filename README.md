@@ -11,22 +11,23 @@ This document provides a basic introduction to TYPO3.
 Getting Started
 ---------------
 
-TYPO3 requires a webserver with PHP and a database (MySQL recommended).
+TYPO3 requires a web server with PHP and a database (e.g. MySQL).
 Accessing the backend through a supported browser.
 
-Please see the INSTALL.md in this folder in order to set up a basic TYPO3
-installation on your webserver.
+Please see the [Installation Guide](https://docs.typo3.org/typo3cms/InstallationGuide/) 
+in order to set up a basic TYPO3 installation on your web server.
 
 What is TYPO3?
 --------------
 
-TYPO3 is a free and open source Content Management Framework. It is released
-under the GNU General Public License. It can run on several web servers, such
-as Apache or IIS, on top of many operating systems, among them Linux, Microsoft
-Windows, FreeBSD or MacOS X.
+TYPO3 is a free and open source Content Management Framework. It is
+released under the GNU General Public License. It can run on several web
+servers, such as Apache, nginx or IIS, on top of many operating systems,
+among them Linux, Microsoft Windows, FreeBSD or MacOS.
 
-TYPO3 was initially authored by Kasper Skårhøj and is now further developed
-by a community of Active Contributors around a small TYPO3 CMS Team.
+TYPO3 was initially authored by Kasper Skårhøj and is now further
+developed by a community of contributors and the [TYPO3 Core Development
+Team](https://typo3.org/community/teams/typo3-development/).
 
 To get more info about the GPL license, visit
 http://www.opensource.org/licenses/gpl-license.php
@@ -34,51 +35,54 @@ http://www.opensource.org/licenses/gpl-license.php
 What is a Content Management Framework?
 ---------------------------------------
 
-A Content Management Framework is more than just a content management system,
-due to the separation of the streamlined core and optional plugins
-(extensions). TYPO3 has an open API that allows you to extend the frontend (web
-site) and/or backend (administration) functionalities.
+A Content Management Framework is more than just a content management
+system, due to the separation of the streamlined core and optional
+plugins (extensions). TYPO3 has an open API that allows you to extend
+the frontend (web site) and/or backend (administration) functionality.
 
-The concept of extensions makes TYPO3 capable of being developed and used
-in almost any way you can imagine, either by using any of the many extensions
-which are available for download, or by writing your own.
+The concept of extensions makes TYPO3 capable of being developed and
+used in almost any way you can imagine, either by using any of the many
+extensions which are available for download, or by writing your own.
 
 TYPO3 System requirements
------------------------------
+-------------------------
 
-TYPO3 is based upon PHP and uses a MySQL database. For more information
-regarding these requirements see the [INSTALL.md](INSTALL.md) file in this folder.
+TYPO3 is based upon PHP and uses a database management system like
+MySQL.
 
-Using the Database Abstraction Layer (DBAL) allows one to use TYPO3 with other
-Database Management Systems, like PostgreSQL, Oracle and MSSQL.
+For more specific information regarding requirements see the
+[INSTALL.md](INSTALL.md#server-system-requirements) file in this folder.
 
 TYPO3 resources
 ---------------
 
-Here is an overview of the most important TYPO3 resources to help you get
-started:
+Here is an overview of the most important TYPO3 resources to help you
+get started:
 
 ### Get more information
 
-* https://typo3.org is the main project website. It provides up to
-  date official news, information about events, access to downloading the
+* https://typo3.org is the main project website. It provides up to date
+  official news, information about events, access to downloading the
   products and extensions.
-
-* https://wiki.typo3.org is a collaborative wiki, providing access to
-  all kind of information around the TYPO3 ecosphere.
 
 * https://docs.typo3.org/: TYPO3 is one of the most thoroughly
   documented OpenSource products around, with manuals covering basic
-  tutorials, TypoScript, administration, development, core structure, etc.
-  You should make the time to locate the various documents, and read those
-  that apply to the work you want to do.
+  tutorials, TypoScript, administration, development, core structure,
+  etc. You should make the time to locate the various documents, and
+  read those that apply to the work you want to do.
+
+* https://get.typo3.org/ is the platform where you can download TYPO3
+  and find all release notes and change logs of TYPO3 releases.
+
+* https://extensions.typo3.org/ is the platform where you can search for
+  and download TYPO3 extensions.
 
 ### Chat with us
 
-The TYPO3 team is using a tool called Slack to openly communicate with each
-other and with the public. Several teams use Slack as a way to communicate
-internally and most channels are a welcome place for you to join and get
-yourself involved.
+The TYPO3 community is using a tool called Slack to openly communicate
+with each other and with the public. Several TYPO3 teams use Slack as a
+way to communicate internally and most channels are a welcome place for
+you to join and get yourself involved.
 
 * Register: https://forger.typo3.org/slack/
 * Slack: https://typo3.slack.com/
@@ -86,73 +90,74 @@ yourself involved.
 ### Exchange information, ask questions, get help
 
 Slack is nice for short discussions, but when asking questions, most
-answers are lost in the noise after a few minutes. To let everyone
-profit from an answer, we recommend to ask questions on StackOverflow.
-If you like, you can then post a link into the corresponding Slack
-channel to raise attention. And please, do not forget to tag your
-questions correctly with `TYPO3` (and possibly other tags like `Fluid`
-or `Extbase`).
+answers are lost in the noise after a few minutes.
+
+#### StackOverflow
+
+**To let everyone profit from an answer, we recommend to ask questions
+on StackOverflow**. If you like, you can then post a link into the
+corresponding Slack channel to raise attention. And please, do not
+forget to tag your questions correctly with `typo3` (and possibly other
+tags like `typo3-9.5.x`, `Fluid` or `Extbase`).
 
 * [StackOverflow questions tagged "TYPO3"](https://stackoverflow.com/questions/tagged/typo3)
 
-The community and all TYPO3 teams communicate through newsgroups, which can
-also be accessed through mailing lists and forums. Any of these three ways
-provide access to the same communication channels:
+#### Official meet the TYPO3 Community overview:
 
-* Forum (Web): https://forum.typo3.org/
-* Mailing Lists (Mail): https://typo3.org/support/mailing-lists/
-* Newsgroups (NNTP): news://lists.typo3.org/
+Visit https://typo3.org/community/meet/
 
 Contributing
 ------------
 
-If you want to contribute to the TYPO3 CMS source code, take a look at our
+If you want to contribute to the TYPO3 source code, take a look at our
 Contributors Walkthrough and Review System:
 
 * https://docs.typo3.org/typo3cms/ContributionWorkflowGuide/
 * https://review.typo3.org/
 
+> Please use the [TYPO3 Slack chat](#chat-with-us), if you need help in
+> setting up your contribution environment. The community is very
+> helpful and get you up and running! (Please post your questions in
+> Slack Channel `#typo3-cms-coredev` regarding contribution support)
+
 The [repository at GitHub](https://github.com/TYPO3/TYPO3.CMS) is a
-synchronized mirror of the primary TYPO3 CMS core git repository:
+synchronized mirror of the primary TYPO3 core git repository:
 
 * https://git.typo3.org/Packages/TYPO3.CMS.git
 
-If you want to file a bug report, maintain your own extension using our
-infrastructure (Git, Issue Tracker, Wiki, etc), take a look at:
+If you want to file a bug report, take a look at:
 
-* https://forge.typo3.org
+* [https://forge.typo3.org](https://forge.typo3.org/projects/typo3cms-core/issues)
 
 Final notes
 -----------
 
 TYPO3 is said to be one of the most sophisticated PHP / Internet related
-applications available, and the more you play with it, the more you will agree.
+applications available, and the more you play with it, the more you will
+agree.
 
-Due to the advanced level of the code and functionality, a degree of study,
-time and perseverance is required to fully understand it, and get the best from
-it. You should keep trying, as we say it's definitely worth it. TYPO3 is the
-Enterprise Content Management System "for all".
+Due to the advanced level of the code and functionality, a degree of
+study, time and perseverance is required to fully understand it, and get
+the best from it. You should keep trying, as we say it's definitely
+worth it. TYPO3 is the Enterprise Content Management System "for all".
 
-The GPL license allows for developments that are based upon TYPO3 to also be
-freely available under the GPL. Please remember this, because TYPO3 is about
-"Inspiring People To Share". If you are making money with TYPO3 you can donate
-or become a member of the TYPO3 Association.
+The GPL license allows for developments that are based upon TYPO3 to
+also be freely available under the GPL. Please remember this, because
+TYPO3 is about "Inspiring People To Share". If you are making money with
+TYPO3 you can donate or become a member of the TYPO3 Association.
 
-By becoming a supporting member, individuals and organisations mainly fund
-core development of TYPO3. The decision about what the funds are used for, is
-made by all members of the Association and the Expert Advisory Board (EAB).
-The decisions will be made transparent to the community and especially the
-supporting members. Your funds will also serve for other purposes as laid
-out in the bylaws.
+By becoming a supporting member, individuals and organisations mainly
+fund core development of TYPO3. The decision about what the funds are
+used for, is made by all members of the Association and the Expert
+Advisory Board (EAB). The decisions will be made transparent to the
+community and especially the supporting members. Your funds will also
+serve for other purposes as laid out in the bylaws.
 
 * Donate: https://typo3.org/donate
 * Become a member of the TYPO3 Association:
-  https://typo3.org/association/membership/levels/
+  https://typo3.org/project/association/
 
 Copyleft
 --------
 
 This document is a part of the TYPO3 project.
-
-Written by Nigel Jackson, Ingmar Schlecht, Ernesto Baschny, Michael Stucki,
-Oliver Hader, Ben van 't Ende and others.
