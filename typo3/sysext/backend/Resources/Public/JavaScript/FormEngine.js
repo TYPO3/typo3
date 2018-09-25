@@ -828,6 +828,7 @@ define(['jquery',
       var checkIt = $checkboxes.length !== $table.find('.t3js-checkbox:checked').length;
       $checkboxes.prop('checked', checkIt);
       $checkbox.prop('checked', checkIt);
+      FormEngine.Validation.markFieldAsChanged($checkbox);
     });
     $(document).on('change', '.t3js-checkbox', function(e) {
       FormEngine.updateCheckboxState(this);
