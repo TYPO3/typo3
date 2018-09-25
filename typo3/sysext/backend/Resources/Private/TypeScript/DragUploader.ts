@@ -357,12 +357,12 @@ class DragUploaderPlugin {
           )
         ),
         $('<td />').html(
-          this.askForOverride[i].uploaded.name + ' (' + (DragUploader.fileSizeAsString(this.askForOverride[i].uploaded.size)) + ')' +
-          '<br>' + moment(this.askForOverride[i].uploaded.lastModifiedDate, 'x').format('YYYY-MM-DD HH:mm')
+          this.askForOverride[i].original.name + ' (' + (DragUploader.fileSizeAsString(this.askForOverride[i].original.size)) + ')' +
+          '<br>' + moment(this.askForOverride[i].original.mtime, 'x').format('YYYY-MM-DD HH:mm')
         ),
         $('<td />').html(
-          this.askForOverride[i].uploaded.name + ' (' + (DragUploader.fileSizeAsString(this.askForOverride[i].original.size)) + ')' +
-          '<br>' + moment(this.askForOverride[i].original.mtime, 'X').format('YYYY-MM-DD HH:mm')
+          this.askForOverride[i].uploaded.name + ' (' + (DragUploader.fileSizeAsString(this.askForOverride[i].uploaded.size)) + ')' +
+          '<br>' + moment(this.askForOverride[i].uploaded.lastModifiedDate, 'X').format('YYYY-MM-DD HH:mm')
         ),
         $('<td />').append(
           $('<select />', {class: 'form-control t3js-actions', 'data-override': i}).append(
