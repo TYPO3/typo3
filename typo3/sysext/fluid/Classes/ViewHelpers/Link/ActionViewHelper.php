@@ -78,7 +78,7 @@ class ActionViewHelper extends AbstractTagBasedViewHelper
         $pageUid = (int)$this->arguments['pageUid'] ?: null;
         $pageType = (int)$this->arguments['pageType'];
         $noCache = (bool)$this->arguments['noCache'];
-        $noCacheHash = (bool)$this->arguments['useCacheHash'];
+        $noCacheHash = (bool)$this->arguments['noCacheHash'];
         $section = (string)$this->arguments['section'];
         $format = (string)$this->arguments['format'];
         $linkAccessRestrictedPages = (bool)$this->arguments['linkAccessRestrictedPages'];
