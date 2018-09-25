@@ -257,6 +257,10 @@ class NewMultiplePagesController
                 $queryBuilder->expr()->eq(
                     'pid',
                     $queryBuilder->createNamedParameter($pageUid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    $GLOBALS['TCA']['pages']['ctrl']['languageField'],
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 )
             )
             ->orderBy('sorting')
