@@ -20,7 +20,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
-use TYPO3\CMS\Core\Routing\PageUriBuilder;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -86,14 +87,14 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
             return $urlParams['url'];
         }
 
+        $site = $request->getAttribute('site', null);
+        if (!$site instanceof Site) {
+            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$urlParams['pageuid']);
+        }
         // Build Url
-        $uriBuilder = GeneralUtility::makeInstance(PageUriBuilder::class);
-        return (string)$uriBuilder->buildUri(
+        return (string)$site->getRouter()->generateUri(
             (int)$urlParams['pageuid'],
-            [],
-            null,
-            ['language' => $request->getAttribute('language', null)],
-            PageUriBuilder::ABSOLUTE_URL
+            ['_language' => $request->getAttribute('language', null)]
         );
     }
 }

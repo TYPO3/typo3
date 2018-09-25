@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Routing\PageUriBuilder;
+use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
@@ -359,13 +359,12 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         }
 
         $targetPageId = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $page['uid']);
-
-        $uri = GeneralUtility::makeInstance(PageUriBuilder::class)->buildUri(
+        $queryParameters['_language'] = $siteLanguageOfTargetPage;
+        $uri = $siteOfTargetPage->getRouter()->generateUri(
             $targetPageId,
             $queryParameters,
             $fragment,
-            ['site' => $siteOfTargetPage, 'language' => $siteLanguageOfTargetPage],
-            $useAbsoluteUrl ? PageUriBuilder::ABSOLUTE_URL : PageUriBuilder::ABSOLUTE_PATH
+            $useAbsoluteUrl ? RouterInterface::ABSOLUTE_URL : RouterInterface::ABSOLUTE_PATH
         );
         // Override scheme, but only if the site does not define a scheme yet AND the site defines a domain/host
         if ($useAbsoluteUrl && !$uri->getScheme() && $uri->getHost()) {

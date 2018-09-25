@@ -73,11 +73,13 @@ class PageResolver implements MiddlewareInterface
 
         // Resolve the page ID based on TYPO3's native routing functionality
         if ($hasSiteConfiguration) {
+            /** @var PageRouter $router */
+            $router = $site->getRouter();
             /** @var RouteResult $previousResult */
             $previousResult = $request->getAttribute('routing', new RouteResult($request->getUri(), $site, $language));
             if (!empty($previousResult->getTail())) {
                 // Check for the route
-                $routeResult = $this->getPageRouter()->matchRoute($request, $previousResult->getTail(), $site, $language);
+                $routeResult = $router->matchRequest($request, $previousResult);
                 $request = $request->withAttribute('routing', $routeResult);
                 if (is_array($routeResult['page'])) {
                     $page = $routeResult['page'];
@@ -138,14 +140,6 @@ class PageResolver implements MiddlewareInterface
         $this->controller->makeCacheHash($request);
 
         return $handler->handle($request);
-    }
-
-    /**
-     * @return PageRouter
-     */
-    protected function getPageRouter(): PageRouter
-    {
-        return GeneralUtility::makeInstance(PageRouter::class);
     }
 
     /**

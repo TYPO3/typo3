@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  *
  * @internal this API might change until 9 LTS.
  */
-class RouteResult implements \ArrayAccess
+class RouteResult implements RouteResultInterface
 {
     /**
      * @var array

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Routing\PageUriBuilder;
+use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -45,7 +45,7 @@ class StaticRouteResolver implements MiddlewareInterface
             if (in_array($path, $routeNames, true)) {
                 $key = array_search($path, $routeNames, true);
                 $routeConfig = $configuration[$key];
-                [$content, $contentType] = $this->resolveByType($request, $routeConfig['type'], $routeConfig);
+                [$content, $contentType] = $this->resolveByType($request, $site, $routeConfig['type'], $routeConfig);
                 return new HtmlResponse($content, 200, ['Content-Type' => $contentType]);
             }
         }
@@ -73,20 +73,18 @@ class StaticRouteResolver implements MiddlewareInterface
         return [$content, $contentType];
     }
 
-    private function getPageUri(ServerRequestInterface $request, array $urlParams): string
+    private function getPageUri(ServerRequestInterface $request, Site $site, array $urlParams): string
     {
-        $uriBuilder = GeneralUtility::makeInstance(PageUriBuilder::class);
-        $uri = (string)$uriBuilder->buildUri(
+        $uri = $site->getRouter()->generateUri(
             (int)$urlParams['pageuid'],
-            ['type' => $urlParams['pagetype'] ?? 0],
-            null,
-            ['language' => $request->getAttribute('language', null)],
-            PageUriBuilder::ABSOLUTE_URL
+            ['type' => $urlParams['pagetype'] ?? 0, '_language' => $request->getAttribute('language', null)],
+            '',
+            RouterInterface::ABSOLUTE_URL
         );
-        return $uri;
+        return (string)$uri;
     }
 
-    private function resolveByType(ServerRequestInterface $request, string $type, array $routeConfig): array
+    private function resolveByType(ServerRequestInterface $request, Site $site, string $type, array $routeConfig): array
     {
         switch ($type) {
             case 'staticText':
@@ -97,7 +95,7 @@ class StaticRouteResolver implements MiddlewareInterface
                 $linkService = GeneralUtility::makeInstance(LinkService::class);
                 $urlParams = $linkService->resolve($routeConfig['source']);
                 if ($urlParams['type'] === 'url' || $urlParams['type'] === 'page') {
-                    $uri = $urlParams['url'] ?? $this->getPageUri($request, $urlParams);
+                    $uri = $urlParams['url'] ?? $this->getPageUri($request, $site, $urlParams);
                     [$content, $contentType] = $this->getFromUri($uri);
                 } elseif ($urlParams['type'] === 'file') {
                     [$content, $contentType] = $this->getFromFile($urlParams['file']);

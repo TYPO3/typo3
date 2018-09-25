@@ -18,22 +18,26 @@ namespace TYPO3\CMS\Core\Routing;
 
 use Doctrine\DBAL\Connection;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
+use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Page Router looking up the slug of the page path.
+ * Page Router - responsible for a page based on a request, by looking up the slug of the page path.
+ * Is also used for generating URLs for pages.
  *
- * This is done via the "Route Candidate" pattern.
+ * Resolving is done via the "Route Candidate" pattern.
  *
  * Example:
  * - /about-us/team/management/
@@ -51,27 +55,49 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Please note: PageRouter does not restrict the HTTP method or is bound to any domain constraints,
  * as the SiteMatcher has done that already.
  *
- * The concept of the PageRouter is to *resolve*, and not build URIs. On top, it is a facade to hide the
+ * The concept of the PageRouter is to *resolve*, and to build URIs. On top, it is a facade to hide the
  * dependency to symfony and to not expose its logic.
-
- * @internal This API is not public yet and might change in the future, until TYPO3 v9 or TYPO3 v10.
  */
-class PageRouter
+class PageRouter implements RouterInterface
 {
     /**
-     * @param ServerRequestInterface $request
-     * @param string $routePathTail
-     * @param SiteInterface $site
-     * @param SiteLanguage $language
-     * @return RouteResult|null
+     * @var Site
      */
-    public function matchRoute(ServerRequestInterface $request, string $routePathTail, SiteInterface $site, SiteLanguage $language): ?RouteResult
+    protected $site;
+
+    /**
+     * @var array
+     */
+    protected $configuration;
+
+    /**
+     * A page router is always bound to a specific site.
+     *
+     * @param Site $site
+     * @param array $configuration
+     */
+    public function __construct(Site $site, array $configuration)
     {
+        $this->site = $site;
+        $this->configuration = $configuration;
+    }
+
+    /**
+     * Finds a RouteResult based on the given request.
+     *
+     * @param ServerRequestInterface $request
+     * @param RouteResultInterface|RouteResult|null $previousResult
+     * @return RouteResult
+     */
+    public function matchRequest(ServerRequestInterface $request, RouteResultInterface $previousResult = null): ?RouteResultInterface
+    {
+        $routePathTail = $previousResult ? $previousResult->getTail() : '';
+        $language = $previousResult ? $previousResult->getLanguage() : null;
         $slugCandidates = $this->getCandidateSlugsFromRoutePath($routePathTail);
         if (empty($slugCandidates)) {
             return null;
         }
-        $pageCandidates = $this->getPagesFromDatabaseForCandidates($slugCandidates, $site, $language->getLanguageId());
+        $pageCandidates = $this->getPagesFromDatabaseForCandidates($slugCandidates, $language->getLanguageId());
         // Stop if there are no candidates
         if (empty($pageCandidates)) {
             return null;
@@ -94,22 +120,77 @@ class PageRouter
         try {
             $result = $matcher->match('/' . ltrim($routePathTail, '/'));
             unset($result['_route']);
-            return new RouteResult($request->getUri(), $site, $language, $result['tail'], $result);
+            return new RouteResult($request->getUri(), $this->site, $language, $result['tail'], $result);
         } catch (ResourceNotFoundException $e) {
             // do nothing
         }
-        return new RouteResult($request->getUri(), $site, $language);
+        return new RouteResult($request->getUri(), $this->site, $language);
+    }
+
+    /**
+     * API for generating a page where the $route parameter is typically an array (page record) or the page ID
+     *
+     * @param array|string $route
+     * @param array $parameters an array of query parameters which can be built into the URI path, also consider the special handling of "_language"
+     * @param string $fragment additional #my-fragment part
+     * @param string $type see the RouterInterface for possible types
+     * @return UriInterface
+     */
+    public function generateUri($route, array $parameters = [], string $fragment = '', string $type = ''): UriInterface
+    {
+        // Resolve site
+        $siteLanguage = null;
+        $languageOption = $parameters['_language'] ?? null;
+        if ($languageOption instanceof SiteLanguage) {
+            $siteLanguage = $languageOption;
+            unset($parameters['_language']);
+        }
+        if ($siteLanguage === null) {
+            $siteLanguage = $this->site->getDefaultLanguage();
+        }
+
+        $pageId = 0;
+        if (is_array($route)) {
+            $pageId = (int)$route['uid'];
+        } elseif (is_scalar($route)) {
+            $pageId = (int)$route;
+        }
+        $pageRecord = BackendUtility::getRecord('pages', $pageId);
+        if ($siteLanguage->getLanguageId() > 0) {
+            $pageLocalizations = BackendUtility::getRecordLocalization('pages', $pageId, $siteLanguage->getLanguageId());
+            $pageRecord = $pageLocalizations[0] ?? $pageRecord;
+        }
+        $prefix = (string)$siteLanguage->getBase();
+        $prefix = rtrim($prefix, '/') . '/' . ltrim($pageRecord['slug'] ?? '', '/');
+
+        // Add the query parameters as string
+        $queryString = http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);
+        $prefix = rtrim($prefix, '?');
+        if (!empty($queryString)) {
+            if (strpos($prefix, '?') === false) {
+                $prefix .= '?';
+            } else {
+                $prefix .= '&';
+            }
+        }
+        $uri = new Uri($prefix . $queryString);
+        if ($fragment) {
+            $uri = $uri->withFragment($fragment);
+        }
+        if ($type === self::ABSOLUTE_PATH) {
+            $uri = $uri->withScheme('')->withHost('')->withPort(null);
+        }
+        return $uri;
     }
 
     /**
      * Check for records in the database which matches one of the slug candidates.
      *
      * @param array $slugCandidates
-     * @param SiteInterface $site
      * @param int $languageId
      * @return array
      */
-    protected function getPagesFromDatabaseForCandidates(array $slugCandidates, SiteInterface $site, int $languageId): array
+    protected function getPagesFromDatabaseForCandidates(array $slugCandidates, int $languageId): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
@@ -143,7 +224,7 @@ class PageRouter
         $siteMatcher = GeneralUtility::makeInstance(SiteMatcher::class);
         while ($row = $statement->fetch()) {
             $pageIdInDefaultLanguage = (int)($languageId > 0 ? $row['l10n_parent'] : $row['uid']);
-            if ($siteMatcher->matchByPageId($pageIdInDefaultLanguage)->getRootPageId() === $site->getRootPageId()) {
+            if ($siteMatcher->matchByPageId($pageIdInDefaultLanguage)->getRootPageId() === $this->site->getRootPageId()) {
                 $pages[] = $row;
             }
         }
@@ -152,7 +233,8 @@ class PageRouter
 
     /**
      * Returns possible URL parts for a string like /home/about-us/offices/
-     * to return
+     * to return.
+     *
      * /home/about-us/offices/
      * /home/about-us/offices
      * /home/about-us/

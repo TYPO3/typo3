@@ -30,6 +30,7 @@ class PageRouterTest extends UnitTestCase
     public function properSiteConfigurationFindsRoute()
     {
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom';
+        $slugCandidates = ['/mr-magpie/bloom/', '/mr-magpie/bloom'];
         $pageRecord = ['uid' => 13, 'l10n_parent' => 0, 'slug' => '/mr-magpie/bloom/'];
         $site = new Site('lotus-flower', 13, [
             'base' => '/lotus-flower/',
@@ -44,9 +45,11 @@ class PageRouterTest extends UnitTestCase
         $language = $site->getDefaultLanguage();
 
         $request = new ServerRequest($incomingUrl, 'GET');
-        $subject = $this->getAccessibleMock(PageRouter::class, ['getPagesFromDatabaseForCandidates']);
+        $previousResult = new RouteResult($request->getUri(), $site, $language, '/mr-magpie/bloom');
+        $subject = $this->getAccessibleMock(PageRouter::class, ['getCandidateSlugsFromRoutePath', 'getPagesFromDatabaseForCandidates'], [$site, []]);
+        $subject->expects($this->once())->method('getCandidateSlugsFromRoutePath')->willReturn($slugCandidates);
         $subject->expects($this->once())->method('getPagesFromDatabaseForCandidates')->willReturn([$pageRecord]);
-        $routeResult = $subject->matchRoute($request, '/mr-magpie/bloom', $site, $language);
+        $routeResult = $subject->matchRequest($request, $previousResult);
 
         $expectedRouteResult = new RouteResult($request->getUri(), $site, $language, '', ['page' => $pageRecord, 'tail' => '']);
         $this->assertEquals($expectedRouteResult, $routeResult);
@@ -59,6 +62,7 @@ class PageRouterTest extends UnitTestCase
     public function properSiteConfigurationWithoutTrailingSlashFindsRoute()
     {
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom/unknown-code/';
+        $slugCandidates = ['/mr-magpie/bloom/unknown-code/', '/mr-magpie/bloom/unknown-code'];
         $pageRecord = ['uid' => 13, 'l10n_parent' => 0, 'slug' => '/mr-magpie/bloom/'];
         $site = new Site('lotus-flower', 13, [
             'base' => '/lotus-flower/',
@@ -71,11 +75,12 @@ class PageRouterTest extends UnitTestCase
             ]
         ]);
         $language = $site->getDefaultLanguage();
-
         $request = new ServerRequest($incomingUrl, 'GET');
-        $subject = $this->getAccessibleMock(PageRouter::class, ['getPagesFromDatabaseForCandidates']);
+        $previousResult = new RouteResult($request->getUri(), $site, $language, '/mr-magpie/bloom/unknown-code/');
+        $subject = $this->getAccessibleMock(PageRouter::class, ['getCandidateSlugsFromRoutePath', 'getPagesFromDatabaseForCandidates'], [$site, []]);
+        $subject->expects($this->once())->method('getCandidateSlugsFromRoutePath')->willReturn($slugCandidates);
         $subject->expects($this->once())->method('getPagesFromDatabaseForCandidates')->willReturn([$pageRecord]);
-        $routeResult = $subject->matchRoute($request, '/mr-magpie/bloom/unknown-code/', $site, $language);
+        $routeResult = $subject->matchRequest($request, $previousResult);
 
         $expectedRouteResult = new RouteResult($request->getUri(), $site, $language, 'unknown-code/', ['page' => $pageRecord, 'tail' => 'unknown-code/']);
         $this->assertEquals($expectedRouteResult, $routeResult);

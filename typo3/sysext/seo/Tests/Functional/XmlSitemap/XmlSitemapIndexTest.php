@@ -51,22 +51,23 @@ class XmlSitemapIndexTest extends AbstractTestCase
     {
         $this->writeSiteConfiguration(
             'website-local',
-            $this->buildSiteConfiguration(1, 'http://localhost/')
+            $this->buildSiteConfiguration(1, 'http://localhost/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/')
+            ]
         );
 
         $response = $this->executeFrontendRequest(
-            (new InternalRequest())->withQueryParameters([
+            (new InternalRequest('http://localhost/'))->withQueryParameters([
                 'id' => 1,
                 'type' => 1533906435
             ])
         );
 
-        $expectedHeaders = [
-            'Content-Length' => [0 => '462']
-        ];
-        $expectedBody = '#<loc>http://localhost/\?id=1&amp;type=1533906435&amp;sitemap=pages&amp;page=0</loc>#';
+        $expectedContent = '<loc>http://localhost/?type=1533906435&amp;sitemap=pages&amp;page=0</loc>';
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals($expectedHeaders, $response->getHeaders());
-        $this->assertRegExp($expectedBody, (string)$response->getBody());
+        $this->assertArrayHasKey('Content-Length', $response->getHeaders());
+        $this->assertGreaterThan(0, $response->getHeader('Content-Length')[0]);
+        $this->assertContains($expectedContent, (string)$response->getBody());
     }
 }

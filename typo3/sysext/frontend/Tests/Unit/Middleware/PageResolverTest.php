@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Middleware;
  * The TYPO3 project - inspiring people to share!
  */
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -84,29 +85,32 @@ class PageResolverTest extends UnitTestCase
     {
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom';
         $pageRecord = ['uid' => 13, 'l10n_parent' => 0, 'slug' => '/mr-magpie/bloom'];
-        $site = new Site('lotus-flower', 13, [
-            'base' => '/lotus-flower/',
-            'languages' => [
-                0 => [
-                    'languageId' => 0,
-                    'locale' => 'en_US.UTF-8',
-                    'base' => '/en/'
-                ],
+        /** @var MockObject|Site $site */
+        $site = $this->getMockBuilder(Site::class)->setConstructorArgs([
+            'lotus-flower', 13, [
+                'base' => '/lotus-flower/',
+                'languages' => [
+                    0 => [
+                        'languageId' => 0,
+                        'locale' => 'en_US.UTF-8',
+                        'base' => '/en/'
+                    ],
+                ]
             ]
-        ]);
+        ])->setMethods(['getRouter'])->getMock();
         $language = $site->getDefaultLanguage();
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('site', $site);
         $request = $request->withAttribute('language', $language);
         $request = $request->withAttribute('routing', new RouteResult($request->getUri(), $site, $language, 'mr-magpie/bloom'));
-
         $expectedRouteResult = new RouteResult($request->getUri(), $site, $language, '', ['page' => $pageRecord]);
-        $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->setMethods(['matchRoute'])->getMock();
-        $pageRouterMock->expects($this->once())->method('matchRoute')->willReturn($expectedRouteResult);
 
-        $subject = $this->getAccessibleMock(PageResolver::class, ['getPageRouter'], [$this->controller], '', true);
-        $subject->expects($this->any())->method('getPageRouter')->willReturn($pageRouterMock);
+        $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->setMethods(['matchRequest'])->getMock();
+        $pageRouterMock->expects($this->once())->method('matchRequest')->willReturn($expectedRouteResult);
+        $site->expects($this->any())->method('getRouter')->willReturn($pageRouterMock);
+
+        $subject = new PageResolver($this->controller);
         $response = $subject->process($request, $this->responseOutputHandler);
         $result = $response->getBody()->getContents();
         $result = json_decode($result, true);
@@ -123,16 +127,19 @@ class PageResolverTest extends UnitTestCase
     {
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom/';
         $pageRecord = ['uid' => 13, 'l10n_parent' => 0, 'slug' => '/mr-magpie/bloom'];
-        $site = new Site('lotus-flower', 13, [
-            'base' => '/lotus-flower/',
-            'languages' => [
-                0 => [
-                    'languageId' => 0,
-                    'locale' => 'en_US.UTF-8',
-                    'base' => '/en/'
-                ],
+        /** @var MockObject|Site $site */
+        $site = $this->getMockBuilder(Site::class)->setConstructorArgs([
+            'lotus-flower', 13, [
+                'base' => '/lotus-flower/',
+                'languages' => [
+                    0 => [
+                        'languageId' => 0,
+                        'locale' => 'en_US.UTF-8',
+                        'base' => '/en/'
+                    ],
+                ]
             ]
-        ]);
+        ])->setMethods(['getRouter'])->getMock();
         $language = $site->getDefaultLanguage();
 
         $request = new ServerRequest($incomingUrl, 'GET');
@@ -141,11 +148,11 @@ class PageResolverTest extends UnitTestCase
         $request = $request->withAttribute('routing', new RouteResult($request->getUri(), $site, $language, 'mr-magpie/bloom/'));
 
         $expectedRouteResult = new RouteResult($request->getUri(), $site, $language, '/', ['page' => $pageRecord]);
-        $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->setMethods(['matchRoute'])->getMock();
-        $pageRouterMock->expects($this->once())->method('matchRoute')->willReturn($expectedRouteResult);
+        $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->setMethods(['matchRequest'])->getMock();
+        $pageRouterMock->expects($this->once())->method('matchRequest')->willReturn($expectedRouteResult);
+        $site->expects($this->any())->method('getRouter')->willReturn($pageRouterMock);
 
-        $subject = $this->getAccessibleMock(PageResolver::class, ['getPageRouter'], [$this->controller], '', true);
-        $subject->expects($this->any())->method('getPageRouter')->willReturn($pageRouterMock);
+        $subject = new PageResolver($this->controller);
         $response = $subject->process($request, $this->responseOutputHandler);
         $this->assertEquals(307, $response->getStatusCode());
         $this->assertEquals('https://king.com/lotus-flower/en/mr-magpie/bloom', $response->getHeader('Location')[0]);
@@ -160,16 +167,19 @@ class PageResolverTest extends UnitTestCase
     {
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom';
         $pageRecord = ['uid' => 13, 'l10n_parent' => 0, 'slug' => '/mr-magpie/bloom/'];
-        $site = new Site('lotus-flower', 13, [
-            'base' => '/lotus-flower/',
-            'languages' => [
-                0 => [
-                    'languageId' => 0,
-                    'locale' => 'en_US.UTF-8',
-                    'base' => '/en/'
-                ],
+        /** @var MockObject|Site $site */
+        $site = $this->getMockBuilder(Site::class)->setConstructorArgs([
+            'lotus-flower', 13, [
+                'base' => '/lotus-flower/',
+                'languages' => [
+                    0 => [
+                        'languageId' => 0,
+                        'locale' => 'en_US.UTF-8',
+                        'base' => '/en/'
+                    ],
+                ]
             ]
-        ]);
+        ])->setMethods(['getRouter'])->getMock();
         $language = $site->getDefaultLanguage();
 
         $request = new ServerRequest($incomingUrl, 'GET');
@@ -178,11 +188,11 @@ class PageResolverTest extends UnitTestCase
         $request = $request->withAttribute('routing', new RouteResult($request->getUri(), $site, $language, 'mr-magpie/bloom/'));
 
         $expectedRouteResult = new RouteResult($request->getUri(), $site, $language, '', ['page' => $pageRecord]);
-        $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->setMethods(['matchRoute'])->getMock();
-        $pageRouterMock->expects($this->once())->method('matchRoute')->willReturn($expectedRouteResult);
+        $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->setMethods(['matchRequest'])->getMock();
+        $pageRouterMock->expects($this->once())->method('matchRequest')->willReturn($expectedRouteResult);
+        $site->expects($this->any())->method('getRouter')->willReturn($pageRouterMock);
 
-        $subject = $this->getAccessibleMock(PageResolver::class, ['getPageRouter'], [$this->controller], '', true);
-        $subject->expects($this->any())->method('getPageRouter')->willReturn($pageRouterMock);
+        $subject = new PageResolver($this->controller);
         $response = $subject->process($request, $this->responseOutputHandler);
         $this->assertEquals(307, $response->getStatusCode());
         $this->assertEquals('https://king.com/lotus-flower/en/mr-magpie/bloom/', $response->getHeader('Location')[0]);

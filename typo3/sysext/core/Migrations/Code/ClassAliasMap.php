@@ -8,7 +8,6 @@ return [
     'TYPO3\\CMS\\Core\\IO\\PharStreamWrapperException' => \TYPO3\PharStreamWrapper\Exception::class,
     'TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\ExtJsArrayTreeRenderer' => \TYPO3\CMS\Core\Tree\TableConfiguration\ArrayTreeRenderer::class,
     'TYPO3\\CMS\\Core\\History\\RecordHistory' => \TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore::class,
-    'TYPO3\\CMS\\Backend\\Routing\\PageUriBuilder' => \TYPO3\CMS\Core\Routing\PageUriBuilder::class,
     'TYPO3\\CMS\\Saltedpasswords\\Salt\\AbstractSalt' => \TYPO3\CMS\Core\Crypto\PasswordHashing\AbstractComposedSalt::class,
     'TYPO3\\CMS\\Saltedpasswords\\Salt\\AbstractComposedSalt' => \TYPO3\CMS\Core\Crypto\PasswordHashing\AbstractComposedSalt::class,
     'TYPO3\\CMS\\Saltedpasswords\\Salt\\Argon2iSalt' => \TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash::class,

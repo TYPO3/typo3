@@ -337,15 +337,13 @@ class Site implements SiteInterface
     }
 
     /**
-     * Returns applicable routers for this site
+     * Returns the applicable router for this site. This might be configurable in the future.
      *
-     * @return RouterInterface[]
+     * @return RouterInterface
      */
-    public function getRouters(): array
+    public function getRouter(): RouterInterface
     {
-        return [
-            new PageRouter()
-        ];
+        return new PageRouter($this, $this->configuration['routing'] ?? []);
     }
 
     /**

@@ -80,9 +80,9 @@ class SiteMatcher implements SingletonInterface
      * a sys_domain record, and match against them.
      *
      * @param ServerRequestInterface $request
-     * @return RouteResult
+     * @return RouteResultInterface
      */
-    public function matchRequest(ServerRequestInterface $request): RouteResult
+    public function matchRequest(ServerRequestInterface $request): RouteResultInterface
     {
         $site = null;
         $language = null;

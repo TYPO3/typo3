@@ -41,9 +41,10 @@ use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Routing\PageUriBuilder;
+use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\Entity\PseudoSite;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
@@ -2665,12 +2666,17 @@ class BackendUtility
             // Check if the page (= its rootline) has a site attached, otherwise just keep the URL as is
             $rootLine = $rootLine ?? BackendUtility::BEgetRootLine($pageUid);
             try {
+                /** @var Site $site */
                 $site = $siteFinder->getSiteByPageId((int)$pageUid, $rootLine);
                 // Create a multi-dimensional array out of the additional get vars
                 $additionalQueryParams = [];
                 parse_str($additionalGetVars, $additionalQueryParams);
-                $uriBuilder = GeneralUtility::makeInstance(PageUriBuilder::class);
-                $previewUrl = (string)$uriBuilder->buildUri($pageUid, $additionalQueryParams, $anchorSection, ['site' => $site, 'rootLine' => $rootLine], $uriBuilder::ABSOLUTE_URL);
+                $previewUrl = (string)$site->getRouter()->generateUri(
+                    $pageUid,
+                    $additionalQueryParams,
+                    $anchorSection,
+                    RouterInterface::ABSOLUTE_URL
+                );
             } catch (SiteNotFoundException $e) {
                 $previewUrl = self::createPreviewUrl($pageUid, $rootLine, $anchorSection, $additionalGetVars, $viewScript);
             }

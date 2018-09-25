@@ -66,9 +66,9 @@ class CanonicalGeneratorTest extends AbstractTestCase
             'uid: 2 with canonical_link' => [2, '<link rel="canonical" href="http://localhost/dummy-1-2"/>' . LF],
             'uid: 3 with canonical_link AND content_from_pid = 2' => [3, '<link rel="canonical" href="http://localhost/dummy-1-2"/>' . LF],
             'uid: 4 without canonical_link AND content_from_pid = 2' => [4, '<link rel="canonical" href="http://localhost/dummy-1-2"/>' . LF],
-            'uid: 5 without canonical_link AND without content_from_pid set' => [5, '<link rel="canonical" href="http://localhost/?id=5"/>' . LF],
-            'uid: 6 without canonical_link AND content_from_pid = 7 (but target page is deleted)' => [6, '<link rel="canonical" href="http://localhost/?id=6"/>' . LF],
-            'uid: 8 without canonical_link AND content_from_pid = 9 (but target page is hidden)' => [8, '<link rel="canonical" href="http://localhost/?id=8"/>' . LF],
+            'uid: 5 without canonical_link AND without content_from_pid set' => [5, '<link rel="canonical" href="http://localhost/dummy-1-2-5"/>' . LF],
+            'uid: 6 without canonical_link AND content_from_pid = 7 (but target page is deleted)' => [6, '<link rel="canonical" href="http://localhost/dummy-1-2-6"/>' . LF],
+            'uid: 8 without canonical_link AND content_from_pid = 9 (but target page is hidden)' => [8, '<link rel="canonical" href="http://localhost/dummy-1-2-8"/>' . LF],
         ];
     }
 

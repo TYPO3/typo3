@@ -29,8 +29,8 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Routing\PageUriBuilder;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -218,21 +218,16 @@ class ViewModuleController
                 $additionalGetVars .= '&MP=' . $mountPointInformation['MPvar'];
             }
             $additionalGetVars .= $this->getTypeParameterIfSet($finalPageIdToShow);
-            $additionalQueryParams = [];
-            parse_str($additionalGetVars, $additionalQueryParams);
-            $options = [
-                'site' => $site,
-                'rootLine' => $rootLine,
-                'language' => $languageId,
-            ];
-            $uriBuilder = GeneralUtility::makeInstance(PageUriBuilder::class);
-            return (string)$uriBuilder->buildUri(
-                $finalPageIdToShow,
-                $additionalQueryParams,
-                '',
-                $options,
-                $uriBuilder::ABSOLUTE_URL
-            );
+            /** @todo */
+            if ($site instanceof Site) {
+                $additionalQueryParams = [];
+                parse_str($additionalGetVars, $additionalQueryParams);
+                $additionalQueryParams['_language'] = $site->getLanguageById($languageId);
+                $uri = (string)$site->getRouter()->generateUri($finalPageIdToShow, $additionalQueryParams);
+            } else {
+                $uri = BackendUtility::getPreviewUrl($finalPageIdToShow, '', $rootLine, '', '', $additionalGetVars);
+            }
+            return $uri;
         }
         return '#';
     }
