@@ -36,7 +36,9 @@ Installations with extensions which did not migrate to doctrine yet and need :ph
 Migration
 =========
 
-Migrate affected extensions to doctrine or load extension `typo3db_legacy` as backwards compatible
-layer to :php:`$GLOBALS['TYPO3_DB']`.
+`Migrate affected extensions to doctrine<https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Database/Migration/Index.html>`_
+or load extension `typo3db_legacy` as backwards compatible layer to :php:`$GLOBALS['TYPO3_DB']` 
+(the extension is available via TER and may be installed from there or directly
+via the upgrade wizard `typo3DbLegacyExtension`).
 
 .. index:: Database, PHP-API, FullyScanned

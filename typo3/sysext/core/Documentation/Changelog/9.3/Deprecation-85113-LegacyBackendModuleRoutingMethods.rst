@@ -35,4 +35,13 @@ Migration
 
 Use :php:`UriBuilder->buildUriFromRoute($moduleIdentifier)` instead.
 
+For example ::
+
+   BackendUtility::getModuleUrl('record_edit', $uriParameters);
+
+becomes ::
+
+   $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+   $uriBuilder->buildUriFromRoute('record_edit', $uriParameters);
+
 .. index:: Backend, PHP-API, FullyScanned

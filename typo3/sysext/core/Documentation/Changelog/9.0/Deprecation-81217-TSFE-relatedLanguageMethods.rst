@@ -13,6 +13,7 @@ The main class for generating frontend output (TypoScriptFrontendController) has
 to use the same API within LanguageService.
 
 Therefore the following methods within TypoScriptFrontendController have been marked as deprecated:
+
 * :php:`readLLfile()`
 * :php:`getLLL()`
 * :php:`initLLvars()`
@@ -34,9 +35,16 @@ Migration
 =========
 
 Use :php:`TypoScriptFrontendController->sL()` for resolving language labels in the language
-of the Frontend rendering engine.
+of the Frontend rendering engine as a replacement for :php:`getLLL()`.
 
-For doing custom special logic, it is recommend to set up a custom instance of :php:`LanguageService`
+If you are not doing anything special on language initialization, the call to :php:`initLLvars()` 
+can likely be dropped. If you need to influence language initialization yourself, you can use the 
+hooks :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_preProcess']`
+ or :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_postProcess']`.
+
+For doing special logic, it is recommend to set up a custom instance of :php:`LanguageService`
 which holds all functionality directly.
+
+For example you may then use :php:`$languageService->includeLLFile(...);` instead of :php:`readLLfile()`.
 
 .. index:: Frontend, PHP-API, FullyScanned
