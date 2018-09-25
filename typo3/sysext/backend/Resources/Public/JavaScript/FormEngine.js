@@ -1148,7 +1148,7 @@ define(['jquery',
       var title = TYPO3.lang['label.confirm.close_without_save.title'] || 'Do you want to close without saving?';
       var content = TYPO3.lang['label.confirm.close_without_save.content'] || 'You currently have unsaved changes. Are you sure you want to discard these changes?';
       var $elem = $('<input />').attr('type', 'hidden').attr('name', '_saveandclosedok').attr('value', '1');
-      var $modal = Modal.confirm(title, content, Severity.warning, [
+      var buttons = [
         {
           text: TYPO3.lang['buttons.confirm.close_without_save.no'] || 'No, I will continue editing',
           btnClass: 'btn-default',
@@ -1158,14 +1158,18 @@ define(['jquery',
           text: TYPO3.lang['buttons.confirm.close_without_save.yes'] || 'Yes, discard my changes',
           btnClass: 'btn-default',
           name: 'yes'
-        },
-        {
+        }
+      ];
+      if ($('.has-error').length === 0) {
+        buttons.push({
           text: TYPO3.lang['buttons.confirm.save and close'] || 'Save and close',
           btnClass: 'btn-warning',
           name: 'save',
           active: true
-        }
-      ]);
+        });
+      }
+
+      var $modal = Modal.confirm(title, content, Severity.warning, buttons);
       $modal.on('button.clicked', function(e) {
         if (e.target.name === 'no') {
           Modal.dismiss();
