@@ -13,6 +13,7 @@
 
 import * as CodeMirror from 'cm/lib/codemirror';
 import * as $ from 'jquery';
+import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 
 /**
  * Module: TYPO3/CMS/T3editor/T3editor
@@ -80,6 +81,11 @@ class T3editor {
           // set options
           $.each(options, (key: string, value: any): void => {
             cm.setOption(key, value);
+          });
+
+          // Mark form as changed if code editor content has changed
+          cm.on('change', (): void => {
+            FormEngine.Validation.markFieldAsChanged($textarea);
           });
 
           cm.addPanel(

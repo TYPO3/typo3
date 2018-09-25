@@ -157,7 +157,9 @@ class T3editorElement extends AbstractFormElement
         $html[] =   '<div class="form-control-wrap">';
         $html[] =       '<div class="form-wizards-wrap">';
         $html[] =           '<div class="form-wizards-element">';
-        $html[] =               $editorHtml;
+        $html[] =               '<div class="t3editor-wrapper">';
+        $html[] =                   $editorHtml;
+        $html[] =               '</div>';
         $html[] =           '</div>';
         if (!empty($fieldControlHtml)) {
             $html[] =           '<div class="form-wizards-items-aside">';

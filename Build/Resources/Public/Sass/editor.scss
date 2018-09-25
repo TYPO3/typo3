@@ -5,28 +5,37 @@
 //
 $panel-bg-color: #f7f7f7;
 $panel-border-color: #ddd;
+$editor-border-color-changed: #6daadf;
 $fullscreen-top: 64px;
 $panel-font-size: 0.85em;
 $panel-padding-vertical: 3px;
 $panel-padding-horizontal: 6px;
 $color-matching-bracket: #6ca52b;
 
-.CodeMirror-fullscreen {
-    top: $fullscreen-top !important;
-}
+.t3editor-wrapper {
+    border: 1px solid transparent;
 
-.CodeMirror-panel {
-    background: $panel-bg-color;
-    padding: $panel-padding-vertical $panel-padding-horizontal;
-    font-size: $panel-font-size;
-
-    &-bottom {
-        border-top: 1px solid $panel-border-color;
+    .CodeMirror-fullscreen {
+        top: $fullscreen-top !important;
     }
-}
 
-div.CodeMirror {
-    span.CodeMirror-matchingbracket {
-        color: $color-matching-bracket;
+    .CodeMirror-panel {
+        background: $panel-bg-color;
+        padding: $panel-padding-vertical $panel-padding-horizontal;
+        font-size: $panel-font-size;
+
+        &-bottom {
+            border-top: 1px solid $panel-border-color;
+        }
+    }
+
+    div.CodeMirror {
+        span.CodeMirror-matchingbracket {
+            color: $color-matching-bracket;
+        }
+    }
+
+    .has-change & {
+        border-color: $editor-border-color-changed;
     }
 }

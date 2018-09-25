@@ -26,6 +26,7 @@ declare namespace TYPO3 {
     export namespace Backend {
       export class FormEngineValidation {
         public readonly errorClass: string;
+        public markFieldAsChanged($field: JQuery): void;
       }
 
       export class FormEngine {
