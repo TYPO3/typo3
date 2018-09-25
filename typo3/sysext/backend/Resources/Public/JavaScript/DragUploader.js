@@ -328,12 +328,12 @@ define(['jquery',
             )
           ),
           $('<td />').html(
-            askForOverride[i].uploaded.name + ' (' + (DragUploader.fileSizeAsString(askForOverride[i].uploaded.size)) + ')' +
-            '<br>' + moment(askForOverride[i].uploaded.lastModified, 'x').format('YYYY-MM-DD HH:mm')
+            askForOverride[i].original.name + ' (' + (DragUploader.fileSizeAsString(askForOverride[i].original.size)) + ')' +
+            '<br>' + moment(askForOverride[i].original.mtime, 'x').format('YYYY-MM-DD HH:mm')
           ),
           $('<td />').html(
-            askForOverride[i].uploaded.name + ' (' + (DragUploader.fileSizeAsString(askForOverride[i].original.size)) + ')' +
-            '<br>' + moment(askForOverride[i].original.mtime, 'X').format('YYYY-MM-DD HH:mm')
+            askForOverride[i].uploaded.name + ' (' + (DragUploader.fileSizeAsString(askForOverride[i].uploaded.size)) + ')' +
+            '<br>' + moment(askForOverride[i].uploaded.lastModified, 'X').format('YYYY-MM-DD HH:mm')
           ),
           $('<td />').append(
             $('<select />', {class: 'form-control t3js-actions', 'data-override': i}).append(
