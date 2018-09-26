@@ -38,7 +38,7 @@ class ConfigurationService implements SingletonInterface
 
     public function __construct()
     {
-        $this->mainConfiguration = $this->getBackendUser()->getTSConfig('admPanel')['properties'];
+        $this->mainConfiguration = $this->getBackendUser()->getTSConfig()['admPanel.'] ?? [];
     }
 
     /**

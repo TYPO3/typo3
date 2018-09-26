@@ -55,7 +55,7 @@ class AdminPanelInitiatorTest extends UnitTestCase
             ]
         ];
         $userAuthentication = $this->prophesize(FrontendBackendUserAuthentication::class);
-        $userAuthentication->getTSConfig(Argument::any())->willReturn($tsConfig);
+        $userAuthentication->getTSConfig()->willReturn($tsConfig);
         $userAuthentication->uc = $uc;
         $GLOBALS['BE_USER'] = $userAuthentication->reveal();
 
@@ -121,7 +121,7 @@ class AdminPanelInitiatorTest extends UnitTestCase
     protected function checkAdminPanelDoesNotCallInitialize($tsConfig, $uc): void
     {
         $userAuthentication = $this->prophesize(FrontendBackendUserAuthentication::class);
-        $userAuthentication->getTSConfig(Argument::any())->willReturn($tsConfig);
+        $userAuthentication->getTSConfig()->willReturn($tsConfig);
         $userAuthentication->uc = $uc;
         $GLOBALS['BE_USER'] = $userAuthentication->reveal();
 

@@ -211,8 +211,8 @@ class ConfigurationServiceTest extends UnitTestCase
      */
     private function setUpUserTsConfigForAdmPanel($userTsAdmPanelConfig): void
     {
-        $this->beUserProphecy->getTSConfig('admPanel')->willReturn(
-            ['properties' => $userTsAdmPanelConfig]
+        $this->beUserProphecy->getTSConfig()->willReturn(
+            ['admPanel.' => $userTsAdmPanelConfig]
         );
     }
 }
