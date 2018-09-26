@@ -183,4 +183,25 @@ class VimeoRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             $this->subject->render($fileResourceMock, '300m', '200', ['allow' => 'foo; bar', 'autoplay' => 1])
         );
     }
+
+    /**
+     * @test
+     */
+    public function renderOutputWithPrivateVimeoCodeIsCorrect()
+    {
+        /** @var VimeoHelper|\PHPUnit_Framework_MockObject_MockObject $vimeoHelper */
+        $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
+        $vimeoHelper->expects($this->any())->method('getOnlineMediaId')->will($this->returnValue('7331/private0123'));
+
+        $subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper'], []);
+        $subject->expects($this->any())->method('getOnlineMediaHelper')->will($this->returnValue($vimeoHelper));
+
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileResourceMock = $this->createMock(File::class);
+
+        $this->assertSame(
+            '<iframe src="https://player.vimeo.com/video/7331/private0123?title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            $subject->render($fileResourceMock, '300m', '200')
+        );
+    }
 }
