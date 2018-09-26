@@ -2272,21 +2272,22 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function reqCHash()
     {
-        if (!$this->cHash) {
-            if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError']) {
-                if ($this->tempContent) {
-                    $this->clearPageCacheContent();
-                }
-                $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                    $GLOBALS['TYPO3_REQUEST'],
-                    'Request parameters could not be validated (&cHash empty)',
-                    ['code' => PageAccessFailureReasons::CACHEHASH_EMPTY]
-                );
-                throw new ImmediateResponseException($response, 1533931354);
-            }
-            $this->disableCache();
-            $this->getTimeTracker()->setTSlogMessage('TSFE->reqCHash(): No &cHash parameter was sent for GET vars though required so caching is disabled', 2);
+        if ($this->cHash) {
+            return;
         }
+        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError']) {
+            if ($this->tempContent) {
+                $this->clearPageCacheContent();
+            }
+            $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                $GLOBALS['TYPO3_REQUEST'],
+                'Request parameters could not be validated (&cHash empty)',
+                ['code' => PageAccessFailureReasons::CACHEHASH_EMPTY]
+            );
+            throw new ImmediateResponseException($response, 1533931354);
+        }
+        $this->disableCache();
+        $this->getTimeTracker()->setTSlogMessage('TSFE->reqCHash(): No &cHash parameter was sent for GET vars though required so caching is disabled', 2);
     }
 
     /**

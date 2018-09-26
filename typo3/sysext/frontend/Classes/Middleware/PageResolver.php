@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Routing\PageRouter;
 use TYPO3\CMS\Core\Routing\RouteResult;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
@@ -73,13 +72,18 @@ class PageResolver implements MiddlewareInterface
 
         // Resolve the page ID based on TYPO3's native routing functionality
         if ($hasSiteConfiguration) {
-            /** @var PageRouter $router */
-            $router = $site->getRouter();
             /** @var RouteResult $previousResult */
-            $previousResult = $request->getAttribute('routing', new RouteResult($request->getUri(), $site, $language));
-            if (!empty($previousResult->getTail())) {
+            $previousResult = $request->getAttribute('routing', null);
+            if ($previousResult && $previousResult->getTail()) {
                 // Check for the route
-                $routeResult = $router->matchRequest($request, $previousResult);
+                $routeResult = $site->getRouter()->matchRequest($request, $previousResult);
+                if ($routeResult === null) {
+                    return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                        $request,
+                        'The requested page does not exist',
+                        ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
+                    );
+                }
                 $request = $request->withAttribute('routing', $routeResult);
                 if (is_array($routeResult['page'])) {
                     $page = $routeResult['page'];

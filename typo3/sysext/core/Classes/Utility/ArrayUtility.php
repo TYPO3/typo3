@@ -718,7 +718,7 @@ class ArrayUtility
 
     /**
      * Filters keys off from first array that also exist in second array. Comparison is done by keys.
-     * This method is a recursive version of php array_diff_assoc()
+     * This method is a recursive version of php array_diff_key()
      *
      * @param array $array1 Source array
      * @param array $array2 Reduce source array by this array

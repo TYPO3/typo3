@@ -51,7 +51,7 @@ class PageRouterTest extends UnitTestCase
         $subject->expects($this->once())->method('getPagesFromDatabaseForCandidates')->willReturn([$pageRecord]);
         $routeResult = $subject->matchRequest($request, $previousResult);
 
-        $expectedRouteResult = new RouteResult($request->getUri(), $site, $language, '', ['page' => $pageRecord, 'tail' => '']);
+        $expectedRouteResult = new RouteResult($request->getUri(), $site, $language, '', ['page' => $pageRecord]);
         $this->assertEquals($expectedRouteResult, $routeResult);
     }
 
@@ -82,7 +82,7 @@ class PageRouterTest extends UnitTestCase
         $subject->expects($this->once())->method('getPagesFromDatabaseForCandidates')->willReturn([$pageRecord]);
         $routeResult = $subject->matchRequest($request, $previousResult);
 
-        $expectedRouteResult = new RouteResult($request->getUri(), $site, $language, 'unknown-code/', ['page' => $pageRecord, 'tail' => 'unknown-code/']);
+        $expectedRouteResult = new RouteResult($request->getUri(), $site, $language, 'unknown-code/', ['page' => $pageRecord]);
         $this->assertEquals($expectedRouteResult, $routeResult);
     }
 }

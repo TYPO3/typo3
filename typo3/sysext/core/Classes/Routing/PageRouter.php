@@ -22,9 +22,8 @@ use Psr\Http\Message\UriInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
@@ -32,6 +31,7 @@ use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Page Router - responsible for a page based on a request, by looking up the slug of the page path.
@@ -91,40 +91,41 @@ class PageRouter implements RouterInterface
      */
     public function matchRequest(ServerRequestInterface $request, RouteResultInterface $previousResult = null): ?RouteResultInterface
     {
-        $routePathTail = $previousResult ? $previousResult->getTail() : '';
-        $language = $previousResult ? $previousResult->getLanguage() : null;
-        $slugCandidates = $this->getCandidateSlugsFromRoutePath($routePathTail);
+        $slugCandidates = $this->getCandidateSlugsFromRoutePath($previousResult->getTail());
         if (empty($slugCandidates)) {
             return null;
         }
+        $language = $previousResult->getLanguage();
         $pageCandidates = $this->getPagesFromDatabaseForCandidates($slugCandidates, $language->getLanguageId());
         // Stop if there are no candidates
         if (empty($pageCandidates)) {
             return null;
         }
 
-        $collection = new RouteCollection();
+        $fullCollection = new RouteCollection();
         foreach ($pageCandidates ?? [] as $page) {
-            $path = $page['slug'];
-            $route = new Route(
-                $path . '{tail}',
-                ['page' => $page, 'tail' => ''],
+            $pagePath = $page['slug'];
+            $defaultRouteForPage = new Route(
+                $pagePath . '{tail}',
+                ['tail' => ''],
                 ['tail' => '.*'],
-                ['utf8' => true]
+                ['utf8' => true, '_page' => $page]
             );
-            $collection->add('page_' . $page['uid'], $route);
+            $fullCollection->add('page_' . $page['uid'], $defaultRouteForPage);
         }
 
         $context = new RequestContext('/', $request->getMethod(), $request->getUri()->getHost());
-        $matcher = new UrlMatcher($collection, $context);
+        $matcher = new UrlMatcher($fullCollection, $context);
         try {
-            $result = $matcher->match('/' . ltrim($routePathTail, '/'));
+            $result = $matcher->match('/' . ltrim($previousResult->getTail(), '/'));
+            /** @var Route $matchedRoute */
+            $matchedRoute = $fullCollection->get($result['_route']);
             unset($result['_route']);
-            return new RouteResult($request->getUri(), $this->site, $language, $result['tail'], $result);
+            return $this->buildRouteResult($request, $language, $matchedRoute, $result);
         } catch (ResourceNotFoundException $e) {
-            // do nothing
+            // return nothing
         }
-        return new RouteResult($request->getUri(), $this->site, $language);
+        return null;
     }
 
     /**
@@ -138,15 +139,15 @@ class PageRouter implements RouterInterface
      */
     public function generateUri($route, array $parameters = [], string $fragment = '', string $type = ''): UriInterface
     {
-        // Resolve site
-        $siteLanguage = null;
+        // Resolve language
+        $language = null;
         $languageOption = $parameters['_language'] ?? null;
         if ($languageOption instanceof SiteLanguage) {
-            $siteLanguage = $languageOption;
+            $language = $languageOption;
             unset($parameters['_language']);
         }
-        if ($siteLanguage === null) {
-            $siteLanguage = $this->site->getDefaultLanguage();
+        if ($language === null) {
+            $language = $this->site->getDefaultLanguage();
         }
 
         $pageId = 0;
@@ -155,13 +156,15 @@ class PageRouter implements RouterInterface
         } elseif (is_scalar($route)) {
             $pageId = (int)$route;
         }
-        $pageRecord = BackendUtility::getRecord('pages', $pageId);
-        if ($siteLanguage->getLanguageId() > 0) {
-            $pageLocalizations = BackendUtility::getRecordLocalization('pages', $pageId, $siteLanguage->getLanguageId());
-            $pageRecord = $pageLocalizations[0] ?? $pageRecord;
-        }
-        $prefix = (string)$siteLanguage->getBase();
-        $prefix = rtrim($prefix, '/') . '/' . ltrim($pageRecord['slug'] ?? '', '/');
+
+        $context = clone GeneralUtility::makeInstance(Context::class);
+        $context->setAspect('language', new LanguageAspect($language->getLanguageId()));
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
+        $page = $pageRepository->getPage($pageId, true);
+        $pagePath = ltrim($page['slug'] ?? '', '/');
+
+        $prefix = (string)$language->getBase();
+        $prefix = rtrim($prefix, '/') . '/' . $pagePath;
 
         // Add the query parameters as string
         $queryString = http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);
@@ -177,7 +180,7 @@ class PageRouter implements RouterInterface
         if ($fragment) {
             $uri = $uri->withFragment($fragment);
         }
-        if ($type === self::ABSOLUTE_PATH) {
+        if ($type === RouterInterface::ABSOLUTE_PATH) {
             $uri = $uri->withScheme('')->withHost('')->withPort(null);
         }
         return $uri;
@@ -256,5 +259,23 @@ class PageRouter implements RouterInterface
             array_pop($pathParts);
         }
         return $candidatePathParts;
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @param SiteLanguage|null $language
+     * @param Route|null $route
+     * @param array $results
+     * @return RouteResult
+     */
+    protected function buildRouteResult(ServerRequestInterface $request, SiteLanguage $language, Route $route, array $results = []): RouteResult
+    {
+        $data = [];
+        // page record the route has been applied for
+        if ($route->hasOption('_page')) {
+            $data['page'] = $route->getOption('_page');
+        }
+        $tail = $results['tail'] ?? '';
+        return new RouteResult($request->getUri(), $this->site, $language, $tail, $data);
     }
 }
