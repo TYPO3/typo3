@@ -18,3 +18,16 @@ editor:
     entities_latin: false
     entities: false
     stylesSet: []
+
+    # Configure global wordcount plugin defaults
+    # Overwrite them in your RTE presets as it is necessary
+    wordcount:
+      showParagraphs: true
+      showWordCount: true
+      showCharCount: true
+      countSpacesAsChars: true
+      countHTML: false
+      countLineBreaks: false
+      maxWordCount: -1
+      maxCharCount: -1
+      pasteWarningDuration: 5000

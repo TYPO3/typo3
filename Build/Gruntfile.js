@@ -411,6 +411,16 @@ module.exports = function (grunt) {
           'lang/': 'ckeditor/lang/'
         }
       },
+      ckeditor_externalplugins: {
+        options: {
+          destPrefix: "<%= paths.ckeditor %>Public/JavaScript/Contrib/plugins"
+        },
+        files: {
+          'wordcount/plugin.js': 'ckeditor-wordcount-plugin/wordcount/plugin.js',
+          'wordcount/lang/': 'ckeditor-wordcount-plugin/wordcount/lang/',
+          'wordcount/css/': 'ckeditor-wordcount-plugin/wordcount/css/',
+        }
+      },
       all: {
         options: {
           destPrefix: "<%= paths.core %>Public/JavaScript/Contrib"

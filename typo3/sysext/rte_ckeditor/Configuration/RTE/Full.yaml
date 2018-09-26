@@ -54,6 +54,7 @@ editor:
       - bidi
       - selectall
       - autolink
+      - wordcount
 
     removePlugins:
       - image
