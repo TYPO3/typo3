@@ -55,7 +55,7 @@ class AuthenticationService
             try {
                 $hashInstance = $hashFactory->get($installToolPassword, 'BE');
                 $validPassword = $hashInstance->checkPassword($password, $installToolPassword);
-            } catch (InvalidPasswordHashException $e) {
+            } catch (InvalidPasswordHashException $invalidPasswordHashException) {
                 // Given hash in global configuration is not a valid salted password
                 if (md5($password) === $installToolPassword) {
                     // Update configured install tool hash if it is still "MD5" and password matches
@@ -68,6 +68,12 @@ class AuthenticationService
                         $hashInstance->getHashedPassword($password)
                     );
                     $validPassword = true;
+                } else {
+                    // Still no valid hash instance could be found. Probably the stored hash used a mechanism
+                    // that is not available on current system. We throw the previous exception again to be
+                    // handled on a higher level. The install tool will render an according exception message
+                    // that links to the wiki.
+                    throw $invalidPasswordHashException;
                 }
             }
         }

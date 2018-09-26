@@ -121,9 +121,10 @@ class AuthenticationService extends AbstractAuthenticationService
         $saltFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
 
         // Get a hashed password instance for the hash stored in db of this user
+        $invalidPasswordHashException = null;
         try {
             $hashInstance = $saltFactory->get($passwordHashInDatabase, TYPO3_MODE);
-        } catch (InvalidPasswordHashException $e) {
+        } catch (InvalidPasswordHashException $invalidPasswordHashException) {
             // This can be refactored if the 'else' part below is gone in v10: Log and return 100 here
             $hashInstance = null;
         }
@@ -151,30 +152,36 @@ class AuthenticationService extends AbstractAuthenticationService
                     $isDomainLockMet = true;
                 }
             }
-        } else {
+        } elseif (substr($user['password'], 0, 2) === 'M$') {
             // @todo @deprecated: The entire else should be removed in v10.0 as dedicated breaking patch
-            if (substr($user['password'], 0, 2) === 'M$') {
-                // If the stored db password starts with M$, it may be a md5 password that has been
-                // upgraded to a salted md5 using the old salted passwords scheduler task.
-                // See if a salt instance is returned if we cut off the M, so Md5PasswordHash kicks in
-                try {
-                    $hashInstance = $saltFactory->get(substr($passwordHashInDatabase, 1), TYPO3_MODE);
-                    $isSaltedPassword = true;
-                    $isValidPassword = $hashInstance->checkPassword(md5($submittedPassword), substr($passwordHashInDatabase, 1));
-                    if ($isValidPassword) {
-                        // Upgrade this password to a sane mechanism now
-                        $isReHashNeeded = true;
-                        if (empty($configuredDomainLock)) {
-                            // No domain restriction set for user in db. This is ok.
-                            $isDomainLockMet = true;
-                        } elseif (!strcasecmp($configuredDomainLock, $queriedDomain)) {
-                            // Domain restriction set and it matches given host. Ok.
-                            $isDomainLockMet = true;
-                        }
+            // If the stored db password starts with M$, it may be a md5 password that has been
+            // upgraded to a salted md5 using the old salted passwords scheduler task.
+            // See if a salt instance is returned if we cut off the M, so Md5PasswordHash kicks in
+            try {
+                $hashInstance = $saltFactory->get(substr($passwordHashInDatabase, 1), TYPO3_MODE);
+                $isSaltedPassword = true;
+                $isValidPassword = $hashInstance->checkPassword(md5($submittedPassword), substr($passwordHashInDatabase, 1));
+                if ($isValidPassword) {
+                    // Upgrade this password to a sane mechanism now
+                    $isReHashNeeded = true;
+                    if (empty($configuredDomainLock)) {
+                        // No domain restriction set for user in db. This is ok.
+                        $isDomainLockMet = true;
+                    } elseif (!strcasecmp($configuredDomainLock, $queriedDomain)) {
+                        // Domain restriction set and it matches given host. Ok.
+                        $isDomainLockMet = true;
                     }
-                } catch (InvalidPasswordHashException $e) {
-                    // Still no instance found: $isSaltedPasswords is NOT set to true, logging and return done below
                 }
+            } catch (InvalidPasswordHashException $e) {
+                // Still no instance found: $isSaltedPasswords is NOT set to true, logging and return done below
+            }
+        } else {
+            // @todo: Simplify if elseif part is gone
+            // Still no valid hash instance could be found. Probably the stored hash used a mechanism
+            // that is not available on current system. We throw the previous exception again to be
+            // handled on a higher level.
+            if ($invalidPasswordHashException !== null) {
+                throw $invalidPasswordHashException;
             }
         }
 
