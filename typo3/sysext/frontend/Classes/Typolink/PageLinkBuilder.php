@@ -332,7 +332,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         $currentSiteLanguage = $this->getCurrentSiteLanguage();
         // Happens when currently on a pseudo-site configuration
         // We assume to use the default language then
-        if (!($currentSiteLanguage instanceof SiteLanguage)) {
+        if ($currentSite && !($currentSiteLanguage instanceof SiteLanguage)) {
             $currentSiteLanguage = $currentSite->getDefaultLanguage();
         }
 
@@ -352,9 +352,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         // Use the config option to override this.
         $useAbsoluteUrl = $conf['forceAbsoluteUrl'] ?? false;
         // Check if the current page equal to the site of the target page, now only set the absolute URL
-        if ($currentSite->getRootPageId() !== $siteOfTargetPage->getRootPageId()) {
-            $useAbsoluteUrl = true;
-        } elseif ($siteLanguageOfTargetPage->getBase()->getHost() !== $currentSiteLanguage->getBase()->getHost()) {
+        // Always generate absolute URLs if no current site is set
+        if (
+            !$currentSite
+            || $currentSite->getRootPageId() !== $siteOfTargetPage->getRootPageId()
+            || $siteLanguageOfTargetPage->getBase()->getHost() !== $currentSiteLanguage->getBase()->getHost()) {
             $useAbsoluteUrl = true;
         }
 
