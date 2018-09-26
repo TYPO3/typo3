@@ -19,8 +19,9 @@ namespace TYPO3\CMS\Core\Routing;
 use Doctrine\DBAL\Connection;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -28,9 +29,16 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Routing\Aspect\AspectFactory;
+use TYPO3\CMS\Core\Routing\Aspect\MappableProcessor;
+use TYPO3\CMS\Core\Routing\Aspect\StaticMappableAspectInterface;
+use TYPO3\CMS\Core\Routing\Enhancer\EnhancerFactory;
+use TYPO3\CMS\Core\Routing\Enhancer\EnhancerInterface;
+use TYPO3\CMS\Core\Routing\Enhancer\ResultingInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -55,7 +63,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  * Please note: PageRouter does not restrict the HTTP method or is bound to any domain constraints,
  * as the SiteMatcher has done that already.
  *
- * The concept of the PageRouter is to *resolve*, and to build URIs. On top, it is a facade to hide the
+ * The concept of the PageRouter is to *resolve*, and to *generate* URIs. On top, it is a facade to hide the
  * dependency to symfony and to not expose its logic.
  */
 class PageRouter implements RouterInterface
@@ -66,13 +74,30 @@ class PageRouter implements RouterInterface
     protected $site;
 
     /**
+     * @var EnhancerFactory
+     */
+    protected $enhancerFactory;
+
+    /**
+     * @var AspectFactory
+     */
+    protected $aspectFactory;
+
+    /**
+     * @var CacheHashCalculator
+     */
+    protected $cacheHashCalculator;
+
+    /**
      * A page router is always bound to a specific site.
-     *
      * @param Site $site
      */
     public function __construct(Site $site)
     {
         $this->site = $site;
+        $this->enhancerFactory = GeneralUtility::makeInstance(EnhancerFactory::class);
+        $this->aspectFactory = GeneralUtility::makeInstance(AspectFactory::class);
+        $this->cacheHashCalculator = GeneralUtility::makeInstance(CacheHashCalculator::class);
     }
 
     /**
@@ -84,10 +109,7 @@ class PageRouter implements RouterInterface
      */
     public function matchRequest(ServerRequestInterface $request, RouteResultInterface $previousResult = null): ?RouteResultInterface
     {
-        $slugCandidates = $this->getCandidateSlugsFromRoutePath($previousResult->getTail());
-        if (empty($slugCandidates)) {
-            return null;
-        }
+        $slugCandidates = $this->getCandidateSlugsFromRoutePath($previousResult->getTail() ?: '/');
         $language = $previousResult->getLanguage();
         $pageCandidates = $this->getPagesFromDatabaseForCandidates($slugCandidates, $language->getLanguageId());
         // Stop if there are no candidates
@@ -97,24 +119,30 @@ class PageRouter implements RouterInterface
 
         $fullCollection = new RouteCollection();
         foreach ($pageCandidates ?? [] as $page) {
+            $pageIdForDefaultLanguage = (int)($page['l10n_parent'] ?: $page['uid']);
             $pagePath = $page['slug'];
+            $pageCollection = new RouteCollection();
             $defaultRouteForPage = new Route(
-                $pagePath . '{tail}',
-                ['tail' => ''],
-                ['tail' => '.*'],
+                $pagePath,
+                [],
+                [],
                 ['utf8' => true, '_page' => $page]
             );
-            $fullCollection->add('page_' . $page['uid'], $defaultRouteForPage);
+            $pageCollection->add('default', $defaultRouteForPage);
+            foreach ($this->getEnhancersForPage($pageIdForDefaultLanguage, $language) as $enhancer) {
+                $enhancer->enhanceForMatching($pageCollection);
+            }
+
+            $pageCollection->addNamePrefix('page_' . $page['uid'] . '_');
+            $fullCollection->addCollection($pageCollection);
         }
 
-        $context = new RequestContext('/', $request->getMethod(), $request->getUri()->getHost());
-        $matcher = new UrlMatcher($fullCollection, $context);
+        $matcher = new PageUriMatcher($fullCollection);
         try {
-            $result = $matcher->match('/' . ltrim($previousResult->getTail(), '/'));
+            $result = $matcher->match('/' . trim($previousResult->getTail(), '/'));
             /** @var Route $matchedRoute */
             $matchedRoute = $fullCollection->get($result['_route']);
-            unset($result['_route']);
-            return $this->buildRouteResult($request, $language, $matchedRoute, $result);
+            return $this->buildPageArguments($matchedRoute, $result, $request->getQueryParams());
         } catch (ResourceNotFoundException $e) {
             // return nothing
         }
@@ -157,26 +185,84 @@ class PageRouter implements RouterInterface
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
         $page = $pageRepository->getPage($pageId, true);
         $pagePath = ltrim($page['slug'] ?? '', '/');
+        $originalParameters = $parameters;
+        $collection = new RouteCollection();
+        $defaultRouteForPage = new Route(
+            '/' . $pagePath,
+            [],
+            [],
+            ['utf8' => true, '_page' => $page]
+        );
+        $collection->add('default', $defaultRouteForPage);
 
-        $prefix = (string)$language->getBase();
-        $prefix = rtrim($prefix, '/') . '/' . $pagePath;
+        // cHash is never considered because cHash is built by this very method.
+        unset($originalParameters['cHash']);
+        foreach ($this->getEnhancersForPage($pageId, $language) as $enhancer) {
+            $enhancer->enhanceForGeneration($collection, $originalParameters);
+        }
 
-        // Add the query parameters as string
-        $queryString = http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);
-        $prefix = rtrim($prefix, '?');
-        if (!empty($queryString)) {
-            if (strpos($prefix, '?') === false) {
-                $prefix .= '?';
-            } else {
-                $prefix .= '&';
+        $scheme = $language->getBase()->getScheme();
+        $mappableProcessor = new MappableProcessor();
+        $context = new RequestContext(
+            // page segment (slug & enhanced part) is supposed to start with '/'
+            rtrim($language->getBase()->getPath(), '/'),
+            'GET',
+            $language->getBase()->getHost(),
+            $scheme ?: 'http',
+            $scheme === 'http' ? $language->getBase()->getPort() ?? 80 : 80,
+            $scheme === 'https' ? $language->getBase()->getPort() ?? 443 : 443
+        );
+        $generator = new UrlGenerator($collection, $context);
+        $allRoutes = $collection->all();
+        $allRoutes = array_reverse($allRoutes, true);
+        $matchedRoute = null;
+        $pageRouteResult = null;
+        $uri = null;
+        // map our reference type to symfony's custom paths
+        $referenceType = $type === static::ABSOLUTE_PATH ? UrlGenerator::ABSOLUTE_PATH : UrlGenerator::ABSOLUTE_URL;
+        /**
+         * @var string $routeName
+         * @var Route $route
+         */
+        foreach ($allRoutes as $routeName => $route) {
+            try {
+                $parameters = $originalParameters;
+                if ($route->hasOption('deflatedParameters')) {
+                    $parameters = $route->getOption('deflatedParameters');
+                }
+                $mappableProcessor->generate($route, $parameters);
+                // ABSOLUTE_URL is used as default fallback
+                $urlAsString = $generator->generate($routeName, $parameters, $referenceType);
+                $uri = new Uri($urlAsString);
+                /** @var Route $matchedRoute */
+                $matchedRoute = $collection->get($routeName);
+                parse_str($uri->getQuery() ?? '', $remainingQueryParameters);
+                $pageRouteResult = $this->buildPageArguments($route, $parameters, $remainingQueryParameters);
+                break;
+            } catch (MissingMandatoryParametersException $e) {
+                // no match
             }
         }
-        $uri = new Uri($prefix . $queryString);
+
+        if ($pageRouteResult && $pageRouteResult->areDirty()) {
+            // for generating URLs this should(!) never happen
+            // if it does happen, generator logic has flaws
+            throw new \OverflowException('Route arguments are dirty', 1537613247);
+        }
+
+        if ($matchedRoute && $pageRouteResult && $uri instanceof UriInterface
+            && !empty($pageRouteResult->getDynamicArguments())
+        ) {
+            $cacheHash = $this->generateCacheHash($pageId, $pageRouteResult);
+
+            if (!empty($cacheHash)) {
+                $queryArguments = $pageRouteResult->getQueryArguments();
+                $queryArguments['cHash'] = $cacheHash;
+                $uri = $uri->withQuery(http_build_query($queryArguments, '', '&', PHP_QUERY_RFC3986));
+            }
+        }
         if ($fragment) {
             $uri = $uri->withFragment($fragment);
-        }
-        if ($type === RouterInterface::ABSOLUTE_PATH) {
-            $uri = $uri->withScheme('')->withHost('')->withPort(null);
         }
         return $uri;
     }
@@ -230,6 +316,35 @@ class PageRouter implements RouterInterface
     }
 
     /**
+     * Fetch possible enhancers + aspects based on the current page configuration and the site configuration put
+     * into "routeEnhancers"
+     *
+     * @param int $pageId
+     * @param SiteLanguage $language
+     * @return \Generator|EnhancerInterface[]
+     */
+    protected function getEnhancersForPage(int $pageId, SiteLanguage $language): \Generator
+    {
+        foreach ($this->site->getConfiguration()['routeEnhancers'] ?? [] as $enhancerConfiguration) {
+            // Check if there is a restriction to page Ids.
+            if (is_array($enhancerConfiguration['limitToPages'] ?? null) && !in_array($pageId, $enhancerConfiguration['limitToPages'])) {
+                continue;
+            }
+            $enhancerType = $enhancerConfiguration['type'] ?? '';
+            /** @var EnhancerInterface $enhancer */
+            $enhancer = $this->enhancerFactory->create($enhancerType, $enhancerConfiguration);
+            if (!empty($enhancerConfiguration['aspects'] ?? null)) {
+                $aspects = $this->aspectFactory->createAspects(
+                    $enhancerConfiguration['aspects'],
+                    $language
+                );
+                $enhancer->setAspects($aspects);
+            }
+            yield $enhancer;
+        }
+    }
+
+    /**
      * Returns possible URL parts for a string like /home/about-us/offices/
      * to return.
      *
@@ -247,6 +362,9 @@ class PageRouter implements RouterInterface
     {
         $candidatePathParts = [];
         $pathParts = GeneralUtility::trimExplode('/', $routePath, true);
+        if (empty($pathParts)) {
+            return ['/'];
+        }
         while (!empty($pathParts)) {
             $prefix = '/' . implode('/', $pathParts);
             $candidatePathParts[] = $prefix . '/';
@@ -257,20 +375,106 @@ class PageRouter implements RouterInterface
     }
 
     /**
-     * @param ServerRequestInterface $request
-     * @param SiteLanguage|null $language
-     * @param Route|null $route
-     * @param array $results
-     * @return RouteResult
+     * @param int $pageId
+     * @param PageArguments $arguments
+     * @return string
      */
-    protected function buildRouteResult(ServerRequestInterface $request, SiteLanguage $language, Route $route, array $results = []): RouteResult
+    protected function generateCacheHash(int $pageId, PageArguments $arguments): string
     {
-        $data = [];
-        // page record the route has been applied for
-        if ($route->hasOption('_page')) {
-            $data['page'] = $route->getOption('_page');
+        return $this->cacheHashCalculator->calculateCacheHash(
+            $this->getCacheHashParameters($pageId, $arguments)
+        );
+    }
+
+    /**
+     * @param int $pageId
+     * @param PageArguments $arguments
+     * @return array
+     */
+    protected function getCacheHashParameters(int $pageId, PageArguments $arguments): array
+    {
+        $hashParameters = $arguments->getDynamicArguments();
+        $hashParameters['id'] = $pageId;
+        $uri = http_build_query($hashParameters, '', '&', PHP_QUERY_RFC3986);
+        return $this->cacheHashCalculator->getRelevantParameters($uri);
+    }
+
+    /**
+     * Builds route arguments. The important part here is to distinguish between
+     * static and dynamic arguments. Per default all arguments are dynamic until
+     * aspects can be used to really consider them as static (= 1:1 mapping between
+     * route value and resulting arguments).
+     *
+     * Besides that, internal arguments (_route, _controller, _custom, ..) have
+     * to be separated since those values are not meant to be used for later
+     * processing. Not separating those values might result in invalid cHash.
+     *
+     * This method is used during resolving and generation of URLs.
+     *
+     * @param Route $route
+     * @param array $results
+     * @param array $remainingQueryParameters
+     * @return PageArguments
+     */
+    protected function buildPageArguments(Route $route, array $results, array $remainingQueryParameters = []): PageArguments
+    {
+        // only use parameters that actually have been processed
+        // (thus stripping internals like _route, _controller, ...)
+        $routeArguments = $this->filterProcessedParameters($route, $results);
+        // assert amount of "static" mappers is not too "dynamic"
+        $this->assertMaximumStaticMappableAmount($route, array_keys($routeArguments));
+        // delegate result handling to enhancer
+        $enhancer = $route->getEnhancer();
+        if ($enhancer instanceof ResultingInterface) {
+            // forward complete(!) results, not just filtered parameters
+            return $enhancer->buildResult($route, $results, $remainingQueryParameters);
         }
-        $tail = $results['tail'] ?? '';
-        return new RouteResult($request->getUri(), $this->site, $language, $tail, $data);
+        $page = $route->getOption('_page');
+        $pageId = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $page['uid']);
+        return new PageArguments($pageId, $routeArguments, [], $remainingQueryParameters);
+    }
+
+    /**
+     * Asserts that possible amount of items in all static and countable mappers
+     * (such as StaticRangeMapper) is limited to 10000 in order to avoid
+     * brute-force scenarios and the risk of cache-flooding.
+     *
+     * @param Route $route
+     * @param array $variableNames
+     * @throws \OverflowException
+     */
+    protected function assertMaximumStaticMappableAmount(Route $route, array $variableNames = [])
+    {
+        $mappers = $route->filterAspects(
+            [StaticMappableAspectInterface::class, \Countable::class],
+            $variableNames
+        );
+        if (empty($mappers)) {
+            return;
+        }
+
+        $multipliers = array_map('count', $mappers);
+        $product = array_product($multipliers);
+        if ($product > 10000) {
+            throw new \OverflowException(
+                'Possible range of all mappers is larger than 10000 items',
+                1537696772
+            );
+        }
+    }
+
+    /**
+     * Determine parameters that have been processed.
+     *
+     * @param Route $route
+     * @param array $results
+     * @return array
+     */
+    protected function filterProcessedParameters(Route $route, $results): array
+    {
+        return array_intersect_key(
+            $results,
+            array_flip($route->compile()->getPathVariables())
+        );
     }
 }

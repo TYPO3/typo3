@@ -114,6 +114,20 @@ return [
             \TYPO3\CMS\Core\Crypto\PasswordHashing\BlowfishPasswordHash::class,
             \TYPO3\CMS\Core\Crypto\PasswordHashing\Md5PasswordHash::class,
         ],
+        'routing' => [
+            'enhancers' => [
+                'Simple' => \TYPO3\CMS\Core\Routing\Enhancer\SimpleEnhancer::class,
+                'Plugin' => \TYPO3\CMS\Core\Routing\Enhancer\PluginEnhancer::class,
+                'Extbase' => \TYPO3\CMS\Extbase\Routing\ExtbasePluginEnhancer::class,
+            ],
+            'aspects' => [
+                'LocaleModifier' => \TYPO3\CMS\Core\Routing\Aspect\LocaleModifier::class,
+                'PersistedAliasMapper' => \TYPO3\CMS\Core\Routing\Aspect\PersistedAliasMapper::class,
+                'PersistedPatternMapper' => \TYPO3\CMS\Core\Routing\Aspect\PersistedPatternMapper::class,
+                'StaticRangeMapper' => \TYPO3\CMS\Core\Routing\Aspect\StaticRangeMapper::class,
+                'StaticValueMapper' => \TYPO3\CMS\Core\Routing\Aspect\StaticValueMapper::class,
+            ],
+        ],
         'caching' => [
             'cacheConfigurations' => [
                 // The cache_core cache is is for core php code only and must

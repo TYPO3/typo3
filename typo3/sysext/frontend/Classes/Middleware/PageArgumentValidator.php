@@ -20,6 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
@@ -64,11 +65,19 @@ class PageArgumentValidator implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $pageNotFoundOnValidationError = (bool)($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError'] ?? true);
+        $pageArguments = $request->getAttribute('routing', null);
+        if ($pageArguments instanceof PageArguments) {
+            $this->controller->setPageArguments($pageArguments);
+        }
         if ($this->controller->no_cache && !$pageNotFoundOnValidationError) {
             // No need to test anything if caching was already disabled.
         } else {
-            // Evaluate the cache hash parameter
-            $queryParams = $request->getQueryParams();
+            // Evaluate the cache hash parameter or dynamic arguments when coming from a Site-based routing
+            if ($pageArguments instanceof PageArguments) {
+                $queryParams = $pageArguments->getDynamicArguments();
+            } else {
+                $queryParams = $request->getQueryParams();
+            }
             if (!empty($queryParams) && !$this->evaluateCacheHashParameter($queryParams, $pageNotFoundOnValidationError)) {
                 return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                     $request,

@@ -20,6 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as PsrRequestHandlerInterface;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -71,13 +72,24 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
         // Merge Query Parameters with config.defaultGetVars
         // This is done in getConfigArray as well, but does not override the current middleware request object
         // Since we want to stay in sync with this, the option needs to be set as well.
+        $pageArguments = $request->getAttribute('routing');
         if (!empty($this->controller->config['config']['defaultGetVars.'] ?? null)) {
             $modifiedGetVars = GeneralUtility::removeDotsFromTS($this->controller->config['config']['defaultGetVars.']);
+            if ($pageArguments instanceof PageArguments) {
+                $pageArguments = $pageArguments->withQueryArguments($modifiedGetVars);
+                $request = $request->withAttribute('routing', $pageArguments);
+            }
             if (!empty($request->getQueryParams())) {
                 ArrayUtility::mergeRecursiveWithOverrule($modifiedGetVars, $request->getQueryParams());
             }
             $request = $request->withQueryParams($modifiedGetVars);
             $GLOBALS['TYPO3_REQUEST'] = $request;
+        }
+        // Populate internal route query arguments to super global $_GET
+        if ($pageArguments instanceof PageArguments) {
+            $_GET = $pageArguments->getArguments();
+            $GLOBALS['HTTP_GET_VARS'] = $pageArguments->getArguments();
+            $this->controller->setPageArguments($pageArguments);
         }
 
         // Setting language and locale

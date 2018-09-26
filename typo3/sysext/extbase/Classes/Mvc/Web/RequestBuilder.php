@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -146,7 +148,6 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
             $this->defaultFormat = $configuration['format'];
         }
     }
-
     /**
      * Builds a web request object from the raw HTTP information and the configuration
      *
@@ -156,11 +157,27 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
     {
         $this->loadDefaultValues();
         $pluginNamespace = $this->extensionService->getPluginNamespace($this->extensionName, $this->pluginName);
-        $parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged($pluginNamespace);
+        /** @var \TYPO3\CMS\Core\Http\ServerRequest $typo3Request */
+        $typo3Request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        if ($typo3Request instanceof ServerRequestInterface) {
+            $queryArguments = $typo3Request->getAttribute('routing');
+            if ($queryArguments instanceof PageArguments) {
+                $getParameters = $queryArguments->get($pluginNamespace) ?? [];
+            } else {
+                $getParameters = $typo3Request->getQueryParams()[$pluginNamespace] ?? [];
+            }
+            $bodyParameters = $typo3Request->getParsedBody()[$pluginNamespace] ?? [];
+            $parameters = $getParameters;
+            ArrayUtility::mergeRecursiveWithOverrule($parameters, $bodyParameters);
+        } else {
+            $parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged($pluginNamespace);
+        }
+
         $files = $this->untangleFilesArray($_FILES);
-        if (isset($files[$pluginNamespace]) && is_array($files[$pluginNamespace])) {
+        if (is_array($files[$pluginNamespace] ?? null)) {
             $parameters = array_replace_recursive($parameters, $files[$pluginNamespace]);
         }
+
         $controllerName = $this->resolveControllerName($parameters);
         $actionName = $this->resolveActionName($controllerName, $parameters);
         /** @var \TYPO3\CMS\Extbase\Mvc\Web\Request $request */
@@ -172,6 +189,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
         $request->setControllerExtensionName($this->extensionName);
         $request->setControllerName($controllerName);
         $request->setControllerActionName($actionName);
+        // @todo Use Environment
         $request->setRequestUri(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
         $request->setBaseUri(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
         $request->setMethod($this->environmentService->getServerRequestMethod());

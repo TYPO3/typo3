@@ -23,13 +23,17 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
-use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Routing\RouteResult;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
@@ -74,50 +78,48 @@ class PageResolver implements MiddlewareInterface
         if ($hasSiteConfiguration) {
             /** @var RouteResult $previousResult */
             $previousResult = $request->getAttribute('routing', null);
-            if ($previousResult && $previousResult->getTail()) {
+            if (!$previousResult) {
+                return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                    $request,
+                    'The requested page does not exist',
+                    ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
+                );
+            }
+
+            $requestId = (string)($request->getQueryParams()['id'] ?? '');
+            if (!empty($requestId) && !empty($page = $this->resolvePageId($requestId))) {
+                // Legacy URIs (?id=12345) takes precedence, not matter if a route is given
+                $routeResult = new PageArguments(
+                    (int)($page['l10n_parent'] ?: $page['uid']),
+                    [],
+                    [],
+                    $request->getQueryParams()
+                );
+            } else {
                 // Check for the route
                 $routeResult = $site->getRouter()->matchRequest($request, $previousResult);
-                if ($routeResult === null) {
-                    return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                        $request,
-                        'The requested page does not exist',
-                        ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
-                    );
-                }
-                $request = $request->withAttribute('routing', $routeResult);
-                if (is_array($routeResult['page'])) {
-                    $page = $routeResult['page'];
-                    $this->controller->id = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $page['uid']);
-                    $tail = $routeResult->getTail();
-                    $requestedUri = $request->getUri();
-                    // the request was called with "/my-page" but it's actually called "/my-page/", let's do a redirect
-                    if ($tail === '' && substr($requestedUri->getPath(), -1) !== substr($page['slug'], -1)) {
-                        $uri = $requestedUri->withPath($requestedUri->getPath() . '/');
-                        return new RedirectResponse($uri, 307);
-                    }
-                    if ($tail === '/') {
-                        $uri = $requestedUri->withPath(rtrim($requestedUri->getPath(), '/'));
-                        return new RedirectResponse($uri, 307);
-                    }
-                    if (!empty($tail)) {
-                        // @todo: kick in the resolvers for the RouteEnhancers at this point
-                        return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                            $request,
-                            'The requested page does not exist',
-                            ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
-                        );
-                    }
-                } else {
-                    return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                        $request,
-                        'The requested page does not exist',
-                        ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
-                    );
-                }
-                // At this point, we later get further route modifiers
-                // for bw-compat we update $GLOBALS[TYPO3_REQUEST] to be used later in TSFE.
-                $GLOBALS['TYPO3_REQUEST'] = $request;
             }
+            if ($routeResult === null || !$routeResult->getPageId()) {
+                return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                    $request,
+                    'The requested page does not exist',
+                    ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
+                );
+            }
+
+            $this->controller->id = $routeResult->getPageId();
+            $request = $request->withAttribute('routing', $routeResult);
+            // stop in case arguments are dirty (=defined twice in route and GET query parameters)
+            if ($routeResult->areDirty()) {
+                return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                    $request,
+                    'The requested URL is not distinct',
+                    ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
+                );
+            }
+            // At this point, we later get further route modifiers
+            // for bw-compat we update $GLOBALS[TYPO3_REQUEST] to be used later in TSFE.
+            $GLOBALS['TYPO3_REQUEST'] = $request;
         } else {
             // old-school page resolving for realurl, cooluri etc.
             $this->controller->siteScript = $request->getAttribute('normalizedParams')->getSiteScript();
@@ -159,6 +161,45 @@ class PageResolver implements MiddlewareInterface
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkAlternativeIdMethods-PostProc'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $tsfe);
         }
+    }
+
+    /**
+     * @param string $pageId
+     * @return array|null
+     */
+    protected function resolvePageId(string $pageId): ?array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(FrontendWorkspaceRestriction::class));
+
+        if (MathUtility::canBeInterpretedAsInteger($pageId)) {
+            $constraint = $queryBuilder->expr()->eq(
+                'uid',
+                $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+            );
+        } else {
+            $constraint = $queryBuilder->expr()->eq(
+                'alias',
+                $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_STR)
+            );
+        }
+
+        $statement = $queryBuilder
+            ->select('uid', 'l10n_parent', 'pid')
+            ->from('pages')
+            ->where($constraint)
+            ->execute();
+
+        $page = $statement->fetch();
+        if (empty($page)) {
+            return null;
+        }
+        return $page;
     }
 
     /**

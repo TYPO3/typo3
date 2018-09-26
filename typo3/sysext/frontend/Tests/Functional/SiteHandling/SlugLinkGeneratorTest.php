@@ -509,23 +509,23 @@ class SlugLinkGeneratorTest extends AbstractTestCase
     {
         $instructions = [
             // no frontend user given
-            ['https://acme.us/', 1100, 1510, 1500, 0, '/my-acme?pageId=1510'],
+            ['https://acme.us/', 1100, 1510, 1500, 0, '/my-acme?pageId=1510&cHash=119c4870e323bb7e8c9fae2941726b0d'],
             // ['https://acme.us/', 1100, 1511, 1500, 0, '/my-acme?pageId=1511'], // @todo Fails, not expanded to sub-pages
-            ['https://acme.us/', 1100, 1512, 1500, 0, '/my-acme?pageId=1512'],
-            ['https://acme.us/', 1100, 1515, 1500, 0, '/my-acme?pageId=1515'],
-            ['https://acme.us/', 1100, 1520, 1500, 0, '/my-acme?pageId=1520'],
+            ['https://acme.us/', 1100, 1512, 1500, 0, '/my-acme?pageId=1512&cHash=0ced3db0fd4aae0019a99f59cfa58cb0'],
+            ['https://acme.us/', 1100, 1515, 1500, 0, '/my-acme?pageId=1515&cHash=176f16b31d2c731347d411861d8b06dc'],
+            ['https://acme.us/', 1100, 1520, 1500, 0, '/my-acme?pageId=1520&cHash=253d3dccd4794c4a9473226f683bc36a'],
             // ['https://acme.us/', 1100, 1521, 1500, 0, '/my-acme?pageId=1521'], // @todo Fails, not expanded to sub-pages
             // frontend user 1
             ['https://acme.us/', 1100, 1510, 1500, 1, '/my-acme/whitepapers'],
             ['https://acme.us/', 1100, 1511, 1500, 1, '/my-acme/whitepapers/products'],
             ['https://acme.us/', 1100, 1512, 1500, 1, '/my-acme/whitepapers/solutions'],
-            ['https://acme.us/', 1100, 1515, 1500, 1, '/my-acme?pageId=1515'],
-            ['https://acme.us/', 1100, 1520, 1500, 1, '/my-acme?pageId=1520'],
+            ['https://acme.us/', 1100, 1515, 1500, 1, '/my-acme?pageId=1515&cHash=176f16b31d2c731347d411861d8b06dc'],
+            ['https://acme.us/', 1100, 1520, 1500, 1, '/my-acme?pageId=1520&cHash=253d3dccd4794c4a9473226f683bc36a'],
             // ['https://acme.us/', 1100, 1521, 1500, 1, '/my-acme?pageId=1521'], // @todo Fails, not expanded to sub-pages
             // frontend user 2
             ['https://acme.us/', 1100, 1510, 1500, 2, '/my-acme/whitepapers'],
             ['https://acme.us/', 1100, 1511, 1500, 2, '/my-acme/whitepapers/products'],
-            ['https://acme.us/', 1100, 1512, 1500, 2, '/my-acme?pageId=1512'],
+            ['https://acme.us/', 1100, 1512, 1500, 2, '/my-acme?pageId=1512&cHash=0ced3db0fd4aae0019a99f59cfa58cb0'],
             ['https://acme.us/', 1100, 1515, 1500, 2, '/my-acme/whitepapers/research'],
             ['https://acme.us/', 1100, 1520, 1500, 2, '/my-acme/forecasts'],
             ['https://acme.us/', 1100, 1521, 1500, 2, '/my-acme/forecasts/current-year'],
@@ -579,6 +579,9 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         static::assertSame($expectation, (string)$response->getBody());
     }
 
+    /**
+     * @return array
+     */
     public function linkIsGeneratedForPageVersionDataProvider(): array
     {
         // -> most probably since pid=-1 is not correctly resolved
