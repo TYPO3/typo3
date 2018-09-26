@@ -357,7 +357,7 @@ define([
         },
         success: function(data) {
           if (data.success === true) {
-            self.loadMainLayout();
+            self.executeSilentConfigurationUpdate();
           } else {
             data.status.forEach(function(element) {
               var message = InfoBox.render(element.severity, element.title, element.message);
