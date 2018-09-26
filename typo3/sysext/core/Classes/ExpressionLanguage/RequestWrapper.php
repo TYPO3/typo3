@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Core\ExpressionLanguage;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 /**
@@ -63,7 +63,7 @@ class RequestWrapper
         return $this->request->getCookieParams();
     }
 
-    public function getSite(): ?Site
+    public function getSite(): ?SiteInterface
     {
         return $this->request->getAttribute('site');
     }
