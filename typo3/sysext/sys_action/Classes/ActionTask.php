@@ -807,9 +807,6 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
             $sql_query = unserialize($record['t2_data']);
             if (!is_array($sql_query) || is_array($sql_query) && stripos(trim($sql_query['qSelect']), 'SELECT') === 0) {
                 $actionContent = '';
-                $fullsearch = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryView::class);
-                $fullsearch->formW = 40;
-                $fullsearch->noDownloadB = 1;
                 $type = $sql_query['qC']['search_query_makeQuery'];
                 if ($sql_query['qC']['labels_noprefix'] === 'on') {
                     $this->taskObject->MOD_SETTINGS['labels_noprefix'] = 'on';
@@ -821,10 +818,13 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                         $dataRows = GeneralUtility::makeInstance(ConnectionPool::class)
                             ->getConnectionForTable($sql_query['qC']['queryTable'])
                             ->executeQuery($sqlQuery)->fetchAll();
-                        $fullsearch->formW = 48;
                         // Additional configuration
-                        $this->taskObject->MOD_SETTINGS['search_result_labels'] = 1;
+                        $this->taskObject->MOD_SETTINGS['search_result_labels'] = $sql_query['qC']['search_result_labels'];
                         $this->taskObject->MOD_SETTINGS['queryFields'] = $sql_query['qC']['queryFields'];
+
+                        $fullsearch = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryView::class, $GLOBALS['SOBE']->MOD_SETTINGS);
+                        $fullsearch->noDownloadB = 1;
+                        $fullsearch->formW = 48;
                         $cP = $fullsearch->getQueryResultCode($type, $dataRows, $sql_query['qC']['queryTable']);
                         $actionContent = $cP['content'];
                         // If the result is rendered as csv or xml, show a download link
