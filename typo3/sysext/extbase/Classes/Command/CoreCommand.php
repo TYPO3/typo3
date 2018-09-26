@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Extbase\Command;
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
+use TYPO3\CMS\Core\Package\FailsafePackageManager;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Core\Bootstrap;
 use TYPO3\CMS\Extbase\Mvc\Cli\CommandManager;
@@ -53,6 +55,11 @@ class CoreCommand extends Command
     public function setApplication(Application $application = null)
     {
         parent::setApplication($application);
+
+        // Extbase commands can not be initialized in failsafe mode
+        if (GeneralUtility::makeInstance(PackageManager::class) instanceof FailsafePackageManager) {
+            return;
+        }
 
         // Find any registered Extbase commands
         $this->extbaseBootstrap = GeneralUtility::makeInstance(Bootstrap::class);

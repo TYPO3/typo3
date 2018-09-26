@@ -831,7 +831,7 @@ class IconRegistry implements SingletonInterface
      */
     protected function registerModuleIcons()
     {
-        $moduleConfiguration = $GLOBALS['TBE_MODULES']['_configuration'];
+        $moduleConfiguration = $GLOBALS['TBE_MODULES']['_configuration'] ?? [];
         foreach ($moduleConfiguration as $moduleKey => $singleModuleConfiguration) {
             $iconIdentifier = !empty($singleModuleConfiguration['iconIdentifier'])
                 ? $singleModuleConfiguration['iconIdentifier']

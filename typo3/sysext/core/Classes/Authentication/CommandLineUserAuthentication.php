@@ -52,6 +52,28 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
     }
 
     /**
+     * Replacement for AbstactUserAuthentication::start()
+     *
+     * We do not need support for sessions, cookies, $_GET-modes, the postUserLookup hook or
+     * a database connectiona during CLI Bootstrap
+     */
+    public function start()
+    {
+        $this->logger->debug('## Beginning of auth logging.');
+        // svConfig is unused, but we set it, as the property is public and might be used by extensions
+        $this->svConfig = $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth'] ?? [];
+    }
+
+    /**
+     * Replacement for AbstactUserAuthentication::checkAuthentication()
+     *
+     * Not required in CLI mode, therefore empty.
+     */
+    public function checkAuthentication()
+    {
+    }
+
+    /**
      * Logs-in the _CLI_ user. It does not need to check for credentials.
      *
      * @throws \RuntimeException when the user could not log in or it is an admin
