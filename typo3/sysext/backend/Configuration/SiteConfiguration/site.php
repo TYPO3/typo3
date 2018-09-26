@@ -18,7 +18,7 @@ return [
                 'max' => 255,
                 // identifier is used as directory name - allow a-z,0-9,_,- as chars only.
                 // unique is additionally checked server side
-                'eval' => 'required,lower,alphanum_x',
+                'eval' => 'required, lower, alphanum_x, trim',
             ],
         ],
         'rootPageId' => [
@@ -36,11 +36,12 @@ return [
             'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site.base',
             'config' => [
                 'type' => 'input',
-                'eval' => 'required',
+                'eval' => 'required, trim',
             ],
         ],
         'baseVariants' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.baseVariants',
+            'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site.baseVariants',
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'site_base_variant',

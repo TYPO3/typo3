@@ -57,25 +57,29 @@ return [
             'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_errorhandling.errorFluidTemplate',
             'config' => [
                 'type' => 'input',
-                'eval' => 'required',
+                'eval' => 'required, trim',
+                'placeholder' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorFluidTemplate.placeholder',
             ],
         ],
         'errorFluidTemplatesRootPath' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorFluidTemplatesRootPath',
             'config' => [
                 'type' => 'input',
+                'eval' => 'trim',
             ],
         ],
         'errorFluidLayoutsRootPath' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorFluidLayoutsRootPath',
             'config' => [
                 'type' => 'input',
+                'eval' => 'trim',
             ],
         ],
         'errorFluidPartialsRootPath' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorFluidPartialsRootPath',
             'config' => [
                 'type' => 'input',
+                'eval' => 'trim',
             ],
         ],
         'errorContentSource' => [
@@ -98,7 +102,8 @@ return [
             'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_errorhandling.errorPhpClassFQCN',
             'config' => [
                 'type' => 'input',
-                'eval' => 'required',
+                'eval' => 'required, trim',
+                'placeholder' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorPhpClassFQCN.placeholder',
             ],
         ],
     ],

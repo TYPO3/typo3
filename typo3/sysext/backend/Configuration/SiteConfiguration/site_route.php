@@ -17,7 +17,13 @@ return [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.route',
             'config' => [
                 'type' => 'input',
-                'eval' => 'required',
+                'eval' => 'required, trim',
+                'placeholder' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.route.placeholder',
+                'valuePicker' => [
+                    'items' => [
+                        ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.route.example1', 'robots.txt'],
+                    ],
+                ],
             ],
         ],
         'type' => [
@@ -38,6 +44,15 @@ return [
             'config' => [
                 'type' => 'text',
                 'eval' => 'required',
+                'valuePicker' => [
+                    'items' => [
+                        ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.staticText.example1', 'User-agent: *
+Disallow: /typo3/
+Disallow: /typo3_src/
+Allow: /typo3/sysext/frontend/Resources/Public/*
+'],
+                    ],
+                ],
             ],
         ],
         'source' => [

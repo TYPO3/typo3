@@ -23,6 +23,11 @@ use TYPO3\CMS\Core\Localization\LanguageService;
  */
 class UserFunctions
 {
+    /**
+     * Used to build the IRRE title of a site language element
+     *
+     * @param array $parameters
+     */
     public function getSiteLanguageTitle(array &$parameters): void
     {
         $record = $parameters['row'];
@@ -35,6 +40,11 @@ class UserFunctions
         );
     }
 
+    /**
+     * Used to build the IRRE title of a site route element
+     *
+     * @param array $parameters
+     */
     public function getRouteTitle(array &$parameters): void
     {
         $record = $parameters['row'];
@@ -50,6 +60,10 @@ class UserFunctions
         }
     }
 
+    /**
+     * Used to build the IRRE title of a site error handling element
+     * @param array $parameters
+     */
     public function getErrorHandlingTitle(array &$parameters): void
     {
         $record = $parameters['row'];
@@ -71,6 +85,9 @@ class UserFunctions
         $parameters['title'] = sprintf($format, ...$arguments);
     }
 
+    /**
+     * @return LanguageService
+     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

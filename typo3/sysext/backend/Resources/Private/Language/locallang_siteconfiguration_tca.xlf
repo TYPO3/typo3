@@ -88,8 +88,14 @@
 			<trans-unit id="site_base_variant.base">
 				<source>Base</source>
 			</trans-unit>
+			<trans-unit id="site_base_variant.base.placeholder">
+				<source>www.domain.local</source>
+			</trans-unit>
 			<trans-unit id="site_base_variant.condition">
 				<source>Condition</source>
+			</trans-unit>
+			<trans-unit id="site_base_variant.condition.placeholder">
+				<source>applicationContext == "Production"</source>
 			</trans-unit>
 			<trans-unit id="site_base_variant.condition.applicationContext">
 				<source>Application Context</source>
@@ -137,6 +143,9 @@
 			<trans-unit id="site_errorhandling.errorFluidTemplate">
 				<source>Fluid Template File</source>
 			</trans-unit>
+			<trans-unit id="site_errorhandling.errorFluidTemplate.placeholder">
+				<source>EXT:my_sitepackage/Resources/Private/Templates/Sites/Error.html</source>
+			</trans-unit>
 			<trans-unit id="site_errorhandling.errorFluidTemplatesRootPath">
 				<source>Fluid Templates Root Path</source>
 			</trans-unit>
@@ -152,6 +161,9 @@
 			<trans-unit id="site_errorhandling.errorPhpClassFQCN">
 				<source>ErrorHandler Class Target (FQCN)</source>
 			</trans-unit>
+			<trans-unit id="site_errorhandling.errorPhpClassFQCN.placeholder">
+				<source>Vendor\ExtensionName\ErrorHandlers\GenericErrorhandler</source>
+			</trans-unit>
 			<trans-unit id="site_route.ctrl.title">
 				<source>Routes</source>
 			</trans-unit>
@@ -161,11 +173,20 @@
 			<trans-unit id="site_route.staticText">
 				<source>Static Text</source>
 			</trans-unit>
+			<trans-unit id="site_route.staticText.example1">
+				<source>robots.txt Example Content</source>
+			</trans-unit>
 			<trans-unit id="site_route.source">
 				<source>Page, File or URL</source>
 			</trans-unit>
 			<trans-unit id="site_route.route">
 				<source>Static Route Name</source>
+			</trans-unit>
+			<trans-unit id="site_route.route.placeholder">
+				<source>my-custom_route</source>
+			</trans-unit>
+			<trans-unit id="site_route.route.example1">
+				<source>robots.txt</source>
 			</trans-unit>
 		</body>
 	</file>

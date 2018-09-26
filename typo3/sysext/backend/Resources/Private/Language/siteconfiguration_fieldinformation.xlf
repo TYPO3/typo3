@@ -9,23 +9,32 @@
 			<trans-unit id="site.base">
 				<source>Main URL to call the frontend in default language.</source>
 			</trans-unit>
+			<trans-unit id="site.baseVariants">
+				<source>This allows you to specify variants of the site's base. Can be used, for example, if you have a different domain for your staging environment.</source>
+			</trans-unit>
 			<trans-unit id="site_language.base">
-				<source>use / to use keep the main URL as configured at field Entry Point. Add language specific suffixes to use those, or configure complete URLs for independent domains.</source>
+				<source>Use / To use keep the main URL as configured at field Entry Point. Add language specific suffixes to use those, or configure complete URLs for independent domains.</source>
 			</trans-unit>
 			<trans-unit id="site_language.locale">
-				<source>should be something like de_DE or en_US.UTF-8</source>
+				<source>Should be something like de_DE or en_US.UTF-8</source>
 			</trans-unit>
 			<trans-unit id="site_language.typo3Language">
 				<source>Select the language to be used from translation files. Keep default if no translation files are available.</source>
 			</trans-unit>
 			<trans-unit id="site_errorhandling.errorCode">
-				<source>make sure to have at least 0 (not defined otherwise) configured in order to serve helpful error messages to your visitors.</source>
+				<source>Make sure to have at least 0 (not defined otherwise) configured in order to serve helpful error messages to your visitors.</source>
 			</trans-unit>
 			<trans-unit id="site_errorhandling.errorFluidTemplate">
-				<source>absolute or relative path (from site root) to fluid template file</source>
+				<source>Path to the fluid template file given by absolute, relative path (from site root) or by referring the template file inside an extension with "EXT:" prefix.</source>
 			</trans-unit>
 			<trans-unit id="site_errorhandling.errorPhpClassFQCN">
-				<source>PHP class full qualified name that serves the error page.</source>
+				<source>Fully qualified class name to a class that implements the PageErrorHandlerInterface.</source>
+			</trans-unit>
+			<trans-unit id="site_base_variant.base">
+				<source>For example staging.domain.tld or www.domain.local</source>
+			</trans-unit>
+			<trans-unit id="site_base_variant.condition">
+				<source>Expression to match this base variant.</source>
 			</trans-unit>
 		</body>
 	</file>

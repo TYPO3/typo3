@@ -29,7 +29,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 10,
-                'eval' => 'required',
+                'eval' => 'required, trim',
                 'placeholder' => 'English',
             ],
         ],
@@ -38,6 +38,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 10,
+                'eval' => 'trim',
                 'placeholder' => 'English',
             ],
         ],
@@ -46,8 +47,9 @@ return [
             'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_language.base',
             'config' => [
                 'type' => 'input',
-                'eval' => 'required',
+                'eval' => 'required, trim',
                 'default' => '/',
+                'placeholder' => '/',
             ],
         ],
         'locale' => [
@@ -55,7 +57,7 @@ return [
             'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_language.locale',
             'config' => [
                 'type' => 'input',
-                'eval' => 'required',
+                'eval' => 'required, trim',
                 'placeholder' => 'en_US.UTF-8',
             ],
         ],
@@ -72,6 +74,7 @@ return [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.hreflang',
             'config' => [
                 'type' => 'input',
+                'eval' => 'trim',
                 'placeholder' => 'en-US',
             ],
         ],
