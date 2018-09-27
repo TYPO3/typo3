@@ -548,6 +548,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     {
         $expected = [
             'record' => [],
+            'flexContext' => [],
             'flexformValueKey' => 'vDEF',
             'conditionParameters' => [
                 0 => 'more',
@@ -602,6 +603,88 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
 
         if ($expected !== $parameter['conditionParameters']) {
             throw new \RuntimeException('testing', 1538055997);
+        }
+
+        return true;
+    }
+
+    /**
+     * @test
+     */
+    public function addDataPassesFlexContextToUserCondition()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => [
+                                'sheets' => [
+                                    'sDEF' => [
+                                        'ROOT' => [
+                                            'type' => 'array',
+                                            'el' => [
+                                                'foo' => [
+                                                    'displayCond' => 'USER:' . self::class . '->addDataPassesFlexContextToUserConditionCallback:some:info',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = $input;
+        unset($expected['processedTca']['columns']['field_1']['config']['ds']['sheets']['sDEF']['ROOT']['el']['foo']['displayCond']);
+
+        $this->assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
+    }
+
+    /**
+     * Callback method of addDataEvaluatesUserCondition. A USER condition
+     * Throws an exception if data is correct!
+     *
+     * @param array $parameter
+     * @throws \RuntimeException if FlexForm context is not as expected
+     * @return bool
+     */
+    public function addDataPassesFlexContextToUserConditionCallback(array $parameter)
+    {
+        $expected = [
+            'context' => 'flexField',
+            'sheetNameFieldNames' => [
+                'sDEF.foo' => [
+                    'sheetName' => 'sDEF',
+                    'fieldName' => 'foo',
+                ],
+            ],
+            'currentSheetName' => 'sDEF',
+            'currentFieldName' => 'foo',
+            'flexFormDataStructure' => [
+                'sheets' => [
+                    'sDEF' => [
+                        'ROOT' => [
+                            'type' => 'array',
+                            'el' => [
+                                'foo' => [
+                                    'displayCond' => 'USER:' . self::class . '->addDataPassesFlexContextToUserConditionCallback:some:info'
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'flexFormRowData' => null,
+        ];
+
+        if ($expected !== $parameter['flexContext']) {
+            throw new \RuntimeException('testing', 1538057402);
         }
 
         return true;
