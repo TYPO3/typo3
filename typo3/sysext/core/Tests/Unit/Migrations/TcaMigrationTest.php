@@ -6565,4 +6565,48 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         $this->assertEquals($expected, $subject->migrate($input));
     }
+
+    /**
+     * @test
+     */
+    public function migrateLogsDeprecationWithGroupInternalTypeFile()
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'group',
+                            'internal_type' => 'file',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $subject = new TcaMigration();
+        $subject->migrate($input);
+        $this->assertNotEmpty($subject->getMessages());
+    }
+
+    /**
+     * @test
+     */
+    public function migrateLogsDeprecationWithGroupInternalTypeFileReference()
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'group',
+                            'internal_type' => 'file_reference',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $subject = new TcaMigration();
+        $subject->migrate($input);
+        $this->assertNotEmpty($subject->getMessages());
+    }
 }

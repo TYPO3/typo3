@@ -47,6 +47,7 @@ class FileUpload extends AbstractNode
             || !$isDirectFileUploadEnabled
             || empty($config['uploadfolder'])
         ) {
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
             // No upload if disabled for user or upload folder missing
             return $result;
         }

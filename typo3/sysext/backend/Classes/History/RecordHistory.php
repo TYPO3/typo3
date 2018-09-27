@@ -411,6 +411,7 @@ class RecordHistory
      */
     protected function removeFilefields($table, $dataArray)
     {
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
         if ($GLOBALS['TCA'][$table]) {
             foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $config) {
                 if ($config['config']['type'] === 'group' && $config['config']['internal_type'] === 'file') {

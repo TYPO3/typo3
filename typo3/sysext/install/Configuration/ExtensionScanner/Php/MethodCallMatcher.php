@@ -3530,4 +3530,46 @@ return [
             'Deprecation-86389-GeneralUtility_GETsetAndTSFE-mergingWithGetVars.rst',
         ],
     ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->checkValue_group_select_file' => [
+        'numberOfMandatoryArguments' => 8,
+        'maximumNumberOfArguments' => 8,
+        'restFiles' => [
+            'Deprecation-86406-TCATypeGroupInternal_typeFileAndFile_reference.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->copyRecord_procFilesRefs' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-86406-TCATypeGroupInternal_typeFileAndFile_reference.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->extFileFields' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86406-TCATypeGroupInternal_typeFileAndFile_reference.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->extFileFunctions' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-86406-TCATypeGroupInternal_typeFileAndFile_reference.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\ReferenceIndex->getRelations_procFiles' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-86406-TCATypeGroupInternal_typeFileAndFile_reference.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Integrity\DatabaseIntegrityCheck->getFileFields' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86406-TCATypeGroupInternal_typeFileAndFile_reference.rst',
+        ],
+    ],
 ];

@@ -1685,6 +1685,7 @@ class DataHandler implements LoggerAwareInterface
             $tcaFieldConf['type'] === 'flex'
             || $tcaFieldConf['type'] === 'group' && ($tcaFieldConf['internal_type'] === 'file' || $tcaFieldConf['internal_type'] === 'file_reference')
         ) {
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class. Remove type=group handling.
             $recFID = $table . ':' . $id . ':' . $field;
         } else {
             $recFID = null;
@@ -2176,6 +2177,7 @@ class DataHandler implements LoggerAwareInterface
         // For group types:
         if ($tcaFieldConf['type'] === 'group'
             && in_array($tcaFieldConf['internal_type'], ['file', 'file_reference'], true)) {
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
             $valueArray = $this->checkValue_group_select_file($valueArray, $tcaFieldConf, $curValue, $uploadedFiles, $status, $table, $id, $recFID);
         }
         // For select types which has a foreign table attached:
@@ -2250,6 +2252,7 @@ class DataHandler implements LoggerAwareInterface
      * @return array Modified value array
      *
      * @throws \RuntimeException
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
      */
     public function checkValue_group_select_file($valueArray, $tcaFieldConf, $curValue, $uploadedFileArray, $status, $table, $id, $recFID)
     {
@@ -4195,6 +4198,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $value Field value (eg. list of files)
      * @return string The (possibly modified) value
      * @see copyRecord(), copyRecord_flexFormCallBack()
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
      */
     public function copyRecord_procFilesRefs($conf, $uid, $value)
     {
@@ -5426,6 +5430,7 @@ class DataHandler implements LoggerAwareInterface
         $files = $refIndexObj->getRelations_procFiles($dataValue, $dsArr['TCEforms']['config'], $PA['uid']);
         // Traverse files and delete them if the field is a regular file field (and not a file_reference field)
         if (is_array($files) && $dsArr['TCEforms']['config']['internal_type'] === 'file') {
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
             foreach ($files as $dat) {
                 if (@is_file($dat['ID_absFile'])) {
                     $file = $this->getResourceFactory()->retrieveFileOrFolderObject($dat['ID_absFile']);
@@ -8302,6 +8307,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @return array Array of fieldnames that are either "group" or "file" types.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
      */
     public function extFileFields($table)
     {
@@ -8482,6 +8488,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Table name
      * @param string $field Field name
      * @param string $filelist List of files to work on from field
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
      */
     public function extFileFunctions($table, $field, $filelist)
     {

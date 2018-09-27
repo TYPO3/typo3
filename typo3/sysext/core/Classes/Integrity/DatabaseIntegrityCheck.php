@@ -379,6 +379,7 @@ class DatabaseIntegrityCheck
             foreach ($cols as $field => $config) {
                 if ($config['config']['type'] === 'group') {
                     if ((!$mode || $mode === 'file') && $config['config']['internal_type'] === 'file' || (!$mode || $mode === 'db') && $config['config']['internal_type'] === 'db') {
+                        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class. Remove the type=file specific code.
                         $result[$table][] = $field;
                     }
                 }
@@ -398,6 +399,7 @@ class DatabaseIntegrityCheck
      *
      * @param string $uploadfolder Path to uploadfolder
      * @return array An array with all fields listed that have references to files in the $uploadfolder
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
      */
     public function getFileFields($uploadfolder)
     {
@@ -516,6 +518,7 @@ class DatabaseIntegrityCheck
                                 $fieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
                                 if ($fieldConf['type'] === 'group') {
                                     if ($fieldConf['internal_type'] === 'file') {
+                                        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
                                         // Files...
                                         if ($fieldConf['MM']) {
                                             $tempArr = [];

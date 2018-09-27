@@ -50,6 +50,7 @@ class InsertClipboard extends AbstractNode
         $title = '';
         $clipboardOnClick = [];
         if ($internalType === 'file_reference' || $internalType === 'file') {
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
             $title = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clipInsert_file'), count($clipboardElements));
             foreach ($clipboardElements as $clipboardElement) {
                 $value = $clipboardElement['value'];

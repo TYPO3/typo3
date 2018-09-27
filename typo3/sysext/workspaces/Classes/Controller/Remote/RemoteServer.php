@@ -222,6 +222,7 @@ class RemoteServer
                     );
 
                     if ($configuration['type'] === 'group' && $configuration['internal_type'] === 'file') {
+                        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
                         $versionThumb = BackendUtility::thumbCode($versionRecord, $parameter->table, $fieldName, '');
                         $liveThumb = BackendUtility::thumbCode($liveRecord, $parameter->table, $fieldName, '');
                         $diffReturnArray[] = [

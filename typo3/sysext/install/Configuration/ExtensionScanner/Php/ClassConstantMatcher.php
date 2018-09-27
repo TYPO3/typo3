@@ -120,4 +120,14 @@ return [
             'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst',
         ],
     ],
+    'TYPO3\CMS\Core\DataHandling\TableColumnSubType::FILE' => [
+        'restFiles' => [
+            'Deprecation-86406-TCATypeGroupInternal_typeFileAndFile_reference.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\DataHandling\TableColumnSubType::FILE_REFERENCE' => [
+        'restFiles' => [
+            'Deprecation-86406-TCATypeGroupInternal_typeFileAndFile_reference.rst',
+        ],
+    ],
 ];

@@ -146,6 +146,7 @@ class GroupElement extends AbstractFormElement
         $listOfSelectedValues = [];
         $selectorOptionsHtml = [];
         if ($internalType === 'file_reference' || $internalType === 'file') {
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
             foreach ($selectedItems as $selectedItem) {
                 $uidOrPath = $selectedItem['uidOrPath'];
                 $listOfSelectedValues[] = $uidOrPath;
