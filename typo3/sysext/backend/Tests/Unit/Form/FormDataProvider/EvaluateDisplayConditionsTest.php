@@ -541,6 +541,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
      * Callback method of addDataEvaluatesUserCondition. A USER condition
      * Throws an exception if data is correct!
      *
+     * @param array $parameter
      * @throws \RuntimeException if data is ok
      */
     public function addDataEvaluatesUserConditionCallback(array $parameter)
@@ -551,11 +552,59 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
             'conditionParameters' => [
                 0 => 'more',
                 1 => 'arguments',
-            ]
+            ],
         ];
         if ($expected === $parameter) {
             throw new \RuntimeException('testing', 1488130499);
         }
+    }
+
+    /**
+     * @test
+     */
+    public function addDataResolvesAllUserParameters()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'USER:' . self::class . '->addDataResolvesAllUserParametersCallback:some:more:info',
+                        'config' => [
+                            'type' => 'input',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = $input;
+        unset($expected['processedTca']['columns']['field_1']['displayCond']);
+
+        $this->assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
+    }
+
+    /**
+     * Callback method of addDataResolvesAllUserParameters. A USER condition
+     * receives all condition parameter!
+     *
+     * @param array $parameter
+     * @throws \RuntimeException if condition parameter not resolved correctly
+     * @return bool
+     */
+    public function addDataResolvesAllUserParametersCallback(array $parameter)
+    {
+        $expected = [
+            0 => 'some',
+            1 => 'more',
+            2 => 'info',
+        ];
+
+        if ($expected !== $parameter['conditionParameters']) {
+            throw new \RuntimeException('testing', 1538055997);
+        }
+
+        return true;
     }
 
     /**
@@ -789,7 +838,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                         ],
                     ],
                 ],
-            ]
+            ],
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1481634649);
@@ -1219,8 +1268,8 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                                             'ROOT' => [
                                                 'el' => [
                                                     'flexField_1' => [],
-                                                ]
-                                            ]
+                                                ],
+                                            ],
                                         ],
                                         'sheet_2' => [
                                             'ROOT' => [
@@ -1267,8 +1316,8 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                                             'ROOT' => [
                                                 'el' => [
                                                     'flexField_1' => [],
-                                                ]
-                                            ]
+                                                ],
+                                            ],
                                         ],
                                         'sheet_2' => [
                                             'ROOT' => [
@@ -1315,8 +1364,8 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                                             'ROOT' => [
                                                 'el' => [
                                                     'flexField.1' => [],
-                                                ]
-                                            ]
+                                                ],
+                                            ],
                                         ],
                                         'sheet_2' => [
                                             'ROOT' => [
@@ -1363,8 +1412,8 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                                             'ROOT' => [
                                                 'el' => [
                                                     'flexField.1' => [],
-                                                ]
-                                            ]
+                                                ],
+                                            ],
                                         ],
                                         'sheet_2' => [
                                             'ROOT' => [
@@ -3409,7 +3458,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                                                         'FIELD:sheet_1.field_1:=:LIST',
                                                         'FIELD:sheet_1.field_1:!=:foo',
                                                     ],
-                                                ] ,
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -3589,17 +3638,17 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
             'Field value comparison of 1 against multi-value field of 5 returns true' => [
                 'FIELD:content:BIT:1',
                 ['content' => '5'],
-                true
+                true,
             ],
             'Field value comparison of 2 against multi-value field of 5 returns false' => [
                 'FIELD:content:BIT:2',
                 ['content' => '5'],
-                false
+                false,
             ],
             'Field value of 5 negated comparison against multi-value field of 5 returns false' => [
                 'FIELD:content:!BIT:5',
                 ['content' => '5'],
-                false
+                false,
             ],
             'Field value comparison for required value is false for different value' => [
                 'FIELD:foo:REQ:FALSE',
@@ -3655,7 +3704,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                 'VERSION:IS:TRUE',
                 [
                     'uid' => 42,
-                    'pid' => -1
+                    'pid' => -1,
                 ],
                 true,
             ],
@@ -3663,7 +3712,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                 'VERSION:IS:FALSE',
                 [
                     'uid' => 42,
-                    'pid' => 1
+                    'pid' => 1,
                 ],
                 true,
             ],
@@ -3683,7 +3732,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                     ],
                 ],
                 [
-                    'testField' => 10
+                    'testField' => 10,
                 ],
                 true,
             ],
@@ -3692,10 +3741,10 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                     'AND' => [
                         'FIELD:testField:>:9',
                         'FIELD:testField:<:11',
-                    ]
+                    ],
                 ],
                 [
-                    'testField' => 99
+                    'testField' => 99,
                 ],
                 false,
             ],
@@ -3707,7 +3756,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                     ],
                 ],
                 [
-                    'testField' => 10
+                    'testField' => 10,
                 ],
                 true,
             ],
@@ -3719,7 +3768,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                     ],
                 ],
                 [
-                    'testField' => 99
+                    'testField' => 99,
                 ],
                 false,
             ],
@@ -3734,7 +3783,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                     ],
                 ],
                 [
-                    'testField' => 10
+                    'testField' => 10,
                 ],
                 true,
             ],
@@ -3749,7 +3798,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                     ],
                 ],
                 [
-                    'testField' => -999
+                    'testField' => -999,
                 ],
                 false,
             ],
@@ -3773,10 +3822,10 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                         'displayCond' => $condition,
                         'config' => [
                             'type' => 'input',
-                        ]
+                        ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
 
         $backendUserAuthenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
@@ -3818,8 +3867,8 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
         if (!empty($record['testField'])) {
             $input['databaseRow'] = [
                 'testField' => [
-                    'key' => $record['testField']
-                ]
+                    'key' => $record['testField'],
+                ],
             ];
         }
 
@@ -3849,10 +3898,10 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                         'displayCond' => 'HIDE_FOR_NON_ADMINS',
                         'config' => [
                             'type' => 'input',
-                        ]
+                        ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
 
         /** @var BackendUserAuthentication|ObjectProphecy backendUserProphecy */
@@ -3879,10 +3928,10 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                         'displayCond' => 'HIDE_FOR_NON_ADMINS',
                         'config' => [
                             'type' => 'input',
-                        ]
+                        ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
 
         /** @var BackendUserAuthentication|ObjectProphecy backendUserProphecy */

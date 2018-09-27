@@ -418,7 +418,13 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                 $namedConditionArray['function'] = $conditionArray[1];
                 array_shift($conditionArray);
                 array_shift($conditionArray);
-                $namedConditionArray['parameters'] = $conditionArray;
+                $parameters = count($conditionArray) < 2
+                    ? $conditionArray
+                    : array_merge(
+                        [$conditionArray[0]],
+                        GeneralUtility::trimExplode(':', $conditionArray[1])
+                    );
+                $namedConditionArray['parameters'] = $parameters;
                 $namedConditionArray['record'] = $databaseRow;
                 break;
             default:
