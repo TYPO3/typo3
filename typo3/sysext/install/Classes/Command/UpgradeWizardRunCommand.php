@@ -216,18 +216,24 @@ class UpgradeWizardRunCommand extends Command
         $this->output->title('Running Wizard ' . $instance->getTitle());
         if ($instance instanceof ConfirmableInterface) {
             $confirmation = $instance->getConfirmation();
-            $defaultString = $confirmation->getDefaultValue() ? '(Y/n)' : '(y/N)';
+            $defaultString = $confirmation->getDefaultValue() ? 'Y/n' : 'y/N';
             $question = new ConfirmationQuestion(
                 sprintf(
-                    '<info>%s</info>' . LF . '%s %s',
+                    '<info>%s</info>' . LF . '%s' . LF . '%s %s (%s)',
                     $confirmation->getTitle(),
                     $confirmation->getMessage(),
+                    $confirmation->getConfirm(),
+                    $confirmation->getDeny(),
                     $defaultString
                 ),
                 $confirmation->getDefaultValue()
             );
             $helper = $this->getHelper('question');
             if (!$helper->ask($this->input, $this->output, $question)) {
+                if ($confirmation->isRequired()) {
+                    $this->output->error('You have to acknowledge this wizard to continue');
+                    return 1;
+                }
                 if ($instance instanceof RepeatableInterface) {
                     $this->output->note('No changes applied.');
                 } else {

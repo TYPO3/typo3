@@ -303,28 +303,28 @@ class UpgradeWizardsService
                 E_USER_DEPRECATED
             );
         } elseif ($updateObject instanceof UpgradeWizardInterface && $updateObject instanceof ConfirmableInterface) {
-            $wizardHtml = '
-            <div class="panel panel-danger">
-                <div class="panel-heading">
-                ' . htmlspecialchars($updateObject->getConfirmation()->getTitle()) . '
-                </div>
-                <div class="panel-body">
-                    <p>' . nl2br(htmlspecialchars($updateObject->getConfirmation()->getMessage())) . '</p>
-                    <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-default active">
-                            <input type="radio" name="install[values][' .
-                htmlspecialchars($updateObject->getIdentifier()) .
-                '][install]" value="0" checked="checked" /> No, skip wizard
-                        </label>
-                        <label class="btn btn-default">
-                            <input type="radio" name="install[values][' .
-                htmlspecialchars($updateObject->getIdentifier()) .
-                '][install]" value="1" /> Yes, execute wizard
-                        </label>
-                    </div>
-                </div>
-            </div>
-        ';
+            $markup = [];
+            $radioAttributes = [
+                'type' => 'radio',
+                'name' => 'install[values][' . $updateObject->getIdentifier() . '][install]',
+                'value' => 0
+            ];
+            $markup[] = '<div class="panel panel-danger">';
+            $markup[] = '   <div class="panel-heading">';
+            $markup[] = htmlspecialchars($updateObject->getConfirmation()->getTitle());
+            $markup[] = '    </div>';
+            $markup[] = '    <div class="panel-body">';
+            $markup[] = '        <p>' . nl2br(htmlspecialchars($updateObject->getConfirmation()->getMessage())) . '</p>';
+            $markup[] = '        <div class="btn-group" data-toggle="buttons">';
+            if (!$updateObject->getConfirmation()->isRequired()) {
+                $markup[] = '        <label class="btn btn-default active"><input ' . GeneralUtility::implodeAttributes($radioAttributes, true) . ' checked="checked" />' . $updateObject->getConfirmation()->getDeny() . '</label>';
+            }
+            $radioAttributes['value'] = 1;
+            $markup[] = '            <label class="btn btn-default"><input ' . GeneralUtility::implodeAttributes($radioAttributes, true) . ' />' . $updateObject->getConfirmation()->getConfirm() . '</label>';
+            $markup[] = '        </div>';
+            $markup[] = '    </div>';
+            $markup[] = '</div>';
+            $wizardHtml = implode('', $markup);
         }
 
         $result = [
@@ -372,15 +372,25 @@ class UpgradeWizardsService
         } else {
             if ($updateObject instanceof UpgradeWizardInterface) {
                 $requestParams = GeneralUtility::_GP('install');
-                if ($updateObject instanceof ConfirmableInterface
-                    && (
-                        isset($requestParams['values'][$updateObject->getIdentifier()]['install'])
-                        && empty($requestParams['values'][$updateObject->getIdentifier()]['install'])
-                    )
-                ) {
-                    $this->output->writeln('No changes applied, marking wizard as done.');
-                    // confirmation was set to "no"
-                    $performResult = true;
+                if ($updateObject instanceof ConfirmableInterface) {
+                    // value is set in request but is empty
+                    $isSetButEmpty = isset($requestParams['values'][$updateObject->getIdentifier()]['install'])
+                        && empty($requestParams['values'][$updateObject->getIdentifier()]['install']);
+
+                    $checkValue = (int)$requestParams['values'][$updateObject->getIdentifier()]['install'];
+
+                    if ($checkValue === 1) {
+                        // confirmation = yes, we do the update
+                        $performResult = $updateObject->executeUpdate();
+                    } elseif ($updateObject->getConfirmation()->isRequired()) {
+                        // confirmation = no, but is required, we do *not* the update and fail
+                        $performResult = false;
+                    } elseif ($isSetButEmpty) {
+                        // confirmation = no, but it is *not* required, we do *not* the update, but mark the wizard as done
+                        $this->output->writeln('No changes applied, marking wizard as done.');
+                        // confirmation was set to "no"
+                        $performResult = true;
+                    }
                 } else {
                     // confirmation yes or non-confirmable
                     $performResult = $updateObject->executeUpdate();

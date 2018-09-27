@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Install\Updates;
 
 /*
@@ -33,15 +34,66 @@ class Confirmation
     protected $message = '';
 
     /**
+     * @var string
+     */
+    protected $confirm;
+
+    /**
+     * @var string
+     */
+    protected $deny;
+
+    /**
+     * @var bool
+     */
+    protected $required;
+
+    /**
      * @param string $title
      * @param string $message
      * @param bool $defaultValue
+     * @param string $confirm
+     * @param string $deny
+     * @param bool $required
      */
-    public function __construct(string $title, string $message, bool $defaultValue = false)
-    {
+    public function __construct(
+        string $title,
+        string $message,
+        bool $defaultValue = false,
+        string $confirm = 'Yes, execute',
+        string $deny = 'No, do not execute',
+        bool $required = false
+    ) {
         $this->title = $title;
         $this->message = $message;
         $this->defaultValue = $defaultValue;
+        $this->confirm = $confirm;
+        $this->deny = $deny;
+        $this->required = $required;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfirm(): string
+    {
+        return $this->confirm;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDeny(): string
+    {
+        return $this->deny;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRequired(): bool
+    {
+        return $this->required;
     }
 
     /**
