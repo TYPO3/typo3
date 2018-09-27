@@ -76,6 +76,9 @@ class SelectSingleElement extends AbstractFormElement
         $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
         $uniqueIds = null;
         if ($this->data['isInlineChild'] && $this->data['inlineParentUid']) {
+            // @todo: At least parts of this if is dead and/or broken: $uniqueIds is filled but never used.
+            // See InlineControlContainer where 'inlineData' 'unique' 'used' is set. What exactly is
+            // this if supposed to do and when should it kick in and what for?
             $inlineObjectName = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
             $inlineFormName = $inlineStackProcessor->getCurrentStructureFormPrefix();
             if ($this->data['inlineParentConfig']['foreign_table'] === $table

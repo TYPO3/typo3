@@ -186,6 +186,7 @@ class InlineControlContainer extends AbstractContainer
 
         if ($config['foreign_unique']) {
             // Add inlineData['unique'] with JS unique configuration
+            // @todo: Improve validation and throw an exception if type is neither select nor group here
             $type = $config['selectorOrUniqueConfiguration']['config']['type'] === 'select' ? 'select' : 'groupdb';
             foreach ($parameterArray['fieldConf']['children'] as $child) {
                 // Determine used unique ids, skip not localized records
@@ -193,18 +194,24 @@ class InlineControlContainer extends AbstractContainer
                     $value = $child['databaseRow'][$config['foreign_unique']];
                     // We're assuming there is only one connected value here for both select and group
                     if ($type === 'select') {
-                        // A resolved select field is an array - take first value
+                        // A select field is an array of uids. See TcaSelectItems data provider for details.
+                        // Pick first entry, ends up as eg. $value = 42.
                         $value = $value['0'];
                     } else {
-                        // A group field is still a list with pipe separated uid|tableName
-                        $valueParts = GeneralUtility::trimExplode('|', $value);
-                        $itemParts = explode('_', $valueParts[0]);
+                        // A group field is an array of arrays containing uid + table + title + row.
+                        // See TcaGroup data provider for details.
+                        // Pick the first one (always on 0), and use uid + table only. Exclude title + row
+                        // since the entire inlineData['unique'] array ends up in JavaScript in the end
+                        // and we don't need and want the title and the entire row data in the frontend.
+                        // Ends up as $value = [ 'uid' => '42', 'table' => 'tx_my_table' ]
                         $value = [
-                            'uid' => array_pop($itemParts),
-                            'table' => implode('_', $itemParts)
+                            'uid' => $value[0]['uid'],
+                            'table' => $value[0]['table'],
                         ];
                     }
-                    // @todo: This is weird, $value has different structure for group and select fields?
+                    // Note structure of $value is different in select vs. group: It's a uid for select, but an
+                    // array with uid + table for group. This is handled differently on JavaScript side, search
+                    // for 'groupdb' in jsfunc.inline.js for details.
                     $uniqueIds[$child['databaseRow']['uid']] = $value;
                 }
             }
