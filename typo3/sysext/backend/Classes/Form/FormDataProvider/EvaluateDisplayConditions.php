@@ -426,6 +426,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                     );
                 $namedConditionArray['parameters'] = $parameters;
                 $namedConditionArray['record'] = $databaseRow;
+                $namedConditionArray['flexContext'] = $flexContext;
                 break;
             default:
                 throw new \RuntimeException(
@@ -923,6 +924,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
     {
         $parameter = [
             'record' => $condition['record'],
+            'flexContext' => $condition['flexContext'],
             'flexformValueKey' => 'vDEF',
             'conditionParameters' => $condition['parameters'],
         ];
