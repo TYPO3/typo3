@@ -3579,4 +3579,60 @@ return [
             'Deprecation-86411-TSFE-makeCacheHash.rst'
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_addParams' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86433-VariousStdWrapFunctionsAndContentObjectRenderer-relatedMethods.rst'
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_filelink' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86433-VariousStdWrapFunctionsAndContentObjectRenderer-relatedMethods.rst'
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_filelist' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86433-VariousStdWrapFunctionsAndContentObjectRenderer-relatedMethods.rst'
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->addParams' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86433-VariousStdWrapFunctionsAndContentObjectRenderer-relatedMethods.rst'
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->filelink' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86433-VariousStdWrapFunctionsAndContentObjectRenderer-relatedMethods.rst'
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->filelist' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86433-VariousStdWrapFunctionsAndContentObjectRenderer-relatedMethods.rst'
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->typolinkWrap' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86433-VariousStdWrapFunctionsAndContentObjectRenderer-relatedMethods.rst'
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->currentPageUrl' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86433-VariousStdWrapFunctionsAndContentObjectRenderer-relatedMethods.rst'
+        ],
+    ],
 ];

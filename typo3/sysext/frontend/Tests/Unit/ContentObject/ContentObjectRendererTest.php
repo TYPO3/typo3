@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\ApplicationContext;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -3254,27 +3253,6 @@ class ContentObjectRendererTest extends UnitTestCase
         );
     }
 
-    ////////////////////////////////////
-    // Test concerning link generation
-    ////////////////////////////////////
-
-    /**
-     * @test
-     */
-    public function filelinkCreatesCorrectUrlForFileWithUrlEncodedSpecialChars(): void
-    {
-        $fileNameAndPath = Environment::getPublicPath() . '/typo3temp/var/tests/phpunitJumpUrlTestFile with spaces & amps.txt';
-        file_put_contents($fileNameAndPath, 'Some test data');
-        $relativeFileNameAndPath = substr($fileNameAndPath, strlen(Environment::getPublicPath()) + 1);
-        $fileName = substr($fileNameAndPath, strlen(Environment::getPublicPath() . '/typo3temp/var/tests/'));
-
-        $expectedLink = str_replace('%2F', '/', rawurlencode($relativeFileNameAndPath));
-        $result = $this->subject->filelink($fileName, ['path' => 'typo3temp/var/tests/']);
-        $this->assertEquals('<a href="' . $expectedLink . '">' . $fileName . '</a>', $result);
-
-        GeneralUtility::unlink_tempfile($fileNameAndPath);
-    }
-
     /**
      * Check if calculateCacheKey works properly.
      *
@@ -3906,39 +3884,6 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $this->subject->stdWrap_addPageCacheTags('', $configuration);
         $this->assertEquals($expectedTags, $this->frontendControllerMock->_get('pageCacheTags'));
-    }
-
-    /**
-     * Check that stdWrap_addParams works properly.
-     *
-     * Show:
-     *
-     *  - Delegates to method addParams.
-     *  - Parameter 1 is $content.
-     *  - Parameter 2 is $conf['addParams.'].
-     *  - Returns the return value.
-     *
-     * @test
-     */
-    public function stdWrap_addParams(): void
-    {
-        $content = $this->getUniqueId('content');
-        $conf = [
-            'addParams' => $this->getUniqueId('not used'),
-            'addParams.' => [$this->getUniqueId('addParams.')],
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['addParams'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('addParams')
-            ->with($content, $conf['addParams.'])
-            ->willReturn($return);
-        $this->assertSame(
-            $return,
-            $subject->stdWrap_addParams($content, $conf)
-        );
     }
 
     /**
@@ -5633,62 +5578,6 @@ class ContentObjectRendererTest extends UnitTestCase
             $subject->stdWrap_fieldRequired($content, $conf)
         );
         $this->assertSame($stop, $subject->_get('stopRendering')[1]);
-    }
-
-    /**
-     * Check if stdWrap_filelink works properly.
-     *
-     * Show:
-     *
-     * - Delegates to method filelink.
-     * - Parameter 1 is $content.
-     * - Parameter 2 is $conf['filelink.'].
-     * - Returns the return value.
-     *
-     * @test
-     */
-    public function stdWrap_filelink(): void
-    {
-        $content = $this->getUniqueId('content');
-        $conf = [
-            'filelink' => $this->getUniqueId('not used'),
-            'filelink.' => [$this->getUniqueId('filelink.')],
-        ];
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['filelink'])->getMock();
-        $subject->expects($this->once())->method('filelink')
-            ->with($content, $conf['filelink.'])->willReturn('return');
-        $this->assertSame(
-            'return',
-            $subject->stdWrap_filelink($content, $conf)
-        );
-    }
-
-    /**
-     * Check if stdWrap_filelist works properly.
-     *
-     * Show:
-     *
-     * - Delegates to method filelist.
-     * - Parameter is $conf['filelist'].
-     * - Returns the return value.
-     *
-     * @test
-     */
-    public function stdWrap_filelist(): void
-    {
-        $conf = [
-            'filelist' => $this->getUniqueId('filelist'),
-            'filelist.' => [$this->getUniqueId('not used')],
-        ];
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['filelist'])->getMock();
-        $subject->expects($this->once())->method('filelist')
-            ->with($conf['filelist'])->willReturn('return');
-        $this->assertSame(
-            'return',
-            $subject->stdWrap_filelist('discard', $conf)
-        );
     }
 
     /**

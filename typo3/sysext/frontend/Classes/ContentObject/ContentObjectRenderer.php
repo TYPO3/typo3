@@ -118,7 +118,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
         'cObject' => 'cObject',
         'cObject.' => 'array',
         'numRows.' => 'array',
+        // @deprecated - will be removed in TYPO3 v10.0.
         'filelist' => 'dir',
+        // @deprecated - will be removed in TYPO3 v10.0.
         'filelist.' => 'array',
         'preUserFunc' => 'functionName',
         'stdWrapOverride' => 'hook',
@@ -207,7 +209,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
         'innerWrap.' => 'array',
         'innerWrap2' => 'wrap',
         'innerWrap2.' => 'array',
+        // @deprecated - will be removed in TYPO3 v10.0.
         'addParams.' => 'array',
+        // @deprecated - will be removed in TYPO3 v10.0.
         'filelink.' => 'array',
         'preCObject' => 'cObject',
         'preCObject.' => 'array',
@@ -1834,10 +1838,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for filelist.
      * @return string The processed input value
+     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. Use cObject FILES instead.
      */
     public function stdWrap_filelist($content = '', $conf = [])
     {
-        return $this->filelist($conf['filelist']);
+        return $this->filelist($conf['filelist'], true);
     }
 
     /**
@@ -2566,10 +2571,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for addParams.
      * @return string The processed input value
+     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0.
      */
     public function stdWrap_addParams($content = '', $conf = [])
     {
-        return $this->addParams($content, $conf['addParams.'] ?? []);
+        return $this->addParams($content, $conf['addParams.'] ?? [], true);
     }
 
     /**
@@ -2580,10 +2586,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for filelink.
      * @return string The processed input value
+     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. Use cObject FILES instead.
      */
     public function stdWrap_filelink($content = '', $conf = [])
     {
-        return $this->filelink($content, $conf['filelink.'] ?? []);
+        return $this->filelink($content, $conf['filelink.'] ?? [], true);
     }
 
     /**
@@ -3114,12 +3121,17 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Implements the stdWrap property "filelist"
      *
      * @param string $data The command which contains information about what files/directory listing to return. See the "filelist" property of stdWrap for details.
+     * @param bool $isCoreCall if set, the deprecation message is suppressed
      * @return string Comma list of files.
      * @access private
      * @see stdWrap()
+     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. Use cObject FILES instead.
      */
-    public function filelist($data)
+    public function filelist($data, bool $isCoreCall = false)
     {
+        if (!$isCoreCall) {
+            trigger_error('ContentObjectRenderer->filelist() will be removed in TYPO3 v10.0. Use cObject FILES instead.', E_USER_DEPRECATED);
+        }
         $data = trim($data);
         if ($data === '') {
             return '';
@@ -3513,11 +3525,16 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $content The string with the HTML tag.
      * @param array $conf The TypoScript configuration properties
+     * @param bool $isCoreCall if set, the deprecation message is suppressed
      * @return string The modified string
      * @todo Make it XHTML compatible. Will not present "/>" endings of tags right now. Further getting the tagname might fail if it is not separated by a normal space from the attributes.
+     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0.
      */
-    public function addParams($content, $conf)
+    public function addParams($content, $conf, $isCoreCall = false)
     {
+        if (!$isCoreCall) {
+            trigger_error('ContentObjectRenderer->addParams() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
+        }
         // For XHTML compliance.
         $lowerCaseAttributes = true;
         if (!is_array($conf)) {
@@ -3559,12 +3576,17 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $theValue The filename to link to, possibly prefixed with $conf[path]
      * @param array $conf TypoScript parameters for the TypoScript function ->filelink
+     * @param bool $isCoreCall if set, the deprecation message is suppressed
      * @return string The link to the file possibly with icons, thumbnails, size in bytes shown etc.
      * @access private
      * @see stdWrap()
+     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. Use cObject FILES instead.
      */
-    public function filelink($theValue, $conf)
+    public function filelink($theValue, $conf, $isCoreCall = false)
     {
+        if (!$isCoreCall) {
+            trigger_error('ContentObjectRenderer->filelink() will be removed in TYPO3 v10.0. Use cObject FILES instead.', E_USER_DEPRECATED);
+        }
         $conf['path'] = isset($conf['path.'])
             ? $this->stdWrap($conf['path'] ?? '', $conf['path.'])
             : ($conf['path'] ?? '');
@@ -5596,9 +5618,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $conf "typolink" TypoScript properties
      * @return array An array with two values in key 0+1, each value being the start and close <a>-tag of the typolink properties being inputted in $conf
      * @see typolink()
+     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. Use typoLink() instead.
      */
     public function typolinkWrap($conf)
     {
+        trigger_error('ContentObjectRenderer->typolinkWrap() will be removed in TYPO3 v10.0. Use $cObj->typoLink() instead.', E_USER_DEPRECATED);
         $k = md5(microtime());
         return explode($k, $this->typoLink($k, $conf));
     }
@@ -5610,9 +5634,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param int $id An alternative ID to the current id ($GLOBALS['TSFE']->id)
      * @return string The URL
      * @see getTypoLink_URL()
+     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. Use getTypoLink_URL() instead.
      */
     public function currentPageUrl($urlParameters = [], $id = 0)
     {
+        trigger_error('ContentObjectRenderer->currentPageUrl() will be removed in TYPO3 v10.0. Use $cObj->getTypoLink_URL() instead.', E_USER_DEPRECATED);
         $tsfe = $this->getTypoScriptFrontendController();
         return $this->getTypoLink_URL($id ?: $tsfe->id, $urlParameters, $tsfe->sPre);
     }
