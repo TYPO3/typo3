@@ -769,10 +769,8 @@ class PackageManager implements SingletonInterface
      *
      * @throws Exception\PackageStatesFileNotWritableException
      */
-    protected function sortAndSavePackageStates()
+    protected function savePackageStates()
     {
-        $this->sortActivePackagesByDependencies();
-
         $this->packageStatesConfiguration['version'] = 5;
 
         $fileDescription = "# PackageStates.php\n\n";
@@ -799,6 +797,18 @@ class PackageManager implements SingletonInterface
         $this->initializeCompatibilityLoadedExtArray();
 
         GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($this->packageStatesPathAndFilename);
+    }
+
+    /**
+     * Saves the current content of $this->packageStatesConfiguration to the
+     * PackageStates.php file.
+     *
+     * @throws Exception\PackageStatesFileNotWritableException
+     */
+    protected function sortAndSavePackageStates()
+    {
+        $this->sortActivePackagesByDependencies();
+        $this->savePackageStates();
     }
 
     /**

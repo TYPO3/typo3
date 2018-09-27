@@ -42,13 +42,13 @@ class FailsafePackageManager extends PackageManager
     }
 
     /**
-     * Sort and save states
+     * Save states
      */
-    protected function sortAndSavePackageStates()
+    protected function savePackageStates()
     {
         // Do not save if in rescue mode
         if (!$this->inFailsafeMode) {
-            parent::sortAndSavePackageStates();
+            parent::savePackageStates();
         }
     }
 
@@ -58,6 +58,7 @@ class FailsafePackageManager extends PackageManager
      */
     public function forceSortAndSavePackageStates()
     {
-        parent::sortAndSavePackageStates();
+        parent::sortActivePackagesByDependencies();
+        parent::savePackageStates();
     }
 }
