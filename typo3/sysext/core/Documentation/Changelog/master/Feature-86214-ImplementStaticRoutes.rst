@@ -1,4 +1,5 @@
 .. include:: ../../Includes.txt
+.. highlight:: yaml
 
 =========================================
 Feature: #86214 - Implement static routes
@@ -15,10 +16,10 @@ should be reachable at /robots.txt on each site. You can now add a static route 
 define which content should be delivered.
 
 The TYPO3 SEO extension provides a sitemap for TYPO3 out of the box, but it's only reachable at a specific page type.
-To enable easier access you can now configure a static route `sitemap.xml` that maps to that page type (see example
+To enable easier access you can now configure a static route :file:`sitemap.xml` that maps to that page type (see example
 below).
 
-Routes can be configured as toplevel files (as in the `sitemap.xml` and `robots.txt` case) but may also be configured
+Routes can be configured as toplevel files (as in the :file:`sitemap.xml` and :file:`robots.txt` case) but may also be configured
 to deeper route paths (`my/deep/path/to/a/static/text` for example). Matching is done on the full path but without any
 parameters.
 
@@ -31,17 +32,17 @@ There are two options: deliver static text or resolve a TYPO3 URL.
 StaticText
 ----------
 The `staticText` option allows to deliver simple text content. The text can be added through a text field directly in
-the site configuration. This is suitable for files like `robots.txt` or `humans.txt`.
+the site configuration. This is suitable for files like :file:`robots.txt` or :file:`humans.txt`.
 
-YAML Configuration Example :: yaml
+YAML Configuration Example::
 
-      route: robots.txt
-      type: staticText
-      content: |
-        Sitemap: https://example.com/sitemap.xml
-        User-agent: *
-        Allow: /
-        Disallow: /forbidden/
+   route: robots.txt
+   type: staticText
+   content: |
+     Sitemap: https://example.com/sitemap.xml
+     User-agent: *
+     Allow: /
+     Disallow: /forbidden/
 
 TYPO3 URL (t3://)
 -----------------
@@ -49,16 +50,16 @@ TYPO3 URL (t3://)
 The type `uri` for TYPO3 URL provides the option to render either a file, page or url. Internally a request to the
 file or URL is done and its content delivered.
 
-YAML Configuration Examples :: yaml
+YAML Configuration Examples::
 
-    -
-      route: sitemap.xml
-      type: uri
-      source: 't3://page?uid=1&type=1533906435'
-    -
-      route: favicon.ico
-      type: uri
-      source: 't3://file?uid=77'
+   -
+     route: sitemap.xml
+     type: uri
+     source: 't3://page?uid=1&type=1533906435'
+   -
+     route: favicon.ico
+     type: uri
+     source: 't3://file?uid=77'
 
 
 Implementation
