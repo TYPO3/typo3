@@ -3,6 +3,7 @@ seo_sitemap {
   typeNum = 1533906435
 
   config {
+    cache_period = 900
     disableAllHeaderCode = 1
     admPanel = 0
     removeDefaultJS = 1
@@ -13,7 +14,7 @@ seo_sitemap {
     }
   }
 
-  10 = USER_INT
+  10 = USER
   10.userFunc = TYPO3\CMS\Seo\XmlSitemap\XmlSitemapRenderer->render
 }
 
