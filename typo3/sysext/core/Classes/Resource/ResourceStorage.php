@@ -2891,6 +2891,10 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function getProcessingFolder(File $file = null)
     {
+        // If a file is given, make sure to return the processing folder of the correct storage
+        if ($file !== null && $file->getStorage()->getUid() !== $this->getUid()) {
+            return $file->getStorage()->getProcessingFolder($file);
+        }
         if (!isset($this->processingFolder)) {
             $processingFolder = self::DEFAULT_ProcessingFolder;
             if (!empty($this->storageRecord['processingfolder'])) {

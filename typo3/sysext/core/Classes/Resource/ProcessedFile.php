@@ -250,8 +250,8 @@ class ProcessedFile extends AbstractFile
      */
     public function setName($name)
     {
-        // Remove the existing file
-        if ($this->name !== $name && $this->name !== '' && $this->exists()) {
+        // Remove the existing file, but only we actually have a name or the name has changed
+        if (!empty($this->name) && $this->name !== $name && $this->exists()) {
             $this->delete();
         }
 
@@ -260,6 +260,22 @@ class ProcessedFile extends AbstractFile
         $this->identifier = $this->storage->getProcessingFolder($this->originalFile)->getIdentifier() . $this->name;
 
         $this->updated = true;
+    }
+
+    /**
+     * Checks if this file exists.
+     * Since the original file may reside in a different storage
+     * we ask the original file if it exists in case the processed is representing it
+     *
+     * @return bool TRUE if this file physically exists
+     */
+    public function exists()
+    {
+        if ($this->usesOriginalFile()) {
+            return $this->originalFile->exists();
+        }
+
+        return parent::exists();
     }
 
     /******************
@@ -403,7 +419,7 @@ class ProcessedFile extends AbstractFile
      */
     public function usesOriginalFile()
     {
-        return $this->identifier == null || $this->identifier === $this->originalFile->getIdentifier();
+        return $this->identifier === null || $this->identifier === $this->originalFile->getIdentifier();
     }
 
     /**
