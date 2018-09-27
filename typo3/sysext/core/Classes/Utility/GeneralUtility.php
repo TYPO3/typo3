@@ -3255,10 +3255,10 @@ class GeneralUtility
      */
     public static function copyDirectory($source, $destination)
     {
-        if (strpos($source, Environment::getPublicPath() . '/') === false) {
+        if (strpos($source, Environment::getProjectPath() . '/') === false) {
             $source = Environment::getPublicPath() . '/' . $source;
         }
-        if (strpos($destination, Environment::getPublicPath() . '/') === false) {
+        if (strpos($destination, Environment::getProjectPath() . '/') === false) {
             $destination = Environment::getPublicPath() . '/' . $destination;
         }
         if (static::isAllowedAbsPath($source) && static::isAllowedAbsPath($destination)) {
