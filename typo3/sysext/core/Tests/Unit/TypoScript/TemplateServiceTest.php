@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
  */
 
 use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -51,18 +52,23 @@ class TemplateServiceTest extends UnitTestCase
     protected $backupPackageManager;
 
     /**
+     * @var PackageManager|ObjectProphecy
+     */
+    protected $packageManagerProphecy;
+
+    /**
      * Set up
      */
     protected function setUp(): void
     {
-        $GLOBALS['TYPO3_LOADED_EXT'] = [];
         $GLOBALS['SIM_ACCESS_TIME'] = time();
         $GLOBALS['ACCESS_TIME'] = time();
-        $this->templateService = new TemplateService(new Context());
+        $this->packageManagerProphecy = $this->prophesize(PackageManager::class);
+        $this->templateService = new TemplateService(new Context(), $this->packageManagerProphecy->reveal());
         $this->templateServiceMock = $this->getAccessibleMock(
             TemplateService::class,
             ['dummy'],
-            [new Context()]
+            [new Context(), $this->packageManagerProphecy->reveal()]
         );
         $this->backupPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
     }
@@ -100,14 +106,7 @@ class TemplateServiceTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
         $identifier = $this->getUniqueId('test');
-        $GLOBALS['TYPO3_LOADED_EXT'] = [
-            $identifier => [
-                'ext_typoscript_setup.txt' => ExtensionManagementUtility::extPath(
-                    'core',
-                    'Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt'
-                ),
-            ],
-        ];
+        $this->packageManagerProphecy->getActivePackages()->shouldNotBeCalled();
 
         $this->templateService->runThroughTemplates([], 0);
         $this->assertFalse(
@@ -126,21 +125,13 @@ class TemplateServiceTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
         $identifier = $this->getUniqueId('test');
-        $GLOBALS['TYPO3_LOADED_EXT'] = [
-            $identifier => [
-                'ext_typoscript_setup.txt' => ExtensionManagementUtility::extPath(
-                    'core',
-                    'Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt'
-                ),
-                'ext_typoscript_constants.txt' => ''
-            ],
-        ];
 
         $mockPackage = $this->getMockBuilder(Package::class)
-            ->setMethods(['getPackagePath'])
+            ->setMethods(['getPackagePath', 'getPackageKey'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockPackage->expects($this->any())->method('getPackagePath')->will($this->returnValue(''));
+        $mockPackage->expects($this->any())->method('getPackagePath')->will($this->returnValue(__DIR__ . '/Fixtures/'));
+        $mockPackage->expects($this->any())->method('getPackageKey')->will($this->returnValue('core'));
 
         $mockPackageManager = $this->getMockBuilder(PackageManager::class)
             ->setMethods(['isPackageActive', 'getPackage'])
@@ -149,6 +140,7 @@ class TemplateServiceTest extends UnitTestCase
         $mockPackageManager->expects($this->any())->method('isPackageActive')->will($this->returnValue(true));
         $mockPackageManager->expects($this->any())->method('getPackage')->will($this->returnValue($mockPackage));
         ExtensionManagementUtility::setPackageManager($mockPackageManager);
+        $this->packageManagerProphecy->getActivePackages()->willReturn(['core' => $mockPackage]);
 
         $this->templateService->setProcessExtensionStatics(true);
         $this->templateService->runThroughTemplates([], 0);

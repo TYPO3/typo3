@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\Controller;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Install\Controller\UpgradeController;
 
@@ -69,8 +70,12 @@ class UpgradeControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
             ],
         ]);
 
+        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         /** @var UpgradeController|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(UpgradeController::class)
+            ->setConstructorArgs([$packageManagerMock])
             ->setMethods(['getDocumentationFiles', 'initializeStandaloneView'])
             ->getMock();
 

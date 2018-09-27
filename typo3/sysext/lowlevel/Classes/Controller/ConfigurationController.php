@@ -61,6 +61,7 @@ class ConfigurationController
             'type' => 'global',
             'globalKey' => 'TCA_DESCR',
         ],
+        // @deprecated will be removed in v10
         'loadedExt' => [
             'label' => 'loadedExt',
             'type' => 'global',

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema;
  */
 
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -34,7 +35,7 @@ class SqlReaderTest extends UnitTestCase
      */
     public function getStatementArraySplitsStatements()
     {
-        $subject = new SqlReader();
+        $subject = new SqlReader(null, $this->prophesize(PackageManager::class)->reveal());
         $result = $subject->getStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');' .
             LF .
@@ -50,7 +51,7 @@ class SqlReaderTest extends UnitTestCase
      */
     public function getStatementArrayFiltersStatements()
     {
-        $subject = new SqlReader();
+        $subject = new SqlReader(null, $this->prophesize(PackageManager::class)->reveal());
         $result = $subject->getStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');' .
             LF .
@@ -66,7 +67,7 @@ class SqlReaderTest extends UnitTestCase
      */
     public function getInsertStatementArrayResult()
     {
-        $subject = new SqlReader();
+        $subject = new SqlReader(null, $this->prophesize(PackageManager::class)->reveal());
         $result = $subject->getInsertStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');' .
             LF .
@@ -82,7 +83,7 @@ class SqlReaderTest extends UnitTestCase
      */
     public function getInsertStatementArrayResultWithNewline()
     {
-        $subject = new SqlReader();
+        $subject = new SqlReader(null, $this->prophesize(PackageManager::class)->reveal());
         $result = $subject->getInsertStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');' .
             LF .
@@ -100,7 +101,7 @@ class SqlReaderTest extends UnitTestCase
      */
     public function getCreateTableStatementArrayResult()
     {
-        $subject = new SqlReader();
+        $subject = new SqlReader(null, $this->prophesize(PackageManager::class)->reveal());
         $result = $subject->getCreateTableStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');' .
             LF .

@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -126,8 +127,12 @@ class ContentObjectRendererTest extends UnitTestCase
     protected function setUp(): void
     {
         $GLOBALS['SIM_ACCESS_TIME'] = 1534278180;
+        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->templateServiceMock =
             $this->getMockBuilder(TemplateService::class)
+                ->setConstructorArgs([null, $packageManagerMock])
                 ->setMethods(['linkData'])
                 ->getMock();
         $pageRepositoryMock =
@@ -2750,7 +2755,11 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function typolinkReturnsCorrectLinksForEmailsAndUrls($linkText, $configuration, $expectedResult): void
     {
+        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $templateServiceObjectMock = $this->getMockBuilder(TemplateService::class)
+            ->setConstructorArgs([null, $packageManagerMock])
             ->setMethods(['dummy'])
             ->getMock();
         $templateServiceObjectMock->setup = [
@@ -2995,7 +3004,11 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function typolinkReturnsCorrectLinksFiles($linkText, $configuration, $expectedResult): void
     {
+        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $templateServiceObjectMock = $this->getMockBuilder(TemplateService::class)
+            ->setConstructorArgs([null, $packageManagerMock])
             ->setMethods(['dummy'])
             ->getMock();
         $templateServiceObjectMock->setup = [
@@ -3149,7 +3162,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $absRefPrefix,
         $expectedResult
     ): void {
+        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $templateServiceObjectMock = $this->getMockBuilder(TemplateService::class)
+            ->setConstructorArgs([null, $packageManagerMock])
             ->setMethods(['dummy'])
             ->getMock();
         $templateServiceObjectMock->setup = [

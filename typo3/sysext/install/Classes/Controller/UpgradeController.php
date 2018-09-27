@@ -30,6 +30,8 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
+use TYPO3\CMS\Core\Package\Package;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -75,6 +77,19 @@ class UpgradeController extends AbstractController
      * @var CoreVersionService
      */
     protected $coreVersionService;
+
+    /**
+     * @var PackageManager
+     */
+    protected $packageManager;
+
+    /**
+     * @param PackageManager|null $packageManager
+     */
+    public function __construct(PackageManager $packageManager = null)
+    {
+        $this->packageManager = $packageManager ?? GeneralUtility::makeInstance(PackageManager::class);
+    }
 
     /**
      * Matcher registry of extension scanner.
@@ -369,7 +384,7 @@ class UpgradeController extends AbstractController
 
         return new JsonResponse([
             'success' => true,
-            'extensions' => array_keys($GLOBALS['TYPO3_LOADED_EXT']),
+            'extensions' => array_keys($this->packageManager->getActivePackages()),
             'html' => $view->render(),
         ]);
     }
@@ -383,9 +398,9 @@ class UpgradeController extends AbstractController
     public function extensionCompatTesterLoadExtLocalconfAction(ServerRequestInterface $request): ResponseInterface
     {
         $extension = $request->getParsedBody()['install']['extension'];
-        foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extKey => $extDetails) {
-            $this->extensionCompatTesterLoadExtLocalconfForExtension($extKey, $extDetails);
-            if ($extKey === $extension) {
+        foreach ($this->packageManager->getActivePackages() as $package) {
+            $this->extensionCompatTesterLoadExtLocalconfForExtension($package);
+            if ($package->getPackageKey() === $extension) {
                 break;
             }
         }
@@ -403,13 +418,14 @@ class UpgradeController extends AbstractController
     public function extensionCompatTesterLoadExtTablesAction(ServerRequestInterface $request): ResponseInterface
     {
         $extension = $request->getParsedBody()['install']['extension'];
-        foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extKey => $extDetails) {
+        $activePackages = $this->packageManager->getActivePackages();
+        foreach ($activePackages as $package) {
             // Load all ext_localconf files first
-            $this->extensionCompatTesterLoadExtLocalconfForExtension($extKey, $extDetails);
+            $this->extensionCompatTesterLoadExtLocalconfForExtension($package);
         }
-        foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extKey => $extDetails) {
-            $this->extensionCompatTesterLoadExtTablesForExtension($extKey, $extDetails);
-            if ($extKey === $extension) {
+        foreach ($activePackages as $package) {
+            $this->extensionCompatTesterLoadExtTablesForExtension($package);
+            if ($package->getPackageKey() === $extension) {
                 break;
             }
         }
@@ -699,10 +715,10 @@ class UpgradeController extends AbstractController
         $loadTcaService = GeneralUtility::makeInstance(LoadTcaService::class);
         $loadTcaService->loadExtensionTablesWithoutMigration();
         $baseTca = $GLOBALS['TCA'];
-        foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extensionKey => $extensionInformation) {
-            if ((is_array($extensionInformation) || $extensionInformation instanceof \ArrayAccess)
-                && $extensionInformation['ext_tables.php']
-            ) {
+        foreach ($this->packageManager->getActivePackages() as $package) {
+            $extensionKey = $package->getPackageKey();
+            $extTablesPath = $package->getPackagePath() . 'ext_tables.php';
+            if (@file_exists($extTablesPath)) {
                 $loadTcaService->loadSingleExtTablesFile($extensionKey);
                 $newTca = $GLOBALS['TCA'];
                 if ($newTca !== $baseTca) {
@@ -1091,22 +1107,22 @@ class UpgradeController extends AbstractController
      * Loads ext_localconf.php for a single extension. Method is a modified copy of
      * the original bootstrap method.
      *
-     * @param string $extensionKey
-     * @param array $extension
+     * @param Package $package
      */
-    protected function extensionCompatTesterLoadExtLocalconfForExtension($extensionKey, array $extension)
+    protected function extensionCompatTesterLoadExtLocalconfForExtension(Package $package)
     {
+        $extLocalconfPath = $package->getPackagePath() . 'ext_localconf.php';
         // This is the main array meant to be manipulated in the ext_localconf.php files
         // In general it is recommended to not rely on it to be globally defined in that
         // scope but to use $GLOBALS['TYPO3_CONF_VARS'] instead.
         // Nevertheless we define it here as global for backwards compatibility.
         global $TYPO3_CONF_VARS;
-        $_EXTKEY = $extensionKey;
-        if (isset($extension['ext_localconf.php']) && $extension['ext_localconf.php']) {
+        if (@file_exists($extLocalconfPath)) {
             // $_EXTKEY and $_EXTCONF are available in ext_localconf.php
             // and are explicitly set in cached file as well
+            $_EXTKEY = $package->getPackageKey();
             $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY] ?? null;
-            require $extension['ext_localconf.php'];
+            require $extLocalconfPath;
         }
     }
 
@@ -1114,11 +1130,11 @@ class UpgradeController extends AbstractController
      * Loads ext_tables.php for a single extension. Method is a modified copy of
      * the original bootstrap method.
      *
-     * @param string $extensionKey
-     * @param array $extension
+     * @param Package $package
      */
-    protected function extensionCompatTesterLoadExtTablesForExtension($extensionKey, array $extension)
+    protected function extensionCompatTesterLoadExtTablesForExtension(Package $package)
     {
+        $extTablesPath = $package->getPackagePath() . 'ext_tables.php';
         // In general it is recommended to not rely on it to be globally defined in that
         // scope, but we can not prohibit this without breaking backwards compatibility
         global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
@@ -1127,11 +1143,11 @@ class UpgradeController extends AbstractController
         global $_EXTKEY;
         // Load each ext_tables.php file of loaded extensions
         $_EXTKEY = $extensionKey;
-        if (isset($extension['ext_tables.php']) && $extension['ext_tables.php']) {
+        if (@file_exists($extTablesPath)) {
             // $_EXTKEY and $_EXTCONF are available in ext_tables.php
             // and are explicitly set in cached file as well
             $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY] ?? null;
-            require $extension['ext_tables.php'];
+            require $extTablesPath;
         }
     }
 

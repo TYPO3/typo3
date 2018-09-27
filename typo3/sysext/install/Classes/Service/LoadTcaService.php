@@ -93,21 +93,22 @@ class LoadTcaService
         global $PAGES_TYPES, $TBE_STYLES;
         global $_EXTKEY;
 
-        if (!isset($GLOBALS['TYPO3_LOADED_EXT'][$extensionKey])) {
+        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
+        try {
+            $package = $packageManager->getPackage($extensionKey);
+        } catch (\TYPO3\CMS\Core\Package\Exception\UnknownPackageException $e) {
             throw new \RuntimeException(
-                'Extension ' . $extensionKey . ' does not exist in TYPO3_LOADED_EXT',
+                'Extension ' . $extensionKey . ' is not active',
                 1477217619
             );
         }
 
-        $extensionInformation = $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey];
-        $_EXTKEY = $extensionKey;
-        // Load each ext_tables.php file of loaded extensions
-        if ((is_array($extensionInformation) || $extensionInformation instanceof \ArrayAccess)
-            && $extensionInformation['ext_tables.php']
-        ) {
+        $extTablesPath = $package->getPackagePath() . 'ext_tables.php';
+        // Load ext_tables.php file of the extension
+        if (@file_exists($extTablesPath)) {
             // $_EXTKEY and $_EXTCONF are available in ext_tables.php
             // and are explicitly set in cached file as well
+            $_EXTKEY = $extensionKey;
             $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY] ?? null;
             require $extensionInformation['ext_tables.php'];
         }

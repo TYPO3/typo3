@@ -143,6 +143,7 @@ class PackageManager implements SingletonInterface
         } catch (Exception\PackageManagerCacheUnavailableException $exception) {
             $this->loadPackageStates();
             $this->initializePackageObjects();
+            // @deprecated will be removed in v10
             $this->initializeCompatibilityLoadedExtArray();
             $this->saveToPackageCache();
         }
@@ -184,6 +185,7 @@ class PackageManager implements SingletonInterface
             $packageCache = [
                 'packageStatesConfiguration' => $this->packageStatesConfiguration,
                 'packageAliasMap' => $this->packageAliasMap,
+                // @deprecated will be removed in v10
                 'loadedExtArray' => $GLOBALS['TYPO3_LOADED_EXT'],
                 'composerNameToPackageKeyMap' => $this->composerNameToPackageKeyMap,
                 'packageObjects' => serialize($this->packages),
@@ -220,6 +222,7 @@ class PackageManager implements SingletonInterface
                 \stdClass::class,
             ]
         ]);
+        // @deprecated will be removed in v10
         $GLOBALS['TYPO3_LOADED_EXT'] = $packageCache['loadedExtArray'];
     }
 
@@ -299,6 +302,7 @@ class PackageManager implements SingletonInterface
      */
     protected function initializeCompatibilityLoadedExtArray()
     {
+        // @deprecated will be removed in v10
         $loadedExtObj = new \TYPO3\CMS\Core\Compatibility\LoadedExtensionsArray($this);
         $GLOBALS['TYPO3_LOADED_EXT'] = $loadedExtObj->toArray();
     }
@@ -608,6 +612,7 @@ class PackageManager implements SingletonInterface
     {
         $package = $this->registerPackageDuringRuntime($packageKey);
         $this->runtimeActivatedPackages[$package->getPackageKey()] = $package;
+        // @deprecated will be removed in v10
         if (!isset($GLOBALS['TYPO3_LOADED_EXT'][$package->getPackageKey()])) {
             $loadedExtArrayElement = new LoadedExtensionArrayElement($package);
             $GLOBALS['TYPO3_LOADED_EXT'][$package->getPackageKey()] = $loadedExtArrayElement->toArray();
@@ -790,6 +795,7 @@ class PackageManager implements SingletonInterface
         $packageStatesCode = "<?php\n$fileDescription\nreturn " . ArrayUtility::arrayExport($this->packageStatesConfiguration) . ";\n";
         GeneralUtility::writeFile($this->packageStatesPathAndFilename, $packageStatesCode, true);
 
+        // @deprecated will be removed in v10
         $this->initializeCompatibilityLoadedExtArray();
 
         GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($this->packageStatesPathAndFilename);

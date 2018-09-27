@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\Collection\StaticFileCollection;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileCollectionRepository;
@@ -51,7 +52,11 @@ class FilesContentObjectTest extends UnitTestCase
     protected function setUp()
     {
         $GLOBALS['SIM_ACCESS_TIME'] = 0;
+        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $templateService = $this->getMockBuilder(TemplateService::class)
+            ->setConstructorArgs([null, $packageManagerMock])
             ->setMethods(['getFileName', 'linkData'])
             ->getMock();
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)

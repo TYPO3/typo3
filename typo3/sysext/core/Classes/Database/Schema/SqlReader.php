@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Database\Schema;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
@@ -27,17 +28,24 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 class SqlReader
 {
     /**
-     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     * @var Dispatcher
      */
     protected $signalSlotDispatcher;
 
     /**
+     * @var PackageManager
+     */
+    protected $packageManager;
+
+    /**
      * @param Dispatcher $signalSlotDispatcher
+     * @param PackageManager $packageManager
      * @throws \InvalidArgumentException
      */
-    public function __construct(Dispatcher $signalSlotDispatcher = null)
+    public function __construct(Dispatcher $signalSlotDispatcher = null, PackageManager $packageManager = null)
     {
         $this->signalSlotDispatcher = $signalSlotDispatcher ?: GeneralUtility::makeInstance(Dispatcher::class);
+        $this->packageManager = $packageManager ?? GeneralUtility::makeInstance(PackageManager::class);
     }
 
     /**
@@ -54,15 +62,13 @@ class SqlReader
         $sqlString = [];
 
         // Find all ext_tables.sql of loaded extensions
-        foreach ((array)$GLOBALS['TYPO3_LOADED_EXT'] as $extensionConfiguration) {
-            if (!is_array($extensionConfiguration) && !$extensionConfiguration instanceof \ArrayAccess) {
-                continue;
+        foreach ($this->packageManager->getActivePackages() as $package) {
+            $packagePath = $package->getPackagePath();
+            if (@file_exists($packagePath . 'ext_tables.sql')) {
+                $sqlString[] = file_get_contents($packagePath . 'ext_tables.sql');
             }
-            if ($extensionConfiguration['ext_tables.sql']) {
-                $sqlString[] = file_get_contents($extensionConfiguration['ext_tables.sql']);
-            }
-            if ($withStatic && $extensionConfiguration['ext_tables_static+adt.sql']) {
-                $sqlString[] = file_get_contents($extensionConfiguration['ext_tables_static+adt.sql']);
+            if ($withStatic && @file_exists($packagePath . 'ext_tables_static+adt.sql')) {
+                $sqlString[] = file_get_contents($packagePath . 'ext_tables_static+adt.sql');
             }
         }
 

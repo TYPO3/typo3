@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Tests\UnitDeprecated\TypoScript;
  */
 
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -35,7 +36,8 @@ class TemplateServiceTest extends UnitTestCase
      */
     protected function setUp(): void
     {
-        $this->templateService = new TemplateService(new Context());
+        $packageManagerProphecy = $this->prophesize(PackageManager::class);
+        $this->templateService = new TemplateService(new Context(), $packageManagerProphecy->reveal());
     }
 
     /**

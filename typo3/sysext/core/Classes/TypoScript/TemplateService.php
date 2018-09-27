@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\AbstractRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException;
@@ -369,11 +370,18 @@ class TemplateService
     protected $context;
 
     /**
-     * @param Context|null $context
+     * @var PackageManager
      */
-    public function __construct(Context $context = null)
+    protected $packageManager;
+
+    /**
+     * @param Context|null $context
+     * @param PackageManager|null $packageManager
+     */
+    public function __construct(Context $context = null, PackageManager $packageManager = null)
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
+        $this->packageManager = $packageManager ?? GeneralUtility::makeInstance(PackageManager::class);
         $this->initializeDatabaseQueryRestrictions();
         if ($this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false) || $GLOBALS['SIM_ACCESS_TIME'] !== $GLOBALS['ACCESS_TIME']) {
             // Set the simulation flag, if simulation is detected!
@@ -1009,16 +1017,28 @@ class TemplateService
     {
         $this->extensionStaticsProcessed = true;
 
-        // @todo Change to use new API
-        foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extKey => $files) {
-            if ((is_array($files) || $files instanceof \ArrayAccess)
-                && (
-                    !empty($files['ext_typoscript_constants.txt'])
-                    || !empty($files['ext_typoscript_constants.typoscript'])
-                    || !empty($files['ext_typoscript_setup.txt'])
-                    || !empty($files['ext_typoscript_setup.typoscript'])
-                )
-            ) {
+        foreach ($this->packageManager->getActivePackages() as $package) {
+            $extKey = $package->getPackageKey();
+            $packagePath = $package->getPackagePath();
+            $filesToCheck = [
+                'ext_typoscript_constants.txt',
+                'ext_typoscript_constants.typoscript',
+                'ext_typoscript_setup.txt',
+                'ext_typoscript_setup.typoscript',
+            ];
+            $files = [];
+            $hasExtensionStatics = false;
+            foreach ($filesToCheck as $file) {
+                $path = $packagePath . $file;
+                if (@file_exists($path)) {
+                    $files[$file] = $path;
+                    $hasExtensionStatics = true;
+                } else {
+                    $files[$file] = null;
+                }
+            }
+
+            if ($hasExtensionStatics) {
                 $mExtKey = str_replace('_', '', $extKey);
                 $constants = '';
                 $config = '';
@@ -1046,7 +1066,7 @@ class TemplateService
                     $pid,
                     'ext_' . $mExtKey,
                     $templateID,
-                    ExtensionManagementUtility::extPath($extKey)
+                    $packagePath
                 );
             }
         }
