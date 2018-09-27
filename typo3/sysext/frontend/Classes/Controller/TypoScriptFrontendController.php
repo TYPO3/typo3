@@ -428,7 +428,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $forceTemplateParsing = false;
 
     /**
-     * The array which cHash_calc is based on, see ->makeCacheHash().
+     * The array which cHash_calc is based on, see PageParameterValidator class.
      * @var array
      */
     public $cHash_array = [];
@@ -2229,22 +2229,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * This is used to cache pages with more parameters than just id and type.
      *
      * @see reqCHash()
-     * @param ServerRequestInterface $request
+     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. This validation is done in the PageParameterValidator PSR-15 middleware.
      */
-    public function makeCacheHash(ServerRequestInterface $request = null)
+    public function makeCacheHash()
     {
-        if ($request === null) {
-            trigger_error('TSFE->makeCacheHash() requires a ServerRequestInterface as first argument, add this argument in order to avoid this deprecation error.', E_USER_DEPRECATED);
-        }
+        trigger_error('TSFE->makeCacheHash() will be removed in TYPO3 v10.0, as this is now handled in the PSR-15 middleware.', E_USER_DEPRECATED);
         // No need to test anything if caching was already disabled.
         if ($this->no_cache && !$GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError']) {
             return;
         }
-        if ($request === null) {
-            $GET = GeneralUtility::_GET();
-        } else {
-            $GET = $request->getQueryParams();
-        }
+        $GET = GeneralUtility::_GET();
         if ($this->cHash && is_array($GET)) {
             // Make sure we use the page uid and not the page alias
             $GET['id'] = $this->id;
@@ -2272,9 +2266,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Will disable caching if the cHash value was not set.
-     * This function should be called to check the _existence_ of "&cHash" whenever a plugin generating cacheable output is using extra GET variables. If there _is_ a cHash value the validation of it automatically takes place in makeCacheHash() (see above)
+     * This function should be called to check the _existence_ of "&cHash" whenever a plugin generating cacheable output is using extra GET variables. If there _is_ a cHash value the validation of it automatically takes place in \TYPO3\CMS\Frontend\Middleware\PageParameterValidator
      *
-     * @see makeCacheHash(), \TYPO3\CMS\Frontend\Plugin\AbstractPlugin::pi_cHashCheck()
+     * @see \TYPO3\CMS\Frontend\Plugin\AbstractPlugin::pi_cHashCheck()
      */
     public function reqCHash()
     {

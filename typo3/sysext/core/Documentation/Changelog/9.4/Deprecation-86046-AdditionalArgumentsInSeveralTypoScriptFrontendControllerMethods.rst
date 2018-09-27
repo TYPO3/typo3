@@ -11,7 +11,6 @@ Description
 
 The following public methods within :php:`TypoScriptFrontendController` now expect an argument:
 
-* :php:`makeCacheHash(ServerRequestInterface $request)`
 * :php:`calculateLinkVars(array $queryParams)`
 * :php:`preparePageContentGeneration(ServerRequestInterface $request)`
 

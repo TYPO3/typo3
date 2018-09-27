@@ -3572,4 +3572,11 @@ return [
             'Deprecation-86406-TCATypeGroupInternal_typeFileAndFile_reference.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->makeCacheHash' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86411-TSFE-makeCacheHash.rst'
+        ],
+    ],
 ];

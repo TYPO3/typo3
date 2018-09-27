@@ -55,7 +55,7 @@ class PageResolverTest extends UnitTestCase
 
     protected function setUp(): void
     {
-        $this->controller = $this->getAccessibleMock(TypoScriptFrontendController::class, ['getSiteScript', 'makeCacheHash', 'determineId', 'isBackendUserLoggedIn'], [], '', false);
+        $this->controller = $this->getAccessibleMock(TypoScriptFrontendController::class, ['getSiteScript', 'determineId', 'isBackendUserLoggedIn'], [], '', false);
 
         // A request handler which expects a site with some more details are found.
         $this->responseOutputHandler = new class implements RequestHandlerInterface {

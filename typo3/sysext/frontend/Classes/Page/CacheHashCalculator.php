@@ -108,7 +108,7 @@ class CacheHashCalculator implements SingletonInterface
      * @param string $queryString Query-parameters: "&xxx=yyy&zzz=uuu
      * @return array Array with key/value pairs of query-parameters WITHOUT a certain list of
      * @throws \RuntimeException
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::makeCacheHash(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink()
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink()
      */
     public function getRelevantParameters($queryString)
     {
