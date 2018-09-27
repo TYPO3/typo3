@@ -540,6 +540,7 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
      * Callback method of addDataEvaluatesUserCondition. A USER condition
      * Throws an exception if data is correct!
      *
+     * @param array $parameter
      * @throws \RuntimeException if data is ok
      */
     public function addDataEvaluatesUserConditionCallback(array $parameter)
@@ -550,11 +551,59 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
             'conditionParameters' => [
                 0 => 'more',
                 1 => 'arguments',
-            ]
+            ],
         ];
         if ($expected === $parameter) {
             throw new \RuntimeException('testing', 1488130499);
         }
+    }
+
+    /**
+     * @test
+     */
+    public function addDataResolvesAllUserParameters()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'USER:' . self::class . '->addDataResolvesAllUserParametersCallback:some:more:info',
+                        'config' => [
+                            'type' => 'input',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = $input;
+        unset($expected['processedTca']['columns']['field_1']['displayCond']);
+
+        $this->assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
+    }
+
+    /**
+     * Callback method of addDataResolvesAllUserParameters. A USER condition
+     * receives all condition parameter!
+     *
+     * @param array $parameter
+     * @throws \RuntimeException if condition parameter not resolved correctly
+     * @return bool
+     */
+    public function addDataResolvesAllUserParametersCallback(array $parameter)
+    {
+        $expected = [
+            0 => 'some',
+            1 => 'more',
+            2 => 'info',
+        ];
+
+        if ($expected !== $parameter['conditionParameters']) {
+            throw new \RuntimeException('testing', 1538055997);
+        }
+
+        return true;
     }
 
     /**
@@ -788,7 +837,7 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                         ],
                     ],
                 ],
-            ]
+            ],
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1481634649);
@@ -1218,8 +1267,8 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                                             'ROOT' => [
                                                 'el' => [
                                                     'flexField_1' => [],
-                                                ]
-                                            ]
+                                                ],
+                                            ],
                                         ],
                                         'sheet_2' => [
                                             'ROOT' => [
@@ -1266,8 +1315,8 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                                             'ROOT' => [
                                                 'el' => [
                                                     'flexField_1' => [],
-                                                ]
-                                            ]
+                                                ],
+                                            ],
                                         ],
                                         'sheet_2' => [
                                             'ROOT' => [
@@ -1314,8 +1363,8 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                                             'ROOT' => [
                                                 'el' => [
                                                     'flexField.1' => [],
-                                                ]
-                                            ]
+                                                ],
+                                            ],
                                         ],
                                         'sheet_2' => [
                                             'ROOT' => [
@@ -1362,8 +1411,8 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                                             'ROOT' => [
                                                 'el' => [
                                                     'flexField.1' => [],
-                                                ]
-                                            ]
+                                                ],
+                                            ],
                                         ],
                                         'sheet_2' => [
                                             'ROOT' => [
@@ -3408,7 +3457,7 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                                                         'FIELD:sheet_1.field_1:=:LIST',
                                                         'FIELD:sheet_1.field_1:!=:foo',
                                                     ],
-                                                ] ,
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -3588,17 +3637,17 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
             'Field value comparison of 1 against multi-value field of 5 returns true' => [
                 'FIELD:content:BIT:1',
                 ['content' => '5'],
-                true
+                true,
             ],
             'Field value comparison of 2 against multi-value field of 5 returns false' => [
                 'FIELD:content:BIT:2',
                 ['content' => '5'],
-                false
+                false,
             ],
             'Field value of 5 negated comparison against multi-value field of 5 returns false' => [
                 'FIELD:content:!BIT:5',
                 ['content' => '5'],
-                false
+                false,
             ],
             'Field value comparison for required value is false for different value' => [
                 'FIELD:foo:REQ:FALSE',
@@ -3654,7 +3703,7 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                 'VERSION:IS:TRUE',
                 [
                     'uid' => 42,
-                    'pid' => -1
+                    'pid' => -1,
                 ],
                 true,
             ],
@@ -3662,7 +3711,7 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                 'VERSION:IS:FALSE',
                 [
                     'uid' => 42,
-                    'pid' => 1
+                    'pid' => 1,
                 ],
                 true,
             ],
@@ -3682,7 +3731,7 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                     ],
                 ],
                 [
-                    'testField' => 10
+                    'testField' => 10,
                 ],
                 true,
             ],
@@ -3691,10 +3740,10 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                     'AND' => [
                         'FIELD:testField:>:9',
                         'FIELD:testField:<:11',
-                    ]
+                    ],
                 ],
                 [
-                    'testField' => 99
+                    'testField' => 99,
                 ],
                 false,
             ],
@@ -3706,7 +3755,7 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                     ],
                 ],
                 [
-                    'testField' => 10
+                    'testField' => 10,
                 ],
                 true,
             ],
@@ -3718,7 +3767,7 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                     ],
                 ],
                 [
-                    'testField' => 99
+                    'testField' => 99,
                 ],
                 false,
             ],
@@ -3733,7 +3782,7 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                     ],
                 ],
                 [
-                    'testField' => 10
+                    'testField' => 10,
                 ],
                 true,
             ],
@@ -3748,7 +3797,7 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                     ],
                 ],
                 [
-                    'testField' => -999
+                    'testField' => -999,
                 ],
                 false,
             ],
@@ -3772,10 +3821,10 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                         'displayCond' => $condition,
                         'config' => [
                             'type' => 'input',
-                        ]
+                        ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
 
         $expected = $input;
@@ -3809,7 +3858,17 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                 ],
             ],
         ];
-        $input['databaseRow'] = $record ?: ['testField' => ['key' => $record['testField']]];
+        $input['databaseRow'] = $record;
+        if (!empty($record['testField'])) {
+            $input['databaseRow'] = [
+                'testField' => [
+                    'key' => $record['testField'],
+                ],
+            ];
+        }
+
+        $backendUserAuthenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserAuthenticationProphecy->reveal();
 
         $expected = $input;
         if ($expectedResult) {
@@ -3834,10 +3893,10 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                         'displayCond' => 'HIDE_FOR_NON_ADMINS',
                         'config' => [
                             'type' => 'input',
-                        ]
+                        ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
 
         /** @var BackendUserAuthentication|ObjectProphecy backendUserProphecy */
@@ -3864,10 +3923,10 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                         'displayCond' => 'HIDE_FOR_NON_ADMINS',
                         'config' => [
                             'type' => 'input',
-                        ]
+                        ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
 
         /** @var BackendUserAuthentication|ObjectProphecy backendUserProphecy */
