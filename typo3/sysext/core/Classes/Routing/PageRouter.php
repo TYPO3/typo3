@@ -66,20 +66,13 @@ class PageRouter implements RouterInterface
     protected $site;
 
     /**
-     * @var array
-     */
-    protected $configuration;
-
-    /**
      * A page router is always bound to a specific site.
      *
      * @param Site $site
-     * @param array $configuration
      */
-    public function __construct(Site $site, array $configuration)
+    public function __construct(Site $site)
     {
         $this->site = $site;
-        $this->configuration = $configuration;
     }
 
     /**

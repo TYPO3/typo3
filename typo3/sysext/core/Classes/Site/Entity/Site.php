@@ -343,7 +343,7 @@ class Site implements SiteInterface
      */
     public function getRouter(): RouterInterface
     {
-        return new PageRouter($this, $this->configuration['routing'] ?? []);
+        return GeneralUtility::makeInstance(PageRouter::class, $this);
     }
 
     /**
