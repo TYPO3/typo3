@@ -67,6 +67,26 @@ define(['jquery', 'TYPO3/CMS/Backend/InfoWindow'], function($, InfoWindow) {
       openFileInfoPopup(identifier);
     });
 
+    $('a.btn.filelist-file-copy').click(function(event) {
+        event.preventDefault();
+
+        var url = $(this).attr('data-url');
+        var redirectUrl = $(this).attr('data-url');
+        if (redirectUrl) {
+            redirectUrl = top.rawurlencode(redirectUrl);
+        } else {
+            redirectUrl = top.rawurlencode(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
+        }
+        top.list_frame.location.href = url + '&redirect=' + redirectUrl;
+    });
+
+    $('a.btn.filelist-file-cut').click(function(event) {
+        event.preventDefault();
+
+        var url = $(this).attr('data-url');
+        top.list_frame.location.href = url;
+    });
+
   });
 
   /**

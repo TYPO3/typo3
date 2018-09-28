@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Filelist;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -231,11 +232,58 @@ class FileFacade
     /**
      * @return bool
      */
+    public function isCopyable()
+    {
+        $method = 'checkActionPermission';
+        if (is_callable([$this->resource, $method])) {
+            return call_user_func_array([$this->resource, $method], ['copy']);
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCuttable()
+    {
+        $method = 'checkActionPermission';
+        if (is_callable([$this->resource, $method])) {
+            return call_user_func_array([$this->resource, $method], ['move']);
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
     public function getIsDeletable()
     {
         $method = 'checkActionPermission';
         if (is_callable([$this->resource, $method])) {
             return call_user_func_array([$this->resource, $method], ['delete']);
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSelected()
+    {
+        $fullIdentifier = $this->getIdentifier();
+        $md5 = GeneralUtility::shortMD5($fullIdentifier);
+
+        /** @var Clipboard $clipboard */
+        $clipboard = GeneralUtility::makeInstance(Clipboard::class);
+        $clipboard->initializeClipboard();
+
+        $isSel = $clipboard->isSelected('_FILE', $md5);
+
+        if ($isSel) {
+            return $isSel;
         }
 
         return false;

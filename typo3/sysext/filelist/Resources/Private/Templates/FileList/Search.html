@@ -143,6 +143,42 @@
 										<span class="btn btn-default disabled"><core:icon identifier="empty-empty" /></span>
 									</f:else>
 								</f:if>
+
+								<f:if condition="{file.copyable}">
+									<f:then>
+										<a href="#" class="btn btn-default filelist-file-copy"
+										   title="{f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy' )}"
+										   data-url="{fl:uri.copyCutFile( file:file.resource, copyOrCut: 'copy' )}"
+										   data-redirect-url="{f:uri.action( action:'search', arguments:{ searchWord:'{searchWord->f:format.htmlentities()}' } )}"
+										>
+											<f:if condition="{file.selected} == 'copy'">
+												<f:then><core:icon identifier="actions-edit-copy-release" /></f:then>
+												<f:else><core:icon identifier="actions-edit-copy" /></f:else>
+											</f:if>
+										</a>
+									</f:then>
+									<f:else>
+										<span class="btn btn-default disabled"><core:icon identifier="empty-empty" /></span>
+									</f:else>
+								</f:if>
+								<f:if condition="{file.cuttable}">
+									<f:then>
+										<a href="#" class="btn btn-default filelist-file-cut"
+										   title="{f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut' )}"
+										   data-url="{fl:uri.copyCutFile( file:file.resource, copyOrCut: 'cut' )}"
+										>
+											<f:if condition="{file.selected} == 'cut'">
+												<f:then><core:icon identifier="actions-edit-cut-release" /></f:then>
+												<f:else><core:icon identifier="actions-edit-cut" /></f:else>
+											</f:if>
+										</a>
+									</f:then>
+									<f:else>
+										<span class="btn btn-default disabled"><core:icon identifier="empty-empty" /></span>
+									</f:else>
+								</f:if>
+
+
 								<f:if condition="{file.isDeletable}">
 									<f:then>
 										<a href="#" class="btn btn-default t3js-filelist-delete"
