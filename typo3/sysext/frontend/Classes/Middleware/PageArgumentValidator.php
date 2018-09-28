@@ -28,9 +28,9 @@ use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 
 /**
- * This middleware validates given request parameters.
+ * This middleware validates given request parameters against the common "cHash" functionality.
  */
-class PageParameterValidator implements MiddlewareInterface
+class PageArgumentValidator implements MiddlewareInterface
 {
 
     /**

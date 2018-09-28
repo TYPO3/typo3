@@ -106,8 +106,8 @@ return [
                 'typo3/cms-frontend/site',
             ]
         ],
-        'typo3/cms-frontend/page-parameter-validator' => [
-            'target' => \TYPO3\CMS\Frontend\Middleware\PageParameterValidator::class,
+        'typo3/cms-frontend/page-argument-validator' => [
+            'target' => \TYPO3\CMS\Frontend\Middleware\PageArgumentValidator::class,
             'after' => [
                 'typo3/cms-frontend/page-resolver',
             ],
@@ -119,7 +119,7 @@ return [
         'typo3/cms-frontend/prepare-tsfe-rendering' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\PrepareTypoScriptFrontendRendering::class,
             'after' => [
-                'typo3/cms-frontend/page-parameter-validator',
+                'typo3/cms-frontend/page-argument-validator',
             ]
         ],
         /** internal: do not use or reference this middleware in your own code, as this will be possibly be removed */

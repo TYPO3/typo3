@@ -52,7 +52,7 @@ class CacheHashCalculator implements SingletonInterface
      */
     public function __construct()
     {
-        $this->setConfiguration($GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']);
+        $this->setConfiguration($GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash'] ?? []);
     }
 
     /**
