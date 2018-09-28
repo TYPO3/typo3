@@ -843,7 +843,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                             . '&id=' . '&SET[function]=search' . '&SET[search]=query'
                             . '&storeControl[STORE]=-' . $record['uid'] . '&storeControl[LOAD]=1')
                         . '">'
-                        . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . ' '
+                        . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . ' '
                         . $this->getLanguageService()->getLL(($queryIsEmpty ? 'action_createQuery'
                         : 'action_editQuery')) . '</a>';
                 }
