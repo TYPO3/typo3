@@ -1142,7 +1142,7 @@ class UpgradeController extends AbstractController
         global $PAGES_TYPES, $TBE_STYLES;
         global $_EXTKEY;
         // Load each ext_tables.php file of loaded extensions
-        $_EXTKEY = $extensionKey;
+        $_EXTKEY = $package->getPackageKey();
         if (@file_exists($extTablesPath)) {
             // $_EXTKEY and $_EXTCONF are available in ext_tables.php
             // and are explicitly set in cached file as well
