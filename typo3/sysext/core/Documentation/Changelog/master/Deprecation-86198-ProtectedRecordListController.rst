@@ -22,10 +22,8 @@ The following properties changed their visibility from public to protected and s
 * :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->cmd`
 * :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->cmd_table`
 * :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->perms_clause`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->modTSconfig`
 * :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->pageinfo`
 * :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->MOD_MENU`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->MOD_SETTINGS`
 * :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->content`
 * :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->body`
 * :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->imagemode`

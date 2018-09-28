@@ -66,10 +66,8 @@ class RecordListController
         'cmd' => 'Using RecordListController::$cmd is deprecated and will not be possible anymore in TYPO3 v10.',
         'cmd_table' => 'Using RecordListController::$cmd_table is deprecated and will not be possible anymore in TYPO3 v10.',
         'perms_clause' => 'Using RecordListController::$perms_clause is deprecated and will not be possible anymore in TYPO3 v10.',
-        'modTSconfig' => 'Using RecordListController::$modTSconfig is deprecated and will not be possible anymore in TYPO3 v10.',
         'pageinfo' => 'Using RecordListController::$pageinfo is deprecated and will not be possible anymore in TYPO3 v10.',
         'MOD_MENU' => 'Using RecordListController::$MOD_MENU is deprecated and will not be possible anymore in TYPO3 v10.',
-        'MOD_SETTINGS' => 'Using RecordListController::$MOD_SETTINGS is deprecated and will not be possible anymore in TYPO3 v10.',
         'content' => 'Using RecordListController::$content is deprecated and will not be possible anymore in TYPO3 v10.',
         'body' => 'Using RecordListController::$body is deprecated and will not be possible anymore in TYPO3 v10.',
         'imagemode' => 'Using RecordListController::$imagemode is deprecated, property will be removed in TYPO3 v10.',
@@ -176,8 +174,9 @@ class RecordListController
      * Module TSconfig
      *
      * @var array
+     * @internal Still used by DatabaseRecordList via $GLOBALS['SOBE']
      */
-    protected $modTSconfig;
+    public $modTSconfig;
 
     /**
      * Current ids page record
@@ -205,8 +204,9 @@ class RecordListController
      * Module settings (session variable)
      *
      * @var string[]
+     * @internal Still used by DatabaseRecordList via $GLOBALS['SOBE']
      */
-    protected $MOD_SETTINGS = [];
+    public $MOD_SETTINGS = [];
 
     /**
      * Module output accumulation
