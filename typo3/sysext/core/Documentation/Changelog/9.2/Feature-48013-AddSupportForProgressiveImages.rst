@@ -4,7 +4,7 @@
 Feature: #48013 - Add support for progressive images
 ====================================================
 
-See :issue:`83724`
+See :issue:`48013`
 
 Description
 ===========
