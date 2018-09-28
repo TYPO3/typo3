@@ -245,6 +245,16 @@ return [
         ],
 
 
+        'group_file_reference_1' => [
+            'exclude' => 1,
+            'label' => 'group_file_reference_1',
+            'config' => [
+                'type' => 'group',
+                'internal_type' => 'file_reference',
+            ],
+        ],
+
+
         'group_folder_1' => [
             'exclude' => 1,
             'label' => 'group_folder_1 desription',
@@ -407,6 +417,8 @@ return [
                     group_db_1, group_db_2, group_db_9, group_db_3, group_db_8, group_db_4, group_db_5, group_db_7,
                 --div--;internal_type=file,
                     group_file_1, group_file_2, group_file_3,
+                --div--;internal_type=file_reference,
+                    group_file_reference_1,
                 --div--;internal_type=folder,
                     group_folder_1,
                 --div--;in flex,
