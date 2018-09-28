@@ -501,7 +501,8 @@ return [
                 'minitems' => 0,
                 'suggestOptions' => [
                     'default' => [
-                        'additionalSearchFields' => 'nav_title, alias, url'
+                        'additionalSearchFields' => 'nav_title, alias, url',
+                        'addWhere' => ' AND pages.uid != ###THIS_UID###'
                     ]
                 ],
                 'default' => 0
