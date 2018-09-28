@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 use PHPUnit\Framework\Exception;
 use Prophecy\Argument;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
@@ -32,6 +33,7 @@ use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\DebugUtility;
@@ -1688,6 +1690,28 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->assertEquals('0,-1', $this->subject->getData('context:frontend.user:groupIds'));
         $this->assertEquals(false, $this->subject->getData('context:frontend.user:isLoggedIn'));
         $this->assertEquals(false, $this->subject->getData('context:frontend.user:foozball'));
+    }
+
+    /**
+     * Checks if getData() works with type "context"
+     *
+     * @test
+     */
+    public function getDataWithTypeSite(): void
+    {
+        $site = new Site('my-site', 123, [
+           'base' => 'http://example.com',
+           'custom' => [
+               'config' => [
+                   'nested' => 'yeah'
+               ]
+           ]
+        ]);
+        $serverRequest = $this->prophesize(ServerRequestInterface::class);
+        $serverRequest->getAttribute('site')->willReturn($site);
+        $GLOBALS['TYPO3_REQUEST'] = $serverRequest->reveal();
+        $this->assertEquals('http://example.com', $this->subject->getData('site:base'));
+        $this->assertEquals('yeah', $this->subject->getData('site:custom.config.nested'));
     }
 
     /**

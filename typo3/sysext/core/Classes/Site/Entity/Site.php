@@ -82,7 +82,7 @@ class Site implements SiteInterface
         $this->identifier = $identifier;
         $this->rootPageId = $rootPageId;
         $this->configuration = $configuration;
-        $configuration['languages'] = $configuration['languages'] ?: [
+        $configuration['languages'] = !empty($configuration['languages']) ? $configuration['languages'] : [
             0 => [
                 'languageId' => 0,
                 'title' => 'Default',
