@@ -116,7 +116,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             ['BE/loginSecurityLevel', $current]
         ];
         $closure = function () {
-            throw new MissingArrayPathException('Path does not exist in array', 1476109311);
+            throw new MissingArrayPathException('Path does not exist in array', 1538160231);
         };
 
         $this->createConfigurationManagerWithMockedMethods(
@@ -143,6 +143,81 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
 
         $silentConfigurationUpgradeServiceInstance->_call('configureBackendLoginSecurity');
+    }
+
+    /**
+     * Dataprovider for configureBackendLoginSecurity
+     *
+     * @return array
+     */
+    public function configureFrontendLoginSecurityLocalconfiguration(): array
+    {
+        return [
+            ['', 'rsa', true, false],
+            ['normal', 'rsa', true, true],
+            ['rsa', 'normal', false, true],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider configureFrontendLoginSecurityLocalconfiguration
+     * @param string $current
+     * @param string $setting
+     * @param bool $isPackageActive
+     * @param bool $hasLocalConfig
+     */
+    public function configureFrontendLoginSecurity($current, $setting, $isPackageActive, $hasLocalConfig)
+    {
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
+            SilentConfigurationUpgradeService::class,
+            ['dummy'],
+            [],
+            '',
+            false
+        );
+
+        /** @var $packageManager PackageManager|\PHPUnit_Framework_MockObject_MockObject */
+        $packageManager = $this->createMock(PackageManager::class);
+        $packageManager->expects($this->any())
+            ->method('isPackageActive')
+            ->will($this->returnValue($isPackageActive));
+        ExtensionManagementUtility::setPackageManager($packageManager);
+
+        $currentLocalConfiguration = [
+            ['FE/loginSecurityLevel', $current]
+        ];
+        $closure = function () {
+            throw new MissingArrayPathException('Path does not exist in array', 1476109311);
+        };
+
+        $this->createConfigurationManagerWithMockedMethods(
+            [
+                'getLocalConfigurationValueByPath',
+                'setLocalConfigurationValueByPath',
+            ]
+        );
+        if ($hasLocalConfig) {
+            $this->configurationManager->expects($this->once())
+                ->method('getLocalConfigurationValueByPath')
+                ->will($this->returnValueMap($currentLocalConfiguration));
+        } else {
+            $this->configurationManager->expects($this->once())
+                ->method('getLocalConfigurationValueByPath')
+                ->will($this->returnCallback($closure));
+        }
+        if ($isPackageActive === false) {
+            $this->configurationManager->expects($this->once())
+                ->method('setLocalConfigurationValueByPath')
+                ->with($this->equalTo('FE/loginSecurityLevel'), $this->equalTo($setting));
+
+            $this->expectException(ConfigurationChangedException::class);
+        }
+
+        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
+
+        $silentConfigurationUpgradeServiceInstance->_call('configureFrontendLoginSecurity');
     }
 
     /**

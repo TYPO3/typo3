@@ -152,6 +152,7 @@ class SilentConfigurationUpgradeService
     {
         $this->generateEncryptionKeyIfNeeded();
         $this->configureBackendLoginSecurity();
+        $this->configureFrontendLoginSecurity();
         $this->migrateImageProcessorSetting();
         $this->transferHttpSettings();
         $this->disableImageMagickDetailSettingsIfImageMagickIsDisabled();
@@ -215,6 +216,26 @@ class SilentConfigurationUpgradeService
                 $rsaauthLoaded ? 'rsa' : 'normal'
             );
             $this->throwConfigurationChangedException();
+        }
+    }
+
+    /**
+     * Frontend login security is set to normal in case
+     * any other value is set while ext:rsaauth is not loaded.
+     *
+     * @throws ConfigurationChangedException
+     */
+    protected function configureFrontendLoginSecurity()
+    {
+        $rsaauthLoaded = ExtensionManagementUtility::isLoaded('rsaauth');
+        try {
+            $currentLoginSecurityLevelValue = $this->configurationManager->getLocalConfigurationValueByPath('FE/loginSecurityLevel');
+            if (!$rsaauthLoaded && $currentLoginSecurityLevelValue !== 'normal') {
+                $this->configurationManager->setLocalConfigurationValueByPath('FE/loginSecurityLevel', 'normal');
+                $this->throwConfigurationChangedException();
+            }
+        } catch (MissingArrayPathException $e) {
+            // no value set, just ignore
         }
     }
 
