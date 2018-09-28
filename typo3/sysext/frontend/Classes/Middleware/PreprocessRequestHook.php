@@ -39,6 +39,14 @@ class PreprocessRequestHook implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        // Legacy functionality to check if any hook modified global GET/POST
+        // This is a safety net, see RequestHandler for how this is validated.
+        // This information is just a compat layer which will be removed in TYPO3 v10.0.
+        $request = $request->withAttribute('_originalGetParameters', $_GET);
+        if ($request->getMethod() === 'POST') {
+            $request = $request->withAttribute('_originalPostParameters', $_POST);
+        }
+        // Set original parameters
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'])) {
             trigger_error('The "preprocessRequest" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'] as $hookFunction) {

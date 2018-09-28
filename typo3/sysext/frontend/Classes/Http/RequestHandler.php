@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -75,6 +76,63 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
     }
 
     /**
+     * Puts parameters that have been added or removed from the global _GET or _POST arrays
+     * into the given request (however, the PSR-7 request information takes precedence).
+     *
+     * @param ServerRequestInterface $request
+     * @return ServerRequestInterface
+     */
+    protected function addModifiedGlobalsToIncomingRequest(ServerRequestInterface $request): ServerRequestInterface
+    {
+        $originalGetParameters = $request->getAttribute('_originalGetParameters', null);
+        if ($originalGetParameters !== null && !empty($_GET) && $_GET !== $originalGetParameters) {
+            // Find out what has been changed.
+            $modifiedGetParameters = ArrayUtility::arrayDiffAssocRecursive($_GET ?? [], $originalGetParameters);
+            if (!empty($modifiedGetParameters)) {
+                $queryParams = array_replace_recursive($modifiedGetParameters, $request->getQueryParams());
+                $request = $request->withQueryParams($queryParams);
+                $GLOBALS['TYPO3_REQUEST'] = $request;
+                $this->timeTracker->setTSlogMessage('GET parameters have been modified during Request building in a hook.');
+            }
+        }
+        // do same for $_POST if the request is a POST request
+        $originalPostParameters = $request->getAttribute('_originalPostParameters', null);
+        if ($request->getMethod() === 'POST' && $originalPostParameters !== null && !empty($_POST) && $_POST !== $originalPostParameters) {
+            // Find out what has been changed
+            $modifiedPostParameters = ArrayUtility::arrayDiffAssocRecursive($_POST ?? [], $originalPostParameters);
+            if (!empty($modifiedPostParameters)) {
+                $parsedBody = array_replace_recursive($modifiedPostParameters, $request->getParsedBody());
+                $request = $request->withParsedBody($parsedBody);
+                $GLOBALS['TYPO3_REQUEST'] = $request;
+                $this->timeTracker->setTSlogMessage('POST parameters have been modified during Request building in a hook.');
+            }
+        }
+        return $request;
+    }
+
+    /**
+     * Sets the global GET and POST to the values, so if people access $_GET and $_POST
+     * Within hooks starting NOW (e.g. cObject), they get the "enriched" data from query params.
+     *
+     * This needs to be run after the request object has been enriched with modified GET/POST variables.
+     *
+     * @param ServerRequestInterface $request
+     * @internal this safety net will be removed in TYPO3 v10.
+     */
+    protected function resetGlobalsToCurrentRequest(ServerRequestInterface $request)
+    {
+        if ($request->getQueryParams() !== $_GET) {
+            $queryParams = $request->getQueryParams();
+            $_GET = $queryParams;
+            $GLOBALS['HTTP_GET_VARS'] = $_GET;
+        }
+        if ($request->getMethod() === 'POST' && $request->getParsedBody() !== $_POST) {
+            $parsedBody = $request->getParsedBody();
+            $_POST = $parsedBody;
+            $GLOBALS['HTTP_POST_VARS'] = $_POST;
+        }
+    }
+    /**
      * Handles a frontend request, after finishing running middlewares
      *
      * @param ServerRequestInterface $request
@@ -86,6 +144,10 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         $this->timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
         /** @var TypoScriptFrontendController $controller */
         $controller = $GLOBALS['TSFE'];
+
+        // safety net, will be removed in TYPO3 v10.0. Aligns $_GET/$_POST to the incoming request.
+        $request = $this->addModifiedGlobalsToIncomingRequest($request);
+        $this->resetGlobalsToCurrentRequest($request);
 
         // Generate page
         if ($controller->isGeneratePage()) {
