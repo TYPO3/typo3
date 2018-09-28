@@ -328,7 +328,7 @@ define([
                 input.find(self.selectorWizardsInputHtml).html(data.userInput.wizardHtml);
               }
               input.find(self.selectorWizardsInputTitle).text(data.userInput.title);
-              input.find(self.selectorWizardsInputPerform).attr('data-identifier', data.userInput.identifier);
+              input.find(self.selectorWizardsInputPerform).attr('data-identifier', data.userInput.identifier).attr('data-title', data.userInput.title);
             }
             modalContent.find(self.selectorOutputWizardsContainer).append(input);
           },
