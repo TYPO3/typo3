@@ -4931,7 +4931,8 @@ class DataHandler implements LoggerAwareInterface
                 if (($fCfg['config']['type'] === 'text' || $fCfg['config']['type'] === 'input') && (string)$row[$fN] !== '') {
                     list($tscPID) = BackendUtility::getTSCpid($table, $uid, '');
                     $TSConfig = BackendUtility::getPagesTSconfig($tscPID)['TCEMAIN.'] ?? [];
-                    if (!empty($TSConfig['translateToMessage'])) {
+                    $tE = $this->getTableEntries($table, $TSConfig);
+                    if (!empty($TSConfig['translateToMessage']) && !$tE['disablePrependAtCopy']) {
                         $translateToMsg = $this->getLanguageService()->sL($TSConfig['translateToMessage']);
                         $translateToMsg = @sprintf($translateToMsg, $langRec['title']);
                     }
