@@ -4867,7 +4867,8 @@ class DataHandler
                 if (($fCfg['config']['type'] === 'text' || $fCfg['config']['type'] === 'input') && (string)$row[$fN] !== '') {
                     list($tscPID) = BackendUtility::getTSCpid($table, $uid, '');
                     $TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
-                    if (!empty($TSConfig['translateToMessage'])) {
+                    $tE = $this->getTableEntries($table, $TSConfig);
+                    if (!empty($TSConfig['translateToMessage']) && !$tE['disablePrependAtCopy']) {
                         $translateToMsg = $GLOBALS['LANG'] ? $GLOBALS['LANG']->sL($TSConfig['translateToMessage']) : $TSConfig['translateToMessage'];
                         $translateToMsg = @sprintf($translateToMsg, $langRec['title']);
                     }
