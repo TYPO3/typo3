@@ -2671,6 +2671,10 @@ class BackendUtility
                 // Create a multi-dimensional array out of the additional get vars
                 $additionalQueryParams = [];
                 parse_str($additionalGetVars, $additionalQueryParams);
+                if (isset($additionalQueryParams['L'])) {
+                    $additionalQueryParams['_language'] = $additionalQueryParams['_language'] ?? $additionalQueryParams['L'];
+                    unset($additionalQueryParams['L']);
+                }
                 $previewUrl = (string)$site->getRouter()->generateUri(
                     $pageUid,
                     $additionalQueryParams,

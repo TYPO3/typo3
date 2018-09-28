@@ -135,9 +135,11 @@ class PageRouter implements RouterInterface
         // Resolve language
         $language = null;
         $languageOption = $parameters['_language'] ?? null;
+        unset($parameters['_language']);
         if ($languageOption instanceof SiteLanguage) {
             $language = $languageOption;
-            unset($parameters['_language']);
+        } elseif ($languageOption !== null) {
+            $language = $this->site->getLanguageById((int)$languageOption);
         }
         if ($language === null) {
             $language = $this->site->getDefaultLanguage();
