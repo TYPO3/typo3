@@ -220,20 +220,21 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
             );
             $result = $queryBuilder
                 ->select(
-                    'uid',
-                    'pid',
-                    'title',
-                    'sitetitle',
-                    'root',
-                    'hidden',
-                    'starttime',
-                    'endtime',
-                    't3ver_oid',
-                    't3ver_wsid',
-                    't3ver_state',
-                    't3ver_move_id'
+                    'sys_template.uid',
+                    'sys_template.pid',
+                    'sys_template.title',
+                    'sys_template.sitetitle',
+                    'sys_template.root',
+                    'sys_template.hidden',
+                    'sys_template.starttime',
+                    'sys_template.endtime',
+                    'sys_template.t3ver_oid',
+                    'sys_template.t3ver_wsid',
+                    'sys_template.t3ver_state',
+                    'sys_template.t3ver_move_id'
                 )
                 ->from('sys_template')
+                ->join('sys_template', 'pages', 'pages', $queryBuilder->expr()->eq('pages.uid', $queryBuilder->quoteIdentifier('sys_template.pid')))
                 ->orderBy('sys_template.pid')
                 ->addOrderBy('sys_template.sorting')
                 ->execute();
@@ -718,11 +719,11 @@ page.10.value = HELLO WORLD!
         }
         $queryBuilder->andWhere(
             $queryBuilder->expr()->in(
-                't3ver_wsid',
+                $tableName . '.t3ver_wsid',
                 $queryBuilder->createNamedParameter($workspaceIds, Connection::PARAM_INT_ARRAY)
             ),
             $queryBuilder->expr()->neq(
-                'pid',
+                $tableName . '.pid',
                 $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
             )
         );
