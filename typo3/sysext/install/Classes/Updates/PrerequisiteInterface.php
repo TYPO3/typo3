@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Install\Updates;
 
 /**
  * UpgradeWizard Prerequisites
- *
- * @internal
  */
 interface PrerequisiteInterface
 {

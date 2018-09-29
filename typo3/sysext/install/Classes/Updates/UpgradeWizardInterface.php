@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Install\Updates;
 
 /**
  * Interface UpgradeWizardInterface
- *
- * @internal
  */
 interface UpgradeWizardInterface
 {

@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Install\Updates;
 
 /**
  * Use if upgrade wizard needs confirmation
- *
- * @internal
  */
 interface ConfirmableInterface
 {

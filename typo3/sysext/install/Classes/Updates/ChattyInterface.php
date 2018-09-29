@@ -20,8 +20,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Is this upgradeWizard chatty aka does it need to output things?
- *
- * @internal
  */
 interface ChattyInterface
 {
