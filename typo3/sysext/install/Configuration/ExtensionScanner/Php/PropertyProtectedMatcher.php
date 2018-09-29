@@ -932,4 +932,9 @@ return [
             'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->checkWorkspaceCurrent_cache' => [
+        'restFiles' => [
+            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst'
+        ],
+    ],
 ];

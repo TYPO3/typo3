@@ -3635,4 +3635,11 @@ return [
             'Deprecation-86433-VariousStdWrapFunctionsAndContentObjectRenderer-relatedMethods.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->isPSet' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst'
+        ],
+    ],
 ];

@@ -58,6 +58,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         'userTSUpdated' => 'Using $userTSUpdated of class BackendUserAuthentication from the outside is discouraged. This property is for class internal use only.',
         'userTS_text' => 'Using $userTS_text of class BackendUserAuthentication from the outside is discouraged. This property is for class internal use only.',
         'userTS_dontGetCached' => 'Using $userTS_dontGetCached of class BackendUserAuthentication is deprecated. The property will be removed in v10.',
+        'checkWorkspaceCurrent_cache' => 'Using $checkWorkspaceCurrent_cache of class BackendUserAuthentication is marked as internal, as its sole purpose is a runtime cache for internal calls.',
     ];
 
     /**
@@ -163,7 +164,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     protected $userTSUpdated = false;
 
     /**
-     * @var bool @deprecated since v9, will be removed in v10. If true, parsed TSconfig will not be cached
+     * @var bool
+     * @deprecated since v9, will be removed in v10. If true, parsed TSconfig will not be cached
      */
     protected $userTS_dontGetCached = false;
 
@@ -177,7 +179,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Cache for checkWorkspaceCurrent()
      * @var array|null
      */
-    public $checkWorkspaceCurrent_cache;
+    protected $checkWorkspaceCurrent_cache;
 
     /**
      * @var \TYPO3\CMS\Core\Resource\ResourceStorage[]
@@ -352,11 +354,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * Bits for permissions, see $perms variable:
      *
-     * 1 - Show:	See/Copy page and the pagecontent.
-     * 16- Edit pagecontent: Change/Add/Delete/Move pagecontent.
-     * 2- Edit page: Change/Move the page, eg. change title, startdate, hidden.
-     * 4- Delete page: Delete the page and pagecontent.
-     * 8- New pages: Create new pages under the page.
+     * 1  - Show:             See/Copy page and the pagecontent.
+     * 2  - Edit page:        Change/Move the page, eg. change title, startdate, hidden.
+     * 4  - Delete page:      Delete the page and pagecontent.
+     * 8  - New pages:        Create new pages under the page.
+     * 16 - Edit pagecontent: Change/Add/Delete/Move pagecontent.
      *
      * @param array $row Is the pagerow for which the permissions is checked
      * @param int $perms Is the binary representation of the permission we are going to check. Every bit in this number represents a permission that must be set. See function explanation.
@@ -417,12 +419,18 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Checks access to a backend module with the $MCONF passed as first argument
      *
      * @param array $conf $MCONF array of a backend module!
-     * @param bool $exitOnError If set, an array will issue an error message and exit.
+     * @param bool $exitOnError If set, an array will issue an error message and exit. @deprecated will be removed in TYPO3 v10.0. and exceptions will always be caught. In TYPO3 v10.0. Custom permission-based Exceptions should be thrown.
      * @throws \RuntimeException
      * @return bool Will return TRUE if $MCONF['access'] is not set at all, if the BE_USER is admin or if the module is enabled in the be_users/be_groups records of the user (specifically enabled). Will return FALSE if the module name is not even found in $TBE_MODULES
      */
-    public function modAccess($conf, $exitOnError)
+    public function modAccess($conf, $exitOnError = null)
     {
+        if ($exitOnError !== null) {
+            trigger_error('Calling BackendUserAuthentication->modAccess() with a second argument is deprecated, as the default behaviour is throwing exceptions, which might get customized in TYPO3 v10.0. Remove the second argument within modAccess() to avoid the deprecation, and ensure to catch the Exception in the callers code.', E_USER_DEPRECATED);
+        } else {
+            // new default behaviour (true by default when no second parameter given)
+            $exitOnError = true;
+        }
         if (!BackendUtility::isModuleSetInTBE_MODULES($conf['name'])) {
             if ($exitOnError) {
                 throw new \RuntimeException('Fatal Error: This module "' . $conf['name'] . '" is not enabled in TBE_MODULES', 1294586446);
@@ -432,7 +440,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         // Workspaces check:
         if (
             !empty($conf['workspaces'])
-            && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')
+            && ExtensionManagementUtility::isLoaded('workspaces')
             && ($this->workspace !== 0 || !GeneralUtility::inList($conf['workspaces'], 'online'))
             && ($this->workspace !== -1 || !GeneralUtility::inList($conf['workspaces'], 'offline'))
             && ($this->workspace <= 0 || !GeneralUtility::inList($conf['workspaces'], 'custom'))
@@ -894,10 +902,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param string $tableName Is the tablename to check: If "pages" table then edit,new,delete and editcontent permissions can be checked. Other tables will be checked for "editcontent" only (and $type will be ignored)
      * @param string $actionType For $tableName='pages' this can be 'edit' (2), 'new' (8 or 16), 'delete' (4), 'editcontent' (16). For all other tables this is ignored. (16 is used)
      * @return bool
-     * @access public (used by ClickMenuController)
+     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0.
      */
     public function isPSet($compiledPermissions, $tableName, $actionType = '')
     {
+        trigger_error('BackendUserAuthentication->isPSet() will be removed in TYPO3 v10.0. Use doesUserHaveAccess() and calcPerms()', E_USER_DEPRECATED);
         if ($this->isAdmin()) {
             $result = true;
         } elseif ($tableName === 'pages') {
@@ -999,6 +1008,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param array|int $recData Integer (record uid) or array where fields are at least: pid, t3ver_wsid, t3ver_stage (if versioningWS is set)
      * @return string String error code, telling the failure state. FALSE=All ok
      * @see workspaceCannotEditRecord()
+     * @internal this method will be moved to EXT:workspaces
      */
     public function workspaceCannotEditOfflineVersion($table, $recData)
     {
@@ -1105,7 +1115,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         if ($this->isAdmin()) {
             return true;
         }
-        if ($this->workspace !== 0 && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
+        if ($this->workspace !== 0 && ExtensionManagementUtility::isLoaded('workspaces')) {
             $stage = (int)$stage;
             $stat = $this->checkWorkspaceCurrent();
             // Check if custom staging is activated
@@ -1162,6 +1172,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @param int $wsid Workspace UID; 0,1+
      * @return bool Returns TRUE if the user has access to publish content from the workspace ID given.
+     * @internal this method will be moved to EXT:workspaces
      */
     public function workspacePublishAccess($wsid)
     {
@@ -1193,6 +1204,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Workspace swap-mode access?
      *
      * @return bool Returns TRUE if records can be swapped in the current workspace, otherwise FALSE
+     * @internal this method will be moved to EXT:workspaces
      */
     public function workspaceSwapAccess()
     {
@@ -1225,7 +1237,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             return $this->userTS;
         }
 
-        trigger_error('Handing over arguments to getTSConfig() is deprecated, they will be removed in v10.', E_USER_DEPRECATED);
+        trigger_error('Handing over arguments to BackendUserAuthentication->getTSConfig() is deprecated, they will be removed in v10.', E_USER_DEPRECATED);
 
         if (!is_array($config)) {
             // Getting Root-ts if not sent
@@ -1254,11 +1266,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param string $objectString Object string, eg. "somestring.someproperty.somesubproperty
      * @return string The value for that object string (object path)
      * @see getTSConfig()
-     * @deprecated since core v9, will be removed with core v10
+     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10
      */
     public function getTSConfigVal($objectString)
     {
-        trigger_error('This getTSConfigVal() will be removed in TYPO3 v10. Use getTSConfig() instead.', E_USER_DEPRECATED);
+        trigger_error('BackendUserAuthentication->getTSConfigVal() will be removed in TYPO3 v10. Use getTSConfig() instead.', E_USER_DEPRECATED);
         $TSConf = $this->getTSConfig($objectString);
         return $TSConf['value'];
     }
@@ -1269,11 +1281,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param string $objectString Object string, eg. "somestring.someproperty.somesubproperty
      * @return array The properties for that object string (object path) - if any
      * @see getTSConfig()
-     * @deprecated since core v9, will be removed with core v10
+     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10
      */
     public function getTSConfigProp($objectString)
     {
-        trigger_error('This getTSConfigProp() will be removed in TYPO3 v10. Use getTSConfig() instead.', E_USER_DEPRECATED);
+        trigger_error('BackendUserAuthentication->getTSConfigProp() will be removed in TYPO3 v10. Use getTSConfig() instead.', E_USER_DEPRECATED);
         $TSConf = $this->getTSConfig($objectString);
         return $TSConf['properties'];
     }
@@ -1359,7 +1371,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // Default TSconfig for admin-users
             if ($this->isAdmin()) {
                 $this->TSdataArray[] = 'admPanel.enable.all = 1';
-                if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('sys_note')) {
+                if (ExtensionManagementUtility::isLoaded('sys_note')) {
                     $this->TSdataArray[] = '
 							// Setting defaults for sys_note author / email...
 						TCAdefaults.sys_note.author = ' . $this->user['realName'] . '
@@ -2052,11 +2064,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @param string $str The text to wrap in comment prefixes and delimiters.
      * @return string TypoScript comment with the string text inside.
-     * @deprecated since core v9, will be removed with core v10
+     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10
      */
     public function addTScomment($str)
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('BackendUserAuthentication->addTScomment() will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         $delimiter = '# ***********************************************';
         $out = $delimiter . LF;
         $lines = GeneralUtility::trimExplode(LF, $str);
@@ -2130,7 +2142,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     $wsRec = ['uid' => $wsRec];
                     break;
                 default:
-                    if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
+                    if (ExtensionManagementUtility::isLoaded('workspaces')) {
                         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
                         $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
                         $wsRec = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields))
@@ -2376,11 +2388,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param string $extKey Option extension key / module name
      * @param int $error Error level. 0 = message, 1 = error (user problem), 2 = System Error (which should not happen), 3 = security notice (admin)
      * @return int Log entry UID
-     * @deprecated since core v9, will be removed with core v10
+     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10
      */
     public function simplelog($message, $extKey = '', $error = 0)
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('BackendUserAuthentication->simplelog() will be removed in TYPO3 v10. Use writelog, or better, PSR-3 based logging instead.', E_USER_DEPRECATED);
         return $this->writelog(4, 0, $error, 0, ($extKey ? '[' . $extKey . '] ' : '') . $message, []);
     }
 

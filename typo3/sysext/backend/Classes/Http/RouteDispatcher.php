@@ -139,8 +139,7 @@ class RouteDispatcher extends Dispatcher
         $backendUserAuthentication = $GLOBALS['BE_USER'];
 
         // Check permissions and exit if the user has no permission for entry
-        // @todo please do not use "true" here, what a bad coding paradigm
-        $backendUserAuthentication->modAccess($moduleConfiguration, true);
+        $backendUserAuthentication->modAccess($moduleConfiguration);
         $id = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'];
         if (MathUtility::canBeInterpretedAsInteger($id) && $id > 0) {
             $permClause = $backendUserAuthentication->getPagePermsClause(Permission::PAGE_SHOW);
