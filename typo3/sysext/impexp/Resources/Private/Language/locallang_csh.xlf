@@ -181,7 +181,7 @@ The static mapping is obtained by selecting the "sys_language" table as a static
 				<source>When an HTML or CSS file is found as a soft reference the files are parsed for references to external media (such as images) and if any are found they are also exported. If you don't want this behaviour, click this option.</source>
 			</trans-unit>
 			<trans-unit id="htmlCssResources.details">
-				<source>Notice: Resources found inside an HTML or CSS file are not analysed further. For instance it means that any CSS files referred to from within an HTML will not be traversed - but CSS files referred to inside the Setup or Constant field of a TypoScript template record will be!</source>
+				<source>Notice: Resources found inside an HTML or CSS file are not analyzed further. For instance it means that any CSS files referred to from within an HTML will not be traversed - but CSS files referred to inside the Setup or Constant field of a TypoScript template record will be!</source>
 			</trans-unit>
 			<trans-unit id="_htmlCssResources.image">
 				<source>EXT:impexp/Resources/Public/Images/cshimages/htmlcss.png</source>

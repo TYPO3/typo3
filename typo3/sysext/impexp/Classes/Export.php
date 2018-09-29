@@ -419,7 +419,7 @@ class Export extends ImportExport
     }
 
     /**
-     * This analyses the existing added records, finds all database relations to records and adds these records to the export file.
+     * This analyzes the existing added records, finds all database relations to records and adds these records to the export file.
      * This function can be called repeatedly until it returns an empty array.
      * In principle it should not allow to infinite recursivity, but you better set a limit...
      * Call this BEFORE the ext_addFilesFromRelations (so files from added relations are also included of course)

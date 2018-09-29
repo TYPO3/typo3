@@ -153,7 +153,7 @@ class SoftReferenceIndex
      * Will only return files in uploads/ folders which are prefixed with "RTEmagic[C|P]_" for substitution
      * Any "clear.gif" images are ignored.
      *
-     * @param string $content The input content to analyse
+     * @param string $content The input content to analyze
      * @return array Result array on positive matches, see description above. Otherwise FALSE
      */
     public function findRef_images($content)
@@ -215,7 +215,7 @@ class SoftReferenceIndex
      * TypoLink value processing.
      * Will process input value as a TypoLink value.
      *
-     * @param string $content The input content to analyse
+     * @param string $content The input content to analyze
      * @param array $spParams Parameters set for the softref parser key in TCA/columns. value "linkList" will split the string by comma before processing.
      * @return array Result array on positive matches, see description above. Otherwise FALSE
      * @see \TYPO3\CMS\Frontend\ContentObject::typolink(), getTypoLinkParts()
@@ -251,7 +251,7 @@ class SoftReferenceIndex
      * TypoLink tag processing.
      * Will search for <link ...> and <a> tags in the content string and process any found.
      *
-     * @param string $content The input content to analyse
+     * @param string $content The input content to analyze
      * @return array Result array on positive matches, see description above. Otherwise FALSE
      * @see \TYPO3\CMS\Frontend\ContentObject::typolink(), getTypoLinkParts()
      */
@@ -319,7 +319,7 @@ class SoftReferenceIndex
     /**
      * Finding email addresses in content and making them substitutable.
      *
-     * @param string $content The input content to analyse
+     * @param string $content The input content to analyze
      * @param array $spParams Parameters set for the softref parser key in TCA/columns
      * @return array Result array on positive matches, see description above. Otherwise FALSE
      */
@@ -355,7 +355,7 @@ class SoftReferenceIndex
     /**
      * Finding URLs in content
      *
-     * @param string $content The input content to analyse
+     * @param string $content The input content to analyze
      * @param array $spParams Parameters set for the softref parser key in TCA/columns
      * @return array Result array on positive matches, see description above. Otherwise FALSE
      */
@@ -394,7 +394,7 @@ class SoftReferenceIndex
     /**
      * Finding reference to files from extensions in content, but only to notify about their existence. No substitution
      *
-     * @param string $content The input content to analyse
+     * @param string $content The input content to analyze
      * @return array Result array on positive matches, see description above. Otherwise FALSE
      */
     public function findRef_extension_fileref($content)
@@ -425,7 +425,7 @@ class SoftReferenceIndex
      *************************/
 
     /**
-     * Analyse content as a TypoLink value and return an array with properties.
+     * Analyze content as a TypoLink value and return an array with properties.
      * TypoLinks format is: <link [typolink] [browser target] [css class] [title attribute] [additionalParams]>.
      * See TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink()
      * The syntax of the [typolink] part is: [typolink] = [page id or alias][,[type value]][#[anchor, if integer = tt_content uid]]

@@ -582,8 +582,8 @@ class Indexer
                 $this->log_push('Extract words from content', '');
                 $splitInWords = $this->processWordsInArrays($this->contentParts);
                 $this->log_pull();
-                // Analyse the indexed words.
-                $this->log_push('Analyse the extracted words', '');
+                // Analyze the indexed words.
+                $this->log_push('Analyze the extracted words', '');
                 $indexArr = $this->indexAnalyze($splitInWords);
                 $this->log_pull();
                 // Submitting page (phash) record
@@ -1180,8 +1180,8 @@ class Indexer
                                     $this->log_push('Extract words from content', '');
                                     $splitInWords = $this->processWordsInArrays($contentParts);
                                     $this->log_pull();
-                                    // Analyse the indexed words.
-                                    $this->log_push('Analyse the extracted words', '');
+                                    // Analyze the indexed words.
+                                    $this->log_push('Analyze the extracted words', '');
                                     $indexArr = $this->indexAnalyze($splitInWords);
                                     $this->log_pull();
                                     // Submitting page (phash) record

@@ -1100,7 +1100,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * Parse <A>-tag href and return status of email,external,file or page
      * This functionality is not in use anymore
      *
-     * @param string $url URL to analyse.
+     * @param string $url URL to analyze.
      * @return array Information in an array about the URL
      */
     public function urlInfoForLinkTags($url)

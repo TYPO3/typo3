@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
- * This processor analyses the provided data-map before actually being process
+ * This processor analyzes the provided data-map before actually being process
  * in the calling DataHandler instance. Field names that are configured to have
  * "allowLanguageSynchronization" enabled are either synchronized from there
  * relative parent records (could be a default language record, or a l10n_source

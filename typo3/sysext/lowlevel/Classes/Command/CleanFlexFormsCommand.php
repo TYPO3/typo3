@@ -52,7 +52,7 @@ class CleanFlexFormsCommand extends Command
                 'depth',
                 'd',
                 InputOption::VALUE_REQUIRED,
-                'Setting traversal depth. 0 (zero) will only analyse start page (see --pid), 1 will traverse one level of subpages etc.'
+                'Setting traversal depth. 0 (zero) will only analyze start page (see --pid), 1 will traverse one level of subpages etc.'
             )
             ->addOption(
                 'dry-run',

@@ -200,14 +200,14 @@ class TemplateService
     protected $templateIncludePaths = [];
 
     /**
-     * For Template Analyser in backend
+     * For Template Analyzer in backend
      *
      * @var array
      */
     public $hierarchyInfo = [];
 
     /**
-     * For Template Analyser in backend (setup content only)
+     * For Template Analyzer in backend (setup content only)
      *
      * @var array
      */
@@ -863,7 +863,7 @@ class TemplateService
         $this->constants[] = $row['constants'];
         $this->config[] = $row['config'];
         $this->templateIncludePaths[] = $includePath;
-        // For backend analysis (Template Analyser) provide the order of added constants/config template IDs
+        // For backend analysis (Template Analyzer) provide the order of added constants/config template IDs
         $this->clearList_const[] = $templateID;
         $this->clearList_setup[] = $templateID;
         if (trim($row['sitetitle'] ?? null)) {

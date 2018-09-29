@@ -765,7 +765,7 @@ class GeneralUtility
     /**
      * Splits a reference to a file in 5 parts
      *
-     * @param string $fileNameWithPath File name with path to be analysed (must exist if open_basedir is set)
+     * @param string $fileNameWithPath File name with path to be analyzed (must exist if open_basedir is set)
      * @return array Contains keys [path], [file], [filebody], [fileext], [realFileext]
      */
     public static function split_fileref($fileNameWithPath)
@@ -3506,7 +3506,7 @@ class GeneralUtility
             return str_replace($fileName, $language . '.' . $fileName, $fileRef);
         }
 
-        // Analyse file reference
+        // Analyze file reference
         if (self::isFirstPartOfStr($fileRef, Environment::getFrameworkBasePath() . '/')) {
             // Is system
             $validatedPrefix = Environment::getFrameworkBasePath() . '/';

@@ -83,7 +83,7 @@ class CategoryPermissionsAspect
                     }
                 }
 
-                // First, remove all child nodes which must be analysed to be considered as "secure".
+                // First, remove all child nodes which must be analyzed to be considered as "secure".
                 // The nodes were backed up in variable $treeNodeCollection beforehand.
                 $treeData->removeChildNodes();
 

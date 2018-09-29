@@ -263,7 +263,7 @@ class LinkAnalyzer
      * @param array $results Array of broken links
      * @param string $table Table name of the record
      * @param array $fields Array of fields to analyze
-     * @param array $record Record to analyse
+     * @param array $record Record to analyze
      */
     public function analyzeRecord(array &$results, $table, array $fields, array $record)
     {
@@ -307,9 +307,9 @@ class LinkAnalyzer
                 }
 
                 if ($spKey === 'typolink_tag') {
-                    $this->analyseTypoLinks($resultArray, $results, $htmlParser, $record, $field, $table);
+                    $this->analyzeTypoLinks($resultArray, $results, $htmlParser, $record, $field, $table);
                 } else {
-                    $this->analyseLinks($resultArray, $results, $record, $field, $table);
+                    $this->analyzeLinks($resultArray, $results, $record, $field, $table);
                 }
             }
         }
@@ -337,7 +337,7 @@ class LinkAnalyzer
      * @param string $field The current field
      * @param string $table The current table
      */
-    protected function analyseLinks(array $resultArray, array &$results, array $record, $field, $table)
+    protected function analyzeLinks(array $resultArray, array &$results, array $record, $field, $table)
     {
         foreach ($resultArray['elements'] as $element) {
             $r = $element['subst'];
@@ -374,7 +374,7 @@ class LinkAnalyzer
      * @param string $field The current field
      * @param string $table The current table
      */
-    protected function analyseTypoLinks(array $resultArray, array &$results, $htmlParser, array $record, $field, $table)
+    protected function analyzeTypoLinks(array $resultArray, array &$results, $htmlParser, array $record, $field, $table)
     {
         $currentR = [];
         $linkTags = $htmlParser->splitIntoBlock('a,link', $resultArray['content']);
@@ -557,7 +557,7 @@ class LinkAnalyzer
      * Emits a signal before the record is analyzed
      *
      * @param array $results Array of broken links
-     * @param array $record Record to analyse
+     * @param array $record Record to analyze
      * @param string $table Table name of the record
      * @param array $fields Array of fields to analyze
      * @return array

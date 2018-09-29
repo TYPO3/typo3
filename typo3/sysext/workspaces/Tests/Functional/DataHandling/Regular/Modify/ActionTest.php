@@ -582,7 +582,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
      * @see DataSet/changeContentSortingAndCopyDraftPage.csv
      * @group not-postgres
      * @group not-mssql
-     * @todo Analyse PostgreSQL issues further, which is a generic issue
+     * @todo Analyze PostgreSQL issues further, which is a generic issue
      */
     public function changeContentSortingAndCopyDraftPage()
     {

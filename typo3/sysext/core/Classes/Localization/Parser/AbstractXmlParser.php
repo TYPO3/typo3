@@ -106,7 +106,7 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
             return GeneralUtility::getFileAbsFileName(str_replace($fileName, $language . '.' . $fileName, $fileRef));
         }
 
-        // Analyse file reference
+        // Analyze file reference
         if (GeneralUtility::isFirstPartOfStr($fileRef, Environment::getFrameworkBasePath() . '/')) {
             // Is system
             $validatedPrefix = Environment::getFrameworkBasePath() . '/';

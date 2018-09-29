@@ -36,7 +36,7 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
  * Reference index processing and relation extraction
  *
  * NOTICE: When the reference index is updated for an offline version the results may not be correct.
- * First, lets assumed that the reference update happens in LIVE workspace (ALWAYS update from Live workspace if you analyse whole database!)
+ * First, lets assumed that the reference update happens in LIVE workspace (ALWAYS update from Live workspace if you analyze whole database!)
  * Secondly, lets assume that in a Draft workspace you have changed the data structure of a parent page record - this is (in TemplaVoila) inherited by subpages.
  * When in the LIVE workspace the data structure for the records/pages in the offline workspace will not be evaluated to the right one simply because the data
  * structure is taken from a rootline traversal and in the Live workspace that will NOT include the changed DataStructure! Thus the evaluation will be based
