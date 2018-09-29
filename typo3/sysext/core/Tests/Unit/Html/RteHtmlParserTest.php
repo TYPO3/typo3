@@ -28,21 +28,7 @@ class RteHtmlParserTest extends UnitTestCase
      */
     protected $resetSingletonInstances = true;
 
-    /**
-     * @var RteHtmlParser
-     */
-    protected $subject;
-
-    /**
-     * Set up
-     */
-    protected function setUp()
-    {
-        $this->subject = new RteHtmlParser();
-        $this->subject->procOptions = [
-            'overruleMode' => 'default',
-        ];
-    }
+    protected $procOptions = ['overruleMode' => 'default'];
 
     /**
      * Data provider for hrTagCorrectlyTransformedOnWayToDataBase
@@ -119,8 +105,9 @@ class RteHtmlParserTest extends UnitTestCase
      */
     public function hrTagCorrectlyTransformedOnWayToDataBase($content, $expectedResult)
     {
-        $thisConfig = ['proc.' => $this->subject->procOptions];
-        $this->assertEquals($expectedResult, $this->subject->RTE_transform($content, [], 'db', $thisConfig));
+        $subject = new RteHtmlParser();
+        $thisConfig = ['proc.' => $this->procOptions];
+        $this->assertEquals($expectedResult, $subject->RTE_transform($content, [], 'db', $thisConfig));
     }
 
     /**
@@ -194,8 +181,9 @@ class RteHtmlParserTest extends UnitTestCase
      */
     public function hrTagCorrectlyTransformedOnWayToDatabaseAndBackToRte($content, $expectedResult)
     {
-        $thisConfig = ['proc.' => $this->subject->procOptions];
-        $this->assertEquals($expectedResult, $this->subject->RTE_transform($this->subject->RTE_transform($content, [], 'db', $thisConfig), [], 'rte', $thisConfig));
+        $subject = new RteHtmlParser();
+        $thisConfig = ['proc.' => $this->procOptions];
+        $this->assertEquals($expectedResult, $subject->RTE_transform($subject->RTE_transform($content, [], 'db', $thisConfig), [], 'rte', $thisConfig));
     }
 
     /**
@@ -381,8 +369,9 @@ class RteHtmlParserTest extends UnitTestCase
      */
     public function paragraphCorrectlyTransformedOnWayToDatabase($content, $expectedResult)
     {
-        $thisConfig = ['proc.' => $this->subject->procOptions];
-        $this->assertEquals($expectedResult, $this->subject->RTE_transform($content, [], 'db', $thisConfig));
+        $subject = new RteHtmlParser();
+        $thisConfig = ['proc.' => $this->procOptions];
+        $this->assertEquals($expectedResult, $subject->RTE_transform($content, [], 'db', $thisConfig));
     }
 
     /**
@@ -480,8 +469,9 @@ class RteHtmlParserTest extends UnitTestCase
      */
     public function lineBreakCorrectlyTransformedOnWayToRTE($content, $expectedResult)
     {
-        $thisConfig = ['proc.' => $this->subject->procOptions];
-        $this->assertEquals($expectedResult, $this->subject->RTE_transform($content, [], 'rte', $thisConfig));
+        $subject = new RteHtmlParser();
+        $thisConfig = ['proc.' => $this->procOptions];
+        $this->assertEquals($expectedResult, $subject->RTE_transform($content, [], 'rte', $thisConfig));
     }
 
     /**
@@ -631,7 +621,8 @@ class RteHtmlParserTest extends UnitTestCase
      */
     public function paragraphCorrectlyTransformedOnWayToDatabaseAndBackToRte($content, $expectedResult)
     {
-        $thisConfig = ['proc.' => $this->subject->procOptions];
-        $this->assertEquals($expectedResult, $this->subject->RTE_transform($this->subject->RTE_transform($content, [], 'db', $thisConfig), [], 'rte', $thisConfig));
+        $subject = new RteHtmlParser();
+        $thisConfig = ['proc.' => $this->procOptions];
+        $this->assertEquals($expectedResult, $subject->RTE_transform($subject->RTE_transform($content, [], 'db', $thisConfig), [], 'rte', $thisConfig));
     }
 }

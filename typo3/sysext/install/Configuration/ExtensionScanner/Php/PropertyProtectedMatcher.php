@@ -932,6 +932,46 @@ return [
             'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Html\RteHtmlParser->blockElementList' => [
+        'restFiles' => [
+            'Deprecation-86440-InternalMethodsAndPropertiesWithinRteHtmlParser.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Html\RteHtmlParser->recPid' => [
+        'restFiles' => [
+            'Deprecation-86440-InternalMethodsAndPropertiesWithinRteHtmlParser.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Html\RteHtmlParser->elRef' => [
+        'restFiles' => [
+            'Deprecation-86440-InternalMethodsAndPropertiesWithinRteHtmlParser.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Html\RteHtmlParser->tsConfig' => [
+        'restFiles' => [
+            'Deprecation-86440-InternalMethodsAndPropertiesWithinRteHtmlParser.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Html\RteHtmlParser->procOptions' => [
+        'restFiles' => [
+            'Deprecation-86440-InternalMethodsAndPropertiesWithinRteHtmlParser.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Html\RteHtmlParser->TS_transform_db_safecounter' => [
+        'restFiles' => [
+            'Deprecation-86440-InternalMethodsAndPropertiesWithinRteHtmlParser.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Html\RteHtmlParser->getKeepTags_cache' => [
+        'restFiles' => [
+            'Deprecation-86440-InternalMethodsAndPropertiesWithinRteHtmlParser.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Html\RteHtmlParser->allowedClasses' => [
+        'restFiles' => [
+            'Deprecation-86440-InternalMethodsAndPropertiesWithinRteHtmlParser.rst',
+        ],
+    ],
     'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->checkWorkspaceCurrent_cache' => [
         'restFiles' => [
             'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst'

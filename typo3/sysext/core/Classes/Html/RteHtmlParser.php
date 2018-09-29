@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Core\Html;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource;
@@ -35,12 +37,39 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+    use PublicPropertyDeprecationTrait;
+    use PublicMethodDeprecationTrait;
+
+    protected $deprecatedPublicProperties = [
+        'blockElementList' => 'Using $blockElementList of class RteHtmlParser from the outside is discouraged, as this property is only used for internal storage.',
+        'recPid' => 'Using $recPid of class RteHtmlParser from the outside is discouraged, as this property is only used for internal storage.',
+        'elRef' => 'Using $elRef of class RteHtmlParser from the outside is discouraged, as this property is only used for internal storage.',
+        'tsConfig' => 'Using $tsConfig of class RteHtmlParser from the outside is discouraged, as this property is only used for internal storage.',
+        'procOptions' => 'Using $procOptions of class RteHtmlParser from the outside is discouraged, as this property is only used for internal storage.',
+        'TS_transform_db_safecounter' => 'Using $TS_transform_db_safecounter of class RteHtmlParser from the outside is discouraged, as this property is only used for internal storage.',
+        'getKeepTags_cache' => 'Using $getKeepTags_cache of class RteHtmlParser from the outside is discouraged, as this property is only used for internal storage.',
+        'allowedClasses' => 'Using $allowedClasses of class RteHtmlParser from the outside is discouraged, as this property is only used for internal storage.',
+    ];
+
+    protected $deprecatedPublicMethods = [
+        'TS_images_db' => 'Using TS_images_db() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
+        'TS_links_db' => 'Using TS_links_db() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
+        'TS_transform_db' => 'Using TS_transform_db() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
+        'TS_transform_rte' => 'Using TS_transform_rte() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
+        'HTMLcleaner_db' => 'Using HTMLcleaner_db() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
+        'getKeepTags' => 'Using getKeepTags() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
+        'divideIntoLines' => 'Using divideIntoLines() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
+        'setDivTags' => 'Using setDivTags() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
+        'getWHFromAttribs' => 'Using getWHFromAttribs() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
+        'urlInfoForLinkTags' => 'Using urlInfoForLinkTags() of class RteHtmlParser from the outside is discouraged, as this method is not in use anymore and will be removed.',
+        'TS_AtagToAbs' => 'Using TS_AtagToAbs() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
+    ];
 
     /**
      * List of elements that are not wrapped into a "p" tag while doing the transformation.
      * @var string
      */
-    public $blockElementList = 'DIV,TABLE,BLOCKQUOTE,PRE,UL,OL,H1,H2,H3,H4,H5,H6,ADDRESS,DL,DD,HEADER,SECTION,FOOTER,NAV,ARTICLE,ASIDE';
+    protected $blockElementList = 'DIV,TABLE,BLOCKQUOTE,PRE,UL,OL,H1,H2,H3,H4,H5,H6,ADDRESS,DL,DD,HEADER,SECTION,FOOTER,NAV,ARTICLE,ASIDE';
 
     /**
      * List of all tags that are allowed by default
@@ -53,49 +82,49 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      *
      * @var int
      */
-    public $recPid = 0;
+    protected $recPid = 0;
 
     /**
      * Element reference [table]:[field], eg. "tt_content:bodytext"
      *
      * @var string
      */
-    public $elRef = '';
+    protected $elRef = '';
 
     /**
      * Current Page TSConfig
      *
      * @var array
      */
-    public $tsConfig = [];
+    protected $tsConfig = [];
 
     /**
      * Set to the TSconfig options coming from Page TSconfig
      *
      * @var array
      */
-    public $procOptions = [];
+    protected $procOptions = [];
 
     /**
      * Run-away brake for recursive calls.
      *
      * @var int
      */
-    public $TS_transform_db_safecounter = 100;
+    protected $TS_transform_db_safecounter = 100;
 
     /**
      * Data caching for processing function
      *
      * @var array
      */
-    public $getKeepTags_cache = [];
+    protected $getKeepTags_cache = [];
 
     /**
      * Storage of the allowed CSS class names in the RTE
      *
      * @var array
      */
-    public $allowedClasses = [];
+    protected $allowedClasses = [];
 
     /**
      * A list of HTML attributes for <p> tags. Because <p> tags are wrapped currently in a special handling,
@@ -182,6 +211,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         if (isset($this->procOptions['allowAttributes.'])) {
             $this->allowedAttributesForParagraphTags = $this->procOptions['allowAttributes.'];
         } elseif (isset($this->procOptions['keepPDIVattribs'])) {
+            trigger_error('HTML parsing option "keepPDIVattribs" will not be evaluated anymore in TYPO3 v10.0. Use "allowedAttributes" instead.', E_USER_DEPRECATED);
             $this->allowedAttributesForParagraphTags = GeneralUtility::trimExplode(',', strtolower($this->procOptions['keepPDIVattribs']), true);
         }
         // Override tags which are allowed outside of <p> tags
@@ -335,7 +365,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @param string $value The content from RTE going to Database
      * @return string Processed content
      */
-    public function TS_images_db($value)
+    protected function TS_images_db($value)
     {
         // Split content by <img> tags and traverse the resulting array for processing:
         $imgSplit = $this->splitTags('img', $value);
@@ -542,7 +572,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @return string Content output
      * @see TS_links_rte()
      */
-    public function TS_links_db($value)
+    protected function TS_links_db($value)
     {
         $blockSplit = $this->splitIntoBlock('A', $value);
         foreach ($blockSplit as $k => $v) {
@@ -666,7 +696,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @return string Content output
      * @see TS_transform_rte()
      */
-    public function TS_transform_db($value)
+    protected function TS_transform_db($value)
     {
         // Safety... so forever loops are avoided (they should not occur, but an error would potentially do this...)
         $this->TS_transform_db_safecounter--;
@@ -768,7 +798,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @return string Content output
      * @see TS_transform_db()
      */
-    public function TS_transform_rte($value)
+    protected function TS_transform_rte($value)
     {
         // Split the content from database by the occurrence of the block elements
         $blockSplit = $this->splitIntoBlock($this->blockElementList, $value);
@@ -834,10 +864,13 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @return string Clean content
      * @see getKeepTags()
      */
-    public function HTMLcleaner_db($content)
+    protected function HTMLcleaner_db($content)
     {
         $keepTags = $this->getKeepTags('db');
         // Default: remove unknown tags.
+        if (isset($this->procOptions['dontRemoveUnknownTags_db'])) {
+            trigger_error('HTMLParser option "dontRemoveUnknownTags_db" will not be evaluted anymore in TYPO3 v10.0. Remove its usages.', E_USER_DEPRECATED);
+        }
         $keepUnknownTags = (bool)($this->procOptions['dontRemoveUnknownTags_db'] ?? false);
         return $this->HTMLcleaner($content, $keepTags, $keepUnknownTags);
     }
@@ -850,7 +883,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @return array Configuration array
      * @see HTMLcleaner_db()
      */
-    public function getKeepTags($direction = 'rte')
+    protected function getKeepTags($direction = 'rte')
     {
         if (!isset($this->getKeepTags_cache[$direction]) || !is_array($this->getKeepTags_cache[$direction])) {
             // Setting up allowed tags:
@@ -921,7 +954,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @return string|array Processed input value.
      * @see setDivTags()
      */
-    public function divideIntoLines($value, $count = 5, $returnArray = false)
+    protected function divideIntoLines($value, $count = 5, $returnArray = false)
     {
         // Setting the third param will eliminate false end-tags. Maybe this is a good thing to do...?
         $paragraphBlocks = $this->splitIntoBlock('p', $value, true);
@@ -974,7 +1007,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @return string Processed value.
      * @see divideIntoLines()
      */
-    public function setDivTags($value)
+    protected function setDivTags($value)
     {
         // First, setting configuration for the HTMLcleaner function. This will process each line between the <div>/<p> section on their way to the RTE
         $keepTags = $this->getKeepTags('rte');
@@ -1072,7 +1105,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @param array $attribArray Array of attributes from tag in which to search. More specifically the content of the key "style" is used to extract "width:xxx / height:xxx" information
      * @return array Integer w/h in key 0/1. Zero is returned if not found.
      */
-    public function getWHFromAttribs($attribArray)
+    protected function getWHFromAttribs($attribArray)
     {
         $style = trim($attribArray['style']);
         $w = 0;
@@ -1102,8 +1135,9 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      *
      * @param string $url URL to analyze.
      * @return array Information in an array about the URL
+     * @deprecated will be removed in TYPO3 v10.0. Not in use anymore.
      */
-    public function urlInfoForLinkTags($url)
+    protected function urlInfoForLinkTags($url)
     {
         $info = [];
         $url = trim($url);
@@ -1167,7 +1201,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @param string $value Content input
      * @return string Content output
      */
-    public function TS_AtagToAbs($value)
+    protected function TS_AtagToAbs($value)
     {
         if (func_num_args() > 1) {
             trigger_error('Second argument of TS_AtagToAbs() is not in use and is removed, however the argument in the callers code can be removed without side-effects.', E_USER_DEPRECATED);
