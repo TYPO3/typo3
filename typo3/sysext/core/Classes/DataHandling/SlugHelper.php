@@ -164,14 +164,7 @@ class SlugHelper
         if ($this->configuration['generatorOptions']['prefixParentPageSlug'] ?? false) {
             $languageFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null;
             $languageId = (int)($recordData[$languageFieldName] ?? 0);
-            $rootLine = $this->resolveRootLine($pid);
-            $parentPageRecord = reset($rootLine);
-            if ($languageId > 0) {
-                $localizedParentPageRecord = BackendUtility::getRecordLocalization('pages', $parentPageRecord['uid'], $languageId);
-                if (!empty($localizedParentPageRecord)) {
-                    $parentPageRecord = reset($localizedParentPageRecord);
-                }
-            }
+            $parentPageRecord = $this->resolveParentPageRecord($pid, $languageId);
             if (is_array($parentPageRecord)) {
                 // If the parent page has a slug, use that instead of "re-generating" the slug from the parents' page title
                 if (!empty($parentPageRecord['slug'])) {
@@ -535,11 +528,25 @@ class SlugHelper
     }
 
     /**
+     * Fetch a parent page, but exclude spacers, recyclers and sys-folders and all doktypes > 200
      * @param int $pid
-     * @return array
+     * @param int $languageId
+     * @return array|null
      */
-    protected function resolveRootLine(int $pid): array
+    protected function resolveParentPageRecord(int $pid, int $languageId): ?array
     {
-        return BackendUtility::BEgetRootLine($pid, '', true, ['nav_title']);
+        $parentPageRecord = null;
+        $rootLine = BackendUtility::BEgetRootLine($pid, '', true, ['nav_title']);
+        do {
+            $parentPageRecord = array_shift($rootLine);
+            // do not use spacers (199), recyclers and folders and everything else
+        } while (!empty($rootLine) && (int)$parentPageRecord['doktype'] >= 199);
+        if ($languageId > 0) {
+            $localizedParentPageRecord = BackendUtility::getRecordLocalization('pages', $parentPageRecord['uid'], $languageId);
+            if (!empty($localizedParentPageRecord)) {
+                $parentPageRecord = reset($localizedParentPageRecord);
+            }
+        }
+        return $parentPageRecord;
     }
 }

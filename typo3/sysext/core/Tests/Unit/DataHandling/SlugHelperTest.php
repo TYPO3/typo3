@@ -379,16 +379,14 @@ class SlugHelperTest extends UnitTestCase
     public function generatePrependsSlugsForPages(string $input, string $expected)
     {
         $GLOBALS['dummyTable']['ctrl'] = [];
-        $rootLine = [
-            [
-                'uid' => '13',
-                'pid' => '10',
-                'title' => 'Parent Page',
-            ]
+        $parentPage = [
+            'uid' => '13',
+            'pid' => '10',
+            'title' => 'Parent Page',
         ];
         $subject = $this->getAccessibleMock(
             SlugHelper::class,
-            ['resolveRootLine'],
+            ['resolveParentPageRecord'],
             [
                 'pages',
                 'slug',
@@ -401,9 +399,9 @@ class SlugHelperTest extends UnitTestCase
             ]
         );
         $subject->expects(static::at(0))
-            ->method('resolveRootLine')->with(13)->willReturn($rootLine);
+            ->method('resolveParentPageRecord')->with(13)->willReturn($parentPage);
         $subject->expects(static::at(1))
-            ->method('resolveRootLine')->with(10)->willReturn([]);
+            ->method('resolveParentPageRecord')->with(10)->willReturn(null);
         static::assertEquals(
             $expected,
             $subject->generate(['title' => $input, 'uid' => 13], 13)
