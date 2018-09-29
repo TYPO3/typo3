@@ -85,6 +85,14 @@ class SiteDatabaseEditRow implements FormDataProviderInterface
             Environment::getConfigPath() . '/sites'
         );
         // load config as it is stored on disk (without replacements)
-        return $siteConfiguration->load($site->getIdentifier());
+        $configuration = $siteConfiguration->load($site->getIdentifier());
+        if (isset($configuration['site'])) {
+            trigger_error(
+                'Site configuration with key \'site\' has been deprecated, remove indentation level and site key.',
+                E_USER_DEPRECATED
+            );
+            $configuration = $configuration['site'];
+        }
+        return $configuration;
     }
 }
