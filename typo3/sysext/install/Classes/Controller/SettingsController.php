@@ -359,6 +359,7 @@ class SettingsController extends AbstractController
                 ];
             }
         }
+        ksort($extensionsWithConfigurations);
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view = $this->initializeStandaloneView($request, 'Settings/ExtensionConfigurationGetContent.html');
         $view->assignMultiple([
