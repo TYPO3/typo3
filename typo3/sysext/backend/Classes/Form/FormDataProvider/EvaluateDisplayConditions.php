@@ -202,7 +202,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
             $conditionArray = $this->parseSingleConditionString($condition, $databaseRow, $flexContext);
         } elseif (is_array($condition)) {
             foreach ($condition as $logicalOperator => $groupedDisplayConditions) {
-                $logicalOperator = strtoupper($logicalOperator);
+                $logicalOperator = strtoupper(is_string($logicalOperator) ? $logicalOperator : '');
                 if (($logicalOperator !== 'AND' && $logicalOperator !== 'OR') || !is_array($groupedDisplayConditions)) {
                     throw new \RuntimeException(
                         'Multiple conditions must have boolean operator "OR" or "AND", "' . $logicalOperator . '" given.',

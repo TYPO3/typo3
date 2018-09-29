@@ -54,6 +54,28 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
+    public function addDataThrowsExceptionIAConditionHasNoStringAsKey()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => [
+                            ['condition1'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1481380393);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * @test
+     */
     public function addDataThrowsExceptionWithMultipleConditionsCombinedWithAndHavingOnlyOneSubCondition()
     {
         $input = [
