@@ -122,6 +122,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * The submitted cHash
      * @var string
+     * @internal
      */
     public $cHash = '';
 
@@ -197,12 +198,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Is set to 1 if a pageNotFound handler could have been called.
      * @var int
+     * @internal
      */
     public $pageNotFound = 0;
 
     /**
      * Domain start page
      * @var int
+     * @internal
      */
     public $domainStartPage = 0;
 
@@ -215,6 +218,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * @var string
+     * @internal
      */
     public $MP = '';
 
@@ -232,6 +236,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Typically "index.php" but by rewrite rules it could be something else! Used
      * for Speaking Urls / Simulate Static Documents.
      * @var string
+     * @internal
      */
     public $siteScript = '';
 
@@ -300,6 +305,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * backend user and whether the backend user has read access to the current
      * page.
      * @var int
+     * @internal
      */
     public $fePreview = 0;
 
@@ -397,6 +403,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * This hash is unique to the template, the $this->id and $this->type vars and
      * the gr_list (list of groups). Used to get and later store the cached data
      * @var string
+     * @internal
      */
     public $newHash = '';
 
@@ -406,12 +413,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * with the string, '&ftu=[token...]' which enables GET-method usertracking as
      * opposed to cookie based
      * @var string
+     * @internal
      */
     public $getMethodUrlIdToken = '';
 
     /**
-     * This flag is set before inclusion of pagegen.php IF no_cache is set. If this
-     * flag is set after the inclusion of pagegen.php, no_cache is forced to be set.
+     * This flag is set before inclusion of RequestHandler IF no_cache is set. If this
+     * flag is set after the inclusion of RequestHandler, no_cache is forced to be set.
      * This is done in order to make sure that php-code from pagegen does not falsely
      * clear the no_cache flag.
      * @var bool
@@ -435,8 +443,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $forceTemplateParsing = false;
 
     /**
-     * The array which cHash_calc is based on, see PageParameterValidator class.
+     * The array which cHash_calc is based on, see PageArgumentValidator class.
      * @var array
+     * @internal
      */
     public $cHash_array = [];
 
@@ -555,6 +564,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * used to mark up the found search words on a page when jumped to from a link
      * in a search-result.
      * @var string
+     * @internal
      */
     public $sWordRegEx = '';
 
@@ -562,6 +572,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Is set to the incoming array sword_list in case of a page-view jumped to from
      * a search-result.
      * @var string
+     * @internal
      */
     public $sWordList = '';
 
@@ -720,6 +731,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Alternative page title (normally the title of the page record). Can be set
      * from applications you make.
      * @var string
+     * @internal
      */
     public $altPageTitle = '';
 
@@ -744,7 +756,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $cObj = '';
 
     /**
-     * All page content is accumulated in this variable. See pagegen.php
+     * All page content is accumulated in this variable. See RequestHandler
      * @var string
      */
     public $content = '';
@@ -1201,21 +1213,18 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         // Checks if user logins are blocked for a certain branch and if so, will unset user login and re-fetch ID.
         $this->loginAllowedInBranch = $this->checkIfLoginAllowedInBranch();
-        // Logins are not allowed:
-        if (!$this->loginAllowedInBranch) {
-            // Only if there is a login will we run this...
-            if ($this->isUserOrGroupSet()) {
-                if ($this->loginAllowedInBranch_mode === 'all') {
-                    // Clear out user and group:
-                    $this->fe_user->hideActiveLogin();
-                    $userGroups = [0, -1];
-                } else {
-                    $userGroups = [0, -2];
-                }
-                $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user ?: null, $userGroups));
-                // Fetching the id again, now with the preview settings reset.
-                $this->fetch_the_id();
+        // Logins are not allowed, but there is a login, so will we run this.
+        if (!$this->loginAllowedInBranch && $this->isUserOrGroupSet()) {
+            if ($this->loginAllowedInBranch_mode === 'all') {
+                // Clear out user and group:
+                $this->fe_user->hideActiveLogin();
+                $userGroups = [0, -1];
+            } else {
+                $userGroups = [0, -2];
             }
+            $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user ?: null, $userGroups));
+            // Fetching the id again, now with the preview settings reset.
+            $this->fetch_the_id();
         }
         // Final cleaning.
         // Make sure it's an integer
@@ -1369,6 +1378,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @throws ServiceUnavailableException
      * @access private
+     * @internal
      */
     public function fetch_the_id()
     {
@@ -1812,22 +1822,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Check group access against a page record
      *
      * @param array $row The page record to evaluate (needs field: fe_group)
-     * @param mixed $groupList List of group id's (comma list or array). Default is group Ids from frontend.user aspect
      * @return bool TRUE, if group access is granted.
      * @access private
+     * @internal
      */
-    public function checkPageGroupAccess($row, $groupList = null)
+    public function checkPageGroupAccess($row)
     {
-        if ($groupList === null) {
-            /** @var UserAspect $userAspect */
-            $userAspect = $this->context->getAspect('frontend.user');
-            $groupList = $userAspect->getGroupIds();
-        }
-        if (!is_array($groupList)) {
-            $groupList = explode(',', $groupList);
-        }
+        /** @var UserAspect $userAspect */
+        $userAspect = $this->context->getAspect('frontend.user');
         $pageGroupList = explode(',', $row['fe_group'] ?: 0);
-        return count(array_intersect($groupList, $pageGroupList)) > 0;
+        return count(array_intersect($userAspect->getGroupIds(), $pageGroupList)) > 0;
     }
 
     /**
@@ -1841,6 +1845,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param array $row The page record
      * @return bool true if visible
      * @access private
+     * @internal
      * @see checkEnableFields()
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList()
      * @see checkRootlineForIncludeSection()
@@ -1921,6 +1926,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param int $domainStartPage Page uid of the page where the found domain record is (pid of the domain record)
      * @access private
+     * @internal
      */
     public function getPageAndRootlineWithDomain($domainStartPage)
     {
@@ -2687,6 +2693,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * In this function it should be checked, 1) that this language exists, 2) that a page_overlay_record exists, .. and if not the default language, 0 (zero), should be set.
      *
      * @access private
+     * @internal
      */
     public function settingLanguage()
     {
@@ -4181,7 +4188,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Creates an instance of ContentObjectRenderer in $this->cObj
      * This instance is used to start the rendering of the TypoScript template structure
      *
-     * @see pagegen.php
+     * @see RequestHandler
      */
     public function newCObj()
     {
@@ -4193,7 +4200,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Converts relative paths in the HTML source to absolute paths for fileadmin/, typo3conf/ext/ and media/ folders.
      *
      * @access private
-     * @see pagegen.php, INTincScript()
+     * @internal
+     * @see RequestHandler, INTincScript()
      */
     public function setAbsRefPrefix()
     {
