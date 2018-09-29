@@ -16,10 +16,13 @@ namespace TYPO3\CMS\Core\Routing\Aspect;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Very useful for building an a path segment from a combined value of the database.
@@ -75,14 +78,14 @@ class PersistedPatternMapper implements StaticMappableAspectInterface
     protected $routeFieldResultNames;
 
     /**
-     * @var string
-     */
-    protected $valueFieldName = 'uid';
-
-    /**
      * @var PersistenceDelegate
      */
     protected $persistenceDelegate;
+
+    /**
+     * @var string|null
+     */
+    protected $languageParentFieldName;
 
     /**
      * @param array $settings
@@ -115,6 +118,7 @@ class PersistedPatternMapper implements StaticMappableAspectInterface
         $this->routeFieldPattern = $routeFieldPattern;
         $this->routeFieldResult = $routeFieldResult;
         $this->routeFieldResultNames = $routeFieldResultNames['fieldName'] ?? [];
+        $this->languageParentFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['transOrigPointerField'] ?? null;
     }
 
     /**
@@ -123,8 +127,9 @@ class PersistedPatternMapper implements StaticMappableAspectInterface
     public function generate(string $value): ?string
     {
         $result = $this->getPersistenceDelegate()->generate([
-            $this->valueFieldName => $value
+            'uid' => $value
         ]);
+        $result = $this->resolveOverlay($result);
         return $this->createRouteResult($result);
     }
 
@@ -138,8 +143,13 @@ class PersistedPatternMapper implements StaticMappableAspectInterface
         }
         $values = $this->filterNamesKeys($matches);
         $result = $this->getPersistenceDelegate()->resolve($values);
-        $result = $result[$this->valueFieldName] ?? null;
-        return $result ? (string)$result : null;
+        if ($result[$this->languageParentFieldName] ?? null > 0) {
+            return (string)$result[$this->languageParentFieldName];
+        }
+        if (isset($result['uid'])) {
+            return (string)$result['uid'];
+        }
+        return null;
     }
 
     /**
@@ -154,8 +164,11 @@ class PersistedPatternMapper implements StaticMappableAspectInterface
         }
         $substitutes = [];
         foreach ($this->routeFieldResultNames as $fieldName) {
+            if (!isset($result[$fieldName])) {
+                return null;
+            }
             $routeFieldName = '{' . $fieldName . '}';
-            $substitutes[$routeFieldName] = ($result[$fieldName] ?? null) ?: 'empty';
+            $substitutes[$routeFieldName] = $result[$fieldName];
         }
         return str_replace(
             array_keys($substitutes),
@@ -193,8 +206,8 @@ class PersistedPatternMapper implements StaticMappableAspectInterface
         // @todo Restrictions (Hidden? Workspace?)
 
         $resolveModifier = function (QueryBuilder $queryBuilder, array $values) {
-            return $queryBuilder->select($this->valueFieldName)->where(
-                ...$this->createFieldConstraints($queryBuilder, $values)
+            return $queryBuilder->select('*')->where(
+                ...$this->createFieldConstraints($queryBuilder, $values, true)
             );
         };
         $generateModifier = function (QueryBuilder $queryBuilder, array $values) {
@@ -213,12 +226,23 @@ class PersistedPatternMapper implements StaticMappableAspectInterface
     /**
      * @param QueryBuilder $queryBuilder
      * @param array $values
+     * @param bool $resolveExpansion
      * @return array
      */
-    protected function createFieldConstraints(QueryBuilder $queryBuilder, array $values): array
-    {
+    protected function createFieldConstraints(
+        QueryBuilder $queryBuilder,
+        array $values,
+        bool $resolveExpansion = false
+    ): array {
+        $languageExpansion = $this->languageParentFieldName
+            && $resolveExpansion
+            && isset($values['uid']);
+
         $constraints = [];
         foreach ($values as $fieldName => $fieldValue) {
+            if ($languageExpansion && $fieldName === 'uid') {
+                continue;
+            }
             $constraints[] = $queryBuilder->expr()->eq(
                 $fieldName,
                 $queryBuilder->createNamedParameter(
@@ -227,6 +251,53 @@ class PersistedPatternMapper implements StaticMappableAspectInterface
                 )
             );
         }
+        // If requested, either match uid or language parent field value
+        if ($languageExpansion) {
+            $idParameter = $queryBuilder->createNamedParameter(
+                $values['uid'],
+                \PDO::PARAM_INT
+            );
+            $constraints[] = $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->eq('uid', $idParameter),
+                $queryBuilder->expr()->eq($this->languageParentFieldName, $idParameter)
+            );
+        }
+
         return $constraints;
+    }
+
+    /**
+     * @param array|null $record
+     * @return array|null
+     */
+    protected function resolveOverlay(?array $record): ?array
+    {
+        $languageId = $this->siteLanguage->getLanguageId();
+        if ($record === null || $languageId === 0) {
+            return $record;
+        }
+
+        $pageRepository = $this->createPageRepository();
+        if ($this->tableName === 'pages') {
+            return $pageRepository->getPageOverlay($record, $languageId);
+        }
+        return $pageRepository
+            ->getRecordOverlay($this->tableName, $record, $languageId) ?: null;
+    }
+
+    /**
+     * @return PageRepository
+     */
+    protected function createPageRepository(): PageRepository
+    {
+        $context = clone GeneralUtility::makeInstance(Context::class);
+        $context->setAspect(
+            'language',
+            LanguageAspectFactory::createFromSiteLanguage($this->siteLanguage)
+        );
+        return GeneralUtility::makeInstance(
+            PageRepository::class,
+            $context
+        );
     }
 }

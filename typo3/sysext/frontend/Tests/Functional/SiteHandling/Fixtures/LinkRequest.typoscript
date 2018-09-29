@@ -15,5 +15,5 @@ config {
 page = PAGE
 page {
   10 = USER
-  10.userFunc = TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\LinkHandlingController->mainAction
+  10.userFunc = TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\LinkHandlingController->dumpPageArgumentsAction
 }

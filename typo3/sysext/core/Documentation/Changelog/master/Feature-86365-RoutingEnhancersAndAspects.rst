@@ -392,13 +392,11 @@ can be used to build the URL:
             type: PersistedAliasMapper
             tableName: 'tx_news_domain_model_news'
             routeFieldName: 'path_segment'
-            valueFieldName: 'uid'
             routeValuePrefix: '/'
 
 The PersistedAliasMapper looks up (via a so-called delegate pattern under the hood) to map the given value to a
 a URL. The property `tableName` points to the database table, property `routeFieldName` is the field which will be
-used within the route path, and the `valueFieldName` is the argument that is used within the Extbase plugin for
-example.
+used within the route path for example.
 
 The special `routeValuePrefix` is used for TCA type `slug` fields where the prefix `/` is within all fields of the
 field names, which should be removed in the case above.

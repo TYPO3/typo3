@@ -113,7 +113,7 @@ class StaticValueMapper implements StaticMappableAspectInterface, \Countable
     {
         $locale = $this->siteLanguage->getLocale();
         foreach ($this->localeMap as $item) {
-            $pattern = '#' . $item['locale'] . '#i';
+            $pattern = '#^' . $item['locale'] . '#i';
             if (preg_match($pattern, $locale)) {
                 return array_map('strval', $item['map']);
             }

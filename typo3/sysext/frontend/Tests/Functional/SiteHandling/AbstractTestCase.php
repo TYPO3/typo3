@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
-use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\LinkGeneratorController;
+use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\LinkHandlingController;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\PhpError;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\ArrayValueInstruction;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -181,20 +181,38 @@ abstract class AbstractTestCase extends FunctionalTestCase
         array $languages = [],
         array $errorHandling = []
     ) {
-        $configuration = [
-            'site' => $site,
-        ];
+        $configuration = $site;
         if (!empty($languages)) {
-            $configuration['site']['languages'] = $languages;
+            $configuration['languages'] = $languages;
         }
         if (!empty($errorHandling)) {
-            $configuration['site']['errorHandling'] = $errorHandling;
+            $configuration['errorHandling'] = $errorHandling;
         }
 
         $siteConfiguration = new SiteConfiguration(
             $this->instancePath . '/typo3conf/sites/'
         );
 
+        try {
+            $siteConfiguration->write($identifier, $configuration);
+        } catch (\Exception $exception) {
+            $this->markTestSkipped($exception->getMessage());
+        }
+    }
+
+    /**
+     * @param string $identifier
+     * @param array $overrides
+     */
+    protected function mergeSiteConfiguration(
+        string $identifier,
+        array $overrides
+    ) {
+        $siteConfiguration = new SiteConfiguration(
+            $this->instancePath . '/typo3conf/sites/'
+        );
+        $configuration = $siteConfiguration->load($identifier);
+        $configuration = array_merge($configuration, $overrides);
         try {
             $siteConfiguration->write($identifier, $configuration);
         } catch (\Exception $exception) {
@@ -364,7 +382,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
      */
     protected function createTypoLinkUrlInstruction(array $typoScript): ArrayValueInstruction
     {
-        return (new ArrayValueInstruction(LinkGeneratorController::class))
+        return (new ArrayValueInstruction(LinkHandlingController::class))
             ->withArray([
                 '10' => 'TEXT',
                 '10.' => [
@@ -382,7 +400,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
      */
     protected function createHierarchicalMenuProcessorInstruction(array $typoScript): ArrayValueInstruction
     {
-        return (new ArrayValueInstruction(LinkGeneratorController::class))
+        return (new ArrayValueInstruction(LinkHandlingController::class))
             ->withArray([
                 '10' => 'FLUIDTEMPLATE',
                 '10.' => [
@@ -404,7 +422,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
      */
     protected function createLanguageMenuProcessorInstruction(array $typoScript): ArrayValueInstruction
     {
-        return (new ArrayValueInstruction(LinkGeneratorController::class))
+        return (new ArrayValueInstruction(LinkHandlingController::class))
             ->withArray([
                 '10' => 'FLUIDTEMPLATE',
                 '10.' => [
@@ -453,5 +471,19 @@ abstract class AbstractTestCase extends FunctionalTestCase
             },
             $menu
         );
+    }
+
+    /**
+     * @param array $keys
+     * @param mixed $payload
+     * @return array
+     */
+    protected function populateToKeys(array $keys, $payload): array
+    {
+        $result = [];
+        foreach ($keys as $key) {
+            $result[$key] = $payload;
+        }
+        return $result;
     }
 }

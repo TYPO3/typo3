@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\ArrayValueInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\RequestBootstrap;
@@ -22,20 +25,45 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\RequestBootstrap;
 /**
  * Test case for frontend requests having site handling configured
  */
-class LinkGeneratorController
+class LinkHandlingController
 {
     /**
      * @var ContentObjectRenderer
      */
     public $cObj;
 
+    /**
+     * @return string
+     */
     public function mainAction(): string
     {
         $instruction = RequestBootstrap::getInternalRequest()
-            ->getInstruction(LinkGeneratorController::class);
+            ->getInstruction(LinkHandlingController::class);
         if (!$instruction instanceof ArrayValueInstruction) {
             return '';
         }
         return $this->cObj->cObjGet($instruction->getArray());
+    }
+
+    /**
+     * @return string
+     */
+    public function dumpPageArgumentsAction(): string
+    {
+        /** @var ServerRequestInterface $request */
+        $request = $GLOBALS['TYPO3_REQUEST'];
+        /** @var PageArguments $pageArguments */
+        $pageArguments = $request->getAttribute('routing');
+        /** @var SiteLanguage $language */
+        $language = $request->getAttribute('language');
+        return json_encode([
+            'pageId' => $pageArguments->getPageId(),
+            'languageId' => $language->getLanguageId(),
+            'dynamicArguments' => $pageArguments->getDynamicArguments(),
+            'staticArguments' => $pageArguments->getStaticArguments(),
+            'queryArguments' => $pageArguments->getQueryArguments(),
+            'requestQueryParams' => $request->getQueryParams(),
+            '_GET' => $_GET,
+        ]);
     }
 }

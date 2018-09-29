@@ -16,10 +16,13 @@ namespace TYPO3\CMS\Core\Routing\Aspect;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Classic usage when using a "URL segment" (e.g. slug) field within a database table.
@@ -38,7 +41,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *           type: PersistedAliasMapper
  *           tableName: 'tx_events2_domain_model_event'
  *           routeFieldName: 'path_segment'
- *           valueFieldName: 'uid'
  *           routeValuePrefix: '/'
  */
 class PersistedAliasMapper implements StaticMappableAspectInterface
@@ -63,17 +65,22 @@ class PersistedAliasMapper implements StaticMappableAspectInterface
     /**
      * @var string
      */
-    protected $valueFieldName;
-
-    /**
-     * @var string
-     */
     protected $routeValuePrefix;
 
     /**
      * @var PersistenceDelegate
      */
     protected $persistenceDelegate;
+
+    /**
+     * @var string[]
+     */
+    protected $persistenceFieldNames;
+
+    /**
+     * @var string|null
+     */
+    protected $languageParentFieldName;
 
     /**
      * @param array $settings
@@ -83,27 +90,33 @@ class PersistedAliasMapper implements StaticMappableAspectInterface
     {
         $tableName = $settings['tableName'] ?? null;
         $routeFieldName = $settings['routeFieldName'] ?? null;
-        $valueFieldName = $settings['valueFieldName'] ?? null;
         $routeValuePrefix = $settings['routeValuePrefix'] ?? '';
 
         if (!is_string($tableName)) {
-            throw new \InvalidArgumentException('tableName must be string', 1537277133);
+            throw new \InvalidArgumentException(
+                'tableName must be string',
+                1537277133
+            );
         }
         if (!is_string($routeFieldName)) {
-            throw new \InvalidArgumentException('routeFieldName name must be string', 1537277134);
-        }
-        if (!is_string($valueFieldName)) {
-            throw new \InvalidArgumentException('valueFieldName name must be string', 1537277135);
+            throw new \InvalidArgumentException(
+                'routeFieldName name must be string',
+                1537277134
+            );
         }
         if (!is_string($routeValuePrefix) || strlen($routeValuePrefix) > 1) {
-            throw new \InvalidArgumentException('$routeValuePrefix name must be string with one character', 1537277136);
+            throw new \InvalidArgumentException(
+                '$routeValuePrefix must be string with one character',
+                1537277136
+            );
         }
 
         $this->settings = $settings;
         $this->tableName = $tableName;
         $this->routeFieldName = $routeFieldName;
-        $this->valueFieldName = $valueFieldName;
         $this->routeValuePrefix = $routeValuePrefix;
+        $this->persistenceFieldNames = $this->buildPersistenceFieldNames();
+        $this->languageParentFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['transOrigPointerField'] ?? null;
     }
 
     /**
@@ -112,14 +125,15 @@ class PersistedAliasMapper implements StaticMappableAspectInterface
     public function generate(string $value): ?string
     {
         $result = $this->getPersistenceDelegate()->generate([
-            $this->valueFieldName => $value
+            'uid' => $value
         ]);
-        $value = null;
-        if (isset($result[$this->routeFieldName])) {
-            $value = (string)$result[$this->routeFieldName];
+        $result = $this->resolveOverlay($result);
+        if (!isset($result[$this->routeFieldName])) {
+            return null;
         }
-        $result = $this->purgeRouteValuePrefix($value);
-        return $result ? (string)$result : null;
+        return $this->purgeRouteValuePrefix(
+            (string)$result[$this->routeFieldName]
+        );
     }
 
     /**
@@ -131,8 +145,27 @@ class PersistedAliasMapper implements StaticMappableAspectInterface
         $result = $this->getPersistenceDelegate()->resolve([
             $this->routeFieldName => $value
         ]);
-        $result = $result[$this->valueFieldName] ?? null;
-        return $result ? (string)$result : null;
+        if ($result[$this->languageParentFieldName] ?? null > 0) {
+            return (string)$result[$this->languageParentFieldName];
+        }
+        if (isset($result['uid'])) {
+            return (string)$result['uid'];
+        }
+        return null;
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function buildPersistenceFieldNames(): array
+    {
+        return array_filter([
+            'uid',
+            'pid',
+            $this->routeFieldName,
+            $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null,
+            $GLOBALS['TCA'][$this->tableName]['ctrl']['transOrigPointerField'] ?? null,
+        ]);
     }
 
     /**
@@ -161,12 +194,12 @@ class PersistedAliasMapper implements StaticMappableAspectInterface
         // @todo Restrictions (Hidden? Workspace?)
 
         $resolveModifier = function (QueryBuilder $queryBuilder, array $values) {
-            return $queryBuilder->select($this->valueFieldName)->where(
+            return $queryBuilder->select(...$this->persistenceFieldNames)->where(
                 ...$this->createFieldConstraints($queryBuilder, $values)
             );
         };
         $generateModifier = function (QueryBuilder $queryBuilder, array $values) {
-            return $queryBuilder->select($this->routeFieldName)->where(
+            return $queryBuilder->select(...$this->persistenceFieldNames)->where(
                 ...$this->createFieldConstraints($queryBuilder, $values)
             );
         };
@@ -189,9 +222,47 @@ class PersistedAliasMapper implements StaticMappableAspectInterface
         foreach ($values as $fieldName => $fieldValue) {
             $constraints[] = $queryBuilder->expr()->eq(
                 $fieldName,
-                $queryBuilder->createNamedParameter($fieldValue, \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter(
+                    $fieldValue,
+                    \PDO::PARAM_STR
+                )
             );
         }
         return $constraints;
+    }
+
+    /**
+     * @param array|null $record
+     * @return array|null
+     */
+    protected function resolveOverlay(?array $record): ?array
+    {
+        $languageId = $this->siteLanguage->getLanguageId();
+        if ($record === null || $languageId === 0) {
+            return $record;
+        }
+
+        $pageRepository = $this->createPageRepository();
+        if ($this->tableName === 'pages') {
+            return $pageRepository->getPageOverlay($record, $languageId);
+        }
+        return $pageRepository
+            ->getRecordOverlay($this->tableName, $record, $languageId) ?: null;
+    }
+
+    /**
+     * @return PageRepository
+     */
+    protected function createPageRepository(): PageRepository
+    {
+        $context = clone GeneralUtility::makeInstance(Context::class);
+        $context->setAspect(
+            'language',
+            LanguageAspectFactory::createFromSiteLanguage($this->siteLanguage)
+        );
+        return GeneralUtility::makeInstance(
+            PageRepository::class,
+            $context
+        );
     }
 }

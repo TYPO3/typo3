@@ -53,10 +53,10 @@ entities:
   page:
     - self: {id: *idAcmeRootPage, title: 'ACME Inc', type: *pageShortcut, shortcut: 'first', root: true, alias: 'acme-root', slug: '/'}
       children:
-        - self: {id: *idAcmeFirstPage, title: 'EN: Welcome', alias: 'acme-first', slug: '/welcome'}
+        - self: {id: *idAcmeFirstPage, title: 'EN: Welcome', alias: 'acme-first', slug: '/welcome', subtitle: 'hello-and-welcome'}
           languageVariants:
-            - self: {id: 1101, title: 'FR: Welcome', language: 1, slug: '/bienvenue'}
-            - self: {id: 1102, title: 'FR-CA: Welcome', language: 2, slug: '/bienvenue'}
+            - self: {id: 1101, title: 'FR: Welcome', language: 1, slug: '/bienvenue', subtitle: 'salut-et-bienvenue'}
+            - self: {id: 1102, title: 'FR-CA: Welcome', language: 2, slug: '/bienvenue', subtitle: 'salut-et-bienvenue'}
           versionVariants:
             - version: {title: 'EN: Welcome to ACME Inc', workspace: 1, slug: '/welcome'}
           entities:
