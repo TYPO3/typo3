@@ -83,6 +83,7 @@ define(['jquery',
     $(document).on('click', AjaxDataHandler.identifier.delete, function(evt) {
       evt.preventDefault();
       var $anchorElement = $(this);
+      $anchorElement.tooltip('hide');
       var $modal = Modal.confirm($anchorElement.data('title'), $anchorElement.data('message'), Severity.warning, [
         {
           text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
