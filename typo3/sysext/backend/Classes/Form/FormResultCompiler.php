@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Domain\Model\FormElements\Page;
 
 /**
  * This is form engine - Class for creating the backend editing forms.
@@ -217,7 +218,6 @@ class FormResultCompiler
                 $pageRenderer->loadRequireJsModule($moduleName, $callback);
             }
         }
-        $pageRenderer->loadJquery();
         $backendUser = $this->getBackendUserAuthentication();
 
         // define the window size of the element browser etc.
@@ -267,7 +267,8 @@ class FormResultCompiler
                 $pageRenderer->addInlineLanguageLabelFile($additionalInlineLanguageLabelFile);
             }
         }
-        // We want to load jQuery-ui inside our js. Enable this using requirejs.
+        // @TODO: Refactor jsfunc.inline.js to an AMD module / TypsScript. If this is done, remove loadJquery() call.
+        $pageRenderer->loadJquery(null, null, PageRenderer::JQUERY_NAMESPACE_NONE, true);
         $pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.inline.js');
 
         // todo: change these things in JS

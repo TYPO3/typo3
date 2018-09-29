@@ -83,7 +83,6 @@ abstract class AbstractElementBrowser
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $this->pageRenderer->loadJquery();
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/ElementBrowser');
 
         $this->initialize();

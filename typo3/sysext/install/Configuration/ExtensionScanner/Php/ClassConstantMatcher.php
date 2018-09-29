@@ -130,4 +130,14 @@ return [
             'Deprecation-86406-TCATypeGroupInternal_typeFileAndFile_reference.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST' => [
+        'restFiles' => [
+            'Deprecation-86438-DeprecatePageRenderer-loadJQuery.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_NONE' => [
+        'restFiles' => [
+            'Deprecation-86438-DeprecatePageRenderer-loadJQuery.rst',
+        ],
+    ],
 ];

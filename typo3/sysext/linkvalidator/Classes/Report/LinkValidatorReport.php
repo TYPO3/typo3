@@ -360,7 +360,6 @@ class LinkValidatorReport
 
         $pageRenderer = $this->getPageRenderer();
         $pageRenderer->addCssFile('EXT:linkvalidator/Resources/Public/Css/linkvalidator.css', 'stylesheet', 'screen');
-        $pageRenderer->loadJquery();
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Linkvalidator/Linkvalidator');
 
         $this->templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);

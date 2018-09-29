@@ -38,9 +38,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     const PART_COMPLETE = 0;
     const PART_HEADER = 1;
     const PART_FOOTER = 2;
+    // @deprecated will be removed in TYPO3 v10.0.
     // jQuery Core version that is shipped with TYPO3
     const JQUERY_VERSION_LATEST = '3.3.1';
     // jQuery namespace options
+    // @deprecated will be removed in TYPO3 v10.0.
     const JQUERY_NAMESPACE_NONE = 'none';
 
     /**
@@ -276,6 +278,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * The local directory where one can find jQuery versions and plugins
      *
      * @var string
+     * @deprecated will be removed in TYPO3 v10.0.
      */
     protected $jQueryPath = 'EXT:core/Resources/Public/JavaScript/Contrib/jquery/';
 
@@ -296,6 +299,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * jQuery core out of the box.
      *
      * @var array
+     * @deprecated will be removed in TYPO3 v10.0.
      */
     protected $jQueryVersions = [];
 
@@ -303,6 +307,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Array of jQuery version numbers shipped with the core
      *
      * @var array
+     * @deprecated will be removed in TYPO3 v10.0.
      */
     protected $availableLocalJqueryVersions = [
         self::JQUERY_VERSION_LATEST
@@ -1356,10 +1361,15 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string|null $version The jQuery version that should be included, either "latest" or any available version
      * @param string|null $source The location of the jQuery source, can be "local", "google", "msn", "jquery" or just an URL to your jQuery lib
      * @param string $namespace The namespace in which the jQuery object of the specific version should be stored.
+     * @param bool $isCoreCall if set, then the deprecation message is suppressed.
      * @throws \UnexpectedValueException
+     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. This is still in use in deprecated code, so it does not trigger a deprecation warning.
      */
-    public function loadJquery($version = null, $source = null, $namespace = self::JQUERY_NAMESPACE_NONE)
+    public function loadJquery($version = null, $source = null, $namespace = self::JQUERY_NAMESPACE_NONE, bool $isCoreCall = false)
     {
+        if (!$isCoreCall) {
+            trigger_error('PageRenderer->loadJquery() will be removed in TYPO3 v10.0. Use a package manager for frontend or custom jQuery files instead.', E_USER_DEPRECATED);
+        }
         // Set it to the version that is shipped with the TYPO3 core
         if ($version === null || $version === 'latest') {
             $version = self::JQUERY_VERSION_LATEST;
@@ -1430,6 +1440,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $corePath = PathUtility::getAbsoluteWebPath($corePath);
         // first, load all paths for the namespaces, and configure contrib libs.
         $requireJsConfig['paths'] = [
+            'jquery' => $corePath . '/jquery/jquery',
             'jquery-ui' => $corePath . 'jquery-ui',
             'datatables' => $corePath . 'jquery.dataTables',
             'nprogress' => $corePath . 'nprogress',

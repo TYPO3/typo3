@@ -817,7 +817,6 @@ class PageLayoutController
     {
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
-        $this->moduleTemplate->getPageRenderer()->loadJquery();
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $dbList = GeneralUtility::makeInstance(PageLayoutView::class);
         $dbList->thumbs = $this->imagemode;

@@ -513,7 +513,7 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
                 } else {
                     $namespace = PageRenderer::JQUERY_NAMESPACE_NONE;
                 }
-                $pageRenderer->loadJquery($version, $source, $namespace);
+                $pageRenderer->loadJquery($version, $source, $namespace, true);
             }
         }
         // JavaScript library files

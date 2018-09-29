@@ -634,7 +634,6 @@ class SchedulerModuleController
         }
 
         // Load necessary JavaScript
-        $this->getPageRenderer()->loadJquery();
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Scheduler/Scheduler');
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Scheduler/PageBrowser');
@@ -881,7 +880,6 @@ class SchedulerModuleController
             return $this->view->render();
         }
 
-        $this->getPageRenderer()->loadJquery();
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Scheduler/Scheduler');
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
 

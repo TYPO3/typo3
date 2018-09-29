@@ -131,8 +131,6 @@ class BackendController
         $this->moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
         $this->moduleLoader->load($GLOBALS['TBE_MODULES']);
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        // included for the module menu JavaScript, please note that this is subject to change
-        $this->pageRenderer->loadJquery();
         // Add default BE javascript
         $this->jsFiles = [
             'md5' => 'EXT:backend/Resources/Public/JavaScript/md5.js',

@@ -3684,4 +3684,11 @@ return [
             'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Page\PageRenderer->loadJquery' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-86438-DeprecatePageRenderer-loadJQuery.rst'
+        ],
+    ],
 ];

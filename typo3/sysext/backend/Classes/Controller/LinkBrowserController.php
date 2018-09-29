@@ -70,7 +70,6 @@ class LinkBrowserController extends AbstractLinkBrowserController
         $inlineJS = implode(LF, $update);
 
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadJquery();
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter', 'function(FormEngineLinkBrowserAdapter) {
 			FormEngineLinkBrowserAdapter.updateFunctions = function() {' . $inlineJS . '};
 		}');

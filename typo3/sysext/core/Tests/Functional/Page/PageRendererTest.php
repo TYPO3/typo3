@@ -85,7 +85,7 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $subject->addCssInlineBlock('general2', 'body {margin:20px;}');
         $subject->addCssInlineBlock('general3', 'h1 {margin:20px;}', null, true);
 
-        $subject->loadJquery();
+        $subject->loadJquery(null, null, PageRenderer::JQUERY_NAMESPACE_NONE, true);
         $expectedJqueryRegExp = '#<script src="typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
 
         $expectedBodyContent = $this->getUniqueId('ABCDE-');
@@ -208,7 +208,7 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
 
         $expectedRegExp = '#<script src="typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
         $noConflictStatement = 'jQuery.noConflict();';
-        $subject->loadJquery(null, null, $namespace);
+        $subject->loadJquery(null, null, $namespace, true);
 
         //jQuery.noConflict();
         $out = $subject->render();
@@ -230,7 +230,7 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
 
         $expectedRegExp = '#<script src="typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
         $expectedStatement = 'jQuery.noConflict();';
-        $subject->loadJquery(null, null, 'MyNameSpace');
+        $subject->loadJquery(null, null, 'MyNameSpace', true);
         $out = $subject->render();
         $this->assertRegExp($expectedRegExp, $out);
         $this->assertContains($expectedStatement, $out);
@@ -245,7 +245,7 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $subject = new PageRenderer();
 
         $expectedRegExp = '#<script src="typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-        $subject->loadJquery(null, null, PageRenderer::JQUERY_NAMESPACE_NONE);
+        $subject->loadJquery(null, null, PageRenderer::JQUERY_NAMESPACE_NONE, true);
         $out = $subject->render();
         $this->assertRegExp($expectedRegExp, $out);
         $this->assertNotContains('jQuery.noConflict', $out);
@@ -260,7 +260,7 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
 
         $expectedRegExp = '#<script src="typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
         $expectedStatement = 'jQuery.noConflict();';
-        $subject->loadJquery(null, null, 'MyNameSpace');
+        $subject->loadJquery(null, null, 'MyNameSpace', true);
         $subject->enableDebugMode();
         $out = $subject->render();
         $this->assertRegExp($expectedRegExp, $out);
@@ -307,7 +307,7 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
     {
         $subject = new PageRenderer();
 
-        $subject->loadJquery($version, $source);
+        $subject->loadJquery($version, $source, PageRenderer::JQUERY_NAMESPACE_NONE, true);
         $subject->enableDebugMode();
         $out = $subject->render();
         $this->assertRegExp($regex, $out);
@@ -321,7 +321,7 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $subject = new PageRenderer();
 
         $expectedRegex = '#<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js" type="text/javascript"></script>#';
-        $subject->loadJquery('1.6.3', 'google');
+        $subject->loadJquery('1.6.3', 'google', PageRenderer::JQUERY_NAMESPACE_NONE, true);
         $out = $subject->render();
         $this->assertRegExp($expectedRegex, $out);
     }
