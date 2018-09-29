@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtili
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -85,19 +84,6 @@ class TemplateServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function versionOlCallsVersionOlOfPageSelectClassWithGivenRow(): void
-    {
-        $row = ['foo'];
-        $GLOBALS['TSFE'] = new \stdClass();
-        $sysPageMock = $this->createMock(PageRepository::class);
-        $sysPageMock->expects($this->once())->method('versionOL')->with('sys_template', $row);
-        $GLOBALS['TSFE']->sys_page = $sysPageMock;
-        $this->templateService->versionOL($row);
-    }
-
-    /**
-     * @test
-     */
     public function extensionStaticFilesAreNotProcessedIfNotExplicitlyRequested(): void
     {
         $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
@@ -105,7 +91,6 @@ class TemplateServiceTest extends UnitTestCase
         $connectionPoolProphet->getQueryBuilderForTable(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
-        $identifier = $this->getUniqueId('test');
         $this->packageManagerProphecy->getActivePackages()->shouldNotBeCalled();
 
         $this->templateService->runThroughTemplates([], 0);
@@ -123,8 +108,6 @@ class TemplateServiceTest extends UnitTestCase
         $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
         $connectionPoolProphet->getQueryBuilderForTable(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
-
-        $identifier = $this->getUniqueId('test');
 
         $mockPackage = $this->getMockBuilder(Package::class)
             ->setMethods(['getPackagePath', 'getPackageKey'])

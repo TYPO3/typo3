@@ -797,7 +797,7 @@ class TypoScriptParser
      * @param int $cycle_counter Counter for detecting endless loops
      * @param bool $returnFiles When set an array containing the resulting typoscript and all included files will get returned
      * @param string $parentFilenameOrPath The parent file (with absolute path) or path for relative includes
-     * @return string Complete TypoScript with includes added.
+     * @return string|array Complete TypoScript with includes added.
      * @static
      */
     public static function checkIncludeLines($string, $cycle_counter = 1, $returnFiles = false, $parentFilenameOrPath = '')

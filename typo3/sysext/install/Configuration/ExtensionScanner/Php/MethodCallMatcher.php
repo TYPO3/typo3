@@ -3635,6 +3635,48 @@ return [
             'Deprecation-86433-VariousStdWrapFunctionsAndContentObjectRenderer-relatedMethods.rst'
         ],
     ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->prependStaticExtra' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86439-MarkSeveralMethodsWithinTemplateServiceAsInternal.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->versionOL' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86439-MarkSeveralMethodsWithinTemplateServiceAsInternal.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->processIncludes' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86439-MarkSeveralMethodsWithinTemplateServiceAsInternal.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->mergeConstantsFromPageTSconfig' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86439-MarkSeveralMethodsWithinTemplateServiceAsInternal.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->flattenSetup' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-86439-MarkSeveralMethodsWithinTemplateServiceAsInternal.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->substituteConstants' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86439-MarkSeveralMethodsWithinTemplateServiceAsInternal.rst'
+        ],
+    ],
     'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->isPSet' => [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 3,

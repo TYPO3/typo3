@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Core\TypoScript;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\AbstractRestrictionContainer;
@@ -48,6 +48,7 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 class TemplateService
 {
     use PublicPropertyDeprecationTrait;
+    use PublicMethodDeprecationTrait;
 
     /**
      * Properties which have been moved to protected status from public
@@ -55,7 +56,7 @@ class TemplateService
      */
     protected $deprecatedPublicProperties = [
         'matchAll' => 'Using $matchAll of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
-        'whereClause' => 'Using $whereClause of class TemplateService is discouraged, as this has been superseeded by Doctrine DBAL API.',
+        'whereClause' => 'Using $whereClause of class TemplateService is discouraged, as this has been superseded by Doctrine DBAL API.',
         'debug' => 'Using $debug of class TemplateService is discouraged, as this option has no effect anymore.',
         'allowedPaths' => 'Using $allowedPaths of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
         'simulationHiddenOrTime' => 'Using $simulationHiddenOrTime of class TemplateService is discouraged, as this has been superseeded by Doctrine DBAL API.',
@@ -69,6 +70,19 @@ class TemplateService
         'frames' => 'Using $frames of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
         'MPmap' => 'Using $MPmap of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
         'fileCache' => 'Using $fileCache of class TemplateService from the outside is discouraged, the property will be removed in v10.',
+    ];
+
+    /**
+     * Methods which have been moved to protected status from public
+     * @var array
+     */
+    protected $deprecatedPublicMethods = [
+        'prependStaticExtra' => 'Using prependStaticExtra() of class TemplateService from the outside is discouraged, as this method is only meant to be used internally.',
+        'versionOL' => 'Using versionOL() of class TemplateService from the outside is discouraged, as this method is only meant to be used internally.',
+        'processIncludes' => 'Using processIncludes() of class TemplateService from the outside is discouraged, as this method is only meant to be used internally.',
+        'mergeConstantsFromPageTSconfig' => 'Using mergeConstantsFromPageTSconfig() of class TemplateService from the outside is discouraged, as this method is only meant to be used internally.',
+        'flattenSetup' => 'Using flattenSetup() of class TemplateService from the outside is discouraged, as this method is only meant to be used internally.',
+        'substituteConstants' => 'Using substituteConstants() of class TemplateService from the outside is discouraged, as this method is only meant to be used internally.',
     ];
 
     /**
@@ -100,6 +114,7 @@ class TemplateService
      * Used for backend modules only. Never frontend!
      *
      * @var array
+     * @internal
      */
     public $matchAlternative = [];
 
@@ -504,6 +519,7 @@ class TemplateService
      * because this will make a new portion of data in currentPageData string.
      *
      * @return array Returns the unmatched array $currentPageData if found cached in "cache_pagesection". Otherwise FALSE is returned which means that the array must be generated and stored in the cache
+     * @internal
      */
     public function getCurrentPageData()
     {
@@ -922,6 +938,7 @@ class TemplateService
      * @param int $pid The PID of the input template record
      * @param array $row A full TypoScript template record
      * @see processTemplate()
+     * @internal
      */
     public function includeStaticTypoScriptSources($idList, $templateID, $pid, $row)
     {
@@ -1078,10 +1095,9 @@ class TemplateService
      *
      * @param array $subrow Static template record/file
      * @return array Returns the input array where the values for keys "config" and "constants" may have been modified with prepended code.
-     * @internal
      * @see addExtensionStatics(), includeStaticTypoScriptSources()
      */
-    public function prependStaticExtra($subrow)
+    protected function prependStaticExtra($subrow)
     {
         // the identifier can be "43" if coming from "static template" extension or a path like "cssstyledcontent/static/"
         $identifier = $subrow['uid'];
@@ -1101,7 +1117,7 @@ class TemplateService
      *
      * @param array $row Row to overlay (passed by reference)
      */
-    public function versionOL(&$row)
+    protected function versionOL(&$row)
     {
         // Distinguish frontend and backend call:
         // To do the fronted call a full frontend is required, just checking for
@@ -1245,7 +1261,7 @@ class TemplateService
      *
      * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser, generateConfig()
      */
-    public function processIncludes()
+    protected function processIncludes()
     {
         if ($this->processIncludesHasBeenRun) {
             return;
@@ -1284,7 +1300,7 @@ class TemplateService
      * @return array Constants array, modified
      * @todo Apply caching to the parsed Page TSconfig. This is done in the other similar functions for both frontend and backend. However, since this functions works for BOTH frontend and backend we will have to either write our own local caching function or (more likely) detect if we are in FE or BE and use caching functions accordingly. Not having caching affects mostly the backend modules inside the "Template" module since the overhead in the frontend is only seen when TypoScript templates are parsed anyways (after which point they are cached anyways...)
      */
-    public function mergeConstantsFromPageTSconfig($constArray)
+    protected function mergeConstantsFromPageTSconfig($constArray)
     {
         $TSdataArray = [];
         // Setting default configuration:
@@ -1353,7 +1369,7 @@ class TemplateService
      * @param string $prefix Prefix to the object path. Used for recursive calls to this function.
      * @see generateConfig()
      */
-    public function flattenSetup($setupArray, $prefix)
+    protected function flattenSetup($setupArray, $prefix)
     {
         if (is_array($setupArray)) {
             foreach ($setupArray as $key => $val) {
@@ -1373,7 +1389,7 @@ class TemplateService
      * @return string The processed string with all constants found in $this->flatSetup as key/value pairs substituted.
      * @see generateConfig(), flattenSetup()
      */
-    public function substituteConstants($all)
+    protected function substituteConstants($all)
     {
         if ($this->tt_track) {
             $this->getTimeTracker()->setTSlogMessage('Constants to substitute: ' . count($this->flatSetup));
@@ -1396,6 +1412,7 @@ class TemplateService
      * @param array $matches Regular expression matches
      * @return string Replacement
      * @see substituteConstants()
+     * @internal
      */
     public function substituteConstantsCallBack($matches)
     {
