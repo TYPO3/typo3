@@ -144,8 +144,7 @@ class AjaxDataHandler {
       // Bootstrap Tooltip internally uses only .attr('data-original-title')
       $anchorElement
         .data('toggleTitle', $anchorElement.attr('data-original-title'))
-        .attr('data-original-title', nextTitle)
-        .tooltip('show');
+        .attr('data-original-title', nextTitle);
     });
 
     const $iconElement = $anchorElement.find(Identifiers.icon);
