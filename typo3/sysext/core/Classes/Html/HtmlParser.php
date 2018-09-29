@@ -291,7 +291,7 @@ class HtmlParser
      *
      * @param string $tag The tag or attributes
      * @return array
-     * @access private
+     * @internal
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::split_tag_attributes()
      */
     public function split_tag_attributes($tag)
@@ -781,7 +781,7 @@ class HtmlParser
      * @param string $srcVal Relative path/URL
      * @param string $suffix Suffix string
      * @return string Output path, prefixed if no scheme in input string
-     * @access private
+     * @internal
      */
     public function prefixRelPath($prefix, $srcVal, $suffix = '')
     {
@@ -804,7 +804,7 @@ class HtmlParser
      * @param bool $caseSensitiveComparison If this value is FALSE, the string is returned in uppercase
      * @param string $cacheKey Key string used for internal caching of the results. Could be an MD5 hash of the serialized version of the input $str if that is an array.
      * @return string Output string, processed
-     * @access private
+     * @internal
      */
     public function caseShift($str, $caseSensitiveComparison, $cacheKey = '')
     {
@@ -835,7 +835,7 @@ class HtmlParser
      * @param array $tagAttrib Tag attributes
      * @param array $meta Meta information about these attributes (like if they were quoted)
      * @return string Imploded attributes, eg: 'attribute="value" attrib2="value2"'
-     * @access private
+     * @internal
      */
     public function compileTagAttribs($tagAttrib, $meta = [])
     {
@@ -857,7 +857,7 @@ class HtmlParser
      * @param array $TSconfig TSconfig for HTMLcleaner
      * @param array $keepTags Array of tags to keep (?)
      * @return array
-     * @access private
+     * @internal
      */
     public function HTMLparserConfig($TSconfig, $keepTags = [])
     {

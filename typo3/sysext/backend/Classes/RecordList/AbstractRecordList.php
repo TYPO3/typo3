@@ -367,7 +367,7 @@ abstract class AbstractRecordList
      * @param int $pointer Pointer
      * @param string $table Table name
      * @return string
-     * @access private
+     * @internal
      * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public function fwd_rwd_HTML($type, $pointer, $table = '')

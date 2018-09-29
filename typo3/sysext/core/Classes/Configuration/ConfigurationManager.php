@@ -97,7 +97,7 @@ class ConfigurationManager
      * currently the path and filename.
      *
      * @return string
-     * @access private
+     * @internal
      */
     public function getDefaultConfigurationFileLocation()
     {
@@ -109,7 +109,7 @@ class ConfigurationManager
      * currently the path and filename.
      *
      * @return string
-     * @access private
+     * @internal
      */
     public function getDefaultConfigurationDescriptionFileLocation()
     {
@@ -131,7 +131,7 @@ class ConfigurationManager
      * currently the path and filename.
      *
      * @return string
-     * @access private
+     * @internal
      */
     public function getLocalConfigurationFileLocation()
     {
@@ -155,7 +155,7 @@ class ConfigurationManager
      * currently the path and filename.
      *
      * @return string
-     * @access private
+     * @internal
      */
     public function getAdditionalConfigurationFileLocation()
     {
@@ -316,7 +316,7 @@ class ConfigurationManager
      * Checks if the configuration can be written.
      *
      * @return bool
-     * @access private
+     * @internal
      */
     public function canWriteConfiguration()
     {
@@ -327,7 +327,7 @@ class ConfigurationManager
     /**
      * Reads the configuration array and exports it to the global variable
      *
-     * @access private
+     * @internal
      * @throws \UnexpectedValueException
      */
     public function exportConfiguration()
@@ -356,7 +356,7 @@ class ConfigurationManager
      * @param array $configuration The local configuration to be written
      * @throws \RuntimeException
      * @return bool TRUE on success
-     * @access private
+     * @internal
      */
     public function writeLocalConfiguration(array $configuration)
     {
@@ -388,7 +388,7 @@ class ConfigurationManager
      * @param array $additionalConfigurationLines The configuration lines to be written
      * @throws \RuntimeException
      * @return bool TRUE on success
-     * @access private
+     * @internal
      */
     public function writeAdditionalConfiguration(array $additionalConfigurationLines)
     {
@@ -405,7 +405,7 @@ class ConfigurationManager
      * by the install tool in an early step.
      *
      * @throws \RuntimeException
-     * @access private
+     * @internal
      */
     public function createLocalConfigurationFromFactoryConfiguration()
     {

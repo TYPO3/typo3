@@ -307,7 +307,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $extensionKey
      * @param bool $loadTerInformation
-     * @access private
+     * @internal
      * @return array
      * @throws ExtensionManagerException
      */

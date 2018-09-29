@@ -524,7 +524,7 @@ class Indexer
     /**
      * Initialize external parsers
      *
-     * @access private
+     * @internal
      * @see init()
      */
     public function initializeExternalParsers()

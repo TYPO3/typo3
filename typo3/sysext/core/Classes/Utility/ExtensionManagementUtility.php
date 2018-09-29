@@ -1530,7 +1530,7 @@ tt_content.' . $key . $suffix . ' {
      *
      * @param bool $allowCaching Whether or not to load / create concatenated cache file
      * @param FrontendInterface $codeCache
-     * @access private
+     * @internal
      */
     public static function loadExtLocalconf($allowCaching = true, FrontendInterface $codeCache = null)
     {
@@ -1633,7 +1633,7 @@ tt_content.' . $key . $suffix . ' {
      * extensions should not use it!
      *
      * @param bool $allowCaching Whether or not to load / create concatenated cache file
-     * @access private
+     * @internal
      */
     public static function loadBaseTca($allowCaching = true, FrontendInterface $codeCache = null)
     {
@@ -1776,7 +1776,7 @@ tt_content.' . $key . $suffix . ' {
      * extensions should not use it!
      *
      * @param bool $allowCaching Whether to load / create concatenated cache file
-     * @access private
+     * @internal
      */
     public static function loadExtTables($allowCaching = true)
     {

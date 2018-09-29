@@ -124,7 +124,7 @@ class BackendFormProtection extends AbstractFormProtection
      * Saves the tokens so that they can be used by a later incarnation of this
      * class.
      *
-     * @access private
+     * @internal
      */
     public function persistSessionToken()
     {
@@ -135,7 +135,7 @@ class BackendFormProtection extends AbstractFormProtection
      * Sets the session token for the user from the registry
      * and returns it additionally.
      *
-     * @access private
+     * @internal
      * @return string
      * @throws \UnexpectedValueException
      */
@@ -152,7 +152,7 @@ class BackendFormProtection extends AbstractFormProtection
      * Stores the session token in the registry to have it
      * available during re-login of the user.
      *
-     * @access private
+     * @internal
      */
     public function storeSessionTokenInRegistry()
     {
@@ -162,7 +162,7 @@ class BackendFormProtection extends AbstractFormProtection
     /**
      * Removes the session token for the user from the registry.
      *
-     * @access private
+     * @internal
      */
     public function removeSessionTokenFromRegistry()
     {

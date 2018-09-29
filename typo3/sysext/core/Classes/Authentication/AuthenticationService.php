@@ -305,9 +305,9 @@ class AuthenticationService extends AbstractAuthenticationService
      * @param string $grList Commalist of fe_groups uid numbers
      * @param string $idList List of already processed fe_groups-uids so the function will not fall into an eternal recursion.
      * @param array $groups
-     * @access private
+     * @internal
      */
-    public function getSubGroups($grList, $idList = '', &$groups)
+    public function getSubGroups($grList, $idList, &$groups)
     {
         // Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('fe_groups');

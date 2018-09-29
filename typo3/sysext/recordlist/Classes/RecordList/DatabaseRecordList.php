@@ -1381,7 +1381,7 @@ class DatabaseRecordList
      * @param string $thumbsCol Table field (column) where (possible) thumbnails can be found
      * @param int $indent Indent from left.
      * @return string Table row for the element
-     * @access private
+     * @internal
      * @see getTable()
      */
     public function renderListRow($table, $row, $cc, $titleCol, $thumbsCol, $indent = 0)
@@ -1579,7 +1579,7 @@ class DatabaseRecordList
      * @param int[] $currentIdList Array of the currently displayed uids of the table
      * @throws \UnexpectedValueException
      * @return string Header table row
-     * @access private
+     * @internal
      * @see getTable()
      */
     public function renderListHeader($table, $currentIdList)
@@ -4232,7 +4232,7 @@ class DatabaseRecordList
      * @param int $pointer Pointer
      * @param string $table Table name
      * @return string
-     * @access private
+     * @internal
      */
     public function fwd_rwd_HTML($type, $pointer, $table = '')
     {

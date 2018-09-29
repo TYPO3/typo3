@@ -1709,7 +1709,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Render the page but not the JavaScript and CSS Files
      *
      * @param string $substituteHash The hash that is used for the placehoder markers
-     * @access private
+     * @internal
      * @return string Content of rendered section
      */
     public function renderPageWithUncachedObjects($substituteHash)
@@ -1727,7 +1727,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $cachedPageContent
      * @param string $substituteHash The hash that is used for the placehoder markers
-     * @access private
+     * @internal
      * @return string
      */
     public function renderJavaScriptAndCssForProcessingOfUncachedContentObjects($cachedPageContent, $substituteHash)

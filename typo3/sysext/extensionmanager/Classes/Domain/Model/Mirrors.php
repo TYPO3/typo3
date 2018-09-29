@@ -66,7 +66,6 @@ class Mirrors extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Mirror has previously been selected or is chosen
      * randomly.
      *
-     * @access public
      * @return array array of a mirror's properties or NULL in case of errors
      */
     public function getMirror()
@@ -96,7 +95,6 @@ class Mirrors extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Method returns all available mirrors.
      *
-     * @access public
      * @return array multidimensional array with mirrors and their properties
      * @see $mirrors, setMirrors()
      */

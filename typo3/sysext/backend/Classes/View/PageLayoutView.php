@@ -4238,7 +4238,7 @@ class PageLayoutView implements LoggerAwareInterface
      * @param int $pointer Pointer
      * @param string $table Table name
      * @return string
-     * @access private
+     * @internal
      */
     public function fwd_rwd_HTML($type, $pointer, $table = '')
     {

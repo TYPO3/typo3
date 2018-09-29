@@ -74,7 +74,6 @@ abstract class AbstractMirrorXmlParser extends AbstractXmlParser
      * Valid array keys of returned array are:
      * country, host, path, sponsorlink, sponsorlogo, sponsorname, title
      *
-     * @access public
      * @return array assoziative array of a mirror's properties
      * @see $country, $host, $path, $sponsorlink, $sponsorlogo, $sponsorname, $title
      */
@@ -94,7 +93,6 @@ abstract class AbstractMirrorXmlParser extends AbstractXmlParser
     /**
      * Returns country of currently processed mirror.
      *
-     * @access public
      * @return string name of country a mirror is located in
      * @see $country, getAll()
      */
@@ -106,7 +104,6 @@ abstract class AbstractMirrorXmlParser extends AbstractXmlParser
     /**
      * Returns host of currently processed mirror.
      *
-     * @access public
      * @return string host name
      * @see $host, getAll()
      */
@@ -118,7 +115,6 @@ abstract class AbstractMirrorXmlParser extends AbstractXmlParser
     /**
      * Returns path to mirrored TER of currently processed mirror.
      *
-     * @access public
      * @return string path name
      * @see $path, getAll()
      */
@@ -130,7 +126,6 @@ abstract class AbstractMirrorXmlParser extends AbstractXmlParser
     /**
      * Returns sponsor link of currently processed mirror.
      *
-     * @access public
      * @return string URL of a sponsor's website
      * @see $sponsorlink, getAll()
      */
@@ -142,7 +137,6 @@ abstract class AbstractMirrorXmlParser extends AbstractXmlParser
     /**
      * Returns sponsor logo location of currently processed mirror.
      *
-     * @access public
      * @return string a sponsor's logo location
      * @see $sponsorlogo, getAll()
      */
@@ -154,7 +148,6 @@ abstract class AbstractMirrorXmlParser extends AbstractXmlParser
     /**
      * Returns sponsor name of currently processed mirror.
      *
-     * @access public
      * @return string name of sponsor
      * @see $sponsorname, getAll()
      */
@@ -166,9 +159,8 @@ abstract class AbstractMirrorXmlParser extends AbstractXmlParser
     /**
      * Returns title of currently processed mirror.
      *
-     * @access public
      * @return string title of mirror
-     * @see $title, get All()
+     * @see $title, getAll()
      */
     public function getTitle()
     {
@@ -178,7 +170,6 @@ abstract class AbstractMirrorXmlParser extends AbstractXmlParser
     /**
      * Method resets version class properties.
      *
-     * @access protected
      * @see $country, $host, $path, $sponsorlink, $sponsorlogo, $sponsorname, $title
      */
     protected function resetProperties()

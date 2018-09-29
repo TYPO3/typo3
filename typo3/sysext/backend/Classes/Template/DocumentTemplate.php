@@ -393,7 +393,7 @@ function jumpToUrl(URL) {
      * @param string $gvList Is the list of GET variables to store (if any)
      * @param string $setList Is the list of SET[] variables to store (if any) - SET[] variables a stored in $GLOBALS["SOBE"]->MOD_SETTINGS for backend modules
      * @return string
-     * @access private
+     * @internal
      * @see makeShortcutIcon()
      */
     public function makeShortcutUrl($gvList, $setList)

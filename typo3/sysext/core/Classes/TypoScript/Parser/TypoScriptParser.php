@@ -1406,7 +1406,7 @@ class TypoScriptParser
      * @param string $code Key from the internal array $this->highLightStyles
      * @param int $pointer Pointer to the line in $this->raw which this is about
      * @param int $strlen The number of chars LEFT on this line before the end is reached.
-     * @access private
+     * @internal
      * @see parse()
      */
     public function regHighLight($code, $pointer, $strlen = -1)
@@ -1425,7 +1425,7 @@ class TypoScriptParser
      * @param mixed $lineNumDat If blank, linenumbers are NOT printed. If array then the first key is the linenumber offset to add to the internal counter.
      * @param bool $highlightBlockMode If set, then the highlighted output will be formatted in blocks based on the brace levels. prespace will be ignored and empty lines represented with a single no-break-space.
      * @return string HTML content
-     * @access private
+     * @internal
      * @see doSyntaxHighlight()
      */
     public function syntaxHighlight_print($lineNumDat, $highlightBlockMode)

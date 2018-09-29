@@ -112,7 +112,7 @@ class FrontendFormProtection extends AbstractFormProtection
      * Saves the tokens so that they can be used by a later incarnation of this
      * class.
      *
-     * @access private
+     * @internal
      */
     public function persistSessionToken()
     {

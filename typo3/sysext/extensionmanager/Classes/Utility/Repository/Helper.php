@@ -18,7 +18,13 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extensionmanager\Domain\Model\Repository;
+use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
+use TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+use TYPO3\CMS\Extensionmanager\Utility\Importer\ExtensionListUtility;
+use TYPO3\CMS\Extensionmanager\Utility\Importer\MirrorListUtility;
 
 /**
  * Central utility class for repository handling.
@@ -30,6 +36,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      * Problem constants - to be used in bitmasks
      * ##########################################
      */
+
     /**
      * Type of problem: extension file not existing in file system.
      *
@@ -42,42 +49,42 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      * @var int
      */
     const PROBLEM_EXTENSION_HASH_CHANGED = 2;
+
     /**
      * Type of problem: no version records in database.
      *
      * @var int
      */
     const PROBLEM_NO_VERSIONS_IN_DATABASE = 4;
+
     /**
      * Keeps instance of repository class.
      *
-     * @var \TYPO3\CMS\Extensionmanager\Domain\Model\Repository
+     * @var Repository
      */
     protected $repository;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository
+     * @var RepositoryRepository
      */
     protected $repositoryRepository;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
+     * @var ExtensionRepository
      */
     protected $extensionRepository;
 
     /**
-     * Class constructor.
-     *
-     * @access public
+     * @var ObjectManager
      */
+    protected $objectManager;
+
     public function __construct()
     {
-        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        /** @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository $repositoryRepository */
-        $repositoryRepository = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class);
-        $this->extensionRepository = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository::class);
-        /** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Repository $repository */
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $repositoryRepository = $this->objectManager->get(RepositoryRepository::class);
+        $this->extensionRepository = $this->objectManager->get(ExtensionRepository::class);
+        /** @var Repository $repository */
         $repository = $repositoryRepository->findByUid(1);
         if (is_object($repository)) {
             $this->setRepository($repository);
@@ -89,11 +96,10 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      *
      * Repository instance is passed by reference.
      *
-     * @access public
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Repository $repository
+     * @param Repository $repository
      * @see $repository
      */
-    public function setRepository(\TYPO3\CMS\Extensionmanager\Domain\Model\Repository $repository)
+    public function setRepository(Repository $repository)
     {
         $this->repository = $repository;
     }
@@ -103,7 +109,6 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      *
      * Delegates to {@link fetchFile()}.
      *
-     * @access public
      * @throws ExtensionManagerException
      * @see fetchFile()
      */
@@ -117,7 +122,6 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      *
      * Delegates to {@link fetchFile()}.
      *
-     * @access public
      * @throws ExtensionManagerException
      * @see fetchFile()
      */
@@ -142,9 +146,9 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
             throw new ExtensionManagerException('Extension Manager is in offline mode. No TER connection available.', 1437078780);
         }
         if (is_string($remoteResource) && is_string($localResource) && !empty($remoteResource) && !empty($localResource)) {
-            $fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($remoteResource);
+            $fileContent = GeneralUtility::getUrl($remoteResource);
             if ($fileContent !== false) {
-                if (\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($localResource, $fileContent) !== null) {
+                if (GeneralUtility::writeFileToTypo3tempDir($localResource, $fileContent) !== null) {
                     throw new ExtensionManagerException(sprintf('Could not write to file %s.', $localResource), 1342635378);
                 }
             } else {
@@ -156,7 +160,6 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Method returns location of local extension list file.
      *
-     * @access public
      * @return string local location of file
      * @see getRemoteExtListFile()
      */
@@ -168,7 +171,6 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Method returns location of remote extension list file.
      *
-     * @access public
      * @return string remote location of file
      * @see getLocalExtListFile()
      */
@@ -183,7 +185,6 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      * Method returns location of remote file containing
      * the extension checksum hash.
      *
-     * @access public
      * @return string remote location of file
      */
     public function getRemoteExtHashFile()
@@ -196,7 +197,6 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Method returns location of local mirror list file.
      *
-     * @access public
      * @return string local location of file
      * @see getRemoteMirrorListFile()
      */
@@ -208,7 +208,6 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Method returns location of remote mirror list file.
      *
-     * @access public
      * @return string remote location of file
      * @see getLocalMirrorListFile()
      */
@@ -225,7 +224,6 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      * the method will retrieve them from file system or remote
      * server.
      *
-     * @access public
      * @param bool $forcedUpdateFromRemote if boolean TRUE, mirror configuration will always retrieved from remote server
      * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors instance of repository mirrors class
      * @throws ExtensionManagerException
@@ -237,8 +235,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
             if ($forcedUpdateFromRemote || !is_file($this->getLocalMirrorListFile())) {
                 $this->fetchMirrorListFile();
             }
-            /** @var \TYPO3\CMS\Extensionmanager\Utility\Importer\MirrorListUtility $objMirrorListImporter */
-            $objMirrorListImporter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extensionmanager\Utility\Importer\MirrorListUtility::class);
+            $objMirrorListImporter = GeneralUtility::makeInstance(MirrorListUtility::class);
             $this->repository->addMirrors($objMirrorListImporter->getMirrors($this->getLocalMirrorListFile()));
         }
         return $this->repository->getMirrors();
@@ -248,7 +245,6 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      * Method returns information if currently available
      * extension list might be outdated.
      *
-     * @access public
      * @see \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::PROBLEM_NO_VERSIONS_IN_DATABASE,
      * @throws ExtensionManagerException
      * @return int "0" if everything is perfect, otherwise bitmask with problems
@@ -265,7 +261,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
         if (!is_file($this->getLocalExtListFile())) {
             $updateNecessity |= self::PROBLEM_EXTENSION_FILE_NOT_EXISTING;
         } else {
-            $remotemd5 = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->getRemoteExtHashFile());
+            $remotemd5 = GeneralUtility::getUrl($this->getRemoteExtHashFile());
             if ($remotemd5 !== false) {
                 $localmd5 = md5_file($this->getLocalExtListFile());
                 if ($remotemd5 !== $localmd5) {
@@ -311,8 +307,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
             // no further problems - start of import process
             if ($updateNecessity === 0) {
                 $uid = $this->repository->getUid();
-                /* @var \TYPO3\CMS\Extensionmanager\Utility\Importer\ExtensionListUtility $objExtListImporter */
-                $objExtListImporter = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\Importer\ExtensionListUtility::class);
+                $objExtListImporter = $this->objectManager->get(ExtensionListUtility::class);
                 $objExtListImporter->import($this->getLocalExtListFile(), $uid);
                 $updated = true;
             }

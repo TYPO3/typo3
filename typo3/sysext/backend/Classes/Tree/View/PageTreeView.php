@@ -94,7 +94,7 @@ class PageTreeView extends AbstractTreeView
      * @param int $nextCount The number of sub-elements to the current element.
      * @param bool $isExpand The element was expanded to render subelements if this flag is set.
      * @return string Image tag with the plus/minus icon.
-     * @access private
+     * @internal
      * @see AbstractTreeView::PMicon()
      */
     public function PMicon($row, $a, $c, $nextCount, $isExpand)
@@ -106,7 +106,7 @@ class PageTreeView extends AbstractTreeView
      * Get stored tree structure AND updating it if needed according to incoming PM GET var.
      * - Here we just set it to nothing since we want to just render the tree, nothing more.
      *
-     * @access private
+     * @internal
      */
     public function initializePositionSaving()
     {

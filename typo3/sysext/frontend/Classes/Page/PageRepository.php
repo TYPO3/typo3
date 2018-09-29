@@ -992,7 +992,7 @@ class PageRepository implements LoggerAwareInterface
      * @throws \RuntimeException
      * @throws ShortcutTargetPageNotFoundException
      * @return mixed Returns the page record of the page that the shortcut pointed to.
-     * @access private
+     * @internal
      * @see getPageAndRootline()
      */
     public function getPageShortcut($shortcutFieldValue, $shortcutMode, $thisUid, $iteration = 20, $pageLog = [], $disableGroupCheck = false)

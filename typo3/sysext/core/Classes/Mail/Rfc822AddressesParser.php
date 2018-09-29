@@ -115,7 +115,6 @@ class Rfc822AddressesParser
      * The number of groups that have been found in the address list.
      *
      * @var int $num_groups
-     * @access public
      */
     private $num_groups = 0;
 
@@ -154,7 +153,6 @@ class Rfc822AddressesParser
      * Starts the whole process. The address must either be set here
      * or when creating the object. One or the other.
      *
-     * @access public
      * @param string $address The address(es) to validate.
      * @param string $default_domain Default domain/host etc.
      * @param bool $validate Whether to validate atoms. Turn this off if you need to run addresses through before encoding the personal names, for instance.
@@ -203,7 +201,7 @@ class Rfc822AddressesParser
     /**
      * Splits an address into separate addresses.
      *
-     * @access private
+     * @internal
      * @param string $address The addresses to split.
      * @return bool Success or failure.
      */
@@ -265,7 +263,7 @@ class Rfc822AddressesParser
     /**
      * Checks for a group at the start of the string.
      *
-     * @access private
+     * @internal
      * @param string $address The address to check.
      * @return bool Whether or not there is a group at the start of the string.
      */
@@ -287,7 +285,7 @@ class Rfc822AddressesParser
     /**
      * A common function that will check an exploded string.
      *
-     * @access private
+     * @internal
      * @param array $parts The exloded string.
      * @param string $char  The char that was exploded on.
      * @return mixed False if the string contains unclosed quotes/brackets, or the string on success.
@@ -315,7 +313,7 @@ class Rfc822AddressesParser
     /**
      * Checks if a string has unclosed quotes or not.
      *
-     * @access private
+     * @internal
      * @param string $string  The string to check.
      * @return bool TRUE if there are unclosed quotes inside the string,
      */
@@ -346,7 +344,7 @@ class Rfc822AddressesParser
      * Checks if a string has an unclosed brackets or not. IMPORTANT:
      * This function handles both angle brackets and square brackets;
      *
-     * @access private
+     * @internal
      * @param string $string The string to check.
      * @param string $chars  The characters to check for.
      * @return bool TRUE if there are unclosed brackets inside the string, FALSE otherwise.
@@ -367,7 +365,7 @@ class Rfc822AddressesParser
     /**
      * Sub function that is used only by hasUnclosedBrackets().
      *
-     * @access private
+     * @internal
      * @param string $string The string to check.
      * @param int &$num	The number of occurrences.
      * @param string $char   The character to count.
@@ -391,7 +389,7 @@ class Rfc822AddressesParser
     /**
      * Function to begin checking the address.
      *
-     * @access private
+     * @internal
      * @param string $address The address to validate.
      * @return mixed False on failure, or a structured array of address information on success.
      */
@@ -457,7 +455,7 @@ class Rfc822AddressesParser
     /**
      * Function to validate a phrase.
      *
-     * @access private
+     * @internal
      * @param string $phrase The phrase to check.
      * @return bool Success or failure.
      */
@@ -497,7 +495,7 @@ class Rfc822AddressesParser
      * can split a list of addresses up before encoding personal names
      * (umlauts, etc.), for example.
      *
-     * @access private
+     * @internal
      * @param string $atom The string to check.
      * @return bool Success or failure.
      */
@@ -526,7 +524,7 @@ class Rfc822AddressesParser
      * Function to validate quoted string, which is:
      * quoted-string = <"> *(qtext/quoted-pair) <">
      *
-     * @access private
+     * @internal
      * @param string $qstring The string to check
      * @return bool Success or failure.
      */
@@ -543,7 +541,6 @@ class Rfc822AddressesParser
      * mailbox =   addr-spec		 ; simple address
      * phrase route-addr ; name and route-addr
      *
-     * @access public
      * @param string &$mailbox The string to check.
      * @return bool Success or failure.
      */
@@ -617,7 +614,7 @@ class Rfc822AddressesParser
      * Angle brackets have already been removed at the point of
      * getting to this function.
      *
-     * @access private
+     * @internal
      * @param string $route_addr The string to check.
      * @return mixed False on failure, or an array containing validated address/route information on success.
      */
@@ -662,7 +659,7 @@ class Rfc822AddressesParser
      * Function to validate a route, which is:
      * route = 1#("@" domain) ":"
      *
-     * @access private
+     * @internal
      * @param string $route The string to check.
      * @return mixed False on failure, or the validated $route on success.
      */
@@ -685,7 +682,7 @@ class Rfc822AddressesParser
      *
      * domain = sub-domain *("." sub-domain)
      *
-     * @access private
+     * @internal
      * @param string $domain The string to check.
      * @return mixed False on failure, or the validated domain on success.
      */
@@ -712,7 +709,7 @@ class Rfc822AddressesParser
      * Function to validate a subdomain:
      * subdomain = domain-ref / domain-literal
      *
-     * @access private
+     * @internal
      * @param string $subdomain The string to check.
      * @return bool Success or failure.
      */
@@ -735,7 +732,7 @@ class Rfc822AddressesParser
      * Function to validate a domain literal:
      * domain-literal =  "[" *(dtext / quoted-pair) "]"
      *
-     * @access private
+     * @internal
      * @param string $dliteral The string to check.
      * @return bool Success or failure.
      */
@@ -749,7 +746,7 @@ class Rfc822AddressesParser
      *
      * addr-spec = local-part "@" domain
      *
-     * @access private
+     * @internal
      * @param string $addr_spec The string to check.
      * @return mixed False on failure, or the validated addr-spec on success.
      */
@@ -779,7 +776,7 @@ class Rfc822AddressesParser
      * Function to validate the local part of an address:
      * local-part = word *("." word)
      *
-     * @access private
+     * @internal
      * @param string $local_part
      * @return mixed False on failure, or the validated local part on success.
      */

@@ -42,7 +42,7 @@ class ExportPageTreeView extends BrowseTreeView
      * @param string $row Item record
      * @param int $bank Bank pointer (which mount point number)
      * @return string Wrapped title
-     * @access private
+     * @internal
      */
     public function wrapTitle($title, $row, $bank = 0)
     {

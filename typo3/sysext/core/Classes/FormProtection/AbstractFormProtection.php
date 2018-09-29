@@ -144,7 +144,7 @@ abstract class AbstractFormProtection
      * Saves the session token so that it can be used by a later incarnation
      * of this class.
      *
-     * @access private
+     * @internal
      */
     abstract public function persistSessionToken();
 }

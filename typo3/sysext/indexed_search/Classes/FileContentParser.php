@@ -779,7 +779,7 @@ class FileContentParser
      *
      * @param array $pdfInfoArray Array of PDF content, coming from the pdfinfo tool
      * @return array Result array
-     * @access private
+     * @internal
      * @see fileContentParts()
      */
     public function splitPdfInfo($pdfInfoArray)

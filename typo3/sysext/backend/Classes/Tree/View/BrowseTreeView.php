@@ -121,7 +121,7 @@ class BrowseTreeView extends AbstractTreeView
      * @param string $icon The image tag for the icon
      * @param array $row The row for the current element
      * @return string The processed icon input value.
-     * @access private
+     * @internal
      */
     public function wrapIcon($icon, $row)
     {

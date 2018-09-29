@@ -363,7 +363,7 @@ class Clipboard
     /**
      * Print the content on a pad. Called from ->printClipboard()
      *
-     * @access private
+     * @internal
      * @param string $pad Pad reference
      * @return array Array with table rows for the clipboard.
      */
@@ -798,7 +798,7 @@ class Clipboard
      * Saves the clipboard, no questions asked.
      * Use ->endClipboard normally (as it checks if changes has been done so saving is necessary)
      *
-     * @access private
+     * @internal
      */
     public function saveClipboard()
     {

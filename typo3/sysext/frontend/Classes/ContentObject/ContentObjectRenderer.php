@@ -611,7 +611,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param array $data The record array
      * @param string $currentRecord This is set to the [table]:[uid] of the record delivered in the $data-array, if the cObjects CONTENT or RECORD is in operation. Note that $GLOBALS['TSFE']->currentRecord is set to an equal value but always indicating the latest record rendered.
-     * @access private
+     * @internal
      */
     public function setParent($data, $currentRecord)
     {
@@ -999,7 +999,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $pidList A list of page Content-Element PIDs (Page UIDs) / stdWrap
      * @param array $pidConf stdWrap array for the list
      * @return string A list of PIDs
-     * @access private
+     * @internal
      */
     public function getSlidePids($pidList, $pidConf)
     {
@@ -1033,7 +1033,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $file File TypoScript resource
      * @param array $conf TypoScript configuration properties
      * @return string <img> tag, (possibly wrapped in links and other HTML) if any image found.
-     * @access private
+     * @internal
      * @see IMAGE()
      */
     public function cImage($file, $conf)
@@ -3005,7 +3005,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param array $conf TypoScript properties for the property (see link to "numRows")
      * @return int The number of rows found by the select
-     * @access private
+     * @internal
      * @see stdWrap()
      */
     public function numRows($conf)
@@ -3123,7 +3123,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $data The command which contains information about what files/directory listing to return. See the "filelist" property of stdWrap for details.
      * @param bool $isCoreCall if set, the deprecation message is suppressed
      * @return string Comma list of files.
-     * @access private
+     * @internal
      * @see stdWrap()
      * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. Use cObject FILES instead.
      */
@@ -3327,7 +3327,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $content The string to perform the operation on
      * @param string $options The parameters to substring, given as a comma list of integers where the first and second number is passed as arg 1 and 2 to substr().
      * @return string The processed input value.
-     * @access private
+     * @internal
      * @see stdWrap()
      */
     public function substring($content, $options)
@@ -3345,7 +3345,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $content The string to perform the operation on
      * @param string $options The parameters splitted by "|": First parameter is the max number of chars of the string. Negative value means cropping from end of string. Second parameter is the pre/postfix string to apply if cropping occurs. Third parameter is a boolean value. If set then crop will be applied at nearest space.
      * @return string The processed input value.
-     * @access private
+     * @internal
      * @see stdWrap()
      */
     public function crop($content, $options)
@@ -3385,7 +3385,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $content The string to perform the operation on
      * @param string $options The parameters splitted by "|": First parameter is the max number of chars of the string. Negative value means cropping from end of string. Second parameter is the pre/postfix string to apply if cropping occurs. Third parameter is a boolean value. If set then crop will be applied at nearest space.
      * @return string The processed input value.
-     * @access private
+     * @internal
      * @see stdWrap()
      */
     public function cropHTML($content, $options)
@@ -3578,7 +3578,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $conf TypoScript parameters for the TypoScript function ->filelink
      * @param bool $isCoreCall if set, the deprecation message is suppressed
      * @return string The link to the file possibly with icons, thumbnails, size in bytes shown etc.
-     * @access private
+     * @internal
      * @see stdWrap()
      * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. Use cObject FILES instead.
      */
@@ -3805,7 +3805,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $value The string value to explode by $conf[token] and process each part
      * @param array $conf TypoScript properties for "split
      * @return string Compiled result
-     * @access private
+     * @internal
      * @see stdWrap(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::procesItemStates()
      */
     public function splitObj($value, $conf)
@@ -4139,7 +4139,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $theValue The value to process.
      * @param array $conf TypoScript configuration for parseFunc
      * @return string The processed value
-     * @access private
+     * @internal
      * @see parseFunc()
      */
     public function _parseFunc($theValue, $conf)
@@ -4377,7 +4377,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $theValue The input value
      * @param array $conf TypoScript options
      * @return string The processed input value being returned; Splitted lines imploded by LF again.
-     * @access private
+     * @internal
      */
     public function encaps_lineSplit($theValue, $conf)
     {
@@ -5184,7 +5184,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param bool $slideBack If set, then we will traverse through the rootline from outer level towards the root level until the value found is TRUE
      * @param mixed $altRootLine If you supply an array for this it will be used as an alternative root line array
      * @return string The value from the field of the rootline.
-     * @access private
+     * @internal
      * @see getData()
      */
     public function rootLineValue($key, $field, $slideBack = false, $altRootLine = '')
@@ -5242,7 +5242,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param int $key The integer to transform
      * @param array $arr array in which the key should be found.
      * @return int The processed integer key value.
-     * @access private
+     * @internal
      * @see getData()
      */
     public function getKey($key, $arr)
@@ -6532,7 +6532,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @return mixed A SELECT query if $returnQueryArray is FALSE, otherwise the SELECT query in an array as parts.
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
-     * @access private
+     * @internal
      * @see CONTENT(), numRows()
      */
     public function getQuery($table, $conf, $returnQueryArray = false)
@@ -6980,7 +6980,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $selectPart Select part
      * @param string $table Table to select from
      * @return string Sanitized select part
-     * @access private
+     * @internal
      * @see getQuery
      */
     protected function sanitizeSelectPart($selectPart, $table)
@@ -7016,7 +7016,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param array $listArr Array of Page UID numbers for select and for which pages with enablefields and bad doktypes should be removed.
      * @return array Returns the array of remaining page UID numbers
-     * @access private
+     * @internal
      * @see checkPid()
      */
     public function checkPidArray($listArr)
@@ -7059,7 +7059,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param int $uid Page UID to test
      * @return bool TRUE if OK
-     * @access private
+     * @internal
      * @see checkPidArray()
      */
     public function checkPid($uid)
@@ -7098,7 +7098,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $table Table to select records from
      * @param array $conf Select part of CONTENT definition
      * @return array List of values to replace markers with
-     * @access private
+     * @internal
      * @see getQuery()
      */
     public function getQueryMarkers($table, $conf)
@@ -7293,7 +7293,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $table The table name
      * @param array $row The data record
      * @return bool
-     * @access private
+     * @internal
      * @see editPanelPreviewBorder()
      */
     public function isDisabled($table, $row)

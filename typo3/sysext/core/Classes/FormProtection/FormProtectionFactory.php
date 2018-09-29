@@ -201,7 +201,7 @@ class FormProtectionFactory
      *
      * Note: This function is intended for testing purposes only.
      *
-     * @access private
+     * @internal
      * @param string $classNameOrType
      * @param AbstractFormProtection $instance
      */

@@ -511,7 +511,7 @@ class GraphicalFunctions
      * @param resource $cpImg GDlib image pointer, source (top image)
      * @param array $conf TypoScript array with the properties for the IMAGE GIFBUILDER object. Only used for the "tile" property value.
      * @param array $workArea Work area
-     * @access private
+     * @internal
      */
     public function copyGifOntoGif(&$im, $cpImg, $conf, $workArea)
     {
@@ -590,7 +590,7 @@ class GraphicalFunctions
      * @param int $dstHeight Destination height
      * @param int $srcWidth Source width
      * @param int $srcHeight Source height
-     * @access private
+     * @internal
      */
     public function imagecopyresized(&$dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight)
     {
@@ -717,7 +717,7 @@ class GraphicalFunctions
      * @param array $workArea Work area definition
      * @param array $BB Bounding box information, was set in \TYPO3\CMS\Frontend\Imaging\GifBuilder::start()
      * @return array [0]=x, [1]=y, [2]=w, [3]=h
-     * @access private
+     * @internal
      * @see makeText()
      */
     public function txtPosition($conf, $workArea, $BB)
@@ -768,7 +768,7 @@ class GraphicalFunctions
      *
      * @param array $conf TypoScript array for the TEXT GIFBUILDER object
      * @return array Array with three keys [0]/[1] being x/y and [2] being the bounding box array
-     * @access private
+     * @internal
      * @see txtPosition(), \TYPO3\CMS\Frontend\Imaging\GifBuilder::start()
      */
     public function calcBBox($conf)
@@ -851,7 +851,7 @@ class GraphicalFunctions
      *
      * @param array $cords Coordinates for a polygon image map as created by ->calcTextCordsForMap()
      * @param array $conf Configuration for "imgMap." property of a TEXT GIFBUILDER object.
-     * @access private
+     * @internal
      * @see makeText(), calcTextCordsForMap()
      */
     public function addToMap($cords, $conf)
@@ -870,7 +870,7 @@ class GraphicalFunctions
      * @param array $offset Offset array
      * @param array $conf Configuration for "imgMap." property of a TEXT GIFBUILDER object.
      * @return array
-     * @access private
+     * @internal
      * @see makeText(), calcTextCordsForMap()
      */
     public function calcTextCordsForMap($cords, $offset, $conf)
@@ -904,7 +904,7 @@ class GraphicalFunctions
      * @param int $wordSpacing The spacing of words in pixels
      * @param array $splitRenderingConf Array
      * @param int $sF Scale factor
-     * @access private
+     * @internal
      */
     public function SpacedImageTTFText(&$im, $fontSize, $angle, $x, $y, $Fcolor, $fontFile, $text, $spacing, $wordSpacing, $splitRenderingConf, $sF = 1)
     {
@@ -936,7 +936,7 @@ class GraphicalFunctions
      *
      * @param array $conf The TypoScript properties of the TEXT GIFBUILDER object
      * @return int The new fontSize
-     * @access private
+     * @internal
      * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::start()
      */
     public function fontResize($conf)
@@ -1201,7 +1201,7 @@ class GraphicalFunctions
      * @param array $conf TypoScript array for the TEXT GIFBUILDER object
      * @param int $scaleFactor TypoScript value from eg $conf['niceText.']['scaleFactor']
      * @return array Array with two keys [0]/[1] being array($spacing,$wordSpacing)
-     * @access private
+     * @internal
      * @see calcBBox()
      */
     public function calcWordSpacing($conf, $scaleFactor = 1)
@@ -1219,7 +1219,7 @@ class GraphicalFunctions
      *
      * @param array $conf TypoScript array for the TEXT GIFBUILDER object
      * @return int TypoScript value from eg $conf['niceText.']['scaleFactor']
-     * @access private
+     * @internal
      */
     public function getTextScalFactor($conf)
     {
@@ -1602,7 +1602,7 @@ class GraphicalFunctions
      *
      * @param string $setup A string with effect keywords=value pairs separated by "|
      * @return string ImageMagick prepared parameters.
-     * @access private
+     * @internal
      * @see makeEffect()
      */
     public function IMparams($setup)
@@ -1783,7 +1783,7 @@ class GraphicalFunctions
      * Setting internal working area boundaries (->workArea)
      *
      * @param string $workArea Working area dimensions, comma separated
-     * @access private
+     * @internal
      * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
      */
     public function setWorkArea($workArea)
@@ -2038,7 +2038,7 @@ class GraphicalFunctions
      * @param array $workArea Workarea definition
      * @param array $BB BB (Bounding box) array. Not just used for TEXT objects but also for others
      * @return array [0]=x, [1]=y, [2]=w, [3]=h
-     * @access private
+     * @internal
      * @see copyGifOntoGif(), makeBox(), crop()
      */
     public function objPosition($conf, $workArea, $BB)
@@ -2325,7 +2325,7 @@ class GraphicalFunctions
      * @param int $h "required" height
      * @param array $options Options: Keys are like "maxW", "maxH", "minW", "minH
      * @return array
-     * @access private
+     * @internal
      * @see imageMagickConvert()
      */
     public function getImageScale($info, $w, $h, $options)

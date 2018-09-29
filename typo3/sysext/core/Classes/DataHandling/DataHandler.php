@@ -860,7 +860,7 @@ class DataHandler implements LoggerAwareInterface
      * @param array $outputArr $this->uploadedFileArray passed by reference
      * @param array $inputArr Input array  ($_FILES parts)
      * @param string $keyToSet The current $_FILES array key to set on the outermost level.
-     * @access private
+     * @internal
      * @see process_uploads()
      */
     public function process_uploads_traverseArray(&$outputArr, $inputArr, $keyToSet)
@@ -3987,7 +3987,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $language Language ID (from sys_language table) used in the duplicated record
      * @param array $workspaceOptions Options to be forwarded if actions happen on a workspace currently
      * @return array|string
-     * @access private
+     * @internal
      * @see copyRecord()
      */
     public function copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $realDestPid, $language = 0, array $workspaceOptions = [])
@@ -5487,7 +5487,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param int $uid Page id
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-     * @access private
+     * @internal
      * @see deletePages()
      */
     public function deleteSpecificPage($uid, $forceHardDelete = false)
@@ -6749,7 +6749,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $perms Permission integer
      * @param array $columns Columns to select
      * @return bool|array
-     * @access private
+     * @internal
      * @see doesRecordExist()
      */
     protected function doesRecordExist_pageLookUp($id, $perms, $columns = ['uid'])
@@ -7624,7 +7624,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $sortColumn Column name used for sorting
      * @param int $return_SortNumber_After_This_Uid Uid of record from $table in this $pid and for which the return value will be set to a free sorting number after that record. This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
      * @return int|null If $return_SortNumber_After_This_Uid is set, will contain usable sorting number after that record if found (otherwise 0)
-     * @access private
+     * @internal
      * @see getSortNumber()
      * @deprecated since core v9, will be removed with core v10
      */

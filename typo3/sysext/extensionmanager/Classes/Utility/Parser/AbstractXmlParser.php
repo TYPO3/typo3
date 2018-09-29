@@ -69,7 +69,6 @@ abstract class AbstractXmlParser implements \SplSubject
     /**
      * Method notifies attached observers.
      *
-     * @access public
      * @see $observers, attach(), detach()
      */
     public function notify()
@@ -84,7 +83,6 @@ abstract class AbstractXmlParser implements \SplSubject
      *
      * Method tries to load the extension if necessary and possible.
      *
-     * @access public
      * @return bool TRUE, if PHP extension is available, otherwise FALSE
      */
     public function isAvailable()

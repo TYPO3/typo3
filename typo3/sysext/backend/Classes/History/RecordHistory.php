@@ -407,7 +407,7 @@ class RecordHistory
      * @param string $table Table name
      * @param array $dataArray The data array
      * @return array The modified data array
-     * @access private
+     * @internal
      */
     protected function removeFilefields($table, $dataArray)
     {

@@ -239,7 +239,7 @@ class Export extends ImportExport
      *
      * @param array $idH Page uid hierarchy
      * @return array Modified input array
-     * @access private
+     * @internal
      * @see setPageTree()
      */
     public function unsetExcludedSections($idH)

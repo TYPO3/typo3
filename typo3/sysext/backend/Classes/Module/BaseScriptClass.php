@@ -245,7 +245,7 @@ class BaseScriptClass
      * @param string $menuKey Menu key, eg. 'function' for the function menu.
      * @param array $menuArr The part of a MOD_MENU array to work on.
      * @return array Modified array part.
-     * @access private
+     * @internal
      * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), menuConfig()
      */
     public function mergeExternalItems($modName, $menuKey, $menuArr)

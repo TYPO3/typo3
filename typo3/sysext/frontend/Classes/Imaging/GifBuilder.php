@@ -364,7 +364,7 @@ class GifBuilder extends GraphicalFunctions
      * Creates a GDlib resource in $this->im and works on that
      * Called by gifBuild()
      *
-     * @access private
+     * @internal
      * @see gifBuild()
      */
     public function make()
@@ -541,7 +541,7 @@ class GifBuilder extends GraphicalFunctions
      *
      * @param array $conf GIFBUILDER object TypoScript properties
      * @return array Modified $conf array IF the "text" property is not blank
-     * @access private
+     * @internal
      */
     public function checkTextObj($conf)
     {
@@ -635,7 +635,7 @@ class GifBuilder extends GraphicalFunctions
      *
      * @param string $string The string to resolve/calculate the result of. The string is divided by a comma first and each resulting part is calculated into an integer.
      * @return string The resolved string with each part (separated by comma) returned separated by comma
-     * @access private
+     * @internal
      */
     public function calcOffset($string)
     {
@@ -658,7 +658,7 @@ class GifBuilder extends GraphicalFunctions
      * @param string $file Filename value OR the string "GIFBUILDER", see documentation in TSref for the "datatype" called "imgResource
      * @param array $fileArray TypoScript properties passed to the function. Either GIFBUILDER properties or imgResource properties, depending on the value of $file (whether that is "GIFBUILDER" or a file reference)
      * @return array|null Returns an array with file information from ContentObjectRenderer::getImgResource()
-     * @access private
+     * @internal
      * @see ContentObjectRenderer::getImgResource()
      */
     public function getResource($file, $fileArray)
@@ -677,7 +677,7 @@ class GifBuilder extends GraphicalFunctions
      *
      * @param string $file The resource value.
      * @return string|null Returns the relative filepath or null if it's invalid
-     * @access private
+     * @internal
      * @see TemplateService::getFileName()
      */
     public function checkFile($file)
@@ -697,7 +697,7 @@ class GifBuilder extends GraphicalFunctions
      *
      * @param string $pre Filename prefix, eg. "GB_
      * @return string The filepath, relative to Environment::getPublicPath()
-     * @access private
+     * @internal
      */
     public function fileName($pre)
     {
@@ -716,7 +716,7 @@ class GifBuilder extends GraphicalFunctions
      * Returns the file extension used in the filename
      *
      * @return string Extension; "jpg" or "gif"/"png
-     * @access private
+     * @internal
      */
     public function extension()
     {

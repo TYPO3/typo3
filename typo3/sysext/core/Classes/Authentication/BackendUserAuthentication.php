@@ -1347,7 +1347,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * if the backend user login has verified OK.
      * Generally this is required initialization of a backend user.
      *
-     * @access private
+     * @internal
      * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
      */
     public function fetchGroupData()
@@ -1490,7 +1490,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @param string $grList Commalist of be_groups uid numbers
      * @param string $idList List of already processed be_groups-uids so the function will not fall into an eternal recursion.
-     * @access private
+     * @internal
      */
     public function fetchGroups($grList, $idList = '')
     {
@@ -1591,7 +1591,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * a representation of the exact groups/subgroups which the BE_USER has membership with.
      *
      * @param string $cList The newly compiled group-list which must be compared with the current list in the user record and possibly stored if a difference is detected.
-     * @access private
+     * @internal
      */
     public function setCachedList($cList)
     {
@@ -2405,7 +2405,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param string $email Email address
      * @param int $secondsBack Number of sections back in time to check. This is a kind of limit for how many failures an hour for instance.
      * @param int $max Max allowed failures before a warning mail is sent
-     * @access private
+     * @internal
      */
     public function checkLogFailures($email, $secondsBack = 3600, $max = 3)
     {
@@ -2646,7 +2646,7 @@ This is a dump of the failures:
     /**
      * Sends an email notification to warning_email_address and/or the logged-in user's email address.
      *
-     * @access private
+     * @internal
      */
     private function emailAtLogin()
     {

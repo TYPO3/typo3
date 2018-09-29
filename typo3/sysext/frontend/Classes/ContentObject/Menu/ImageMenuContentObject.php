@@ -58,7 +58,7 @@ class ImageMenuContentObject extends AbstractMenuContentObject
      * The data of the files are stored in $this->result
      *
      * @param array $conf Array with configuration for each item.
-     * @access private
+     * @internal
      * @see generate()
      */
     public function makeImageMap($conf)

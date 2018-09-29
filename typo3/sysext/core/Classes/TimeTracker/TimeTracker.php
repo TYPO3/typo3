@@ -548,7 +548,7 @@ class TimeTracker implements SingletonInterface
      * @param array $arr Array (passed by reference) and modified
      * @param int $pointer Pointer value
      * @param string $uniqueId Unique ID string
-     * @access private
+     * @internal
      * @see printTSlog()
      */
     protected function createHierarchyArray(&$arr, $pointer, $uniqueId)

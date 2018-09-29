@@ -88,7 +88,7 @@ class Mailer extends \Swift_Mailer
      * This method is only used in unit tests
      *
      * @param array $mailSettings
-     * @access private
+     * @internal
      */
     public function injectMailSettings(array $mailSettings = null)
     {

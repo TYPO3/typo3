@@ -71,7 +71,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Method returns title of a repository.
      *
-     * @access public
      * @return string title of repository
      * @see $title, setTitle()
      */
@@ -83,7 +82,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Method sets title of a repository.
      *
-     * @access public
      * @param string $title title of repository to set
      * @see $title, getTitle()
      */
@@ -97,7 +95,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Method returns description of a repository.
      *
-     * @access public
      * @return string title of repository
      * @see $title, setTitle()
      */
@@ -109,7 +106,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Method sets description of a repository.
      *
-     * @access public
      * @param string $description title of repository to set
      */
     public function setDescription($description)
@@ -122,7 +118,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Method returns URL of a resource that contains repository mirrors.
      *
-     * @access public
      * @return string URL of file that contains repository mirrors
      * @see $mirrorListUrl, getMirrorListUrl()
      */
@@ -136,7 +131,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * Parameter is typically a remote gzipped xml file.
      *
-     * @access public
      * @param string $url URL of file that contains repository mirrors
      * @see $mirrorListUrl, getMirrorListUrl()
      */
@@ -150,7 +144,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Method returns URL of repository WSDL.
      *
-     * @access public
      * @return string URL of repository WSDL
      * @see $wsdlUrl, setWsdlUrl()
      */
@@ -175,7 +168,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Method returns LastUpdate.
      *
-     * @access public
      * @return \DateTime timestamp of last update
      */
     public function getLastUpdate()
@@ -186,7 +178,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Method sets LastUpdate.
      *
-     * @access public
      * @param \DateTime $time URL of repository WSDL
      */
     public function setLastUpdate(\DateTime $time)
@@ -197,7 +188,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Method returns extension count
      *
-     * @access public
      * @return int count of read extensions
      */
     public function getExtensionCount()
@@ -208,7 +198,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Method sets extension count
      *
-     * @access public
      * @param string $count count of read extensions
      */
     public function setExtensionCount($count)
@@ -221,7 +210,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * Repository mirrors object is passed by reference.
      *
-     * @access public
      * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors $mirrors mirror list
      * @see $mirrors, getMirrors(), hasMirrors(), removeMirrors()
      */
@@ -234,7 +222,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Method returns information if a repository mirrors
      * object has been registered to this repository.
      *
-     * @access public
      * @return bool TRUE, if a repository mirrors object has been registered, otherwise FALSE
      * @see $mirrors, addMirrors(), getMirrors(), removeMirrors()
      */
@@ -250,7 +237,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Method returns a repository mirrors object.
      *
-     * @access public
      * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors mirrors for repository
      * @see $mirrors, addMirrors(), hasMirrors(), removeMirrors()
      */
@@ -262,7 +248,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Method unregisters a repository mirrors object.
      *
-     * @access public
      * @see $mirrors, addMirrors(), getMirrors(), hasMirrors()
      */
     public function removeMirrors()

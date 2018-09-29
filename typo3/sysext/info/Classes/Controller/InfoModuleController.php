@@ -434,7 +434,7 @@ class InfoModuleController
      * @param string $menuKey Menu key, eg. 'function' for the function menu.
      * @param array $menuArr The part of a MOD_MENU array to work on.
      * @return array Modified array part.
-     * @access private
+     * @internal
      */
     protected function mergeExternalItems($modName, $menuKey, $menuArr)
     {

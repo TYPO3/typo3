@@ -119,7 +119,7 @@ class ElementBrowserFolderTreeView extends FolderTreeView
      * @param bool|string $bMark If set, the link will have an anchor point (=$bMark) and a name attribute (=$bMark)
      * @param bool $isOpen check if the item has children
      * @return string Link-wrapped input string
-     * @access private
+     * @internal
      */
     public function PM_ATagWrap($icon, $cmd, $bMark = '', $isOpen = false)
     {

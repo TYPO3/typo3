@@ -660,7 +660,7 @@ abstract class ImportExport
      * @param string $preCode Pre-HTML code
      * @param array $recurCheck Recursivity check stack
      * @param string $htmlColorClass Alternative HTML color class to use.
-     * @access private
+     * @internal
      * @see singleRecordLines()
      */
     public function addRelations($rels, &$lines, $preCode, $recurCheck = [], $htmlColorClass = '')
@@ -724,7 +724,7 @@ abstract class ImportExport
      * @param string $preCode Pre-HTML code
      * @param string $htmlColorClass Alternative HTML color class to use.
      * @param string $tokenID Token ID if this is a softreference (in which case it only makes sense with a single element in the $rels array!)
-     * @access private
+     * @internal
      * @see singleRecordLines()
      */
     public function addFiles($rels, &$lines, $preCode, $htmlColorClass = '', $tokenID = '')

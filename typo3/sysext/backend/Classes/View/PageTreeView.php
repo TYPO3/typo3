@@ -95,7 +95,7 @@ class PageTreeView extends BrowseTreeView
      * @param string $row Item record
      * @param int $bank Bank pointer (which mount point number)
      * @return string
-     * @access private
+     * @internal
      */
     public function wrapTitle($title, $row, $bank = 0)
     {
@@ -225,7 +225,7 @@ class PageTreeView extends BrowseTreeView
      * @param int $nextCount The number of sub-elements to the current element.
      * @param bool $exp The element was expanded to render subelements if this flag is set.
      * @return string Image tag with the plus/minus icon.
-     * @access private
+     * @internal
      * @see \TYPO3\CMS\Backend\Tree\View\PageTreeView::PMicon()
      */
     public function PMicon($row, $a, $c, $nextCount, $exp)
@@ -245,7 +245,7 @@ class PageTreeView extends BrowseTreeView
      * @param string $cmd Command for 'PM' get var
      * @param bool $isExpand Link-wrapped input string
      * @return string
-     * @access private
+     * @internal
      */
     public function PMiconATagWrap($icon, $cmd, $isExpand = true)
     {

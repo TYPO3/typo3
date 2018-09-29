@@ -1299,7 +1299,7 @@ class ImportExportController
      * @param string $menuKey Menu key, eg. 'function' for the function menu.
      * @param array $menuArr The part of a MOD_MENU array to work on.
      * @return array Modified array part.
-     * @access private
+     * @internal
      * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), menuConfig()
      * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */

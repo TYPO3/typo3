@@ -22,11 +22,6 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  */
 class MirrorXmlPullParser extends AbstractMirrorXmlParser
 {
-    /**
-     * Class constructor.
-     *
-     * @access public
-     */
     public function __construct()
     {
         $this->requiredPhpExtensions = 'xmlreader';

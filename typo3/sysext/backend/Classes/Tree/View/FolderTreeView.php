@@ -581,7 +581,7 @@ class FolderTreeView extends AbstractTreeView
     /**
      * Get stored tree structure AND updating it if needed according to incoming PM GET var.
      *
-     * @access private
+     * @internal
      */
     public function initializePositionSaving()
     {

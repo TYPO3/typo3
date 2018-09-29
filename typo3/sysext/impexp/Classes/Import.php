@@ -632,7 +632,7 @@ class Import extends ImportExport
      * Organize all updated pages in page tree so they are related like in the import file
      * Only used for updates and when $this->dat['header']['pagetree'] is an array.
      *
-     * @access private
+     * @internal
      * @see writeRecords_pages(), writeRecords_records_order()
      */
     public function writeRecords_pages_order()
@@ -755,7 +755,7 @@ class Import extends ImportExport
      * Only used for updates
      *
      * @param int $mainPid Main PID into which we import.
-     * @access private
+     * @internal
      * @see writeRecords_records(), writeRecords_pages_order()
      */
     public function writeRecords_records_order($mainPid)
@@ -1722,7 +1722,7 @@ class Import extends ImportExport
      * @param bool $unserialize If set, the returned content is unserialized into an array, otherwise you get the raw string
      * @param string $name For error messages this indicates the section of the problem.
      * @return string|null Data string or NULL in case of an error
-     * @access private
+     * @internal
      * @see loadFile()
      */
     public function getNextFilePart($fd, $unserialize = false, $name = '')

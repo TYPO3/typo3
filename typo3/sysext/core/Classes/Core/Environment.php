@@ -61,7 +61,7 @@ class Environment
      * @param string $configPath
      * @param string $currentScript
      * @param string $os
-     * @private
+     * @internal
      */
     public static function initialize(
         ApplicationContext $context,

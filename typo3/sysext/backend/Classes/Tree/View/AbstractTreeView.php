@@ -507,7 +507,7 @@ abstract class AbstractTreeView
      * @param int $nextCount The number of sub-elements to the current element.
      * @param bool $isOpen The element was expanded to render subelements if this flag is set.
      * @return string Image tag with the plus/minus icon.
-     * @access private
+     * @internal
      * @see \TYPO3\CMS\Backend\Tree\View\PageTreeView::PMicon()
      */
     public function PMicon($row, $a, $c, $nextCount, $isOpen)
@@ -528,7 +528,7 @@ abstract class AbstractTreeView
      * @param string $bMark If set, the link will have an anchor point (=$bMark) and a name attribute (=$bMark)
      * @param bool $isOpen
      * @return string Link-wrapped input string
-     * @access private
+     * @internal
      */
     public function PM_ATagWrap($icon, $cmd, $bMark = '', $isOpen = false)
     {
@@ -548,7 +548,7 @@ abstract class AbstractTreeView
      * @param array $row Item record
      * @param int $bank Bank pointer (which mount point number)
      * @return string
-     * @access private
+     * @internal
      */
     public function wrapTitle($title, $row, $bank = 0)
     {
@@ -562,7 +562,7 @@ abstract class AbstractTreeView
      * @param string $icon The image tag for the icon
      * @param array $row The row for the current element
      * @return string The processed icon input value.
-     * @access private
+     * @internal
      */
     public function wrapIcon($icon, $row)
     {
@@ -587,7 +587,7 @@ abstract class AbstractTreeView
      * @param string $str Input string, like a page title for the tree
      * @param array $row record row with "php_tree_stop" field
      * @return string Modified string
-     * @access private
+     * @internal
      */
     public function wrapStop($str, $row)
     {
@@ -609,7 +609,7 @@ abstract class AbstractTreeView
      *
      * @param int $id Record id/key
      * @return bool
-     * @access private
+     * @internal
      * @see \TYPO3\CMS\Backend\Tree\View\PageTreeView::expandNext()
      */
     public function expandNext($id)
@@ -620,7 +620,7 @@ abstract class AbstractTreeView
     /**
      * Get stored tree structure AND updating it if needed according to incoming PM GET var.
      *
-     * @access private
+     * @internal
      */
     public function initializePositionSaving()
     {
@@ -649,7 +649,7 @@ abstract class AbstractTreeView
      * Saves the content of ->stored (keeps track of expanded positions in the tree)
      * $this->treeName will be used as key for BE_USER->uc[] to store it in
      *
-     * @access private
+     * @internal
      */
     public function savePosition()
     {
@@ -842,7 +842,7 @@ abstract class AbstractTreeView
      *
      * @param int $uid Id to count subitems for
      * @return int
-     * @access private
+     * @internal
      */
     public function getCount($uid)
     {
@@ -908,7 +908,7 @@ abstract class AbstractTreeView
      * @param int $parentId parent item id
      *
      * @return mixed Data handle (Tables: An sql-resource, arrays: A parentId integer. -1 is returned if there were NO subLevel.)
-     * @access private
+     * @internal
      */
     public function getDataInit($parentId)
     {
@@ -950,7 +950,7 @@ abstract class AbstractTreeView
      *
      * @param mixed $res Data handle
      * @return int number of items
-     * @access private
+     * @internal
      * @see getDataInit()
      */
     public function getDataCount(&$res)
@@ -968,7 +968,7 @@ abstract class AbstractTreeView
      * @param mixed $res Data handle
      *
      * @return array|bool item data array OR FALSE if end of elements.
-     * @access private
+     * @internal
      * @see getDataInit()
      */
     public function getDataNext(&$res)
@@ -997,7 +997,7 @@ abstract class AbstractTreeView
      * Getting the tree data: frees data handle
      *
      * @param mixed $res Data handle
-     * @access private
+     * @internal
      */
     public function getDataFree(&$res)
     {

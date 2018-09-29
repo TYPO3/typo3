@@ -1010,7 +1010,7 @@ class TemplateService
      * @param string $idList A list of already processed template ids including the current; The list is on the form "[prefix]_[uid]" where [prefix] is "sys" for "sys_template" records and "ext_" for static include files (from extensions). The list is used to check that the recursive inclusion of templates does not go into circles: Simply it is used to NOT include a template record/file which has already BEEN included somewhere in the recursion.
      * @param string $templateID The id of the current template. Same syntax as $idList ids, eg. "sys_123
      * @param int $pid The PID of the input template record
-     * @access private
+     * @internal
      * @see includeStaticTypoScriptSources()
      */
     public function addExtensionStatics($idList, $templateID, $pid)
@@ -1078,7 +1078,7 @@ class TemplateService
      *
      * @param array $subrow Static template record/file
      * @return array Returns the input array where the values for keys "config" and "constants" may have been modified with prepended code.
-     * @access private
+     * @internal
      * @see addExtensionStatics(), includeStaticTypoScriptSources()
      */
     public function prependStaticExtra($subrow)

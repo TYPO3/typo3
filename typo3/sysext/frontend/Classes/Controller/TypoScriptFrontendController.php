@@ -1249,7 +1249,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param FrontendBackendUserAuthentication $backendUser
      * @return string|null null if no changes to the current frontend usergroups have been made, otherwise the original list of frontend usergroups
-     * @private do not use this in your extension code.
+     * @internal
      */
     protected function applyPreviewSettings($backendUser = null)
     {
@@ -1377,7 +1377,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * indirectly by page objects. Page objects still don't exist.
      *
      * @throws ServiceUnavailableException
-     * @access private
      * @internal
      */
     public function fetch_the_id()
@@ -1699,7 +1698,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @throws \RuntimeException
      * @throws ShortcutTargetPageNotFoundException
      * @return mixed Returns the page record of the page that the shortcut pointed to.
-     * @access private
+     * @internal
      * @see getPageAndRootline()
      * @deprecated As this method conceptually belongs to PageRepository, it is moved in PageRepository, and will be removed in TYPO3 v10.0.
      */
@@ -1823,7 +1822,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param array $row The page record to evaluate (needs field: fe_group)
      * @return bool TRUE, if group access is granted.
-     * @access private
      * @internal
      */
     public function checkPageGroupAccess($row)
@@ -1844,7 +1842,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param array $row The page record
      * @return bool true if visible
-     * @access private
      * @internal
      * @see checkEnableFields()
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList()
@@ -1925,7 +1922,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * If not inside domain, then default to first page in domain.
      *
      * @param int $domainStartPage Page uid of the page where the found domain record is (pid of the domain record)
-     * @access private
      * @internal
      */
     public function getPageAndRootlineWithDomain($domainStartPage)
@@ -2692,7 +2688,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Setting the language key that will be used by the current page.
      * In this function it should be checked, 1) that this language exists, 2) that a page_overlay_record exists, .. and if not the default language, 0 (zero), should be set.
      *
-     * @access private
      * @internal
      */
     public function settingLanguage()
@@ -4199,7 +4194,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Converts relative paths in the HTML source to absolute paths for fileadmin/, typo3conf/ext/ and media/ folders.
      *
-     * @access private
      * @internal
      * @see RequestHandler, INTincScript()
      */
