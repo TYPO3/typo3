@@ -76,6 +76,28 @@ abstract class AbstractEnhancer implements EnhancerInterface
     }
 
     /**
+     * Retrieves type from processed route and modifies remaining query parameters.
+     *
+     * @param Route $route
+     * @param array $remainingQueryParameters reference to remaining query parameters
+     * @return string
+     */
+    protected function resolveType(Route $route, array &$remainingQueryParameters): string
+    {
+        $decoratedParameters = $route->getOption('_decoratedParameters');
+        if (!isset($decoratedParameters['type'])) {
+            return '0';
+        }
+        $type = (string)$decoratedParameters['type'];
+        unset($decoratedParameters['type']);
+        $remainingQueryParameters = array_replace_recursive(
+            $remainingQueryParameters,
+            $decoratedParameters
+        );
+        return $type;
+    }
+
+    /**
      * @return VariableProcessor
      */
     protected function getVariableProcessor(): VariableProcessor
@@ -89,7 +111,7 @@ abstract class AbstractEnhancer implements EnhancerInterface
     /**
      * {@inheritdoc}
      */
-    public function setAspects(array $aspects)
+    public function setAspects(array $aspects): void
     {
         $this->aspects = $aspects;
     }

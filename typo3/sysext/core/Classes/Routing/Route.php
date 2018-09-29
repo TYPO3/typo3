@@ -65,6 +65,25 @@ class Route extends SymfonyRoute
     }
 
     /**
+     * @param array $arguments
+     * @deprecated Probably not required
+     */
+    public function addArguments(array $arguments)
+    {
+        $mergedArguments = $this->getArguments();
+        foreach ($arguments as $key => $argument) {
+            if (isset($mergedArguments[$key])) {
+                throw new \OverflowException(
+                    sprintf('Cannot override argument %s', $key),
+                    1538326790
+                );
+            }
+            $mergedArguments[$key] = $argument;
+        }
+        $this->setOption('_arguments', $mergedArguments);
+    }
+
+    /**
      * @return EnhancerInterface|null
      */
     public function getEnhancer(): ?EnhancerInterface
@@ -107,6 +126,12 @@ class Route extends SymfonyRoute
     public function addAspects(array $aspects): self
     {
         foreach ($aspects as $key => $aspect) {
+            if (isset($this->aspects[$key])) {
+                throw new \OverflowException(
+                    sprintf('Cannot override aspect %s', $key),
+                    1538326791
+                );
+            }
             $this->aspects[$key] = $aspect;
         }
         $this->compiled = null;

@@ -38,7 +38,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  *       user_id: '[a-z]+'
  *       hash: '[a-z]{0-6}'
  */
-class PluginEnhancer extends AbstractEnhancer implements ResultingInterface
+class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterface, ResultingInterface
 {
     /**
      * @var array
@@ -87,7 +87,8 @@ class PluginEnhancer extends AbstractEnhancer implements ResultingInterface
 
         $page = $route->getOption('_page');
         $pageId = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $page['uid']);
-        return new PageArguments($pageId, $routeArguments, $staticArguments, $remainingQueryParameters);
+        $type = $this->resolveType($route, $remainingQueryParameters);
+        return new PageArguments($pageId, $type, $routeArguments, $staticArguments, $remainingQueryParameters);
     }
 
     /**

@@ -29,6 +29,11 @@ class PageArguments implements RouteResultInterface
     protected $pageId;
 
     /**
+     * @var string
+     */
+    protected $pageType;
+
+    /**
      * @var array
      */
     protected $arguments;
@@ -60,13 +65,15 @@ class PageArguments implements RouteResultInterface
 
     /**
      * @param int $pageId
+     * @param string $pageType
      * @param array $routeArguments
      * @param array $staticArguments
      * @param array $remainingArguments
      */
-    public function __construct(int $pageId, array $routeArguments, array $staticArguments = [], array $remainingArguments = [])
+    public function __construct(int $pageId, string $pageType, array $routeArguments, array $staticArguments = [], array $remainingArguments = [])
     {
         $this->pageId = $pageId;
+        $this->pageType = $pageType;
         $this->routeArguments = $this->sort($routeArguments);
         $this->staticArguments = $this->sort($staticArguments);
         $this->arguments = $this->routeArguments;
@@ -98,6 +105,14 @@ class PageArguments implements RouteResultInterface
     public function getPageId(): int
     {
         return $this->pageId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPageType(): string
+    {
+        return $this->pageType;
     }
 
     /**
@@ -250,7 +265,7 @@ class PageArguments implements RouteResultInterface
      */
     public function offsetExists($offset): bool
     {
-        return $offset === 'pageId' || isset($this->arguments[$offset]);
+        return $offset === 'pageId' || $offset === 'pageType' || isset($this->arguments[$offset]);
     }
 
     /**
@@ -261,6 +276,9 @@ class PageArguments implements RouteResultInterface
     {
         if ($offset === 'pageId') {
             return $this->getPageId();
+        }
+        if ($offset === 'pageType') {
+            return $this->getPageType();
         }
         return $this->arguments[$offset] ?? null;
     }

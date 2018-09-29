@@ -32,9 +32,11 @@ use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Routing\Aspect\AspectFactory;
 use TYPO3\CMS\Core\Routing\Aspect\MappableProcessor;
 use TYPO3\CMS\Core\Routing\Aspect\StaticMappableAspectInterface;
+use TYPO3\CMS\Core\Routing\Enhancer\DecoratingEnhancerInterface;
 use TYPO3\CMS\Core\Routing\Enhancer\EnhancerFactory;
 use TYPO3\CMS\Core\Routing\Enhancer\EnhancerInterface;
 use TYPO3\CMS\Core\Routing\Enhancer\ResultingInterface;
+use TYPO3\CMS\Core\Routing\Enhancer\RoutingEnhancerInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -109,7 +111,8 @@ class PageRouter implements RouterInterface
      */
     public function matchRequest(ServerRequestInterface $request, RouteResultInterface $previousResult = null): ?RouteResultInterface
     {
-        $slugCandidates = $this->getCandidateSlugsFromRoutePath($previousResult->getTail() ?: '/');
+        $urlPath = $previousResult->getTail();
+        $slugCandidates = $this->getCandidateSlugsFromRoutePath($urlPath ?: '/');
         $language = $previousResult->getLanguage();
         $pageCandidates = $this->getPagesFromDatabaseForCandidates($slugCandidates, $language->getLanguageId());
         // Stop if there are no candidates
@@ -117,6 +120,7 @@ class PageRouter implements RouterInterface
             return null;
         }
 
+        $decoratedParameters = [];
         $fullCollection = new RouteCollection();
         foreach ($pageCandidates ?? [] as $page) {
             $pageIdForDefaultLanguage = (int)($page['l10n_parent'] ?: $page['uid']);
@@ -129,8 +133,16 @@ class PageRouter implements RouterInterface
                 ['utf8' => true, '_page' => $page]
             );
             $pageCollection->add('default', $defaultRouteForPage);
-            foreach ($this->getEnhancersForPage($pageIdForDefaultLanguage, $language) as $enhancer) {
-                $enhancer->enhanceForMatching($pageCollection);
+            $enhancers = $this->getEnhancersForPage($pageIdForDefaultLanguage, $language);
+            foreach ($enhancers as $enhancer) {
+                if ($enhancer instanceof DecoratingEnhancerInterface) {
+                    $enhancer->decorateForMatching($pageCollection, $decoratedParameters, $urlPath);
+                }
+            }
+            foreach ($enhancers as $enhancer) {
+                if ($enhancer instanceof RoutingEnhancerInterface) {
+                    $enhancer->enhanceForMatching($pageCollection);
+                }
             }
 
             $pageCollection->addNamePrefix('page_' . $page['uid'] . '_');
@@ -139,9 +151,10 @@ class PageRouter implements RouterInterface
 
         $matcher = new PageUriMatcher($fullCollection);
         try {
-            $result = $matcher->match('/' . trim($previousResult->getTail(), '/'));
+            $result = $matcher->match('/' . trim($urlPath, '/'));
             /** @var Route $matchedRoute */
             $matchedRoute = $fullCollection->get($result['_route']);
+            $matchedRoute->setOption('_decoratedParameters', $decoratedParameters);
             return $this->buildPageArguments($matchedRoute, $result, $request->getQueryParams());
         } catch (ResourceNotFoundException $e) {
             // return nothing
@@ -197,8 +210,16 @@ class PageRouter implements RouterInterface
 
         // cHash is never considered because cHash is built by this very method.
         unset($originalParameters['cHash']);
-        foreach ($this->getEnhancersForPage($pageId, $language) as $enhancer) {
-            $enhancer->enhanceForGeneration($collection, $originalParameters);
+        $enhancers = $this->getEnhancersForPage($pageId, $language);
+        foreach ($enhancers as $enhancer) {
+            if ($enhancer instanceof RoutingEnhancerInterface) {
+                $enhancer->enhanceForGeneration($collection, $originalParameters);
+            }
+        }
+        foreach ($enhancers as $enhancer) {
+            if ($enhancer instanceof DecoratingEnhancerInterface) {
+                $enhancer->decorateForGeneration($collection, $originalParameters);
+            }
         }
 
         $scheme = $language->getBase()->getScheme();
@@ -264,6 +285,7 @@ class PageRouter implements RouterInterface
         if ($fragment) {
             $uri = $uri->withFragment($fragment);
         }
+        // @todo Throw exception in case $uri is null
         return $uri;
     }
 
@@ -321,10 +343,11 @@ class PageRouter implements RouterInterface
      *
      * @param int $pageId
      * @param SiteLanguage $language
-     * @return \Generator|EnhancerInterface[]
+     * @return EnhancerInterface[]
      */
-    protected function getEnhancersForPage(int $pageId, SiteLanguage $language): \Generator
+    protected function getEnhancersForPage(int $pageId, SiteLanguage $language): array
     {
+        $enhancers = [];
         foreach ($this->site->getConfiguration()['routeEnhancers'] ?? [] as $enhancerConfiguration) {
             // Check if there is a restriction to page Ids.
             if (is_array($enhancerConfiguration['limitToPages'] ?? null) && !in_array($pageId, $enhancerConfiguration['limitToPages'])) {
@@ -340,15 +363,17 @@ class PageRouter implements RouterInterface
                 );
                 $enhancer->setAspects($aspects);
             }
-            yield $enhancer;
+            $enhancers[] = $enhancer;
         }
+        return $enhancers;
     }
 
     /**
-     * Returns possible URL parts for a string like /home/about-us/offices/
+     * Returns possible URL parts for a string like /home/about-us/offices/ or /home/about-us/offices.json
      * to return.
      *
      * /home/about-us/offices/
+     * /home/about-us/offices.json
      * /home/about-us/offices
      * /home/about-us/
      * /home/about-us
@@ -364,6 +389,14 @@ class PageRouter implements RouterInterface
         $pathParts = GeneralUtility::trimExplode('/', $routePath, true);
         if (empty($pathParts)) {
             return ['/'];
+        }
+        // Check if the last part contains a ".", then split it
+        // @todo fix me based on enhancer configuration
+        $lastPart = array_pop($pathParts);
+        if (strpos($lastPart, '.') !== false) {
+            $pathParts = array_merge($pathParts, explode('.', $lastPart));
+        } else {
+            $pathParts[] = $lastPart;
         }
         while (!empty($pathParts)) {
             $prefix = '/' . implode('/', $pathParts);
@@ -431,7 +464,30 @@ class PageRouter implements RouterInterface
         }
         $page = $route->getOption('_page');
         $pageId = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $page['uid']);
-        return new PageArguments($pageId, $routeArguments, [], $remainingQueryParameters);
+        $type = $this->resolveType($route, $remainingQueryParameters);
+        return new PageArguments($pageId, $type, $routeArguments, [], $remainingQueryParameters);
+    }
+
+    /**
+     * Retrieves type from processed route and modifies remaining query parameters.
+     *
+     * @param Route $route
+     * @param array $remainingQueryParameters reference to remaining query parameters
+     * @return string
+     */
+    protected function resolveType(Route $route, array &$remainingQueryParameters): string
+    {
+        $decoratedParameters = $route->getOption('_decoratedParameters');
+        if (!isset($decoratedParameters['type'])) {
+            return '0';
+        }
+        $type = (string)$decoratedParameters['type'];
+        unset($decoratedParameters['type']);
+        $remainingQueryParameters = array_replace_recursive(
+            $remainingQueryParameters,
+            $decoratedParameters
+        );
+        return $type;
     }
 
     /**

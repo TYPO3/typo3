@@ -91,6 +91,7 @@ class PageResolver implements MiddlewareInterface
                 // Legacy URIs (?id=12345) takes precedence, not matter if a route is given
                 $pageArguments = new PageArguments(
                     (int)($page['l10n_parent'] ?: $page['uid']),
+                    (string)($request->getQueryParams()['type'] ?? '0'),
                     [],
                     [],
                     $request->getQueryParams()
@@ -108,7 +109,7 @@ class PageResolver implements MiddlewareInterface
             }
 
             $this->controller->id = $pageArguments->getPageId();
-            $this->controller->type = $pageArguments->getArguments()['type'] ?? $this->controller->type;
+            $this->controller->type = $pageArguments->getPageType() ?? $this->controller->type;
             $request = $request->withAttribute('routing', $pageArguments);
             // stop in case arguments are dirty (=defined twice in route and GET query parameters)
             if ($pageArguments->areDirty()) {

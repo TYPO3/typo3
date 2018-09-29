@@ -112,7 +112,7 @@ class PageResolverTest extends UnitTestCase
         $request = $request->withAttribute('site', $site);
         $request = $request->withAttribute('language', $language);
         $request = $request->withAttribute('routing', new SiteRouteResult($request->getUri(), $site, $language, 'mr-magpie/bloom'));
-        $expectedRouteResult = new PageArguments(13, []);
+        $expectedRouteResult = new PageArguments(13, '0', []);
 
         $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->setMethods(['matchRequest'])->getMock();
         $pageRouterMock->expects($this->once())->method('matchRequest')->willReturn($expectedRouteResult);
@@ -155,7 +155,7 @@ class PageResolverTest extends UnitTestCase
         $request = $request->withAttribute('language', $language);
         $request = $request->withAttribute('routing', new SiteRouteResult($request->getUri(), $site, $language, 'mr-magpie/bloom/'));
 
-        $expectedRouteResult = new PageArguments(13, []);
+        $expectedRouteResult = new PageArguments(13, '0', []);
         $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->setMethods(['matchRequest'])->getMock();
         $pageRouterMock->expects($this->once())->method('matchRequest')->willReturn($expectedRouteResult);
         $site->expects($this->any())->method('getRouter')->willReturn($pageRouterMock);
@@ -195,7 +195,7 @@ class PageResolverTest extends UnitTestCase
         $request = $request->withAttribute('language', $language);
         $request = $request->withAttribute('routing', new SiteRouteResult($request->getUri(), $site, $language, 'mr-magpie/bloom/'));
 
-        $expectedRouteResult = new PageArguments(13, []);
+        $expectedRouteResult = new PageArguments(13, '0', []);
         $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->setMethods(['matchRequest'])->getMock();
         $pageRouterMock->expects($this->once())->method('matchRequest')->willReturn($expectedRouteResult);
         $site->expects($this->any())->method('getRouter')->willReturn($pageRouterMock);

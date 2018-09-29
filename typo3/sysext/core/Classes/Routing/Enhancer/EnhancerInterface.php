@@ -17,34 +17,17 @@ namespace TYPO3\CMS\Core\Routing\Enhancer;
  */
 
 use TYPO3\CMS\Core\Routing\Aspect\AspectInterface;
-use TYPO3\CMS\Core\Routing\RouteCollection;
 
 /**
- * Interface for enhancers
+ * Base interface for enhancers, which can be decorators for adding parameters,
+ * or routing enhancers which adds variants to a page.
  */
 interface EnhancerInterface
 {
     /**
-     * Extends route collection with all routes. Used during URL resolving.
-     *
-     * @param RouteCollection $collection
-     */
-    public function enhanceForMatching(RouteCollection $collection): void;
-
-    /**
-     * Extends route collection with routes that are relevant for given
-     * parameters. Used during URL generation.
-     *
-     * @param RouteCollection $collection
-     * @param array $parameters
-     */
-    public function enhanceForGeneration(RouteCollection $collection, array $parameters): void;
-
-    /**
      * @param AspectInterface[] $aspects
-     * @return mixed
      */
-    public function setAspects(array $aspects);
+    public function setAspects(array $aspects): void;
 
     /**
      * @return AspectInterface[]

@@ -118,6 +118,7 @@ return [
             'enhancers' => [
                 'Simple' => \TYPO3\CMS\Core\Routing\Enhancer\SimpleEnhancer::class,
                 'Plugin' => \TYPO3\CMS\Core\Routing\Enhancer\PluginEnhancer::class,
+                'PageType' => \TYPO3\CMS\Core\Routing\Enhancer\PageTypeDecorator::class,
                 'Extbase' => \TYPO3\CMS\Extbase\Routing\ExtbasePluginEnhancer::class,
             ],
             'aspects' => [

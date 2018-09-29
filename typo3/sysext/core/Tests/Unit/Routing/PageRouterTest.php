@@ -57,7 +57,7 @@ class PageRouterTest extends UnitTestCase
         $subject->expects($this->once())->method('getPagesFromDatabaseForCandidates')->willReturn([$pageRecord]);
         $routeResult = $subject->matchRequest($request, $previousResult);
 
-        $expectedRouteResult = new PageArguments(13, [], [], []);
+        $expectedRouteResult = new PageArguments(13, '0', [], [], []);
         $this->assertEquals($expectedRouteResult, $routeResult);
     }
 
