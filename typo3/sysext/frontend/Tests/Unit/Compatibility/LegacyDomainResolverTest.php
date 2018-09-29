@@ -94,7 +94,7 @@ class LegacyDomainResolverTest extends UnitTestCase
         $_SERVER['HTTP_HOST'] = $currentDomain;
         $_SERVER['SCRIPT_NAME'] = $scriptName;
         $request = ServerRequestFactory::fromGlobals();
-        $normalizedParams = new NormalizedParams($request, [], Environment::getCurrentScript(), Environment::getPublicPath());
+        $normalizedParams = new NormalizedParams($_SERVER, [], Environment::getCurrentScript(), Environment::getPublicPath());
         $request = $request->withAttribute('normalizedParams', $normalizedParams);
         $this->assertEquals($expectedResult, $this->subject->_call('domainNameMatchesCurrentRequest', $domainRecord, $request));
     }

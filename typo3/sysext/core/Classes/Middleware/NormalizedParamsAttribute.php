@@ -43,8 +43,8 @@ class NormalizedParamsAttribute implements MiddlewareInterface
         $request = $request->withAttribute(
             'normalizedParams',
             new NormalizedParams(
-                $request,
-                $GLOBALS['TYPO3_CONF_VARS'],
+                $request->getServerParams(),
+                $GLOBALS['TYPO3_CONF_VARS']['SYS'],
                 Environment::getCurrentScript(),
                 Environment::getPublicPath()
             )

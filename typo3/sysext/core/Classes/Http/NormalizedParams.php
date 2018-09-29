@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -285,26 +284,25 @@ class NormalizedParams
      * dependency to $this. This ensures the chain of inter-property dependencies
      * is visible by only looking at the construct() method.
      *
-     * @param ServerRequestInterface $serverRequest Used to access $_SERVER
-     * @param array $typo3ConfVars $GLOBALS['TYPO3_CONF_VARS']
+     * @param array $serverParams, usually coming from $_SERVER or $request->getServerParams()
+     * @param array $configuration $GLOBALS['TYPO3_CONF_VARS']['SYS']
      * @param string $pathThisScript Absolute server entry script path, usually found within Environment::getCurrentScript()
      * @param string $pathSite Absolute server path to document root, Environment::getPublicPath()
      */
-    public function __construct(ServerRequestInterface $serverRequest, array $typo3ConfVars, string $pathThisScript, string $pathSite)
+    public function __construct(array $serverParams, array $configuration, string $pathThisScript, string $pathSite)
     {
-        $serverParams = $serverRequest->getServerParams();
-        $isBehindReverseProxy = $this->isBehindReverseProxy = self::determineIsBehindReverseProxy($serverParams, $typo3ConfVars);
-        $httpHost = $this->httpHost = self::determineHttpHost($serverParams, $typo3ConfVars, $isBehindReverseProxy);
-        $isHttps = $this->isHttps = self::determineHttps($serverParams, $typo3ConfVars);
+        $isBehindReverseProxy = $this->isBehindReverseProxy = self::determineIsBehindReverseProxy($serverParams, $configuration);
+        $httpHost = $this->httpHost = self::determineHttpHost($serverParams, $configuration, $isBehindReverseProxy);
+        $isHttps = $this->isHttps = self::determineHttps($serverParams, $configuration);
         $requestHost = $this->requestHost = ($isHttps ? 'https://' : 'http://') . $httpHost;
         $requestHostOnly = $this->requestHostOnly = self::determineRequestHostOnly($httpHost);
         $this->requestPort = self::determineRequestPort($httpHost, $requestHostOnly);
-        $scriptName = $this->scriptName = self::determineScriptName($serverParams, $typo3ConfVars, $isHttps, $isBehindReverseProxy);
-        $requestUri = $this->requestUri = self::determineRequestUri($serverParams, $typo3ConfVars, $isHttps, $scriptName, $isBehindReverseProxy);
+        $scriptName = $this->scriptName = self::determineScriptName($serverParams, $configuration, $isHttps, $isBehindReverseProxy);
+        $requestUri = $this->requestUri = self::determineRequestUri($serverParams, $configuration, $isHttps, $scriptName, $isBehindReverseProxy);
         $requestUrl = $this->requestUrl = $requestHost . $requestUri;
         $this->requestScript = $requestHost . $scriptName;
         $requestDir = $this->requestDir = $requestHost . GeneralUtility::dirname($scriptName) . '/';
-        $this->remoteAddress = self::determineRemoteAddress($serverParams, $typo3ConfVars, $isBehindReverseProxy);
+        $this->remoteAddress = self::determineRemoteAddress($serverParams, $configuration, $isBehindReverseProxy);
         $scriptFilename = $this->scriptFilename = $pathThisScript;
         $this->documentRoot = self::determineDocumentRoot($scriptName, $scriptFilename);
         $siteUrl = $this->siteUrl = self::determineSiteUrl($requestDir, $pathThisScript, $pathSite . '/');
@@ -532,11 +530,11 @@ class NormalizedParams
      * verify allowed hosts with configured trusted hosts pattern.
      *
      * @param array $serverParams Basically the $_SERVER, but from $request object
-     * @param array $typo3ConfVars TYPO3_CONF_VARS array
+     * @param array $configuration $TYPO3_CONF_VARS['SYS'] array
      * @param bool $isBehindReverseProxy True if reverse proxy setup is detected
      * @return string Sanitized HTTP_HOST
      */
-    protected static function determineHttpHost(array $serverParams, array $typo3ConfVars, bool $isBehindReverseProxy): string
+    protected static function determineHttpHost(array $serverParams, array $configuration, bool $isBehindReverseProxy): string
     {
         $httpHost = $serverParams['HTTP_HOST'] ?? '';
         if ($isBehindReverseProxy) {
@@ -546,7 +544,7 @@ class NormalizedParams
             $xForwardedHost = '';
             // Choose which host in list to use
             if (!empty($xForwardedHostArray)) {
-                $configuredReverseProxyHeaderMultiValue = trim($typo3ConfVars['SYS']['reverseProxyHeaderMultiValue'] ?? '');
+                $configuredReverseProxyHeaderMultiValue = trim($configuration['reverseProxyHeaderMultiValue'] ?? '');
                 // Default if reverseProxyHeaderMultiValue is not set or set to 'none', instead of 'first' / 'last' is to
                 // ignore $serverParams['HTTP_X_FORWARDED_HOST']
                 // @todo: Maybe this default is stupid: Both SYS/reverseProxyIP hand SYS/reverseProxyHeaderMultiValue have to
@@ -578,15 +576,15 @@ class NormalizedParams
      * configurations into account.
      *
      * @param array $serverParams Basically the $_SERVER, but from $request object
-     * @param array $typo3ConfVars TYPO3_CONF_VARS array
+     * @param array $configuration $TYPO3_CONF_VARS['SYS'] array
      * @return bool True if request has been done via HTTPS
      */
-    protected static function determineHttps(array $serverParams, array $typo3ConfVars): bool
+    protected static function determineHttps(array $serverParams, array $configuration): bool
     {
         $isHttps = false;
-        $configuredProxySSL = trim($typo3ConfVars['SYS']['reverseProxySSL'] ?? '');
+        $configuredProxySSL = trim($configuration['reverseProxySSL'] ?? '');
         if ($configuredProxySSL === '*') {
-            $configuredProxySSL = trim($typo3ConfVars['SYS']['reverseProxyIP'] ?? '');
+            $configuredProxySSL = trim($configuration['reverseProxyIP'] ?? '');
         }
         $httpsParam = (string)($serverParams['HTTPS'] ?? '');
         if (GeneralUtility::cmpIP(trim($serverParams['REMOTE_ADDR'] ?? ''), $configuredProxySSL)
@@ -604,12 +602,12 @@ class NormalizedParams
      * Determine script name and path
      *
      * @param array $serverParams Basically the $_SERVER, but from $request object
-     * @param array $typo3ConfVars TYPO3_CONF_VARS array
+     * @param array $configuration TYPO3_CONF_VARS['SYS'] array
      * @param bool $isHttps True if used protocol is HTTPS
      * @param bool $isBehindReverseProxy True if reverse proxy setup is detected
      * @return string Sanitized script name
      */
-    protected static function determineScriptName(array $serverParams, array $typo3ConfVars, bool $isHttps, bool $isBehindReverseProxy): string
+    protected static function determineScriptName(array $serverParams, array $configuration, bool $isHttps, bool $isBehindReverseProxy): string
     {
         $scriptName = $serverParams['ORIG_PATH_INFO'] ??
             $serverParams['PATH_INFO'] ??
@@ -618,10 +616,10 @@ class NormalizedParams
             '';
         if ($isBehindReverseProxy) {
             // Add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
-            if ($isHttps && !empty($typo3ConfVars['SYS']['reverseProxyPrefixSSL'])) {
-                $scriptName = $typo3ConfVars['SYS']['reverseProxyPrefixSSL'] . $scriptName;
-            } elseif (!empty($typo3ConfVars['SYS']['reverseProxyPrefix'])) {
-                $scriptName = $typo3ConfVars['SYS']['reverseProxyPrefix'] . $scriptName;
+            if ($isHttps && !empty($configuration['reverseProxyPrefixSSL'])) {
+                $scriptName = $configuration['reverseProxyPrefixSSL'] . $scriptName;
+            } elseif (!empty($configuration['reverseProxyPrefix'])) {
+                $scriptName = $configuration['reverseProxyPrefix'] . $scriptName;
             }
         }
         return $scriptName;
@@ -632,20 +630,20 @@ class NormalizedParams
      * specifics into account.
      *
      * @param array $serverParams Basically the $_SERVER, but from $request object
-     * @param array $typo3ConfVars TYPO3_CONF_VARS array
+     * @param array $configuration $TYPO3_CONF_VARS['SYS'] array
      * @param bool $isHttps True if used protocol is HTTPS
      * @param string $scriptName Script name
      * @param bool $isBehindReverseProxy True if reverse proxy setup is detected
      * @return string Sanitized REQUEST_URI
      */
-    protected static function determineRequestUri(array $serverParams, array $typo3ConfVars, bool $isHttps, string $scriptName, bool $isBehindReverseProxy): string
+    protected static function determineRequestUri(array $serverParams, array $configuration, bool $isHttps, string $scriptName, bool $isBehindReverseProxy): string
     {
         $proxyPrefixApplied = false;
-        if (!empty($typo3ConfVars['SYS']['requestURIvar'])) {
+        if (!empty($configuration['requestURIvar'])) {
             // This is for URL rewriter that store the original URI in a server
             // variable (e.g. ISAPI Rewriter for IIS: HTTP_X_REWRITE_URL), a config then looks like:
             // requestURIvar = '_SERVER|HTTP_X_REWRITE_URL' which will access $GLOBALS['_SERVER']['HTTP_X_REWRITE_URL']
-            list($firstLevel, $secondLevel) = GeneralUtility::trimExplode('|', $typo3ConfVars['SYS']['requestURIvar'], true);
+            list($firstLevel, $secondLevel) = GeneralUtility::trimExplode('|', $configuration['requestURIvar'], true);
             $requestUri = $GLOBALS[$firstLevel][$secondLevel];
         } elseif (empty($serverParams['REQUEST_URI'])) {
             // This is for ISS/CGI which does not have the REQUEST_URI available.
@@ -658,10 +656,10 @@ class NormalizedParams
         }
         if (!$proxyPrefixApplied && $isBehindReverseProxy) {
             // Add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
-            if ($isHttps && !empty($typo3ConfVars['SYS']['reverseProxyPrefixSSL'])) {
-                $requestUri = $typo3ConfVars['SYS']['reverseProxyPrefixSSL'] . $requestUri;
-            } elseif (!empty($typo3ConfVars['SYS']['reverseProxyPrefix'])) {
-                $requestUri = $typo3ConfVars['SYS']['reverseProxyPrefix'] . $requestUri;
+            if ($isHttps && !empty($configuration['reverseProxyPrefixSSL'])) {
+                $requestUri = $configuration['reverseProxyPrefixSSL'] . $requestUri;
+            } elseif (!empty($configuration['reverseProxyPrefix'])) {
+                $requestUri = $configuration['reverseProxyPrefix'] . $requestUri;
             }
         }
         return $requestUri;
@@ -671,17 +669,17 @@ class NormalizedParams
      * Determine clients REMOTE_ADDR, even if there is a reverse proxy in between.
      *
      * @param array $serverParams Basically the $_SERVER, but from $request object
-     * @param array $typo3ConfVars TYPO3_CONF_VARS array
+     * @param array $configuration $TYPO3_CONF_VARS[SYS] array
      * @param bool $isBehindReverseProxy True if reverse proxy setup is detected
      * @return string Resolved REMOTE_ADDR
      */
-    protected static function determineRemoteAddress(array $serverParams, array $typo3ConfVars, bool $isBehindReverseProxy): string
+    protected static function determineRemoteAddress(array $serverParams, array $configuration, bool $isBehindReverseProxy): string
     {
         $remoteAddress = trim($serverParams['REMOTE_ADDR'] ?? '');
         if ($isBehindReverseProxy) {
             $ip = GeneralUtility::trimExplode(',', $serverParams['HTTP_X_FORWARDED_FOR'] ?? '', true);
             // Choose which IP in list to use
-            $configuredReverseProxyHeaderMultiValue = trim($typo3ConfVars['SYS']['reverseProxyHeaderMultiValue'] ?? '');
+            $configuredReverseProxyHeaderMultiValue = trim($configuration['reverseProxyHeaderMultiValue'] ?? '');
             if (!empty($ip) && $configuredReverseProxyHeaderMultiValue === 'last') {
                 $ip = array_pop($ip);
             } elseif (!empty($ip) && $configuredReverseProxyHeaderMultiValue === 'first') {
@@ -700,12 +698,12 @@ class NormalizedParams
      * Check if a configured reverse proxy setup is detected.
      *
      * @param array $serverParams Basically the $_SERVER, but from $request object
-     * @param array $typo3ConfVars TYPO3_CONF_VARS array
+     * @param array $configuration $TYPO3_CONF_VARS[SYS] array
      * @return bool True if TYPO3 is behind a reverse proxy
      */
-    protected static function determineIsBehindReverseProxy($serverParams, $typo3ConfVars): bool
+    protected static function determineIsBehindReverseProxy($serverParams, $configuration): bool
     {
-        return GeneralUtility::cmpIP(trim($serverParams['REMOTE_ADDR'] ?? ''), trim($typo3ConfVars['SYS']['reverseProxyIP'] ?? ''));
+        return GeneralUtility::cmpIP(trim($serverParams['REMOTE_ADDR'] ?? ''), trim($configuration['reverseProxyIP'] ?? ''));
     }
 
     /**

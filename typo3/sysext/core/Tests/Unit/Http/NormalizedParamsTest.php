@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -44,10 +43,8 @@ class NormalizedParamsTest extends UnitTestCase
                     'HTTP_X_FORWARDED_HOST' => 'www.domain1.com, www.domain2.com,'
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxyIP' => ' 123.123.123.123',
-                        'reverseProxyHeaderMultiValue' => 'first',
-                    ]
+                    'reverseProxyIP' => ' 123.123.123.123',
+                    'reverseProxyHeaderMultiValue' => 'first',
                 ],
                 'www.domain1.com',
             ],
@@ -58,10 +55,8 @@ class NormalizedParamsTest extends UnitTestCase
                     'HTTP_X_FORWARDED_HOST' => 'www.domain1.com, www.domain2.com,'
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxyIP' => '123.123.123.123',
-                        'reverseProxyHeaderMultiValue' => 'last',
-                    ]
+                    'reverseProxyIP' => '123.123.123.123',
+                    'reverseProxyHeaderMultiValue' => 'last',
                 ],
                 'www.domain2.com',
             ],
@@ -72,9 +67,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'HTTP_X_FORWARDED_HOST' => 'www.domain1.com'
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxyIP' => '123.123.123.123',
-                    ]
+                    'reverseProxyIP' => '123.123.123.123',
                 ],
                 'www.domain.com',
             ],
@@ -85,10 +78,8 @@ class NormalizedParamsTest extends UnitTestCase
                     'HTTP_X_FORWARDED_HOST' => 'www.domain1.com'
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxyIP' => '234.234.234.234',
-                        'reverseProxyHeaderMultiValue' => 'last',
-                    ]
+                    'reverseProxyIP' => '234.234.234.234',
+                    'reverseProxyHeaderMultiValue' => 'last',
                 ],
                 'www.domain.com',
             ],
@@ -98,10 +89,8 @@ class NormalizedParamsTest extends UnitTestCase
                     'HTTP_X_FORWARDED_HOST' => 'www.domain1.com'
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxyIP' => '234.234.234.234',
-                        'reverseProxyHeaderMultiValue' => 'last',
-                    ]
+                    'reverseProxyIP' => '234.234.234.234',
+                    'reverseProxyHeaderMultiValue' => 'last',
                 ],
                 'www.domain.com',
             ],
@@ -112,10 +101,8 @@ class NormalizedParamsTest extends UnitTestCase
                     'HTTP_X_FORWARDED_HOST' => ''
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxyIP' => '123.123.123.123',
-                        'reverseProxyHeaderMultiValue' => 'last',
-                    ]
+                    'reverseProxyIP' => '123.123.123.123',
+                    'reverseProxyHeaderMultiValue' => 'last',
                 ],
                 'www.domain.com',
             ],
@@ -126,14 +113,12 @@ class NormalizedParamsTest extends UnitTestCase
      * @test
      * @dataProvider getHttpHostReturnsSanitizedValueDataProvider
      * @param array $serverParams
-     * @param array $typo3ConfVars
+     * @param array $configuration
      * @param string $expected
      */
-    public function getHttpHostReturnsSanitizedValue(array $serverParams, array $typo3ConfVars, string $expected)
+    public function getHttpHostReturnsSanitizedValue(array $serverParams, array $configuration, string $expected)
     {
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), $typo3ConfVars, '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, $configuration, '', '');
         $this->assertSame($expected, $serverRequestParameters->getHttpHost());
     }
 
@@ -291,9 +276,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'REMOTE_ADDR' => '123.123.123.123 ',
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxySSL' => ' 123.123.123.123',
-                    ],
+                    'reverseProxySSL' => ' 123.123.123.123',
                 ],
                 true
             ],
@@ -303,9 +286,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'REMOTE_ADDR' => '123.123.123.123',
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxySSL' => '234.234.234.234',
-                    ],
+                    'reverseProxySSL' => '234.234.234.234',
                 ],
                 false
             ],
@@ -315,10 +296,8 @@ class NormalizedParamsTest extends UnitTestCase
                     'REMOTE_ADDR' => '123.123.123.123',
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxySSL' => '*',
-                        'reverseProxyIP' => '123.123.123.123',
-                    ],
+                    'reverseProxySSL' => '*',
+                    'reverseProxyIP' => '123.123.123.123',
                 ],
                 true
             ],
@@ -328,10 +307,8 @@ class NormalizedParamsTest extends UnitTestCase
                     'REMOTE_ADDR' => '123.123.123.123',
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxySSL' => '*',
-                        'reverseProxyIP' => '234.234.234.234',
-                    ],
+                    'reverseProxySSL' => '*',
+                    'reverseProxyIP' => '234.234.234.234',
                 ],
                 false
             ]
@@ -342,14 +319,12 @@ class NormalizedParamsTest extends UnitTestCase
      * @test
      * @dataProvider isHttpsReturnSanitizedValueDataProvider
      * @param array $serverParams
-     * @param array $typo3ConfVars
+     * @param array $configuration
      * @param bool $expected
      */
-    public function isHttpsReturnSanitizedValue(array $serverParams, array $typo3ConfVars, bool $expected)
+    public function isHttpsReturnSanitizedValue(array $serverParams, array $configuration, bool $expected)
     {
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), $typo3ConfVars, '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, $configuration, '', '');
         $this->assertSame($expected, $serverRequestParameters->isHttps());
     }
 
@@ -363,9 +338,7 @@ class NormalizedParamsTest extends UnitTestCase
             'HTTPS' => 'on',
         ];
         $expected = 'https://www.domain.com';
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), [], '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, [], '', '');
         $this->assertSame($expected, $serverRequestParameters->getRequestHost());
     }
 
@@ -423,10 +396,8 @@ class NormalizedParamsTest extends UnitTestCase
                     'PATH_INFO' => '/path/info.php',
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxyIP' => '123.123.123.123',
-                        'reverseProxyPrefixSSL' => '/proxyPrefixSSL',
-                    ],
+                    'reverseProxyIP' => '123.123.123.123',
+                    'reverseProxyPrefixSSL' => '/proxyPrefixSSL',
                 ],
                 '/proxyPrefixSSL/path/info.php',
             ],
@@ -436,10 +407,8 @@ class NormalizedParamsTest extends UnitTestCase
                     'PATH_INFO' => '/path/info.php',
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxyIP' => '123.123.123.123',
-                        'reverseProxyPrefix' => '/proxyPrefix',
-                    ],
+                    'reverseProxyIP' => '123.123.123.123',
+                    'reverseProxyPrefix' => '/proxyPrefix',
                 ],
                 '/proxyPrefix/path/info.php',
             ],
@@ -450,14 +419,12 @@ class NormalizedParamsTest extends UnitTestCase
      * @test
      * @dataProvider getScriptNameReturnsExpectedValueDataProvider
      * @param array $serverParams
-     * @param array $typo3ConfVars
+     * @param array $configuration
      * @param string $expected
      */
-    public function getScriptNameReturnsExpectedValue(array $serverParams, array $typo3ConfVars, string $expected)
+    public function getScriptNameReturnsExpectedValue(array $serverParams, array $configuration, string $expected)
     {
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), $typo3ConfVars, '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, $configuration, '', '');
         $this->assertSame($expected, $serverRequestParameters->getScriptName());
     }
 
@@ -498,10 +465,8 @@ class NormalizedParamsTest extends UnitTestCase
                     'REQUEST_URI' => 'typo3/index.php?route=foo/bar&id=42',
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxyIP' => '123.123.123.123',
-                        'reverseProxyPrefixSSL' => '/proxyPrefixSSL',
-                    ],
+                    'reverseProxyIP' => '123.123.123.123',
+                    'reverseProxyPrefixSSL' => '/proxyPrefixSSL',
                 ],
                 '/proxyPrefixSSL/typo3/index.php?route=foo/bar&id=42',
             ],
@@ -512,10 +477,8 @@ class NormalizedParamsTest extends UnitTestCase
                     'REQUEST_URI' => 'typo3/index.php?route=foo/bar&id=42',
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxyIP' => '123.123.123.123',
-                        'reverseProxyPrefix' => '/proxyPrefix',
-                    ],
+                    'reverseProxyIP' => '123.123.123.123',
+                    'reverseProxyPrefix' => '/proxyPrefix',
                 ],
                 '/proxyPrefix/typo3/index.php?route=foo/bar&id=42',
             ],
@@ -527,10 +490,8 @@ class NormalizedParamsTest extends UnitTestCase
                     'SCRIPT_NAME' => '/typo3/index.php',
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxyIP' => '123.123.123.123',
-                        'reverseProxyPrefixSSL' => '/proxyPrefixSSL',
-                    ],
+                    'reverseProxyIP' => '123.123.123.123',
+                    'reverseProxyPrefixSSL' => '/proxyPrefixSSL',
                 ],
                 '/proxyPrefixSSL/typo3/index.php?route=foo/bar&id=42',
             ],
@@ -542,10 +503,8 @@ class NormalizedParamsTest extends UnitTestCase
                     'SCRIPT_NAME' => '/typo3/index.php',
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxyIP' => '123.123.123.123',
-                        'reverseProxyPrefix' => '/proxyPrefix',
-                    ],
+                    'reverseProxyIP' => '123.123.123.123',
+                    'reverseProxyPrefix' => '/proxyPrefix',
                 ],
                 '/proxyPrefix/typo3/index.php?route=foo/bar&id=42',
             ],
@@ -556,14 +515,12 @@ class NormalizedParamsTest extends UnitTestCase
      * @test
      * @dataProvider getRequestUriReturnsExpectedValueDataProvider
      * @param array $serverParams
-     * @param array $typo3ConfVars
+     * @param array $configuration
      * @param string $expected
      */
-    public function getRequestUriReturnsExpectedValue(array $serverParams, array $typo3ConfVars, string $expected)
+    public function getRequestUriReturnsExpectedValue(array $serverParams, array $configuration, string $expected)
     {
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), $typo3ConfVars, '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, $configuration, '', '');
         $this->assertSame($expected, $serverRequestParameters->getRequestUri());
     }
 
@@ -576,15 +533,11 @@ class NormalizedParamsTest extends UnitTestCase
         $serverParams = [
             'HTTP_HOST' => 'www.domain.com',
         ];
-        $typo3ConfVars = [
-            'SYS' => [
-                'requestURIvar' => 'foo|bar',
-            ],
+        $configuration = [
+            'requestURIvar' => 'foo|bar',
         ];
         $expected = '/foo/bar.php';
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), $typo3ConfVars, '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, $configuration, '', '');
         $this->assertSame($expected, $serverRequestParameters->getRequestUri());
     }
 
@@ -598,9 +551,7 @@ class NormalizedParamsTest extends UnitTestCase
             'REQUEST_URI' => 'typo3/index.php?route=foo/bar&id=42',
         ];
         $expected = 'http://www.domain.com/typo3/index.php?route=foo/bar&id=42';
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), [], '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, [], '', '');
         $this->assertSame($expected, $serverRequestParameters->getRequestUrl());
     }
 
@@ -614,9 +565,7 @@ class NormalizedParamsTest extends UnitTestCase
             'PATH_INFO' => '/typo3/index.php',
         ];
         $expected = 'http://www.domain.com/typo3/index.php';
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), [], '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, [], '', '');
         $this->assertSame($expected, $serverRequestParameters->getRequestScript());
     }
 
@@ -630,9 +579,7 @@ class NormalizedParamsTest extends UnitTestCase
             'PATH_INFO' => '/typo3/index.php',
         ];
         $expected = 'http://www.domain.com/typo3/';
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), [], '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, [], '', '');
         $this->assertSame($expected, $serverRequestParameters->getRequestDir());
     }
 
@@ -655,9 +602,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'REMOTE_ADDR' => '100.100.100.100',
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxyIP' => '200.200.200.200',
-                    ],
+                    'reverseProxyIP' => '200.200.200.200',
                 ],
                 false
             ],
@@ -667,9 +612,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'REMOTE_ADDR' => '100.100.100.100',
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxyIP' => '100.100.100.100',
-                    ],
+                    'reverseProxyIP' => '100.100.100.100',
                 ],
                 true
             ],
@@ -679,9 +622,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'REMOTE_ADDR' => ' 100.100.100.100 ',
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxyIP' => '  100.100.100.100  ',
-                    ],
+                    'reverseProxyIP' => '  100.100.100.100  ',
                 ],
                 true
             ]
@@ -692,14 +633,12 @@ class NormalizedParamsTest extends UnitTestCase
      * @test
      * @dataProvider isBehindReverseProxyReturnsExpectedValueDataProvider
      * @param array $serverParams
-     * @param array $typo3ConfVars
+     * @param array $configuration
      * @param bool $expected
      */
-    public function isBehindReverseProxyReturnsExpectedValue(array $serverParams, array $typo3ConfVars, bool $expected)
+    public function isBehindReverseProxyReturnsExpectedValue(array $serverParams, array $configuration, bool $expected)
     {
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), $typo3ConfVars, '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, $configuration, '', '');
         $this->assertSame($expected, $serverRequestParameters->isBehindReverseProxy());
     }
 
@@ -724,10 +663,8 @@ class NormalizedParamsTest extends UnitTestCase
                     'HTTP_X_FORWARDED_FOR' => ' 234.234.234.234, 235.235.235.235,',
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxyIP' => '123.123.123.123',
-                        'reverseProxyHeaderMultiValue' => ' last ',
-                    ]
+                    'reverseProxyIP' => '123.123.123.123',
+                    'reverseProxyHeaderMultiValue' => ' last ',
                 ],
                 '235.235.235.235'
             ],
@@ -738,10 +675,8 @@ class NormalizedParamsTest extends UnitTestCase
                     'HTTP_X_FORWARDED_FOR' => ' 234.234.234.234, 235.235.235.235,',
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxyIP' => '123.123.123.123 ',
-                        'reverseProxyHeaderMultiValue' => ' first ',
-                    ]
+                    'reverseProxyIP' => '123.123.123.123 ',
+                    'reverseProxyHeaderMultiValue' => ' first ',
                 ],
                 '234.234.234.234'
             ],
@@ -752,10 +687,8 @@ class NormalizedParamsTest extends UnitTestCase
                     'HTTP_X_FORWARDED_FOR' => ' 234.234.234.234, 235.235.235.235,',
                 ],
                 [
-                    'SYS' => [
-                        'reverseProxyIP' => '123.123.123.123 ',
-                        'reverseProxyHeaderMultiValue' => ' foo ',
-                    ]
+                    'reverseProxyIP' => '123.123.123.123 ',
+                    'reverseProxyHeaderMultiValue' => ' foo ',
                 ],
                 '123.123.123.123'
             ],
@@ -766,14 +699,12 @@ class NormalizedParamsTest extends UnitTestCase
      * @test
      * @dataProvider getRemoteAddressReturnsExpectedValueDataProvider
      * @param array $serverParams
-     * @param array $typo3ConfVars
+     * @param array $configuration
      * @param string $expected
      */
-    public function getRemoteAddressReturnsExpectedValue(array $serverParams, array $typo3ConfVars, string $expected)
+    public function getRemoteAddressReturnsExpectedValue(array $serverParams, array $configuration, string $expected)
     {
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), $typo3ConfVars, '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, $configuration, '', '');
         $this->assertSame($expected, $serverRequestParameters->getRemoteAddress());
     }
 
@@ -842,9 +773,7 @@ class NormalizedParamsTest extends UnitTestCase
      */
     public function getRequestHostOnlyReturnsExpectedValue(array $serverParams, string $expected)
     {
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), [], '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, [], '', '');
         $this->assertSame($expected, $serverRequestParameters->getRequestHostOnly());
     }
 
@@ -913,9 +842,7 @@ class NormalizedParamsTest extends UnitTestCase
      */
     public function getRequestPortReturnsExpectedValue(array $serverParams, int $expected)
     {
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), [], '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, [], '', '');
         $this->assertSame($expected, $serverRequestParameters->getRequestPort());
     }
 
@@ -929,9 +856,7 @@ class NormalizedParamsTest extends UnitTestCase
             'SCRIPT_NAME' => '/typo3/index.php',
         ];
         $pathSite = '/var/www/';
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), [], '/var/www/typo3/index.php', $pathSite);
+        $serverRequestParameters = new NormalizedParams($serverParams, [], '/var/www/typo3/index.php', $pathSite);
         $this->assertSame('/var/www/typo3/index.php', $serverRequestParameters->getScriptFilename());
     }
 
@@ -947,9 +872,7 @@ class NormalizedParamsTest extends UnitTestCase
         $pathThisScript = '/var/www/myInstance/Web/typo3/index.php';
         $pathSite = '/var/www/myInstance/Web/';
         $expected = '/var/www/myInstance/Web';
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), [], $pathThisScript, $pathSite);
+        $serverRequestParameters = new NormalizedParams($serverParams, [], $pathThisScript, $pathSite);
         $this->assertSame($expected, $serverRequestParameters->getDocumentRoot());
     }
 
@@ -966,9 +889,7 @@ class NormalizedParamsTest extends UnitTestCase
         $pathThisScript = '/var/www/myInstance/Web/typo3/index.php';
         $pathSite = '/var/www/myInstance/Web';
         $expected = 'http://www.domain.com/';
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), [], $pathThisScript, $pathSite);
+        $serverRequestParameters = new NormalizedParams($serverParams, [], $pathThisScript, $pathSite);
         $this->assertSame($expected, $serverRequestParameters->getSiteUrl());
     }
 
@@ -1015,9 +936,7 @@ class NormalizedParamsTest extends UnitTestCase
      */
     public function getSitePathReturnsExpectedPath(array $serverParams, string $pathThisScript, string $pathSite, string $expected)
     {
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), [], $pathThisScript, $pathSite);
+        $serverRequestParameters = new NormalizedParams($serverParams, [], $pathThisScript, $pathSite);
         $this->assertSame($expected, $serverRequestParameters->getSitePath());
     }
 
@@ -1058,9 +977,7 @@ class NormalizedParamsTest extends UnitTestCase
      */
     public function getSiteScriptReturnsExpectedPath(array $serverParams, string $pathThisScript, string $pathSite, string $expected)
     {
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), [], $pathThisScript, $pathSite);
+        $serverRequestParameters = new NormalizedParams($serverParams, [], $pathThisScript, $pathSite);
         $this->assertSame($expected, $serverRequestParameters->getSiteScript());
     }
 
@@ -1073,9 +990,7 @@ class NormalizedParamsTest extends UnitTestCase
             'PATH_INFO' => '/typo3/index.php',
         ];
         $expected = '/typo3/index.php';
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), [], '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, [], '', '');
         $this->assertSame($expected, $serverRequestParameters->getPathInfo());
     }
 
@@ -1088,9 +1003,7 @@ class NormalizedParamsTest extends UnitTestCase
             'HTTP_REFERER' => 'https://www.domain.com/typo3/index.php?id=42',
         ];
         $expected = 'https://www.domain.com/typo3/index.php?id=42';
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), [], '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, [], '', '');
         $this->assertSame($expected, $serverRequestParameters->getHttpReferer());
     }
 
@@ -1103,9 +1016,7 @@ class NormalizedParamsTest extends UnitTestCase
             'HTTP_USER_AGENT' => 'the client browser',
         ];
         $expected = 'the client browser';
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), [], '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, [], '', '');
         $this->assertSame($expected, $serverRequestParameters->getHttpUserAgent());
     }
 
@@ -1118,9 +1029,7 @@ class NormalizedParamsTest extends UnitTestCase
             'HTTP_ACCEPT_ENCODING' => 'gzip, deflate',
         ];
         $expected = 'gzip, deflate';
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), [], '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, [], '', '');
         $this->assertSame($expected, $serverRequestParameters->getHttpAcceptEncoding());
     }
 
@@ -1133,9 +1042,7 @@ class NormalizedParamsTest extends UnitTestCase
             'HTTP_ACCEPT_LANGUAGE' => 'de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7',
         ];
         $expected = 'de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7';
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), [], '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, [], '', '');
         $this->assertSame($expected, $serverRequestParameters->getHttpAcceptLanguage());
     }
 
@@ -1148,9 +1055,7 @@ class NormalizedParamsTest extends UnitTestCase
             'REMOTE_HOST' => 'www.clientDomain.com',
         ];
         $expected = 'www.clientDomain.com';
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), [], '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, [], '', '');
         $this->assertSame($expected, $serverRequestParameters->getRemoteHost());
     }
 
@@ -1163,9 +1068,7 @@ class NormalizedParamsTest extends UnitTestCase
             'QUERY_STRING' => 'id=42&foo=bar',
         ];
         $expected = 'id=42&foo=bar';
-        $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestProphecy->getServerParams()->willReturn($serverParams);
-        $serverRequestParameters = new NormalizedParams($serverRequestProphecy->reveal(), [], '', '');
+        $serverRequestParameters = new NormalizedParams($serverParams, [], '', '');
         $this->assertSame($expected, $serverRequestParameters->getQueryString());
     }
 }
