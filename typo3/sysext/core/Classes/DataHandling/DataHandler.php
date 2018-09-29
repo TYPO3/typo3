@@ -742,6 +742,13 @@ class DataHandler implements LoggerAwareInterface
         if ($this->BE_USER->uc['recursiveDelete']) {
             $this->deleteTree = 1;
         }
+
+        // Get default values from user TSConfig
+        $tcaDefaultOverride = $this->BE_USER->getTSConfig()['TCAdefaults.'] ?? null;
+        if (is_array($tcaDefaultOverride)) {
+            $this->setDefaultsFromUserTS($tcaDefaultOverride);
+        }
+
         // Initializing default permissions for pages
         $defaultPermissions = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions'];
         if (isset($defaultPermissions['user'])) {
@@ -1018,7 +1025,7 @@ class DataHandler implements LoggerAwareInterface
                 $this->autoVersioningUpdate = false;
                 // Is it a new record? (Then Id is a string)
                 if (!MathUtility::canBeInterpretedAsInteger($id)) {
-                    // Get a fieldArray with default values
+                    // Get a fieldArray with tca default values
                     $fieldArray = $this->newFieldArray($table);
                     // A pid must be set for new records.
                     if (isset($incomingFieldArray['pid'])) {

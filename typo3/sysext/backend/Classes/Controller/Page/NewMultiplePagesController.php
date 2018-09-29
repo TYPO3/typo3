@@ -181,12 +181,6 @@ class NewMultiplePagesController
         if (!empty($commandArray)) {
             $pagesCreated = true;
             $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-            // Set default TCA values specific for the user
-            $backendUser = $this->getBackendUser();
-            $tcaDefaultOverride = $backendUser->getTSConfig()['TCAdefaults.'] ?? null;
-            if (is_array($tcaDefaultOverride)) {
-                $dataHandler->setDefaultsFromUserTS($tcaDefaultOverride);
-            }
             $dataHandler->start($commandArray, []);
             $dataHandler->process_datamap();
             BackendUtility::setUpdateSignal('updatePageTree');
