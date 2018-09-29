@@ -57,6 +57,15 @@ class SlugHelper
     protected $workspaceEnabled;
 
     /**
+     * Defines whether the slug field should start with "/".
+     * For pages (due to rootline functionality), this is a must have, otherwise the root level page
+     * would have an empty value.
+     *
+     * @var bool
+     */
+    protected $prependSlashInSlug;
+
+    /**
      * Slug constructor.
      *
      * @param string $tableName TCA table
@@ -70,6 +79,12 @@ class SlugHelper
         $this->fieldName = $fieldName;
         $this->configuration = $configuration;
         $this->workspaceId = $workspaceId;
+
+        if ($this->tableName === 'pages' && $this->fieldName === 'slug') {
+            $this->prependSlashInSlug = true;
+        } else {
+            $this->prependSlashInSlug = $this->configuration['prependSlash'] ?? false;
+        }
 
         $this->workspaceEnabled = BackendUtility::isTableWorkspaceEnabled($tableName);
     }
@@ -91,6 +106,7 @@ class SlugHelper
         $slug = preg_replace('/[ \t\x{00A0}\-+_]+/u', $fallbackCharacter, $slug);
 
         // Convert extended letters to ascii equivalents
+        // The specCharsToASCII() converts "€" to "EUR"
         $slug = GeneralUtility::makeInstance(CharsetConverter::class)->specCharsToASCII('utf-8', $slug);
 
         // Get rid of all invalid characters, but allow slashes
@@ -101,8 +117,7 @@ class SlugHelper
             $slug = preg_replace('/' . preg_quote($fallbackCharacter) . '{2,}/', $fallbackCharacter, $slug);
         }
 
-        // Ensure slug is lower cased after all replacement was done:
-        // The specCharsToASCII() above for example converts "€" to "EUR"
+        // Ensure slug is lower cased after all replacement was done
         $slug = mb_strtolower($slug, 'utf-8');
         // keep slashes: re-convert them after rawurlencode did everything
         $slug = rawurlencode($slug);
@@ -112,7 +127,10 @@ class SlugHelper
         $extractedSlug = $this->extract($slug);
         // Remove trailing and beginning slashes, except if the trailing slash was added, then we'll re-add it
         $appendTrailingSlash = $extractedSlug !== '' && substr($slug, -1) === '/';
-        $slug = '/' . $extractedSlug . ($appendTrailingSlash ? '/' : '');
+        $slug = $extractedSlug . ($appendTrailingSlash ? '/' : '');
+        if ($this->prependSlashInSlug) {
+            $slug = '/' . $slug;
+        }
         return $slug;
     }
 
@@ -177,8 +195,11 @@ class SlugHelper
         $slug = implode($fieldSeparator, $slugParts);
         $slug = $this->sanitize($slug);
         // No valid data found
-        if ($slug === '/') {
-            $slug .= 'default-' . GeneralUtility::shortMD5(json_encode($recordData));
+        if ($slug === '' || $slug === '/') {
+            $slug = 'default-' . GeneralUtility::shortMD5(json_encode($recordData));
+        }
+        if ($this->prependSlashInSlug) {
+            $slug = '/' . $slug;
         }
         if (!empty($prefix)) {
             $slug = $prefix . $slug;
