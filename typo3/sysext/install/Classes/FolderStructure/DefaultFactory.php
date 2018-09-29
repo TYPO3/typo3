@@ -39,12 +39,12 @@ class DefaultFactory
      *
      * @return array
      */
-    protected function getDefaultStructureDefinition()
+    protected function getDefaultStructureDefinition(): array
     {
         $filePermission = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'];
         $directoryPermission = $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'];
 
-        return [
+        $structure = [
             // Note that root node has no trailing slash like all others
             'name' => Environment::getPublicPath(),
             'targetPermission' => $directoryPermission,
@@ -212,5 +212,24 @@ class DefaultFactory
                 ],
             ],
         ];
+
+        // Have a default .htaccess if running apache web server or a default web.config if running IIS
+        if (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'Apache') === 0) {
+            $structure['children'][] = [
+                'name' => '.htaccess',
+                'type' => FileNode::class,
+                'targetPermission' => $filePermission,
+                'targetContentFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/root-htaccess',
+            ];
+        } elseif (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS') === 0) {
+            $structure['children'][] = [
+                'name' => 'web.config',
+                'type' => FileNode::class,
+                'targetPermission' => $filePermission,
+                'targetContentFile' => Environment::getPublicPath() . '/typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/root-web-config',
+            ];
+        }
+
+        return $structure;
     }
 }
