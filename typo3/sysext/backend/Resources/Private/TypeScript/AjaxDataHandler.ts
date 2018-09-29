@@ -89,6 +89,7 @@ class AjaxDataHandler {
     $(document).on('click', Identifiers.delete, (evt: JQueryEventObject): void => {
       evt.preventDefault();
       const $anchorElement = $(evt.currentTarget);
+      $anchorElement.tooltip('hide');
       const $modal = Modal.confirm($anchorElement.data('title'), $anchorElement.data('message'), SeverityEnum.warning, [
         {
           text: $anchorElement.data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
