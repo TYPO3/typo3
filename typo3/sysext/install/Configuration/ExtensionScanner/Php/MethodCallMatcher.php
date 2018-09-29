@@ -3775,4 +3775,53 @@ return [
             'Deprecation-86466-AbstractUserAuthentication-fetchUserRecord.rst'
         ],
     ],
+    'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->nextDivider' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->parseSub' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->rollParseSub' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->setVal' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->error' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->regHighLight' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->syntaxHighlight_print' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+        ],
+    ],
 ];

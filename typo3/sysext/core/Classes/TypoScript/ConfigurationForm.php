@@ -20,6 +20,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Provides a simplified layer for making Constant Editor style configuration forms
+ *
+ * @internal this is only used for the TYPO3 TypoScript Template module, which should not be used in Extensions
  */
 class ConfigurationForm extends ExtendedTemplateService
 {

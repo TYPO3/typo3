@@ -1132,7 +1132,7 @@ test.TYPO3Forever.TypoScript = 1
         $string = '';
         $setup = [];
         $value = [];
-        $this->typoScriptParser->setVal($string, $setup, $value);
+        $this->typoScriptParser->_callRef('setVal', $string, $setup, $value);
     }
 
     /**
@@ -1143,7 +1143,7 @@ test.TYPO3Forever.TypoScript = 1
         $string = '';
         $setup = [];
         $value = '';
-        $this->typoScriptParser->setVal($string, $setup, $value);
+        $this->typoScriptParser->_callRef('setVal', $string, $setup, $value);
     }
 
     /**

@@ -32,6 +32,8 @@ use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatch
 /**
  * TSParser extension class to TemplateService
  * Contains functions for the TS module in TYPO3 backend
+ *
+ * @internal this is only used for the TYPO3 TypoScript Template module, which should not be used in Extensions
  */
 class ExtendedTemplateService extends TemplateService
 {
@@ -330,7 +332,7 @@ class ExtendedTemplateService extends TemplateService
         // Parse constants
         $constants = GeneralUtility::makeInstance(Parser\TypoScriptParser::class);
         // Register comments!
-        $constants->regComments = 1;
+        $constants->regComments = true;
         $constants->setup = $this->mergeConstantsFromPageTSconfig([]);
         /** @var ConditionMatcher $matchObj */
         $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);

@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Core\TypoScript\Parser;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as BackendConditionMatcher;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -33,6 +35,37 @@ use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatch
  */
 class TypoScriptParser
 {
+    use PublicPropertyDeprecationTrait;
+    use PublicMethodDeprecationTrait;
+
+    protected $deprecatedPublicProperties = [
+        'raw' => 'Using $raw of class TypoScriptParser from the outside is discouraged, as this variable is only used for internal storage.',
+        'rawP' => 'Using $rawP of class TypoScriptParser from the outside is discouraged, as this variable is only used for internal storage.',
+        'lastComment' => 'Using $lastComment of class TypoScriptParser from the outside is discouraged, as this variable is only used for internal storage.',
+        'commentSet' => 'Using $commentSet of class TypoScriptParser from the outside is discouraged, as this variable is only used for internal storage.',
+        'multiLineEnabled' => 'Using $multiLineEnabled of class TypoScriptParser from the outside is discouraged, as this variable is only used for internal storage.',
+        'multiLineObject' => 'Using $multiLineObject of class TypoScriptParser from the outside is discouraged, as this variable is only used for internal storage.',
+        'multiLineValue' => 'Using $multiLineValue of class TypoScriptParser from the outside is discouraged, as this variable is only used for internal storage.',
+        'inBrace' => 'Using $inBrace of class TypoScriptParser from the outside is discouraged, as this variable is only used for internal storage.',
+        'lastConditionTrue' => 'Using $lastConditionTrue of class TypoScriptParser from the outside is discouraged, as this variable is only used for internal storage.',
+        'syntaxHighLight' => 'Using $syntaxHighLight of class TypoScriptParser from the outside is discouraged, as this variable is only used for internal storage.',
+        'highLightData' => 'Using $highLightData of class TypoScriptParser from the outside is discouraged, as this variable is only used for internal storage.',
+        'highLightData_bracelevel' => 'Using $highLightData_bracelevel of class TypoScriptParser from the outside is discouraged, as this variable is only used for internal storage.',
+        'highLightStyles' => 'Using $highLightStyles of class TypoScriptParser from the outside is discouraged, as this variable is only used for internal storage.',
+        'highLightBlockStyles' => 'Using $highLightBlockStyles of class TypoScriptParser from the outside is discouraged, as this variable is only used for internal storage.',
+        'highLightBlockStyles_basecolor' => 'Using $highLightBlockStyles_basecolor of class TypoScriptParser from the outside is discouraged, as this variable is only used for internal storage.',
+    ];
+
+    protected $deprecatedPublicMethods = [
+        'nextDivider' => 'Using nextDivider() of class TypoScriptParser from the outside is discouraged, as this method is only meant to be used internally.',
+        'parseSub' => 'Using parseSub() of class TypoScriptParser from the outside is discouraged, as this method is only meant to be used internally.',
+        'rollParseSub' => 'Using rollParseSub() of class TypoScriptParser from the outside is discouraged, as this method is only meant to be used internally.',
+        'setVal' => 'Using setVal() of class TypoScriptParser from the outside is discouraged, as this method is only meant to be used internally.',
+        'error' => 'Using error() of class TypoScriptParser from the outside is discouraged, as this method is only meant to be used internally.',
+        'regHighLight' => 'Using regHighLight() of class TypoScriptParser from the outside is discouraged, as this method is only meant to be used internally.',
+        'syntaxHighlight_print' => 'Using syntaxHighlight_print() of class TypoScriptParser from the outside is discouraged, as this method is only meant to be used internally.',
+    ];
+
     /**
      * TypoScript hierarchy being build during parsing.
      *
@@ -45,56 +78,56 @@ class TypoScriptParser
      *
      * @var array
      */
-    public $raw;
+    protected $raw;
 
     /**
      * Pointer to entry in raw data array
      *
      * @var int
      */
-    public $rawP;
+    protected $rawP;
 
     /**
      * Holding the value of the last comment
      *
      * @var string
      */
-    public $lastComment = '';
+    protected $lastComment = '';
 
     /**
      * Internally set, used as internal flag to create a multi-line comment (one of those like /* ... * /
      *
      * @var bool
      */
-    public $commentSet = false;
+    protected $commentSet = false;
 
     /**
      * Internally set, when multiline value is accumulated
      *
      * @var bool
      */
-    public $multiLineEnabled = false;
+    protected $multiLineEnabled = false;
 
     /**
      * Internally set, when multiline value is accumulated
      *
      * @var string
      */
-    public $multiLineObject = '';
+    protected $multiLineObject = '';
 
     /**
      * Internally set, when multiline value is accumulated
      *
      * @var array
      */
-    public $multiLineValue = [];
+    protected $multiLineValue = [];
 
     /**
      * Internally set, when in brace. Counter.
      *
      * @var int
      */
-    public $inBrace = 0;
+    protected $inBrace = 0;
 
     /**
      * For each condition this flag is set, if the condition is TRUE,
@@ -102,7 +135,7 @@ class TypoScriptParser
      *
      * @var bool
      */
-    public $lastConditionTrue = true;
+    protected $lastConditionTrue = true;
 
     /**
      * Tracking all conditions found
@@ -123,21 +156,21 @@ class TypoScriptParser
      *
      * @var bool
      */
-    public $syntaxHighLight = false;
+    protected $syntaxHighLight = false;
 
     /**
      * Syntax highlight data is accumulated in this array. Used by syntaxHighlight_print() to construct the output.
      *
      * @var array
      */
-    public $highLightData = [];
+    protected $highLightData = [];
 
     /**
      * Syntax highlight data keeping track of the curly brace level for each line
      *
      * @var array
      */
-    public $highLightData_bracelevel = [];
+    protected $highLightData_bracelevel = [];
 
     /**
      * DO NOT register the comments. This is default for the ordinary sitetemplate!
@@ -177,7 +210,7 @@ class TypoScriptParser
     /**
      * @var array
      */
-    public $highLightStyles = [
+    protected $highLightStyles = [
         'prespace' => ['<span class="ts-prespace">', '</span>'],
         // Space before any content on a line
         'objstr_postspace' => ['<span class="ts-objstr_postspace">', '</span>'],
@@ -212,14 +245,14 @@ class TypoScriptParser
      *
      * @var string
      */
-    public $highLightBlockStyles = '';
+    protected $highLightBlockStyles = '';
 
     /**
      * The hex-HTML color for the blockmode
      *
      * @var string
      */
-    public $highLightBlockStyles_basecolor = '#cccccc';
+    protected $highLightBlockStyles_basecolor = '#cccccc';
 
     /**
      * @var \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
@@ -253,7 +286,7 @@ class TypoScriptParser
                     !$this->lastConditionTrue && $preUppercase === '[ELSE]')
             ) {
                 $pre = trim($this->parseSub($this->setup));
-                $this->lastConditionTrue = 1;
+                $this->lastConditionTrue = true;
             } else {
                 // We're in a specific section. Therefore we log this section
                 $specificSection = $preUppercase !== '[ELSE]';
@@ -265,10 +298,10 @@ class TypoScriptParser
                         $this->sectionsMatch[md5($pre)] = $pre;
                     }
                     $pre = trim($this->parseSub($this->setup));
-                    $this->lastConditionTrue = 1;
+                    $this->lastConditionTrue = true;
                 } else {
                     $pre = $this->nextDivider();
-                    $this->lastConditionTrue = 0;
+                    $this->lastConditionTrue = false;
                 }
             }
         }
@@ -287,7 +320,7 @@ class TypoScriptParser
      * @return string The condition value
      * @see parse()
      */
-    public function nextDivider()
+    protected function nextDivider()
     {
         while (isset($this->raw[$this->rawP])) {
             $line = trim($this->raw[$this->rawP]);
@@ -305,7 +338,7 @@ class TypoScriptParser
      * @param array $setup Reference to the setup array in which to accumulate the values.
      * @return string|null Returns the string of the condition found, the exit signal or possible nothing (if it completed parsing with no interruptions)
      */
-    public function parseSub(array &$setup)
+    protected function parseSub(array &$setup)
     {
         while (isset($this->raw[$this->rawP])) {
             $line = ltrim($this->raw[$this->rawP]);
@@ -321,7 +354,7 @@ class TypoScriptParser
             }
             // Set comment flag?
             if (!$this->multiLineEnabled && strpos($line, '/*') === 0) {
-                $this->commentSet = 1;
+                $this->commentSet = true;
             }
             // If $this->multiLineEnabled we will go and get the line values here because we know, the first if() will be TRUE.
             if (!$this->commentSet && ($line || $this->multiLineEnabled)) {
@@ -333,7 +366,7 @@ class TypoScriptParser
                             $this->regHighLight('operator', $lineP, strlen($line) - 1);
                         }
                         // Disable multiline
-                        $this->multiLineEnabled = 0;
+                        $this->multiLineEnabled = false;
                         $theValue = implode($this->multiLineValue, LF);
                         if (strpos($this->multiLineObject, '.') !== false) {
                             // Set the value deeper.
@@ -451,7 +484,7 @@ class TypoScriptParser
                                             break;
                                         case '(':
                                             $this->multiLineObject = $objStrName;
-                                            $this->multiLineEnabled = 1;
+                                            $this->multiLineEnabled = true;
                                             $this->multiLineValue = [];
                                             break;
                                         case '<':
@@ -513,7 +546,7 @@ class TypoScriptParser
                     $this->regHighLight('comment', $lineP);
                 }
                 if (strpos($line, '*/') !== false) {
-                    $this->commentSet = 0;
+                    $this->commentSet = false;
                 }
             }
         }
@@ -617,7 +650,7 @@ class TypoScriptParser
      * @return string Returns the exitSignal
      * @see parseSub()
      */
-    public function rollParseSub($string, array &$setup)
+    protected function rollParseSub($string, array &$setup)
     {
         if ((string)$string === '') {
             return '';
@@ -675,7 +708,7 @@ class TypoScriptParser
      * @param array|string $value The value/property pair array to set. If only one of them is set, then the other is not touched (unless $wipeOut is set, which it is when copies are made which must include both value and property)
      * @param bool $wipeOut If set, then both value and property is wiped out when a copy is made of another value.
      */
-    public function setVal($string, array &$setup, $value, $wipeOut = false)
+    protected function setVal($string, array &$setup, $value, $wipeOut = false)
     {
         if ((string)$string === '') {
             return;
@@ -780,7 +813,7 @@ class TypoScriptParser
      * @param string $err The error message string
      * @param int $num The error severity (in the scale of TimeTracker::setTSlogMessage: Approx: 2=warning, 1=info, 0=nothing, 3=fatal.)
      */
-    public function error($err, $num = 2)
+    protected function error($err, $num = 2)
     {
         $tt = $this->getTimeTracker();
         if ($tt !== null) {
@@ -1078,6 +1111,7 @@ class TypoScriptParser
      * @param string $optionalProperties
      * @param string $parentFilenameOrPath The parent file (with absolute path) or path for relative includes
      * @static
+     * @internal
      */
     public static function includeFile($filename, $cycle_counter = 1, $returnFiles = false, &$newString = '', array &$includedFiles = [], $optionalProperties = '', $parentFilenameOrPath = '')
     {
@@ -1219,6 +1253,7 @@ class TypoScriptParser
      * @throws \RuntimeException
      * @throws \UnexpectedValueException
      * @return string Template content with uncommented include statements
+     * @internal
      */
     public static function extractIncludes($string, $cycle_counter = 1, array $extractedFileNames = [], $parentFilenameOrPath = '')
     {
@@ -1391,7 +1426,7 @@ class TypoScriptParser
      */
     public function doSyntaxHighlight($string, $lineNum = '', $highlightBlockMode = false)
     {
-        $this->syntaxHighLight = 1;
+        $this->syntaxHighLight = true;
         $this->highLightData = [];
         $this->errors = [];
         // This is done in order to prevent empty <span>..</span> sections around CR content. Should not do anything but help lessen the amount of HTML code.
@@ -1406,10 +1441,9 @@ class TypoScriptParser
      * @param string $code Key from the internal array $this->highLightStyles
      * @param int $pointer Pointer to the line in $this->raw which this is about
      * @param int $strlen The number of chars LEFT on this line before the end is reached.
-     * @internal
      * @see parse()
      */
-    public function regHighLight($code, $pointer, $strlen = -1)
+    protected function regHighLight($code, $pointer, $strlen = -1)
     {
         if ($strlen === -1) {
             $this->highLightData[$pointer] = [[$code, 0]];
@@ -1425,10 +1459,9 @@ class TypoScriptParser
      * @param mixed $lineNumDat If blank, linenumbers are NOT printed. If array then the first key is the linenumber offset to add to the internal counter.
      * @param bool $highlightBlockMode If set, then the highlighted output will be formatted in blocks based on the brace levels. prespace will be ignored and empty lines represented with a single no-break-space.
      * @return string HTML content
-     * @internal
      * @see doSyntaxHighlight()
      */
-    public function syntaxHighlight_print($lineNumDat, $highlightBlockMode)
+    protected function syntaxHighlight_print($lineNumDat, $highlightBlockMode)
     {
         // Registers all error messages in relation to their linenumber
         $errA = [];
