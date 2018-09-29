@@ -68,6 +68,14 @@ $modal-danger-border: $btn-danger-border;
 .modal-body {
     flex: 1 1 auto;
     overflow-y: auto;
+    padding-bottom: 0;
+
+    &:after {
+        content: "";
+        display: block;
+        height: $modal-inner-padding;
+        width: 100%;
+    }
 }
 
 .modal-header,

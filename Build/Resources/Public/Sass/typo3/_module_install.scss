@@ -58,6 +58,7 @@
 
         .panel-collapse {
             position: relative;
+            overflow: auto;
         }
 
         &.panel-default > .panel-heading {
