@@ -26,27 +26,6 @@
     border-bottom: 1px solid #cdcdcd;
     padding: 12px;
     margin-bottom: 24px;
-
-    form {
-        .control-group {
-            clear: both;
-            margin-bottom: 5px;
-        }
-
-        label {
-            float: left;
-            height: 20px;
-            padding: 4px 0;
-            line-height: 20px;
-            width: 90px;
-        }
-
-        .control {
-            min-height: 20px;
-            padding: 4px 0;
-            margin-left: 110px;
-        }
-    }
 }
 
 // Distributions List
@@ -190,12 +169,6 @@
     // Hide author for now
     .author {
         display: none;
-    }
-}
-
-#extensionUploadForm {
-    div.control-group:last-child {
-        margin-bottom: 0;
     }
 }
 
