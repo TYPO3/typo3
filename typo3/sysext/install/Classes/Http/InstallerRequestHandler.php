@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface as PsrRequestHandlerInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
@@ -29,16 +30,28 @@ use TYPO3\CMS\Install\Service\SessionService;
 /**
  * Request handler to walk through the web installation process of TYPO3
  */
-class InstallerRequestHandler implements RequestHandlerInterface
+class InstallerRequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterface
 {
     /**
-     * Handles an install tool request when nothing is there
+     * Handles an Install Tool request when nothing is there
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      * @throws \RuntimeException
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->handle($request);
+    }
+
+    /**
+     * Handles an Install Tool request when nothing is there
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     * @throws \RuntimeException
+     */
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $controller = new InstallerController();
         $actionName = $request->getParsedBody()['install']['action'] ?? $request->getQueryParams()['install']['action'] ?? 'init';

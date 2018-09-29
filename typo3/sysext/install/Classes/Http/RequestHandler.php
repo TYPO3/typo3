@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface as PsrRequestHandlerInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
@@ -46,7 +47,7 @@ use TYPO3\CMS\Install\Service\SessionService;
  * Default request handler for all requests inside the TYPO3 Install Tool, which does a simple hardcoded
  * dispatching to a controller based on the get/post variable.
  */
-class RequestHandler implements RequestHandlerInterface
+class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterface
 {
     /**
      * @var ConfigurationManager
@@ -75,12 +76,23 @@ class RequestHandler implements RequestHandlerInterface
     }
 
     /**
-     * Handles an install tool request for normal operations
+     * Handles an Install Tool request for normal operations
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->handle($request);
+    }
+
+    /**
+     * Handles an Install Tool request for normal operations
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $controllerName = $request->getQueryParams()['install']['controller'] ?? 'layout';
         $actionName = $request->getParsedBody()['install']['action'] ?? $request->getQueryParams()['install']['action'] ?? 'init';

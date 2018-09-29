@@ -22,7 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * The interface for a request handler
  * see RequestHandler in EXT:backend/Classes/Http/ and EXT:frontend/Classes/Http
  *
- * @api
+ * @internal although TYPO3 Core still uses this in TYPO3 v9, this will be removed with PSR-15 RequestHandlerInterface
  */
 interface RequestHandlerInterface
 {

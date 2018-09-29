@@ -61,7 +61,7 @@ class Application extends AbstractApplication
         $this->initializeContext();
         foreach ($this->availableRequestHandlers as $handler) {
             if ($handler->canHandleRequest($request)) {
-                return $handler->handleRequest($request);
+                return $handler->handle($request);
             }
         }
         throw new \TYPO3\CMS\Core\Exception('No suitable request handler found.', 1518448686);
