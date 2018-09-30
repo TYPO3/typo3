@@ -280,7 +280,7 @@ class TemplateService
     /**
      * Tracking all conditions found during parsing of TypoScript. Used for the "all" key in currentPageData
      *
-     * @var string
+     * @var array|null
      */
     public $sections;
 

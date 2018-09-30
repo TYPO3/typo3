@@ -184,7 +184,7 @@ class SystemEnvironmentBuilder
      * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
      * @param int $requestType
      */
-    protected static function definePaths($entryPointLevel = 0, int $requestType)
+    protected static function definePaths(int $entryPointLevel, int $requestType)
     {
         $isCli = self::isCliRequestType($requestType);
         // Absolute path of the entry script that was called
@@ -541,7 +541,7 @@ class SystemEnvironmentBuilder
      */
     protected static function defineLegacyConstants(string $mode)
     {
-        if (defined('TYPO3_MODE')) { // @todo remove once Bootstrap::getInstance()
+        if (defined('TYPO3_MODE')) { // @todo remove once Bootstrap::getInstance() is dropped
             return;
         }
         define('TYPO3_MODE', $mode);
