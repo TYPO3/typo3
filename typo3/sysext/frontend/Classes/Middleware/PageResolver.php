@@ -89,7 +89,7 @@ class PageResolver implements MiddlewareInterface
             $requestId = (string)($request->getQueryParams()['id'] ?? '');
             if (!empty($requestId) && !empty($page = $this->resolvePageId($requestId))) {
                 // Legacy URIs (?id=12345) takes precedence, not matter if a route is given
-                $routeResult = new PageArguments(
+                $pageArguments = new PageArguments(
                     (int)($page['l10n_parent'] ?: $page['uid']),
                     [],
                     [],
@@ -97,9 +97,9 @@ class PageResolver implements MiddlewareInterface
                 );
             } else {
                 // Check for the route
-                $routeResult = $site->getRouter()->matchRequest($request, $previousResult);
+                $pageArguments = $site->getRouter()->matchRequest($request, $previousResult);
             }
-            if ($routeResult === null || !$routeResult->getPageId()) {
+            if ($pageArguments === null || !$pageArguments->getPageId()) {
                 return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                     $request,
                     'The requested page does not exist',
@@ -107,16 +107,23 @@ class PageResolver implements MiddlewareInterface
                 );
             }
 
-            $this->controller->id = $routeResult->getPageId();
-            $request = $request->withAttribute('routing', $routeResult);
+            $this->controller->id = $pageArguments->getPageId();
+            $this->controller->type = $pageArguments->getArguments()['type'] ?? $this->controller->type;
+            $request = $request->withAttribute('routing', $pageArguments);
             // stop in case arguments are dirty (=defined twice in route and GET query parameters)
-            if ($routeResult->areDirty()) {
+            if ($pageArguments->areDirty()) {
                 return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                     $request,
                     'The requested URL is not distinct',
                     ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
                 );
             }
+
+            // merge the PageArguments with the request query parameters
+            $queryParams = array_replace_recursive($request->getQueryParams(), $pageArguments->getArguments());
+            $request = $request->withQueryParams($queryParams);
+            $this->controller->setPageArguments($pageArguments);
+
             // At this point, we later get further route modifiers
             // for bw-compat we update $GLOBALS[TYPO3_REQUEST] to be used later in TSFE.
             $GLOBALS['TYPO3_REQUEST'] = $request;

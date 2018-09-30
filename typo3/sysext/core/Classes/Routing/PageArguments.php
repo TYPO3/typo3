@@ -144,6 +144,7 @@ class PageArguments implements RouteResultInterface
     /**
      * @param array $queryArguments
      * @return static
+     * @internal this is internal due to the issue that a PageArgument should not be modified, but must be within TYPO3 Core currently.
      */
     public function withQueryArguments(array $queryArguments): self
     {

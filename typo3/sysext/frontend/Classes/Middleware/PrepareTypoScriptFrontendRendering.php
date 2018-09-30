@@ -77,6 +77,7 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
             $modifiedGetVars = GeneralUtility::removeDotsFromTS($this->controller->config['config']['defaultGetVars.']);
             if ($pageArguments instanceof PageArguments) {
                 $pageArguments = $pageArguments->withQueryArguments($modifiedGetVars);
+                $this->controller->setPageArguments($pageArguments);
                 $request = $request->withAttribute('routing', $pageArguments);
             }
             if (!empty($request->getQueryParams())) {
@@ -84,12 +85,6 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
             }
             $request = $request->withQueryParams($modifiedGetVars);
             $GLOBALS['TYPO3_REQUEST'] = $request;
-        }
-        // Populate internal route query arguments to super global $_GET
-        if ($pageArguments instanceof PageArguments) {
-            $_GET = $pageArguments->getArguments();
-            $GLOBALS['HTTP_GET_VARS'] = $pageArguments->getArguments();
-            $this->controller->setPageArguments($pageArguments);
         }
 
         // Setting language and locale

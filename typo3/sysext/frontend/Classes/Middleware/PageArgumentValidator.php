@@ -66,9 +66,6 @@ class PageArgumentValidator implements MiddlewareInterface
     {
         $pageNotFoundOnValidationError = (bool)($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError'] ?? true);
         $pageArguments = $request->getAttribute('routing', null);
-        if ($pageArguments instanceof PageArguments) {
-            $this->controller->setPageArguments($pageArguments);
-        }
         if ($this->controller->no_cache && !$pageNotFoundOnValidationError) {
             // No need to test anything if caching was already disabled.
         } else {
