@@ -128,7 +128,7 @@ class SlugHelper
         // Remove trailing and beginning slashes, except if the trailing slash was added, then we'll re-add it
         $appendTrailingSlash = $extractedSlug !== '' && substr($slug, -1) === '/';
         $slug = $extractedSlug . ($appendTrailingSlash ? '/' : '');
-        if ($this->prependSlashInSlug) {
+        if ($this->prependSlashInSlug && ($slug{0} ?? '') !== '/') {
             $slug = '/' . $slug;
         }
         return $slug;
@@ -162,8 +162,9 @@ class SlugHelper
         }
         $prefix = '';
         if ($this->configuration['generatorOptions']['prefixParentPageSlug'] ?? false) {
-            $languageId = (int)$recordData[$GLOBALS['TCA'][$this->tableName]['ctrl']['languageField']];
-            $rootLine = BackendUtility::BEgetRootLine($pid, '', true, ['nav_title']);
+            $languageFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null;
+            $languageId = (int)($recordData[$languageFieldName] ?? 0);
+            $rootLine = $this->resolveRootLine($pid);
             $parentPageRecord = reset($rootLine);
             if ($languageId > 0) {
                 $localizedParentPageRecord = BackendUtility::getRecordLocalization('pages', $parentPageRecord['uid'], $languageId);
@@ -198,7 +199,7 @@ class SlugHelper
         if ($slug === '' || $slug === '/') {
             $slug = 'default-' . GeneralUtility::shortMD5(json_encode($recordData));
         }
-        if ($this->prependSlashInSlug) {
+        if ($this->prependSlashInSlug && ($slug{0} ?? '') !== '/') {
             $slug = '/' . $slug;
         }
         if (!empty($prefix)) {
@@ -531,5 +532,14 @@ class SlugHelper
                 $records
             )
         );
+    }
+
+    /**
+     * @param int $pid
+     * @return array
+     */
+    protected function resolveRootLine(int $pid): array
+    {
+        return BackendUtility::BEgetRootLine($pid, '', true, ['nav_title']);
     }
 }

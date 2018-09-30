@@ -344,4 +344,69 @@ class SlugHelperTest extends UnitTestCase
             $subject->generate(['title' => $input, 'uid' => 13], 13)
         );
     }
+
+    /**
+     * @return array
+     */
+    public function generatePrependsSlugsForPagesDataProvider(): array
+    {
+        return [
+            'simple title' => [
+                'Products',
+                '/parent-page/products'
+            ],
+            'title with spaces' => [
+                'Product Cow',
+                '/parent-page/product-cow'
+            ],
+            'title with invalid characters' => [
+                'Products - Cows',
+                '/parent-page/products-cows'
+            ],
+            'title with only invalid characters' => [
+                '!!!',
+                '/parent-page/default-51cf35392c'
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider generatePrependsSlugsForPagesDataProvider
+     * @param string $input
+     * @param string $expected
+     * @test
+     */
+    public function generatePrependsSlugsForPages(string $input, string $expected)
+    {
+        $GLOBALS['dummyTable']['ctrl'] = [];
+        $rootLine = [
+            [
+                'uid' => '13',
+                'pid' => '10',
+                'title' => 'Parent Page',
+            ]
+        ];
+        $subject = $this->getAccessibleMock(
+            SlugHelper::class,
+            ['resolveRootLine'],
+            [
+                'pages',
+                'slug',
+                [
+                    'generatorOptions' => [
+                        'fields' => ['title'],
+                        'prefixParentPageSlug' => true,
+                    ],
+                ]
+            ]
+        );
+        $subject->expects(static::at(0))
+            ->method('resolveRootLine')->with(13)->willReturn($rootLine);
+        $subject->expects(static::at(1))
+            ->method('resolveRootLine')->with(10)->willReturn([]);
+        static::assertEquals(
+            $expected,
+            $subject->generate(['title' => $input, 'uid' => 13], 13)
+        );
+    }
 }
