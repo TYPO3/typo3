@@ -61,7 +61,7 @@ class ActionHandler
      */
     public function generateWorkspacePreviewLink($uid)
     {
-        return GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForPage((int)$uid);
+        return GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForPage((int)$uid, 0);
     }
 
     /**

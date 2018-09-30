@@ -21,7 +21,10 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Workspaces\Service\StagesService;
@@ -137,19 +140,40 @@ class PreviewController
             BackendUtility::setUpdateSignal('updatePageTree');
         }
 
-        // Base URL for frontend preview links
-        $previewBaseUrl = BackendUtility::getViewDomain($this->pageId) . '/index.php?' . $queryString;
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        try {
+            /** @var Site $site */
+            $site = $siteFinder->getSiteByPageId($this->pageId);
+            if (isset($queryParameters['L'])) {
+                $queryParameters['_language'] = $site->getLanguageById((int)$queryParameters['L']);
+                unset($queryParameters['L']);
+            }
+            if (!WorkspaceService::isNewPage($this->pageId)) {
+                $parameters = $queryParameters;
+                $parameters['ADMCMD_noBeUser'] = 1;
+                $parameters['ADMCMD_prev'] = 'IGNORE';
+                $liveUrl = (string)$site->getRouter()->generateUri($this->pageId, $parameters);
+            }
+
+            $parameters = $queryParameters;
+            $parameters['ADMCMD_view'] = 1;
+            $parameters['ADMCMD_editIcons'] = 1;
+            $parameters['ADMCMD_prev'] = 'IGNORE';
+            $wsUrl = (string)$site->getRouter()->generateUri($this->pageId, $parameters);
+        } catch (SiteNotFoundException $e) {
+            // Base URL for frontend preview links
+            $previewBaseUrl = BackendUtility::getViewDomain($this->pageId) . '/index.php?' . $queryString;
+            if (!WorkspaceService::isNewPage($this->pageId)) {
+                $liveUrl = $previewBaseUrl . '&ADMCMD_noBeUser=1&ADMCMD_prev=IGNORE';
+            }
+            $wsUrl = $previewBaseUrl . '&ADMCMD_prev=IGNORE&ADMCMD_view=1&ADMCMD_editIcons=1';
+        }
 
         // Build the "list view" link to the review controller
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $wsSettingsUrl = $uriBuilder->buildUriFromRoute('web_WorkspacesWorkspaces', [
             'tx_workspaces_web_workspacesworkspaces' => ['action' => 'singleIndex']
         ], UriBuilder::ABSOLUTE_URL);
-
-        if (!WorkspaceService::isNewPage($this->pageId)) {
-            $liveUrl = $previewBaseUrl . '&ADMCMD_noBeUser=1&ADMCMD_prev=IGNORE';
-        }
-        $wsUrl = $previewBaseUrl . '&ADMCMD_prev=IGNORE&ADMCMD_view=1&ADMCMD_editIcons=1';
 
         // Evaluate available preview modes
         $splitPreviewModes = GeneralUtility::trimExplode(

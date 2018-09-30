@@ -2661,7 +2661,8 @@ class BackendUtility
             }
         }
 
-        if ($alternativeUrl) {
+        // If there is an alternative URL or the URL has been modified by a hook, use that one.
+        if ($alternativeUrl || $viewScript !== '/index.php?id=') {
             $previewUrl = $viewScript;
         } else {
             $permissionClause = $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW);

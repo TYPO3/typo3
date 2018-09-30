@@ -22,6 +22,9 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
@@ -50,21 +53,36 @@ class PreviewUriBuilder
      * Generates a workspace preview link.
      *
      * @param int $uid The ID of the record to be linked
+     * @param int $languageId the language to link to
      * @return string the full domain including the protocol http:// or https://, but without the trailing '/'
      */
-    public function buildUriForPage(int $uid): string
+    public function buildUriForPage(int $uid, int $languageId = 0): string
     {
         $previewKeyword = $this->compilePreviewKeyword(
-            $this->getBackendUser()->user['uid'],
+            (int)$this->getBackendUser()->user['uid'],
             $this->getPreviewLinkLifetime() * 3600,
             $this->workspaceService->getCurrentWorkspace()
         );
 
-        $linkParams = [
-            'ADMCMD_prev' => $previewKeyword,
-            'id' => $uid
-        ];
-        return BackendUtility::getViewDomain($uid) . '/index.php?' . GeneralUtility::implodeArrayForUrl('', $linkParams);
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        try {
+            /** @var Site $site */
+            $site = $siteFinder->getSiteByPageId($uid);
+            try {
+                $language = $site->getLanguageById($languageId);
+            } catch (\InvalidArgumentException $e) {
+                $language = $site->getDefaultLanguage();
+            }
+            $uri = $site->getRouter()->generateUri($uid, ['ADMCMD_prev' => $previewKeyword, '_language' => $language], '');
+            return (string)$uri;
+        } catch (SiteNotFoundException $e) {
+            $linkParams = [
+                'ADMCMD_prev' => $previewKeyword,
+                'id' => $uid,
+                'L' => $languageId
+            ];
+            return BackendUtility::getViewDomain($uid) . '/index.php?' . GeneralUtility::implodeArrayForUrl('', $linkParams);
+        }
     }
 
     /**
@@ -75,12 +93,11 @@ class PreviewUriBuilder
      */
     public function buildUrisForAllLanguagesOfPage(int $pageId): array
     {
-        $previewUrl = $this->buildUriForPage($pageId);
         $previewLanguages = $this->getAvailableLanguages($pageId);
         $previewLinks = [];
 
         foreach ($previewLanguages as $languageUid => $language) {
-            $previewLinks[$language] = $previewUrl . '&L=' . $languageUid;
+            $previewLinks[$language] = $this->buildUriForPage($pageId, $languageUid);
         }
 
         return $previewLinks;
@@ -101,7 +118,7 @@ class PreviewUriBuilder
         }
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // the actual uid will be appended directly in BackendUtility Hook
-        $viewScript = $uriBuilder->buildUriFromRoute('workspace_previewcontrols', ['id' => '']);
+        $viewScript = $uriBuilder->buildUriFromRoute('workspace_previewcontrols', ['id' => $uid]);
         if ($addDomain === true) {
             $viewScript = $uriBuilder->buildUriFromRoute('workspace_previewcontrols', ['id' => $uid]);
             return BackendUtility::getViewDomain($uid) . 'index.php?redirect_url=' . urlencode($viewScript);

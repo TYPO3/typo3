@@ -612,7 +612,7 @@ class DataHandlerHook
                 $tempEmailMessage = $emailConfig['message'];
             }
             if (strpos($tempEmailMessage, '###PREVIEW_LINK###') !== false) {
-                $markers['###PREVIEW_LINK###'] = $previewUriBuilder->buildUriForPage((int)$elementUid);
+                $markers['###PREVIEW_LINK###'] = $previewUriBuilder->buildUriForPage((int)$elementUid, 0);
             }
             unset($tempEmailMessage);
 
