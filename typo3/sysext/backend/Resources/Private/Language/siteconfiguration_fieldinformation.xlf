@@ -3,11 +3,15 @@
 	<file t3:id="1522923345" source-language="en" datatype="plaintext" original="messages" date="2015-01-02T11:16:11Z" product-name="backend">
 		<header/>
 		<body>
+			<trans-unit id="site.rootPageId">
+				<source>You must create a page with a site root flag.</source>
+			</trans-unit>
 			<trans-unit id="site.identifier">
 				<source>This name will be used to create the configuration directory. Mind the recommendations for directory names (only a-z,0-9,_,-) and make it unique.</source>
 			</trans-unit>
 			<trans-unit id="site.base">
-				<source>Main URL to call the frontend in default language.</source>
+				<source>Main URL to call the frontend in default language. Can be https://www.example.com/ or just /, if it is just a / you cannot rely on TYPO3 creating
+					full URLs</source>
 			</trans-unit>
 			<trans-unit id="site.baseVariants">
 				<source>This allows you to specify variants of the site's base. Can be used, for example, if you have a different domain for your staging environment.</source>

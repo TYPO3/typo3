@@ -23,6 +23,7 @@ return [
         ],
         'rootPageId' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.rootPageId',
+            'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site.rootPageId',
             'config' => [
                 'type' => 'select',
                 'readOnly' => true,
@@ -98,10 +99,18 @@ return [
     ],
     'types' => [
         '0' => [
-            'showitem' => 'identifier, rootPageId, base,baseVariants,
+            'showitem' => '--palette--;;default,--palette--;;base,
                 --div--;LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.tab.languages, languages,
                 --div--;LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.tab.errorHandling, errorHandling,
                 --div--;LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.tab.routes, routes',
         ],
     ],
+    'palettes' => [
+        'default' => [
+            'showitem' => 'rootPageId, identifier'
+        ],
+        'base' => [
+            'showitem' => 'base, baseVariants'
+        ]
+    ]
 ];

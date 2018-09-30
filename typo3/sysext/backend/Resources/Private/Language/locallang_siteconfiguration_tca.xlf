@@ -10,16 +10,16 @@
 				<source>Site Identifier</source>
 			</trans-unit>
 			<trans-unit id="site.rootPageId">
-				<source>Root Page ID (You must create a page with a site root flag)</source>
+				<source>Root Page ID</source>
 			</trans-unit>
 			<trans-unit id="site.base">
-				<source>Entry point (can be https://www.mydomain/ or just /, if it is just / you can not rely on TYPO3 creating full URLs)</source>
+				<source>Entry Point</source>
 			</trans-unit>
 			<trans-unit id="site.baseVariants">
-				<source>Variants for the entry point</source>
+				<source>Variants for the Entry Point</source>
 			</trans-unit>
 			<trans-unit id="site.languages">
-				<source>Available Languages for this site</source>
+				<source>Available Languages for this Site</source>
 			</trans-unit>
 			<trans-unit id="site.errorHandling">
 				<source>Error Handling</source>
@@ -56,37 +56,37 @@
 				<source>Title</source>
 			</trans-unit>
 			<trans-unit id="site_language.navigationTitle">
-				<source>Navigation title</source>
+				<source>Navigation Title</source>
 			</trans-unit>
 			<trans-unit id="site_language.base">
-				<source>Entry point</source>
+				<source>Entry Point</source>
 			</trans-unit>
 			<trans-unit id="site_language.locale">
 				<source>Locale</source>
 			</trans-unit>
 			<trans-unit id="site_language.iso-639-1">
-				<source>Two letter ISO code</source>
+				<source>Two Letter ISO Code</source>
 			</trans-unit>
 			<trans-unit id="site_language.hreflang">
-				<source>Language tag defined by RFC 1766 / 3066</source>
+				<source>Language Tag defined by RFC 1766 / 3066</source>
 			</trans-unit>
 			<trans-unit id="site_language.enabled">
-				<source>Visible in frontend</source>
+				<source>Visible in Frontend</source>
 			</trans-unit>
 			<trans-unit id="site_language.direction">
 				<source>Direction</source>
 			</trans-unit>
 			<trans-unit id="site_language.typo3Language">
-				<source>Language key for XLF files</source>
+				<source>Language Key for XLF Files</source>
 			</trans-unit>
 			<trans-unit id="site_language.flag">
 				<source>Flag icon</source>
 			</trans-unit>
 			<trans-unit id="site_language.fallbackType">
-				<source>Fallback type</source>
+				<source>Fallback Type</source>
 			</trans-unit>
 			<trans-unit id="site_language.fallbacks">
-				<source>Fallback to other language(s) - order is important!</source>
+				<source>Fallback to other Language(s) - order is important!</source>
 			</trans-unit>
 			<trans-unit id="site_base_variant.ctrl.title">
 				<source>Base</source>
@@ -107,7 +107,7 @@
 				<source>Application Context</source>
 			</trans-unit>
 			<trans-unit id="site_base_variant.condition.environmentVariable">
-				<source>Environment variable</source>
+				<source>Environment Variable</source>
 			</trans-unit>
 
 			<trans-unit id="site_errorhandling.ctrl.title">
@@ -135,7 +135,7 @@
 				<source>any error not defined otherwise</source>
 			</trans-unit>
 			<trans-unit id="site_errorhandling.errorHandler">
-				<source>How to handle errors</source>
+				<source>How to handle Errors</source>
 			</trans-unit>
 			<trans-unit id="site_errorhandling.errorHandler.fluid">
 				<source>Fluid Template</source>
@@ -162,7 +162,7 @@
 				<source>Fluid Partials Root Path</source>
 			</trans-unit>
 			<trans-unit id="site_errorhandling.errorContentSource">
-				<source>Show Content From Page</source>
+				<source>Show Content from Page</source>
 			</trans-unit>
 			<trans-unit id="site_errorhandling.errorPhpClassFQCN">
 				<source>ErrorHandler Class Target (FQCN)</source>
