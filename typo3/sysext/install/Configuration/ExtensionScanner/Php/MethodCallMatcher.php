@@ -3831,4 +3831,11 @@ return [
             'Deprecation-83793-FALResourceStorage-dumpFileContents.rst'
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->processOutput' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-86486-TypoScriptFrontendController-processOutput.rst'
+        ],
+    ],
 ];

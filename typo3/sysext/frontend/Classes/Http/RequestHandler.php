@@ -193,7 +193,8 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         $isOutputting = $controller->isOutputting();
         if ($isOutputting) {
             $this->timeTracker->push('Print Content');
-            $controller->processOutput();
+            $response = $controller->applyHttpHeadersToResponse($response);
+            $controller->processContentForOutput();
             $this->timeTracker->pull();
         }
         // Store session data for fe_users
@@ -202,6 +203,7 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         // @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0.
         $redirectResponse = $controller->redirectToExternalUrl(true);
         if ($redirectResponse instanceof ResponseInterface) {
+            $controller->sendHttpHeadersDirectly();
             return $redirectResponse;
         }
 

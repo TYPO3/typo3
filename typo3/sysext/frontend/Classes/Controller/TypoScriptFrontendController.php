@@ -3928,8 +3928,22 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * This includes substituting the "username" comment, sending additional headers
      * (as defined in the TypoScript "config.additionalHeaders" object), XHTML cleaning content (if configured)
      * Works on $this->content.
+     *
+     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0.
      */
     public function processOutput()
+    {
+        trigger_error('TypoScriptFrontendController->processOutput() will be removed in TYPO3 v10.0. Use streamFile() instead.', E_USER_DEPRECATED);
+        $this->sendHttpHeadersDirectly();
+        $this->processContentForOutput();
+    }
+
+    /**
+     * Runs PHP header() calls. In an ideal world, this should never happen, but we keep it for bw compat.
+     *
+     * @internal
+     */
+    public function sendHttpHeadersDirectly()
     {
         // Set header for charset-encoding unless disabled
         if (empty($this->config['config']['disableCharsetHeader'])) {
@@ -3966,6 +3980,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 header($header . ': ' . $value);
             }
         }
+    }
+
+    /**
+     * Process the output before it's actually outputted.
+     *
+     * This includes substituting the "username" comment.
+     * Works on $this->content.
+     */
+    public function processContentForOutput()
+    {
         // Make substitution of eg. username/uid in content only if cache-headers for client/proxy caching is NOT sent!
         if (!$this->isClientCachable) {
             $this->contentStrReplace();
@@ -3975,6 +3999,53 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
+    }
+
+    /**
+     * Add HTTP headers to the response object.
+     *
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function applyHttpHeadersToResponse(ResponseInterface $response): ResponseInterface
+    {
+        // Set header for charset-encoding unless disabled
+        if (empty($this->config['config']['disableCharsetHeader'])) {
+            $response = $response->withHeader('Content-Type', $this->contentType . '; charset=' . trim($this->metaCharset));
+        }
+        // Set header for content language unless disabled
+        if (empty($this->config['config']['disableLanguageHeader']) && !empty($this->sys_language_isocode)) {
+            $response = $response->withHeader('Content-Language', trim($this->sys_language_isocode));
+        }
+        // Set cache related headers to client (used to enable proxy / client caching!)
+        if (!empty($this->config['config']['sendCacheHeaders'])) {
+            $headers = $this->getCacheHeaders();
+            foreach ($headers as $header => $value) {
+                $response = $response->withHeader($header, $value);
+            }
+        }
+        // Set additional headers if any have been configured via TypoScript
+        $additionalHeaders = $this->getAdditionalHeaders();
+        foreach ($additionalHeaders as $headerConfig) {
+            list($header, $value) = GeneralUtility::trimExplode(':', $headerConfig['header'], false, 2);
+            if ($headerConfig['statusCode']) {
+                $response = $response->withStatus($headerConfig['statusCode']);
+            }
+            if ($headerConfig['replace']) {
+                $response = $response->withHeader($header, $value);
+            } else {
+                $response = $response->withAddedHeader($header, $value);
+            }
+        }
+        // Send appropriate status code in case of temporary content
+        if ($this->tempContent) {
+            $response = $response->withStatus(503, 'Service unavailable');
+            $headers = $this->getHttpHeadersForTemporaryContent();
+            foreach ($headers as $header => $value) {
+                $response = $response->withHeader($header, $value);
+            }
+        }
+        return $response;
     }
 
     /**
