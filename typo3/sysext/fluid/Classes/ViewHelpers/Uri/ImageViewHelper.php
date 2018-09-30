@@ -143,7 +143,6 @@ class ImageViewHelper extends AbstractViewHelper
             // thrown if file storage does not exist
             throw new Exception($e->getMessage(), 1509741910, $e);
         }
-        return '';
     }
 
     /**
