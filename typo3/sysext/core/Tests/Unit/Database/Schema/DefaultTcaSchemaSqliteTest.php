@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Test case
  */
-class DefaultTcaSchemaTest extends UnitTestCase
+class DefaultTcaSchemaSqliteTest extends UnitTestCase
 {
     /**
      * @var DefaultTcaSchema
@@ -38,7 +38,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     {
         parent::setUp();
         $this->subject = $this->getAccessibleMock(DefaultTcaSchema::class, ['tableRunsOnSqlite']);
-        $this->subject->method('tableRunsOnSqlite')->willReturn(false);
+        $this->subject->method('tableRunsOnSqlite')->willReturn(true);
     }
 
     /**
@@ -118,7 +118,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsUidAndPrimaryKey()
+    public function enrichAddsUidAndNoPrimaryKey()
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
         $result = $this->subject->enrich([]);
@@ -131,9 +131,8 @@ class DefaultTcaSchemaTest extends UnitTestCase
                 'autoincrement' => true,
             ]
         );
-        $expectedPrimaryKey = new Index('primary', ['uid'], true, true);
         $this->assertEquals($expectedUidColumn, $result[0]->getColumn('uid'));
-        $this->assertEquals($expectedPrimaryKey, $result[0]->getPrimaryKey());
+        $this->assertNull($result[0]->getPrimaryKey());
     }
 
     /**

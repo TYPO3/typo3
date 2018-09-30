@@ -16,7 +16,9 @@ namespace TYPO3\CMS\Core\Database\Schema;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Schema\Table;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -76,7 +78,10 @@ class DefaultTcaSchema
                         'autoincrement' => true,
                     ]
                 );
-                $tables[$tablePosition]->setPrimaryKey(['uid']);
+                // SQLite does not need primary key, only needs autoincrement on integer fields
+                if (!$this->tableRunsOnSqlite($tableName)) {
+                    $tables[$tablePosition]->setPrimaryKey(['uid']);
+                }
             }
 
             // pid column and prepare parent key if pid is not defined
@@ -683,5 +688,17 @@ class DefaultTcaSchema
     protected function quote(string $identifier): string
     {
         return '`' . $identifier . '`';
+    }
+
+    /**
+     * SQLite does not need primary key, only needs autoincrement on integer fields
+     * See https://github.com/doctrine/dbal/pull/3141
+     * @param string $tableName
+     * @return bool
+     */
+    protected function tableRunsOnSqlite(string $tableName): bool
+    {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
+        return $connection->getDatabasePlatform() instanceof SqlitePlatform;
     }
 }
