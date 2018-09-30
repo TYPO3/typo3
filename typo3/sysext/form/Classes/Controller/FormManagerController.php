@@ -109,7 +109,7 @@ class FormManagerController extends AbstractBackendController
             throw new FormException(sprintf('The template path "%s" is not allowed', $templatePath), 1329233410);
         }
         if (empty($formName)) {
-            throw new FormException(sprintf('No form name', $templatePath), 1472312204);
+            throw new FormException('No form name', 1472312204);
         }
 
         $templatePath = GeneralUtility::getFileAbsFileName($templatePath);
