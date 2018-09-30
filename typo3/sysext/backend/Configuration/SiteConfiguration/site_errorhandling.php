@@ -25,6 +25,7 @@ return [
                     'lower' => 0,
                     'upper' => 599,
                 ],
+                'size' => 8,
                 'default' => 404,
                 'valuePicker' => [
                     'mode' => '',
@@ -109,18 +110,23 @@ return [
     ],
     'types' => [
         '1' => [
-            'showitem' => 'errorCode, errorHandler',
+            'showitem' => '--palette--;;general',
         ],
         'Fluid' => [
-            'showitem' => 'errorCode, errorHandler, errorFluidTemplate,
+            'showitem' => '--palette--;;general, errorFluidTemplate,
                            --div--;LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.tab.rootpaths,
                            errorFluidTemplatesRootPath, errorFluidLayoutsRootPath, errorFluidPartialsRootPath',
         ],
         'Page' => [
-            'showitem' => 'errorCode, errorHandler, errorContentSource',
+            'showitem' => '--palette--;;general, errorContentSource',
         ],
         'PHP' => [
-            'showitem' => 'errorCode, errorHandler, errorPhpClassFQCN',
+            'showitem' => '--palette--;;general, errorPhpClassFQCN',
         ],
     ],
+    'palettes' => [
+        'general' => [
+            'showitem' => 'errorCode, errorHandler'
+        ]
+    ]
 ];

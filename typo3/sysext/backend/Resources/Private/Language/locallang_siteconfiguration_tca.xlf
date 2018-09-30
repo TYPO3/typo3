@@ -40,41 +40,47 @@
 				<source>Static Routes</source>
 			</trans-unit>
 
+			<trans-unit id="site_language.palette.locales">
+				<source>Locales</source>
+			</trans-unit>
+			<trans-unit id="site_language.palette.frontend">
+				<source>Frontend related</source>
+			</trans-unit>
 			<trans-unit id="site_language.ctrl.title">
 				<source>Language Configuration for a Site</source>
 			</trans-unit>
-			<trans-unit id="site_language.language">
-				<source>Language</source>
+			<trans-unit id="site_language.languageId">
+				<source>Language ID</source>
 			</trans-unit>
 			<trans-unit id="site_language.title">
-				<source>Language title (e.g. "English")</source>
+				<source>Title</source>
 			</trans-unit>
 			<trans-unit id="site_language.navigationTitle">
-				<source>Navigation title (e.g. "English", "Deutsch", "Français")</source>
+				<source>Navigation title</source>
 			</trans-unit>
 			<trans-unit id="site_language.base">
-				<source>Entry point (either https://www.mydomain.fr/ or /fr/)</source>
+				<source>Entry point</source>
 			</trans-unit>
 			<trans-unit id="site_language.locale">
-				<source>Language locale</source>
+				<source>Locale</source>
 			</trans-unit>
 			<trans-unit id="site_language.iso-639-1">
 				<source>Two letter ISO code</source>
 			</trans-unit>
 			<trans-unit id="site_language.hreflang">
-				<source>Language tag defined by RFC 1766 / 3066 for "lang" and "hreflang" attributes</source>
+				<source>Language tag defined by RFC 1766 / 3066</source>
 			</trans-unit>
 			<trans-unit id="site_language.enabled">
-				<source>Language visible in frontend</source>
+				<source>Visible in frontend</source>
 			</trans-unit>
 			<trans-unit id="site_language.direction">
-				<source>Language direction for "dir" attribute</source>
+				<source>Direction</source>
 			</trans-unit>
 			<trans-unit id="site_language.typo3Language">
 				<source>Language key for XLF files</source>
 			</trans-unit>
 			<trans-unit id="site_language.flag">
-				<source>Select flag icon</source>
+				<source>Flag icon</source>
 			</trans-unit>
 			<trans-unit id="site_language.fallbackType">
 				<source>Fallback type</source>
@@ -111,7 +117,7 @@
 				<source>Root Paths (optional)</source>
 			</trans-unit>
 			<trans-unit id="site_errorhandling.errorCode">
-				<source>Error Status Code</source>
+				<source>HTTP Error Status Code</source>
 			</trans-unit>
 			<trans-unit id="site_errorhandling.errorCode.404">
 				<source>404 (Page not found)</source>

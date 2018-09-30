@@ -13,10 +13,22 @@
 				<source>This allows you to specify variants of the site's base. Can be used, for example, if you have a different domain for your staging environment.</source>
 			</trans-unit>
 			<trans-unit id="site_language.base">
-				<source>Use / To use keep the main URL as configured at field Entry Point. Add language specific suffixes to use those, or configure complete URLs for independent domains.</source>
+				<source>Use a full qualified domain "https://www.mydomain.fr/" or "/fr/". Use "/" to keep the main URL for the default language. Add language specific suffixes to use those, or configure complete URLs for independent domains.</source>
 			</trans-unit>
 			<trans-unit id="site_language.locale">
-				<source>Should be something like de_DE or en_US.UTF-8</source>
+				<source>Used for localized date and currency formats. E.g. "de_DE" or "en_US.UTF-8".</source>
+			</trans-unit>
+			<trans-unit id="site_language.iso-639-1">
+				<source>ISO 639-1 code of the Language</source>
+			</trans-unit>
+			<trans-unit id="site_language.hreflang">
+				<source>Used within for "lang" and "hreflang" attributes</source>
+			</trans-unit>
+			<trans-unit id="site_language.navigationTitle">
+				<source>Used within language-related menus</source>
+			</trans-unit>
+			<trans-unit id="site_language.direction">
+				<source>Language direction for "dir" attribute</source>
 			</trans-unit>
 			<trans-unit id="site_language.typo3Language">
 				<source>Select the language to be used from translation files. Keep default if no translation files are available.</source>
