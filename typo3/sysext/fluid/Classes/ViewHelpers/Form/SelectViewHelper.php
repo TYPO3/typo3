@@ -138,7 +138,8 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         // as often as there are elements in the box
         if (isset($this->arguments['multiple']) && $this->arguments['multiple']) {
             $content .= $this->renderHiddenFieldForEmptyValue();
-            for ($i = 0; $i < count($options); $i++) {
+            $optionsCount = count($options);
+            for ($i = 0; $i < $optionsCount; $i++) {
                 $this->registerFieldNameForFormTokenGeneration($name);
             }
             // save the parent field name so that any child f:form.select.option

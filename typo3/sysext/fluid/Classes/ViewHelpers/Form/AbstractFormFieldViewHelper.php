@@ -269,7 +269,8 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
             'formObjectName'
         );
         // If count == 2 -> we need to go through the for-loop exactly once
-        for ($i = 1; $i < count($propertySegments); $i++) {
+        $propertySegmentsCount = count($propertySegments);
+        for ($i = 1; $i < $propertySegmentsCount; $i++) {
             $object = ObjectAccess::getPropertyPath($formObject, implode('.', array_slice($propertySegments, 0, $i)));
             $objectName .= '[' . $propertySegments[$i - 1] . ']';
             $hiddenIdentityField = $this->renderHiddenIdentityField($object, $objectName);
