@@ -20,11 +20,12 @@ use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Form\Domain\Finishers\ClosureFinisher;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class ClosureFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ClosureFinisherTest extends UnitTestCase
 {
 
     /**

@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessPlaceholders;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaColumnsProcessPlaceholdersTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TcaColumnsProcessPlaceholdersTest extends UnitTestCase
 {
     /**
      * @var TcaColumnsProcessPlaceholders

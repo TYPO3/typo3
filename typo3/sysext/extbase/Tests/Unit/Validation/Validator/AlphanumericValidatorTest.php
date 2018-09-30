@@ -21,10 +21,12 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class AlphanumericValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AlphanumericValidatorTest extends UnitTestCase
 {
     /**
      * @test

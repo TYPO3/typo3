@@ -19,11 +19,12 @@ use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Log\Processor\NullProcessor;
 use TYPO3\CMS\Core\Log\Writer\NullWriter;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class LoggerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class LoggerTest extends UnitTestCase
 {
     /**
      * @test

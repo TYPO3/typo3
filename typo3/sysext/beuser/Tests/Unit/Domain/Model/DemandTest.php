@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case for class \TYPO3\CMS\Beuser\Domain\Model\Demand
  */
-class DemandTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DemandTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Beuser\Domain\Model\Demand

@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Tree;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Testcase for class \TYPO3\CMS\Backend\Tree\TreeNodeCollection.
  */
-class TreeNodeCollectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TreeNodeCollectionTest extends UnitTestCase
 {
     /**
      * @test

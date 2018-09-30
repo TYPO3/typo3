@@ -18,11 +18,12 @@ namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Validation;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class ValidatorResolverTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ValidatorResolverTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver | \PHPUnit_Framework_MockObject_MockObject | \TYPO3\TestingFramework\Core\AccessibleObjectInterface

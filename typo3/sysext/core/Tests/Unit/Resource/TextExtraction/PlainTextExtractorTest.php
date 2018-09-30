@@ -16,11 +16,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\TextExtraction;
 
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\TextExtraction\PlainTextExtractor;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Class PlainTextExtractorTest
  */
-class PlainTextExtractorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class PlainTextExtractorTest extends UnitTestCase
 {
     /**
      * @test

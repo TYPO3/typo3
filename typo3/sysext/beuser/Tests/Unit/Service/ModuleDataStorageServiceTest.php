@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class ModuleDataStorageServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ModuleDataStorageServiceTest extends UnitTestCase
 {
     /**
      * @test

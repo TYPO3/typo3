@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class CacheServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class CacheServiceTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Service\CacheService

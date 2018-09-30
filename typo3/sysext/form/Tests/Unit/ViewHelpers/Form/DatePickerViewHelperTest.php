@@ -16,11 +16,12 @@ namespace TYPO3\CMS\Form\Tests\Unit\ViewHelpers\Form;
  */
 
 use TYPO3\CMS\Form\ViewHelpers\Form\DatePickerViewHelper;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class DatePickerViewHelperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DatePickerViewHelperTest extends UnitTestCase
 {
 
     /**

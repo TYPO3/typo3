@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
  */
 
 use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Update from TER controller test
  */
-class UploadExtensionFileControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class UploadExtensionFileControllerTest extends UnitTestCase
 {
     /**
      * @return array The test data for getExtensionFromZipFileExtractsExtensionKey

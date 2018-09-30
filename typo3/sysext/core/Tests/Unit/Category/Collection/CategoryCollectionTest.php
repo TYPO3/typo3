@@ -14,11 +14,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Category\Collection;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Category\Collection\CategoryCollection;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case for \TYPO3\CMS\Core\Category\Collection\CategoryCollection
  */
-class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class CategoryCollectionTest extends UnitTestCase
 {
     /**
      * @test

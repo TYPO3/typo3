@@ -15,13 +15,14 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering;
  */
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 /**
  * Test case
  */
-class RenderingContextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class RenderingContextTest extends UnitTestCase
 {
     /**
      * Parsing state

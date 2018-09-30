@@ -21,11 +21,12 @@ use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController;
 use TYPO3\CMS\Fluid\Core\Widget\WidgetRequest;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Fluid\View\TemplateView;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class AbstractWidgetControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AbstractWidgetControllerTest extends UnitTestCase
 {
     /**
      * @test

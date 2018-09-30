@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\View\BackendLayout;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Testing backend layout representation.
  */
-class BackendLayoutTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class BackendLayoutTest extends UnitTestCase
 {
     /**
      * @test

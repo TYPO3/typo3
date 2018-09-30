@@ -23,13 +23,14 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  *                                                                        */
 
 use TYPO3\CMS\Extbase\Validation\Validator\StringValidator;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for the string length validator
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class StringValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class StringValidatorTest extends UnitTestCase
 {
     /**
      * @test

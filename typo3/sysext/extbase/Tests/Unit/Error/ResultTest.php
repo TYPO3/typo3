@@ -21,10 +21,12 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Error;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class ResultTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ResultTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Error\Result

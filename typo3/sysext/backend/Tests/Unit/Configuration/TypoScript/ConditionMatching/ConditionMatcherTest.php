@@ -26,11 +26,12 @@ use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for class \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher.
  */
-class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ConditionMatcherTest extends UnitTestCase
 {
     /**
      * @var array

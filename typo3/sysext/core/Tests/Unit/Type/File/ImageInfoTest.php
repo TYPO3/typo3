@@ -20,11 +20,12 @@ use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class ImageInfoTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ImageInfoTest extends UnitTestCase
 {
 
     /**

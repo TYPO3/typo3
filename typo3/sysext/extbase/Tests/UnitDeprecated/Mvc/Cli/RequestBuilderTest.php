@@ -22,11 +22,12 @@ namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Mvc\Cli;
  *                                                                        */
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentMixingException;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class RequestBuilderTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_Comparator_MockObject

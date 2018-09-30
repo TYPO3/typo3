@@ -20,11 +20,12 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Preparations\TcaPreparation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaPreparationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TcaPreparationTest extends UnitTestCase
 {
     public function prepareQuotingOfTableNamesAndColumnNamesDataProvider()
     {

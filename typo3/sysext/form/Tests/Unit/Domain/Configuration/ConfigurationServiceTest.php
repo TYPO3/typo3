@@ -20,11 +20,12 @@ use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PrototypeNotFoundException;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators\ValidationDto;
 use TYPO3\CMS\Form\Service\TranslationService;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class ConfigurationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ConfigurationServiceTest extends UnitTestCase
 {
 
     /**

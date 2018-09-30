@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
  */
 
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Tests for EditDocumentController
  */
-class EditDocumentControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class EditDocumentControllerTest extends UnitTestCase
 {
     /**
      * @test

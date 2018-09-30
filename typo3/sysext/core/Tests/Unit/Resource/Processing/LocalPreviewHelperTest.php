@@ -17,11 +17,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Processing;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper;
 use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper
  */
-class LocalPreviewHelperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class LocalPreviewHelperTest extends UnitTestCase
 {
     /**
      * @test

@@ -14,11 +14,12 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class RequestTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class RequestTest extends UnitTestCase
 {
     /**
      * @test

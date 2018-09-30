@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
  */
 
 use TYPO3\CMS\Extbase\Reflection\DocCommentParser;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class DocCommentParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DocCommentParserTest extends UnitTestCase
 {
     /**
      * @test

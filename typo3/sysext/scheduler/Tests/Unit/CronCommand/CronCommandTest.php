@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\CronCommand;
  */
 
 use TYPO3\CMS\Scheduler\CronCommand\CronCommand;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class CronCommandTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class CronCommandTest extends UnitTestCase
 {
     /**
      * @var int timestamp of 1.1.2010 0:00 (Friday), timezone UTC/GMT

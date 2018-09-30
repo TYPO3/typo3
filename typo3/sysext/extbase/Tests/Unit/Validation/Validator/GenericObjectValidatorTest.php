@@ -26,11 +26,12 @@ use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase
  */
-class GenericObjectValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class GenericObjectValidatorTest extends UnitTestCase
 {
     /**
      * @test

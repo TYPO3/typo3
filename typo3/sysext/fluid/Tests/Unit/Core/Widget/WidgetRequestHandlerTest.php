@@ -19,11 +19,12 @@ use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Fluid\Core\Widget\WidgetRequestBuilder;
 use TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class WidgetRequestHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class WidgetRequestHandlerTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler

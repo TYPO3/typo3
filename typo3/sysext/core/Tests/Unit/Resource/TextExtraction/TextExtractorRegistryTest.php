@@ -16,11 +16,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\TextExtraction;
 
 use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorInterface;
 use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test cases for TextExtractorRegistry
  */
-class TextExtractorRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TextExtractorRegistryTest extends UnitTestCase
 {
     /**
      * Initialize a TextExtractorRegistry and mock createTextExtractorInstance()

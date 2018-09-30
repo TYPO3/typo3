@@ -20,11 +20,12 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test for EnumType
  */
-class EnumTypeTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class EnumTypeTest extends UnitTestCase
 {
     /**
      * Set up the test subject

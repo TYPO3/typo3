@@ -16,11 +16,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Template\Components\Button;
 
 use TYPO3\CMS\Backend\Template\Components\Buttons\InputButton;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case for InputButton
  */
-class InputButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class InputButtonTest extends UnitTestCase
 {
     /**
      * Try to validate an empty button

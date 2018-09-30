@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class AbstractMemoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AbstractMemoryTest extends UnitTestCase
 {
     /**
      * @test

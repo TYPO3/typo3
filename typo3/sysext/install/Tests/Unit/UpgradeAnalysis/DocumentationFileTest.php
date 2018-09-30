@@ -21,8 +21,9 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Install\UpgradeAnalysis\DocumentationFile;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DocumentationFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DocumentationFileTest extends UnitTestCase
 {
     /**
      * @var DocumentationFile

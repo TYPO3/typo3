@@ -18,8 +18,9 @@ use TYPO3\CMS\Core\LinkHandling\FolderLinkHandler;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FolderLinkHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FolderLinkHandlerTest extends UnitTestCase
 {
 
     /**

@@ -14,11 +14,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for the PHP source code cache frontend
  */
-class PhpFrontendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class PhpFrontendTest extends UnitTestCase
 {
     /**
      * @test

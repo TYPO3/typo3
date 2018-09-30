@@ -18,11 +18,12 @@ use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\SaveToDatabaseFinisher;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class SaveToDatabaseFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class SaveToDatabaseFinisherTest extends UnitTestCase
 {
 
     /**

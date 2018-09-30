@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Form\Tests\Unit\Domain\Renderable;
  */
 
 use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class AbstractRenderableTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AbstractRenderableTest extends UnitTestCase
 {
 
     /**

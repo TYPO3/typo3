@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class WorkspaceRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class WorkspaceRepositoryTest extends UnitTestCase
 {
     /**
      * @test

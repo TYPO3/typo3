@@ -18,11 +18,12 @@ namespace TYPO3\CMS\T3editor\Tests\Unit\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\T3editor\Mode;
 use TYPO3\CMS\T3editor\Registry\ModeRegistry;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Unit test class for Registry\ModeRegistry
  */
-class ModeRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ModeRegistryTest extends UnitTestCase
 {
     /**
      * @var ModeRegistry|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface

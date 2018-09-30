@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  */
 
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\StringUtility
  */
-class StringUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class StringUtilityTest extends UnitTestCase
 {
 
     /**

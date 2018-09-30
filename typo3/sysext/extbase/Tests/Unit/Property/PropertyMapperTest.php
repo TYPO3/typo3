@@ -27,11 +27,12 @@ use TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures\DataProviderThree;
 use TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures\DataProviderThreeInterface;
 use TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures\DataProviderTwo;
 use TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures\DataProviderTwoInterface;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class PropertyMapperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class PropertyMapperTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder|\PHPUnit_Framework_MockObject_MockObject

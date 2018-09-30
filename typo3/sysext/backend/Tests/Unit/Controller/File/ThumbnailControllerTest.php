@@ -18,11 +18,12 @@ use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Controller\File\ThumbnailController;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Tests for \TYPO3\CMS\Backend\Controller\File\ThumbnailController
  */
-class ThumbnailControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ThumbnailControllerTest extends UnitTestCase
 {
     /**
      * @var ThumbnailController|MockObject

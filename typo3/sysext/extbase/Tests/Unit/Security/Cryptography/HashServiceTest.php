@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Security\Cryptography;
  */
 use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException;
 use TYPO3\CMS\Extbase\Security\Exception\InvalidHashException;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class HashServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class HashServiceTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService

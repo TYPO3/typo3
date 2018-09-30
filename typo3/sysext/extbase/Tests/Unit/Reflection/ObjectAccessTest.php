@@ -17,11 +17,12 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithGettersAndSetters;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class ObjectAccessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ObjectAccessTest extends UnitTestCase
 {
     /**
      * @var DummyClassWithGettersAndSetters

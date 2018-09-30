@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Core\Tests\Unit;
  */
 
 use TYPO3\CMS\Core\Registry;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class RegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class RegistryTest extends UnitTestCase
 {
     /**
      * @test

@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Template\Components\Menu;
  */
 
 use TYPO3\CMS\Backend\Template\Components\Menu\MenuItem;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case for MenuItem
  */
-class MenuItemTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class MenuItemTest extends UnitTestCase
 {
     /**
      * Try a blank menu Item

@@ -20,11 +20,12 @@ use TYPO3\CMS\Backend\Form\Exception\DatabaseDefaultLanguageException;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseLanguageRows;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class DatabaseLanguageRowsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DatabaseLanguageRowsTest extends UnitTestCase
 {
     /**
      * @var DatabaseLanguageRows|\PHPUnit_Framework_MockObject_MockObject

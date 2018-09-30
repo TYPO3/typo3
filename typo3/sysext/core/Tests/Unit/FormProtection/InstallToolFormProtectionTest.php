@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Testcase
  */
-class InstallToolFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class InstallToolFormProtectionTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface

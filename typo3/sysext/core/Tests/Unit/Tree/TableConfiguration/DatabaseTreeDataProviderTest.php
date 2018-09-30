@@ -24,11 +24,12 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider
  */
-class DatabaseTreeDataProviderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DatabaseTreeDataProviderTest extends UnitTestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|DatabaseTreeDataProvider|\TYPO3\TestingFramework\Core\AccessibleObjectInterface

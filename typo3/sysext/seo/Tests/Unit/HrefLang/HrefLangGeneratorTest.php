@@ -18,11 +18,12 @@ namespace TYPO3\CMS\Seo\Tests\Unit\HrefLang;
 
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Seo\HrefLang\HrefLangGenerator;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class HrefLangGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class HrefLangGeneratorTest extends UnitTestCase
 {
     /**
      * @test

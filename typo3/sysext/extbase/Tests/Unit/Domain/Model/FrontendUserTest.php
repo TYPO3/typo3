@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
  */
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class FrontendUserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FrontendUserTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser

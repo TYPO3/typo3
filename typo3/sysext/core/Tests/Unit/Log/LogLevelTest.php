@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class LogLevelTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class LogLevelTest extends UnitTestCase
 {
     /**
      * @test

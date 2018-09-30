@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\ParentPageTca;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class ParentPageTcaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ParentPageTcaTest extends UnitTestCase
 {
     /**
      * @var ParentPageTca

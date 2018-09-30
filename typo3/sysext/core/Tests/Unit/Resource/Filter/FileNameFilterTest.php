@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Filter;
  */
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Filter\FileNameFilter;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for the filename filter of the TYPO3 VFS
  */
-class FileNameFilterTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FileNameFilterTest extends UnitTestCase
 {
     /**
      * Return combinations of files and paths to test against.

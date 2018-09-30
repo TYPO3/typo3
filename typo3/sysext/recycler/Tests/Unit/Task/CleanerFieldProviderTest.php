@@ -19,11 +19,12 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Recycler\Task\CleanerFieldProvider;
 use TYPO3\CMS\Recycler\Task\CleanerTask;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase
  */
-class CleanerFieldProviderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class CleanerFieldProviderTest extends UnitTestCase
 {
     /**
      * @var CleanerFieldProvider

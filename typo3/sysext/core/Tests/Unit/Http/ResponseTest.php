@@ -16,13 +16,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\Stream;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Http\Response
  *
  * Adapted from https://github.com/phly/http/
  */
-class ResponseTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ResponseTest extends UnitTestCase
 {
     /**
      * @var Response

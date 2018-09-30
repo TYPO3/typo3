@@ -16,11 +16,12 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Configuration;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class BackendConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class BackendConfigurationManagerTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface

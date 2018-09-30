@@ -16,11 +16,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\FormSelectTreeAjaxController;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class FormSelectTreeAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FormSelectTreeAjaxControllerTest extends UnitTestCase
 {
     /**
      * @test

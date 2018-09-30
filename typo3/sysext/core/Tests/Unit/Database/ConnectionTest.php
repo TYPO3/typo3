@@ -23,11 +23,12 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class ConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ConnectionTest extends UnitTestCase
 {
     /**
      * @var Connection|\PHPUnit_Framework_MockObject_MockObject

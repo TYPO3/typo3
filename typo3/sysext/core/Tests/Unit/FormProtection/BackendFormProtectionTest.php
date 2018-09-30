@@ -17,11 +17,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase
  */
-class BackendFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class BackendFormProtectionTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface

@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case for \TYPO3\CMS\Core\Database\RelationHandler
  */
-class RelationHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class RelationHandlerTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Database\RelationHandler

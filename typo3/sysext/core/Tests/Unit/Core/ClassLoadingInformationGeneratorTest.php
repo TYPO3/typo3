@@ -17,11 +17,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Core;
 use Composer\Autoload\ClassLoader;
 use TYPO3\CMS\Core\Core\ClassLoadingInformationGenerator;
 use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for the ClassLoadingInformationGenerator class
  */
-class ClassLoadingInformationGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ClassLoadingInformationGeneratorTest extends UnitTestCase
 {
     /**
      * @test

@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Core;
  */
 
 use TYPO3\CMS\Core\Core\ApplicationContext;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for the ApplicationContext class
  */
-class ApplicationContextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ApplicationContextTest extends UnitTestCase
 {
     /**
      * Data provider with allowed contexts.

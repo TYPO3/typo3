@@ -19,11 +19,12 @@ use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class OnTheFlyTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class OnTheFlyTest extends UnitTestCase
 {
     /**
      * @var OnTheFly

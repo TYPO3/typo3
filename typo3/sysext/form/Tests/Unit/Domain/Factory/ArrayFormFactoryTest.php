@@ -20,11 +20,12 @@ use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Model\FormElements\Section;
 use TYPO3\CMS\Form\Domain\Model\FormElements\UnknownFormElement;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class ArrayFormFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ArrayFormFactoryTest extends UnitTestCase
 {
 
     /**

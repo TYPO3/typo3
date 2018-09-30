@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\MathUtility
  */
-class MathUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class MathUtilityTest extends UnitTestCase
 {
     //////////////////////////////////
     // Tests concerning forceIntegerInRange

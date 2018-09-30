@@ -21,11 +21,12 @@ use TYPO3\CMS\Extbase\Scheduler\Task;
 use TYPO3\CMS\Extbase\Tests\Fixture\DummyController;
 use TYPO3\CMS\Extbase\Tests\MockACommandController;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class FieldProviderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FieldProviderTest extends UnitTestCase
 {
     /**
      * @test

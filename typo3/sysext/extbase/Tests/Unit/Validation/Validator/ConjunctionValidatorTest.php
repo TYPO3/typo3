@@ -21,11 +21,12 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class ConjunctionValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ConjunctionValidatorTest extends UnitTestCase
 {
     /**
      * @test

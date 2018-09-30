@@ -16,11 +16,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Crypto;
  */
 
 use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class RandomTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class RandomTest extends UnitTestCase
 {
     /**
      * @test

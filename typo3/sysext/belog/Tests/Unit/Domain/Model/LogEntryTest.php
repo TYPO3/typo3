@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class LogEntryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class LogEntryTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Belog\Domain\Model\LogEntry

@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
  */
 
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class PageRepositoryTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Frontend\Page\PageRepository|\TYPO3\TestingFramework\Core\AccessibleObjectInterface

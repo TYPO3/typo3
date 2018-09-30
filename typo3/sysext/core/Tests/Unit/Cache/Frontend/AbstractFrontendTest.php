@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Testcase for the abstract cache frontend
  */
-class AbstractFrontendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AbstractFrontendTest extends UnitTestCase
 {
     /**
      * @test

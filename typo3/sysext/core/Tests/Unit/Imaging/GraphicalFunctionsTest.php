@@ -15,8 +15,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
  */
 
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class GraphicalFunctionsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class GraphicalFunctionsTest extends UnitTestCase
 {
     /**
      * Dataprovider for getScaleForImage

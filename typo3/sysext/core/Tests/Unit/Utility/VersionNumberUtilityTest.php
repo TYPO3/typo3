@@ -16,11 +16,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\VersionNumberUtilityFixture;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\VersionNumberUtility
  */
-class VersionNumberUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class VersionNumberUtilityTest extends UnitTestCase
 {
     /**
      * Data Provider for convertVersionNumberToIntegerConvertsVersionNumbersToIntegers

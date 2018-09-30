@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  */
 
 use TYPO3\CMS\Core\Utility\DebugUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\DebugUtility
  */
-class DebugUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DebugUtilityTest extends UnitTestCase
 {
     protected function tearDown()
     {

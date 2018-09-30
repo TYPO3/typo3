@@ -22,11 +22,12 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility
  */
-class ExtendedFileUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ExtendedFileUtilityTest extends UnitTestCase
 {
     /**
      * Sets up this testcase

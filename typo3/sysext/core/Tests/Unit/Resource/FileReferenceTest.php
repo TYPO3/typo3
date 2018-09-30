@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class FileReferenceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FileReferenceTest extends UnitTestCase
 {
     /**
      * @param array $fileReferenceProperties

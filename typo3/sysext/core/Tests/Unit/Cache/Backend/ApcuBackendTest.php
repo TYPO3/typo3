@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Cache\Backend\ApcuBackend;
 use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case for the APCu cache backend.
@@ -25,7 +26,7 @@ use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
  * NOTE: If you want to execute these tests you need to enable apc in
  * cli context (apc.enable_cli = 1) and disable slam defense (apc.slam_defense = 0)
  */
-class ApcuBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ApcuBackendTest extends UnitTestCase
 {
     /**
      * Set up

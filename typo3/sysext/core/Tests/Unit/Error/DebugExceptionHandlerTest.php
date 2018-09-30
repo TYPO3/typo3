@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Error;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * testcase for the DebugExceptionHandler class.
  */
-class DebugExceptionHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DebugExceptionHandlerTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Error\DebugExceptionHandler|\PHPUnit_Framework_MockObject_MockObject

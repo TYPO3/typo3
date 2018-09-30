@@ -18,11 +18,12 @@ namespace TYPO3\CMS\T3editor\Tests\Unit\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\T3editor\Addon;
 use TYPO3\CMS\T3editor\Registry\AddonRegistry;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Unit test class for Registry\AddonRegistry
  */
-class AddonRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AddonRegistryTest extends UnitTestCase
 {
     /**
      * @var AddonRegistry|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface

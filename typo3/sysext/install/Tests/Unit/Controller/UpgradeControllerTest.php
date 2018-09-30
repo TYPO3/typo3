@@ -20,11 +20,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Install\Controller\UpgradeController;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class UpgradeControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class UpgradeControllerTest extends UnitTestCase
 {
     /**
      * @return array

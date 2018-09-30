@@ -19,11 +19,12 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Controller\FormFrontendController;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class FormFrontendControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FormFrontendControllerTest extends UnitTestCase
 {
 
     /**

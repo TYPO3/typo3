@@ -17,11 +17,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Index;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\Index\Indexer;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Class IndexerTest
  */
-class IndexerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class IndexerTest extends UnitTestCase
 {
     /**
      * @test

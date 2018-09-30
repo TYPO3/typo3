@@ -21,11 +21,12 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class MvcPropertyMappingConfigurationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
 {
     /**
      * Data provider for generating the list of trusted properties

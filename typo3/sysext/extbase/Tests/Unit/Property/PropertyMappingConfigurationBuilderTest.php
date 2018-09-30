@@ -21,10 +21,12 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class PropertyMappingConfigurationBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class PropertyMappingConfigurationBuilderTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder

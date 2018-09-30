@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Install\Tests\Unit;
  */
 
 use org\bovigo\vfs\vfsStream;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-abstract class FolderStructureTestCase extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+abstract class FolderStructureTestCase extends UnitTestCase
 {
     /**
      * Create a random directory in the virtual file system and return the path.

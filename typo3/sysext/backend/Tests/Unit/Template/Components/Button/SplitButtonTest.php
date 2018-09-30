@@ -17,11 +17,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Template\Components\Button;
 use TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\SplitButton;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Class BackendModuleRequestHandlerTest
  */
-class SplitButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class SplitButtonTest extends UnitTestCase
 {
     /**
      * Try to validate an empty button

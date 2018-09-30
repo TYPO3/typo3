@@ -16,11 +16,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Imaging\IconProvider;
 
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider
  */
-class FontawesomeIconProviderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FontawesomeIconProviderTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider

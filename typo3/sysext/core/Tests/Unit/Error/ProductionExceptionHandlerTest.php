@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Error;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * testcase for the \TYPO3\CMS\Core\Error\ProductionExceptionHandler class.
  */
-class ProductionExceptionHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ProductionExceptionHandlerTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Error\ProductionExceptionHandler|\PHPUnit_Framework_MockObject_MockObject

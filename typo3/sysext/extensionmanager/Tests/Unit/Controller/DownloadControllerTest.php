@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
  */
 
 use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Download from TER controller test
  */
-class DownloadControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DownloadControllerTest extends UnitTestCase
 {
     /**
      * @test

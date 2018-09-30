@@ -29,11 +29,12 @@ use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\FrontendDefaultFixture;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\FrontendFixture;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\FrontendIdentifierFixture;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\FrontendInitializeObjectFixture;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for the TYPO3\CMS\Core\Cache\CacheManager
  */
-class CacheManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class CacheManagerTest extends UnitTestCase
 {
     /**
      * @test

@@ -17,11 +17,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Imaging\IconProvider;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider
  */
-class SvgIconProviderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class SvgIconProviderTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider

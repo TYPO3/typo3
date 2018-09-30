@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class RepositoryRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class RepositoryRepositoryTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface

@@ -24,11 +24,12 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recycler\Task\CleanerTask;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase
  */
-class CleanerTaskTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class CleanerTaskTest extends UnitTestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|CleanerTask

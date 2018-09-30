@@ -24,11 +24,12 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class StringLengthValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class StringLengthValidatorTest extends UnitTestCase
 {
     /**
      * @test

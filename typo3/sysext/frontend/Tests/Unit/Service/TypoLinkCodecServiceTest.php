@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Service;
  */
 
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class TypoLinkCodecServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TypoLinkCodecServiceTest extends UnitTestCase
 {
     /**
      * @var TypoLinkCodecService

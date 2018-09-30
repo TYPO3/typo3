@@ -14,11 +14,12 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Download queue test
  */
-class DownloadQueueTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DownloadQueueTest extends UnitTestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue

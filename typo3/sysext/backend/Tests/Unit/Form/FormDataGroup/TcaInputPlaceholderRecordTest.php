@@ -20,11 +20,12 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\TcaInputPlaceholderRecord;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaInputPlaceholderRecordTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TcaInputPlaceholderRecordTest extends UnitTestCase
 {
     /**
      * @var TcaInputPlaceholderRecord

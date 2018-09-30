@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Rsaauth\Tests\Unit;
  */
 
 use TYPO3\CMS\Rsaauth\Keypair;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case.
  */
-class KeypairTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class KeypairTest extends UnitTestCase
 {
     /**
      * @var Keypair

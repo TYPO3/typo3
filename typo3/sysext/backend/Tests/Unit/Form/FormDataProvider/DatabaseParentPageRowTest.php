@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class DatabaseParentPageRowTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DatabaseParentPageRowTest extends UnitTestCase
 {
     /**
      * @var DatabaseParentPageRow|\PHPUnit_Framework_MockObject_MockObject

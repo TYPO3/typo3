@@ -17,11 +17,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
 use TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer;
 use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
 use TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class RendererRegistryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class RendererRegistryTest extends UnitTestCase
 {
     /**
      * Initialize a RendererRegistry and mock createRendererInstance()

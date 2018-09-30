@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Extension test
  */
-class ExtensionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ExtensionTest extends UnitTestCase
 {
     /**
      * Data provider for getCategoryIndexFromStringOrNumberReturnsIndex

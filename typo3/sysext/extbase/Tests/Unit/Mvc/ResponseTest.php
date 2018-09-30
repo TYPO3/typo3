@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class ResponseTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ResponseTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Response|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface

@@ -17,11 +17,12 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Controller;
 
 use TYPO3\CMS\Beuser\Controller\BackendUserController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class BackendUserControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class BackendUserControllerTest extends UnitTestCase
 {
     /**
      * @var BackendUserController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface

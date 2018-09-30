@@ -14,11 +14,12 @@ namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Mvc\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class CommandControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class CommandControllerTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\CommandController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface

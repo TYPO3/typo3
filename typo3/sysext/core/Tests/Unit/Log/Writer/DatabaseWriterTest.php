@@ -18,11 +18,12 @@ use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class DatabaseWriterTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DatabaseWriterTest extends UnitTestCase
 {
     /**
      * @test

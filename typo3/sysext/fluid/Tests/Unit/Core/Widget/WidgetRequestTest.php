@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Widget;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class WidgetRequestTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class WidgetRequestTest extends UnitTestCase
 {
     /**
      * @test

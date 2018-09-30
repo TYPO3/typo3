@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Testcase for the TransientMemory cache backend
  */
-class TransientMemoryBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TransientMemoryBackendTest extends UnitTestCase
 {
     /**
      * @test

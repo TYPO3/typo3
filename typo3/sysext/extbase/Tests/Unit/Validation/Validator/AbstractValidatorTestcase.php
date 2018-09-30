@@ -21,11 +21,13 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case for the Abstract Validator
  * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
  */
-abstract class AbstractValidatorTestcase extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+abstract class AbstractValidatorTestcase extends UnitTestCase
 {
     /**
      * @var string

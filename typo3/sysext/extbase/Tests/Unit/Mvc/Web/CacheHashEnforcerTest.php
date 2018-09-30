@@ -19,11 +19,12 @@ use TYPO3\CMS\Extbase\Mvc\Web\CacheHashEnforcer;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class CacheHashEnforcerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class CacheHashEnforcerTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Web\CacheHashEnforcer

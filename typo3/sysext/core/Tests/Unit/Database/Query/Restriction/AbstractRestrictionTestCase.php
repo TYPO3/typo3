@@ -20,8 +20,9 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AbstractRestrictionTestCase extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AbstractRestrictionTestCase extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;

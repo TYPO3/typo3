@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
  */
 
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Imaging\Dimension
  */
-class DimensionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DimensionTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Imaging\Dimension

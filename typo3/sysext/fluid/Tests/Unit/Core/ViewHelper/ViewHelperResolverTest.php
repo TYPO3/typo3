@@ -18,11 +18,12 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
 use TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlentitiesViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\RenderViewHelper;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class ViewHelperResolverTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ViewHelperResolverTest extends UnitTestCase
 {
     /**
      * @test

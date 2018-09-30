@@ -14,11 +14,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class AbstractWriterTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AbstractWriterTest extends UnitTestCase
 {
     /**
      * @test

@@ -16,11 +16,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 use TYPO3\CMS\Core\Log\Exception\InvalidLogProcessorConfigurationException;
 use TYPO3\CMS\Core\Tests\Unit\Log\Fixtures\ProcessorFixture;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class AbstractProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class AbstractProcessorTest extends UnitTestCase
 {
     /**
      * @test

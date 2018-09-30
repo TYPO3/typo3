@@ -17,11 +17,12 @@ namespace TYPO3\CMS\Seo\Tests\Unit\MetaTag;
  */
 
 use TYPO3\CMS\Seo\MetaTag\OpenGraphMetaTagManager;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class OpenGraphMetaTagManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class OpenGraphMetaTagManagerTest extends UnitTestCase
 {
     /**
      * @test

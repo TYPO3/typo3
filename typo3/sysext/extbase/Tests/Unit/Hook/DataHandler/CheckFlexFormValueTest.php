@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Hook\DataHandler;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class CheckFlexFormValueTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class CheckFlexFormValueTest extends UnitTestCase
 {
     /**
      * @test

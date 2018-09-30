@@ -16,13 +16,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
 use TYPO3\CMS\Core\Http\Message;
 use TYPO3\CMS\Core\Http\Stream;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Http\Message
  *
  * Adapted from https://github.com/phly/http/
  */
-class MessageTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class MessageTest extends UnitTestCase
 {
     /**
      * @var Stream

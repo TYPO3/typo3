@@ -16,11 +16,12 @@ namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Validation;
 
 use TYPO3\CMS\Form\Mvc\Validation\DateRangeValidator;
 use TYPO3\CMS\Form\Mvc\Validation\Exception\InvalidValidationOptionsException;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class DateRangeValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class DateRangeValidatorTest extends UnitTestCase
 {
 
     /**

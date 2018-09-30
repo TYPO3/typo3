@@ -17,13 +17,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Http\UploadedFile
  *
  * Adapted from https://github.com/phly/http/
  */
-class UploadedFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class UploadedFileTest extends UnitTestCase
 {
     protected $tmpFile;
 

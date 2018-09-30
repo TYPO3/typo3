@@ -15,13 +15,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
  */
 
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Http\Uri
  *
  * Adapted from https://github.com/phly/http/
  */
-class UriTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class UriTest extends UnitTestCase
 {
     /**
      * @test

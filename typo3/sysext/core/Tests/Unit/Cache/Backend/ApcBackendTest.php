@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 
 use TYPO3\CMS\Core\Cache\Backend\ApcBackend;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for the APC cache backend.
@@ -23,7 +24,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
  * NOTE: If you want to execute these tests you need to enable apc in
  * cli context (apc.enable_cli = 1)
  */
-class ApcBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ApcBackendTest extends UnitTestCase
 {
     /**
      * Sets up this testcase

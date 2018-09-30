@@ -19,11 +19,12 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaText;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class TcaTextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class TcaTextTest extends UnitTestCase
 {
     /**
      * @test

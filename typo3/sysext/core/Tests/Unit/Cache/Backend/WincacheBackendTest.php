@@ -15,13 +15,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  */
 
 use TYPO3\CMS\Core\Cache\Backend\WincacheBackend;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for the WinCache cache backend
  *
  * @requires extension wincache
  */
-class WincacheBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class WincacheBackendTest extends UnitTestCase
 {
     /**
      * @test

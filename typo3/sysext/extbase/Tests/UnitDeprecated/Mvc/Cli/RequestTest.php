@@ -21,10 +21,12 @@ namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Mvc\Cli;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class RequestTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class RequestTest extends UnitTestCase
 {
     /**
      * @test

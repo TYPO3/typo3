@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  */
 
 use org\bovigo\vfs\vfsStream;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Basic test case for the \TYPO3\CMS\Core\Resource\File tests
  */
-abstract class BaseTestCase extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+abstract class BaseTestCase extends UnitTestCase
 {
     /**
      * @var string

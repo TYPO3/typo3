@@ -32,11 +32,12 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class BackendUtilityTest extends UnitTestCase
 {
     /**
      * @var bool

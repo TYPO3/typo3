@@ -22,11 +22,12 @@ namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Mvc\Cli;
  *                                                                        */
 use TYPO3\CMS\Extbase\Mvc\Exception\AmbiguousCommandIdentifierException;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class CommandManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class CommandManagerTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface

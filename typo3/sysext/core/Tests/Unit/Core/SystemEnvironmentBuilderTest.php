@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Testcase
  */
-class SystemEnvironmentBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class SystemEnvironmentBuilderTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder|\TYPO3\TestingFramework\Core\AccessibleObjectInterface

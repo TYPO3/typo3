@@ -16,11 +16,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Template\Components\Button;
 
 use TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case for LinkButton
  */
-class LinkButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class LinkButtonTest extends UnitTestCase
 {
     /**
      * Try validating an empty button

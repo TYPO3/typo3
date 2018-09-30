@@ -16,11 +16,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class UserTsConfigTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class UserTsConfigTest extends UnitTestCase
 {
     /**
      * @var UserTsConfig

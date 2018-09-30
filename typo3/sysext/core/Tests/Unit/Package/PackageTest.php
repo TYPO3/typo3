@@ -16,11 +16,12 @@ use TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for the package class
  */
-class PackageTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class PackageTest extends UnitTestCase
 {
     /**
      */

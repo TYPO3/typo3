@@ -17,13 +17,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
 use TYPO3\CMS\Core\Http\Request;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Http\Request
  *
  * Adapted from https://github.com/phly/http/
  */
-class RequestTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class RequestTest extends UnitTestCase
 {
     /**
      * @var Request
