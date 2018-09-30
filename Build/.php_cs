@@ -87,5 +87,6 @@ return PhpCsFixer\Config::create()
         'cast_spaces' => ['space' => 'none'],
         'declare_equal_normalize' => ['space' => 'single'],
         'dir_constant' => true,
+        'phpdoc_no_access' => true
     ])
     ->setFinder($finder);
