@@ -136,8 +136,7 @@ define(['jquery',
       // Bootstrap Tooltip internally uses only .attr('data-original-title')
       $anchorElement
         .data('toggleTitle', $anchorElement.attr('data-original-title'))
-        .attr('data-original-title', nextTitle)
-        .tooltip('show');
+        .attr('data-original-title', nextTitle);
     });
 
     var $iconElement = $anchorElement.find(AjaxDataHandler.identifier.icon);
