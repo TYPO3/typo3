@@ -46,7 +46,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  *
  * @internal might change its options in the future, be aware that there might be modifications.
  */
-class PersistedPatternMapper implements StaticMappableAspectInterface
+class PersistedPatternMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface
 {
     use SiteLanguageAwareTrait;
 

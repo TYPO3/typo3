@@ -40,13 +40,10 @@ class MappableProcessor
             $value = $mapper->resolve(
                 (string)($attributes[$variableName] ?? '')
             );
-            if ($value !== null) {
-                $values[$variableName] = $value;
+            if ($value === null) {
+                return false;
             }
-        }
-
-        if (count($mappers) !== count($values)) {
-            return false;
+            $values[$variableName] = $value;
         }
 
         $attributes = array_merge($attributes, $values);
@@ -70,13 +67,10 @@ class MappableProcessor
             $value = $mapper->generate(
                 (string)($attributes[$variableName] ?? '')
             );
-            if ($value !== null) {
-                $values[$variableName] = $value;
+            if ($value === null) {
+                return false;
             }
-        }
-
-        if (count($mappers) !== count($values)) {
-            return false;
+            $values[$variableName] = $value;
         }
 
         $attributes = array_merge($attributes, $values);

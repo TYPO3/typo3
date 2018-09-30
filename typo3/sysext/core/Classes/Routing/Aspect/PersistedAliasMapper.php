@@ -43,7 +43,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  *           routeFieldName: 'path_segment'
  *           routeValuePrefix: '/'
  */
-class PersistedAliasMapper implements StaticMappableAspectInterface
+class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface
 {
     use SiteLanguageAwareTrait;
 

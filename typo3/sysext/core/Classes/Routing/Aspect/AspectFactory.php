@@ -47,13 +47,15 @@ class AspectFactory
      */
     public function createAspects(array $aspects, SiteLanguage $language): array
     {
-        return array_map(
+        $aspects = array_map(
             function ($settings) use ($language) {
                 $type = (string)($settings['type'] ?? '');
                 return $this->create($type, $settings, $language);
             },
             $aspects
         );
+        uasort($aspects, [$this, 'sortAspects']);
+        return $aspects;
     }
 
     /**
@@ -101,5 +103,26 @@ class AspectFactory
             $aspect->setSiteLanguage($language);
         }
         return $aspect;
+    }
+
+    /**
+     * Sorts aspects with putting persisted aspects to the end, thus
+     * non-persisted aspects can be executed earlier without invoking database.
+     *
+     * @param AspectInterface $first
+     * @param AspectInterface $second
+     * @return int
+     */
+    protected function sortAspects(AspectInterface $first, AspectInterface $second): int
+    {
+        // when first is persisted, move it to the end (>0)
+        $first = $first instanceof PersistedMappableAspectInterface ? 1 : 0;
+        // when second is persisted, move it to the beginning (<0)
+        $second = $second instanceof PersistedMappableAspectInterface ? -1 : 0;
+        // 0 + 0 =  0 - both are non-persisted
+        // 1 - 1 =  0 - both are persisted
+        // 1 + 0 =  1 - only first is persisted
+        // 0 - 1 = -1 - only second is persisted
+        return $first + $second;
     }
 }
