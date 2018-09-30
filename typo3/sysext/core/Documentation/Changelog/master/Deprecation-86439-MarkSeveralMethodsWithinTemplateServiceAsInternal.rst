@@ -38,4 +38,4 @@ Migration
 
 Avoid using the methods, and re-implement the functionality on your own, if necessary.
 
-.. index:: Backend, NotScanned, ext:core
+.. index:: Backend, FullyScanned, ext:core
