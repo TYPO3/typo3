@@ -62,4 +62,4 @@ Migration
 Migrate to use the public API only and use other options (such as `allowAttributes` instead of
 `dontRemoveUnknownTags_db`) in order to only run certain instructions on the RteHtmlParser object.
 
-.. index:: RTE, FullyScanned
+.. index:: RTE, FullyScanned, PHP-API
