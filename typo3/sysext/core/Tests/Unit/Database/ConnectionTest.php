@@ -376,7 +376,7 @@ class ConnectionTest extends UnitTestCase
             ],
             'limit' => [
                 [['*'], 'aTable', [], [], [], 1],
-                'SELECT * FROM "aTable" LIMIT 1 OFFSET 0',
+                'SELECT * FROM "aTable" LIMIT 1',
                 [],
             ],
             'offset' => [

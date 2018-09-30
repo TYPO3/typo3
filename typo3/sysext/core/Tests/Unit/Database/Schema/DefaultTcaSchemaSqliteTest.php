@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Test case
  */
-class DefaultTcaSchemaTest extends UnitTestCase
+class DefaultTcaSchemaSqliteTest extends UnitTestCase
 {
     /**
      * @var DefaultTcaSchema
@@ -38,7 +38,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     {
         parent::setUp();
         $this->subject = $this->getAccessibleMock(DefaultTcaSchema::class, ['tableRunsOnSqlite']);
-        $this->subject->method('tableRunsOnSqlite')->willReturn(false);
+        $this->subject->method('tableRunsOnSqlite')->willReturn(true);
     }
 
     /**
@@ -118,7 +118,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsUidAndPrimaryKey()
+    public function enrichAddsUidAndNoPrimaryKey()
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
         $result = $this->subject->enrich([]);
@@ -131,9 +131,8 @@ class DefaultTcaSchemaTest extends UnitTestCase
                 'autoincrement' => true,
             ]
         );
-        $expectedPrimaryKey = new Index('primary', ['uid'], true, true);
         $this->assertEquals($expectedUidColumn, $result[0]->getColumn('uid'));
-        $this->assertEquals($expectedPrimaryKey, $result[0]->getPrimaryKey());
+        $this->assertNull($result[0]->getPrimaryKey());
     }
 
     /**
@@ -688,27 +687,6 @@ class DefaultTcaSchemaTest extends UnitTestCase
             ]
         );
         $this->assertEquals($expectedColumn, $result[0]->getColumn('t3ver_id'));
-    }
-
-    /**
-     * @test
-     */
-    public function enrichAddsT3verLabel()
-    {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'versioningWS' => true,
-        ];
-        $result = $this->subject->enrich([]);
-        $expectedColumn = new Column(
-            '`t3ver_label`',
-            Type::getType('string'),
-            [
-                'default' => '',
-                'notnull' => true,
-                'length' => 255,
-            ]
-        );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('t3ver_label'));
     }
 
     /**

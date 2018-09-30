@@ -21,7 +21,7 @@
 		"ext-xml": "*",
 		"cogpowered/finediff": "~0.3.1",
 		"doctrine/annotations": "^1.3",
-		"doctrine/dbal": "~2.7.1",
+		"doctrine/dbal": "~2.8.0",
 		"doctrine/instantiator": "^1.1",
 		"doctrine/lexer": "^1.0",
 		"guzzlehttp/guzzle": "^6.3.0",
@@ -51,7 +51,7 @@
 		"fiunchinho/phpunit-randomizer": "^4.0",
 		"friendsofphp/php-cs-fixer": "^2.12.2",
 		"typo3/cms-styleguide": "~9.2.2",
-		"typo3/testing-framework": "~4.11.1"
+		"typo3/testing-framework": "~4.11.3"
 	},
 	"suggest": {
 		"ext-fileinfo": "Used for proper file type detection in the file abstraction layer",
