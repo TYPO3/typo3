@@ -3768,4 +3768,11 @@ return [
             'Deprecation-86438-DeprecatePageRenderer-loadJQuery.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->fetchUserRecord' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-86466-AbstractUserAuthentication-fetchUserRecord.rst'
+        ],
+    ],
 ];

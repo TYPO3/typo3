@@ -1517,9 +1517,11 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * @param string $username user name
      * @param string $extraWhere Additional WHERE clause: " AND ...
      * @return mixed User array or FALSE
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public function fetchUserRecord($dbUser, $username, $extraWhere = '')
     {
+        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         $user = false;
         if ($username || $extraWhere) {
             $query = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($dbUser['table']);
@@ -1548,7 +1550,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 ->execute()
                 ->fetch();
         }
-
         return $user;
     }
 
