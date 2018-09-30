@@ -46,21 +46,36 @@ Now configure the Route Enhancer in your site's `config.yaml` file like this:
          type: PageType
          default: ''
          map:
-         'rss.feed': 13
-         '.json': 26
+            'rss.feed': 13
+            '.json': 26
+
+
+The `map` allows to add a filename or a file ending and map this to a `page.typeNum` value.
 
 It is also possible to set `default` to e.g. ".html" to add a ".html" suffix to all default pages.
 
-The `map` allows to add a filename or a file ending and map this to a `page.typeNum` value.
+.. code-block:: yaml
+
+   routeEnhancers:
+      PageTypeSuffix:
+         type: PageType
+         default: '.json'
+         index: 'index'
+         map:
+            'rss.feed': 13
+            '.json': 26
+
+The `index` property is used when generating links on root-level page, thus, instead of e.g. having
+`/en/.json` thus would then result in `/en/index.json`.
 
 Impact
 ======
 
-The TYPO3 Frontend-internal `&type` parameter can now also be part of a speaking URL with a simple line
-of configuration.
+The TYPO3 Frontend-internal `&type` parameter can now also be part of a speaking URL with a simple
+line of configuration.
 
-Please note that the implementation is a Decorator Enhancer, which means that the PageTypeEnhancer is only
-there for adding suffixes to an existing route / variant, but not to substitute something within the middle
-of a speaking URL segment.
+Please note that the implementation is a Decorator Enhancer, which means that the PageTypeEnhancer
+is only there for adding suffixes to an existing route / variant, but not to substitute something
+within the middle of a speaking URL segment.
 
 .. index:: Frontend

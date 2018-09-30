@@ -24,22 +24,34 @@ use TYPO3\CMS\Core\Routing\RouteCollection;
 interface DecoratingEnhancerInterface extends EnhancerInterface
 {
     /**
-     * Decorates route collection and modifies route parameters and the
-     * URL path to be processed during URL resolving. Executed before invoking
-     * routing enhancers.
+     * Gets pattern that can be used to redecorate (undecorate)
+     * a potential previously decorated route path.
      *
-     * @param RouteCollection $collection
-     * @param array $parameters reference to reconstituted parameters
-     * @param string $routePath reference to URL path
+     * Example:
+     * + route path: 'first/second.html'
+     * + redecoration pattern: '(?:\.html|\.json)$'
+     * -> 'first/second' might be the redecorated route path after
+     *    applying the redecoration pattern to preg_match/preg_replace
+     *
+     * @return string regular expression pattern
      */
-    public function decorateForMatching(RouteCollection $collection, array &$parameters, string &$routePath): void;
+    public function getRoutePathRedecorationPattern(): string;
 
     /**
-     * Decorates route collection and modifies route parameters during URL
-     * URL generation. Executed before invoking routing enhancers.
+     * Decorates route collection to be processed during URL resolving.
+     * Executed before invoking routing enhancers.
      *
      * @param RouteCollection $collection
-     * @param array $parameters reference to query parameters
+     * @param string $routePath URL path
      */
-    public function decorateForGeneration(RouteCollection $collection, array &$parameters): void;
+    public function decorateForMatching(RouteCollection $collection, string $routePath): void;
+
+    /**
+     * Decorates route collection during URL URL generation.
+     * Executed before invoking routing enhancers.
+     *
+     * @param RouteCollection $collection
+     * @param array $parameters query parameters
+     */
+    public function decorateForGeneration(RouteCollection $collection, array $parameters): void;
 }

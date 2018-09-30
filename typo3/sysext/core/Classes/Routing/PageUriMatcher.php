@@ -74,6 +74,7 @@ class PageUriMatcher
     protected function matchCollection(string $urlPath, RouteCollection $routes): ?array
     {
         foreach ($routes as $name => $route) {
+            $urlPath = $this->getDecoratedRoutePath($route) ?? $urlPath;
             $compiledRoute = $route->compile();
 
             // check the static prefix of the URL first. Only use the more expensive preg_match when it matches
@@ -93,6 +94,22 @@ class PageUriMatcher
             return $this->getAttributes($route, $name, $matches);
         }
         return null;
+    }
+
+    /**
+     * Resolves an optional route specific decorated route path that has been
+     * assigned by DecoratingEnhancerInterface instances.
+     *
+     * @param Route $route
+     * @return string|null
+     */
+    protected function getDecoratedRoutePath(Route $route): ?string
+    {
+        if (!$route->hasOption('_decoratedRoutePath')) {
+            return null;
+        }
+        $urlPath = $route->getOption('_decoratedRoutePath');
+        return rawurldecode($urlPath);
     }
 
     /**

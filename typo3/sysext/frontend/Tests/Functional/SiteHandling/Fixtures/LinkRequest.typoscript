@@ -17,3 +17,8 @@ page {
   10 = USER
   10.userFunc = TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\LinkHandlingController->dumpPageArgumentsAction
 }
+
+menu < page
+menu {
+  typeNum = 10
+}

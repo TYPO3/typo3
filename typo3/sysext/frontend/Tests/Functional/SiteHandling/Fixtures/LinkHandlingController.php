@@ -58,6 +58,7 @@ class LinkHandlingController
         $language = $request->getAttribute('language');
         return json_encode([
             'pageId' => $pageArguments->getPageId(),
+            'pageType' => $pageArguments->getPageType(),
             'languageId' => $language->getLanguageId(),
             'dynamicArguments' => $pageArguments->getDynamicArguments(),
             'staticArguments' => $pageArguments->getStaticArguments(),

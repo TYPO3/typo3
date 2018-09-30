@@ -29,13 +29,14 @@ use TYPO3\CMS\Core\Routing\RouteCollection;
  *   PageTypeSuffix:
  *     type: PageType
  *     default: ''
+ *     index: 'index'
  *     map:
  *       '.html': 1
  *       'menu.json': 13
  */
 class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerInterface
 {
-    protected const PREFIXES = ['.', '-', '_'];
+    protected const ROUTE_PATH_DELIMITERS = ['.', '-', '_'];
 
     /**
      * @var array
@@ -48,6 +49,11 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
     protected $default;
 
     /**
+     * @var string
+     */
+    protected $index;
+
+    /**
      * @var array
      */
     protected $map;
@@ -58,54 +64,79 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
     public function __construct(array $configuration)
     {
         $default = $configuration['default'] ?? '';
+        $index = $configuration['index'] ?? 'index';
         $map = $configuration['map'] ?? null;
 
         if (!is_string($default)) {
             throw new \InvalidArgumentException('default must be string', 1538327508);
         }
+        if (!is_string($index)) {
+            throw new \InvalidArgumentException('index must be string', 1538327509);
+        }
         if (!is_array($map)) {
-            throw new \InvalidArgumentException('map must be array', 1538327509);
+            throw new \InvalidArgumentException('map must be array', 1538327510);
         }
 
         $this->configuration = $configuration;
         $this->default = $default;
+        $this->index = $index;
         $this->map = array_map('strval', $map);
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function decorateForMatching(RouteCollection $collection, array &$parameters, string &$routePath): void
+    public function getRoutePathRedecorationPattern(): string
     {
-        $pattern = $this->buildRegularExpressionPattern();
-        if (!preg_match('#' . $pattern . '#', $routePath, $matches, PREG_UNMATCHED_AS_NULL)) {
-            $parameters['type'] = 0;
-            return;
-        }
-
-        $value = $matches['slashedItems'] ?? $matches['regularItems'] ?? null;
-        if (!is_string($value)) {
-            throw new \UnexpectedValueException(
-                'Unexpected null value at end of URL',
-                1538335671
-            );
-        }
-
-        $parameters['type'] = $this->map[$value] ?? 0;
-        $valuePattern = $this->quoteForRegularExpressionPattern($value) . '$';
-        $routePath = preg_replace('#' . $valuePattern . '#', '', $routePath);
+        return $this->buildRegularExpressionPattern(false);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function decorateForGeneration(RouteCollection $collection, array &$parameters): void
+    public function decorateForMatching(RouteCollection $collection, string $routePath): void
+    {
+        $decoratedRoutePath = null;
+        $decoratedParameters = ['type' => 0];
+
+        $pattern = $this->buildRegularExpressionPattern();
+        if (preg_match('#(?P<decoration>(?:' . $pattern . '))#', $routePath, $matches, PREG_UNMATCHED_AS_NULL)) {
+            if (!isset($matches['decoration'])) {
+                throw new \UnexpectedValueException(
+                    'Unexpected null value at end of URL',
+                    1538335671
+                );
+            }
+
+            $routePathValue = $matches['decoration'];
+            $parameterValue = $matches['indexItems'] ?? $matches['slashedItems'] ?? $matches['regularItems'];
+            $routePathValuePattern = $this->quoteForRegularExpressionPattern($routePathValue) . '$';
+            $decoratedRoutePath = preg_replace('#' . $routePathValuePattern . '#', '', $routePath);
+            $decoratedParameters = ['type' => $this->map[$parameterValue] ?? 0];
+        }
+
+        foreach ($collection->all() as $route) {
+            if ($decoratedRoutePath !== null) {
+                $route->setOption(
+                    '_decoratedRoutePath',
+                    '/' . trim($decoratedRoutePath, '/')
+                );
+            }
+            $route->setOption('_decoratedParameters', $decoratedParameters);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function decorateForGeneration(RouteCollection $collection, array $parameters): void
     {
         $type = isset($parameters['type']) ? (string)$parameters['type'] : null;
         $value = $this->resolveValue($type);
-        unset($parameters['type']);
 
-        if ($value !== '' && !in_array($value{0}, static::PREFIXES)) {
+        $considerIndex = $value !== ''
+            && in_array($value{0}, static::ROUTE_PATH_DELIMITERS);
+        if ($value !== '' && !in_array($value{0}, static::ROUTE_PATH_DELIMITERS)) {
             $value = '/' . $value;
         }
 
@@ -114,8 +145,12 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
          * @var Route $existingRoute
          */
         foreach ($collection->all() as $routeName => $existingRoute) {
-            $existingRoute->setPath(rtrim($existingRoute->getPath(), '/') . $value);
-            $deflatedParameters = $existingRoute->getOption('deflatedParameters');
+            $existingRoutePath = rtrim($existingRoute->getPath(), '/');
+            if ($considerIndex && $existingRoutePath === '') {
+                $existingRoutePath = $this->index;
+            }
+            $existingRoute->setPath($existingRoutePath . $value);
+            $deflatedParameters = $existingRoute->getOption('deflatedParameters') ?? $parameters;
             if (isset($deflatedParameters['type'])) {
                 unset($deflatedParameters['type']);
                 $existingRoute->setOption(
@@ -143,9 +178,11 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
 
     /**
      * Builds a regexp out of the map.
+     *
+     * @param bool $useNames
      * @return string
      */
-    protected function buildRegularExpressionPattern(): string
+    protected function buildRegularExpressionPattern(bool $useNames = true): string
     {
         $items = array_keys($this->map);
         $slashedItems = array_filter($items, [$this, 'needsSlashPrefix']);
@@ -156,10 +193,17 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
 
         $patterns = [];
         if (!empty($slashedItems)) {
-            $patterns[] = '/(?P<slashedItems>' . implode('|', $slashedItems) . ')';
+            $name = $useNames ? '?P<slashedItems>' : '';
+            $patterns[] = '(?:^|/)(' . $name . implode('|', $slashedItems) . ')';
+        }
+        if (!empty($regularItems) && !empty($this->index)) {
+            $name = $useNames ? '?P<indexItems>' : '';
+            $indexPattern = $this->quoteForRegularExpressionPattern($this->index);
+            $patterns[] = '(' . $name . $indexPattern . '(?:' . implode('|', $regularItems) . '))';
         }
         if (!empty($regularItems)) {
-            $patterns[] = '(?P<regularItems>' . implode('|', $regularItems) . ')';
+            $name = $useNames ? '?P<regularItems>' : '';
+            $patterns[] = '(' . $name . implode('|', $regularItems) . ')';
         }
         return '(?:' . implode('|', $patterns) . ')$';
     }
@@ -185,7 +229,7 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
     {
         return !in_array(
             $value{0} ?? '',
-            static::PREFIXES,
+            static::ROUTE_PATH_DELIMITERS,
             true
         );
     }

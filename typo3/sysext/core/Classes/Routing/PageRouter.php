@@ -121,7 +121,6 @@ class PageRouter implements RouterInterface
             throw new RouteNotFoundException('No page candidates found for path "' . $urlPath . '"', 1538389999);
         }
 
-        $decoratedParameters = [];
         $fullCollection = new RouteCollection();
         foreach ($pageCandidates ?? [] as $page) {
             $pageIdForDefaultLanguage = (int)($page['l10n_parent'] ?: $page['uid']);
@@ -137,7 +136,7 @@ class PageRouter implements RouterInterface
             $enhancers = $this->getEnhancersForPage($pageIdForDefaultLanguage, $language);
             foreach ($enhancers as $enhancer) {
                 if ($enhancer instanceof DecoratingEnhancerInterface) {
-                    $enhancer->decorateForMatching($pageCollection, $decoratedParameters, $urlPath);
+                    $enhancer->decorateForMatching($pageCollection, $urlPath);
                 }
             }
             foreach ($enhancers as $enhancer) {
@@ -155,7 +154,6 @@ class PageRouter implements RouterInterface
             $result = $matcher->match('/' . trim($urlPath, '/'));
             /** @var Route $matchedRoute */
             $matchedRoute = $fullCollection->get($result['_route']);
-            $matchedRoute->setOption('_decoratedParameters', $decoratedParameters);
             return $this->buildPageArguments($matchedRoute, $result, $request->getQueryParams());
         } catch (ResourceNotFoundException $e) {
             // Do nothing
@@ -356,7 +354,6 @@ class PageRouter implements RouterInterface
                 continue;
             }
             $enhancerType = $enhancerConfiguration['type'] ?? '';
-            /** @var EnhancerInterface $enhancer */
             $enhancer = $this->enhancerFactory->create($enhancerType, $enhancerConfiguration);
             if (!empty($enhancerConfiguration['aspects'] ?? null)) {
                 $aspects = $this->aspectFactory->createAspects(
@@ -368,6 +365,48 @@ class PageRouter implements RouterInterface
             $enhancers[] = $enhancer;
         }
         return $enhancers;
+    }
+
+    /**
+     * Resolves decorating enhancers without having aspects assigned. These
+     * instances are used to pre-process URL path and MUST NOT be used for
+     * actually resolving or generating URL parameters.
+     *
+     * @return DecoratingEnhancerInterface[]
+     */
+    protected function getDecoratingEnhancers(): array
+    {
+        $enhancers = [];
+        foreach ($this->site->getConfiguration()['routeEnhancers'] ?? [] as $enhancerConfiguration) {
+            $enhancerType = $enhancerConfiguration['type'] ?? '';
+            $enhancer = $this->enhancerFactory->create($enhancerType, $enhancerConfiguration);
+            if ($enhancer instanceof DecoratingEnhancerInterface) {
+                $enhancers[] = $enhancer;
+            }
+        }
+        return $enhancers;
+    }
+
+    /**
+     * Gets all patterns that can be used to redecorate (undecorate) a
+     * potential previously decorated route path.
+     *
+     * @return string regular expression pattern capable of redecorating
+     */
+    protected function getRoutePathRedecorationPattern(): string
+    {
+        $decoratingEnhancers = $this->getDecoratingEnhancers();
+        if (empty($decoratingEnhancers)) {
+            return '';
+        }
+        $redecorationPatterns = array_map(
+            function (DecoratingEnhancerInterface $decorationEnhancers) {
+                $pattern = $decorationEnhancers->getRoutePathRedecorationPattern();
+                return '(?:' . $pattern . ')';
+            },
+            $decoratingEnhancers
+        );
+        return '(?P<decoration>' . implode('|', $redecorationPatterns) . ')';
     }
 
     /**
@@ -387,19 +426,19 @@ class PageRouter implements RouterInterface
      */
     protected function getCandidateSlugsFromRoutePath(string $routePath): array
     {
+        $redecorationPattern = $this->getRoutePathRedecorationPattern();
+        if (!empty($redecorationPattern) && preg_match('#' . $redecorationPattern . '#', $routePath, $matches)) {
+            $decoration = $matches['decoration'];
+            $decorationPattern = preg_quote($decoration, '#');
+            $routePath = preg_replace('#' . $decorationPattern . '$#', '', $routePath);
+        }
+
         $candidatePathParts = [];
         $pathParts = GeneralUtility::trimExplode('/', $routePath, true);
         if (empty($pathParts)) {
             return ['/'];
         }
-        // Check if the last part contains a ".", then split it
-        // @todo fix me based on enhancer configuration
-        $lastPart = array_pop($pathParts);
-        if (strpos($lastPart, '.') !== false) {
-            $pathParts = array_merge($pathParts, explode('.', $lastPart));
-        } else {
-            $pathParts[] = $lastPart;
-        }
+
         while (!empty($pathParts)) {
             $prefix = '/' . implode('/', $pathParts);
             $candidatePathParts[] = $prefix . '/';
@@ -479,17 +518,17 @@ class PageRouter implements RouterInterface
      */
     protected function resolveType(Route $route, array &$remainingQueryParameters): string
     {
+        $type = 0;
         $decoratedParameters = $route->getOption('_decoratedParameters');
-        if (!isset($decoratedParameters['type'])) {
-            return '0';
+        if (isset($decoratedParameters['type'])) {
+            $type = $decoratedParameters['type'];
+            unset($decoratedParameters['type']);
+            $remainingQueryParameters = array_replace_recursive(
+                $remainingQueryParameters,
+                $decoratedParameters
+            );
         }
-        $type = (string)$decoratedParameters['type'];
-        unset($decoratedParameters['type']);
-        $remainingQueryParameters = array_replace_recursive(
-            $remainingQueryParameters,
-            $decoratedParameters
-        );
-        return $type;
+        return (string)$type;
     }
 
     /**

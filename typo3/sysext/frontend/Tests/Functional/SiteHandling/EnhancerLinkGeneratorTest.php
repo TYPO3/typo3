@@ -107,7 +107,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
      * @param array $languages
      * @param array $enhancers
      * @param string $variableName
-     * @param string $templateSuffix
+     * @param array $templateOptions
      * @return array
      */
     protected function createDataSet(
@@ -115,7 +115,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
         array $languages,
         array $enhancers,
         string $variableName = 'value',
-        string $templateSuffix = ''
+        array $templateOptions = []
     ): array {
         $dataSet = [];
         foreach ($enhancers as $enhancer) {
@@ -131,9 +131,11 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                 ];
             }
         }
+        $templatePrefix = isset($templateOptions['prefix']) ? $templateOptions['prefix'] : '';
+        $templateSuffix = isset($templateOptions['suffix']) ? $templateOptions['suffix'] : '';
         return $this->keysFromTemplate(
             $dataSet,
-            'enhancer:%1$s, lang:%3$d' . $templateSuffix,
+            $templatePrefix . 'enhancer:%1$s, lang:%3$d' . $templateSuffix,
             function (array $items) {
                 array_splice(
                     $items,
@@ -146,12 +148,19 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
         );
     }
 
+    /**
+     * @param array $options
+     * @return array
+     */
     protected function getEnhancers(array $options = []): array
     {
-        $options = array_merge(['name' => 'enhance', 'value' => 100], $options);
+        $options = array_merge(
+            ['name' => 'enhance', 'value' => 100, 'additionalParameters' => ''],
+            $options
+        );
         return [
             [
-                'parameters' => sprintf('&value=%s', $options['value']),
+                'parameters' => sprintf('&value=%s%s', $options['value'], $options['additionalParameters']),
                 'enhancer' => [
                     'type' => 'Simple',
                     'routePath' => sprintf('/%s/{value}', $options['name']),
@@ -159,7 +168,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                 ],
             ],
             [
-                'parameters' => sprintf('&testing[value]=%s', $options['value']),
+                'parameters' => sprintf('&testing[value]=%s%s', $options['value'], $options['additionalParameters']),
                 'enhancer' => [
                     'type' => 'Plugin',
                     'routePath' => sprintf('/%s/{value}', $options['name']),
@@ -168,7 +177,11 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                 ],
             ],
             [
-                'parameters' => sprintf('&tx_testing_link[value]=%s&tx_testing_link[controller]=Link&tx_testing_link[action]=index', $options['value']),
+                'parameters' => sprintf(
+                    '&tx_testing_link[value]=%s&tx_testing_link[controller]=Link&tx_testing_link[action]=index%s',
+                    $options['value'],
+                    $options['additionalParameters']
+                ),
                 'enhancer' => [
                     'type' => 'Extbase',
                     'routes' => [
@@ -188,8 +201,28 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function localeModifierDataProvider(): array
+    protected function createPageTypeDecorator(): array
     {
+        return [
+            'type' => 'PageType',
+            'default' => '.html',
+            'index' => 'index',
+            'map' => [
+                '.html' =>  0,
+                'menu.json' =>  10,
+            ]
+        ];
+    }
+
+    /**
+     * @param string|array|null $options
+     * @return array
+     */
+    public function localeModifierDataProvider($options = null): array
+    {
+        if (!is_array($options)) {
+            $options = [];
+        }
         $aspect = [
             'type' => 'LocaleModifier',
             'default' => 'enhance',
@@ -202,15 +235,19 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
         ];
 
         $languages = [
-            '0' => 'https://acme.us/welcome/enhance/100?cHash=',
-            '1' => 'https://acme.fr/bienvenue/augmenter/100?cHash=',
+            '0' => sprintf('https://acme.us/welcome/enhance/100%s?cHash=', $options['pathSuffix'] ?? ''),
+            '1' => sprintf('https://acme.fr/bienvenue/augmenter/100%s?cHash=', $options['pathSuffix'] ?? ''),
         ];
 
         return $this->createDataSet(
             $aspect,
             $languages,
-            $this->getEnhancers(['name' => '{enhance_name}']),
-            'enhance_name'
+            $this->getEnhancers([
+                'name' => '{enhance_name}',
+                'additionalParameters' => $options['additionalParameters'] ?? ''
+            ]),
+            'enhance_name',
+            ['prefix' => 'localeModifier/']
         );
     }
 
@@ -247,10 +284,14 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
     }
 
     /**
+     * @param string|array|null $options
      * @return array
      */
-    public function persistedAliasMapperDataProvider(): array
+    public function persistedAliasMapperDataProvider($options = null): array
     {
+        if (!is_array($options)) {
+            $options = [];
+        }
         $aspect = [
             'type' => 'PersistedAliasMapper',
             'tableName' => 'pages',
@@ -259,14 +300,19 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
         ];
 
         $languages = [
-            '0' => 'https://acme.us/welcome/enhance/welcome',
-            '1' => 'https://acme.fr/bienvenue/enhance/bienvenue',
+            '0' => sprintf('https://acme.us/welcome/enhance/welcome%s', $options['pathSuffix'] ?? ''),
+            '1' => sprintf('https://acme.fr/bienvenue/enhance/bienvenue%s', $options['pathSuffix'] ?? ''),
         ];
 
         return $this->createDataSet(
             $aspect,
             $languages,
-            $this->getEnhancers(['value' => 1100])
+            $this->getEnhancers([
+                'value' => 1100,
+                'additionalParameters' => $options['additionalParameters'] ?? ''
+            ]),
+            'value',
+            ['prefix' => 'persistedAliasMapper/']
         );
     }
 
@@ -303,10 +349,14 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
     }
 
     /**
+     * @param string|array|null $options
      * @return array
      */
-    public function persistedPatternMapperDataProvider(): array
+    public function persistedPatternMapperDataProvider($options = null): array
     {
+        if (!is_array($options)) {
+            $options = [];
+        }
         $aspect = [
             'type' => 'PersistedPatternMapper',
             'tableName' => 'pages',
@@ -315,14 +365,19 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
         ];
 
         $languages = [
-            '0' => 'https://acme.us/welcome/enhance/hello-and-welcome-1100',
-            '1' => 'https://acme.fr/bienvenue/enhance/salut-et-bienvenue-1100',
+            '0' => sprintf('https://acme.us/welcome/enhance/hello-and-welcome-1100%s', $options['pathSuffix'] ?? ''),
+            '1' => sprintf('https://acme.fr/bienvenue/enhance/salut-et-bienvenue-1100%s', $options['pathSuffix'] ?? ''),
         ];
 
         return $this->createDataSet(
             $aspect,
             $languages,
-            $this->getEnhancers(['value' => 1100])
+            $this->getEnhancers([
+                'value' => 1100,
+                'additionalParameters' => $options['additionalParameters'] ?? ''
+            ]),
+            'value',
+            ['prefix' => 'persistedPatternMapper/']
         );
     }
 
@@ -359,10 +414,14 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
     }
 
     /**
+     * @param string|array|null $options
      * @return array
      */
-    public function staticValueMapperDataProvider(): array
+    public function staticValueMapperDataProvider($options = null): array
     {
+        if (!is_array($options)) {
+            $options = [];
+        }
         $aspect = [
             'type' => 'StaticValueMapper',
             'map' => [
@@ -379,11 +438,19 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
         ];
 
         $languages = [
-            '0' => 'https://acme.us/welcome/enhance/hundred',
-            '1' => 'https://acme.fr/bienvenue/enhance/cent',
+            '0' => sprintf('https://acme.us/welcome/enhance/hundred%s', $options['pathSuffix'] ?? ''),
+            '1' => sprintf('https://acme.fr/bienvenue/enhance/cent%s', $options['pathSuffix'] ?? ''),
         ];
 
-        return $this->createDataSet($aspect, $languages, $this->getEnhancers());
+        return $this->createDataSet(
+            $aspect,
+            $languages,
+            $this->getEnhancers([
+                'additionalParameters' => $options['additionalParameters'] ?? ''
+            ]),
+            'value',
+            ['prefix' => 'staticValueMapper/']
+        );
     }
 
     /**
@@ -419,10 +486,14 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
     }
 
     /**
+     * @param string|array|null $options
      * @return array
      */
-    public function staticRangeMapperDataProvider(): array
+    public function staticRangeMapperDataProvider($options = null): array
     {
+        if (!is_array($options)) {
+            $options = [];
+        }
         $aspect = [
             'type' => 'StaticRangeMapper',
             'start' => '1',
@@ -432,8 +503,8 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
         $dataSet = [];
         foreach (range(10, 100, 30) as $value) {
             $languages = [
-                '0' => sprintf('https://acme.us/welcome/enhance/%s', $value),
-                '1' => sprintf('https://acme.fr/bienvenue/enhance/%s', $value),
+                '0' => sprintf('https://acme.us/welcome/enhance/%s%s', $value, $options['pathSuffix'] ?? ''),
+                '1' => sprintf('https://acme.fr/bienvenue/enhance/%s%s', $value, $options['pathSuffix'] ?? ''),
             ];
 
             $dataSet = array_merge(
@@ -441,9 +512,15 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                 $this->createDataSet(
                     $aspect,
                     $languages,
-                    $this->getEnhancers(['value' => $value]),
+                    $this->getEnhancers([
+                        'value' => $value,
+                        'additionalParameters' => $options['additionalParameters'] ?? ''
+                    ]),
                     'value',
-                    sprintf(', value:%d', $value)
+                    [
+                        'prefix' => 'staticRangeMapper/',
+                        'suffix' => sprintf(', value:%d', $value),
+                    ]
                 )
             );
         }
@@ -463,6 +540,89 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
     {
         $this->mergeSiteConfiguration('acme-com', [
             'routeEnhancers' => ['Enhancer' => $enhancer]
+        ]);
+
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest('https://acme.us/'))
+                ->withPageId(1100)
+                ->withInstructions([
+                    $this->createTypoLinkUrlInstruction([
+                        'parameter' => 1100,
+                        'language' => $targetLanguageId,
+                        'additionalParams' => $additionalParameters,
+                        'forceAbsoluteUrl' => 1,
+                    ])
+                ]),
+            $this->internalRequestContext
+        );
+
+        static::assertStringStartsWith($expectation, (string)$response->getBody());
+    }
+
+    /**
+     * Combines all previous data providers for mappable aspects into one large
+     * data set that is permuted for several page type decorator instructions.
+     *
+     * @return array
+     */
+    public function pageTypeDecoratorIsAppliedDataProvider(): array
+    {
+        $instructions = [
+            ['pathSuffix' => '.html', 'type' => null],
+            ['pathSuffix' => '.html', 'type' => 0],
+            ['pathSuffix' => '/menu.json', 'type' => 10],
+        ];
+
+        $dataSet = [];
+        foreach ($instructions as $instruction) {
+            $templateSuffix = sprintf(
+                ' [%s=>%s]',
+                $instruction['pathSuffix'],
+                $instruction['type'] ?? 'null'
+            );
+            $dataProviderOptions = [
+                'pathSuffix' => $instruction['pathSuffix'],
+                'additionalParameters' => $instruction['type'] !== null
+                    ? '&type=' . $instruction['type']
+                    : ''
+            ];
+            $dataSetCandidates = array_merge(
+                $this->localeModifierDataProvider($dataProviderOptions),
+                $this->persistedAliasMapperDataProvider($dataProviderOptions),
+                $this->persistedPatternMapperDataProvider($dataProviderOptions),
+                $this->staticValueMapperDataProvider($dataProviderOptions),
+                $this->staticRangeMapperDataProvider($dataProviderOptions)
+            );
+            $dataSetCandidatesKeys = array_map(
+                function (string $dataSetCandidatesKey) use ($templateSuffix) {
+                    return $dataSetCandidatesKey . $templateSuffix;
+                },
+                array_keys($dataSetCandidates)
+            );
+            $dataSet = array_merge(
+                $dataSet,
+                array_combine($dataSetCandidatesKeys, $dataSetCandidates)
+            );
+        }
+        return $dataSet;
+    }
+
+    /**
+     * @param array $enhancer
+     * @param string $additionalParameters
+     * @param int $targetLanguageId
+     * @param string $expectation
+     *
+     * @test
+     * @dataProvider pageTypeDecoratorIsAppliedDataProvider
+     */
+    public function pageTypeDecoratorIsApplied(array $enhancer, string $additionalParameters, int $targetLanguageId, string $expectation)
+    {
+        $this->mergeSiteConfiguration('acme-com', [
+            'routeEnhancers' => [
+                'Enhancer' => $enhancer,
+                'PageType' => $this->createPageTypeDecorator()
+            ]
         ]);
 
         $response = $this->executeFrontendRequest(
