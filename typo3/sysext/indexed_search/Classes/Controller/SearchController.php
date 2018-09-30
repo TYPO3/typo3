@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Index search frontend
@@ -1353,29 +1354,11 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     protected function getMenuOfPages($pageUid)
     {
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         if ($this->settings['displayLevelxAllTypes']) {
-            $menu = [];
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
-            $result = $queryBuilder
-                ->select('uid', 'title')
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter($pageUid, \PDO::PARAM_INT)
-                    )
-                )
-                ->orderBy('sorting')
-                ->execute();
-
-            while ($row = $result->fetch()) {
-                $menu[$row['uid']] = $GLOBALS['TSFE']->sys_page->getPageOverlay($row);
-            }
-        } else {
-            $menu = $GLOBALS['TSFE']->sys_page->getMenu($pageUid);
+            return $pageRepository->getMenuForPages([$pageUid]);
         }
-        return $menu;
+        return $pageRepository->getMenu($pageUid);
     }
 
     /**
