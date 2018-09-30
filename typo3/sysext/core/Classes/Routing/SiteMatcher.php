@@ -126,7 +126,7 @@ class SiteMatcher implements SingletonInterface
             $matcher = new UrlMatcher($collection, $context);
             try {
                 $result = $matcher->match($request->getUri()->getPath());
-                return new RouteResult($request->getUri(), $result['site'], $result['language'], $result['tail']);
+                return new SiteRouteResult($request->getUri(), $result['site'], $result['language'], $result['tail']);
             } catch (NoConfigurationException | ResourceNotFoundException $e) {
                 // No site+language combination found so far
             }
@@ -147,7 +147,7 @@ class SiteMatcher implements SingletonInterface
                 $context->setHost(implode('.', $host));
                 try {
                     $result = $matcher->match($request->getUri()->getPath());
-                    return new RouteResult($request->getUri(), $result['site'], $result['language'], $result['tail']);
+                    return new SiteRouteResult($request->getUri(), $result['site'], $result['language'], $result['tail']);
                 } catch (NoConfigurationException | ResourceNotFoundException $e) {
                     array_shift($host);
                 }
@@ -155,7 +155,7 @@ class SiteMatcher implements SingletonInterface
         } else {
             try {
                 $result = $matcher->match($request->getUri()->getPath());
-                return new RouteResult($request->getUri(), $result['site'], $result['language'], $result['tail']);
+                return new SiteRouteResult($request->getUri(), $result['site'], $result['language'], $result['tail']);
             } catch (NoConfigurationException | ResourceNotFoundException $e) {
                 // No domain record found
             }
@@ -171,7 +171,7 @@ class SiteMatcher implements SingletonInterface
                 $site = reset($allPseudoSites);
             }
         }
-        return new RouteResult($request->getUri(), $site, $language);
+        return new SiteRouteResult($request->getUri(), $site, $language);
     }
 
     /**

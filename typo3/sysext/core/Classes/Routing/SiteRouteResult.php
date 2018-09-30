@@ -23,10 +23,9 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 /**
  * Class, usually available within request attribute "routing"
  * containing all the findings of the Routers.
- *
- * @internal this API might change until 9 LTS.
+ * When doing page-based routing the SiteRouteResult will get replaced with the PageArguments object.
  */
-class RouteResult implements RouteResultInterface
+class SiteRouteResult implements RouteResultInterface
 {
     /**
      * @var array

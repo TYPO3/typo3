@@ -104,8 +104,8 @@ class PageRouter implements RouterInterface
      * Finds a RouteResult based on the given request.
      *
      * @param ServerRequestInterface $request
-     * @param RouteResultInterface|RouteResult|null $previousResult
-     * @return RouteResult
+     * @param RouteResultInterface|SiteRouteResult|null $previousResult
+     * @return SiteRouteResult
      */
     public function matchRequest(ServerRequestInterface $request, RouteResultInterface $previousResult = null): ?RouteResultInterface
     {

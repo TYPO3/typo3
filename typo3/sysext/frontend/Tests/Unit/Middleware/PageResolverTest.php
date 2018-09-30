@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Routing\PageRouter;
-use TYPO3\CMS\Core\Routing\RouteResult;
+use TYPO3\CMS\Core\Routing\SiteRouteResult;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -111,7 +111,7 @@ class PageResolverTest extends UnitTestCase
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('site', $site);
         $request = $request->withAttribute('language', $language);
-        $request = $request->withAttribute('routing', new RouteResult($request->getUri(), $site, $language, 'mr-magpie/bloom'));
+        $request = $request->withAttribute('routing', new SiteRouteResult($request->getUri(), $site, $language, 'mr-magpie/bloom'));
         $expectedRouteResult = new PageArguments(13, []);
 
         $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->setMethods(['matchRequest'])->getMock();
@@ -153,7 +153,7 @@ class PageResolverTest extends UnitTestCase
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('site', $site);
         $request = $request->withAttribute('language', $language);
-        $request = $request->withAttribute('routing', new RouteResult($request->getUri(), $site, $language, 'mr-magpie/bloom/'));
+        $request = $request->withAttribute('routing', new SiteRouteResult($request->getUri(), $site, $language, 'mr-magpie/bloom/'));
 
         $expectedRouteResult = new PageArguments(13, []);
         $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->setMethods(['matchRequest'])->getMock();
@@ -193,7 +193,7 @@ class PageResolverTest extends UnitTestCase
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('site', $site);
         $request = $request->withAttribute('language', $language);
-        $request = $request->withAttribute('routing', new RouteResult($request->getUri(), $site, $language, 'mr-magpie/bloom/'));
+        $request = $request->withAttribute('routing', new SiteRouteResult($request->getUri(), $site, $language, 'mr-magpie/bloom/'));
 
         $expectedRouteResult = new PageArguments(13, []);
         $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->setMethods(['matchRequest'])->getMock();

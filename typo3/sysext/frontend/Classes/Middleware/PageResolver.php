@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
 use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\Routing\RouteResult;
+use TYPO3\CMS\Core\Routing\SiteRouteResult;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -76,7 +76,7 @@ class PageResolver implements MiddlewareInterface
 
         // Resolve the page ID based on TYPO3's native routing functionality
         if ($hasSiteConfiguration) {
-            /** @var RouteResult $previousResult */
+            /** @var SiteRouteResult $previousResult */
             $previousResult = $request->getAttribute('routing', null);
             if (!$previousResult) {
                 return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(

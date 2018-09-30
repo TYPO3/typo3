@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Routing;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Routing\PageRouter;
-use TYPO3\CMS\Core\Routing\RouteResult;
+use TYPO3\CMS\Core\Routing\SiteRouteResult;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -51,7 +51,7 @@ class PageRouterTest extends UnitTestCase
         $language = $site->getDefaultLanguage();
 
         $request = new ServerRequest($incomingUrl, 'GET');
-        $previousResult = new RouteResult($request->getUri(), $site, $language, '/mr-magpie/bloom');
+        $previousResult = new SiteRouteResult($request->getUri(), $site, $language, '/mr-magpie/bloom');
         $subject = $this->getAccessibleMock(PageRouter::class, ['getCandidateSlugsFromRoutePath', 'getPagesFromDatabaseForCandidates'], [$site, []]);
         $subject->expects($this->once())->method('getCandidateSlugsFromRoutePath')->willReturn($slugCandidates);
         $subject->expects($this->once())->method('getPagesFromDatabaseForCandidates')->willReturn([$pageRecord]);
@@ -85,13 +85,13 @@ class PageRouterTest extends UnitTestCase
         ]);
         $language = $site->getDefaultLanguage();
         $request = new ServerRequest($incomingUrl, 'GET');
-        $previousResult = new RouteResult($request->getUri(), $site, $language, '/mr-magpie/bloom/unknown-code/');
+        $previousResult = new SiteRouteResult($request->getUri(), $site, $language, '/mr-magpie/bloom/unknown-code/');
         $subject = $this->getAccessibleMock(PageRouter::class, ['getCandidateSlugsFromRoutePath', 'getPagesFromDatabaseForCandidates'], [$site, []]);
         $subject->expects($this->once())->method('getCandidateSlugsFromRoutePath')->willReturn($slugCandidates);
         $subject->expects($this->once())->method('getPagesFromDatabaseForCandidates')->willReturn([$pageRecord]);
         $routeResult = $subject->matchRequest($request, $previousResult);
 
-        $expectedRouteResult = new RouteResult($request->getUri(), $site, $language, 'unknown-code/', ['page' => $pageRecord]);
+        $expectedRouteResult = new SiteRouteResult($request->getUri(), $site, $language, 'unknown-code/', ['page' => $pageRecord]);
         $this->assertEquals($expectedRouteResult, $routeResult);
     }
 }
