@@ -110,7 +110,8 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
                 $queryBuilder->expr()->neq(
                     'serialized_executions',
                     $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
-                )
+                ),
+                $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
             ->execute();
         $maxDuration = $this->extConf['maxLifetime'] * 60;
@@ -322,11 +323,13 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
                 $queryBuilder->expr()->orX(
                     $queryBuilder->expr()->eq('g.hidden', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->isNull('g.hidden')
-                )
+                ),
+                $queryBuilder->expr()->eq('t.deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             );
         } else {
             $queryBuilder->where(
-                $queryBuilder->expr()->eq('t.uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('t.uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('t.deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             );
         }
 
@@ -369,9 +372,15 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
      */
     public function fetchTaskRecord($uid)
     {
-        $row = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('tx_scheduler_task')
-            ->select(['*'], 'tx_scheduler_task', ['uid' => (int)$uid])
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_scheduler_task');
+        $row = $queryBuilder->select('*')
+            ->from('tx_scheduler_task')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$uid, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+            )
+            ->execute()
             ->fetch();
 
         // If the task is not found, throw an exception
