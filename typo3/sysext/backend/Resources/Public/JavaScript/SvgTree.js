@@ -22,9 +22,10 @@ define(
     'TYPO3/CMS/Backend/Modal',
     'TYPO3/CMS/Backend/Severity',
     'TYPO3/CMS/Backend/Notification',
-    'TYPO3/CMS/Backend/Icons'
+    'TYPO3/CMS/Backend/Icons',
+    'TYPO3/CMS/Backend/Tooltip',
   ],
-  function($, d3, ContextMenu, Modal, Severity, Notification, Icons) {
+  function($, d3, ContextMenu, Modal, Severity, Notification, Icons, Tooltip) {
     'use strict';
 
     /**
@@ -722,39 +723,47 @@ define(
         // append the icon element
         if (this.settings.showIcons) {
           this.textPosition = 30;
-          nodeEnter
+
+          var nodeContainer = nodeEnter
+            .append('g')
+            .attr('class', 'node-icon-container')
+            .attr('title', this.getNodeTitle)
+            .attr('data-toggle', 'tooltip')
+            .on('click', function(node) {
+                _this.clickOnIcon(node, this);
+            });
+
+          nodeContainer
             .append('use')
-            .attr('x', 8)
-            .attr('y', -8)
             .attr('class', 'node-icon')
             .attr('data-uid', this.getNodeIdentifier)
-            .on('click', function(node) {
-              _this.clickOnIcon(node, this);
-            });
+            .attr('transform', 'translate(8, -8)');
 
-          nodeEnter
+          nodeContainer
             .append('use')
-            .attr('x', 8)
-            .attr('y', -3)
-            .attr('class', 'node-icon-overlay')
-            .on('click', function(node) {
-              _this.clickOnIcon(node, this);
-            });
+            .attr('transform', 'translate(8, -3)')
+            .attr('class', 'node-icon-overlay');
 
-          nodeEnter
+          nodeContainer
             .append('use')
             .attr('x', 27)
             .attr('y', -7)
             .attr('class', 'node-icon-locked');
         }
 
+        Tooltip.initialize('[data-toggle="tooltip"]', {
+            delay: {
+                "show": 50,
+                "hide": 50
+            },
+            trigger: 'hover',
+            container: 'body',
+            placement: 'right',
+        });
+
         this.dispatch.call('updateSvg', this, nodeEnter);
 
         _this.appendTextElement(nodeEnter);
-
-        nodeEnter
-          .append('title')
-          .text(this.getNodeTitle.bind(this));
 
         return nodes.merge(nodeEnter);
       },
