@@ -87,7 +87,6 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
         $this->importScenarioDataSet('LiveDefaultPages');
         $this->importScenarioDataSet('LiveDefaultElements');
 
-        $this->backendUser->workspace = 0;
         $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $this->contentRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\TtContentRepository::class);
         $this->setUpFrontendRootPage(1, [

@@ -41,8 +41,7 @@ class ActionTest extends AbstractDataHandlerActionTestCase
     {
         $this->importScenarioDataSet('LiveDefaultPages');
         $this->importScenarioDataSet('LiveDefaultElements');
-        $this->backendUser->workspace = 1;
-        $GLOBALS['BE_USER']->workspace = 1;
+        $this->setWorkspaceId(1);
         $this->getActionService()->modifyRecords(1, [
             //'sys_file_reference' => ['uid' => 10, 'hidden' => 0],
             'tt_content' => ['uid' => 100, 'header' => 'Content #1 (WS)']

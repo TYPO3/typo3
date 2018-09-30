@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -84,7 +86,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
 
         $this->backendUser = $this->setUpBackendUserFromFixture(self::VALUE_BackendUserId);
         // By default make tests on live workspace
-        $this->backendUser->workspace = 0;
+        $this->setWorkspaceId(0);
 
         $this->actionService = $this->getActionService();
         Bootstrap::initializeLanguageObject();
@@ -96,6 +98,15 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
         unset($this->actionService);
         unset($this->recordIds);
         parent::tearDown();
+    }
+
+    /**
+     * @param int $workspaceId
+     */
+    protected function setWorkspaceId(int $workspaceId)
+    {
+        $this->backendUser->workspace = $workspaceId;
+        GeneralUtility::makeInstance(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
     }
 
     /**

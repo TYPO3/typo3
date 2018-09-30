@@ -39,7 +39,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         parent::setUp();
         $this->importScenarioDataSet('ReferenceIndex');
-        $this->backendUser->workspace = self::VALUE_WorkspaceId;
+        $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 
     /**

@@ -112,7 +112,6 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
         $this->setUpFrontendRootPage(1, [
             'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
         ]);
-        $this->backendUser->workspace = 0;
     }
 
     public function defaultLanguageConfigurationDataProvider(): array

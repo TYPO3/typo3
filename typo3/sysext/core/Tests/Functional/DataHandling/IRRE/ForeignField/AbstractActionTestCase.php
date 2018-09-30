@@ -62,7 +62,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
                 'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/ExtbaseJsonRenderer.typoscript',
             ]
         );
-        $this->backendUser->workspace = 0;
     }
 
     /**

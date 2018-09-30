@@ -47,7 +47,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->importScenarioDataSet('LivePageFreeModeElements');
         $this->importScenarioDataSet('VersionDefaultElements');
         $this->importScenarioDataSet('ReferenceIndex');
-        $this->backendUser->workspace = self::VALUE_WorkspaceId;
+        $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 
     /**
@@ -94,10 +94,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
         // Switch to live workspace
-        $this->backendUser->workspace = 0;
+        $this->setWorkspaceId(0);
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
         // Switch back to draft workspace
-        $this->backendUser->workspace = static::VALUE_WorkspaceId;
+        $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 
     /**
@@ -157,13 +157,13 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
 
         // Switch to live workspace
-        $this->backendUser->workspace = 0;
+        $this->setWorkspaceId(0);
 
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
         $this->recordIds['copiedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
 
         // Switch back to draft workspace
-        $this->backendUser->workspace = static::VALUE_WorkspaceId;
+        $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 
     /**
@@ -189,13 +189,13 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->recordIds['newPageId'] = $newTableIds[static::TABLE_Page][0];
 
         // Switch to live workspace
-        $this->backendUser->workspace = 0;
+        $this->setWorkspaceId(0);
 
         $newTableIds = $this->actionService->copyRecord(static::TABLE_Page, static::VALUE_PageId, static::VALUE_PageIdTarget);
         $this->recordIds['copiedPageId'] = $newTableIds[static::TABLE_Page][static::VALUE_PageId];
 
         // Switch back to draft workspace
-        $this->backendUser->workspace = static::VALUE_WorkspaceId;
+        $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 
     /**
@@ -228,7 +228,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->recordIds['newPageIdSecond'] = $newTableIds[static::TABLE_Page][0];
 
         // Switch to live workspace
-        $this->backendUser->workspace = 0;
+        $this->setWorkspaceId(0);
 
         $newTableIds = $this->actionService->copyRecord(static::TABLE_Page, static::VALUE_PageId, static::VALUE_PageIdTarget);
         $this->recordIds['copiedPageId'] = $newTableIds[static::TABLE_Page][static::VALUE_PageId];
@@ -236,7 +236,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->recordIds['copiedPageIdSecond'] = $newTableIds[static::TABLE_Page][$this->recordIds['newPageIdSecond']];
 
         // Switch back to draft workspace
-        $this->backendUser->workspace = static::VALUE_WorkspaceId;
+        $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 
     /**
@@ -257,13 +257,13 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
 
         // Switch to live workspace
-        $this->backendUser->workspace = 0;
+        $this->setWorkspaceId(0);
 
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
         $this->recordIds['copiedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
 
         // Switch back to draft workspace
-        $this->backendUser->workspace = static::VALUE_WorkspaceId;
+        $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 
     /**
@@ -284,13 +284,13 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
 
         // Switch to live workspace
-        $this->backendUser->workspace = 0;
+        $this->setWorkspaceId(0);
 
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
         $this->recordIds['copiedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
 
         // Switch back to draft workspace
-        $this->backendUser->workspace = static::VALUE_WorkspaceId;
+        $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 
     /**
@@ -313,13 +313,13 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdZero, self::VALUE_PageId);
 
         // Switch to live workspace
-        $this->backendUser->workspace = 0;
+        $this->setWorkspaceId(0);
 
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
         $this->recordIds['copiedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
 
         // Switch back to draft workspace
-        $this->backendUser->workspace = static::VALUE_WorkspaceId;
+        $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 
     /**
@@ -346,11 +346,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_ParentPageId, ['title' => 'Testing #1']);
 
         // Switch to live workspace
-        $this->backendUser->workspace = 0;
+        $this->setWorkspaceId(0);
 
         $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_ParentPageId);
 
         // Switch back to draft workspace
-        $this->backendUser->workspace = static::VALUE_WorkspaceId;
+        $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 }

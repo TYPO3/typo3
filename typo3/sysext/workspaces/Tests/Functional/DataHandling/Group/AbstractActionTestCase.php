@@ -37,6 +37,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     protected function setUp()
     {
         parent::setUp();
-        $this->backendUser->workspace = self::VALUE_WorkspaceId;
+        $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 }
