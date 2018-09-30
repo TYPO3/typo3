@@ -208,7 +208,6 @@ return [
         ],
     ],
     'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->modAccess' => [
-        'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst'
