@@ -58,7 +58,7 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         // Use a custom pre-created response for AJAX calls
-        // @deprecated since v9, will be removed in v10: No prepared $response to RouteDispatcher any longer
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0: No prepared $response to RouteDispatcher any longer
         if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
             $response = new Response('php://temp', 200, [
                 'Content-Type' => 'application/json; charset=utf-8',

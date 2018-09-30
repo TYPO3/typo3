@@ -57,14 +57,14 @@ class SchedulerModuleController
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'addMessage' => 'Using SchedulerModuleController::addMessage() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'addMessage' => 'Using SchedulerModuleController::addMessage() is deprecated and will not be possible anymore in TYPO3 v10.0.',
     ];
 
     /**
      * @var array
      */
     private $deprecatedPublicProperties = [
-        'CMD' => 'Using SchedulerModuleController::$CMD is deprecated and will not be possible anymore in TYPO3 v10. Use SchedulerModuleController::getCurrentAction() instead.',
+        'CMD' => 'Using SchedulerModuleController::$CMD is deprecated and will not be possible anymore in TYPO3 v10.0. Use SchedulerModuleController::getCurrentAction() instead.',
     ];
 
     /**
@@ -1408,7 +1408,7 @@ class SchedulerModuleController
     protected function setCurrentAction(Action $action): void
     {
         $this->action = $action;
-        // @deprecated since TYPO3 v9, will be removed with TYPO3 v10
+        // @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0
         $this->CMD = (string)$action;
     }
 

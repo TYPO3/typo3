@@ -17,13 +17,13 @@ level errors, or the test fails.
 Impact
 ======
 
-This is a first step towards a PHP notice free core.
+This is a first step towards a PHP notice free TYPO3 core.
 
 
 Affected Installations
 ======================
 
-Extensions that use the core v9 compatible `typo3/testing-framework`
+Extensions that use the TYPO3 v9 compatible `typo3/testing-framework`
 package in a version >= 3.0.0 may see failing unit tests if the tested
 class raises `E_NOTICE` errors.
 
@@ -48,7 +48,7 @@ property to still suppress E_NOTICE warnings:
     }
 
 Note that this property is deprecated and will be removed from
-:php:`UnitTestCase` as soon as the core does not need it
+:php:`UnitTestCase` as soon as TYPO3 core does not need it
 anymore.
 
 .. index:: PHP-API, FullyScanned

@@ -38,8 +38,8 @@ class PhpassPasswordHash implements PasswordHashInterface
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'isValidSalt' => 'Using PhpassPasswordHash::isValidSalt() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'base64Encode' => 'Using PhpassPasswordHash::base64Encode() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'isValidSalt' => 'Using PhpassPasswordHash::isValidSalt() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'base64Encode' => 'Using PhpassPasswordHash::base64Encode() is deprecated and will not be possible anymore in TYPO3 v10.0.',
     ];
 
     /**
@@ -368,7 +368,7 @@ class PhpassPasswordHash implements PasswordHashInterface
      */
     public function getHashCount(): int
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return $this->options['hash_count'];
     }
 
@@ -380,7 +380,7 @@ class PhpassPasswordHash implements PasswordHashInterface
      */
     public function getMaxHashCount(): int
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return 24;
     }
 
@@ -392,7 +392,7 @@ class PhpassPasswordHash implements PasswordHashInterface
      */
     public function getMinHashCount(): int
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return 7;
     }
 
@@ -404,7 +404,7 @@ class PhpassPasswordHash implements PasswordHashInterface
      */
     public function getSaltLength(): int
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return 6;
     }
 
@@ -416,7 +416,7 @@ class PhpassPasswordHash implements PasswordHashInterface
      */
     public function getSetting(): string
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return self::PREFIX;
     }
 
@@ -428,7 +428,7 @@ class PhpassPasswordHash implements PasswordHashInterface
      */
     public function setHashCount(int $hashCount = null)
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         if ($hashCount >= 7 && $hashCount <= 24) {
             $this->options['hash_count'] = $hashCount;
         }
@@ -442,7 +442,7 @@ class PhpassPasswordHash implements PasswordHashInterface
      */
     public function setMaxHashCount(int $maxHashCount = null)
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         // Empty, max hash count is hard coded to 24
     }
 
@@ -454,7 +454,7 @@ class PhpassPasswordHash implements PasswordHashInterface
      */
     public function setMinHashCount(int $minHashCount = null)
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         // Empty, max hash count is hard coded to 7
     }
 }

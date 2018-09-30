@@ -39,7 +39,7 @@ class FileTypeList extends AbstractNode
         if (!isset($config['allowed']) || !is_string($config['allowed']) || empty($config['allowed'])
             || !isset($config['internal_type']) || $config['internal_type'] !== 'file'
         ) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
             // No handling if the field has no, or funny "allowed" setting, and if internal_type is not "file"
             return $result;
         }

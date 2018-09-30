@@ -42,8 +42,8 @@ class PagePositionMap
      * @var array
      */
     protected $deprecatedPublicProperties = [
-        'getModConfigCache' => 'Using $getModConfigCache of class PagePositionMap is discouraged. This property will be removed in v10.',
-        'modConfigStr' => 'Using $$modConfigStr of class PagePositionMap is discouraged. This property will be removed in v10.',
+        'getModConfigCache' => 'Using $getModConfigCache of class PagePositionMap is discouraged. This property will be removed in TYPO3 v10.0.',
+        'modConfigStr' => 'Using $$modConfigStr of class PagePositionMap is discouraged. This property will be removed in TYPO3 v10.0.',
     ];
 
     // EXTERNAL, static:
@@ -90,7 +90,7 @@ class PagePositionMap
 
     // Caching arrays:
     /**
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     protected $getModConfigCache = [];
 
@@ -111,7 +111,7 @@ class PagePositionMap
     public $l_insertNewRecordHere = 'insertNewRecordHere';
 
     /**
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     protected $modConfigStr = 'mod.web_list.newPageWiz';
 
@@ -353,11 +353,11 @@ class PagePositionMap
      * @param int $pid Page id for which to get the module configuration.
      * @return array The properties of the module configuration for the page id.
      * @see onClickEvent()
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function getModConfig($pid)
     {
-        trigger_error('Method getModConfig() is deprecated and will be removed in v10', E_USER_DEPRECATED);
+        trigger_error('PagePositionMap->getModConfig() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         if (!isset($this->getModConfigCache[$pid])) {
             // Acquiring TSconfig for this PID:
             $this->getModConfigCache[$pid]['properties'] = BackendUtility::getPagesTSconfig($pid)['mod.']['web_list.']['newPageWiz.'] ?? [];

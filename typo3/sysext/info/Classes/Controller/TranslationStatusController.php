@@ -44,22 +44,22 @@ class TranslationStatusController
      * @var array
      */
     private $deprecatedPublicProperties = [
-        'pObj' => 'Using TranslationStatusController::$pObj is deprecated and will not be possible anymore in TYPO3 v10.',
-        'function_key' => 'Using TranslationStatusController::function_key$ is deprecated, property will be removed in TYPO3 v10.',
-        'extClassConf' => 'Using TranslationStatusController::$extClassConf is deprecated, property will be removed in TYPO3 v10.',
-        'localLangFile' => 'Using TranslationStatusController::$localLangFile is deprecated, property will be removed in TYPO3 v10.',
-        'extObj' => 'Using TranslationStatusController::$extObj is deprecated, property will be removed in TYPO3 v10.',
+        'pObj' => 'Using TranslationStatusController::$pObj is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'function_key' => 'Using TranslationStatusController::function_key$ is deprecated, property will be removed in TYPO3 v10.0.',
+        'extClassConf' => 'Using TranslationStatusController::$extClassConf is deprecated, property will be removed in TYPO3 v10.0.',
+        'localLangFile' => 'Using TranslationStatusController::$localLangFile is deprecated, property will be removed in TYPO3 v10.0.',
+        'extObj' => 'Using TranslationStatusController::$extObj is deprecated, property will be removed in TYPO3 v10.0.',
     ];
 
     /**
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'getContentElementCount' => 'Using TranslationStatusController::getContentElementCount() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'getLangStatus' => 'Using TranslationStatusController::getLangStatus() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'renderL10nTable' => 'Using TranslationStatusController::renderL10nTable() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'modMenu' => 'Using TranslationStatusController::modMenu() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'extObjContent' => 'Using TranslationStatusController::extObjContent() is deprecated, method will be removed in TYPO3 v10.',
+        'getContentElementCount' => 'Using TranslationStatusController::getContentElementCount() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'getLangStatus' => 'Using TranslationStatusController::getLangStatus() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'renderL10nTable' => 'Using TranslationStatusController::renderL10nTable() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'modMenu' => 'Using TranslationStatusController::modMenu() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'extObjContent' => 'Using TranslationStatusController::extObjContent() is deprecated, method will be removed in TYPO3 v10.0.',
     ];
 
     /**
@@ -433,11 +433,11 @@ class TranslationStatusController
      * Selects all system languages (from sys_language)
      *
      * @return array System language records in an array.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function getSystemLanguages()
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         if (!$this->getBackendUser()->isAdmin() && $this->getBackendUser()->groupData['allowed_languages'] !== '') {
             $allowed_languages = array_flip(explode(',', $this->getBackendUser()->groupData['allowed_languages']));
         }
@@ -550,7 +550,7 @@ class TranslationStatusController
     }
 
     /**
-     * Called from InfoModuleController until deprecation removal in v10
+     * Called from InfoModuleController until deprecation removal in TYPO3 v10.0
      *
      * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */

@@ -871,7 +871,7 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param array $conf Field configuration array of type "TCA/columns
      * @param int $uid Field uid
      * @return bool|array If field type is OK it will return an array with the files inside. Else FALSE
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
      */
     public function getRelations_procFiles($value, $conf, $uid)
     {

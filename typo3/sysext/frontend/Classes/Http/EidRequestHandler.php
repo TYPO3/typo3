@@ -30,7 +30,7 @@ use TYPO3\CMS\Frontend\Middleware\EidHandler as EidMiddleware;
  * Lightweight alternative to the regular RequestHandler used when $_GET[eID] is set.
  * In the future, logic from the EidUtility will be moved to this class.
  *
- * @deprecated since TYPO3 v9.2, will be removed in TYPO3 v10
+ * @deprecated since TYPO3 v9.2, will be removed in TYPO3 v10.0
  */
 class EidRequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterface
 {
@@ -39,7 +39,7 @@ class EidRequestHandler implements RequestHandlerInterface, PsrRequestHandlerInt
      */
     public function __construct()
     {
-        trigger_error(self::class . ' will be removed in TYPO3 v10. Use ' . EidMiddleware::class . ' instead.', E_USER_DEPRECATED);
+        trigger_error(self::class . ' will be removed in TYPO3 v10.0. Use ' . EidMiddleware::class . ' instead.', E_USER_DEPRECATED);
     }
 
     /**
@@ -50,7 +50,7 @@ class EidRequestHandler implements RequestHandlerInterface, PsrRequestHandlerInt
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        trigger_error(self::class . ' will be removed in TYPO3 v10. Use ' . EidMiddleware::class . ' instead.', E_USER_DEPRECATED);
+        trigger_error(self::class . ' will be removed in TYPO3 v10.0. Use ' . EidMiddleware::class . ' instead.', E_USER_DEPRECATED);
         return $this->handle($request);
     }
 
@@ -62,7 +62,7 @@ class EidRequestHandler implements RequestHandlerInterface, PsrRequestHandlerInt
      */
     public function canHandleRequest(ServerRequestInterface $request): bool
     {
-        trigger_error(self::class . ' will be removed in TYPO3 v10. Use ' . EidMiddleware::class . ' instead.', E_USER_DEPRECATED);
+        trigger_error(self::class . ' will be removed in TYPO3 v10.0. Use ' . EidMiddleware::class . ' instead.', E_USER_DEPRECATED);
         return !empty($request->getQueryParams()['eID']) || !empty($request->getParsedBody()['eID']);
     }
 
@@ -74,7 +74,7 @@ class EidRequestHandler implements RequestHandlerInterface, PsrRequestHandlerInt
      */
     public function getPriority(): int
     {
-        trigger_error(self::class . ' will be removed in TYPO3 v10. Use ' . EidMiddleware::class . ' instead.', E_USER_DEPRECATED);
+        trigger_error(self::class . ' will be removed in TYPO3 v10.0. Use ' . EidMiddleware::class . ' instead.', E_USER_DEPRECATED);
         return 80;
     }
 
@@ -87,7 +87,7 @@ class EidRequestHandler implements RequestHandlerInterface, PsrRequestHandlerInt
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        trigger_error(self::class . ' will be removed in TYPO3 v10. Use ' . EidMiddleware::class . ' instead.', E_USER_DEPRECATED);
+        trigger_error(self::class . ' will be removed in TYPO3 v10.0. Use ' . EidMiddleware::class . ' instead.', E_USER_DEPRECATED);
         // Remove any output produced until now
         ob_clean();
 

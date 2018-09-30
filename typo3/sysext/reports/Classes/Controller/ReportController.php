@@ -40,8 +40,8 @@ class ReportController
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'indexAction' => 'Using ReportController::indexAction() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'detailAction' => 'Using ReportController::detailAction() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'indexAction' => 'Using ReportController::indexAction() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'detailAction' => 'Using ReportController::detailAction() is deprecated and will not be possible anymore in TYPO3 v10.0.',
     ];
 
     /**

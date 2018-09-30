@@ -57,7 +57,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         'userTS' => 'Using $userTS of class BackendUserAuthentication from the outside is discouraged. Use getTSConfig() instead.',
         'userTSUpdated' => 'Using $userTSUpdated of class BackendUserAuthentication from the outside is discouraged. This property is for class internal use only.',
         'userTS_text' => 'Using $userTS_text of class BackendUserAuthentication from the outside is discouraged. This property is for class internal use only.',
-        'userTS_dontGetCached' => 'Using $userTS_dontGetCached of class BackendUserAuthentication is deprecated. The property will be removed in v10.',
+        'userTS_dontGetCached' => 'Using $userTS_dontGetCached of class BackendUserAuthentication is deprecated. The property will be removed in TYPO3 v10.0.',
         'checkWorkspaceCurrent_cache' => 'Using $checkWorkspaceCurrent_cache of class BackendUserAuthentication is marked as internal, as its sole purpose is a runtime cache for internal calls.',
     ];
 
@@ -165,7 +165,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
 
     /**
      * @var bool
-     * @deprecated since v9, will be removed in v10. If true, parsed TSconfig will not be cached
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. If true, parsed TSconfig will not be cached
      */
     protected $userTS_dontGetCached = false;
 
@@ -906,7 +906,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function isPSet($compiledPermissions, $tableName, $actionType = '')
     {
-        trigger_error('BackendUserAuthentication->isPSet() will be removed in TYPO3 v10.0. Use doesUserHaveAccess() and calcPerms()', E_USER_DEPRECATED);
+        trigger_error('BackendUserAuthentication->isPSet() will be removed in TYPO3 v10.0. Use doesUserHaveAccess() and calcPerms().', E_USER_DEPRECATED);
         if ($this->isAdmin()) {
             $result = true;
         } elseif ($tableName === 'pages') {
@@ -1237,7 +1237,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             return $this->userTS;
         }
 
-        trigger_error('Handing over arguments to BackendUserAuthentication->getTSConfig() is deprecated, they will be removed in v10.', E_USER_DEPRECATED);
+        trigger_error('Handing over arguments to BackendUserAuthentication->getTSConfig() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
 
         if (!is_array($config)) {
             // Getting Root-ts if not sent
@@ -1266,11 +1266,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param string $objectString Object string, eg. "somestring.someproperty.somesubproperty
      * @return string The value for that object string (object path)
      * @see getTSConfig()
-     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0
      */
     public function getTSConfigVal($objectString)
     {
-        trigger_error('BackendUserAuthentication->getTSConfigVal() will be removed in TYPO3 v10. Use getTSConfig() instead.', E_USER_DEPRECATED);
+        trigger_error('BackendUserAuthentication->getTSConfigVal() will be removed in TYPO3 v10.0. Use getTSConfig() instead.', E_USER_DEPRECATED);
         $TSConf = $this->getTSConfig($objectString);
         return $TSConf['value'];
     }
@@ -1281,11 +1281,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param string $objectString Object string, eg. "somestring.someproperty.somesubproperty
      * @return array The properties for that object string (object path) - if any
      * @see getTSConfig()
-     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0
      */
     public function getTSConfigProp($objectString)
     {
-        trigger_error('BackendUserAuthentication->getTSConfigProp() will be removed in TYPO3 v10. Use getTSConfig() instead.', E_USER_DEPRECATED);
+        trigger_error('BackendUserAuthentication->getTSConfigProp() will be removed in TYPO3 v10.0. Use getTSConfig() instead.', E_USER_DEPRECATED);
         $TSConf = $this->getTSConfig($objectString);
         return $TSConf['properties'];
     }
@@ -1402,7 +1402,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // Imploding with "[global]" will make sure that non-ended confinements with braces are ignored.
             $this->userTS_text = implode(LF . '[GLOBAL]' . LF, $this->TSdataArray);
             if (!$this->userTS_dontGetCached) {
-                // @deprecated: Property userTS_dontGetCached is deprecated since v9 and will be removed in v10
+                // @deprecated: Property userTS_dontGetCached is deprecated since TYPO3 v9 and will be removed in TYPO3 v10.0
                 // Perform TS-Config parsing with condition matching
                 $parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TsConfigParser::class);
                 $res = $parseObj->parseTSconfig($this->userTS_text, 'userTS');
@@ -1416,7 +1416,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
                 $cachedContent = $cache->get($hash);
                 if (is_array($cachedContent) && !$this->userTS_dontGetCached) {
-                    // @deprecated: Property userTS_dontGetCached is deprecated since v9 and will be removed in v10
+                    // @deprecated: Property userTS_dontGetCached is deprecated since TYPO3 v9 and will be removed in TYPO3 v10.0
                     $this->userTS = $cachedContent;
                 } else {
                     $parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
@@ -2064,11 +2064,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @param string $str The text to wrap in comment prefixes and delimiters.
      * @return string TypoScript comment with the string text inside.
-     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0
      */
     public function addTScomment($str)
     {
-        trigger_error('BackendUserAuthentication->addTScomment() will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('BackendUserAuthentication->addTScomment() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $delimiter = '# ***********************************************';
         $out = $delimiter . LF;
         $lines = GeneralUtility::trimExplode(LF, $str);
@@ -2388,11 +2388,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param string $extKey Option extension key / module name
      * @param int $error Error level. 0 = message, 1 = error (user problem), 2 = System Error (which should not happen), 3 = security notice (admin)
      * @return int Log entry UID
-     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0
      */
     public function simplelog($message, $extKey = '', $error = 0)
     {
-        trigger_error('BackendUserAuthentication->simplelog() will be removed in TYPO3 v10. Use writelog, or better, PSR-3 based logging instead.', E_USER_DEPRECATED);
+        trigger_error('BackendUserAuthentication->simplelog() will be removed in TYPO3 v10.0. Use writelog, or better, PSR-3 based logging instead.', E_USER_DEPRECATED);
         return $this->writelog(4, 0, $error, 0, ($extKey ? '[' . $extKey . '] ' : '') . $message, []);
     }
 

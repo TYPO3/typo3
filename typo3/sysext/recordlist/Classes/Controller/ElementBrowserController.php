@@ -37,7 +37,7 @@ class ElementBrowserController
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'main' => 'Using ElementBrowserController::main() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'main' => 'Using ElementBrowserController::main() is deprecated and will not be possible anymore in TYPO3 v10.0.',
     ];
 
     /**

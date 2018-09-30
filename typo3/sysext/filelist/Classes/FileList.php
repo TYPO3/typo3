@@ -264,7 +264,7 @@ class FileList
 
     /**
      * @var FileListController
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $fileListController;
 
@@ -276,7 +276,7 @@ class FileList
     /**
      * Construct
      *
-     * @param FileListController $fileListController @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @param FileListController $fileListController @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function __construct(FileListController $fileListController = null)
     {

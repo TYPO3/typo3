@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Log writer that writes log entries into TYPO3 runtime cache
- * @deprecated Deprecated since TYPO3 9, will be removed in v10
+ * @deprecated Deprecated since TYPO3 9, will be removed in TYPO3 v10.0
  */
 class RuntimeCacheWriter implements WriterInterface
 {

@@ -172,7 +172,7 @@ class SoftReferenceIndex
                 // If it looks like a local image, continue. Otherwise ignore it.
                 $absPath = GeneralUtility::getFileAbsFileName(Environment::getPublicPath() . '/' . $srcRef);
                 if (!$pI['scheme'] && !$pI['query'] && $absPath && $srcRef !== 'clear.gif') {
-                    // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
+                    // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
                     // Initialize the element entry with info text here:
                     $tokenID = $this->makeTokenID($k);
                     $elements[$k] = [];

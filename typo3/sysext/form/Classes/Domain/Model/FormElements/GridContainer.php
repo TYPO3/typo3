@@ -35,7 +35,7 @@ class GridContainer extends Section implements GridContainerInterface
     public function initializeFormElement()
     {
         trigger_error(
-            '"GridContainer" form elements has been deprecated in v9 and will be removed in v10. Use "GridRow" form elements instead.',
+            '"GridContainer" form elements will be removed in TYPO3 v10.0. Use "GridRow" form elements instead.',
             E_USER_DEPRECATED
         );
         parent::initializeFormElement();

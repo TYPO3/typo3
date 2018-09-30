@@ -134,7 +134,7 @@ class RootlineUtility
     {
         $this->mountPointParameter = trim($mountPointParameter);
         if ($context instanceof PageRepository) {
-            trigger_error('Calling RootlineUtility with PageRepository as third parameter will be unsupported with TYPO3 v10.0. Use a Context object directly', E_USER_DEPRECATED);
+            trigger_error('Calling RootlineUtility with PageRepository as third parameter will be unsupported with TYPO3 v10.0. Use a Context object directly.', E_USER_DEPRECATED);
             $this->pageContext = $context;
             $this->context = GeneralUtility::makeInstance(Context::class);
         } else {

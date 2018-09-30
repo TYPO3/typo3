@@ -75,7 +75,7 @@ class ListController extends AbstractWizardController
     {
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf');
 
-        // @deprecated since v9, will be obsolete in v10
+        // @deprecated since TYPO3 v9, will be obsolete in TYPO3 v10.0
         $request = $GLOBALS['TYPO3_REQUEST'];
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
@@ -101,11 +101,11 @@ class ListController extends AbstractWizardController
     /**
      * Main function
      * Will issue a location-header, redirecting either BACK or to a new FormEngine instance...
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function main(): void
     {
-        trigger_error('Method main() will be replaced by protected method processRequest() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('ListController->main() will be replaced by protected method processRequest() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         $this->processRequest($GLOBALS['TYPO3_REQUEST']);
     }
     /**

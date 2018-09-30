@@ -101,12 +101,12 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
         $value = isset($conf['value.']) ? $this->cObj->stdWrap($conf['value'], $conf['value.']) : $conf['value'];
         $noscript = isset($conf['noscript.']) ? $this->cObj->stdWrap($conf['noscript'], $conf['noscript.']) : $conf['noscript'];
 
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10 - see method usages
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 - see method usages
         if (!empty($conf['noscript.']) || !empty($conf['noscript'])) {
             trigger_error('SVG cObject: The option "noscript" will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         }
         if (!empty($conf['value.']) || !empty($conf['value'])) {
-            trigger_error('SVG cObject: The option "value" without setting renderMode=inline will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+            trigger_error('SVG cObject: The option "value" without setting renderMode=inline will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         }
 
         $content = [];
@@ -120,7 +120,7 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
             $content[] = $noscript;
             $content[] = '</object>';
         } else {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10 - see method usages
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 - see method usages
             $content[] = '<script type="image/svg+xml">';
             $content[] = '  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="' . (int)$width . '" height="' . (int)$height . '">';
             $content[] = $value;

@@ -40,7 +40,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Child class for rendering of Web > List (not the final class)
  * Shared between Web>List and Web>Page
  * @see \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
- * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
  */
 class AbstractDatabaseRecordList extends AbstractRecordList
 {
@@ -48,7 +48,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Specify a list of tables which are the only ones allowed to be displayed.
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $tableList = '';
 
@@ -56,7 +56,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Return URL
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $returnUrl = '';
 
@@ -64,7 +64,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Thumbnails on records containing files (pictures)
      *
      * @var bool
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $thumbs = 0;
 
@@ -72,7 +72,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * default Max items shown per table in "multi-table mode", may be overridden by tables.php
      *
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $itemsLimitPerTable = 20;
 
@@ -80,7 +80,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * default Max items shown per table in "single-table mode", may be overridden by tables.php
      *
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $itemsLimitSingleTable = 100;
 
@@ -88,7 +88,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Current script name
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $script = 'index.php';
 
@@ -96,7 +96,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Indicates if all available fields for a user should be selected or not.
      *
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $allFields = 0;
 
@@ -104,7 +104,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * If set, csvList is outputted.
      *
      * @var bool
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $csvOutput = false;
 
@@ -112,7 +112,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Field, to sort list by
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $sortField;
 
@@ -120,7 +120,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Field, indicating to sort in reverse order.
      *
      * @var bool
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $sortRev;
 
@@ -128,7 +128,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Containing which fields to display in extended mode
      *
      * @var string[]
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $displayFields;
 
@@ -136,7 +136,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * String, can contain the field name from a table which must have duplicate values marked.
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $duplicateField;
 
@@ -144,7 +144,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Page id
      *
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $id;
 
@@ -152,7 +152,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Tablename if single-table mode
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $table = '';
 
@@ -160,7 +160,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * If TRUE, records are listed only if a specific table is selected.
      *
      * @var bool
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $listOnlyInSingleTableMode = false;
 
@@ -168,7 +168,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Pointer for browsing list
      *
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $firstElementNumber = 0;
 
@@ -176,7 +176,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Search string
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $searchString = '';
 
@@ -184,7 +184,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Levels to search down.
      *
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $searchLevels = '';
 
@@ -192,7 +192,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Number of records to show
      *
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $showLimit = 0;
 
@@ -200,7 +200,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Page select permissions
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $perms_clause = '';
 
@@ -208,7 +208,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Some permissions...
      *
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $calcPerms = 0;
 
@@ -216,7 +216,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Mode for what happens when a user clicks the title of a record.
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $clickTitleMode = '';
 
@@ -224,7 +224,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Shared module configuration, used by localization features
      *
      * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $modSharedTSconfig = [];
 
@@ -232,7 +232,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Loaded with page record with version overlay if any.
      *
      * @var string[]
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $pageRecord = [];
 
@@ -240,7 +240,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Tables which should not get listed
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $hideTables = '';
 
@@ -248,7 +248,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Tables which should not list their translations
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $hideTranslations = '';
 
@@ -256,7 +256,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * TSconfig which overwrites TCA-Settings
      *
      * @var mixed[][]
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $tableTSconfigOverTCA = [];
 
@@ -264,7 +264,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Array of collapsed / uncollapsed tables in multi table view
      *
      * @var int[][]
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $tablesCollapsed = [];
 
@@ -272,7 +272,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * JavaScript code accumulation
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $JScode = '';
 
@@ -280,7 +280,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * HTML output
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $HTMLcode = '';
 
@@ -288,7 +288,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * "LIMIT " in SQL...
      *
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $iLimit = 0;
 
@@ -296,7 +296,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Counting the elements no matter what...
      *
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $eCounter = 0;
 
@@ -304,7 +304,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Set to the total number of items for a table when selecting.
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $totalItems = '';
 
@@ -312,7 +312,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Cache for record path
      *
      * @var mixed[]
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $recPath_cache = [];
 
@@ -320,7 +320,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Fields to display for the current table
      *
      * @var string[]
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $setFields = [];
 
@@ -328,7 +328,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Used for tracking next/prev uids
      *
      * @var int[][]
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $currentTable = [];
 
@@ -336,20 +336,20 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Used for tracking duplicate values of fields
      *
      * @var string[]
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $duplicateStack = [];
 
     /**
      * @var array[] Module configuration
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $modTSconfig;
 
     /**
      * Override/add urlparameters in listUrl() method
      * @var string[]
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     protected $overrideUrlParameters = [];
 
@@ -357,7 +357,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Override the page ids taken into account by getPageIdConstraint()
      *
      * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     protected $overridePageIdList = [];
 
@@ -369,7 +369,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      *    'after' => []
      *  ]
      * @var array[]
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     protected $tableDisplayOrder = [];
 
@@ -382,7 +382,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @param string $search Search word, if any
      * @param int $levels Number of levels to search down the page tree
      * @param int $showLimit Limit of records to be listed.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function start($id, $table, $pointer, $search = '', $levels = 0, $showLimit = 0)
     {
@@ -467,7 +467,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Traverses the table(s) to be listed and renders the output code for each:
      * The HTML is accumulated in $this->HTMLcode
      * Finishes off with a stopper-gif
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function generateList()
     {
@@ -576,7 +576,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @param int $id
      * @param string $fields List of fields to show in the listing. Pseudo fields will be added including the record header.
      * @return string HTML code
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function getTable($tableName, $id, $fields = '')
     {
@@ -588,7 +588,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      *
      * @param bool $formFields If TRUE, the search box is wrapped in its own form-tags
      * @return string HTML for the search box
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function getSearchBox($formFields = true)
     {
@@ -663,7 +663,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
     /**
      * Setting the field names to display in extended list.
      * Sets the internal variable $this->setFields
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function setDispFields()
     {
@@ -688,7 +688,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @param string $table Table (record is from)
      * @param string $field Field name for which thumbnail are to be rendered.
      * @return string HTML for thumbnails, if any.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function thumbCode($row, $table, $field)
     {
@@ -704,7 +704,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @param string[] $additionalConstraints Additional part for where clause
      * @param string[] $fields Field list to select, * for all
      * @return \TYPO3\CMS\Core\Database\Query\QueryBuilder
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function getQueryBuilder(
         string $table,
@@ -742,7 +742,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @param QueryBuilder $queryBuilder
      * @param bool $addSorting
      * @return QueryBuilder
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     protected function prepareQueryBuilder(
         string $table,
@@ -801,8 +801,8 @@ class AbstractDatabaseRecordList extends AbstractRecordList
 
         $hookName = DatabaseRecordList::class;
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'])) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10, the modifyQuery hook should be used instead.
-            trigger_error('The hook ($GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][' . $hookName . '][\'buildQueryParameters\']) will be removed in TYPO3 v10, the modifyQuery hook should be used instead.', E_USER_DEPRECATED);
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, the modifyQuery hook should be used instead.
+            trigger_error('The hook ($GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][' . $hookName . '][\'buildQueryParameters\']) will be removed in TYPO3 v10.0, the modifyQuery hook should be used instead.', E_USER_DEPRECATED);
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'] as $className) {
                 $hookObject = GeneralUtility::makeInstance($className);
                 if (method_exists($hookObject, 'buildQueryParametersPostProcess')) {
@@ -822,7 +822,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         // array_unique / array_filter used to eliminate empty and duplicate constraints
         // the array keys are eliminated by this as well to facilitate argument unpacking
         // when used with the querybuilder.
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
         if (!empty($parameters['where'])) {
             $parameters['where'] = array_unique(array_filter(array_values($parameters['where'])));
         }
@@ -860,7 +860,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @param string $table Table name
      * @param int $pageId Only used to build the search constraints, $this->pidList is used for restrictions
      * @param array $constraints Additional constraints for where clause
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function setTotalItems(string $table, int $pageId, array $constraints)
     {
@@ -895,7 +895,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @param string $table Table, in which the fields are being searched.
      * @param int $currentPid Page id for the possible search limit. -1 only if called from an old XCLASS.
      * @return string Returns part of WHERE-clause for searching, if applicable.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function makeSearchString($table, $currentPid = -1)
     {
@@ -993,7 +993,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      *
      * @param string $tableName
      * @return string[]
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     protected function getSearchFields($tableName)
     {
@@ -1024,7 +1024,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @param string $table Table name
      * @param string $code Table label
      * @return string The linked table label
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function linkWrapTable($table, $code)
     {
@@ -1042,7 +1042,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @param string $code Item title (not htmlspecialchars()'ed yet)
      * @param mixed[] $row Item row
      * @return string The item title. Ready for HTML output (is htmlspecialchars()'ed)
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function linkWrapItems($table, $uid, $code, $row)
     {
@@ -1102,7 +1102,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @param string $code code to wrap
      * @param string $testString String which is tested for being a URL or email and which will be used for the link if so.
      * @return string Link-Wrapped $code value, if $testString was URL or email.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function linkUrlMail($code, $testString)
     {
@@ -1128,7 +1128,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @param string $table Table name to display. Enter "-1" for the current table.
      * @param string $exclList Comma separated list of fields NOT to include ("sortField", "sortRev" or "firstElementNumber")
      * @return string URL
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function listURL($altId = '', $table = '-1', $exclList = '')
     {
@@ -1182,7 +1182,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
     /**
      * Returns "requestUri" - which is basically listURL
      * @return string Content of ->listURL()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function requestUri()
     {
@@ -1196,7 +1196,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @param bool $dontCheckUser If set, users access to the field (non-exclude-fields) is NOT checked.
      * @param bool $addDateFields If set, also adds crdate and tstamp fields (note: they will also be added if user is admin or dontCheckUser is set)
      * @return string[] Array, where values are fieldnames to include in query
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function makeFieldList($table, $dontCheckUser = false, $addDateFields = false)
     {
@@ -1255,7 +1255,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @param int $depth Depth to go down
      * @param string $perms_clause select clause
      * @return int[]
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     protected function getSearchableWebmounts($id, $depth, $perms_clause)
     {
@@ -1293,7 +1293,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Redirects to FormEngine if a record is just localized.
      *
      * @param string $justLocalized String with table, orig uid and language separated by ":
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function localizationRedirect($justLocalized)
     {
@@ -1345,7 +1345,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Set URL parameters to override or add in the listUrl() method.
      *
      * @param string[] $urlParameters
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function setOverrideUrlParameters(array $urlParameters)
     {
@@ -1363,7 +1363,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      *
      * @param array $orderInformation
      * @throws \UnexpectedValueException
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function setTableDisplayOrder(array $orderInformation)
     {
@@ -1388,7 +1388,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
 
     /**
      * @return array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function getOverridePageIdList(): array
     {
@@ -1397,7 +1397,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
 
     /**
      * @param int[]|array $overridePageIdList
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function setOverridePageIdList(array $overridePageIdList)
     {
@@ -1411,7 +1411,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @param string $tableName
      * @param QueryBuilder $queryBuilder
      * @return QueryBuilder Modified QueryBuilder object
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     protected function addPageIdConstraint(string $tableName, QueryBuilder $queryBuilder): QueryBuilder
     {
@@ -1457,16 +1457,16 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Method used to log deprecated usage of old buildQueryParametersPostProcess hook arguments
      *
      * @param string $index
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     protected function logDeprecation(string $index)
     {
-        trigger_error('[index: ' . $index . '] $parameters in "buildQueryParameters"-Hook has been deprecated in v9 and will be remove in v10, use $queryBuilder instead', E_USER_DEPRECATED);
+        trigger_error('[index: ' . $index . '] $parameters in "buildQueryParameters"-Hook will be removed in TYPO3 v10.0, use $queryBuilder instead.', E_USER_DEPRECATED);
     }
 
     /**
      * @return BackendUserAuthentication
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     protected function getBackendUserAuthentication()
     {

@@ -30,6 +30,6 @@ Migration
 =========
 
 Youngest TYPO3 core v7 and v8 releases support PHP 7.2. This allows upgrading the platform
-in a first step and upgrading to core v9 in a second step
+in a first step and upgrading to TYPO3 v9 in a second step.
 
 .. index:: PHP-API, NotScanned

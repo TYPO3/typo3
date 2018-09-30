@@ -110,7 +110,7 @@ class PackageManager implements SingletonInterface
         $this->packagesBasePath = Environment::getPublicPath() . '/';
         $this->packageStatesPathAndFilename = Environment::getLegacyConfigPath() . '/PackageStates.php';
         if ($dependencyOrderingService === null) {
-            trigger_error(self::class . ' without constructor based dependency injection has been deprecated in v9.2 and will not work in TYPO3 v10.', E_USER_DEPRECATED);
+            trigger_error(self::class . ' without constructor based dependency injection will stop working in TYPO3 v10.0.', E_USER_DEPRECATED);
             $dependencyOrderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);
         }
         $this->dependencyOrderingService = $dependencyOrderingService;
@@ -126,11 +126,11 @@ class PackageManager implements SingletonInterface
 
     /**
      * @param DependencyResolver $dependencyResolver
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function injectDependencyResolver(DependencyResolver $dependencyResolver)
     {
-        trigger_error(self::class . '::injectDependencyResolver() has been deprecated with v9.2 and will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error(self::class . '::injectDependencyResolver() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
     }
 
     /**
@@ -143,7 +143,7 @@ class PackageManager implements SingletonInterface
         } catch (Exception\PackageManagerCacheUnavailableException $exception) {
             $this->loadPackageStates();
             $this->initializePackageObjects();
-            // @deprecated will be removed in v10
+            // @deprecated will be removed in TYPO3 v10.0
             $this->initializeCompatibilityLoadedExtArray();
             $this->saveToPackageCache();
         }
@@ -185,7 +185,7 @@ class PackageManager implements SingletonInterface
             $packageCache = [
                 'packageStatesConfiguration' => $this->packageStatesConfiguration,
                 'packageAliasMap' => $this->packageAliasMap,
-                // @deprecated will be removed in v10
+                // @deprecated will be removed in TYPO3 v10.0
                 'loadedExtArray' => $GLOBALS['TYPO3_LOADED_EXT'],
                 'composerNameToPackageKeyMap' => $this->composerNameToPackageKeyMap,
                 'packageObjects' => serialize($this->packages),
@@ -222,7 +222,7 @@ class PackageManager implements SingletonInterface
                 \stdClass::class,
             ]
         ]);
-        // @deprecated will be removed in v10
+        // @deprecated will be removed in TYPO3 v10.0
         $GLOBALS['TYPO3_LOADED_EXT'] = $packageCache['loadedExtArray'];
     }
 
@@ -302,7 +302,7 @@ class PackageManager implements SingletonInterface
      */
     protected function initializeCompatibilityLoadedExtArray()
     {
-        // @deprecated will be removed in v10
+        // @deprecated will be removed in TYPO3 v10.0
         $loadedExtObj = new \TYPO3\CMS\Core\Compatibility\LoadedExtensionsArray($this);
         $GLOBALS['TYPO3_LOADED_EXT'] = $loadedExtObj->toArray();
     }
@@ -612,7 +612,7 @@ class PackageManager implements SingletonInterface
     {
         $package = $this->registerPackageDuringRuntime($packageKey);
         $this->runtimeActivatedPackages[$package->getPackageKey()] = $package;
-        // @deprecated will be removed in v10
+        // @deprecated will be removed in TYPO3 v10.0
         if (!isset($GLOBALS['TYPO3_LOADED_EXT'][$package->getPackageKey()])) {
             $loadedExtArrayElement = new LoadedExtensionArrayElement($package);
             $GLOBALS['TYPO3_LOADED_EXT'][$package->getPackageKey()] = $loadedExtArrayElement->toArray();
@@ -793,7 +793,7 @@ class PackageManager implements SingletonInterface
         $packageStatesCode = "<?php\n$fileDescription\nreturn " . ArrayUtility::arrayExport($this->packageStatesConfiguration) . ";\n";
         GeneralUtility::writeFile($this->packageStatesPathAndFilename, $packageStatesCode, true);
 
-        // @deprecated will be removed in v10
+        // @deprecated will be removed in TYPO3 v10.0
         $this->initializeCompatibilityLoadedExtArray();
 
         GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($this->packageStatesPathAndFilename);

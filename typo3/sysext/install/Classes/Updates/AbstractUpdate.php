@@ -23,13 +23,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Generic class that every update wizard class inherits from.
  * Used by the update wizard in the install tool.
  *
- * @deprecated since TYPO3 v9, will be removed in v10
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
  */
 abstract class AbstractUpdate implements UpgradeWizardInterface, ChattyInterface
 {
     public function __construct()
     {
-        trigger_error('Deprecated since TYPO3 v9, will be removed in v10, use UpgradeWizardInterface directly. affected class: ' . get_class($this), E_USER_DEPRECATED);
+        trigger_error('Deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use UpgradeWizardInterface directly. affected class: ' . get_class($this), E_USER_DEPRECATED);
     }
     /**
      * The human-readable title of the upgrade wizard
@@ -66,7 +66,7 @@ abstract class AbstractUpdate implements UpgradeWizardInterface, ChattyInterface
     public function getTitle(): string
     {
         trigger_error(
-            'Deprecated since TYPO3 v9, will be removed in v10, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
+            'Deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
             E_USER_DEPRECATED
         );
         if ($this->title) {
@@ -83,7 +83,7 @@ abstract class AbstractUpdate implements UpgradeWizardInterface, ChattyInterface
     public function setTitle($title)
     {
         trigger_error(
-            'Deprecated since TYPO3 v9, will be removed in v10, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
+            'Deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
             E_USER_DEPRECATED
         );
         $this->title = $title;
@@ -97,7 +97,7 @@ abstract class AbstractUpdate implements UpgradeWizardInterface, ChattyInterface
     public function getIdentifier(): string
     {
         trigger_error(
-            'Deprecated since TYPO3 v9, will be removed in v10, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
+            'Deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
             E_USER_DEPRECATED
         );
         return $this->identifier ?? static::class;
@@ -111,7 +111,7 @@ abstract class AbstractUpdate implements UpgradeWizardInterface, ChattyInterface
     public function setIdentifier($identifier)
     {
         trigger_error(
-            'Deprecated since TYPO3 v9, will be removed in v10, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
+            'Deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
             E_USER_DEPRECATED
         );
         $this->identifier = $identifier;
@@ -128,7 +128,7 @@ abstract class AbstractUpdate implements UpgradeWizardInterface, ChattyInterface
     public function shouldRenderWizard()
     {
         trigger_error(
-            'Deprecated since TYPO3 v9, will be removed in v10, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
+            'Deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
             E_USER_DEPRECATED
         );
         $explanation = '';
@@ -145,7 +145,7 @@ abstract class AbstractUpdate implements UpgradeWizardInterface, ChattyInterface
     protected function checkIfTableExists($table)
     {
         trigger_error(
-            'Deprecated since TYPO3 v9, will be removed in v10, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
+            'Deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
             E_USER_DEPRECATED
         );
         $tableExists = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -182,7 +182,7 @@ abstract class AbstractUpdate implements UpgradeWizardInterface, ChattyInterface
     protected function installExtensions(array $extensionKeys)
     {
         trigger_error(
-            'Deprecated since TYPO3 v9, will be removed in v10, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
+            'Deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
             E_USER_DEPRECATED
         );
         /** @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility */
@@ -202,7 +202,7 @@ abstract class AbstractUpdate implements UpgradeWizardInterface, ChattyInterface
     protected function markWizardAsDone($confValue = 1)
     {
         trigger_error(
-            'Deprecated since TYPO3 v9, will be removed in v10, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
+            'Deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
             E_USER_DEPRECATED
         );
         GeneralUtility::makeInstance(Registry::class)->set('installUpdate', static::class, $confValue);
@@ -216,7 +216,7 @@ abstract class AbstractUpdate implements UpgradeWizardInterface, ChattyInterface
     protected function isWizardDone()
     {
         trigger_error(
-            'Deprecated since TYPO3 v9, will be removed in v10, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
+            'Deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
             E_USER_DEPRECATED
         );
         $wizardClassName = static::class;
@@ -231,7 +231,7 @@ abstract class AbstractUpdate implements UpgradeWizardInterface, ChattyInterface
     public function getDescription(): string
     {
         trigger_error(
-            'Deprecated since TYPO3 v9, will be removed in v10, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
+            'Deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
             E_USER_DEPRECATED
         );
         return '';
@@ -246,7 +246,7 @@ abstract class AbstractUpdate implements UpgradeWizardInterface, ChattyInterface
     public function executeUpdate(): bool
     {
         trigger_error(
-            'Deprecated since TYPO3 v9, will be removed in v10, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
+            'Deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
             E_USER_DEPRECATED
         );
         $queries = [];
@@ -266,7 +266,7 @@ abstract class AbstractUpdate implements UpgradeWizardInterface, ChattyInterface
     public function updateNecessary(): bool
     {
         trigger_error(
-            'Deprecated since TYPO3 v9, will be removed in v10, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
+            'Deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
             E_USER_DEPRECATED
         );
         $description = '';
@@ -285,7 +285,7 @@ abstract class AbstractUpdate implements UpgradeWizardInterface, ChattyInterface
     public function getPrerequisites(): array
     {
         trigger_error(
-            'Deprecated since TYPO3 v9, will be removed in v10, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
+            'Deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
             E_USER_DEPRECATED
         );
         return [
@@ -301,7 +301,7 @@ abstract class AbstractUpdate implements UpgradeWizardInterface, ChattyInterface
     public function setOutput(OutputInterface $output): void
     {
         trigger_error(
-            'Deprecated since TYPO3 v9, will be removed in v10, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
+            'Deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use UpgradeWizardInterface directly. affected class: ' . get_class($this),
             E_USER_DEPRECATED
         );
         $this->output = $output;

@@ -99,7 +99,7 @@ class LoginController implements LoggerAwareInterface
      */
     public function __construct()
     {
-        // @deprecated since v9, will be obsolete in v10
+        // @deprecated since TYPO3 v9, will be obsolete in TYPO3 v10.0
         $request = $GLOBALS['TYPO3_REQUEST'];
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
@@ -175,11 +175,11 @@ class LoginController implements LoggerAwareInterface
      *
      * @throws Exception
      * @return string The content to output
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function main(): string
     {
-        trigger_error('Method main() will be replaced by protected method createLoginLogoutForm() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('LoginController->main() will be replaced by protected method createLoginLogoutForm() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         return $this->createLoginLogoutForm($GLOBALS['TYPO3_REQUEST']);
     }
 
@@ -377,11 +377,11 @@ class LoginController implements LoggerAwareInterface
     /**
      * Making interface selector
      *
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function makeInterfaceSelectorBox(): void
     {
-        trigger_error('Method makeInterfaceSelectorBox() will be replaced by protected method makeInterfaceSelector() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('LoginController->makeInterfaceSelectorBox() will be replaced by protected method makeInterfaceSelector() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         $this->makeInterfaceSelector($GLOBALS['TYPO3_REQUEST']);
     }
 

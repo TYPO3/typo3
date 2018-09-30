@@ -317,7 +317,7 @@ class Indexer
         $fileInfo['type'] = $this->getFileType($fileInfo['mime_type']);
         $fileInfo['sha1'] = $this->storage->hashFileByIdentifier($identifier, 'sha1');
         if (!isset($fileInfo['extension'])) {
-            trigger_error('Guessing FAL file extensions has been deprecated in v9.3 and will be removed in v10. The FAL (' . $this->storage->getDriverType() . ') driver method getFileInfoByIdentifier() should return the file extension', E_USER_DEPRECATED);
+            trigger_error('Guessing FAL file extensions will be removed in TYPO3 v10.0. The FAL (' . $this->storage->getDriverType() . ') driver method getFileInfoByIdentifier() should return the file extension.', E_USER_DEPRECATED);
             $fileInfo['extension'] = PathUtility::pathinfo($fileInfo['name'], PATHINFO_EXTENSION);
         }
         $fileInfo['missing'] = 0;

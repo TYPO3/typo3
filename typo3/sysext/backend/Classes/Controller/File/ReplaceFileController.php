@@ -103,7 +103,7 @@ class ReplaceFileController
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
 
-        // @deprecated since v9, will be moved out of __construct() in v10
+        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
         $this->init($GLOBALS['TYPO3_REQUEST']);
     }
 
@@ -124,7 +124,7 @@ class ReplaceFileController
      */
     public function main()
     {
-        trigger_error('Method main() will be replaced by protected method renderContent() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('ReplaceFileController->main() will be replaced by protected method renderContent() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         $this->renderContent();
     }
 

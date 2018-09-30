@@ -39,7 +39,7 @@ class UserElement extends AbstractFormElement
         if (empty($parameterArray['fieldConf']['config']['userFunc'])) {
             // If there is no (deprecated) userFunc, render some dummy output to explain this element
             // should usually not be called at all.
-            // @deprecated The if can be removed in v10, keeping the body only.
+            // @deprecated The if can be removed in TYPO3 v10.0, keeping the body only.
             $resultArray['html'] = '<div class="alert alert-warning">';
             $resultArray['html'] .= 'This is dummy output: Field <code>' . htmlspecialchars($this->data['fieldName']) . '</code>';
             $resultArray['html'] .= 'of table <code>' . htmlspecialchars($this->data['tableName']) . '</code>';
@@ -49,9 +49,9 @@ class UserElement extends AbstractFormElement
             return $resultArray;
         }
 
-        // @deprecated since TYPO3 v9, everything below will be removed in v10.
+        // @deprecated since TYPO3 v9, everything below will be removed in TYPO3 v10.0.
         trigger_error(
-            'Properties "userFunc", "noTableWrapping" and "parameters" have been deprecated in v9, will be removed in v10. Use a renderType instead.',
+            'Properties "userFunc", "noTableWrapping" and "parameters" will be removed in TYPO3 v10.0. Use a renderType instead.',
             E_USER_DEPRECATED
         );
         $parameterArray['table'] = $this->data['tableName'];

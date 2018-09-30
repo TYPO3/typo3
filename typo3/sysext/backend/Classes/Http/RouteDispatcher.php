@@ -36,7 +36,7 @@ class RouteDispatcher extends Dispatcher
      * Main method to resolve the route and checks the target of the route, and tries to call it.
      *
      * @param ServerRequestInterface $request the current server request
-     * @param ResponseInterface $response the prepared response @deprecated since v9, will be removed in v10
+     * @param ResponseInterface $response the prepared response @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      * @return ResponseInterface the filled response by the callable / controller/action
      * @throws InvalidRequestTokenException if the route was not found
      * @throws \InvalidArgumentException if the defined target for the route is invalid
@@ -77,7 +77,7 @@ class RouteDispatcher extends Dispatcher
             }
             if ($targetReflection->getNumberOfParameters() >= 2) {
                 trigger_error(
-                    'Handing over second argument $response to controller action ' . $controllerActionName . '() is deprecated and will be removed in v10.',
+                    'Handing over second argument $response to controller action ' . $controllerActionName . '() is deprecated and will be removed in TYPO3 v10.0.',
                     E_USER_DEPRECATED
                 );
                 $arguments[] = $response;
@@ -117,7 +117,7 @@ class RouteDispatcher extends Dispatcher
             return $this->getFormProtection()->validateToken($token, 'route', $route->getOption('_identifier'));
         }
         // backwards compatibility: check for M and module token params
-        // @deprecated since TYPO3 CMS 9, will be removed in TYPO3 CMS 10.
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
         $token = (string)($request->getParsedBody()['moduleToken'] ?? $request->getQueryParams()['moduleToken']);
         return $this->getFormProtection()->validateToken($token, 'moduleCall', $request->getParsedBody()['M'] ?? $request->getQueryParams()['M']);
     }

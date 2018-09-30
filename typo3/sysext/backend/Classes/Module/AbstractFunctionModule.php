@@ -60,7 +60,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * times inclusion sections in their index.php scripts.
  *
  * @see \TYPO3\CMS\Backend\Module\BaseScriptClass
- * @deprecated since v9, will be removed in v10
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
  */
 abstract class AbstractFunctionModule
 {
@@ -116,7 +116,7 @@ abstract class AbstractFunctionModule
     public function __construct()
     {
         trigger_error(
-            'Class AbstractFunctionModule is deprecated and will be removed in TYPO3 v10',
+            'Class AbstractFunctionModule is deprecated and will be removed in TYPO3 v10.0',
             E_USER_DEPRECATED
         );
     }

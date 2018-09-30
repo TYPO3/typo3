@@ -268,7 +268,7 @@ class Bootstrap
     /**
      * @return ApplicationContext
      * @internal This is not a public API method, do not use in own extensions
-     * @deprecated Will be removed with v10
+     * @deprecated will be removed in TYPO3 v10.0.
      */
     public static function createApplicationContext(): ApplicationContext
     {
@@ -460,7 +460,7 @@ class Bootstrap
     ) {
         if (!$isInternalCall) {
             // Suppress duplicate deprecation calls
-            trigger_error('Bootstrap::loadConfigurationAndInitialize() will removed in v10.0.', E_USER_DEPRECATED);
+            trigger_error('Bootstrap::loadConfigurationAndInitialize() will removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         }
 
         $configurationManager = static::createConfigurationManager();
@@ -994,7 +994,7 @@ class Bootstrap
      * @param $methodName
      * @param array $arguments
      * @throws \Error
-     * @deprecated Will be removed in v10.0
+     * @deprecated Will be removed in TYPO3 v10.0
      * @return mixed
      */
     public static function __callStatic($methodName, array $arguments)
@@ -1015,7 +1015,7 @@ class Bootstrap
      * @param string $methodName
      * @param array $arguments
      * @throws \Error
-     * @deprecated Will be removed in v10.0
+     * @deprecated Will be removed in TYPO3 v10.0
      * @return mixed
      */
     public function __call($methodName, array $arguments)

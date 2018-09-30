@@ -38,19 +38,19 @@ class PageInformationController
      * @var array
      */
     private $deprecatedPublicProperties = [
-        'pObj' => 'Using PageInformationController::$pObj is deprecated and will not be possible anymore in TYPO3 v10.',
-        'function_key' => 'Using PageInformationController::$function_key is deprecated, property will be removed in TYPO3 v10.',
-        'extClassConf' => 'Using PageInformationController::$extClassConf is deprecated, property will be removed in TYPO3 v10.',
-        'localLangFile' => 'Using PageInformationController::$localLangFile is deprecated, property will be removed in TYPO3 v10.',
-        'extObj' => 'Using PageInformationController::$extObj is deprecated, property will be removed in TYPO3 v10.',
+        'pObj' => 'Using PageInformationController::$pObj is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'function_key' => 'Using PageInformationController::$function_key is deprecated, property will be removed in TYPO3 v10.0.',
+        'extClassConf' => 'Using PageInformationController::$extClassConf is deprecated, property will be removed in TYPO3 v10.0.',
+        'localLangFile' => 'Using PageInformationController::$localLangFile is deprecated, property will be removed in TYPO3 v10.0.',
+        'extObj' => 'Using PageInformationController::$extObj is deprecated, property will be removed in TYPO3 v10.0.',
     ];
 
     /**
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'modMenu' => 'Using PageInformationController::modMenu() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'extObjContent' => 'Using PageInformationController::extObjContent() is deprecated, method will be removed in TYPO3 v10.',
+        'modMenu' => 'Using PageInformationController::modMenu() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'extObjContent' => 'Using PageInformationController::extObjContent() is deprecated, method will be removed in TYPO3 v10.0.',
     ];
 
     /**
@@ -151,7 +151,7 @@ class PageInformationController
 
         // Additional footer content
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook'] ?? [] as $hook) {
-            // @todo: request object should be submitted here as soon as it is available in v10.
+            // @todo: request object should be submitted here as soon as it is available in TYPO3 v10.0.
             $params = [];
             $theOutput .= GeneralUtility::callUserFunction($hook, $params, $this);
         }
@@ -247,7 +247,7 @@ class PageInformationController
     }
 
     /**
-     * Called from InfoModuleController until deprecation removal in v10
+     * Called from InfoModuleController until deprecation removal in TYPO3 v10.0
      *
      * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */

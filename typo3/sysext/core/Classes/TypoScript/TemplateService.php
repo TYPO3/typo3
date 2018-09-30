@@ -69,7 +69,7 @@ class TemplateService
         'sectionsMatch' => 'Using $sectionsMatch of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
         'frames' => 'Using $frames of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
         'MPmap' => 'Using $MPmap of class TemplateService from the outside is discouraged, as this variable is only used for internal storage.',
-        'fileCache' => 'Using $fileCache of class TemplateService from the outside is discouraged, the property will be removed in v10.',
+        'fileCache' => 'Using $fileCache of class TemplateService from the outside is discouraged, the property will be removed in TYPO3 v10.0.',
     ];
 
     /**
@@ -317,7 +317,7 @@ class TemplateService
      * Used by getFileName for caching of references to file resources
      *
      * @var array
-     * @deprecated Will be removed in v10
+     * @deprecated Will be removed in TYPO3 v10.0
      */
     protected $fileCache = [];
 
@@ -330,7 +330,7 @@ class TemplateService
 
     /**
      * Contains mapping of Page id numbers to MP variables.
-     * This is not used anymore, and will be removed in TYPO3 v10.
+     * This is not used anymore, and will be removed in TYPO3 v10.0.
      *
      * @var string
      */
@@ -452,11 +452,11 @@ class TemplateService
     /**
      * Initialize
      *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function init()
     {
-        trigger_error('Method will be removed in TYPO3 v10, __construct() does the job', E_USER_DEPRECATED);
+        trigger_error('TemplateService->init() will be removed in TYPO3 v10.0, __construct() does the job.', E_USER_DEPRECATED);
         $this->initializeDatabaseQueryRestrictions();
         if ($this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false) || $GLOBALS['SIM_ACCESS_TIME'] !== $GLOBALS['ACCESS_TIME']) {
             // Set the simulation flag, if simulation is detected!
@@ -1470,11 +1470,11 @@ class TemplateService
      * @param string $pageTitleSeparator an alternative to the ": " as the separator between site title and page title
      * @return string The page title on the form "[sitetitle]: [input-title]". Not htmlspecialchar()'ed.
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::tempPageCacheContent(), \TYPO3\CMS\Frontend\Page\PageGenerator::renderContentWithHeader()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10, use $TSFE->generatePageTitle() instead.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use $TSFE->generatePageTitle() instead.
      */
     public function printTitle($pageTitle, $noTitle = false, $showTitleFirst = false, $pageTitleSeparator = '')
     {
-        trigger_error('This method will be removed in TYPO3 v10. Title tag generation has been moved into TSFE itself, re-implement this method if you need to, otherwise use TSFE->generatePageTitle() for full usage.', E_USER_DEPRECATED);
+        trigger_error('TemplateService->printTitle() will be removed in TYPO3 v10.0. Title tag generation has been moved into $TSFE itself, re-implement this method if you need to, otherwise use TSFE->generatePageTitle() for full usage.', E_USER_DEPRECATED);
         $siteTitle = trim($this->setup['sitetitle']);
         $pageTitle = $noTitle ? '' : $pageTitle;
         if ($showTitleFirst) {
@@ -1545,7 +1545,7 @@ class TemplateService
      */
     public function linkData($page, $oTarget, $no_cache, $_ = null, $overrideArray = null, $addParams = '', $typeOverride = '', $targetDomain = '')
     {
-        trigger_error('Creating URLs to pages is now encapsulated into PageLinkBuilder, and should be used in the future. This method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
+        trigger_error('Creating URLs to pages is now encapsulated into PageLinkBuilder, and should be used in the future. TemplateService->linkData() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $LD = [];
         // Overriding some fields in the page record and still preserves the values by adding them as parameters. Little strange function.
         if (is_array($overrideArray)) {
@@ -1627,11 +1627,11 @@ class TemplateService
      * @return string
      * @see initMPmap_create()
      * @todo Implement some caching of the result between hits. (more than just the memory caching used here)
-     * @deprecated - will be removed in TYPO3 v10.
+     * @deprecated - will be removed in TYPO3 v10.0.
      */
     public function getFromMPmap($pageId = 0)
     {
-        trigger_error('Getting a mount point parameter for a page is now built into PageLinkBuilder, and should be used in the future. This method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
+        trigger_error('Getting a mount point parameter for a page is now built into PageLinkBuilder, and should be used in the future. TemplateService->getFromMPmap() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         // Create map if not found already:
         if (!is_array($this->MPmap)) {
             $this->MPmap = [];
@@ -1668,7 +1668,7 @@ class TemplateService
      */
     public function initMPmap_create($id, $MP_array = [], $level = 0)
     {
-        trigger_error('Building a mount point parameter map is now built into PageLinkBuilder, and should be used in the future. This method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
+        trigger_error('Building a mount point parameter map is now built into PageLinkBuilder, and should be used in the future. TemplateService->initMPmap_creat() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $id = (int)$id;
         if ($id <= 0) {
             return;

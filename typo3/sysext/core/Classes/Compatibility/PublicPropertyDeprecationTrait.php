@@ -44,7 +44,7 @@ namespace TYPO3\CMS\Core\Compatibility;
  *       * @var array
  *       *...
  *     private $deprecatedPublicProperties = [
- *         'myProperty' => 'Using myProperty is deprecated and will not be possible anymore in TYPO3 v10. Use getMyProperty() instead.'
+ *         'myProperty' => 'Using myProperty is deprecated and will not be possible anymore in TYPO3 v10.0. Use getMyProperty() instead.'
  *     ];
  *
  *     /**

@@ -216,7 +216,7 @@ class ExtensionConfiguration
         }
 
         // After TYPO3_CONF_VARS['EXTENSIONS'] has been written, update legacy layer TYPO3_CONF_VARS['EXTENSIONS']['extConf']
-        // @deprecated since TYPO3 v9, will be removed in v10 with removal of old serialized 'extConf' layer
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 with removal of old serialized 'extConf' layer
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'])) {
             $extConfArray = [];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'] as $extensionName => $extensionConfig) {
@@ -242,7 +242,7 @@ class ExtensionConfiguration
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'] = $configuration;
 
         // After TYPO3_CONF_VARS['EXTENSIONS'] has been written, update legacy layer TYPO3_CONF_VARS['EXTENSIONS']['extConf']
-        // @deprecated since TYPO3 v9, will be removed in v10 with removal of old serialized 'extConf' layer
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 with removal of old serialized 'extConf' layer
         $extConfArray = [];
         foreach ($configuration as $extensionName => $extensionConfig) {
             $extConfArray[$extensionName] = serialize($this->addDotsToArrayKeysRecursiveForLegacyExtConf($extensionConfig));
@@ -331,7 +331,7 @@ class ExtensionConfiguration
      *
      * @param array $extensionConfig
      * @return array
-     * @deprecated since TYPO3 v9, will be removed in v10 with removal of old serialized 'extConf' layer
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 with removal of old serialized 'extConf' layer
      */
     private function addDotsToArrayKeysRecursiveForLegacyExtConf(array $extensionConfig): array
     {

@@ -147,7 +147,7 @@ class AdministrationRepository
                 'cHashParams',
                 'data_filename',
                 'data_page_id',
-                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Remove along with database field data_page_reg1
+                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove along with database field data_page_reg1
                 'data_page_reg1',
                 'data_page_type',
                 'data_page_mp',
@@ -333,7 +333,7 @@ class AdministrationRepository
                 'cHashParams',
                 'data_filename',
                 'data_page_id',
-                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Remove along with database field data_page_reg1
+                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove along with database field data_page_reg1
                 'data_page_reg1',
                 'data_page_type',
                 'data_page_mp',
@@ -500,7 +500,7 @@ class AdministrationRepository
                 'IP.cHashParams',
                 'IP.data_filename',
                 'IP.data_page_id',
-                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Remove along with database field data_page_reg1
+                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove along with database field data_page_reg1
                 'IP.data_page_reg1',
                 'IP.data_page_type',
                 'IP.data_page_mp',
@@ -537,7 +537,7 @@ class AdministrationRepository
                 'IP.cHashParams',
                 'IP.data_filename',
                 'IP.data_page_id',
-                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Remove along with database field data_page_reg1
+                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove along with database field data_page_reg1
                 'IP.data_page_reg1',
                 'IP.data_page_type',
                 'IP.data_page_mp',

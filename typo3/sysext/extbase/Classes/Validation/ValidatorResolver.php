@@ -154,7 +154,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException
      * @throws \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException
      * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function buildMethodArgumentsValidatorConjunctions($className, $methodName, array $methodParameters = null, array $methodValidateAnnotations = null)
     {
@@ -232,7 +232,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $objectPath The object path
      * @param \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $propertyValidator The validator which should be added to the property specified by objectPath
      * @return \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function buildSubObjectValidator(array $objectPath, \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $propertyValidator)
     {
@@ -374,7 +374,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $validateValue
      * @return array
      * @internal
-     * @deprecated Helper, remove in v10 together with the deprecated consumer methods
+     * @deprecated Helper, remove in TYPO3 v10.0 together with the deprecated consumer methods
      */
     public function parseValidatorAnnotation($validateValue)
     {
@@ -408,7 +408,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $rawValidatorOptions
      * @return array An array of optionName/optionValue pairs
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function parseValidatorOptions($rawValidatorOptions)
     {
@@ -434,7 +434,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      * This method is meant as a helper for regular expression results.
      *
      * @param string &$quotedValue Value to unquote
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function unquoteString(&$quotedValue)
     {
@@ -550,7 +550,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $methodName
      *
      * @return array
-     * @deprecated Helper, remove in v10 together with buildMethodArgumentsValidatorConjunctions()
+     * @deprecated Helper, remove in TYPO3 v10.0 together with buildMethodArgumentsValidatorConjunctions()
      */
     public function getMethodValidateAnnotations($className, $methodName)
     {

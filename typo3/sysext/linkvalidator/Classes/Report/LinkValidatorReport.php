@@ -47,19 +47,19 @@ class LinkValidatorReport
      * @var array
      */
     private $deprecatedPublicProperties = [
-        'pObj' => 'Using LinkValidatorReport::$pObj is deprecated and will not be possible anymore in TYPO3 v10.',
-        'doc' => 'Using LinkValidatorReport::$doc is deprecated and will not be possible anymore in TYPO3 v10.',
-        'function_key' => 'Using LinkValidatorReport::$function_key is deprecated, property will be removed in TYPO3 v10.',
-        'extClassConf' => 'Using LinkValidatorReport::$extClassConf is deprecated, property will be removed in TYPO3 v10.',
-        'localLangFile' => 'Using LinkValidatorReport::$localLangFile is deprecated, property will be removed in TYPO3 v10.',
-        'extObj' => 'Using LinkValidatorReport::$extObj is deprecated, property will be removed in TYPO3 v10.',
+        'pObj' => 'Using LinkValidatorReport::$pObj is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'doc' => 'Using LinkValidatorReport::$doc is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'function_key' => 'Using LinkValidatorReport::$function_key is deprecated, property will be removed in TYPO3 v10.0.',
+        'extClassConf' => 'Using LinkValidatorReport::$extClassConf is deprecated, property will be removed in TYPO3 v10.0.',
+        'localLangFile' => 'Using LinkValidatorReport::$localLangFile is deprecated, property will be removed in TYPO3 v10.0.',
+        'extObj' => 'Using LinkValidatorReport::$extObj is deprecated, property will be removed in TYPO3 v10.0.',
     ];
 
     /**
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'extObjContent' => 'Using LinkValidatorReport::extObjContent() is deprecated, method will be removed in TYPO3 v10.',
+        'extObjContent' => 'Using LinkValidatorReport::extObjContent() is deprecated, method will be removed in TYPO3 v10.0.',
     ];
 
     /**
@@ -888,7 +888,7 @@ class LinkValidatorReport
     }
 
     /**
-     * Called from InfoModuleController until deprecation removal in v10
+     * Called from InfoModuleController until deprecation removal in TYPO3 v10.0
      *
      * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */

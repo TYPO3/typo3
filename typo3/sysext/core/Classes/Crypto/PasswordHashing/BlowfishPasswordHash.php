@@ -34,8 +34,8 @@ class BlowfishPasswordHash implements PasswordHashInterface
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'isValidSalt' => 'Using BlowfishPasswordHash::isValidSalt() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'base64Encode' => 'Using BlowfishPasswordHash::base64Encode() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'isValidSalt' => 'Using BlowfishPasswordHash::isValidSalt() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'base64Encode' => 'Using BlowfishPasswordHash::base64Encode() is deprecated and will not be possible anymore in TYPO3 v10.0.',
     ];
 
     /**
@@ -331,7 +331,7 @@ class BlowfishPasswordHash implements PasswordHashInterface
      */
     public function getHashCount(): int
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return $this->options['hash_count'];
     }
 
@@ -343,7 +343,7 @@ class BlowfishPasswordHash implements PasswordHashInterface
      */
     public function getMaxHashCount(): int
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return 17;
     }
 
@@ -355,7 +355,7 @@ class BlowfishPasswordHash implements PasswordHashInterface
      */
     public function getMinHashCount(): int
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return 4;
     }
 
@@ -367,7 +367,7 @@ class BlowfishPasswordHash implements PasswordHashInterface
      */
     public function getSaltLength(): int
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return 16;
     }
 
@@ -379,7 +379,7 @@ class BlowfishPasswordHash implements PasswordHashInterface
      */
     public function getSetting(): string
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return self::PREFIX;
     }
 
@@ -391,7 +391,7 @@ class BlowfishPasswordHash implements PasswordHashInterface
      */
     public function setHashCount(int $hashCount = null)
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         if ($hashCount >= 4 && $hashCount <= 17) {
             $this->options['hash_count'] = $hashCount;
         }
@@ -405,7 +405,7 @@ class BlowfishPasswordHash implements PasswordHashInterface
      */
     public function setMaxHashCount(int $maxHashCount = null)
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         // Empty, max hash count is hard coded to 17
     }
 
@@ -417,7 +417,7 @@ class BlowfishPasswordHash implements PasswordHashInterface
      */
     public function setMinHashCount(int $minHashCount = null)
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         // Empty, min hash count is hard coded to 4
     }
 }

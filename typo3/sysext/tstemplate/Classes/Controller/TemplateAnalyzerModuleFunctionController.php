@@ -35,19 +35,19 @@ class TemplateAnalyzerModuleFunctionController
      * @var array
      */
     private $deprecatedPublicProperties = [
-        'pObj' => 'Using TemplateAnalyzerModuleFunctionController::$pObj is deprecated and will not be possible anymore in TYPO3 v10.',
-        'function_key' => 'Using TemplateAnalyzerModuleFunctionController::$function_key is deprecated, property will be removed in TYPO3 v10.',
-        'extClassConf' => 'Using TemplateAnalyzerModuleFunctionController::$extClassConf is deprecated, property will be removed in TYPO3 v10.',
-        'localLangFile' => 'Using TemplateAnalyzerModuleFunctionController::$localLangFile is deprecated, property will be removed in TYPO3 v10.',
+        'pObj' => 'Using TemplateAnalyzerModuleFunctionController::$pObj is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'function_key' => 'Using TemplateAnalyzerModuleFunctionController::$function_key is deprecated, property will be removed in TYPO3 v10.0.',
+        'extClassConf' => 'Using TemplateAnalyzerModuleFunctionController::$extClassConf is deprecated, property will be removed in TYPO3 v10.0.',
+        'localLangFile' => 'Using TemplateAnalyzerModuleFunctionController::$localLangFile is deprecated, property will be removed in TYPO3 v10.0.',
     ];
 
     /**
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'initialize_editor' => 'Using TemplateAnalyzerModuleFunctionController::initialize_editor() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'modMenu' => 'Using TemplateAnalyzerModuleFunctionController::modMenu() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'handleExternalFunctionValue' => 'Using TemplateAnalyzerModuleFunctionController::handleExternalFunctionValue() is deprecated, method will be removed in TYPO3 v10.',
+        'initialize_editor' => 'Using TemplateAnalyzerModuleFunctionController::initialize_editor() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'modMenu' => 'Using TemplateAnalyzerModuleFunctionController::modMenu() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'handleExternalFunctionValue' => 'Using TemplateAnalyzerModuleFunctionController::handleExternalFunctionValue() is deprecated, method will be removed in TYPO3 v10.0.',
     ];
 
     /**
@@ -82,7 +82,7 @@ class TemplateAnalyzerModuleFunctionController
      *
      * @see init()
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $localLangFile = '';
 
@@ -91,7 +91,7 @@ class TemplateAnalyzerModuleFunctionController
      *
      * @see handleExternalFunctionValue()
      * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $extClassConf;
 
@@ -101,7 +101,7 @@ class TemplateAnalyzerModuleFunctionController
      * The extension 'func_wizards' has this description: 'Adds the 'Wizards' item to the function menu in Web>Func. This is just a framework for wizard extensions.' - so as you can see it is designed to allow further connectivity - 'level 2'
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $function_key = '';
 
@@ -115,7 +115,7 @@ class TemplateAnalyzerModuleFunctionController
         $this->pObj = $pObj;
         // Local lang:
         if (!empty($this->localLangFile)) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
             $this->getLanguageService()->includeLLFile($this->localLangFile);
         }
         // Setting MOD_MENU items as we need them for logging:
@@ -309,7 +309,7 @@ class TemplateAnalyzerModuleFunctionController
      * If $this->function_key is set (which means there are two levels of object connectivity) then
      * $this->extClassConf is loaded with the TBE_MODULES_EXT configuration for that sub-sub-module
      *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function handleExternalFunctionValue()
     {

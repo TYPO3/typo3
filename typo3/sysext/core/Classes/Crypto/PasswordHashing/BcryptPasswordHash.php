@@ -104,7 +104,7 @@ class BcryptPasswordHash implements PasswordHashInterface
     public function getHashedPassword(string $password, string $salt = null)
     {
         if ($salt !== null) {
-            trigger_error(static::class . ': using a custom salt is deprecated in PHP password api and thus ignored', E_USER_DEPRECATED);
+            trigger_error(static::class . ': using a custom salt is deprecated in PHP password api and thus ignored.', E_USER_DEPRECATED);
         }
         $hashedPassword = null;
         if ($password !== '') {
@@ -181,7 +181,7 @@ class BcryptPasswordHash implements PasswordHashInterface
      */
     public function getOptions(): array
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return $this->options;
     }
 
@@ -193,7 +193,7 @@ class BcryptPasswordHash implements PasswordHashInterface
      */
     public function setOptions(array $options): void
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $newOptions = [];
 
         // Check options for validity, else use hard coded defaults

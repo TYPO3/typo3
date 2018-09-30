@@ -93,7 +93,7 @@ class FileUploadController
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
 
-        // @deprecated since v9, will be moved out of __construct() in v10
+        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
         $this->init($GLOBALS['TYPO3_REQUEST']);
     }
 
@@ -112,11 +112,11 @@ class FileUploadController
     /**
      * Main function, rendering the upload file form fields
      *
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function main()
     {
-        trigger_error('Method main() will be replaced by protected method renderContent() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('FileUploadController->main() will be replaced by protected method renderContent() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         $this->renderContent();
     }
 
@@ -124,11 +124,11 @@ class FileUploadController
      * This function renders the upload form
      *
      * @return string The HTML form as a string, ready for outputting
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function renderUploadForm()
     {
-        trigger_error('Method renderUploadForm() will be replaced by protected method renderUploadFormInternal() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('FileUploadController->renderUploadForm() will be replaced by protected method renderUploadFormInternal() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         return $this->renderUploadFormInternal();
     }
 

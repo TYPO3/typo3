@@ -275,7 +275,7 @@ class Arguments extends \ArrayObject
      * Get all property mapping / validation errors
      *
      * @return \TYPO3\CMS\Extbase\Error\Result
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function getValidationResults()
     {

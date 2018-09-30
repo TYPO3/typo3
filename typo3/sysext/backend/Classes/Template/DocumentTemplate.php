@@ -52,7 +52,7 @@ class DocumentTemplate implements LoggerAwareInterface
      * @var array
      */
     protected $deprecatedPublicProperties = [
-        'hasDocheader' => 'Using $hasDocheader of class DocumentTemplate is discouraged. The property is not evaluated in the TYPO3 core anymore and will be removed in TYPO3 v10.'
+        'hasDocheader' => 'Using $hasDocheader of class DocumentTemplate is discouraged. The property is not evaluated in the TYPO3 core anymore and will be removed in TYPO3 v10.0.'
     ];
 
     // Vars you typically might want to/should set from outside after making instance of this class:
@@ -220,7 +220,7 @@ function jumpToUrl(URL) {
 
     /**
      * @var bool
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
      */
     protected $hasDocheader = true;
 
@@ -412,11 +412,11 @@ function jumpToUrl(URL) {
      * @param bool $textarea A flag you can set for textareas - DEPRECATED as there is no difference any more between the two
      * @param string $styleOverride A string which will be returned as attribute-value for style="" instead of the calculated width (if CSS is enabled)
      * @return string Tag attributes for an <input> tag (regarding width)
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function formWidth($size = 48, $textarea = false, $styleOverride = '')
     {
-        trigger_error('This method will be removed in TYPO3 10 - use responsive code or direct inline styles to format your input fields instead.', E_USER_DEPRECATED);
+        trigger_error('DocumentTemplate->formWidth() will be removed in TYPO3 10.0 - use responsive code or direct inline styles to format your input fields instead.', E_USER_DEPRECATED);
         return ' style="' . ($styleOverride ?: 'width:' . ceil($size * 9.58) . 'px;') . '"';
     }
 
@@ -634,12 +634,12 @@ function jumpToUrl(URL) {
      * @param string $href uri to the style sheet file
      * @param string $title value for the title attribute of the link element
      * @param string $relation value for the rel attribute of the link element
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
      * @see PageRenderer::addCssFile()
      */
     public function addStyleSheet($key, $href, $title = '', $relation = 'stylesheet')
     {
-        trigger_error('The method `DocumentTemplate::addStyleSheet has been deprecated, this method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
+        trigger_error('DocumentTemplate->->addStyleSheet() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $this->pageRenderer->addCssFile($href, $relation, 'screen', $title);
     }
 
@@ -725,14 +725,14 @@ function jumpToUrl(URL) {
 
     /**
      * Returns X-UA-Compatible meta tag
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      *
      * @param string $content Content of the compatible tag (default: IE-8)
      * @return string <meta http-equiv="X-UA-Compatible" content="???" />
      */
     public function xUaCompatible($content = 'IE=8')
     {
-        trigger_error('Method DocumentTemplate->xUaCompatible is deprecated and will be removed with v10. Use pageRenderer->setMetaTag instead.', E_USER_DEPRECATED);
+        trigger_error('DocumentTemplate->xUaCompatible() will be removed with TYPO3 v10.0. Use PageRenderer->setMetaTag() instead.', E_USER_DEPRECATED);
         return '<meta http-equiv="X-UA-Compatible" content="' . $content . '" />';
     }
 

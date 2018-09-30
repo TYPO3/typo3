@@ -65,11 +65,11 @@ class UserSettingsController
      * @param string $value
      * @return mixed
      *
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function process($action, $key = '', $value = '')
     {
-        trigger_error('Method process() will be replaced by protected method processRequest() in v10. Do not call from other extensions', E_USER_DEPRECATED);
+        trigger_error('UserSettingsController->process() will be replaced by protected method processRequest() in TYPO3 v10.0. Do not call from other extensions.', E_USER_DEPRECATED);
         return $this->processRequest($action, $key, $value);
     }
 

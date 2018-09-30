@@ -126,7 +126,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * Load the array formDefinition identified by $persistenceIdentifier, and return it.
      * Only files with the extension .yaml or .form.yaml are loaded.
      * Form definition file names which not ends with ".form.yaml" has been
-     * deprecated in v9 and will not be supported in v10.
+     * deprecated in TYPO3 v9 and will not be supported in TYPO3 v10.0.
      *
      * @param string $persistenceIdentifier
      * @return array
@@ -281,7 +281,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         foreach ($this->retrieveYamlFilesFromStorageFolders() as $file) {
             /** @var Folder $folder */
             $folder = $file->getParentFolder();
-            // TODO: deprecated since TYPO3 v9, will be removed in TYPO3 v10
+            // TODO: deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
             $formReadOnly = $folder->getCombinedIdentifier() === '1:/user_upload/';
 
             $form = $this->loadMetaData($file);
@@ -737,7 +737,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         ) {
             if (strpos($persistenceIdentifier, 'EXT:') === 0) {
                 trigger_error(
-                    'Form definition file name ("' . $persistenceIdentifier . '") which does not end with ".form.yaml" has been deprecated in v9 and will not be supported in v10.',
+                    'Form definition file name ("' . $persistenceIdentifier . '") which does not end with ".form.yaml" will not be supported in TYPO3 v10.0.',
                     E_USER_DEPRECATED
                 );
             } elseif (strpos($persistenceIdentifier, 'EXT:') !== 0) {

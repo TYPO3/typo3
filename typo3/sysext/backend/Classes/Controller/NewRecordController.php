@@ -201,7 +201,7 @@ class NewRecordController
         // @see \TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView::expandNext()
         $GLOBALS['SOBE'] = $this;
 
-        // @deprecated since v9, will be moved out of __construct() in v10
+        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
         $this->init($GLOBALS['TYPO3_REQUEST']);
     }
 
@@ -226,11 +226,11 @@ class NewRecordController
     /**
      * Main processing, creating the list of new record tables to select from
      *
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function main()
     {
-        trigger_error('Method main() will be replaced by protected method renderContent() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('NewRecordController->main() will be replaced by protected method renderContent() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
 
         $response = $this->renderContent($GLOBALS['TYPO3_REQUEST']);
 
@@ -242,22 +242,22 @@ class NewRecordController
     /**
      * Creates the position map for pages wizard
      *
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function pagesOnly()
     {
-        trigger_error('Method pagesOnly() will be replaced by protected method renderPositionTree() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('NewRecordController->pagesOnly() will be replaced by protected method renderPositionTree() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         $this->renderPositionTree();
     }
 
     /**
      * Create a regular new element (pages and records)
      *
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function regularNew()
     {
-        trigger_error('Method regularNew() will be replaced by protected method renderNewRecordControls() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('NewRecordController->regularNew() will be replaced by protected method renderNewRecordControls() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         $this->renderNewRecordControls($GLOBALS['TYPO3_REQUEST']);
     }
 
@@ -267,11 +267,11 @@ class NewRecordController
      * @param string $a First array element for compare
      * @param string $b First array element for compare
      * @return int -1 for lower, 0 for equal, 1 for greater
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function sortNewRecordsByConfig($a, $b)
     {
-        trigger_error('Method sortNewRecordsByConfig() will be replaced by protected method sortTableRows() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('NewRecordController->sortNewRecordsByConfig() will be replaced by protected method sortTableRows() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         return $this->sortTableRows($a, $b);
     }
 
@@ -283,11 +283,11 @@ class NewRecordController
      * @param int $pid PID value for the "&edit['.$table.']['.$pid.']=new" command (positive/negative)
      * @param bool $addContentTable If $addContentTable is set, then a new tt_content record is created together with pages
      * @return string The link.
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function linkWrap($linkText, $table, $pid, $addContentTable = false)
     {
-        trigger_error('Method linkWrap() will be replaced by protected method renderLink() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('NewRecordController->linkWrap() will be replaced by protected method renderLink() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         return $this->renderLink($linkText, $table, $pid, $addContentTable);
     }
 
@@ -297,11 +297,11 @@ class NewRecordController
      * @param array $pid_row Record for parent page.
      * @param string $checkTable Table name to check
      * @return bool Returns TRUE if the tablename $checkTable is allowed to be created on the page with record $pid_row
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function isTableAllowedForThisPage($pid_row, $checkTable)
     {
-        trigger_error('Method isTableAllowedForThisPage() will be replaced by protected method isTableAllowedOnPage() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('NewRecordController->isTableAllowedForThisPage() will be replaced by protected method isTableAllowedOnPage() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         return $this->isTableAllowedOnPage($checkTable, $pid_row);
     }
 
@@ -318,11 +318,11 @@ class NewRecordController
      * @param array $allowedNewTables Array of new tables that are allowed.
      * @param array $deniedNewTables Array of new tables that are not allowed.
      * @return bool Returns TRUE if a link for creating new records should be displayed for $table
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function showNewRecLink($table, array $allowedNewTables = [], array $deniedNewTables = [])
     {
-        trigger_error('Method showNewRecLink() will be replaced by protected method isRecordCreationAllowedForTable() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('NewRecordController->showNewRecLink() will be replaced by protected method isRecordCreationAllowedForTable() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         return $this->isRecordCreationAllowedForTable($table, $allowedNewTables, $deniedNewTables);
     }
 

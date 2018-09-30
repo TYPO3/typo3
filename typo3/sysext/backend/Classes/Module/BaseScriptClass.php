@@ -66,7 +66,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * THEN WE CALL THE main() METHOD AND THIS SHOULD SPARK THE CREATION OF THE MODULE OUTPUT.
  * $GLOBALS['SOBE']->main();
  *
- * @deprecated since v9, will be removed in v10
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
  */
 class BaseScriptClass
 {
@@ -194,7 +194,7 @@ class BaseScriptClass
     public function __construct()
     {
         trigger_error(
-            'Class BaseScriptClass is deprecated and will be removed in TYPO3 v10',
+            'Class BaseScriptClass is deprecated and will be removed in TYPO3 v10.0',
             E_USER_DEPRECATED
         );
     }

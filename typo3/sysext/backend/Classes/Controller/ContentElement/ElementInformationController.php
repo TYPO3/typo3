@@ -46,7 +46,7 @@ class ElementInformationController
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'getLabelForTableColumn' => 'Using ElementInformationController::getLabelForTableColumn() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'getLabelForTableColumn' => 'Using ElementInformationController::getLabelForTableColumn() is deprecated and will not be possible anymore in TYPO3 v10.0.',
     ];
 
     /**
@@ -138,9 +138,9 @@ class ElementInformationController
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $GLOBALS['SOBE'] = $this;
 
-        // @deprecated since v9, will be obsolete in v10 with removal of init()
+        // @deprecated since TYPO3 v9, will be obsolete in TYPO3 v10.0 with removal of init()
         $request = $GLOBALS['TYPO3_REQUEST'];
-        // @deprecated since v9, will be moved out of __construct() in v10
+        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
         $this->init($request);
     }
 
@@ -167,10 +167,10 @@ class ElementInformationController
     {
         if ($request === null) {
             // Missing argument? This method must have been called from outside.
-            // Method will be protected and $request mandatory in v10, giving core freedom to move stuff around
+            // Method will be protected and $request mandatory in TYPO3 v10.0, giving core freedom to move stuff around
             // New v10 signature: "protected function init(ServerRequestInterface $request): void"
             // @deprecated since TYPO3 v9, method argument $request will be set to mandatory
-            trigger_error('Method init() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+            trigger_error('ElementInformationController->init() will be set to protected in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
             $request = $GLOBALS['TYPO3_REQUEST'];
         }
 
@@ -250,7 +250,7 @@ class ElementInformationController
         if ($request === null) {
             // Missing argument? This method must have been called from outside.
             // @deprecated since TYPO3 v9, method argument $request will be set to mandatory
-            trigger_error('Method main() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+            trigger_error('ElementInformationController->main() will be set to protected in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
             $request = $GLOBALS['TYPO3_REQUEST'];
         }
 

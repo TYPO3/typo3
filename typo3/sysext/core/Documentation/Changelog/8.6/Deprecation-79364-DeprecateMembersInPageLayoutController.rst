@@ -16,7 +16,7 @@ and :php:`\TYPO3\CMS\Backend\Controller\PageLayoutController::new_unique_uid`.
 Impact
 ======
 
-Installation of EXT:compatibility7 is required to continue using this members until they are removed in TYPO3 CMS 9.
+Installation of EXT:compatibility7 is required to continue using this members until they are removed in TYPO3 v9.
 
 
 Affected Installations

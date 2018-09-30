@@ -32,7 +32,7 @@ class ExternalPageUrlHandler implements \TYPO3\CMS\Frontend\Http\UrlHandlerInter
 
     public function __construct()
     {
-        trigger_error('ExternalPageUrlHandler has been moved into a PSR-15 middleware and will be removed in TYPO3 v10.0. In order to modify the external page redirection, use a PSR-15 middleware as well', E_USER_DEPRECATED);
+        trigger_error('ExternalPageUrlHandler has been moved into a PSR-15 middleware and will be removed in TYPO3 v10.0. In order to modify the external page redirection, use a PSR-15 middleware as well.', E_USER_DEPRECATED);
     }
 
     /**

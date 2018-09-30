@@ -34,7 +34,7 @@ class BackendUserController extends ActionController
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'initializeView' => 'Using BackendUserController::initializeView() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'initializeView' => 'Using BackendUserController::initializeView() is deprecated and will not be possible anymore in TYPO3 v10.0.',
     ];
 
     /**

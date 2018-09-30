@@ -167,9 +167,9 @@ class NewContentElementController
         $this->view = $this->getFluidTemplateObject();
         $this->menuItemView = $this->getFluidTemplateObject('MenuItem.html');
 
-        // @deprecated since v9, will be obsolete in v10 with removal of init()
+        // @deprecated since TYPO3 v9, will be obsolete in TYPO3 v10.0 with removal of init()
         $request = $GLOBALS['TYPO3_REQUEST'];
-        // @deprecated since v9, will be moved out of __construct() in v10
+        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
         $this->init($request);
     }
 
@@ -181,8 +181,8 @@ class NewContentElementController
     public function init(ServerRequestInterface $request = null)
     {
         if ($request === null) {
-            // Method signature in v10: protected function init(ServerRequestInterface $request)
-            trigger_error('Method init() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+            // Method signature in TYPO3 v10.0: protected function init(ServerRequestInterface $request)
+            trigger_error('NewContentElementController->init() will be set to protected in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
             $request = $GLOBALS['TYPO3_REQUEST'];
         }
 
@@ -252,7 +252,7 @@ class NewContentElementController
      */
     public function main()
     {
-        trigger_error('Method main() will be replaced by protected method prepareContent() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('NewContentElementController->main() will be replaced by protected method prepareContent() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         $this->prepareContent('window');
     }
 
@@ -264,7 +264,7 @@ class NewContentElementController
      */
     public function wizardArray()
     {
-        trigger_error('Method wizardArray() will be replaced by protected method getWizards() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('NewContentElementController->wizardArray() will be replaced by protected method getWizards() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         return $this->getWizards();
     }
 
@@ -274,7 +274,7 @@ class NewContentElementController
      */
     public function wizard_appendWizards($wizardElements)
     {
-        trigger_error('Method wizard_appendWizards() will be replaced by protected method getAppendWizards() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('NewContentElementController->wizard_appendWizards() will be replaced by protected method getAppendWizards() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         return $this->getAppendWizards($wizardElements);
     }
 
@@ -286,7 +286,7 @@ class NewContentElementController
      */
     public function wizard_getItem($groupKey, $itemKey, $itemConf)
     {
-        trigger_error('Method wizard_getItem() will be replaced by protected method getWizardItem() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('NewContentElementController->wizard_getItem() will be replaced by protected method getWizardItem() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         return $this->getWizardItem($groupKey, $itemKey, $itemConf);
     }
 
@@ -297,7 +297,7 @@ class NewContentElementController
      */
     public function wizard_getGroupHeader($groupKey, $wizardGroup)
     {
-        trigger_error('Method wizard_getGroupHeader() will be replaced by protected method getWizardGroupHeader() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('NewContentElementController->wizard_getGroupHeader() will be replaced by protected method getWizardGroupHeader() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         return $this->getWizardGroupHeader($wizardGroup);
     }
 
@@ -311,7 +311,7 @@ class NewContentElementController
      */
     public function removeInvalidElements(&$wizardItems)
     {
-        trigger_error('Method removeInvalidElements() will be replaced by protected method removeInvalidWizardItems() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('NewContentElementController->removeInvalidElements() will be replaced by protected method removeInvalidWizardItems() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         $this->removeInvalidWizardItems($wizardItems);
     }
 

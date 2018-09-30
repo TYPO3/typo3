@@ -55,7 +55,7 @@ class AddController extends AbstractWizardController
      * Content accumulation for the module.
      *
      * @var string
-     * @deprecated since v9, will be removed in v10, unused
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused
      */
     protected $content;
 
@@ -107,7 +107,7 @@ class AddController extends AbstractWizardController
     public function __construct()
     {
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf');
-        // @deprecated since v9, will be moved out of __construct() in v10
+        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
         $this->init($GLOBALS['TYPO3_REQUEST']);
     }
 
@@ -127,11 +127,11 @@ class AddController extends AbstractWizardController
      * Main function
      * Will issue a location-header, redirecting either BACK or to a new FormEngine instance...
      *
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function main()
     {
-        trigger_error('Method main() will be replaced by protected method processRequest() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('AddController->main() will be replaced by protected method processRequest() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
 
         $response = $this->processRequest($GLOBALS['TYPO3_REQUEST']);
         HttpUtility::redirect($response->getHeaders()['location'][0]);

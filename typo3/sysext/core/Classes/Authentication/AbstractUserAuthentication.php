@@ -1397,11 +1397,11 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * @param array $loginData Login data array
      * @param string $passwordCompareStrategy Alternative passwordCompareStrategy. Used when authentication services wants to override the default.
      * @return bool TRUE if login data matched
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function compareUident($user, $loginData, $passwordCompareStrategy = '')
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return (string)$loginData['uident_text'] !== '' && (string)$loginData['uident_text'] === (string)$user[$this->userident_column];
     }
 
@@ -1517,11 +1517,11 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * @param string $username user name
      * @param string $extraWhere Additional WHERE clause: " AND ...
      * @return mixed User array or FALSE
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function fetchUserRecord($dbUser, $username, $extraWhere = '')
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $user = false;
         if ($username || $extraWhere) {
             $query = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($dbUser['table']);

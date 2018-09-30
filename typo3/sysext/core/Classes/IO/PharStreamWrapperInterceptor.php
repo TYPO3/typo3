@@ -121,7 +121,7 @@ class PharStreamWrapperInterceptor implements \TYPO3\PharStreamWrapper\Assertabl
      *
      * @param string $path
      * @return bool
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function isBaseFile(string $path): bool
     {

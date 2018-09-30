@@ -59,7 +59,7 @@ class AuthenticationService
                 // Given hash in global configuration is not a valid salted password
                 if (md5($password) === $installToolPassword) {
                     // Update configured install tool hash if it is still "MD5" and password matches
-                    // @todo: This should be removed in v10 with a dedicated breaking patch
+                    // @todo: This should be removed in TYPO3 v10.0 with a dedicated breaking patch
                     // @todo: Additionally, this code should check required hash updates and update the hash if needed
                     $hashInstance = $hashFactory->getDefaultHashInstance('BE');
                     $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);

@@ -31,7 +31,7 @@ class Dispatcher implements DispatcherInterface
      * Main method that fetches the target from the request and calls the target directly
      *
      * @param ServerRequestInterface $request the current server request
-     * @param ResponseInterface $response the prepared response @deprecated since v9, will be removed in v10
+     * @param ResponseInterface $response the prepared response @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      * @return ResponseInterface the filled response by the callable/controller/action
      * @throws \InvalidArgumentException if the defined target is invalid
      */
@@ -60,7 +60,7 @@ class Dispatcher implements DispatcherInterface
             }
             if ($targetReflection->getNumberOfParameters() >= 2) {
                 trigger_error(
-                    'Handing over second argument $response to controller action ' . $controllerActionName . '() is deprecated and will be removed in v10.',
+                    'Handing over second argument $response to controller action ' . $controllerActionName . '() is deprecated and will be removed in TYPO3 v10.0.',
                     E_USER_DEPRECATED
                 );
                 $arguments[] = $response;

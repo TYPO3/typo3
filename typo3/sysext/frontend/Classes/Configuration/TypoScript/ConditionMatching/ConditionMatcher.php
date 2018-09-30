@@ -80,7 +80,7 @@ class ConditionMatcher extends AbstractConditionMatcher
     protected function evaluateCondition($string)
     {
         if ($this->strictSyntaxEnabled()) {
-            trigger_error('The old condition syntax has been deprecated and will be removed in TYPO3 CMS 10, use the new expression language. condition: [' . $string . ']', E_USER_DEPRECATED);
+            trigger_error('The old condition syntax will be removed in TYPO3 v10.0, use the new expression language. Used condition: [' . $string . '].', E_USER_DEPRECATED);
         }
 
         list($key, $value) = GeneralUtility::trimExplode('=', $string, false, 2);
@@ -198,7 +198,7 @@ class ConditionMatcher extends AbstractConditionMatcher
                     case 'TSFE':
                         if (strpos($vars[1], 'fe_user|sesData|') === 0) {
                             trigger_error(
-                                'Condition on TSFE|fe_user|sesData is deprecated and will be removed in TYPO3 CMS 10',
+                                'Condition on TSFE|fe_user|sesData is deprecated and will be removed in TYPO3 v10.0.',
                                 E_USER_DEPRECATED
                             );
                             $val = $this->getSessionVariable(substr($vars[1], 16));

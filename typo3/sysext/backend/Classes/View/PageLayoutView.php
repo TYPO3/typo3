@@ -3400,8 +3400,8 @@ class PageLayoutView implements LoggerAwareInterface
 
         $hookName = DatabaseRecordList::class;
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'] ?? [] as $className) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10, the modifyQuery hook should be used instead.
-            trigger_error('The hook ($GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][' . $hookName . '][\'buildQueryParameters\']) will be removed in TYPO3 v10, the modifyQuery hook should be used instead.', E_USER_DEPRECATED);
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, the modifyQuery hook should be used instead.
+            trigger_error('The hook ($GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][' . $hookName . '][\'buildQueryParameters\']) will be removed in TYPO3 v10.0, the modifyQuery hook should be used instead.', E_USER_DEPRECATED);
             $hookObject = GeneralUtility::makeInstance($className);
             if (method_exists($hookObject, 'buildQueryParametersPostProcess')) {
                 $hookObject->buildQueryParametersPostProcess(
@@ -3432,7 +3432,7 @@ class PageLayoutView implements LoggerAwareInterface
         // array_unique / array_filter used to eliminate empty and duplicate constraints
         // the array keys are eliminated by this as well to facilitate argument unpacking
         // when used with the querybuilder.
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
         if (!empty($parameters['where'])) {
             $parameters['where'] = array_unique(array_filter(array_values($parameters['where'])));
         }
@@ -4079,12 +4079,12 @@ class PageLayoutView implements LoggerAwareInterface
      * Method used to log deprecated usage of old buildQueryParametersPostProcess hook arguments
      *
      * @param string $index
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function logDeprecation(string $index)
     {
         trigger_error(
-            '[index: ' . $index . '] $parameters in "buildQueryParameters"-Hook has been deprecated in v9 and will be remove in v10, use $queryBuilder instead',
+            '[index: ' . $index . '] $parameters in "buildQueryParameters"-Hook will be removed in TYPO3 v10.0, use $queryBuilder instead',
             E_USER_DEPRECATED
         );
     }
@@ -4362,7 +4362,7 @@ class PageLayoutView implements LoggerAwareInterface
      */
     public function languageFlag($sys_language_uid, $addAsAdditionalText = true)
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $out = '';
         $title = htmlspecialchars($this->languageIconTitles[$sys_language_uid]['title']);
         if ($this->languageIconTitles[$sys_language_uid]['flagIcon']) {

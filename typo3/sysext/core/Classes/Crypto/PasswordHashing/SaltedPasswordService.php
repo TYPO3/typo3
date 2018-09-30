@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Class implements salted-password hashes authentication service.
  * Contains authentication service class for salted hashed passwords.
  *
- * @deprecated since v9, will be removed in v10
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
  */
 class SaltedPasswordService extends AbstractAuthenticationService
 {
@@ -71,7 +71,7 @@ class SaltedPasswordService extends AbstractAuthenticationService
      */
     public function __construct()
     {
-        trigger_error('Class SaltedPasswordService has been deprecated since v9 and will be removed in v10', E_USER_DEPRECATED);
+        trigger_error('SaltedPasswordService will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
     }
 
     /**
@@ -129,8 +129,8 @@ class SaltedPasswordService extends AbstractAuthenticationService
                 // This calls deprecated getSaltingInstance(). This is "ok" since this SaltedPasswordsService in itself is deprecated.
                 $this->objInstanceSaltedPW = PasswordHashFactory::getSaltingInstance(substr($user['password'], 1));
                 // md5 passwords that have been upgraded to salted passwords using old scheduler task
-                // @todo: The entire 'else' should be dropped in v10, admins had to upgrade users to salted passwords with v8 latest since the
-                // @todo: scheduler task has been dropped with v9, users should have had logged in in v9 era, this fallback is obsolete with v10.
+                // @todo: The entire 'else' should be dropped in TYPO3 v10.0, admins had to upgrade users to salted passwords with v8 latest since the
+                // @todo: scheduler task has been dropped with v9, users should have had logged in in TYPO3 v9 era, this fallback is obsolete with TYPO3 v10.0.
                 $validPasswd = $this->objInstanceSaltedPW->checkPassword(md5($password), substr($user['password'], 1));
 
                 // Skip further authentication methods

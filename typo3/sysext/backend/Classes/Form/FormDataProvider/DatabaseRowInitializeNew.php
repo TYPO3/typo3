@@ -147,7 +147,7 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
     /**
      * @param array $result
      * @return array
-     * @deprecated since v9 will be removed in v10 - see $result['defaultValues']
+     * @deprecated since TYPO3 v9 will be removed in TYPO3 v10.0 - see $result['defaultValues']
      */
     protected function setDefaultValuesFromGetPost(array $result)
     {

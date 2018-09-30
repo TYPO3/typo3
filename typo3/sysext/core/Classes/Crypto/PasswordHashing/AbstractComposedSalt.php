@@ -40,7 +40,7 @@ abstract class AbstractComposedSalt
      */
     public function base64Encode(string $input, int $count): string
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $output = '';
         $i = 0;
         $itoa64 = $this->getItoa64();
@@ -76,7 +76,7 @@ abstract class AbstractComposedSalt
      */
     protected function getLengthBase64FromBytes(int $byteLength): int
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         // Calculates bytes in bits in base64
         return (int)ceil($byteLength * 8 / 6);
     }

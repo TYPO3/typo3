@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\PageTitle;
 /**
  * Class to handle $GLOBALS['TSFE']->altPageTitle as input for the page title
  *
- * @deprecated since TYPO3 v9.4 and will be removed in TYPO3 v10
+ * @deprecated since TYPO3 v9.4 and will be removed in TYPO3 v10.0
  */
 class AltPageTitleProvider extends AbstractPageTitleProvider
 {
@@ -29,7 +29,7 @@ class AltPageTitleProvider extends AbstractPageTitleProvider
     public function getTitle(): string
     {
         if (!empty($GLOBALS['TSFE']->altPageTitle)) {
-            trigger_error('This $GLOBALS[\'TSFE\']->altPageTitle is deprecated and will be removed in TYPO3 v10. Please use the TitleTag API to set the title tag', E_USER_DEPRECATED);
+            trigger_error('$TSFE->altPageTitle will be removed in TYPO3 v10.0. Please use the TitleTag API to set the title tag.', E_USER_DEPRECATED);
 
             return $GLOBALS['TSFE']->altPageTitle;
         }

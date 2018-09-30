@@ -47,7 +47,7 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
      */
     protected function getInstallToolPasswordStatus()
     {
-        // @todo @deprecated: This should be removed in v10 when install tool allows proper hashes only
+        // @todo @deprecated: This should be removed in TYPO3 v10.0 when install tool allows proper hashes only
         $value = $GLOBALS['LANG']->getLL('status_ok');
         $message = '';
         $severity = Status::OK;

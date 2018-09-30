@@ -71,7 +71,7 @@ class CacheManager implements SingletonInterface
     /**
      * Used by Bootstrap to define whether the configuration has been set finally.
      * Controls whether a deprecation warning is logged in getCache().
-     * This property will be removed in v10.
+     * This property will be removed in TYPO3 v10.0.
      *
      * @var bool
      * @internal
@@ -292,9 +292,9 @@ class CacheManager implements SingletonInterface
      */
     protected function createCache($identifier)
     {
-        // @deprecated will be removed with TYPO3 v10
+        // @deprecated will be removed with TYPO3 v10.0
         if ($this->limbo) {
-            trigger_error('Usage of ' . self::class . '->createCache(\'' . $identifier . '\') in ext_localconf.php is deprecated and will not be supported in TYPO3 v10.0', E_USER_DEPRECATED);
+            trigger_error('Usage of ' . self::class . '->createCache(\'' . $identifier . '\') in ext_localconf.php will not be supported in TYPO3 v10.0.', E_USER_DEPRECATED);
         }
         if (isset($this->cacheConfigurations[$identifier]['frontend'])) {
             $frontend = $this->cacheConfigurations[$identifier]['frontend'];
@@ -357,7 +357,7 @@ class CacheManager implements SingletonInterface
      * Sets the limbo state
      *
      * If limbo is enable, then getCache() will log a deprecation warning.
-     * This method will be removed in v10.
+     * This method will be removed in TYPO3 v10.0.
      *
      * @param bool $limbo
      * @internal

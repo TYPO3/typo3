@@ -90,11 +90,11 @@ class ElementBrowserFolderTreeView extends FolderTreeView
      *
      * @param Folder $folderObject Object with information about the folder element. Contains keys like title, uid, path, _title
      * @return bool TRUE
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function ext_isLinkable(Folder $folderObject)
     {
-        trigger_error('This method is obsolete and will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method is obsolete and will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return true;
     }
 

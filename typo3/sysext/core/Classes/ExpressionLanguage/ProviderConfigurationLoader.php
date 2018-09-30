@@ -29,7 +29,7 @@ class ProviderConfigurationLoader
         $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core');
 
         if ($cache->has($this->cacheIdentifier)) {
-            /** @noinspection PhpUndefinedMethodInspection the method require() will be added to the interface in v10 */
+            /** @noinspection PhpUndefinedMethodInspection the method require() will be added to the interface in TYPO3 v10.0 */
             return $cache->require($this->cacheIdentifier);
         }
 

@@ -117,7 +117,7 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
      * This needs to be run after the request object has been enriched with modified GET/POST variables.
      *
      * @param ServerRequestInterface $request
-     * @internal this safety net will be removed in TYPO3 v10.
+     * @internal this safety net will be removed in TYPO3 v10.0.
      */
     protected function resetGlobalsToCurrentRequest(ServerRequestInterface $request)
     {
@@ -559,13 +559,13 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         }
         // Javascript Libraries
         if (isset($controller->pSetup['javascriptLibs.']) && is_array($controller->pSetup['javascriptLibs.'])) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10, the setting page.javascriptLibs has been deprecated and will be removed in TYPO3 CMS 10.
-            trigger_error('The setting page.javascriptLibs has been deprecated and will be removed in TYPO3 CMS 10', E_USER_DEPRECATED);
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, the setting page.javascriptLibs has been deprecated and will be removed in TYPO3 v10.0.
+            trigger_error('The setting page.javascriptLibs will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
 
             // Include jQuery into the page renderer
             if (!empty($controller->pSetup['javascriptLibs.']['jQuery'])) {
-                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10, the setting page.javascriptLibs.jQuery has been deprecated and will be removed in TYPO3 CMS 10.
-                trigger_error('The setting page.javascriptLibs.jQuery has been deprecated and will be removed in TYPO3 CMS 10', E_USER_DEPRECATED);
+                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, the setting page.javascriptLibs.jQuery has been deprecated and will be removed in TYPO3 v10.0.
+                trigger_error('The setting page.javascriptLibs.jQuery will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
 
                 $jQueryTS = $controller->pSetup['javascriptLibs.']['jQuery.'];
                 // Check if version / source is set, if not set variable to "NULL" to use the default of the page renderer

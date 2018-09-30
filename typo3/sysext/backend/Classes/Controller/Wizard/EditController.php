@@ -81,7 +81,7 @@ class EditController extends AbstractWizardController
     {
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf');
 
-        // @deprecated since v9, will be moved out of __construct() in v10
+        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
         $this->init($GLOBALS['TYPO3_REQUEST']);
     }
 
@@ -119,12 +119,12 @@ class EditController extends AbstractWizardController
      * Makes a header-location redirect to an edit form IF POSSIBLE from the passed data - otherwise the window will
      * just close.
      *
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      * @return string
      */
     public function main()
     {
-        trigger_error('Method main() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('EditController->main() will be set to protected in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         $request = $GLOBALS['TYPO3_REQUEST'];
 
         $response = $this->processRequest($request);

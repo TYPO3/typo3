@@ -62,11 +62,11 @@ class FileFacade
 
     /**
      * @return string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function getIcon(): string
     {
-        trigger_error('This method has been deprecated in v9 will be removed in TYPO3 v10, use ViewHelper <core:iconForResource /> instead', E_USER_DEPRECATED);
+        trigger_error('FileFacade->getIcon() will be removed in TYPO3 v10.0, use ViewHelper <core:iconForResource /> instead.', E_USER_DEPRECATED);
         $title = htmlspecialchars($this->resource->getName() . ' [' . (int)$this->resource->getProperty('uid') . ']');
         return '<span title="' . $title . '">' . $this->iconFactory->getIconForResource($this->resource, Icon::SIZE_SMALL) . '</span>';
     }

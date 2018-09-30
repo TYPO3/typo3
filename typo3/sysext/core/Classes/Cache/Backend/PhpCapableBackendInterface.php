@@ -31,5 +31,5 @@ interface PhpCapableBackendInterface extends BackendInterface
      */
     public function requireOnce($entryIdentifier);
 
-    // @todo: Add require() as breaking patch in v10.0 to the interface
+    // @todo: Add require() as breaking patch in TYPO3 v10.0 to the interface
 }

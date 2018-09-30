@@ -227,7 +227,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * and later perform some external cache management, like clearing only a part
      * of the cache of a page...
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public $page_cache_reg1 = 0;
 
@@ -981,7 +981,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function initFEuser()
     {
-        trigger_error('TSFE->initFEuser() will be removed in TYPO3 v10.0. Use the FrontendUserAuthenticator middleware instead to initialize a Frontend User object', E_USER_DEPRECATED);
+        trigger_error('$TSFE->initFEuser() will be removed in TYPO3 v10.0. Use the FrontendUserAuthenticator middleware instead to initialize a Frontend User object.', E_USER_DEPRECATED);
         $this->fe_user = GeneralUtility::makeInstance(FrontendUserAuthentication::class);
         // List of pid's acceptable
         $pid = GeneralUtility::_GP('pid');
@@ -1085,7 +1085,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function checkAlternativeIdMethods()
     {
-        trigger_error('This method "' . __METHOD__ . '" is removed, extensions should use a Frontend PSR-15-based middleware to hook into the frontend process. There is no need to call this method directly.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->checkAlternativeIdMethods() will removed in TYPO3 v10.0, extensions should use a Frontend PSR-15-based middleware to hook into the frontend process. There is no need to call this method directly.', E_USER_DEPRECATED);
         $this->siteScript = GeneralUtility::getIndpEnv('TYPO3_SITE_SCRIPT');
         // Call post processing function for custom URL methods.
         $_params = ['pObj' => &$this];
@@ -1132,7 +1132,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function initializeBackendUser()
     {
-        trigger_error('The method "' . __METHOD__ . '" is deprecated, and will be removed in TYPO3 v10. Extensions should ensure that the BackendAuthenticator middleware is run to load a backend user.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->initializeBackendUser() will be removed in TYPO3 v10.0. Extensions should ensure that the BackendAuthenticator middleware is run to load a backend user.', E_USER_DEPRECATED);
         // PRE BE_USER HOOK
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'])) {
             trigger_error('The "preBeUser" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
@@ -1704,7 +1704,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function getPageShortcut($SC, $mode, $thisUid, $itera = 20, $pageLog = [], $disableGroupCheck = false)
     {
-        trigger_error('Method "TypoScriptFrontendController::getPageShortcut()" as been moved to PageRepository - use the page repository directly to call this functionality, as this method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->getPageShortcut() has been moved to PageRepository, use the PageRepository directly to call this functionality, as this method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return $this->sys_page->getPageShortcut($SC, $mode, $thisUid, $itera, $pageLog, $disableGroupCheck);
     }
 
@@ -1951,11 +1951,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param string $reason Reason text
      * @param string $header HTTP header to send
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function pageUnavailableAndExit($reason = '', $header = '')
     {
-        trigger_error('This method will be removed in TYPO3 v10. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->pageUnavailableAndExit() will be removed in TYPO3 v10.0. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
         $header = $header ?: $GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling_statheader'];
         $this->pageUnavailableHandler($GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling'], $header, $reason);
         die;
@@ -1966,11 +1966,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param string $reason Reason text
      * @param string $header HTTP header to send
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function pageNotFoundAndExit($reason = '', $header = '')
     {
-        trigger_error('This method will be removed in TYPO3 v10. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->pageNotFoundAndExit() will be removed in TYPO3 v10.0. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
         $header = $header ?: $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling_statheader'];
         $this->pageNotFoundHandler($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling'], $header, $reason);
         die;
@@ -1981,11 +1981,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * and devIPMask must not match the current visitor's IP address.
      *
      * @return bool TRUE/FALSE whether the pageUnavailable_handler should be used.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function checkPageUnavailableHandler()
     {
-        trigger_error('This method will be removed in TYPO3 v10. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->checkPageUnavailableHandler() will be removed in TYPO3 v10.0. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
         if (
             $GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling']
             && !GeneralUtility::cmpIP(
@@ -2006,11 +2006,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param mixed $code See ['FE']['pageUnavailable_handling'] for possible values
      * @param string $header If set, this is passed directly to the PHP function, header()
      * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function pageUnavailableHandler($code, $header, $reason)
     {
-        trigger_error('This method will be removed in TYPO3 v10. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->pageUnavailableHandler() will be removed in TYPO3 v10.0. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
         $this->pageErrorHandler($code, $header, $reason);
     }
 
@@ -2020,11 +2020,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param mixed $code See docs of ['FE']['pageNotFound_handling'] for possible values
      * @param string $header If set, this is passed directly to the PHP function, header()
      * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function pageNotFoundHandler($code, $header = '', $reason = '')
     {
-        trigger_error('This method will be removed in TYPO3 v10. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->pageNotFoundHandler() will be removed in TYPO3 v10.0. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
         $this->pageErrorHandler($code, $header, $reason);
     }
 
@@ -2036,11 +2036,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param string $header If set, this is passed directly to the PHP function, header()
      * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
      * @throws \RuntimeException
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function pageErrorHandler($code, $header = '', $reason = '')
     {
-        trigger_error('This method will be removed in TYPO3 v10. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->pageErrorHandler() will be removed in TYPO3 v10.0. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
         // Issue header in any case:
         if ($header) {
             $headerArr = preg_split('/\\r|\\n/', $header, -1, PREG_SPLIT_NO_EMPTY);
@@ -2242,7 +2242,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function makeCacheHash()
     {
-        trigger_error('TSFE->makeCacheHash() will be removed in TYPO3 v10.0, as this is now handled in the PSR-15 middleware.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->makeCacheHash() will be removed in TYPO3 v10.0, as this is now handled in the PSR-15 middleware.', E_USER_DEPRECATED);
         // No need to test anything if caching was already disabled.
         if ($this->no_cache && !$GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError']) {
             return;
@@ -2315,7 +2315,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function initTemplate()
     {
-        trigger_error('TSFE->initTemplate() will be removed in TYPO3 v10.0. Instantiating TemplateService is done implicitly on usage within TSFE directly.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->initTemplate() will be removed in TYPO3 v10.0. Instantiating TemplateService is done implicitly on usage within $TSFE directly.', E_USER_DEPRECATED);
         $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context);
     }
 
@@ -2605,7 +2605,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     if (is_array($this->pSetup['config.'])) {
                         ArrayUtility::mergeRecursiveWithOverrule($this->config['config'], $this->pSetup['config.']);
                     }
-                    // @deprecated since TYPO3 v9, can be removed in TYPO3 v10
+                    // @deprecated since TYPO3 v9, can be removed in TYPO3 v10.0
                     if ($this->config['config']['typolinkCheckRootline']) {
                         $this->logDeprecatedTyposcript('config.typolinkCheckRootline', 'The functionality is always enabled since TYPO3 v9 and can be removed from your TypoScript code');
                     }
@@ -2925,11 +2925,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Handle data submission
      * This is done at this point, because we need the config values
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function handleDataSubmission()
     {
-        trigger_error('The method "' . __METHOD__ . '" is deprecated since TYPO3 v9, and will be removed in TYPO3 v10. Use a PSR-15 middleware. The hooks are still executed as PSR-15 middleware but will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->handleDataSubmission() will be removed in TYPO3 v10.0. Use a PSR-15 middleware. The hooks are still executed as PSR-15 middleware but will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         // Hook for processing data submission to extensions
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'] ?? [] as $className) {
             $_procObj = GeneralUtility::makeInstance($className);
@@ -2949,11 +2949,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $urlHandlers = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlHandlers'] ?? false;
         if (!$urlHandlers) {
             if (!$calledFromCore) {
-                trigger_error('The method $TSFE->initializeRedirectUrlHandlers() will be removed in TYPO3 v10.0. Do not call this method anymore and implement UrlHandlers by PSR-15 middlewares instead.', E_USER_DEPRECATED);
+                trigger_error('$TSFE->initializeRedirectUrlHandlers() will be removed in TYPO3 v10.0. Do not call this method anymore and implement UrlHandlers by PSR-15 middlewares instead.', E_USER_DEPRECATED);
             }
             return;
         }
-        trigger_error('The system has registered RedirectUrlHandlers via $TYPO3_CONF_VARS[SC_OPTIONS][urlProcessing][urlHandlers]. This functionality will be removed in TYPO3 v10.0. Ensure that extensions using this functionality switch to PSR-15 middelwares instead.', E_USER_DEPRECATED);
+        trigger_error('The system has registered RedirectUrlHandlers via $TYPO3_CONF_VARS[SC_OPTIONS][urlProcessing][urlHandlers]. This functionality will be removed in TYPO3 v10.0. Ensure that extensions using this functionality switch to PSR-15 middlewares instead.', E_USER_DEPRECATED);
 
         foreach ($urlHandlers as $identifier => $configuration) {
             if (empty($configuration) || !is_array($configuration)) {
@@ -2989,7 +2989,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function redirectToExternalUrl($calledFromCore = false)
     {
         if (!$calledFromCore) {
-            trigger_error('The method $TSFE->redirectToExternalUrl() will be removed in TYPO3 v10.0. Do not call this method anymore and implement UrlHandlers by PSR-15 middlewares instead.', E_USER_DEPRECATED);
+            trigger_error('$TSFE->redirectToExternalUrl() will be removed in TYPO3 v10.0. Do not call this method anymore and implement UrlHandlers by PSR-15 middlewares instead.', E_USER_DEPRECATED);
         }
         foreach ($this->activeUrlHandlers as $redirectHandler) {
             $response = $redirectHandler->handle();
@@ -3027,7 +3027,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function calculateLinkVars(array $queryParams = null)
     {
         if ($queryParams === null) {
-            trigger_error('Calling TSFE->calculateLinkVars() without first argument is deprecated, and needs to be an array.', E_USER_DEPRECATED);
+            trigger_error('Calling $TSFE->calculateLinkVars() without first argument will not be supported in TYPO3 v10.0. anymore, and needs to be an array.', E_USER_DEPRECATED);
             $queryParams = GeneralUtility::_GET();
         }
         $this->linkVars = '';
@@ -3179,7 +3179,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function checkPageForMountpointRedirect()
     {
-        trigger_error('Method ' . __FUNCTION__ . 'is deprecated.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->checkPageForMountpointRedirect() will be removed in TYPO3 v10.0, as this is now handled within a PSR-15 middleware.', E_USER_DEPRECATED);
         if (!empty($this->originalMountPointPage) && $this->originalMountPointPage['doktype'] == PageRepository::DOKTYPE_MOUNTPOINT) {
             $this->redirectToCurrentPage();
         }
@@ -3213,7 +3213,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function checkPageForShortcutRedirect()
     {
-        trigger_error('Method ' . __FUNCTION__ . 'is deprecated.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->checkPageForShortcutRedirect() will be removed in TYPO3 v10.0, as this is now done within a PSR-15 middleware.', E_USER_DEPRECATED);
         if (!empty($this->originalShortcutPage) && (int)$this->originalShortcutPage['doktype'] === PageRepository::DOKTYPE_SHORTCUT) {
             $this->redirectToCurrentPage();
         }
@@ -3226,7 +3226,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function redirectToCurrentPage()
     {
-        trigger_error('Method ' . __FUNCTION__ . 'is deprecated.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->redirectToCurrentPage() will be removed in TYPO3 v10.0, as this is now done within a PSR-15 middleware.', E_USER_DEPRECATED);
         $redirectUrl = $this->getUriToCurrentPageForRedirect($GLOBALS['TYPO3_REQUEST']);
         // Prevent redirection loop
         if (!empty($redirectUrl) && GeneralUtility::getIndpEnv('REQUEST_URI') !== '/' . $redirectUrl) {
@@ -3382,8 +3382,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->cacheExpires = $expirationTstamp;
         $this->pageCacheTags[] = 'pageId_' . $cacheData['page_id'];
         if ($this->page_cache_reg1) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Remove this "if" along with property page_cache_reg1
-            trigger_error('Property page_cache_reg1 has been deprecated and will be removed in core version 10', E_USER_DEPRECATED);
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove this "if" along with property page_cache_reg1
+            trigger_error('$TSFE->page_cache_reg1 will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
             $reg1 = (int)$this->page_cache_reg1;
             $cacheData['reg1'] = $reg1;
             $this->pageCacheTags[] = 'reg1_' . $reg1;
@@ -3502,7 +3502,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function preparePageContentGeneration(ServerRequestInterface $request = null)
     {
         if ($request === null) {
-            trigger_error('TSFE->preparePageContentGeneration() requires a ServerRequestInterface as first argument, add this argument in order to avoid this deprecation error.', E_USER_DEPRECATED);
+            trigger_error('$TSFE->preparePageContentGeneration() requires a ServerRequestInterface as first argument, add this argument in order to avoid this deprecation error.', E_USER_DEPRECATED);
             $request = ServerRequestFactory::fromGlobals();
         }
         $this->getTimeTracker()->push('Prepare page content generation');
@@ -4174,7 +4174,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function storeSessionData()
     {
-        trigger_error('Calling $TSFE->storeSessionData will be removed in TYPO3 v10.0. Use the call on the FrontendUserAuthentication object directly instead.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->storeSessionData() will be removed in TYPO3 v10.0. Use the call on the FrontendUserAuthentication object directly instead.', E_USER_DEPRECATED);
         $this->fe_user->storeSessionData();
     }
 
@@ -4187,9 +4187,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function previewInfo($isCoreCall = false)
     {
         if (!$isCoreCall) {
-            trigger_error('The method $TSFE->previewInfo() will be removed in TYPO3 v10.0, as this is now called by the Frontend RequestHandler', E_USER_DEPRECATED);
+            trigger_error('$TSFE->previewInfo() will be removed in TYPO3 v10.0, as this is now called by the Frontend RequestHandler.', E_USER_DEPRECATED);
         } elseif (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_previewInfo'])) {
-            trigger_error('The hook "hook_previewInfo" will be removed in TYPO3 v10.0, but is still in use. Use hook_eofe instead.', E_USER_DEPRECATED);
+            trigger_error('The hook "hook_previewInfo" will be removed in TYPO3 v10.0, but is still in use. Use "hook_eofe" instead.', E_USER_DEPRECATED);
         }
         if ($this->fePreview !== 0) {
             $previewInfo = '';
@@ -4208,7 +4208,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function hook_eofe()
     {
-        trigger_error('TSFE->hook_eofe() will be removed in TYPO3 v10.0. The hook is now executed within Frontend RequestHandler', E_USER_DEPRECATED);
+        trigger_error('$TSFE->hook_eofe() will be removed in TYPO3 v10.0. The hook is now executed within Frontend RequestHandler.', E_USER_DEPRECATED);
         $_params = ['pObj' => &$this];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
@@ -4441,7 +4441,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($key) {
             switch ($key) {
                 case 'mouseOver':
-                    trigger_error('Calling $TSFE->setJS("mouseOver") will be removed in TYPO3 v10.0. If necessary, use setJS() with your recommended code.', E_USER_DEPRECATED);
+                    trigger_error('$TSFE->setJS("mouseOver") will be removed in TYPO3 v10.0. If necessary, use setJS() with your recommended code.', E_USER_DEPRECATED);
                     // Rollover functionality will be removed in TYPO3 v10.0
                     $this->additionalJavaScript[$key] = '		// JS function for mouse-over
 		function over(name, imgObj) {	//
@@ -4479,7 +4479,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function setCSS($key, $content)
     {
-        trigger_error('The method "' . __METHOD__ . '" will be removed in TYPO3 v10, use PageRenderer instead to add CSS.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->setCSS() will be removed in TYPO3 v10.0, use PageRenderer instead to add CSS.', E_USER_DEPRECATED);
         if ($key) {
             $this->additionalCSS[$key] = $content;
         }
@@ -4609,7 +4609,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function getUniqueId($desired = '')
     {
-        trigger_error('Calling TSFE->getUniqueId() will be removed in TYPO3 v10.0, implement this functionality on your own with a proper Singleton Pattern which can be used outside of the frontend scope as well, if needed.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->getUniqueId() will be removed in TYPO3 v10.0, implement this functionality on your own with a proper Singleton Pattern which can be used outside of the frontend scope as well, if needed.', E_USER_DEPRECATED);
         if ($desired === '') {
             // id has to start with a letter to reach XHTML compliance
             $uniqueId = 'a' . $this->uniqueHash();
@@ -4644,11 +4644,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param string $fileRef Reference to a relative filename to include.
      * @return array Returns the $LOCAL_LANG array found in the file. If no array found, returns empty array.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function readLLfile($fileRef)
     {
-        trigger_error('This method will be removed in TYPO3 v10, as the method LanguageService->includeLLFile() can be used directly.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->readLLfile() will be removed in TYPO3 v10.0. The method LanguageService->includeLLFile() can be used directly.', E_USER_DEPRECATED);
         return $this->languageService->includeLLFile($fileRef, false, true);
     }
 
@@ -4658,11 +4658,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param string $index Local_lang key for which to return label (language is determined by $this->lang)
      * @param array $LOCAL_LANG The locallang array in which to search
      * @return string|false Label value of $index key.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10, use LanguageService->getLLL() directly
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use LanguageService->getLLL() directly
      */
     public function getLLL($index, $LOCAL_LANG)
     {
-        trigger_error('This method will be removed in TYPO3 v10, as the method LanguageService->getLLL() can be used directly.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->getLLL() will be removed in TYPO3 v10.0. The method LanguageService->getLLL() can be used directly.', E_USER_DEPRECATED);
         if (isset($LOCAL_LANG[$this->lang][$index][0]['target'])) {
             return $LOCAL_LANG[$this->lang][$index][0]['target'];
         }
@@ -4676,11 +4676,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Initializing the getLL variables needed.
      *
      * @see settingLanguage()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function initLLvars()
     {
-        trigger_error('This method will be removed in TYPO3 v10, the initialization can be altered via hooks within settingLanguage().', E_USER_DEPRECATED);
+        trigger_error('$TSFE->initLLvars() will be removed in TYPO3 v10.0, the initialization can be altered via hooks within settingLanguage().', E_USER_DEPRECATED);
         $this->lang = $this->config['config']['language'] ?: 'default';
         $this->setOutputLanguage($this->lang);
 
@@ -4732,7 +4732,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function convPOSTCharset()
     {
-        trigger_error('The method "' . __METHOD__ . '" is deprecated since TYPO3 v9, and will be removed in TYPO3 v10. A PSR-15 middleware is now taking care of the conversion. It seems you called this method from your own bootstrap code - ensure that the PrepareTypoScriptFrontendRendering middleware is called and you can remove the method call.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->convPOSTCharset() will be removed in TYPO3 v10.0. A PSR-15 middleware is now taking care of the conversion. It seems you called this method from your own bootstrap code - ensure that the PrepareTypoScriptFrontendRendering middleware is called and you can remove the method call.', E_USER_DEPRECATED);
         if ($this->metaCharset !== 'utf-8' && is_array($_POST) && !empty($_POST)) {
             $this->convertCharsetRecursivelyToUtf8($_POST, $this->metaCharset);
             $GLOBALS['HTTP_POST_VARS'] = $_POST;
@@ -4744,7 +4744,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param mixed $data given by reference (string/array usually)
      * @param string $fromCharset convert FROM this charset
-     * @deprecated since TYPO3 v9, will be removed when convPOSTCharset() is removed as well in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed when convPOSTCharset() is removed as well in TYPO3 v10.0.
      */
     protected function convertCharsetRecursivelyToUtf8(&$data, string $fromCharset)
     {
@@ -4891,11 +4891,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param string $domainName
      * @return bool
-     * @deprecated will be removed in TYPO3 v10.
+     * @deprecated will be removed in TYPO3 v10.0.
      */
     public function domainNameMatchesCurrentRequest($domainName)
     {
-        trigger_error('This method will be removed in TYPO3 v10, use LegacyDomainResolver instead.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->domainNameMatchesCurrentRequest() will be removed in TYPO3 v10.0, use LegacyDomainResolver instead.', E_USER_DEPRECATED);
         $currentDomain = GeneralUtility::getIndpEnv('HTTP_HOST');
         $currentPathSegment = trim(preg_replace('|/[^/]*$|', '', GeneralUtility::getIndpEnv('SCRIPT_NAME')));
         return $currentDomain === $domainName || $currentDomain . $currentPathSegment === $domainName;
@@ -4907,11 +4907,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param int $targetPid Target page id
      * @return mixed Return domain data or NULL
-     * @deprecated will be removed in TYPO3 v10.
+     * @deprecated will be removed in TYPO3 v10.0.
      */
     public function getDomainDataForPid($targetPid)
     {
-        trigger_error('This method will be removed in TYPO3 v10, use LegacyDomainResolver instead.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->getDomainDataForPid() will be removed in TYPO3 v10.0, use LegacyDomainResolver instead.', E_USER_DEPRECATED);
         return GeneralUtility::makeInstance(LegacyDomainResolver::class)->matchPageId((int)$targetPid, $GLOBALS['TYPO3_REQUEST']);
     }
 
@@ -4921,11 +4921,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param int $targetPid Target page id
      * @return mixed Return domain name or NULL if not found
-     * @deprecated will be removed in TYPO3 v10.
+     * @deprecated will be removed in TYPO3 v10.0.
      */
     public function getDomainNameForPid($targetPid)
     {
-        trigger_error('This method will be removed in TYPO3 v10, use LegacyDomainResolver instead.', E_USER_DEPRECATED);
+        trigger_error('$TSFE->getDomainNameForPid() will be removed in TYPO3 v10.0, use LegacyDomainResolver instead.', E_USER_DEPRECATED);
         $domainData = GeneralUtility::makeInstance(LegacyDomainResolver::class)->matchPageId((int)$targetPid, $GLOBALS['TYPO3_REQUEST']);
         return $domainData ? $domainData['domainName'] : null;
     }

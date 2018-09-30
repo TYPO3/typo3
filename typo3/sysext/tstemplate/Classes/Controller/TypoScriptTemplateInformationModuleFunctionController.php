@@ -35,27 +35,27 @@ class TypoScriptTemplateInformationModuleFunctionController
      * @var array
      */
     private $deprecatedPublicProperties = [
-        'pObj' => 'Using TypoScriptTemplateInformationModuleFunctionController::$pObj is deprecated and will not be possible anymore in TYPO3 v10.',
-        'function_key' => 'Using TypoScriptTemplateInformationModuleFunctionController::$function_key is deprecated, property will be removed in TYPO3 v10.',
-        'extClassConf' => 'Using TypoScriptTemplateInformationModuleFunctionController::$extClassConf is deprecated, property will be removed in TYPO3 v10.',
-        'localLangFile' => 'Using TypoScriptTemplateInformationModuleFunctionController::$localLangFile is deprecated, property will be removed in TYPO3 v10.',
-        'tce_processed' => 'Using TypoScriptTemplateInformationModuleFunctionController::$tce_processed is deprecated, property will be removed in TYPO3 v10.',
+        'pObj' => 'Using TypoScriptTemplateInformationModuleFunctionController::$pObj is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'function_key' => 'Using TypoScriptTemplateInformationModuleFunctionController::$function_key is deprecated, property will be removed in TYPO3 v10.0.',
+        'extClassConf' => 'Using TypoScriptTemplateInformationModuleFunctionController::$extClassConf is deprecated, property will be removed in TYPO3 v10.0.',
+        'localLangFile' => 'Using TypoScriptTemplateInformationModuleFunctionController::$localLangFile is deprecated, property will be removed in TYPO3 v10.0.',
+        'tce_processed' => 'Using TypoScriptTemplateInformationModuleFunctionController::$tce_processed is deprecated, property will be removed in TYPO3 v10.0.',
     ];
 
     /**
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'initialize_editor' => 'Using TypoScriptTemplateInformationModuleFunctionController::initialize_editor() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'tableRowData' => 'Using TypoScriptTemplateInformationModuleFunctionController::tableRowData() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'handleExternalFunctionValue' => 'Using TypoScriptTemplateInformationModuleFunctionController::handleExternalFunctionValue() is deprecated, method will be removed in TYPO3 v10.',
+        'initialize_editor' => 'Using TypoScriptTemplateInformationModuleFunctionController::initialize_editor() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'tableRowData' => 'Using TypoScriptTemplateInformationModuleFunctionController::tableRowData() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'handleExternalFunctionValue' => 'Using TypoScriptTemplateInformationModuleFunctionController::handleExternalFunctionValue() is deprecated, method will be removed in TYPO3 v10.0.',
     ];
 
     /**
      * Indicator for t3editor, whether data is stored
      *
      * @var bool
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $tce_processed = false;
 
@@ -86,7 +86,7 @@ class TypoScriptTemplateInformationModuleFunctionController
      *
      * @see init()
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $localLangFile = '';
 
@@ -95,7 +95,7 @@ class TypoScriptTemplateInformationModuleFunctionController
      *
      * @see handleExternalFunctionValue()
      * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $extClassConf;
 
@@ -105,7 +105,7 @@ class TypoScriptTemplateInformationModuleFunctionController
      * The extension 'func_wizards' has this description: 'Adds the 'Wizards' item to the function menu in Web>Func. This is just a framework for wizard extensions.' - so as you can see it is designed to allow further connectivity - 'level 2'
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $function_key = '';
 
@@ -119,7 +119,7 @@ class TypoScriptTemplateInformationModuleFunctionController
         $this->pObj = $pObj;
         // Local lang:
         if (!empty($this->localLangFile)) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
             $this->getLanguageService()->includeLLFile($this->localLangFile);
         }
         $this->id = (int)GeneralUtility::_GP('id');
@@ -265,7 +265,7 @@ class TypoScriptTemplateInformationModuleFunctionController
      * If $this->function_key is set (which means there are two levels of object connectivity) then
      * $this->extClassConf is loaded with the TBE_MODULES_EXT configuration for that sub-sub-module
      *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function handleExternalFunctionValue()
     {

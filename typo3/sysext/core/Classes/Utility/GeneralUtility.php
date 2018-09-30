@@ -44,7 +44,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class GeneralUtility
 {
     // Severity constants used by \TYPO3\CMS\Core\Utility\GeneralUtility::devLog()
-    // @deprecated since TYPO3 CMS 9, will be removed in TYPO3 CMS 10.
+    // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
     const SYSLOG_SEVERITY_INFO = 0;
     const SYSLOG_SEVERITY_NOTICE = 1;
     const SYSLOG_SEVERITY_WARNING = 2;
@@ -1823,7 +1823,7 @@ class GeneralUtility
             if (is_array($requestHeaders)) {
                 // Check is $requestHeaders is an associative array or not
                 if (count(array_filter(array_keys($requestHeaders), 'is_string')) === 0) {
-                    trigger_error('Request headers as colon-separated string are deprecated, use an associative array instead.', E_USER_DEPRECATED);
+                    trigger_error('Request headers as colon-separated string will stop working in TYPO3 v10.0, use an associative array instead.', E_USER_DEPRECATED);
                     // Convert cURL style lines of headers to Guzzle key/value(s) pairs.
                     $requestHeaders = static::splitHeaderLines($requestHeaders);
                 }
@@ -2118,7 +2118,7 @@ class GeneralUtility
      * sets permissions on newly created directories.
      *
      * @param string $directory Target directory to create. Must a have trailing slash
-     * @param string $deepDirectory Directory to create. This second parameter is deprecated since TYPO3 v9, and will be removed in TYPO3 v10.
+     * @param string $deepDirectory Directory to create. This second parameter is deprecated since TYPO3 v9, and will be removed in TYPO3 v10.0.
      * @throws \InvalidArgumentException If $directory or $deepDirectory are not strings
      * @throws \RuntimeException If directory could not be created
      */
@@ -3043,7 +3043,7 @@ class GeneralUtility
      */
     public static function clientInfo($useragent = '')
     {
-        trigger_error('GeneralUtility::clientInfo() will be removed in TYPO3 v10.0. Use your own detection via HTTP_USER_AGENT Server string', E_USER_DEPRECATED);
+        trigger_error('GeneralUtility::clientInfo() will be removed in TYPO3 v10.0. Use your own detection via HTTP_USER_AGENT Server string.', E_USER_DEPRECATED);
         if (!$useragent) {
             $useragent = self::getIndpEnv('HTTP_USER_AGENT');
         }
@@ -3106,11 +3106,11 @@ class GeneralUtility
      *
      * @param bool $requestHost Use request host (when not in CLI mode).
      * @return string The fully-qualified host name.
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
      */
     public static function getHostname($requestHost = true)
     {
-        trigger_error('The method `TYPO3\CMS\Core\Utility\GeneralUtility::getHostname()` has been deprecated and should not be used any longer, this method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
+        trigger_error('GeneralUtility::getHostname() should not be used any longer, this method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $host = '';
         // If not called from the command-line, resolve on getIndpEnv()
         if ($requestHost && !Environment::isCli()) {
@@ -3495,7 +3495,7 @@ class GeneralUtility
      */
     public static function llXmlAutoFileName($fileRef, $language, $sameLocation = false)
     {
-        trigger_error('This method will be removed in TYPO3 v10.0, the functionality has been moved into AbstractXmlParser', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0, the functionality has been moved into AbstractXmlParser.', E_USER_DEPRECATED);
         // If $fileRef is already prefixed with "[language key]" then we should return it as is
         $fileName = PathUtility::basename($fileRef);
         if (self::isFirstPartOfStr($fileName, $language . '.')) {
@@ -3582,7 +3582,7 @@ class GeneralUtility
     }
 
     /**
-     * This method should be avoided, as it will be deprecated completely in TYPO3 v9, and will be removed in TYPO3 v10.
+     * This method should be avoided, as it will be deprecated completely in TYPO3 v9, and will be removed in TYPO3 v10.0.
      * Instead use makeInstance() directly.
      *
      * Creates and returns reference to a user defined object.
@@ -3591,11 +3591,11 @@ class GeneralUtility
      * @param string $className Class name
      * @return object The instance of the class asked for. Instance is created with GeneralUtility::makeInstance
      * @see callUserFunction()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public static function getUserObj($className)
     {
-        trigger_error('This method will be removed in TYPO3 v10.0, use GeneralUtility::makeInstance() directly instead', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0, use GeneralUtility::makeInstance() directly instead.', E_USER_DEPRECATED);
         // Check if class exists:
         if (class_exists($className)) {
             return self::makeInstance($className);
@@ -3936,7 +3936,7 @@ class GeneralUtility
      * Initialize the system log.
      *
      * @see sysLog()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public static function initSysLog()
     {
@@ -3960,11 +3960,11 @@ class GeneralUtility
      * @param string $msg Message (in English).
      * @param string $extKey Extension key (from which extension you are calling the log) or "Core"
      * @param int $severity \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_* constant
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public static function sysLog($msg, $extKey, $severity = 0)
     {
-        trigger_error('Method sysLog() is deprecated since v9 and will be removed with v10', E_USER_DEPRECATED);
+        trigger_error('GeneralUtility::sysLog() will be removed with TYPO3 v10.0.', E_USER_DEPRECATED);
 
         $severity = MathUtility::forceIntegerInRange($severity, 0, 4);
         // Is message worth logging?
@@ -4003,11 +4003,11 @@ class GeneralUtility
      * @param string $extKey Extension key (from which extension you are calling the log)
      * @param int $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
      * @param mixed $dataVar Additional data you want to pass to the logger.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public static function devLog($msg, $extKey, $severity = 0, $dataVar = false)
     {
-        trigger_error('Method devLog() is deprecated since v9 and will be removed with v10', E_USER_DEPRECATED);
+        trigger_error('GeneralUtility::devLog() will be removed with TYPO3 v10.0.', E_USER_DEPRECATED);
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['devLog'])) {
             $params = ['msg' => $msg, 'extKey' => $extKey, 'severity' => $severity, 'dataVar' => $dataVar];
             $fakeThis = false;
@@ -4021,11 +4021,11 @@ class GeneralUtility
      * Writes a message to the deprecation log.
      *
      * @param string $msg Message (in English).
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public static function deprecationLog($msg)
     {
-        static::writeDeprecationLogFileEntry(__METHOD__ . ' is deprecated since TYPO3 v9.0, will be removed in TYPO3 v10.0, use "trigger_error("Given reason", E_USER_DEPRECATED);" to log deprecations.');
+        static::writeDeprecationLogFileEntry('GeneralUtility::deprecationLog() will be removed in TYPO3 v10.0, use "trigger_error("Given reason", E_USER_DEPRECATED);" to log deprecations.');
         trigger_error($msg, E_USER_DEPRECATED);
     }
 
@@ -4052,11 +4052,11 @@ class GeneralUtility
      * @param string $property
      * @param RenderingContextInterface $renderingContext
      * @param string $additionalMessage
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public static function logDeprecatedViewHelperAttribute(string $property, RenderingContextInterface $renderingContext, string $additionalMessage = '')
     {
-        static::writeDeprecationLogFileEntry(__METHOD__ . ' is deprecated since TYPO3 v9.0, will be removed in TYPO3 v10.0');
+        static::writeDeprecationLogFileEntry('GeneralUtility::logDeprecatedViewHelperAttribute() will be removed in TYPO3 v10.0.');
         $template = $renderingContext->getTemplatePaths()->resolveTemplateFileForControllerAndActionAndFormat(
             $renderingContext->getControllerName(),
             $renderingContext->getControllerAction()
@@ -4074,22 +4074,22 @@ class GeneralUtility
      * Gets the absolute path to the deprecation log file.
      *
      * @return string Absolute path to the deprecation log file
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public static function getDeprecationLogFileName()
     {
-        static::writeDeprecationLogFileEntry(__METHOD__ . ' is deprecated since TYPO3 v9.0, will be removed in TYPO3 v10.0');
+        static::writeDeprecationLogFileEntry('GeneralUtility::getDeprecationLogFileName() will be removed in TYPO3 v10.0.');
         return Environment::getVarPath() . '/log/deprecation_' . self::shortMD5(Environment::getProjectPath() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '.log';
     }
 
     /**
      * Logs a call to a deprecated function.
      * The log message will be taken from the annotation.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public static function logDeprecatedFunction()
     {
-        static::writeDeprecationLogFileEntry(__METHOD__ . ' is deprecated since TYPO3 v9.0, will be removed in TYPO3 v10.0');
+        static::writeDeprecationLogFileEntry('GeneralUtility::logDeprecatedFunction() will be removed in TYPO3 v10.0.');
         $trail = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
         if ($trail[1]['type']) {
             $function = new \ReflectionMethod($trail[1]['class'], $trail[1]['function']);
@@ -4115,11 +4115,11 @@ class GeneralUtility
      * @param mixed $valueList List of keys which should be listed in the output string. Pass a comma list or an array. An empty list outputs the whole array.
      * @param int $valueLength Long string values are shortened to this length. Default: 20
      * @return string Output string with key names and their value as string
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0.
      */
     public static function arrayToLogString(array $arr, $valueList = [], $valueLength = 20)
     {
-        trigger_error('Method GeneralUtility::arrayToLogString() will be removed in TYPO3 v10. Use CLI-related methods in your code directly.', E_USER_DEPRECATED);
+        trigger_error('GeneralUtility::arrayToLogString() will be removed in TYPO3 v10.0. Use CLI-related methods in your code directly.', E_USER_DEPRECATED);
         $str = '';
         if (!is_array($valueList)) {
             $valueList = self::trimExplode(',', $valueList, true);
@@ -4139,11 +4139,11 @@ class GeneralUtility
      * @param string $parameters The whole parameters string
      * @param bool $unQuote If set, the elements of the resulting array are unquoted.
      * @return array Exploded parameters
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
      */
     public static function unQuoteFilenames($parameters, $unQuote = false)
     {
-        trigger_error('The method `TYPO3\CMS\Core\Utility\GeneralUtility::unQuoteFilenames()` has been deprecated and should not be used any longer, this method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
+        trigger_error('GeneralUtility::unQuoteFilenames() should not be used any longer, this method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $paramsArr = explode(' ', trim($parameters));
         // Whenever a quote character (") is found, $quoteActive is set to the element number inside of $params. A value of -1 means that there are not open quotes at the current position.
         $quoteActive = -1;
@@ -4255,7 +4255,7 @@ class GeneralUtility
 
     /**
      * @param string $msg
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     private static function writeDeprecationLogFileEntry($msg)
     {

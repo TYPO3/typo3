@@ -50,7 +50,7 @@ class EditFileController
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'main' => 'Using EditFileController::main() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'main' => 'Using EditFileController::main() is deprecated and will not be possible anymore in TYPO3 v10.0.',
     ];
 
     /**
@@ -80,7 +80,7 @@ class EditFileController
      * Document template object
      *
      * @var DocumentTemplate
-     * @deprecated since v9, will be removed in v10, unused
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused
      */
     protected $doc;
 
@@ -125,7 +125,7 @@ class EditFileController
     public function __construct()
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        // @deprecated since v9, will be moved out of __construct() in v10
+        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
         $this->init($GLOBALS['TYPO3_REQUEST']);
     }
 
@@ -336,11 +336,11 @@ class EditFileController
     /**
      * Builds the buttons for the docheader and returns them as an
      *
-     * @deprecated since TYPO3 v9, will be set protected in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be set protected in TYPO3 v10.0
      */
     public function getButtons()
     {
-        trigger_error('Method getButtons() will be replaced by protected method getButtonsInternal() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('EditFileController->getButtons() will be replaced by protected method getButtonsInternal() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         $this->getButtonsInternal();
     }
 

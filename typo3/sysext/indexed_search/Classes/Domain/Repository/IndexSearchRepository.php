@@ -540,7 +540,7 @@ class IndexSearchRepository
             'IP.phash_grouping',
             'IP.data_filename',
             'IP.data_page_id',
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Remove along with database field data_page_reg1
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove along with database field data_page_reg1
             'IP.data_page_reg1',
             'IP.data_page_type',
             'IP.data_page_mp',
@@ -1003,7 +1003,7 @@ class IndexSearchRepository
                 'IP.phash_grouping',
                 'IP.data_filename',
                 'IP.data_page_id',
-                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Remove along with database field data_page_reg1
+                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove along with database field data_page_reg1
                 'IP.data_page_reg1',
                 'IP.data_page_type',
                 'IP.data_page_mp',

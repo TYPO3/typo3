@@ -62,7 +62,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getParsedData($fileReference, $languageKey, $charset = '', $errorMode = null, $isLocalizationOverride = false)
     {
-        // @deprecated since TYPO3 v9, will be removed with TYPO3 v10
+        // @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0
         // this is a fallback to convert references to old 'lang' locallang files to the new location
         if (strpos($fileReference, 'EXT:lang/Resources/Private/Language/') === 0) {
             $mapping = [
@@ -81,10 +81,10 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
                 'lang/Resources/Private/Language/locallang_tcemain.xlf' => 'workspaces/Resources/Private/Language/locallang_tcemain.xlf',
             ];
             $filePath = substr($fileReference, 4);
-            trigger_error('There is a reference to "' . $fileReference . '", which has been moved to "EXT:' . $mapping[$filePath] . '". This fallback will be removed with TYPO3 v10.', E_USER_DEPRECATED);
+            trigger_error('There is a reference to "' . $fileReference . '", which has been moved to "EXT:' . $mapping[$filePath] . '". This fallback will be removed with TYPO3 v10.0.', E_USER_DEPRECATED);
             $fileReference = 'EXT:' . $mapping[$filePath];
         }
-        // @deprecated since TYPO3 v9, will be removed with TYPO3 v10
+        // @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0
         // this is a fallback to convert references to old 'saltedpasswords' locallang files to the new location
         if (strpos($fileReference, 'EXT:saltedpasswords/Resources/Private/Language/') === 0) {
             $mapping = [
@@ -92,7 +92,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
                 'saltedpasswords/Resources/Private/Language/locallang_em.xlf' => 'core/Resources/Private/Language/locallang_deprecated_saltedpasswords_em.xlf',
             ];
             $filePath = substr($fileReference, 4);
-            trigger_error('There is a reference to "' . $fileReference . '", which has been moved to "EXT:' . $mapping[$filePath] . '". This fallback will be removed with TYPO3 v10.', E_USER_DEPRECATED);
+            trigger_error('There is a reference to "' . $fileReference . '", which has been moved to "EXT:' . $mapping[$filePath] . '". This fallback will be removed with TYPO3 v10.0.', E_USER_DEPRECATED);
             $fileReference = 'EXT:' . $mapping[$filePath];
         }
 

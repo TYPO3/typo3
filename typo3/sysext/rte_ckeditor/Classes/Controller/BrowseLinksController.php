@@ -35,9 +35,9 @@ class BrowseLinksController extends AbstractLinkBrowserController
      * @var array
      */
     protected $deprecatedPublicMethods = [
-        'renderLinkAttributeFields' => 'Using BrowseLinksController::renderLinkAttributeFields() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'getPageConfigLabel' => 'Using BrowseLinksController::getPageConfigLabel() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'getDisplayedLinkHandlerId' => 'Using BrowseLinksController::getDisplayedLinkHandlerId() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'renderLinkAttributeFields' => 'Using BrowseLinksController::renderLinkAttributeFields() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'getPageConfigLabel' => 'Using BrowseLinksController::getPageConfigLabel() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'getDisplayedLinkHandlerId' => 'Using BrowseLinksController::getDisplayedLinkHandlerId() is deprecated and will not be possible anymore in TYPO3 v10.0.',
     ];
 
     /**

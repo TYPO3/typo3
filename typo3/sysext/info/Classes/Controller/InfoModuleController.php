@@ -46,37 +46,37 @@ class InfoModuleController
      * @var array
      */
     private $deprecatedPublicProperties = [
-        'perms_clause' => 'Using InfoModuleController::$perms_clause is deprecated and will not be possible anymore in TYPO3 v10.',
-        'modTSconfig' => 'Using InfoModuleController::$modTSconfig is deprecated and will not be possible anymore in TYPO3 v10.',
-        'modMenu_setDefaultList' => 'Using InfoModuleController::$modMenu_setDefaultList is deprecated and will not be possible anymore in TYPO3 v10.',
-        'modMenu_dontValidateList' => 'Using InfoModuleController::$modMenu_dontValidateList is deprecated and will not be possible anymore in TYPO3 v10.',
-        'modMenu_type' => 'Using InfoModuleController::$modMenu_type$ is deprecated and will not be possible anymore in TYPO3 v10.',
-        'extClassConf' => 'Using InfoModuleController::extClassConf$ is deprecated and will not be possible anymore in TYPO3 v10.',
-        'extObj' => 'Using InfoModuleController::$extObj is deprecated and will not be possible anymore in TYPO3 v10.',
-        'content' => 'Using InfoModuleController::$content is deprecated and will not be possible anymore in TYPO3 v10.',
-        'pObj' => 'Using InfoModuleController::$pObj is deprecated and will not be possible anymore in TYPO3 v10.',
-        'id' => 'Using InfoModuleController::id$ is deprecated and will not be possible anymore in TYPO3 v10.',
-        'CMD' => 'Using InfoModuleController::$CMD is deprecated, property will be removed in TYPO3 v10.',
-        'doc' => 'Using InfoModuleController::$doc is deprecated, property will be removed in TYPO3 v10.',
-        'MCONF' => 'Using InfoModuleController::$MCONF is deprecated, property will be removed in TYPO3 v10.',
+        'perms_clause' => 'Using InfoModuleController::$perms_clause is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'modTSconfig' => 'Using InfoModuleController::$modTSconfig is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'modMenu_setDefaultList' => 'Using InfoModuleController::$modMenu_setDefaultList is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'modMenu_dontValidateList' => 'Using InfoModuleController::$modMenu_dontValidateList is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'modMenu_type' => 'Using InfoModuleController::$modMenu_type$ is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'extClassConf' => 'Using InfoModuleController::extClassConf$ is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'extObj' => 'Using InfoModuleController::$extObj is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'content' => 'Using InfoModuleController::$content is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'pObj' => 'Using InfoModuleController::$pObj is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'id' => 'Using InfoModuleController::id$ is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'CMD' => 'Using InfoModuleController::$CMD is deprecated, property will be removed in TYPO3 v10.0.',
+        'doc' => 'Using InfoModuleController::$doc is deprecated, property will be removed in TYPO3 v10.0.',
+        'MCONF' => 'Using InfoModuleController::$MCONF is deprecated, property will be removed in TYPO3 v10.0.',
     ];
 
     /**
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'main' => 'Using InfoModuleController::main() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'init' => 'Using InfoModuleController::init() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'getModuleTemplate' => 'Using InfoModuleController::getModuleTemplate() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'menuConfig' => 'Using InfoModuleController::menuConfig() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'handleExternalFunctionValue' => 'Using InfoModuleController::handleExternalFunctionValue() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'mergeExternalItems' => 'Using InfoModuleController::mergeExternalItems() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'getExternalItemConfig' => 'Using InfoModuleController::getExternalItemConfig() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'extObjContent' => 'Using InfoModuleController::extObjContent() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'getExtObjContent' => 'Using InfoModuleController::getExtObjContent() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'checkExtObj' => 'Using InfoModuleController::checkExtObj() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'extObjHeader' => 'Using InfoModuleController::extObjHeader() is deprecated, method will be removed in TYPO3 v10.',
-        'checkSubExtObj' => 'Using InfoModuleController::checkSubExtObj() is deprecated, method will be removed in TYPO3 v10.',
+        'main' => 'Using InfoModuleController::main() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'init' => 'Using InfoModuleController::init() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'getModuleTemplate' => 'Using InfoModuleController::getModuleTemplate() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'menuConfig' => 'Using InfoModuleController::menuConfig() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'handleExternalFunctionValue' => 'Using InfoModuleController::handleExternalFunctionValue() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'mergeExternalItems' => 'Using InfoModuleController::mergeExternalItems() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'getExternalItemConfig' => 'Using InfoModuleController::getExternalItemConfig() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'extObjContent' => 'Using InfoModuleController::extObjContent() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'getExtObjContent' => 'Using InfoModuleController::getExtObjContent() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'checkExtObj' => 'Using InfoModuleController::checkExtObj() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'extObjHeader' => 'Using InfoModuleController::extObjHeader() is deprecated, method will be removed in TYPO3 v10.0.',
+        'checkSubExtObj' => 'Using InfoModuleController::checkSubExtObj() is deprecated, method will be removed in TYPO3 v10.0.',
     ];
 
     /**

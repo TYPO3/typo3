@@ -99,7 +99,7 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
                 || (isset($renderingOptions['_isReadOnlyFormElement']) && (bool)$renderingOptions['_isReadOnlyFormElement'] === true)
             ) {
                 trigger_error(
-                    'Using the properties "renderingOptions._isHiddenFormElement" and "renderingOptions._isReadOnlyFormElement" has been deprecated in v9 and will be removed in v10. Use variants instead.',
+                    'Using the properties "renderingOptions._isHiddenFormElement" and "renderingOptions._isReadOnlyFormElement" will be removed in TYPO3 v10.0. Use variants instead.',
                     E_USER_DEPRECATED
                 );
                 continue;

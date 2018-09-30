@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Script Class, putting the frameset together.
  *
- * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
  */
 class ElementBrowserFramesetController
 {
@@ -47,7 +47,7 @@ class ElementBrowserFramesetController
     public function __construct()
     {
         trigger_error(
-            self::class . ' will be removed in TYPO3 v10. Use route wizard_element_browser instead.',
+            self::class . ' will be removed in TYPO3 v10.0. Use route wizard_element_browser instead.',
             E_USER_DEPRECATED
         );
         $GLOBALS['SOBE'] = $this;

@@ -197,12 +197,12 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
             $innerExpression = substr($normalizedExpression, 1, -1);
             $orParts = explode(']||[', $innerExpression);
             if ($this->strictSyntaxEnabled() && count($orParts) > 1) {
-                trigger_error('Multiple conditions blocks combined with AND, OR, && or || have been deprecated and will be removed in TYPO3 CMS 10, use the new expression language.', E_USER_DEPRECATED);
+                trigger_error('Multiple conditions blocks combined with AND, OR, && or || will be removed in TYPO3 v10.0, use the new expression language.', E_USER_DEPRECATED);
             }
             foreach ($orParts as $orPart) {
                 $andParts = explode(']&&[', $orPart);
                 if ($this->strictSyntaxEnabled() && count($andParts) > 1) {
-                    trigger_error('Multiple conditions blocks combined with AND, OR, && or || have been deprecated and will be removed in TYPO3 CMS 10, use the new expression language.', E_USER_DEPRECATED);
+                    trigger_error('Multiple conditions blocks combined with AND, OR, && or || will be removed in TYPO3 v10.0, use the new expression language.', E_USER_DEPRECATED);
                 }
                 foreach ($andParts as $andPart) {
                     $result = $this->evaluateExpression($andPart);

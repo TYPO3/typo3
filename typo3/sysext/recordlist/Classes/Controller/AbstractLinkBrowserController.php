@@ -38,8 +38,8 @@ abstract class AbstractLinkBrowserController
      * @var array
      */
     protected $deprecatedPublicMethods = [
-        'renderLinkAttributeFields' => 'Using AbstractLinkBrowserController::renderLinkAttributeFields() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'getDisplayedLinkHandlerId' => 'Using AbstractLinkBrowzerController::getDisplayedLinkHandlerId() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'renderLinkAttributeFields' => 'Using AbstractLinkBrowserController::renderLinkAttributeFields() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'getDisplayedLinkHandlerId' => 'Using AbstractLinkBrowzerController::getDisplayedLinkHandlerId() is deprecated and will not be possible anymore in TYPO3 v10.0.',
     ];
 
     /**

@@ -142,7 +142,7 @@ class TableController extends AbstractWizardController
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf');
 
-        // @deprecated since v9, will be moved out of __construct() in v10
+        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
         $this->init($GLOBALS['TYPO3_REQUEST']);
     }
 
@@ -167,11 +167,11 @@ class TableController extends AbstractWizardController
     /**
      * Main function, rendering the table wizard
      *
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function main()
     {
-        trigger_error('Method main() will be replaced by protected method renderContent() in v10. Do not call from other extensions', E_USER_DEPRECATED);
+        trigger_error('TableController->main() will be replaced by protected method renderContent() in TYPO3 v10.0. Do not call from other extensions.', E_USER_DEPRECATED);
 
         $response = $this->renderContent($GLOBALS['TYPO3_REQUEST']);
 
@@ -186,11 +186,11 @@ class TableController extends AbstractWizardController
      * @return string HTML content for the form.
      * @throws \RuntimeException
      *
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function tableWizard()
     {
-        trigger_error('Method tableWizard() will be replaced by protected method renderTableWizard() in v10. Do not call from other extensions', E_USER_DEPRECATED);
+        trigger_error('TableController->tableWizard() will be replaced by protected method renderTableWizard() in TYPO3 v10.0. Do not call from other extensions.', E_USER_DEPRECATED);
 
         $result = $this->renderTableWizard($GLOBALS['TYPO3_REQUEST']);
 
@@ -208,11 +208,11 @@ class TableController extends AbstractWizardController
      * @param array $row Current parent record row
      * @return array Table config code in an array
      *
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function getConfigCode($row)
     {
-        trigger_error('Method getConfigCode() will be replaced by protected method getConfiguration() in v10. Do not call from other extensions', E_USER_DEPRECATED);
+        trigger_error('TableController->getConfigCode() will be replaced by protected method getConfiguration() in TYPO3 v10.0. Do not call from other extensions.', E_USER_DEPRECATED);
 
         $result = $this->getConfiguration($row, $GLOBALS['TYPO3_REQUEST']);
 
@@ -230,11 +230,11 @@ class TableController extends AbstractWizardController
      * @return string HTML for the table wizard
      * @internal
      *
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function getTableHTML($configuration)
     {
-        trigger_error('Method getTableHTML() will be replaced by protected method getTableWizard() in v10. Do not call from other extensions', E_USER_DEPRECATED);
+        trigger_error('TableController->getTableHTML() will be replaced by protected method getTableWizard() in TYPO3 v10.0. Do not call from other extensions.', E_USER_DEPRECATED);
         return $this->getTableWizard($configuration);
     }
 
@@ -244,11 +244,11 @@ class TableController extends AbstractWizardController
      *
      * @internal
      *
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function changeFunc()
     {
-        trigger_error('Method changeFunc() will be replaced by protected method manipulateTable() in v10. Do not call from other extensions', E_USER_DEPRECATED);
+        trigger_error('TableController->changeFunc() will be replaced by protected method manipulateTable() in TYPO3 v10.0. Do not call from other extensions.', E_USER_DEPRECATED);
         $this->manipulateTable();
     }
 
@@ -259,11 +259,11 @@ class TableController extends AbstractWizardController
      * @return string The array converted into a string with line-based configuration.
      * @see cfgString2CfgArray()
      *
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function cfgArray2CfgString($cfgArr)
     {
-        trigger_error('Method cfgArray2CfgString() will be replaced by protected method configurationArrayToString() in v10. Do not call from other extensions', E_USER_DEPRECATED);
+        trigger_error('TableController->cfgArray2CfgString() will be replaced by protected method configurationArrayToString() in TYPO3 v10.0. Do not call from other extensions.', E_USER_DEPRECATED);
         return $this->configurationArrayToString($cfgArr);
     }
 
@@ -275,11 +275,11 @@ class TableController extends AbstractWizardController
      * @return array Configuration array
      * @see cfgArray2CfgString()
      *
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function cfgString2CfgArray($configurationCode, $columns)
     {
-        trigger_error('Method cfgString2CfgArray() will be replaced by protected method configurationStringToArray() in v10. Do not call from other extensions', E_USER_DEPRECATED);
+        trigger_error('TableController->cfgString2CfgArray() will be replaced by protected method configurationStringToArray() in TYPO3 v10.0. Do not call from other extensions.', E_USER_DEPRECATED);
         return $this->configurationStringToArray($configurationCode, $columns);
     }
 

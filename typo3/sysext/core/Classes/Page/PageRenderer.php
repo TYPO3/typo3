@@ -62,7 +62,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @var bool
-     * @deprecated will be removed in TYPO3 v10, in favor of concatenateJavaScript and concatenateCss
+     * @deprecated will be removed in TYPO3 v10.0, in favor of concatenateJavaScript and concatenateCss
      */
     protected $concatenateFiles = false;
 
@@ -961,12 +961,12 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /*****************************************************/
     /**
      * Adds meta data
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      * @param string $meta Meta data (complete metatag)
      */
     public function addMetaTag($meta)
     {
-        trigger_error('Method pageRenderer->addMetaTag is deprecated in v9 and will be removed with v10. Use pageRenderer->setMetaTag instead.', E_USER_DEPRECATED);
+        trigger_error('Method pageRenderer->addMetaTag will be removed with TYPO3 v10.0. Use pageRenderer->setMetaTag instead.', E_USER_DEPRECATED);
         if (!in_array($meta, $this->metaTags)) {
             $this->metaTags[] = $meta;
         }
@@ -1553,7 +1553,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     public function addInlineLanguageLabelArray(array $array, $parseWithLanguageService = null)
     {
         if ($parseWithLanguageService === true) {
-            trigger_error('PageRenderer::addInlineLanguageLabelArray() second method argument set to true is deprecated, and will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
+            trigger_error('PageRenderer::addInlineLanguageLabelArray() second method argument set to true will not be supported anymore in TYPO3 v10.0.', E_USER_DEPRECATED);
             foreach ($array as $key => $value) {
                 if (TYPO3_MODE === 'FE') {
                     $array[$key] = $this->getTypoScriptFrontendController()->sL($value);

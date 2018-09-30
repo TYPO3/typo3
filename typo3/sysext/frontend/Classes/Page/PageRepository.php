@@ -70,9 +70,9 @@ class PageRepository implements LoggerAwareInterface
      * @var array
      */
     protected $deprecatedPublicMethods = [
-        'init' => 'init() is now called implicitly on object creation, and is not necessary anymore to be called explicitly. Calling init() will throw an error in TYPO3 v10.',
-        'movePlhOL' => 'Using movePlhOL is deprecated and will not be possible anymore in TYPO3 v10.',
-        'getMovePlaceholder' => 'Using getMovePlaceholder is deprecated and will not be possible anymore in TYPO3 v10.'
+        'init' => 'init() is now called implicitly on object creation, and is not necessary anymore to be called explicitly. Calling init() will throw an error in TYPO3 v10.0.',
+        'movePlhOL' => 'Using movePlhOL is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'getMovePlaceholder' => 'Using getMovePlaceholder is deprecated and will not be possible anymore in TYPO3 v10.0.'
     ];
 
     /**
@@ -93,7 +93,7 @@ class PageRepository implements LoggerAwareInterface
 
     /**
      * @var int
-     * @deprecated will be removed in TYPO3 v10, all occurrences should be replaced with the language->id() aspect property in TYPO3 v10.0
+     * @deprecated will be removed in TYPO3 v10.0, all occurrences should be replaced with the language->id() aspect property in TYPO3 v10.0
      * However, the usage within the class is kept as the property could be overwritten by third-party classes
      */
     protected $sys_language_uid = 0;
@@ -104,7 +104,7 @@ class PageRepository implements LoggerAwareInterface
      * user!!!
      *
      * @var bool
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10. As $versioningWorkspaceId now indicates what records to fetch.
+     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0. As $versioningWorkspaceId now indicates what records to fetch.
      */
     protected $versioningPreview = false;
 
@@ -1139,7 +1139,7 @@ class PageRepository implements LoggerAwareInterface
      * @throws \RuntimeException
      * @return array Array with page records from the root line as values. The array is ordered with the outer records first and root record in the bottom. The keys are numeric but in reverse order. So if you traverse/sort the array by the numeric keys order you will get the order from root and out. If an error is found (like eternal looping or invalid mountpoint) it will return an empty array.
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getPageAndRootline()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function getRootLine($uid, $MP = '', $ignoreMPerrors = null)
     {
@@ -1390,9 +1390,9 @@ class PageRepository implements LoggerAwareInterface
 
             if ($row) {
                 if ($noWSOL !== null) {
-                    trigger_error('The fourth parameter of PageRepository->getRawRecord() has been deprecated, use a SQL statement directly. The parameter will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+                    trigger_error('The fourth parameter of PageRepository->getRawRecord() will be removed in TYPO3 v10.0. Use a SQL statement directly.', E_USER_DEPRECATED);
                 }
-                // @deprecated - remove this if-clause in TYPO3 v10
+                // @deprecated - remove this if-clause in TYPO3 v10.0
                 if (!$noWSOL) {
                     $this->versionOL($table, $row);
                 }
@@ -1415,11 +1415,11 @@ class PageRepository implements LoggerAwareInterface
      * @param string $orderBy Optional ORDER BY field(s). If none, supply blank string.
      * @param string $limit Optional LIMIT value ([begin,]max). If none, supply blank string.
      * @return mixed Returns array (the record) if found, otherwise nothing (void)
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
      */
     public function getRecordsByField($theTable, $theField, $theValue, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '')
     {
-        trigger_error('The method `TYPO3\CMS\Frontend\Page::getRecordsByField()` has been deprecated and should not be used any longer, this method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
+        trigger_error('PageRepository->getRecordsByField() should not be used any longer, this method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         if (is_array($GLOBALS['TCA'][$theTable])) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($theTable);
             $queryBuilder->getRestrictions()
@@ -1477,11 +1477,11 @@ class PageRepository implements LoggerAwareInterface
      * @param string $table Tablename
      * @return string
      * @see enableFields()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10, use QueryBuilders' Restrictions directly instead.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use QueryBuilders' Restrictions directly instead.
      */
     public function deleteClause($table)
     {
-        trigger_error('The delete clause can be applied via the DeletedRestrictions via QueryBuilder, this method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
+        trigger_error('PageRepository->deleteClause() will be removed in TYPO3 v10.0. The delete clause can be applied via the DeletedRestrictions via QueryBuilder.', E_USER_DEPRECATED);
         return $GLOBALS['TCA'][$table]['ctrl']['delete'] ? ' AND ' . $table . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete'] . '=0' : '';
     }
 
@@ -2020,11 +2020,11 @@ class PageRepository implements LoggerAwareInterface
      * @param string $fieldName Name of the field
      * @param array $element The parent element referencing to files
      * @return array
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
      */
     public function getFileReferences($tableName, $fieldName, array $element)
     {
-        trigger_error('The method `TYPO3\CMS\Frontend\Page::getFileReferences()` has been deprecated and should not be used any longer, this method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
+        trigger_error('PageRepository->getFileReferences() should not be used any longer, this method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         /** @var FileRepository $fileRepository */
         $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
         $currentId = !empty($element['uid']) ? $element['uid'] : 0;

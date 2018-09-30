@@ -583,7 +583,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
 
                 // Modify parameters, this hook should be deprecated
                 if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'])) {
-                    trigger_error('The hook "t3lib/class.t3lib_parsehtml_proc.php->modifyParams_LinksDb_PostProc" will be removed in TYPO3 v10, use LinkService syntax to modify links to be stored in the database.', E_USER_DEPRECATED);
+                    trigger_error('The hook "t3lib/class.t3lib_parsehtml_proc.php->modifyParams_LinksDb_PostProc" will be removed in TYPO3 v10.0, use LinkService syntax to modify links to be stored in the database.', E_USER_DEPRECATED);
                     $parameters = [
                         'currentBlock' => $v,
                         'linkInformation' => $linkInformation,
@@ -615,12 +615,12 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @param string $value Content input
      * @param bool $internallyCalledFromCore internal option for calls where the Core is still using this function, to supress method deprecations
      * @return string Content output
-     * @deprecated will be removed in TYPO3 v10, only ->TS_AtagToAbs() should be called directly, <link> syntax is deprecated
+     * @deprecated will be removed in TYPO3 v10.0, only ->TS_AtagToAbs() should be called directly, <link> syntax is deprecated
      */
     public function TS_links_rte($value, $internallyCalledFromCore = null)
     {
         if ($internallyCalledFromCore === null) {
-            trigger_error('This method will be removed in TYPO3 v10, use TS_AtagToAbs() directly and do not use <link> syntax anymore', E_USER_DEPRECATED);
+            trigger_error('RteHtmlParser->TS_links_rte() will be removed in TYPO3 v10.0, use TS_AtagToAbs() directly and do not use <link> syntax anymore.', E_USER_DEPRECATED);
         }
         $hasLinkTags = false;
         $value = $this->TS_AtagToAbs($value);
@@ -646,7 +646,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
 
                 // Modify parameters by a hook
                 if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc'] ?? false)) {
-                    trigger_error('The hook "t3lib/class.t3lib_parsehtml_proc.php->modifyParams_LinksRte_PostProc" will be removed in TYPO3 v10, use the link service to properly use ', E_USER_DEPRECATED);
+                    trigger_error('The hook "t3lib/class.t3lib_parsehtml_proc.php->modifyParams_LinksRte_PostProc" will be removed in TYPO3 v10.0, use the link service to properly use .', E_USER_DEPRECATED);
                     // backwards-compatibility: show an error message if the page is not found
                     $error = '';
                     if ($linkInformation['type'] === LinkService::TYPE_PAGE) {
@@ -683,7 +683,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
             }
         }
         if ($hasLinkTags) {
-            trigger_error('Content with <link> syntax was found, update your content to use the t3:// syntax, and migrate your content via the upgrade wizard in the install tool', E_USER_DEPRECATED);
+            trigger_error('Content with <link> syntax was found, update your content to use the t3:// syntax, and migrate your content via the upgrade wizard in the install tool.', E_USER_DEPRECATED);
         }
         return implode('', $blockSplit);
     }
@@ -767,11 +767,11 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      *
      * @param string $value Content input
      * @return string Content output
-     * @deprecated since TYPO3 v9.0, will be removed in TYPO3 v10, see comment above, adding attribuet "rteerror" is not necessary anymore.
+     * @deprecated since TYPO3 v9.0, will be removed in TYPO3 v10.0, see comment above, adding attribuet "rteerror" is not necessary anymore.
      */
     public function transformStyledATags($value)
     {
-        trigger_error('This method will be removed in TYPO3 v10. TYPO3 can handle style attribute in anchor tags properly since TYPO3 v8 LTS', E_USER_DEPRECATED);
+        trigger_error('RteHtmlParser->transformStyledATags() will be removed in TYPO3 v10.0. TYPO3 can handle style attribute in anchor tags properly since TYPO3 v8 LTS.', E_USER_DEPRECATED);
         $blockSplit = $this->splitIntoBlock('A', $value);
         foreach ($blockSplit as $k => $v) {
             // If an A-tag was found
@@ -1204,7 +1204,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     protected function TS_AtagToAbs($value)
     {
         if (func_num_args() > 1) {
-            trigger_error('Second argument of TS_AtagToAbs() is not in use and is removed, however the argument in the callers code can be removed without side-effects.', E_USER_DEPRECATED);
+            trigger_error('Second argument of RteHtmlParser->TS_AtagToAbs() is not in use and will be removed in TYPO3 v10.0, however the argument in the callers code can be removed without side-effects.', E_USER_DEPRECATED);
         }
         $blockSplit = $this->splitIntoBlock('A', $value);
         foreach ($blockSplit as $k => $v) {

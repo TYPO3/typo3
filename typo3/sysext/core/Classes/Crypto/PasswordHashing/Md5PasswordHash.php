@@ -34,8 +34,8 @@ class Md5PasswordHash implements PasswordHashInterface
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'isValidSalt' => 'Using Md5PasswordHash::isValidSalt() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'base64Encode' => 'Using Md5PasswordHash::base64Encode() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'isValidSalt' => 'Using Md5PasswordHash::isValidSalt() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'base64Encode' => 'Using Md5PasswordHash::base64Encode() is deprecated and will not be possible anymore in TYPO3 v10.0.',
     ];
 
     /**
@@ -259,7 +259,7 @@ class Md5PasswordHash implements PasswordHashInterface
      */
     public function getSetting(): string
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return self::PREFIX;
     }
 
@@ -271,7 +271,7 @@ class Md5PasswordHash implements PasswordHashInterface
      */
     public function getSaltLength(): int
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return 6;
     }
 }

@@ -170,7 +170,7 @@ List of all possible tags:
 
 - ext:xyz - Changes on extension xyz. Please refer to this tag only when changing system extensions.
 
-Furthermore, exactly one of the following tags *must* be added for all "Deprecation" and "Breaking" ReST files since core v9 and above:
+Furthermore, exactly one of the following tags *must* be added for all "Deprecation" and "Breaking" ReST files since TYPO3 v9 and above:
 
 - NotScanned - If this ReST file is not covered by the extension scanner at all.
 

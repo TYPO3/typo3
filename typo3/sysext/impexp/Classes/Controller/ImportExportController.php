@@ -61,48 +61,48 @@ class ImportExportController
      * @var array
      */
     private $deprecatedPublicProperties = [
-        'pageinfo' => 'Using ImportExportController::$pageinfo is deprecated and will not be possible anymore in TYPO3 v10.',
-        'id' => 'Using ImportExportController::$id is deprecated and will not be possible anymore in TYPO3 v10.',
-        'perms_clause' => 'Using ImportExportController::$perms_clause is deprecated and will not be possible anymore in TYPO3 v10.',
-        'extObj' => 'Using ImportExportController::$extObj is deprecated, the property will be removed in v10.',
-        'doc' => 'Using ImportExportController::$doc is deprecated, the property will be removed in v10.',
-        'content' => 'Using ImportExportController::$content is deprecated, the property will be removed in v10.',
-        'extClassConf' => 'Using ImportExportController::$extClassConf is deprecated, the property will be removed in v10.',
-        'modMenu_setDefaultList' => 'Using ImportExportController::$modMenu_setDefaultList is deprecated, the property will be removed in v10.',
-        'modMenu_dontValidateList' => 'Using ImportExportController::$modMenu_dontValidateList is deprecated, the property will be removed in v10.',
-        'modMenu_type' => 'Using ImportExportController::$modMenu_type is deprecated, the property will be removed in v10.',
-        'modTSconfig' => 'Using ImportExportController::$modTSconfig is deprecated, the property will be removed in v10.',
-        'MOD_SETTINGS' => 'Using ImportExportController::$MOD_SETTINGS is deprecated, the property will be removed in v10.',
-        'MOD_MENU' => 'Using ImportExportController::MOD_MENU is deprecated, the property will be removed in v10.',
-        'CMD' => 'Using ImportExportController::$CMD is deprecated, the property will be removed in v10.',
-        'MCONF' => 'Using ImportExportController::$MCONF is deprecated, the property will be removed in v10.',
+        'pageinfo' => 'Using ImportExportController::$pageinfo is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'id' => 'Using ImportExportController::$id is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'perms_clause' => 'Using ImportExportController::$perms_clause is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'extObj' => 'Using ImportExportController::$extObj is deprecated, the property will be removed in TYPO3 v10.0.',
+        'doc' => 'Using ImportExportController::$doc is deprecated, the property will be removed in TYPO3 v10.0.',
+        'content' => 'Using ImportExportController::$content is deprecated, the property will be removed in TYPO3 v10.0.',
+        'extClassConf' => 'Using ImportExportController::$extClassConf is deprecated, the property will be removed in TYPO3 v10.0.',
+        'modMenu_setDefaultList' => 'Using ImportExportController::$modMenu_setDefaultList is deprecated, the property will be removed in TYPO3 v10.0.',
+        'modMenu_dontValidateList' => 'Using ImportExportController::$modMenu_dontValidateList is deprecated, the property will be removed in TYPO3 v10.0.',
+        'modMenu_type' => 'Using ImportExportController::$modMenu_type is deprecated, the property will be removed in TYPO3 v10.0.',
+        'modTSconfig' => 'Using ImportExportController::$modTSconfig is deprecated, the property will be removed in TYPO3 v10.0.',
+        'MOD_SETTINGS' => 'Using ImportExportController::$MOD_SETTINGS is deprecated, the property will be removed in TYPO3 v10.0.',
+        'MOD_MENU' => 'Using ImportExportController::MOD_MENU is deprecated, the property will be removed in TYPO3 v10.0.',
+        'CMD' => 'Using ImportExportController::$CMD is deprecated, the property will be removed in TYPO3 v10.0.',
+        'MCONF' => 'Using ImportExportController::$MCONF is deprecated, the property will be removed in TYPO3 v10.0.',
     ];
 
     /**
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'init' => 'Using ImportExportController::init() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'main' => 'Using ImportExportController::main() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'exportData' => 'Using ImportExportController::exportData() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'addRecordsForPid' => 'Using ImportExportController::addRecordsForPid() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'exec_listQueryPid' => 'Using ImportExportController::exec_listQueryPid() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'makeConfigurationForm' => 'Using ImportExportController::makeConfigurationForm() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'makeAdvancedOptionsForm' => 'Using ImportExportController::makeAdvancedOptionsForm() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'makeSaveForm' => 'Using ImportExportController::makeSaveForm() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'importData' => 'Using ImportExportController::importData() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'checkUpload' => 'Using ImportExportController::checkUpload() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'getTableSelectOptions' => 'Using ImportExportController::getTableSelectOptions() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'filterPageIds' => 'Using ImportExportController::filterPageIds() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'getExtObjContent' => 'Using ImportExportController::getExtObjContent() is deprecated, the method will be removed in v10.',
-        'extObjContent' => 'Using ImportExportController::extObjContent() is deprecated, the method will be removed in v10.',
-        'extObjHeader' => 'Using ImportExportController::extObjHeader() is deprecated, the method will be removed in v10.',
-        'checkSubExtObj' => 'Using ImportExportController::checkSubExtObj() is deprecated, the method will be removed in v10.',
-        'checkExtObj' => 'Using ImportExportController::checkExtObj() is deprecated, the method will be removed in v10.',
-        'getExternalItemConfig' => 'Using ImportExportController::getExternalItemConfig() is deprecated, the method will be removed in v10.',
-        'handleExternalFunctionValue' => 'Using ImportExportController::handleExternalFunctionValue() is deprecated, the method will be removed in v10.',
-        'mergeExternalItems' => 'Using ImportExportController::mergeExternalItems() is deprecated, the method will be removed in v10.',
-        'menuConfig' => 'Using ImportExportController::menuConfig() is deprecated, the method will be removed in v10.',
+        'init' => 'Using ImportExportController::init() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'main' => 'Using ImportExportController::main() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'exportData' => 'Using ImportExportController::exportData() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'addRecordsForPid' => 'Using ImportExportController::addRecordsForPid() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'exec_listQueryPid' => 'Using ImportExportController::exec_listQueryPid() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'makeConfigurationForm' => 'Using ImportExportController::makeConfigurationForm() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'makeAdvancedOptionsForm' => 'Using ImportExportController::makeAdvancedOptionsForm() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'makeSaveForm' => 'Using ImportExportController::makeSaveForm() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'importData' => 'Using ImportExportController::importData() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'checkUpload' => 'Using ImportExportController::checkUpload() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'getTableSelectOptions' => 'Using ImportExportController::getTableSelectOptions() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'filterPageIds' => 'Using ImportExportController::filterPageIds() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'getExtObjContent' => 'Using ImportExportController::getExtObjContent() is deprecated, the method will be removed in TYPO3 v10.0.',
+        'extObjContent' => 'Using ImportExportController::extObjContent() is deprecated, the method will be removed in TYPO3 v10.0.',
+        'extObjHeader' => 'Using ImportExportController::extObjHeader() is deprecated, the method will be removed in TYPO3 v10.0.',
+        'checkSubExtObj' => 'Using ImportExportController::checkSubExtObj() is deprecated, the method will be removed in TYPO3 v10.0.',
+        'checkExtObj' => 'Using ImportExportController::checkExtObj() is deprecated, the method will be removed in TYPO3 v10.0.',
+        'getExternalItemConfig' => 'Using ImportExportController::getExternalItemConfig() is deprecated, the method will be removed in TYPO3 v10.0.',
+        'handleExternalFunctionValue' => 'Using ImportExportController::handleExternalFunctionValue() is deprecated, the method will be removed in TYPO3 v10.0.',
+        'mergeExternalItems' => 'Using ImportExportController::mergeExternalItems() is deprecated, the method will be removed in TYPO3 v10.0.',
+        'menuConfig' => 'Using ImportExportController::menuConfig() is deprecated, the method will be removed in TYPO3 v10.0.',
     ];
 
     /**
@@ -211,7 +211,7 @@ class ImportExportController
      *
      * @see init()
      * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $MCONF = [];
 
@@ -220,7 +220,7 @@ class ImportExportController
      *
      * @see init()
      * @var mixed
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $CMD;
 
@@ -229,7 +229,7 @@ class ImportExportController
      *
      * @see init()
      * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $MOD_MENU = [
         'function' => []
@@ -240,7 +240,7 @@ class ImportExportController
      *
      * @see $MOD_MENU
      * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $MOD_SETTINGS = [];
 
@@ -249,7 +249,7 @@ class ImportExportController
      *
      * @see menuConfig()
      * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Module has no TSconfig options
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Module has no TSconfig options
      */
     protected $modTSconfig;
 
@@ -259,7 +259,7 @@ class ImportExportController
      *
      * @see menuConfig(), \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $modMenu_type = '';
 
@@ -269,7 +269,7 @@ class ImportExportController
      *
      * @see menuConfig(), \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $modMenu_dontValidateList = '';
 
@@ -279,7 +279,7 @@ class ImportExportController
      *
      * @see menuConfig(), \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $modMenu_setDefaultList = '';
 
@@ -288,7 +288,7 @@ class ImportExportController
      *
      * @see handleExternalFunctionValue()
      * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $extClassConf;
 
@@ -296,13 +296,13 @@ class ImportExportController
      * Generally used for accumulating the output content of backend modules
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $content = '';
 
     /**
      * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $doc;
 
@@ -311,7 +311,7 @@ class ImportExportController
      *
      * @see checkExtObj()
      * @var \object
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $extObj;
 
@@ -338,9 +338,9 @@ class ImportExportController
      */
     protected function init()
     {
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
         $this->MCONF['name'] = $this->moduleName;
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
         $this->CMD = GeneralUtility::_GP('CMD');
 
         $this->id = (int)GeneralUtility::_GP('id');
@@ -780,7 +780,7 @@ class ImportExportController
      *
      * @param int $k Page id for which to select records to add
      * @param array $tables Array of table names to select from
-     * @param int $maxNumber @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @param int $maxNumber @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     protected function addRecordsForPid($k, $tables, $maxNumber = null)
     {
@@ -791,7 +791,7 @@ class ImportExportController
             if ($table !== 'pages' && (in_array($table, $tables) || in_array('_ALL', $tables))) {
                 if ($this->getBackendUser()->check('tables_select', $table) && !$GLOBALS['TCA'][$table]['ctrl']['is_static']) {
                     if ($maxNumber !== null) {
-                        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Remove this if in v10
+                        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove this if in TYPO3 v10.0
                         // and the 3rd method argument. trigger_error() is called by method exec_listQueryPid() below
                         $statement = $this->exec_listQueryPid($table, $k, MathUtility::forceIntegerInRange($maxNumber, 1));
                     } else {
@@ -810,7 +810,7 @@ class ImportExportController
      *
      * @param string $table Table to select from
      * @param int $pid Page ID to select from
-     * @param int $limit @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @param int $limit @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      * @return \Doctrine\DBAL\Driver\Statement Query statement
      */
     protected function exec_listQueryPid($table, $pid, $limit = null)
@@ -819,7 +819,7 @@ class ImportExportController
         if ($limit !== null) {
             trigger_error(
                 'The third argument of addRecordsForPid() and exec_listQueryPid() has been'
-                . ' deprecated, do not limit exports anymore. The parameter will be removed in TYPO3 v10.',
+                . ' deprecated, do not limit exports anymore. The parameter will be removed in TYPO3 v10.0.',
                 E_USER_DEPRECATED
             );
         }
@@ -1276,7 +1276,7 @@ class ImportExportController
      * Also loads the modTSconfig internal variable.
      *
      * @see init(), $MOD_MENU, $MOD_SETTINGS, \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData(), mergeExternalItems()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function menuConfig()
     {
@@ -1301,7 +1301,7 @@ class ImportExportController
      * @return array Modified array part.
      * @internal
      * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), menuConfig()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function mergeExternalItems($modName, $menuKey, $menuArr)
     {
@@ -1322,7 +1322,7 @@ class ImportExportController
      * @param string $MM_key The key to MOD_MENU for which to fetch configuration. 'function' is default since it is first and foremost used to get information per "extension object" (I think that is what its called)
      * @param string $MS_value The value-key to fetch from the config array. If NULL (default) MOD_SETTINGS[$MM_key] will be used. This is useful if you want to force another function than the one defined in MOD_SETTINGS[function]. Call this in init() function of your Script Class: handleExternalFunctionValue('function', $forcedSubModKey)
      * @see getExternalItemConfig(), init()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function handleExternalFunctionValue($MM_key = 'function', $MS_value = null)
     {
@@ -1341,7 +1341,7 @@ class ImportExportController
      * @param string $value Optionally the value-key to fetch from the array that would otherwise have been returned if this value was not set. Look source...
      * @return mixed The value from the TBE_MODULES_EXT array.
      * @see handleExternalFunctionValue()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function getExternalItemConfig($modName, $menuKey, $value = '')
     {
@@ -1358,7 +1358,7 @@ class ImportExportController
      * If an instance is created it is initiated with $this passed as value and $this->extClassConf as second argument. Further the $this->MOD_SETTING is cleaned up again after calling the init function.
      *
      * @see handleExternalFunctionValue(), \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), $extObj
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function checkExtObj()
     {
@@ -1373,7 +1373,7 @@ class ImportExportController
     /**
      * Calls the checkExtObj function in sub module if present.
      *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function checkSubExtObj()
     {
@@ -1387,7 +1387,7 @@ class ImportExportController
      * A header function might be needed to add JavaScript or other stuff in the head.
      * This can't be done in the main function because the head is already written.
      *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function extObjHeader()
     {
@@ -1399,7 +1399,7 @@ class ImportExportController
     /**
      * Calls the 'main' function inside the "Function menu module" if present
      *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function extObjContent()
     {
@@ -1426,7 +1426,7 @@ class ImportExportController
      * Return the content of the 'main' function inside the "Function menu module" if present
      *
      * @return string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function getExtObjContent()
     {

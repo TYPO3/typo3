@@ -3785,11 +3785,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $string The string with parts in (where each part is evaluated by ->calc())
      * @return array And array with evaluated values.
      * @see calc(), \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::makeGifs()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10. It is solely used in GMENU, which can be handled there directly.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. It is solely used in GMENU, which can be handled there directly.
      */
     public function calcIntExplode($delim, $string)
     {
-        trigger_error('calcIntExplode will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('calcIntExplode will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $temp = explode($delim, $string);
         foreach ($temp as $key => $val) {
             $temp[$key] = (int)$this->calc($val);
@@ -6183,7 +6183,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function enableFields($table, $show_hidden = false, array $ignore_array = [])
     {
-        trigger_error('cObj->enableFields() will be removed in TYPO3 v10. should be used from the PageRepository->enableFields() functionality directly.', E_USER_DEPRECATED);
+        trigger_error('cObj->enableFields() will be removed in TYPO3 v10.0. should be used from the PageRepository->enableFields() functionality directly.', E_USER_DEPRECATED);
         return $this->getTypoScriptFrontendController()->sys_page->enableFields($table, $show_hidden ? true : -1, $ignore_array);
     }
 

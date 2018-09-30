@@ -717,11 +717,11 @@ class IconRegistry implements SingletonInterface
         if ($this->isDeprecated($identifier)) {
             $replacement = $this->deprecatedIcons[$identifier] ?? null;
             if (!empty($replacement)) {
-                $message = 'The icon "%s" is deprecated since TYPO3 v9 and will be removed in TYPO3 v10. Please use "%s" instead.';
+                $message = 'The icon "%s" is deprecated since TYPO3 v9 and will be removed in TYPO3 v10.0. Please use "%s" instead.';
                 $arguments = [$identifier, $replacement];
                 $identifier = $replacement;
             } else {
-                $message = 'The icon "%s" is deprecated since TYPO3 v9 and will be removed in TYPO3 v10.';
+                $message = 'The icon "%s" is deprecated since TYPO3 v9 and will be removed in TYPO3 v10.0.';
                 $arguments = [$identifier];
             }
             trigger_error(vsprintf($message, $arguments), E_USER_DEPRECATED);

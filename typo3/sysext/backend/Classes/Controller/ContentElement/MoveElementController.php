@@ -118,9 +118,9 @@ class MoveElementController
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
 
-        // @deprecated since v9, will be obsolete in v10 with removal of init()
+        // @deprecated since TYPO3 v9, will be obsolete in TYPO3 v10.0 with removal of init()
         $request = $GLOBALS['TYPO3_REQUEST'];
-        // @deprecated since v9, will be moved out of __construct() in v10
+        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
         $this->init($request);
     }
 
@@ -146,8 +146,8 @@ class MoveElementController
     public function init(ServerRequestInterface $request = null)
     {
         if ($request === null) {
-            // Method signature in v10: protected function init(ServerRequestInterface $request)
-            trigger_error('Method init() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+            // Method signature in TYPO3 v10.0: protected function init(ServerRequestInterface $request)
+            trigger_error('MoveElementController->init() will be set to protected in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
             $request = $GLOBALS['TYPO3_REQUEST'];
         }
 
@@ -287,11 +287,11 @@ class MoveElementController
     /**
      * Creating the module output.
      *
-     * @deprecated since v9, will be removed in v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function main()
     {
-        trigger_error('Method main() will be replaced by protected method renderContent() in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('MoveElementController->main() will be replaced by protected method renderContent() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         $this->renderContent();
     }
 

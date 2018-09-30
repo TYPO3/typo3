@@ -1046,7 +1046,7 @@ class TcaMigration
     /**
      * Removes "localizationMode" set to "keep" if used in combination with
      * "allowLanguageSynchronization" - in general "localizationMode" is
-     * deprecated since TYPO3 CMS 8 and will be removed in TYPO3 CMS 9.
+     * deprecated since TYPO3 CMS 8 and will be removed in TYPO3 v9.
      *
      * @param array $tca
      * @return array
@@ -2579,12 +2579,12 @@ class TcaMigration
 
     /**
      * type=group with internal_type=file and internal_type=file_reference have
-     * been deprecated in TYPO3 v9 and will be removed in v10. This method scans
+     * been deprecated in TYPO3 v9 and will be removed in TYPO3 v10.0. This method scans
      * for usages. This methods does not modify TCA.
      *
      * @param array $tca
      * @return array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function deprecateTypeGroupInternalTypeFile(array $tca): array
     {
@@ -2599,7 +2599,7 @@ class TcaMigration
                 ) {
                     $this->messages[] = 'The \'internal_type\' = \'' . $fieldConfig['config']['internal_type'] . '\' property value'
                         . ' from TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'] is deprecated. It will continue'
-                        . ' to work is TYPO3 v9, but the functionality will be removed in TYPO3 v10. Switch to inline FAL instead.';
+                        . ' to work is TYPO3 v9, but the functionality will be removed in TYPO3 v10.0. Switch to inline FAL instead.';
                 }
             }
         }

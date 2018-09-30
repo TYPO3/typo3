@@ -34,7 +34,7 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
      * Gets the charset conversion object.
      *
      * @return CharsetConverter
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.ß. Instantiate the CharsetConverter object yourself in your driver class.
+     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0.ß. Instantiate the CharsetConverter object yourself in your driver class.
      */
     protected function getCharsetConversion()
     {

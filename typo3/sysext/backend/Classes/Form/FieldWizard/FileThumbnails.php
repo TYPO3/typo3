@@ -49,7 +49,7 @@ class FileThumbnails extends AbstractNode
         if (!isset($config['internal_type'])
             || ($config['internal_type'] !== 'file' && $config['internal_type'] !== 'file_reference')
         ) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
             // Thumbnails only make sense on file and file_reference
             return $result;
         }

@@ -62,7 +62,7 @@ class ConfigurationForm extends ExtendedTemplateService
     {
         parent::__construct($context);
         // Deprecate this class
-        trigger_error('Class ConfigurationForm has been deprecated with v9 and will be removed in v10', E_USER_DEPRECATED);
+        trigger_error('Class ConfigurationForm will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
     }
     /**
      * @param string $configTemplate

@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case for the Abstract Validator
- * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
  */
 abstract class AbstractValidatorTestcase extends UnitTestCase
 {
@@ -40,7 +40,7 @@ abstract class AbstractValidatorTestcase extends UnitTestCase
     protected $validator;
 
     /**
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function setUp()
     {
@@ -50,7 +50,7 @@ abstract class AbstractValidatorTestcase extends UnitTestCase
     /**
      * @param array $options
      * @return mixed
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function getValidator($options = [])
     {
@@ -65,7 +65,7 @@ abstract class AbstractValidatorTestcase extends UnitTestCase
 
     /**
      * @param array $options
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function validatorOptions($options)
     {

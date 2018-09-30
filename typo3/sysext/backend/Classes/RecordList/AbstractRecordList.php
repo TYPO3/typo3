@@ -30,13 +30,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Base for class listing of database records and files in the
  * modules Web>List and File>Filelist
- * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
  */
 abstract class AbstractRecordList
 {
     /**
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     protected $id = 0;
 
@@ -44,7 +44,7 @@ abstract class AbstractRecordList
      * default Max items shown
      *
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $iLimit = 10;
 
@@ -52,19 +52,19 @@ abstract class AbstractRecordList
      * OBSOLETE - NOT USED ANYMORE. leftMargin
      *
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $leftMargin = 0;
 
     /**
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $showIcon = 1;
 
     /**
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $no_noWrap = 0;
 
@@ -72,7 +72,7 @@ abstract class AbstractRecordList
      * If set this is <td> CSS-classname for odd columns in addElement. Used with db_layout / pages section
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $oddColumnsCssClass = '';
 
@@ -80,7 +80,7 @@ abstract class AbstractRecordList
      * Decides the columns shown. Filled with values that refers to the keys of the data-array. $this->fieldArray[0] is the title column.
      *
      * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $fieldArray = [];
 
@@ -88,7 +88,7 @@ abstract class AbstractRecordList
      * Keys are fieldnames and values are td-parameters to add in addElement(), please use $addElement_tdCSSClass for CSS-classes;
      *
      * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $addElement_tdParams = [];
 
@@ -96,7 +96,7 @@ abstract class AbstractRecordList
      * Keys are fieldnames and values are td-css-classes to add in addElement();
      *
      * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $addElement_tdCssClass = [];
 
@@ -105,7 +105,7 @@ abstract class AbstractRecordList
      * Max length of strings
      *
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $fixedL = 30;
 
@@ -113,7 +113,7 @@ abstract class AbstractRecordList
      * Script URL
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $thisScript = '';
 
@@ -121,7 +121,7 @@ abstract class AbstractRecordList
      * Set to zero, if you don't want a left-margin with addElement function
      *
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $setLMargin = 1;
 
@@ -129,7 +129,7 @@ abstract class AbstractRecordList
      * Counter increased for each element. Used to index elements for the JavaScript-code that transfers to the clipboard
      *
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $counter = 0;
 
@@ -137,7 +137,7 @@ abstract class AbstractRecordList
      * This could be set to the total number of items. Used by the fwd_rew_navigation...
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $totalItems = '';
 
@@ -145,13 +145,13 @@ abstract class AbstractRecordList
      * Internal (used in this class.)
      *
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $firstElementNumber = 0;
 
     /**
      * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $eCounter = 0;
 
@@ -159,7 +159,7 @@ abstract class AbstractRecordList
      * String with accumulated HTML content
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $HTMLcode = '';
 
@@ -167,7 +167,7 @@ abstract class AbstractRecordList
      * Contains page translation languages
      *
      * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $pageOverlays = [];
 
@@ -175,29 +175,29 @@ abstract class AbstractRecordList
      * Contains sys language icons and titles
      *
      * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $languageIconTitles = [];
 
     /**
      * @var TranslationConfigurationProvider
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $translateTools;
 
     /**
      * @var IconFactory
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     protected $iconFactory;
 
     /**
      * Constructor
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function __construct()
     {
-        trigger_error('The class AbstractRecordList will be removed in TYPO3 v10, as all logic was moved into specific classes that inherited from AbstractRecordList', E_USER_DEPRECATED);
+        trigger_error('The class AbstractRecordList will be removed in TYPO3 v10.0, as all logic was moved into specific classes that inherited from AbstractRecordList.', E_USER_DEPRECATED);
         if (isset($GLOBALS['BE_USER']->uc['titleLen']) && $GLOBALS['BE_USER']->uc['titleLen'] > 0) {
             $this->fixedL = $GLOBALS['BE_USER']->uc['titleLen'];
         }
@@ -208,7 +208,7 @@ abstract class AbstractRecordList
 
     /**
      * Sets the script url depending on being a module or script request
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     protected function determineScriptUrl()
     {
@@ -222,7 +222,7 @@ abstract class AbstractRecordList
 
     /**
      * @return string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     protected function getThisScript()
     {
@@ -241,7 +241,7 @@ abstract class AbstractRecordList
      * @param string $_2 OBSOLETE - NOT USED ANYMORE. Is the HTML <img>-tag for an alternative 'gfx/ol/line.gif'-icon (used in the top)
      * @param string $colType Defines the tag being used for the columns. Default is td.
      * @return string HTML content for the table row
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function addElement($h, $icon, $data, $rowParams = '', $_ = '', $_2 = '', $colType = 'td')
     {
@@ -324,7 +324,7 @@ abstract class AbstractRecordList
 
     /**
      * Dummy function, used to write the top of a table listing.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function writeTop()
     {
@@ -335,7 +335,7 @@ abstract class AbstractRecordList
      *
      * @param string $table Table name
      * @return array array([boolean], [HTML]) where [boolean] is 1 for reverse element, [HTML] is the table-row code for the element
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function fwd_rwd_nav($table = '')
     {
@@ -368,7 +368,7 @@ abstract class AbstractRecordList
      * @param string $table Table name
      * @return string
      * @internal
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function fwd_rwd_HTML($type, $pointer, $table = '')
     {
@@ -394,7 +394,7 @@ abstract class AbstractRecordList
      * @param string $table Table name to display. Enter "-1" for the current table.
      * @param string $exclList Comma separated list of fields NOT to include ("sortField", "sortRev" or "firstElementNumber")
      * @return string URL
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function listURL($altId = '', $table = '-1', $exclList = '')
     {
@@ -405,7 +405,7 @@ abstract class AbstractRecordList
      * Returning JavaScript for ClipBoard functionality.
      *
      * @return string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function CBfunctions()
     {
@@ -443,7 +443,7 @@ abstract class AbstractRecordList
 
     /**
      * Initializes page languages and icons
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function initializeLanguages()
     {
@@ -481,7 +481,7 @@ abstract class AbstractRecordList
      * @param int $sys_language_uid Sys language uid
      * @param bool $addAsAdditionalText If set to true, only the flag is returned
      * @return string Language icon
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function languageFlag($sys_language_uid, $addAsAdditionalText = true)
     {
@@ -502,7 +502,7 @@ abstract class AbstractRecordList
      * Gets an instance of TranslationConfigurationProvider
      *
      * @return TranslationConfigurationProvider
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     protected function getTranslateTools()
     {
@@ -519,7 +519,7 @@ abstract class AbstractRecordList
      * @param int $references number of records from sys_refindex table
      * @param string $launchViewParameter JavaScript String, which will be passed as parameters to top.TYPO3.InfoWindow.showItem
      * @return string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     protected function generateReferenceToolTip($references, $launchViewParameter = '')
     {
@@ -540,7 +540,7 @@ abstract class AbstractRecordList
     /**
      * Returns the language service
      * @return LanguageService
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     protected function getLanguageService()
     {

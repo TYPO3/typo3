@@ -126,7 +126,7 @@ class SystemEnvironmentBuilder
         define('TYPO3_URL_DONATE', 'https://typo3.org/community/contribute/donate/');
         define('TYPO3_URL_WIKI_OPCODECACHE', 'https://wiki.typo3.org/Opcode_Cache');
 
-        // @deprecated since TYPO3 v9.4 and will be removed in TYPO3 v10
+        // @deprecated since TYPO3 v9.4 and will be removed in TYPO3 v10.0
         define('TYPO3_URL_MAILINGLISTS', 'http://lists.typo3.org/cgi-bin/mailman/listinfo');
         define('TYPO3_URL_DOCUMENTATION', 'https://typo3.org/documentation/');
         define('TYPO3_URL_DOCUMENTATION_TSREF', 'https://docs.typo3.org/typo3cms/TyposcriptReference/');
@@ -142,7 +142,7 @@ class SystemEnvironmentBuilder
         defined('CR') ?: define('CR', chr(13));
         defined('CRLF') ?: define('CRLF', CR . LF);
 
-        // @deprecated since TYPO3 v9.4 and will be removed in TYPO3 v10
+        // @deprecated since TYPO3 v9.4 and will be removed in TYPO3 v10.0
         defined('NUL') ?: define('NUL', "\0");
         defined('TAB') ?: define('TAB', "\t");
         defined('SUB') ?: define('SUB', chr(26));
@@ -209,12 +209,12 @@ class SystemEnvironmentBuilder
         }
 
         if (!defined('PATH_thisScript')) {
-            // @deprecated since v9, will be removed in v10
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
             define('PATH_thisScript', $scriptPath);
         }
         // Absolute path of the document root of the instance with trailing slash
         if (!defined('PATH_site')) {
-            // @deprecated since v9, will be removed in v10
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
             define('PATH_site', $rootPath . '/');
         }
         // Relative path from document root to typo3/ directory
@@ -225,13 +225,13 @@ class SystemEnvironmentBuilder
         // Absolute path of the typo3 directory of the instance with trailing slash
         // Example "/var/www/instance-name/htdocs/typo3/"
         if (!defined('PATH_typo3')) {
-            // @deprecated since v9, will be removed in v10
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
             define('PATH_typo3', PATH_site . TYPO3_mainDir);
         }
         // Absolute path to the typo3conf directory with trailing slash
         // Example "/var/www/instance-name/htdocs/typo3conf/"
         if (!defined('PATH_typo3conf')) {
-            // @deprecated since v9, will be removed in v10
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
             define('PATH_typo3conf', PATH_site . 'typo3conf/');
         }
     }

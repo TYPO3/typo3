@@ -63,7 +63,7 @@ class RsaPublicKeyGenerationController
                 break;
 
             default:
-                trigger_error('Requesting RSA public keys without "Content-Type: application/json" will be removed in v10. Add this header to your AJAX request.', E_USER_DEPRECATED);
+                trigger_error('Requesting RSA public keys without "Content-Type: application/json" will be removed in TYPO3 v10.0. Add this header to your AJAX request.', E_USER_DEPRECATED);
 
                 $content = $keyPair->getPublicKeyModulus() . ':' . sprintf('%x', $keyPair->getExponent()) . ':';
                 $response = new Response('php://temp', 200, ['Content-Type' => 'application/json; charset=utf-8']);

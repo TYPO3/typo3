@@ -486,12 +486,12 @@ class ModuleTemplate
      *
      * @internal
      * @return self
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10, use PageRenderer directly.
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0, use PageRenderer directly.
      * @see \TYPO3\CMS\Core\Page\PageRenderer::addJsFile
      */
     public function loadJavascriptLib($lib): self
     {
-        trigger_error('The method `TYPO3\CMS\Backend\Template\ModuleTemplate::loadJavascriptLib()` has been deprecated and should not be used any longer, this method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
+        trigger_error('ModuleTemplate->loadJavascriptLib() should not be used any longer, as this method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $this->pageRenderer->addJsFile($lib);
         return $this;
     }
@@ -618,11 +618,11 @@ class ModuleTemplate
      *
      * @return string HTML image tag (if applicable)
      * @internal
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
      */
     public function icons($type)
     {
-        trigger_error('The method `TYPO3\CMS\Backend\Template\ModuleTemplate::icons()` has been deprecated and should not be used any longer, this method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
+        trigger_error('ModuleTemplate->icons() should not be used any longer, as this will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $icon = '';
         switch ($type) {
             case self::STATUS_ICON_ERROR:

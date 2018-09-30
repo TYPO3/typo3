@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This class takes care about dependencies between packages.
  * It provides functionality to resolve dependencies and to determine
  * the crucial loading order of the packages.
- * @deprecated since TYPO3 v9.2, will be removed in TYPO3 v10
+ * @deprecated since TYPO3 v9.2, will be removed in TYPO3 v10.0
  */
 class DependencyResolver
 {
@@ -45,7 +45,7 @@ class DependencyResolver
      */
     public function sortPackageStatesConfigurationByDependency(array $packageStatesConfiguration)
     {
-        trigger_error(self::class . ' has been deprecated with v9.2 and will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error(self::class . ' will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return $this->dependencyOrderingService->calculateOrder($this->buildDependencyGraph($packageStatesConfiguration));
     }
 

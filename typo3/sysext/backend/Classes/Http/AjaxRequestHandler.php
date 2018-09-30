@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * AJAX Requests are typically registered within EXT:myext/Configuration/Backend/AjaxRoutes.php
  *
- * @deprecated since TYPO3 v9.2, will be removed in TYPO3 v10
+ * @deprecated since TYPO3 v9.2, will be removed in TYPO3 v10.0
  */
 class AjaxRequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterface
 {
@@ -43,7 +43,7 @@ class AjaxRequestHandler implements RequestHandlerInterface, PsrRequestHandlerIn
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        trigger_error(self::class . ' will be removed in TYPO3 v10. Use the regular application dispatcher instead.', E_USER_DEPRECATED);
+        trigger_error(self::class . ' will be removed in TYPO3 v10.0. Use the regular application dispatcher instead.', E_USER_DEPRECATED);
         return $this->handle($request);
     }
 
@@ -59,7 +59,7 @@ class AjaxRequestHandler implements RequestHandlerInterface, PsrRequestHandlerIn
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        trigger_error(self::class . ' will be removed in TYPO3 v10. Use the regular application dispatcher instead.', E_USER_DEPRECATED);
+        trigger_error(self::class . ' will be removed in TYPO3 v10.0. Use the regular application dispatcher instead.', E_USER_DEPRECATED);
         /** @var Response $response */
         $response = GeneralUtility::makeInstance(Response::class, 'php://temp', 200, [
             'Content-Type' => 'application/json; charset=utf-8',
@@ -80,7 +80,7 @@ class AjaxRequestHandler implements RequestHandlerInterface, PsrRequestHandlerIn
      */
     public function canHandleRequest(ServerRequestInterface $request): bool
     {
-        trigger_error(self::class . ' will be removed in TYPO3 v10. Use the regular application dispatcher instead.', E_USER_DEPRECATED);
+        trigger_error(self::class . ' will be removed in TYPO3 v10.0. Use the regular application dispatcher instead.', E_USER_DEPRECATED);
         $routePath = $request->getParsedBody()['route'] ?? $request->getQueryParams()['route'] ?? '';
         return strpos($routePath, '/ajax/') === 0;
     }
@@ -92,7 +92,7 @@ class AjaxRequestHandler implements RequestHandlerInterface, PsrRequestHandlerIn
      */
     public function getPriority(): int
     {
-        trigger_error(self::class . ' will be removed in TYPO3 v10. Use the regular application dispatcher instead.', E_USER_DEPRECATED);
+        trigger_error(self::class . ' will be removed in TYPO3 v10.0. Use the regular application dispatcher instead.', E_USER_DEPRECATED);
         return 80;
     }
 }

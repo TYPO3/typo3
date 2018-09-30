@@ -87,9 +87,9 @@ class SetupModuleController
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'storeIncomingData' => 'Using SetupModuleController::storeIncomingData() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'main' => 'Using SetupModuleController::main() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'init' => 'Using SetupModuleController::init() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'storeIncomingData' => 'Using SetupModuleController::storeIncomingData() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'main' => 'Using SetupModuleController::main() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'init' => 'Using SetupModuleController::init() is deprecated and will not be possible anymore in TYPO3 v10.0.',
     ];
 
     /**
@@ -113,7 +113,7 @@ class SetupModuleController
     protected $overrideConf;
 
     /**
-     * @deprecated will be removed in TYPO3 v10
+     * @deprecated will be removed in TYPO3 v10.0
      */
     protected $OLD_BE_USER;
 
@@ -213,11 +213,11 @@ class SetupModuleController
      * Getter for the form protection instance.
      *
      * @return \TYPO3\CMS\Core\FormProtection\BackendFormProtection
-     * @deprecated and will be removed in TYPO3 v10.0.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function getFormProtection()
     {
-        trigger_error('Method will be removed in TYPO3 v10', E_USER_DEPRECATED);
+        trigger_error('SetupModuleController->getFormProtection() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return $this->formProtection;
     }
 
@@ -743,11 +743,11 @@ class SetupModuleController
      * Will make the simulate-user selector if the logged in user is administrator.
      * It will also set the GLOBAL(!) BE_USER to the simulated user selected if any (and set $this->OLD_BE_USER to logged in user)
      *
-     * @deprecated and will be removed in TYPO3 v10.0.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function simulateUser()
     {
-        trigger_error('Method will be removed in TYPO3 v10', E_USER_DEPRECATED);
+        trigger_error('SetupModuleController->simulateUser() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         // If admin, allow simulation of another user
         $this->simUser = 0;
         $this->simulateSelector = '';

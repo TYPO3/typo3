@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Utility class to render capabilities of the storage.
  *
- * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
  */
 class UserStorageCapabilityService
 {
@@ -34,7 +34,7 @@ class UserStorageCapabilityService
      */
     public function __construct()
     {
-        trigger_error('This class will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This class will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
     }
 
     /**

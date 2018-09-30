@@ -71,7 +71,7 @@ class TranslateElementErrorViewHelper extends AbstractViewHelper
             $defaultValue = $error->__toString();
         } else {
             trigger_error(
-                'TranslateElementErrorViewHelper arguments "code", "arguments" and "defaultValue" has been deprecated in v8 and will be removed in v10. Use "error" instead.',
+                'TranslateElementErrorViewHelper arguments "code", "arguments" and "defaultValue" has been deprecated in v8 and will be removed in TYPO3 v10.0. Use "error" instead.',
                 E_USER_DEPRECATED
             );
         }

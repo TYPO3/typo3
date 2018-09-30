@@ -61,7 +61,7 @@ class DatabaseRecordList
      * @var array
      */
     protected $deprecatedPublicProperties = [
-        'newWizards' => 'Using $newWizards of class DatabaseRecordList from outside is discouraged, property will be removed in v10.',
+        'newWizards' => 'Using $newWizards of class DatabaseRecordList from outside is discouraged, property will be removed in TYPO3 v10.0.',
     ];
 
     // *********
@@ -90,7 +90,7 @@ class DatabaseRecordList
      * element without the wizards!).
      *
      * @var bool
-     * @deprecated and unused since v9, will be removed in v10
+     * @deprecated and unused since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public $newWizards = false;
 
@@ -3360,8 +3360,8 @@ class DatabaseRecordList
 
         $hookName = DatabaseRecordList::class;
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'])) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10, the modifyQuery hook should be used instead.
-            trigger_error('The hook ($GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][' . $hookName . '][\'buildQueryParameters\']) will be removed in TYPO3 v10, the modifyQuery hook should be used instead.', E_USER_DEPRECATED);
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, the modifyQuery hook should be used instead.
+            trigger_error('The hook ($GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][' . $hookName . '][\'buildQueryParameters\']) will be removed in TYPO3 v10.0, the modifyQuery hook should be used instead.', E_USER_DEPRECATED);
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'] as $className) {
                 $hookObject = GeneralUtility::makeInstance($className);
                 if (method_exists($hookObject, 'buildQueryParametersPostProcess')) {
@@ -3394,7 +3394,7 @@ class DatabaseRecordList
         // array_unique / array_filter used to eliminate empty and duplicate constraints
         // the array keys are eliminated by this as well to facilitate argument unpacking
         // when used with the querybuilder.
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
         if (!empty($parameters['where'])) {
             $parameters['where'] = array_unique(array_filter(array_values($parameters['where'])));
         }
@@ -4081,11 +4081,11 @@ class DatabaseRecordList
      * Method used to log deprecated usage of old buildQueryParametersPostProcess hook arguments
      *
      * @param string $index
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10 - see method usages
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 - see method usages
      */
     protected function logDeprecation(string $index)
     {
-        trigger_error('[index: ' . $index . '] $parameters in "buildQueryParameters"-Hook has been deprecated in v9 and will be remove in v10, use $queryBuilder instead', E_USER_DEPRECATED);
+        trigger_error('[index: ' . $index . '] $parameters in "buildQueryParameters"-Hook will be removed in TYPO3 v10.0, use $queryBuilder instead.', E_USER_DEPRECATED);
     }
 
     /**

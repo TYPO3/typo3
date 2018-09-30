@@ -299,7 +299,7 @@ class UpgradeWizardsService
         if (method_exists($updateObject, 'getUserInput')) {
             $wizardHtml = $updateObject->getUserInput('install[values][' . htmlspecialchars($identifier) . ']');
             trigger_error(
-                'Deprecated since TYPO3 v9, will be removed in v10, use ConfirmableInterface directly.',
+                'Deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use ConfirmableInterface directly.',
                 E_USER_DEPRECATED
             );
         } elseif ($updateObject instanceof UpgradeWizardInterface && $updateObject instanceof ConfirmableInterface) {
@@ -359,7 +359,7 @@ class UpgradeWizardsService
         if (method_exists($updateObject, 'checkUserInput') &&
             !$updateObject->checkUserInput($wizardInputErrorMessage)) {
             trigger_error(
-                'Deprecated since TYPO3 v9, will be removed in v10, use ConfirmableInterface.',
+                'Deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use ConfirmableInterface.',
                 E_USER_DEPRECATED
             );
             $messages->enqueue(

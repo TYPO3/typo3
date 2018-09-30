@@ -67,7 +67,7 @@ class TcaGroup implements FormDataProviderInterface
             $internalType = $fieldConfig['config']['internal_type'];
 
             if ($internalType === 'file_reference' || $internalType === 'file') {
-                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
+                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
                 // Set 'allowed' config to "*" if not set
                 if (empty($fieldConfig['config']['allowed'])) {
                     $result['processedTca']['columns'][$fieldName]['config']['allowed'] = '*';

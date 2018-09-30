@@ -21,14 +21,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * General library class.
  *
- * @deprecated since v9, will be removed in v10
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
  */
 class SaltedPasswordsUtility
 {
     /**
      * Keeps this extension's key.
      *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     const EXTKEY = 'saltedpasswords';
 
@@ -36,11 +36,11 @@ class SaltedPasswordsUtility
      * Calculates number of backend users, who have no saltedpasswords protection.
      *
      * @return int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public static function getNumberOfBackendUsersWithInsecurePassword()
     {
-        trigger_error('This method is obsolete and will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('SaltedPasswordsUtility::getNumberOfBackendUsersWithInsecurePassword() is obsolete and will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
         $queryBuilder->getRestrictions()->removeAll();
 
@@ -63,11 +63,11 @@ class SaltedPasswordsUtility
      *
      * @param string $mode TYPO3_MODE, whether Configuration for Frontend or Backend should be delivered
      * @return array Extension configuration data
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public static function returnExtConf($mode = TYPO3_MODE)
     {
-        trigger_error('This method is obsolete and will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('SaltedPasswordsUtility::returnExtConf() is obsolete and will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $currentConfiguration = self::returnExtConfDefaults();
         if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['saltedpasswords'])) {
             $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('saltedpasswords');
@@ -83,11 +83,11 @@ class SaltedPasswordsUtility
      * Returns default configuration of this extension.
      *
      * @return array Default extension configuration data for localconf.php
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public static function returnExtConfDefaults()
     {
-        trigger_error('This method is obsolete and will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('SaltedPasswordsUtility::returnExtConfDefaults() is obsolete and will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return [
             'saltedPWHashingMethod' => \TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash::class,
         ];
@@ -99,11 +99,11 @@ class SaltedPasswordsUtility
      *
      * @param string $mode (optional) The TYPO3 mode (FE or BE) saltedpasswords shall be used for
      * @return string Classname of object to be used
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public static function getDefaultSaltingHashingMethod($mode = TYPO3_MODE)
     {
-        trigger_error('This method is obsolete and will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('SaltedPasswordsUtility::getDefaultSaltingHashingMethod() is obsolete and will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $extConf = self::returnExtConf($mode);
         $classNameToUse = \TYPO3\CMS\Core\Crypto\PasswordHashing\Md5PasswordHash::class;
         if (in_array(
@@ -121,12 +121,12 @@ class SaltedPasswordsUtility
      * indeed used in the TYPO3_MODE.
      *
      * @return bool TRUE, if salted password hashes are used in the TYPO3_MODE, otherwise FALSE
-     * @deprecated in TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated in TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public static function isUsageEnabled()
     {
         trigger_error(
-            'Method isUsageEnabled() has been deprecated with core v9, always returns true and will be removed with v10.',
+            'SaltedPasswordsUtility::isUsageEnabled() now always returns true and will be removed with TYPO3 v10.0.',
             E_USER_DEPRECATED
         );
         return true;

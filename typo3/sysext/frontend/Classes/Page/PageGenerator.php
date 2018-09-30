@@ -39,7 +39,7 @@ class PageGenerator
     /**
      * Do not render title tag
      * Typoscript setting: [config][noPageTitle]
-     * @deprecated will not be used anymore, and will be removed in TYPO3 v10.
+     * @deprecated will not be used anymore, and will be removed in TYPO3 v10.0.
      */
     const NO_PAGE_TITLE = 2;
 
@@ -388,13 +388,13 @@ class PageGenerator
         }
         // Javascript Libraries
         if (isset($tsfe->pSetup['javascriptLibs.']) && is_array($tsfe->pSetup['javascriptLibs.'])) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10, the setting page.javascriptLibs has been deprecated and will be removed in TYPO3 CMS 10.
-            trigger_error('The setting page.javascriptLibs has been deprecated and will be removed in TYPO3 CMS 10', E_USER_DEPRECATED);
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, the setting page.javascriptLibs has been deprecated and will be removed in TYPO3 v10.0.
+            trigger_error('The setting page.javascriptLibs will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
 
             // Include jQuery into the page renderer
             if (!empty($tsfe->pSetup['javascriptLibs.']['jQuery'])) {
-                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10, the setting page.javascriptLibs.jQuery has been deprecated and will be removed in TYPO3 CMS 10.
-                trigger_error('The setting page.javascriptLibs.jQuery has been deprecated and will be removed in TYPO3 CMS 10', E_USER_DEPRECATED);
+                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, the setting page.javascriptLibs.jQuery has been deprecated and will be removed in TYPO3 v10.0.
+                trigger_error('The setting page.javascriptLibs.jQuery will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
 
                 $jQueryTS = $tsfe->pSetup['javascriptLibs.']['jQuery.'];
                 // Check if version / source is set, if not set variable to "NULL" to use the default of the page renderer
@@ -887,11 +887,11 @@ class PageGenerator
      * @param string $needle The string to find in $haystack
      * @return bool Returns TRUE if $needle matches or is found in $haystack
      *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10, is now called within TSFE itself, if needed outside the regular calculations, reimplement the method on your own.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, is now called within TSFE itself, if needed outside the regular calculations, reimplement the method on your own.
      */
     public static function isAllowedLinkVarValue($haystack, $needle)
     {
-        trigger_error('The method will be removed in TYPO3 v10.0, if needed outside of linkVar calculation, re-implement the method in your own extension', E_USER_DEPRECATED);
+        trigger_error('The method will be removed in TYPO3 v10.0, if needed outside of linkVar calculation, re-implement the method in your own extension.', E_USER_DEPRECATED);
         $OK = false;
         // Integer
         if ($needle === 'int' || $needle === 'integer') {

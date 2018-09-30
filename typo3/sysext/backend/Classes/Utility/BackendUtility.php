@@ -94,11 +94,11 @@ class BackendUtility
      * @param string $table Table name present in $GLOBALS['TCA']
      * @param string $tableAlias Table alias if any
      * @return string WHERE clause for filtering out deleted records, eg " AND tablename.deleted=0
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10, the DeletedRestriction functionality should be used instead.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, the DeletedRestriction functionality should be used instead.
      */
     public static function deleteClause($table, $tableAlias = '')
     {
-        trigger_error('This method will be removed in TYPO3 v10. Add the delete statement directly in your SQL statement via the DeletedRestriction', E_USER_DEPRECATED);
+        trigger_error('BackendUtility::deleteClause() will be removed in TYPO3 v10.0. Add the delete statement directly in your SQL statement via the DeletedRestriction.', E_USER_DEPRECATED);
         if (empty($GLOBALS['TCA'][$table]['ctrl']['delete'])) {
             return '';
         }
@@ -649,7 +649,7 @@ class BackendUtility
      */
     public static function getTCAtypes($table, $rec, $useFieldNameAsKey = false)
     {
-        trigger_error('BackendUtility::getTCAtypes will be removed in TYPO3 v10. The method is not in use anymore.', E_USER_DEPRECATED);
+        trigger_error('BackendUtility::getTCAtypes() will be removed in TYPO3 v10.0. The method is not in use anymore.', E_USER_DEPRECATED);
         if (isset($GLOBALS['TCA'][$table])) {
             // Get type value:
             $fieldValue = self::getTCAtypeValue($table, $rec);
@@ -801,11 +801,11 @@ class BackendUtility
      * @param string $hash 32 bit hash string (eg. a md5 hash of a serialized array identifying the data being stored)
      * @param mixed $data The data to store
      * @param string $ident $ident is just a textual identification in order to inform about the content!
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10, use the Caching Framework directly
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use the Caching Framework directly
      */
     public static function storeHash($hash, $data, $ident)
     {
-        trigger_error('This method will be removed in TYPO3 v10.0, use the Caching Framework directly.', E_USER_DEPRECATED);
+        trigger_error('BackendUtility::storeHash() will be removed in TYPO3 v10.0, use the Caching Framework directly.', E_USER_DEPRECATED);
         $cacheManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
         $cacheManager->getCache('cache_hash')->set($hash, $data, ['ident_' . $ident], 0);
     }
@@ -816,11 +816,11 @@ class BackendUtility
      *
      * @param string $hash The hash-string which was used to store the data value
      * @return mixed The "data" from the cache
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10, use the Caching Framework directly
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use the Caching Framework directly
      */
     public static function getHash($hash)
     {
-        trigger_error('This method will be removed in TYPO3 v10.0, use the Caching Framework directly.', E_USER_DEPRECATED);
+        trigger_error('BackendUtility::getHash() will be removed in TYPO3 v10.0, use the Caching Framework directly.', E_USER_DEPRECATED);
         $cacheManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
         $cacheEntry = $cacheManager->getCache('cache_hash')->get($hash);
         $hashContent = null;
@@ -861,13 +861,13 @@ class BackendUtility
             $rootLine = self::BEgetRootLine($id, '', true);
             $useCacheForCurrentPageId = true;
         } else {
-            trigger_error('Calling TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig() with a custom rootline handed over as second argument will be removed in TYPO3 v10. Use TYPO3\CMS\Backend\Utility\BackendUtility::getRawPagesTSconfig() instead and parse PageTS yourself.', E_USER_DEPRECATED);
+            trigger_error('Calling BackendUtility::getPagesTSconfig() with a custom rootline handed over as second argument will be removed in TYPO3 v10.0. Use TYPO3\CMS\Backend\Utility\BackendUtility::getRawPagesTSconfig() instead and parse PageTS yourself.', E_USER_DEPRECATED);
             $useCacheForCurrentPageId = false;
         }
 
         $TSdataArray = static::getRawPagesTSconfig($id, $rootLine);
         if ($returnPartArray) {
-            trigger_error('Calling TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig() with a third parameter to return the unparsed array directly will be removed in TYPO3 v10. Use TYPO3\CMS\Backend\Utility\BackendUtility::getRawPagesTSconfig() instead.', E_USER_DEPRECATED);
+            trigger_error('Calling BackendUtility::getPagesTSconfig() with a third parameter to return the unparsed array directly will be removed in TYPO3 v10.0. Use TYPO3\CMS\Backend\Utility\BackendUtility::getRawPagesTSconfig() instead.', E_USER_DEPRECATED);
             return $TSdataArray;
         }
         // Parsing the page TS-Config
@@ -894,9 +894,9 @@ class BackendUtility
 
         // Overlay page "mod." ts with user ts in a special and deprecated way
         if (is_array($userTSconfig['mod.'] ?? null)) {
-            // @deprecated This entire "if" and variable $isCacheHashExtendedWithUserUid can be deleted in v10
+            // @deprecated This entire "if" and variable $isCacheHashExtendedWithUserUid can be deleted in TYPO3 v10.0
             trigger_error(
-                'Overriding page TSconfig "mod." with user TSconfig "mod." is deprecated. Use user TSconfig "page.mod." instead',
+                'Overriding page TSconfig "mod." with user TSconfig "mod." is deprecated. Use user TSconfig "page.mod." instead.',
                 E_USER_DEPRECATED
             );
             if (!is_array($tsConfig['mod.'])) {
@@ -1060,11 +1060,11 @@ class BackendUtility
      *
      * @param string $fields Field list; $fields specify the fields selected (default: title,uid)
      * @return array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public static function getListGroupNames($fields = 'title, uid')
     {
-        trigger_error('This method will be removed in TYPO3 v10.0, you should generate the list of backend user groups by yourself.', E_USER_DEPRECATED);
+        trigger_error('BackendUtility::getListGroupNames() will be removed in TYPO3 v10.0, you should generate the list of backend user groups by yourself.', E_USER_DEPRECATED);
         $beUser = static::getBackendUserAuthentication();
         $exQ = '';
         if (!$beUser->isAdmin()) {
@@ -2898,13 +2898,13 @@ class BackendUtility
      * @param int $id Page uid
      * @param string $TSref An object string which determines the path of the TSconfig to return.
      * @return array
-     * @deprecated since v9, will be removed in TYPO3 v10, use getPagesTSconfig() instead
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use getPagesTSconfig() instead
      */
     public static function getModTSconfig($id, $TSref)
     {
         trigger_error(
-            'Method getModTSconfig() is deprecated in v9 and will be removed in v10.'
-            . ' Use getPagesTSconfig() to retrieve the full page TSconfig array instead.',
+            'BackendUtility::getModTSconfig() will be removed in TYPO3 v10.0.'
+            . ' Use BackendUtility::getPagesTSconfig() to retrieve the full page TSconfig array instead.',
             E_USER_DEPRECATED
         );
         $beUser = static::getBackendUserAuthentication();
@@ -3114,11 +3114,11 @@ class BackendUtility
      * @param array $itemArray Array of items from which to remove items.
      * @param string $TSref $TSref points to the "object string" in $modTSconfig
      * @return array The modified $itemArray is returned.
-     * @deprecated since core v9, will be removed with core v10
+     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0
      */
     public static function unsetMenuItems($modTSconfig, $itemArray, $TSref)
     {
-        trigger_error('Method getPidForModTSconfig() will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('BackendUtility::getPidForModTSconfig() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         // Getting TS-config options for this module for the Backend User:
         $conf = static::getBackendUserAuthentication()->getTSConfig($TSref, $modTSconfig);
         if (is_array($conf['properties'])) {
@@ -3300,11 +3300,11 @@ class BackendUtility
      * @param string $moduleName Name of the module
      * @param array $urlParameters URL parameters that should be added as key value pairs
      * @return string Calculated URL
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Use UriBuilder instead.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Use UriBuilder instead.
      */
     public static function getModuleUrl($moduleName, $urlParameters = [])
     {
-        trigger_error('BackendUtility::getModuleUrl() will be removed in TYPO3 v10, use UriBuilder->buildUriFromRoute() instead.', E_USER_DEPRECATED);
+        trigger_error('BackendUtility::getModuleUrl() will be removed in TYPO3 v10.0, use UriBuilder->buildUriFromRoute() instead.', E_USER_DEPRECATED);
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         try {
             $uri = $uriBuilder->buildUriFromRoute($moduleName, $urlParameters);
@@ -3539,11 +3539,11 @@ class BackendUtility
      * @param int $pid Record pid
      * @return int
      * @internal
-     * @deprecated since core v9, will be removed with core v10
+     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0
      */
     public static function getPidForModTSconfig($table, $uid, $pid)
     {
-        trigger_error('Method getPidForModTSconfig() will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('BackendUtility::getPidForModTSconfig() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return $table === 'pages' && MathUtility::canBeInterpretedAsInteger($uid) ? $uid : $pid;
     }
 
@@ -4503,7 +4503,7 @@ class BackendUtility
      * Exists already a shortcut entry for this TYPO3 url?
      *
      * @param string $url
-     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0.
      *
      * @return bool
      */

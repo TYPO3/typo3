@@ -49,8 +49,8 @@ class FileController
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'initClipboard' => 'Using FileController::initClipboard() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'main' => 'Using FileController::main() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'initClipboard' => 'Using FileController::initClipboard() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'main' => 'Using FileController::main() is deprecated and will not be possible anymore in TYPO3 v10.0.',
     ];
 
     /**
@@ -102,7 +102,7 @@ class FileController
      */
     public function __construct()
     {
-        // @deprecated since v9, will be moved out of __construct() in v10
+        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
         $this->init($GLOBALS['TYPO3_REQUEST']);
     }
 
@@ -264,11 +264,11 @@ class FileController
      * Redirecting the user after the processing has been done.
      * Might also display error messages directly, if any.
      *
-     * @deprecated since TYPO3 v9. Will be removed in v10.
+     * @deprecated since TYPO3 v9. Will be removed in TYPO3 v10.0.
      */
     public function finish()
     {
-        trigger_error('Method finish() will be removed in v10. Do not call from other extension', E_USER_DEPRECATED);
+        trigger_error('FileController->finish() will be removed in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
         BackendUtility::setUpdateSignal('updateFolderTree');
         if ($this->redirect) {
             HttpUtility::redirect($this->redirect);

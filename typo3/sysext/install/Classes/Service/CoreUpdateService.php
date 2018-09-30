@@ -127,13 +127,13 @@ class CoreUpdateService
     /**
      * Wrapper method for CoreVersionService
      *
-     * @deprecated Since TYPO3 v9 and will be removed in v10 - use REST api directly (see https://get.typo3.org/v1/api/doc)
+     * @deprecated since TYPO3 v9 and will be removed in TYPO3 v10.0 - use REST api directly (see https://get.typo3.org/v1/api/doc)
      * @return bool TRUE on success
      */
     public function updateVersionMatrix()
     {
         trigger_error(
-            'The method updateVersionMatrix() is deprecated since v9 and will be removed in v10, use the REST api directly (see https://get.typo3.org/v1/api/doc).',
+            'The method updateVersionMatrix() is deprecated since TYPO3 v9 and will be removed in TYPO3 v10.0, use the REST api directly (see https://get.typo3.org/v1/api/doc).',
             E_USER_DEPRECATED
         );
         $success = true;

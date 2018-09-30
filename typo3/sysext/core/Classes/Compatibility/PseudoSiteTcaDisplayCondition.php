@@ -26,10 +26,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This is used to suppress the 'slug' field in pseudo site page trees
  * when editing page records and to show the alias field.
  *
- * Both "Pseudo sites" and "alias" db field will bite the dust in v10,
+ * Both "Pseudo sites" and "alias" db field will bite the dust in TYPO3 v10.0,
  * so this is a temporary display condition for v9 only and thus marked internal.
  *
- * @internal Implementation and class will probably vanish in v10 without further notice
+ * @internal Implementation and class will probably vanish in TYPO3 v10.0 without further notice
  */
 class PseudoSiteTcaDisplayCondition
 {

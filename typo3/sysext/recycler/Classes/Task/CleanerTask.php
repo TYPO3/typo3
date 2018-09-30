@@ -168,7 +168,7 @@ class CleanerTask extends AbstractTask
      * Checks if the table has fields for uploaded files and removes those files.
      *
      * @param string $table
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class. Remove caller, too.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class. Remove caller, too.
      */
     protected function checkFileResourceFieldsBeforeDeletion($table)
     {
@@ -226,7 +226,7 @@ class CleanerTask extends AbstractTask
      *
      * @param string $table
      * @return array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
      */
     protected function getFileResourceFields($table)
     {

@@ -224,7 +224,7 @@ class Indexer
      * Charset class object
      *
      * @var \TYPO3\CMS\Core\Charset\CharsetConverter
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10 (also the instantiation in the init() method).
+     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0 (also the instantiation in the init() method).
      */
     protected $csObj;
 
@@ -309,7 +309,7 @@ class Indexer
                             // The creation date of the TYPO3 page
 
                             // reg1 of the caching table. Not known what practical use this has.
-                            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Remove along with database field data_page_reg1
+                            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove along with database field data_page_reg1
                             $this->conf['page_cache_reg1'] = $pObj->page_cache_reg1;
 
                             // Root line uids
@@ -401,7 +401,7 @@ class Indexer
         $this->conf['freeIndexUid'] = 0;
         $this->conf['freeIndexSetId'] = 0;
 
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Remove along with database field data_page_reg1
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove along with database field data_page_reg1
         $this->conf['page_cache_reg1'] = 0;
 
         // Root line uids
@@ -1461,7 +1461,7 @@ class Indexer
             'cHashParams' => serialize($this->cHashParams),
             'contentHash' => $this->content_md5h,
             'data_page_id' => $this->conf['id'],
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Remove along with database field data_page_reg1
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove along with database field data_page_reg1
             'data_page_reg1' => $this->conf['page_cache_reg1'],
             'data_page_type' => $this->conf['type'],
             'data_page_mp' => $this->conf['MP'],

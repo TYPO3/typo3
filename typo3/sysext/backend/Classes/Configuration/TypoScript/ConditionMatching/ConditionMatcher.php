@@ -77,7 +77,7 @@ class ConditionMatcher extends AbstractConditionMatcher
     protected function evaluateCondition($string)
     {
         if ($this->strictSyntaxEnabled()) {
-            trigger_error('The old condition syntax has been deprecated and will be removed in TYPO3 CMS 10, use the new expression language. condition: [' . $string . ']', E_USER_DEPRECATED);
+            trigger_error('The old condition syntax will be removed in TYPO3 v10.0, use the new expression language. Used condition: [' . $string . '].', E_USER_DEPRECATED);
         }
 
         list($key, $value) = GeneralUtility::trimExplode('=', $string, false, 2);

@@ -125,7 +125,7 @@ class AuthenticationService extends AbstractAuthenticationService
         try {
             $hashInstance = $saltFactory->get($passwordHashInDatabase, TYPO3_MODE);
         } catch (InvalidPasswordHashException $invalidPasswordHashException) {
-            // This can be refactored if the 'else' part below is gone in v10: Log and return 100 here
+            // This can be refactored if the 'else' part below is gone in TYPO3 v10.0: Log and return 100 here
             $hashInstance = null;
         }
         // An instance of the currently configured salted password mechanism
@@ -153,7 +153,7 @@ class AuthenticationService extends AbstractAuthenticationService
                 }
             }
         } elseif (substr($user['password'], 0, 2) === 'M$') {
-            // @todo @deprecated: The entire else should be removed in v10.0 as dedicated breaking patch
+            // @todo @deprecated: The entire else should be removed in TYPO3 v10.0 as dedicated breaking patch
             // If the stored db password starts with M$, it may be a md5 password that has been
             // upgraded to a salted md5 using the old salted passwords scheduler task.
             // See if a salt instance is returned if we cut off the M, so Md5PasswordHash kicks in

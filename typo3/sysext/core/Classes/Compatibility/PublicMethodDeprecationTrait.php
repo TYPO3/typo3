@@ -47,7 +47,7 @@ namespace TYPO3\CMS\Core\Compatibility;
  *       * @var array
  *       *...
  *     private $deprecatedPublicMethods = [
- *         'myMethod' => 'Using MyControllerClass::myMethod() is deprecated and will not be possible anymore in TYPO3 v10. Use MyControllerClass:myOtherMethod() instead.'
+ *         'myMethod' => 'Using MyControllerClass::myMethod() is deprecated and will not be possible anymore in TYPO3 v10.0. Use MyControllerClass:myOtherMethod() instead.'
  *     ];
  *
  *     /**

@@ -55,34 +55,34 @@ class RecordListController
      * @var array
      */
     private $deprecatedPublicProperties = [
-        'id' => 'Using RecordListController::$id is deprecated and will not be possible anymore in TYPO3 v10.',
-        'pointer' => 'Using RecordListController::$pointer is deprecated and will not be possible anymore in TYPO3 v10.',
-        'table' => 'Using RecordListController::$table is deprecated and will not be possible anymore in TYPO3 v10.',
-        'search_field' => 'Using RecordListController::$search_field is deprecated and will not be possible anymore in TYPO3 v10.',
-        'search_levels' => 'Using RecordListController::$search_levels is deprecated and will not be possible anymore in TYPO3 v10.',
-        'showLimit' => 'Using RecordListController::$showLimit is deprecated and will not be possible anymore in TYPO3 v10.',
-        'returnUrl' => 'Using RecordListController::$returnUrl is deprecated and will not be possible anymore in TYPO3 v10.',
-        'clear_cache' => 'Using RecordListController::$clear_cache is deprecated and will not be possible anymore in TYPO3 v10.',
-        'cmd' => 'Using RecordListController::$cmd is deprecated and will not be possible anymore in TYPO3 v10.',
-        'cmd_table' => 'Using RecordListController::$cmd_table is deprecated and will not be possible anymore in TYPO3 v10.',
-        'perms_clause' => 'Using RecordListController::$perms_clause is deprecated and will not be possible anymore in TYPO3 v10.',
-        'pageinfo' => 'Using RecordListController::$pageinfo is deprecated and will not be possible anymore in TYPO3 v10.',
-        'MOD_MENU' => 'Using RecordListController::$MOD_MENU is deprecated and will not be possible anymore in TYPO3 v10.',
-        'content' => 'Using RecordListController::$content is deprecated and will not be possible anymore in TYPO3 v10.',
-        'body' => 'Using RecordListController::$body is deprecated and will not be possible anymore in TYPO3 v10.',
-        'imagemode' => 'Using RecordListController::$imagemode is deprecated, property will be removed in TYPO3 v10.',
-        'doc' => 'Using RecordListController::$doc is deprecated, property will be removed in TYPO3 v10.',
+        'id' => 'Using RecordListController::$id is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'pointer' => 'Using RecordListController::$pointer is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'table' => 'Using RecordListController::$table is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'search_field' => 'Using RecordListController::$search_field is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'search_levels' => 'Using RecordListController::$search_levels is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'showLimit' => 'Using RecordListController::$showLimit is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'returnUrl' => 'Using RecordListController::$returnUrl is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'clear_cache' => 'Using RecordListController::$clear_cache is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'cmd' => 'Using RecordListController::$cmd is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'cmd_table' => 'Using RecordListController::$cmd_table is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'perms_clause' => 'Using RecordListController::$perms_clause is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'pageinfo' => 'Using RecordListController::$pageinfo is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'MOD_MENU' => 'Using RecordListController::$MOD_MENU is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'content' => 'Using RecordListController::$content is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'body' => 'Using RecordListController::$body is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'imagemode' => 'Using RecordListController::$imagemode is deprecated, property will be removed in TYPO3 v10.0.',
+        'doc' => 'Using RecordListController::$doc is deprecated, property will be removed in TYPO3 v10.0.',
     ];
 
     /**
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'init' => 'Using RecordListController::init() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'menuConfig' => 'Using RecordListController::menuConfig() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'clearCache' => 'Using RecordListController::clearCache() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'main' => 'Using RecordListController::main() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'getModuleTemplate' => 'Using RecordListController::getModuleTemplate() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'init' => 'Using RecordListController::init() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'menuConfig' => 'Using RecordListController::menuConfig() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'clearCache' => 'Using RecordListController::clearCache() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'main' => 'Using RecordListController::main() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'getModuleTemplate' => 'Using RecordListController::getModuleTemplate() is deprecated and will not be possible anymore in TYPO3 v10.0.',
     ];
 
     /**
@@ -103,7 +103,7 @@ class RecordListController
      * Thumbnails or not
      *
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $imagemode;
 
@@ -189,7 +189,7 @@ class RecordListController
      * Document template object
      *
      * @var DocumentTemplate
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $doc;
 
@@ -272,7 +272,7 @@ class RecordListController
         // GPvars:
         $this->id = (int)GeneralUtility::_GP('id');
         $this->pointer = GeneralUtility::_GP('pointer');
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
         $this->imagemode = GeneralUtility::_GP('imagemode');
         $this->table = GeneralUtility::_GP('table');
         $this->search_field = GeneralUtility::_GP('search_field');
@@ -327,7 +327,7 @@ class RecordListController
     {
         if ($request === null) {
             // Missing argument? This method must have been called from outside.
-            // Method will be protected and $request mandatory in v10, giving core freedom to move stuff around
+            // Method will be protected and $request mandatory in TYPO3 v10.0, giving core freedom to move stuff around
             // New v10 signature: "protected function main(ServerRequestInterface $request)"
             // @deprecated since TYPO3 v9, method argument $request will be set to mandatory
             $request = $GLOBALS['TYPO3_REQUEST'];
@@ -524,7 +524,7 @@ class RecordListController
             $params = [
                 'request' => $request,
             ];
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10: Handing over $this as second constructor argument will be changed to $null = null;
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0: Handing over $this as second constructor argument will be changed to $null = null;
             $this->body .= GeneralUtility::callUserFunction($hook, $params, $this);
         }
 
@@ -614,7 +614,7 @@ class RecordListController
             $params = [
                 'request' => $request,
             ];
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10: Handing over $this as second constructor argument will be changed to $null = null;
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0: Handing over $this as second constructor argument will be changed to $null = null;
             $this->body .= GeneralUtility::callUserFunction($hook, $params, $this);
         }
         // Setting up the buttons for docheader

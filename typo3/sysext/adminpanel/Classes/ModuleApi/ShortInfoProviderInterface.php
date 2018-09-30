@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Adminpanel\ModuleApi;
  * about the current state (for example the log module provides the number of warnings and errors directly).
  *
  * Be aware that modules with submodules at the moment can only render one short info (the one of the "parent" module).
- * This will likely change in v10.
+ * This will likely change in TYPO3 v10.0.
  */
 interface ShortInfoProviderInterface
 {

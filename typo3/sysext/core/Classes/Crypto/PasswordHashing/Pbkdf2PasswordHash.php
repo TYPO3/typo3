@@ -31,9 +31,9 @@ class Pbkdf2PasswordHash implements PasswordHashInterface
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'isValidSalt' => 'Using Pbkdf2PasswordHash::isValidSalt() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'base64Encode' => 'Using Pbkdf2PasswordHash::base64Encode() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'base64Decode' => 'Using Pbkdf2PasswordHash::base64Decode() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'isValidSalt' => 'Using Pbkdf2PasswordHash::isValidSalt() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'base64Encode' => 'Using Pbkdf2PasswordHash::base64Encode() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'base64Decode' => 'Using Pbkdf2PasswordHash::base64Decode() is deprecated and will not be possible anymore in TYPO3 v10.0.',
     ];
 
     /**
@@ -342,7 +342,7 @@ class Pbkdf2PasswordHash implements PasswordHashInterface
      */
     public function getHashCount(): int
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return $this->options['hash_count'];
     }
 
@@ -354,7 +354,7 @@ class Pbkdf2PasswordHash implements PasswordHashInterface
      */
     public function getMaxHashCount(): int
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return 10000000;
     }
 
@@ -366,7 +366,7 @@ class Pbkdf2PasswordHash implements PasswordHashInterface
      */
     public function getMinHashCount(): int
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return 1000;
     }
 
@@ -378,7 +378,7 @@ class Pbkdf2PasswordHash implements PasswordHashInterface
      */
     public function getSaltLength(): int
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return 16;
     }
 
@@ -390,7 +390,7 @@ class Pbkdf2PasswordHash implements PasswordHashInterface
      */
     public function getSetting(): string
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return self::PREFIX;
     }
 
@@ -402,7 +402,7 @@ class Pbkdf2PasswordHash implements PasswordHashInterface
      */
     public function setHashCount(int $hashCount = null)
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         if ($hashCount >= 1000 && $hashCount <= 10000000) {
             $this->options['hash_count'] = $hashCount;
         }
@@ -416,7 +416,7 @@ class Pbkdf2PasswordHash implements PasswordHashInterface
      */
     public function setMaxHashCount(int $maxHashCount = null)
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         // Empty, max hash count is hard coded to 10000000
     }
 
@@ -428,7 +428,7 @@ class Pbkdf2PasswordHash implements PasswordHashInterface
      */
     public function setMinHashCount(int $minHashCount = null)
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         // Empty, max hash count is hard coded to 1000
     }
 }

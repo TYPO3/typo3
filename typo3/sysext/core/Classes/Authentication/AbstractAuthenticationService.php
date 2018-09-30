@@ -101,11 +101,11 @@ class AbstractAuthenticationService extends AbstractService
      * @param array $loginData Login data array
      * @param string $passwordCompareStrategy Password compare strategy
      * @return bool TRUE if login data matched
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function compareUident(array $user, array $loginData, $passwordCompareStrategy = '')
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return $this->pObj->compareUident($user, $loginData, $passwordCompareStrategy);
     }
 

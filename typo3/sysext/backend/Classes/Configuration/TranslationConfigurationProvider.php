@@ -24,6 +24,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Contains translation tools
+ *
+ * @internal The whole class is subject to be removed, fetch all language info from the current site object.
  */
 class TranslationConfigurationProvider
 {
@@ -187,11 +189,11 @@ class TranslationConfigurationProvider
      *
      * @param string $table The table name
      * @return string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10 as foreign translation table is not supported anymore
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 as foreign translation table is not supported anymore
      */
     public function getTranslationTable($table)
     {
-        trigger_error('getTranslationTable() will be removed in TYPO3 v10, as the translation table is always the same as the original table.', E_USER_DEPRECATED);
+        trigger_error('TranslationConfigurationProvider->getTranslationTable() will be removed in TYPO3 v10.0, as the translation table is always the same as the original table.', E_USER_DEPRECATED);
         return BackendUtility::isTableLocalizable($table) ? $table : '';
     }
 
@@ -200,11 +202,11 @@ class TranslationConfigurationProvider
      *
      * @param string $table The table name
      * @return bool
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10 as foreign translation table is not supported anymore
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 as foreign translation table is not supported anymore
      */
     public function isTranslationInOwnTable($table)
     {
-        trigger_error('isTranslationInOwnTable() will be removed in TYPO3 v10, as the translation table is always the same as the original table.', E_USER_DEPRECATED);
+        trigger_error('TranslationConfigurationProvider->isTranslationInOwnTable() will be removed in TYPO3 v10.0, as the translation table is always the same as the original table.', E_USER_DEPRECATED);
         return $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
     }
 
@@ -215,11 +217,11 @@ class TranslationConfigurationProvider
      *
      * @param string $table The table name
      * @return string Translation foreign table
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10 as foreign translation table is not supported anymore
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 as foreign translation table is not supported anymore
      */
     public function foreignTranslationTable($table)
     {
-        trigger_error('foreignTranslationTable() will be removed in TYPO3 v10, as the translation table is always the same as the original table.', E_USER_DEPRECATED);
+        trigger_error('TranslationConfigurationProvider->foreignTranslationTable() will be removed in TYPO3 v10.0, as the translation table is always the same as the original table.', E_USER_DEPRECATED);
         return '';
     }
 

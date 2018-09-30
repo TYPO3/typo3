@@ -43,7 +43,7 @@ class EidUtility
      */
     public static function initFeUser()
     {
-        trigger_error('EidUtility::initFeUser() will be removed in TYPO3 v10. Use a PSR-15 middleware instead.', E_USER_DEPRECATED);
+        trigger_error('EidUtility::initFeUser() will be removed in TYPO3 v10.0. Use a PSR-15 middleware instead.', E_USER_DEPRECATED);
         // Get TSFE instance. It knows how to initialize the user.
         $tsfe = self::getTSFE();
         $tsfe->fe_user = GeneralUtility::makeInstance(FrontendUserAuthentication::class);
@@ -86,7 +86,7 @@ class EidUtility
      */
     public static function initLanguage($language = 'default')
     {
-        trigger_error('EidUtility::initLanguage() will be removed in TYPO3 v10. Ensure to intantiate the LanguageService by yourself.', E_USER_DEPRECATED);
+        trigger_error('EidUtility::initLanguage() will be removed in TYPO3 v10.0. Ensure to intantiate the LanguageService by yourself.', E_USER_DEPRECATED);
         if (!is_object($GLOBALS['LANG'])) {
             $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
             $GLOBALS['LANG']->init($language);
@@ -99,7 +99,7 @@ class EidUtility
      */
     public static function initTCA()
     {
-        trigger_error('EidUtility::initTCA() will be removed in TYPO3 v10. Is not needed anymore within eID scripts as TCA is now available at any time.', E_USER_DEPRECATED);
+        trigger_error('EidUtility::initTCA() will be removed in TYPO3 v10.0. Is not needed anymore within eID scripts as TCA is now available at any time.', E_USER_DEPRECATED);
         // Some badly made extensions attempt to manipulate TCA in a wrong way
         // (inside ext_localconf.php). Therefore $GLOBALS['TCA'] may become an array
         // but in fact it is not loaded. The check below ensure that
@@ -118,7 +118,7 @@ class EidUtility
      */
     public static function initExtensionTCA($extensionKey)
     {
-        trigger_error('EidUtility::initExtensionTCA() will be removed in TYPO3 v10 as it is discouraged to only load ext_tables.php of one extension. Use ExtensionManagementUtility instead.', E_USER_DEPRECATED);
+        trigger_error('EidUtility::initExtensionTCA() will be removed in TYPO3 v10.0 as it is discouraged to only load ext_tables.php of one extension. Use ExtensionManagementUtility instead.', E_USER_DEPRECATED);
         $extTablesPath = ExtensionManagementUtility::extPath($extensionKey, 'ext_tables.php');
         if (file_exists($extTablesPath)) {
             $GLOBALS['_EXTKEY'] = $extensionKey;

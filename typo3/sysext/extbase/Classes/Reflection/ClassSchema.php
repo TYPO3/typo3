@@ -610,7 +610,7 @@ class ClassSchema
      * @param string $type Type of the property
      * @param bool $lazy Whether the property should be lazy-loaded when reconstituting
      * @param string $cascade Strategy to cascade the object graph.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function addProperty($name, $type, $lazy = false, $cascade = '')
     {
@@ -656,7 +656,7 @@ class ClassSchema
      *
      * @param int $modelType The model type, one of the MODELTYPE_* constants.
      * @throws \InvalidArgumentException
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function setModelType($modelType)
     {
@@ -674,7 +674,7 @@ class ClassSchema
      * Returns the model type of the class this schema is referring to.
      *
      * @return int The model type, one of the MODELTYPE_* constants.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function getModelType()
     {
@@ -723,7 +723,7 @@ class ClassSchema
      *
      * @param string $propertyName
      * @throws \InvalidArgumentException
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function setUuidPropertyName($propertyName)
     {
@@ -741,7 +741,7 @@ class ClassSchema
      * Gets the name of the property marked as uuid of an object
      *
      * @return string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function getUuidPropertyName()
     {
@@ -759,7 +759,7 @@ class ClassSchema
      *
      * @param string $propertyName
      * @throws \InvalidArgumentException
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function markAsIdentityProperty($propertyName)
     {
@@ -781,7 +781,7 @@ class ClassSchema
      *
      * @return array
      * @see markAsIdentityProperty()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public function getIdentityProperties()
     {

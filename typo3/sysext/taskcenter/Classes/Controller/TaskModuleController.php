@@ -44,34 +44,34 @@ class TaskModuleController
      * @var array
      */
     private $deprecatedPublicProperties = [
-        'MCONF' => 'Using TaskModuleController::$MCONF is deprecated and will not be possible anymore in TYPO3 v10.',
-        'id' => 'Using TaskModuleController::$id is deprecated and will not be possible anymore in TYPO3 v10.',
-        'MOD_MENU' => 'Using TaskModuleController::$MOD_MENU is deprecated and will not be possible anymore in TYPO3 v10.',
-        'modMenu_type' => 'Using TaskModuleController::$modMenu_type is deprecated and will not be possible anymore in TYPO3 v10.',
-        'modMenu_setDefaultList' => 'Using TaskModuleController::$$modMenu_setDefaultList is deprecated and will not be possible anymore in TYPO3 v10.',
-        'modMenu_dontValidateList' => 'Using TaskModuleController::$modMenu_dontValidateList is deprecated and will not be possible anymore in TYPO3 v10.',
-        'content' => 'Using TaskModuleController::$content is deprecated and will not be possible anymore in TYPO3 v10.',
-        'perms_clause' => 'Using TaskModuleController::$perms_clause is deprecated, the property will be removed in v10.',
-        'CMD' => 'Using TaskModuleController::$CMD is deprecated, the property will be removed in v10.',
-        'extClassConf' => 'Using TaskModuleController::$extClassConf is deprecated, the property will be removed in v10.',
-        'extObj' => 'Using TaskModuleController::$extObj is deprecated, the property will be removed in v10.',
+        'MCONF' => 'Using TaskModuleController::$MCONF is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'id' => 'Using TaskModuleController::$id is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'MOD_MENU' => 'Using TaskModuleController::$MOD_MENU is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'modMenu_type' => 'Using TaskModuleController::$modMenu_type is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'modMenu_setDefaultList' => 'Using TaskModuleController::$$modMenu_setDefaultList is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'modMenu_dontValidateList' => 'Using TaskModuleController::$modMenu_dontValidateList is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'content' => 'Using TaskModuleController::$content is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'perms_clause' => 'Using TaskModuleController::$perms_clause is deprecated, the property will be removed in TYPO3 v10.0.',
+        'CMD' => 'Using TaskModuleController::$CMD is deprecated, the property will be removed in TYPO3 v10.0.',
+        'extClassConf' => 'Using TaskModuleController::$extClassConf is deprecated, the property will be removed in TYPO3 v10.0.',
+        'extObj' => 'Using TaskModuleController::$extObj is deprecated, the property will be removed in TYPO3 v10.0.',
     ];
 
     /**
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'menuConfig' => 'Using TaskModuleController::menuConfig() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'mergeExternalItems' => 'Using TaskModuleController::mergeExternalItems() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'handleExternalFunctionValue' => 'Using TaskModuleController::handleExternalFunctionValue() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'getExternalItemConfig' => 'Using TaskModuleController::getExternalItemConfig() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'main' => 'Using TaskModuleController::main() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'urlInIframe' => 'Using TaskModuleController::urlInIframe() is deprecated. The method will be removed in TYPO3 v10.',
-        'extObjHeader' => 'Using TaskModuleController::extObjHeader() is deprecated. The method will be removed in TYPO3 v10.',
-        'checkSubExtObj' => 'Using TaskModuleController::checkSubExtObj() is deprecated. The method will be removed in TYPO3 v10.',
-        'checkExtObj' => 'Using TaskModuleController::checkExtObj() is deprecated. The method will be removed in TYPO3 v10.',
-        'extObjContent' => 'Using TaskModuleController::extObjContent() is deprecated. The method will be removed in TYPO3 v10.',
-        'getExtObjContent' => 'Using TaskModuleController::getExtObjContent() is deprecated. The method will be removed in TYPO3 v10.',
+        'menuConfig' => 'Using TaskModuleController::menuConfig() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'mergeExternalItems' => 'Using TaskModuleController::mergeExternalItems() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'handleExternalFunctionValue' => 'Using TaskModuleController::handleExternalFunctionValue() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'getExternalItemConfig' => 'Using TaskModuleController::getExternalItemConfig() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'main' => 'Using TaskModuleController::main() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'urlInIframe' => 'Using TaskModuleController::urlInIframe() is deprecated. The method will be removed in TYPO3 v10.0.',
+        'extObjHeader' => 'Using TaskModuleController::extObjHeader() is deprecated. The method will be removed in TYPO3 v10.0.',
+        'checkSubExtObj' => 'Using TaskModuleController::checkSubExtObj() is deprecated. The method will be removed in TYPO3 v10.0.',
+        'checkExtObj' => 'Using TaskModuleController::checkExtObj() is deprecated. The method will be removed in TYPO3 v10.0.',
+        'extObjContent' => 'Using TaskModuleController::extObjContent() is deprecated. The method will be removed in TYPO3 v10.0.',
+        'getExtObjContent' => 'Using TaskModuleController::getExtObjContent() is deprecated. The method will be removed in TYPO3 v10.0.',
     ];
 
     /**
@@ -95,7 +95,7 @@ class TaskModuleController
      *
      * @see init()
      * @var mixed
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $CMD;
 
@@ -104,7 +104,7 @@ class TaskModuleController
      *
      * @see init()
      * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $perms_clause;
 
@@ -168,7 +168,7 @@ class TaskModuleController
      *
      * @see handleExternalFunctionValue()
      * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $extClassConf;
 
@@ -184,7 +184,7 @@ class TaskModuleController
      *
      * @see checkExtObj()
      * @var \object
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected $extObj;
 
@@ -222,9 +222,9 @@ class TaskModuleController
             $this->MCONF = $GLOBALS['MCONF'];
         }
         $this->id = (int)GeneralUtility::_GP('id');
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
         $this->CMD = GeneralUtility::_GP('CMD');
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
         $this->menuConfig();
         $this->handleExternalFunctionValue();
@@ -306,7 +306,7 @@ class TaskModuleController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
         $GLOBALS['SOBE'] = $this;
 
         $this->main();
@@ -626,7 +626,7 @@ class TaskModuleController
      *
      * @param string $url Url to display
      * @return string Code that inserts the iframe (HTML)
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Remember to remove the fluid template, too.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remember to remove the fluid template, too.
      */
     protected function urlInIframe($url)
     {
@@ -745,7 +745,7 @@ class TaskModuleController
      * If an instance is created it is initiated with $this passed as value and $this->extClassConf as second argument. Further the $this->MOD_SETTING is cleaned up again after calling the init function.
      *
      * @see handleExternalFunctionValue(), \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), $extObj
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function checkExtObj()
     {
@@ -760,7 +760,7 @@ class TaskModuleController
     /**
      * Calls the checkExtObj function in sub module if present.
      *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function checkSubExtObj()
     {
@@ -773,7 +773,7 @@ class TaskModuleController
      * Calls the 'header' function inside the "Function menu module" if present.
      * A header function might be needed to add JavaScript or other stuff in the head. This can't be done in the main function because the head is already written.
      *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function extObjHeader()
     {
@@ -784,7 +784,7 @@ class TaskModuleController
 
     /**
      * Calls the 'main' function inside the "Function menu module" if present
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function extObjContent()
     {
@@ -812,7 +812,7 @@ class TaskModuleController
      * Return the content of the 'main' function inside the "Function menu module" if present
      *
      * @return string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function getExtObjContent()
     {
@@ -826,7 +826,7 @@ class TaskModuleController
 
     /**
      * @return PageRenderer
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     protected function getPageRenderer(): PageRenderer
     {

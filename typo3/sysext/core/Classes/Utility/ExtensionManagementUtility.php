@@ -113,19 +113,19 @@ class ExtensionManagementUtility
      * Returns TRUE if the extension with extension key $key is loaded.
      *
      * @param string $key Extension key to test
-     * @param bool $exitOnError If $exitOnError is TRUE and the extension is not loaded the function will die with an error message, this is deprecated and will be removed in TYPO3 v10
+     * @param bool $exitOnError If $exitOnError is TRUE and the extension is not loaded the function will die with an error message, this is deprecated and will be removed in TYPO3 v10.0.
      * @return bool
      * @throws \BadFunctionCallException
      */
     public static function isLoaded($key, $exitOnError = null)
     {
-        // safety net for extensions checking for "EXT:version", can be removed in TYPO3 v10.
+        // safety net for extensions checking for "EXT:version", can be removed in TYPO3 v10.0.
         if ($key === 'version') {
             trigger_error('EXT:version has been moved into EXT:workspaces, you should check against "workspaces", as this might lead to unexpected behaviour in the future.', E_USER_DEPRECATED);
             $key = 'workspaces';
         }
         if ($exitOnError !== null) {
-            trigger_error('Calling isLoaded() with a second argument via "exitOnError" will be removed in TYPO3 v10, handle an unloaded package yourself in the future.', E_USER_DEPRECATED);
+            trigger_error('Calling ExtensionManagementUtility::isLoaded() with a second argument via "exitOnError" will be removed in TYPO3 v10.0, handle an unloaded package yourself in the future.', E_USER_DEPRECATED);
         }
         $isLoaded = static::$packageManager->isPackageActive($key);
         if ($exitOnError && !$isLoaded) {
@@ -162,7 +162,7 @@ class ExtensionManagementUtility
      */
     public static function siteRelPath($key)
     {
-        trigger_error('Calling siteRelPath() is deprecated. This method will be removed in TYPO3 v10, use extPath() in conjunction with PathUtility::getAbsoluteWebPath() instead.', E_USER_DEPRECATED);
+        trigger_error('ExtensionManagementUtility::siteRelPath() will be removed in TYPO3 v10.0, use extPath() in conjunction with PathUtility::getAbsoluteWebPath() instead.', E_USER_DEPRECATED);
         return PathUtility::stripPathSitePrefix(self::extPath($key));
     }
 
@@ -187,7 +187,7 @@ class ExtensionManagementUtility
      */
     public static function getExtensionKeyByPrefix($prefix)
     {
-        trigger_error('Calling getExtensionKeyByPrefix() is deprecated and will be removed in TYPO3 v10. Use extension keys directly', E_USER_DEPRECATED);
+        trigger_error('ExtensionManagementUtility::getExtensionKeyByPrefix() will be removed in TYPO3 v10.0. Use extension keys directly.', E_USER_DEPRECATED);
         $result = false;
         // Build map of short keys referencing to real keys:
         if (!isset(self::$extensionKeyMap)) {
@@ -823,11 +823,11 @@ class ExtensionManagementUtility
      *
      * @param string $moduleSignature The module name
      * @return array Configuration of the module
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10, addModule() works the same way nowadays.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, addModule() works the same way nowadays.
      */
     public static function configureModule($moduleSignature)
     {
-        trigger_error('This method will be removed in TYPO3 v10, as the same functionality is found in addModule() as well.', E_USER_DEPRECATED);
+        trigger_error('ExtensionManagementUtility::configureModule will be removed in TYPO3 v10.0, as the same functionality is found in addModule() as well.', E_USER_DEPRECATED);
         $moduleConfiguration = $GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature];
 
         // Register the icon and move it too "iconIdentifier"
@@ -861,7 +861,7 @@ class ExtensionManagementUtility
     {
         if (($moduleConfiguration['navigationComponentId'] ?? '') === 'typo3-pagetree') {
             trigger_error(
-                'Navigation component ID "typo3-pagetree" has been deprecated and will be removed in TYPO3 v10.'
+                'Referencing the navigation component ID "typo3-pagetree" will be removed in TYPO3 v10.0.'
                 . 'Use "TYPO3/CMS/Backend/PageTree/PageTreeElement" instead. Module key: ' . $main . '-' . $sub,
                 E_USER_DEPRECATED
             );
@@ -1889,7 +1889,7 @@ tt_content.' . $key . $suffix . ' {
      */
     public static function removeCacheFiles()
     {
-        trigger_error('removeCacheFiles() will be removed in TYPO3 v10. Use CacheManager directly to flush all system caches.', E_USER_DEPRECATED);
+        trigger_error('ExtensionManagementUtility::removeCacheFiles() will be removed in TYPO3 v10.0. Use CacheManager directly to flush all system caches.', E_USER_DEPRECATED);
         self::getCacheManager()->flushCachesInGroup('system');
     }
 

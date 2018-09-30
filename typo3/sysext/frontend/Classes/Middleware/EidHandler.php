@@ -70,7 +70,7 @@ class EidHandler implements MiddlewareInterface
             return $dispatcher->dispatch($request, $response) ?? new NullResponse();
         }
         trigger_error(
-            'eID "' . $eID . '" is registered with a script to a file. This behaviour will be removed in TYPO3 v10.'
+            'eID "' . $eID . '" is registered with a script to a file. This behaviour will be removed in TYPO3 v10.0.'
             . ' Register eID with a class::method syntax like "\MyVendor\MyExtension\Controller\MyEidController::myMethod" instead.',
             E_USER_DEPRECATED
         );

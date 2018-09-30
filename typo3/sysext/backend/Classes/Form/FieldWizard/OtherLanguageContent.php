@@ -103,7 +103,7 @@ class OtherLanguageContent extends AbstractNode
      */
     protected function previewFieldValue($value, $config, $field = '')
     {
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Deprecation logged by TcaMigration class.
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
         $value = (string)$value;
         if ($config['config']['type'] === 'group'
             && ($config['config']['internal_type'] === 'file' || $config['config']['internal_type'] === 'file_reference')

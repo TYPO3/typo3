@@ -100,7 +100,7 @@ class LayoutController extends AbstractController
      * exist in EXTENSIONS yet.
      *
      * @return ResponseInterface
-     * @deprecated since core v9, will be removed with core v10
+     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0
      */
     public function executeSilentLegacyExtConfExtensionConfigurationUpdateAction(): ResponseInterface
     {
@@ -153,7 +153,7 @@ class LayoutController extends AbstractController
      *
      * @param array $settings
      * @return array New settings
-     * @deprecated since core v9, will be removed with core v10 along with executeSilentLegacyExtConfExtensionConfigurationUpdateAction()
+     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0 along with executeSilentLegacyExtConfExtensionConfigurationUpdateAction()
      */
     private function removeDotsFromArrayKeysRecursive(array $settings): array
     {

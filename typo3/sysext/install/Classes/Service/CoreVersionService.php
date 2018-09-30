@@ -46,7 +46,7 @@ class CoreVersionService
     {
         if (null !== $registry) {
             trigger_error(
-                'The constructor parameter $registry for CoreVersionService is deprecated since v9 and will be removed in v10.',
+                'The constructor parameter $registry for CoreVersionService is deprecated since TYPO3 v9 and will be removed in TYPO3 v10.0.',
                 E_USER_DEPRECATED
             );
             $this->registry = $registry;
@@ -192,12 +192,12 @@ class CoreVersionService
     /**
      * Update version matrix from remote and store in registry
      *
-     * @deprecated Since TYPO3 v9 and will be removed in v10 - use new REST API directly (see https://get.typo3.org/v1/api/doc)
+     * @deprecated since TYPO3 v9 and will be removed in TYPO3 v10.0 - use new REST API directly (see https://get.typo3.org/v1/api/doc)
      * @throws Exception\RemoteFetchException
      */
     public function updateVersionMatrix(): void
     {
-        trigger_error('Method updateVersionMatrix is deprecated, use new REST API directly (see https://get.typo3.org/v1/api/doc).', E_USER_DEPRECATED);
+        trigger_error('Method updateVersionMatrix will be removed in TYPO3 v10.0, use new REST API directly (see https://get.typo3.org/v1/api/doc).', E_USER_DEPRECATED);
         $url = 'https://get.typo3.org/json';
         $versionJson = GeneralUtility::getUrl($url);
         if (!$versionJson) {
@@ -218,14 +218,14 @@ class CoreVersionService
     /**
      * Youngest development patch release, e.g., 6.2.0alpha3 or 6.2-snapshot-20131004
      *
-     * @deprecated Since TYPO3 v9 and will be removed in v10 - TYPO3 release cycles do not contain development releases anymore
+     * @deprecated since TYPO3 v9 and will be removed in TYPO3 v10.0 - TYPO3 release cycles do not contain development releases anymore
      * @return string
      * @throws \TYPO3\CMS\Install\Service\Exception\RemoteFetchException
      */
     public function getYoungestPatchDevelopmentRelease(): string
     {
         trigger_error(
-            'Method getYoungestPatchDevelopmentRelease() is deprecated since v9 and will be removed in v10, use getYoungestPatchRelease() instead.',
+            'Method getYoungestPatchDevelopmentRelease() is deprecated since TYPO3 v9 and will be removed in TYPO3 v10.0, use getYoungestPatchRelease() instead.',
             E_USER_DEPRECATED
         );
         return $this->getYoungestPatchRelease();
@@ -234,27 +234,27 @@ class CoreVersionService
     /**
      * Returns TRUE if a younger patch level release exists in version matrix that may be a development release.
      *
-     * @deprecated Since TYPO3 v9 and will be removed in v10 - TYPO3 release cycles do not contain development releases anymore
+     * @deprecated since TYPO3 v9 and will be removed in TYPO3 v10.0 - TYPO3 release cycles do not contain development releases anymore
      * @return bool TRUE if younger patch release is exists
      * @throws \TYPO3\CMS\Install\Service\Exception\RemoteFetchException
      */
     public function isYoungerPatchDevelopmentReleaseAvailable(): bool
     {
         trigger_error(
-            'Method isYoungerPatchDevelopmentReleaseAvailable() is deprecated since v9 and will be removed in v10, use isYoungerPatchReleaseAvailable() instead.',
+            'Method isYoungerPatchDevelopmentReleaseAvailable() is deprecated since TYPO3 v9 and will be removed in TYPO3 v10.0, use isYoungerPatchReleaseAvailable() instead.',
             E_USER_DEPRECATED
         );
         return $this->isYoungerPatchReleaseAvailable();
     }
 
     /**
-     * @deprecated Since TYPO3 v9 and will be removed in v10, use 'https://get.typo3.org' directly
+     * @deprecated since TYPO3 v9 and will be removed in TYPO3 v10.0, use 'https://get.typo3.org' directly
      * @return string
      */
     public function getDownloadBaseUrl(): string
     {
         trigger_error(
-            'Method getDownloadBaseUrl() is deprecated since v9 and will be removed in v10, use https://get.typo3.org directly.',
+            'Method getDownloadBaseUrl() is deprecated since TYPO3 v9 and will be removed in TYPO3 v10.0, use https://get.typo3.org directly.',
             E_USER_DEPRECATED
         );
         return $this->apiBaseUrl;

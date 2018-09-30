@@ -52,7 +52,7 @@ class Lexer
      * Charset class object
      *
      * @var CharsetConverter
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10 (also the instantiation in the init() method).
+     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0 (also the instantiation in the init() method).
      */
     public $csObj;
 

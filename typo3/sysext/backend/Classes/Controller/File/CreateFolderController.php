@@ -46,7 +46,7 @@ class CreateFolderController
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'main' => 'Using CreateFolderController::main() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'main' => 'Using CreateFolderController::main() is deprecated and will not be possible anymore in TYPO3 v10.0.',
     ];
 
     /**
@@ -70,7 +70,7 @@ class CreateFolderController
      * Name of the filemount
      *
      * @var string
-     * @deprecated since v9, will be removed in v10, unused
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused
      */
     protected $title;
 
@@ -109,7 +109,7 @@ class CreateFolderController
      * Accumulating content
      *
      * @var string
-     * @deprecated since v9, will be removed in v10, unused
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused
      */
     protected $content;
 
@@ -126,7 +126,7 @@ class CreateFolderController
     public function __construct()
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        // @deprecated since v9, will be moved out of __construct() in v10
+        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
         $this->init($GLOBALS['TYPO3_REQUEST']);
     }
 

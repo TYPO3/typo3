@@ -49,7 +49,7 @@ class BackendRouteInitialization implements MiddlewareInterface
 
         if ($moduleName !== null) {
             // backwards compatibility for old module names
-            // @deprecated since TYPO3 CMS 9, will be removed in TYPO3 CMS 10.
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
             $router = GeneralUtility::makeInstance(Router::class);
             foreach ($router->getRoutes() as $routeIdentifier => $route) {
                 if ($routeIdentifier === $moduleName) {
@@ -58,7 +58,7 @@ class BackendRouteInitialization implements MiddlewareInterface
                 }
             }
 
-            trigger_error('Calling the TYPO3 Backend with "M" GET parameter will be removed in TYPO3 v10,'
+            trigger_error('Calling the TYPO3 Backend with "M" GET parameter will be removed in TYPO3 v10.0,'
                 . ' the calling code calls this script with "&M=' . $moduleName . '" and needs to be adapted'
                 . ' to use the TYPO3 API.', E_USER_DEPRECATED);
         }

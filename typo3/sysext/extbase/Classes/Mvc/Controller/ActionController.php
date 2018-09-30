@@ -629,7 +629,7 @@ class ActionController extends AbstractController
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      *
      * @return array Array of method parameters by action name
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public static function getActionMethodParameters($objectManager)
     {

@@ -43,19 +43,19 @@ class InfoPageTyposcriptConfigController
      * @var array
      */
     private $deprecatedPublicProperties = [
-        'pObj' => 'Using InfoPageTyposcriptConfigController::$pObj is deprecated and will not be possible anymore in TYPO3 v10.',
-        'function_key' => 'Using InfoPageTyposcriptConfigController::$function_key is deprecated, property will be removed in TYPO3 v10.',
-        'extClassConf' => 'Using InfoPageTyposcriptConfigController::$extClassConf is deprecated, property will be removed in TYPO3 v10.',
-        'localLangFile' => 'Using InfoPageTyposcriptConfigController::$localLangFile is deprecated, property will be removed in TYPO3 v10.',
-        'extObj' => 'Using InfoPageTyposcriptConfigController::$extObj is deprecated, property will be removed in TYPO3 v10.',
+        'pObj' => 'Using InfoPageTyposcriptConfigController::$pObj is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'function_key' => 'Using InfoPageTyposcriptConfigController::$function_key is deprecated, property will be removed in TYPO3 v10.0.',
+        'extClassConf' => 'Using InfoPageTyposcriptConfigController::$extClassConf is deprecated, property will be removed in TYPO3 v10.0.',
+        'localLangFile' => 'Using InfoPageTyposcriptConfigController::$localLangFile is deprecated, property will be removed in TYPO3 v10.0.',
+        'extObj' => 'Using InfoPageTyposcriptConfigController::$extObj is deprecated, property will be removed in TYPO3 v10.0.',
     ];
 
     /**
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'modMenu' => 'Using InfoPageTyposcriptConfigController::modMenu() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'extObjContent' => 'Using InfoPageTyposcriptConfigController::extObjContent() is deprecated, method will be removed in TYPO3 v10.',
+        'modMenu' => 'Using InfoPageTyposcriptConfigController::modMenu() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'extObjContent' => 'Using InfoPageTyposcriptConfigController::extObjContent() is deprecated, method will be removed in TYPO3 v10.0.',
     ];
 
     /**
@@ -437,7 +437,7 @@ class InfoPageTyposcriptConfigController
     }
 
     /**
-     * Called from InfoModuleController until deprecation removal in v10
+     * Called from InfoModuleController until deprecation removal in TYPO3 v10.0
      *
      * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */

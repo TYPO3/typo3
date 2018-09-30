@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * template and comes with a simple dispatcher method.
  *
  * @internal Experimental for now
- * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
  */
 class AbstractModule
 {
@@ -42,7 +42,7 @@ class AbstractModule
     public function __construct()
     {
         trigger_error(
-            'Class AbstractModule is deprecated since TYPO3 v9 and will be removed with TYPO3 v10.'
+            'Class AbstractModule is deprecated since TYPO3 v9 and will be removed with TYPO3 v10.0.'
             . ' Instantiate ModuleTemplate yourself if needed and use routing registered in Routes.php.',
             E_USER_DEPRECATED
         );

@@ -47,7 +47,7 @@ class BackendController
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'render' => 'Using BackendController::render() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'render' => 'Using BackendController::render() is deprecated and will not be possible anymore in TYPO3 v10.0.',
     ];
 
     /**

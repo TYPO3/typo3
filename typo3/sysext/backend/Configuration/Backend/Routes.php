@@ -164,7 +164,7 @@ return [
     ],
 
     // Register browser
-    // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
+    // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
     'browser' => [
         'path' => '/record/browse',
         'target' => \TYPO3\CMS\Recordlist\Controller\ElementBrowserFramesetController::class . '::mainAction'

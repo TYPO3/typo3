@@ -90,7 +90,7 @@ class PhpFrontend extends AbstractFrontend
      */
     public function getByTag($tag)
     {
-        trigger_error('This method will be removed in TYPO3 v10. Avoid using this method since it is not compliant to PSR-6.', E_USER_DEPRECATED);
+        trigger_error('PhpFrontend->getByTag() will be removed in TYPO3 v10.0. Avoid using this method since it is not compliant to PSR-6.', E_USER_DEPRECATED);
         if (!$this->isValidTag($tag)) {
             throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233057773);
         }

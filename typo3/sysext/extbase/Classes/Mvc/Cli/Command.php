@@ -257,12 +257,12 @@ class Command
      *
      * @return bool
      *
-     * @deprecated will be removed in TYPO3 v10.
+     * @deprecated will be removed in TYPO3 v10.0.
      */
     public function isFlushingCaches()
     {
         trigger_error(
-            'Method isFlushingCaches() will be removed in v10. Do not call from other extension.',
+            'Method isFlushingCaches() will be removed in TYPO3 v10.0. Do not call from other extension.',
             E_USER_DEPRECATED
         );
         return isset($this->classSchema->getMethod($this->controllerCommandMethod)['tags']['flushesCaches']);

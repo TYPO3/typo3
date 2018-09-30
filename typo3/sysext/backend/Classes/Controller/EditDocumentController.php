@@ -66,7 +66,7 @@ class EditDocumentController
     use PublicPropertyDeprecationTrait;
 
     /**
-     * @deprecated since v9. These constants will be set to protected in v10
+     * @deprecated since TYPO3 v9. These constants will be set to protected in TYPO3 v10.0
      */
     public const DOCUMENT_CLOSE_MODE_DEFAULT = 0;
     public const DOCUMENT_CLOSE_MODE_REDIRECT = 1; // works like DOCUMENT_CLOSE_MODE_DEFAULT
@@ -77,12 +77,12 @@ class EditDocumentController
      * @var array
      */
     private $deprecatedPublicMethods = [
-        'makeEditForm' => 'Using EditDocumentController::makeEditForm() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'compileForm' => 'Using EditDocumentController::compileForm() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'languageSwitch' => 'Using EditDocumentController::languageSwitch() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'getLanguages' => 'Using EditDocumentController::getLanguages() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'fixWSversioningInEditConf' => 'Using EditDocumentController::fixWSversioningInEditConf() is deprecated and will not be possible anymore in TYPO3 v10.',
-        'getRecordForEdit' => 'Using EditDocumentController::getRecordForEdit() is deprecated and will not be possible anymore in TYPO3 v10.',
+        'makeEditForm' => 'Using EditDocumentController::makeEditForm() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'compileForm' => 'Using EditDocumentController::compileForm() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'languageSwitch' => 'Using EditDocumentController::languageSwitch() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'getLanguages' => 'Using EditDocumentController::getLanguages() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'fixWSversioningInEditConf' => 'Using EditDocumentController::fixWSversioningInEditConf() is deprecated and will not be possible anymore in TYPO3 v10.0.',
+        'getRecordForEdit' => 'Using EditDocumentController::getRecordForEdit() is deprecated and will not be possible anymore in TYPO3 v10.0.',
     ];
 
     /**
@@ -203,7 +203,7 @@ class EditDocumentController
      *
      * @var array
      * @todo: Will be set protected later, still used by ConditionMatcher
-     * @internal Will be removed / protected in v10 without further notice
+     * @internal Will be removed / protected in TYPO3 v10.0 without further notice
      */
     public $data;
 
@@ -223,13 +223,13 @@ class EditDocumentController
 
     /**
      * @var string
-     * @deprecated since v9, will be removed in v10, unused
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused
      */
     protected $cacheCmd;
 
     /**
      * @var string
-     * @deprecated since v9, will be removed in v10, unused
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused
      */
     protected $redirect;
 
@@ -258,7 +258,7 @@ class EditDocumentController
 
     /**
      * @var string
-     * @deprecated since v9, will be removed in v10, unused
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused
      */
     protected $popViewId_addParams;
 
@@ -304,17 +304,17 @@ class EditDocumentController
 
     /**
      * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-     * @deprecated since v9, will be removed in v10, unused
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused
      */
     protected $doc;
 
     /**
-     * @deprecated since v9, will be removed in v10, unused
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused
      */
     protected $template;
 
     /**
-     * @deprecated since v9, will be removed in v10, unused
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused
      */
     protected $content;
 
@@ -342,7 +342,7 @@ class EditDocumentController
 
     /**
      * @var array
-     * @deprecated since v9, will be removed in v10, unused
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused
      */
     protected $MCONF;
 
@@ -403,7 +403,7 @@ class EditDocumentController
      *
      * @var array
      * @todo: Will be set protected later, still used by ConditionMatcher
-     * @internal Will be removed / protected in v10 without further notice
+     * @internal Will be removed / protected in TYPO3 v10.0 without further notice
      */
     public $elementsData;
 
@@ -444,7 +444,7 @@ class EditDocumentController
     protected $viewId_addParams;
 
     /**
-     * @deprecated since v9, will be removed in v10, unused
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused
      */
     protected $modTSconfig = [];
 
@@ -549,10 +549,10 @@ class EditDocumentController
     {
         if ($request === null) {
             // Missing argument? This method must have been called from outside.
-            // Method will be protected and $request mandatory in v10, giving core freedom to move stuff around
+            // Method will be protected and $request mandatory in TYPO3 v10.0, giving core freedom to move stuff around
             // New v10 signature: "protected function preInit(ServerRequestInterface $request): ?ResponseInterface"
             // @deprecated since TYPO3 v9, method argument $request will be set to mandatory
-            trigger_error('Method preInit() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+            trigger_error('EditDocumentController->preInit() will be set to protected in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
             $request = $GLOBALS['TYPO3_REQUEST'];
         }
 
@@ -619,11 +619,11 @@ class EditDocumentController
      * Detects, if a save command has been triggered.
      *
      * @return bool TRUE, then save the document (data submitted)
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function doProcessData()
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('EditDocumentController->doProcessData() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
 
         $out = $this->doSave
             || isset($_POST['_savedok'])
@@ -642,14 +642,14 @@ class EditDocumentController
      */
     public function processData(ServerRequestInterface $request = null): ?ResponseInterface
     {
-        // @deprecated Variable can be removed in v10
+        // @deprecated Variable can be removed in TYPO3 v10.0
         $deprecatedCaller = false;
         if ($request === null) {
             // Missing argument? This method must have been called from outside.
-            // Method will be protected and $request mandatory in v10, giving core freedom to move stuff around
+            // Method will be protected and $request mandatory in TYPO3 v10.0, giving core freedom to move stuff around
             // New v10 signature: "protected function processData(ServerRequestInterface $request): ?ResponseInterface"
             // @deprecated since TYPO3 v9, method argument $request will be set to mandatory
-            trigger_error('Method processData() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+            trigger_error('EditDocumentController->processData() will be set to protected in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
             $request = $GLOBALS['TYPO3_REQUEST'];
             $deprecatedCaller = true;
         }
@@ -663,9 +663,9 @@ class EditDocumentController
         $this->data = $parsedBody['data'] ?? $queryParams['data'] ?? [];
         $this->cmd = $parsedBody['cmd'] ?? $queryParams['cmd'] ?? [];
         $this->mirror = $parsedBody['mirror'] ?? $queryParams['mirror'] ?? [];
-        // @deprecated property cacheCmd is unused and can be removed in v10
+        // @deprecated property cacheCmd is unused and can be removed in TYPO3 v10.0
         $this->cacheCmd = $parsedBody['cacheCmd'] ?? $queryParams['cacheCmd'] ?? null;
-        // @deprecated property redirect is unused and can be removed in v10
+        // @deprecated property redirect is unused and can be removed in TYPO3 v10.0
         $this->redirect = $parsedBody['redirect'] ?? $queryParams['redirect'] ?? null;
         $this->returnNewPageId = (bool)($parsedBody['returnNewPageId'] ?? $queryParams['returnNewPageId'] ?? false);
 
@@ -886,7 +886,7 @@ class EditDocumentController
             // Redirect if element should be closed after save
             $possibleRedirect = $this->closeDocument(abs($this->closeDoc), $request);
             if ($deprecatedCaller && $possibleRedirect) {
-                // @deprecated fall back if method has been called from outside. This if can be removed in v10
+                // @deprecated fall back if method has been called from outside. This if can be removed in TYPO3 v10.0
                 HttpUtility::redirect($possibleRedirect->getHeaders()['location'][0]);
             }
             return $possibleRedirect;
@@ -903,10 +903,10 @@ class EditDocumentController
     {
         if ($request === null) {
             // Missing argument? This method must have been called from outside.
-            // Method will be protected and $request mandatory in v10, giving core freedom to move stuff around
+            // Method will be protected and $request mandatory in TYPO3 v10.0, giving core freedom to move stuff around
             // New v10 signature: "protected function init(ServerRequestInterface $request): void
             // @deprecated since TYPO3 v9, method argument $request will be set to mandatory
-            trigger_error('Method init() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+            trigger_error('EditDocumentController->init() will be set to protected in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
             $request = $GLOBALS['TYPO3_REQUEST'];
         }
 
@@ -915,7 +915,7 @@ class EditDocumentController
 
         $beUser = $this->getBackendUser();
 
-        // @deprecated since v9, will be removed in v10, unused, remove call in v10
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused, remove call in TYPO3 v10.0
         $this->popViewId_addParams = $parsedBody['popViewId_addParams'] ?? $queryParams['popViewId_addParams'] ?? '';
 
         $this->popViewId = (int)($parsedBody['popViewId'] ?? $queryParams['popViewId'] ?? 0);
@@ -930,9 +930,9 @@ class EditDocumentController
             $this->R_URL_getvars
         ), '&');
 
-        // @deprecated since v9, will be removed in v10, unused
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused
         $this->MCONF['name'] = 'xMOD_alt_doc.php';
-        // @deprecated since v9, will be removed in v10, unused
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused
         $this->doc = $GLOBALS['TBE_TEMPLATE'];
 
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
@@ -945,7 +945,7 @@ class EditDocumentController
             '
             // Info view:
             function launchView(table,uid) {
-                console.warn(\'Calling launchView() has been deprecated in v9 and will be removed in v10.0\');
+                console.warn(\'Calling launchView() has been deprecated in TYPO3 v9 and will be removed in TYPO3 v10.0\');
                 var thePreviewWindow = window.open(
                     ' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('show_item') . '&table=') . ' + encodeURIComponent(table) + "&uid=" + encodeURIComponent(uid),
                     "ShowItem" + Math.random().toString(16).slice(2),
@@ -1161,8 +1161,8 @@ class EditDocumentController
     public function main(ServerRequestInterface $request = null): void
     {
         if ($request === null) {
-            // Set method signature in v10 to: "protected function main(ServerRequestInterface $request): void"
-            trigger_error('@deprecated since v9, this method will be set to protected in v10', E_USER_DEPRECATED);
+            // Set method signature in TYPO3 v10.0 to: "protected function main(ServerRequestInterface $request): void"
+            trigger_error('EditDocumentController->main() will be set to protected in TYPO3 v10.0.', E_USER_DEPRECATED);
             $request = $GLOBALS['TYPO3_REQUEST'];
         }
 
@@ -2100,11 +2100,11 @@ class EditDocumentController
     /**
      * Create shortcut icon
      *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function shortCutLink()
     {
-        trigger_error('Method shortCutLink() will be removed in v10', E_USER_DEPRECATED);
+        trigger_error('EditDocumentController->shortCutLink() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
 
         if ($this->returnUrl !== $this->getCloseUrl()) {
             $shortCutButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
@@ -2124,11 +2124,11 @@ class EditDocumentController
     /**
      * Creates open-in-window link
      *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function openInNewWindowLink()
     {
-        trigger_error('Method openInNewWindowLink() will be removed in v10', E_USER_DEPRECATED);
+        trigger_error('EditDocumentController->openInNewWindowLink() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
 
         $closeUrl = $this->getCloseUrl();
         if ($this->returnUrl !== $closeUrl) {
@@ -2345,8 +2345,8 @@ class EditDocumentController
         $deprecatedCaller = false;
         if (!$request instanceof ServerRequestInterface) {
             // @deprecated since TYPO3 v9
-            // Method signature in v10: protected function localizationRedirect(ServerRequestInterface $request): ?ResponseInterface
-            trigger_error('Method localizationRedirect() will be set to protected in v10. Do not call from other extension', E_USER_DEPRECATED);
+            // Method signature in TYPO3 v10.0: protected function localizationRedirect(ServerRequestInterface $request): ?ResponseInterface
+            trigger_error('EditDocumentController->localizationRedirect() will be set to protected in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
             $justLocalized = $request;
             $request = $GLOBALS['TYPO3_REQUEST'];
             $deprecatedCaller = true;
@@ -2389,7 +2389,7 @@ class EditDocumentController
             $returnUrl = $parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '';
             if (is_array($localizedRecord)) {
                 if ($deprecatedCaller) {
-                    // @deprecated fall back if method has been called from outside. This if can be removed in v10
+                    // @deprecated fall back if method has been called from outside. This if can be removed in TYPO3 v10.0
                     $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                     $location = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                         'edit[' . $table . '][' . $localizedRecord['uid'] . ']' => 'edit',
@@ -2561,11 +2561,11 @@ class EditDocumentController
     /**
      * Populates the variables $this->storeArray, $this->storeUrl, $this->storeUrlMd5
      *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function compileStoreDat()
     {
-        trigger_error('Method compileStoreDat() will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('EditDocumentController->compileStoreDat() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $this->compileStoreData();
     }
 
@@ -2575,7 +2575,7 @@ class EditDocumentController
      */
     protected function compileStoreData(): void
     {
-        // @todo: Refactor in v10: This GeneralUtility method fiddles with _GP()
+        // @todo: Refactor in TYPO3 v10.0: This GeneralUtility method fiddles with _GP()
         $this->storeArray = GeneralUtility::compileSelectedGetVarsFromArray(
             'edit,defVals,overrideVals,columnsOnly,noView,workspace',
             $this->R_URL_getvars
@@ -2591,11 +2591,11 @@ class EditDocumentController
      * @param string $table The table for which the configuration may be specific
      * @param string $key The option for look for. Default is checking if the saveDocNew button should be displayed.
      * @return string Return value fetched from USER TSconfig
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function getNewIconMode($table, $key = 'saveDocNew')
     {
-        trigger_error('Method getNewIconMode() will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('EditDocumentController->getNewIconMode() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return $this->getTsConfigOption($table, $key);
     }
 
@@ -2629,11 +2629,11 @@ class EditDocumentController
      */
     public function closeDocument($mode = self::DOCUMENT_CLOSE_MODE_DEFAULT, ServerRequestInterface $request = null): ?ResponseInterface
     {
-        // Foreign class call or missing argument? Method will be protected and $request mandatory in v10, giving core freedom to move stuff around
+        // Foreign class call or missing argument? Method will be protected and $request mandatory in TYPO3 v10.0, giving core freedom to move stuff around
         $deprecatedCaller = false;
         if ($request === null) {
-            // Set method signature in v10 to: "protected function closeDocument($mode, ServerRequestInterface $request): ?ResponseInterface"
-            trigger_error('@deprecated since v9, this method will be set to protected in v10', E_USER_DEPRECATED);
+            // Set method signature in TYPO3 v10.0 to: "protected function closeDocument($mode, ServerRequestInterface $request): ?ResponseInterface"
+            trigger_error('EditDocumentController->closeDocument will be set to protected in TYPO3 v10.0.', E_USER_DEPRECATED);
             $request = $GLOBALS['TYPO3_REQUEST'];
             $deprecatedCaller = true;
         }
@@ -2674,7 +2674,7 @@ class EditDocumentController
         // If mode is NOT set (means 0) OR set to 1, then make a header location redirect to $this->retUrl
         if ($mode === self::DOCUMENT_CLOSE_MODE_DEFAULT || $mode === self::DOCUMENT_CLOSE_MODE_REDIRECT) {
             if ($deprecatedCaller) {
-                // @deprecated fall back if method has been called from outside. This if can be removed in v10
+                // @deprecated fall back if method has been called from outside. This if can be removed in TYPO3 v10.0
                 HttpUtility::redirect($this->retUrl);
             }
             return new RedirectResponse($this->retUrl, 303);
@@ -2690,7 +2690,7 @@ class EditDocumentController
             }
         }
         if ($deprecatedCaller) {
-            // @deprecated fall back if method has been called from outside. This if can be removed in v10
+            // @deprecated fall back if method has been called from outside. This if can be removed in TYPO3 v10.0
             HttpUtility::redirect($retUrl);
         }
         return new RedirectResponse($retUrl, 303);
@@ -2702,11 +2702,11 @@ class EditDocumentController
      *
      * @param string $currentDocFromHandlerMD5 Pointer to the document in the docHandler array
      * @param string $retUrl Alternative/Default retUrl
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
     public function setDocument($currentDocFromHandlerMD5 = '', $retUrl = '')
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('EditDocumentController->setDocument() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         if ($retUrl === '') {
             return;
         }

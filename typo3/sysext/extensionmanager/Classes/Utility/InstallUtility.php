@@ -363,7 +363,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function processDatabaseUpdates(array $extension)
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $extTablesSqlFile = Environment::getPublicPath() . '/' . $extension['siteRelPath'] . 'ext_tables.sql';
         $extTablesSqlContent = '';
         if (file_exists($extTablesSqlFile)) {
@@ -413,7 +413,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
         if (!empty($sqlString)) {
             trigger_error(
                 sprintf(
-                    'The signal %s of class %s is deprecated and will be removed in TYPO3 v10.',
+                    'The signal %s of class %s is deprecated and will be removed in TYPO3 v10.0.',
                     'tablesDefinitionIsBeingBuilt',
                     __CLASS__
                 ),
@@ -494,7 +494,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function updateDbWithExtTablesSql($rawDefinitions)
     {
-        trigger_error('This method will be removed in TYPO3 v10.', E_USER_DEPRECATED);
+        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
         $statements = $sqlReader->getCreateTableStatementArray($rawDefinitions);
         if (count($statements) !== 0) {
