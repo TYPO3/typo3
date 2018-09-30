@@ -441,7 +441,7 @@ class DataMapper
         $columnMap = $dataMap->getColumnMap($propertyName);
         $type = $this->getType(get_class($parentObject), $propertyName);
         $query = $this->queryFactory->create($type);
-        if ($this->query) {
+        if ($this->query && $query instanceof Persistence\Generic\Query) {
             $query->setParentQuery($this->query);
         }
         $query->getQuerySettings()->setRespectStoragePage(false);

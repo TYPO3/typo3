@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
@@ -22,7 +23,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
  * A proxy that can replace any object and replaces itself in it's parent on
  * first access (call, get, set, isset, unset).
  */
-class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Generic\LoadingStrategyInterface
+class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
 {
     /**
      * @var ?DataMapper
@@ -99,7 +100,10 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
         // this check safeguards against a proxy being activated multiple times
         // usually that does not happen, but if the proxy is held from outside
         // its parent ... the result would be weird.
-        if ($this->parentObject->_getProperty($this->propertyName) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
+        if ($this->parentObject instanceof AbstractDomainObject
+            && $this->parentObject->_getProperty($this->propertyName) instanceof LazyLoadingProxy
+            && $this->dataMapper
+        ) {
             $objects = $this->dataMapper->fetchRelated($this->parentObject, $this->propertyName, $this->fieldValue, false);
             $propertyValue = $this->dataMapper->mapResultToPropertyValue($this->parentObject, $this->propertyName, $objects);
             $this->parentObject->_setProperty($this->propertyName, $propertyValue);

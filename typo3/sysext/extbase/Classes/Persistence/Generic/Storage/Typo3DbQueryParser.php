@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
+use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException;
@@ -561,7 +561,7 @@ class Typo3DbQueryParser
     {
         $consistentHandlingEnabled = $this->configurationManager->isFeatureEnabled('consistentTranslationOverlayHandling');
         if ($consistentHandlingEnabled
-            && $value instanceof DomainObjectInterface
+            && $value instanceof AbstractDomainObject
             && $value->_hasProperty('_localizedUid')
             && $value->_getProperty('_localizedUid') > 0
         ) {

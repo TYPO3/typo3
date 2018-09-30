@@ -30,6 +30,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\SqlErrorException;
@@ -643,9 +644,10 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      *
      * @param Qom\SourceInterface $source The source (selector or join)
      * @param array $rows
-     * @param QueryInterface $querySettings The TYPO3 CMS specific query settings
+     * @param QueryInterface $query
      * @param int|null $workspaceUid
      * @return array
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
     protected function overlayLanguageAndWorkspace(Qom\SourceInterface $source, array $rows, QueryInterface $query, int $workspaceUid = null): array
     {
@@ -707,7 +709,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                     $languageUid = (int)$querySettings->getLanguageUid();
                     if (!$querySettings->getRespectSysLanguage()
                         && isset($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']]) > 0
-                        && !$query->getParentQuery()) {
+                        && (!$query instanceof Query || !$query->getParentQuery())) {
                         //we're mapping the aggregate root.
                         $languageUid = $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']];
                     }
