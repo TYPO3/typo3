@@ -22,6 +22,7 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
  * Utility for dealing with files and folders
+ * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
 class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
 {

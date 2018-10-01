@@ -1821,7 +1821,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Each filemount is represented with an array of a "name", "path" and "type".
      * If no filemounts an empty array is returned.
      *
-     * @api
      * @return \TYPO3\CMS\Core\Resource\ResourceStorage[]
      */
     public function getFileStorages()
@@ -1879,7 +1878,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Please note that these permissions only apply, if the storage has the
      * capabilities (browseable, writable), and if the driver allows for writing etc
      *
-     * @api
      * @return array
      */
     public function getFilePermissions()
@@ -1937,7 +1935,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * storage with the default settings.
      * Admin users will always get the default settings.
      *
-     * @api
      * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storageObject
      * @return array
      */

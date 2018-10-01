@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Cache;
 
 /**
  * A generic Cache exception
- *
- * @api
  */
 class Exception extends \Exception
 {

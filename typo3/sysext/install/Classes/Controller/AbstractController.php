@@ -21,6 +21,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Controller abstract for shared parts of the install tool
+ * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class AbstractController
 {

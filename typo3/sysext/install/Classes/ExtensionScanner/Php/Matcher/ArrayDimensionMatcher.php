@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Find usages of dropped configuration values and hook registrations.
  * Matches on "last" key only.
  * Definition of $GLOBALS['foo']['bar'] and usage as $foo['bar'] matches.
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class ArrayDimensionMatcher extends AbstractCoreMatcher
 {

@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Merge URLs divided in pages.urltype and pages.url into pages.url
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class MigrateUrlTypesInPagesUpdate implements UpgradeWizardInterface
 {

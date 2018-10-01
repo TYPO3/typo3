@@ -22,6 +22,7 @@ use PhpParser\NodeVisitorAbstract;
 /**
  * A visitor doing some counting.
  * It sums the number of ignored lines and lines of effective code.
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class CodeStatistics extends NodeVisitorAbstract
 {

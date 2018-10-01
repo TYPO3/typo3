@@ -31,7 +31,6 @@ class VariableFrontend extends AbstractFrontend
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
      * @throws \InvalidArgumentException if the identifier or tag is not valid
-     * @api
      */
     public function set($entryIdentifier, $variable, array $tags = [], $lifetime = null)
     {
@@ -69,7 +68,6 @@ class VariableFrontend extends AbstractFrontend
      *
      * @return mixed The value
      * @throws \InvalidArgumentException if the identifier is not valid
-     * @api
      */
     public function get($entryIdentifier)
     {
@@ -93,7 +91,6 @@ class VariableFrontend extends AbstractFrontend
      *
      * @return array An array with the content of all matching entries. An empty array if no entries matched
      * @throws \InvalidArgumentException if the tag is not valid
-     * @api
      * @deprecated since TYPO3 v9, Avoid using this method since it is not compliant to PSR-6
      */
     public function getByTag($tag)

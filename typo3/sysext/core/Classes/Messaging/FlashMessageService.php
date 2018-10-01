@@ -36,7 +36,6 @@ class FlashMessageService implements SingletonInterface
      *
      * @param string $identifier
      * @return FlashMessageQueue
-     * @api
      */
     public function getMessageQueueByIdentifier($identifier = 'core.template.flashMessages'): FlashMessageQueue
     {

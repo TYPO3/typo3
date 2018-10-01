@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 
 /**
  * Login controller
+ * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class LoginController extends AbstractController
 {

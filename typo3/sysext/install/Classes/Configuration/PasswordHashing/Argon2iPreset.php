@@ -21,6 +21,7 @@ use TYPO3\CMS\Install\Configuration\AbstractPreset;
 
 /**
  * Preset for password hashing method "argon2i"
+ * @internal only to be used within EXT:install
  */
 class Argon2iPreset extends AbstractPreset
 {

@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * Core version service
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class CoreVersionService
 {

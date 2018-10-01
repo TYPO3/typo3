@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
 
 /**
  * Utility for dealing with extension model related helper functions
+ * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
 class ExtensionModelUtility
 {

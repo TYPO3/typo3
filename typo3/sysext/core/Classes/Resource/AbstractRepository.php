@@ -64,7 +64,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * Adds an object to this repository.
      *
      * @param object $object The object to add
-     * @api
      */
     public function add($object)
     {
@@ -74,7 +73,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * Removes an object from this repository.
      *
      * @param object $object The object to remove
-     * @api
      */
     public function remove($object)
     {
@@ -85,7 +83,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      *
      * @param object $existingObject The existing object
      * @param object $newObject The new object
-     * @api
      */
     public function replace($existingObject, $newObject)
     {
@@ -95,7 +92,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * Replaces an existing object with the same identifier by the given object
      *
      * @param object $modifiedObject The modified object
-     * @api
      */
     public function update($modifiedObject)
     {
@@ -106,6 +102,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * the storage layer.
      *
      * @return array An array of objects
+     * @internal
      */
     public function getAddedObjects()
     {
@@ -116,6 +113,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * had been persisted to the storage layer before.
      *
      * @return array
+     * @internal
      */
     public function getRemovedObjects()
     {
@@ -125,7 +123,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * Returns all objects of this repository.
      *
      * @return array An array of objects, empty if no objects found
-     * @api
      */
     public function findAll()
     {
@@ -168,7 +165,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * Returns the total number objects of this repository.
      *
      * @return int The object count
-     * @api
      */
     public function countAll()
     {
@@ -177,8 +173,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
     /**
      * Removes all objects of this repository as if remove() was called for
      * all of them.
-     *
-     * @api
      */
     public function removeAll()
     {
@@ -192,7 +186,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      * @return object The matching object
-     * @api
      */
     public function findByUid($uid)
     {
@@ -228,7 +221,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * @param array $defaultOrderings The property names to order by
      *
      * @throws \BadMethodCallException
-     * @api
      */
     public function setDefaultOrderings(array $defaultOrderings)
     {
@@ -241,7 +233,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
      *
      * @throws \BadMethodCallException
-     * @api
      */
     public function setDefaultQuerySettings(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings)
     {
@@ -253,7 +244,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      *
      * @throws \BadMethodCallException
      * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
-     * @api
      */
     public function createQuery()
     {
@@ -265,7 +255,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      *
      * @param mixed $identifier The identifier of the object to find
      * @return object|null The matching object if found, otherwise NULL
-     * @api
      */
     public function findByIdentifier($identifier)
     {
@@ -279,6 +268,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * @param array $arguments The arguments
      *
      * @throws \BadMethodCallException
+     * @internal
      */
     public function __call($method, $arguments)
     {
@@ -289,7 +279,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * Returns the object type this repository is managing.
      *
      * @return string
-     * @api
      */
     public function getEntityClassName()
     {

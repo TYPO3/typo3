@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * Installs and downloads EXT:typo3db_legacy
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class Typo3DbExtractionUpdate extends AbstractDownloadExtensionUpdate
 {

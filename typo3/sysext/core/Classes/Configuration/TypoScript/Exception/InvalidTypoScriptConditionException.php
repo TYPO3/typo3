@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Core\Configuration\TypoScript\Exception;
  * A "Your TypoScript condition is invalid" exception
  * used when a TypoScript condition is called but not extending
  * from the AbstractCondition class.
- *
- * @api
  */
 class InvalidTypoScriptConditionException extends \TYPO3\CMS\Core\Exception
 {

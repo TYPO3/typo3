@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Migrate file references that are stored in a wrong way to correct scheme
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class FileReferenceUpdate implements UpgradeWizardInterface
 {

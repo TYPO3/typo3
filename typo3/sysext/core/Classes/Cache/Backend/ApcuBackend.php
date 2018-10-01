@@ -39,8 +39,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * - MD5 of path to TYPO3 and user running TYPO3
  * This prefix makes sure that keys from the different installations do not
  * conflict.
- *
- * @api
  */
 class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
 {
@@ -122,7 +120,6 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
      * @throws Exception if no cache frontend has been set.
      * @throws InvalidDataException if $data is not a string
-     * @api
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
@@ -148,7 +145,6 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * @param string $entryIdentifier An identifier which describes the cache entry to load
      * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
-     * @api
      */
     public function get($entryIdentifier)
     {
@@ -162,7 +158,6 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * @param string $entryIdentifier An identifier specifying the cache entry
      * @return bool TRUE if such an entry exists, FALSE if not
-     * @api
      */
     public function has($entryIdentifier)
     {
@@ -178,7 +173,6 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * @param string $entryIdentifier Specifies the cache entry to remove
      * @return bool TRUE if (at least) an entry could be removed or FALSE if no entry was found
-     * @api
      */
     public function remove($entryIdentifier)
     {
@@ -192,7 +186,6 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * @param string $tag The tag to search for
      * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-     * @api
      */
     public function findIdentifiersByTag($tag)
     {
@@ -222,7 +215,6 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
      * Removes all cache entries of this cache.
      *
      * @throws Exception
-     * @api
      */
     public function flush()
     {
@@ -236,7 +228,6 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
-     * @api
      */
     public function flushByTag($tag)
     {

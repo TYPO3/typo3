@@ -20,6 +20,7 @@ use TYPO3\CMS\Install\Configuration\FeatureInterface;
 
 /**
  * Password hashing feature detects password hashing capabilities of the system
+ * @internal only to be used within EXT:install
  */
 class PasswordHashingFeature extends AbstractFeature implements FeatureInterface
 {

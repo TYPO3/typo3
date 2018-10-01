@@ -23,6 +23,7 @@ use PhpParser\Node\Expr\MethodCall;
  * but are called with more arguments.
  * This is a "weak" match since we're just testing for method name
  * but not connected class.
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class MethodArgumentDroppedMatcher extends AbstractCoreMatcher
 {

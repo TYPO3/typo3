@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract preset class implements common preset code
+ * @internal only to be used within EXT:install
  */
 abstract class AbstractPreset implements PresetInterface
 {

@@ -24,8 +24,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * A caching backend which stores cache entries in files
- *
- * @api
  */
 class FileBackend extends SimpleFileBackend implements FreezableBackendInterface, TaggableBackendInterface
 {
@@ -123,7 +121,6 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
      * @throws InvalidDataException if the directory does not exist or is not writable or exceeds the maximum allowed path length, or if no cache frontend has been set.
      * @throws Exception if the directory does not exist or is not writable or exceeds the maximum allowed path length, or if no cache frontend has been set.
      * @throws \InvalidArgumentException
-     * @api
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
@@ -168,7 +165,6 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
      * @param string $entryIdentifier An identifier which describes the cache entry to load
      * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
      * @throws \InvalidArgumentException If identifier is invalid
-     * @api
      */
     public function get($entryIdentifier)
     {
@@ -198,7 +194,6 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
      * @param string $entryIdentifier
      * @return bool TRUE if such an entry exists, FALSE if not
      * @throws \InvalidArgumentException
-     * @api
      */
     public function has($entryIdentifier)
     {
@@ -219,7 +214,6 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
      * @return bool TRUE if (at least) an entry could be removed or FALSE if no entry was found
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
-     * @api
      */
     public function remove($entryIdentifier)
     {
@@ -248,7 +242,6 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
      *
      * @param string $searchedTag The tag to search for
      * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-     * @api
      */
     public function findIdentifiersByTag($searchedTag)
     {
@@ -285,8 +278,6 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
 
     /**
      * Removes all cache entries of this cache and sets the frozen flag to FALSE.
-     *
-     * @api
      */
     public function flush()
     {
@@ -300,7 +291,6 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
-     * @api
      */
     public function flushByTag($tag)
     {
@@ -319,7 +309,6 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
      *
      * @param string $cacheEntryPathAndFilename
      * @return bool
-     * @api
      */
     protected function isCacheFileExpired($cacheEntryPathAndFilename)
     {
@@ -339,8 +328,6 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
 
     /**
      * Does garbage collection
-     *
-     * @api
      */
     public function collectGarbage()
     {
@@ -386,7 +373,6 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
      * @param string $entryIdentifier An identifier which describes the cache entry to load
      * @throws \InvalidArgumentException
      * @return mixed Potential return value from the include operation
-     * @api
      */
     public function requireOnce($entryIdentifier)
     {
@@ -409,7 +395,6 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
      * @param string $entryIdentifier An identifier which describes the cache entry to load
      * @throws \InvalidArgumentException
      * @return mixed Potential return value from the include operation
-     * @api
      */
     public function require(string $entryIdentifier)
     {

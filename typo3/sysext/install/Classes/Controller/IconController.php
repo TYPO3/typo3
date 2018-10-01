@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Controller for icon handling
+ * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class IconController extends AbstractController
 {

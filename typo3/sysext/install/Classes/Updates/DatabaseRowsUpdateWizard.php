@@ -39,6 +39,7 @@ use TYPO3\CMS\Install\Updates\RowUpdater\RteLinkSyntaxUpdater;
  * A start position pointer is stored in the registry that is updated during
  * the run process, so if for instance the PHP process runs into a timeout,
  * the job can restart at the position it stopped.
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInterface
 {

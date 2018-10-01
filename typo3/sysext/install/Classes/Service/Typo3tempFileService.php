@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Service class to manage typo3temp/assets and FAL storage
  * processed file statistics / cleanup.
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class Typo3tempFileService
 {

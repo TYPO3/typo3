@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  * array" behaviour).
  * Notice: ext/xml has proven to be buggy with entities.
  * Use at least PHP 5.2.9+ and libxml2 2.7.3+!
+ * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
 class ExtensionXmlPushParser extends AbstractExtensionXmlParser
 {

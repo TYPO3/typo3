@@ -27,6 +27,7 @@ use TYPO3\CMS\Install\Service\SessionService;
  * This is a classic backend module that does not interfere with other code
  * within the install tool, it can be seen as a facade around install tool just
  * to embed the install tool in backend.
+ * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class BackendModuleController
 {

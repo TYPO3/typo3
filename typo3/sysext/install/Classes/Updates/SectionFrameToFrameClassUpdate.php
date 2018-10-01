@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Migrate the field 'section_frame' for all content elements to 'frame_class'
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class SectionFrameToFrameClassUpdate implements UpgradeWizardInterface
 {

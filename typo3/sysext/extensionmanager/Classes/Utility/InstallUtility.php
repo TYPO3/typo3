@@ -26,6 +26,7 @@ use TYPO3\CMS\Impexp\Utility\ImportExportUtility;
 
 /**
  * Extension Manager Install Utility
+ * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
 class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
 {

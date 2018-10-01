@@ -46,6 +46,7 @@ use TYPO3\CMS\Install\Service\SessionService;
 /**
  * Default request handler for all requests inside the TYPO3 Install Tool, which does a simple hardcoded
  * dispatching to a controller based on the get/post variable.
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterface
 {

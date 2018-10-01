@@ -40,6 +40,7 @@ use TYPO3\CMS\Install\Service\Typo3tempFileService;
 
 /**
  * Maintenance controller
+ * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class MaintenanceController extends AbstractController
 {

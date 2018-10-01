@@ -28,6 +28,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * - Check if a page has pages.alias filled.
  * - Check if realurl v1 (tx_realurl_pathcache) or v2 (tx_realurl_pathdata) has a page path, use that instead.
  * - If not -> generate the slug.
+ *
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class PopulatePageSlugs implements UpgradeWizardInterface
 {

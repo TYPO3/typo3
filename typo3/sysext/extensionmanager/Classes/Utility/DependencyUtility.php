@@ -22,6 +22,7 @@ use TYPO3\CMS\Extensionmanager\Exception;
 
 /**
  * Utility for dealing with dependencies
+ * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
 class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
 {

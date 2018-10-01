@@ -23,6 +23,7 @@ use PhpParser\Node\Name\FullyQualified;
 /**
  * Find usages of static method calls which were removed / deprecated.
  * This is a "strong" match if class name is given and "weak" if not.
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class MethodArgumentDroppedStaticMatcher extends AbstractCoreMatcher
 {

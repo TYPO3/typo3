@@ -30,6 +30,7 @@ use TYPO3\CMS\Extensionmanager\Utility\Repository\Helper;
 
 /**
  * Controller for extension listings (TER or local extensions)
+ * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class ListController extends AbstractModuleController
 {

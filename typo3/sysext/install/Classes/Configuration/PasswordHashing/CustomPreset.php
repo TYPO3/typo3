@@ -22,6 +22,7 @@ use TYPO3\CMS\Install\Configuration\CustomPresetInterface;
  * Preset used if custom password hashing configuration has been applied.
  * Note this custom preset does not allow manipulation via gui, this has to be done manually.
  * This preset only find out if it is active and shows the current values.
+ * @internal only to be used within EXT:install
  */
 class CustomPreset extends AbstractCustomPreset implements CustomPresetInterface
 {

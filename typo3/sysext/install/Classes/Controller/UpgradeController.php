@@ -65,6 +65,7 @@ use TYPO3\CMS\Install\UpgradeAnalysis\DocumentationFile;
 
 /**
  * Upgrade controller
+ * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class UpgradeController extends AbstractController
 {

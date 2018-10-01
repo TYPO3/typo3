@@ -84,7 +84,6 @@ class ApplicationContext
      * Returns the full context string, for example "Development", or "Production/LiveSystem"
      *
      * @return string
-     * @api
      */
     public function __toString()
     {
@@ -95,7 +94,6 @@ class ApplicationContext
      * Returns TRUE if this context is the Development context or a sub-context of it
      *
      * @return bool
-     * @api
      */
     public function isDevelopment()
     {
@@ -106,7 +104,6 @@ class ApplicationContext
      * Returns TRUE if this context is the Production context or a sub-context of it
      *
      * @return bool
-     * @api
      */
     public function isProduction()
     {
@@ -117,7 +114,6 @@ class ApplicationContext
      * Returns TRUE if this context is the Testing context or a sub-context of it
      *
      * @return bool
-     * @api
      */
     public function isTesting()
     {
@@ -128,7 +124,6 @@ class ApplicationContext
      * Returns the parent context object, if any
      *
      * @return \TYPO3\CMS\Core\Core\ApplicationContext the parent context or NULL, if there is none
-     * @api
      */
     public function getParent()
     {

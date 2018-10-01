@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 /**
  * Root node of structure
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class RootNode extends DirectoryNode implements RootNodeInterface
 {

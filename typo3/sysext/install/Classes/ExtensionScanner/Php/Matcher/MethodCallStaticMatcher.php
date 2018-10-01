@@ -30,6 +30,7 @@ use PhpParser\Node\Name\FullyQualified;
  * recognized: If calling a static method as "$foo::aMethod($arg1), but the
  * method needs two arguments, this is *not* considered a match. This would
  * have raised a fatal PHP error anyway and this is nothing we test here.
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class MethodCallStaticMatcher extends AbstractCoreMatcher
 {

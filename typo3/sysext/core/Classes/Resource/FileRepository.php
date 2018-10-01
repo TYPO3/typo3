@@ -65,7 +65,6 @@ class FileRepository extends AbstractRepository
      * @param int $uid The UID of the related record (needs to be the localized uid, as translated IRRE elements relate to them)
      * @return array An array of objects, empty if no objects found
      * @throws \InvalidArgumentException
-     * @api
      */
     public function findByRelation($tableName, $fieldName, $uid)
     {
@@ -141,7 +140,6 @@ class FileRepository extends AbstractRepository
      * @param int $uid The UID of the sys_file_reference record
      * @return FileReference|bool
      * @throws \InvalidArgumentException
-     * @api
      */
     public function findFileReferenceByUid($uid)
     {
@@ -162,6 +160,7 @@ class FileRepository extends AbstractRepository
      * @param Folder $folder
      * @param string $fileName
      * @return File[]
+     * @internal
      */
     public function searchByName(Folder $folder, $fileName)
     {

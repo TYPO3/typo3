@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
 
 /**
  * Utility for Downloading Extensions
+ * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
 class DownloadUtility implements \TYPO3\CMS\Core\SingletonInterface
 {

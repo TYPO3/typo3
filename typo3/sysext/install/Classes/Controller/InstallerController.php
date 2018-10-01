@@ -56,6 +56,7 @@ use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
 
 /**
  * Install step controller, dispatcher class of step actions.
+ * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class InstallerController
 {

@@ -20,6 +20,7 @@ use PhpParser\Node\Name\FullyQualified;
 
 /**
  * Find usages of class / interface names which are entirely deprecated or removed
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class ClassNameMatcher extends AbstractCoreMatcher
 {

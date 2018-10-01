@@ -27,6 +27,7 @@ use PhpParser\Node\Stmt\ClassMethod;
  * The scanner only looks for:
  * - Class method names not having specified number of arguments
  * - Method calls with given method name not having this number of arguments
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class InterfaceMethodChangedMatcher extends AbstractCoreMatcher
 {

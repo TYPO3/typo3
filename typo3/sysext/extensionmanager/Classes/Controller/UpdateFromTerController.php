@@ -18,6 +18,7 @@ use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 
 /**
  * Controller for actions relating to update of full extension list from TER
+ * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class UpdateFromTerController extends AbstractController
 {

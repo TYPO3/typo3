@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Parser for XML locallang file.
+ * @internal This class is a concrete implementation and is not part of the TYPO3 Core API.
  */
 class LocallangXmlParser extends AbstractXmlParser
 {

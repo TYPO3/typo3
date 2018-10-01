@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * Upgrade wizard which goes through all files referenced in fe_users::image
  * and creates sys_file records as well as sys_file_reference records for each hit.
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class FrontendUserImageUpdateWizard implements UpgradeWizardInterface, LoggerAwareInterface
 {

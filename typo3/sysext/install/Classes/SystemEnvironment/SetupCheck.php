@@ -28,6 +28,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * The status messages and title *must not* include HTML, use plain
  * text only. The return values of this class are not bound to HTML
  * and can be used in different scopes (eg. as json array).
+ *
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class SetupCheck implements CheckInterface
 {

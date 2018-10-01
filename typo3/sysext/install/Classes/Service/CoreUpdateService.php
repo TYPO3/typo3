@@ -33,6 +33,7 @@ use TYPO3\CMS\Install\Service\Exception\RemoteFetchException;
  * Each method returns only TRUE of FALSE indicating if it was successful or
  * not. Detailed information can be fetched with getMessages() and will return
  * a list of status messages of the previous operation.
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class CoreUpdateService
 {

@@ -18,6 +18,7 @@ use TYPO3\CMS\Install\Configuration;
 
 /**
  * Context feature sets development / production settings
+ * @internal only to be used within EXT:install
  */
 class ContextFeature extends Configuration\AbstractFeature implements Configuration\FeatureInterface
 {

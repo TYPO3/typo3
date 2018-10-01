@@ -28,6 +28,7 @@ use PhpParser\NodeVisitorAbstract;
  *
  * This resolver is to be called after generic NameResolver::class, but before
  * other search and find visitors that implement CodeScannerInterface::class
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class GeneratorClassesResolver extends NodeVisitorAbstract
 {

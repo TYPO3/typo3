@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  *
  * @see http://code.google.com/p/redis/
  * @see http://github.com/owlient/phpredis
- * @api
  */
 class RedisBackend extends AbstractBackend implements TaggableBackendInterface
 {
@@ -183,7 +182,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * Setter for persistent connection
      *
      * @param bool $persistentConnection
-     * @api
      */
     public function setPersistentConnection($persistentConnection)
     {
@@ -194,7 +192,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * Setter for server hostname
      *
      * @param string $hostname Hostname
-     * @api
      */
     public function setHostname($hostname)
     {
@@ -205,7 +202,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * Setter for server port
      *
      * @param int $port Port
-     * @api
      */
     public function setPort($port)
     {
@@ -217,7 +213,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * @param int $database Database
      * @throws \InvalidArgumentException if database number is not valid
-     * @api
      */
     public function setDatabase($database)
     {
@@ -234,7 +229,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * Setter for authentication password
      *
      * @param string $password Password
-     * @api
      */
     public function setPassword($password)
     {
@@ -246,7 +240,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * @param bool $compression TRUE to enable compression
      * @throws \InvalidArgumentException if compression parameter is not of type boolean
-     * @api
      */
     public function setCompression($compression)
     {
@@ -263,7 +256,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * @param int $compressionLevel -1 to 9: Compression level
      * @throws \InvalidArgumentException if compressionLevel parameter is not within allowed bounds
-     * @api
      */
     public function setCompressionLevel($compressionLevel)
     {
@@ -284,7 +276,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * @param int $connectionTimeout limit in seconds, a value greater or equal than 0
      * @throws \InvalidArgumentException if compressionLevel parameter is not within allowed bounds
-     * @api
      */
     public function setConnectionTimeout($connectionTimeout)
     {
@@ -311,7 +302,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, default lifetime is used. "0" means unlimited lifetime.
      * @throws \InvalidArgumentException if identifier is not valid
      * @throws InvalidDataException if data is not a string
-     * @api
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
@@ -364,7 +354,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * @param string $entryIdentifier An identifier which describes the cache entry to load
      * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
      * @throws \InvalidArgumentException if identifier is not a string
-     * @api
      */
     public function get($entryIdentifier)
     {
@@ -389,7 +378,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * @param string $entryIdentifier Identifier specifying the cache entry
      * @return bool TRUE if such an entry exists, FALSE if not
      * @throws \InvalidArgumentException if identifier is not a string
-     * @api
      */
     public function has($entryIdentifier)
     {
@@ -408,7 +396,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * @param string $entryIdentifier Specifies the cache entry to remove
      * @return bool TRUE if (at least) an entry could be removed or FALSE if no entry was found
      * @throws \InvalidArgumentException if identifier is not a string
-     * @api
      */
     public function remove($entryIdentifier)
     {
@@ -441,7 +428,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * @param string $tag The tag to search for
      * @return array An array of entries with all matching entries. An empty array if no entries matched
      * @throws \InvalidArgumentException if tag is not a string
-     * @api
      */
     public function findIdentifiersByTag($tag)
     {
@@ -459,8 +445,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * Removes all cache entries of this cache.
      *
      * Scales O(1) with number of cache entries
-     *
-     * @api
      */
     public function flush()
     {
@@ -477,7 +461,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * @param string $tag Tag the entries must have
      * @throws \InvalidArgumentException if identifier is not a string
-     * @api
      */
     public function flushByTag($tag)
     {
@@ -499,8 +482,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * This methods finds those entries and cleans them up.
      *
      * Scales O(n*m) with number of cache entries (n) and number of tags (m)
-     *
-     * @api
      */
     public function collectGarbage()
     {

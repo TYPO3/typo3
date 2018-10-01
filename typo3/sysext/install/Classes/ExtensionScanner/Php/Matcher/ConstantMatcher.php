@@ -22,6 +22,7 @@ use PhpParser\Node\Expr\ConstFetch;
  * Find usages of class constants.
  *
  * Test for "THE_CONSTANT", matches are considered "strong"
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class ConstantMatcher extends AbstractCoreMatcher
 {

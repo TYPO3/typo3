@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Installs and downloads EXT:rdct if cache_md5params is filled
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class RedirectExtractionUpdate extends AbstractDownloadExtensionUpdate
 {

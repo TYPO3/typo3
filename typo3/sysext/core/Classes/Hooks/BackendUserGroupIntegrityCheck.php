@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * DataHandler hook class to check the integrity of submitted be_groups data
+ * @internal This class is a hook implementation and is not part of the TYPO3 Core API.
  */
 class BackendUserGroupIntegrityCheck
 {

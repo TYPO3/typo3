@@ -22,6 +22,7 @@ use PhpParser\Node\Expr\MethodCall;
  * Find usages of method calls which were removed / deprecated.
  * This is a "weak" match since we're just testing for method name
  * but not connected class.
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class MethodCallMatcher extends AbstractCoreMatcher
 {

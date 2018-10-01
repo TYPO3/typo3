@@ -18,6 +18,7 @@ use TYPO3\CMS\Install\Configuration;
 
 /**
  * Abstract class implements common image preset code
+ * @internal only to be used within EXT:install
  */
 abstract class AbstractImagePreset extends Configuration\AbstractPreset
 {

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
 
 /**
  * A contract for a cache backend which can be frozen.
- *
- * @api
  */
 interface FreezableBackendInterface extends BackendInterface
 {

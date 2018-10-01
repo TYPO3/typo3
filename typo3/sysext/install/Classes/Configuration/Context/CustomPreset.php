@@ -18,6 +18,7 @@ use TYPO3\CMS\Install\Configuration;
 
 /**
  * Custom preset is a fallback if no other preset fits
+ * @internal only to be used within EXT:install
  */
 class CustomPreset extends Configuration\AbstractCustomPreset implements Configuration\CustomPresetInterface
 {

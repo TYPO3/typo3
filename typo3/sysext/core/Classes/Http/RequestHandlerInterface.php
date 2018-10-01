@@ -31,7 +31,6 @@ interface RequestHandlerInterface
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @api
      */
     public function handleRequest(ServerRequestInterface $request);
 
@@ -40,7 +39,6 @@ interface RequestHandlerInterface
      *
      * @param ServerRequestInterface $request
      * @return bool TRUE if it can handle the request, otherwise FALSE
-     * @api
      */
     public function canHandleRequest(ServerRequestInterface $request);
 
@@ -50,7 +48,6 @@ interface RequestHandlerInterface
      * "100" is default. "0" means "I am a fallback solution".
      *
      * @return int The priority of the request handler
-     * @api
      */
     public function getPriority();
 }

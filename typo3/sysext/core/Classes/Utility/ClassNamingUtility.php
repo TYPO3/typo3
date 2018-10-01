@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Core\Utility;
  * Several functions related to naming and conversions of names
  * such as translation between Repository and Model names or
  * exploding an objectControllerName into pieces
- *
- * @api
  */
 class ClassNamingUtility
 {

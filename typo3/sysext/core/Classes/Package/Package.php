@@ -149,6 +149,7 @@ class Package implements PackageInterface
 
     /**
      * @return bool
+     * @internal
      */
     public function isPartOfFactoryDefault()
     {
@@ -157,6 +158,7 @@ class Package implements PackageInterface
 
     /**
      * @return bool
+     * @internal
      */
     public function isPartOfMinimalUsableSystem()
     {
@@ -167,7 +169,6 @@ class Package implements PackageInterface
      * Returns the package key of this package.
      *
      * @return string
-     * @api
      */
     public function getPackageKey()
     {
@@ -178,7 +179,6 @@ class Package implements PackageInterface
      * Tells if this package is protected and therefore cannot be deactivated or deleted
      *
      * @return bool
-     * @api
      */
     public function isProtected()
     {
@@ -189,7 +189,6 @@ class Package implements PackageInterface
      * Sets the protection flag of the package
      *
      * @param bool $protected TRUE if the package should be protected, otherwise FALSE
-     * @api
      */
     public function setProtected($protected)
     {
@@ -200,7 +199,6 @@ class Package implements PackageInterface
      * Returns the full path to this package's main directory
      *
      * @return string Path to this package's main directory
-     * @api
      */
     public function getPackagePath()
     {
@@ -211,6 +209,7 @@ class Package implements PackageInterface
      * Returns the package meta data object of this package.
      *
      * @return MetaData
+     * @internal
      */
     public function getPackageMetaData()
     {
@@ -221,6 +220,7 @@ class Package implements PackageInterface
      * Returns an array of packages this package replaces
      *
      * @return array
+     * @internal
      */
     public function getPackageReplacementKeys()
     {
@@ -234,6 +234,7 @@ class Package implements PackageInterface
      * @param string $key Optional. Only return the part of the manifest indexed by 'key'
      * @return mixed|null
      * @see json_decode for return values
+     * @internal
      */
     public function getValueFromComposerManifest($key = null)
     {

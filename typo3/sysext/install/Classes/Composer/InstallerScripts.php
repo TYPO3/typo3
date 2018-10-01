@@ -22,6 +22,8 @@ use TYPO3\CMS\Composer\Plugin\Core\ScriptDispatcher;
 
 /**
  * Hook into Composer build to generate TYPO3 install tool entry script
+ *
+ * @internal only used within TYPO3's composer mode and not part of TYPO3 Core API.
  */
 class InstallerScripts implements InstallerScriptsRegistration
 {

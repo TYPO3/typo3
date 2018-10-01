@@ -21,6 +21,7 @@ use PhpParser\Node\Stmt\ClassMethod;
 
 /**
  * Find usages of method annotations
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class MethodAnnotationMatcher extends AbstractCoreMatcher
 {

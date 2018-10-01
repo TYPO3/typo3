@@ -21,6 +21,7 @@ use TYPO3\CMS\Install\Configuration\AbstractPreset;
 
 /**
  * Preset for password hashing method "phpass"
+ * @internal only to be used within EXT:install
  */
 class PhpassPreset extends AbstractPreset
 {

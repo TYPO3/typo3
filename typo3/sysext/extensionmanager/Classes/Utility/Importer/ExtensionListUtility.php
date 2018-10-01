@@ -21,6 +21,7 @@ use TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractExtensionXmlParser;
 
 /**
  * Importer object for extension list
+ * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
 class ExtensionListUtility implements \SplObserver
 {

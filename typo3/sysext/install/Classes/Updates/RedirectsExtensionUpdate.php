@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Installs EXT:redirect if sys_domain.redirectTo is filled, and migrates the values from redirectTo
  * to a proper sys_redirect entry.
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class RedirectsExtensionUpdate extends AbstractDownloadExtensionUpdate
 {

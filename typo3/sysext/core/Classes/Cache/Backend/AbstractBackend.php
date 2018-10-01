@@ -19,8 +19,6 @@ use Psr\Log\LoggerAwareTrait;
 
 /**
  * An abstract caching backend
- *
- * @api
  */
 abstract class AbstractBackend implements BackendInterface, LoggerAwareInterface
 {
@@ -63,7 +61,6 @@ abstract class AbstractBackend implements BackendInterface, LoggerAwareInterface
      * @param string $context Unused, for backward compatibility only
      * @param array $options Configuration options - depends on the actual backend
      * @throws \InvalidArgumentException
-     * @api
      */
     public function __construct($context, array $options = [])
     {
@@ -84,7 +81,6 @@ abstract class AbstractBackend implements BackendInterface, LoggerAwareInterface
      * Sets a reference to the cache frontend which uses this backend
      *
      * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache The frontend for this backend
-     * @api
      */
     public function setCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache)
     {
@@ -97,7 +93,6 @@ abstract class AbstractBackend implements BackendInterface, LoggerAwareInterface
      *
      * @param int $defaultLifetime Default lifetime of this cache backend in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
      * @throws \InvalidArgumentException
-     * @api
      */
     public function setDefaultLifetime($defaultLifetime)
     {
@@ -116,7 +111,6 @@ abstract class AbstractBackend implements BackendInterface, LoggerAwareInterface
      * delegate to a less efficient linear flushing behavior.
      *
      * @param string[] $tags
-     * @api
      */
     public function flushByTags(array $tags)
     {

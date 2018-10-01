@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Cache\Exception;
 
 /**
  * A "No Such Cache" exception
- *
- * @api
  */
 class NoSuchCacheException extends \TYPO3\CMS\Core\Cache\Exception
 {

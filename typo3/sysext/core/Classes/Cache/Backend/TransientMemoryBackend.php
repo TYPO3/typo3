@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 
 /**
  * A caching backend which stores cache entries during one script run.
- *
- * @api
  */
 class TransientMemoryBackend extends AbstractBackend implements TaggableBackendInterface, TransientBackendInterface
 {
@@ -42,7 +40,6 @@ class TransientMemoryBackend extends AbstractBackend implements TaggableBackendI
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
      * @throws Exception if no cache frontend has been set.
-     * @api
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
@@ -60,7 +57,6 @@ class TransientMemoryBackend extends AbstractBackend implements TaggableBackendI
      *
      * @param string $entryIdentifier An identifier which describes the cache entry to load
      * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
-     * @api
      */
     public function get($entryIdentifier)
     {
@@ -72,7 +68,6 @@ class TransientMemoryBackend extends AbstractBackend implements TaggableBackendI
      *
      * @param string $entryIdentifier An identifier specifying the cache entry
      * @return bool TRUE if such an entry exists, FALSE if not
-     * @api
      */
     public function has($entryIdentifier)
     {
@@ -84,7 +79,6 @@ class TransientMemoryBackend extends AbstractBackend implements TaggableBackendI
      *
      * @param string $entryIdentifier Specifies the cache entry to remove
      * @return bool TRUE if the entry could be removed or FALSE if no entry was found
-     * @api
      */
     public function remove($entryIdentifier)
     {
@@ -106,7 +100,6 @@ class TransientMemoryBackend extends AbstractBackend implements TaggableBackendI
      *
      * @param string $tag The tag to search for
      * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-     * @api
      */
     public function findIdentifiersByTag($tag)
     {
@@ -118,8 +111,6 @@ class TransientMemoryBackend extends AbstractBackend implements TaggableBackendI
 
     /**
      * Removes all cache entries of this cache.
-     *
-     * @api
      */
     public function flush()
     {
@@ -131,7 +122,6 @@ class TransientMemoryBackend extends AbstractBackend implements TaggableBackendI
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
-     * @api
      */
     public function flushByTag($tag)
     {
@@ -143,8 +133,6 @@ class TransientMemoryBackend extends AbstractBackend implements TaggableBackendI
 
     /**
      * Does nothing
-     *
-     * @api
      */
     public function collectGarbage()
     {

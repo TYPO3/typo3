@@ -123,7 +123,6 @@ class ExtensionConfiguration
      * @return mixed The value. Can be a sub array or a single value.
      * @throws ExtensionConfigurationExtensionNotConfiguredException If ext configuration does no exist
      * @throws ExtensionConfigurationPathDoesNotExistException If a requested extension path does not exist
-     * @api
      */
     public function get(string $extension, string $path = '')
     {

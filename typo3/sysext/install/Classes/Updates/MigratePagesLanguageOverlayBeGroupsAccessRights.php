@@ -22,6 +22,7 @@ use TYPO3\CMS\Install\Service\UpgradeWizardsService;
 /**
  * Merge access rights from be_groups concerning pages_language_overlay
  * into pages
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class MigratePagesLanguageOverlayBeGroupsAccessRights implements UpgradeWizardInterface, ConfirmableInterface
 {

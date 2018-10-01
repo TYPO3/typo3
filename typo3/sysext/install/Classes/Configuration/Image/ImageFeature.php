@@ -18,6 +18,7 @@ use TYPO3\CMS\Install\Configuration;
 
 /**
  * Image feature detects imagemagick / graphicsmagick versions
+ * @internal only to be used within EXT:install
  */
 class ImageFeature extends Configuration\AbstractFeature implements Configuration\FeatureInterface
 {

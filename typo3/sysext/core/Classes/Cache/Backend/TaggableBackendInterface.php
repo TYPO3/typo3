@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
 
 /**
  * A contract for a cache backend which supports tagging.
- *
- * @api
  */
 interface TaggableBackendInterface extends BackendInterface
 {
@@ -25,7 +23,6 @@ interface TaggableBackendInterface extends BackendInterface
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
-     * @api
      */
     public function flushByTag($tag);
 
@@ -33,7 +30,6 @@ interface TaggableBackendInterface extends BackendInterface
      * Removes all cache entries of this cache which are tagged by any of the specified tags.
      *
      * @param string[] $tags List of tags
-     * @api
      */
     public function flushByTags(array $tags);
 
@@ -43,7 +39,6 @@ interface TaggableBackendInterface extends BackendInterface
      *
      * @param string $tag The tag to search for
      * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-     * @api
      */
     public function findIdentifiersByTag($tag);
 }

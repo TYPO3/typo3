@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract feature class implements common code
+ * @internal only to be used within EXT:install
  */
 abstract class AbstractFeature
 {

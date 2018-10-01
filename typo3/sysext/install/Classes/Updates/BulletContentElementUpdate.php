@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Migrate bullet content element rendering from layout to bullets_type
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class BulletContentElementUpdate implements UpgradeWizardInterface
 {

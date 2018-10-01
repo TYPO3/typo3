@@ -24,6 +24,7 @@ use TYPO3\CMS\Install\Service\SessionService;
 
 /**
  * Authenticates a user (currently comparing it through the install tool password, but could be extended)
+ * @internal only to be used within EXT:install
  */
 class AuthenticationService
 {

@@ -29,7 +29,7 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
  * Service class handling language pack details
  * Used by 'manage language packs' module and 'language packs command'
  *
- * @internal Used by core only
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class LanguagePackService
 {

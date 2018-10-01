@@ -27,8 +27,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * A caching backend which stores cache entries in files, but does not support or
  * care about expiry times and tags.
- *
- * @api
  */
 class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInterface
 {
@@ -198,7 +196,6 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
      * Returns the directory where the cache files are stored
      *
      * @return string Full path of the cache directory
-     * @api
      */
     public function getCacheDirectory()
     {
@@ -215,7 +212,6 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
      * @throws Exception if the directory does not exist or is not writable or exceeds the maximum allowed path length, or if no cache frontend has been set.
      * @throws InvalidDataException if the data to bes stored is not a string.
      * @throws \InvalidArgumentException
-     * @api
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
@@ -247,7 +243,6 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
      * @param string $entryIdentifier An identifier which describes the cache entry to load
      * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
      * @throws \InvalidArgumentException If identifier is invalid
-     * @api
      */
     public function get($entryIdentifier)
     {
@@ -267,7 +262,6 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
      * @param string $entryIdentifier
      * @return bool TRUE if such an entry exists, FALSE if not
      * @throws \InvalidArgumentException
-     * @api
      */
     public function has($entryIdentifier)
     {
@@ -284,7 +278,6 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
      * @param string $entryIdentifier Specifies the cache entry to remove
      * @return bool TRUE if (at least) an entry could be removed or FALSE if no entry was found
      * @throws \InvalidArgumentException
-     * @api
      */
     public function remove($entryIdentifier)
     {
@@ -304,8 +297,6 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
 
     /**
      * Removes all cache entries of this cache.
-     *
-     * @api
      */
     public function flush()
     {
@@ -318,7 +309,6 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
      *
      * @param string $cacheEntryPathAndFilename
      * @return bool
-     * @api
      */
     protected function isCacheFileExpired($cacheEntryPathAndFilename)
     {
@@ -327,8 +317,6 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
 
     /**
      * Not necessary
-     *
-     * @api
      */
     public function collectGarbage()
     {
@@ -352,7 +340,6 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
      * @param string $entryIdentifier An identifier which describes the cache entry to load
      * @return mixed Potential return value from the include operation
      * @throws \InvalidArgumentException
-     * @api
      */
     public function requireOnce($entryIdentifier)
     {
@@ -369,7 +356,6 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
      * @param string $entryIdentifier An identifier which describes the cache entry to load
      * @return mixed Potential return value from the include operation
      * @throws \InvalidArgumentException
-     * @api
      */
     public function require(string $entryIdentifier)
     {

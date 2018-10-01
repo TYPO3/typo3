@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Abstract class for XML based parser.
+ * @internal This class is a concrete implementation and is not part of the TYPO3 Core API.
  */
 abstract class AbstractXmlParser implements LocalizationParserInterface
 {

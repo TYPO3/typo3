@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Install\Updates;
 /**
  * Use if wizard may be run multiple times (and should not be disabled after one run)
  *
- * Semantic interface only
+ * Semantic/Marker interface only
  */
 interface RepeatableInterface
 {

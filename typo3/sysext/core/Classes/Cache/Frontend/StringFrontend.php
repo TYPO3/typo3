@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 /**
  * A cache frontend for strings. Nothing else.
  *
- * @api
  * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 - use VariableFrontend instead.
  */
 class StringFrontend extends AbstractFrontend
@@ -51,7 +50,6 @@ class StringFrontend extends AbstractFrontend
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
      * @throws \InvalidArgumentException if the identifier or tag is not valid
      * @throws InvalidDataException if the variable to cache is not of type string
-     * @api
      */
     public function set($entryIdentifier, $string, array $tags = [], $lifetime = null)
     {
@@ -75,7 +73,6 @@ class StringFrontend extends AbstractFrontend
      * @param string $entryIdentifier Identifier of the cache entry to fetch
      * @return string The value
      * @throws \InvalidArgumentException if the cache identifier is not valid
-     * @api
      */
     public function get($entryIdentifier)
     {
@@ -91,7 +88,6 @@ class StringFrontend extends AbstractFrontend
      * @param string $tag The tag to search for
      * @return array An array with the content of all matching entries. An empty array if no entries matched
      * @throws \InvalidArgumentException if the tag is not valid
-     * @api
      * @deprecated since TYPO3 v9, Avoid using this method since it is not compliant to PSR-6
      */
     public function getByTag($tag)

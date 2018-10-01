@@ -21,6 +21,7 @@ use TYPO3\CMS\Install\ExtensionScanner\CodeScannerInterface;
 
 /**
  * Factory preparing matcher instances
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class MatcherFactory
 {

@@ -26,6 +26,7 @@ use TYPO3\CMS\Install\ExtensionScanner\CodeScannerInterface;
  * It brings a set of protected methods to help single matcher classes doing common stuff.
  * This abstract extends the nikic/php-parser NodeVisitorAbstract which implements the main
  * parser interface, and it implements the TYPO3 specific CodeScannerInterface to retrieve matches.
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 abstract class AbstractCoreMatcher extends NodeVisitorAbstract implements CodeScannerInterface
 {

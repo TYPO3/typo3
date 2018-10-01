@@ -29,6 +29,7 @@ class TypoScriptService
      *
      * @param array $typoScriptArray The TypoScript array (e.g. array('foo' => 'TEXT', 'foo.' => array('bar' => 'baz')))
      * @return array e.g. array('foo' => array('_typoScriptNodeValue' => 'TEXT', 'bar' => 'baz'))
+     * @internal
      */
     public function convertTypoScriptArrayToPlainArray(array $typoScriptArray): array
     {
@@ -60,7 +61,6 @@ class TypoScriptService
      *
      * @param array $plainArray An TypoScript Array with Extbase Syntax (without dot but with _typoScriptNodeValue)
      * @return array array with TypoScript as usual (with dot)
-     * @api
      */
     public function convertPlainArrayToTypoScriptArray(array $plainArray): array
     {
@@ -90,6 +90,7 @@ class TypoScriptService
      * @param array $originalConfiguration A TypoScript array
      * @param int $splitCount The number of items for which to generated individual TypoScript arrays
      * @return array The individualized TypoScript array.
+     * @internal
      */
     public function explodeConfigurationForOptionSplit(array $originalConfiguration, int $splitCount): array
     {

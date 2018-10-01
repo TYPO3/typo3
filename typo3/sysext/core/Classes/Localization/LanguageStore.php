@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Language store.
+ * @internal This class is not part of the TYPO3 Core API.
  */
 class LanguageStore implements SingletonInterface
 {

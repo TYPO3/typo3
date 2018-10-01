@@ -22,6 +22,7 @@ use PhpParser\Node\Name\FullyQualified;
 /**
  * Find usages of global function calls which were removed / deprecated.
  * This is a strong match.
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class FunctionCallMatcher extends AbstractCoreMatcher
 {

@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Utility for dealing with ext_emconf
+ * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
 class EmConfUtility implements SingletonInterface
 {

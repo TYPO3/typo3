@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Controller for handling extension related actions like
  * installing, removing, downloading of data or files
+ * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class ActionController extends AbstractController
 {

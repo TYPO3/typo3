@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Core\Environment;
 
 /**
  * Preset for GraphicsMagick
+ * @internal only to be used within EXT:install
  */
 class GraphicsMagickPreset extends AbstractImagePreset
 {

@@ -40,8 +40,6 @@ use TYPO3\CMS\Core\Core\Environment;
  *
  * Note: When using the Memcached backend to store values of more than ~1 MB,
  * the data will be split into chunks to make them fit into the memcached limits.
- *
- * @api
  */
 class MemcachedBackend extends AbstractBackend implements TaggableBackendInterface, TransientBackendInterface
 {
@@ -117,7 +115,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      * to be formatted like "<host>[:<port>]" or "unix://<path>"
      *
      * @param array $servers An array of servers to add.
-     * @api
      */
     protected function setServers(array $servers)
     {
@@ -128,7 +125,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      * Setter for compression flags bit
      *
      * @param bool $useCompression
-     * @api
      */
     protected function setCompression($useCompression)
     {
@@ -144,7 +140,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      * Getter for compression flag
      *
      * @return bool
-     * @api
      */
     protected function getCompression()
     {
@@ -222,7 +217,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
      * @throws Exception if no cache frontend has been set.
      * @throws \InvalidArgumentException if the identifier is not valid or the final memcached key is longer than 250 characters
-     * @api
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
@@ -285,7 +279,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      *
      * @param string $entryIdentifier An identifier which describes the cache entry to load
      * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
-     * @api
      */
     public function get($entryIdentifier)
     {
@@ -305,7 +298,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      *
      * @param string $entryIdentifier An identifier specifying the cache entry
      * @return bool TRUE if such an entry exists, FALSE if not
-     * @api
      */
     public function has($entryIdentifier)
     {
@@ -325,7 +317,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      *
      * @param string $entryIdentifier Specifies the cache entry to remove
      * @return bool TRUE if (at least) an entry could be removed or FALSE if no entry was found
-     * @api
      */
     public function remove($entryIdentifier)
     {
@@ -339,7 +330,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      *
      * @param string $tag The tag to search for
      * @return array An array of entries with all matching entries. An empty array if no entries matched
-     * @api
      */
     public function findIdentifiersByTag($tag)
     {
@@ -354,7 +344,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      * Removes all cache entries of this cache.
      *
      * @throws Exception
-     * @api
      */
     public function flush()
     {
@@ -368,7 +357,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
-     * @api
      */
     public function flushByTag($tag)
     {
@@ -446,7 +434,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      *
      * @param string $identifier Identifier to find tags by
      * @return array
-     * @api
      */
     protected function findTagsByIdentifier($identifier)
     {
@@ -456,8 +443,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
 
     /**
      * Does nothing, as memcached does GC itself
-     *
-     * @api
      */
     public function collectGarbage()
     {

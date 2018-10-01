@@ -23,6 +23,7 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
  * TER2 connection handling class for the TYPO3 Extension Manager.
  *
  * It contains methods for downloading and uploading extensions and related code
+ * @internal This class is a specific TER implementation and is not part of the Public TYPO3 API.
  */
 class TerUtility
 {

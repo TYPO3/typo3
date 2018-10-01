@@ -20,6 +20,7 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 /**
  * Controller for distribution related actions
+ * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class DistributionController extends AbstractModuleController
 {

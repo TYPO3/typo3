@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * has this interface, in which case it allows the backend to store
  * the value directly without serializing it to a string, and does
  * not attempt to unserialize the string on every get() request.
- *
- * @api
  */
 interface TransientBackendInterface extends BackendInterface
 {

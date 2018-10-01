@@ -29,6 +29,7 @@ use TYPO3\CMS\Install\Service\SessionService;
 
 /**
  * Request handler to walk through the web installation process of TYPO3
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class InstallerRequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterface
 {

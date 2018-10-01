@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A caching backend which stores cache entries in database tables
- * @api
  */
 class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInterface
 {
@@ -61,7 +60,6 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
      * Set cache frontend instance and calculate data and tags table name
      *
      * @param FrontendInterface $cache The frontend for this backend
-     * @api
      */
     public function setCache(FrontendInterface $cache)
     {

@@ -22,6 +22,7 @@ use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 
 /**
  * Controller for actions related to the TER download of an extension
+ * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class DownloadController extends AbstractController
 {

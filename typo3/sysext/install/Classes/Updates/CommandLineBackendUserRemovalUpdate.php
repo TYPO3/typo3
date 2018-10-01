@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Remove all backend users starting with _cli_
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class CommandLineBackendUserRemovalUpdate implements UpgradeWizardInterface, ChattyInterface, RepeatableInterface, ConfirmableInterface
 {

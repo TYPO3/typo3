@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A repository for extensions
+ * @internal This class is a specific domain repository implementation and is not part of the Public TYPO3 API.
  */
 class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {

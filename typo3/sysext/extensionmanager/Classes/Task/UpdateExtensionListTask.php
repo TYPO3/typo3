@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extensionmanager\Task;
 
 /**
  * Update extension list from TER task
+ * @internal This class is a specific EXT:scheduler task implementation and is not part of the Public TYPO3 API.
  */
 class UpdateExtensionListTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {

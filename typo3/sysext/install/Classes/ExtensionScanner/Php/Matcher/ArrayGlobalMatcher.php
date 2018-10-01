@@ -23,6 +23,7 @@ use PhpParser\Node\Scalar\String_;
 /**
  * Match access to a one dimensional $GLOBAL array
  * Example "$GLOBALS['TYPO3_DB']"
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class ArrayGlobalMatcher extends AbstractCoreMatcher
 {

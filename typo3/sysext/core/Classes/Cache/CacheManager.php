@@ -28,8 +28,6 @@ use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * The Cache Manager
- *
- * @api
  */
 class CacheManager implements SingletonInterface
 {
@@ -116,7 +114,6 @@ class CacheManager implements SingletonInterface
      *
      * @param FrontendInterface $cache The cache frontend to be registered
      * @throws DuplicateIdentifierException if a cache with the given identifier has already been registered.
-     * @api
      */
     public function registerCache(FrontendInterface $cache)
     {
@@ -133,7 +130,6 @@ class CacheManager implements SingletonInterface
      * @param string $identifier Identifies which cache to return
      * @return FrontendInterface The specified cache frontend
      * @throws NoSuchCacheException
-     * @api
      */
     public function getCache($identifier)
     {
@@ -151,7 +147,6 @@ class CacheManager implements SingletonInterface
      *
      * @param string $identifier The identifier of the cache
      * @return bool TRUE if a cache with the given identifier exists, otherwise FALSE
-     * @api
      */
     public function hasCache($identifier)
     {
@@ -160,8 +155,6 @@ class CacheManager implements SingletonInterface
 
     /**
      * Flushes all registered caches
-     *
-     * @api
      */
     public function flushCaches()
     {
@@ -176,7 +169,6 @@ class CacheManager implements SingletonInterface
      *
      * @param string $groupIdentifier
      * @throws NoSuchCacheGroupException
-     * @api
      */
     public function flushCachesInGroup($groupIdentifier)
     {
@@ -198,7 +190,6 @@ class CacheManager implements SingletonInterface
      * @param string $groupIdentifier
      * @param string|array $tag Tag to search for
      * @throws NoSuchCacheGroupException
-     * @api
      */
     public function flushCachesInGroupByTag($groupIdentifier, $tag)
     {
@@ -223,7 +214,6 @@ class CacheManager implements SingletonInterface
      * @param string $groupIdentifier
      * @param string[] $tags Tags to search for
      * @throws NoSuchCacheGroupException
-     * @api
      */
     public function flushCachesInGroupByTags($groupIdentifier, array $tags)
     {
@@ -246,7 +236,6 @@ class CacheManager implements SingletonInterface
      * caches.
      *
      * @param string $tag Tag to search for
-     * @api
      */
     public function flushCachesByTag($tag)
     {
@@ -260,7 +249,6 @@ class CacheManager implements SingletonInterface
      * Flushes entries tagged by any of the specified tags in all registered caches.
      *
      * @param string[] $tags Tags to search for
-     * @api
      */
     public function flushCachesByTags(array $tags)
     {

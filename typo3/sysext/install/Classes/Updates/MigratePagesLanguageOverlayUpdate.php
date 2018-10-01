@@ -23,6 +23,7 @@ use TYPO3\CMS\Install\Service\LoadTcaService;
 
 /**
  * Merge pages_language_overlay rows into pages table
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class MigratePagesLanguageOverlayUpdate implements UpgradeWizardInterface, ChattyInterface
 {

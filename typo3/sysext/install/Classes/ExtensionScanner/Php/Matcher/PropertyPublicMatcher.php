@@ -21,6 +21,7 @@ use PhpParser\Node\Identifier;
 
 /**
  * Find usages of properties which were removed / deprecated.
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class PropertyPublicMatcher extends AbstractCoreMatcher
 {

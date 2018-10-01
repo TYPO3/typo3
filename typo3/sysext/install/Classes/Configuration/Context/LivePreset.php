@@ -18,6 +18,7 @@ use TYPO3\CMS\Install\Configuration;
 
 /**
  * Live preset
+ * @internal only to be used within EXT:install
  */
 class LivePreset extends Configuration\AbstractPreset
 {

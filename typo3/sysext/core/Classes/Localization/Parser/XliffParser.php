@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Localization\Parser;
 
 /**
  * Parser for XLIFF file.
+ * @internal This class is a concrete implementation and is not part of the TYPO3 Core API.
  */
 class XliffParser extends AbstractXmlParser
 {

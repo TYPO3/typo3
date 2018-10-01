@@ -20,6 +20,7 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
  * Utility to find and execute class.ext_update.php scripts of extensions
+ * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
 class UpdateScriptUtility
 {

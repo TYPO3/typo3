@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\Configuration;
 
 /**
  * Abstract custom preset class implements common preset code
+ * @internal only to be used within EXT:install
  */
 abstract class AbstractCustomPreset extends AbstractPreset
 {

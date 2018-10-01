@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
 
 /**
  * Factory for XML parsers.
+ * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
 class XmlParserFactory
 {

@@ -30,6 +30,7 @@ use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
  *
  * Renders a first "load the Javascript in <head>" view, and the
  * main layout of the install tool in second action.
+ * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class LayoutController extends AbstractController
 {

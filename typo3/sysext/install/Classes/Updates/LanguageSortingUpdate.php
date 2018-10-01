@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Update sys_language records to use the newly sorting column,
  * set default sorting from title
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class LanguageSortingUpdate implements UpgradeWizardInterface
 {

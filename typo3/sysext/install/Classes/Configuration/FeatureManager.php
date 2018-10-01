@@ -22,6 +22,7 @@ use TYPO3\CMS\Install\Configuration\PasswordHashing\PasswordHashingFeature;
 
 /**
  * Instantiate and configure all known features and presets
+ * @internal only to be used within EXT:install
  */
 class FeatureManager
 {

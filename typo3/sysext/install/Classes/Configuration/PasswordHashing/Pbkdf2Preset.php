@@ -21,6 +21,7 @@ use TYPO3\CMS\Install\Configuration\AbstractPreset;
 
 /**
  * Preset for password hashing method "PBKDF2"
+ * @internal only to be used within EXT:install
  */
 class Pbkdf2Preset extends AbstractPreset
 {

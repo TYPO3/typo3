@@ -24,6 +24,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper;
 
 /**
  * View helper for update script link
+ * @internal
  */
 class ReloadSqlDataViewHelper extends ActionViewHelper
 {

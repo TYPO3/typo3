@@ -29,6 +29,7 @@ use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
  * - The methods depend on each other, they take each others result, that could be done internally
  * - There is no good wording to distinguish existing and loaded extensions
  * - The name 'listUtility' is not good, the methods could be moved to some 'extensionInformationUtility', or a repository?
+ * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
 class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
 {

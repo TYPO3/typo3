@@ -28,6 +28,7 @@ use TYPO3\CMS\Extensionmanager\Utility\Importer\MirrorListUtility;
 
 /**
  * Central utility class for repository handling.
+ * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
 class Helper implements \TYPO3\CMS\Core\SingletonInterface
 {

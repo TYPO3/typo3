@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A PDO database cache backend
- * @api
  */
 class PdoBackend extends AbstractBackend implements TaggableBackendInterface
 {
@@ -55,7 +54,6 @@ class PdoBackend extends AbstractBackend implements TaggableBackendInterface
      * Sets the DSN to use
      *
      * @param string $DSN The DSN to use for connecting to the DB
-     * @api
      */
     public function setDataSourceName($DSN)
     {
@@ -66,7 +64,6 @@ class PdoBackend extends AbstractBackend implements TaggableBackendInterface
      * Sets the username to use
      *
      * @param string $username The username to use for connecting to the DB
-     * @api
      */
     public function setUsername($username)
     {
@@ -77,7 +74,6 @@ class PdoBackend extends AbstractBackend implements TaggableBackendInterface
      * Sets the password to use
      *
      * @param string $password The password to use for connecting to the DB
-     * @api
      */
     public function setPassword($password)
     {
@@ -102,7 +98,6 @@ class PdoBackend extends AbstractBackend implements TaggableBackendInterface
      * @throws Exception if no cache frontend has been set.
      * @throws \InvalidArgumentException if the identifier is not valid
      * @throws InvalidDataException if $data is not a string
-     * @api
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
@@ -133,7 +128,6 @@ class PdoBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * @param string $entryIdentifier An identifier which describes the cache entry to load
      * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
-     * @api
      */
     public function get($entryIdentifier)
     {
@@ -147,7 +141,6 @@ class PdoBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * @param string $entryIdentifier An identifier specifying the cache entry
      * @return bool TRUE if such an entry exists, FALSE if not
-     * @api
      */
     public function has($entryIdentifier)
     {
@@ -163,7 +156,6 @@ class PdoBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * @param string $entryIdentifier Specifies the cache entry to remove
      * @return bool TRUE if (at least) an entry could be removed or FALSE if no entry was found
-     * @api
      */
     public function remove($entryIdentifier)
     {
@@ -176,8 +168,6 @@ class PdoBackend extends AbstractBackend implements TaggableBackendInterface
 
     /**
      * Removes all cache entries of this cache.
-     *
-     * @api
      */
     public function flush()
     {
@@ -191,7 +181,6 @@ class PdoBackend extends AbstractBackend implements TaggableBackendInterface
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
-     * @api
      */
     public function flushByTag($tag)
     {
@@ -207,7 +196,6 @@ class PdoBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * @param string $tag The tag to search for
      * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-     * @api
      */
     public function findIdentifiersByTag($tag)
     {
@@ -218,8 +206,6 @@ class PdoBackend extends AbstractBackend implements TaggableBackendInterface
 
     /**
      * Does garbage collection
-     *
-     * @api
      */
     public function collectGarbage()
     {

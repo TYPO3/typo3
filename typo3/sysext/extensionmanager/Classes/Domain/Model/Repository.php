@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Model;
 
 /**
  * Repository object for extension manager.
+ * @internal This class is a specific domain model implementation and is not part of the Public TYPO3 API.
  */
 class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {

@@ -30,6 +30,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * <output>
  * install.php?install[action]=importantActions&amp;install[context]=
  * </output>
+ * @internal
  */
 class ActionViewHelper extends AbstractViewHelper
 {
@@ -37,8 +38,6 @@ class ActionViewHelper extends AbstractViewHelper
 
     /**
      * Initialize arguments
-     *
-     * @api
      */
     public function initializeArguments()
     {

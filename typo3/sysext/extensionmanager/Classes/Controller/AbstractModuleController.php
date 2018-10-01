@@ -19,6 +19,7 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 /**
  * Abstract action controller.
+ * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class AbstractModuleController extends AbstractController
 {

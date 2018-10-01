@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extensionmanager\Report;
 
 /**
  * Extension status reports
+ * @internal This class is a specific EXT:reports implementation and is not part of the Public TYPO3 API.
  */
 class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
 {

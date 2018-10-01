@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * When a sys_domain or sys_language record is modified, the Site Handling caches should be flushed.
  * Also, if pages on root level are changed, site handling caches need flush.
  *
- * @internal
+ * @internal This class is a hook implementation and is not part of the TYPO3 Core API.
  */
 class SiteDataHandlerCacheHook
 {

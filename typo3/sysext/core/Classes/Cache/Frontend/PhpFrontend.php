@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 
 /**
  * A cache frontend tailored to PHP code.
- *
- * @api
  */
 class PhpFrontend extends AbstractFrontend
 {
@@ -44,7 +42,6 @@ class PhpFrontend extends AbstractFrontend
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
      * @throws \InvalidArgumentException If $entryIdentifier or $tags is invalid
      * @throws InvalidDataException If $sourceCode is not a string
-     * @api
      */
     public function set($entryIdentifier, $sourceCode, array $tags = [], $lifetime = null)
     {
@@ -69,7 +66,6 @@ class PhpFrontend extends AbstractFrontend
      * @param string $entryIdentifier Identifier of the cache entry to fetch
      * @return string The value
      * @throws \InvalidArgumentException if the cache identifier is not valid
-     * @api
      */
     public function get($entryIdentifier)
     {
@@ -85,7 +81,6 @@ class PhpFrontend extends AbstractFrontend
      * @param string $tag The tag to search for
      * @return array An array with the content of all matching entries. An empty array if no entries matched
      * @throws \InvalidArgumentException if the tag is not valid
-     * @api
      * @deprecated since TYPO3 v9, Avoid using this method since it is not compliant to PSR-6
      */
     public function getByTag($tag)
@@ -107,7 +102,6 @@ class PhpFrontend extends AbstractFrontend
      *
      * @param string $entryIdentifier An identifier which describes the cache entry to load
      * @return mixed Potential return value from the include operation
-     * @api
      */
     public function requireOnce($entryIdentifier)
     {
@@ -122,7 +116,6 @@ class PhpFrontend extends AbstractFrontend
      *
      * @param string $entryIdentifier An identifier which describes the cache entry to load
      * @return mixed Potential return value from the include operation
-     * @api
      */
     public function require(string $entryIdentifier)
     {

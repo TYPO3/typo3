@@ -18,6 +18,7 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
  * Download Queue - storage for extensions to be downloaded
+ * @internal This class is a specific domain model implementation and is not part of the Public TYPO3 API.
  */
 class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface
 {

@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Service handling bulk read and write of LocalConfiguration values.
  *
  * Used by "Configure global settings" / "All configuration" view.
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class LocalConfigurationValueService
 {

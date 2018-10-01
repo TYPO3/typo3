@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
 
 /**
  * A repository for extension repositories
+ * @internal This class is a specific domain repository implementation and is not part of the Public TYPO3 API.
  */
 class RepositoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {

@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Merge data stored in sys_log that belongs to sys_history
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class SeparateSysHistoryFromSysLogUpdate implements UpgradeWizardInterface
 {

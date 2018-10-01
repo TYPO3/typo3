@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
  * Structure facade, a facade class in front of root node.
  * This is the main API interface to the node structure and should
  * be the only class used from outside.
- *
- * @api
  */
 class StructureFacade implements StructureFacadeInterface
 {

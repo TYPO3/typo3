@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Core\Environment;
 
 /**
  * Preset for ImageMagick version 6 or higher
+ * @internal only to be used within EXT:install
  */
 class ImageMagick6Preset extends AbstractImagePreset
 {

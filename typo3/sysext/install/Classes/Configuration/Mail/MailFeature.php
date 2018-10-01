@@ -18,6 +18,7 @@ use TYPO3\CMS\Install\Configuration;
 
 /**
  * Mail feature detects sendmail settings
+ * @internal only to be used within EXT:install
  */
 class MailFeature extends Configuration\AbstractFeature implements Configuration\FeatureInterface
 {

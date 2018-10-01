@@ -22,6 +22,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Contains the update class for filling the basic repository record of the extension manager
+ *
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class ExtensionManagerTables implements UpgradeWizardInterface, RepeatableInterface
 {

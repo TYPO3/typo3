@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Core\Environment;
 
 /**
  * Main extension model
+ * @internal This class is a specific domain model implementation and is not part of the Public TYPO3 API.
  */
 class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {

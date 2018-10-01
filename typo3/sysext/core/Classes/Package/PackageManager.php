@@ -118,6 +118,7 @@ class PackageManager implements SingletonInterface
 
     /**
      * @param FrontendInterface $coreCache
+     * @internal
      */
     public function injectCoreCache(FrontendInterface $coreCache)
     {
@@ -127,6 +128,7 @@ class PackageManager implements SingletonInterface
     /**
      * @param DependencyResolver $dependencyResolver
      * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
+     * @internal
      */
     public function injectDependencyResolver(DependencyResolver $dependencyResolver)
     {
@@ -135,6 +137,7 @@ class PackageManager implements SingletonInterface
 
     /**
      * Initializes the package manager
+     * @internal
      */
     public function initialize()
     {
@@ -310,6 +313,7 @@ class PackageManager implements SingletonInterface
     /**
      * Scans all directories in the packages directories for available packages.
      * For each package a Package object is created and stored in $this->packages.
+     * @internal
      */
     public function scanAvailablePackages()
     {
@@ -441,6 +445,7 @@ class PackageManager implements SingletonInterface
      * @param PackageInterface $package The Package to be registered
      * @return PackageInterface
      * @throws Exception\InvalidPackageStateException
+     * @internal
      */
     public function registerPackage(PackageInterface $package)
     {
@@ -484,6 +489,7 @@ class PackageManager implements SingletonInterface
      *
      * @param string $composerName
      * @return string
+     * @internal
      */
     public function getPackageKeyFromComposerName($composerName)
     {
@@ -504,7 +510,6 @@ class PackageManager implements SingletonInterface
      * @param string $packageKey
      * @return PackageInterface The requested package object
      * @throws Exception\UnknownPackageException if the specified package is not known
-     * @api
      */
     public function getPackage($packageKey)
     {
@@ -520,7 +525,6 @@ class PackageManager implements SingletonInterface
      *
      * @param string $packageKey The key of the package to check
      * @return bool TRUE if the package is available, otherwise FALSE
-     * @api
      */
     public function isPackageAvailable($packageKey)
     {
@@ -542,7 +546,6 @@ class PackageManager implements SingletonInterface
      *
      * @param string $packageKey The key of the package to check
      * @return bool TRUE if package is active, otherwise FALSE
-     * @api
      */
     public function isPackageActive($packageKey)
     {
@@ -558,6 +561,7 @@ class PackageManager implements SingletonInterface
      * @throws Exception\PackageStatesFileNotWritableException
      * @throws Exception\ProtectedPackageKeyException
      * @throws Exception\UnknownPackageException
+     * @internal
      */
     public function deactivatePackage($packageKey)
     {
@@ -588,6 +592,7 @@ class PackageManager implements SingletonInterface
 
     /**
      * @param string $packageKey
+     * @internal
      */
     public function activatePackage($packageKey)
     {
@@ -606,7 +611,6 @@ class PackageManager implements SingletonInterface
      * Enables packages during runtime, but no class aliases will be available
      *
      * @param string $packageKey
-     * @api
      */
     public function activatePackageDuringRuntime($packageKey)
     {
@@ -639,6 +643,7 @@ class PackageManager implements SingletonInterface
      * @throws Exception
      * @throws Exception\ProtectedPackageKeyException
      * @throws Exception\UnknownPackageException
+     * @internal
      */
     public function deletePackage($packageKey)
     {
@@ -671,7 +676,6 @@ class PackageManager implements SingletonInterface
      * manager settings. This method returns runtime activated packages too
      *
      * @return PackageInterface[]
-     * @api
      */
     public function getActivePackages()
     {
@@ -816,7 +820,6 @@ class PackageManager implements SingletonInterface
      *
      * @param string $packageKey The package key to validate
      * @return bool If the package key is valid, returns TRUE otherwise FALSE
-     * @api
      */
     public function isPackageKeyValid($packageKey)
     {
@@ -828,7 +831,6 @@ class PackageManager implements SingletonInterface
      * A package is available, if the package directory contains valid meta information.
      *
      * @return PackageInterface[] Array of PackageInterface
-     * @api
      */
     public function getAvailablePackages()
     {
@@ -844,6 +846,7 @@ class PackageManager implements SingletonInterface
      *
      * @param PackageInterface $package The package to be unregistered
      * @throws Exception\InvalidPackageStateException
+     * @internal
      */
     public function unregisterPackage(PackageInterface $package)
     {
@@ -859,6 +862,7 @@ class PackageManager implements SingletonInterface
      *
      * @param string $packageKey
      * @throws Exception\InvalidPackageStateException if the package isn't available
+     * @internal
      */
     public function reloadPackageInformation($packageKey)
     {
@@ -880,6 +884,7 @@ class PackageManager implements SingletonInterface
      * @param string $manifestPath
      * @return \stdClass
      * @throws Exception\InvalidPackageManifestException
+     * @internal
      */
     public function getComposerManifest($manifestPath)
     {

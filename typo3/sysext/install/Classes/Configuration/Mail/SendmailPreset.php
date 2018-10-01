@@ -18,6 +18,7 @@ use TYPO3\CMS\Install\Configuration;
 
 /**
  * Sendmail path handling preset
+ * @internal only to be used within EXT:install
  */
 class SendmailPreset extends Configuration\AbstractPreset
 {
