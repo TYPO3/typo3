@@ -520,6 +520,28 @@ CREATE TABLE tx_styleguide_inline_mn_child (
 );
 
 
+CREATE TABLE tx_styleguide_inline_mngroup (
+	input_1 tinytext,
+	inline_1 int(11) DEFAULT '0' NOT NULL
+);
+
+
+CREATE TABLE tx_styleguide_inline_mngroup_mm (
+	parentid int(11) DEFAULT '0' NOT NULL,
+	childid int(11) DEFAULT '0' NOT NULL,
+	parentsort int(10) DEFAULT '0' NOT NULL,
+	childsort int(10) DEFAULT '0' NOT NULL,
+
+	check_1 int(11) DEFAULT '0' NOT NULL
+);
+
+
+CREATE TABLE tx_styleguide_inline_mngroup_child (
+	input_1 tinytext,
+	parents int(11) DEFAULT '0' NOT NULL
+);
+
+
 CREATE TABLE tx_styleguide_inline_mnsymmetric (
 	input_1 tinytext,
 	branches int(11) DEFAULT '0' NOT NULL
