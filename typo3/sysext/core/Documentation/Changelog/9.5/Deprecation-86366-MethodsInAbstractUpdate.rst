@@ -16,11 +16,11 @@ wizard).
 
 The following methods have been marked as deprecated and will be removed with TYPO3 v10:
 
-* :php:`AbstractUpdate::getTitle()`
-* :php:`AbstractUpdate::setTitle()`
-* :php:`AbstractUpdate::getIdentifier()`
-* :php:`AbstractUpdate::setIdentifier()`
-* :php:`AbstractUpdate::getDescription()`
+* [not scanned] :php:`AbstractUpdate::getTitle()`
+* [not scanned] :php:`AbstractUpdate::setTitle()`
+* [not scanned] :php:`AbstractUpdate::getIdentifier()`
+* [not scanned] :php:`AbstractUpdate::setIdentifier()`
+* [not scanned] :php:`AbstractUpdate::getDescription()`
 * :php:`AbstractUpdate::executeUpdate()`
 * :php:`AbstractUpdate::updateNecessary()`
 * :php:`AbstractUpdate::getPrerequisites()`
@@ -51,4 +51,4 @@ Migration
 Use the interfaces instead the abstract class to define the capabilities of the Upgrade Wizard class.
 See https://docs.typo3.org/typo3cms/extensions/core/latest/Changelog/9.4/Feature-86076-NewAPIForUpgradeWizards.html.
 
-.. index:: Backend, CLI, PHP-API, FullyScanned, ext:install
+.. index:: Backend, CLI, PHP-API, PartiallyScanned, ext:install
