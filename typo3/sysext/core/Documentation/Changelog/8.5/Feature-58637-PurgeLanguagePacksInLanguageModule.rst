@@ -10,9 +10,9 @@ Description
 ===========
 
 The language module in the backend offers the possibility to activate and deactivate language packs.
-If deactivating a language pack that previously had been loaded, the data stays in `typo3conf/l10n/<locale>/`.
+If deactivating a language pack that previously had been loaded, the data stays in `<labels-path>/<locale>/`.
 A remove button has been added to the actions. With the remove action the language is disabled and the data is removed
-from the `typo3conf/l10n/<locale>/` directory.
+from the `<labels-path>/<locale>/` directory.
 
 
 Impact

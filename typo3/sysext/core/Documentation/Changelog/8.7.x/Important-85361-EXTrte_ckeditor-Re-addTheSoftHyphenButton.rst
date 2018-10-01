@@ -31,7 +31,7 @@ The functionality is automatically added if you are importing
 :file:`EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml` in your custom RTE preset. If your
 custom RTE preset can't rely on that file, you can explicitly import this plugin as shown:
 
-.. code-block::
+.. code-block:: yaml
 
    editor:
      externalPlugins:
@@ -39,6 +39,7 @@ custom RTE preset can't rely on that file, you can explicitly import this plugin
          resource: "EXT:rte_ckeditor/Resources/Public/JavaScript/Plugins/softhyphen/"
          # set whether the shortcut for this plugin is activated or not
          enableShortcut: true
+
 
 How to add the button in a custom RTE preset
 ''''''''''''''''''''''''''''''''''''''''''''

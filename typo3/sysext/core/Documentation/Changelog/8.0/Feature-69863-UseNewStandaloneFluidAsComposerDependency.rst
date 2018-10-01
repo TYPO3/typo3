@@ -277,7 +277,7 @@ Just a few of the capabilities you gain:
 * You can change which Expression Node types are possible to use in templates rendered with your context, for example disabling
   ternary expressions or adding a custom type of expression of your own.
 * You can change which TemplateProcessors will be used to process templates when rendered with your context, to do whatever you
-  like - transform, analyse and so on the template source.
+  like - transform, analyze and so on the template source.
 
 All of these parts are possible to replace via the provided RenderingContext - you don't necessarily have to create your own -
 but when creating multiple implementations it is often easier to combine those in a custom RenderingContext and just provide
