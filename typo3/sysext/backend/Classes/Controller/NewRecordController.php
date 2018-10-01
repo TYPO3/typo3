@@ -40,6 +40,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Script class for 'db_new'
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class NewRecordController
 {

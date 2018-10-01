@@ -28,8 +28,6 @@ class TranslateLabelSelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\S
 {
     /**
      * Initialize arguments.
-     *
-     * @api
      */
     public function initializeArguments()
     {

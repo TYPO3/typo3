@@ -37,6 +37,7 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
  * Controller providing data to the page tree
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class TreeController
 {

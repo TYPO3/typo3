@@ -25,6 +25,8 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * User toolbar item
+ *
+ * @internal This class is a specific Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class UserToolbarItem implements ToolbarItemInterface
 {

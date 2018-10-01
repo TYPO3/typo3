@@ -18,6 +18,7 @@ use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /**
  * Model for backend user group
+ * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {

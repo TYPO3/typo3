@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 
 /**
  * This is the ajax handler for backend login after timeout.
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class AjaxLoginController
 {

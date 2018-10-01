@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Search\LiveSearch;
 /**
  * Class for parsing query parameters in backend live search.
  * Detects searches for #pages:23 or #content:mycontent
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class QueryParser
 {

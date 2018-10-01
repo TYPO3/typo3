@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 /**
  * Backend user switchback, for logoff_pre_processing hook within
  * \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication class
+ * @internal This class is a TYPO3 core-internal hook implementation and is not considered part of the Public TYPO3 API.
  */
 class SwitchBackUserHook
 {

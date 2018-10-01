@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Site configuration FormEngine controller class. Receives inline "edit" and "new"
  * commands to expand / create site configuration inline records
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class SiteInlineAjaxController extends AbstractFormEngineAjaxController
 {

@@ -34,6 +34,8 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * "Create multiple pages" controller
+ *
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class NewMultiplePagesController
 {

@@ -19,7 +19,8 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * This class adds import export related JavaScript to the backend
+ * This class adds Access-permission related JavaScript to the backend
+ * @internal This class is a TYPO3 core-internal hook implementation and is not considered part of the Public TYPO3 API.
  */
 class BackendControllerHook
 {

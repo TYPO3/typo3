@@ -34,6 +34,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Repository for backend shortcuts
+ *
+ * @internal This class is a specific Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class ShortcutRepository
 {

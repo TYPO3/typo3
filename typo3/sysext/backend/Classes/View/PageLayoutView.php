@@ -55,6 +55,7 @@ use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 
 /**
  * Child class for the Web > Page module
+ * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class PageLayoutView implements LoggerAwareInterface
 {

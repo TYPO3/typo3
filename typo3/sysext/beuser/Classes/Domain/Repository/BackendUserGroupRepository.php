@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Beuser\Domain\Repository;
 
 /**
  * Repository for \TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup
+ * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {

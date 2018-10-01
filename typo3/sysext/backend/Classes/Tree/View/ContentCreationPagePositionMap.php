@@ -19,6 +19,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Local position map class when creating new Content Elements
+ *
+ * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class ContentCreationPagePositionMap extends PagePositionMap
 {

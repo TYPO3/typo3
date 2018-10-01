@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script Class for the Context Sensitive Menu in TYPO3
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class ContextMenuController
 {

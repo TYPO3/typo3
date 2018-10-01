@@ -27,6 +27,8 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
 /**
  * Module 'about' shows some standard information for TYPO3 CMS:
  * About-text, version number, available modules and so on.
+ *
+ * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 class AboutController
 {

@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Position map class for moving pages,
- * previously resided in typo3/move_el.php
+ * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class PageMovingPagePositionMap extends PagePositionMap
 {

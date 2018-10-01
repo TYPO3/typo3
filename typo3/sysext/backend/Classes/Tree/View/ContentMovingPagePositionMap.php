@@ -15,8 +15,9 @@ namespace TYPO3\CMS\Backend\Tree\View;
  */
 
 /**
- * Position map class for moving content elements,
- * previously resided in typo3/move_el.php
+ * Position map class for moving content elements.
+ *
+ * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class ContentMovingPagePositionMap extends PagePositionMap
 {

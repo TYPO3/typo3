@@ -34,6 +34,7 @@ use TYPO3\CMS\Recordlist\Tree\View\DummyLinkParameterProvider;
 
 /**
  * Main script class for rendering of the folder tree
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class FileSystemNavigationFrameController
 {

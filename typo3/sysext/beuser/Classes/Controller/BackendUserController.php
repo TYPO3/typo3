@@ -25,6 +25,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Backend module user administration controller
+ * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class BackendUserController extends ActionController
 {

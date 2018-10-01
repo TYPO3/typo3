@@ -50,6 +50,8 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
  * Backend controller: The "Site management" -> "Sites" module
  *
  * List all site root pages, CRUD site configuration.
+ *
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class SiteConfigurationController
 {

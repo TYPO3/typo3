@@ -22,8 +22,6 @@ use TYPO3\CMS\Fluid\View\TemplateView;
 /**
  * Decorates the main template view. Should be used as view if you want to use
  * Fluid templates in a backend module in order to have a consistent backend.
- *
- * @api
  */
 class BackendTemplateView implements ViewInterface
 {
@@ -69,7 +67,6 @@ class BackendTemplateView implements ViewInterface
      *
      * @param string $actionName If set, the view of the specified action will be rendered instead. Default is the action specified in the Request object
      * @return string Rendered Template
-     * @api
      */
     public function render($actionName = null)
     {
@@ -82,7 +79,6 @@ class BackendTemplateView implements ViewInterface
      * Sets the current controller context
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext Controller context which is available inside the view
-     * @api
      */
     public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
     {
@@ -95,7 +91,6 @@ class BackendTemplateView implements ViewInterface
      * @param string $key The key of a view variable to set
      * @param mixed $value The value of the view variable
      * @return \TYPO3\CMS\Fluid\View\AbstractTemplateView the instance of this view to allow chaining
-     * @api
      */
     public function assign($key, $value)
     {
@@ -109,7 +104,6 @@ class BackendTemplateView implements ViewInterface
      *
      * @param array $values Keys and values - only a value with key "value" is considered
      * @return \TYPO3\CMS\Fluid\View\AbstractTemplateView the instance of this view to allow chaining
-     * @api
      */
     public function assignMultiple(array $values)
     {
@@ -122,7 +116,6 @@ class BackendTemplateView implements ViewInterface
      *
      * @param ControllerContext $controllerContext Controller context which is available inside the view
      * @return bool
-     * @api
      */
     public function canRender(ControllerContext $controllerContext)
     {
@@ -141,7 +134,6 @@ class BackendTemplateView implements ViewInterface
      * Set the root path(s) to the templates.
      *
      * @param array $templateRootPaths Root path(s) to the templates.
-     * @api
      */
     public function setTemplateRootPaths(array $templateRootPaths)
     {
@@ -152,7 +144,6 @@ class BackendTemplateView implements ViewInterface
      * Set the root path(s) to the partials.
      *
      * @param array $partialRootPaths Root paths to the partials.
-     * @api
      */
     public function setPartialRootPaths(array $partialRootPaths)
     {
@@ -163,7 +154,6 @@ class BackendTemplateView implements ViewInterface
      * Set the root path(s) to the layouts.
      *
      * @param array $layoutRootPaths Root path to the layouts.
-     * @api
      */
     public function setLayoutRootPaths(array $layoutRootPaths)
     {

@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Returns the results for any live searches, e.g. in the toolbar
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class LiveSearchController
 {

@@ -29,6 +29,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  * This class extends the permissions module in the TYPO3 Backend to provide
  * convenient methods of editing of page permissions (including page ownership
  * (user and group)) via new AjaxRequestHandler facility
+ * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class PermissionAjaxController
 {

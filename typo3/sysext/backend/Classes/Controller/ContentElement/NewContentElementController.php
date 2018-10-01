@@ -36,6 +36,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Script Class for the New Content element wizard
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class NewContentElementController
 {

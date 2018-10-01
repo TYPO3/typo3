@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script Class for display up to 10 upload fields
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class FileUploadController
 {

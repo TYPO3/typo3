@@ -29,6 +29,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Generate a folder tree,
  * specially made for browsing folders in the File module
+ *
+ * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class FolderTreeView extends AbstractTreeView
 {

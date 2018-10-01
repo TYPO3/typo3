@@ -22,6 +22,8 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Class to render the shortcut menu
+ *
+ * @internal This class is a specific Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class ShortcutToolbarItem implements ToolbarItemInterface
 {

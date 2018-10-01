@@ -36,6 +36,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  * Script class for the create-new script
  *
  * Displays forms for creating folders (1 to 10), a media asset or a new file.
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class CreateFolderController
 {

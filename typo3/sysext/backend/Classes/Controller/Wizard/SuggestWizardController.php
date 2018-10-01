@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Receives ajax request from FormEngine suggest wizard and creates suggest answer as json result
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class SuggestWizardController
 {

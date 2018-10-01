@@ -33,6 +33,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * "Sort sub pages" controller - reachable from context menu "more" on page records
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class SortSubPagesController
 {

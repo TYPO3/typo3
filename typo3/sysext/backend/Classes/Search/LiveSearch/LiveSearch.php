@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Class for handling backend live search.
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class LiveSearch
 {

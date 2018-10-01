@@ -43,7 +43,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * class PrototypeController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
  * 	public function __construct() {
  * 		$this->getLanguageService()->includeLLFile('EXT:prototype/Resources/Private/Language/locallang.xlf');
- * 		$this->getBackendUser()->modAccess($GLOBALS['MCONF'], TRUE);
+ * 		$this->getBackendUser()->modAccess($GLOBALS['MCONF']);
  * 	}
  * }
  *

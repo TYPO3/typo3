@@ -17,6 +17,9 @@ namespace TYPO3\CMS\Beuser\ContextMenu;
 
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\PageProvider;
 
+/**
+ * @internal This class is a TYPO3 core-internal hook implementation and is not considered part of the Public TYPO3 API.
+ */
 class ItemProvider extends PageProvider
 {
     /**

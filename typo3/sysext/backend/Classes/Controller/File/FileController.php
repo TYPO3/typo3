@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  * Gateway for TCE (TYPO3 Core Engine) file-handling through POST forms.
  * This script serves as the file administration part of the TYPO3 Core Engine.
  * Basically it includes two libraries which are used to manipulate files on the server.
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class FileController
 {

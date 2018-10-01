@@ -27,6 +27,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * on data data object initialization.
  *
  * The aspect define category mount points according to BE User permissions.
+ *
+ * @internal This class is TYPO3-internal hook and is not considered part of the Public TYPO3 API.
  */
 class CategoryPermissionsAspect
 {

@@ -24,6 +24,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Handle FormEngine AJAX calls for Slug validation and sanitization
+ *
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class FormSlugAjaxController extends AbstractFormEngineAjaxController
 {

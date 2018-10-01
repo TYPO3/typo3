@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Table manual repository for csh manual handling
+ * @internal This class is a specific Backend repository implementation and is not considered part of the Public TYPO3 API.
  */
 class TableManualRepository
 {

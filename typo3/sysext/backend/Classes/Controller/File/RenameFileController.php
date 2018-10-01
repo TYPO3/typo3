@@ -33,6 +33,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Script Class for the rename-file form.
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class RenameFileController
 {

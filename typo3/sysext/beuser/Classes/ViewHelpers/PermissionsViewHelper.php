@@ -24,6 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Most of that could be done in fluid directly, but this view helper
  * is much better performance wise.
+ * @internal
  */
 class PermissionsViewHelper extends AbstractViewHelper
 {

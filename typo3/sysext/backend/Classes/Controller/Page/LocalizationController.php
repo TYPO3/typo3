@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 /**
  * LocalizationController handles the AJAX requests for record localization
  *
- * @internal
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class LocalizationController
 {

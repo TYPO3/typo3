@@ -26,6 +26,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Wizard for rendering image manipulation view
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class ImageManipulationController
 {

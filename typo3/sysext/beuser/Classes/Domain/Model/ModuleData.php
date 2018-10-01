@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Beuser\Domain\Model;
 
 /**
  * Module data object
+ * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class ModuleData
 {

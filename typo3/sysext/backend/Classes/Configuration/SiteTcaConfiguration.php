@@ -25,6 +25,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Load Site configuration TCA from ext:*Configuration/SiteConfiguration
  * and ext:*Configuration/SiteConfiguration/Overrides
+ *
+ * @internal This class is a specific Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class SiteTcaConfiguration
 {

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Beuser\Domain\Model;
 
 /**
  * Demand filter for listings
+ * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class Demand extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {

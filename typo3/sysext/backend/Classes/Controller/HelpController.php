@@ -32,6 +32,7 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * Main "CSH help" module controller
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class HelpController
 {

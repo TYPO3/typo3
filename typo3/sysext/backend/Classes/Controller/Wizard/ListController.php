@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * Script Class for redirecting the user to the Web > List module if a wizard-link has been clicked in FormEngine
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class ListController extends AbstractWizardController
 {

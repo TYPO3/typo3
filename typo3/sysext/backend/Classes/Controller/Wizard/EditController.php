@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Script Class for redirecting a backend user to the editing form when an "Edit wizard" link was clicked in FormEngine somewhere
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class EditController extends AbstractWizardController
 {

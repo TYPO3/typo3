@@ -30,6 +30,8 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * TYPO3 clipboard for records and files
+ *
+ * @internal This class is a specific Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class Clipboard
 {

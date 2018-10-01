@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Sys log entry repository
+ * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {

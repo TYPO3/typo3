@@ -20,6 +20,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Position map class for content elements within the page module
+ *
+ * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class ContentLayoutPagePositionMap extends PagePositionMap
 {

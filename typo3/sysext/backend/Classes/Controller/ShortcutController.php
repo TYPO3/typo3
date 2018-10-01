@@ -29,6 +29,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Controller for shortcut processing
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class ShortcutController
 {
