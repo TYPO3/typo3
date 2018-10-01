@@ -24,6 +24,7 @@ use TYPO3\CMS\Seo\XmlSitemap\Exception\MissingConfigurationException;
 
 /**
  * XmlSiteDataProvider will provide information for the XML sitemap for a specific database table
+ * @internal this class is not part of TYPO3's Core API.
  */
 class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
 {

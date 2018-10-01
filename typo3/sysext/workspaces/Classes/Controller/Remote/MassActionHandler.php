@@ -23,6 +23,7 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
  * Class encapsulates all actions which are triggered for all elements within the current workspace.
+ * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 class MassActionHandler
 {

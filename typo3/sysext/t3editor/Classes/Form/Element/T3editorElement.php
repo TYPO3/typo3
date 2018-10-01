@@ -28,6 +28,7 @@ use TYPO3\CMS\T3editor\T3editor;
 
 /**
  * t3editor FormEngine widget
+ * @internal
  */
 class T3editorElement extends AbstractFormElement
 {

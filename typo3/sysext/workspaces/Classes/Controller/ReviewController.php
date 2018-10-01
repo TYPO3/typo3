@@ -31,7 +31,7 @@ use TYPO3\CMS\Workspaces\Service\AdditionalResourceService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
- * Review controller.
+ * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 class ReviewController extends ActionController
 {

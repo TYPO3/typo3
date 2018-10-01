@@ -39,6 +39,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Controller for viewing the frontend
+ * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 class ViewModuleController
 {

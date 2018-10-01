@@ -22,6 +22,7 @@ use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
 
 /**
  * Hook for the list module
+ * @internal This is a specific hook implementation and is not considered part of the Public TYPO3 API.
  */
 class RecordListHook
 {

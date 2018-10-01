@@ -18,6 +18,9 @@ namespace TYPO3\CMS\Seo\MetaTag;
 
 use TYPO3\CMS\Core\MetaTag\AbstractMetaTagManager;
 
+/**
+ * @internal this class is not part of TYPO3's Core API.
+ */
 class OpenGraphMetaTagManager extends AbstractMetaTagManager
 {
     /**

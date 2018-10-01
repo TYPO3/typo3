@@ -42,6 +42,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script class for the Setup module
+ *
+ * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 class SetupModuleController
 {

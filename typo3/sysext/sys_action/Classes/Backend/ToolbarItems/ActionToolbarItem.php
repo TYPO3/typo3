@@ -25,6 +25,7 @@ use TYPO3\CMS\SysAction\ActionTask;
 
 /**
  * Adds action links to the backend's toolbar
+ * @internal This is a specific hook implementation and is not considered part of the Public TYPO3 API.
  */
 class ActionToolbarItem implements ToolbarItemInterface
 {

@@ -33,6 +33,7 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * Implements the preview controller of the workspace module.
+ * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 class PreviewController
 {

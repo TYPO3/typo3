@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class for the list rendering of Web>Task Center module
+ * @internal
  */
 class ActionList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
 {

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\T3editor;
 
 /**
  * Represents an addon for CodeMirror
+ * @internal
  */
 class Addon
 {

@@ -44,6 +44,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 
 /**
  * Module: TypoScript Tools
+ * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 class TypoScriptTemplateModuleController
 {

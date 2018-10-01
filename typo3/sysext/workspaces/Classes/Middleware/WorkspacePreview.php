@@ -37,6 +37,8 @@ use TYPO3\CMS\Workspaces\Authentication\PreviewUserAuthentication;
  * - evaluate ADMCMD_prev as GET parameter or from a cookie
  * - initializes the PreviewUser as $GLOBALS['BE_USER']
  * - renders a message about a possible workspace previewing currently
+ *
+ * @internal
  */
 class WorkspacePreview implements MiddlewareInterface
 {

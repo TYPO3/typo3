@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 
 /**
  * Status of tasks
+ * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 class TaskStatusController
 {

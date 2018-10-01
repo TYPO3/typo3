@@ -24,6 +24,7 @@ use TYPO3\CMS\T3editor\T3editor;
 
 /**
  * File edit hook for t3editor
+ * @internal This is a specific hook implementation and is not considered part of the Public TYPO3 API.
  */
 class FileEditHook
 {

@@ -37,6 +37,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This class explicitly does not derive from FrontendBackendUserAuthentication.
  * As this user is only meant for using against GET/cookie of "ADMCMD_prev" = clicked on a preview link
  * This user cannot use any admin panel / frontend editing capabilities.
+ *
+ * @internal
  */
 class PreviewUserAuthentication extends BackendUserAuthentication
 {

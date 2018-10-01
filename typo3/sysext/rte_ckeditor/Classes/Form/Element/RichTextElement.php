@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Render rich text editor in FormEngine
+ * @internal This is a specific Backend FormEngine implementation and is not considered part of the Public TYPO3 API.
  */
 class RichTextElement extends AbstractFormElement
 {

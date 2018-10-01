@@ -31,6 +31,8 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
  * Create links to pages when in a workspace for previewing purposes
+ *
+ * @internal
  */
 class PreviewUriBuilder
 {

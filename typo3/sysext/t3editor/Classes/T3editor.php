@@ -26,6 +26,7 @@ use TYPO3\CMS\T3editor\Registry\ModeRegistry;
 
 /**
  * Provides necessary code to setup a t3editor instance in FormEngine
+ * @internal
  */
 class T3editor implements SingletonInterface
 {

@@ -21,6 +21,7 @@ use TYPO3\CMS\T3editor\Addon;
 
 /**
  * Registers and holds t3editor modes
+ * @internal
  */
 class AddonRegistry implements SingletonInterface
 {

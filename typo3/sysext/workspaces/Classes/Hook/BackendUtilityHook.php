@@ -24,6 +24,7 @@ use TYPO3\CMS\Workspaces\Service\StagesService;
 
 /**
  * Befunc service
+ * @internal This is a specific hook implementation and is not considered part of the Public TYPO3 API.
  */
 class BackendUtilityHook
 {

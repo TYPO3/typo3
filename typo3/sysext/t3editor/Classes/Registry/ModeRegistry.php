@@ -22,6 +22,7 @@ use TYPO3\CMS\T3editor\Mode;
 
 /**
  * Registers and holds t3editor modes
+ * @internal
  */
 class ModeRegistry implements SingletonInterface
 {

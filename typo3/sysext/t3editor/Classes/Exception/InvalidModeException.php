@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Exception;
 
 /**
  * Exception thrown for invalid modes
+ * @internal
  */
 class InvalidModeException extends Exception
 {

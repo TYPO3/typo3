@@ -27,6 +27,7 @@ use TYPO3\CMS\Seo\XmlSitemap\Exception\InvalidConfigurationException;
 
 /**
  * Class to render the XML Sitemap to be used as a UserFunction
+ * @internal this class is not part of TYPO3's Core API.
  */
 class XmlSitemapRenderer
 {

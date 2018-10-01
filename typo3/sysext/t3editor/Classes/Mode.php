@@ -17,6 +17,7 @@ namespace TYPO3\CMS\T3editor;
 
 /**
  * Represents a mode for CodeMirror
+ * @internal
  */
 class Mode
 {

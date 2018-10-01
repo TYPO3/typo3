@@ -26,6 +26,7 @@ use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 
 /**
  * Extended controller for link browser
+ * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 class BrowseLinksController extends AbstractLinkBrowserController
 {

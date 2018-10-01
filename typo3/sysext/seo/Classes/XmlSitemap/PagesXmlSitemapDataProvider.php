@@ -28,6 +28,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Class to generate a XML sitemap for pages
+ * @internal this class is not part of TYPO3's Core API.
  */
 class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
 {

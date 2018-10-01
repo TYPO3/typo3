@@ -20,6 +20,7 @@ use TYPO3\CMS\SysNote\Controller\NoteController;
 
 /**
  * Hook for the info module
+ * @internal This is a specific hook implementation and is not considered part of the Public TYPO3 API.
  */
 class InfoModuleHook
 {

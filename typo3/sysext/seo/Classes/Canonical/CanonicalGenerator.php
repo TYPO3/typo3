@@ -24,7 +24,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 /**
  * Class to add the canonical tag to the page
  *
- * @internal
+ * @internal this class is not part of TYPO3's Core API.
  */
 class CanonicalGenerator
 {

@@ -27,6 +27,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * TypoScript Constant editor
+ * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 class TypoScriptTemplateConstantEditorModuleFunctionController
 {

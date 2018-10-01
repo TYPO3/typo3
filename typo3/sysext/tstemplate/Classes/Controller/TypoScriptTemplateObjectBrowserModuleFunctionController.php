@@ -31,6 +31,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * This class displays the submodule "TypoScript Object Browser" inside the Web > Template module
+ * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 class TypoScriptTemplateObjectBrowserModuleFunctionController
 {

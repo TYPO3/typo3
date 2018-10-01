@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * This class provides a task for the taskcenter
+ * @internal
  */
 class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
 {

@@ -40,6 +40,7 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 /**
  * Contains some parts for staging, versioning and workspaces
  * to interact with the TYPO3 Core Engine
+ * @internal This is a specific hook implementation and is not considered part of the Public TYPO3 API.
  */
 class DataHandlerHook
 {

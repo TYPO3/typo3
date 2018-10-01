@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
  * Code completion for t3editor
+ * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 class CodeCompletionController
 {

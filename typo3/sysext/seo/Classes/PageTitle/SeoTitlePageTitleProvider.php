@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\PageTitle\AbstractPageTitleProvider;
 
 /**
  * This class will take care of the seo title that can be set in the backend
+ * @internal this class is not part of TYPO3's Core API.
  */
 class SeoTitlePageTitleProvider extends AbstractPageTitleProvider
 {

@@ -34,6 +34,7 @@ use TYPO3\CMS\Taskcenter\TaskInterface;
 
 /**
  * This class provides a task center for BE users
+ * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 class TaskModuleController
 {
