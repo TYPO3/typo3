@@ -61,7 +61,7 @@ class XmlSitemapRenderer
     {
         // Inject request from globals until request will be available to cObj
         $request = $GLOBALS['TYPO3_REQUEST'];
-        $this->view->assign('type', $request->getQueryParams()['type']);
+        $this->view->assign('type', $GLOBALS['TSFE']->type);
         if (!empty($sitemap = $request->getQueryParams()['sitemap'])) {
             return $this->renderSitemap($request, $sitemap);
         }
