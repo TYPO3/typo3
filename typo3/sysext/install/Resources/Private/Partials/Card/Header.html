@@ -1,0 +1,17 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<div class="card-header">
+	<f:if condition="{icon}">
+		<div class="card-icon">
+			<img src="{f:uri.resource(path: icon)}" width="64" height="64" class="card-header-icon-image" />
+		</div>
+	</f:if>
+	<div class="card-header-body">
+		<f:if condition="{title}">
+			<h1 class="card-title">{title}</h1>
+		</f:if>
+		<f:if condition="{subtitle}">
+			<span class="card-subtitle">{subtitle}</span>
+		</f:if>
+	</div>
+</div>
+</html>
