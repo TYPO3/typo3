@@ -22,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Class DeleteFileViewHelper
+ * @internal
  */
 class DeleteFileViewHelper extends AbstractViewHelper
 {

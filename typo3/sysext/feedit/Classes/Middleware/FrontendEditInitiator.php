@@ -27,6 +27,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * PSR-15 middleware initializing frontend editing
+ *
+ * @internal this is a concrete TYPO3 implementation and solely used for EXT:feedit and not part of TYPO3's Core API.
  */
 class FrontendEditInitiator implements MiddlewareInterface
 {

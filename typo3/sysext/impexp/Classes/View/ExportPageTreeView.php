@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Extension of the page tree class. Used to get the tree of pages to export.
+ * @internal
  */
 class ExportPageTreeView extends BrowseTreeView
 {

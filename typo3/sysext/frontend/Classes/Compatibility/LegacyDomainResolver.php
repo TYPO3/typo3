@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
  * or a pageId is given or a rootpage Id is given (= if there is a sys_domain record on that specific page).
  * Always keeps the sorting in line.
  *
- * @internal as this should ideally be wrapped inside the "main" site router in the future.
+ * @internal this functionality is for compatibility reasons and might be removed in TYPO3 v10.0.
  */
 class LegacyDomainResolver implements SingletonInterface
 {

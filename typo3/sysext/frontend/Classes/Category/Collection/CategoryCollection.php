@@ -24,6 +24,8 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 /**
  * Extend category collection for the frontend, to collect related records
  * while respecting language, enable fields, etc.
+ *
+ * @internal this is a concrete TYPO3 hook implementation and solely used for EXT:frontend and not part of TYPO3's Core API.
  */
 class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCollection
 {

@@ -43,6 +43,7 @@ use TYPO3\CMS\Filelist\FileList;
 
 /**
  * Script Class for creating the list of files in the File > Filelist module
+ * @internal this is a concrete TYPO3 controller implementation and solely used for EXT:filelist and not part of TYPO3's Core API.
  */
 class FileListController extends ActionController
 {

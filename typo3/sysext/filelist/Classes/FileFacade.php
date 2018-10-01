@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * provide necessary methods needed in the views of the filelist extension. It
  * is a first approach to get rid of the FileList class that mixes up PHP,
  * HTML and JavaScript.
+ * @internal this is a concrete TYPO3 hook implementation and solely used for EXT:filelist and not part of TYPO3's Core API.
  */
 class FileFacade
 {

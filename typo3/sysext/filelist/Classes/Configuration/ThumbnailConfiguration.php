@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
- * Class TYPO3\CMS\Filelist\Configuration\ThumbnailConfiguration
+ * @internal this is a concrete TYPO3 implementation and solely used for EXT:filelist and not part of TYPO3's Core API.
  */
 class ThumbnailConfiguration implements SingletonInterface
 {

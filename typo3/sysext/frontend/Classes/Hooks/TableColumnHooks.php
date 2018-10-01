@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Hooks;
 
 /**
  * Hooks / manipulation data for TCA columns e.g. to sort items within itemsProcFunc
+ * @internal this is a concrete TYPO3 hook implementation and solely used for EXT:frontend and not part of TYPO3's Core API.
  */
 class TableColumnHooks
 {

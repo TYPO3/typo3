@@ -22,6 +22,7 @@ use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 
 /**
  * Exception handler class for content object rendering
+ * @internal this is a concrete TYPO3 implementation and solely used for EXT:frontend and not part of TYPO3's Core API.
  */
 class ProductionExceptionHandler implements ExceptionHandlerInterface, LoggerAwareInterface
 {

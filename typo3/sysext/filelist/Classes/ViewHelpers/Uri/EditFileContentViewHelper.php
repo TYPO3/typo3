@@ -22,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Class EditFileContentViewHelper
+ * @internal
  */
 class EditFileContentViewHelper extends AbstractViewHelper
 {

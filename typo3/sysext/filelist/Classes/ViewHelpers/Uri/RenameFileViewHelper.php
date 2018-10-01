@@ -21,7 +21,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Class RenameFileViewHelper
+ * @internal
  */
 class RenameFileViewHelper extends AbstractViewHelper
 {

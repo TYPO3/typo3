@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Filelist\ContextMenu\ItemProviders;
 
 /**
  * Provides click menu items for file_storage
+ * @internal this is a concrete TYPO3 hook implementation and solely used for EXT:filelist and not part of TYPO3's Core API.
  */
 class FileStorageProvider extends FileProvider
 {

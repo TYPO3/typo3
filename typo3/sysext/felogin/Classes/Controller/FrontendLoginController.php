@@ -30,6 +30,8 @@ use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 /**
  * Plugin 'Website User Login' for the 'felogin' extension.
+ *
+ * @internal this is a concrete TYPO3 implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
  */
 class FrontendLoginController extends AbstractPlugin implements LoggerAwareInterface
 {

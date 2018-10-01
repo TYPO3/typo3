@@ -26,6 +26,8 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  *
  * The aspect injects user permissions and mount points into the storage
  * based on user or group configuration.
+ *
+ * @internal this is a concrete TYPO3 hook implementation and solely used for EXT:frontend and not part of TYPO3's Core API.
  */
 class FileMetadataOverlayAspect
 {

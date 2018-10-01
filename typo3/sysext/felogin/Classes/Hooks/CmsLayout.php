@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Felogin\Hooks;
 
 /**
  * Hook to display verbose information about the felogin plugin
+ * @internal this is a TYPO3 hook implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
  */
 class CmsLayout implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface
 {

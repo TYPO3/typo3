@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class that hooks into DataHandler and listens for updates to pages to update the
  * treelist cache
+ * @internal this is a concrete TYPO3 hook implementation and solely used for EXT:frontend and not part of TYPO3's Core API.
  */
 class TreelistCacheUpdateHooks
 {

@@ -35,6 +35,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *  - frame
  *  - bodyTag
  *  - title
+ *
+ * @internal this is a concrete TYPO3 implementation and solely used for EXT:frontend and not part of TYPO3's Core API.
  */
 class ShowImageController
 {

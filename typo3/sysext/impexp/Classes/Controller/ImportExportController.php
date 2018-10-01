@@ -51,6 +51,7 @@ use TYPO3\CMS\Impexp\View\ExportPageTreeView;
 
 /**
  * Main script class for the Import / Export facility
+ * @internal this is a TYPO3 Backend controller implementation and not part of TYPO3's Core API.
  */
 class ImportExportController
 {

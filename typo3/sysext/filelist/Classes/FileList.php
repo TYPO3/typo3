@@ -41,6 +41,7 @@ use TYPO3\CMS\Filelist\Controller\FileListController;
 
 /**
  * Class for rendering of File>Filelist
+ * @internal this is a concrete TYPO3 controller implementation and solely used for EXT:filelist and not part of TYPO3's Core API.
  */
 class FileList
 {

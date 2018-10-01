@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Factory for menu content objects. Allows overriding the default
  * types like 'GMENU' with an own implementation (only one possible)
  * and new types can be registered.
+ * @internal this is only used for internal purposes and solely used for EXT:frontend and not part of TYPO3's Core API.
  */
 class MenuContentObjectFactory implements SingletonInterface
 {

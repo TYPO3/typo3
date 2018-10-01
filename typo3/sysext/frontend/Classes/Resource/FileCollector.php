@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Use in FILES Content Object or for a Fluid Data Processor
  *
  * Is not persisted, use only in FE.
+ * @internal this is a internal TYPO3 implementation and solely used for EXT:frontend and not part of TYPO3's Core API.
  */
 class FileCollector implements \Countable, LoggerAwareInterface
 {

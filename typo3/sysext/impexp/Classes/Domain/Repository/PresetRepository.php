@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Handling of presets
+ * @internal this is not part of TYPO3's Core API.
  */
 class PresetRepository
 {

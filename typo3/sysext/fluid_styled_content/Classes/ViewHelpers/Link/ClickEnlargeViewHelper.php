@@ -35,6 +35,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * <output>
  * <a href="url" onclick="javascript" target="thePicture"><img src=""></a>
  * </output>
+ *
+ * @internal this is not part of TYPO3 Core API.
  */
 class ClickEnlargeViewHelper extends AbstractViewHelper
 {

@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * T3D file Import library (TYPO3 Record Document)
+ * @internal this is not part of TYPO3's Core API.
  */
 class Import extends ImportExport
 {

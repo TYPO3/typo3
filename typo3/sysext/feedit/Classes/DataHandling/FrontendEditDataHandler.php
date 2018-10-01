@@ -28,6 +28,8 @@ use TYPO3\CMS\Frontend\View\AdminPanelView;
 
 /**
  * Calls DataHandler and stores data
+ *
+ * @internal this is a concrete TYPO3 implementation and solely used for EXT:feedit and not part of TYPO3's Core API.
  */
 class FrontendEditDataHandler
 {

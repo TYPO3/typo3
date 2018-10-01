@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Hooks\PageLayoutView;
 
 /**
  * Contains a preview rendering for the page module of CType="text"
+ * @internal this is a concrete TYPO3 hook implementation and solely used for EXT:frontend and not part of TYPO3's Core API.
  */
 class TextPreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface
 {

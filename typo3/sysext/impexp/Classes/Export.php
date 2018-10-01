@@ -52,6 +52,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * Write export
  * $out = $this->export->compileMemoryToFileContent();
+ * @internal this is not part of TYPO3's Core API.
  */
 
 /**

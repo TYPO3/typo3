@@ -26,6 +26,7 @@ use TYPO3\CMS\Taskcenter\TaskInterface;
 
 /**
  * This class provides a textarea to save personal notes
+ * @internal this is a internal TYPO3 Backend implementation and solely used for EXT:impexp and not part of TYPO3's Core API.
  */
 class ImportExportTask implements TaskInterface
 {

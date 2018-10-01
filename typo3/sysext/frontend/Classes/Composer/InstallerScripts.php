@@ -22,6 +22,8 @@ use TYPO3\CMS\Composer\Plugin\Core\ScriptDispatcher;
 
 /**
  * Hook into Composer build to generate TYPO3 frontend entry script
+ *
+ * @internal only used for TYPO3 Core internally.
  */
 class InstallerScripts implements InstallerScriptsRegistration
 {

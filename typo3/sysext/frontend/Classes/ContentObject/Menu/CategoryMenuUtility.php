@@ -22,6 +22,7 @@ use TYPO3\CMS\Frontend\Category\Collection\CategoryCollection;
  * Utility class for menus based on category collections of pages.
  *
  * Returns all the relevant pages for rendering with a menu content object.
+ * @internal this is only used for internal purposes and solely used for EXT:frontend and not part of TYPO3's Core API.
  */
 class CategoryMenuUtility
 {

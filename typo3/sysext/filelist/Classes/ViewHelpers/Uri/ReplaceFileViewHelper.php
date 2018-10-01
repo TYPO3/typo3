@@ -21,7 +21,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Class ReplaceFileViewHelper
+ * @internal
  */
 class ReplaceFileViewHelper extends AbstractViewHelper
 {
