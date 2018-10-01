@@ -1,0 +1,101 @@
+.typo3-install {
+    padding: 30px;
+    background-color: #dadada;
+
+    h1 {
+        font-size: 28px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    .btn {
+        font-size: inherit;
+        padding: 0.5em 1em;
+    }
+
+    .alert {
+        padding: 1.5em;
+
+        h3 {
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        > *:first-child {
+            margin-top: 0;
+        }
+
+        > *:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.typo3-install-container {
+    margin: 0 auto;
+    max-width: 680px;
+}
+
+.typo3-install-content {
+    background-color: #fff;
+    box-shadow: 0 2px 1px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    border-radius: 5px;
+
+    > div {
+        > *:first-child {
+            margin-top: 0;
+        }
+
+        > *:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.typo3-install-content-header {
+    padding: 35px;
+}
+
+.typo3-install-content-header-logo {
+    margin: 0 auto;
+    margin-bottom: 15px;
+}
+
+.typo3-install-content-header-title {
+    font-size: 28px;
+    font-weight: 300;
+}
+
+.typo3-install-content-progress {
+    padding: 15px 35px;
+    border-top: 1px solid #eaeaea;
+    background-color: #fafafa;
+}
+
+.typo3-install-content-body {
+    border-top: 1px solid #eaeaea;
+    padding: 35px;
+
+    > *:first-child {
+        margin-top: 0;
+    }
+
+    > *:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.typo3-install-content-spacer {
+    margin-top: 2em;
+}
+
+.typo3-install-content-spacer-small {
+    margin-top: 1em;
+}
