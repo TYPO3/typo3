@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Lexer class for indexed_search
  * A lexer splits the text into words
+ * @internal
  */
 class Lexer
 {

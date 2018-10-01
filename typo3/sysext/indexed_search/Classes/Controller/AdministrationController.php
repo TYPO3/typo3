@@ -31,6 +31,7 @@ use TYPO3\CMS\IndexedSearch\Indexer;
 
 /**
  * Administration controller
+ * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class AdministrationController extends ActionController
 {

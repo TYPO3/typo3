@@ -34,6 +34,7 @@ use TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck;
 
 /**
  * Script class for the DB int module
+ * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 class DatabaseIntegrityController
 {

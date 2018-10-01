@@ -29,7 +29,7 @@ use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
- * Class TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandAdditionalFieldProvider
+ * @internal This class is a specific scheduler task implementation is not considered part of the Public TYPO3 API.
  */
 class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFieldProviderInterface
 {

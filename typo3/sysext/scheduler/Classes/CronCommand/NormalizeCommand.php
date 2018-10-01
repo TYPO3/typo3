@@ -32,7 +32,6 @@ class NormalizeCommand
      * and consists of five whitespace separated fields, which are either
      * the letter '*' or a sorted, unique comma separated list of integers.
      *
-     * @api
      * @throws \InvalidArgumentException cron command is invalid or out of bounds
      * @param string $cronCommand The cron command to normalize
      * @return string Normalized cron command

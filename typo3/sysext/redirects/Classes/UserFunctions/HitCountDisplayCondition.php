@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Display condition evaluating the feature toggle "redirects.hitCount"
+ * @internal This class is a specific TYPO3 display condition implementation and is not part of the Public TYPO3 API.
  */
 class HitCountDisplayCondition
 {

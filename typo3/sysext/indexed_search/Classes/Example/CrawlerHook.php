@@ -19,6 +19,7 @@ use TYPO3\CMS\IndexedSearch\Indexer;
 
 /**
  * Index search crawler hook example
+ * @internal just an example, not for public use, but used as a blue-print
  */
 class CrawlerHook
 {

@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Class for displaying an array as a tree
  * See the extension 'lowlevel' /config (Backend module 'Tools > Configuration')
+ * @internal just a helper class for internal usage
  */
 class ArrayBrowser
 {

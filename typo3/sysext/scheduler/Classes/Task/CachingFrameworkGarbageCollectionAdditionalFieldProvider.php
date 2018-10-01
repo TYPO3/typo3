@@ -23,6 +23,7 @@ use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 /**
  * Additional BE fields for caching framework garbage collection task.
  * Creates a multi selectbox with all available cache backends to select from.
+ * @internal This class is a specific scheduler task implementation is not considered part of the Public TYPO3 API.
  */
 class CachingFrameworkGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 {

@@ -52,6 +52,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Class for rendering of Web>List module
+ * @internal This class is a specific TYPO3 Backend implementation and is not part of the TYPO3's Core API.
  */
 class DatabaseRecordList
 {

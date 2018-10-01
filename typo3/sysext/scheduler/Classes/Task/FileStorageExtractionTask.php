@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Scheduler\Task;
 
 /**
  * This task which indexes files in storage
+ * @internal This class is a specific scheduler task implementation is not considered part of the Public TYPO3 API.
  */
 class FileStorageExtractionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {

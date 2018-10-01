@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class for accessing redirect records from the database
+ * @internal
  */
 class RedirectRepository
 {

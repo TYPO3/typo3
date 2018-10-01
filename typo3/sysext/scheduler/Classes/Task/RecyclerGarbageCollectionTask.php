@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Compatible drivers should be implemented correctly for this. The shipped "local driver"
  * does a "touch()" after the file is moved into the recycler folder.
+ * @internal This class is a specific scheduler task implementation is not considered part of the Public TYPO3 API.
  */
 class RecyclerGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {

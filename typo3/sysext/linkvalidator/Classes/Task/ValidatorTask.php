@@ -27,6 +27,7 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * This class provides Scheduler plugin implementation
+ * @internal This class is a specific Scheduler task implementation and is not part of the TYPO3's Core API.
  */
 class ValidatorTask extends AbstractTask
 {

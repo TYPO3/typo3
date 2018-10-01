@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class for displaying translation status of pages in the tree in Web -> Info
+ * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 class TranslationStatusController
 {

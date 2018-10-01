@@ -26,6 +26,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 /**
  * The target of a redirect can contain a t3://page link.
  * This ViewHelper checks for such a case and returns the Page ID
+ * @internal
  */
 class TargetPageIdViewHelper extends AbstractViewHelper
 {

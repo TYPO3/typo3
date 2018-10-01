@@ -48,7 +48,6 @@ class CronCommand
      *
      * @param string $cronCommand The cron command can hold any combination documented as valid
      * @param bool|int $timestamp Optional start time, used in unit tests
-     * @api
      */
     public function __construct($cronCommand, $timestamp = false)
     {
@@ -68,7 +67,6 @@ class CronCommand
     /**
      * Calculates the date of the next execution.
      *
-     * @api
      * @throws \RuntimeException
      */
     public function calculateNextValue()
@@ -108,7 +106,6 @@ class CronCommand
     /**
      * Get next timestamp
      *
-     * @api
      * @return int Unix timestamp
      */
     public function getTimestamp()
@@ -121,6 +118,7 @@ class CronCommand
      * a list of comma separated integers or *
      *
      * @return array command sections:
+     * @internal
      */
     public function getCronCommandSections()
     {

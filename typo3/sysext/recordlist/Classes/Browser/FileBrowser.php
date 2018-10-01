@@ -32,6 +32,7 @@ use TYPO3\CMS\Recordlist\View\FolderUtilityRenderer;
 
 /**
  * Browser for files
+ * @internal This class is a specific LinkBrowser implementation and is not part of the TYPO3's Core API.
  */
 class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterface, LinkParameterProviderInterface
 {

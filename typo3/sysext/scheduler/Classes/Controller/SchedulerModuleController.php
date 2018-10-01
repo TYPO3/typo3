@@ -47,6 +47,7 @@ use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 
 /**
  * Module 'TYPO3 Scheduler administration module' for the 'scheduler' extension.
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class SchedulerModuleController
 {

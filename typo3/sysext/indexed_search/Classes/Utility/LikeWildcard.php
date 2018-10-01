@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Enumeration object for LikeWildcard
+ * @internal
  */
 final class LikeWildcard extends Enumeration
 {

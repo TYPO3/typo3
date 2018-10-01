@@ -25,6 +25,7 @@ use TYPO3\CMS\Opendocs\Service\OpenDocumentService;
 
 /**
  * Main functionality to render a list of all open documents in the top bar of the TYPO3 Backend
+ * @internal This class is a specific hook implementation and is not part of the TYPO3's Core API.
  */
 class OpendocsToolbarItem implements ToolbarItemInterface
 {

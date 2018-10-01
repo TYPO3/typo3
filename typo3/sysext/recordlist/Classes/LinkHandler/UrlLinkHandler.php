@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Link handler for external URLs
+ * @internal This class is a specific LinkHandler implementation and is not part of the TYPO3's Core API.
  */
 class UrlLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface
 {

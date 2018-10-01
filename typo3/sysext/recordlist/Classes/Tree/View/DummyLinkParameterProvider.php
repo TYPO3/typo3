@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Recordlist\Tree\View;
 
 /**
  * This class is a dummy class used for the FileSystemNavigationFrameController
+ * @internal
  */
 class DummyLinkParameterProvider implements LinkParameterProviderInterface
 {

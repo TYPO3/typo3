@@ -36,6 +36,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Script Class for the Web > Info module
  * This class creates the framework to which other extensions can connect their sub-modules
+ * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 class InfoModuleController
 {

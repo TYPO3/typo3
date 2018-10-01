@@ -24,6 +24,7 @@ use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 
 /**
  * Additional BE fields for optimize database table task.
+ * @internal This class is a specific scheduler task implementation is not considered part of the Public TYPO3 API.
  */
 class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 {

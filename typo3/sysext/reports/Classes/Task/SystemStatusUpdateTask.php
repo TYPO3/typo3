@@ -23,6 +23,7 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * A task that should be run regularly to determine the system's status.
+ * @internal This class is a specific scheduler task implementation and is not considered part of the Public TYPO3 API.
  */
 class SystemStatusUpdateTask extends AbstractTask
 {

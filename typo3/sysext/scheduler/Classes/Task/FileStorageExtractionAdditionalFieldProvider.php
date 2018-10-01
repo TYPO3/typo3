@@ -24,6 +24,7 @@ use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 
 /**
  * Additional BE fields for task which extracts metadata from storage
+ * @internal This class is a specific scheduler task implementation is not considered part of the Public TYPO3 API.
  */
 class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldProviderInterface
 {

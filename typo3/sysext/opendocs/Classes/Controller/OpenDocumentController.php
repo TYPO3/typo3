@@ -27,6 +27,7 @@ use TYPO3\CMS\Opendocs\Service\OpenDocumentService;
  * Controller for documents processing
  *
  * Contains AJAX endpoints of the open docs toolbar item click actions
+ * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 class OpenDocumentController
 {

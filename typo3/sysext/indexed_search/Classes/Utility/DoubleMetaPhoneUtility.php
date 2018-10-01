@@ -18,6 +18,7 @@ namespace TYPO3\CMS\IndexedSearch\Utility;
  * TYPO3: Had to change name to "\TYPO3\CMS\IndexedSearch\Utility\DoubleMetaPhoneUtility" from just "DoubleMetaPhone" because TYPO3 requires a user class to be prefixed so:
  * TYPO3: If you want to use this metaphone method instead of the default in the indexer you can enable it in the extension configuration
  * TYPO3: Of course you can write your own metaphone hook methods by taking this class and configuration as example (also see ext_localconf.php)
+ * @internal
  */
 class DoubleMetaPhoneUtility
 {

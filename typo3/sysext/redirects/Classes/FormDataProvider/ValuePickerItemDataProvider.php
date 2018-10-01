@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Inject sys_domain records into valuepicker form
+ * @internal
  */
 class ValuePickerItemDataProvider implements FormDataProviderInterface
 {

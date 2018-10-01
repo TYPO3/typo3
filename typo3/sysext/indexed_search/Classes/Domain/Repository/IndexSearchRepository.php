@@ -29,6 +29,7 @@ use TYPO3\CMS\IndexedSearch\Utility;
 
 /**
  * Index search abstraction to search through the index
+ * @internal This class is a specific repository implementation and is not considered part of the Public TYPO3 API.
  */
 class IndexSearchRepository
 {

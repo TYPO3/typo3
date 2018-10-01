@@ -24,6 +24,7 @@ use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
  *
  * Creates an integer input field for difference between scheduler run time
  * and file modification time in days to select from.
+ * @internal This class is a specific scheduler task implementation is not considered part of the Public TYPO3 API.
  */
 class RecyclerGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 {

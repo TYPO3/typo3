@@ -24,6 +24,7 @@ use TYPO3\CMS\Recordlist\View\FolderUtilityRenderer;
 
 /**
  * Browser for folders
+ * @internal This class is a specific LinkBrowser implementation and is not part of the TYPO3's Core API.
  */
 class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInterface, LinkParameterProviderInterface
 {

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Scheduler;
 
 /**
  * This class manages the logic of a particular execution of a task
+ * @internal
  */
 class Execution
 {

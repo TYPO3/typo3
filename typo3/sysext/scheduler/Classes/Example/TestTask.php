@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Provides testing procedures
+ * @internal This class is an example is not considered part of the Public TYPO3 API.
  */
 class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {

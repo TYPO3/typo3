@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * TYPO3 Scheduler. This class handles scheduling and execution of tasks.
- * Formerly known as "Gabriel TYPO3 arch angel"
  */
 class Scheduler implements SingletonInterface, LoggerAwareInterface
 {

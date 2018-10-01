@@ -20,6 +20,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * FlagValue viewhelper
+ * @internal
  */
 class FlagValueViewHelper extends AbstractViewHelper
 {

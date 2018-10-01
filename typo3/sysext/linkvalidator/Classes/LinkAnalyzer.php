@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This class provides Processing plugin implementation
+ * @internal
  */
 class LinkAnalyzer
 {

@@ -31,6 +31,7 @@ use TYPO3\CMS\Recordlist\View\FolderUtilityRenderer;
 
 /**
  * Link handler for files
+ * @internal This class is a specific LinkHandler implementation and is not part of the TYPO3's Core API.
  */
 class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface, LinkParameterProviderInterface
 {

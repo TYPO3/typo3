@@ -27,6 +27,7 @@ use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 
 /**
  * Deleted Records View
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class DeletedRecordsController
 {

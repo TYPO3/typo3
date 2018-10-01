@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Extension class for the TBE record browser
+ * @internal
  */
 class ElementBrowserPageTreeView extends \TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView
 {

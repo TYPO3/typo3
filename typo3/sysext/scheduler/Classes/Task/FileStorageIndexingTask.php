@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Scheduler\Task;
 
 /**
  * This task tries to find changes in storage and writes them back to DB
+ * @internal This class is a specific scheduler task implementation is not considered part of the Public TYPO3 API.
  */
 class FileStorageIndexingTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {

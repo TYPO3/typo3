@@ -31,6 +31,7 @@ use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 
 /**
  * Model class for the 'recycler' extension.
+ * @internal This class is a specific domain model implementation and is not part of the Public TYPO3 API.
  */
 class DeletedRecords
 {

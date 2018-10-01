@@ -17,6 +17,7 @@ namespace TYPO3\CMS\IndexedSearch\Utility;
 /**
  * Class with common methods used across various classes in the indexed search.
  * Impementation is provided by various people from the TYPO3 community.
+ * @internal
  */
 class IndexedSearchUtility
 {

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Scheduler\Task;
 
 /**
  * Additional BE fields for tasks which indexes files in a storage
+ * @internal This class is a specific scheduler task implementation is not considered part of the Public TYPO3 API.
  */
 class FileStorageIndexingAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
 {

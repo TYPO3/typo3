@@ -25,6 +25,7 @@ use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 /**
  * Additional field to set the notification email address(es) for system health
  * issue notifications.
+ * @internal This class is a specific scheduler task implementation and is not considered part of the Public TYPO3 API.
  */
 class SystemStatusUpdateTaskNotificationEmailField extends AbstractAdditionalFieldProvider
 {

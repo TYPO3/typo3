@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Redirects\Evaluation;
 /**
  * Class SourceHost
  * Triggered from DataHandler as TCA formevals hook for validation / sanitation of domain values.
+ * @internal
  */
 class SourceHost
 {

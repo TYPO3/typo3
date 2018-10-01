@@ -24,6 +24,7 @@ use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 
 /**
  * Renders utility forms used in the views for files/folders of Element and Link Browser
+ * @internal
  */
 class FolderUtilityRenderer
 {

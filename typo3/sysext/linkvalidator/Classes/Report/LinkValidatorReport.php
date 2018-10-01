@@ -37,6 +37,7 @@ use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 
 /**
  * Module 'Link validator' as sub module of Web -> Info
+ * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 class LinkValidatorReport
 {

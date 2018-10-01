@@ -23,6 +23,7 @@ use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 /**
  * A task that should be run regularly that deletes
  * datasets flagged as "deleted" from the DB.
+ * @internal
  */
 class CleanerFieldProvider extends AbstractAdditionalFieldProvider
 {

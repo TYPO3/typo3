@@ -27,6 +27,7 @@ use TYPO3\CMS\Recycler\Domain\Model\Tables;
 
 /**
  * Controller class for the 'recycler' extension. Handles the AJAX Requests
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class RecyclerAjaxController
 {

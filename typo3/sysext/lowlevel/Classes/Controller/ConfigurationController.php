@@ -34,6 +34,7 @@ use TYPO3\CMS\Lowlevel\Utility\ArrayBrowser;
 
 /**
  * View configuration arrays in the backend
+ * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 class ConfigurationController
 {

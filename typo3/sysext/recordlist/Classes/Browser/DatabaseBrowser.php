@@ -25,6 +25,7 @@ use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 
 /**
  * Showing a page tree and allows you to browse for records
+ * @internal This class is a specific LinkBrowser implementation and is not part of the TYPO3's Core API.
  */
 class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserInterface, LinkParameterProviderInterface
 {

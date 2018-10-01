@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
 /**
  * Access to open and recent documents
+ * @internal helper class
  */
 class OpenDocumentService
 {

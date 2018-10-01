@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Service for URL-related data
+ *
+ * @internal
  */
 class UrlService
 {

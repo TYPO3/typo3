@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This service provides the mysql specific changes of the schema definition
+ * @internal this is a TYPO3-internal hook implementation and not part of TYPO3's Core API.
  */
 class DatabaseSchemaService
 {

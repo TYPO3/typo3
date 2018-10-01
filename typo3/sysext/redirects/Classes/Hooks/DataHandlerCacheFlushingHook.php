@@ -21,6 +21,7 @@ use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 
 /**
  * Ensure to clear the cache entry when a sys_redirect record is modified or deleted
+ * @internal This class is a specific TYPO3 hook implementation and is not part of the Public TYPO3 API.
  */
 class DataHandlerCacheFlushingHook
 {

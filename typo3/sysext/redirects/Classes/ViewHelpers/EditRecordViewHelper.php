@@ -23,6 +23,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Edit Record ViewHelper
+ * @internal
  * @todo remove once general edit view helper exists
  */
 class EditRecordViewHelper extends AbstractViewHelper

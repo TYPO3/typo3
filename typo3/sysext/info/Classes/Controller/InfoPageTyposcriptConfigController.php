@@ -33,6 +33,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Page TSconfig viewer in Web -> Info
+ * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 class InfoPageTyposcriptConfigController
 {

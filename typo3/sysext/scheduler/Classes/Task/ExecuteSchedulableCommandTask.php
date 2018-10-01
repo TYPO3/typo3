@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask
+ * @internal This class is a specific scheduler task implementation is not considered part of the Public TYPO3 API.
  */
 class ExecuteSchedulableCommandTask extends AbstractTask
 {

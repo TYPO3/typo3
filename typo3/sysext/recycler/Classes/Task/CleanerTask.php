@@ -21,6 +21,7 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 /**
  * A task that should be run regularly that deletes deleted
  * datasets from the DB.
+ * @internal This class is a specific scheduler task implementation and is not part of the Public TYPO3 API.
  */
 class CleanerTask extends AbstractTask
 {

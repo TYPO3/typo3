@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Scheduler\Example;
 /**
  * Provides a task that sleeps for some time
  * This is useful for testing parallel executions
+ * @internal This class is an example is not considered part of the Public TYPO3 API.
  */
 class SleepTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {

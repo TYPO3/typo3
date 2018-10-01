@@ -31,6 +31,8 @@ use TYPO3\CMS\Redirects\Service\RedirectService;
 /**
  * Hooks into the frontend request, and checks if a redirect should apply,
  * If so, a redirect response is triggered.
+ *
+ * @internal
  */
 class RedirectHandler implements MiddlewareInterface, LoggerAwareInterface
 {

@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Specific page tree for the record link handler.
+ * @internal
  */
 class RecordBrowserPageTreeView extends ElementBrowserPageTreeView
 {

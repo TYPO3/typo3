@@ -18,6 +18,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Hooks for \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController (TSFE).
+ * @internal this is a TYPO3-internal hook implementation and not part of TYPO3's Core API.
  */
 class TypoScriptFrontendHook
 {

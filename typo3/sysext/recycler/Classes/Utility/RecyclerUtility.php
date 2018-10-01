@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Helper class for the 'recycler' extension.
+ * @internal
  */
 class RecyclerUtility
 {

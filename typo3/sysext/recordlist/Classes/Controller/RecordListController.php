@@ -45,6 +45,7 @@ use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 
 /**
  * Script Class for the Web > List module; rendering the listing of records on a page
+ * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 class RecordListController
 {

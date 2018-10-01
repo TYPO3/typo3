@@ -31,6 +31,7 @@ use TYPO3\CMS\IndexedSearch\FileContentParser;
 
 /**
  * Administration repository
+ * @internal This class is a specific repository implementation and is not considered part of the Public TYPO3 API.
  */
 class AdministrationRepository
 {

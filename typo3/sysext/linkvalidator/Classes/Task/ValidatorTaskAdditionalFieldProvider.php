@@ -25,6 +25,7 @@ use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 
 /**
  * This class provides Scheduler Additional Field plugin implementation
+ * @internal This class is a specific Scheduler task implementation and is not part of the TYPO3's Core API.
  */
 class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 {

@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class for displaying page information (records, page record properties) in Web -> Info
+ * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 class PageInformationController
 {

@@ -28,6 +28,7 @@ use TYPO3\CMS\Recordlist\Tree\View\RecordBrowserPageTreeView;
 
 /**
  * Link handler for arbitrary database records
+ * @internal This class is a specific LinkHandler implementation and is not part of the TYPO3's Core API.
  */
 class RecordLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface, LinkParameterProviderInterface
 {

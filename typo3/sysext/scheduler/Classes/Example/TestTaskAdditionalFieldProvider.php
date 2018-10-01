@@ -22,6 +22,7 @@ use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 
 /**
  * Additional fields provider class for usage with the Scheduler's test task
+ * @internal This class is an example is not considered part of the Public TYPO3 API.
  */
 class TestTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 {

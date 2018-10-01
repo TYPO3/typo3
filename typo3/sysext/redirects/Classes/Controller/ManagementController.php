@@ -35,6 +35,7 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * Lists all redirects in the TYPO3 Backend as a module
+ * @internal This class is a specific TYPO3 Backend controller implementation and is not part of the Public TYPO3 API.
  */
 class ManagementController
 {

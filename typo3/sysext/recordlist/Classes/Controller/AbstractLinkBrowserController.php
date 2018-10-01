@@ -29,6 +29,7 @@ use TYPO3\CMS\Recordlist\LinkHandler\LinkHandlerInterface;
 
 /**
  * Script class for the Link Browser window.
+ * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 abstract class AbstractLinkBrowserController
 {

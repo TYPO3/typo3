@@ -23,7 +23,7 @@ use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 /**
  * Base class for link handlers
  *
- * NOTE: This class should only be used internally. Extensions must implement the LinkHandlerInterface.
+ * @internal This class should only be used internally. Extensions must implement the LinkHandlerInterface.
  */
 abstract class AbstractLinkHandler
 {

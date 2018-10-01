@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This task reorganizes the physical storage of table data and associated index data,
  * to reduce storage space and improve I/O efficiency when accessing the table. The
  * exact changes made to each table depend on the storage engine used by that table.
+ * @internal This class is a specific scheduler task implementation is not considered part of the Public TYPO3 API.
  */
 class OptimizeDatabaseTableTask extends AbstractTask
 {
