@@ -1,5 +1,7 @@
 <?php
-namespace TYPO3\CMS\Backend\Routing\Exception;
+declare(strict_types = 1);
+
+namespace TYPO3\CMS\Core\Routing;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,8 +17,8 @@ namespace TYPO3\CMS\Backend\Routing\Exception;
  */
 
 /**
- * Exception thrown when a route does not exist
+ * Exception thrown when a route does not exist or does not match the Route Arguments
  */
-class RouteNotFoundException extends \TYPO3\CMS\Core\Routing\RouteNotFoundException
+class InvalidRouteArgumentsException extends \TYPO3\CMS\Core\Exception
 {
 }

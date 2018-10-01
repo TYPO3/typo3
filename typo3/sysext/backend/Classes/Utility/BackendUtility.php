@@ -41,6 +41,7 @@ use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\Entity\PseudoSite;
@@ -2689,7 +2690,7 @@ class BackendUtility
                     $anchorSection,
                     RouterInterface::ABSOLUTE_URL
                 );
-            } catch (SiteNotFoundException $e) {
+            } catch (SiteNotFoundException | InvalidRouteArgumentsException $e) {
                 $previewUrl = self::createPreviewUrl($pageUid, $rootLine, $anchorSection, $additionalGetVars, $viewScript);
             }
         }

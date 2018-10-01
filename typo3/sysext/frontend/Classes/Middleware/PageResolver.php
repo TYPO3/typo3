@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
 use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Routing\RouteNotFoundException;
 use TYPO3\CMS\Core\Routing\SiteRouteResult;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
@@ -98,9 +99,17 @@ class PageResolver implements MiddlewareInterface
                 );
             } else {
                 // Check for the route
-                $pageArguments = $site->getRouter()->matchRequest($request, $previousResult);
+                try {
+                    $pageArguments = $site->getRouter()->matchRequest($request, $previousResult);
+                } catch (RouteNotFoundException $e) {
+                    return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                        $request,
+                        'The requested page does not exist',
+                        ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
+                    );
+                }
             }
-            if ($pageArguments === null || !$pageArguments->getPageId()) {
+            if (!$pageArguments->getPageId()) {
                 return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                     $request,
                     'The requested page does not exist',

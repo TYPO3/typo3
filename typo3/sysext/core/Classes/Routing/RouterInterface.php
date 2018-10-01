@@ -38,9 +38,10 @@ interface RouterInterface
     /**
      * @param ServerRequestInterface $request
      * @param RouteResultInterface|null $previousResult
-     * @return RouteResultInterface|null if no route has matched, an empty RouteResult is returned.
+     * @return RouteResultInterface
+     * @throws RouteNotFoundException
      */
-    public function matchRequest(ServerRequestInterface $request, RouteResultInterface $previousResult = null): ?RouteResultInterface;
+    public function matchRequest(ServerRequestInterface $request, RouteResultInterface $previousResult = null): RouteResultInterface;
 
     /**
      * Builds a URI based on the $route and the given parameters.
@@ -50,6 +51,7 @@ interface RouterInterface
      * @param string $fragment the section/fragment www.example.com/page/#fragment, WITHOUT the hash
      * @param string $type see the constants above.
      * @return UriInterface
+     * @throws InvalidRouteArgumentsException
      */
     public function generateUri($route, array $parameters = [], string $fragment = '', string $type = self::ABSOLUTE_URL): UriInterface;
 }

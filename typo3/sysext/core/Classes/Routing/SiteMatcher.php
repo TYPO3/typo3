@@ -43,6 +43,8 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  *
  * The concept of the SiteMatcher is to *resolve*, and not build URIs. On top, it is a facade to hide the
  * dependency to symfony and to not expose its logic.
+ *
+ * @internal Please note that the site matcher will be probably cease to exist and adapted to the SiteFinder concept when Pseudo-Site handling will be removed.
  */
 class SiteMatcher implements SingletonInterface
 {

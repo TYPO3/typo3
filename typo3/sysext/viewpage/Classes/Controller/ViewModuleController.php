@@ -218,7 +218,6 @@ class ViewModuleController
                 $additionalGetVars .= '&MP=' . $mountPointInformation['MPvar'];
             }
             $additionalGetVars .= $this->getTypeParameterIfSet($finalPageIdToShow);
-            /** @todo */
             if ($site instanceof Site) {
                 $additionalQueryParams = [];
                 parse_str($additionalGetVars, $additionalQueryParams);

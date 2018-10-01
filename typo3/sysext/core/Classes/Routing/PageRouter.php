@@ -108,8 +108,9 @@ class PageRouter implements RouterInterface
      * @param ServerRequestInterface $request
      * @param RouteResultInterface|SiteRouteResult|null $previousResult
      * @return SiteRouteResult
+     * @throws RouteNotFoundException
      */
-    public function matchRequest(ServerRequestInterface $request, RouteResultInterface $previousResult = null): ?RouteResultInterface
+    public function matchRequest(ServerRequestInterface $request, RouteResultInterface $previousResult = null): RouteResultInterface
     {
         $urlPath = $previousResult->getTail();
         $slugCandidates = $this->getCandidateSlugsFromRoutePath($urlPath ?: '/');
@@ -117,7 +118,7 @@ class PageRouter implements RouterInterface
         $pageCandidates = $this->getPagesFromDatabaseForCandidates($slugCandidates, $language->getLanguageId());
         // Stop if there are no candidates
         if (empty($pageCandidates)) {
-            return null;
+            throw new RouteNotFoundException('No page candidates found for path "' . $urlPath . '"', 1538389999);
         }
 
         $decoratedParameters = [];
@@ -157,9 +158,9 @@ class PageRouter implements RouterInterface
             $matchedRoute->setOption('_decoratedParameters', $decoratedParameters);
             return $this->buildPageArguments($matchedRoute, $result, $request->getQueryParams());
         } catch (ResourceNotFoundException $e) {
-            // return nothing
+            // Do nothing
         }
-        return null;
+        throw new RouteNotFoundException('No route found for path "' . $urlPath . '"', 1538389998);
     }
 
     /**
@@ -265,15 +266,17 @@ class PageRouter implements RouterInterface
             }
         }
 
+        if (!$uri instanceof UriInterface) {
+            throw new InvalidRouteArgumentsException('Uri could not be built for page "' . $pageId . '"', 1538390230);
+        }
+
         if ($pageRouteResult && $pageRouteResult->areDirty()) {
             // for generating URLs this should(!) never happen
             // if it does happen, generator logic has flaws
-            throw new \OverflowException('Route arguments are dirty', 1537613247);
+            throw new InvalidRouteArgumentsException('Route arguments are dirty', 1537613247);
         }
 
-        if ($matchedRoute && $pageRouteResult && $uri instanceof UriInterface
-            && !empty($pageRouteResult->getDynamicArguments())
-        ) {
+        if ($matchedRoute && $pageRouteResult && !empty($pageRouteResult->getDynamicArguments())) {
             $cacheHash = $this->generateCacheHash($pageId, $pageRouteResult);
 
             if (!empty($cacheHash)) {
@@ -285,7 +288,6 @@ class PageRouter implements RouterInterface
         if ($fragment) {
             $uri = $uri->withFragment($fragment);
         }
-        // @todo Throw exception in case $uri is null
         return $uri;
     }
 
