@@ -87,7 +87,7 @@ class Uri implements UriInterface
      * The query part of the URI without the ?
      * @var string
      */
-    protected $query;
+    protected $query = '';
 
     /**
      * The fragment part of the URI without the # before
