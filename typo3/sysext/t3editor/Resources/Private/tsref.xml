@@ -7092,11 +7092,11 @@ Must at least contain the header property.]]></description>
 		</property>
 	</type>
 	<type id="additionalHeadersItem">
-		<property name="header" type="stdWrap">
+		<property name="header" type="string">
 			<description><![CDATA[The header string]]></description>
 			<default><![CDATA[]]></default>
 		</property>
-		<property name="replace" type="stdWrap">
+		<property name="replace" type="boolean">
 			<description><![CDATA[Optional.
 
 If set, previous headers with the same name are replaced with the current one.
@@ -7104,7 +7104,7 @@ If set, previous headers with the same name are replaced with the current one.
 Default is "1".]]></description>
 			<default><![CDATA[1]]></default>
 		</property>
-		<property name="httpResponseCode" type="stdWrap">
+		<property name="httpResponseCode" type="int">
 			<description><![CDATA[Optional. HTTP status code as an integer.]]></description>
 			<default><![CDATA[]]></default>
 		</property>

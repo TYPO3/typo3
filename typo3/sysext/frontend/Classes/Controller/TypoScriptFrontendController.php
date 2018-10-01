@@ -5027,28 +5027,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             if (!is_array($options)) {
                 continue;
             }
-            $header = $options['header'] ?? '';
-            $header = isset($options['header.'])
-                ? $this->cObj->stdWrap(trim($header), $options['header.'])
-                : trim($header);
+            $header = trim($options['header'] ?? '');
             if ($header === '') {
                 continue;
             }
-            $replace = $options['replace'] ?? '';
-            $replace = isset($options['replace.'])
-                ? $this->cObj->stdWrap($replace, $options['replace.'])
-                : $replace;
-            $httpResponseCode = $options['httpResponseCode'] ?? '';
-            $httpResponseCode = isset($options['httpResponseCode.'])
-                ? $this->cObj->stdWrap($httpResponseCode, $options['httpResponseCode.'])
-                : $httpResponseCode;
-            $httpResponseCode = (int)$httpResponseCode;
-
             $additionalHeaders[] = [
                 'header' => $header,
                 // "replace existing headers" is turned on by default, unless turned off
-                'replace' => $replace !== '0',
-                'statusCode' => $httpResponseCode ?: null
+                'replace' => ($options['replace'] ?? '') !== '0',
+                'statusCode' => (int)($options['httpResponseCode'] ?? 0) ?: null
             ];
         }
         return $additionalHeaders;
