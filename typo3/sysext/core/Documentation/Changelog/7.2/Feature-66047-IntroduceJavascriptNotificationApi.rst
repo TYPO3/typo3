@@ -14,7 +14,7 @@ The Flashmessages API has been moved from `TYPO3.Flashmessages` to `top.TYPO3.Fl
 
 Now we introduce the new JavaScript Notification API and remove the refactoring of the FlashMessage API which was made for TYPO3 CMS 7.0.
 
-The compatibility layer for TYPO3.FlashMessage has changed to use the new Notification API and will be removed with TYPO3 CMS 9 as before.
+The compatibility layer for TYPO3.FlashMessage has changed to use the new Notification API and will be removed with TYPO3 v9 as before.
 
 The new Notification API works similar to old Flashmessages, you can use it from the Top-Frame, where is it loaded one time for the complete backend.
 

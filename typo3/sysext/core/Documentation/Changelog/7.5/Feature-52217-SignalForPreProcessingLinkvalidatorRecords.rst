@@ -41,7 +41,7 @@ The slot class:
          * Receives a signal before the record is analyzed
          *
          * @param array $results Array of broken links
-         * @param array $record Record to analyse
+         * @param array $record Record to analyze
          * @param string $table Table name of the record
          * @param array $fields Array of fields to analyze
          * @param LinkAnalyzer $parentObject Parent object
