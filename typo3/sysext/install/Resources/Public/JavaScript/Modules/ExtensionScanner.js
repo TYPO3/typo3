@@ -16,8 +16,9 @@
  */
 define(['jquery',
   'TYPO3/CMS/Install/Router',
-  'TYPO3/CMS/Backend/Notification'
-], function($, Router, Notification) {
+  'TYPO3/CMS/Backend/Notification',
+  'TYPO3/CMS/Install/AjaxQueue'
+], function($, Router, Notification, AjaxQueue) {
   'use strict';
 
   return {
@@ -27,10 +28,6 @@ define(['jquery',
     selectorExtensionContainer: '.t3js-extensionScanner-extension',
     selectorNumberOfFiles: '.t3js-extensionScanner-number-of-files',
     selectorScanSingleTrigger: '.t3js-extensionScanner-scan-single',
-    ajaxRequests: 0,
-    ajaxQueue: [],
-    ajaxActive: 0,
-    ajaxMaxConcurrent: 10,
 
     initialize: function(currentModal) {
       var self = this;
@@ -59,38 +56,9 @@ define(['jquery',
       });
     },
 
-    addAjaxCallToQueue: function(obj) {
-      this.ajaxRequests++;
-      var oldSuccess = obj.success;
-      var oldError = obj.error;
-      var that = this;
-      var callback = function() {
-        that.ajaxRequests--;
-        if (that.ajaxActive === that.ajaxMaxConcurrent) {
-          $.ajax(that.ajaxQueue.shift());
-        } else {
-          that.ajaxActive--;
-        }
-      };
-      obj.success = function(resp, xhr, status) {
-        callback();
-        if (oldSuccess) oldSuccess(resp, xhr, status);
-      };
-      obj.error = function(xhr, status, error) {
-        callback();
-        if (oldError) oldError(xhr, status, error);
-      };
-      if (this.ajaxActive === this.ajaxMaxConcurrent) {
-        this.ajaxQueue.push(obj);
-      } else {
-        this.ajaxActive++;
-        $.ajax(obj);
-      }
-    },
-
     getData: function() {
       var modalContent = this.currentModal.find(this.selectorModalBody);
-      this.addAjaxCallToQueue(
+      AjaxQueue.add(
         {
           url: Router.getUrl('extensionScannerGetData'),
           cache: false,
@@ -184,7 +152,7 @@ define(['jquery',
 
       if (numberOfScannedExtensions === numberOfExtensions) {
         Notification.success('Scan finished', 'All extensions have been scanned');
-        this.addAjaxCallToQueue(
+        AjaxQueue.add(
           {
             url: Router.getUrl(),
             method: 'POST',
@@ -241,8 +209,7 @@ define(['jquery',
       $extensionContainer.find('.t3js-extensionScanner-extension-body-ignored-files').empty().text('0');
       $extensionContainer.find('.t3js-extensionScanner-extension-body-ignored-lines').empty().text('0');
       this.setProgressForAll();
-      var that = this;
-      this.addAjaxCallToQueue(
+      AjaxQueue.add(
         {
           url: Router.getUrl(),
           method: 'POST',
@@ -262,7 +229,7 @@ define(['jquery',
                 $extensionContainer.find('.t3js-extensionScanner-extension-body').text('');
                 var doneFiles = 0;
                 data.files.forEach(function(file) {
-                  that.addAjaxCallToQueue(
+                  AjaxQueue.add(
                     {
                       method: 'POST',
                       data: {
