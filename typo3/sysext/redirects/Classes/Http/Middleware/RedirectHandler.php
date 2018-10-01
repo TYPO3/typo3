@@ -78,7 +78,11 @@ class RedirectHandler implements MiddlewareInterface, LoggerAwareInterface
      */
     protected function buildRedirectResponse(UriInterface $uri, array $redirectRecord): ResponseInterface
     {
-        return new RedirectResponse($uri, (int)$redirectRecord['target_statuscode'], ['X-Redirect-By' => 'TYPO3']);
+        return new RedirectResponse(
+            $uri,
+            (int)$redirectRecord['target_statuscode'],
+            ['X-Redirect-By' => 'TYPO3 Redirect ' . $redirectRecord['uid']]
+        );
     }
 
     /**
