@@ -1,4 +1,5 @@
 .. include:: ../../Includes.txt
+.. highlight:: yaml
 
 ===============================================
 Feature: #86365 - Routing Enhancers and Aspects
@@ -72,22 +73,21 @@ The Simple Enhancer works with various route arguments to map them to a argument
 
 `https://www.example.com/path-to/my-page/241/Benni`
 
-The configuration looks like this:
+The configuration looks like this::
 
-:yaml:
-    routeEnhancers:
-      # Unique name for the enhancers, used internally for referencing
-      CategoryListing:
-        type: Simple
-        limitToPages: [13]
-        routePath: '/show-by-category/{category_id}/{tag}'
-        defaults:
-          tag: ''
-          requirements:
-            category_id: '[0-9]{1..3}'
-            tag: '^[a-zA-Z0-9].*$'
-          _arguments:
-            category_id: 'category'
+   routeEnhancers:
+     # Unique name for the enhancers, used internally for referencing
+     CategoryListing:
+       type: Simple
+       limitToPages: [13]
+       routePath: '/show-by-category/{category_id}/{tag}'
+       defaults:
+         tag: ''
+         requirements:
+           category_id: '[0-9]{1..3}'
+           tag: '^[a-zA-Z0-9].*$'
+         _arguments:
+           category_id: 'category'
 
 The configuration option `routePath` defines the static keyword (previously known to some as "postVarSets" keyword for
 some TYPO3 folks), and the available placeholders.
@@ -122,7 +122,7 @@ namespace.
 The Plugin Enhancer explicitly sets exactly one additional variant for a specific use-case. In case of Frontend Login,
 we would need to set up multiple configurations of Plugin Enhancer for forgot and recover passwords.
 
-:yaml:
+::
 
    routeEnhancers:
      ForgotPassword:
@@ -135,7 +135,6 @@ we would need to set up multiple configurations of Plugin Enhancer for forgot an
        requirements:
          user: '[0-9]{1..3}'
          hash: '^[a-zA-Z0-9]{32}$'
-
 
 If a URL is generated with the given parameters to link to a page, the result will look like this:
 
@@ -174,25 +173,24 @@ And generate the following URLs
    `https://www.example.com/path-to/my-page/detail/13`
    `https://www.example.com/path-to/my-page/archive/2018/8`
 
-:yaml:
+::
 
-    routeEnhancers:
-      NewsPlugin:
-        type: Extbase
-        limitToPages: [13]
-        extension: News
-        plugin: Pi1
-        routes:
-          - { routePath: '/list/{page}', _controller: 'News::list', _arguments: {'page': '@widget_0/currentPage'} }
-          - { routePath: '/tag/{tag_name}', '_controller': 'News::list', '_arguments': {'tag_name': 'overwriteDemand/tags'}}
-          - { routePath: '/blog/{news_title}', _controller: 'News::detail', _arguments: {'news_title': 'news'} }
-          - { routePath: '/archive/{year}/{month}', _controller: 'News::archive' }
-        defaultController: 'News::list'
-        defaults:
-          page: '0'
-        requirements:
-          page: '\d+'
-
+   routeEnhancers:
+     NewsPlugin:
+       type: Extbase
+       limitToPages: [13]
+       extension: News
+       plugin: Pi1
+       routes:
+         - { routePath: '/list/{page}', _controller: 'News::list', _arguments: {'page': '@widget_0/currentPage'} }
+         - { routePath: '/tag/{tag_name}', '_controller': 'News::list', '_arguments': {'tag_name': 'overwriteDemand/tags'}}
+         - { routePath: '/blog/{news_title}', _controller: 'News::detail', _arguments: {'news_title': 'news'} }
+         - { routePath: '/archive/{year}/{month}', _controller: 'News::archive' }
+       defaultController: 'News::list'
+       defaults:
+         page: '0'
+       requirements:
+         page: '\d+'
 
 In this example, you also see that the `_arguments` parameter can be used to bring them into sub properties of an array,
 which is typically the case within demand objects for filtering functionality.
@@ -223,35 +221,35 @@ simpler example to create speaking segments for all available months.
 
 The configuration could look like this:
 
-:yaml:
+::
 
-    routeEnhancers:
-      NewsArchive:
-        type: Extbase
-        limitToPages: [13]
-        extension: News
-        plugin: Pi1
-        routes:
-          - { routePath: '/{year}/{month}', _controller: 'News::archive' }
-        defaultController: 'News::list'
-        defaults:
-          month: ''
-        aspects:
-          month:
-            type: StaticValueMapper
-            map:
-              january: 1
-              february: 2
-              march: 3
-              april: 4
-              may: 5
-              june: 6
-              july: 7
-              august: 8
-              september: 9
-              october: 10
-              november: 11
-              december: 12
+   routeEnhancers:
+     NewsArchive:
+       type: Extbase
+       limitToPages: [13]
+       extension: News
+       plugin: Pi1
+       routes:
+         - { routePath: '/{year}/{month}', _controller: 'News::archive' }
+       defaultController: 'News::list'
+       defaults:
+         month: ''
+       aspects:
+         month:
+           type: StaticValueMapper
+           map:
+             january: 1
+             february: 2
+             march: 3
+             april: 4
+             may: 5
+             june: 6
+             july: 7
+             august: 8
+             september: 9
+             october: 10
+             november: 11
+             december: 12
 
 
 You'll see the placeholder "month" where the aspect replaces the value to a speaking segment.
@@ -259,8 +257,7 @@ You'll see the placeholder "month" where the aspect replaces the value to a spea
 It is possible to add an optional `localeMap` to that aspect to use the locale of a value to use in multi-language
 setups.
 
-
-:yaml:
+::
 
     routeEnhancers:
       NewsArchive:
@@ -313,28 +310,26 @@ The enhanced part of a route path could be `/archive/{year}/{month}` - however, 
 possible to rename `/archive/` depending on the language that is given for this page translation. This modifier is a
 good example where a route path is modified but is not affected by arguments.
 
-The configuration could look like this:
+The configuration could look like this::
 
-:yaml:
-
-    routeEnhancers:
-      NewsArchive:
-        type: Extbase
-        limitToPages: [13]
-        extension: News
-        plugin: Pi1
-        routes:
-          - { routePath: '/{localized_archive}/{year}/{month}', _controller: 'News::archive' }
-        defaultController: 'News::list'
-        aspects:
-          localized_archive:
-            type: LocaleModifier
-            default: 'archive'
-            localeMap:
-              - locale: 'fr_FR.*|fr_CA.*'
-                value: 'archives'
-              - locale: 'de_DE.*'
-                 value: 'archiv'
+   routeEnhancers:
+     NewsArchive:
+       type: Extbase
+       limitToPages: [13]
+       extension: News
+       plugin: Pi1
+       routes:
+         - { routePath: '/{localized_archive}/{year}/{month}', _controller: 'News::archive' }
+       defaultController: 'News::list'
+       aspects:
+         localized_archive:
+           type: LocaleModifier
+           default: 'archive'
+           localeMap:
+             - locale: 'fr_FR.*|fr_CA.*'
+               value: 'archives'
+             - locale: 'de_DE.*'
+                value: 'archiv'
 
 You'll see the placeholder "localized_archive" where the aspect replaces the localized archive based on the locale of
 the language of that page.
@@ -346,26 +341,26 @@ StaticRangeMapper
 A static range mapper allows to avoid the `cHash` and narrow down the available possibilities for a placeholder,
 and to explicitly define a range for a value, which is recommended for all kinds of pagination functionalities.
 
-:yaml:
+::
 
-    routeEnhancers:
-      NewsPlugin:
-        type: Extbase
-        limitToPages: [13]
-        extension: News
-        plugin: Pi1
-        routes:
-          - { routePath: '/list/{page}', _controller: 'News::list', _arguments: {'page': '@widget_0/currentPage'} }
-        defaultController: 'News::list'
-        defaults:
-          page: '0'
-        requirements:
-          page: '\d+'
-        aspects:
-          page:
-            type: StaticRangeMapper
-            start: 1
-            end: 100
+   routeEnhancers:
+     NewsPlugin:
+       type: Extbase
+       limitToPages: [13]
+       extension: News
+       plugin: Pi1
+       routes:
+         - { routePath: '/list/{page}', _controller: 'News::list', _arguments: {'page': '@widget_0/currentPage'} }
+       defaultController: 'News::list'
+       defaults:
+         page: '0'
+       requirements:
+         page: '\d+'
+       aspects:
+         page:
+           type: StaticRangeMapper
+           start: 1
+           end: 100
 
 This limits down the pagination to max. 100 pages, if a user calls the news list with page 101, then the route enhancer
 does not match and would not apply the placeholder.
@@ -374,9 +369,7 @@ PersistedAliasMapper
 --------------------
 
 If an extension ships with a slug field, or a different field used for the speaking URL path, this database field
-can be used to build the URL:
-
-:yaml:
+can be used to build the URL::
 
     routeEnhancers:
       NewsPlugin:
@@ -412,23 +405,23 @@ When a placeholder should be fetched from multiple fields of the database, the P
 It allows to combine various fields into one variable, ensuring a unique value by e.g. adding the UID to the field
 without having the need of adding a custom slug field to the system.
 
-:yaml:
+::
 
-    routeEnhancers:
-      Blog:
-        type: Extbase
-        limitToPages: [13]
-        extension: BlogExample
-        plugin: Pi1
-        routes:
-          - { routePath: '/blog/{blogpost}', _controller: 'Blog::detail', _arguments: {'blogpost': 'post'} }
-        defaultController: 'Blog::detail'
-        aspects:
-          blogpost:
-            type: PersistedPatternMapper
-            tableName: 'tx_blogexample_domain_model_post'
-            routeFieldPattern: '^(?P<title>.+)-(?P<uid>\d+)$'
-            routeFieldResult: '{title}-{uid}'
+   routeEnhancers:
+     Blog:
+       type: Extbase
+       limitToPages: [13]
+       extension: BlogExample
+       plugin: Pi1
+       routes:
+         - { routePath: '/blog/{blogpost}', _controller: 'Blog::detail', _arguments: {'blogpost': 'post'} }
+       defaultController: 'Blog::detail'
+       aspects:
+         blogpost:
+           type: PersistedPatternMapper
+           tableName: 'tx_blogexample_domain_model_post'
+           routeFieldPattern: '^(?P<title>.+)-(?P<uid>\d+)$'
+           routeFieldResult: '{title}-{uid}'
 
 The `routeFieldPattern` option builds the title and uid fields from the database, the `routeFieldResult` shows
 how the placeholder will be output.
