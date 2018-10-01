@@ -9,23 +9,20 @@ See :issue:`86439`
 Description
 ===========
 
-Some minor changes have been made with :php:`\TYPO3\CMS\Core\TypoScript\TemplateService` in order
-to continue cleaning up the code.
+The following methods in :php:`\TYPO3\CMS\Core\TypoScript\TemplateService` have been marked as protected:
 
-The following methods have been marked as protected:
-
-- :php:`prependStaticExtra()`
-- :php:`versionOL()`
-- :php:`processIncludes()`
-- :php:`mergeConstantsFromPageTSconfig()`
-- :php:`flattenSetup()`
-- :php:`substituteConstants()`
+* :php:`prependStaticExtra()`
+* :php:`versionOL()`
+* :php:`processIncludes()`
+* :php:`mergeConstantsFromPageTSconfig()`
+* :php:`flattenSetup()`
+* :php:`substituteConstants()`
 
 
 Impact
 ======
 
-Calling the methods in a public context will now trigger a PHP deprecation message.
+Calling the methods in a public context  will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations

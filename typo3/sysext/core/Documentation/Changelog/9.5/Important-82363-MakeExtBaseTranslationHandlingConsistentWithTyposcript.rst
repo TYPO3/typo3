@@ -10,13 +10,13 @@ Description
 ===========
 
 Extbase now renders the translated records in the same way TypoScript rendering does.
-The new behaviour is controlled by the Extbase feature switch `consistentTranslationOverlayHandling`.
+The new behaviour is controlled by the Extbase feature switch :typoscript:`consistentTranslationOverlayHandling`.
 
 .. code-block:: typoscript
 
      config.tx_extbase.features.consistentTranslationOverlayHandling = 1
 
-The new behaviour is default in v9. The feature switch will be removed in v10, so there will be just
+The new behaviour is default in TYPO3 v9. The feature switch will be removed in TYPO3 v10, so there will be just
 one way of fetching records.
 You can override the setting using normal TypoScript.
 
@@ -117,12 +117,12 @@ Following examples show how to query data in Extbase in different scenarios, ind
 
 +------------------------+-------------------------------------------------------------------------------------------------+----------------------------------------------+------------------------------+
 | QuerySettings property | old behaviour                                                                                   | new behaviour                                | default value (TSFE|Extbase) |
-+------------------------+-------------------------------------------------------------------------------------------------+----------------------------------------------+------------------------------+
++========================+=================================================================================================+==============================================+==============================+
 | languageUid            |                                                                                                 | same                                         | 0                            |
 +------------------------+-------------------------------------------------------------------------------------------------+----------------------------------------------+------------------------------+
 | respectSysLanguage     |                                                                                                 | same                                         | `true`                       |
 +------------------------+-------------------------------------------------------------------------------------------------+----------------------------------------------+------------------------------+
-| languageOverlayMode    | not used                                                                                        | values: `true`, `false`, `hideNonTranslated` | 0|`true`                     |
+| languageOverlayMode    | not used                                                                                        | values: `true`, `false`, `hideNonTranslated` | 0 | `true`                   |
 |                        |                                                                                                 |                                              |                              |
 +------------------------+-------------------------------------------------------------------------------------------------+----------------------------------------------+------------------------------+
 | languageMode           | documented values: `null`, `content_fallback`, `strict` or `ignore`.                            | not used                                     | `null`                       |
@@ -156,7 +156,7 @@ See tests in :file:`extbase/Tests/Functional/Persistence/QueryLocalizedDataTest.
 The :php:`$repository->findByUid()` method takes current rendering language into account (e.g. L=1). It does not take
 `defaultQuerySetting` set on the repository into account.
 The result of this method also depends on whether `languageOverlayMode` is set or not.
-Values in brackets show previous behaviour (disabled flag) if different than current.
+Values in braces show previous behaviour (disabled flag) if different than current.
 
 The bottom line is that with the feature flag on, you can now use  :php:`findByUid()` using translated record uid to get
 translated content independently from language set in global context.

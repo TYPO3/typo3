@@ -37,7 +37,7 @@ Example TypoScript:
    jsonview.10.config.disableAllHeaderCode = 1
    jsonview.10.config.additionalHeaders.10.header = Content-Type: application/json
 
-Now configure the Route Enhancer in your site's `config.yaml` file like this:
+Now configure the Route Enhancer in your site's :file:`config.yaml` file like this:
 
 .. code-block:: yaml
 
@@ -50,9 +50,9 @@ Now configure the Route Enhancer in your site's `config.yaml` file like this:
             '.json': 26
 
 
-The `map` allows to add a filename or a file ending and map this to a `page.typeNum` value.
+The :yaml:`map` allows to add a filename or a file ending and map this to a :ts:`page.typeNum` value.
 
-It is also possible to set `default` to e.g. ".html" to add a ".html" suffix to all default pages.
+It is also possible to set :yaml:`default` to e.g. ".html" to add a ".html" suffix to all default pages.
 
 .. code-block:: yaml
 
@@ -65,7 +65,7 @@ It is also possible to set `default` to e.g. ".html" to add a ".html" suffix to 
             'rss.feed': 13
             '.json': 26
 
-The `index` property is used when generating links on root-level page, thus, instead of e.g. having
+The :yaml:`index` property is used when generating links on root-level page, thus, instead of e.g. having
 `/en/.json` thus would then result in `/en/index.json`.
 
 Impact

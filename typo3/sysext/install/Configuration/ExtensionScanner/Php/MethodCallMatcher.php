@@ -3765,7 +3765,7 @@ return [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
-            'Deprecation-86438-DeprecatePageRenderer-loadJQuery.rst'
+            'Deprecation-86438-PageRenderer-loadJQuery.rst'
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->fetchUserRecord' => [

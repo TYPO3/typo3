@@ -19,7 +19,7 @@ and enhance the existing route path which can contain flexible values, so-called
 On top, aspects can be registered to a specific enhancer to modify a specific placeholder, like static speaking names
 within the route path, or dynamically generated.
 
-To give you an overview of what the distinction are, we take a regular page which is available under
+To give you an overview of what the distinction is, we take a regular page which is available under
 
 `https://www.example.com/path-to/my-page`
 
@@ -34,11 +34,11 @@ which is added by the curly braces can then be statically or dynamically resolve
 commonly known a Mapper.
 
 Enhancers and aspects are activated and configured in a site configuration, currently possible by modifying the
-site's `config.yml` and adding the `routeEnhancers` section manually, as there is no UI for doing this. See
-examples below.
+site's :file:`config.yml` and adding the :yaml:`routeEnhancers` section manually, as there is no UI available for
+this configuration. See examples below.
 
 It is possible to use the same enhancers multiple times with different configurations, however, be aware that
-it is not possible to combine multiple variants / enhancers that match multiple configurations. @todo: How to describe this the best?
+it is not possible to combine multiple variants / enhancers that match multiple configurations.
 
 However, custom enhancers can be built to overcome special use cases where e.g. two plugins with multiple parameters
 each could be configured. Otherwise, the first variant that matches the URL parameters is used for generation and
@@ -53,14 +53,15 @@ TYPO3 comes with the following enhancers out of the box:
 - Plugin Enhancer (enhancer type "Plugin")
 - Extbase Plugin Enhancer (enhancer type "Extbase")
 
-Custom enhancers can be registered by adding an entry to an extensions` :php:`ext_localconf.php`.
+Custom enhancers can be registered by adding an entry to an extensions :file:`ext_localconf.php`.
 
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['CustomPlugin'] = \MyVendor\MyPackage\Routing\CustomEnhancer::class;`
 
 Within a configuration, an enhancer always evaluates the following properties:
-- `type` - the short name of the enhancer as registered within `$TYPO3_CONF_VARS`. This is mandatory.
-- `limitToPages` - an array of page IDs where this enhancer should be called. This is optional. This property (array)
-  evaluates to only trigger an enhancers for specific pages. In case of special plugin pages it is
+
+* `type` - the short name of the enhancer as registered within :php:`$TYPO3_CONF_VARS`. This is mandatory.
+* `limitToPages` - an array of page IDs where this enhancer should be called. This is optional. This property (array)
+  evaluates to only trigger an enhancer for specific pages. In case of special plugin pages it is
   useful to only enhance pages with IDs, to speed up performance for building page routes of all other pages.
 
 Simple Enhancer
@@ -68,9 +69,8 @@ Simple Enhancer
 
 The Simple Enhancer works with various route arguments to map them to a argument to be used later-on.
 
-   `index.php?id=13&category=241&tag=Benni`
-
-
+`index.php?id=13&category=241&tag=Benni`
+results in
 `https://www.example.com/path-to/my-page/241/Benni`
 
 The configuration looks like this::
@@ -104,7 +104,7 @@ The `_arguments` section defines what Route Parameters should be available to th
 placeholder is called `category_id` but the URL generation receives the argument `category`, so this is mapped to
 this very name.
 
-An enhancer is only there to replace a set of placeholders and fill in URL parameter or resolve them properly
+An enhancer is only there to replace a set of placeholders and fill in URL parameters or resolve them properly
 later-on, but not to substitute the values with aliases, this can be achieved by Aspects.
 
 
@@ -161,17 +161,17 @@ The `namespace` option is omitted, as this is built with `extension` and `plugin
 
 The Extbase Plugin enhancer with the configuration below would now apply to the following URLs:
 
-   `index.php?id=13&tx_news_pi1[controller]=News&tx_news_pi1[action]=list`
-   `index.php?id=13&tx_news_pi1[controller]=News&tx_news_pi1[action]=list&tx_news_pi1[page]=5`
-   `index.php?id=13&tx_news_pi1[controller]=News&tx_news_pi1[action]=detail&tx_news_pi1[news]=13`
-   `index.php?id=13&tx_news_pi1[controller]=News&tx_news_pi1[action]=archive&tx_news_pi1[year]=2018&&tx_news_pi1[month]=8`
+* `index.php?id=13&tx_news_pi1[controller]=News&tx_news_pi1[action]=list`
+* `index.php?id=13&tx_news_pi1[controller]=News&tx_news_pi1[action]=list&tx_news_pi1[page]=5`
+* `index.php?id=13&tx_news_pi1[controller]=News&tx_news_pi1[action]=detail&tx_news_pi1[news]=13`
+* `index.php?id=13&tx_news_pi1[controller]=News&tx_news_pi1[action]=archive&tx_news_pi1[year]=2018&&tx_news_pi1[month]=8`
 
 And generate the following URLs
 
-   `https://www.example.com/path-to/my-page/list/`
-   `https://www.example.com/path-to/my-page/list/5`
-   `https://www.example.com/path-to/my-page/detail/13`
-   `https://www.example.com/path-to/my-page/archive/2018/8`
+* `https://www.example.com/path-to/my-page/list/`
+* `https://www.example.com/path-to/my-page/list/5`
+* `https://www.example.com/path-to/my-page/detail/13`
+* `https://www.example.com/path-to/my-page/archive/2018/8`
 
 ::
 
@@ -432,7 +432,7 @@ Impact
 Some notes to the implementation:
 
 While accessing a page in TYPO3 in the Frontend, all arguments are currently built back into the global
-GET parameters, but also available as so-called `PageArguments` object, which is then used to be signed and verified
+GET parameters, but are also available as so-called `PageArguments` object, which is then used to be signed and verified
 that they are valid, when handing them to process a frontend request further.
 
 If there are dynamic parameters (= parameters which are not strictly limited), a verification GET parameter `cHash`

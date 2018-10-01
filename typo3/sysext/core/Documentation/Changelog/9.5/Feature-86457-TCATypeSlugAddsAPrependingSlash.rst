@@ -23,21 +23,22 @@ Impact
 ======
 
 Third-party extensions using the slug field now receive a slug value without a slash, and
-can use this as a regular - sanitized - slug field. It is however, recommended to use the
+can use this as a regular - sanitized - slug field. It is however recommended to use the
 `uniqueInPid` eval option to ensure uniqueness.
 
 If a nested record structure is given, it is recommended to use the new option `prependSlash`
 by setting it to :php:`true`.
 
-:php:
-	'type' => 'slug',
-	'config' => [
-		'generatorOptions' => [
-			'fields' => ['title'],
-		]
-		'fallbackCharacter' => '-',
-		'prefixSlash' => '/',
-		'eval' => 'uniqueInPid'
-	]
+.. code-block:: php
+
+    'type' => 'slug',
+    'config' => [
+        'generatorOptions' => [
+            'fields' => ['title'],
+        ]
+        'fallbackCharacter' => '-',
+        'prependSlash' => true,
+        'eval' => 'uniqueInPid'
+    ]
 
 .. index:: TCA

@@ -132,12 +132,12 @@ return [
     ],
     'TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST' => [
         'restFiles' => [
-            'Deprecation-86438-DeprecatePageRenderer-loadJQuery.rst',
+            'Deprecation-86438-PageRenderer-loadJQuery.rst',
         ],
     ],
     'TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_NONE' => [
         'restFiles' => [
-            'Deprecation-86438-DeprecatePageRenderer-loadJQuery.rst',
+            'Deprecation-86438-PageRenderer-loadJQuery.rst',
         ],
     ],
 ];

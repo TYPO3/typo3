@@ -16,13 +16,13 @@ marked as deprecated.
 Impact
 ======
 
-Calling this method will trigger a PHP deprecation notice.
+Calling this method will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations
 ======================
 
-TYPO3 installations with extensions, which use the method.
+TYPO3 installations with extensions that use the method.
 
 
 Migration

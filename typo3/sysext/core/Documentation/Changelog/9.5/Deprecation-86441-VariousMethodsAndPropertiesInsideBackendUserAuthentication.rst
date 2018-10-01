@@ -19,16 +19,17 @@ The second argument of method :php:`modAccess()` has been marked as deprecated, 
 The method :php:`isPSet()` has been marked as deprecated.
 
 The following - mostly workspaces-related - methods have been marked as "internal":
-- :php:`workspaceCannotEditOfflineVersion()`
-- :php:`workspacePublishAccess()`
-- :php:`workspaceSwapAccess()`
-- :php:`workspaceCannotEditOfflineVersion()`
+
+* :php:`workspaceCannotEditOfflineVersion()`
+* :php:`workspacePublishAccess()`
+* :php:`workspaceSwapAccess()`
+* :php:`workspaceCannotEditOfflineVersion()`
 
 
 Impact
 ======
 
-Calling the deprecated method or the protected property will now trigger a PHP deprecation message.
+Calling the deprecated method or the protected property will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations
@@ -42,4 +43,4 @@ Migration
 
 Avoid using the methods, and re-implement the functionality on your own, if necessary.
 
-.. index:: Frontend, FullyScanned
+.. index:: Frontend, FullyScanned, PHP-API
