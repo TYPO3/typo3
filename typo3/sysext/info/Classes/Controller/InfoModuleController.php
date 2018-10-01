@@ -549,7 +549,13 @@ class InfoModuleController
             $defaultFlashMessageQueue->enqueue($flashMessage);
         } else {
             if (is_callable([$this->extObj, 'main'])) {
-                $this->content .= $this->extObj->main();
+                $main = $this->extObj->main();
+                if ($main instanceof ResponseInterface) {
+                    $stream = $main->getBody();
+                    $stream->rewind();
+                    $main = $stream->getContents();
+                }
+                $this->content .= $main;
             }
         }
     }
