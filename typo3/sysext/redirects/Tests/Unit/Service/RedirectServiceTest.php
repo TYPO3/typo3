@@ -104,6 +104,187 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @test
      */
+    public function matchRedirectReturnsRedirectOnRespectQueryParametersMatch()
+    {
+        $row = [
+            'target' => 'https://example.com',
+            'force_https' => '0',
+            'keep_query_parameters' => '0',
+            'respect_query_parameters' => '1',
+            'target_statuscode' => '307',
+            'disabled' => '0',
+            'starttime' => '0',
+            'endtime' => '0'
+        ];
+        $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
+            [
+                'example.com' => [
+                    'respect_query_parameters' => [
+                        'index.php?id=123' => [
+                            1 => $row,
+                        ],
+                    ],
+                ],
+            ]
+        );
+        GeneralUtility::addInstance(RedirectCacheService::class, $this->redirectCacheServiceProphecy->reveal());
+
+        $result = $this->redirectService->matchRedirect('example.com', 'index.php', 'id=123');
+
+        self::assertSame($row, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function matchRedirectReturnsRedirectOnRespectQueryParametersMatchWithSlash()
+    {
+        $row = [
+            'target' => 'https://example.com',
+            'force_https' => '0',
+            'keep_query_parameters' => '0',
+            'respect_query_parameters' => '1',
+            'target_statuscode' => '307',
+            'disabled' => '0',
+            'starttime' => '0',
+            'endtime' => '0'
+        ];
+        $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
+            [
+                'example.com' => [
+                    'respect_query_parameters' => [
+                        'index.php/?id=123' => [
+                            1 => $row,
+                        ],
+                    ],
+                ],
+            ]
+        );
+        GeneralUtility::addInstance(RedirectCacheService::class, $this->redirectCacheServiceProphecy->reveal());
+
+        $result = $this->redirectService->matchRedirect('example.com', 'index.php', 'id=123');
+
+        self::assertSame($row, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function matchRedirectReturnsRedirectOnFullRespectQueryParametersMatch()
+    {
+        $row = [
+            'target' => 'https://example.com/target',
+            'force_https' => '0',
+            'keep_query_parameters' => '0',
+            'respect_query_parameters' => '1',
+            'target_statuscode' => '307',
+            'disabled' => '0',
+            'starttime' => '0',
+            'endtime' => '0'
+        ];
+        $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
+            [
+                'example.com' => [
+                    'respect_query_parameters' => [
+                        'index.php?id=123&a=b' => [
+                            1 => $row,
+                        ],
+                    ],
+                ],
+            ]
+        );
+        GeneralUtility::addInstance(RedirectCacheService::class, $this->redirectCacheServiceProphecy->reveal());
+
+        $result = $this->redirectService->matchRedirect('example.com', 'index.php', 'id=123&a=b');
+
+        self::assertSame($row, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function matchRedirectReturnsNullOnPartialRespectQueryParametersMatch()
+    {
+        $row = [
+            'target' => 'https://example.com/target',
+            'force_https' => '0',
+            'keep_query_parameters' => '0',
+            'respect_query_parameters' => '1',
+            'target_statuscode' => '307',
+            'disabled' => '0',
+            'starttime' => '0',
+            'endtime' => '0'
+        ];
+        $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
+            [
+                'example.com' => [
+                    'respect_query_parameters' => [
+                        'index.php?id=123&a=b' => [
+                            1 => $row,
+                        ],
+                    ],
+                ],
+            ]
+        );
+        GeneralUtility::addInstance(RedirectCacheService::class, $this->redirectCacheServiceProphecy->reveal());
+
+        $result = $this->redirectService->matchRedirect('example.com', 'index.php', 'id=123&a=a');
+
+        self::assertSame(null, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function matchRedirectReturnsMatchingRedirectWithMatchingQueryParametersOverMatchingPath()
+    {
+        $row1 = [
+            'target' => 'https://example.com/no-promotion',
+            'force_https' => '0',
+            'keep_query_parameters' => '0',
+            'respect_query_parameters' => '0',
+            'target_statuscode' => '307',
+            'disabled' => '0',
+            'starttime' => '0',
+            'endtime' => '0'
+        ];
+        $row2 = [
+            'target' => 'https://example.com/promotion',
+            'force_https' => '0',
+            'keep_query_parameters' => '0',
+            'respect_query_parameters' => '1',
+            'target_statuscode' => '307',
+            'disabled' => '0',
+            'starttime' => '0',
+            'endtime' => '0'
+        ];
+        $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
+            [
+                'example.com' => [
+                    'flat' => [
+                        'special/page/' =>
+                        [
+                            1 => $row1,
+                        ]
+                    ],
+                    'respect_query_parameters' => [
+                        'special/page?key=998877' => [
+                            1 => $row2,
+                        ],
+                    ],
+                ],
+            ]
+        );
+        GeneralUtility::addInstance(RedirectCacheService::class, $this->redirectCacheServiceProphecy->reveal());
+
+        $result = $this->redirectService->matchRedirect('example.com', 'special/page', 'key=998877');
+
+        self::assertSame($row2, $result);
+    }
+
+    /**
+     * @test
+     */
     public function matchRedirectReturnsRedirectSpecificToDomainOnFlatMatchIfSpecificAndNonSpecificExist()
     {
         $row1 = [

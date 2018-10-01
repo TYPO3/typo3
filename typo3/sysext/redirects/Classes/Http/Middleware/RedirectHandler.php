@@ -51,7 +51,8 @@ class RedirectHandler implements MiddlewareInterface, LoggerAwareInterface
         $port = $request->getUri()->getPort();
         $matchedRedirect = $redirectService->matchRedirect(
             $request->getUri()->getHost() . ($port ? ':' . $port : ''),
-            $request->getUri()->getPath()
+            $request->getUri()->getPath(),
+            $request->getUri()->getQuery() ?? ''
         );
 
         // If the matched redirect is found, resolve it, and check further

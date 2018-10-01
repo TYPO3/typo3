@@ -28,7 +28,7 @@ return [
         'searchFields' => 'source_host,source_path,target,target_statuscode',
     ],
     'interface' => [
-        'showRecordFieldList' => 'disabled, source_host, source_path, is_regexp, force_https, keep_query_parameters, target, target_statuscode, hitcount, lasthiton, disable_hitcount',
+        'showRecordFieldList' => 'disabled, source_host, source_path, respect_query_parameters, is_regexp, force_https, keep_query_parameters, target, target_statuscode, hitcount, lasthiton, disable_hitcount',
     ],
     'types' => [
         '1' => [
@@ -43,7 +43,7 @@ return [
             'showitem' => 'disabled, --linebreak--, starttime, endtime'
         ],
         'source' => [
-            'showitem' => 'source_host, --linebreak--, source_path, is_regexp'
+            'showitem' => 'source_host, --linebreak--, source_path, respect_query_parameters, is_regexp'
         ],
         'targetdetails' => [
             'showitem' => 'target, target_statuscode, --linebreak--, force_https, keep_query_parameters'
@@ -131,6 +131,21 @@ return [
         'keep_query_parameters' => [
             'exclude' => true,
             'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.keep_query_parameters.0',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'default' => 0,
+                'items' => [
+                    [
+                        0 => '',
+                        1 => '',
+                    ]
+                ],
+            ]
+        ],
+        'respect_query_parameters' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.respect_query_parameters.0',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',

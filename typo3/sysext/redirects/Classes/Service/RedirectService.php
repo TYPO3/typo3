@@ -42,9 +42,10 @@ class RedirectService implements LoggerAwareInterface
      *
      * @param string $domain
      * @param string $path
+     * @param string $query
      * @return array|null
      */
-    public function matchRedirect(string $domain, string $path)
+    public function matchRedirect(string $domain, string $path, string $query = '')
     {
         $allRedirects = $this->fetchRedirects();
         // Check if the domain matches, or if there is a
@@ -55,9 +56,21 @@ class RedirectService implements LoggerAwareInterface
             }
 
             $possibleRedirects = [];
-            // match if a flat redirect matches
+            // check if a flat redirect matches
             if (!empty($allRedirects[$domainName]['flat'][rtrim($path, '/') . '/'])) {
                 $possibleRedirects = $allRedirects[$domainName]['flat'][rtrim($path, '/') . '/'];
+            }
+            // check if a flat redirect matches with the Query applied
+            if (!empty($query)) {
+                $pathWithQuery = rtrim($path, '/') . '?' . ltrim($query, '?');
+                if (!empty($allRedirects[$domainName]['respect_query_parameters'][$pathWithQuery])) {
+                    $possibleRedirects = $allRedirects[$domainName]['respect_query_parameters'][$pathWithQuery];
+                } else {
+                    $pathWithQueryAndSlash = rtrim($path, '/') . '/?' . ltrim($query, '?');
+                    if (!empty($allRedirects[$domainName]['respect_query_parameters'][$pathWithQueryAndSlash])) {
+                        $possibleRedirects = $allRedirects[$domainName]['respect_query_parameters'][$pathWithQueryAndSlash];
+                    }
+                }
             }
             // check all redirects that are registered as regex
             if (!empty($allRedirects[$domainName]['regexp'])) {

@@ -24,6 +24,12 @@
 			<trans-unit id="sys_redirect.keep_query_parameters.0">
 				<source>Keep GET Parameters</source>
 			</trans-unit>
+			<trans-unit id="sys_redirect.respect_query_parameters">
+				<source>GET Parameters (source)</source>
+			</trans-unit>
+			<trans-unit id="sys_redirect.respect_query_parameters.0">
+				<source>Respect GET Parameters</source>
+			</trans-unit>
 			<trans-unit id="sys_redirect.target">
 				<source>Target</source>
 			</trans-unit>

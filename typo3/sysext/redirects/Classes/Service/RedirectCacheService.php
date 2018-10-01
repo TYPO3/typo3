@@ -60,7 +60,7 @@ class RedirectCacheService
     }
 
     /**
-     * Rebuilds the cache for all redirects, grouped by host and by regular expressions.
+     * Rebuilds the cache for all redirects, grouped by host as well as by regular expressions and respect_query_parameters.
      * Does not include deleted redirects, but includes the ones with dynamic starttime/endtime.
      */
     public function rebuild(): array
@@ -79,6 +79,8 @@ class RedirectCacheService
             $host = $row['source_host'] ?: '*';
             if ($row['is_regexp']) {
                 $redirects[$host]['regexp'][$row['source_path']][$row['uid']] = $row;
+            } elseif ($row['respect_query_parameters']) {
+                $redirects[$host]['respect_query_parameters'][$row['source_path']][$row['uid']] = $row;
             } else {
                 $redirects[$host]['flat'][rtrim($row['source_path'], '/') . '/'][$row['uid']] = $row;
             }
