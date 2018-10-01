@@ -254,7 +254,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= paths.t3icons %>',
-          src: ['**/*.svg', '!module/*'],
+          src: ['**/*.svg', '!install/*', '!module/*'],
           dest: '<%= paths.sysext %>core/Resources/Public/Icons/T3Icons/',
           ext: '.svg'
         }]
