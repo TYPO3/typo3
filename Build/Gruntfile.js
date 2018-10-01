@@ -364,6 +364,10 @@ module.exports = function (grunt) {
           {
             dest: '<%= paths.sysext %>form/Resources/Public/Icons/Extension.svg',
             src: '<%= paths.t3icons %>module/module-form.svg'
+          },
+          {
+            dest: '<%= paths.sysext %>rte_ckeditor/Resources/Public/Icons/Extension.svg',
+            src: '<%= paths.t3icons %>module/module-rte-ckeditor.svg'
           }
         ]
       },
