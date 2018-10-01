@@ -37,8 +37,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * <output>
  * ftp://typo3.org
  * </output>
- *
- * @api
  */
 class ExternalViewHelper extends AbstractViewHelper
 {

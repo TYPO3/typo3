@@ -32,8 +32,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * <base href="http://yourdomain.tld/" />
  * (depending on your domain)
  * </output>
- *
- * @api
  */
 class BaseViewHelper extends AbstractViewHelper
 {
@@ -57,7 +55,6 @@ class BaseViewHelper extends AbstractViewHelper
      * @param RenderingContextInterface $renderingContext
      *
      * @return string "base"-Tag.
-     * @api
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {

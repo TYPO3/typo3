@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * <output>
  * <input type="submit" name="mySubmit" value="Send Mail" />
  * </output>
- *
- * @api
  */
 class SubmitViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper
 {
@@ -44,8 +42,6 @@ class SubmitViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 
     /**
      * Initialize the arguments.
-     *
-     * @api
      */
     public function initializeArguments()
     {
@@ -62,7 +58,6 @@ class SubmitViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
      * Renders the submit button.
      *
      * @return string
-     * @api
      */
     public function render()
     {

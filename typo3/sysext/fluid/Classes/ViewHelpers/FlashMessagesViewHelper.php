@@ -76,8 +76,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * <code title="Using a specific queue">
  * <f:flashMessages queueIdentifier="myQueue" />
  * </code>
- *
- * @api
  */
 class FlashMessagesViewHelper extends AbstractViewHelper
 {
@@ -92,8 +90,6 @@ class FlashMessagesViewHelper extends AbstractViewHelper
 
     /**
      * Initialize arguments
-     *
-     * @api
      */
     public function initializeArguments()
     {

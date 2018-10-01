@@ -44,8 +44,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  * Everything inside the "then" tag is displayed if you have access.
  * Otherwise, everything inside the "else"-tag is displayed.
  * </output>
- *
- * @api
  */
 class IfAuthenticatedViewHelper extends AbstractConditionViewHelper
 {

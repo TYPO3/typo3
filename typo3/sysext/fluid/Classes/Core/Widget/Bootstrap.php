@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Fluid\Core\Widget;
 
 /**
  * This is the bootstrap for Ajax Widget responses
+ *
+ * @internal This class is only used internally by the widget framework.
  */
 class Bootstrap
 {

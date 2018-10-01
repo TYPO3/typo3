@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Fluid\Core\Widget;
  * by various ViewHelpers (like <f:widget.link>, <f:widget.uri>, <f:widget.renderChildren>),
  * to get knowledge over the current widget's configuration.
  *
- * It is a purely internal class which should not be used outside of Fluid.
+ * @internal It is a purely internal class which should not be used outside of Fluid.
  */
 class WidgetContext
 {

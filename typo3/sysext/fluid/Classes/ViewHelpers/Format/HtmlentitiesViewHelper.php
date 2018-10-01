@@ -36,8 +36,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * <output>
  * Text with & " ' < > * replaced by HTML entities (htmlentities applied).
  * </output>
- *
- * @api
  */
 class HtmlentitiesViewHelper extends AbstractEncodingViewHelper
 {

@@ -51,8 +51,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * <output>
  * 123,-
  * </output>
- *
- * @api
  */
 class CurrencyViewHelper extends AbstractViewHelper
 {

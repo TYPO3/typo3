@@ -43,8 +43,6 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
  * so the paginate ViewHelper will adjust the query sent to the database and receive
  * only the small subset of objects.
  * So, there is no negative performance overhead in using the Be Paginate Widget.
- *
- * @api
  */
 class PaginateViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper
 {

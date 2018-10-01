@@ -25,8 +25,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * <output>
  * <input type="password" name="myPassword" value="default value" />
  * </output>
- *
- * @api
  */
 class PasswordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper
 {
@@ -37,8 +35,6 @@ class PasswordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
 
     /**
      * Initialize the arguments.
-     *
-     * @api
      */
     public function initializeArguments()
     {
@@ -70,7 +66,6 @@ class PasswordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
      * Renders the password input field.
      *
      * @return string
-     * @api
      */
     public function render()
     {

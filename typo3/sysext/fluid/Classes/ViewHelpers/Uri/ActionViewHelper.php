@@ -37,8 +37,6 @@ class ActionViewHelper extends AbstractViewHelper
 
     /**
      * Initialize arguments
-     *
-     * @api
      */
     public function initializeArguments()
     {

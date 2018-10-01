@@ -21,8 +21,6 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
  *
  * If you set the "property" attribute to the name of the property to resolve from the object, this class will
  * automatically set the name and value of a form element.
- *
- * @api
  */
 abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
 {
@@ -46,8 +44,6 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
 
     /**
      * Initialize arguments.
-     *
-     * @api
      */
     public function initializeArguments()
     {

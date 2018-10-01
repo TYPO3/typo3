@@ -44,8 +44,6 @@ use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
  * so the paginate ViewHelper will adjust the query sent to the database and receive
  * only the small subset of objects.
  * So, there is no negative performance overhead in using the Paginate Widget.
- *
- * @api
  */
 class PaginateViewHelper extends AbstractWidgetViewHelper
 {
@@ -65,7 +63,6 @@ class PaginateViewHelper extends AbstractWidgetViewHelper
     /**
      * Initialize arguments.
      *
-     * @api
      * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      */
     public function initializeArguments()

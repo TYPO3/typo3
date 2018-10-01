@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * <output>
  * <textarea name="myTextArea">This is shown inside the textarea</textarea>
  * </output>
- *
- * @api
  */
 class TextareaViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper
 {
@@ -38,8 +36,6 @@ class TextareaViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
 
     /**
      * Initialize the arguments.
-     *
-     * @api
      */
     public function initializeArguments()
     {
@@ -59,7 +55,6 @@ class TextareaViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
      * Renders the textarea.
      *
      * @return string
-     * @api
      */
     public function render()
     {

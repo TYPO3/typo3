@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Fluid\Core\Widget;
  * f3-fluid-widget-id is found.
  *
  * This Request Handler gets the WidgetRequestBuilder injected.
+ * @internal It is a purely internal class which should not be used outside of Fluid.
  */
 class WidgetRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHandler
 {

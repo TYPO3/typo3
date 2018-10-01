@@ -60,8 +60,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * <output>
  * SomeString
  * </output>
- *
- * @api
  */
 class CaseViewHelper extends AbstractViewHelper
 {

@@ -28,8 +28,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * <a href="index.php?id=123&tx_myextension_plugin[widgetIdentifier][action]=show&tx_myextension_plugin[widgetIdentifier][controller]=Standard&cHash=xyz">link</a>
  * (depending on the current page, widget and your TS configuration)
  * </output>
- *
- * @api
  */
 class LinkViewHelper extends AbstractTagBasedViewHelper
 {
@@ -40,8 +38,6 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Initialize arguments
-     *
-     * @api
      */
     public function initializeArguments()
     {
@@ -64,7 +60,6 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
      * Render the link.
      *
      * @return string The rendered link
-     * @api
      */
     public function render()
     {

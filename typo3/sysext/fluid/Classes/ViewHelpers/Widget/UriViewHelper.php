@@ -30,8 +30,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * index.php?id=123&tx_myextension_plugin[widgetIdentifier][action]=show&tx_myextension_plugin[widgetIdentifier][controller]=Standard&cHash=xyz
  * (depending on the current page, widget and your TS configuration)
  * </output>
- *
- * @api
  */
 class UriViewHelper extends AbstractViewHelper
 {
@@ -39,8 +37,6 @@ class UriViewHelper extends AbstractViewHelper
 
     /**
      * Initialize arguments
-     *
-     * @api
      */
     public function initializeArguments()
     {

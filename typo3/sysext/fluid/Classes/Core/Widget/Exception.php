@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Fluid\Core\Widget;
 
 /**
  * A Fluid Widget exception.
- *
- * @api
  */
 class Exception extends \TYPO3Fluid\Fluid\Core\Exception
 {

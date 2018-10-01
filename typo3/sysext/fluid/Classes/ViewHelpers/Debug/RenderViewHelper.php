@@ -27,8 +27,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * (see ViewHelperResolver class). Also possible to use
  * explicitly by using `f:debug.render` instead of the
  * normal `f:render` statement.
- *
- * @api
  */
 class RenderViewHelper extends AbstractViewHelper
 {
@@ -57,7 +55,6 @@ class RenderViewHelper extends AbstractViewHelper
      * Renders the content.
      *
      * @return string
-     * @api
      */
     public function render()
     {

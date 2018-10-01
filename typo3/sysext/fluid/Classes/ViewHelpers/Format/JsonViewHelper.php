@@ -46,8 +46,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * <output>
  * {"0":"bar","1":"baz"}
  * </output>
- *
- * @api
  */
 class JsonViewHelper extends AbstractViewHelper
 {

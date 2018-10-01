@@ -19,8 +19,6 @@ use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
 
 /**
  * The main template view. Should be used as view if you want Fluid Templating
- *
- * @api
  */
 class TemplateView extends AbstractTemplateView
 {
@@ -28,7 +26,6 @@ class TemplateView extends AbstractTemplateView
      * Sets the path and name of the layout file. Overrides the dynamic resolving of the layout file.
      *
      * @param string $layoutPathAndFilename Path and filename of the layout file
-     * @api
      */
     public function setLayoutPathAndFilename($layoutPathAndFilename)
     {
@@ -40,7 +37,6 @@ class TemplateView extends AbstractTemplateView
      *
      * @param ControllerContext $controllerContext Controller context which is available inside the view
      * @return bool
-     * @api
      */
     public function canRender(ControllerContext $controllerContext)
     {

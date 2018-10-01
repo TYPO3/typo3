@@ -45,6 +45,8 @@ use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
  * to automatically add or extend namespaces which then become
  * available in every Fluid template file without having to
  * register the namespace.
+ *
+ * @internal This is a helper class which is not considered part of TYPO3's Public API.
  */
 class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperResolver
 {

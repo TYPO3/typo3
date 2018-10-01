@@ -72,8 +72,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * So, in the above example, the method $user->getId() is called to retrieve the key, and $user->getFirstName() to retrieve the displayed value of each entry.
  *
  * The "value" property now expects a domain object, and tests for object equivalence.
- *
- * @api
  */
 class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper
 {
@@ -89,8 +87,6 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 
     /**
      * Initialize arguments.
-     *
-     * @api
      */
     public function initializeArguments()
     {
@@ -115,7 +111,6 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
      * Render the tag.
      *
      * @return string rendered tag.
-     * @api
      */
     public function render()
     {

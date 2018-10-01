@@ -25,6 +25,8 @@ use TYPO3Fluid\Fluid\Core\Cache\StandardCacheWarmer;
  *
  * Connector class that enables the TYPO3 cache called "fluid_template" to be operated with the
  * interface appropriate for the Fluid engine.
+ *
+ * @internal
  */
 class FluidTemplateCache extends PhpFrontend implements FluidCacheInterface
 {

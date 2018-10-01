@@ -36,8 +36,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * <output>
  * Text with &amp; &quot; &lt; &gt; replaced by unescaped entities (html_entity_decode applied).
  * </output>
- *
- * @api
  */
 class HtmlentitiesDecodeViewHelper extends AbstractEncodingViewHelper
 {

@@ -34,8 +34,6 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
  * <input type="text" id="name" />
  * the input field and the required JavaScript for the Ajax communication (see Resources/Private/Templates/ViewHelpers/Widget/Autocomplete/Index.html
  * </output>
- *
- * @api
  */
 class AutocompleteViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper
 {

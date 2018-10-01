@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Fluid\Core\Widget;
  * of the current user, to make sure the WidgetContext is available in
  * Widget AJAX requests.
  *
- * This class is only used internally by the widget framework.
+ * @internal This class is only used internally by the widget framework.
  */
 class AjaxWidgetContextHolder implements \TYPO3\CMS\Core\SingletonInterface
 {

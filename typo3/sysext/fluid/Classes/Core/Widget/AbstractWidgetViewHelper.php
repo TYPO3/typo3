@@ -19,7 +19,6 @@ use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * @api
  */
 abstract class AbstractWidgetViewHelper extends AbstractViewHelper
 {
@@ -28,7 +27,6 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
      * This needs to be filled by the individual subclass by an inject method.
      *
      * @var \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController
-     * @api
      */
     protected $controller;
 
@@ -36,7 +34,6 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
      * If set to TRUE, it is an AJAX widget.
      *
      * @var bool
-     * @api
      */
     protected $ajaxWidget = false;
 
@@ -67,6 +64,7 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
 
     /**
      * @param \TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder $ajaxWidgetContextHolder
+     * @internal
      */
     public function injectAjaxWidgetContextHolder(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder $ajaxWidgetContextHolder)
     {
@@ -75,6 +73,7 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+     * @internal
      */
     public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
     {
@@ -84,6 +83,7 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
 
     /**
      * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
+     * @internal
      */
     public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService)
     {
@@ -92,6 +92,7 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
 
     /**
      * Initialize arguments.
+     * @internal
      */
     public function initializeArguments()
     {
@@ -108,6 +109,7 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
      * Initialize the arguments of the ViewHelper, and call the render() method of the ViewHelper.
      *
      * @return string the rendered ViewHelper.
+     * @internal
      */
     public function initializeArgumentsAndRender()
     {
@@ -142,6 +144,7 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
      * rendered with <f:widget.renderChildren> lateron.
      *
      * @param array $childNodes The SyntaxTree Child nodes of this ViewHelper.
+     * @internal
      */
     public function setChildNodes(array $childNodes)
     {
@@ -156,7 +159,6 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
      * Generate the configuration for this widget. Override to adjust.
      *
      * @return array
-     * @api
      */
     protected function getWidgetConfiguration()
     {
@@ -169,7 +171,6 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
      *
      * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface the response of this request.
      * @throws \TYPO3\CMS\Fluid\Core\Widget\Exception\MissingControllerException
-     * @api
      */
     protected function initiateSubRequest()
     {

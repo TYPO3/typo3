@@ -25,8 +25,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * <output>
  * <input type="text" name="myTextBox" value="default value" />
  * </output>
- *
- * @api
  */
 class TextfieldViewHelper extends AbstractFormFieldViewHelper
 {
@@ -39,7 +37,6 @@ class TextfieldViewHelper extends AbstractFormFieldViewHelper
      * Initialize the arguments.
      *
      * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     * @api
      */
     public function initializeArguments()
     {
@@ -61,7 +58,6 @@ class TextfieldViewHelper extends AbstractFormFieldViewHelper
      * Renders the textfield.
      *
      * @return string
-     * @api
      */
     public function render()
     {

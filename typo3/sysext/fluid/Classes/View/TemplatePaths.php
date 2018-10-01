@@ -27,6 +27,8 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
  * Custom implementation for template paths resolving, one which differs from the base
  * implementation in that it is capable of resolving template paths based on TypoScript
  * configuration when given a package name, and is aware of the Frontend/Backend contexts of TYPO3.
+ *
+ * @internal This is for internal Fluid use only.
  */
 class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
 {

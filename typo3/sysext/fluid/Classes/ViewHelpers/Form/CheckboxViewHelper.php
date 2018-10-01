@@ -41,8 +41,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * <input type="checkbox" name="user[interests][]" value="TYPO3" checked="checked" />
  * (depending on property "interests")
  * </output>
- *
- * @api
  */
 class CheckboxViewHelper extends AbstractFormFieldViewHelper
 {
@@ -53,8 +51,6 @@ class CheckboxViewHelper extends AbstractFormFieldViewHelper
 
     /**
      * Initialize the arguments.
-     *
-     * @api
      */
     public function initializeArguments()
     {
@@ -82,7 +78,6 @@ class CheckboxViewHelper extends AbstractFormFieldViewHelper
      *
      * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
      * @return string
-     * @api
      */
     public function render()
     {

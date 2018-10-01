@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * <output>
  * <input type="file" name="file" />
  * </output>
- *
- * @api
  */
 class UploadViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper
 {
@@ -38,8 +36,6 @@ class UploadViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 
     /**
      * Initialize the arguments.
-     *
-     * @api
      */
     public function initializeArguments()
     {
@@ -54,7 +50,6 @@ class UploadViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
      * Renders the upload field.
      *
      * @return string
-     * @api
      */
     public function render()
     {

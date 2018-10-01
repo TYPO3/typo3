@@ -43,8 +43,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * <input type="radio" name="user[newsletter]" value="0" /> no
  * (depending on property "newsletter")
  * </output>
- *
- * @api
  */
 class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper
 {
@@ -55,8 +53,6 @@ class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFiel
 
     /**
      * Initialize the arguments.
-     *
-     * @api
      */
     public function initializeArguments()
     {
@@ -82,7 +78,6 @@ class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFiel
      * Renders the checkbox.
      *
      * @return string
-     * @api
      */
     public function render()
     {

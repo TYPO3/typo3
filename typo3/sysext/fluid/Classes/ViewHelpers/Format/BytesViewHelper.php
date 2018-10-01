@@ -49,8 +49,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * 123 KB
  * // depending on the value of {fileSize}
  * </output>
- *
- * @api
  */
 class BytesViewHelper extends AbstractViewHelper
 {

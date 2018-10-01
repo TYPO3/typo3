@@ -20,8 +20,6 @@ use TYPO3\CMS\Fluid\View\TemplatePaths;
  * This is the base class for all widget controllers.
  * It is basically an ActionController and additionally has $this->widgetConfiguration set to the
  * Configuration of the current Widget.
- *
- * @api
  */
 abstract class AbstractWidgetController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController implements \TYPO3\CMS\Core\SingletonInterface
 {
@@ -34,7 +32,6 @@ abstract class AbstractWidgetController extends \TYPO3\CMS\Extbase\Mvc\Controlle
      * Configuration for this widget.
      *
      * @var array
-     * @api
      */
     protected $widgetConfiguration;
 
@@ -43,7 +40,6 @@ abstract class AbstractWidgetController extends \TYPO3\CMS\Extbase\Mvc\Controlle
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
      * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this handler
-     * @api
      */
     public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response)
     {

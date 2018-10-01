@@ -56,8 +56,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  * Everything inside the "then" tag is displayed if the logged in FE user belongs to the specified role.
  * Otherwise, everything inside the "else"-tag is displayed.
  * </output>
- *
- * @api
  */
 class IfHasRoleViewHelper extends AbstractConditionViewHelper
 {

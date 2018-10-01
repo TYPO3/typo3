@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * <output>
  * <button disabled="disabled" formmethod="post" formnovalidate="formnovalidate" type="reset" name="myForm[buttonName]" value="buttonValue">Cancel</button>
  * </output>
- *
- * @api
  */
 class ButtonViewHelper extends AbstractFormFieldViewHelper
 {
@@ -46,7 +44,6 @@ class ButtonViewHelper extends AbstractFormFieldViewHelper
      * Initialize the arguments.
      *
      * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     * @api
      */
     public function initializeArguments()
     {
@@ -95,7 +92,6 @@ class ButtonViewHelper extends AbstractFormFieldViewHelper
      * Renders the button.
      *
      * @return string
-     * @api
      */
     public function render()
     {

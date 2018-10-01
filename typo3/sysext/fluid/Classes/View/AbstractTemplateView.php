@@ -35,8 +35,6 @@ abstract class AbstractTemplateView extends TemplateView implements \TYPO3\CMS\E
 
     /**
      * Initializes this view.
-     *
-     * @api
      */
     public function initializeView()
     {
@@ -44,6 +42,7 @@ abstract class AbstractTemplateView extends TemplateView implements \TYPO3\CMS\E
 
     /**
      * @param RenderingContextInterface $context
+     * @internal
      */
     public function __construct(RenderingContextInterface $context = null)
     {
@@ -61,7 +60,6 @@ abstract class AbstractTemplateView extends TemplateView implements \TYPO3\CMS\E
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext Controller context which is available inside the view
      * @return bool TRUE if the view has something useful to display, otherwise FALSE
-     * @api
      */
     public function canRender(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
     {
@@ -72,6 +70,7 @@ abstract class AbstractTemplateView extends TemplateView implements \TYPO3\CMS\E
      * Sets the current controller context
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
+     * @internal
      */
     public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
     {
@@ -86,6 +85,7 @@ abstract class AbstractTemplateView extends TemplateView implements \TYPO3\CMS\E
 
     /**
      * @param string $templateName
+     * @internal
      */
     public function setTemplate($templateName)
     {
@@ -97,7 +97,6 @@ abstract class AbstractTemplateView extends TemplateView implements \TYPO3\CMS\E
      * dynamic resolving of a template file.
      *
      * @param string $templatePathAndFilename Template file path
-     * @api
      */
     public function setTemplatePathAndFilename($templatePathAndFilename)
     {
@@ -109,7 +108,6 @@ abstract class AbstractTemplateView extends TemplateView implements \TYPO3\CMS\E
      * If set, overrides the one determined from $this->templateRootPathPattern
      *
      * @param string[] $templateRootPaths Root path(s) to the templates. If set, overrides the one determined from $this->templateRootPathPattern
-     * @api
      */
     public function setTemplateRootPaths(array $templateRootPaths)
     {
@@ -130,7 +128,6 @@ abstract class AbstractTemplateView extends TemplateView implements \TYPO3\CMS\E
      * If set, overrides the one determined from $this->partialRootPathPattern
      *
      * @param string[] $partialRootPaths Root paths to the partials. If set, overrides the one determined from $this->partialRootPathPattern
-     * @api
      */
     public function setPartialRootPaths(array $partialRootPaths)
     {
@@ -142,7 +139,6 @@ abstract class AbstractTemplateView extends TemplateView implements \TYPO3\CMS\E
      *
      * @return string[] Fluid partial root paths
      * @throws InvalidTemplateResourceException
-     * @api
      */
     public function getPartialRootPaths()
     {
@@ -154,7 +150,6 @@ abstract class AbstractTemplateView extends TemplateView implements \TYPO3\CMS\E
      *
      * @return string[] Fluid layout root paths
      * @throws InvalidTemplateResourceException
-     * @api
      */
     public function getLayoutRootPaths()
     {
@@ -166,7 +161,6 @@ abstract class AbstractTemplateView extends TemplateView implements \TYPO3\CMS\E
      * If set, overrides the one determined from $this->layoutRootPathPattern
      *
      * @param string[] $layoutRootPaths Root path to the layouts. If set, overrides the one determined from $this->layoutRootPathPattern
-     * @api
      */
     public function setLayoutRootPaths(array $layoutRootPaths)
     {

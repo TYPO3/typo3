@@ -24,8 +24,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * It renders everything inside the Widget ViewHelper, and you can pass additional
  * arguments.
- *
- * @api
  */
 class RenderChildrenViewHelper extends AbstractViewHelper
 {

@@ -27,8 +27,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 /**
  * A standalone template view.
  * Should be used as view if you want to use Fluid without Extbase extensions
- *
- * @api
  */
 class StandaloneView extends AbstractTemplateView
 {
@@ -77,7 +75,6 @@ class StandaloneView extends AbstractTemplateView
      *
      * @param string $format
      * @throws \RuntimeException
-     * @api
      */
     public function setFormat($format)
     {
@@ -94,7 +91,6 @@ class StandaloneView extends AbstractTemplateView
      *
      * @return string $format
      * @throws \RuntimeException
-     * @api
      */
     public function getFormat()
     {
@@ -109,6 +105,7 @@ class StandaloneView extends AbstractTemplateView
      *
      * @return WebRequest
      * @throws \RuntimeException
+     * @internal
      */
     public function getRequest()
     {
@@ -126,7 +123,6 @@ class StandaloneView extends AbstractTemplateView
      * and return that template path and filename directly, instead of attempting to resolve it.
      *
      * @return string Fluid template path
-     * @api
      */
     public function getTemplatePathAndFilename()
     {
@@ -143,7 +139,6 @@ class StandaloneView extends AbstractTemplateView
      * You can use setTemplatePathAndFilename() alternatively if you only want to specify the template path
      *
      * @param string $templateSource Fluid template source code
-     * @api
      */
     public function setTemplateSource($templateSource)
     {
@@ -154,7 +149,6 @@ class StandaloneView extends AbstractTemplateView
      * Checks whether a template can be resolved for the current request
      *
      * @return bool
-     * @api
      */
     public function hasTemplate()
     {
