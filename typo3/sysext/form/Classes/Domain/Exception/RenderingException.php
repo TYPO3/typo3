@@ -21,8 +21,6 @@ use TYPO3\CMS\Form\Domain\Exception;
 
 /**
  * This exception is thrown if a rendering error occurs
- *
- * @api
  */
 class RenderingException extends Exception
 {

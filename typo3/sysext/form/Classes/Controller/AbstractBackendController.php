@@ -24,6 +24,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
  * The abstract form backend controller
  *
  * Scope: backend
+ * @internal
  */
 abstract class AbstractBackendController extends ActionController
 {

@@ -77,7 +77,6 @@ class ConfigurationService implements SingletonInterface
      * @param string $prototypeName name of the prototype to get the configuration for
      * @return array the prototype configuration
      * @throws PrototypeNotFoundException if prototype with the name $prototypeName was not found
-     * @api
      */
     public function getPrototypeConfiguration(string $prototypeName): array
     {

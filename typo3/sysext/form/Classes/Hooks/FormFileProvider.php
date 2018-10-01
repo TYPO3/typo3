@@ -21,6 +21,7 @@ use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 
 /**
  * Purges previously added form files from items for context menus.
+ * @internal
  */
 class FormFileProvider extends FileProvider
 {

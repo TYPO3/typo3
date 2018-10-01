@@ -33,6 +33,7 @@ use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 
 /**
  * Contains a preview rendering for the page module of CType="form_formframework"
+ * @internal
  */
 class FormPagePreviewRenderer implements PageLayoutViewDrawItemHookInterface
 {

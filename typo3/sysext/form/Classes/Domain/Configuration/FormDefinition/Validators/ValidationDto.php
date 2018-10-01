@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * @api
  */
 class ValidationDto
 {

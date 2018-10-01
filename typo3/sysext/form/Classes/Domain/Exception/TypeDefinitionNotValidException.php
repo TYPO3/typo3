@@ -22,8 +22,6 @@ use TYPO3\CMS\Form\Domain\Exception;
 /**
  * This exception is thrown if a Type Definition for a form element was not valid,
  * i.e. it has properties which are not supported.
- *
- * @api
  */
 class TypeDefinitionNotValidException extends Exception
 {

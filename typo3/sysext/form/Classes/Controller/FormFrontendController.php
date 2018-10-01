@@ -24,6 +24,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
  * The frontend controller
  *
  * Scope: frontend
+ * @internal
  */
 class FormFrontendController extends ActionController
 {

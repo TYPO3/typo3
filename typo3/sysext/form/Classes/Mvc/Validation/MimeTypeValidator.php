@@ -24,7 +24,6 @@ use TYPO3\CMS\Form\Mvc\Validation\Exception\InvalidValidationOptionsException;
  * Validator for mime types
  *
  * Scope: frontend
- * @api
  */
 class MimeTypeValidator extends AbstractValidator
 {
@@ -42,7 +41,6 @@ class MimeTypeValidator extends AbstractValidator
      * Note: a value of NULL or empty string ('') is considered valid
      *
      * @param FileReference|File $resource The resource that should be validated
-     * @api
      */
     public function isValid($resource)
     {

@@ -47,7 +47,6 @@ use TYPO3\CMS\Form\Domain\Model\FormDefinition;
  *
  * Scope: frontend / backend
  * **This class is meant to be sub classed by developers.**
- * @api
  */
 abstract class AbstractFormFactory implements FormFactoryInterface
 {
@@ -56,7 +55,6 @@ abstract class AbstractFormFactory implements FormFactoryInterface
      * hook on all form elements.
      *
      * @param FormDefinition $form
-     * @api
      */
     protected function triggerFormBuildingFinished(FormDefinition $form)
     {

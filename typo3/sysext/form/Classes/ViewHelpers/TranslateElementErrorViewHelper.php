@@ -27,7 +27,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Translate form element properites.
  *
  * Scope: frontend / backend
- * @api
  */
 class TranslateElementErrorViewHelper extends AbstractViewHelper
 {
@@ -54,7 +53,6 @@ class TranslateElementErrorViewHelper extends AbstractViewHelper
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      * @return string
-     * @api
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
@@ -71,7 +69,7 @@ class TranslateElementErrorViewHelper extends AbstractViewHelper
             $defaultValue = $error->__toString();
         } else {
             trigger_error(
-                'TranslateElementErrorViewHelper arguments "code", "arguments" and "defaultValue" has been deprecated in v8 and will be removed in TYPO3 v10.0. Use "error" instead.',
+                'TranslateElementErrorViewHelper arguments "code", "arguments" and "defaultValue" will be removed in TYPO3 v10.0. Use "error" instead.',
                 E_USER_DEPRECATED
             );
         }

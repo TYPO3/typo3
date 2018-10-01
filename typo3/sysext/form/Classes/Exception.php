@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Error\Exception as CoreException;
 
 /**
  * A generic Form Exception
- *
- * @api
  */
 class Exception extends CoreException
 {

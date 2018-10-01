@@ -23,7 +23,7 @@ use TYPO3\CMS\Form\Domain\Condition\Functions\FormConditionFunctionsProvider;
  * **This classis NOT meant to be sub classed by developers .**
  *
  * @internal
-   */
+ */
 class ConditionProvider extends AbstractProvider
 {
     public function __construct()

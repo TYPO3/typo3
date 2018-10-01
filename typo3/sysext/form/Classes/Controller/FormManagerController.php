@@ -37,6 +37,7 @@ use TYPO3\CMS\Form\Service\TranslationService;
  * The form manager controller
  *
  * Scope: backend
+ * @internal
  */
 class FormManagerController extends AbstractBackendController
 {

@@ -42,7 +42,6 @@ final class FinisherVariableProvider implements \ArrayAccess, \IteratorAggregate
      * @param string $finisherIdentifier
      * @param string $key
      * @param mixed $value
-     * @api
      */
     public function add(string $finisherIdentifier, string $key, $value)
     {
@@ -77,7 +76,6 @@ final class FinisherVariableProvider implements \ArrayAccess, \IteratorAggregate
      * @param string $key
      * @param mixed $default
      * @return mixed
-     * @api
      */
     public function get(string $finisherIdentifier, string $key, $default = null)
     {
@@ -93,7 +91,6 @@ final class FinisherVariableProvider implements \ArrayAccess, \IteratorAggregate
      * @param string $finisherIdentifier
      * @param string $key
      * @return bool
-     * @api
      */
     public function exists($finisherIdentifier, $key): bool
     {
@@ -110,7 +107,6 @@ final class FinisherVariableProvider implements \ArrayAccess, \IteratorAggregate
      *
      * @param string $finisherIdentifier
      * @param string $key
-     * @api
      */
     public function remove(string $finisherIdentifier, string $key)
     {

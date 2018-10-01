@@ -63,7 +63,6 @@ class Section extends AbstractSection implements FormElementInterface
      * this includes the identifier of the form itself, making it "globally" unique
      *
      * @return string the "globally" unique identifier of this element
-     * @api
      */
     public function getUniqueIdentifier(): string
     {
@@ -77,7 +76,6 @@ class Section extends AbstractSection implements FormElementInterface
      * Note: This is currently not used for section elements
      *
      * @return mixed the default value for this Form Element
-     * @api
      */
     public function getDefaultValue()
     {
@@ -90,7 +88,6 @@ class Section extends AbstractSection implements FormElementInterface
      * Note: This is currently ignored for section elements
      *
      * @param mixed $defaultValue the default value for this Form Element
-     * @api
      */
     public function setDefaultValue($defaultValue)
     {
@@ -100,7 +97,6 @@ class Section extends AbstractSection implements FormElementInterface
      * Get all element-specific configuration properties
      *
      * @return array
-     * @api
      */
     public function getProperties(): array
     {
@@ -112,7 +108,6 @@ class Section extends AbstractSection implements FormElementInterface
      *
      * @param string $key
      * @param mixed $value
-     * @api
      */
     public function setProperty(string $key, $value)
     {
@@ -130,7 +125,6 @@ class Section extends AbstractSection implements FormElementInterface
      * Whether or not this element is required
      *
      * @return bool
-     * @api
      */
     public function isRequired(): bool
     {

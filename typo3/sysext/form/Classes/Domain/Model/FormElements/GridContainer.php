@@ -64,7 +64,6 @@ class GridContainer extends Section implements GridContainerInterface
      * Add a new row element at the end of the grid container
      *
      * @param FormElementInterface $formElement The form element to add
-     * @api
      */
     public function addElement(FormElementInterface $formElement)
     {
@@ -84,7 +83,6 @@ class GridContainer extends Section implements GridContainerInterface
      * @param string $typeName type of the new form element
      * @return FormElementInterface the newly created grid row
      * @throws TypeDefinitionNotValidException
-     * @api
      */
     public function createElement(string $identifier, string $typeName): FormElementInterface
     {

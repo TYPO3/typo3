@@ -32,7 +32,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * and return the rendered content.
  *
  * Scope: frontend
- * @api
  */
 class RenderRenderableViewHelper extends AbstractViewHelper
 {
@@ -58,6 +57,7 @@ class RenderRenderableViewHelper extends AbstractViewHelper
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      * @return string
+     * @internal
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {

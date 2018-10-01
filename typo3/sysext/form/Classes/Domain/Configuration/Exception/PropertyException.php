@@ -19,8 +19,6 @@ use TYPO3\CMS\Form\Domain\Exception;
 
 /**
  * This exception is thrown if a form setup property was not found.
- *
- * @api
  */
 class PropertyException extends Exception
 {

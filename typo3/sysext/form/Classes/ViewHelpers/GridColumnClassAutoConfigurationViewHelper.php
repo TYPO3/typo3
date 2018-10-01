@@ -23,7 +23,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Scope: frontend
- * @api
  */
 class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelper
 {

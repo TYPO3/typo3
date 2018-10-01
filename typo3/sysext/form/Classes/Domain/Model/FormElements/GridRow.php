@@ -35,7 +35,6 @@ class GridRow extends Section implements GridRowInterface
      *
      * @param FormElementInterface $formElement The form element to add
      * @throws TypeDefinitionNotValidException if FormElement is already added to a section
-     * @api
      */
     public function addElement(FormElementInterface $formElement)
     {
@@ -56,7 +55,6 @@ class GridRow extends Section implements GridRowInterface
      * @param string $typeName type of the new form element
      * @return GridRowInterface the newly created frid row
      * @throws TypeDefinitionNotValidException
-     * @api
      */
     public function createElement(string $identifier, string $typeName): FormElementInterface
     {

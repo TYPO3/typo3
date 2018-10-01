@@ -85,7 +85,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * Scope: frontend
  * **This class is NOT meant to be sub classed by developers.**
- * @api
  */
 class FormRuntime implements RootRenderableInterface, \ArrayAccess
 {
@@ -177,7 +176,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * @param FormDefinition $formDefinition
      * @param Request $request
      * @param Response $response
-     * @api
      */
     public function __construct(FormDefinition $formDefinition, Request $request, Response $response)
     {
@@ -580,7 +578,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * some kind of "preview" of the form (e.g. form editor).
      *
      * @param int $pageIndex
-     * @api
      */
     public function overrideCurrentPage(int $pageIndex)
     {
@@ -592,7 +589,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      *
      * @return string|null rendered form
      * @throws RenderingException
-     * @api
      */
     public function render()
     {
@@ -658,7 +654,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * @return string The identifier of underlying form
-     * @api
      */
     public function getIdentifier(): string
     {
@@ -672,7 +667,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * the user to another page.
      *
      * @return Request the request this object is bound to
-     * @api
      */
     public function getRequest(): Request
     {
@@ -686,7 +680,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * headers or output content.
      *
      * @return Response the response this object is bound to
-     * @api
      */
     public function getResponse(): Response
     {
@@ -697,7 +690,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * Returns the currently selected page
      *
      * @return Page|null
-     * @api
      */
     public function getCurrentPage(): ?Page
     {
@@ -708,7 +700,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * Returns the previous page of the currently selected one or NULL if there is no previous page
      *
      * @return Page|null
-     * @api
      */
     public function getPreviousPage(): ?Page
     {
@@ -723,7 +714,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * Returns the next page of the currently selected one or NULL if there is no next page
      *
      * @return Page|null
-     * @api
      */
     public function getNextPage(): ?Page
     {
@@ -739,7 +729,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * or NULL if there is no previous page
      *
      * @return Page|null
-     * @api
      */
     public function getPreviousEnabledPage(): ?Page
     {
@@ -769,7 +758,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * NULL if there is no next page
      *
      * @return Page|null
-     * @api
      */
     public function getNextEnabledPage(): ?Page
     {
@@ -819,7 +807,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * the particular element.
      *
      * @return string
-     * @api
      */
     public function getType(): string
     {
@@ -895,7 +882,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      *
      * @param string $identifier
      * @return mixed
-     * @api
      */
     public function getElementValue(string $identifier)
     {
@@ -908,7 +894,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * @return array<Page> The Form's pages in the correct order
-     * @api
      */
     public function getPages(): array
     {
@@ -928,7 +913,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * Get all rendering options
      *
      * @return array associative array of rendering options
-     * @api
      */
     public function getRenderingOptions(): array
     {
@@ -940,7 +924,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * must implement RendererInterface
      *
      * @return string the renderer class name
-     * @api
      */
     public function getRendererClassName(): string
     {
@@ -951,7 +934,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * Get the label which shall be displayed next to the form element
      *
      * @return string
-     * @api
      */
     public function getLabel(): string
     {
@@ -962,7 +944,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * Get the template name of the renderable
      *
      * @return string
-     * @api
      */
     public function getTemplateName(): string
     {
@@ -973,7 +954,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * Get the underlying form definition from the runtime
      *
      * @return FormDefinition
-     * @api
      */
     public function getFormDefinition(): FormDefinition
     {
@@ -984,7 +964,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * Get the current site language configuration.
      *
      * @return SiteLanguage
-     * @api
      */
     public function getCurrentSiteLanguage(): ?SiteLanguage
     {
@@ -998,7 +977,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * helpful when displaying some kind of "preview" of the form (e.g. form editor).
      *
      * @param SiteLanguage $currentSiteLanguage
-     * @api
      */
     public function setCurrentSiteLanguage(SiteLanguage $currentSiteLanguage): void
     {
@@ -1049,7 +1027,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * Reference to the current running finisher
      *
      * @return FinisherInterface|null
-     * @api
      */
     public function getCurrentFinisher(): ?FinisherInterface
     {

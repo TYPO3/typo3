@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing;
  * Helper for array processing
  *
  * Scope: frontend / backend
+ * @internal
  */
 class ArrayProcessing
 {

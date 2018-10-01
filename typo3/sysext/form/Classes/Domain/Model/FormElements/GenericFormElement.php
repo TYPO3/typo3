@@ -21,7 +21,6 @@ namespace TYPO3\CMS\Form\Domain\Model\FormElements;
  * A generic form element
  *
  * Scope: frontend
- * @api
  */
 class GenericFormElement extends AbstractFormElement
 {

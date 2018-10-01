@@ -19,8 +19,6 @@ use TYPO3\CMS\Form\Domain\Exception;
 
 /**
  * This exception is thrown in Form Finishers
- *
- * @api
  */
 class FinisherException extends Exception
 {

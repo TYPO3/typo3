@@ -28,7 +28,6 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  * Note: Requires jQuery UI to be included on the page.
  *
  * Scope: frontend
- * @api
  */
 class DatePickerViewHelper extends AbstractFormFieldViewHelper
 {
@@ -54,8 +53,6 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
 
     /**
      * Initialize the arguments.
-     *
-     * @api
      */
     public function initializeArguments()
     {
@@ -74,7 +71,6 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
      * Renders the text field, hidden field and required javascript
      *
      * @return string
-     * @api
      */
     public function render()
     {

@@ -41,7 +41,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * The factory class must implement {@link TYPO3\CMS\Form\Domain\Factory\FormFactoryInterface}.
  *
  * Scope: frontend
- * @api
  */
 class RenderViewHelper extends AbstractViewHelper
 {

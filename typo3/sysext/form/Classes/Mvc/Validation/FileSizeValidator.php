@@ -41,7 +41,6 @@ class FileSizeValidator extends AbstractValidator
      * The given value is valid
      *
      * @param FileReference|File $resource
-     * @api
      */
     public function isValid($resource)
     {

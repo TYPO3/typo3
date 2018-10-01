@@ -35,7 +35,6 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
      * @param string $identifier The FormElement's identifier
      * @param string $type The Form Element Type
      * @throws IdentifierNotValidException
-     * @api
      */
     public function __construct(string $identifier, string $type)
     {
@@ -47,7 +46,7 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
     }
 
     /**
-     * @api
+     * Sets up the form element
      */
     public function initializeFormElement()
     {
@@ -67,7 +66,6 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
      * this includes the identifier of the form itself, making it "globally" unique
      *
      * @return string the "globally" unique identifier of this element
-     * @api
      */
     public function getUniqueIdentifier(): string
     {
@@ -81,7 +79,6 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
      * Get the template name of the renderable
      *
      * @return string
-     * @api
      */
     public function getTemplateName(): string
     {

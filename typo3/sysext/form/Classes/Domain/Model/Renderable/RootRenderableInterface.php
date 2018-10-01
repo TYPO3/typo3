@@ -32,7 +32,6 @@ interface RootRenderableInterface
      * the particular element.
      *
      * @return string
-     * @api
      */
     public function getType(): string;
 
@@ -40,7 +39,6 @@ interface RootRenderableInterface
      * The identifier of this renderable
      *
      * @return string
-     * @api
      */
     public function getIdentifier(): string;
 
@@ -48,7 +46,6 @@ interface RootRenderableInterface
      * Get the label which shall be displayed next to the form element
      *
      * @return string
-     * @api
      */
     public function getLabel(): string;
 
@@ -57,7 +54,6 @@ interface RootRenderableInterface
      * must implement RendererInterface
      *
      * @return string the renderer class name
-     * @api
      */
     public function getRendererClassName(): string;
 
@@ -65,7 +61,6 @@ interface RootRenderableInterface
      * Get all rendering options
      *
      * @return array associative array of rendering options
-     * @api
      */
     public function getRenderingOptions(): array;
 }

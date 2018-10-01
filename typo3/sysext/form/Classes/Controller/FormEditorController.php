@@ -40,6 +40,7 @@ use TYPO3\CMS\Form\Type\FormDefinitionArray;
  * The form editor controller
  *
  * Scope: backend
+ * @internal
  */
 class FormEditorController extends AbstractBackendController
 {

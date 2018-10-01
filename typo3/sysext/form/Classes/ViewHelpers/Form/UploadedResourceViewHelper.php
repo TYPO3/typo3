@@ -26,7 +26,6 @@ use TYPO3\CMS\Fluid\ViewHelpers\Form\UploadViewHelper;
  * uploaded image will be correctly used.
  *
  * Scope: frontend
- * @api
  */
 class UploadedResourceViewHelper extends UploadViewHelper
 {
@@ -73,7 +72,6 @@ class UploadedResourceViewHelper extends UploadViewHelper
 
     /**
      * @return string
-     * @api
      */
     public function render()
     {

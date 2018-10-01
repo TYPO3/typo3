@@ -24,7 +24,6 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
  *
  * Scope: frontend
  * **This class is meant to be sub classed by developers**.
- * @api
  */
 abstract class AbstractElementRenderer implements RendererInterface
 {
@@ -33,13 +32,11 @@ abstract class AbstractElementRenderer implements RendererInterface
      * The assigned controller context which might be needed by the renderer.
      *
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
-     * @api
      */
     protected $controllerContext;
 
     /**
      * @var \TYPO3\CMS\Form\Domain\Runtime\FormRuntime
-     * @api
      */
     protected $formRuntime;
 
@@ -47,7 +44,6 @@ abstract class AbstractElementRenderer implements RendererInterface
      * Set the controller context which should be used
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
-     * @api
      */
     public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
     {
@@ -56,7 +52,6 @@ abstract class AbstractElementRenderer implements RendererInterface
 
     /**
      * @param FormRuntime $formRuntime
-     * @api
      */
     public function setFormRuntime(FormRuntime $formRuntime)
     {
@@ -65,7 +60,6 @@ abstract class AbstractElementRenderer implements RendererInterface
 
     /**
      * @return FormRuntime
-     * @api
      */
     public function getFormRuntime(): FormRuntime
     {

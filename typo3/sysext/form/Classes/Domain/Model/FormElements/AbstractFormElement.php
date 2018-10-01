@@ -56,7 +56,6 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
      * @param string $identifier The FormElement's identifier
      * @param string $type The Form Element Type
      * @throws IdentifierNotValidException
-     * @api
      */
     public function __construct(string $identifier, string $type)
     {
@@ -69,8 +68,6 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
 
     /**
      * Override this method in your custom FormElements if needed
-     *
-     * @api
      */
     public function initializeFormElement()
     {
@@ -88,7 +85,6 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
      * Get the global unique identifier of the element
      *
      * @return string
-     * @api
      */
     public function getUniqueIdentifier(): string
     {
@@ -102,7 +98,6 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
      * Get the default value of the element
      *
      * @return mixed
-     * @api
      */
     public function getDefaultValue()
     {
@@ -114,7 +109,6 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
      * Set the default value of the element
      *
      * @param mixed $defaultValue
-     * @api
      */
     public function setDefaultValue($defaultValue)
     {
@@ -131,7 +125,6 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
      * Check if the element is required
      *
      * @return bool
-     * @api
      */
     public function isRequired(): bool
     {
@@ -148,7 +141,6 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
      *
      * @param string $key
      * @param mixed $value
-     * @api
      */
     public function setProperty(string $key, $value)
     {
@@ -166,7 +158,6 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
      * Get all properties
      *
      * @return array
-     * @api
      */
     public function getProperties(): array
     {

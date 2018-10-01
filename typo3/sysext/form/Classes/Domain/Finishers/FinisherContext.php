@@ -73,7 +73,7 @@ class FinisherContext
     }
 
     /**
-     * @api
+     * Sets up the FinisherVariableProvider
      */
     public function initializeObject()
     {
@@ -83,8 +83,6 @@ class FinisherContext
 
     /**
      * Cancels the finisher invocation after the current finisher
-     *
-     * @api
      */
     public function cancel()
     {
@@ -106,7 +104,6 @@ class FinisherContext
      * The Form Runtime that is associated with the current finisher
      *
      * @return FormRuntime
-     * @api
      */
     public function getFormRuntime(): FormRuntime
     {
@@ -117,7 +114,6 @@ class FinisherContext
      * The values of the submitted form (after validation and property mapping)
      *
      * @return array
-     * @api
      */
     public function getFormValues(): array
     {
@@ -126,7 +122,6 @@ class FinisherContext
 
     /**
      * @return ControllerContext
-     * @api
      */
     public function getControllerContext(): ControllerContext
     {
@@ -135,7 +130,6 @@ class FinisherContext
 
     /**
      * @return FinisherVariableProvider
-     * @api
      */
     public function getFinisherVariableProvider(): FinisherVariableProvider
     {

@@ -26,15 +26,15 @@ class TypoScriptService
 {
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\TypoScriptService
+     * @var \TYPO3\CMS\Core\TypoScript\TypoScriptService
      */
     protected $extbaseTypoScriptService;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Service\TypoScriptService $typoScriptService
+     * @param \TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService
      * @internal
      */
-    public function injectTypoScriptService(\TYPO3\CMS\Extbase\Service\TypoScriptService $typoScriptService)
+    public function injectTypoScriptService(\TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService)
     {
         $this->extbaseTypoScriptService = $typoScriptService;
     }

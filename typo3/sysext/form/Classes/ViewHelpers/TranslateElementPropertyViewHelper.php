@@ -24,10 +24,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Translate form element properites.
+ * Translate form element properties.
  *
  * Scope: frontend / backend
- * @api
  */
 class TranslateElementPropertyViewHelper extends AbstractViewHelper
 {
@@ -52,7 +51,6 @@ class TranslateElementPropertyViewHelper extends AbstractViewHelper
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      * @return string|array
-     * @api
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {

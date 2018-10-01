@@ -18,6 +18,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\Exception;
 
 /**
  * Exception for file write errors
+ * @internal
  */
 class FileWriteException extends Exception
 {

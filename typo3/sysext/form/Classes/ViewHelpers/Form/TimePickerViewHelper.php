@@ -18,13 +18,13 @@ namespace TYPO3\CMS\Form\ViewHelpers\Form;
  */
 
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
+use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 
 /**
  * Displays two select-boxes for hour and minute selection.
  *
  * Scope: frontend
- * @api
  */
 class TimePickerViewHelper extends AbstractFormFieldViewHelper
 {
@@ -69,7 +69,6 @@ class TimePickerViewHelper extends AbstractFormFieldViewHelper
      * Renders the select fields for hour & minute
      *
      * @return string
-     * @api
      */
     public function render()
     {

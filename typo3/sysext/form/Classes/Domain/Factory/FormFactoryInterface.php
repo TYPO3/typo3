@@ -28,7 +28,6 @@ use TYPO3\CMS\Form\Domain\Model\FormDefinition;
  * it is done through an invocation of a Form Rendering ViewHelper.
  *
  * Scope: frontend / backend
- * @api
  */
 interface FormFactoryInterface
 {
@@ -42,7 +41,6 @@ interface FormFactoryInterface
      * @param array $configuration factory-specific configuration array
      * @param string $prototypeName The name of the "PrototypeName" to use; it is factory-specific to implement this.
      * @return FormDefinition a newly built form definition
-     * @api
      */
     public function build(array $configuration, string $prototypeName = null): FormDefinition;
 }

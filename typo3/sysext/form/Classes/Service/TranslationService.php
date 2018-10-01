@@ -218,7 +218,6 @@ class TranslationService implements SingletonInterface
      * @param array $renderingOptions
      * @return string
      * @throws \InvalidArgumentException
-     * @api
      */
     public function translateFinisherOption(
         FormRuntime $formRuntime,

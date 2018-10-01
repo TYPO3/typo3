@@ -21,6 +21,7 @@ use TYPO3\CMS\Filelist\FileListEditIconHookInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 
 /**
+ * @internal
  */
 class FileListEditIconsHook implements FileListEditIconHookInterface
 {

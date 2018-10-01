@@ -39,7 +39,6 @@ interface VariableRenderableInterface
      * Get all rendering variants
      *
      * @return RenderableVariantInterface[]
-     * @api
      */
     public function getVariants(): array;
 
@@ -47,7 +46,6 @@ interface VariableRenderableInterface
      * Adds the specified variant to this form element
      *
      * @param RenderableVariantInterface $variant
-     * @api
      */
     public function addVariant(RenderableVariantInterface $variant);
 }

@@ -58,7 +58,6 @@ interface RenderableInterface extends RootRenderableInterface
      * Get the index inside the parent renderable
      *
      * @return int
-     * @api
      */
     public function getIndex(): int;
 
@@ -83,7 +82,6 @@ interface RenderableInterface extends RootRenderableInterface
      * Get the template name of the renderable
      *
      * @return string
-     * @api
      */
     public function getTemplateName(): string;
 
@@ -91,7 +89,6 @@ interface RenderableInterface extends RootRenderableInterface
      * Returns whether this renderable is enabled
      *
      * @return bool
-     * @api
      */
     public function isEnabled(): bool;
 }

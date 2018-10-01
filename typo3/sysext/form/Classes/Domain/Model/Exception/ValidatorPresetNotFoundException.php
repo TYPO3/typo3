@@ -20,8 +20,6 @@ use TYPO3\CMS\Form\Domain\Model\Exception;
 /**
  * This exception is thrown if a Validator Preset was not found,
  * or if the implementationClassName was not set.
- *
- * @api
  */
 class ValidatorPresetNotFoundException extends Exception
 {

@@ -38,6 +38,7 @@ use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 /**
  * Update wizard to migrate all forms currently in use to new ending
+ * @internal
  */
 class FormFileExtensionUpdate implements ChattyInterface, UpgradeWizardInterface
 {

@@ -45,7 +45,6 @@ abstract class AbstractSection extends AbstractCompositeRenderable
      * @param string $identifier The Section identifier
      * @param string $type The Section type
      * @throws IdentifierNotValidException if the identifier was no non-empty string
-     * @api
      */
     public function __construct(string $identifier, string $type)
     {
@@ -61,7 +60,6 @@ abstract class AbstractSection extends AbstractCompositeRenderable
      * Get the child Form Elements
      *
      * @return FormElementInterface[] The Page's elements
-     * @api
      */
     public function getElements(): array
     {
@@ -72,7 +70,6 @@ abstract class AbstractSection extends AbstractCompositeRenderable
      * Get the child Form Elements
      *
      * @return FormElementInterface[] The Page's elements
-     * @api
      */
     public function getElementsRecursively(): array
     {
@@ -84,7 +81,6 @@ abstract class AbstractSection extends AbstractCompositeRenderable
      *
      * @param FormElementInterface $formElement The form element to add
      * @throws FormDefinitionConsistencyException if FormElement is already added to a section
-     * @api
      */
     public function addElement(FormElementInterface $formElement)
     {
@@ -105,7 +101,6 @@ abstract class AbstractSection extends AbstractCompositeRenderable
      * @return FormElementInterface the newly created form element
      * @throws TypeDefinitionNotFoundException
      * @throws TypeDefinitionNotValidException
-     * @api
      */
     public function createElement(string $identifier, string $typeName): FormElementInterface
     {
@@ -153,7 +148,6 @@ abstract class AbstractSection extends AbstractCompositeRenderable
      *
      * @param FormElementInterface $elementToMove
      * @param FormElementInterface $referenceElement
-     * @api
      */
     public function moveElementBefore(FormElementInterface $elementToMove, FormElementInterface $referenceElement)
     {
@@ -167,7 +161,6 @@ abstract class AbstractSection extends AbstractCompositeRenderable
      *
      * @param FormElementInterface $elementToMove
      * @param FormElementInterface $referenceElement
-     * @api
      */
     public function moveElementAfter(FormElementInterface $elementToMove, FormElementInterface $referenceElement)
     {
@@ -178,7 +171,6 @@ abstract class AbstractSection extends AbstractCompositeRenderable
      * Remove $elementToRemove from this Section/Page
      *
      * @param FormElementInterface $elementToRemove
-     * @api
      */
     public function removeElement(FormElementInterface $elementToRemove)
     {

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Form\Type;
 
 /**
  * Wrapper for basic form definition arrays
+ * @internal
  */
 class FormDefinitionArray extends \ArrayObject
 {

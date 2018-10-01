@@ -99,7 +99,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      * Get the type of the renderable
      *
      * @return string
-     * @api
      */
     public function getType(): string
     {
@@ -110,7 +109,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      * Get the identifier of the element
      *
      * @return string
-     * @api
      */
     public function getIdentifier(): string
     {
@@ -121,7 +119,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      * Set the identifier of the element
      *
      * @param string $identifier
-     * @api
      */
     public function setIdentifier(string $identifier)
     {
@@ -135,7 +132,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      *
      * @param array $options
      * @param bool $resetValidators
-     * @api
      */
     public function setOptions(array $options, bool $resetValidators = false)
     {
@@ -201,7 +197,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      * @param array $options
      * @return mixed
      * @throws ValidatorPresetNotFoundException
-     * @api
      */
     public function createValidator(string $validatorIdentifier, array $options = [])
     {
@@ -224,7 +219,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      * Add a validator to the element
      *
      * @param ValidatorInterface $validator
-     * @api
      */
     public function addValidator(ValidatorInterface $validator)
     {
@@ -248,7 +242,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      * Set the datatype
      *
      * @param string $dataType
-     * @api
      */
     public function setDataType(string $dataType)
     {
@@ -260,7 +253,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      * Get the classname of the renderer
      *
      * @return string
-     * @api
      */
     public function getRendererClassName(): string
     {
@@ -271,7 +263,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      * Get all rendering options
      *
      * @return array
-     * @api
      */
     public function getRenderingOptions(): array
     {
@@ -284,7 +275,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      * @param string $key
      * @param mixed $value
      * @return mixed
-     * @api
      */
     public function setRenderingOption(string $key, $value)
     {
@@ -302,7 +292,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      * Get the parent renderable
      *
      * @return CompositeRenderableInterface|null
-     * @api
      */
     public function getParentRenderable()
     {
@@ -313,7 +302,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      * Set the parent renderable
      *
      * @param CompositeRenderableInterface $parentRenderable
-     * @api
      */
     public function setParentRenderable(CompositeRenderableInterface $parentRenderable)
     {
@@ -326,7 +314,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      *
      * @return FormDefinition
      * @throws FormDefinitionConsistencyException
-     * @api
      */
     public function getRootForm(): FormDefinition
     {
@@ -405,7 +392,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      * Get the label of the renderable
      *
      * @return string
-     * @api
      */
     public function getLabel(): string
     {
@@ -416,7 +402,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      * Set the label which shall be displayed next to the form element
      *
      * @param string $label
-     * @api
      */
     public function setLabel(string $label)
     {
@@ -427,7 +412,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      * Get the templateName name of the renderable
      *
      * @return string
-     * @api
      */
     public function getTemplateName(): string
     {
@@ -450,7 +434,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      * Get all rendering variants
      *
      * @return RenderableVariantInterface[]
-     * @api
      */
     public function getVariants(): array
     {
@@ -460,7 +443,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
     /**
      * @param array $options
      * @return RenderableVariantInterface
-     * @api
      */
     public function createVariant(array $options): RenderableVariantInterface
     {
@@ -478,7 +460,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      * Adds the specified variant to this form element
      *
      * @param RenderableVariantInterface $variant
-     * @api
      */
     public function addVariant(RenderableVariantInterface $variant)
     {
@@ -490,7 +471,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      * regardless of their conditions
      *
      * @param RenderableVariantInterface $variant
-     * @api
      */
     public function applyVariant(RenderableVariantInterface $variant)
     {

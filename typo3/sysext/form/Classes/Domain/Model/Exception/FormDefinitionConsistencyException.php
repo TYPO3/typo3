@@ -20,8 +20,6 @@ use TYPO3\CMS\Form\Domain\Model\Exception;
 /**
  * This exception is thrown if the form definition would get an inconsistent state, like
  * adding a page to two different forms
- *
- * @api
  */
 class FormDefinitionConsistencyException extends Exception
 {

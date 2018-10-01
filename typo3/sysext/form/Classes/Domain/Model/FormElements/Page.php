@@ -45,7 +45,6 @@ class Page extends AbstractSection
      * @param string $identifier The Page's identifier
      * @param string $type The Page's type
      * @throws \TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException if the identifier was no non-empty string
-     * @api
      */
     public function __construct(string $identifier, string $type = 'Page')
     {
@@ -57,7 +56,6 @@ class Page extends AbstractSection
      *
      * @param CompositeRenderableInterface $parentRenderable
      * @throws FormException
-     * @api
      */
     public function setParentRenderable(CompositeRenderableInterface $parentRenderable)
     {

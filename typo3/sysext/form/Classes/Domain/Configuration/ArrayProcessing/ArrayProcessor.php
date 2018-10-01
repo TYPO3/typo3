@@ -22,6 +22,7 @@ use TYPO3\CMS\Form\Domain\Configuration\Exception\ArrayProcessorException;
  * Helper for array processing
  *
  * Scope: frontend / backend
+ * @internal
  */
 class ArrayProcessor
 {

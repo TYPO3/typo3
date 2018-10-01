@@ -32,7 +32,6 @@ interface FormPersistenceManagerInterface
      *
      * @param string $persistenceIdentifier
      * @return array
-     * @api
      */
     public function load(string $persistenceIdentifier): array;
 
@@ -41,7 +40,6 @@ interface FormPersistenceManagerInterface
      *
      * @param string $persistenceIdentifier
      * @param array $formDefinition
-     * @api
      */
     public function save(string $persistenceIdentifier, array $formDefinition);
 
@@ -50,7 +48,6 @@ interface FormPersistenceManagerInterface
      *
      * @param string $persistenceIdentifier
      * @return bool TRUE if a form with the given $persistenceIdentifier can be loaded, otherwise FALSE
-     * @api
      */
     public function exists(string $persistenceIdentifier): bool;
 
@@ -58,7 +55,6 @@ interface FormPersistenceManagerInterface
      * Delete the form representation identified by $persistenceIdentifier
      *
      * @param string $persistenceIdentifier
-     * @api
      */
     public function delete(string $persistenceIdentifier);
 
@@ -70,7 +66,6 @@ interface FormPersistenceManagerInterface
      * and 'persistenceIdentifier' (the unique identifier for the Form Persistence Manager e.g. the path to the saved form definition).
      *
      * @return array in the format [['name' => 'Form 01', 'persistenceIdentifier' => 'path1'], [ .... ]]
-     * @api
      */
     public function listForms(): array;
 
@@ -78,7 +73,6 @@ interface FormPersistenceManagerInterface
      * Return a list of all accessible file mount points
      *
      * @return Folder[]
-     * @api
      */
     public function getAccessibleFormStorageFolders(): array;
 
@@ -86,7 +80,6 @@ interface FormPersistenceManagerInterface
      * Return a list of all accessible extension folders
      *
      * @return array
-     * @api
      */
     public function getAccessibleExtensionFolders(): array;
 
@@ -96,7 +89,6 @@ interface FormPersistenceManagerInterface
      * @param string $formIdentifier
      * @param string $savePath
      * @return string
-     * @api
      */
     public function getUniquePersistenceIdentifier(string $formIdentifier, string $savePath): string;
 
@@ -105,7 +97,6 @@ interface FormPersistenceManagerInterface
      *
      * @param string $identifier
      * @return bool
-     * @api
      */
     public function checkForDuplicateIdentifier(string $identifier): bool;
 }

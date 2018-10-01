@@ -19,8 +19,6 @@ use TYPO3\CMS\Form\Domain\Exception;
 
 /**
  * This exception is thrown if a form prototype for a given name was not found.
- *
- * @api
  */
 class PrototypeNotFoundException extends Exception
 {

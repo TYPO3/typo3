@@ -302,7 +302,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * @param string $type element type of this form
      * @param string $persistenceIdentifier the persistence identifier of the form
      * @throws IdentifierNotValidException if the identifier was not valid
-     * @api
      */
     public function __construct(
         string $identifier,
@@ -398,7 +397,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * @param string $typeName Type of the new page
      * @return Page the newly created page
      * @throws TypeDefinitionNotFoundException
-     * @api
      */
     public function createPage(string $identifier, string $typeName = 'Page'): Page
     {
@@ -441,7 +439,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * @param Page $page
      * @throws FormDefinitionConsistencyException if Page is already added to a FormDefinition
      * @see createPage
-     * @api
      */
     public function addPage(Page $page)
     {
@@ -452,7 +449,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * Get the Form's pages
      *
      * @return array<Page> The Form's pages in the correct order
-     * @api
      */
     public function getPages(): array
     {
@@ -464,7 +460,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      *
      * @param int $index
      * @return bool TRUE if a page with the given $index exists, otherwise FALSE
-     * @api
      */
     public function hasPageWithIndex(int $index): bool
     {
@@ -479,7 +474,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * @param int $index
      * @return Page the page, or NULL if none found.
      * @throws FormException if the specified index does not exist
-     * @api
      */
     public function getPageByIndex(int $index)
     {
@@ -493,7 +487,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * Adds the specified finisher to this form
      *
      * @param FinisherInterface $finisher
-     * @api
      */
     public function addFinisher(FinisherInterface $finisher)
     {
@@ -505,7 +498,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * @param array $options options for this finisher in the format ['option1' => 'value1', 'option2' => 'value2', ...]
      * @return FinisherInterface
      * @throws FinisherPresetNotFoundException
-     * @api
      */
     public function createFinisher(string $finisherIdentifier, array $options = []): FinisherInterface
     {
@@ -526,7 +518,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * Gets all finishers of this form
      *
      * @return \TYPO3\CMS\Form\Domain\Finishers\FinisherInterface[]
-     * @api
      */
     public function getFinishers(): array
     {
@@ -570,7 +561,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      *
      * @param string $elementIdentifier
      * @return FormElementInterface The element with the given $elementIdentifier or NULL if none found
-     * @api
      */
     public function getElementByIdentifier(string $elementIdentifier)
     {
@@ -612,7 +602,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      *
      * @param Page $pageToMove
      * @param Page $referencePage
-     * @api
      */
     public function movePageBefore(Page $pageToMove, Page $referencePage)
     {
@@ -624,7 +613,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      *
      * @param Page $pageToMove
      * @param Page $referencePage
-     * @api
      */
     public function movePageAfter(Page $pageToMove, Page $referencePage)
     {
@@ -635,7 +623,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * Remove $pageToRemove from form
      *
      * @param Page $pageToRemove
-     * @api
      */
     public function removePage(Page $pageToRemove)
     {
@@ -649,7 +636,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * @param Request $request
      * @param Response $response
      * @return FormRuntime
-     * @api
      */
     public function bind(Request $request, Response $response): FormRuntime
     {
@@ -659,7 +645,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     /**
      * @param string $propertyPath
      * @return ProcessingRule
-     * @api
      */
     public function getProcessingRule(string $propertyPath): ProcessingRule
     {
@@ -722,7 +707,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * Set the renderer class name
      *
      * @param string $rendererClassName
-     * @api
      */
     public function setRendererClassName(string $rendererClassName)
     {
@@ -733,7 +717,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * Get the classname of the renderer
      *
      * @return string
-     * @api
      */
     public function getRendererClassName(): string
     {

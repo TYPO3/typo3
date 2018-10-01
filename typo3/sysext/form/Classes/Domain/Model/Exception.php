@@ -19,8 +19,6 @@ use TYPO3\CMS\Form\Domain\Exception as DomainException;
 
 /**
  * A generic Form model Exception
- *
- * @api
  */
 class Exception extends DomainException
 {

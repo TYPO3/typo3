@@ -22,7 +22,6 @@ use TYPO3\CMS\Form\Mvc\Validation\Exception\InvalidValidationOptionsException;
  * Validator for date ranges
  *
  * Scope: frontend
- * @api
  */
 class DateRangeValidator extends AbstractValidator
 {
@@ -37,7 +36,6 @@ class DateRangeValidator extends AbstractValidator
 
     /**
      * @param \DateTime $value The value that should be validated
-     * @api
      */
     public function isValid($value)
     {
