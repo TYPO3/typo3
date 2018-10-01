@@ -43,8 +43,9 @@ class NullSite implements SiteInterface
      * Sets up a null site object
      *
      * @param array $languages (sys_language objects)
+     * @param Uri|null $baseEntryPoint
      */
-    public function __construct(array $languages = null)
+    public function __construct(array $languages = null, Uri $baseEntryPoint = null)
     {
         foreach ($languages ?? [] as $languageConfiguration) {
             $languageUid = (int)$languageConfiguration['languageId'];
@@ -53,7 +54,7 @@ class NullSite implements SiteInterface
             $this->languages[$languageUid] = new SiteLanguage(
                 $languageUid,
                 $languageConfiguration['locale'] ?? '',
-                new Uri('/'),
+                $baseEntryPoint ?: new Uri('/'),
                 $languageConfiguration
             );
         }

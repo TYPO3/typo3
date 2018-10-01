@@ -57,17 +57,8 @@ class PseudoSite extends NullSite implements SiteInterface
             $this->entryPoints = [new Uri('/')];
         }
         $baseEntryPoint = reset($this->entryPoints);
-        foreach ($configuration['languages'] as $languageConfiguration) {
-            $languageUid = (int)$languageConfiguration['languageId'];
-            // Language configuration does not have a base defined
-            // So the main site base is used (usually done for default languages)
-            $this->languages[$languageUid] = new SiteLanguage(
-                $languageUid,
-                $languageConfiguration['locale'] ?? '',
-                $baseEntryPoint,
-                $languageConfiguration
-            );
-        }
+
+        parent::__construct($configuration['languages'], $baseEntryPoint);
     }
 
     /**

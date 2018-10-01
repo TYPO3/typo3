@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Routing\Aspect\AspectFactory;
 use TYPO3\CMS\Core\Routing\Aspect\MappableProcessor;
@@ -169,6 +170,7 @@ class PageRouter implements RouterInterface
      * @param string $fragment additional #my-fragment part
      * @param string $type see the RouterInterface for possible types
      * @return UriInterface
+     * @throws InvalidRouteArgumentsException
      */
     public function generateUri($route, array $parameters = [], string $fragment = '', string $type = ''): UriInterface
     {
@@ -330,8 +332,11 @@ class PageRouter implements RouterInterface
         $siteMatcher = GeneralUtility::makeInstance(SiteMatcher::class);
         while ($row = $statement->fetch()) {
             $pageIdInDefaultLanguage = (int)($languageId > 0 ? $row['l10n_parent'] : $row['uid']);
-            if ($siteMatcher->matchByPageId($pageIdInDefaultLanguage)->getRootPageId() === $this->site->getRootPageId()) {
-                $pages[] = $row;
+            try {
+                if ($siteMatcher->matchByPageId($pageIdInDefaultLanguage)->getRootPageId() === $this->site->getRootPageId()) {
+                    $pages[] = $row;
+                }
+            } catch (SiteNotFoundException $e) {
             }
         }
         return $pages;

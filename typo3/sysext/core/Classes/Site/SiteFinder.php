@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 
@@ -69,11 +68,11 @@ class SiteFinder
      * Find a site by given root page id
      *
      * @param int $rootPageId the page ID (default language)
-     * @return SiteInterface
+     * @return Site
      * @throws SiteNotFoundException
      * @internal only for usage in some places for managing Site Configuration, might be removed without further notice
      */
-    public function getSiteByRootPageId(int $rootPageId): SiteInterface
+    public function getSiteByRootPageId(int $rootPageId): Site
     {
         if (isset($this->mappingRootPageIdToIdentifier[$rootPageId])) {
             return $this->sites[$this->mappingRootPageIdToIdentifier[$rootPageId]];
@@ -101,10 +100,10 @@ class SiteFinder
      *
      * @param int $pageId
      * @param array $rootLine
-     * @return SiteInterface
+     * @return Site
      * @throws SiteNotFoundException
      */
-    public function getSiteByPageId(int $pageId, array $rootLine = null): SiteInterface
+    public function getSiteByPageId(int $pageId, array $rootLine = null): Site
     {
         if ($pageId === 0) {
             // page uid 0 has no root line. We don't need to ask the root line resolver to know that.

@@ -18,8 +18,10 @@ namespace TYPO3\CMS\Core\Error\PageErrorHandler;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -64,8 +66,12 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
      */
     public function handlePageError(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
     {
-        $resolvedUrl = $this->resolveUrl($request, $this->errorHandlerConfiguration['errorContentSource']);
-        $content = GeneralUtility::getUrl($resolvedUrl);
+        try {
+            $resolvedUrl = $this->resolveUrl($request, $this->errorHandlerConfiguration['errorContentSource']);
+            $content = GeneralUtility::getUrl($resolvedUrl);
+        } catch (InvalidRouteArgumentsException | SiteNotFoundException $e) {
+            $content = 'Invalid error handler configuration: ' . $this->errorHandlerConfiguration['errorContentSource'];
+        }
         return new HtmlResponse($content, $this->statusCode);
     }
 
@@ -75,6 +81,8 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
      * @param ServerRequestInterface $request
      * @param string $typoLinkUrl
      * @return string
+     * @throws SiteNotFoundException
+     * @throws InvalidRouteArgumentsException
      */
     protected function resolveUrl(ServerRequestInterface $request, string $typoLinkUrl): string
     {

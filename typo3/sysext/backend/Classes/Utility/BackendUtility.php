@@ -2675,7 +2675,6 @@ class BackendUtility
             // Check if the page (= its rootline) has a site attached, otherwise just keep the URL as is
             $rootLine = $rootLine ?? BackendUtility::BEgetRootLine($pageUid);
             try {
-                /** @var Site $site */
                 $site = $siteFinder->getSiteByPageId((int)$pageUid, $rootLine);
                 // Create a multi-dimensional array out of the additional get vars
                 $additionalQueryParams = [];

@@ -45,6 +45,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 {
     /**
      * @inheritdoc
+     * @throws UnableToLinkException
      */
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): array
     {
@@ -787,7 +788,12 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         }
         if (MathUtility::canBeInterpretedAsInteger($GLOBALS['TSFE']->id) && $GLOBALS['TSFE']->id > 0) {
             $matcher = GeneralUtility::makeInstance(SiteMatcher::class);
-            return $matcher->matchByPageId((int)$GLOBALS['TSFE']->id);
+            try {
+                $site = $matcher->matchByPageId((int)$GLOBALS['TSFE']->id);
+            } catch (SiteNotFoundException $e) {
+                $site = null;
+            }
+            return $site;
         }
         return null;
     }

@@ -23,7 +23,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
-use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -105,6 +105,7 @@ class PreviewController
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
@@ -143,7 +144,6 @@ class PreviewController
 
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         try {
-            /** @var Site $site */
             $site = $siteFinder->getSiteByPageId($this->pageId);
             if (isset($queryParameters['L'])) {
                 $queryParameters['_language'] = $site->getLanguageById((int)$queryParameters['L']);
@@ -161,7 +161,7 @@ class PreviewController
             $parameters['ADMCMD_editIcons'] = 1;
             $parameters['ADMCMD_prev'] = 'IGNORE';
             $wsUrl = (string)$site->getRouter()->generateUri($this->pageId, $parameters);
-        } catch (SiteNotFoundException $e) {
+        } catch (SiteNotFoundException | InvalidRouteArgumentsException $e) {
             // Base URL for frontend preview links
             $previewBaseUrl = BackendUtility::getViewDomain($this->pageId) . '/index.php?' . $queryString;
             if (!WorkspaceService::isNewPage($this->pageId)) {

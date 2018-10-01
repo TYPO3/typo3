@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -68,7 +68,6 @@ class PreviewUriBuilder
 
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         try {
-            /** @var Site $site */
             $site = $siteFinder->getSiteByPageId($uid);
             try {
                 $language = $site->getLanguageById($languageId);
@@ -77,7 +76,7 @@ class PreviewUriBuilder
             }
             $uri = $site->getRouter()->generateUri($uid, ['ADMCMD_prev' => $previewKeyword, '_language' => $language], '');
             return (string)$uri;
-        } catch (SiteNotFoundException $e) {
+        } catch (SiteNotFoundException | InvalidRouteArgumentsException $e) {
             $linkParams = [
                 'ADMCMD_prev' => $previewKeyword,
                 'id' => $uid,
@@ -111,6 +110,7 @@ class PreviewUriBuilder
      * @param int $uid The ID of the record to be linked
      * @param bool $addDomain Parameter to decide if domain should be added to the generated link, FALSE per default
      * @return string the preview link without the trailing '/'
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
     public function buildUriForWorkspaceSplitPreview(int $uid, bool $addDomain = false): string
     {

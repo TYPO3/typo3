@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -115,7 +116,11 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
         if ($result['command'] === 'edit') {
             $siteConfigurationForPageUid = (int)$result['databaseRow']['rootPageId'][0];
             $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
-            $site = $siteFinder->getSiteByRootPageId($siteConfigurationForPageUid);
+            try {
+                $site = $siteFinder->getSiteByRootPageId($siteConfigurationForPageUid);
+            } catch (SiteNotFoundException $e) {
+                $site = null;
+            }
             $siteConfiguration = $site ? $site->getConfiguration() : [];
             if (is_array($siteConfiguration[$fieldName])) {
                 $connectedUids = array_keys($siteConfiguration[$fieldName]);

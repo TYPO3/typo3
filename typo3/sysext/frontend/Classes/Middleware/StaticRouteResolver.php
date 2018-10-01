@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,6 +34,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class StaticRouteResolver implements MiddlewareInterface
 {
+    /**
+     * Checks if there is a valid site with route configuration.
+     *
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
+     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (($site = $request->getAttribute('site', null)) instanceof Site &&
@@ -45,21 +53,35 @@ class StaticRouteResolver implements MiddlewareInterface
             if (in_array($path, $routeNames, true)) {
                 $key = array_search($path, $routeNames, true);
                 $routeConfig = $configuration[$key];
-                [$content, $contentType] = $this->resolveByType($request, $site, $routeConfig['type'], $routeConfig);
+                try {
+                    [$content, $contentType] = $this->resolveByType($request, $site, $routeConfig['type'], $routeConfig);
+                } catch (InvalidRouteArgumentsException $e) {
+                    $content = 'Invalid route';
+                    $contentType = 'text/plain';
+                }
+
                 return new HtmlResponse($content, 200, ['Content-Type' => $contentType]);
             }
         }
         return $handler->handle($request);
     }
 
-    private function getFromFile(File $file): array
+    /**
+     * @param File $file
+     * @return array
+     */
+    protected function getFromFile(File $file): array
     {
         $content = $file->getContents();
         $contentType = $file->getMimeType();
         return [$content, $contentType];
     }
 
-    private function getFromUri(string $uri): array
+    /**
+     * @param string $uri
+     * @return array
+     */
+    protected function getFromUri(string $uri): array
     {
         $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
         $response = $requestFactory->request($uri);
@@ -73,7 +95,14 @@ class StaticRouteResolver implements MiddlewareInterface
         return [$content, $contentType];
     }
 
-    private function getPageUri(ServerRequestInterface $request, Site $site, array $urlParams): string
+    /**
+     * @param ServerRequestInterface $request
+     * @param Site $site
+     * @param array $urlParams
+     * @return string
+     * @throws InvalidRouteArgumentsException
+     */
+    protected function getPageUri(ServerRequestInterface $request, Site $site, array $urlParams): string
     {
         $uri = $site->getRouter()->generateUri(
             (int)$urlParams['pageuid'],
@@ -84,7 +113,15 @@ class StaticRouteResolver implements MiddlewareInterface
         return (string)$uri;
     }
 
-    private function resolveByType(ServerRequestInterface $request, Site $site, string $type, array $routeConfig): array
+    /**
+     * @param ServerRequestInterface $request
+     * @param Site $site
+     * @param string $type
+     * @param array $routeConfig
+     * @return array
+     * @throws InvalidRouteArgumentsException
+     */
+    protected function resolveByType(ServerRequestInterface $request, Site $site, string $type, array $routeConfig): array
     {
         switch ($type) {
             case 'staticText':

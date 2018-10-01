@@ -24,11 +24,13 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -210,7 +212,11 @@ class ViewModuleController
             $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
             $additionalGetVars = $this->getAdminCommand($pageId);
             $siteMatcher = GeneralUtility::makeInstance(SiteMatcher::class);
-            $site = $siteMatcher->matchByPageId($pageId, $rootLine);
+            try {
+                $site = $siteMatcher->matchByPageId($pageId, $rootLine);
+            } catch (SiteNotFoundException $e) {
+                $site = null;
+            }
             $finalPageIdToShow = $pageId;
             $mountPointInformation = $pageRepository->getMountPointInfo($pageId);
             if ($mountPointInformation && $mountPointInformation['overlay']) {
@@ -223,7 +229,11 @@ class ViewModuleController
                 $additionalQueryParams = [];
                 parse_str($additionalGetVars, $additionalQueryParams);
                 $additionalQueryParams['_language'] = $site->getLanguageById($languageId);
-                $uri = (string)$site->getRouter()->generateUri($finalPageIdToShow, $additionalQueryParams);
+                try {
+                    $uri = (string)$site->getRouter()->generateUri($finalPageIdToShow, $additionalQueryParams);
+                } catch (InvalidRouteArgumentsException $e) {
+                    return '#';
+                }
             } else {
                 $uri = BackendUtility::getPreviewUrl($finalPageIdToShow, '', $rootLine, '', '', $additionalGetVars);
             }

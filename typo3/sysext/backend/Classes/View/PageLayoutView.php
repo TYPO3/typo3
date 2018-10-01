@@ -2979,6 +2979,7 @@ class PageLayoutView implements LoggerAwareInterface
      * @param string $search Search word, if any
      * @param int $levels Number of levels to search down the page tree
      * @param int $showLimit Limit of records to be listed.
+     * @throws SiteNotFoundException
      */
     public function start($id, $table, $pointer, $search = '', $levels = 0, $showLimit = 0)
     {

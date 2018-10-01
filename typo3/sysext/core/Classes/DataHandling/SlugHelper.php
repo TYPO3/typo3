@@ -239,6 +239,7 @@ class SlugHelper
      * @param int $pageId
      * @param int $languageId
      * @return bool
+     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
     public function isUniqueInSite(string $slug, $recordId, int $pageId, int $languageId): bool
     {
@@ -283,6 +284,7 @@ class SlugHelper
      * @param int $realPid pageID (already workspace-resolved)
      * @param int $languageId the language ID realm to be searched for
      * @return string
+     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
     public function buildSlugForUniqueInSite(string $slug, $recordId, int $realPid, int $languageId): string
     {

@@ -1593,7 +1593,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $namespace
      * @param string $key
-     * @param string $value
+     * @param mixed $value
      */
     public function addInlineSetting($namespace, $key, $value)
     {
