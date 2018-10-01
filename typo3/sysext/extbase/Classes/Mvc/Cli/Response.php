@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Cli;
 /**
  * A CLI specific response implementation
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Use symfony/console commands instead.
  */
 class Response extends \TYPO3\CMS\Extbase\Mvc\Response
@@ -32,7 +31,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      *
      * @param int $exitCode
      * @throws \InvalidArgumentException
-     * @api
      */
     public function setExitCode($exitCode)
     {
@@ -46,7 +44,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      * Rets the numerical exit code which should be returned when exiting this application.
      *
      * @return int
-     * @api
      */
     public function getExitCode()
     {
@@ -55,8 +52,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
 
     /**
      * Renders and sends the whole web response
-     *
-     * @api
      */
     public function send()
     {

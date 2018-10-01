@@ -1,25 +1,19 @@
 <?php
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
-/*                                                                        *
- * This script belongs to the Extbase framework                           *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 /**
  * This converter transforms arrays or strings to persistent objects. It does the following:
  *
@@ -31,8 +25,6 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  *   and set the sub-properties. We only do this if the configuration option "CONFIGURATION_MODIFICATION_ALLOWED" is TRUE.
  * - If the input has NO identity property, but additional properties, we create a new object and return it.
  *   However, we only do this if the configuration option "CONFIGURATION_CREATION_ALLOWED" is TRUE.
- *
- * @api
  */
 class PersistentObjectConverter extends ObjectConverter
 {
@@ -68,6 +60,7 @@ class PersistentObjectConverter extends ObjectConverter
 
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager)
     {
@@ -80,6 +73,7 @@ class PersistentObjectConverter extends ObjectConverter
      * @param mixed $source
      * @param string $targetType
      * @return bool
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function canConvertFrom($source, $targetType)
     {
@@ -91,6 +85,7 @@ class PersistentObjectConverter extends ObjectConverter
      *
      * @param mixed $source
      * @return array
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getSourceChildPropertiesToBeConverted($source)
     {
@@ -111,6 +106,7 @@ class PersistentObjectConverter extends ObjectConverter
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return string
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getTypeOfChildProperty($targetType, $propertyName, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration)
     {
@@ -138,6 +134,7 @@ class PersistentObjectConverter extends ObjectConverter
      * @throws \InvalidArgumentException
      * @return object the target type
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function convertFrom($source, $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
     {

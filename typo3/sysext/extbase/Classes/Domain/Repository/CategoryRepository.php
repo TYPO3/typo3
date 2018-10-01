@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Domain\Repository;
 
 /**
  * Repository for Category models.
- *
- * @api
  */
 class CategoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {

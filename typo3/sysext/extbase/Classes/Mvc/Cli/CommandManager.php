@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Cli;
 /**
  * A helper for CLI commands
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Use symfony/console commands instead.
  */
 class CommandManager implements \TYPO3\CMS\Core\SingletonInterface
@@ -49,7 +48,6 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface
      * Returns an array of all commands
      *
      * @return Command[]
-     * @api
      */
     public function getAvailableCommands()
     {
@@ -78,7 +76,6 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface
      * @return Command
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException if no matching command is available
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\AmbiguousCommandIdentifierException if more than one Command matches the identifier (the exception contains the matched commands)
-     * @api
      */
     public function getCommandByIdentifier($commandIdentifier)
     {
@@ -107,7 +104,6 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param Command $command The command
      * @return string The shortest possible command identifier
-     * @api
      */
     public function getShortestIdentifierForCommand(Command $command)
     {

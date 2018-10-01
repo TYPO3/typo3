@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Mvc;
 
 /**
  * A generic and very basic response implementation
- *
- * @api
  */
 class Response implements \TYPO3\CMS\Extbase\Mvc\ResponseInterface
 {
@@ -30,7 +28,6 @@ class Response implements \TYPO3\CMS\Extbase\Mvc\ResponseInterface
      * Overrides and sets the content of the response
      *
      * @param string $content The response content
-     * @api
      */
     public function setContent($content)
     {
@@ -41,7 +38,6 @@ class Response implements \TYPO3\CMS\Extbase\Mvc\ResponseInterface
      * Appends content to the already existing content.
      *
      * @param string $content More response content
-     * @api
      */
     public function appendContent($content)
     {
@@ -52,7 +48,6 @@ class Response implements \TYPO3\CMS\Extbase\Mvc\ResponseInterface
      * Returns the response content without sending it.
      *
      * @return string The response content
-     * @api
      */
     public function getContent()
     {
@@ -63,7 +58,6 @@ class Response implements \TYPO3\CMS\Extbase\Mvc\ResponseInterface
      * Fetches the content, returns and clears it.
      *
      * @return string
-     * @api
      */
     public function shutdown()
     {
@@ -76,7 +70,6 @@ class Response implements \TYPO3\CMS\Extbase\Mvc\ResponseInterface
      * Returns the content of the response.
      *
      * @return string
-     * @api
      */
     public function __toString()
     {

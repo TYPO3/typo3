@@ -26,8 +26,6 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * A multi action controller. This is by far the most common base class for Controllers.
- *
- * @api
  */
 class ActionController extends AbstractController
 {
@@ -45,13 +43,11 @@ class ActionController extends AbstractController
      * The current view, as resolved by resolveView()
      *
      * @var ViewInterface
-     * @api
      */
     protected $view;
 
     /**
      * @var string
-     * @api
      */
     protected $namespacesViewObjectNamePattern = '@vendor\@extension\View\@controller\@action@format';
 
@@ -71,7 +67,6 @@ class ActionController extends AbstractController
      * a response for the current request.
      *
      * @var string
-     * @api
      */
     protected $defaultViewObjectName = \TYPO3\CMS\Fluid\View\TemplateView::class;
 
@@ -79,7 +74,6 @@ class ActionController extends AbstractController
      * Name of the action method
      *
      * @var string
-     * @api
      */
     protected $actionMethodName = 'indexAction';
 
@@ -87,13 +81,11 @@ class ActionController extends AbstractController
      * Name of the special error action method which is called in case of errors
      *
      * @var string
-     * @api
      */
     protected $errorMethodName = 'errorAction';
 
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService
-     * @api
      */
     protected $mvcPropertyMappingConfigurationService;
 
@@ -101,7 +93,6 @@ class ActionController extends AbstractController
      * The current request.
      *
      * @var \TYPO3\CMS\Extbase\Mvc\Request
-     * @api
      */
     protected $request;
 
@@ -109,7 +100,6 @@ class ActionController extends AbstractController
      * The response which will be returned by this action controller
      *
      * @var \TYPO3\CMS\Extbase\Mvc\Response
-     * @api
      */
     protected $response;
 
@@ -314,8 +304,6 @@ class ActionController extends AbstractController
      * If the action returns a string, it is appended to the content in the
      * response object. If the action doesn't return anything and a valid
      * view exists, the view is rendered automatically.
-     *
-     * @api
      */
     protected function callActionMethod()
     {
@@ -356,7 +344,6 @@ class ActionController extends AbstractController
      * By default, this method tries to locate a view with a name matching the current action.
      *
      * @return ViewInterface
-     * @api
      */
     protected function resolveView()
     {
@@ -464,7 +451,6 @@ class ActionController extends AbstractController
      * Determines the fully qualified view object name.
      *
      * @return mixed The fully qualified view object name or FALSE if no matching view could be found.
-     * @api
      */
     protected function resolveViewObjectName()
     {
@@ -506,8 +492,6 @@ class ActionController extends AbstractController
      * or prepare the view in another way before the action is called.
      *
      * @param ViewInterface $view The view to be initialized
-     *
-     * @api
      */
     protected function initializeView(ViewInterface $view)
     {
@@ -518,8 +502,6 @@ class ActionController extends AbstractController
      *
      * Override this method to solve tasks which all actions have in
      * common.
-     *
-     * @api
      */
     protected function initializeAction()
     {
@@ -536,7 +518,6 @@ class ActionController extends AbstractController
      * data is re-evaluated when the user changes something.
      *
      * @return string
-     * @api
      */
     protected function errorAction()
     {
@@ -580,7 +561,6 @@ class ActionController extends AbstractController
      * the flash message in your action controller.
      *
      * @return string The flash message or FALSE if no flash message should be set
-     * @api
      */
     protected function getErrorFlashMessage()
     {

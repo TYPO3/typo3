@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 /**
  * The QueryFactory used to create queries against the storage backend
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class QueryFactory implements QueryFactoryInterface, \TYPO3\CMS\Core\SingletonInterface
 {

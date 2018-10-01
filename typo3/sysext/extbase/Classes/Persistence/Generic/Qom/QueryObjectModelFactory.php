@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 
 /**
  * The Query Object Model Factory
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface
 {

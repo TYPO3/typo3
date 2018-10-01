@@ -24,8 +24,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * A JSON view
- *
- * @api
  */
 class JsonView extends AbstractView
 {
@@ -169,6 +167,7 @@ class JsonView extends AbstractView
 
     /**
      * @param PersistenceManagerInterface $persistenceManager
+     * @internal
      */
     public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager): void
     {
@@ -177,6 +176,7 @@ class JsonView extends AbstractView
 
     /**
      * @param ReflectionService $reflectionService
+     * @internal
      */
     public function injectReflectionService(ReflectionService $reflectionService): void
     {
@@ -188,7 +188,6 @@ class JsonView extends AbstractView
      * By default only the variable 'value' will be rendered
      *
      * @param array $variablesToRender
-     * @api
      */
     public function setVariablesToRender(array $variablesToRender): void
     {
@@ -209,7 +208,6 @@ class JsonView extends AbstractView
      * the result.
      *
      * @return string The JSON encoded variables
-     * @api
      */
     public function render(): string
     {
@@ -242,7 +240,6 @@ class JsonView extends AbstractView
      * array.
      *
      * @return mixed
-     * @api
      */
     protected function renderArray()
     {

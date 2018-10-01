@@ -1,31 +1,22 @@
 <?php
 namespace TYPO3\CMS\Extbase\Mvc\Controller;
 
-/*                                                                        *
- * This script belongs to the Extbase framework                           *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 /**
  * The default property mapping configuration is available
  * inside the Argument-object.
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @api
  */
 class MvcPropertyMappingConfiguration extends \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
 {
@@ -33,7 +24,6 @@ class MvcPropertyMappingConfiguration extends \TYPO3\CMS\Extbase\Property\Proper
      * Allow creation of a certain sub property
      *
      * @param string $propertyPath
-     * @api
      */
     public function allowCreationForSubProperty($propertyPath)
     {
@@ -44,7 +34,6 @@ class MvcPropertyMappingConfiguration extends \TYPO3\CMS\Extbase\Property\Proper
      * Allow modification for a given property path
      *
      * @param string $propertyPath
-     * @api
      */
     public function allowModificationForSubProperty($propertyPath)
     {
@@ -58,7 +47,6 @@ class MvcPropertyMappingConfiguration extends \TYPO3\CMS\Extbase\Property\Proper
      *
      * @param string $propertyPath
      * @param string $targetType
-     * @api
      */
     public function setTargetTypeForSubProperty($propertyPath, $targetType)
     {

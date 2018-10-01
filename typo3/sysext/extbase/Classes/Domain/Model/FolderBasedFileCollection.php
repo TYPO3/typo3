@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 /**
  * A file collection object (File Abstraction Layer)
  *
- * @api experimental! This class is experimental and subject to change!
+ * @internal experimental! This class is experimental and subject to change!
  */
 class FolderBasedFileCollection extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection
 {

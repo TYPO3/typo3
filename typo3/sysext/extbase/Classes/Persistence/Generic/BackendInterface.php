@@ -37,7 +37,6 @@ interface BackendInterface
      * Sets the deleted entities
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities
-     * @api
      */
     public function setDeletedEntities(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities);
 
@@ -87,7 +86,6 @@ interface BackendInterface
      *
      * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
      * @return int
-     * @api
      */
     public function getObjectCountByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query);
 
@@ -96,7 +94,6 @@ interface BackendInterface
      *
      * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
      * @return array
-     * @api
      */
     public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query);
 }

@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 
 /**
  * The controller context contains information from the controller
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @api
  */
 class ControllerContext
 {
@@ -87,7 +84,6 @@ class ControllerContext
      * Get the request of the controller
      *
      * @return \TYPO3\CMS\Extbase\Mvc\Request
-     * @api
      */
     public function getRequest()
     {
@@ -108,7 +104,6 @@ class ControllerContext
      * Get the response of the controller
      *
      * @return \TYPO3\CMS\Extbase\Mvc\Response
-     * @api
      */
     public function getResponse()
     {
@@ -129,7 +124,6 @@ class ControllerContext
      * Get the arguments of the controller
      *
      * @return \TYPO3\CMS\Extbase\Mvc\Controller\Arguments
-     * @api
      */
     public function getArguments()
     {
@@ -146,7 +140,6 @@ class ControllerContext
 
     /**
      * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
-     * @api
      */
     public function getUriBuilder()
     {
@@ -156,7 +149,6 @@ class ControllerContext
     /**
      * @param string $identifier Queue-identifier
      * @return \TYPO3\CMS\Core\Messaging\FlashMessageQueue
-     * @api
      */
     public function getFlashMessageQueue($identifier = null)
     {

@@ -28,6 +28,7 @@ use TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler;
 
 /**
  * A general purpose configuration manager used in backend mode.
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class BackendConfigurationManager extends AbstractConfigurationManager
 {

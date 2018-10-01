@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 
 /**
  * Contract for a validator
- *
- * @api
  */
 interface ValidatorInterface
 {
@@ -27,7 +25,6 @@ interface ValidatorInterface
      *
      * @param mixed $value The value that should be validated
      * @return \TYPO3\CMS\Extbase\Error\Result
-     * @api
      */
     public function validate($value);
 

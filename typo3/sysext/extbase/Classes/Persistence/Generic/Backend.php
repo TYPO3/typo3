@@ -24,6 +24,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface;
 /**
  * A persistence backend. This backend maps objects to the relational model of the storage backend.
  * It persists all added, removed and changed objects.
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface, \TYPO3\CMS\Core\SingletonInterface
 {
@@ -200,7 +201,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      *
      * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
      * @return int
-     * @api
      */
     public function getObjectCountByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query)
     {
@@ -212,7 +212,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      *
      * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
      * @return array
-     * @api
      */
     public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query)
     {

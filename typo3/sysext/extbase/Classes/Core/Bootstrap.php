@@ -60,7 +60,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
      * @param array $configuration The TS configuration array
      * @throws \RuntimeException
      * @see run()
-     * @api
      */
     public function initialize($configuration)
     {
@@ -96,6 +95,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
      *
      * @param array $configuration
      * @see initialize()
+     * @internal
      */
     public function initializeConfiguration($configuration)
     {
@@ -137,6 +137,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
      * Initializes the persistence framework
      *
      * @see initialize()
+     * @internal
      */
     public function initializePersistence()
     {
@@ -150,7 +151,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
      * @param string $content The content. Not used
      * @param array $configuration The TS configuration array
      * @return string $content The processed content
-     * @api
      */
     public function run($content, $configuration)
     {

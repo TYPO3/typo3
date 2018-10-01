@@ -16,8 +16,7 @@ namespace TYPO3\CMS\Extbase\Mvc\View;
 
 /**
  * The not found view - a special case.
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class NotFoundView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView
 {
@@ -31,7 +30,6 @@ class NotFoundView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView
      *
      * @return string The rendered view
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception if no request has been set
-     * @api
      */
     public function render()
     {

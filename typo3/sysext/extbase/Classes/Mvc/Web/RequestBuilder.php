@@ -23,6 +23,7 @@ use TYPO3\CMS\Extbase\Mvc\Exception as MvcException;
 
 /**
  * Builds a web request.
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
 {

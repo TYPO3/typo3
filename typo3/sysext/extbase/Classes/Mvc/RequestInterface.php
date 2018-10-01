@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Mvc;
 
 /**
  * Contract for a request.
- *
- * @api
  */
 interface RequestInterface
 {
@@ -25,7 +23,6 @@ interface RequestInterface
      * Sets the dispatched flag
      *
      * @param bool $flag If this request has been dispatched
-     * @api
      */
     public function setDispatched($flag);
 
@@ -37,7 +34,6 @@ interface RequestInterface
      * addressed yet.
      *
      * @return bool TRUE if this request has been disptached successfully
-     * @api
      */
     public function isDispatched();
 
@@ -47,7 +43,6 @@ interface RequestInterface
      *
      * @return string The controller's Object Name
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchControllerException if the controller does not exist
-     * @api
      */
     public function getControllerObjectName();
 
@@ -56,7 +51,6 @@ interface RequestInterface
      *
      * @param string $argumentName Name of the argument to set
      * @param mixed $value The new value
-     * @api
      */
     public function setArgument($argumentName, $value);
 
@@ -65,7 +59,6 @@ interface RequestInterface
      * which existed before.
      *
      * @param array $arguments An array of argument names and their values
-     * @api
      */
     public function setArguments(array $arguments);
 
@@ -75,7 +68,6 @@ interface RequestInterface
      * @param string $argumentName Name of the argument
      * @return string Value of the argument
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException if such an argument does not exist
-     * @api
      */
     public function getArgument($argumentName);
 
@@ -84,7 +76,6 @@ interface RequestInterface
      *
      * @param string $argumentName Name of the argument to check
      * @return bool TRUE if the argument is set, otherwise FALSE
-     * @api
      */
     public function hasArgument($argumentName);
 
@@ -92,7 +83,6 @@ interface RequestInterface
      * Returns an array of arguments and their values
      *
      * @return array Array of arguments and their values (which may be arguments and values as well)
-     * @api
      */
     public function getArguments();
 }

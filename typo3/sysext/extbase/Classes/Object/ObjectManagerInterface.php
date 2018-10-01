@@ -24,6 +24,7 @@ interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $objectName Name of the object
      * @return bool TRUE if the object has been registered, otherwise FALSE
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function isRegistered($objectName);
 
@@ -33,7 +34,6 @@ interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface
      * @param string $objectName The name of the object to return an instance of
      * @param array ...$constructorArguments
      * @return object The object instance
-     * @api
      */
     public function get($objectName, ...$constructorArguments);
 
@@ -42,7 +42,6 @@ interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $className
      * @return object
-     * @api
      */
     public function getEmptyObject($className);
 
@@ -51,6 +50,7 @@ interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $objectName The object name
      * @return int One of the Container::SCOPE_ constants
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getScope($objectName);
 }

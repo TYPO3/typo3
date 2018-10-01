@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Cli;
 /**
  * Represents a CLI request.
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @api
  * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Use symfony/console commands instead.
  */
 class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface

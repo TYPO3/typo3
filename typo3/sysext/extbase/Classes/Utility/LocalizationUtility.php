@@ -24,8 +24,6 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Localization helper which should be used to fetch localized labels.
- *
- * @api
  */
 class LocalizationUtility
 {
@@ -65,7 +63,6 @@ class LocalizationUtility
      * @param string $languageKey The language key or null for using the current language from the system
      * @param string[] $alternativeLanguageKeys The alternative language keys if no translation was found. If null and we are in the frontend, then the language_alt from TypoScript setup will be used
      * @return string|null The value from LOCAL_LANG or null if no translation was found.
-     * @api
      */
     public static function translate($key, $extensionName = null, $arguments = null, string $languageKey = null, array $alternativeLanguageKeys = null)
     {

@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\SingletonInterface;
 /**
  * Reflection service for acquiring reflection based information.
  * Originally based on the TYPO3.Flow reflection service.
- *
- * @api
  */
 class ReflectionService implements SingletonInterface
 {

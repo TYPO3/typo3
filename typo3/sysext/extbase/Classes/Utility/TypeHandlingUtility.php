@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Utility;
 
 /**
  * PHP type handling functions
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class TypeHandlingUtility
 {

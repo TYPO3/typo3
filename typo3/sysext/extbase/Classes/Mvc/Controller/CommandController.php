@@ -31,7 +31,6 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 /**
  * A controller which processes requests from the command line
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Use symfony/console commands instead.
  */
 class CommandController implements CommandControllerInterface
@@ -62,7 +61,6 @@ class CommandController implements CommandControllerInterface
      * Whether the command needs admin access to perform its job
      *
      * @var bool
-     * @api
      */
     protected $requestAdminPermissions = false;
 
@@ -119,7 +117,6 @@ class CommandController implements CommandControllerInterface
      * @param RequestInterface $request The request object
      * @param ResponseInterface $response The response, modified by this handler
      * @throws UnsupportedRequestTypeException if the controller doesn't support the current request type
-     * @api
      */
     public function processRequest(RequestInterface $request, ResponseInterface $response)
     {

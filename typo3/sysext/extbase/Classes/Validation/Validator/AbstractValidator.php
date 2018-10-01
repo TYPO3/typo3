@@ -54,7 +54,6 @@ abstract class AbstractValidator implements ValidatorInterface
      *
      * @param array $options Options for the validator
      * @throws InvalidValidationOptionsException
-     * @api
      */
     public function __construct(array $options = [])
     {
@@ -92,7 +91,6 @@ abstract class AbstractValidator implements ValidatorInterface
      *
      * @param mixed $value The value that should be validated
      * @return \TYPO3\CMS\Extbase\Error\Result
-     * @api
      */
     public function validate($value)
     {

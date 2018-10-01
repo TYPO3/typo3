@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
 
 /**
  * ArrayAccess class for the Reflection tests
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class ArrayAccessClass implements \ArrayAccess
 {

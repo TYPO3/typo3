@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 
 /**
  * Validator for email addresses
- *
- * @api
  */
 class EmailAddressValidator extends AbstractValidator
 {
@@ -25,7 +23,6 @@ class EmailAddressValidator extends AbstractValidator
      * Checks if the given value is a valid email address.
      *
      * @param mixed $value The value that should be validated
-     * @api
      */
     public function isValid($value)
     {

@@ -56,8 +56,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * the character "_" (underscore) matches exactly one character, and
  * the string "\x" matches the character "x", and
  * all other characters match themselves.
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 interface ComparisonInterface extends ConstraintInterface
 {

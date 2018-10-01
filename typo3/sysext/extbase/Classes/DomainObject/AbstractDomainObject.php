@@ -20,6 +20,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
  * A generic Domain Object.
  *
  * All Model domain objects need to inherit from either AbstractEntity or AbstractValueObject, as this provides important framework information.
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface
 {

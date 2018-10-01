@@ -23,6 +23,7 @@ use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 
 /**
  * Validator resolver to automatically find an appropriate validator for a given subject
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
 {

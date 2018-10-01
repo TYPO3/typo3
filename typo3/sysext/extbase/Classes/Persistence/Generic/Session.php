@@ -18,6 +18,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * The persistence session - acts as a Unit of Work for Extbase persistence framework.
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class Session implements \TYPO3\CMS\Core\SingletonInterface
 {
@@ -112,7 +113,6 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param object $object
      * @return bool
-     * @api
      */
     public function hasObject($object)
     {
@@ -137,7 +137,6 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $identifier
      * @param string $className
      * @return object
-     * @api
      */
     public function getObjectByIdentifier($identifier, $className)
     {
@@ -151,7 +150,6 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param object $object
      * @return string
-     * @api
      */
     public function getIdentifierByObject($object)
     {
@@ -166,7 +164,6 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param object $object
      * @param string $identifier
-     * @api
      */
     public function registerObject($object, $identifier)
     {

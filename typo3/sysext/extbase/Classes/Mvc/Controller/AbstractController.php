@@ -21,8 +21,6 @@ use TYPO3\CMS\Extbase\Mvc\Web\Request as WebRequest;
 
 /**
  * An abstract base class for Controllers
- *
- * @api
  */
 abstract class AbstractController implements ControllerInterface
 {
@@ -50,7 +48,6 @@ abstract class AbstractController implements ControllerInterface
      * Contains the settings of the current extension
      *
      * @var array
-     * @api
      */
     protected $settings;
 
@@ -58,7 +55,6 @@ abstract class AbstractController implements ControllerInterface
      * The current request.
      *
      * @var \TYPO3\CMS\Extbase\Mvc\RequestInterface
-     * @api
      */
     protected $request;
 
@@ -66,7 +62,6 @@ abstract class AbstractController implements ControllerInterface
      * The response which will be returned by this action controller
      *
      * @var \TYPO3\CMS\Extbase\Mvc\ResponseInterface
-     * @api
      */
     protected $response;
 
@@ -107,13 +102,11 @@ abstract class AbstractController implements ControllerInterface
 
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
-     * @api
      */
     protected $controllerContext;
 
     /**
      * @return ControllerContext
-     * @api
      */
     public function getControllerContext()
     {
@@ -169,7 +162,6 @@ abstract class AbstractController implements ControllerInterface
      * @param bool $storeInSession Optional, defines whether the message should be stored in the session (default) or not
      * @throws \InvalidArgumentException if the message body is no string
      * @see \TYPO3\CMS\Core\Messaging\FlashMessage
-     * @api
      */
     public function addFlashMessage($messageBody, $messageTitle = '', $severity = \TYPO3\CMS\Core\Messaging\AbstractMessage::OK, $storeInSession = true)
     {
@@ -196,7 +188,6 @@ abstract class AbstractController implements ControllerInterface
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The current request
      * @return bool TRUE if this request type is supported, otherwise FALSE
-     * @api
      */
     public function canProcessRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request)
     {
@@ -214,7 +205,6 @@ abstract class AbstractController implements ControllerInterface
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
      * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this handler
      * @throws UnsupportedRequestTypeException if the controller doesn't support the current request type
-     * @api
      */
     public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response)
     {
@@ -238,7 +228,6 @@ abstract class AbstractController implements ControllerInterface
      * Initialize the controller context
      *
      * @return \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext ControllerContext to be passed to the view
-     * @api
      */
     protected function buildControllerContext()
     {
@@ -266,7 +255,6 @@ abstract class AbstractController implements ControllerInterface
      * @param array $arguments Arguments to pass to the target action
      * @throws StopActionException
      * @see redirect()
-     * @api
      */
     public function forward($actionName, $controllerName = null, $extensionName = null, array $arguments = null)
     {
@@ -304,7 +292,6 @@ abstract class AbstractController implements ControllerInterface
      * @throws UnsupportedRequestTypeException If the request is not a web request
      * @throws StopActionException
      * @see forward()
-     * @api
      */
     protected function redirect($actionName, $controllerName = null, $extensionName = null, array $arguments = null, $pageUid = null, $delay = 0, $statusCode = 303)
     {
@@ -332,7 +319,6 @@ abstract class AbstractController implements ControllerInterface
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
      * @throws UnsupportedRequestTypeException If the request is not a web request
      * @throws StopActionException
-     * @api
      */
     protected function redirectToUri($uri, $delay = 0, $statusCode = 303)
     {
@@ -373,7 +359,6 @@ abstract class AbstractController implements ControllerInterface
      * @param string $content Body content which further explains the status
      * @throws UnsupportedRequestTypeException If the request is not a web request
      * @throws StopActionException
-     * @api
      */
     public function throwStatus($statusCode, $statusMessage = null, $content = null)
     {

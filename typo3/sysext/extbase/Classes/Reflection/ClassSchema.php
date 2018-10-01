@@ -35,8 +35,7 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 
 /**
  * A class schema
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class ClassSchema
 {

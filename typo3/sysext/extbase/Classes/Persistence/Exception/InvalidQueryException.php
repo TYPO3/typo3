@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Exception;
 
 /**
  * An "Invalid Query" Exception
- *
- * @api
  */
 class InvalidQueryException extends \TYPO3\CMS\Extbase\Exception
 {

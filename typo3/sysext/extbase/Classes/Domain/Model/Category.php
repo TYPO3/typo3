@@ -18,8 +18,6 @@ use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /**
  * This model represents a category (for anything).
- *
- * @api
  */
 class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
@@ -44,7 +42,6 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Gets the title.
      *
      * @return string the title, might be empty
-     * @api
      */
     public function getTitle()
     {
@@ -55,7 +52,6 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the title.
      *
      * @param string $title the title to set, may be empty
-     * @api
      */
     public function setTitle($title)
     {
@@ -66,7 +62,6 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Gets the description.
      *
      * @return string the description, might be empty
-     * @api
      */
     public function getDescription()
     {
@@ -77,7 +72,6 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the description.
      *
      * @param string $description the description to set, may be empty
-     * @api
      */
     public function setDescription($description)
     {
@@ -88,7 +82,6 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Gets the parent category.
      *
      * @return \TYPO3\CMS\Extbase\Domain\Model\Category|null the parent category
-     * @api
      */
     public function getParent()
     {
@@ -102,7 +95,6 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the parent category.
      *
      * @param \TYPO3\CMS\Extbase\Domain\Model\Category $parent the parent category
-     * @api
      */
     public function setParent(\TYPO3\CMS\Extbase\Domain\Model\Category $parent)
     {

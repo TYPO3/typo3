@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 /**
  * Represents a web request.
- *
- * @api
  */
 class Request extends \TYPO3\CMS\Extbase\Mvc\Request
 {
@@ -63,6 +61,7 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
 
     /**
      * @param \TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectHashService(\TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService)
     {
@@ -71,6 +70,7 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
 
     /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
     {
@@ -79,6 +79,7 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
 
     /**
      * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService)
     {
@@ -90,6 +91,7 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
      *
      * @param string $method Name of the request method
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidRequestMethodException if the request method is not supported
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function setMethod($method)
     {
@@ -103,7 +105,6 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
      * Returns the name of the request method
      *
      * @return string Name of the request method
-     * @api
      */
     public function getMethod()
     {
@@ -114,6 +115,7 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
      * Sets the request URI
      *
      * @param string $requestUri URI of this web request
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function setRequestUri($requestUri)
     {
@@ -124,7 +126,6 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
      * Returns the request URI
      *
      * @return string URI of this web request
-     * @api
      */
     public function getRequestUri()
     {
@@ -135,6 +136,7 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
      * Sets the base URI for this request.
      *
      * @param string $baseUri New base URI
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function setBaseUri($baseUri)
     {
@@ -145,7 +147,6 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
      * Returns the base URI
      *
      * @return string Base URI of this web request
-     * @api
      */
     public function getBaseUri()
     {
@@ -159,6 +160,7 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
      * Set if the current request is cached.
      *
      * @param bool $isCached
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function setIsCached($isCached)
     {
@@ -168,8 +170,8 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
     /**
      * Return whether the current request is a cached request or not.
      *
-     * @api (v4 only)
      * @return bool the caching status.
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function isCached()
     {
@@ -180,6 +182,7 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
      * Get a freshly built request object pointing to the Referrer.
      *
      * @return ReferringRequest the referring request, or null if no referrer found
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getReferringRequest()
     {

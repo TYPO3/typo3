@@ -29,6 +29,8 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  * 2) Check that _all_ GET/POST parameters submitted occur inside the form field list of the request hash.
  *
  * Note: It is crucially important that a private key is computed into the hash value! This is done inside the HashService.
+ *
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class MvcPropertyMappingConfigurationService implements \TYPO3\CMS\Core\SingletonInterface
 {

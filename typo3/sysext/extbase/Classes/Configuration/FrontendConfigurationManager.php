@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * A general purpose configuration manager used in frontend mode.
  *
  * Should NOT be singleton, as a new configuration manager is needed per plugin.
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager
 {

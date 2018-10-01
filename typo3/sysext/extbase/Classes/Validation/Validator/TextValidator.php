@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 
 /**
  * Validator for "plain" text.
- *
- * @api
  */
 class TextValidator extends AbstractValidator
 {
@@ -31,7 +29,6 @@ class TextValidator extends AbstractValidator
      * See http://php.net/filter_var for details.
      *
      * @param mixed $value The value that should be validated
-     * @api
      */
     public function isValid($value)
     {

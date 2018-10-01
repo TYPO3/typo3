@@ -23,6 +23,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 /**
  * Service for determining basic extension params
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
 {

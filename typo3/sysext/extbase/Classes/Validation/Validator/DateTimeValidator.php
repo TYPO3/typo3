@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 
 /**
  * Validator for DateTime/DateTimeImmutable objects.
- *
- * @api
  */
 class DateTimeValidator extends AbstractValidator
 {

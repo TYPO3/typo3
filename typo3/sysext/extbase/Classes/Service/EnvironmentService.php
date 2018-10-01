@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Core\Environment;
 
 /**
  * Service for determining environment params
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class EnvironmentService implements \TYPO3\CMS\Core\SingletonInterface
 {

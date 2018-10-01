@@ -18,8 +18,6 @@ use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /**
  * This model represents a file mount.
- *
- * @api
  */
 class FileMount extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {

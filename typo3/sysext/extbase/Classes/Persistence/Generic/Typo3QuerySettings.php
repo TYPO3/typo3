@@ -22,10 +22,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
 
 /**
- * Query settings. This class is NOT part of the TYPO3.Flow API.
- * It reflects the settings unique to TYPO3 CMS.
- *
- * @api
+ * Query settings, reflects the settings unique to TYPO3 CMS.
  */
 class Typo3QuerySettings implements QuerySettingsInterface
 {
@@ -143,7 +140,6 @@ class Typo3QuerySettings implements QuerySettingsInterface
      *
      * @param bool $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
      * @return QuerySettingsInterface
-     * @api
      */
     public function setRespectStoragePage($respectStoragePage)
     {
@@ -166,7 +162,6 @@ class Typo3QuerySettings implements QuerySettingsInterface
      *
      * @param array $storagePageIds If given the storage page IDs will be determined and the statement will be extended accordingly.
      * @return QuerySettingsInterface
-     * @api
      */
     public function setStoragePageIds(array $storagePageIds)
     {
@@ -187,7 +182,6 @@ class Typo3QuerySettings implements QuerySettingsInterface
     /**
      * @param bool $respectSysLanguage TRUE if TYPO3 language settings are to be applied
      * @return QuerySettingsInterface
-     * @api
      */
     public function setRespectSysLanguage($respectSysLanguage)
     {
@@ -206,7 +200,6 @@ class Typo3QuerySettings implements QuerySettingsInterface
     /**
      * @param mixed $languageOverlayMode TRUE, FALSE or "hideNonTranslated"
      * @return QuerySettingsInterface instance of $this to allow method chaining
-     * @api
      */
     public function setLanguageOverlayMode($languageOverlayMode = false)
     {
@@ -227,7 +220,6 @@ class Typo3QuerySettings implements QuerySettingsInterface
      *
      * @param string $languageMode NULL, "content_fallback", "strict" or "ignore"
      * @return QuerySettingsInterface instance of $this to allow method chaining
-     * @api
      */
     public function setLanguageMode($languageMode = '')
     {
@@ -248,7 +240,6 @@ class Typo3QuerySettings implements QuerySettingsInterface
     /**
      * @param int $languageUid
      * @return QuerySettingsInterface instance of $this to allow method chaining
-     * @api
      */
     public function setLanguageUid($languageUid)
     {
@@ -272,7 +263,6 @@ class Typo3QuerySettings implements QuerySettingsInterface
      * @param bool $ignoreEnableFields
      * @return QuerySettingsInterface
      * @see setEnableFieldsToBeIgnored()
-     * @api
      */
     public function setIgnoreEnableFields($ignoreEnableFields)
     {
@@ -302,7 +292,6 @@ class Typo3QuerySettings implements QuerySettingsInterface
      * @param array $enableFieldsToBeIgnored
      * @return QuerySettingsInterface
      * @see setIgnoreEnableFields()
-     * @api
      */
     public function setEnableFieldsToBeIgnored($enableFieldsToBeIgnored)
     {
@@ -327,7 +316,6 @@ class Typo3QuerySettings implements QuerySettingsInterface
      *
      * @param bool $includeDeleted
      * @return QuerySettingsInterface
-     * @api
      */
     public function setIncludeDeleted($includeDeleted)
     {

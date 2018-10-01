@@ -42,6 +42,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * QueryParser, converting the qom to string representation
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class Typo3DbQueryParser
 {

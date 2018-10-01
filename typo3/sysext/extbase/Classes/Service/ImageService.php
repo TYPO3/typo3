@@ -56,7 +56,6 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
      * @param FileInterface|FileReference $image
      * @param array $processingInstructions
      * @return ProcessedFile
-     * @api
      */
     public function applyProcessingInstructions($image, $processingInstructions)
     {
@@ -77,7 +76,6 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
      * @param FileInterface $image
      * @param bool|false $absolute Force absolute URL
      * @return string
-     * @api
      */
     public function getImageUri(FileInterface $image, $absolute = false)
     {

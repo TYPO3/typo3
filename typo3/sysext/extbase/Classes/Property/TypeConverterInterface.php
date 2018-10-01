@@ -1,31 +1,23 @@
 <?php
 namespace TYPO3\CMS\Extbase\Property;
 
-/*                                                                        *
- * This script belongs to the Extbase framework                           *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 /**
  * Interface for type converters, which can convert from a simple type to an object or another simple type.
  *
  * All Type Converters should have NO INTERNAL STATE, such that they can be used as singletons and multiple times in succession (as this improves performance dramatically).
- *
- * @api
  */
 interface TypeConverterInterface
 {
@@ -34,7 +26,6 @@ interface TypeConverterInterface
      * Must be PHP simple types, classes or object is not allowed.
      *
      * @return array<string>
-     * @api
      */
     public function getSupportedSourceTypes();
 
@@ -43,7 +34,6 @@ interface TypeConverterInterface
      * Can be a simple type or a class name.
      *
      * @return string
-     * @api
      */
     public function getSupportedTargetType();
 
@@ -54,7 +44,6 @@ interface TypeConverterInterface
      * @param string $originalTargetType the type we originally want to convert to
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return string
-     * @api
      */
     public function getTargetTypeForSource($source, $originalTargetType, PropertyMappingConfigurationInterface $configuration = null);
 
@@ -62,7 +51,6 @@ interface TypeConverterInterface
      * Return the priority of this TypeConverter. TypeConverters with a high priority are chosen before low priority.
      *
      * @return int
-     * @api
      */
     public function getPriority();
 
@@ -73,7 +61,6 @@ interface TypeConverterInterface
      * @param mixed $source the source data
      * @param string $targetType the type to convert to.
      * @return bool TRUE if this TypeConverter can convert from $source to $targetType, FALSE otherwise.
-     * @api
      */
     public function canConvertFrom($source, $targetType);
 
@@ -83,7 +70,6 @@ interface TypeConverterInterface
      *
      * @param mixed $source
      * @return array<mixed>
-     * @api
      */
     public function getSourceChildPropertiesToBeConverted($source);
 
@@ -94,7 +80,6 @@ interface TypeConverterInterface
      * @param string $propertyName
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return string the type of $propertyName in $targetType
-     * @api
      */
     public function getTypeOfChildProperty($targetType, $propertyName, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration);
 
@@ -115,7 +100,6 @@ interface TypeConverterInterface
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return mixed|\TYPO3\CMS\Extbase\Error\Error the target type, or an error object if a user-error occurred
      * @throws \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException thrown in case a developer error occurred
-     * @api
      */
     public function convertFrom($source, $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null);
 }

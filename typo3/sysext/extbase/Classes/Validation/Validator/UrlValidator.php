@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Validator for url.
- *
- * @api
  */
 class UrlValidator extends AbstractValidator
 {
@@ -28,7 +26,6 @@ class UrlValidator extends AbstractValidator
      * Checks if the given value is a string.
      *
      * @param mixed $value The value that should be validated
-     * @api
      */
     public function isValid($value)
     {

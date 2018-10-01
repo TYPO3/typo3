@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 
 /**
  * Validator based on regular expressions.
- *
- * @api
  */
 class RegularExpressionValidator extends AbstractValidator
 {
@@ -33,7 +31,6 @@ class RegularExpressionValidator extends AbstractValidator
      *
      * @param mixed $value The value that should be validated
      * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException
-     * @api
      */
     public function isValid($value)
     {

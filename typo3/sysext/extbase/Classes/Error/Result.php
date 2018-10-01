@@ -1,30 +1,20 @@
 <?php
 namespace TYPO3\CMS\Extbase\Error;
 
-/*                                                                        *
- * This script belongs to the Extbase framework                           *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 /**
  * Result object for operations dealing with objects, such as the Property Mapper or the Validators.
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @api
  */
 class Result
 {
@@ -99,7 +89,6 @@ class Result
      * Add an error to the current Result object
      *
      * @param Error $error
-     * @api
      */
     public function addError(Error $error)
     {
@@ -111,7 +100,6 @@ class Result
      * Add a warning to the current Result object
      *
      * @param Warning $warning
-     * @api
      */
     public function addWarning(Warning $warning)
     {
@@ -123,7 +111,6 @@ class Result
      * Add a notice to the current Result object
      *
      * @param Notice $notice
-     * @api
      */
     public function addNotice(Notice $notice)
     {
@@ -135,7 +122,6 @@ class Result
      * Get all errors in the current Result object (non-recursive)
      *
      * @return Error[]
-     * @api
      */
     public function getErrors()
     {
@@ -146,7 +132,6 @@ class Result
      * Get all warnings in the current Result object (non-recursive)
      *
      * @return Warning[]
-     * @api
      */
     public function getWarnings()
     {
@@ -157,7 +142,6 @@ class Result
      * Get all notices in the current Result object (non-recursive)
      *
      * @return Notice[]
-     * @api
      */
     public function getNotices()
     {
@@ -168,7 +152,6 @@ class Result
      * Get the first error object of the current Result object (non-recursive)
      *
      * @return Error
-     * @api
      */
     public function getFirstError()
     {
@@ -180,7 +163,6 @@ class Result
      * Get the first warning object of the current Result object (non-recursive)
      *
      * @return Warning
-     * @api
      */
     public function getFirstWarning()
     {
@@ -192,7 +174,6 @@ class Result
      * Get the first notice object of the curren Result object (non-recursive)
      *
      * @return Notice
-     * @api
      */
     public function getFirstNotice()
     {
@@ -208,7 +189,6 @@ class Result
      *
      * @param string $propertyPath
      * @return Result
-     * @api
      */
     public function forProperty($propertyPath)
     {
@@ -333,7 +313,6 @@ class Result
      * Does the current Result object have Errors? (Recursively)
      *
      * @return bool
-     * @api
      */
     public function hasErrors()
     {
@@ -344,7 +323,6 @@ class Result
      * Does the current Result object have Warnings? (Recursively)
      *
      * @return bool
-     * @api
      */
     public function hasWarnings()
     {
@@ -355,7 +333,6 @@ class Result
      * Does the current Result object have Notices? (Recursively)
      *
      * @return bool
-     * @api
      */
     public function hasNotices()
     {
@@ -368,7 +345,6 @@ class Result
      * value is a list of all errors (stored as array)
      *
      * @return Error[]
-     * @api
      */
     public function getFlattenedErrors()
     {
@@ -383,7 +359,6 @@ class Result
      * value is a list of all warnings (stored as array)
      *
      * @return Warning[]
-     * @api
      */
     public function getFlattenedWarnings()
     {
@@ -398,7 +373,6 @@ class Result
      * value is a list of all notices (stored as array)
      *
      * @return Notice[]
-     * @api
      */
     public function getFlattenedNotices()
     {
@@ -432,7 +406,6 @@ class Result
      * Merge the given Result object into this one.
      *
      * @param Result $otherResult
-     * @api
      */
     public function merge(Result $otherResult)
     {

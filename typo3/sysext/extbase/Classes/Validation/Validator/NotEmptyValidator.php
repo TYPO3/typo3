@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 
 /**
  * Validator for not empty values.
- *
- * @api
  */
 class NotEmptyValidator extends AbstractValidator
 {

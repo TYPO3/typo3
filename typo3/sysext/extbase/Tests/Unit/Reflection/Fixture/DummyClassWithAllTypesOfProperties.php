@@ -19,8 +19,6 @@ use TYPO3\CMS\Extbase\Annotation\ORM\Transient;
 
 /**
  * Fixture class with getters and setters
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class DummyClassWithAllTypesOfProperties
 {

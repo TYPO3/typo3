@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 
 /**
  * A factory for a data map to map a single table configured in $TCA on a domain object.
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
 {

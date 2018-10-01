@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
 /**
  * A column map to map a column configured in $TCA on a property of a domain object.
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class ColumnMap
 {

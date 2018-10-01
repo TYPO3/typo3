@@ -23,6 +23,7 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
  * Internal TYPO3 Dependency Injection container
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class Container implements \TYPO3\CMS\Core\SingletonInterface
 {

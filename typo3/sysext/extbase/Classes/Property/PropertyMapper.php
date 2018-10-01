@@ -1,25 +1,19 @@
 <?php
 namespace TYPO3\CMS\Extbase\Property;
 
-/*                                                                        *
- * This script belongs to the Extbase framework                           *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
@@ -27,9 +21,6 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 /**
  * The Property Mapper transforms simple types (arrays, strings, integers, floats, booleans) to objects or other simple types.
  * It is used most prominently to map incoming HTTP arguments to objects.
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @api
  */
 class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
 {
@@ -64,6 +55,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
     {
@@ -72,6 +64,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder $configurationBuilder
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectConfigurationBuilder(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder $configurationBuilder)
     {
@@ -83,6 +76,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
      * Here, the typeConverter array gets initialized.
      *
      * @throws Exception\DuplicateTypeConverterException
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function initializeObject()
     {
@@ -105,7 +99,6 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
      * @param PropertyMappingConfigurationInterface $configuration Configuration for the property mapping. If NULL, the PropertyMappingConfigurationBuilder will create a default configuration.
      * @throws Exception
      * @return mixed an instance of $targetType
-     * @api
      */
     public function convert($source, $targetType, PropertyMappingConfigurationInterface $configuration = null)
     {
@@ -132,7 +125,6 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
      * Get the messages of the last Property Mapping
      *
      * @return \TYPO3\CMS\Extbase\Error\Result
-     * @api
      */
     public function getMessages()
     {
@@ -383,6 +375,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $compositeType
      * @return string
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function parseCompositeType($compositeType)
     {

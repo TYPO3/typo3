@@ -22,6 +22,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 /**
  * A proxy that can replace any object and replaces itself in it's parent on
  * first access (call, get, set, isset, unset).
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
 {

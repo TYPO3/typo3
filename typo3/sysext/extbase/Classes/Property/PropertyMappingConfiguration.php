@@ -1,30 +1,21 @@
 <?php
 namespace TYPO3\CMS\Extbase\Property;
 
-/*                                                                        *
- * This script belongs to the Extbase framework                           *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 
 /**
  * Concrete configuration object for the PropertyMapper.
- *
- * @api
  */
 class PropertyMappingConfiguration implements PropertyMappingConfigurationInterface
 {
@@ -107,7 +98,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      *
      * @param string $propertyName
      * @return bool TRUE if the given propertyName should be mapped, FALSE otherwise.
-     * @api
      */
     public function shouldMap($propertyName)
     {
@@ -131,7 +121,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      *
      * @param string $propertyName
      * @return bool
-     * @api
      */
     public function shouldSkip($propertyName)
     {
@@ -142,7 +131,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      * Allow all properties in property mapping, even unknown ones.
      *
      * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration this
-     * @api
      */
     public function allowAllProperties()
     {
@@ -157,7 +145,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      * Example: allowProperties('title', 'content', 'author')
      *
      * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
-     * @api
      */
     public function allowProperties()
     {
@@ -174,7 +161,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      * Example: skipProperties('unused', 'dummy')
      *
      * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration this
-     * @api
      */
     public function skipProperties()
     {
@@ -191,7 +177,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      * Example: allowAllPropertiesExcept('password', 'userGroup')
      *
      * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration this
-     * @api
      */
     public function allowAllPropertiesExcept()
     {
@@ -208,7 +193,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      * instead of triggering an error during mapping.
      *
      * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration this
-     * @api
      */
     public function skipUnknownProperties()
     {
@@ -221,7 +205,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      * mapping, instead if causing an error.
      *
      * @return bool
-     * @api
      */
     public function shouldSkipUnknownProperties()
     {
@@ -233,7 +216,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      *
      * @param string $propertyName
      * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface the property mapping configuration for the given $propertyName.
-     * @api
      */
     public function getConfigurationFor($propertyName)
     {
@@ -252,7 +234,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      *
      * @param string $sourcePropertyName
      * @return string property name of target
-     * @api
      */
     public function getTargetPropertyName($sourcePropertyName)
     {
@@ -266,7 +247,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      * @param string $typeConverterClassName
      * @param string $key
      * @return mixed configuration value for the specific $typeConverterClassName. Can be used by Type Converters to fetch converter-specific configuration.
-     * @api
      */
     public function getConfigurationValue($typeConverterClassName, $key)
     {
@@ -283,7 +263,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      * @param string $sourcePropertyName
      * @param string $targetPropertyName
      * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration this
-     * @api
      */
     public function setMapping($sourcePropertyName, $targetPropertyName)
     {
@@ -297,7 +276,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      * @param string $typeConverter class name of type converter
      * @param array $options
      * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration this
-     * @api
      */
     public function setTypeConverterOptions($typeConverter, array $options)
     {
@@ -314,7 +292,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      * @param string $optionKey
      * @param mixed $optionValue
      * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration this
-     * @api
      */
     public function setTypeConverterOption($typeConverter, $optionKey, $optionValue)
     {
@@ -348,7 +325,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      *
      * @param string $propertyPath
      * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration (or a subclass thereof)
-     * @api
      */
     public function forProperty($propertyPath)
     {
@@ -384,7 +360,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      * Return the type converter set for this configuration.
      *
      * @return \TYPO3\CMS\Extbase\Property\TypeConverterInterface
-     * @api
      */
     public function getTypeConverter()
     {
@@ -396,7 +371,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      *
      * @param \TYPO3\CMS\Extbase\Property\TypeConverterInterface $typeConverter
      * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration this
-     * @api
      */
     public function setTypeConverter(\TYPO3\CMS\Extbase\Property\TypeConverterInterface $typeConverter)
     {

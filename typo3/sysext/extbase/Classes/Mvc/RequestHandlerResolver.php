@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Mvc;
 
 /**
  * Analyzes the raw request and delivers a request handler which can handle it.
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class RequestHandlerResolver
 {

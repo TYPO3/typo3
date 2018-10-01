@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 
 /**
  * A composite of controller arguments
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class Arguments extends \ArrayObject
 {

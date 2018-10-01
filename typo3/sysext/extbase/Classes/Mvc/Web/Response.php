@@ -20,8 +20,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * A web specific response implementation
- *
- * @api
  */
 class Response extends \TYPO3\CMS\Extbase\Mvc\Response
 {
@@ -142,6 +140,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
 
     /**
      * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService)
     {
@@ -154,7 +153,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      * @param int $code The status code
      * @param string $message If specified, this message is sent instead of the standard message
      * @throws \InvalidArgumentException if the specified status code is not valid
-     * @api
      */
     public function setStatus($code, $message = null)
     {
@@ -172,7 +170,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      * Returns status code and status message.
      *
      * @return string The status code and status message, eg. "404 Not Found
-     * @api
      */
     public function getStatus()
     {
@@ -197,7 +194,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      * @param mixed $value The value of the given header
      * @param bool $replaceExistingHeader If a header with the same name should be replaced. Default is TRUE.
      * @throws \InvalidArgumentException
-     * @api
      */
     public function setHeader($name, $value, $replaceExistingHeader = true)
     {
@@ -215,7 +211,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      * Returns the HTTP headers - including the status header - of this web response
      *
      * @return string[] The HTTP headers
-     * @api
      */
     public function getHeaders()
     {
@@ -248,8 +243,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      * Sends the HTTP headers.
      *
      * If headers have already been sent, this method fails silently.
-     *
-     * @api
      */
     public function sendHeaders()
     {
@@ -263,8 +256,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
 
     /**
      * Renders and sends the whole web response
-     *
-     * @api
      */
     public function send()
     {
@@ -282,7 +273,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      * @TODO The workround and the $request member should be removed again, once the PageRender does support non-cached USER_INTs
      * @param string $additionalHeaderData The value additional header
      * @throws \InvalidArgumentException
-     * @api
      */
     public function addAdditionalHeaderData($additionalHeaderData)
     {
@@ -302,7 +292,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      * Returns the additional header data
      *
      * @return array The additional header data
-     * @api
      */
     public function getAdditionalHeaderData()
     {
@@ -311,6 +300,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
 
     /**
      * @param \TYPO3\CMS\Extbase\Mvc\Web\Request $request
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function setRequest(\TYPO3\CMS\Extbase\Mvc\Web\Request $request)
     {
@@ -319,6 +309,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
 
     /**
      * @return \TYPO3\CMS\Extbase\Mvc\Web\Request
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getRequest()
     {
@@ -329,6 +320,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      * Sends additional headers and returns the content
      *
      * @return string|null
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function shutdown()
     {

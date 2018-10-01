@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 
 /**
  * A generic collection validator.
- *
- * @api
  */
 class CollectionValidator extends GenericObjectValidator
 {
@@ -49,7 +47,6 @@ class CollectionValidator extends GenericObjectValidator
      *
      * @param mixed $value The value that should be validated
      * @return \TYPO3\CMS\Extbase\Error\Result
-     * @api
      */
     public function validate($value)
     {

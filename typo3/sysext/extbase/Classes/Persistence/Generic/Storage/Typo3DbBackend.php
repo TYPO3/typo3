@@ -42,6 +42,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * A Storage backend
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class Typo3DbBackend implements BackendInterface, SingletonInterface
 {

@@ -23,8 +23,6 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
  * A dispatcher which dispatches signals by calling its registered slot methods
  * and passing them the method arguments which were originally passed to the
  * signal method.
- *
- * @api
  */
 class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
 {
@@ -80,7 +78,6 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $slotMethodName Name of the method to be used as a slot. If $slotClassNameOrObject is a Closure object, this parameter is ignored
      * @param bool $passSignalInformation If set to TRUE, the last argument passed to the slot will be information about the signal (EmitterClassName::signalName)
      * @throws \InvalidArgumentException
-     * @api
      */
     public function connect($signalClassName, $signalName, $slotClassNameOrObject, $slotMethodName = '', $passSignalInformation = true)
     {
@@ -118,7 +115,6 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      * @return mixed
      * @throws Exception\InvalidSlotException if the slot is not valid
      * @throws Exception\InvalidSlotReturnException if a slot returns invalid arguments (too few or return value is not an array)
-     * @api
      */
     public function dispatch($signalClassName, $signalName, array $signalArguments = [])
     {
@@ -180,7 +176,6 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $signalClassName Name of the class containing the signal
      * @param string $signalName Name of the signal
      * @return array An array of arrays with slot information
-     * @api
      */
     public function getSlots($signalClassName, $signalName)
     {

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Domain\Repository;
 
 /**
  * Repository for \TYPO3\CMS\Extbase\Domain\Model\FileMount.
- *
- * @api
  */
 class FileMountRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {

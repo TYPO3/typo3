@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extbase\Mvc;
 /**
  * Dispatches requests to the controller which was specified by the request and
  * returns the response the controller generated.
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
 {

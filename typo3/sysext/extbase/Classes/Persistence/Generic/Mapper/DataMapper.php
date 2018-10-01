@@ -25,6 +25,7 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 
 /**
  * A mapper to map database tables configured in $TCA on domain objects.
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class DataMapper
 {

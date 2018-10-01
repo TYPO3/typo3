@@ -23,6 +23,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * - if public getter/setter method exists, call it.
  * - if public property exists, return/set the value of it.
  * - else, throw exception
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class ObjectAccess
 {

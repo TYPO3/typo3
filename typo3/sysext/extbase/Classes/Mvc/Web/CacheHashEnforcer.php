@@ -21,6 +21,7 @@ use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 
 /**
  * Enforces cHash argument if it is required for a given request
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class CacheHashEnforcer implements SingletonInterface
 {

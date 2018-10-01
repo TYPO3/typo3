@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 
 /**
  * The base repository - will usually be extended by a more concrete repository.
- *
- * @api
  */
 class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterface
 {
@@ -72,7 +70,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      *
      * @param object $object The object to add
      * @throws Exception\IllegalObjectTypeException
-     * @api
      */
     public function add($object)
     {
@@ -87,7 +84,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      *
      * @param object $object The object to remove
      * @throws Exception\IllegalObjectTypeException
-     * @api
      */
     public function remove($object)
     {
@@ -103,7 +99,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      * @param object $modifiedObject The modified object
      * @throws Exception\UnknownObjectException
      * @throws Exception\IllegalObjectTypeException
-     * @api
      */
     public function update($modifiedObject)
     {
@@ -117,7 +112,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      * Returns all objects of this repository.
      *
      * @return QueryResultInterface|array
-     * @api
      */
     public function findAll()
     {
@@ -128,7 +122,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      * Returns the total number objects of this repository.
      *
      * @return int The object count
-     * @api
      */
     public function countAll()
     {
@@ -138,8 +131,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
     /**
      * Removes all objects of this repository as if remove() was called for
      * all of them.
-     *
-     * @api
      */
     public function removeAll()
     {
@@ -153,7 +144,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      *
      * @param int $uid The identifier of the object to find
      * @return object The matching object if found, otherwise NULL
-     * @api
      */
     public function findByUid($uid)
     {
@@ -165,7 +155,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      *
      * @param mixed $identifier The identifier of the object to find
      * @return object The matching object if found, otherwise NULL
-     * @api
      */
     public function findByIdentifier($identifier)
     {
@@ -181,7 +170,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      * )
      *
      * @param array $defaultOrderings The property names to order by
-     * @api
      */
     public function setDefaultOrderings(array $defaultOrderings)
     {
@@ -192,7 +180,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      * Sets the default query settings to be used in this repository
      *
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
-     * @api
      */
     public function setDefaultQuerySettings(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings)
     {
@@ -203,7 +190,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      * Returns a query for objects of this repository
      *
      * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
-     * @api
      */
     public function createQuery()
     {
@@ -224,7 +210,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      * @param string $arguments The arguments of the magic method
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException
      * @return mixed
-     * @api
      */
     public function __call($methodName, $arguments)
     {

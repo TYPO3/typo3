@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Core;
 
 /**
  * Bootstrap Interface
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 interface BootstrapInterface
 {
@@ -26,7 +27,6 @@ interface BootstrapInterface
      * @param string $content The content. Not used
      * @param array $configuration The TS configuration array
      * @return string $content The processed content
-     * @api
      */
     public function run($content, $configuration);
 }

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 
 /**
  * Validator to chain many validators in a disjunction (logical or).
- *
- * @api
  */
 class DisjunctionValidator extends AbstractCompositeValidator
 {
@@ -30,7 +28,6 @@ class DisjunctionValidator extends AbstractCompositeValidator
      *
      * @param mixed $value The value that should be validated
      * @return \TYPO3\CMS\Extbase\Error\Result
-     * @api
      */
     public function validate($value)
     {

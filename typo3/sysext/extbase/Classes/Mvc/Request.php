@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 
 /**
  * Represents a generic request.
- *
- * @api
  */
 class Request implements RequestInterface
 {
@@ -107,7 +105,6 @@ class Request implements RequestInterface
      * Sets the dispatched flag
      *
      * @param bool $flag If this request has been dispatched
-     * @api
      */
     public function setDispatched($flag)
     {
@@ -122,7 +119,6 @@ class Request implements RequestInterface
      * addressed yet.
      *
      * @return bool TRUE if this request has been disptached successfully
-     * @api
      */
     public function isDispatched()
     {
@@ -135,7 +131,6 @@ class Request implements RequestInterface
      *
      * @return string The controller's Object Name
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchControllerException if the controller does not exist
-     * @api
      */
     public function getControllerObjectName()
     {
@@ -168,6 +163,7 @@ class Request implements RequestInterface
      * Explicitly sets the object name of the controller
      *
      * @param string $controllerObjectName The fully qualified controller object name
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function setControllerObjectName($controllerObjectName)
     {
@@ -182,6 +178,7 @@ class Request implements RequestInterface
      * Sets the plugin name.
      *
      * @param string|null $pluginName
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function setPluginName($pluginName = null)
     {
@@ -194,7 +191,6 @@ class Request implements RequestInterface
      * Returns the plugin key.
      *
      * @return string The plugin key
-     * @api
      */
     public function getPluginName()
     {
@@ -205,8 +201,8 @@ class Request implements RequestInterface
      * Sets the extension name of the controller.
      *
      * @param string $controllerExtensionName The extension name.
-     *
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException if the extension name is not valid
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function setControllerExtensionName($controllerExtensionName)
     {
@@ -219,7 +215,6 @@ class Request implements RequestInterface
      * Returns the extension name of the specified controller.
      *
      * @return string The extension name
-     * @api
      */
     public function getControllerExtensionName()
     {
@@ -230,7 +225,6 @@ class Request implements RequestInterface
      * Returns the extension name of the specified controller.
      *
      * @return string The extension key
-     * @api
      */
     public function getControllerExtensionKey()
     {
@@ -241,6 +235,7 @@ class Request implements RequestInterface
      * Sets the subpackage key of the controller.
      *
      * @param string $subpackageKey The subpackage key.
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function setControllerSubpackageKey($subpackageKey)
     {
@@ -252,6 +247,7 @@ class Request implements RequestInterface
      * If there is no subpackage key set, the method returns NULL
      *
      * @return string The subpackage key
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getControllerSubpackageKey()
     {
@@ -263,8 +259,8 @@ class Request implements RequestInterface
      * Note: This is not the object name of the controller!
      *
      * @param string $controllerName Name of the controller
-     *
      * @throws Exception\InvalidControllerNameException
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function setControllerName($controllerName)
     {
@@ -281,7 +277,6 @@ class Request implements RequestInterface
      * was set already (if not, the name of the default controller is returned)
      *
      * @return string Object name of the controller
-     * @api
      */
     public function getControllerName()
     {
@@ -294,8 +289,8 @@ class Request implements RequestInterface
      * Note that the action name must start with a lower case letter and is case sensitive.
      *
      * @param string $actionName Name of the action to execute by the controller
-     *
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException if the action name is not valid
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function setControllerActionName($actionName)
     {
@@ -314,7 +309,6 @@ class Request implements RequestInterface
      * Returns the name of the action the controller is supposed to execute.
      *
      * @return string Action name
-     * @api
      */
     public function getControllerActionName()
     {
@@ -339,8 +333,8 @@ class Request implements RequestInterface
      *
      * @param string $argumentName Name of the argument to set
      * @param mixed $value The new value
-     *
      * @throws Exception\InvalidArgumentNameException
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function setArgument($argumentName, $value)
     {
@@ -360,6 +354,7 @@ class Request implements RequestInterface
      * sets the VendorName
      *
      * @param string $vendorName
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function setControllerVendorName($vendorName)
     {
@@ -370,6 +365,7 @@ class Request implements RequestInterface
      * get the VendorName
      *
      * @return string
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getControllerVendorName()
     {
@@ -381,6 +377,7 @@ class Request implements RequestInterface
      * which existed before.
      *
      * @param array $arguments An array of argument names and their values
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function setArguments(array $arguments)
     {
@@ -394,7 +391,6 @@ class Request implements RequestInterface
      * Returns an array of arguments and their values
      *
      * @return array Associative array of arguments and their values (which may be arguments and values as well)
-     * @api
      */
     public function getArguments()
     {
@@ -408,7 +404,6 @@ class Request implements RequestInterface
      *
      * @return string Value of the argument
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException if such an argument does not exist
-     * @api
      */
     public function getArgument($argumentName)
     {
@@ -424,7 +419,6 @@ class Request implements RequestInterface
      * @param string $argumentName Name of the argument to check
      *
      * @return bool TRUE if the argument is set, otherwise FALSE
-     * @api
      */
     public function hasArgument($argumentName)
     {
@@ -435,6 +429,7 @@ class Request implements RequestInterface
      * Sets the requested representation format
      *
      * @param string $format The desired format, something like "html", "xml", "png", "json" or the like. Can even be something like "rss.xml".
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function setFormat($format)
     {
@@ -445,7 +440,6 @@ class Request implements RequestInterface
      * Returns the requested representation format
      *
      * @return string The desired format, something like "html", "xml", "png", "json" or the like.
-     * @api
      */
     public function getFormat()
     {
@@ -456,6 +450,7 @@ class Request implements RequestInterface
      * Returns the original request. Filled only if a property mapping error occurred.
      *
      * @return \TYPO3\CMS\Extbase\Mvc\Request the original request.
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getOriginalRequest()
     {
@@ -464,6 +459,7 @@ class Request implements RequestInterface
 
     /**
      * @param \TYPO3\CMS\Extbase\Mvc\Request $originalRequest
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function setOriginalRequest(\TYPO3\CMS\Extbase\Mvc\Request $originalRequest)
     {
@@ -474,6 +470,7 @@ class Request implements RequestInterface
      * Get the request mapping results for the original request.
      *
      * @return \TYPO3\CMS\Extbase\Error\Result
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getOriginalRequestMappingResults()
     {
@@ -485,6 +482,7 @@ class Request implements RequestInterface
 
     /**
      * @param \TYPO3\CMS\Extbase\Error\Result $originalRequestMappingResults
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function setOriginalRequestMappingResults(\TYPO3\CMS\Extbase\Error\Result $originalRequestMappingResults)
     {
@@ -496,6 +494,7 @@ class Request implements RequestInterface
      * with two underscores.
      *
      * @return array
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getInternalArguments()
     {
@@ -506,8 +505,8 @@ class Request implements RequestInterface
      * Returns the value of the specified argument
      *
      * @param string $argumentName Name of the argument
-     *
      * @return string Value of the argument, or NULL if not set.
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getInternalArgument($argumentName)
     {

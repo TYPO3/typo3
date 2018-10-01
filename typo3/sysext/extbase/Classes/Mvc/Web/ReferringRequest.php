@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 /**
  * Represents a referring web request.
- *
- * @api
  */
 class ReferringRequest extends Request
 {

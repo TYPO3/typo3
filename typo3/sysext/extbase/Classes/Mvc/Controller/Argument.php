@@ -20,8 +20,6 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 
 /**
  * A controller argument
- *
- * @api
  */
 class Argument
 {
@@ -118,7 +116,6 @@ class Argument
      * @param string $name Name of this argument
      * @param string $dataType The data type of this argument
      * @throws \InvalidArgumentException if $name is not a string or empty
-     * @api
      */
     public function __construct($name, $dataType)
     {
@@ -138,7 +135,6 @@ class Argument
      * Returns the name of this argument
      *
      * @return string This argument's name
-     * @api
      */
     public function getName()
     {
@@ -151,7 +147,6 @@ class Argument
      * @param string $shortName A "short name" - a single character
      * @throws \InvalidArgumentException if $shortName is not a character
      * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument $this
-     * @api
      */
     public function setShortName($shortName)
     {
@@ -166,7 +161,6 @@ class Argument
      * Returns the short name of this argument
      *
      * @return string This argument's short name
-     * @api
      */
     public function getShortName()
     {
@@ -177,7 +171,6 @@ class Argument
      * Returns the data type of this argument's value
      *
      * @return string The data type
-     * @api
      */
     public function getDataType()
     {
@@ -189,7 +182,6 @@ class Argument
      *
      * @param bool $required TRUE if this argument should be required
      * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument $this
-     * @api
      */
     public function setRequired($required)
     {
@@ -201,7 +193,6 @@ class Argument
      * Returns TRUE if this argument is required
      *
      * @return bool TRUE if this argument is required
-     * @api
      */
     public function isRequired()
     {
@@ -213,7 +204,6 @@ class Argument
      *
      * @param mixed $defaultValue Default value
      * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument $this
-     * @api
      */
     public function setDefaultValue($defaultValue)
     {
@@ -225,7 +215,6 @@ class Argument
      * Returns the default value of this argument
      *
      * @return mixed The default value
-     * @api
      */
     public function getDefaultValue()
     {
@@ -237,7 +226,6 @@ class Argument
      *
      * @param \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator The actual validator object
      * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument Returns $this (used for fluent interface)
-     * @api
      */
     public function setValidator(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator)
     {
@@ -249,7 +237,6 @@ class Argument
      * Returns the set validator
      *
      * @return \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface The set validator, NULL if none was set
-     * @api
      */
     public function getValidator()
     {
@@ -290,7 +277,6 @@ class Argument
      * Returns the value of this argument
      *
      * @return mixed The value of this argument - if none was set, NULL is returned
-     * @api
      */
     public function getValue()
     {
@@ -304,7 +290,6 @@ class Argument
      * Return the Property Mapping Configuration used for this argument; can be used by the initialize*action to modify the Property Mapping.
      *
      * @return \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration
-     * @api
      */
     public function getPropertyMappingConfiguration()
     {
@@ -313,7 +298,6 @@ class Argument
 
     /**
      * @return bool TRUE if the argument is valid, FALSE otherwise
-     * @api
      */
     public function isValid(): bool
     {
@@ -338,7 +322,6 @@ class Argument
      * Returns a string representation of this argument's value
      *
      * @return string
-     * @api
      */
     public function __toString()
     {
@@ -347,7 +330,6 @@ class Argument
 
     /**
      * @return \TYPO3\CMS\Extbase\Error\Result
-     * @api
      */
     public function validate(): \TYPO3\CMS\Extbase\Error\Result
     {

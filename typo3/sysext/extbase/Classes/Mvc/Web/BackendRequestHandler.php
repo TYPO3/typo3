@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Core\Environment;
 
 /**
  * A request handler which can handle web requests invoked by the backend.
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class BackendRequestHandler extends AbstractRequestHandler
 {

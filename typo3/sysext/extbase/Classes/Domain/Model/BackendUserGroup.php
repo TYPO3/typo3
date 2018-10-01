@@ -18,8 +18,6 @@ use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /**
  * This model represents a backend usergroup.
- *
- * @api
  */
 class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {

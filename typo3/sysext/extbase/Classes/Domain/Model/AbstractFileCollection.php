@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 /**
  * A file object (File Abstraction Layer)
  *
- * @api experimental! This class is experimental and subject to change!
+ * @internal experimental! This class is experimental and subject to change!
  */
 abstract class AbstractFileCollection extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {

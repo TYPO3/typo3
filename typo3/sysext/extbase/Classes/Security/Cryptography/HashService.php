@@ -18,8 +18,7 @@ namespace TYPO3\CMS\Extbase\Security\Cryptography;
  * A hash service which should be used to generate and validate hashes.
  *
  * It will use some salt / encryption key in the future.
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser Public License, version 3 or later
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class HashService implements \TYPO3\CMS\Core\SingletonInterface
 {

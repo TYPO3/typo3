@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Validation;
 
 /**
  * A generic validation exception
- *
- * @api
  */
 class Exception extends \TYPO3\CMS\Extbase\Exception
 {

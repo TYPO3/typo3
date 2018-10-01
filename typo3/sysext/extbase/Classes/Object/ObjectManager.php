@@ -46,6 +46,7 @@ class ObjectManager implements ObjectManagerInterface
      *
      * @see http://forge.typo3.org/issues/36820
      * @return array Names of the properties to be serialized
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function __sleep()
     {
@@ -63,6 +64,7 @@ class ObjectManager implements ObjectManagerInterface
      * a call to the __sleep() method on serialization before.
      *
      * @see http://forge.typo3.org/issues/36820
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function __wakeup()
     {
@@ -74,6 +76,7 @@ class ObjectManager implements ObjectManagerInterface
      *
      * @param string $objectName Name of the object
      * @return bool TRUE if the object has been registered, otherwise FALSE
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function isRegistered($objectName)
     {
@@ -86,7 +89,6 @@ class ObjectManager implements ObjectManagerInterface
      * @param string $objectName The name of the object to return an instance of
      * @param array $constructorArguments
      * @return object The object instance
-     * @api
      */
     public function get($objectName, ...$constructorArguments)
     {
@@ -104,7 +106,6 @@ class ObjectManager implements ObjectManagerInterface
      * @param string $objectName The object name
      * @return int One of the Container::SCOPE_ constants
      * @throws \TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException
-     * @api
      */
     public function getScope($objectName)
     {
@@ -119,7 +120,6 @@ class ObjectManager implements ObjectManagerInterface
      *
      * @param string $className
      * @return object
-     * @api
      */
     public function getEmptyObject($className)
     {

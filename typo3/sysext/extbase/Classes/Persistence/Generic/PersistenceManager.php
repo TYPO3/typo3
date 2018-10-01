@@ -19,8 +19,6 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
  * The Extbase Persistence Manager
- *
- * @api
  */
 class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface, \TYPO3\CMS\Core\SingletonInterface
 {
@@ -61,6 +59,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectQueryFactory(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory)
     {
@@ -69,6 +68,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface $backend
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectBackend(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface $backend)
     {
@@ -77,6 +77,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\Session $persistenceSession
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectPersistenceSession(\TYPO3\CMS\Extbase\Persistence\Generic\Session $persistenceSession)
     {
@@ -85,6 +86,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 
     /**
      * Create new instance
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function __construct()
     {
@@ -97,6 +99,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      * Registers a repository
      *
      * @param string $className The class name of the repository to be registered
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function registerRepositoryClassName($className)
     {
@@ -107,7 +110,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      *
      * @param QueryInterface $query
      * @return int
-     * @api
      */
     public function getObjectCountByQuery(QueryInterface $query)
     {
@@ -119,7 +121,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      *
      * @param QueryInterface $query
      * @return array
-     * @api
      */
     public function getObjectDataByQuery(QueryInterface $query)
     {
@@ -136,7 +137,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      *
      * @param object $object
      * @return mixed The identifier for the object if it is known, or NULL
-     * @api
      */
     public function getIdentifierByObject($object)
     {
@@ -151,7 +151,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      * @param string $objectType
      * @param bool $useLazyLoading Set to TRUE if you want to use lazy loading for this object
      * @return object The object for the identifier if it is known, or NULL
-     * @api
      */
     public function getObjectByIdentifier($identifier, $objectType = null, $useLazyLoading = false)
     {
@@ -166,9 +165,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 
     /**
      * Commits new objects and changes to objects in the current persistence
-     * session into the backend
-     *
-     * @api
+     * session into the backend.
      */
     public function persistAll()
     {
@@ -191,6 +188,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      *
      * @param string $type
      * @return QueryInterface
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function createQueryForType($type)
     {
@@ -201,7 +199,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      * Adds an object to the persistence.
      *
      * @param object $object The object to add
-     * @api
      */
     public function add($object)
     {
@@ -213,7 +210,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      * Removes an object to the persistence.
      *
      * @param object $object The object to remove
-     * @api
      */
     public function remove($object)
     {
@@ -229,7 +225,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      *
      * @param object $object The modified object
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
-     * @api
      */
     public function update($object)
     {
@@ -244,7 +239,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      *
      * @param array $settings
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
-     * @api
      */
     public function injectSettings(array $settings)
     {
@@ -253,6 +247,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 
     /**
      * Initializes the persistence manager, called by Extbase.
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function initializeObject()
     {
@@ -266,6 +261,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      * return data directly from the persistence "backend".
      *
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function clearState()
     {
@@ -281,7 +277,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      *
      * @param object $object The object to check
      * @return bool TRUE if the object is new, FALSE if the object exists in the persistence session
-     * @api
      */
     public function isNewObject($object)
     {
@@ -298,6 +293,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      * method.
      *
      * @param object $object The new object to register
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function registerNewObject($object)
     {
@@ -310,7 +306,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      *
      * @param object $object The object to be converted
      * @throws Exception\NotImplementedException
-     * @api
      */
     public function convertObjectToIdentityArray($object)
     {
@@ -323,7 +318,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      *
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
      * @param array $array The array to be iterated over
-     * @api
      * @see convertObjectToIdentityArray()
      */
     public function convertObjectsToIdentityArrays(array $array)
@@ -336,6 +330,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      *
      * This method is called in functional tests to reset the storage between tests.
      * The implementation is optional and depends on the underlying persistence backend.
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function tearDown()
     {

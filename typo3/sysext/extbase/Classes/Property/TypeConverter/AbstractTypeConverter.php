@@ -1,25 +1,19 @@
 <?php
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
-/*                                                                        *
- * This script belongs to the Extbase framework                           *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 /**
  * Type converter which provides sensible default implementations for most methods. If you extend this class
  * you only need to do the following:
@@ -27,8 +21,6 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  * - set $targetType
  * - set $priority
  * - implement convertFrom()
- *
- * @api
  */
 abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\TypeConverterInterface, \TYPO3\CMS\Core\SingletonInterface
 {
@@ -36,7 +28,6 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
      * The source types this converter can convert.
      *
      * @var array<string>
-     * @api
      */
     protected $sourceTypes = [];
 
@@ -44,7 +35,6 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
      * The target type this converter can convert to.
      *
      * @var string
-     * @api
      */
     protected $targetType = '';
 
@@ -52,7 +42,6 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
      * The priority for this converter.
      *
      * @var int
-     * @api
      */
     protected $priority;
 
@@ -63,6 +52,7 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
     {
@@ -74,7 +64,6 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
      * Must be PHP simple types, classes or object is not allowed.
      *
      * @return array<string>
-     * @api
      */
     public function getSupportedSourceTypes()
     {
@@ -86,7 +75,6 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
      * Can be a simple type or a class name.
      *
      * @return string
-     * @api
      */
     public function getSupportedTargetType()
     {
@@ -100,7 +88,6 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
      * @param string $originalTargetType the type we originally want to convert to
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return string
-     * @api
      */
     public function getTargetTypeForSource($source, $originalTargetType, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
     {
@@ -111,7 +98,6 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
      * Return the priority of this TypeConverter. TypeConverters with a high priority are chosen before low priority.
      *
      * @return int
-     * @api
      */
     public function getPriority()
     {
@@ -124,7 +110,6 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
      * @param mixed $source the source data
      * @param string $targetType the type to convert to.
      * @return bool TRUE if this TypeConverter can convert from $source to $targetType, FALSE otherwise.
-     * @api
      */
     public function canConvertFrom($source, $targetType)
     {
@@ -136,7 +121,6 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
      *
      * @param mixed $source
      * @return array
-     * @api
      */
     public function getSourceChildPropertiesToBeConverted($source)
     {
@@ -149,7 +133,6 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
      * @param string $targetType
      * @param string $propertyName
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-     * @api
      */
     public function getTypeOfChildProperty($targetType, $propertyName, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration)
     {

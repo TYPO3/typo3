@@ -32,7 +32,6 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
      *
      * @param mixed $value The value that should be validated
      * @return \TYPO3\CMS\Extbase\Error\Result
-     * @api
      */
     public function validate($value)
     {
@@ -100,7 +99,6 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
      * Checks if the given value is valid according to the property validators.
      *
      * @param mixed $object The value that should be validated
-     * @api
      */
     protected function isValid($object)
     {
@@ -115,7 +113,6 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
      *
      * @param mixed $object The object to be checked
      * @return bool TRUE if the given value is an object
-     * @api
      */
     public function canValidate($object)
     {
@@ -127,7 +124,6 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
      *
      * @param string $propertyName Name of the property to validate
      * @param ValidatorInterface $validator The property validator
-     * @api
      */
     public function addPropertyValidator($propertyName, ValidatorInterface $validator)
     {
@@ -177,7 +173,6 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
      * Allows to set a container to keep track of validated instances.
      *
      * @param \SplObjectStorage $validatedInstancesContainer A container to keep track of validated instances
-     * @api
      */
     public function setValidatedInstancesContainer(\SplObjectStorage $validatedInstancesContainer)
     {

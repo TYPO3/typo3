@@ -21,99 +21,71 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterface;
 
 /**
  * A persistence query interface
- *
- * @api
  */
 interface QueryInterface
 {
     /**
      * The '=' comparison operator.
-     *
-     * @api
      */
     const OPERATOR_EQUAL_TO = 1;
 
     /**
      * For NULL we have to use 'IS' instead of '='
-     *
-     * @api
      */
     const OPERATOR_EQUAL_TO_NULL = 101;
 
     /**
      * The '!=' comparison operator.
-     *
-     * @api
      */
     const OPERATOR_NOT_EQUAL_TO = 2;
 
     /**
      * For NULL we have to use 'IS NOT' instead of '!='
-     *
-     * @api
      */
     const OPERATOR_NOT_EQUAL_TO_NULL = 202;
 
     /**
      * The '<' comparison operator.
-     *
-     * @api
      */
     const OPERATOR_LESS_THAN = 3;
 
     /**
      * The '<=' comparison operator.
-     *
-     * @api
      */
     const OPERATOR_LESS_THAN_OR_EQUAL_TO = 4;
 
     /**
      * The '>' comparison operator.
-     *
-     * @api
      */
     const OPERATOR_GREATER_THAN = 5;
 
     /**
      * The '>=' comparison operator.
-     *
-     * @api
      */
     const OPERATOR_GREATER_THAN_OR_EQUAL_TO = 6;
 
     /**
      * The 'like' comparison operator.
-     *
-     * @api
      */
     const OPERATOR_LIKE = 7;
 
     /**
      * The 'contains' comparison operator for collections.
-     *
-     * @api
      */
     const OPERATOR_CONTAINS = 8;
 
     /**
      * The 'in' comparison operator.
-     *
-     * @api
      */
     const OPERATOR_IN = 9;
 
     /**
      * The 'is NULL' comparison operator.
-     *
-     * @api
      */
     const OPERATOR_IS_NULL = 10;
 
     /**
      * The 'is empty' comparison operator for collections.
-     *
-     * @api
      */
     const OPERATOR_IS_EMPTY = 11;
 
@@ -137,7 +109,6 @@ interface QueryInterface
      *
      * @param bool $returnRawQueryResult avoids the object mapping by the persistence
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $returnRawQueryResult is TRUE
-     * @api
      */
     public function execute($returnRawQueryResult = false);
 
@@ -150,7 +121,6 @@ interface QueryInterface
      *
      * @param array $orderings The property names to order by
      * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
-     * @api
      */
     public function setOrderings(array $orderings);
 
@@ -160,7 +130,6 @@ interface QueryInterface
      *
      * @param int $limit
      * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
-     * @api
      */
     public function setLimit($limit);
 
@@ -170,7 +139,6 @@ interface QueryInterface
      *
      * @param int $offset
      * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
-     * @api
      */
     public function setOffset($offset);
 
@@ -180,7 +148,6 @@ interface QueryInterface
      *
      * @param ConstraintInterface $constraint Some constraint, depending on the backend
      * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
-     * @api
      */
     public function matching($constraint);
 
@@ -191,7 +158,6 @@ interface QueryInterface
      *
      * @param mixed $constraint1 The first of multiple constraints or an array of constraints.
      * @return AndInterface
-     * @api
      */
     public function logicalAnd($constraint1);
 
@@ -202,7 +168,6 @@ interface QueryInterface
      *
      * @param mixed $constraint1 The first of multiple constraints or an array of constraints.
      * @return OrInterface
-     * @api
      */
     public function logicalOr($constraint1);
 
@@ -211,7 +176,6 @@ interface QueryInterface
      *
      * @param ConstraintInterface $constraint Constraint to negate
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\NotInterface
-     * @api
      */
     public function logicalNot(ConstraintInterface $constraint);
 
@@ -226,7 +190,6 @@ interface QueryInterface
      * @param mixed $operand The value to compare with
      * @param bool $caseSensitive Whether the equality test should be done case-sensitive for strings
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface
-     * @api
      */
     public function equals($propertyName, $operand, $caseSensitive = true);
 
@@ -239,7 +202,6 @@ interface QueryInterface
      * @param string $operand The value to compare with
      * @return ComparisonInterface
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a non-string property
-     * @api
      */
     public function like($propertyName, $operand);
 
@@ -253,7 +215,6 @@ interface QueryInterface
      * @param mixed $operand The value to compare with
      * @return ComparisonInterface
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a single-valued property
-     * @api
      */
     public function contains($propertyName, $operand);
 
@@ -265,7 +226,6 @@ interface QueryInterface
      * @param mixed $operand The value to compare with, multivalued
      * @return ComparisonInterface
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a multi-valued property
-     * @api
      */
     public function in($propertyName, $operand);
 
@@ -276,7 +236,6 @@ interface QueryInterface
      * @param mixed $operand The value to compare with
      * @return ComparisonInterface
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a multi-valued property or with a non-literal/non-DateTime operand
-     * @api
      */
     public function lessThan($propertyName, $operand);
 
@@ -287,7 +246,6 @@ interface QueryInterface
      * @param mixed $operand The value to compare with
      * @return ComparisonInterface
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a multi-valued property or with a non-literal/non-DateTime operand
-     * @api
      */
     public function lessThanOrEqual($propertyName, $operand);
 
@@ -298,7 +256,6 @@ interface QueryInterface
      * @param mixed $operand The value to compare with
      * @return ComparisonInterface
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a multi-valued property or with a non-literal/non-DateTime operand
-     * @api
      */
     public function greaterThan($propertyName, $operand);
 
@@ -309,7 +266,6 @@ interface QueryInterface
      * @param mixed $operand The value to compare with
      * @return ComparisonInterface
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a multi-valued property or with a non-literal/non-DateTime operand
-     * @api
      */
     public function greaterThanOrEqual($propertyName, $operand);
 
@@ -317,7 +273,6 @@ interface QueryInterface
      * Returns the type this query cares for.
      *
      * @return string
-     * @api
      */
     public function getType();
 
@@ -327,7 +282,6 @@ interface QueryInterface
      *
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings The Query Settings
      * @todo decide whether this can be deprecated somewhen
-     * @api This method is not part of TYPO3Flow API
      */
     public function setQuerySettings(Generic\QuerySettingsInterface $querySettings);
 
@@ -336,7 +290,6 @@ interface QueryInterface
      *
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings The Query Settings
      * @todo decide whether this can be deprecated eventually
-     * @api This method is not part of  TYPO3Flow API
      */
     public function getQuerySettings();
 
@@ -344,7 +297,6 @@ interface QueryInterface
      * Returns the query result count.
      *
      * @return int The query result count
-     * @api
      */
     public function count();
 
@@ -356,7 +308,6 @@ interface QueryInterface
      * )
      *
      * @return array
-     * @api
      */
     public function getOrderings();
 
@@ -364,7 +315,6 @@ interface QueryInterface
      * Returns the maximum size of the result set to limit.
      *
      * @return int
-     * @api
      */
     public function getLimit();
 
@@ -372,7 +322,6 @@ interface QueryInterface
      * Returns the start offset of the result set.
      *
      * @return int
-     * @api
      */
     public function getOffset();
 
@@ -380,7 +329,6 @@ interface QueryInterface
      * Gets the constraint for this query.
      *
      * @return ConstraintInterface|null the constraint, or null if none
-     * @api
      */
     public function getConstraint();
 
@@ -391,7 +339,6 @@ interface QueryInterface
      * @param string $propertyName The name of the multivalued property to compare against
      * @return bool
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a single-valued property
-     * @api
      */
     public function isEmpty($propertyName);
 

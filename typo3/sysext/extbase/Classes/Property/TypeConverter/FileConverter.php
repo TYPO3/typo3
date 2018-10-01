@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 /**
  * Converter which transforms simple types to \TYPO3\CMS\Extbase\Domain\Model\File.
  *
- * @api experimental! This class is experimental and subject to change!
+ * @internal experimental! This class is experimental and subject to change!
  */
 class FileConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileFolderConverter
 {

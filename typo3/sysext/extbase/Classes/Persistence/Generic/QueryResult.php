@@ -20,8 +20,6 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * A lazy result list that is returned by Query::execute()
- *
- * @api
  */
 class QueryResult implements QueryResultInterface
 {
@@ -103,7 +101,6 @@ class QueryResult implements QueryResultInterface
      * Returns a clone of the query object
      *
      * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
-     * @api
      */
     public function getQuery()
     {
@@ -114,7 +111,6 @@ class QueryResult implements QueryResultInterface
      * Returns the first object in the result set
      *
      * @return object
-     * @api
      */
     public function getFirst()
     {
@@ -137,7 +133,6 @@ class QueryResult implements QueryResultInterface
      * Returns the number of objects in the result
      *
      * @return int The number of matching objects
-     * @api
      */
     public function count()
     {
@@ -155,7 +150,6 @@ class QueryResult implements QueryResultInterface
      * Returns an array with the objects in the result set
      *
      * @return array
-     * @api
      */
     public function toArray()
     {
@@ -264,6 +258,7 @@ class QueryResult implements QueryResultInterface
     /**
      * Ensures that the objectManager, persistenceManager and dataMapper are back when loading the QueryResult
      * from the cache
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function __wakeup()
     {
@@ -273,6 +268,7 @@ class QueryResult implements QueryResultInterface
 
     /**
      * @return array
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function __sleep()
     {

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Configuration;
  * implementation of the configuration manager and provides an unified acccess point.
  *
  * Use the shutdown() method to drop the concrete implementation.
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 {

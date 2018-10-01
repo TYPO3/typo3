@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\SignalSlot\Exception;
 
 /**
  * "Invalid Slot Return" Exception
- *
- * @api
  */
 class InvalidSlotReturnException extends \TYPO3\CMS\Extbase\Object\Exception
 {

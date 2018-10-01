@@ -24,7 +24,6 @@ interface QuerySettingsInterface
      *
      * @param bool $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
-     * @api
      */
     public function setRespectStoragePage($respectStoragePage);
 
@@ -40,7 +39,6 @@ interface QuerySettingsInterface
      *
      * @param array $storagePageIds If TRUE the storage page ID will be determined and the statement will be extended accordingly.
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
-     * @api
      */
     public function setStoragePageIds(array $storagePageIds);
 
@@ -57,7 +55,6 @@ interface QuerySettingsInterface
      *
      * @param bool $respectSysLanguage TRUE if only record language should be respected when querying
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
-     * @api
      */
     public function setRespectSysLanguage($respectSysLanguage);
 
@@ -71,7 +68,6 @@ interface QuerySettingsInterface
     /**
      * @param mixed $languageOverlayMode TRUE, FALSE or "hideNonTranslated"
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
-     * @api
      */
     public function setLanguageOverlayMode($languageOverlayMode);
 
@@ -85,7 +81,6 @@ interface QuerySettingsInterface
      *
      * @param string $languageMode NULL, "content_fallback", "strict" or "ignore"
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
-     * @api
      */
     public function setLanguageMode($languageMode);
 
@@ -99,7 +94,6 @@ interface QuerySettingsInterface
     /**
      * @param int $languageUid
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
-     * @api
      */
     public function setLanguageUid($languageUid);
 
@@ -116,7 +110,6 @@ interface QuerySettingsInterface
      * @param bool $ignoreEnableFields
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
      * @see setEnableFieldsToBeIgnored()
-     * @api
      */
     public function setIgnoreEnableFields($ignoreEnableFields);
 
@@ -139,7 +132,6 @@ interface QuerySettingsInterface
      * @param array $enableFieldsToBeIgnored
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
      * @see setIgnoreEnableFields()
-     * @api
      */
     public function setEnableFieldsToBeIgnored($enableFieldsToBeIgnored);
 
@@ -157,7 +149,6 @@ interface QuerySettingsInterface
      *
      * @param bool $includeDeleted
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
-     * @api
      */
     public function setIncludeDeleted($includeDeleted);
 

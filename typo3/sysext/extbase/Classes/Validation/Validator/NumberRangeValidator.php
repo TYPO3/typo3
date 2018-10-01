@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 
 /**
  * Validator for general numbers
- *
- * @api
  */
 class NumberRangeValidator extends AbstractValidator
 {
@@ -33,7 +31,6 @@ class NumberRangeValidator extends AbstractValidator
      * The given value is valid if it is a number in the specified range.
      *
      * @param mixed $value The value that should be validated
-     * @api
      */
     public function isValid($value)
     {

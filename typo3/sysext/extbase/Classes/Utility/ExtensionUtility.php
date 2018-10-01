@@ -207,7 +207,6 @@ tt_content.' . $pluginSignature . ' {
      * Register a type converter by class name.
      *
      * @param string $typeConverterClassName
-     * @api
      */
     public static function registerTypeConverter($typeConverterClassName)
     {

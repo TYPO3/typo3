@@ -19,7 +19,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 /**
  * A file reference object (File Abstraction Layer)
  *
- * @api experimental! This class is experimental and subject to change!
+ * @internal experimental! This class is experimental and subject to change!
  */
 class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder
 {

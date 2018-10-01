@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 /**
  * A folder object (File Abstraction Layer)
  *
- * @api experimental! This class is experimental and subject to change!
+ * @internal experimental! This class is experimental and subject to change!
  */
 class Folder extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder
 {

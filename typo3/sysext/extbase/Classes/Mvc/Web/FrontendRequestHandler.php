@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 /**
  * A request handler which can handle web requests invoked by the frontend.
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class FrontendRequestHandler extends AbstractRequestHandler
 {
