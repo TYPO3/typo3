@@ -83,22 +83,22 @@ The configuration looks like this::
        routePath: '/show-by-category/{category_id}/{tag}'
        defaults:
          tag: ''
-         requirements:
-           category_id: '[0-9]{1..3}'
-           tag: '^[a-zA-Z0-9].*$'
-         _arguments:
-           category_id: 'category'
+       requirements:
+         category_id: '[0-9]{1..3}'
+         tag: '^[a-zA-Z0-9].*$'
+       _arguments:
+         category_id: 'category'
 
 The configuration option `routePath` defines the static keyword (previously known to some as "postVarSets" keyword for
 some TYPO3 folks), and the available placeholders.
 
-The `requirements` section exactly specifies what kind of parameter should be added to that route as regular expression.
-This way, it is configurable to only allow integer values for e.g. pagination. If the requirements are too loose, a
-URL signature parameter ("cHash") is added to the end of the URL which cannot be removed.
-
 The `defaults` section defines which URL parameters are optional. If the parameters are omitted on generation, they
 can receive a default value, and do not need a placeholder - it is also possible to add them at the very end of the
 `routePath`.
+
+The `requirements` section exactly specifies what kind of parameter should be added to that route as regular expression.
+This way, it is configurable to only allow integer values for e.g. pagination. If the requirements are too loose, a
+URL signature parameter ("cHash") is added to the end of the URL which cannot be removed.
 
 The `_arguments` section defines what Route Parameters should be available to the system. In this example, the
 placeholder is called `category_id` but the URL generation receives the argument `category`, so this is mapped to
@@ -183,7 +183,7 @@ And generate the following URLs
        plugin: Pi1
        routes:
          - { routePath: '/list/{page}', _controller: 'News::list', _arguments: {'page': '@widget_0/currentPage'} }
-         - { routePath: '/tag/{tag_name}', '_controller': 'News::list', '_arguments': {'tag_name': 'overwriteDemand/tags'}}
+         - { routePath: '/tag/{tag_name}', _controller: 'News::list', _arguments: {'tag_name': 'overwriteDemand/tags'}}
          - { routePath: '/blog/{news_title}', _controller: 'News::detail', _arguments: {'news_title': 'news'} }
          - { routePath: '/archive/{year}/{month}', _controller: 'News::archive' }
        defaultController: 'News::list'
@@ -329,7 +329,7 @@ The configuration could look like this::
              - locale: 'fr_FR.*|fr_CA.*'
                value: 'archives'
              - locale: 'de_DE.*'
-                value: 'archiv'
+               value: 'archiv'
 
 You'll see the placeholder "localized_archive" where the aspect replaces the localized archive based on the locale of
 the language of that page.
