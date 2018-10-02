@@ -80,11 +80,11 @@ class IntroductionPackageCest
 
         // Verify default frontend is rendered
         $I->amOnPage('/');
-        $I->waitForText('Let us introduce you to TYPO3', 30);
-        $I->waitForText('Make it your own');
+        $I->waitForText('Deliver business value', 30);
+        $I->waitForText('100% free open source software');
 
         // Verify link
         $I->click('[title="Features"]');
-        $I->waitForText('Feature Complete Out-of-the-box', 30);
+        $I->waitForText('rich core feature set out-of-the-box', 30);
     }
 }

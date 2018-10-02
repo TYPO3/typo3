@@ -174,7 +174,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            'updatedon',
+            '`updatedon`',
             Type::getType('integer'),
             [
                 'default' => 0,
@@ -195,7 +195,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            'createdon',
+            '`createdon`',
             Type::getType('integer'),
             [
                 'default' => 0,
@@ -216,7 +216,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            'createdby',
+            '`createdby`',
             Type::getType('integer'),
             [
                 'default' => 0,
@@ -237,7 +237,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            'deleted',
+            '`deleted`',
             Type::getType('smallint'),
             [
                 'default' => 0,
@@ -260,7 +260,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            'disabled',
+            '`disabled`',
             Type::getType('smallint'),
             [
                 'default' => 0,
@@ -283,7 +283,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            'starttime',
+            '`starttime`',
             Type::getType('integer'),
             [
                 'default' => 0,
@@ -306,7 +306,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            'endtime',
+            '`endtime`',
             Type::getType('integer'),
             [
                 'default' => 0,
@@ -329,7 +329,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            'fe_group',
+            '`fe_group`',
             Type::getType('string'),
             [
                 'default' => '0',
@@ -350,7 +350,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            'sorting',
+            '`sorting`',
             Type::getType('integer'),
             [
                 'default' => '0',
@@ -426,7 +426,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            'sys_language_uid',
+            '`sys_language_uid`',
             Type::getType('integer'),
             [
                 'default' => 0,
@@ -448,7 +448,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            'l10n_parent',
+            '`l10n_parent`',
             Type::getType('integer'),
             [
                 'default' => 0,
@@ -478,18 +478,18 @@ class DefaultTcaSchemaTest extends UnitTestCase
     public function enrichAddsDescription()
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'descriptionColumn' => 'description',
+            'descriptionColumn' => 'rowDescription',
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            'description',
+            '`rowDescription`',
             Type::getType('text'),
             [
                 'notnull' => false,
                 'length' => 65535,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('description'));
+        $this->assertEquals($expectedColumn, $result[0]->getColumn('rowDescription'));
     }
 
     /**
@@ -502,7 +502,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            'editlock',
+            '`editlock`',
             Type::getType('smallint'),
             [
                 'default' => 0,
@@ -524,7 +524,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            'l10n_source',
+            '`l10n_source`',
             Type::getType('integer'),
             [
                 'default' => 0,
@@ -559,7 +559,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            'l10n_state',
+            '`l10n_state`',
             Type::getType('text'),
             [
                 'notnull' => false,
@@ -605,7 +605,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            't3_origuid',
+            '`t3_origuid`',
             Type::getType('integer'),
             [
                 'default' => 0,
@@ -626,7 +626,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            'l18n_diffsource',
+            '`l18n_diffsource`',
             Type::getType('blob'),
             [
                 'length' => 16777215,
@@ -646,7 +646,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            't3ver_oid',
+            '`t3ver_oid`',
             Type::getType('integer'),
             [
                 'default' => 0,
@@ -667,7 +667,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            't3ver_id',
+            '`t3ver_id`',
             Type::getType('integer'),
             [
                 'default' => 0,
@@ -688,7 +688,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            't3ver_label',
+            '`t3ver_label`',
             Type::getType('string'),
             [
                 'default' => '',
@@ -709,7 +709,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            't3ver_wsid',
+            '`t3ver_wsid`',
             Type::getType('integer'),
             [
                 'default' => 0,
@@ -730,7 +730,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            't3ver_state',
+            '`t3ver_state`',
             Type::getType('smallint'),
             [
                 'default' => 0,
@@ -751,7 +751,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            't3ver_stage',
+            '`t3ver_stage`',
             Type::getType('integer'),
             [
                 'default' => 0,
@@ -772,7 +772,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            't3ver_count',
+            '`t3ver_count`',
             Type::getType('integer'),
             [
                 'default' => 0,
@@ -793,7 +793,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            't3ver_tstamp',
+            '`t3ver_tstamp`',
             Type::getType('integer'),
             [
                 'default' => 0,
@@ -814,7 +814,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = (new DefaultTcaSchema())->enrich([]);
         $expectedColumn = new Column(
-            't3ver_move_id',
+            '`t3ver_move_id`',
             Type::getType('integer'),
             [
                 'default' => 0,

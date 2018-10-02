@@ -100,7 +100,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['tstamp'])
             ) {
                 $tables[$tablePosition]->addColumn(
-                    $tableDefinition['ctrl']['tstamp'],
+                    $this->quote($tableDefinition['ctrl']['tstamp']),
                     'integer',
                     [
                         'default' => 0,
@@ -115,7 +115,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['crdate'])
             ) {
                 $tables[$tablePosition]->addColumn(
-                    $tableDefinition['ctrl']['crdate'],
+                    $this->quote($tableDefinition['ctrl']['crdate']),
                     'integer',
                     [
                         'default' => 0,
@@ -130,7 +130,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['cruser_id'])
             ) {
                 $tables[$tablePosition]->addColumn(
-                    $tableDefinition['ctrl']['cruser_id'],
+                    $this->quote($tableDefinition['ctrl']['cruser_id']),
                     'integer',
                     [
                         'default' => 0,
@@ -145,7 +145,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['delete'])
             ) {
                 $tables[$tablePosition]->addColumn(
-                    $tableDefinition['ctrl']['delete'],
+                    $this->quote($tableDefinition['ctrl']['delete']),
                     'smallint',
                     [
                         'default' => 0,
@@ -160,7 +160,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['enablecolumns']['disabled'])
             ) {
                 $tables[$tablePosition]->addColumn(
-                    $tableDefinition['ctrl']['enablecolumns']['disabled'],
+                    $this->quote($tableDefinition['ctrl']['enablecolumns']['disabled']),
                     'smallint',
                     [
                         'default' => 0,
@@ -175,7 +175,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['enablecolumns']['starttime'])
             ) {
                 $tables[$tablePosition]->addColumn(
-                    $tableDefinition['ctrl']['enablecolumns']['starttime'],
+                    $this->quote($tableDefinition['ctrl']['enablecolumns']['starttime']),
                     'integer',
                     [
                         'default' => 0,
@@ -190,7 +190,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['enablecolumns']['endtime'])
             ) {
                 $tables[$tablePosition]->addColumn(
-                    $tableDefinition['ctrl']['enablecolumns']['endtime'],
+                    $this->quote($tableDefinition['ctrl']['enablecolumns']['endtime']),
                     'integer',
                     [
                         'default' => 0,
@@ -205,7 +205,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['enablecolumns']['fe_group'])
             ) {
                 $tables[$tablePosition]->addColumn(
-                    $tableDefinition['ctrl']['enablecolumns']['fe_group'],
+                    $this->quote($tableDefinition['ctrl']['enablecolumns']['fe_group']),
                     'string',
                     [
                         'default' => '0',
@@ -220,7 +220,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['sortby'])
             ) {
                 $tables[$tablePosition]->addColumn(
-                    $tableDefinition['ctrl']['sortby'],
+                    $this->quote($tableDefinition['ctrl']['sortby']),
                     'integer',
                     [
                         'default' => 0,
@@ -247,7 +247,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['descriptionColumn'])
             ) {
                 $tables[$tablePosition]->addColumn(
-                    $tableDefinition['ctrl']['descriptionColumn'],
+                    $this->quote($tableDefinition['ctrl']['descriptionColumn']),
                     'text',
                     [
                         'notnull' => false,
@@ -261,7 +261,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['editlock'])
             ) {
                 $tables[$tablePosition]->addColumn(
-                    $tableDefinition['ctrl']['editlock'],
+                    $this->quote($tableDefinition['ctrl']['editlock']),
                     'smallint',
                     [
                         'default' => 0,
@@ -276,7 +276,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['languageField'])
             ) {
                 $tables[$tablePosition]->addColumn(
-                    (string)$tableDefinition['ctrl']['languageField'],
+                    $this->quote((string)$tableDefinition['ctrl']['languageField']),
                     'integer',
                     [
                         'default' => 0,
@@ -292,7 +292,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['transOrigPointerField'])
             ) {
                 $tables[$tablePosition]->addColumn(
-                    (string)$tableDefinition['ctrl']['transOrigPointerField'],
+                    $this->quote((string)$tableDefinition['ctrl']['transOrigPointerField']),
                     'integer',
                     [
                         'default' => 0,
@@ -308,7 +308,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['translationSource'])
             ) {
                 $tables[$tablePosition]->addColumn(
-                    (string)$tableDefinition['ctrl']['translationSource'],
+                    $this->quote((string)$tableDefinition['ctrl']['translationSource']),
                     'integer',
                     [
                         'default' => 0,
@@ -324,7 +324,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, 'l10n_state')
             ) {
                 $tables[$tablePosition]->addColumn(
-                    'l10n_state',
+                    $this->quote('l10n_state'),
                     'text',
                     [
                         'notnull' => false,
@@ -338,7 +338,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['origUid'])
             ) {
                 $tables[$tablePosition]->addColumn(
-                    $tableDefinition['ctrl']['origUid'],
+                    $this->quote($tableDefinition['ctrl']['origUid']),
                     'integer',
                     [
                         'default' => 0,
@@ -353,7 +353,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['transOrigDiffSourceField'])
             ) {
                 $tables[$tablePosition]->addColumn(
-                    $tableDefinition['ctrl']['transOrigDiffSourceField'],
+                    $this->quote($tableDefinition['ctrl']['transOrigDiffSourceField']),
                     'blob',
                     [
                         // mediumblob (16MB) on mysql
@@ -369,7 +369,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, 't3ver_oid')
             ) {
                 $tables[$tablePosition]->addColumn(
-                    't3ver_oid',
+                    $this->quote('t3ver_oid'),
                     'integer',
                     [
                         'default' => 0,
@@ -385,7 +385,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, 't3ver_id')
             ) {
                 $tables[$tablePosition]->addColumn(
-                    't3ver_id',
+                    $this->quote('t3ver_id'),
                     'integer',
                     [
                         'default' => 0,
@@ -401,7 +401,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, 't3ver_label')
             ) {
                 $tables[$tablePosition]->addColumn(
-                    't3ver_label',
+                    $this->quote('t3ver_label'),
                     'string',
                     [
                         'default' => '',
@@ -417,7 +417,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, 't3ver_wsid')
             ) {
                 $tables[$tablePosition]->addColumn(
-                    't3ver_wsid',
+                    $this->quote('t3ver_wsid'),
                     'integer',
                     [
                         'default' => 0,
@@ -433,7 +433,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, 't3ver_state')
             ) {
                 $tables[$tablePosition]->addColumn(
-                    't3ver_state',
+                    $this->quote('t3ver_state'),
                     'smallint',
                     [
                         'default' => 0,
@@ -449,7 +449,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, 't3ver_stage')
             ) {
                 $tables[$tablePosition]->addColumn(
-                    't3ver_stage',
+                    $this->quote('t3ver_stage'),
                     'integer',
                     [
                         'default' => 0,
@@ -465,7 +465,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, 't3ver_count')
             ) {
                 $tables[$tablePosition]->addColumn(
-                    't3ver_count',
+                    $this->quote('t3ver_count'),
                     'integer',
                     [
                         'default' => 0,
@@ -481,7 +481,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, 't3ver_tstamp')
             ) {
                 $tables[$tablePosition]->addColumn(
-                    't3ver_tstamp',
+                    $this->quote('t3ver_tstamp'),
                     'integer',
                     [
                         'default' => 0,
@@ -497,7 +497,7 @@ class DefaultTcaSchema
                 && !$this->isColumnDefinedForTable($tables, $tableName, 't3ver_move_id')
             ) {
                 $tables[$tablePosition]->addColumn(
-                    't3ver_move_id',
+                    $this->quote('t3ver_move_id'),
                     'integer',
                     [
                         'default' => 0,
@@ -691,5 +691,14 @@ class DefaultTcaSchema
             }
         }
         throw new \RuntimeException('Table ' . $tableName . ' not found in schema list', 1527854474);
+    }
+
+    /**
+     * @param string $identifier
+     * @return string
+     */
+    protected function quote(string $identifier): string
+    {
+        return '`' . $identifier . '`';
     }
 }
