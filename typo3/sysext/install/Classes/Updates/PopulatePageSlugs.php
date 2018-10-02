@@ -225,7 +225,7 @@ class PopulatePageSlugs implements UpgradeWizardInterface
             ->execute();
         $suggestedSlugs = [];
         while ($row = $statement->fetch()) {
-            $suggestedSlugs[(int)$row['page_id']][(int)$row['language_id']] = '/' . trim($row['pagepath'], '/') . '/';
+            $suggestedSlugs[(int)$row['page_id']][(int)$row['language_id']] = '/' . trim($row['pagepath'], '/');
         }
         return $suggestedSlugs;
     }
