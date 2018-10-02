@@ -157,7 +157,7 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
     protected function getNamespacedRequirements(): array
     {
         $requirements = [];
-        foreach ($this->configuration['requirements'] as $name => $value) {
+        foreach ($this->configuration['requirements'] ?? [] as $name => $value) {
             $requirements[$this->namespace . '_' . $name] = $value;
         }
         return $requirements;
