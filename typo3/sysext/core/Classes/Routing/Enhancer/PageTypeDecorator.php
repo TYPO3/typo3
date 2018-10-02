@@ -97,7 +97,7 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
     public function decorateForMatching(RouteCollection $collection, string $routePath): void
     {
         $decoratedRoutePath = null;
-        $decoratedParameters = ['type' => 0];
+        $decoratedParameters = null;
 
         $pattern = $this->buildRegularExpressionPattern();
         if (preg_match('#(?P<decoration>(?:' . $pattern . '))#', $routePath, $matches, PREG_UNMATCHED_AS_NULL)) {
@@ -112,7 +112,13 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
             $parameterValue = $matches['indexItems'] ?? $matches['slashedItems'] ?? $matches['regularItems'];
             $routePathValuePattern = $this->quoteForRegularExpressionPattern($routePathValue) . '$';
             $decoratedRoutePath = preg_replace('#' . $routePathValuePattern . '#', '', $routePath);
-            $decoratedParameters = ['type' => $this->map[$parameterValue] ?? 0];
+
+            $mappedType = $this->map[$parameterValue];
+            if ($mappedType !== null) {
+                $decoratedParameters = ['type' => $mappedType];
+            } elseif ($this->default === $routePathValue) {
+                $decoratedParameters = ['type' => 0];
+            }
         }
 
         foreach ($collection->all() as $route) {
@@ -122,7 +128,12 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
                     '/' . trim($decoratedRoutePath, '/')
                 );
             }
-            $route->setOption('_decoratedParameters', $decoratedParameters);
+            if ($decoratedParameters !== null) {
+                $route->setOption(
+                    '_decoratedParameters',
+                    $decoratedParameters
+                );
+            }
         }
     }
 
@@ -185,6 +196,9 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
     protected function buildRegularExpressionPattern(bool $useNames = true): string
     {
         $items = array_keys($this->map);
+        if ($this->default !== '' && !in_array($this->default, $items, true)) {
+            $items[] = $this->default;
+        }
         $slashedItems = array_filter($items, [$this, 'needsSlashPrefix']);
         $regularItems = array_diff($items, $slashedItems);
 

@@ -84,7 +84,7 @@ abstract class AbstractEnhancer implements EnhancerInterface
      */
     protected function resolveType(Route $route, array &$remainingQueryParameters): string
     {
-        $type = 0;
+        $type = $remainingQueryParameters['type'] ?? 0;
         $decoratedParameters = $route->getOption('_decoratedParameters');
         if (isset($decoratedParameters['type'])) {
             $type = $decoratedParameters['type'];
