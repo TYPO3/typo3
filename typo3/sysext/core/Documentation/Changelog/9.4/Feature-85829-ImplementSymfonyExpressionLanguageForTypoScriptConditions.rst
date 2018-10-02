@@ -185,7 +185,7 @@ The following functions are only available in **frontend** context:
 |                    |            | Example, matches if site `base = http://localhost`              |
 |                    |            | `[site("base") == "http://localhost"]`                          |
 +--------------------+------------+-----------------------------------------------------------------+
-| siteLanguage       | String     | get vale from siteLanguage configuration, or                    |
+| siteLanguage       | String     | get value from siteLanguage configuration, or                   |
 |                    |            | null if no site was found or property not exists                |
 |                    |            |                                                                 |
 |                    |            | Example, match if siteLanguage locale = foo                     |

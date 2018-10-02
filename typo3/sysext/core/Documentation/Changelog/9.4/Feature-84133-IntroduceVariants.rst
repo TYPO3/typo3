@@ -174,7 +174,7 @@ The most needed ones are probably:
 Example
 '''''''
 
-:yaml:`siteLanguage.getLocale() == "de_DE"`.
+:yaml:`siteLanguage("locale") == "de_DE"`.
 
 
 ``applicationContext`` (string)
@@ -243,7 +243,7 @@ Translate form element values depending on the frontend language:
     variants:
       -
         identifier: language-variant-1
-        condition: 'siteLanguage.getLocale() == "en_US.UTF-8"'
+        condition: 'siteLanguage("locale") == "en_US.UTF-8"'
         label: EN
         renderingOptions:
           submitButtonLabel: Submit
@@ -258,7 +258,7 @@ Translate form element values depending on the frontend language:
         variants:
           -
             identifier: language-variant-1
-            condition: 'siteLanguage.getLocale() == "en_US.UTF-8"'
+            condition: 'siteLanguage("locale") == "en_US.UTF-8"'
             label: EN
             renderingOptions:
               previousButtonLabel: 'Previous step'
@@ -274,7 +274,7 @@ Translate form element values depending on the frontend language:
             variants:
               -
                 identifier: language-variant-1
-                condition: 'siteLanguage.getLocale() == "en_US.UTF-8"'
+                condition: 'siteLanguage("locale") == "en_US.UTF-8"'
                 label: EN
                 properties:
                   fluidAdditionalAttributes:

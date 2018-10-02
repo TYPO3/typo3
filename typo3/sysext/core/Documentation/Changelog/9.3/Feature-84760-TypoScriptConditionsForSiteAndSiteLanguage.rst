@@ -17,8 +17,8 @@ The identifier of the site name is evaluated:
 
 .. code-block:: typoscript
 
-	[site = identifier = someIdentifier, base = https://www.typo3.org/]
-		page.30.value = fo
+	[site("identifier") == "someIdentifier"]
+		page.30.value = foo
 	[global]
 
 **Condition for the site language**
@@ -27,7 +27,7 @@ Any property of the current site language is evaluated:
 
 .. code-block:: typoscript
 
-	[siteLanguage = locale = de_CH.UTF-8, title = Switzerland]
+	[siteLanguage("locale") == "de_CH.UTF-8"]
 		page.40.value = bar
 	[global]
 
