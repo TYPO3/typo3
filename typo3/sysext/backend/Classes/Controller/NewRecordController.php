@@ -846,8 +846,6 @@ class NewRecordController
         if ($table === 'pages' && $addContentTable) {
             $urlParameters['tt_content']['prev'] = 'new';
             $urlParameters['returnNewPageId'] = 1;
-        } elseif ($table === 'pages') {
-            $urlParameters['overrideVals']['pages']['doktype'] = (int)$this->pageinfo['doktype'];
         }
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
