@@ -111,7 +111,7 @@ class LoadTcaService
             // and are explicitly set in cached file as well
             $_EXTKEY = $extensionKey;
             $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY] ?? null;
-            require $extensionInformation['ext_tables.php'];
+            require $extTablesPath;
         }
     }
 }
