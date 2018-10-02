@@ -261,7 +261,7 @@ class UpgradeWizardRunCommand extends Command
      */
     public function runAllWizards(): int
     {
-        $returnCode = 1;
+        $returnCode = 0;
         $wizardInstances = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $class) {
             $wizardInstances[] = $this->getWizard($class, $identifier);
