@@ -62,13 +62,13 @@ class CanonicalGeneratorTest extends AbstractTestCase
     public function generateDataProvider(): array
     {
         return [
-            'uid: 1 with canonical_link' => [1, '<link rel="canonical" href="http://localhost/"/>' . LF],
-            'uid: 2 with canonical_link' => [2, '<link rel="canonical" href="http://localhost/dummy-1-2"/>' . LF],
-            'uid: 3 with canonical_link AND content_from_pid = 2' => [3, '<link rel="canonical" href="http://localhost/dummy-1-2"/>' . LF],
-            'uid: 4 without canonical_link AND content_from_pid = 2' => [4, '<link rel="canonical" href="http://localhost/dummy-1-2"/>' . LF],
-            'uid: 5 without canonical_link AND without content_from_pid set' => [5, '<link rel="canonical" href="http://localhost/dummy-1-2-5"/>' . LF],
-            'uid: 6 without canonical_link AND content_from_pid = 7 (but target page is deleted)' => [6, '<link rel="canonical" href="http://localhost/dummy-1-2-6"/>' . LF],
-            'uid: 8 without canonical_link AND content_from_pid = 9 (but target page is hidden)' => [8, '<link rel="canonical" href="http://localhost/dummy-1-2-8"/>' . LF],
+            'uid: 1 with canonical_link' => [1, '<link rel="canonical" href="http://localhost/"/>' . chr(10)],
+            'uid: 2 with canonical_link' => [2, '<link rel="canonical" href="http://localhost/dummy-1-2"/>' . chr(10)],
+            'uid: 3 with canonical_link AND content_from_pid = 2' => [3, '<link rel="canonical" href="http://localhost/dummy-1-2"/>' . chr(10)],
+            'uid: 4 without canonical_link AND content_from_pid = 2' => [4, '<link rel="canonical" href="http://localhost/dummy-1-2"/>' . chr(10)],
+            'uid: 5 without canonical_link AND without content_from_pid set' => [5, '<link rel="canonical" href="http://localhost/dummy-1-2-5"/>' . chr(10)],
+            'uid: 6 without canonical_link AND content_from_pid = 7 (but target page is deleted)' => [6, '<link rel="canonical" href="http://localhost/dummy-1-2-6"/>' . chr(10)],
+            'uid: 8 without canonical_link AND content_from_pid = 9 (but target page is hidden)' => [8, '<link rel="canonical" href="http://localhost/dummy-1-2-8"/>' . chr(10)],
         ];
     }
 
