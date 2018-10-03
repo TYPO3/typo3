@@ -89,7 +89,6 @@ class FieldGeneratorResolver
         FieldGenerator\TypeGroupDbAllowedBeUsersBeGroups::class,
         FieldGenerator\TypeGroupDbAllowedBeUsers::class,
         FieldGenerator\TypeGroupDbAllowedStaticdata::class,
-        FieldGenerator\TypeGroupFile::class,
         FieldGenerator\TypeGroupFolder::class,
 
         // type=select
