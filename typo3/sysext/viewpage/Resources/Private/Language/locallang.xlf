@@ -42,6 +42,9 @@
 			<trans-unit id="unidentified">
 				<source>Unidentified</source>
 			</trans-unit>
+			<trans-unit id="noValidPageSelected">
+				<source>Please select a page with a valid page type in the page tree on the left to preview the selected page in different screen resolutions.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

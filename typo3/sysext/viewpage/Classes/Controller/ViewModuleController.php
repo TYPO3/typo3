@@ -29,6 +29,8 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
@@ -150,45 +152,57 @@ class ViewModuleController
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
+     * @throws \TYPO3\CMS\Core\Exception
      */
     public function showAction(ServerRequestInterface $request): ResponseInterface
     {
         $pageId = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
-        $languageId = $this->getCurrentLanguage($pageId, $request->getParsedBody()['language'] ?? $request->getQueryParams()['language'] ?? null);
 
         $this->initializeView('show');
-
-        $targetUrl = $this->getTargetUrl($pageId, $languageId);
-        $this->registerDocHeader($pageId, $languageId, $targetUrl);
-
         $this->moduleTemplate->setBodyTag('<body class="typo3-module-viewpage">');
         $this->moduleTemplate->setModuleName('typo3-module-viewpage');
         $this->moduleTemplate->setModuleId('typo3-module-viewpage');
 
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $icons = [];
-        $icons['orientation'] = $iconFactory->getIcon('actions-device-orientation-change', Icon::SIZE_SMALL)->render('inline');
-        $icons['fullscreen'] = $iconFactory->getIcon('actions-fullscreen', Icon::SIZE_SMALL)->render('inline');
-        $icons['expand'] = $iconFactory->getIcon('actions-expand', Icon::SIZE_SMALL)->render('inline');
-        $icons['desktop'] = $iconFactory->getIcon('actions-device-desktop', Icon::SIZE_SMALL)->render('inline');
-        $icons['tablet'] = $iconFactory->getIcon('actions-device-tablet', Icon::SIZE_SMALL)->render('inline');
-        $icons['mobile'] = $iconFactory->getIcon('actions-device-mobile', Icon::SIZE_SMALL)->render('inline');
-        $icons['unidentified'] = $iconFactory->getIcon('actions-device-unidentified', Icon::SIZE_SMALL)->render('inline');
+        if (!$this->isValidDoktype($pageId)) {
+            $flashMessage = GeneralUtility::makeInstance(
+                FlashMessage::class,
+                $this->getLanguageService()->getLL('noValidPageSelected'),
+                '',
+                FlashMessage::INFO
+            );
+            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue->enqueue($flashMessage);
+        } else {
+            $languageId = $this->getCurrentLanguage($pageId, $request->getParsedBody()['language'] ?? $request->getQueryParams()['language'] ?? null);
+            $targetUrl = $this->getTargetUrl($pageId, $languageId);
+            $this->registerDocHeader($pageId, $languageId, $targetUrl);
 
-        $current = ($this->getBackendUser()->uc['moduleData']['web_view']['States']['current'] ?: []);
-        $current['label'] = ($current['label'] ?? $this->getLanguageService()->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:custom'));
-        $current['width'] = (isset($current['width']) && (int)$current['width'] >= 300 ? (int)$current['width'] : 320);
-        $current['height'] = (isset($current['height']) && (int)$current['height'] >= 300 ? (int)$current['height'] : 480);
+            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+            $icons = [];
+            $icons['orientation'] = $iconFactory->getIcon('actions-device-orientation-change', Icon::SIZE_SMALL)->render('inline');
+            $icons['fullscreen'] = $iconFactory->getIcon('actions-fullscreen', Icon::SIZE_SMALL)->render('inline');
+            $icons['expand'] = $iconFactory->getIcon('actions-expand', Icon::SIZE_SMALL)->render('inline');
+            $icons['desktop'] = $iconFactory->getIcon('actions-device-desktop', Icon::SIZE_SMALL)->render('inline');
+            $icons['tablet'] = $iconFactory->getIcon('actions-device-tablet', Icon::SIZE_SMALL)->render('inline');
+            $icons['mobile'] = $iconFactory->getIcon('actions-device-mobile', Icon::SIZE_SMALL)->render('inline');
+            $icons['unidentified'] = $iconFactory->getIcon('actions-device-unidentified', Icon::SIZE_SMALL)->render('inline');
 
-        $custom = ($this->getBackendUser()->uc['moduleData']['web_view']['States']['custom'] ?: []);
-        $custom['width'] = (isset($current['custom']) && (int)$current['custom'] >= 300 ? (int)$current['custom'] : 320);
-        $custom['height'] = (isset($current['custom']) && (int)$current['custom'] >= 300 ? (int)$current['custom'] : 480);
+            $current = ($this->getBackendUser()->uc['moduleData']['web_view']['States']['current'] ?: []);
+            $current['label'] = ($current['label'] ?? $this->getLanguageService()->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:custom'));
+            $current['width'] = (isset($current['width']) && (int)$current['width'] >= 300 ? (int)$current['width'] : 320);
+            $current['height'] = (isset($current['height']) && (int)$current['height'] >= 300 ? (int)$current['height'] : 480);
 
-        $this->view->assign('icons', $icons);
-        $this->view->assign('current', $current);
-        $this->view->assign('custom', $custom);
-        $this->view->assign('presetGroups', $this->getPreviewPresets($pageId));
-        $this->view->assign('url', $targetUrl);
+            $custom = ($this->getBackendUser()->uc['moduleData']['web_view']['States']['custom'] ?: []);
+            $custom['width'] = (isset($current['custom']) && (int)$current['custom'] >= 300 ? (int)$current['custom'] : 320);
+            $custom['height'] = (isset($current['custom']) && (int)$current['custom'] >= 300 ? (int)$current['custom'] : 480);
+
+            $this->view->assign('icons', $icons);
+            $this->view->assign('current', $current);
+            $this->view->assign('custom', $custom);
+            $this->view->assign('presetGroups', $this->getPreviewPresets($pageId));
+            $this->view->assign('url', $targetUrl);
+        }
 
         $this->moduleTemplate->setContent($this->view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
@@ -407,6 +421,27 @@ class ViewModuleController
             $this->getBackendUser()->writeUC($this->getBackendUser()->uc);
         }
         return $languageId;
+    }
+
+    /**
+     * Verifies if doktype of given page is valid
+     *
+     * @param int $pageId
+     * @return bool
+     */
+    protected function isValidDoktype(int $pageId = 0): bool
+    {
+        if ($pageId === 0) {
+            return false;
+        }
+
+        $page = BackendUtility::getRecord('pages', $pageId);
+        $pageType = (int)$page['doktype'] ?? 0;
+
+        return $page !== null
+            && $pageType !== PageRepository::DOKTYPE_SPACER
+            && $pageType !== PageRepository::DOKTYPE_SYSFOLDER
+            && $pageType !== PageRepository::DOKTYPE_RECYCLER;
     }
 
     /**

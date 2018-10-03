@@ -24,6 +24,10 @@ $viewpage-topbar-height: 40px;
 
     .module-body {
         text-align: center;
+
+        .typo3-messages {
+            text-align: left;
+        }
     }
 
     .ui-resizable-w {
