@@ -31,14 +31,14 @@ class FileDumpController
      * Main method to dump a file
      *
      * @param ServerRequestInterface $request
-     * @return ResponseInterface|null
+     * @return ResponseInterface
      *
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
      * @throws \UnexpectedValueException
      */
-    public function dumpAction(ServerRequestInterface $request)
+    public function dumpAction(ServerRequestInterface $request): ResponseInterface
     {
         $parameters = ['eID' => 'dumpFile'];
         $t = $this->getGetOrPost($request, 't');
