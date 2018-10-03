@@ -393,7 +393,7 @@ class ConfigurationManager
     public function writeAdditionalConfiguration(array $additionalConfigurationLines)
     {
         return GeneralUtility::writeFile(
-            Environment::getPublicPath() . '/' . $this->additionalConfigurationFile,
+            $this->getAdditionalConfigurationFileLocation(),
             '<?php' . LF .
                 implode(LF, $additionalConfigurationLines) . LF
         );
