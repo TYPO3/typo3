@@ -14,10 +14,13 @@ namespace TYPO3\CMS\Frontend\DataProcessing;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Routing\SiteMatcher;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * This menu processor utilizes HMENU to generate a json encoded menu
@@ -322,6 +325,11 @@ class MenuProcessor implements DataProcessorInterface
     public function prepareLevelLanguageConfiguration()
     {
         if ($this->menuConfig['special'] === 'language') {
+            $languageUids = $this->menuConfig['special.']['value'];
+            if ($this->menuConfig['special.']['value'] === 'auto') {
+                $site = $this->getCurrentSite();
+                $languageUids = implode(',', array_keys($site->getLanguages()));
+            }
             $this->menuLevelConfig['stdWrap.']['cObject.'] = array_replace_recursive(
                 $this->menuLevelConfig['stdWrap.']['cObject.'],
                 [
@@ -332,7 +340,7 @@ class MenuProcessor implements DataProcessorInterface
                     ],
                     '70' => 'TEXT',
                     '70.' => [
-                        'value' => $this->menuConfig['special.']['value'],
+                        'value' => $languageUids,
                         'listNum.' => [
                             'stdWrap.' => [
                                 'data' => 'register:count_HMENU_MENUOBJ',
@@ -517,5 +525,25 @@ class MenuProcessor implements DataProcessorInterface
         $menuItem['parts']['title'] = str_replace(self::TARGET_PLACEHOLDER, $target, $menuItem['parts']['title']);
 
         return $menuItem;
+    }
+
+    /**
+     * Returns the currently configured "site" if a site is configured (= resolved) in the current request.
+     *
+     * @return SiteInterface
+     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
+     */
+    protected function getCurrentSite(): SiteInterface
+    {
+        $matcher = GeneralUtility::makeInstance(SiteMatcher::class);
+        return $matcher->matchByPageId((int)$this->getTypoScriptFrontendController()->id);
+    }
+
+    /**
+     * @return TypoScriptFrontendController
+     */
+    protected function getTypoScriptFrontendController()
+    {
+        return $GLOBALS['TSFE'];
     }
 }
