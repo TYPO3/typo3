@@ -241,7 +241,7 @@ class PageRepository implements LoggerAwareInterface
         $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages')
             ->expr();
-        if ($this->versioningWorkspaceId) {
+        if ($this->versioningWorkspaceId > 0) {
             // For version previewing, make sure that enable-fields are not
             // de-selecting hidden pages - we need versionOL() to unset them only
             // if the overlay record instructs us to.
@@ -1520,7 +1520,7 @@ class PageRepository implements LoggerAwareInterface
                 $constraints[] = $expressionBuilder->eq($table . '.' . $ctrl['delete'], 0);
             }
             if ($ctrl['versioningWS'] ?? false) {
-                if (!$this->versioningWorkspaceId) {
+                if (!$this->versioningWorkspaceId > 0) {
                     // Filter out placeholder records (new/moved/deleted items)
                     // in case we are NOT in a versioning preview (that means we are online!)
                     $constraints[] = $expressionBuilder->lte(
@@ -1546,7 +1546,7 @@ class PageRepository implements LoggerAwareInterface
             if (is_array($ctrl['enablecolumns'])) {
                 // In case of versioning-preview, enableFields are ignored (checked in
                 // versionOL())
-                if (!$this->versioningWorkspaceId || !$ctrl['versioningWS'] || $noVersionPreview) {
+                if ($this->versioningWorkspaceId <= 0 || !$ctrl['versioningWS'] || $noVersionPreview) {
                     if (($ctrl['enablecolumns']['disabled'] ?? false) && !$show_hidden && !($ignore_array['disabled'] ?? false)) {
                         $field = $table . '.' . $ctrl['enablecolumns']['disabled'];
                         $constraints[] = $expressionBuilder->eq($field, 0);
@@ -1652,7 +1652,7 @@ class PageRepository implements LoggerAwareInterface
      */
     public function fixVersioningPid($table, &$rr)
     {
-        if ($this->versioningWorkspaceId && is_array($rr) && (int)$rr['pid'] === -1 && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+        if ($this->versioningWorkspaceId > 0 && is_array($rr) && (int)$rr['pid'] === -1 && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
             $oid = 0;
             $wsid = 0;
             // Check values for t3ver_oid and t3ver_wsid:
@@ -1732,7 +1732,7 @@ class PageRepository implements LoggerAwareInterface
      */
     public function versionOL($table, &$row, $unsetMovePointers = false, $bypassEnableFieldsCheck = false)
     {
-        if ($this->versioningWorkspaceId && is_array($row)) {
+        if ($this->versioningWorkspaceId > 0 && is_array($row)) {
             // will overlay any movePlhOL found with the real record, which in turn
             // will be overlaid with its workspace version if any.
             $movePldSwap = $this->movePlhOL($table, $row);
@@ -1871,7 +1871,7 @@ class PageRepository implements LoggerAwareInterface
     protected function getMovePlaceholder($table, $uid, $fields = '*')
     {
         $workspace = (int)$this->versioningWorkspaceId;
-        if (!empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $workspace !== 0) {
+        if (!empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $workspace > 0) {
             // Select workspace version of record:
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()
