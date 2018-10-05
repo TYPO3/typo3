@@ -35,7 +35,7 @@ Use a new API to retrieve extension configuration, examples:
     $backendConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('backend');
 
     // Fully qualified class names for usage in ext_localconf.php / ext_tables.php
-    $backendConfiguration = (bool)\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+    $backendConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
         \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
     )->get('backend');
 
