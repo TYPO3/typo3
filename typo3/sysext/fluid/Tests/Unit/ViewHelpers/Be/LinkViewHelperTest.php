@@ -103,4 +103,23 @@ class LinkViewHelperTest extends ViewHelperBaseTestcase
 
         $this->viewHelper->render();
     }
+
+    /**
+     * @test
+     */
+    public function renderPassesEmptyArrayToUriBuilderForNoParameters()
+    {
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'route' => 'theRouteArgument',
+                'referenceType' => 'theReferenceTypeArgument'
+            ]
+        );
+        GeneralUtility::addInstance(UriBuilder::class, $this->uriBuilderMock);
+
+        $this->uriBuilderMock->expects($this->once())->method('buildUriFromRoute')
+            ->with('theRouteArgument', [], 'theReferenceTypeArgument')->willReturn('theUri');
+        $this->viewHelper->render();
+    }
 }

@@ -44,8 +44,8 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('route', 'string', 'The name of the route');
-        $this->registerArgument('parameters', 'array', 'An array of parameters');
+        $this->registerArgument('route', 'string', 'The name of the route', true);
+        $this->registerArgument('parameters', 'array', 'An array of parameters', false, []);
         $this->registerArgument('referenceType', 'string', 'The type of reference to be generated (one of the constants)', false, UriBuilder::ABSOLUTE_PATH);
         $this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
         $this->registerTagAttribute(

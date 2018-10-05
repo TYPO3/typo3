@@ -45,8 +45,8 @@ class UriViewHelper extends AbstractBackendViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('route', 'string', 'The name of the route');
-        $this->registerArgument('parameters', 'array', 'An array of parameters');
+        $this->registerArgument('route', 'string', 'The name of the route', true);
+        $this->registerArgument('parameters', 'array', 'An array of parameters', false, []);
         $this->registerArgument(
             'referenceType',
             'string',
