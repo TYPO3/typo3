@@ -285,6 +285,11 @@ class RequestHandler implements RequestHandlerInterface
             $GLOBALS['error']->debugOutput();
         }
         GeneralUtility::devLog('END of FRONTEND session', 'cms', 0, ['_FLUSH' => true]);
+        // if any code set a response code that is not 200 clear the cache's content
+        // if we fail to do so we would deliver cache content with a wrong header, which causes big mess.
+        if (http_response_code() !== 200) {
+            $this->controller->clearPageCacheContent();
+        }
         return $response;
     }
 
