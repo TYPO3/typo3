@@ -34,6 +34,6 @@ Two new hooks are available to achieve the same things.
 
 Please see:
 
-Feature-83740-CleanupOfAbstractRecordListBreaksHook.rst
+`Feature-83740-CleanupOfAbstractRecordListBreaksHook.rst <https://docs.typo3.org/typo3cms/extensions/core/Changelog/9.2/Feature-83740-CleanupOfAbstractRecordListBreaksHook.html>`_
 
 .. index:: Backend, Database, PHP-API, FullyScanned
