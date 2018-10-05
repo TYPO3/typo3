@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\Controller;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -44,6 +45,7 @@ class AbstractController
         $view->assignMultiple([
             'controller' => $request->getQueryParams()['install']['controller'] ?? 'maintenance',
             'context' => $request->getQueryParams()['install']['context'] ?? '',
+            'composerMode' => Environment::isComposerMode(),
         ]);
         return $view;
     }

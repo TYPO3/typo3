@@ -38,9 +38,16 @@
 		<div class="card-content">
 			<p class="card-text">Resets autoload information for all active third party extensions.</p>
 		</div>
-		<div class="card-footer">
-			<a href="#" class="btn btn-primary " data-inline="1"  data-require="TYPO3/CMS/Install/DumpAutoload">Dump autoload</a>
-		</div>
+		<f:if condition="{composerMode}">
+			<f:then>
+				<div class="card-footer text-muted">Reset autoloading via Composer</div>
+			</f:then>
+			<f:else>
+				<div class="card-footer">
+					<a href="#" class="btn btn-primary " data-inline="1"  data-require="TYPO3/CMS/Install/DumpAutoload">Dump autoload</a>
+				</div>
+			</f:else>
+		</f:if>
 	</div>
 	<div class="card card-size-fixed-small">
 		<f:render partial="Card/Header" arguments="{ title: 'Clear Persistent Database Tables', subtitle: 'Database', icon: 'Icons/modules/install-clear-database.svg'}" />
