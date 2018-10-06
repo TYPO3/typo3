@@ -113,8 +113,10 @@ class MetaTagGenerator
         $noIndex = ((bool)$params['page']['no_index']) ? 'noindex' : 'index';
         $noFollow = ((bool)$params['page']['no_follow']) ? 'nofollow' : 'follow';
 
-        $manager = $metaTagManagerRegistry->getManagerForProperty('robots');
-        $manager->addProperty('robots', implode(',', [$noIndex, $noFollow]));
+        if ($noIndex === 'noindex' || $noFollow === 'nofollow') {
+            $manager = $metaTagManagerRegistry->getManagerForProperty('robots');
+            $manager->addProperty('robots', implode(',', [$noIndex, $noFollow]));
+        }
     }
 
     /**
