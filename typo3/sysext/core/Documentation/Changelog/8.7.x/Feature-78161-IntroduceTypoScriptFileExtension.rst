@@ -16,14 +16,17 @@ with already existing and more spread file extensions like ".ts" for TypeScript 
 Video Transport Stream Files.
 
 New prioritised files for static templates:
+
 * constants.typoscript
 * setup.typoscript
 
 New prioritised files for extension statics:
+
 * ext_typoscript_constants.typoscript
 * ext_typoscript_setup.typoscript
 
 For more details please head over to the decision platform:
+
 * https://decisions.typo3.org/t/file-endings-for-typoscript-files-and-tsconfig-files/43
 * https://decisions.typo3.org/t/file-endings-for-typoscript-and-tsconfig-files-results/71
 

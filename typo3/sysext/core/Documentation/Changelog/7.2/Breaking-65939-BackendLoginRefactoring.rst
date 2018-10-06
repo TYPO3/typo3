@@ -33,6 +33,7 @@ Affected installations
 ======================
 
 All installations which make use of the `LoginController::SIGNAL_RenderLoginForm` signal or use the removed methods:
+
 * `LoginController::makeLoginBoxImage`
 * `LoginController::wrapLoginForm`
 * `LoginController::makeLoginNews`

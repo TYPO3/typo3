@@ -11,8 +11,10 @@ Description
 ===========
 
 The `InformationStatus` enumeration provides a `mapStatusToInt()` method.
+
 * The method expects a string but should expect an enum of itself.
 * The method logic is not what is expected from an enumeration method as it does not do any logic comparison.
+
 Therefore it has been replaced by `isGreaterThan()` as this was the logic that has been checked
 everywhere `mapStatusToInt()` has been used.
 

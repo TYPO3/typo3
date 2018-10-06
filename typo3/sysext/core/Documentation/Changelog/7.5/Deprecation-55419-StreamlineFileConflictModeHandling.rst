@@ -16,11 +16,13 @@ uniformly with constants within the core. Therefore a new enumeration has been i
 values: `\TYPO3\CMS\Core\Resource\DuplicationBehavior`.
 
 Provided constants are:
+
  * `DuplicationBehavior::CANCEL`
  * `DuplicationBehavior::REPLACE`
  * `DuplicationBehavior::RENAME`
 
 Before this change there were two sets of strings used to define the behavior upon conflicts.
+
  * Set1: `cancel`, `replace` and `changeName`
  * Set2: `cancel`, `overrideExistingFile` and `renameNewFile`
 

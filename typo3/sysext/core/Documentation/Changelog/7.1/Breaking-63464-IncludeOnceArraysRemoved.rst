@@ -15,14 +15,15 @@ has been removed. The API did not use the include_once array anymore and certain
 since TYPO3 CMS 6.2. All module functions are using the common autoloading functionality via namespaced classes.
 
 The following `include_once` arrays within the following modules have been removed:
-  * Web => Page
-  * Web => Page - New Content Element Wizard
-  * Web => Functions
-  * Web => Info
-  * Web => Template
-  * Web => Recycler
-  * User => Task Center
-  * System => Scheduler
+
+* Web => Page
+* Web => Page - New Content Element Wizard
+* Web => Functions
+* Web => Info
+* Web => Template
+* Web => Recycler
+* User => Task Center
+* System => Scheduler
 
 Impact
 ======
