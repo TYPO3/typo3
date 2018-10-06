@@ -140,10 +140,10 @@ class StringUtility
                 // Regular expression, only "//" is allowed as delimiter
                 $regex = $needle;
             } else {
-                $needle = str_replace(['*', '?'], ['###MANY###', '###ONE###'], $needle);
+                $needle = str_replace(['*', '?'], ['%%%MANY%%%', '%%%ONE%%%'], $needle);
                 $regex = '/^' . preg_quote($needle, '/') . '$/';
                 // Replace the marker with .* to match anything (wildcard)
-                $regex = str_replace(['###MANY###', '###ONE###'], ['.*', '.'], $regex);
+                $regex = str_replace(['%%%MANY%%%', '%%%ONE%%%'], ['.*', '.'], $regex);
             }
             $result = (bool)preg_match($regex, $haystack);
         }
