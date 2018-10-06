@@ -10,11 +10,13 @@ Description
 ===========
 
 Three error and logging related constants are no longer defined during TYPO3 core bootstrap:
+
 * :php:`TYPO3_DLOG`
 * :php:`TYPO3_ERROR_DLOG`
 * :php:`TYPO3_EXCEPTION_DLOG`
 
 Two error and logging related keys have been removed from :php:`TYPO3_CONF_VARS`:
+
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_errorDLOG']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_exceptionDLOG']`
 

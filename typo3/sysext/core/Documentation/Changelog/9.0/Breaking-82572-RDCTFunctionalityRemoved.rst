@@ -15,6 +15,7 @@ has been removed from TYPO3.
 Along, all functionality related to evaluating `RDCT` is not evaluated anymore.
 
 The following PHP methods have been removed:
+
 * TypoScriptFrontendController->sendRedirect()
 * TypoScriptFrontendController->updateMD5paramsRecord()
 * GeneralUtility::makeRedirectUrl()

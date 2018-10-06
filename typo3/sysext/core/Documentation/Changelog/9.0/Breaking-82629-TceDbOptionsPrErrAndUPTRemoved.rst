@@ -19,6 +19,7 @@ of the pagetree after a page-related action was made.
 Both options are dropped as the functionality is enabled by default.
 
 The corresponding methods have been adjusted:
+
 * `TYPO3\CMS\Core\DataHandling\DataHandler->printLogErrorMessages()` does not need a method argument anymore.
 * The public property `TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->prErr` is removed
 * The public property `TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->uPT` is removed

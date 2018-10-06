@@ -13,6 +13,7 @@ The language pack update module - formerly known as "Admin Tools" -> "Language"
 module has been moved to "Maintenance" -> "Manage language packs".
 
 PHP classes implementing the old solution have been removed:
+
 * :php:`TYPO3\CMS\Lang\Command\LanguageUpdateCommand`
 * :php:`TYPO3\CMS\Lang\Controller\LanguageController`
 * :php:`TYPO3\CMS\Lang\Domain\Model\Extension`

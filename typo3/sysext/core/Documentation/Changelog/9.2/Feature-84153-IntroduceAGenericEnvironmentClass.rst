@@ -35,6 +35,7 @@ Impact
 ======
 
 You should not rely on the PHP constants anymore, but rather use the Environment class to resolve paths:
+
 * :php:`PATH_site`
 * :php:`PATH_typo3conf`
 * :php:`PATH_site . 'typo3temp/var/'`

@@ -13,6 +13,7 @@ The custom scheduler tasks for workspace publishing and removing of preview link
 to custom symfony commands, making the functionality specifically within the scheduler context obsolete.
 
 The following tasks should not be used anymore:
+
 * Workspaces auto-publication
 * Workspaces cleanup preview links
 

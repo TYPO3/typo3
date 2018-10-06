@@ -10,6 +10,7 @@ Description
 ===========
 
 Two classes of extension lowlevel have been renamed:
+
 * :php:`TYPO3\CMS\Lowlevel\View\ConfigurationView` to :php:`TYPO3\CMS\Lowlevel\Controller\ConfigurationController`
 * :php:`TYPO3\CMS\Lowlevel\View\DatabaseIntegrityView` to :php:`TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController`
 

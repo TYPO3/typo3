@@ -15,11 +15,14 @@ have to allowed explicitly for the following commands for files ending with the
 new file suffix `.form.yaml`:
 
 * plain command invocations
+
   + create (creating new, empty file having `.form.yaml` suffix)
   + rename (renaming to file having `.form.yaml` suffix)
   + replace (replacing an existing file having `.form.yaml` suffix)
   + move (moving to different file having `.form.yaml` suffix)
+
 * command and content invocations - content signature required
+
   + add (uploading new file having `.form.yaml` suffix)
   + setContents (changing contents of file having `.form.yaml` suffix)
 

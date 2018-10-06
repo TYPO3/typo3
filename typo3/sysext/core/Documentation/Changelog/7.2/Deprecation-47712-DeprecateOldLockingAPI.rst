@@ -16,8 +16,9 @@ The configuration option `[SYS][lockingMode]` is now marked as deprecated and on
 unused in the Core now.
 
 Moreover two unused methods of `\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` have been marked as deprecated:
- * acquirePageGenerationLock()
- * releasePageGenerationLock()
+
+* acquirePageGenerationLock()
+* releasePageGenerationLock()
 
 
 Impact

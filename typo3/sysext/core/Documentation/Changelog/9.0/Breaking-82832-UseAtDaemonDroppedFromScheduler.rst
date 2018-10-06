@@ -13,6 +13,7 @@ The functionality to execute tasks via the unix "at daemon" (atd)
 has been dropped.
 
 The following method has been dropped:
+
 * :php:`TYPO3\CMS\Scheduler\Scheduler->scheduleNextSchedulerRunUsingAtDaemon()`
 
 

@@ -28,6 +28,7 @@ Migration
 =========
 
 Use alternatives for resolving paths. There are the following methods available:
+
 * :php:`ExtensionManagementUtility::extPath()` - to resolve the full path of an extension
 * :php:`ExtensionManagementUtility::siteRelPath()` - to resolve the location of an extension relative to `PATH_site`
 * :php:`GeneralUtility::getFileAbsFileName()` - to resolve a file/path prefixed with `EXT:myext`

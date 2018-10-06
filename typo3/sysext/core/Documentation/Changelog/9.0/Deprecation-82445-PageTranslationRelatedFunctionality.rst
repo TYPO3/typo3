@@ -13,6 +13,7 @@ With the merge of row content from table `pages_language_overlay` into `pages`
 various core functionality has been deprecated.
 
 Methods:
+
 * :php:`TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider->getTranslationTable()`
 * :php:`TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider->isTranslationInOwnTable()`
 * :php:`TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider->foreignTranslationTable()`

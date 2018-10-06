@@ -21,6 +21,7 @@ Features are usually breaking changes for a minor version / sprint release, whic
 at their own risk, or stay fully compatible with third-party extensions by choosing not to enable them.
 
 Examples for having features are:
+
 * Throw exceptions on certain occasions instead of just returning a string message as error message.
 * Disable obsolete functionality which might still be used, but slows down the system.
 * Enable alternative `PageNotFound handling` for an installation.

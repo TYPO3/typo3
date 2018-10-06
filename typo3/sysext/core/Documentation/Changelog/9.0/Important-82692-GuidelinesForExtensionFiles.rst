@@ -19,6 +19,7 @@ after the global configuration is loaded and the Package Manager knows which ext
 
 2. :file:`ext_tables.php`
 This file is only included when
+
 * a TYPO3 Backend or CLI request is happening
 * or the TYPO3 Frontend is called and a valid Backend User is authenticated
 

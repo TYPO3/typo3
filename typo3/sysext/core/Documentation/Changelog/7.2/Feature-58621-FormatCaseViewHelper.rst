@@ -13,6 +13,7 @@ Description
 Add a format case view helper to change casing of strings.
 
 Possible modes are:
+
 * `upper` Transforms the input string to its uppercase representation
 * `lower` Transforms the input string to its lowercase representation
 * `capital` Transforms the input string to its first letter upper-cased

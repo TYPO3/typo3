@@ -16,6 +16,7 @@ Impact
 ======
 
 Provides a new button "replace" at the extended view in FAL equal to DAM. It's possible to replace a file
+
 * with a new one -> old file will be overwritten; identifier of the file object will be kept
 * with a new one -> old file will be deleted; identifier of the file object will be changed to the new filename
 

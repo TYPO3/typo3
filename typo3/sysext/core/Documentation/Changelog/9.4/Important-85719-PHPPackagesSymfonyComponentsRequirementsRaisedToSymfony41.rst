@@ -13,6 +13,7 @@ Due to the introduction of the PHP requirement of `symfony/routing` with a minim
 version 4.1, all other Symfony Components have been raised to have at least 4.1 as well.
 
 This includes the following symfony components:
+
 * symfony/finder
 * symfony/console
 * symfony/yaml

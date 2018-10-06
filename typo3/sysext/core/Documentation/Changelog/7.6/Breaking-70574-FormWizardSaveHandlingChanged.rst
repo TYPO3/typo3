@@ -16,9 +16,9 @@ All AJAX requests for the wizard are now built with AJAX Routes and PSR-7-based 
 
 All obsolete WizardView PHP classes have been removed without substitution:
 
- * \TYPO3\CMS\Form\View\Wizard\AbstractWizardView
- * \TYPO3\CMS\Form\View\Wizard\LoadWizardView
- * \TYPO3\CMS\Form\View\Wizard\SaveWizardView
+* \TYPO3\CMS\Form\View\Wizard\AbstractWizardView
+* \TYPO3\CMS\Form\View\Wizard\LoadWizardView
+* \TYPO3\CMS\Form\View\Wizard\SaveWizardView
 
 
 Impact

@@ -43,8 +43,8 @@ Use configuration from :php:`DatabaseSessionBackend` located in
 
 Session data can be manipulated with the following methods in :php:`AbstractUserAuthentication`
 
-  * :php:`getSessionData()`
-  * :php:`setSessionData()`
+* :php:`getSessionData()`
+* :php:`setSessionData()`
 
 
 Calls to :php:`FrontendUserAuthentication::fetchSessionData()` can safely be removed.

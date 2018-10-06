@@ -13,6 +13,7 @@ The feature switch `unifiedPageTranslationHandling` is active for all new instal
 installations.
 
 It does the following when active:
+
 * All DB schema migrations decide to drop `pages_language_overlay`
 * TCA migration no longer throws a deprecation info (but still unsets `pages_language_overlay`)
 

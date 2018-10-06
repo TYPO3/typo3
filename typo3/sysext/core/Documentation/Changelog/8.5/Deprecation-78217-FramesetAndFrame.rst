@@ -13,10 +13,12 @@ Frameset and frame are not supported in HTML5_ anymore.
 The browser support for framesets could be dropped in the future.
 
 Creating a layout based on framesets has been marked deprecated:
+
 * DocumentationFrame_
 * DocumentationFrameset_
 
 The following TypoScript has been marked as deprecated:
+
 * :ts:`config.frameReloadIfNotInFrameset`
 * :ts:`config.doctype = xhtml_frames`
 * :ts:`config.xhtmlDoctype= xhtml_frames`

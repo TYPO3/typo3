@@ -28,6 +28,7 @@ will fail.
 
 Relying on the following database fields in the tables sys_workspace and
 sys_workspace_stage will fail:
+
 * sys_workspace.edit_notification_mode
 * sys_workspace.publish_notification_mode
 * sys_workspace.execute_notification_mode
