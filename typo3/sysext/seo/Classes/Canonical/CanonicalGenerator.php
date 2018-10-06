@@ -72,6 +72,10 @@ class CanonicalGenerator
         $href = '';
         $this->signalSlotDispatcher->dispatch(self::class, 'beforeGeneratingCanonical', [&$href]);
 
+        if (empty($href) && (int)$this->typoScriptFrontendController->page['no_index'] === 1) {
+            return '';
+        }
+
         if (empty($href)) {
             // 1) Check if page show content from other page
             $href = $this->checkContentFromPid();

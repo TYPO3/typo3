@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Seo\Tests\Unit\HrefLang;
  */
 
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Seo\HrefLang\HrefLangGenerator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -38,7 +39,10 @@ class HrefLangGeneratorTest extends UnitTestCase
         $subject = $this->getAccessibleMock(
             HrefLangGenerator::class,
             ['getSiteLanguage'],
-            [$this->prophesize(ContentObjectRenderer::class)->reveal()],
+            [
+                $this->prophesize(ContentObjectRenderer::class)->reveal(),
+                $this->prophesize(TypoScriptFrontendController::class)->reveal()
+            ],
             '',
             true
         );
