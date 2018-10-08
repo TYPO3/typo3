@@ -153,6 +153,8 @@ class ExtbasePluginEnhancer extends PluginEnhancer
     {
         $parameters = $this->getVariableProcessor()
             ->inflateNamespaceParameters($parameters, $this->namespace);
+        $parameters[$this->namespace] = $parameters[$this->namespace] ?? [];
+
         // Invalid if there is no controller given, so this enhancers does not do anything
         if (empty($internals['_controller'] ?? null)) {
             return $parameters;
