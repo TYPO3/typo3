@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Controller;
 
 /*
@@ -95,10 +97,10 @@ class FileDumpController
     /**
      * @param ServerRequestInterface $request
      * @param string $parameter
-     * @return mixed|null
+     * @return string
      */
-    protected function getGetOrPost(ServerRequestInterface $request, $parameter)
+    protected function getGetOrPost(ServerRequestInterface $request, string $parameter): string
     {
-        return $request->getParsedBody()[$parameter] ?? $request->getQueryParams()[$parameter] ?? null;
+        return (string)($request->getParsedBody()[$parameter] ?? $request->getQueryParams()[$parameter] ?? '');
     }
 }
