@@ -2,43 +2,37 @@
 <div class="media media-new-content-element-wizard">
 	<f:if condition="{onClickEvent}">
 		<f:then>
-			<f:if condition="{content}">
-				<a href="#" onclick="{aOnClick -> f:format.htmlspecialchars()}" data-dismiss="modal">
+			<a href="#" onclick="{aOnClick -> f:format.htmlspecialchars()}" data-dismiss="modal">
+				<f:if condition="{content}">
 					{content -> f:format.raw()}
-				</a>
-			</f:if>
-			<div class="media-left">
-				<a href="#" onclick="{aOnClick -> f:format.htmlspecialchars()}" data-dismiss="modal">
+				</f:if>
+				<div class="media-left">
 					{icon -> f:format.raw()}
-				</a>
-			</div>
-			<div class="media-body">
-				<a href="#" onclick="{aOnClick -> f:format.htmlspecialchars()}" data-dismiss="modal">
+				</div>
+				<div class="media-body">
 					<strong>{wizardInformation.title -> f:format.htmlspecialchars()}</strong>
-					<br />
+					<br/>
 					{wizardInformation.description -> f:format.nl2br() -> f:format.htmlspecialchars()}
-				</a>
-			</div>
+				</div>
+			</a>
 		</f:then>
 		<f:else>
-			<input type="radio" class="hide" name="tempB" value="{wizardKey -> f:format.htmlspecialchars()}" onclick="{wizardOnClick -> f:format.htmlspecialchars()}"/>
-			<f:if condition="{content}">
-				<a href="#new-content-element-wizard-carousel" onclick="{aOnClick -> f:format.htmlspecialchars()}" data-slide="next">
+			<input type="radio" class="hide" name="tempB" value="{wizardKey -> f:format.htmlspecialchars()}"
+						 onclick="{wizardOnClick -> f:format.htmlspecialchars()}"/>
+			<a href="#new-content-element-wizard-carousel" onclick="{aOnClick -> f:format.htmlspecialchars()}"
+				 data-slide="next">
+				<f:if condition="{content}">
 					{content -> f:format.raw()}
-				</a>
-			</f:if>
-			<div class="media-left">
-				<a href="#new-content-element-wizard-carousel" onclick="{aOnClick -> f:format.htmlspecialchars()}" data-slide="next">
+				</f:if>
+				<div class="media-left">
 					{icon -> f:format.raw()}
-				</a>
-			</div>
-			<div class="media-body">
-				<a href="#new-content-element-wizard-carousel" onclick="{aOnClick -> f:format.htmlspecialchars()}" data-slide="next">
+				</div>
+				<div class="media-body">
 					<strong>{wizardInformation.title -> f:format.htmlspecialchars()}</strong>
-					<br />
+					<br/>
 					{wizardInformation.description -> f:format.nl2br() -> f:format.htmlspecialchars()}
-				</a>
-			</div>
+				</div>
+			</a>
 		</f:else>
 	</f:if>
 </div>
