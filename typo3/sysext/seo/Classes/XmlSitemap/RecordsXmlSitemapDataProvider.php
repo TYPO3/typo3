@@ -101,7 +101,7 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         $pageId = $this->config['url']['pageId'] ?? $GLOBALS['TSFE']->id;
         $additionalParams = [];
 
-        $additionalParams = $this->getUrlFieldParameterMap($additionalParams, $data);
+        $additionalParams = $this->getUrlFieldParameterMap($additionalParams, $data['data']);
         $additionalParams = $this->getUrlAdditionalParams($additionalParams);
 
         $additionalParamsString = http_build_query(

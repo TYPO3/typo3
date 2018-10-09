@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+	<sys_category>
+		<uid>1</uid>
+		<pid>11</pid>
+		<tstamp>1537545656</tstamp>
+		<crdate>1537545656</crdate>
+		<deleted>0</deleted>
+		<hidden>0</hidden>
+		<starttime>0</starttime>
+		<endtime>0</endtime>
+		<sorting>256</sorting>
+		<title>Examples</title>
+	</sys_category>
+	<sys_category>
+		<uid>2</uid>
+		<pid>11</pid>
+		<tstamp>1537545656</tstamp>
+		<crdate>1537545656</crdate>
+		<deleted>0</deleted>
+		<hidden>0</hidden>
+		<starttime>0</starttime>
+		<endtime>0</endtime>
+		<sorting>128</sorting>
+		<title>News</title>
+	</sys_category>
+</data>

@@ -73,4 +73,11 @@
         <slug>/dummy-1-4-10</slug>
         <deleted>0</deleted>
     </pages>
+    <pages>
+        <uid>11</uid>
+        <pid>1</pid>
+        <title>SysFolder</title>
+        <doktype>254</doktype>
+        <deleted>0</deleted>
+    </pages>
 </dataset>
