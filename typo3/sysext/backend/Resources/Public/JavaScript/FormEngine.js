@@ -133,6 +133,13 @@ define(['jquery',
     if (isMultiple || isList) {
       // If multiple values are not allowed, clear anything that is in the control already
       if (!isMultiple) {
+        var $availableFieldEl = FormEngine.getFieldElement(fieldName, '_avail');
+        $fieldEl.find('option').each(function() {
+          $availableFieldEl
+            .find('option[value="' + $.escapeSelector($(this).attr('value')) + '"]')
+            .removeClass('hidden')
+            .prop('disabled', false);
+        });
         $fieldEl.empty();
       }
 
