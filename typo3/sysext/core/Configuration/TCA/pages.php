@@ -545,6 +545,12 @@ return [
                 'size' => 1,
                 'maxitems' => 1,
                 'minitems' => 0,
+                'suggestOptions' => [
+                    'default' => [
+                        'additionalSearchFields' => 'nav_title, alias, url',
+                        'addWhere' => ' AND pages.uid != ###THIS_UID###'
+                    ]
+                ],
                 'default' => 0
             ]
         ],
