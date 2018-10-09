@@ -1228,7 +1228,8 @@ class EditDocumentController extends AbstractModule
                 && $this->getNewIconMode($this->firstEl['table'])
             );
             // Hide the button for tt_content when in connected translation mode
-            if ($this->firstEl['table'] === 'tt_content') {
+            // if the button is enabled in general and the record is a translation
+            if ($showSaveAndNewButton && $sysLanguageUid > 0 && $this->firstEl['table'] === 'tt_content') {
                 $showSaveAndNewButton = $this->isPageInFreeTranslationMode(
                     (int)$this->pageinfo['uid'],
                     !$isSavedRecord ? (int)$this->defVals['colPos'] : (int)$record['colPos'],
