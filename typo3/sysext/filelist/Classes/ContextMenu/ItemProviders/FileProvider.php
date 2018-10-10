@@ -364,11 +364,17 @@ class FileProvider extends \TYPO3\CMS\Backend\ContextMenu\ItemProviders\Abstract
                 $fileOrFolderInClipBoard->getName(),
                 $this->record->getName()
             );
+            $closeText = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:button.cancel');
+            $okLabel = $this->clipboard->currentMode() === 'copy' ? 'copy' : 'pasteinto';
+            $okText = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . $okLabel);
             $attributes += [
                 'data-title' => htmlspecialchars($title),
-                'data-message' => htmlspecialchars($confirmMessage)
+                'data-message' => htmlspecialchars($confirmMessage),
+                'data-button-close-text' => htmlspecialchars($closeText),
+                'data-button-ok-text' => htmlspecialchars($okText),
             ];
         }
+
         return $attributes;
     }
 
