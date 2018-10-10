@@ -124,6 +124,11 @@ class KauderwelschService
         return 'https://typo3.org';
     }
 
+    public function getEmail(): string
+    {
+        return 'foo@example.com';
+    }
+
     /**
      * Get a color as hex string
      *

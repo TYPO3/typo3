@@ -43,6 +43,7 @@ class FieldGeneratorResolver
         FieldGenerator\TypeInputEvalDate::class,
         FieldGenerator\TypeInputEvalDatetime::class,
         FieldGenerator\TypeInputEvalDouble2::class,
+        FieldGenerator\TypeInputEvalEmail::class,
         FieldGenerator\TypeInputEvalInt::class,
         FieldGenerator\TypeInputEvalIsIn::class,
         FieldGenerator\TypeInputEvalMd5::class,
