@@ -64,7 +64,7 @@ return [
                     ]
                 ],
                 'foreign_table' => 'tx_styleguide_elements_select',
-                'foreign_table_where' => 'AND tx_styleguide_elements_select.pid=###CURRENT_PID### AND tx_styleguide_elements_select.sys_language_uid IN (-1,0)',
+                'foreign_table_where' => 'AND {#tx_styleguide_elements_select}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_elements_select}.{#sys_language_uid} IN (-1,0)',
                 'default' => 0
             ]
         ],
@@ -82,7 +82,7 @@ return [
                     ]
                 ],
                 'foreign_table' => 'tx_styleguide_elements_select',
-                'foreign_table_where' => 'AND tx_styleguide_elements_select.pid=###CURRENT_PID### AND tx_styleguide_elements_select.uid!=###THIS_UID###',
+                'foreign_table_where' => 'AND {#tx_styleguide_elements_select}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_elements_select}.{#uid}!=###THIS_UID###',
                 'default' => 0
             ]
         ],
@@ -137,7 +137,7 @@ return [
                     ['DB values', '--div--'],
                 ],
                 'foreign_table' => 'tx_styleguide_staticdata',
-                'foreign_table_where' => 'AND tx_styleguide_staticdata.value_1 LIKE \'%foo%\' ORDER BY uid',
+                'foreign_table_where' => 'AND {#tx_styleguide_staticdata}.{#value_1} LIKE \'%foo%\' ORDER BY uid',
                 'foreign_table_prefix' => 'A prefix: ',
             ],
         ],
@@ -641,7 +641,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectTree',
                 'foreign_table' => 'sys_category',
-                'foreign_table_where' => 'AND (sys_category.sys_language_uid = 0 OR sys_category.l10n_parent = 0) ORDER BY sys_category.sorting',
+                'foreign_table_where' => 'AND ({#sys_category}.{#sys_language_uid} = 0 OR {#sys_category}.{#l10n_parent} = 0) ORDER BY sys_category.sorting',
                 'size' => 20,
                 'treeConfig' => [
                     'parentField' => 'parent',

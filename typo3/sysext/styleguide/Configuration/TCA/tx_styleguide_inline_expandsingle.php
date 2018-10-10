@@ -66,7 +66,7 @@ return [
                     ]
                 ],
                 'foreign_table' => 'tx_styleguide_inline_expandsingle',
-                'foreign_table_where' => 'AND tx_styleguide_inline_expandsingle.pid=###CURRENT_PID### AND tx_styleguide_inline_expandsingle.sys_language_uid IN (-1,0)',
+                'foreign_table_where' => 'AND {#tx_styleguide_inline_expandsingle}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_expandsingle}.{#sys_language_uid} IN (-1,0)',
                 'default' => 0
             ]
         ],
@@ -84,7 +84,7 @@ return [
                     ]
                 ],
                 'foreign_table' => 'tx_styleguide_inline_expandsingle',
-                'foreign_table_where' => 'AND tx_styleguide_inline_expandsingle.pid=###CURRENT_PID### AND tx_styleguide_inline_expandsingle.uid!=###THIS_UID###',
+                'foreign_table_where' => 'AND {#tx_styleguide_inline_expandsingle}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_expandsingle}.{#uid}!=###THIS_UID###',
                 'default' => 0
             ]
         ],

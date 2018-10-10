@@ -47,7 +47,7 @@ return [
                     ['', 0],
                 ],
                 'foreign_table' => 'tx_styleguide_elements_rsainput_inline_1_child',
-                'foreign_table_where' => 'AND tx_styleguide_elements_rsainput_inline_1_child.pid=###CURRENT_PID### AND tx_styleguide_elements_rsainput_inline_1_child.sys_language_uid IN (-1,0)',
+                'foreign_table_where' => 'AND {#tx_styleguide_elements_rsainput_inline_1_child}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_elements_rsainput_inline_1_child}.{#sys_language_uid} IN (-1,0)',
             ]
         ],
         'l10n_source' => [
@@ -64,7 +64,7 @@ return [
                     ]
                 ],
                 'foreign_table' => 'tx_styleguide_elements_rsainput_inline_1_child',
-                'foreign_table_where' => 'AND tx_styleguide_elements_rsainput_inline_1_child.pid=###CURRENT_PID### AND tx_styleguide_elements_rsainput_inline_1_child.uid!=###THIS_UID###',
+                'foreign_table_where' => 'AND {#tx_styleguide_elements_rsainput_inline_1_child}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_elements_rsainput_inline_1_child}.{#uid}!=###THIS_UID###',
                 'default' => 0
             ]
         ],

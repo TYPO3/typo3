@@ -49,7 +49,7 @@ return [
                     ['', 0],
                 ],
                 'foreign_table' => 'tx_styleguide_inline_mn',
-                'foreign_table_where' => 'AND tx_styleguide_inline_mn.pid=###CURRENT_PID### AND tx_styleguide_inline_mn.sys_language_uid IN (-1,0)',
+                'foreign_table_where' => 'AND {#tx_styleguide_inline_mn}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_mn}.{#sys_language_uid} IN (-1,0)',
             ]
         ],
         'l10n_source' => [
@@ -66,7 +66,7 @@ return [
                     ]
                 ],
                 'foreign_table' => 'tx_styleguide_inline_mn',
-                'foreign_table_where' => 'AND tx_styleguide_inline_mn.pid=###CURRENT_PID### AND tx_styleguide_inline_mn.uid!=###THIS_UID###',
+                'foreign_table_where' => 'AND {#tx_styleguide_inline_mn}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_mn}.{#uid}!=###THIS_UID###',
                 'default' => 0
             ]
         ],

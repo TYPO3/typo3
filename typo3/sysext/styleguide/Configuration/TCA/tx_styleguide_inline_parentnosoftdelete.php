@@ -46,7 +46,7 @@ return [
                     ['', 0],
                 ],
                 'foreign_table' => 'tx_styleguide_inline_parentnosoftdelete',
-                'foreign_table_where' => 'AND tx_styleguide_inline_parentnosoftdelete.pid=###CURRENT_PID### AND tx_styleguide_inline_parentnosoftdelete.sys_language_uid IN (-1,0)',
+                'foreign_table_where' => 'AND {#tx_styleguide_inline_parentnosoftdelete}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_parentnosoftdelete}.{#sys_language_uid} IN (-1,0)',
             ],
         ],
         'l10n_source' => [
@@ -63,7 +63,7 @@ return [
                     ]
                 ],
                 'foreign_table' => 'tx_styleguide_inline_parentnosoftdelete',
-                'foreign_table_where' => 'AND tx_styleguide_inline_parentnosoftdelete.pid=###CURRENT_PID### AND tx_styleguide_inline_parentnosoftdelete.uid!=###THIS_UID###',
+                'foreign_table_where' => 'AND {#tx_styleguide_inline_parentnosoftdelete}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_parentnosoftdelete}.{#uid}!=###THIS_UID###',
                 'default' => 0
             ]
         ],

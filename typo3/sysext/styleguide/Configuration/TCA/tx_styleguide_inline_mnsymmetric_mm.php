@@ -48,8 +48,7 @@ return [
                     ['', 0],
                 ],
                 'foreign_table' => 'tx_styleguide_inline_mnsymmetric_mm',
-                'foreign_table_where' => 'AND tx_styleguide_inline_mnsymmetric_mm.pid=###CURRENT_PID###
-                    AND tx_styleguide_inline_mnsymmetric_mm.sys_language_uid IN (-1,0)',
+                'foreign_table_where' => 'AND {#tx_styleguide_inline_mnsymmetric_mm}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_mnsymmetric_mm}.{#sys_language_uid} IN (-1,0)',
             ]
         ],
         'l10n_source' => [
@@ -66,7 +65,7 @@ return [
                     ]
                 ],
                 'foreign_table' => 'tx_styleguide_inline_mnsymmetric_mm',
-                'foreign_table_where' => 'AND tx_styleguide_inline_mnsymmetric_mm.pid=###CURRENT_PID### AND tx_styleguide_inline_mnsymmetric_mm.uid!=###THIS_UID###',
+                'foreign_table_where' => 'AND {#tx_styleguide_inline_mnsymmetric_mm}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_mnsymmetric_mm}.{#uid}!=###THIS_UID###',
                 'default' => 0
             ]
         ],
