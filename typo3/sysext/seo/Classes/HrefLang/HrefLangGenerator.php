@@ -100,10 +100,14 @@ class HrefLangGenerator
     {
         $uri = new Uri($url);
         if (empty($uri->getHost())) {
-            $url = (string)$this->getSiteLanguage()->getBase()->withPath($uri->getPath());
+            $url = $this->getSiteLanguage()->getBase()->withPath($uri->getPath());
+
+            if ($uri->getQuery()) {
+                $url = $url->withQuery($uri->getQuery());
+            }
         }
 
-        return $url;
+        return (string)$url;
     }
 
     /**

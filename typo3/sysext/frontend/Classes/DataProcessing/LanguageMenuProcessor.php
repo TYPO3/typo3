@@ -23,6 +23,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Utility\CanonicalizationUtility;
 
 /**
  * This menu processor generates a json encoded menu string that will be
@@ -69,7 +70,9 @@ class LanguageMenuProcessor implements DataProcessorInterface
         'if.',
         'languages',
         'languages.',
-        'as'
+        'as',
+        'addQueryString',
+        'addQueryString.'
     ];
 
     /**
@@ -89,6 +92,10 @@ class LanguageMenuProcessor implements DataProcessorInterface
      */
     protected $menuConfig = [
         'special' => 'language',
+        'addQueryString' => 1,
+        'addQueryString.' => [
+            'method' => 'GET'
+        ],
         'wrap' => '[|]'
     ];
 
@@ -322,6 +329,19 @@ class LanguageMenuProcessor implements DataProcessorInterface
                 unset($this->menuConfig[$key]);
             }
         }
+
+        $paramsToExclude = CanonicalizationUtility::getParamsToExcludeForCanonicalizedUrl(
+            (int)$this->getTypoScriptFrontendController()->id,
+            (array)$GLOBALS['TYPO3_CONF_VARS']['FE']['additionalCanonicalizedUrlParameters']
+        );
+
+        $this->menuConfig['addQueryString.']['exclude'] = implode(
+            ',',
+            array_merge(
+                GeneralUtility::trimExplode(',', $this->menuConfig['addQueryString.']['exclude'] ?? '', true),
+                $paramsToExclude
+            )
+        );
     }
 
     /**

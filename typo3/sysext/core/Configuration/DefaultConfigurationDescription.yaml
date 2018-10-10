@@ -490,6 +490,9 @@ FE:
               excludeAllEmptyParameters:
                   type: bool
                   description: 'If true, all parameters which are relevant for cHash are only considered if they are non-empty.'
+        additionalCanonicalizedUrlParameters:
+            type: array
+            description: The given parameters will be included when calculating canonicalized URL
         workspacePreviewLogoutTemplate:
             type: text
             description: 'If set, points to an HTML file relative to the TYPO3_site root which will be read and outputted as template for this message. Example: <code>fileadmin/templates/template_workspace_preview_logout.html</code>. Inside you can put the marker %1$s to insert the URL to go back to. Use this in <code>&lt;a href="%1$s"&gt;Go back...&lt;/a&gt;</code> links.'
