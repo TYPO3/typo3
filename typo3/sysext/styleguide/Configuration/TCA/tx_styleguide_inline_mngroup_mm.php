@@ -96,6 +96,11 @@ return [
                 'minitems' => 0,
                 'allowed' => 'tx_styleguide_inline_mngroup',
                 'hideSuggest' => true,
+                'fieldWizard' => [
+                    'recordsOverview' => [
+                        'disabled' => true,
+                    ],
+                ],
             ]
         ],
         'childid' => [
@@ -109,6 +114,11 @@ return [
                 'minitems' => 0,
                 'allowed' => 'tx_styleguide_inline_mngroup_child',
                 'hideSuggest' => true,
+                'fieldWizard' => [
+                    'recordsOverview' => [
+                        'disabled' => true,
+                    ],
+                ],
             ]
         ],
         'parentsort' => [
