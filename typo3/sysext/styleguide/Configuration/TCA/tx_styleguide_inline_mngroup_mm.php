@@ -88,27 +88,27 @@ return [
         'parentid' => [
             'label' => 'parentid',
             'config' => [
-                'type'          => 'group',
+                'type' => 'group',
                 'internal_type' => 'db',
-                'size'          => 1,
-                'eval'          => 'int',
-                'maxitems'      => 1,
-                'minitems'      => 0,
-                'allowed'       => 'tx_styleguide_inline_mngroup',
-                'hideSuggest'   => true,
+                'size' => 1,
+                'eval' => 'int',
+                'maxitems' => 1,
+                'minitems' => 0,
+                'allowed' => 'tx_styleguide_inline_mngroup',
+                'hideSuggest' => true,
             ]
         ],
         'childid' => [
             'label' => 'childid',
             'config' => [
-                'type'          => 'group',
+                'type' => 'group',
                 'internal_type' => 'db',
-                'size'          => 1,
-                'eval'          => 'int',
-                'maxitems'      => 1,
-                'minitems'      => 0,
-                'allowed'       => 'tx_styleguide_inline_mngroup_child',
-                'hideSuggest'   => true,
+                'size' => 1,
+                'eval' => 'int',
+                'maxitems' => 1,
+                'minitems' => 0,
+                'allowed' => 'tx_styleguide_inline_mngroup_child',
+                'hideSuggest' => true,
             ]
         ],
         'parentsort' => [
