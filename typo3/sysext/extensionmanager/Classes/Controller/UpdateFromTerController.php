@@ -97,7 +97,7 @@ class UpdateFromTerController extends AbstractController
             }
         }
         /** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Repository $repository */
-        $repository = $this->repositoryRepository->findByUid((int)$this->settings['repositoryUid']);
+        $repository = $this->repositoryRepository->findOneTypo3OrgRepository();
 
         $timeFormat = $this->getLanguageService()->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.updateFromTer.lastUpdate.fullTimeFormat');
         $lastUpdateTime = $repository ? $repository->getLastUpdate() : null;

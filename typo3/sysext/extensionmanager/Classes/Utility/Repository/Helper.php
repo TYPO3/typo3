@@ -86,7 +86,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
         $repositoryRepository = $this->objectManager->get(RepositoryRepository::class);
         $this->extensionRepository = $this->objectManager->get(ExtensionRepository::class);
         /** @var Repository $repository */
-        $repository = $repositoryRepository->findByUid(1);
+        $repository = $repositoryRepository->findOneTypo3OrgRepository();
         if (is_object($repository)) {
             $this->setRepository($repository);
         }
