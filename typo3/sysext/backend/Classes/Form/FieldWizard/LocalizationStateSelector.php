@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Form\FieldWizard;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Core\DataHandling\Localization\State;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Allows to define the localization state per field.
@@ -127,6 +128,11 @@ class LocalizationStateSelector extends AbstractNode
         }
         $html[] = '</div>';
 
+        $result['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/FieldWizard/LocalizationStateSelector' => '
+            function(LocalizationStateSelector) {
+                new LocalizationStateSelector(' . GeneralUtility::quoteJSvalue($fieldElementName) . ');
+            }'
+        ];
         $result['html'] = implode(LF, $html);
         return $result;
     }

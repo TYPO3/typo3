@@ -270,6 +270,7 @@ class InputDateTimeElement extends AbstractFormElement
             $fullElement = implode(LF, $fullElement);
         }
 
+        $resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/FormEngine/Element/InputDateTimeElement';
         $resultArray['html'] = '<div class="formengine-field-item t3js-formengine-field-item">' . $fieldInformationHtml . $fullElement . '</div>';
         return $resultArray;
     }

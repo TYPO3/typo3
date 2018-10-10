@@ -147,9 +147,11 @@ class InputLinkElement extends AbstractFormElement
             }
         }
 
+        $fieldId = StringUtility::getUniqueId('formengine-input-');
+
         $attributes = [
             'value' => '',
-            'id' => StringUtility::getUniqueId('formengine-input-'),
+            'id' => $fieldId,
             'class' => implode(' ', [
                 'form-control',
                 't3js-clearable',
@@ -302,6 +304,11 @@ class InputLinkElement extends AbstractFormElement
             $fullElement = implode(LF, $fullElement);
         }
 
+        $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/InputLinkElement' => '
+            function(InputLinkElement) {
+                new InputLinkElement(' . GeneralUtility::quoteJSvalue($fieldId) . ');
+            }'
+        ];
         $resultArray['html'] = '<div class="formengine-field-item t3js-formengine-field-item">' . $fieldInformationHtml . $fullElement . '</div>';
         return $resultArray;
     }

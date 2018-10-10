@@ -36,6 +36,9 @@ declare namespace TYPO3 {
 
       export class FormEngine {
         public readonly Validation: FormEngineValidation;
+        public legacyFieldChangedCb(): void;
+        public getFieldElement(fieldName: string, appendix?: string, noFallback?: boolean): JQuery;
+        public updateHiddenFieldValueFromSelect(selectFieldEl: HTMLElement, originalFieldEl: HTMLElement): void;
         public preventFollowLinkIfNotSaved(href: string): boolean;
         public setSelectOptionFromExternalSource(
           fieldName: string,

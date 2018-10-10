@@ -217,6 +217,9 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $fieldWizardHtml = $fieldWizardResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
+        $selectedOptionsFieldId = StringUtility::getUniqueId('tceforms-multiselect-');
+        $availableOptionsFieldId = StringUtility::getUniqueId('tceforms-multiselect-');
+
         $html = [];
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] =   $fieldInformationHtml;
@@ -231,7 +234,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                   '<div class="form-wizards-wrap form-wizards-aside">';
         $html[] =                       '<div class="form-wizards-element">';
         $html[] =                           '<select';
-        $html[] =                               ' id="' . StringUtility::getUniqueId('tceforms-multiselect-') . '"';
+        $html[] =                               ' id="' . $selectedOptionsFieldId . '"';
         $html[] =                               ' size="' . $size . '"';
         $html[] =                               ' class="' . implode(' ', $classes) . '"';
         $html[] =                               $multipleAttribute;
@@ -244,7 +247,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                           '<div class="btn-group-vertical">';
         if ($maxItems > 1 && $size >= 5) {
             $html[] =                           '<a href="#"';
-            $html[] =                               ' class="btn btn-default t3js-btn-moveoption-top"';
+            $html[] =                               ' class="btn btn-default t3js-btn-option t3js-btn-moveoption-top"';
             $html[] =                               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
             $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_to_top')) . '"';
             $html[] =                           '>';
@@ -253,14 +256,14 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         }
         if ($maxItems > 1) {
             $html[] =                           '<a href="#"';
-            $html[] =                               ' class="btn btn-default t3js-btn-moveoption-up"';
+            $html[] =                               ' class="btn btn-default t3js-btn-option t3js-btn-moveoption-up"';
             $html[] =                               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
             $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_up')) . '"';
             $html[] =                           '>';
             $html[] =                               $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render();
             $html[] =                           '</a>';
             $html[] =                           '<a href="#"';
-            $html[] =                               ' class="btn btn-default t3js-btn-moveoption-down"';
+            $html[] =                               ' class="btn btn-default t3js-btn-option t3js-btn-moveoption-down"';
             $html[] =                               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
             $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_down')) . '"';
             $html[] =                           '>';
@@ -269,7 +272,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         }
         if ($maxItems > 1 && $size >= 5) {
             $html[] =                           '<a href="#"';
-            $html[] =                               ' class="btn btn-default t3js-btn-moveoption-bottom"';
+            $html[] =                               ' class="btn btn-default t3js-btn-option t3js-btn-moveoption-bottom"';
             $html[] =                               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
             $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_to_bottom')) . '"';
             $html[] =                           '>';
@@ -277,7 +280,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             $html[] =                           '</a>';
         }
         $html[] =                               '<a href="#"';
-        $html[] =                                   ' class="btn btn-default t3js-btn-removeoption"';
+        $html[] =                                   ' class="btn btn-default t3js-btn-option t3js-btn-removeoption"';
         $html[] =                                   ' data-fieldname="' . htmlspecialchars($elementName) . '"';
         $html[] =                                   ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remove_selected')) . '"';
         $html[] =                               '>';
@@ -297,7 +300,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                           '<select';
         $html[] =                               ' data-relatedfieldname="' . htmlspecialchars($elementName) . '"';
         $html[] =                               ' data-exclusivevalues="' . htmlspecialchars($config['exclusiveKeys']) . '"';
-        $html[] =                               ' id="' . StringUtility::getUniqueId('tceforms-multiselect-') . '"';
+        $html[] =                               ' id="' . $availableOptionsFieldId . '"';
         $html[] =                               ' data-formengine-input-name="' . htmlspecialchars($elementName) . '"';
         $html[] =                               ' class="form-control t3js-formengine-select-itemstoselect"';
         $html[] =                               ' size="' . $size . '"';
@@ -326,6 +329,12 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         }
         $html[] =   '</div>';
         $html[] = '</div>';
+
+        $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectMultipleSideBySideElement' => '
+            function(SelectMultipleSideBySideElement) {
+                new SelectMultipleSideBySideElement(' . GeneralUtility::quoteJSvalue($selectedOptionsFieldId) . ', ' . GeneralUtility::quoteJSvalue($availableOptionsFieldId) . ');
+            }'
+        ];
 
         $resultArray['html'] = implode(LF, $html);
         return $resultArray;

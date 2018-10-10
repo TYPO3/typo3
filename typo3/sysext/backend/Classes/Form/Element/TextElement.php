@@ -146,8 +146,10 @@ class TextElement extends AbstractFormElement
             }
         }
 
+        $fieldId = StringUtility::getUniqueId('formengine-textarea-');
+
         $attributes = [
-            'id' => StringUtility::getUniqueId('formengine-textarea-'),
+            'id' => $fieldId,
             'name' => htmlspecialchars($parameterArray['itemFormElName']),
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'data-formengine-input-name' => htmlspecialchars($parameterArray['itemFormElName']),
@@ -301,6 +303,11 @@ class TextElement extends AbstractFormElement
             $fullElement = implode(LF, $fullElement);
         }
 
+        $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/TextElement' => '
+            function(TextElement) {
+                new TextElement(' . GeneralUtility::quoteJSvalue($fieldId) . ');
+            }'
+        ];
         $resultArray['html'] = '<div class="formengine-field-item t3js-formengine-field-item">' . $fieldInformationHtml . $fullElement . '</div>';
         return $resultArray;
     }

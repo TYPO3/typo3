@@ -469,7 +469,7 @@ define(['jquery',
    * @returns {*|HTMLElement}
    */
   FormEngine.getFieldElement = function(fieldName, appendix, noFallback) {
-    var $formEl = FormEngine.getFormElement();
+    var $formEl = $('form[name="' + FormEngine.formName + '"]:first');
 
     // if an appendix is set, return the field with the appendix (like _mul or _list)
     if (appendix) {
@@ -494,106 +494,6 @@ define(['jquery',
     return $(':input[name="' + fieldName + '"]', $formEl);
   };
 
-
-  /**************************************************
-   * manipulate existing options in a select field
-   **************************************************/
-
-  /**
-   * Moves currently selected options from a select field to the very top,
-   * can be multiple entries as well
-   *
-   * @param {Object} $fieldEl a jQuery object, containing the select field
-   */
-  FormEngine.moveOptionToTop = function($fieldEl) {
-    // remove the selected options
-    var selectedOptions = $fieldEl.find(':selected').detach();
-    // and add them on first position again
-    $fieldEl.prepend(selectedOptions);
-  };
-
-
-  /**
-   * moves currently selected options from a select field up by one position,
-   * can be multiple entries as well
-   *
-   * @param {Object} $fieldEl a jQuery object, containing the select field
-   */
-  FormEngine.moveOptionUp = function($fieldEl) {
-    // remove the selected options and add it before the previous sibling
-    $.each($fieldEl.find(':selected'), function(k, optionEl) {
-      var $optionEl = $(optionEl)
-        , $optionBefore = $optionEl.prev();
-
-      // stop if first option to move is already the first one
-      if (k == 0 && $optionBefore.length === 0) {
-        return false;
-      }
-
-      $optionBefore.before($optionEl.detach());
-    });
-  };
-
-
-  /**
-   * moves currently selected options from a select field down one position,
-   * can be multiple entries as well
-   *
-   * @param {Object} $fieldEl a jQuery object, containing the select field
-   */
-  FormEngine.moveOptionDown = function($fieldEl) {
-    // remove the selected options and add it after the next sibling
-    // however, this time, we need to go from the last to the first
-    var selectedOptions = $fieldEl.find(':selected');
-    selectedOptions = $.makeArray(selectedOptions);
-    selectedOptions.reverse();
-    $.each(selectedOptions, function(k, optionEl) {
-      var $optionEl = $(optionEl)
-        , $optionAfter = $optionEl.next();
-
-      // stop if first option to move is already the last one
-      if (k == 0 && $optionAfter.length === 0) {
-        return false;
-      }
-
-      $optionAfter.after($optionEl.detach());
-    });
-  };
-
-
-  /**
-   * moves currently selected options from a select field as the very last entries
-   *
-   * @param {Object} $fieldEl a jQuery object, containing the select field
-   */
-  FormEngine.moveOptionToBottom = function($fieldEl) {
-    // remove the selected options
-    var selectedOptions = $fieldEl.find(':selected').detach();
-    // and add them on last position again
-    $fieldEl.append(selectedOptions);
-  };
-
-  /**
-   * removes currently selected options from a select field
-   *
-   * @param {Object} $fieldEl a jQuery object, containing the select field
-   * @param {Object} $availableFieldEl a jQuery object, containing all available value
-   */
-  FormEngine.removeOption = function($fieldEl, $availableFieldEl) {
-    var $selected = $fieldEl.find(':selected');
-
-    $selected.each(function() {
-      $availableFieldEl
-        .find('option[value="' + $.escapeSelector($(this).attr('value')) + '"]')
-        .removeClass('hidden')
-        .prop('disabled', false);
-    });
-
-    // remove the selected options
-    $selected.remove();
-  };
-
-
   /**
    * Initialize events for all form engine relevant tasks.
    * This function only needs to be called once on page load,
@@ -606,51 +506,7 @@ define(['jquery',
         top.TYPO3.Backend.consumerScope.detach(FormEngine);
       });
     }
-    $(document).on('click', '.t3js-btn-moveoption-top, .t3js-btn-moveoption-up, .t3js-btn-moveoption-down, .t3js-btn-moveoption-bottom, .t3js-btn-removeoption', function(evt) {
-      evt.preventDefault();
-
-      // track the arrows "Up", "Down", "Clear" etc in multi-select boxes
-      var $el = $(this)
-        , fieldName = $el.data('fieldname')
-        , $listFieldEl = FormEngine.getFieldElement(fieldName, '_list');
-
-      if ($listFieldEl.length > 0) {
-
-        if ($el.hasClass('t3js-btn-moveoption-top')) {
-          FormEngine.moveOptionToTop($listFieldEl);
-        } else if ($el.hasClass('t3js-btn-moveoption-up')) {
-          FormEngine.moveOptionUp($listFieldEl);
-        } else if ($el.hasClass('t3js-btn-moveoption-down')) {
-          FormEngine.moveOptionDown($listFieldEl);
-        } else if ($el.hasClass('t3js-btn-moveoption-bottom')) {
-          FormEngine.moveOptionToBottom($listFieldEl);
-        } else if ($el.hasClass('t3js-btn-removeoption')) {
-          var $availableFieldEl = FormEngine.getFieldElement(fieldName, '_avail');
-          FormEngine.removeOption($listFieldEl, $availableFieldEl);
-        }
-
-        // make sure to update the hidden field value when modifying the select value
-        FormEngine.updateHiddenFieldValueFromSelect($listFieldEl, FormEngine.getFieldElement(fieldName));
-        FormEngine.legacyFieldChangedCb();
-        if (typeof FormEngine.Validation !== 'undefined' && typeof FormEngine.Validation.validate === 'function') {
-          FormEngine.Validation.markFieldAsChanged($listFieldEl);
-          FormEngine.Validation.validate();
-        }
-      }
-    }).on('click', '.t3js-formengine-select-itemstoselect', function(evt) {
-      // in multi-select environments with two (e.g. "Access"), on click the item from the right should go to the left
-      var $el = $(this)
-        , fieldName = $el.data('relatedfieldname')
-        , exclusiveValues = $el.data('exclusivevalues');
-
-      if (fieldName) {
-        // try to add each selected field to the "left" select field
-        $el.find(':selected').each(function() {
-          var $optionEl = $(this);
-          FormEngine.setSelectOptionFromExternalSource(fieldName, $optionEl.prop('value'), $optionEl.text(), $optionEl.prop('title'), exclusiveValues, $optionEl);
-        });
-      }
-    }).on('click', '.t3js-editform-close', function(e) {
+    $(document).on('click', '.t3js-editform-close', function(e) {
         e.preventDefault();
         FormEngine.preventExitIfNotSaved(
             FormEngine.preventExitIfNotSavedCallback
@@ -706,38 +562,6 @@ define(['jquery',
       $(this).closest('.t3js-formengine-field-item').toggleClass('disabled');
     }).on('change', '.t3js-form-field-eval-null-placeholder-checkbox input[type="checkbox"]', function(e) {
       FormEngine.toggleCheckboxField($(this));
-    }).on('change', '.t3js-l10n-state-container input[type=radio]', function(event) {
-      // Change handler for "l10n_state" field changes
-      var $me = $(this);
-      var $input = $me.closest('.t3js-formengine-field-item').find('[data-formengine-input-name]');
-
-      if ($input.length > 0) {
-        var lastState = $input.data('last-l10n-state') || false,
-          currentState = $(this).val();
-
-        if (lastState && currentState === lastState) {
-          return;
-        }
-
-        if (currentState === 'custom') {
-          if (lastState) {
-            $(this).attr('data-original-language-value', $input.val());
-          }
-          $input.attr('disabled', false);
-        } else {
-          if (lastState === 'custom') {
-            $(this).closest('.t3js-l10n-state-container').find('.t3js-l10n-state-custom').attr('data-original-language-value', $input.val());
-          }
-          $input.attr('disabled', 'disabled');
-        }
-
-        $input.val($(this).attr('data-original-language-value')).trigger('change');
-        $input.data('last-l10n-state', $(this).val());
-      }
-    }).on('formengine.dp.change', function(event, $field) {
-      FormEngine.Validation.validate();
-      FormEngine.Validation.markFieldAsChanged($field);
-      $('.module-docheader-bar .btn').removeClass('disabled').prop('disabled', false);
     }).on('change', function(event) {
       $('.module-docheader-bar .btn').removeClass('disabled').prop('disabled', false);
     });
@@ -818,44 +642,6 @@ define(['jquery',
   };
 
   /**
-   * Initialize select checkbox element checkboxes
-   */
-  FormEngine.initializeSelectCheckboxes = function() {
-    $('.t3js-toggle-checkboxes').each(function() {
-      var $checkbox = $(this);
-      var $table = $checkbox.closest('table');
-      var $checkboxes = $table.find('.t3js-checkbox');
-      var checkIt = $checkboxes.length === $table.find('.t3js-checkbox:checked').length;
-      $checkbox.prop('checked', checkIt);
-    });
-    $(document).on('change', '.t3js-toggle-checkboxes', function(e) {
-      e.preventDefault();
-      var $checkbox = $(this);
-      var $table = $checkbox.closest('table');
-      var $checkboxes = $table.find('.t3js-checkbox');
-      var checkIt = $checkboxes.length !== $table.find('.t3js-checkbox:checked').length;
-      $checkboxes.prop('checked', checkIt);
-      $checkbox.prop('checked', checkIt);
-      FormEngine.Validation.markFieldAsChanged($checkbox);
-    });
-    $(document).on('change', '.t3js-checkbox', function(e) {
-      FormEngine.updateCheckboxState(this);
-    });
-  };
-
-  /**
-   *
-   * @param {HTMLElement} source
-   */
-  FormEngine.updateCheckboxState = function(source) {
-    var $sourceElement = $(source);
-    var $table = $sourceElement.closest('table');
-    var $checkboxes = $table.find('.t3js-checkbox');
-    var checkIt = $checkboxes.length === $table.find('.t3js-checkbox:checked').length;
-    $table.find('.t3js-toggle-checkboxes').prop('checked', checkIt);
-  };
-
-  /**
    * Get the properties required for proper rendering of the character counter
    *
    * @param {Object} $field
@@ -882,99 +668,6 @@ define(['jquery',
       remainingCharacters: remainingCharacters,
       labelClass: 'label ' + labelClass
     };
-  };
-
-  /**
-   * Select field filter functions, see TCA option "enableMultiSelectFilterTextfield"
-   * and "multiSelectFilterItems"
-   */
-  FormEngine.SelectBoxFilter = {
-    options: {
-      fieldContainerSelector: '.t3js-formengine-field-group',
-      filterContainerSelector: '.t3js-formengine-multiselect-filter-container',
-      filterTextFieldSelector: '.t3js-formengine-multiselect-filter-textfield',
-      filterSelectFieldSelector: '.t3js-formengine-multiselect-filter-dropdown',
-      itemsToSelectElementSelector: '.t3js-formengine-select-itemstoselect'
-    }
-  };
-
-  /**
-   * Make sure that all selectors and input filters are recognized
-   * note: this also works on elements that are loaded asynchronously via AJAX, no need to call this method
-   * after an AJAX load.
-   */
-  FormEngine.SelectBoxFilter.initializeEvents = function() {
-    $(document).on('keyup', FormEngine.SelectBoxFilter.options.filterTextFieldSelector, function() {
-      var $selectElement = FormEngine.SelectBoxFilter.getSelectElement($(this));
-      FormEngine.SelectBoxFilter.filter($selectElement, $(this).val());
-    }).on('change', FormEngine.SelectBoxFilter.options.filterSelectFieldSelector, function() {
-      var $selectElement = FormEngine.SelectBoxFilter.getSelectElement($(this));
-      FormEngine.SelectBoxFilter.filter($selectElement, $(this).val());
-    });
-  };
-
-  /**
-   * Fetch the "itemstoselect" select element where a filter item is attached to
-   *
-   * @param {Object} $relativeElement
-   * @returns {*}
-   */
-  FormEngine.SelectBoxFilter.getSelectElement = function($relativeElement) {
-    var $containerElement = $relativeElement.closest(FormEngine.SelectBoxFilter.options.fieldContainerSelector);
-    return $containerElement.find(FormEngine.SelectBoxFilter.options.itemsToSelectElementSelector);
-  };
-
-  /**
-   * Filter the actual items
-   *
-   * @param {Object} $selectElement
-   * @param {String} filterText
-   */
-  FormEngine.SelectBoxFilter.filter = function($selectElement, filterText) {
-    var $allOptionElements;
-    if (!$selectElement.data('alloptions')) {
-      $allOptionElements = $selectElement.find('option').clone();
-      $selectElement.data('alloptions', $allOptionElements);
-    } else {
-      $allOptionElements = $selectElement.data('alloptions');
-    }
-
-    if (filterText.length > 0) {
-      var matchFilter = new RegExp(filterText, 'i');
-      $selectElement.html('');
-      $allOptionElements.each(function() {
-        var $item = $(this);
-        if ($item.text().match(matchFilter)) {
-          $selectElement.append($item.clone());
-        }
-      });
-    } else {
-      $selectElement.html($allOptionElements);
-    }
-  };
-
-  /**
-   * convert all textareas so they grow when it is typed in.
-   */
-  FormEngine.convertTextareasResizable = function() {
-    var $elements = $('.t3js-formengine-textarea');
-    if (TYPO3.settings.Textarea && TYPO3.settings.Textarea.autosize && $elements.length) {
-      require(['autosize'], function(autosize) {
-        autosize($elements);
-      });
-    }
-  };
-
-  /**
-   * convert all textareas to enable tab
-   */
-  FormEngine.convertTextareasEnableTab = function() {
-    var $elements = $('.t3js-enable-tab');
-    if ($elements.length) {
-      require(['taboverride'], function(taboverride) {
-        taboverride.set($elements);
-      });
-    }
   };
 
   /**
@@ -1030,25 +723,9 @@ define(['jquery',
         $('.t3js-clearable').clearable();
       });
     }
-    if ($('.t3-form-suggest').length) {
-      require(['TYPO3/CMS/Backend/FormEngineSuggest'], function(Suggest) {
-        $('.t3-form-suggest').each(function(index, suggestElement) {
-          new Suggest(suggestElement);
-        });
-      });
-    }
-    // Apply DatePicker to all date time fields
-    if ($('.t3js-datetimepicker').length) {
-      require(['TYPO3/CMS/Backend/DateTimePicker'], function(DateTimePicker) {
-        DateTimePicker.initialize();
-      });
-    }
 
-    FormEngine.convertTextareasResizable();
-    FormEngine.convertTextareasEnableTab();
     FormEngine.initializeNullNoPlaceholderCheckboxes();
     FormEngine.initializeNullWithPlaceholderCheckboxes();
-    FormEngine.initializeInputLinkToggle();
     FormEngine.initializeLocalizationStateSelector();
     FormEngine.initializeRemainingCharacterViews();
   };
@@ -1062,56 +739,6 @@ define(['jquery',
       var currentState = $(this).find('input[type="radio"]:checked').val();
       if (currentState === 'parent' || currentState === 'source') {
         $input.attr('disabled', 'disabled');
-      }
-    });
-  };
-
-  /**
-   * Toggle for input link explanation
-   */
-  FormEngine.initializeInputLinkToggle = function() {
-    var toggleClass = '.t3js-form-field-inputlink-explanation-toggle',
-      inputFieldClass = '.t3js-form-field-inputlink-input',
-      explanationClass = '.t3js-form-field-inputlink-explanation';
-
-    // if empty, show input field
-    $(explanationClass).filter(function() {
-      return !$.trim($(this).val());
-    }).each(function() {
-      var $group = $(this).closest('.t3js-form-field-inputlink'),
-        $inputField = $group.find(inputFieldClass),
-        $explanationField = $group.find(explanationClass);
-      $explanationField.toggleClass('hidden', true);
-      $inputField.toggleClass('hidden', false);
-      $group.find('.form-control-clearable button.close').toggleClass('hidden', false)
-    });
-
-    $(document).on('click', toggleClass, function(e) {
-      e.preventDefault();
-
-      var $group = $(this).closest('.t3js-form-field-inputlink'),
-        $inputField = $group.find(inputFieldClass),
-        $explanationField = $group.find(explanationClass),
-        explanationShown;
-
-      explanationShown = !$explanationField.hasClass('hidden');
-      $explanationField.toggleClass('hidden', explanationShown);
-      $inputField.toggleClass('hidden', !explanationShown);
-      $group.find('.form-control-clearable button.close').toggleClass('hidden', !explanationShown)
-    });
-
-    $(inputFieldClass).on('change', function() {
-      var $group = $(this).closest('.t3js-form-field-inputlink'),
-        $inputField = $group.find(inputFieldClass),
-        $explanationField = $group.find(explanationClass),
-        explanationShown;
-
-      if (!$explanationField.hasClass('hidden')) {
-
-        explanationShown = !$explanationField.hasClass('hidden');
-        $explanationField.toggleClass('hidden', explanationShown);
-        $inputField.toggleClass('hidden', !explanationShown);
-        $group.find('.form-control-clearable button.close').toggleClass('hidden', !explanationShown)
       }
     });
   };
@@ -1605,8 +1232,6 @@ define(['jquery',
 
     $(function() {
       FormEngine.initializeEvents();
-      FormEngine.SelectBoxFilter.initializeEvents();
-      FormEngine.initializeSelectCheckboxes();
       FormEngine.Validation.initialize();
       FormEngine.reinitialize();
       $('#t3js-ui-block').remove();

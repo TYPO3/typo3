@@ -255,10 +255,13 @@ class GroupElement extends AbstractFormElement
             $deleteControlOnClick = 'inline.revertUnique(' . GeneralUtility::quoteJSvalue($objectPrefix) . ',null,' . GeneralUtility::quoteJSvalue($row['uid']) . ');';
         }
 
+        $fieldId = StringUtility::getUniqueId('tceforms-multiselect-');
+
         $selectorAttributes = [
-            'id' => StringUtility::getUniqueId('tceforms-multiselect-'),
+            'id' => $fieldId,
             'data-formengine-input-name' => htmlspecialchars($elementName),
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
+            'data-maxitems' => $maxItems,
             'size' => $size,
         ];
         $selectorClasses = [
@@ -321,7 +324,7 @@ class GroupElement extends AbstractFormElement
         $html[] =           '<div class="btn-group-vertical">';
         if ($maxItems > 1 && $size >=5 && $showMoveIcons) {
             $html[] =           '<a href="#"';
-            $html[] =               ' class="btn btn-default t3js-btn-moveoption-top"';
+            $html[] =               ' class="btn btn-default t3js-btn-option t3js-btn-moveoption-top"';
             $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
             $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_to_top')) . '"';
             $html[] =           '>';
@@ -330,14 +333,14 @@ class GroupElement extends AbstractFormElement
         }
         if ($maxItems > 1 && $size > 1 && $showMoveIcons) {
             $html[] =           '<a href="#"';
-            $html[] =               ' class="btn btn-default t3js-btn-moveoption-up"';
+            $html[] =               ' class="btn btn-default t3js-btn-option t3js-btn-moveoption-up"';
             $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
             $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_up')) . '"';
             $html[] =           '>';
             $html[] =               $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render();
             $html[] =           '</a>';
             $html[] =           '<a href="#"';
-            $html[] =               ' class="btn btn-default t3js-btn-moveoption-down"';
+            $html[] =               ' class="btn btn-default t3js-btn-option t3js-btn-moveoption-down"';
             $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
             $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_down')) . '"';
             $html[] =           '>';
@@ -346,7 +349,7 @@ class GroupElement extends AbstractFormElement
         }
         if ($maxItems > 1 && $size >= 5 && $showMoveIcons) {
             $html[] =           '<a href="#"';
-            $html[] =               ' class="btn btn-default t3js-btn-moveoption-bottom"';
+            $html[] =               ' class="btn btn-default t3js-btn-option t3js-btn-moveoption-bottom"';
             $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
             $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_to_bottom')) . '"';
             $html[] =           '>';
@@ -355,7 +358,7 @@ class GroupElement extends AbstractFormElement
         }
         if ($showDeleteControl) {
             $html[] =           '<a href="#"';
-            $html[] =               ' class="btn btn-default t3js-btn-removeoption"';
+            $html[] =               ' class="btn btn-default t3js-btn-option t3js-btn-removeoption"';
             $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
             $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remove_selected')) . '"';
             $html[] =               ' onClick="' . $deleteControlOnClick . '"';
@@ -378,6 +381,12 @@ class GroupElement extends AbstractFormElement
         $html[] =   '</div>';
         $html[] =   '<input type="hidden" name="' . htmlspecialchars($elementName) . '" value="' . htmlspecialchars(implode(',', $listOfSelectedValues)) . '" />';
         $html[] = '</div>';
+
+        $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/GroupElement' => '
+            function(GroupElement) {
+                new GroupElement(' . GeneralUtility::quoteJSvalue($fieldId) . ');
+            }'
+        ];
 
         $resultArray['html'] = implode(LF, $html);
         return $resultArray;

@@ -237,6 +237,12 @@ class SelectCheckBoxElement extends AbstractFormElement
                     if (is_array($group['header'])) {
                         $html[] = '</div>';
                     }
+
+                    $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectCheckBoxElement' => '
+                        function(SelectCheckBoxElement) {
+                            new SelectCheckBoxElement(' . GeneralUtility::quoteJSvalue($checkboxId) . ');
+                        }'
+                    ];
                 }
                 $html[] = '</div>';
             }
