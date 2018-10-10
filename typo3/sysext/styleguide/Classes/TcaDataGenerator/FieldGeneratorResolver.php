@@ -60,7 +60,6 @@ class FieldGeneratorResolver
         // General type=input generator
         FieldGenerator\TypeInput::class,
 
-        FieldGenerator\TypeTextRenderTypeFormWizard::class,
         FieldGenerator\TypeTextDefaultExtrasRichtext::class,
         FieldGenerator\TypeTextFormatDatetime::class,
         FieldGenerator\TypeTextFormatT3editor::class,
