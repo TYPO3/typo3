@@ -95,18 +95,18 @@ return [
                 'eval' => 'required',
             ],
         ],
-        "parents" => [
-            "exclude" => 1,
-            "label" => "parents",
-            "config" => [
-                "type" => "inline",
-                "foreign_table" => "tx_styleguide_inline_mngroup_mm",
-                "foreign_field" => "childid",
-                "foreign_sortby" => "childsort",
-                "foreign_label" => "parentid",
+        'parents' => [
+            'exclude' => 1,
+            'label' => 'parents',
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'tx_styleguide_inline_mngroup_mm',
+                'foreign_field' => 'childid',
+                'foreign_sortby' => 'childsort',
+                'foreign_label' => 'parentid',
                 'foreign_unique' => 'parentid',
                 'foreign_selector' => 'parentid',
-                "maxitems" => 10,
+                'maxitems' => 10,
                 'appearance' => [
                     'showSynchronizationLink' => 1,
                     'showAllLocalizationLink' => 1,

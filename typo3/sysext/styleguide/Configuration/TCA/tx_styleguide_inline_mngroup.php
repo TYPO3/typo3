@@ -98,9 +98,9 @@ return [
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_styleguide_inline_mngroup_mm',
-                "foreign_field" => "parentid",
-                "foreign_sortby" => "parentsort",
-                "foreign_label" => "childid",
+                'foreign_field' => 'parentid',
+                'foreign_sortby' => 'parentsort',
+                'foreign_label' => 'childid',
                 'foreign_unique' => 'childid',
                 'foreign_selector' => 'childid',
                 'appearance' => [
