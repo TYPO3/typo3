@@ -180,7 +180,7 @@ class TreeController
         $this->showMountPathAboveMounts = (bool)($userTsConfig['options.']['pageTree.']['showPathAboveMounts'] ?? false);
         $backendUserConfiguration = GeneralUtility::makeInstance(BackendUserConfiguration::class);
         $this->expandedState = $backendUserConfiguration->get('BackendComponents.States.Pagetree');
-        if (is_object($this->expandedState->stateHash)) {
+        if (is_object($this->expandedState) && is_object($this->expandedState->stateHash)) {
             $this->expandedState = (array)$this->expandedState->stateHash;
         } else {
             $this->expandedState = $this->expandedState['stateHash'] ?: [];
@@ -242,10 +242,10 @@ class TreeController
             return [];
         }
 
-        $stopPageTree = $page['php_tree_stop'] && $depth > 0;
+        $stopPageTree = !empty($page['php_tree_stop']) && $depth > 0;
         $identifier = $entryPoint . '_' . $pageId;
-        $expanded = $page['expanded'] || (isset($this->expandedState[$identifier]) && $this->expandedState[$identifier]);
-        $backgroundColor = $this->backgroundColors[$pageId] ?: ($inheritedData['backgroundColor'] ?? '');
+        $expanded = !empty($page['expanded']) || (isset($this->expandedState[$identifier]) && $this->expandedState[$identifier]);
+        $backgroundColor = !empty($this->backgroundColors[$pageId]) ? $this->backgroundColors[$pageId] : ($inheritedData['backgroundColor'] ?? '');
 
         $suffix = '';
         $prefix = '';
@@ -291,7 +291,7 @@ class TreeController
             'icon' => $icon->getIdentifier(),
             'name' => $visibleText,
             'nameSourceField' => $nameSourceField,
-            'alias' => htmlspecialchars($page['alias'] ?: ''),
+            'alias' => htmlspecialchars($page['alias'] ?? ''),
             'prefix' => htmlspecialchars($prefix),
             'suffix' => htmlspecialchars($suffix),
             'locked' => is_array($lockInfo),
@@ -305,7 +305,7 @@ class TreeController
             'readableRootline' => $depth === 0 && $this->showMountPathAboveMounts ? $this->getMountPointPath($pageId) : '',
             'isMountPoint' => $depth === 0,
             'mountPoint' => $entryPoint,
-            'workspaceId' => $page['t3ver_oid'] ?: $pageId,
+            'workspaceId' => !empty($page['t3ver_oid']) ? $page['t3ver_oid'] : $pageId,
         ];
         if (!$stopPageTree) {
             foreach ($page['_children'] as $child) {
@@ -436,6 +436,9 @@ class TreeController
     {
         $classes = [];
 
+        if ($page['uid'] === 0) {
+            return '';
+        }
         $workspaceId = (int)$this->getBackendUser()->workspace;
         if ($workspaceId > 0 && ExtensionManagementUtility::isLoaded('workspaces')) {
             if ($page['t3ver_oid'] > 0 && (int)$page['t3ver_wsid'] === $workspaceId) {

@@ -1488,6 +1488,10 @@ class BackendUtility
         $lang = static::getLanguageService();
         $parts = [];
         $parts[] = 'id=' . $row['uid'];
+        if ($row['uid'] === 0) {
+            $out = htmlspecialchars($parts[0]);
+            return $includeAttrib ? 'title="' . $out . '"' : $out;
+        }
         if ($row['alias']) {
             $parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['alias']['label']) . ' ' . $row['alias'];
         }
