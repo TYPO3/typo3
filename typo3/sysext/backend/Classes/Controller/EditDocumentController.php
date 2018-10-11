@@ -1027,7 +1027,10 @@ class EditDocumentController
                 // use parent record
                 $recordId = $recordArray[$l18nPointer];
             }
-            $linkParameters['L'] = $recordArray[$languageField];
+            $language = $recordArray[$languageField];
+            if ($language > 0) {
+                $linkParameters['L'] = $language;
+            }
         }
 
         // map record data to GET parameters
