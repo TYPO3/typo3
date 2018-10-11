@@ -88,10 +88,19 @@ return [
                 'typo3/cms-frontend/page-resolver'
             ]
         ],
+        'typo3/cms-frontend/base-redirect-resolver' => [
+            'target' => \TYPO3\CMS\Frontend\Middleware\SiteBaseRedirectResolver::class,
+            'after' => [
+                'typo3/cms-frontend/site-resolver',
+            ],
+            'before' => [
+                'typo3/cms-frontend/static-route-resolver'
+            ]
+        ],
         'typo3/cms-frontend/static-route-resolver' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\StaticRouteResolver::class,
             'after' => [
-                'typo3/cms-frontend/site',
+                'typo3/cms-frontend/base-redirect-resolver',
             ],
             'before' => [
                 'typo3/cms-frontend/page-resolver'
