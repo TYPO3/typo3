@@ -84,7 +84,7 @@ class OnlineMedia {
    * @param {JQuery} $currentTarget
    */
   private triggerModal($currentTarget: JQuery): void {
-    const btnSubmit = $currentTarget.data('data-btn-submit') || 'Add';
+    const btnSubmit = $currentTarget.data('btn-submit') || 'Add';
     const placeholder = $currentTarget.data('placeholder') || 'Paste media url here...';
     const allowedExtMarkup = $.map($currentTarget.data('online-media-allowed').split(','), (ext: string): string => {
       return '<span class="label label-success">' + ext.toUpperCase() + '</span>';
