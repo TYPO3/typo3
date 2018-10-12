@@ -36,7 +36,7 @@ define(['jquery',
     me.irreObjectUid = me.$btn.data('file-irre-object');
     me.allowed = me.$btn.data('online-media-allowed');
     me.allowedHelpText = me.$btn.data('online-media-allowed-help-text') || 'Allow to embed from sources:';
-    me.btnSubmit = me.$btn.data('data-btn-submit') || 'Add';
+    me.btnSubmit = me.$btn.data('btn-submit') || 'Add';
     me.placeholder = me.$btn.data('placeholder') || 'Paste media url here...';
 
     /**
