@@ -17,6 +17,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\View\AbstractTemplateView;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Fluid\Unit\Core\Rendering\RenderingContextFixture;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 /**
@@ -47,7 +48,7 @@ class AbstractTemplateViewTest extends UnitTestCase
         $this->viewHelperVariableContainer = $this->getMockBuilder(ViewHelperVariableContainer::class)
             ->setMethods(['setView'])
             ->getMock();
-        $this->renderingContext = $this->getMockBuilder(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class)
+        $this->renderingContext = $this->getMockBuilder(RenderingContextFixture::class)
             ->setMethods(['getViewHelperVariableContainer'])
             ->getMock();
         $this->renderingContext->expects($this->any())->method('getViewHelperVariableContainer')->will($this->returnValue($this->viewHelperVariableContainer));
