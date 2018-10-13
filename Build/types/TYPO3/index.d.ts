@@ -32,6 +32,14 @@ declare namespace TYPO3 {
       export class FormEngine {
         public readonly Validation: FormEngineValidation;
         public preventFollowLinkIfNotSaved(href: string): boolean;
+        public setSelectOptionFromExternalSource(
+          fieldName: string,
+          value: string,
+          label: string,
+          title: string,
+          exclusiveValues?: string,
+          $optionEl?: JQuery
+        ): void;
       }
 
       export class Wizard {
