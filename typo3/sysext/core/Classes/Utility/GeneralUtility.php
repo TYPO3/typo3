@@ -2187,6 +2187,7 @@ class GeneralUtility
         $OK = false;
         // Remove trailing slash
         $path = preg_replace('|/$|', '', $path);
+        $isWindows = DIRECTORY_SEPARATOR === '\\';
         if (file_exists($path)) {
             $OK = true;
             if (!is_link($path) && is_dir($path)) {
@@ -2202,7 +2203,7 @@ class GeneralUtility
                 if ($OK) {
                     $OK = @rmdir($path);
                 }
-            } elseif (is_link($path) && is_dir($path) && Environment::isWindows()) {
+            } elseif (is_link($path) && is_dir($path) && $isWindows) {
                 $OK = @rmdir($path);
             } else {
                 // If $path is a file, simply remove it
@@ -2211,7 +2212,7 @@ class GeneralUtility
             clearstatcache();
         } elseif (is_link($path)) {
             $OK = @unlink($path);
-            if (!$OK && Environment::isWindows()) {
+            if (!$OK && $isWindows) {
                 // Try to delete dead folder links on Windows systems
                 $OK = @rmdir($path);
             }
