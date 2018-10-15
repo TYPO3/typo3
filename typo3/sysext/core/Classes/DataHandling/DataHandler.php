@@ -7436,6 +7436,7 @@ class DataHandler implements LoggerAwareInterface
             RecordHistoryStore::USER_BACKEND,
             $this->BE_USER->user['uid'],
             $this->BE_USER->user['ses_backuserid'] ?? null,
+            $GLOBALS['EXEC_TIME'],
             $this->BE_USER->workspace
         );
     }

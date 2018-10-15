@@ -62,16 +62,16 @@ class RecordHistoryStore
     protected $workspaceId;
 
     /**
-     * @param int|null $userId
      * @param string $userType
+     * @param int|null $userId
      * @param int $originalUserId
      * @param int $tstamp
      * @param int $workspaceId
      */
     public function __construct(string $userType = self::USER_BACKEND, int $userId = null, int $originalUserId = null, int $tstamp = null, int $workspaceId = 0)
     {
-        $this->userId = $userId;
         $this->userType = $userType;
+        $this->userId = $userId;
         $this->originalUserId = $originalUserId;
         $this->tstamp = $tstamp ?: $GLOBALS['EXEC_TIME'];
         $this->workspaceId = $workspaceId;
