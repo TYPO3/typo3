@@ -15,6 +15,7 @@ namespace ExtbaseTeam\BlogExample\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use ExtbaseTeam\BlogExample\Domain\Model\Blog;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 
@@ -40,15 +41,17 @@ class BlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     protected $dataMapFactory;
 
-    /**
-     * @return array
-     */
     public function listAction()
     {
         $blogs = $this->blogRepository->findAll();
         $value[$this->getRuntimeIdentifier()] = $this->getStructure($blogs);
 
         $this->view->assign('value', $value);
+    }
+
+    public function detailsAction(Blog $blog=null)
+    {
+        return $blog ? $blog->getTitle() : '';
     }
 
     /**

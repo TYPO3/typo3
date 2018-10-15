@@ -153,9 +153,9 @@ the `uid` of the translated record is kept in the `_localizedUid`.
 
 See tests in :file:`extbase/Tests/Functional/Persistence/QueryLocalizedDataTest.php`.
 
-The :php:`$repository->findByUid()` method takes current rendering language into account (e.g. L=1). It does not take
-`defaultQuerySetting` set on the repository into account.
-The result of this method also depends on whether `languageOverlayMode` is set or not.
+The :php:`$repository->findByUid()` (or :php:`$persistenceManager->getObjectByIdentifier()`) method takes current
+rendering language into account (e.g. L=1). It does not take `defaultQuerySetting` set on the repository into account.
+This method always performs an overlay.
 Values in braces show previous behaviour (disabled flag) if different than current.
 
 The bottom line is that with the feature flag on, you can now use  :php:`findByUid()` using translated record uid to get
@@ -166,24 +166,25 @@ translated content independently from language set in global context.
 +-------------------+----------------+----------------------+----------------------+----------------------+----------------------+
 | repository method | property       | Overlay              | No overlay           | Overlay              | No overlay           |
 +===================+================+======================+======================+======================+======================+
-| findByUid(2)      | title          | Post 2               | Post 2               | Post 2 (Post 2 - DK) | Post 2 (Post 2 - DK) |
+| findByUid(2)      | title          | Post 2               | Post 2               | Post 2 - DK          | Post 2 - DK          |
 +-------------------+----------------+----------------------+----------------------+----------------------+----------------------+
 |                   | uid            | 2                    | 2                    | 2                    | 2                    |
 +-------------------+----------------+----------------------+----------------------+----------------------+----------------------+
-|                   | _localizedUid  | 2                    | 2                    | 2 (11)               | 2 (11)               |
+|                   | _localizedUid  | 2                    | 2                    | 11                   | 11                   |
 +-------------------+----------------+----------------------+----------------------+----------------------+----------------------+
 | findByUid(11)     | title          | Post 2 - DK (Post 2) | Post 2 - DK (Post 2) | Post 2 - DK          | Post 2 - DK          |
 +-------------------+----------------+----------------------+----------------------+----------------------+----------------------+
-|                   | uid            | 2 (2)                | 11 (2)               | 2                    | 11 (2)               |
+|                   | uid            | 2                    | 2                    | 2                    | 2                    |
 +-------------------+----------------+----------------------+----------------------+----------------------+----------------------+
 |                   | _localizedUid  | 11 (2)               | 11 (2)               | 11                   | 11                   |
 +-------------------+----------------+----------------------+----------------------+----------------------+----------------------+
 
 .. note::
 
-   Note that :php:`$repository->findByUid()` behaves differently than a custom query by an `uid`
-   like :php:`$query->matching($query->equals('uid', 11));` The custom query will return `null` if passed `uid` doesn't match
-   language set in the :php:`$querySettings->setLanguageUid()` method.
+   Note that :php:`$repository->findByUid()` internally sets :php:`respectSysLanguage(false)` so it behaves differently
+   than a regular query by an `uid` like :php:`$query->matching($query->equals('uid', 11));`
+   The regular query will return :php:`null` if passed `uid` doesn't match
+   the language set in the :php:`$querySettings->setLanguageUid()` method.
 
 Filtering & sorting
 -------------------

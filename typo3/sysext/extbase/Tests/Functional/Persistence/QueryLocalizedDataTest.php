@@ -178,7 +178,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $this->persistenceManager->clearState();
 
         $post2translated = $this->postRepository->findByUid(11);
-        $this->assertEquals(['Post 2 - DK', 11, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
+        $this->assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
             $post2translated->getTitle(),
             $post2translated->getUid(),
             $post2translated->_getProperty('_localizedUid'),
@@ -202,7 +202,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
 
         $post2 = $this->postRepository->findByUid(2);
-        $this->assertEquals(['Post 2', 2, 2, 'Blog 1', 1, 1, 'John', 1, 1], [
+        $this->assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
             $post2->getTitle(),
             $post2->getUid(),
             $post2->_getProperty('_localizedUid'),
@@ -241,7 +241,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_OFF));
 
         $post2 = $this->postRepository->findByUid(2);
-        $this->assertEquals(['Post 2', 2, 2, 'Blog 1', 1, 1, 'John', 1, 1], [
+        $this->assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
             $post2->getTitle(),
             $post2->getUid(),
             $post2->_getProperty('_localizedUid'),
@@ -257,7 +257,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $this->persistenceManager->clearState();
 
         $post2translated = $this->postRepository->findByUid(11);
-        $this->assertEquals(['Post 2 - DK', 11, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
+        $this->assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
             $post2translated->getTitle(),
             $post2translated->getUid(),
             $post2translated->_getProperty('_localizedUid'),
@@ -1107,13 +1107,35 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
                  'language' => 1,
                  'overlay' => LanguageAspect::OVERLAYS_ON,
                  'mode' => null,
-                 'expected' => $lang0Expected
+                 'expected' => [
+                     [
+                         'title' => 'Blog 1 DK',
+                         'uid' => 1,
+                         '_localizedUid' => 2,
+                     ],
+                     [
+                         'title' => 'Blog 1 DK',
+                         'uid' => 1,
+                         '_localizedUid' => 2,
+                     ],
+                 ]
              ],
              [
                  'language' => 1,
                  'overlay' => LanguageAspect::OVERLAYS_ON,
                  'mode' => 'strict',
-                 'expected' => $lang0Expected
+                 'expected' => [
+                     [
+                         'title' => 'Blog 1 DK',
+                         'uid' => 1,
+                         '_localizedUid' => 2,
+                     ],
+                     [
+                         'title' => 'Blog 1 DK',
+                         'uid' => 1,
+                         '_localizedUid' => 2,
+                     ],
+                 ]
              ],
              [
                  'language' => 1,

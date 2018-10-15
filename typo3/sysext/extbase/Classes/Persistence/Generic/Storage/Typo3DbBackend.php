@@ -709,13 +709,18 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 } else {
                     $languageUid = (int)$querySettings->getLanguageUid();
                     if (!$querySettings->getRespectSysLanguage()
-                        && isset($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']]) > 0
-                        && (!$query instanceof Query || !$query->getParentQuery())) {
-                        //we're mapping the aggregate root.
+                        && isset($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']])
+                        && $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] > 0
+                        && (!$query instanceof Query || !$query->getParentQuery())
+                    ) {
+                        //no parent query means we're processing the aggregate root.
+                        //respectSysLanguage is false which means that records returned by the query
+                        //might be from different languages (which is desired).
+                        //So we need to force language used for overlay to the language of the current record.
                         $languageUid = $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']];
                     }
                     if (isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']) && $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0) {
-                        //force overlay
+                        //force overlay by faking default language record, as getRecordOverlay can only handle default language records
                         $row['uid'] = $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']];
                         $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] = 0;
                     }
