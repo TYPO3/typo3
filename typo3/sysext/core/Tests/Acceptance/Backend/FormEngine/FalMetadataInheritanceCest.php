@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
+namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\FormEngine;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,21 +17,17 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
  */
 
 use Facebook\WebDriver\Exception\NoSuchWindowException;
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
-use TYPO3\TestingFramework\Core\Acceptance\Support\Page\PageTree;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 /**
  * Tests for inline 1n
  */
 class FalMetadataInheritanceCest
 {
-    public function _before(Admin $I, PageTree $pageTree)
+    public function _before(BackendTester $I, PageTree $pageTree)
     {
-        $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-
+        $I->useExistingSession('admin');
         $this->goToPageModule($I, $pageTree);
     }
 
@@ -43,11 +39,11 @@ class FalMetadataInheritanceCest
      * - modifies image metadata
      * - checks if metadata is propagated to tt_content
      *
-     * @param Admin $I
+     * @param BackendTester $I
      * @param PageTree $pageTree
      * @throws \Exception
      */
-    public function checkIfUpdatedFileMetadataIsUpdatedInContent(Admin $I, PageTree $pageTree)
+    public function checkIfUpdatedFileMetadataIsUpdatedInContent(BackendTester $I, PageTree $pageTree)
     {
         $I->amGoingTo('Create new CE with image');
         $I->click('.t3js-page-new-ce a');
@@ -69,7 +65,7 @@ class FalMetadataInheritanceCest
         }
 
         $I->switchToWindow();
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->waitForText('bus_lane.jpg');
 
         $I->see('Set element specific value (No default)', '.t3js-form-field-eval-null-placeholder-checkbox');
@@ -85,14 +81,14 @@ class FalMetadataInheritanceCest
         $I->click('a[title="Close"]');
 
         $I->amGoingTo('Change default metadata');
-        $I->switchToIFrame();
+        $I->switchToMainFrame();
         $I->click('Filelist');
         $I->switchToIFrame('typo3-navigationContainerIframe');
         $I->waitForText('fileadmin/ (auto-created)');
         $I->click('styleguide');
 
         $I->switchToWindow();
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->click('bus_lane.jpg');
         $I->waitForText('Edit File Metadata "bus_lane.jpg" on root level');
         $I->fillField('//input[contains(@data-formengine-input-name, "data[sys_file_metadata]") and contains(@data-formengine-input-name, "[title]")]', 'Test title');
@@ -106,7 +102,7 @@ class FalMetadataInheritanceCest
         $I->amGoingTo('Check metadata of sys_file_reference displayed in tt_content');
         $this->goToPageModule($I, $pageTree);
         $I->switchToWindow();
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->click('tt_content with image');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForText('Edit Page Content "tt_content with image" on page "styleguide TCA demo"');
@@ -136,12 +132,12 @@ class FalMetadataInheritanceCest
      *
      * test for https://forge.typo3.org/issues/81235
      *
-     * @param Admin $I
+     * @param BackendTester $I
      * @param PageTree $pageTree
      * @throws \Exception
      * @depends checkIfUpdatedFileMetadataIsUpdatedInContent
      */
-    public function checkIfFileMetadataIsInheritedInContent(Admin $I)
+    public function checkIfFileMetadataIsInheritedInContent(BackendTester $I)
     {
         $I->amGoingTo('Create new CE with image with filled metadata');
         $I->click('.t3js-page-new-ce a');
@@ -163,7 +159,7 @@ class FalMetadataInheritanceCest
         }
 
         $I->switchToWindow();
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->waitForText('bus_lane.jpg');
 
         $I->waitForText('Image Metadata');
@@ -194,16 +190,16 @@ class FalMetadataInheritanceCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      * @param PageTree $pageTree
      * @throws \Exception
      */
-    protected function goToPageModule(Admin $I, PageTree $pageTree)
+    protected function goToPageModule(BackendTester $I, PageTree $pageTree)
     {
-        $I->switchToIFrame();
+        $I->switchToMainFrame();
         $I->click('Page');
         $pageTree->openPath(['styleguide TCA demo']);
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->waitForText('styleguide TCA demo');
     }
 }

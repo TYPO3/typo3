@@ -14,7 +14,7 @@ namespace TYPO3\core\Tests\Acceptance\Backend\Topbar;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 
 /**
  * Acceptance test for the menu button in the topbar
@@ -23,17 +23,17 @@ class ModuleMenuButtonCest
 {
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function _before(Admin $I)
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
+        $I->useExistingSession('admin');
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function checkModelMenuButtomFromBigToSmallScreen(Admin $I)
+    public function checkModelMenuButtomFromBigToSmallScreen(BackendTester $I)
     {
         $I->wantTo('see the module menu button behavior when shrinking the window');
 
@@ -62,9 +62,9 @@ class ModuleMenuButtonCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function checkModelMenuButtomFromSmallToBigScreen(Admin $I)
+    public function checkModelMenuButtomFromSmallToBigScreen(BackendTester $I)
     {
         $I->wantTo('see the module menu button behavior when enlarging the window');
 

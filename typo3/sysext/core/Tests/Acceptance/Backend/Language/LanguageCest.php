@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Language;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 
 /**
  * Language tests
@@ -22,15 +22,11 @@ use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
 class LanguageCest
 {
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function _before(Admin $I)
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
+        $I->useExistingSession('admin');
 
         $I->see('Languages');
         $I->click('Languages');
@@ -39,13 +35,13 @@ class LanguageCest
         $I->executeJS('TYPO3.Notification.duration = 100;');
 
         // switch to content iframe
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function showsHeadingAndListsInstalledLanguages(Admin $I)
+    public function showsHeadingAndListsInstalledLanguages(BackendTester $I)
     {
         $I->see('Installed Languages');
 
@@ -54,9 +50,9 @@ class LanguageCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function filterInstalledLanguages(Admin $I)
+    public function filterInstalledLanguages(BackendTester $I)
     {
         $I->wantTo('Filter the list of translations with a valid language');
         $I->fillField('#typo3-language-searchfield', 'Danish');
@@ -73,9 +69,9 @@ class LanguageCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function activateAndDeactivateALanguage(Admin $I)
+    public function activateAndDeactivateALanguage(BackendTester $I)
     {
         $I->wantTo('Activate a language');
         $I->seeElement('#language-pt_BR.disabled');
@@ -91,9 +87,9 @@ class LanguageCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function downloadALanguage(Admin $I)
+    public function downloadALanguage(BackendTester $I)
     {
         $I->wantTo('Download a language with no selection and see error message');
         $I->seeElement('#language-pt_BR.disabled');
@@ -115,9 +111,9 @@ class LanguageCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function showsHeadingAndListsTranslationOverview(Admin $I)
+    public function showsHeadingAndListsTranslationOverview(BackendTester $I)
     {
         $I->wantToTest('Select Translation Overview');
         $I->selectOption('.t3-js-jumpMenuBox', 'Translation Overview');
@@ -126,9 +122,9 @@ class LanguageCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function filterTranslationOverview(Admin $I)
+    public function filterTranslationOverview(BackendTester $I)
     {
         $I->wantToTest('Select Translation Overview and Filter');
         $I->selectOption('.t3-js-jumpMenuBox', 'Translation Overview');
@@ -144,11 +140,11 @@ class LanguageCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      * @param string $alertTitle
      * @param string $alertMessage
      */
-    protected function seeAlert(Admin $I, $alertTitle, $alertMessage)
+    protected function seeAlert(BackendTester $I, $alertTitle, $alertMessage)
     {
         // switch back to body
         $I->switchToIFrame();
@@ -158,7 +154,6 @@ class LanguageCest
         $I->see($alertTitle);
         $I->see($alertMessage);
 
-        // switch to content iframe
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
     }
 }

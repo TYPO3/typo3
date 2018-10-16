@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "691851190de8716c182df21aff7ba2a9",
+    "content-hash": "73f8ef6f02ae8a0be883b54423cc5cb4",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -1710,44 +1710,6 @@
                 "performance"
             ],
             "time": "2018-04-11T15:42:36+00:00"
-        },
-        {
-            "name": "enm1989/chromedriver",
-            "version": "2.38",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ENM1989/chromedriver.git",
-                "reference": "f269e7f58e3e0c8b52a1396b64b679949973f76a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/f269e7f58e3e0c8b52a1396b64b679949973f76a",
-                "reference": "f269e7f58e3e0c8b52a1396b64b679949973f76a",
-                "shasum": ""
-            },
-            "bin": [
-                "bin/chromedriver"
-            ],
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Nico Müller",
-                    "email": "nico.mueller.1989@googlemail.com"
-                }
-            ],
-            "description": "Composer distribution of Chromedriver. Adds a executable to your composer bin directory.",
-            "homepage": "https://github.com/ENM1989/chromedriver",
-            "keywords": [
-                "Chromedriver",
-                "chrome",
-                "selenium",
-                "webdriver"
-            ],
-            "time": "2018-04-20T19:02:08+00:00"
         },
         {
             "name": "facebook/webdriver",
@@ -4115,16 +4077,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "1.2.7",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "dfed706443fd9008b321a13d6d2522da3ba3dd73"
+                "reference": "e541dfeaa2950022890ddb689d1f2422d97c2be0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/dfed706443fd9008b321a13d6d2522da3ba3dd73",
-                "reference": "dfed706443fd9008b321a13d6d2522da3ba3dd73",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/e541dfeaa2950022890ddb689d1f2422d97c2be0",
+                "reference": "e541dfeaa2950022890ddb689d1f2422d97c2be0",
                 "shasum": ""
             },
             "require": {
@@ -4174,7 +4136,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2018-09-01T14:23:29+00:00"
+            "time": "2018-10-17T15:42:32+00:00"
         },
         {
             "name": "webmozart/assert",

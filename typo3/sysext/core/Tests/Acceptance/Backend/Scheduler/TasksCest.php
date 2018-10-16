@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Scheduler;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
-use TYPO3\TestingFramework\Core\Acceptance\Support\Helper\ModalDialog;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 
 /**
  * Scheduler task tests
@@ -23,25 +23,20 @@ use TYPO3\TestingFramework\Core\Acceptance\Support\Helper\ModalDialog;
 class TasksCest
 {
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function _before(Admin $I)
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
+        $I->useExistingSession('admin');
         $I->see('Scheduler', '#system_txschedulerM1');
         $I->click('Scheduler', '#system_txschedulerM1');
-        // switch to content iframe
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function createASchedulerTask(Admin $I)
+    public function createASchedulerTask(BackendTester $I)
     {
         $I->see('No tasks defined yet');
         $I->click('//a[contains(@title, "Add task")]', '.module-docheader');
@@ -58,9 +53,9 @@ class TasksCest
 
     /**
      * @depends createASchedulerTask
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function canRunTask(Admin $I)
+    public function canRunTask(BackendTester $I)
     {
         // run the task
         $I->click('a[data-original-title="Run task"]');
@@ -71,9 +66,9 @@ class TasksCest
 
     /**
      * @depends createASchedulerTask
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function canEditTask(Admin $I)
+    public function canEditTask(BackendTester $I)
     {
         $I->click('//a[contains(@data-original-title, "Edit")]');
         $I->waitForText('Edit task');
@@ -87,9 +82,9 @@ class TasksCest
 
     /**
      * @depends canRunTask
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function canEnableAndDisableTask(Admin $I)
+    public function canEnableAndDisableTask(BackendTester $I)
     {
         $I->wantTo('See a enable button for a task');
         $I->click('//a[contains(@data-original-title, "Enable")]', '#tx_scheduler_form');
@@ -104,10 +99,10 @@ class TasksCest
 
     /**
      * @depends createASchedulerTask
-     * @param Admin $I
+     * @param BackendTester $I
      * @param ModalDialog $modalDialog
      */
-    public function canDeleteTask(Admin $I, ModalDialog $modalDialog)
+    public function canDeleteTask(BackendTester $I, ModalDialog $modalDialog)
     {
         $I->wantTo('See a delete button for a task');
         $I->seeElement('//a[contains(@data-original-title, "Delete")]');
@@ -119,19 +114,19 @@ class TasksCest
         $I->click('Cancel', ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
 
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->wantTo('Still see and can click the Delete button as the deletion has been canceled');
         $I->click('//a[contains(@data-original-title, "Delete")]');
         $modalDialog->clickButtonInDialog('OK');
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->see('The task was successfully deleted.');
         $I->see('No tasks defined yet');
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function canSwitchToSetupCheck(Admin $I)
+    public function canSwitchToSetupCheck(BackendTester $I)
     {
         $I->selectOption('select[name=SchedulerJumpMenu]', 'Setup check');
         $I->waitForElementVisible('div.tx_scheduler_mod1');
@@ -140,9 +135,9 @@ class TasksCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function canSwitchToInformation(Admin $I)
+    public function canSwitchToInformation(BackendTester $I)
     {
         $I->selectOption('select[name=SchedulerJumpMenu]', 'Information');
         $I->waitForElementVisible('div.tx_scheduler_mod1');

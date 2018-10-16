@@ -1,5 +1,6 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\AcceptanceInstallMysql;
+declare(strict_types = 1);
+namespace TYPO3\CMS\Core\Tests\Acceptance\Install\Mysql;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,15 +15,20 @@ namespace TYPO3\CMS\Core\Tests\AcceptanceInstallMysql;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Codeception\Scenario;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\InstallTester;
+
 /**
  * Click through installer, go to backend, check blank site in FE works
  */
-class InstallWithMysqlBlankPageCest
+class BlankPageCest
 {
     /**
-     * @param \AcceptanceTester $I
+     * @param InstallTester $I
+     * @param Scenario
+     * @env mysql
      */
-    public function installTypo3OnMysql(\AcceptanceTester $I)
+    public function installTypo3OnMysql(InstallTester $I, Scenario $scenario)
     {
         // Calling frontend redirects to installer
         $I->amOnPage('/');
@@ -34,14 +40,15 @@ class InstallWithMysqlBlankPageCest
 
         // DatabaseConnection step
         $I->waitForText('Database connection');
-        $I->fillField('#t3-install-step-mysqliManualConfiguration-username', getenv('typo3DatabaseUsername'));
-        $I->fillField('#t3-install-step-mysqliManualConfiguration-password', getenv('typo3DatabasePassword'));
+        $I->fillField('#t3-install-step-mysqliManualConfiguration-username', $scenario->current('typo3InstallMysqlDatabaseUsername'));
+        $I->fillField('#t3-install-step-mysqliManualConfiguration-password', $scenario->current('typo3InstallMysqlDatabasePassword'));
+        $I->fillField('#t3-install-step-mysqliManualConfiguration-host', $scenario->current('typo3InstallMysqlDatabaseHost'));
         $I->click('Continue');
 
         // DatabaseSelect step
         $I->waitForText('Select database');
         $I->click('#t3-install-form-db-select-type-new');
-        $I->fillField('#t3-install-step-database-new', getenv('typo3DatabaseName') . '_atimysql');
+        $I->fillField('#t3-install-step-database-new', $scenario->current('typo3InstallMysqlDatabaseName'));
         $I->click('Continue');
 
         // DatabaseData step

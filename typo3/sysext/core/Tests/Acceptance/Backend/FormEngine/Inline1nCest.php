@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
+namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\FormEngine;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,26 +15,22 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
  */
 
 use Facebook\WebDriver\WebDriverKeys;
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
-use TYPO3\TestingFramework\Core\Acceptance\Support\Helper\ModalDialog;
-use TYPO3\TestingFramework\Core\Acceptance\Support\Page\PageTree;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 /**
  * Tests for inline 1n
  */
 class Inline1nCest
 {
-    public function _before(Admin $I, PageTree $pageTree)
+    public function _before(BackendTester $I, PageTree $pageTree)
     {
-        $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
+        $I->useExistingSession('admin');
 
         $I->click('List');
         $pageTree->openPath(['styleguide TCA demo', 'inline 1n']);
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
 
         $I->waitForText('inline 1n', 20);
         $editRecordLinkCssPath = '#recordlist-tx_styleguide_inline_1n a[data-original-title="Edit record"]';
@@ -43,9 +39,9 @@ class Inline1nCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function checkIfExpandsAndCollapseShowInput(Admin $I)
+    public function checkIfExpandsAndCollapseShowInput(BackendTester $I)
     {
         $I->wantTo('Expands the inline Element');
         $I->click('div[data-toggle="formengine-inline"]', '#data-12-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
@@ -58,9 +54,9 @@ class Inline1nCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function hideAndUnhideInline1nInlineElement(Admin $I)
+    public function hideAndUnhideInline1nInlineElement(BackendTester $I)
     {
         $I->wantTo('Can hide a Inline Element');
         $I->click('a span[data-identifier="actions-edit-hide"]', '#data-12-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
@@ -71,9 +67,9 @@ class Inline1nCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function createInline1nInlineElement(Admin $I)
+    public function createInline1nInlineElement(BackendTester $I)
     {
         $I->click('span[data-identifier="actions-document-new"]', 'div.typo3-newRecordLink');
 
@@ -96,9 +92,9 @@ class Inline1nCest
 
     /**
      * @depends createInline1nInlineElement
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function checkIfCanSortingInlineElement(Admin $I)
+    public function checkIfCanSortingInlineElement(BackendTester $I)
     {
         $I->wantTo('Can sort an Inline Element');
         $I->click('a span[data-identifier="actions-move-down"]', '#data-12-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
@@ -116,9 +112,9 @@ class Inline1nCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function changeInline1nInlineInput(Admin $I)
+    public function changeInline1nInlineInput(BackendTester $I)
     {
         $I->click('div[data-toggle="formengine-inline"]', '#data-12-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
         $I->waitForElement('input[data-formengine-input-name="data[tx_styleguide_inline_1n_child][1][input_1]"]');
@@ -131,17 +127,17 @@ class Inline1nCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      * @param ModalDialog $modalDialog
      */
-    public function deleteInline1nInlineElement(Admin $I, ModalDialog $modalDialog)
+    public function deleteInline1nInlineElement(BackendTester $I, ModalDialog $modalDialog)
     {
         $inlineElementToDelete = '#data-12-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div';
         $I->wantTo('Cancel the delete dialog');
         $I->click('a span[data-identifier="actions-edit-delete"]', $inlineElementToDelete);
         $modalDialog->clickButtonInDialog('button[name="no"]');
         // switch form Dialogbox back to IFrame
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->seeElement($inlineElementToDelete);
 
         $I->wantTo('Accept the delete dialog');
@@ -152,16 +148,16 @@ class Inline1nCest
         $I->click('button[name="yes"]', ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
         // switch form Dialogbox back to IFrame
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->waitForElementNotVisible($inlineElementToDelete);
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      * @param $fieldLabel
      * @param $testValue
      */
-    protected function fillFieldByLabel(Admin $I, $fieldLabel, $testValue)
+    protected function fillFieldByLabel(BackendTester $I, $fieldLabel, $testValue)
     {
         $fieldContext = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use (
             $fieldLabel

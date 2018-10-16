@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\General;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 
 /**
  * Module Menu tests
@@ -22,21 +22,17 @@ use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
 class ModuleMenuCest
 {
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function _before(Admin $I)
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
+        $I->useExistingSession('admin');
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function checkIfModuleMenuIsCollapsible(Admin $I)
+    public function checkIfModuleMenuIsCollapsible(BackendTester $I)
     {
         // A sub-element of web module is shown
         $I->waitForElementVisible('#web .modulemenu-group-container .modulemenu-item');
@@ -57,9 +53,9 @@ class ModuleMenuCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function selectingAModuleDoesHighlightIt(Admin $I)
+    public function selectingAModuleDoesHighlightIt(BackendTester $I)
     {
         $I->seeNumberOfElements('#web .modulemenu-item-link', [2, 20]);
 

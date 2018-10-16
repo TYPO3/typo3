@@ -1,5 +1,6 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\AcceptanceInstallPsql;
+declare(strict_types = 1);
+namespace TYPO3\CMS\Core\Tests\Acceptance\Install\Postgresql;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,15 +15,20 @@ namespace TYPO3\CMS\Core\Tests\AcceptanceInstallPsql;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Codeception\Scenario;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\InstallTester;
+
 /**
  * Click through installer, go to backend, check blank site in FE works
  */
-class InstallWithPgsqlBlankPageCest
+class BlankPageCest
 {
     /**
-     * @param \AcceptanceTester $I
+     * @param InstallTester $I
+     * @param Scenario $scenario
+     * @env postgresql
      */
-    public function installTypo3OnPgSql(\AcceptanceTester $I)
+    public function installTypo3OnPgSql(InstallTester $I, Scenario $scenario)
     {
         // Calling frontend redirects to installer
         $I->amOnPage('/');
@@ -35,13 +41,10 @@ class InstallWithPgsqlBlankPageCest
         // DatabaseConnection step
         $I->waitForText('Database connection');
         $I->selectOption('#t3js-connect-database-driver', 'Manually configured PostgreSQL connection');
-        $I->fillField('#t3-install-step-postgresManualConfiguration-username', getenv('typo3DatabaseUsername'));
-        // password intentionally not filled. Postgres authenticates with the shell user.
-        $I->fillField('#t3-install-step-postgresManualConfiguration-database', getenv('typo3DatabaseName') . '_atipgsql');
-        // fill port if set in environment
-        if (!empty(getenv('typo3DatabasePort'))) {
-            $I->fillField('#t3-install-step-postgresManualConfiguration-port', getenv('typo3DatabasePort'));
-        }
+        $I->fillField('#t3-install-step-postgresManualConfiguration-username', $scenario->current('typo3InstallPostgresqlDatabaseUsername'));
+        $I->fillField('#t3-install-step-postgresManualConfiguration-password', $scenario->current('typo3InstallPostgresqlDatabasePassword'));
+        $I->fillField('#t3-install-step-postgresManualConfiguration-database', $scenario->current('typo3InstallPostgresqlDatabaseName'));
+        $I->fillField('#t3-install-step-postgresManualConfiguration-host', $scenario->current('typo3InstallPostgresqlDatabaseHost'));
         $I->click('Continue');
 
         // DatabaseData step

@@ -1,5 +1,6 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Topbar;
+declare(strict_types = 1);
+namespace TYPO3\CMS\Core\Tests\Acceptance\Support\Helper;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,24 +16,20 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Topbar;
  */
 
 use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractPageTree;
 
 /**
- * Topbar username and avatar module tests.
+ * @see AbstractPageTree
  */
-class UsernameOnAvatarCest
+class PageTree extends AbstractPageTree
 {
-    public function _before(BackendTester $I)
-    {
-        $I->useExistingSession('admin');
-    }
-
     /**
-     * This test case is used to check if username is visible in the toolbar.
+     * Inject our core AcceptanceTester actor into ModalDialog
      *
      * @param BackendTester $I
      */
-    public function usernameIsShown(BackendTester $I)
+    public function __construct(BackendTester $I)
     {
-        $I->see('admin', '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem');
+        $this->tester = $I;
     }
 }

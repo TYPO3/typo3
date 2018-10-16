@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Template;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 
 /**
  * Template tests
@@ -22,43 +22,38 @@ use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
 class TemplateCest
 {
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function _before(Admin $I)
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
+        $I->useExistingSession('admin');
 
         $I->see('Template');
         $I->click('Template');
 
-        // switch to content iframe
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->waitForElementVisible('#ts-overview');
         $I->see('Template tools');
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function pagesWithNoTemplateShouldShowButtonsToCreateTemplates(Admin $I)
+    public function pagesWithNoTemplateShouldShowButtonsToCreateTemplates(BackendTester $I)
     {
         $I->wantTo('show templates overview on root page (uid = 0)');
-        $I->switchToIFrame();
+        $I->switchToMainFrame();
         // click on root page
         $I->click('#extdd-1');
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->waitForElementVisible('#ts-overview');
         $I->see('This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.');
 
         $I->wantTo('show templates overview on website root page (uid = 1 and pid = 0)');
-        $I->switchToIFrame();
+        $I->switchToMainFrame();
         // click on website root page
         $I->click('#extdd-3');
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->waitForText('No template');
         $I->see('There was no template on this page!');
         $I->see('You need to create a template record below in order to edit your configuration.');
@@ -74,14 +69,14 @@ class TemplateCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function addANewSiteTemplate(Admin $I)
+    public function addANewSiteTemplate(BackendTester $I)
     {
         $I->wantTo('create a new site template');
-        $I->switchToIFrame();
+        $I->switchToMainFrame();
         $I->click('#extdd-3');
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame('list_frame');
         $I->waitForText('Create new website');
         $I->click("//input[@name='newWebsite']");
         $I->waitForText('Edit constants for template');
@@ -111,6 +106,7 @@ class TemplateCest
         $config = $I->grabTextFrom('//textarea[@data-formengine-input-name="data[sys_template][1][config]"]');
         $config = str_replace('HELLO WORLD!', 'Hello Acceptance Test!', $config);
         $I->fillField('//textarea[@data-formengine-input-name="data[sys_template][1][config]"]', $config);
+
         $I->click('.btn-toolbar .btn-group.t3js-splitbutton button.btn:nth-child(2)');
         $I->click('//a[@data-name="_saveandclosedok"]');
 

@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Topbar;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
-use TYPO3\TestingFramework\Core\Acceptance\Support\Helper\Topbar;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\TestingFramework\Core\Acceptance\Helper\Topbar;
 
 /**
  * Tests for the flush module in the topbar
@@ -30,22 +30,18 @@ class FlushCest
     protected static $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-clearcachetoolbaritem';
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function _before(Admin $I)
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
+        $I->useExistingSession('admin');
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      * @return Admin
      */
-    public function canSeeModuleInTopbar(Admin $I)
+    public function canSeeModuleInTopbar(BackendTester $I)
     {
         $I->canSeeElement(self::$topBarModuleSelector);
 
@@ -54,9 +50,9 @@ class FlushCest
 
     /**
      * @depends canSeeModuleInTopbar
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function seeFlushCachesLinksInClearCacheModule(Admin $I)
+    public function seeFlushCachesLinksInClearCacheModule(BackendTester $I)
     {
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
         // Ensure existence of link for flush frontend caches

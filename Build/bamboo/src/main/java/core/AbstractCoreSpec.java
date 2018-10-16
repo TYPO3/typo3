@@ -176,33 +176,52 @@ abstract public class AbstractCoreSpec {
      */
     protected Job getJobAcceptanceTestInstallMysql(String requirementIdentifier) {
         return new Job("Accept inst my " + requirementIdentifier, new BambooKey("ACINSTMY" + requirementIdentifier))
-            .description("Install TYPO3 on mysql and create empty frontend page " + requirementIdentifier)
+            .description("Install TYPO3 on mariadb and load introduction package " + requirementIdentifier)
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
                 this.getTaskComposerInstall(requirementIdentifier),
                 this.getTaskPrepareAcceptanceTest(),
-                new CommandTask()
-                    .description("Execute codeception AcceptanceInstallMysql suite")
-                    .executable("codecept")
-                    .argument("run AcceptanceInstallMysql -d -c " + this.testingFrameworkBuildPath + "AcceptanceTestsInstallMysql.yml --xml reports.xml --html reports.html")
-                    .environmentVariables(this.credentialsMysql)
+                this.getTaskDockerDependenciesAcceptanceInstallMariadb10(),
+                new ScriptTask()
+                    .description("Install TYPO3 on mariadb 10")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "function codecept() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        -e typo3InstallMysqlDatabaseHost=${typo3InstallMysqlDatabaseHost} \\\n" +
+                        "        -e typo3InstallMysqlDatabaseName=${typo3InstallMysqlDatabaseName} \\\n" +
+                        "        -e typo3InstallMysqlDatabaseUsername=${typo3InstallMysqlDatabaseUsername} \\\n" +
+                        "        -e typo3InstallMysqlDatabasePassword=${typo3InstallMysqlDatabasePassword} \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}; ./bin/codecept $*\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=mysql --xml reports.xml --html reports.html\n"
+                    )
             )
             .finalTasks(
+                this.getTaskStopDockerDependencies(),
                 new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
-                    .resultDirectories("typo3temp/var/tests/AcceptanceReportsInstallMysql/reports.xml")
+                    .resultDirectories("typo3temp/var/tests/AcceptanceReports/reports.xml")
+            )
+            .artifacts(new Artifact()
+                .name("Test Report")
+                .copyPattern("typo3temp/var/tests/AcceptanceReports/")
+                .shared(false)
             )
             .requirements(
                 this.getRequirementDocker10()
             )
-            .artifacts(new Artifact()
-                .name("Test Report")
-                .copyPattern("typo3temp/var/tests/AcceptanceReportsInstallMysql/")
-                .shared(false)
-            )
-            .cleanWorkingDirectory(true)
-            .enabled(false);
+            .cleanWorkingDirectory(true);
     }
 
     /**
@@ -219,26 +238,45 @@ abstract public class AbstractCoreSpec {
             this.getTaskGitCherryPick(),
             this.getTaskComposerInstall(requirementIdentifier),
             this.getTaskPrepareAcceptanceTest(),
-            new CommandTask()
-                .description("Execute codeception AcceptanceInstallPgsql suite")
-                .executable("codecept")
-                .argument("run AcceptanceInstallPgsql -d -c " + this.testingFrameworkBuildPath + "AcceptanceTestsInstallPgsql.yml --xml reports.xml --html reports.html")
-                .environmentVariables(this.credentialsPgsql)
+            this.getTaskDockerDependenciesAcceptanceInstallPostgres95(),
+            new ScriptTask()
+                .description("Install TYPO3 on postgresql 9.5")
+                .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                .inlineBody(
+                    this.getScriptTaskBashInlineBody() +
+                    "function codecept() {\n" +
+                    "    docker run \\\n" +
+                    "        -u ${HOST_UID} \\\n" +
+                    "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
+                    "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                    "        -e typo3InstallPostgresqlDatabaseHost=postgres9-5 \\\n" +
+                    "        -e typo3InstallPostgresqlDatabaseName=${typo3InstallPostgresqlDatabaseName} \\\n" +
+                    "        -e typo3InstallPostgresqlDatabaseUsername=${typo3InstallPostgresqlDatabaseUsername} \\\n" +
+                    "        -e typo3InstallPostgresqlDatabasePassword=${typo3InstallPostgresqlDatabasePassword} \\\n" +
+                    "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                    "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
+                    "        --rm \\\n" +
+                    "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                    "        bin/bash -c \"cd ${PWD}; ./bin/codecept $*\"\n" +
+                    "}\n" +
+                    "\n" +
+                    "codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=postgresql --xml reports.xml --html reports.html\n"
+                )
         )
         .finalTasks(
+            this.getTaskStopDockerDependencies(),
             new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
-                .resultDirectories("typo3temp/var/tests/AcceptanceReportsInstallPgsql/reports.xml")
+                .resultDirectories("typo3temp/var/tests/AcceptanceReports/reports.xml")
+        )
+        .artifacts(new Artifact()
+            .name("Test Report")
+            .copyPattern("typo3temp/var/tests/AcceptanceReports/")
+            .shared(false)
         )
         .requirements(
             this.getRequirementDocker10()
         )
-        .artifacts(new Artifact()
-            .name("Test Report")
-            .copyPattern("typo3temp/var/tests/AcceptanceReportsInstallPgsql/")
-            .shared(false)
-        )
-        .cleanWorkingDirectory(true)
-        .enabled(false);
+        .cleanWorkingDirectory(true);
     }
 
     /**
@@ -247,7 +285,7 @@ abstract public class AbstractCoreSpec {
      * @param int numberOfChunks
      * @param String requirementIdentifier
      */
-    protected ArrayList<Job> getJobsAcceptanceTestsMysql(int numberOfChunks, String requirementIdentifier) {
+    protected ArrayList<Job> getJobsAcceptanceTestsBackendMysql(int numberOfChunks, String requirementIdentifier) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=1; i<=numberOfChunks; i++) {
@@ -259,33 +297,63 @@ abstract public class AbstractCoreSpec {
                     this.getTaskGitCherryPick(),
                     this.getTaskComposerInstall(requirementIdentifier),
                     this.getTaskPrepareAcceptanceTest(),
+                    this.getTaskDockerDependenciesAcceptanceBackendMariadb10(),
                     new ScriptTask()
                         .description("Split acceptance tests")
                         .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                         .inlineBody(
                             this.getScriptTaskBashInlineBody() +
-                            "./" + this.testingFrameworkBuildPath + "Scripts/splitAcceptanceTests.sh " + numberOfChunks + "\n"
+                            "function splitAcceptanceTests() {\n" +
+                            "    docker run \\\n" +
+                            "        -u ${HOST_UID} \\\n" +
+                            "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
+                            "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                            "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                            "        --rm \\\n" +
+                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                            "        bin/bash -c \"cd ${PWD}; ./" + this.testingFrameworkBuildPath + "Scripts/splitAcceptanceTests.sh $*\"\n" +
+                            "}\n" +
+                            "\n" +
+                            "splitAcceptanceTests " + numberOfChunks
                         ),
-                    new CommandTask()
+                    new ScriptTask()
                         .description("Execute codeception acceptance suite group " + i)
-                        .executable("codecept")
-                        .argument("run Acceptance -d -g AcceptanceTests-Job-" + i + " -c " + this.testingFrameworkBuildPath + "AcceptanceTests.yml --xml reports.xml --html reports.html")
-                        .environmentVariables(this.credentialsMysql)
+                        .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                        .inlineBody(
+                            this.getScriptTaskBashInlineBody() +
+                            "function codecept() {\n" +
+                            "    docker run \\\n" +
+                            "        -u ${HOST_UID} \\\n" +
+                            "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
+                            "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                            "        -e typo3DatabaseName=func_test \\\n" +
+                            "        -e typo3DatabaseUsername=root \\\n" +
+                            "        -e typo3DatabasePassword=funcp  \\\n" +
+                            "        -e typo3DatabaseHost=mariadb10  \\\n" +
+                            "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                            "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
+                            "        --rm \\\n" +
+                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                            "        bin/bash -c \"cd ${PWD}; ./bin/codecept $*\"\n" +
+                            "}\n" +
+                            "\n" +
+                            "codecept run Backend -d -g AcceptanceTests-Job-" + i + " -c typo3/sysext/core/Tests/codeception.yml --xml reports.xml --html reports.html\n"
+                        )
                 )
                 .finalTasks(
+                    this.getTaskStopDockerDependencies(),
                     new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
                         .resultDirectories("typo3temp/var/tests/AcceptanceReports/reports.xml")
-                )
-                .requirements(
-                    this.getRequirementDocker10()
                 )
                 .artifacts(new Artifact()
                     .name("Test Report")
                     .copyPattern("typo3temp/var/tests/AcceptanceReports/")
                     .shared(false)
                 )
+                .requirements(
+                    this.getRequirementDocker10()
+                )
                 .cleanWorkingDirectory(true)
-                .enabled(false)
             );
         }
 
@@ -931,17 +999,56 @@ abstract public class AbstractCoreSpec {
      */
     protected Task getTaskPrepareAcceptanceTest() {
         return new ScriptTask()
-            .description("Start php web server, chromedriver, prepare environment")
+            .description("Prepare acceptance test environment")
             .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
-                "php -n -c /etc/php/cli-no-xdebug/php.ini -S localhost:8000 >/dev/null 2>&1 &\n" +
-                "echo $! > phpserver.pid\n" +
-                "\n" +
-                "./bin/chromedriver --url-base=/wd/hub >/dev/null 2>&1 &\n" +
-                "echo $! > chromedriver.pid\n" +
-                "\n" +
                 "mkdir -p typo3temp/var/tests/\n"
+            );
+    }
+
+    /**
+     * Start docker sibling containers to execute acceptance install tests on mariadb
+     */
+    protected Task getTaskDockerDependenciesAcceptanceInstallMariadb10() {
+        return new ScriptTask()
+            .description("Start docker siblings for acceptance test install mariadb")
+            .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+            .inlineBody(
+                this.getScriptTaskBashInlineBody() +
+                "cd Build/testing-docker/bamboo\n" +
+                "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                "docker-compose run start_dependencies_acceptance_install_mariadb10"
+            );
+    }
+
+    /**
+     * Start docker sibling containers to execute acceptance install tests on postgres
+     */
+    protected Task getTaskDockerDependenciesAcceptanceInstallPostgres95() {
+        return new ScriptTask()
+            .description("Start docker siblings for acceptance test install postgres")
+            .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+            .inlineBody(
+                this.getScriptTaskBashInlineBody() +
+                "cd Build/testing-docker/bamboo\n" +
+                "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                "docker-compose run start_dependencies_acceptance_install_postgres9-5"
+            );
+    }
+
+    /**
+     * Start docker sibling containers to execute acceptance backend tests on mariadb
+     */
+    protected Task getTaskDockerDependenciesAcceptanceBackendMariadb10() {
+        return new ScriptTask()
+            .description("Start docker siblings for acceptance test backend mariadb")
+            .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+            .inlineBody(
+                this.getScriptTaskBashInlineBody() +
+                "cd Build/testing-docker/bamboo\n" +
+                "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                "docker-compose run start_dependencies_acceptance_backend_mariadb10"
             );
     }
 

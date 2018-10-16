@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 
 /**
  * This testcase is used to check if the expected information is found when
@@ -22,22 +22,21 @@ use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
  */
 class PageModuleCest
 {
-    public function _before(Admin $I)
+    /**
+     * @param BackendTester $I
+     */
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
+        $I->useExistingSession('admin');
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function checkThatPageModuleHasAHeadline(Admin $I)
+    public function checkThatPageModuleHasAHeadline(BackendTester $I)
     {
         $I->click('Page');
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->canSee('Web>Page module', 'h4');
     }
 }

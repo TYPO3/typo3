@@ -70,17 +70,11 @@ public class NightlySpec extends AbstractCoreSpec {
 
         jobsMainStage.add(this.getJobComposerValidate("PHP72"));
 
-//        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql("PHP70"));
-//        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql("PHP71"));
-//        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql("PHP72"));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql("PHP72"));
 
-//        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql("PHP70"));
-//        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql("PHP71"));
-//        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql("PHP72"));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql("PHP72"));
 
-//        jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, "PHP70"));
-//        jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, "PHP71"));
-//        jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, "PHP72"));
+        jobsMainStage.addAll(this.getJobsAcceptanceTestsBackendMysql(this.numberOfAcceptanceTestJobs, "PHP72"));
 
         jobsMainStage.add(this.getJobCglCheckFullCore("PHP72"));
 

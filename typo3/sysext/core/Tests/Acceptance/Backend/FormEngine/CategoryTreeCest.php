@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
+namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\FormEngine;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 
 /**
  * Category tree tests
@@ -22,45 +22,40 @@ use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
 class CategoryTreeCest
 {
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function _before(Admin $I)
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForElementNotVisible('div#nprogess', 30);
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
+        $I->useExistingSession('admin');
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function checkIfCategoryListIsAvailable(Admin $I)
+    public function checkIfCategoryListIsAvailable(BackendTester $I)
     {
         // A sub-element of web module is show
         $I->waitForElementVisible('#web .modulemenu-group-container .modulemenu-item');
         $I->click('#web_list');
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->waitForElement('#recordlist-sys_category');
         $I->seeNumberOfElements('#recordlist-sys_category table > tbody > tr', [5, 100]);
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function editCategoryItem(Admin $I)
+    public function editCategoryItem(BackendTester $I)
     {
         // A sub-element of web module is show
         $I->waitForElementVisible('#web .modulemenu-group-container .modulemenu-item');
         $I->click('#web_list');
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         // Collapse all tables and expand category again - ensures category fits into window
         $I->executeJS('$(\'.icon-actions-view-list-collapse\').click();');
         $I->wait(1);
         $I->executeJS('$(\'a[data-table="sys_category"] .icon-actions-view-list-expand\').click();');
-        $I->wait(1);
+        $I->waitForElementVisible('#recordlist-sys_category tr[data-uid="7"] a[data-original-title="Edit record"]');
         // Select category with id 7
         $I->click('#recordlist-sys_category tr[data-uid="7"] a[data-original-title="Edit record"]');
         $I->waitForText('Category', 20);

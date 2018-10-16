@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Topbar;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
-use TYPO3\TestingFramework\Core\Acceptance\Support\Helper\Topbar;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\TestingFramework\Core\Acceptance\Helper\Topbar;
 
 /**
  * Test the search module in the top bar
@@ -30,21 +30,17 @@ class SearchCest
     public static $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-livesearchtoolbaritem';
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function _before(Admin $I)
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
+        $I->useExistingSession('admin');
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function searchAndTestIfAutocompletionWorks(Admin $I)
+    public function searchAndTestIfAutocompletionWorks(BackendTester $I)
     {
         $I->cantSeeElement(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector);
         $I->fillField('#live-search-box', 'adm');
@@ -53,15 +49,15 @@ class SearchCest
         $I->canSee('Backend user', self::$topBarModuleSelector);
         $I->click('admin', self::$topBarModuleSelector);
 
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->waitForElementVisible('#EditDocumentController');
         $I->canSee('Edit Backend user "admin" on root level');
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function searchForFancyTextAndCheckEmptyResultInfo(Admin $I)
+    public function searchForFancyTextAndCheckEmptyResultInfo(BackendTester $I)
     {
         $I->fillField('#live-search-box', 'Kasper = Jesus # joh316');
         $I->waitForElementVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector, 100);
@@ -75,9 +71,9 @@ class SearchCest
     }
 
     /**
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function checkIfTheShowAllLinkPointsToTheListViewWithSearchResults(Admin $I)
+    public function checkIfTheShowAllLinkPointsToTheListViewWithSearchResults(BackendTester $I)
     {
         $I->fillField('#live-search-box', 'fileadmin');
         $I->waitForElementVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector);
@@ -85,7 +81,7 @@ class SearchCest
         $I->canSee('fileadmin/ (auto-created)', self::$topBarModuleSelector);
         $I->click('.t3js-live-search-show-all', self::$topBarModuleSelector);
 
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
         $I->waitForElementVisible('form[name="dblistForm"]');
         $I->canSee('fileadmin/ (auto-created)');
     }

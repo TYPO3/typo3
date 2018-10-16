@@ -14,29 +14,29 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use PHPUnit\Framework\SkippedTestError;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 
 /**
  * Page and page tree related tests.
  */
 class AddPageInPageModuleCest
 {
-    public function _before(Admin $I)
+    /**
+     * @param BackendTester $I
+     */
+    public function _before(BackendTester $I)
     {
-        $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
+        $I->useExistingSession('admin');
     }
 
     /**
      * This test case is used to check if a page can be added with the page module.
      * It also tests to remove the new page with the page tree context menu.
      *
-     * @param Admin $I
+     * @param BackendTester $I
      */
-    public function addAndDeletePage(Admin $I)
+    public function addAndDeletePage(BackendTester $I)
     {
         // @todo: Fix in high load scenarios or throw away
         $this->skipUnstable();
@@ -63,8 +63,7 @@ class AddPageInPageModuleCest
         $I->waitForElementVisible($contextMenuNew, 30);
         $I->click($contextMenuNew);
 
-        // Switch to content frame
-        $I->switchToIFrame('list_frame');
+        $I->switchToContentFrame();
 
         // New page select position wizard
         $I->click('i[title="Insert the new page here"]');
@@ -95,7 +94,7 @@ class AddPageInPageModuleCest
         $I->waitForElement($pageTitleInput);
         $I->assertEquals('Testpage', $I->grabValueFrom($pageTitleInput), 'Value in input field.');
         $I->dontSeeElement($pageTitleFieldset . ' > div > div.t3js-formengine-validation-marker.has-error');
-        $I->switchToIFrame();
+        $I->switchToMainFrame();
 
         // Check tree
         $I->waitForElement($typo3NavigationContainer);
@@ -116,10 +115,10 @@ class AddPageInPageModuleCest
     }
 
     /**
-     * @throws \PHPUnit_Framework_SkippedTestError
+     * @throws SkippedTestError
      */
     protected function skipUnstable()
     {
-        throw new \PHPUnit_Framework_SkippedTestError('Test unstable, skipped for now.');
+        throw new SkippedTestError('Test unstable, skipped for now.');
     }
 }
