@@ -1477,7 +1477,7 @@ abstract public class AbstractCoreSpec {
     }
 
     /**
-     * Start docker sibling containers to execute functional tests on mariadb
+     * Start docker sibling containers to execute functional tests on mssql
      */
     protected Task getTaskDockerDependenciesFunctionalMssql() {
         return new ScriptTask()
