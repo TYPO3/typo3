@@ -60,19 +60,6 @@ abstract public class AbstractCoreSpec {
         " typo3InstallToolPassword=\"klaus\"";
 
     /**
-     * @todo This can be removed if acceptance mssql functional tests work again
-     */
-    protected String credentialsMssql =
-        "typo3DatabaseDriver=\"sqlsrv\"" +
-        " typo3DatabaseName=\"func\"" +
-        " typo3DatabasePassword='Test1234!'" +
-        " typo3DatabaseUsername=\"SA\"" +
-        " typo3DatabaseHost=\"localhost\"" +
-        " typo3DatabasePort=\"1433\"" +
-        " typo3DatabaseCharset=\"utf-8\"" +
-        " typo3InstallToolPassword=\"klaus\"";
-
-    /**
      * @todo This can be removed if acceptance pgsql tests are rewritten and active again
      */
     protected String credentialsPgsql =
@@ -376,23 +363,46 @@ abstract public class AbstractCoreSpec {
 
         for (int i=0; i<numberOfChunks; i++) {
             jobs.add(new Job("Func mssql " + requirementIdentifier + " 0" + i, new BambooKey("FMS" + requirementIdentifier + "0" + i))
-                .description("Run functional tests on mysql DB " + requirementIdentifier)
+                .description("Run functional tests on mssql DB " + requirementIdentifier)
                 .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
                     this.getTaskComposerInstall(requirementIdentifier),
+                    this.getTaskDockerDependenciesFunctionalMssql(),
                     this.getTaskSplitFunctionalJobs(numberOfChunks),
                     new ScriptTask()
                         .description("Run phpunit with functional chunk 0" + i)
                         .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                         .inlineBody(
                             this.getScriptTaskBashInlineBody() +
-                            "./bin/phpunit --exclude-group not-mssql --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "FunctionalTests-Job-" + i + ".xml"
+                            "function phpunit() {\n" +
+                            "    docker run \\\n" +
+                            "        -u ${HOST_UID} \\\n" +
+                            "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
+                            "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                            "        -e typo3DatabaseDriver=sqlsrv \\\n" +
+                            "        -e typo3DatabaseName=func \\\n" +
+                            "        -e typo3DatabasePassword=Test1234! \\\n" +
+                            "        -e typo3DatabaseUsername=SA \\\n" +
+                            "        -e typo3DatabaseHost=localhost \\\n" +
+                            "        -e typo3DatabasePort=1433 \\\n" +
+                            "        -e typo3DatabaseCharset=utf-8 \\\n" +
+                            "        -e typo3DatabaseHost=mssql2017cu9 \\\n" +
+                            "        -e typo3TestingRedisHost=${BAMBOO_COMPOSE_PROJECT_NAME}sib_redis4_1 \\\n" +
+                            "        -e typo3TestingMemcachedHost=${BAMBOO_COMPOSE_PROJECT_NAME}sib_memcached1-5_1 \\\n" +
+                            "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                            "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
+                            "        --rm \\\n" +
+                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                            "        bin/bash -c \"cd ${PWD}; ./bin/phpunit $*\"\n" +
+                            "}\n" +
+                            "\n" +
+                            "phpunit --exclude-group not-mssql --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "FunctionalTests-Job-" + i + ".xml"
                         )
-                        .environmentVariables(this.credentialsMssql)
                 )
                 .finalTasks(
+                    this.getTaskStopDockerDependencies(),
                     new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
                         .resultDirectories("test-reports/phpunit.xml")
                 )
@@ -400,7 +410,6 @@ abstract public class AbstractCoreSpec {
                     this.getRequirementDocker10()
                 )
                 .cleanWorkingDirectory(true)
-                .enabled(false)
             );
         }
 
@@ -948,6 +957,21 @@ abstract public class AbstractCoreSpec {
                 "cd Build/testing-docker/bamboo\n" +
                 "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
                 "docker-compose run start_dependencies_functional_mariadb10"
+            );
+    }
+
+    /**
+     * Start docker sibling containers to execute functional tests on mssql
+     */
+    protected Task getTaskDockerDependenciesFunctionalMssql() {
+        return new ScriptTask()
+            .description("Start docker siblings for functional tests on mssql")
+            .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+            .inlineBody(
+                this.getScriptTaskBashInlineBody() +
+                "cd Build/testing-docker/bamboo\n" +
+                "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                "docker-compose run start_dependencies_functional_mssql"
             );
     }
 

@@ -40,7 +40,7 @@ public class NightlySpec extends AbstractCoreSpec {
 
     protected int numberOfAcceptanceTestJobs = 8;
     protected int numberOfFunctionalMysqlJobs = 6;
-    protected int numberOfFunctionalMssqlJobs = 6;
+    protected int numberOfFunctionalMssqlJobs = 10;
     protected int numberOfFunctionalPgsqlJobs = 6;
     protected int numberOfUnitRandomOrderJobs = 2;
 

@@ -99,7 +99,8 @@ public class PreMergeSpec extends AbstractCoreSpec {
         jobsMainStage.add(this.getJobIntegrationVarious("PHP72"));
 
         jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP70"));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, "PHP71"));
+        // mssql functionals are not executed as pre-merge
+        // jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, "PHP71"));
         jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, "PHP72"));
 
         jobsMainStage.add(this.getJobUnitJavaScript("PHP72"));
