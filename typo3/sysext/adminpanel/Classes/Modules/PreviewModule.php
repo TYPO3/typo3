@@ -19,11 +19,9 @@ namespace TYPO3\CMS\Adminpanel\Modules;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface;
-use TYPO3\CMS\Adminpanel\ModuleApi\OnSubmitActorInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\PageSettingsProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Adminpanel\Repositories\FrontendGroupsRepository;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -36,7 +34,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /**
  * Admin Panel Preview Module
  */
-class PreviewModule extends AbstractModule implements InitializableInterface, PageSettingsProviderInterface, OnSubmitActorInterface, ResourceProviderInterface
+class PreviewModule extends AbstractModule implements InitializableInterface, PageSettingsProviderInterface, ResourceProviderInterface
 {
     /**
      * module configuration, set on initialize
@@ -83,6 +81,11 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
             'simulateUserGroup' => (int)$this->getConfigOptionForModule('simulateUserGroup'),
             'showFluidDebug' => (bool)$this->getConfigOptionForModule('showFluidDebug'),
         ];
+        if ($this->config['showFluidDebug']) {
+            // forcibly unset fluid caching as it does not care about the tsfe based caching settings
+            unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['fluid_template']['frontend']);
+            $GLOBALS['TSFE']->set_no_cache('Cache is disabled if fluid debugging is enabled', true);
+        }
         $this->initializeFrontendPreview(
             $this->config['showHiddenPages'],
             $this->config['showHiddenRecords'],
@@ -119,24 +122,6 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
             ]
         );
         return $view->render();
-    }
-
-    /**
-     * Clear page cache if fluid debug output setting is changed
-     *
-     * @param array $input
-     * @param ServerRequestInterface $request
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
-     */
-    public function onSubmit(array $input, ServerRequestInterface $request): void
-    {
-        $activeConfiguration = (int)$this->getConfigOptionForModule('showFluidDebug');
-        if (isset($input['preview_showFluidDebug']) && (int)$input['preview_showFluidDebug'] !== $activeConfiguration) {
-            $pageId = (int)$request->getParsedBody()['TSFE_ADMIN_PANEL']['preview_clearCacheId'];
-            $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-            $cacheManager->getCache('cache_pages')->flushByTag('pageId_' . $pageId);
-            $cacheManager->getCache('fluid_template')->flush();
-        }
     }
 
     /**
@@ -180,7 +165,10 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
         $typoScriptFrontendController->fePreview = 1;
 
         // Modify visibility settings (hidden pages + hidden content)
-        $context->setAspect('visibility', GeneralUtility::makeInstance(VisibilityAspect::class, $showHiddenPages, $showHiddenRecords));
+        $context->setAspect(
+            'visibility',
+            GeneralUtility::makeInstance(VisibilityAspect::class, $showHiddenPages, $showHiddenRecords)
+        );
 
         // Simulate date
         $simTime = null;
@@ -189,20 +177,35 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
             if ($simTime) {
                 $GLOBALS['SIM_EXEC_TIME'] = $simTime;
                 $GLOBALS['SIM_ACCESS_TIME'] = $simTime - $simTime % 60;
-                $context->setAspect('date', GeneralUtility::makeInstance(DateTimeAspect::class, new \DateTimeImmutable('@' . $GLOBALS['SIM_EXEC_TIME'])));
+                $context->setAspect(
+                    'date',
+                    GeneralUtility::makeInstance(
+                        DateTimeAspect::class,
+                        new \DateTimeImmutable('@' . $GLOBALS['SIM_EXEC_TIME'])
+                    )
+                );
             }
         }
         // simulate usergroup
         if ($simulateUserGroup) {
             $typoScriptFrontendController->simUserGroup = $simulateUserGroup;
             if (!$typoScriptFrontendController->fe_user instanceof FrontendUserAuthentication) {
-                $typoScriptFrontendController->fe_user = GeneralUtility::makeInstance(FrontendUserAuthentication::class);
+                $typoScriptFrontendController->fe_user = GeneralUtility::makeInstance(
+                    FrontendUserAuthentication::class
+                );
             }
             if (!is_array($typoScriptFrontendController->fe_user->user)) {
                 $typoScriptFrontendController->fe_user->user = [];
             }
             $typoScriptFrontendController->fe_user->user[$typoScriptFrontendController->fe_user->usergroup_column] = $simulateUserGroup;
-            $context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $typoScriptFrontendController->fe_user ?: null, [$simulateUserGroup]));
+            $context->setAspect(
+                'frontend.user',
+                GeneralUtility::makeInstance(
+                    UserAspect::class,
+                    $typoScriptFrontendController->fe_user ?: null,
+                    [$simulateUserGroup]
+                )
+            );
         }
         if (!$simulateUserGroup && !$simTime && !$showHiddenPages && !$showHiddenRecords) {
             $typoScriptFrontendController->fePreview = 0;
