@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "34ef85fbd60b2155cc33d782c51d54c6",
+    "content-hash": "f8e5feb86fc0e17fea565b96cf73f75a",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -2286,16 +2286,16 @@
         },
         {
             "name": "typo3/phar-stream-wrapper",
-            "version": "v3.0.0",
+            "version": "v3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/phar-stream-wrapper.git",
-                "reference": "072007eb3d2c8864aa7535fe5bd0349b5ba765f6"
+                "reference": "b3cbcfd2e4de5943bf05ec975d42d0e8d85c0009"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/phar-stream-wrapper/zipball/072007eb3d2c8864aa7535fe5bd0349b5ba765f6",
-                "reference": "072007eb3d2c8864aa7535fe5bd0349b5ba765f6",
+                "url": "https://api.github.com/repos/TYPO3/phar-stream-wrapper/zipball/b3cbcfd2e4de5943bf05ec975d42d0e8d85c0009",
+                "reference": "b3cbcfd2e4de5943bf05ec975d42d0e8d85c0009",
                 "shasum": ""
             },
             "require": {
@@ -2307,8 +2307,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "TYPO3\\PharStreamWrapper\\": "src/",
-                    "TYPO3\\PharStreamWrapper\\Tests\\": "tests/"
+                    "TYPO3\\PharStreamWrapper\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2317,7 +2316,13 @@
             ],
             "description": "Interceptors for PHP's native phar:// stream handling",
             "homepage": "https://typo3.org/",
-            "time": "2018-09-07T15:16:01+00:00"
+            "keywords": [
+                "phar",
+                "php",
+                "security",
+                "stream-wrapper"
+            ],
+            "time": "2018-10-18T08:50:44+00:00"
         },
         {
             "name": "typo3fluid/fluid",
