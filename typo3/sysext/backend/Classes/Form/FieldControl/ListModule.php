@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\FieldControl;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Renders the icon with link parameters to jump to the list module
@@ -82,9 +83,8 @@ class ListModule extends AbstractNode
             ],
         ];
 
-        $onClick = [];
-        $onClick[] = 'this.blur();';
-        $onClick[] = 'return TYPO3.FormEngine.preventFollowLinkIfNotSaved(this.getAttribute(\'href\'));';
+        $id = StringUtility::getUniqueId('t3js-formengine-fieldcontrol-');
+
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 
@@ -92,8 +92,11 @@ class ListModule extends AbstractNode
             'iconIdentifier' => 'actions-system-list-open',
             'title' => $title,
             'linkAttributes' => [
-                'onClick' => implode('', $onClick),
+                'id' => htmlspecialchars($id),
                 'href' => (string)$uriBuilder->buildUriFromRoute('wizard_list', $urlParameters),
+            ],
+            'requireJsModules' => [
+                ['TYPO3/CMS/Backend/FormEngine/FieldControl/ListModule' => 'function(FieldControl) {new FieldControl(' . GeneralUtility::quoteJSvalue('#' . $id) . ');}'],
             ],
         ];
     }
