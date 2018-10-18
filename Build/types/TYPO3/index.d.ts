@@ -31,6 +31,7 @@ declare namespace TYPO3 {
 
       export class FormEngine {
         public readonly Validation: FormEngineValidation;
+        public preventFollowLinkIfNotSaved(href: string): boolean;
       }
 
       export class Wizard {
