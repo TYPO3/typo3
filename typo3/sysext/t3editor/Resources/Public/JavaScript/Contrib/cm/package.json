@@ -1,6 +1,6 @@
 {
   "name": "codemirror",
-  "version": "5.35.0",
+  "version": "5.40.2",
   "main": "lib/codemirror.js",
   "style": "lib/codemirror.css",
   "description": "Full-featured in-browser code editor",
@@ -29,7 +29,7 @@
     "CodeMirror",
     "Editor"
   ],
-  "homepage": "http://codemirror.net",
+  "homepage": "https://codemirror.net",
   "maintainers": [
     {
       "name": "Marijn Haverbeke",

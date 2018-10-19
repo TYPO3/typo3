@@ -4,6 +4,7 @@ List of CodeMirror contributors. Updated before every release.
 4r2r
 Aaron Brooks
 Abdelouahab
+Abdussalam Abdurrahman
 Abe Fettig
 Adam Ahmed
 Adam King
@@ -19,6 +20,7 @@ Ahmad M. Zawawi
 ahoward
 Akeksandr Motsjonov
 Alasdair Smith
+AlbertHilb
 Alberto González Palomo
 Alberto Pose
 Albert Xing
@@ -83,7 +85,9 @@ AtomicPages LLC
 Atul Bhouraskar
 Aurelian Oancea
 Axel Lewenhaupt
+Baptiste Augrain
 Barret Rennie
+Bartosz Dziewoński
 Basarat Ali Syed
 Bastian Müller
 belhaj
@@ -101,10 +105,13 @@ Bharad
 BigBlueHat
 Billy Moon
 binny
+Bjorn Hansen
 B Krishna Chaitanya
 Blaine G
 blukat29
+Bo
 boomyjee
+Bo Peng
 borawjm
 Brad Metcalf
 Brandon Frohs
@@ -121,6 +128,7 @@ Calin Barbat
 callodacity
 Camilo Roca
 Casey Klebba
+César González Íñiguez
 Chad Jolly
 Chandra Sekhar Pydi
 Charles Skelton
@@ -131,10 +139,12 @@ Chris Granger
 Chris Houseknecht
 Chris Lohfink
 Chris Morgan
+Chris Reeves
 Chris Smith
 Christian Gruen
 Christian Oyarzun
 Christian Petrov
+christopherblaser
 Christopher Brown
 Christopher Kramer
 Christopher Mitchell
@@ -156,6 +166,7 @@ Dan Heberden
 Daniel, Dao Quang Minh
 Daniele Di Sarli
 Daniel Faust
+Daniel Hanggi
 Daniel Huigens
 Daniel Kesler
 Daniel KJ
@@ -166,12 +177,14 @@ Danila Malyutin
 Danny Yoo
 darealshinji
 Darius Roberts
+databricks-david-lewis
 Dave Brondsema
 Dave Myers
 David Barnett
 David H. Bronke
 David Mignot
 David Pathakjee
+David Santana
 David Vázquez
 David Whittington
 deebugger
@@ -200,6 +213,7 @@ Elisée
 Emmanuel Schanzer
 Enam Mijbah Noor
 Eric Allam
+Eric Bogard
 Erik Welander
 eustas
 Fabien Dubosson
@@ -215,6 +229,7 @@ ficristo
 Filip Noetzel
 Filip Stollár
 Filype Pereira
+finalfantasia
 flack
 Florian Felten
 ForbesLindesay
@@ -241,6 +256,7 @@ Giovanni Calò
 Glebov Boris
 Glenn Jorde
 Glenn Ruehle
+goldsmcb
 Golevka
 Google Inc.
 Gordon Smith
@@ -258,11 +274,13 @@ Hans Engel
 Hardest
 Harshvardhan Gupta
 Hasan Karahan
+Heanes
 Hector Oswaldo Caballero
 Hélio
 Hendrik Wallbaum
 Henrik Haugbølle
 Herculano Campos
+hidaiy
 Hiroyuki Makino
 hitsthings
 Hocdoc
@@ -361,6 +379,7 @@ Justin Hileman
 jwallers@gmail.com
 kaniga
 karevn
+Karol
 Kayur Patel
 Kazuhito Hokamura
 Ken Newman
@@ -371,6 +390,7 @@ Kevin Kwok
 Kevin Muret
 Kevin Sawicki
 Kevin Ushey
+Kier Darby
 Klaus Silveira
 Koh Zi Han, Cliff
 komakino
@@ -384,8 +404,10 @@ Kyle Kelley
 KyleMcNutt
 Lanfei
 Lanny
+laobubu
 Laszlo Vidacs
 leaf corcoran
+Lemmon
 Leonid Khachaturov
 Leon Sorokin
 Leonya Khachaturov
@@ -396,6 +418,7 @@ Lior Shub
 LloydMilligan
 LM
 lochel
+Lorenzo Simionato
 Lorenzo Stoakes
 Louis Mauchet
 Luca Fabbri
@@ -445,6 +468,7 @@ matthewhayes
 Matthew Rathbone
 Matthias Bussonnier
 Matthias BUSSONNIER
+Matt MacPherson
 Matt McDonald
 Matt Pass
 Matt Sacks
@@ -474,23 +498,27 @@ Michal Kapiczynski
 Mighty Guava
 Miguel Castillo
 mihailik
+Mika Andrianarijaona
 Mike
 Mike Brevoort
 Mike Diaz
 Mike Ivanov
 Mike Kadin
 Mike Kobit
+Milan Szekely
 MinRK
 Miraculix87
 misfo
 mkaminsky11
 mloginov
+Moritz Schubotz (physikerwelt)
 Moritz Schwörer
 Moshe Wajnberg
 mps
 ms
 mtaran-google
 Mu-An Chiou
+Mu-An ✌️ Chiou
 mzabuawala
 Narciso Jaramillo
 Nathan Williams
@@ -514,6 +542,7 @@ Niels van Groningen
 nightwing
 Nikita Beloglazov
 Nikita Vasilyev
+Nikolaj Kappler
 Nikolay Kostov
 nilp0inter
 Nisarg Jhaveri
@@ -527,6 +556,7 @@ overdodactyl
 pablo
 pabloferz
 Pablo Zubieta
+paddya
 Page
 paladox
 Panupong Pasupat
@@ -550,6 +580,7 @@ Peter Flynn
 peterkroon
 Peter Kroon
 Philipp A
+Philipp Markovics
 Philip Stadermann
 Pi Delport
 Pierre Gerold
@@ -567,12 +598,16 @@ ramwin1
 Randall Mason
 Randy Burden
 Randy Edmunds
+Randy Luecke
+Raphael Amorim
 Rasmus Erik Voel Jensen
 Rasmus Schultz
+Raymond Hill
 ray ratchup
 Ray Ratchup
 Remi Nyborg
 Renaud Durlin
+Reynold Xin
 Richard Denton
 Richard van der Meer
 Richard Z.H. Wang
@@ -587,6 +622,7 @@ Rrrandom
 Ruslan Osmanov
 Ryan Petrello
 Ryan Prior
+ryu-sato
 sabaca
 Sam Lee
 Sam Rawlins
@@ -632,6 +668,7 @@ Sorab Bisht
 spastorelli
 srajanpaliwal
 Stanislav Oaserele
+stan-z
 Stas Kobzar
 Stefan Borsje
 Steffen Beyer
@@ -679,6 +716,7 @@ Tomas Varaneckas
 Tom Erik Støwer
 Tom Klancer
 Tom MacWright
+Tom McLaughlin
 Tony Jian
 tophf
 totalamd
@@ -686,8 +724,10 @@ Travis Heppe
 Triangle717
 Tristan Tarrant
 TSUYUSATO Kitsune
+Tugrul Elmas
 twifkak
 Tyler Long
+Vadzim Ramanenka
 Vaibhav Sagar
 VapidWorx
 Vestimir Markov
@@ -707,6 +747,7 @@ William Jamieson
 William Stein
 Willy
 Wojtek Ptak
+wonderboyjon
 Wu Cheng-Han
 Xavier Mendez
 Yassin N. Hassan
