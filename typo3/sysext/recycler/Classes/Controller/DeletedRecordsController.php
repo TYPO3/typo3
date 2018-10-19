@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 
 /**
@@ -131,7 +132,14 @@ class DeletedRecordsController
             $username = $this->runtimeCache->get($cacheId);
         } else {
             $backendUser = BackendUtility::getRecord('be_users', $userId, 'username', '', false);
-            $username = $backendUser['username'];
+            if ($backendUser === null) {
+                $username = sprintf(
+                    '[%s]',
+                    LocalizationUtility::translate('LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:record.deleted')
+                );
+            } else {
+                $username = $backendUser['username'];
+            }
             $this->runtimeCache->set($cacheId, $username);
         }
         return $username;

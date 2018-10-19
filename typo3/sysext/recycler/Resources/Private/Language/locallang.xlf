@@ -123,6 +123,9 @@
 			<trans-unit id="table.header.path">
 				<source>Path</source>
 			</trans-unit>
+			<trans-unit id="record.deleted">
+				<source>deleted</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
