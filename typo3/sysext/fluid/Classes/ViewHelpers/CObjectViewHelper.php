@@ -156,7 +156,10 @@ class CObjectViewHelper extends AbstractViewHelper
      */
     protected static function getContentObjectRenderer()
     {
-        return $GLOBALS['TSFE']->cObj;
+        return GeneralUtility::makeInstance(
+            ContentObjectRenderer::class,
+            $GLOBALS['TSFE'] ?? GeneralUtility::makeInstance(TypoScriptFrontendController::class, null, 0, 0)
+        );
     }
 
     /**
