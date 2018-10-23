@@ -1299,7 +1299,7 @@ return [
         'disableNoCacheParameter' => false,
         'cacheHash' => [
             'cachedParametersWhiteList' => [],
-            'excludedParameters' => ['L', 'pk_campaign', 'pk_kwd', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid'],
+            'excludedParameters' => ['L', 'pk_campaign', 'pk_kwd', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid'],
             'requireCacheHashPresenceParameters' => [],
             'excludeAllEmptyParameters' => false,
             'excludedParametersIfEmpty' => []
