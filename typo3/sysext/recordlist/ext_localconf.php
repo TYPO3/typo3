@@ -30,12 +30,19 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ElementBrowsers']['folder'] = \TYPO3\
             handler = TYPO3\\CMS\\Recordlist\\LinkHandler\\UrlLinkHandler
             label = LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:extUrl
             displayAfter = folder
-            scanAfter = mail
+            scanAfter = telephone
         }
         mail {
             handler = TYPO3\\CMS\\Recordlist\\LinkHandler\\MailLinkHandler
             label = LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:email
             displayAfter = url
+            scanBefore = url
+        }
+        telephone {
+            handler = TYPO3\\CMS\\Recordlist\\LinkHandler\\TelephoneLinkHandler
+            label = LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:telephone
+            displayAfter = mail
+            scanBefore = url
         }
     }
 ');

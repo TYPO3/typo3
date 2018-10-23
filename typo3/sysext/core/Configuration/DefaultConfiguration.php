@@ -323,6 +323,7 @@ return [
             'url'    => \TYPO3\CMS\Core\LinkHandling\UrlLinkHandler::class,
             'email'  => \TYPO3\CMS\Core\LinkHandling\EmailLinkHandler::class,
             'record' => \TYPO3\CMS\Core\LinkHandling\RecordLinkHandler::class,
+            'telephone' => \TYPO3\CMS\Core\LinkHandling\TelephoneLinkHandler::class,
         ],
         'livesearch' => [],  // Array: keywords used for commands to search for specific tables
         'formEngine' => [
@@ -1314,6 +1315,7 @@ return [
             'url' => \TYPO3\CMS\Frontend\Typolink\ExternalUrlLinkBuilder::class,
             'email' => \TYPO3\CMS\Frontend\Typolink\EmailLinkBuilder::class,
             'record' => \TYPO3\CMS\Frontend\Typolink\DatabaseRecordLinkBuilder::class,
+            'telephone' => \TYPO3\CMS\Frontend\Typolink\TelephoneLinkBuilder::class,
             'unknown' => \TYPO3\CMS\Frontend\Typolink\LegacyLinkBuilder::class,
         ],
         'passwordHashing' => [

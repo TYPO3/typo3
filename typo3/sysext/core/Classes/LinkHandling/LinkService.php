@@ -29,6 +29,7 @@ class LinkService implements SingletonInterface
     const TYPE_PAGE = 'page';
     const TYPE_URL = 'url';
     const TYPE_EMAIL = 'email';
+    const TYPE_TELEPHONE = 'telephone';
     const TYPE_FILE = 'file';
     const TYPE_FOLDER = 'folder';
     const TYPE_RECORD = 'record';
@@ -120,6 +121,9 @@ class LinkService implements SingletonInterface
         } elseif (stripos($urn, 'mailto:') === 0 && $this->handlers[self::TYPE_EMAIL]) {
             $result = $this->handlers[self::TYPE_EMAIL]->resolveHandlerData(['email' => $urn]);
             $result['type'] = self::TYPE_EMAIL;
+        } elseif (stripos($urn, 'tel:') === 0 && $this->handlers[self::TYPE_TELEPHONE]) {
+            $result = $this->handlers[self::TYPE_TELEPHONE]->resolveHandlerData(['telephone' => $urn]);
+            $result['type'] = self::TYPE_TELEPHONE;
         } else {
             $result = [];
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Link']['resolveByStringRepresentation'] ?? null)) {

@@ -30,6 +30,9 @@
 			<trans-unit id="email">
 				<source>Email</source>
 			</trans-unit>
+			<trans-unit id="telephone">
+				<source>Telephone</source>
+			</trans-unit>
 			<trans-unit id="special">
 				<source>Special</source>
 			</trans-unit>
@@ -83,6 +86,9 @@
 			</trans-unit>
 			<trans-unit id="emailAddress">
 				<source>Email address</source>
+			</trans-unit>
+			<trans-unit id="telephoneNumber">
+				<source>Telephone number</source>
 			</trans-unit>
 			<trans-unit id="setLink">
 				<source>Set Link</source>

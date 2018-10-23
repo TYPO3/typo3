@@ -73,6 +73,9 @@ class LegacyLinkNotationConverter
         } elseif (GeneralUtility::validEmail(parse_url($linkParameter, PHP_URL_PATH))) {
             $result['type'] = LinkService::TYPE_EMAIL;
             $result['email'] = $linkParameter;
+        } elseif (strpos($linkParameter, 'tel:') === 0) {
+            $result['type'] = LinkService::TYPE_TELEPHONE;
+            $result['telephone'] = $linkParameter;
         } elseif (strpos($linkParameter, ':') !== false) {
             // Check for link-handler keyword
             list($linkHandlerKeyword, $linkHandlerValue) = explode(':', $linkParameter, 2);
