@@ -37,6 +37,7 @@ $finder = PhpCsFixer\Finder::create()
     ->exclude('vendor')
     ->exclude('typo3conf')
     ->exclude('typo3temp')
+    ->exclude('typo3/sysext/core/Tests/Acceptance/Support/_generated')
     ->notName('install.php')
     ->notName('index.php')
     ->in(__DIR__ . '/../');
