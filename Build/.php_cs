@@ -37,6 +37,7 @@ $finder = PhpCsFixer\Finder::create()
     ->exclude('vendor')
     ->exclude('typo3conf')
     ->exclude('typo3temp')
+    ->exclude('typo3/sysext/core/Tests/Acceptance/Support/_generated')
     ->in(__DIR__ . '/../');
 // Return a Code Sniffing configuration using
 // all sniffers needed for PSR-2
