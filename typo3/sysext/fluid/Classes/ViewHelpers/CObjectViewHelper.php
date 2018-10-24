@@ -121,18 +121,22 @@ class CObjectViewHelper extends AbstractViewHelper
         $pathSegments = GeneralUtility::trimExplode('.', $typoscriptObjectPath);
         $lastSegment = array_pop($pathSegments);
         $setup = static::getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-        if (!empty($pathSegments) && \is_array($pathSegments)) {
-            foreach ($pathSegments as $segment) {
-                if (!array_key_exists($segment . '.', $setup)) {
-                    throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(
-                        'TypoScript object path "' . htmlspecialchars($typoscriptObjectPath) . '" does not exist',
-                        1253191023
-                    );
-                }
-                $setup = $setup[$segment . '.'];
+        foreach ($pathSegments as $segment) {
+            if (!array_key_exists($segment . '.', $setup)) {
+                throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(
+                    'TypoScript object path "' . $typoscriptObjectPath . '" does not exist',
+                    1253191023
+                );
             }
-            $content = $contentObjectRenderer->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.']);
+            $setup = $setup[$segment . '.'];
         }
+        if (!isset($setup[$lastSegment])) {
+            throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(
+                'No Content Object definition found at TypoScript object path "' . $typoscriptObjectPath . '"',
+                1540246570
+            );
+        }
+        $content = $contentObjectRenderer->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.'] ?? []);
         if (TYPO3_MODE === 'BE') {
             static::resetFrontendEnvironment();
         }

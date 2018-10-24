@@ -71,12 +71,18 @@ class CObjectViewHelperTest extends ViewHelperBaseTestcase
         $this->setArgumentsUnderTest(
             $this->viewHelper,
             [
+                'typoscriptObjectPath' => 'test',
                 'data' => 'foo',
             ]
         );
+        $configArray = [
+            'test' => 'TEXT',
+            'test.' => [],
+        ];
+        $this->configurationManager->getConfiguration(Argument::any())->willReturn($configArray);
+
         $this->contentObjectRenderer->start(['foo'], '')->willReturn();
-        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertSame('', $actualResult);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -93,17 +99,39 @@ class CObjectViewHelperTest extends ViewHelperBaseTestcase
         );
         $this->setArgumentsUnderTest(
             $this->viewHelper,
-            []
+            [
+                'typoscriptObjectPath' => 'test',
+            ]
         );
+        $configArray = [
+            'test' => 'TEXT',
+            'test.' => [],
+        ];
+        $this->configurationManager->getConfiguration(Argument::any())->willReturn($configArray);
+
         $this->contentObjectRenderer->start(['foo'], '')->willReturn();
-        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertSame('', $actualResult);
+        $this->viewHelper->initializeArgumentsAndRender();
+    }
+
+    public function renderThrowsExceptionIfTypoScriptObjectPathDoesNotExistDataProvider(): array
+    {
+        return [
+            'Single path' => [
+                'test',
+                1540246570
+            ],
+            'Multi path' => [
+                'test.path',
+                1253191023
+            ],
+        ];
     }
 
     /**
      * @test
+     * @dataProvider renderThrowsExceptionIfTypoScriptObjectPathDoesNotExistDataProvider
      */
-    public function renderThrowsExceptionIfTyposcriptObjectPathDoesNotExist()
+    public function renderThrowsExceptionIfTypoScriptObjectPathDoesNotExist(string $objectPath, int $exceptionCode)
     {
         $this->stubBaseDependencies();
         $this->contentObjectRenderer->start(Argument::cetera())->willReturn();
@@ -112,42 +140,76 @@ class CObjectViewHelperTest extends ViewHelperBaseTestcase
             $this->viewHelper,
             [
                 'data' => 'foo',
-                'typoscriptObjectPath' => 'test.path',
+                'typoscriptObjectPath' => $objectPath,
             ]
         );
 
         $this->expectException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception::class);
-        $this->expectExceptionCode(1253191023);
+        $this->expectExceptionCode($exceptionCode);
         $this->viewHelper->initializeArgumentsAndRender();
     }
 
-    /**
-     * @test
-     */
-    public function renderReturnsSimpleTyposcriptValue()
+    public function renderReturnsSimpleTypoScriptValueDataProvider(): array
     {
-        $this->setArgumentsUnderTest(
-            $this->viewHelper,
-            [
-                'typoscriptObjectPath' => 'plugin.test',
-                'data' => 'foo',
-                'table' => 'table',
-            ]
-        );
-
         $subConfigArray = [
             'value' => 'Hello World',
             'wrap' => 'ab | cd',
         ];
-
-        $configArray = [
-            'olugin' => 'COA',
-            'plugin.' => [
-                'test' => 'TEXT',
-                'test.' => $subConfigArray,
-
-            ]
+        return [
+            'Single path' => [
+                'test',
+                [
+                    'test' => 'TEXT',
+                    'test.' => $subConfigArray,
+                ],
+                $subConfigArray
+            ],
+            'Single path no config' => [
+                'test',
+                [
+                    'test' => 'TEXT',
+                ],
+                []
+            ],
+            'Multi path' => [
+                'plugin.test',
+                [
+                    'plugin.' => [
+                        'test' => 'TEXT',
+                        'test.' => $subConfigArray,
+                    ]
+                ],
+                $subConfigArray
+            ],
+            'Multi path no config' => [
+                'plugin.test',
+                [
+                    'plugin.' => [
+                        'test' => 'TEXT',
+                    ]
+                ],
+                []
+            ],
         ];
+    }
+
+    /**
+     * @test
+     * @dataProvider renderReturnsSimpleTypoScriptValueDataProvider
+     * @param string $objectPath
+     * @param array $configArray
+     * @param array $subConfigArray
+     */
+    public function renderReturnsSimpleTypoScriptValue(string $objectPath, array $configArray, array $subConfigArray)
+    {
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'typoscriptObjectPath' => $objectPath,
+                'data' => 'foo',
+                'table' => 'table',
+            ]
+        );
 
         $this->configurationManager->getConfiguration(Argument::any())->willReturn($configArray);
 
