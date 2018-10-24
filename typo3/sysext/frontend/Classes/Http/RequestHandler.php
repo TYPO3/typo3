@@ -126,10 +126,12 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
             $_GET = $queryParams;
             $GLOBALS['HTTP_GET_VARS'] = $_GET;
         }
-        if ($request->getMethod() === 'POST' && $request->getParsedBody() !== $_POST) {
+        if ($request->getMethod() === 'POST') {
             $parsedBody = $request->getParsedBody();
-            $_POST = $parsedBody;
-            $GLOBALS['HTTP_POST_VARS'] = $_POST;
+            if (is_array($parsedBody) && $parsedBody !== $_POST) {
+                $_POST = $parsedBody;
+                $GLOBALS['HTTP_POST_VARS'] = $_POST;
+            }
         }
     }
     /**
