@@ -73,7 +73,10 @@ class GeneralUtilityTest extends UnitTestCase
      */
     protected function tearDown()
     {
-        ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backupPackageManager);
+        GeneralUtility::flushInternalRuntimeCaches();
+        if ($this->backupPackageManager) {
+            ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backupPackageManager);
+        }
         parent::tearDown();
     }
 
@@ -4639,5 +4642,63 @@ class GeneralUtilityTest extends UnitTestCase
         GeneralUtility::getUrl('http://example.com', 0, $headers);
 
         $requestFactory->request(Argument::any(), Argument::any(), ['headers' => $expectedHeaders])->shouldHaveBeenCalled();
+    }
+
+    public function locationHeaderUrlDataProvider(): array
+    {
+        return [
+            'simple relative path' => [
+                'foo',
+                'foo.bar.test',
+                'http://foo.bar.test/foo'
+            ],
+            'path beginning with slash' => [
+                '/foo',
+                'foo.bar.test',
+                'http://foo.bar.test/foo'
+            ],
+            'path with full domain and https scheme' => [
+                'https://example.com/foo',
+                'foo.bar.test',
+                'https://example.com/foo'
+            ],
+            'path with full domain and http scheme' => [
+                'http://example.com/foo',
+                'foo.bar.test',
+                'http://example.com/foo'
+            ],
+            'path with full domain and relative scheme' => [
+                '//example.com/foo',
+                'foo.bar.test',
+                '//example.com/foo'
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @param string $path
+     * @param string $host
+     * @param string $expected
+     * @dataProvider locationHeaderUrlDataProvider
+     * @throws \TYPO3\CMS\Core\Exception
+     */
+    public function locationHeaderUrl($path, $host, $expected): void
+    {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getCurrentScript(),
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+        $_SERVER['HTTP_HOST'] = $host;
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $result = GeneralUtility::locationHeaderUrl($path);
+        self::assertSame($expected, $result);
     }
 }
