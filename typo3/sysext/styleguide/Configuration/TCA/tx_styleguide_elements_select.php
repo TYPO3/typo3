@@ -528,7 +528,21 @@ return [
                 'autoSizeMax' => 5,
             ],
         ],
-
+        'select_multiplesidebyside_9' => [
+            'exclude' => 1,
+            'label' => 'select_multiplesidebyside_9 maxitems=1',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
+                'maxitems' => 1,
+                'items' => [
+                    ['foo 1', 1],
+                    ['foo 2', 2],
+                    ['foo 3', 3],
+                    ['bar', 4],
+                ]
+            ],
+        ],
         'select_tree_1' => [
             'exclude' => 1,
             'label' => 'select_tree_1 pages, showHeader=true, expandAll=true, size=20, order by sorting, static items, description',
@@ -973,7 +987,7 @@ return [
                 --div--;renderType=selectMultipleSideBySide,
                     select_multiplesidebyside_1, select_multiplesidebyside_2, select_multiplesidebyside_3,
                     select_multiplesidebyside_4, select_multiplesidebyside_5, select_multiplesidebyside_6,
-                    select_multiplesidebyside_7, select_multiplesidebyside_8,
+                    select_multiplesidebyside_7, select_multiplesidebyside_8, select_multiplesidebyside_9,
                 --div--;renderType=selectTree,
                     select_tree_1, select_tree_2, select_tree_3, select_tree_4, select_tree_5, select_tree_6,
                 --div--;in flex,

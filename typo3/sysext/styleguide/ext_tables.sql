@@ -230,6 +230,7 @@ CREATE TABLE tx_styleguide_elements_select (
 	select_multiplesidebyside_6 text,
 	select_multiplesidebyside_7 text,
 	select_multiplesidebyside_8 text,
+	select_multiplesidebyside_9 text,
 
 	select_tree_1 text,
 	select_tree_2 text,
