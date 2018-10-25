@@ -63,6 +63,8 @@ class IfHasRoleViewHelper extends AbstractConditionViewHelper
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
+
         $this->registerArgument('role', 'string', 'The usergroup (either the usergroup uid or its title).');
     }
 
