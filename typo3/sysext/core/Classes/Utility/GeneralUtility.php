@@ -2632,14 +2632,21 @@ class GeneralUtility
      */
     public static function locationHeaderUrl($path)
     {
-        $uI = parse_url($path);
-        // relative to HOST
-        if ($path[0] === '/') {
-            $path = self::getIndpEnv('TYPO3_REQUEST_HOST') . $path;
-        } elseif (!$uI['scheme']) {
-            // No scheme either
-            $path = self::getIndpEnv('TYPO3_REQUEST_DIR') . $path;
+        if (strpos($path, '//') === 0) {
+            return $path;
         }
+
+        // relative to HOST
+        if (strpos($path, '/') === 0) {
+            return self::getIndpEnv('TYPO3_REQUEST_HOST') . $path;
+        }
+
+        $urlComponents = parse_url($path);
+        if (!($urlComponents['scheme'] ?? false)) {
+            // No scheme either
+            return self::getIndpEnv('TYPO3_REQUEST_DIR') . $path;
+        }
+
         return $path;
     }
 
@@ -2871,7 +2878,7 @@ class GeneralUtility
                         ? ($_SERVER['ORIG_PATH_INFO'] ?: $_SERVER['PATH_INFO'])
                         : ($_SERVER['ORIG_SCRIPT_NAME'] ?: $_SERVER['SCRIPT_NAME']);
                 // Add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
-                if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
+                if (self::cmpIP($_SERVER['REMOTE_ADDR'] ?? '', $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] ?? '')) {
                     if (self::getIndpEnv('TYPO3_SSL') && $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL']) {
                         $retVal = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL'] . $retVal;
                     } elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefix']) {
@@ -3054,7 +3061,7 @@ class GeneralUtility
                 $retVal = substr(self::getIndpEnv('TYPO3_REQUEST_URL'), strlen(self::getIndpEnv('TYPO3_SITE_URL')));
                 break;
             case 'TYPO3_SSL':
-                $proxySSL = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxySSL']);
+                $proxySSL = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] ?? null);
                 if ($proxySSL === '*') {
                     $proxySSL = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'];
                 }
