@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageStore;
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
@@ -59,12 +60,35 @@ class TranslationServiceTest extends UnitTestCase
      */
     public function setUp()
     {
+        $this->resetSingletonInstances = true;
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
         $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
         $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
         $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
+
+        $localizationFactory = $this->prophesize(LocalizationFactory::class);
+        $localizationFactory
+            ->getParsedData('EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf', 'default')
+            ->willReturn(include __DIR__ . '/Fixtures/locallang_form.php');
+        $localizationFactory
+            ->getParsedData('EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf', 'de')
+            ->willReturn(include __DIR__ . '/Fixtures/de.locallang_form.php');
+        $localizationFactory
+            ->getParsedData('EXT:form/Tests/Unit/Service/Fixtures/locallang_additional_text.xlf', 'default')
+            ->willReturn(include __DIR__ . '/Fixtures/locallang_additional_text.php');
+        $localizationFactory
+            ->getParsedData('EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_01.xlf', 'default')
+            ->willReturn(include __DIR__ . '/Fixtures/locallang_ceuid_suffix_01.php');
+        $localizationFactory
+            ->getParsedData('EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_02.xlf', 'default')
+            ->willReturn(include __DIR__ . '/Fixtures/locallang_ceuid_suffix_02.php');
+        $localizationFactory
+            ->getParsedData('EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf', 'default')
+            ->willReturn(include __DIR__ . '/Fixtures/locallang_text.php');
+
+        GeneralUtility::setSingletonInstance(LocalizationFactory::class, $localizationFactory->reveal());
 
         $this->mockConfigurationManager = $this->getAccessibleMock(ConfigurationManager::class, [
             'getConfiguration'
