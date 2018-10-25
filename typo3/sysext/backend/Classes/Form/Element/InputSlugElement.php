@@ -76,7 +76,7 @@ class InputSlugElement extends AbstractFormElement
         $resultArray = $this->initializeResultArray();
 
         $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
-        $languageId = (int)($row[$languageField][0] ?? 0);
+        $languageId = (int)($row[$languageField] ?? 0);
         $baseUrl = $this->getPrefix($this->data['site'], $languageId);
 
         $itemValue = $parameterArray['itemFormElValue'];
