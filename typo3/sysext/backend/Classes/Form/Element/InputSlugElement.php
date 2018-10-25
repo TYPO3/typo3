@@ -75,8 +75,11 @@ class InputSlugElement extends AbstractFormElement
         $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
 
-        $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
-        $languageId = (int)($row[$languageField] ?? 0);
+        $languageId = 0;
+        if (isset($GLOBALS['TCA'][$table]['ctrl']['languageField']) && !empty($GLOBALS['TCA'][$table]['ctrl']['languageField'])) {
+            $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+            $languageId = (int)((is_array($row[$languageField]) ? $row[$languageField][0] : $row[$languageField]) ?? 0);
+        }
         $baseUrl = $this->getPrefix($this->data['site'], $languageId);
 
         $itemValue = $parameterArray['itemFormElValue'];
