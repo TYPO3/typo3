@@ -1,0 +1,3 @@
+"sys_file_processedfile",,,,,,,,,,,,,,
+,"uid","tstamp","crdate","storage","original","identifier","name","configuration","configurationsha1","originalfilesha1","task_type","checksum","width","height"
+,1,1540470345,1540470345,1,83,"/image.png","image.png",,"013cecd923f59a410611402187055a763c68a59b","806835cf309d0d57d148dc5cd70ca166d04524ae","Image.CropScaleMask","678b062853",1100,479

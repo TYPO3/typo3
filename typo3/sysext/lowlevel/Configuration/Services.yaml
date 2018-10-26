@@ -42,6 +42,12 @@ services:
         command: 'cleanup:flexforms'
         description: 'Updates all database records which have a FlexForm field and the XML data does not match the chosen datastructure.'
 
+  TYPO3\CMS\Lowlevel\Command\CleanUpLocalProcessedFilesCommand:
+    tags:
+      - name: 'console.command'
+        command: 'cleanup:localprocessedfiles'
+        description: 'Delete processed files and their database records.'
+
   TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ProviderRegistry:
     public: true
 

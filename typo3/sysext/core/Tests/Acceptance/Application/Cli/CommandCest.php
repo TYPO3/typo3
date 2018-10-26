@@ -39,6 +39,7 @@ final class CommandCest
             ['command' => 'cache:warmup', 'code' => 0],
             ['command' => 'cleanup:flexforms', 'code' => 0],
             ['command' => 'cleanup:deletedrecords', 'code' => 0],
+            ['command' => 'cleanup:localprocessedfiles --dry-run -v', 'code' => 0],
             ['command' => 'cleanup:missingrelations --dry-run --update-refindex', 'code' => 0],
             ['command' => 'cleanup:orphanrecords', 'code' => 0],
             ['command' => 'cleanup:previewlinks', 'code' => 0],
