@@ -34,7 +34,7 @@ which is added by the curly braces can then be statically or dynamically resolve
 commonly known a Mapper.
 
 Enhancers and aspects are activated and configured in a site configuration, currently possible by modifying the
-site's :file:`config.yml` and adding the :yaml:`routeEnhancers` section manually, as there is no UI available for
+site's :file:`config.yaml` and adding the :yaml:`routeEnhancers` section manually, as there is no UI available for
 this configuration. See examples below.
 
 It is possible to use the same enhancers multiple times with different configurations, however, be aware that
