@@ -38,7 +38,9 @@ class CoreCommand extends Command
      */
     protected function configure()
     {
-        $this->setHidden(true);
+        if (method_exists($this, 'setHidden')) {
+            $this->setHidden(true);
+        }
     }
 
     /**
