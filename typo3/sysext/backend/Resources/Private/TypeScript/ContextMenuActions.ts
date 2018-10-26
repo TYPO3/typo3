@@ -34,8 +34,19 @@ class ContextMenuActions {
    * @param {number} uid
    */
   public static editRecord(table: string, uid: number): void {
+    let overrideVals = '',
+      pageLanguageId = $(this).data('pages-language-uid');
+
+    if (pageLanguageId) {
+      // Disallow manual adjustment of the language field for pages
+      overrideVals = '&overrideVals[pages][sys_language_uid]=' + pageLanguageId;
+    }
+
     Viewport.ContentContainer.setUrl(
-      top.TYPO3.settings.FormEngine.moduleUrl + '&edit[' + table + '][' + uid + ']=edit&returnUrl=' + ContextMenuActions.getReturnUrl()
+      top.TYPO3.settings.FormEngine.moduleUrl
+        + '&edit[' + table + '][' + uid + ']=edit'
+        + overrideVals
+        + '&returnUrl=' + ContextMenuActions.getReturnUrl()
     );
   }
 

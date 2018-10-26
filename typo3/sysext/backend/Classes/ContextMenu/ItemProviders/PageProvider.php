@@ -466,6 +466,11 @@ class PageProvider extends RecordProvider
                 'data-pages-new-multiple-url' => (string)$uriBuilder->buildUriFromRoute('pages_new', ['id' => $this->record['uid']]),
             ];
         }
+        if ($itemName === 'edit') {
+            $attributes = [
+                'data-pages-language-uid' => $this->record['sys_language_uid']
+            ];
+        }
         return $attributes;
     }
 

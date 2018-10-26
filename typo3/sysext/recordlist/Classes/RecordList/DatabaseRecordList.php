@@ -1988,6 +1988,8 @@ class DatabaseRecordList
             $params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
             $iconIdentifier = 'actions-open';
             if ($table === 'pages') {
+                // Disallow manual adjustment of the language field for pages
+                $params .= '&overrideVals[pages][sys_language_uid]=' . (int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
                 $iconIdentifier = 'actions-page-open';
             }
             $overlayIdentifier = !$this->isEditable($table) ? 'overlay-readonly' : null;

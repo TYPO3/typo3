@@ -1327,6 +1327,7 @@ class PageLayoutView implements LoggerAwareInterface
                                 $pageLocalizationRecord['uid'] => 'edit'
                             ]
                         ],
+                        // Disallow manual adjustment of the language field for pages
                         'overrideVals' => [
                             'pages' => [
                                 'sys_language_uid' => $lP

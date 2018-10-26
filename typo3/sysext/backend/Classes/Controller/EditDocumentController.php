@@ -2313,10 +2313,19 @@ class EditDocumentController
                                 $addOption = false;
                             }
                         } else {
-                            $href = (string)$uriBuilder->buildUriFromRoute('record_edit', [
+                            $params = [
                                 'edit[' . $table . '][' . $rowsByLang[$languageId]['uid'] . ']' => 'edit',
                                 'returnUrl' => $this->retUrl
-                            ]);
+                            ];
+                            if ($table === 'pages') {
+                                // Disallow manual adjustment of the language field for pages
+                                $params['overrideVals'] = [
+                                    'pages' => [
+                                        'sys_language_uid' => $languageId
+                                    ]
+                                ];
+                            }
+                            $href = (string)$uriBuilder->buildUriFromRoute('record_edit', $params);
                         }
                         if ($addOption) {
                             $menuItem = $languageMenu->makeMenuItem()
