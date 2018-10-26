@@ -4029,7 +4029,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         foreach ($additionalHeaders as $headerConfig) {
             list($header, $value) = GeneralUtility::trimExplode(':', $headerConfig['header'], false, 2);
             if ($headerConfig['statusCode']) {
-                $response = $response->withStatus($headerConfig['statusCode']);
+                $response = $response->withStatus((int)$headerConfig['statusCode']);
             }
             if ($headerConfig['replace']) {
                 $response = $response->withHeader($header, $value);
@@ -4241,7 +4241,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             'Retry-after' => '3600',
             'Pragma' => 'no-cache',
             'Cache-control' => 'no-cache',
-            'Expire' => 0,
+            'Expires' => '0',
         ];
     }
     /********************************************
