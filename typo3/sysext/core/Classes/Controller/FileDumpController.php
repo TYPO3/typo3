@@ -96,12 +96,13 @@ class FileDumpController
     /**
      * @param ServerRequestInterface $request
      * @param string $parameter
-     * @return mixed|null
+     * @return string
      */
     protected function getGetOrPost(ServerRequestInterface $request, $parameter)
     {
-        return isset($request->getParsedBody()[$parameter])
+        $value = isset($request->getParsedBody()[$parameter])
             ? $request->getParsedBody()[$parameter]
-            : (isset($request->getQueryParams()[$parameter]) ? $request->getQueryParams()[$parameter] : null);
+            : (isset($request->getQueryParams()[$parameter]) ? $request->getQueryParams()[$parameter] : '');
+        return (string)$value;
     }
 }
