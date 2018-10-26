@@ -145,12 +145,18 @@ class RecordState
     }
 
     /**
-     * Resolve identifier of node used as aggregate. For translated pages
-     * that would result in the `uid` of the outer-most language parent page.
+     * Resolves node identifier (`pid`) of current subject. For translated pages
+     * that would result in the `uid` of the outer-most language parent page
+     * otherwise it's the `pid` of the current subject.
+     *
+     * Example:
+     * + pages: uid: 10, pid: 5, sys_language_uid: 0, l10n_parent: 0  -> returns 5
+     * + pages: uid: 11, pid: 5, sys_language_uid: 1, l10n_parent: 10 -> returns 10
+     * + other: uid: 12, pid: 10 -> returns 10
      *
      * @return string
      */
-    public function resolveAggregateNodeIdentifier(): string
+    public function resolveNodeIdentifier(): string
     {
         if ($this->subject->isNode()
             && $this->context->getLanguageId() > 0
@@ -158,7 +164,33 @@ class RecordState
         ) {
             return $this->languageLink->getHead()->getSubject()->getIdentifier();
         }
+        return $this->node->getIdentifier();
+    }
 
+    /**
+     * Resolves node identifier used as aggregate for current subject. For translated
+     * pages that would result in the `uid` of the outer-most language parent page,
+     * for pages it's the identifier of the current subject, otherwise it's
+     * the `pid` of the current subject.
+     *
+     * Example:
+     * + pages: uid: 10, pid: 5, sys_language_uid: 0, l10n_parent: 0  -> returns 10
+     * + pages: uid: 11, pid: 5, sys_language_uid: 1, l10n_parent: 10 -> returns 10
+     * + other: uid: 12, pid: 10 -> returns 10
+     *
+     * @return string
+     */
+    public function resolveNodeAggregateIdentifier(): string
+    {
+        if ($this->subject->isNode()
+            && $this->context->getLanguageId() > 0
+            && $this->languageLink !== null
+        ) {
+            return $this->languageLink->getHead()->getSubject()->getIdentifier();
+        }
+        if ($this->subject->isNode()) {
+            return $this->subject->getIdentifier();
+        }
         return $this->node->getIdentifier();
     }
 }

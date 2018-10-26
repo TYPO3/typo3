@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\Model\RecordState;
+use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -213,7 +214,7 @@ class SlugHelper
      */
     public function isUniqueInPid(string $slug, RecordState $state): bool
     {
-        $pageId = (int)$state->resolveAggregateNodeIdentifier();
+        $pageId = (int)$state->resolveNodeIdentifier();
         $recordId = $state->getSubject()->getIdentifier();
         $languageId = $state->getContext()->getLanguageId();
 
@@ -245,7 +246,7 @@ class SlugHelper
      */
     public function isUniqueInSite(string $slug, RecordState $state): bool
     {
-        $pageId = (int)$state->resolveAggregateNodeIdentifier();
+        $pageId = (int)$state->resolveNodeIdentifier();
         $recordId = $state->getSubject()->getIdentifier();
         $languageId = $state->getContext()->getLanguageId();
 
@@ -273,7 +274,10 @@ class SlugHelper
         $siteOfCurrentRecord = $siteMatcher->matchByPageId($pageId);
         foreach ($records as $record) {
             try {
-                $siteOfExistingRecord = $siteMatcher->matchByPageId((int)$record['uid']);
+                $recordState = RecordStateFactory::forName($this->tableName)->fromArray($record);
+                $siteOfExistingRecord = $siteMatcher->matchByPageId(
+                    (int)$recordState->resolveNodeAggregateIdentifier()
+                );
             } catch (SiteNotFoundException $exception) {
                 // In case not site is found, the record is not
                 // organized in any site or pseudo-site
@@ -350,6 +354,14 @@ class SlugHelper
         if ($this->workspaceEnabled) {
             $fieldNames[] = 't3ver_state';
         }
+        $languageFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null;
+        if (is_string($languageFieldName)) {
+            $fieldNames[] = $languageFieldName;
+        }
+        $languageParentFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['transOrigPointerField'] ?? null;
+        if (is_string($languageParentFieldName)) {
+            $fieldNames[] = $languageParentFieldName;
+        }
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->tableName);
         $queryBuilder->getRestrictions()
@@ -392,15 +404,15 @@ class SlugHelper
      */
     protected function applyLanguageConstraint(QueryBuilder $queryBuilder, int $languageId)
     {
-        $languageField = $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null;
-        if (!is_string($languageField)) {
+        $languageFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null;
+        if (!is_string($languageFieldName)) {
             return;
         }
 
         // Only check records of the given language
         $queryBuilder->andWhere(
             $queryBuilder->expr()->eq(
-                $languageField,
+                $languageFieldName,
                 $queryBuilder->createNamedParameter($languageId, \PDO::PARAM_INT)
             )
         );
