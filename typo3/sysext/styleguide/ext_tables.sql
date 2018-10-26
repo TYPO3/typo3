@@ -246,7 +246,7 @@ CREATE TABLE tx_styleguide_elements_select (
 
 
 CREATE TABLE tx_styleguide_elements_select_single_12_foreign (
-	group_1 text
+	fal_1 text
 );
 
 

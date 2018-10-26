@@ -97,6 +97,7 @@ class FieldGeneratorResolver
         FieldGenerator\TypeSelectRenderTypeSelectTree::class,
         FieldGenerator\TypeSelect::class,
 
+        FieldGenerator\TypeInlineFalSelectSingle12Foreign::class,
         FieldGenerator\TypeInlineFal::class,
         FieldGenerator\TypeInlineExpandsingle::class,
         FieldGenerator\TypeInlineUsecombination::class,

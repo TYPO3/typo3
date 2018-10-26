@@ -2,15 +2,14 @@
 return [
     'ctrl' => [
         'title' => 'Form engine elements - select foreign single_12',
-        'label' => 'group_1',
+        'label' => 'fal_1',
         'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         'sortby' => 'sorting',
-        'selicon_field' => 'group_1',
-        'selicon_field_path' => 'uploads/tx_styleguide',
+        'selicon_field' => 'fal_1',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
@@ -82,18 +81,18 @@ return [
         ],
 
 
-        'group_1' => [
-            'label' => 'group_1',
+        'fal_1' => [
+            'label' => 'fal_1 selicon_field',
             'exclude' => 1,
-            'config' => [
-                'type' => 'group',
-                'internal_type' => 'file',
-                'allowed' => 'jpg,gif,png,svg',
-                'uploadfolder' => 'uploads/tx_styleguide',
-                'size' => 1,
-                'maxitems' => 1,
-            ],
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+                'fal_1',
+                [
+                    'maxitems' => 1,
+                ],
+                $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext']
+            ),
         ],
+
 
 
     ],
@@ -101,7 +100,7 @@ return [
 
     'types' => [
         '0' => [
-            'showitem' => 'group_1',
+            'showitem' => 'fal_1',
         ],
     ],
 

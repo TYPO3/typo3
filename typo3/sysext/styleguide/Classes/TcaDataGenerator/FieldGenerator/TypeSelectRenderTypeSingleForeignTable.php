@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
  */
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\File\BasicFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
+use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
 
 /**
  * Generate data for type=select fields.
@@ -48,40 +48,28 @@ class TypeSelectRenderTypeSingleForeignTable extends AbstractFieldGenerator impl
      */
     public function generate(array $data): string
     {
-        // Create 2 child rows in tx_styleguide_elements_select_single_12_foreign
-        // and select the first one
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('tx_styleguide_elements_select_single_12_foreign');
-
-        // Just in case this dir does not exist yet
-        GeneralUtility::mkdir(PATH_site . 'uploads/tx_styleguide');
-        $files = [
-            'bus_lane.jpg',
-            'telephone_box.jpg',
-        ];
-
-        $lastUid = '';
-        foreach ($files as $fileName) {
-            $basicFileUtility = GeneralUtility::makeInstance(BasicFileUtility::class);
-            $sourceFile = GeneralUtility::getFileAbsFileName('EXT:styleguide/Resources/Public/Images/Pictures/' . $fileName);
-            $targetFile = $basicFileUtility->getUniqueName($sourceFile, PATH_site . 'uploads/tx_styleguide');
-            GeneralUtility::upload_copy_move($sourceFile, $targetFile);
-            // in case of exception at this point (basename requires parameter, null given) => empty uploads/tx_styleguide
-            $finalFileName = basename($targetFile);
-
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $connection = $connectionPool->getConnectionForTable('tx_styleguide_elements_select_single_12_foreign');
+        $childRowsToCreate = 2;
+        for ($i = 0; $i < $childRowsToCreate; $i++) {
             // Insert an empty row again to have the uid already. This is useful for
             // possible further inline that may be attached to this child.
             $childFieldValues = [
                 'pid' => $data['fieldValues']['pid'],
-                'group_1' => $finalFileName,
             ];
             $connection->insert(
                 'tx_styleguide_elements_select_single_12_foreign',
                 $childFieldValues
             );
-            $lastUid = $connection->lastInsertId('tx_styleguide_elements_select_single_12_foreign');
+            $childFieldValues['uid'] = $connection->lastInsertId('tx_styleguide_elements_select_single_12_foreign');
+            $recordData = GeneralUtility::makeInstance(RecordData::class);
+            $childFieldValues = $recordData->generate('tx_styleguide_elements_select_single_12_foreign', $childFieldValues);
+            $connection->update(
+                'tx_styleguide_elements_select_single_12_foreign',
+                $childFieldValues,
+                [ 'uid' => $childFieldValues['uid'] ]
+            );
         }
-
-        return (string)$lastUid;
+        return (string)$childFieldValues['uid'];
     }
 }
