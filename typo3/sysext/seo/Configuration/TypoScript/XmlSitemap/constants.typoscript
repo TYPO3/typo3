@@ -12,7 +12,7 @@ plugin.tx_seo {
     xmlSitemap {
       sitemaps {
         pages {
-          excludedDoktypes = 7, 3, 254, 255, 199
+          excludedDoktypes = 3, 4, 6, 7, 199, 254, 255
           additionalWhere = no_index = 0
         }
       }
