@@ -287,29 +287,6 @@ return [
                                     </ROOT>
                                 </sDb>
 
-                                <sFile>
-                                    <ROOT>
-                                        <type>array</type>
-                                        <TCEforms>
-                                            <sheetTitle>internal_type=file</sheetTitle>
-                                        </TCEforms>
-                                        <el>
-                                            <group_file_1>
-                                                <TCEforms>
-                                                    <label>group_file_1</label>
-                                                    <config>
-                                                        <type>group</type>
-                                                        <internal_type>file</internal_type>
-                                                        <allowed>jpg, jpeg, png, gif</allowed>
-                                                        <size>3</size>
-                                                        <uploadfolder>uploads/tx_styleguide/</uploadfolder>
-                                                    </config>
-                                                </TCEforms>
-                                            </group_file_1>
-                                        </el>
-                                    </ROOT>
-                                </sFile>
-
                                 <sSection>
                                     <ROOT>
                                         <type>array</type>
