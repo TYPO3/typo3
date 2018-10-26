@@ -58,6 +58,9 @@
 			<trans-unit id="pages.canonical_link">
 				<source>Canonical link</source>
 			</trans-unit>
+			<trans-unit id="pages.tabs.socialmedia">
+				<source>Social media</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
