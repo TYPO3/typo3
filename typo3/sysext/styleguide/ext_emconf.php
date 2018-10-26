@@ -7,7 +7,6 @@ $EM_CONF[$_EXTKEY] = array(
     'author_email' => 'felix-source@phorax.com',
     'author_company' => 'PHORAX',
     'state' => 'stable',
-    'uploadfolder' => '1',
     'createDirs' => '',
     'clearCacheOnLoad' => 0,
     'version' => '8.0.7',

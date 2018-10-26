@@ -171,9 +171,6 @@ class Generator
             }
         }
 
-        // Delete all Images in uploads/tx_styleguide/
-        array_map('unlink', glob("../uploads/tx_styleguide/*.jpg"));
-
         // Delete demo users
         $demoUserUids = $recordFinder->findUidsOfDemoBeUsers();
         if (!empty($demoUserUids)) {
