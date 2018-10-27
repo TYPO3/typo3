@@ -307,7 +307,7 @@ class EditFileController
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
 
-            return new RedirectResponse($this->returnUrl, HttpUtility::HTTP_STATUS_500);
+            return new RedirectResponse($this->returnUrl, 500);
         }
 
         // Rendering of the output via fluid
