@@ -159,7 +159,7 @@ function jumpToUrl(URL) {
      *
      * @var bool
      */
-    protected $useCompatibilityTag = true;
+    protected $useCompatibilityTag = false;
 
     /**
      * X-Ua-Compatible version output in meta tag
