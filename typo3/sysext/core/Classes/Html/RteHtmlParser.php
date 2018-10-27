@@ -574,7 +574,12 @@ class RteHtmlParser extends HtmlParser
                     }
                 } else {
                     // Otherwise store the link as <a> tag as default by TYPO3, with the new link service syntax
-                    $tagAttributes['href'] = $linkService->asString($linkInformation);
+                    try {
+                        $tagAttributes['href'] = $linkService->asString($linkInformation);
+                    } catch (UnknownLinkHandlerException $e) {
+                        $tagAttributes['href'] = $linkInformation['href'] ?? $tagAttributes['href'];
+                    }
+
                     $blockSplit[$k] = '<a ' . GeneralUtility::implodeAttributes($tagAttributes, true) . '>'
                         . $this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])) . '</a>';
                 }
