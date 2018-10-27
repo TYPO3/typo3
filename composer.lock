@@ -2219,21 +2219,21 @@
         },
         {
             "name": "typo3/cms-composer-installers",
-            "version": "v2.2.0",
+            "version": "v2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/CmsComposerInstallers.git",
-                "reference": "0f8092b107e8e3524a40e531fd7594ab59575a2f"
+                "reference": "c2f6634171d5936a791925a161f7076ce4665ddf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/0f8092b107e8e3524a40e531fd7594ab59575a2f",
-                "reference": "0f8092b107e8e3524a40e531fd7594ab59575a2f",
+                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/c2f6634171d5936a791925a161f7076ce4665ddf",
+                "reference": "c2f6634171d5936a791925a161f7076ce4665ddf",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.0.0",
-                "php": ">=7.0.0 <7.3"
+                "php": ">=7.0.0 <7.4"
             },
             "conflict": {
                 "composer/installers": "<1.0.24 || >1.0.24"
@@ -2282,7 +2282,7 @@
                 "installer",
                 "typo3"
             ],
-            "time": "2018-04-05T21:00:40+00:00"
+            "time": "2018-10-27T19:55:20+00:00"
         },
         {
             "name": "typo3/phar-stream-wrapper",
