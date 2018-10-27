@@ -75,7 +75,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * List of all tags that are allowed by default
      * @var string
      */
-    protected $defaultAllowedTagsList = 'b,i,u,a,img,br,div,center,pre,font,hr,sub,sup,p,strong,em,li,ul,ol,blockquote,strike,span';
+    protected $defaultAllowedTagsList = 'b,i,u,a,img,br,div,center,pre,font,hr,sub,sup,p,strong,em,li,ul,ol,blockquote,strike,span,abbr,acronym,dfn';
 
     /**
      * Set this to the pid of the record manipulated by the class.
