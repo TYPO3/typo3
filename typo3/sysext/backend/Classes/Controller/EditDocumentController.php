@@ -2464,9 +2464,15 @@ class EditDocumentController
                     )
                 )
                 ->execute();
-            $availableLanguages = [
-                0 => $allLanguages[0]
-            ];
+
+            $availableLanguages = [];
+
+            if ($allLanguages[0] ?? false) {
+                $availableLanguages = [
+                    0 => $allLanguages[0]
+                ];
+            }
+
             while ($row = $statement->fetch()) {
                 $languageId = (int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
                 if (isset($allLanguages[$languageId])) {
