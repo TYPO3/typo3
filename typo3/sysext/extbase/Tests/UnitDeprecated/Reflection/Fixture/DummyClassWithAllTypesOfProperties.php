@@ -21,6 +21,32 @@ namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Reflection\Fixture;
  */
 class DummyClassWithAllTypesOfProperties
 {
+    public $publicProperty;
+
+    protected $protectedProperty;
+
+    private $privateProperty;
+
+    public static $publicStaticProperty;
+
+    protected static $protectedStaticProperty;
+
+    private static $privateStaticProperty;
+
+    /**
+     * @license
+     * @copyright
+     * @author
+     * @version
+     */
+    public $propertyWithIgnoredTags;
+
+    /**
+     * @inject
+     * @var DummyClassWithAllTypesOfProperties
+     */
+    public $propertyWithInjectAnnotation;
+
     /**
      * @transient
      */
@@ -36,4 +62,9 @@ class DummyClassWithAllTypesOfProperties
      * @cascade remove
      */
     public $propertyWithCascadeAnnotationWithoutVarAnnotation;
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfProperties>
+     */
+    public $propertyWithObjectStorageAnnotation;
 }

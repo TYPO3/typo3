@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
+namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Reflection;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -220,7 +220,7 @@ class ReflectionServiceTest extends UnitTestCase
         $this->assertTrue($service->isPropertyTaggedWith(
             Fixture\DummyClassWithAllTypesOfProperties::class,
             'propertyWithInjectAnnotation',
-            'extbase\inject'
+            'inject'
         ));
 
         $this->assertFalse($service->isPropertyTaggedWith(
@@ -238,7 +238,7 @@ class ReflectionServiceTest extends UnitTestCase
         $this->assertFalse($service->isPropertyTaggedWith(
             'NonExistantNamespace\\NonExistantClass',
             'propertyWithInjectAnnotation',
-            'extbase\inject'
+            'inject'
         ));
     }
 
@@ -269,7 +269,7 @@ class ReflectionServiceTest extends UnitTestCase
         $service = new ReflectionService();
         $this->assertSame(
             [
-                'extbase\inject' => [],
+                'inject' => [],
                 'var' => [
                     'DummyClassWithAllTypesOfProperties'
                 ]

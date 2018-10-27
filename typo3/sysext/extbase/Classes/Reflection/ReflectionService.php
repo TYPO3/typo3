@@ -360,7 +360,7 @@ class ReflectionService implements SingletonInterface
         try {
             $classSchema = new ClassSchema($className);
         } catch (\ReflectionException $e) {
-            throw new Exception\UnknownClassException('The classname "' . $className . '" was not found and thus can not be reflected.', 1278450972, $e);
+            throw new Exception\UnknownClassException($e->getMessage() . '. Reflection failed.', 1278450972, $e);
         }
         $this->classSchemata[$className] = $classSchema;
         $this->dataCacheNeedsUpdate = true;
