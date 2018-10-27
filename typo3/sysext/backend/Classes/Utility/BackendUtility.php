@@ -406,7 +406,8 @@ class BackendUtility
                     't3ver_wsid' => null,
                     't3ver_state' => null,
                     't3ver_stage' => null,
-                    'backend_layout_next_level' => null
+                    'backend_layout_next_level' => null,
+                    'hidden' => null
                 ];
             }
             $c = count($theRowArray);
@@ -426,6 +427,7 @@ class BackendUtility
                     't3ver_state',
                     't3ver_stage',
                     'backend_layout_next_level',
+                    'hidden'
                 ];
                 $fields = array_merge($fields, $additionalFields);
                 $output[$c] = array_intersect_key($val, array_combine($fields, $fields));
@@ -477,6 +479,7 @@ class BackendUtility
                     't3ver_state',
                     't3ver_stage',
                     'backend_layout_next_level',
+                    'hidden',
                     ...$additionalFields
                 )
                 ->from('pages')
