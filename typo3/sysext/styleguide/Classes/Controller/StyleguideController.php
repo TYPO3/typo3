@@ -69,7 +69,7 @@ class StyleguideController extends ActionController
         // Hand over flash message queue to module template
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
         $this->view->assign('actions', ['index', 'typography', 'tca', 'trees', 'tab', 'tables', 'avatar', 'buttons',
-            'infobox', 'flashMessages', 'icons', 'debug', 'helpers']);
+            'infobox', 'flashMessages', 'icons', 'debug', 'helpers', 'modal']);
         $this->view->assign('currentAction', $this->request->getControllerActionName());
 
         // Shortcut button
@@ -253,4 +253,7 @@ class StyleguideController extends ActionController
         $tabs = $module->getDynamicTabMenu($menuItems, 'ident');
         $this->view->assign('tabs', $tabs);
     }
+
+    public function modalAction()
+    {}
 }

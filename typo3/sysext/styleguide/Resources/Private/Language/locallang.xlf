@@ -30,6 +30,9 @@
 			<trans-unit id="tab" xml:space="preserve">
 				<source>Tab</source>
 			</trans-unit>
+			<trans-unit id="modal" xml:space="preserve">
+				<source>Modal</source>
+			</trans-unit>
 			<trans-unit id="trees" xml:space="preserve">
 				<source>Trees</source>
 			</trans-unit>
