@@ -131,7 +131,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
 
         $this->siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 
-        $this->currentLinkParts = $queryParameters['curUrl'] ?? [];
+        $this->currentLinkParts = $queryParameters['P']['curUrl'] ?? [];
         $this->editorId = $queryParameters['editorId'];
         $this->contentsLanguage = $queryParameters['contentsLanguage'];
         $this->RTEtsConfigParams = $queryParameters['RTEtsConfigParams'] ?? null;
@@ -561,9 +561,9 @@ class BrowseLinksController extends AbstractLinkBrowserController
     {
         return [
             'act' => $overrides['act'] ?? $this->displayedLinkHandlerId,
+            'P' => $overrides['P'] ?? $this->parameters,
             'editorId' => $this->editorId,
-            'contentsLanguage' => $this->contentsLanguage,
-            'P' => $this->parameters
+            'contentsLanguage' => $this->contentsLanguage
         ];
     }
 }

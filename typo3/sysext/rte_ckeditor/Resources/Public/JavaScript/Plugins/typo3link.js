@@ -58,12 +58,12 @@
       element = CKEDITOR.plugins.link.getSelectedLink(editor);
     }
     if (element) {
-      additionalParameters = '&curUrl[url]=' + encodeURIComponent(element.getAttribute('href'));
+      additionalParameters = '&P[curUrl][url]=' + encodeURIComponent(element.getAttribute('href'));
       var i = 0,
         attributeNames = ["target", "class", "title", "rel"];
       for (i = 0; i < attributeNames.length; ++i) {
         if (element.getAttribute(attributeNames[i])) {
-          additionalParameters += '&curUrl[' + attributeNames[i] + ']=';
+          additionalParameters += '&P[curUrl][' + attributeNames[i] + ']=';
           additionalParameters += encodeURIComponent(element.getAttribute(attributeNames[i]));
         }
       }
@@ -71,7 +71,7 @@
       var additionalAttributes = getAdditionalAttributes(editor);
       for (i = additionalAttributes.length; --i >= 0;) {
         if (element.hasAttribute(additionalAttributes[i])) {
-          additionalParameters += '&curUrl[' + additionalAttributes[i] + ']=';
+          additionalParameters += '&P[curUrl][' + additionalAttributes[i] + ']=';
           additionalParameters += encodeURIComponent(element.getAttribute(additionalAttributes[i]));
         }
       }
