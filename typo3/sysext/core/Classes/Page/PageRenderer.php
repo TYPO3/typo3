@@ -1704,7 +1704,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             if (!empty($properties)) {
                 $metaTags[] = $properties;
 
-                if ($cache instanceof FrontendInterface && !$existingCacheEntry) {
+                if ($cache instanceof FrontendInterface && !$existingCacheEntry && ($this->getTypoScriptFrontendController()->page['uid'] ?? false)) {
                     $cache->set(
                         $cacheIdentifier,
                         $properties,
