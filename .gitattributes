@@ -23,6 +23,7 @@
 *.ts text eol=lf
 *.typoscript text eol=lf
 *.xlf text eol=lf
+*.sh text eol=lf
 *.sql text eol=lf
 *.t3s text eol=lf
 *.txt text eol=lf
