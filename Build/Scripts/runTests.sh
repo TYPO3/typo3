@@ -53,6 +53,7 @@ Options:
             - cglGit: test and fix latest committed patch for CGL compliance
             - cglAll: test and fix all core php files
             - checkAnnotations: check php code for allowed annotations
+            - checkBom: check UTF-8 files do not contain BOM
             - checkComposer: check composer.json files for version integrity
             - checkCsvFixtures: test integrity of functional test csv fixtures
             - checkExceptionCodes: test core for duplicate exception codes
@@ -289,6 +290,12 @@ case ${TEST_SUITE} in
     checkAnnotations)
         setUpDockerComposeDotEnv
         docker-compose run check_annotations
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
+    checkBom)
+        setUpDockerComposeDotEnv
+        docker-compose run check_bom
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;

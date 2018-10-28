@@ -936,6 +936,24 @@ abstract public class AbstractCoreSpec {
                         "checkIntegrityCsvFixtures"
                     ),
                 new ScriptTask()
+                    .description("Run UTF-8 BOM check")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "function checkIntegrityBom() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}; ./Build/Scripts/checkUtf8Bom.sh $*\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "checkIntegrityBom"
+                    ),
+                new ScriptTask()
                     .description("Run composer.json integrity check")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
