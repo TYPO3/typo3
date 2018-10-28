@@ -685,8 +685,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function checkFullLanguagesAccess($table, $record)
     {
-        $recordLocalizationAccess = $this->checkLanguageAccess(0);
-        if ($recordLocalizationAccess && (BackendUtility::isTableLocalizable($table) || $table === 'pages')) {
+        if (!$this->checkLanguageAccess(0)) {
+            return false;
+        }
+        if (BackendUtility::isTableLocalizable($table) || $table === 'pages') {
             if ($table === 'pages') {
                 $l10nTable = 'pages_language_overlay';
                 $pointerField = $GLOBALS['TCA'][$l10nTable]['ctrl']['transOrigPointerField'];
@@ -703,7 +705,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                 ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
 
-            $recordLocalization = $queryBuilder->select('*')
+            $recordLocalizations = $queryBuilder->select('*')
                 ->from($l10nTable)
                 ->where(
                     $queryBuilder->expr()->eq(
@@ -711,18 +713,16 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                         $queryBuilder->createNamedParameter($pointerValue, \PDO::PARAM_INT)
                     )
                 )
-                ->setMaxResults(1)
                 ->execute()
-                ->fetch();
+                ->fetchAll();
 
-            if (is_array($recordLocalization)) {
-                $languageAccess = $this->checkLanguageAccess(
-                    $recordLocalization[$GLOBALS['TCA'][$l10nTable]['ctrl']['languageField']]
-                );
-                $recordLocalizationAccess = $recordLocalizationAccess && $languageAccess;
+            foreach ($recordLocalizations as $recordLocalization) {
+                if (!$this->checkLanguageAccess($recordLocalization[$GLOBALS['TCA'][$l10nTable]['ctrl']['languageField']])) {
+                    return false;
+                }
             }
         }
-        return $recordLocalizationAccess;
+        return true;
     }
 
     /**
