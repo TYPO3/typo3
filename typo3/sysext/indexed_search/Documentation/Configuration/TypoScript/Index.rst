@@ -60,7 +60,7 @@ displayForbiddenRecords
 .. _show-resultnumber:
 
 displayResultNumber
-"""""""""""""""""
+"""""""""""""""""""
 
 .. container:: table-row
 
