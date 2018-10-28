@@ -1272,7 +1272,7 @@ class BackendUtility
         $relationHandler->start(
             $element[$fieldName],
             $configuration['foreign_table'],
-            $configuration['MM'],
+            $configuration['MM'] ?? '',
             $element['uid'],
             $tableName,
             $configuration

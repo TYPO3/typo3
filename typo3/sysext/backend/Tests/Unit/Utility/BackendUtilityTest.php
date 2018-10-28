@@ -1052,4 +1052,94 @@ class BackendUtilityTest extends UnitTestCase
         $result = BackendUtility::getPagesTSconfig($pageId);
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @test
+     */
+    public function returnNullForMissingTcaConfigInResolveFileReferences()
+    {
+        $tableName = 'table_a';
+        $fieldName = 'field_a';
+        $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] = [];
+        $this->assertNull(BackendUtility::resolveFileReferences($tableName, $fieldName, []));
+    }
+
+    /**
+     * @test
+     * @dataProvider unfitResolveFileReferencesTableConfig
+     */
+    public function returnNullForUnfitTableConfigInResolveFileReferences(array $config)
+    {
+        $tableName = 'table_a';
+        $fieldName = 'field_a';
+        $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] = $config;
+        $this->assertNull(BackendUtility::resolveFileReferences($tableName, $fieldName, []));
+    }
+
+    public function unfitResolveFileReferencesTableConfig(): array
+    {
+        return [
+            'invalid table' => [
+                [
+                    'type' => 'inline',
+                    'foreign_table' => 'table_b',
+                ],
+            ],
+            'empty table' => [
+                [
+                    'type' => 'inline',
+                    'foreign_table' => '',
+                ],
+            ],
+            'invalid type' => [
+                [
+                    'type' => 'select',
+                    'foreign_table' => 'sys_file_reference',
+                ],
+            ],
+            'empty type' => [
+                [
+                    'type' => '',
+                    'foreign_table' => 'sys_file_reference',
+                ],
+            ],
+            'empty' => [
+                [
+                    'type' => '',
+                    'foreign_table' => '',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function resolveFileReferencesReturnsEmptyResultForNoReferencesAvailable()
+    {
+        $tableName = 'table_a';
+        $fieldName = 'field_a';
+        $relationHandler = $this->prophesize(RelationHandler::class);
+        $relationHandler->start(
+            'foo',
+            'sys_file_reference',
+            '',
+            42,
+            $tableName,
+            ['type' => 'inline', 'foreign_table' => 'sys_file_reference']
+        )->shouldBeCalled();
+        $relationHandler->tableArray = ['sys_file_reference' => []];
+        $relationHandler->processDeletePlaceholder()->shouldBeCalled();
+        GeneralUtility::addInstance(RelationHandler::class, $relationHandler->reveal());
+        $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] = [
+            'type' => 'inline',
+            'foreign_table' => 'sys_file_reference',
+        ];
+        $elementData = [
+            $fieldName => 'foo',
+            'uid' => 42,
+        ];
+
+        $this->assertEmpty(BackendUtility::resolveFileReferences($tableName, $fieldName, $elementData));
+    }
 }
