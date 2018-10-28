@@ -3993,7 +3993,7 @@ class BackendUtility
             }
             // If ID of current online version is found, look up the PID value of that:
             if ($oid
-                && ($ignoreWorkspaceMatch || (int)$wsid === (int)static::getBackendUserAuthentication()->workspace)
+                && ($ignoreWorkspaceMatch || (static::getBackendUserAuthentication() instanceof BackendUserAuthentication && (int)$wsid === (int)static::getBackendUserAuthentication()->workspace))
             ) {
                 $oidRec = self::getRecord($table, $oid, 'pid');
                 if (is_array($oidRec)) {
@@ -4040,7 +4040,7 @@ class BackendUtility
         // I don't know if this move can be useful for users to toggle. Technically it can help debugging.
         $previewMovePlaceholders = true;
         // Initialize workspace ID
-        if ($wsid == -99) {
+        if ($wsid == -99 && static::getBackendUserAuthentication() instanceof BackendUserAuthentication) {
             $wsid = static::getBackendUserAuthentication()->workspace;
         }
         // Check if workspace is different from zero and record is set:
@@ -4236,7 +4236,7 @@ class BackendUtility
      */
     public static function versioningPlaceholderClause($table)
     {
-        if (static::isTableWorkspaceEnabled($table)) {
+        if (static::isTableWorkspaceEnabled($table) && static::getBackendUserAuthentication() instanceof BackendUserAuthentication) {
             $currentWorkspace = (int)static::getBackendUserAuthentication()->workspace;
             return ' AND (' . $table . '.t3ver_state <= ' . new VersionState(VersionState::DEFAULT_STATE) . ' OR ' . $table . '.t3ver_wsid = ' . $currentWorkspace . ')';
         }
@@ -4253,7 +4253,7 @@ class BackendUtility
     public static function getWorkspaceWhereClause($table, $workspaceId = null)
     {
         $whereClause = '';
-        if (self::isTableWorkspaceEnabled($table)) {
+        if (self::isTableWorkspaceEnabled($table) && static::getBackendUserAuthentication() instanceof BackendUserAuthentication) {
             if ($workspaceId === null) {
                 $workspaceId = static::getBackendUserAuthentication()->workspace;
             }
@@ -4273,12 +4273,15 @@ class BackendUtility
      */
     public static function wsMapId($table, $uid)
     {
-        $wsRec = self::getWorkspaceVersionOfRecord(
-            static::getBackendUserAuthentication()->workspace,
-            $table,
-            $uid,
-            'uid'
-        );
+        $wsRec = null;
+        if (static::getBackendUserAuthentication() instanceof BackendUserAuthentication) {
+            $wsRec = self::getWorkspaceVersionOfRecord(
+                static::getBackendUserAuthentication()->workspace,
+                $table,
+                $uid,
+                'uid'
+            );
+        }
         return is_array($wsRec) ? $wsRec['uid'] : $uid;
     }
 
@@ -4293,7 +4296,7 @@ class BackendUtility
      */
     public static function getMovePlaceholder($table, $uid, $fields = '*', $workspace = null)
     {
-        if ($workspace === null) {
+        if ($workspace === null && static::getBackendUserAuthentication() instanceof BackendUserAuthentication) {
             $workspace = static::getBackendUserAuthentication()->workspace;
         }
         if ((int)$workspace !== 0 && $GLOBALS['TCA'][$table] && static::isTableWorkspaceEnabled($table)) {

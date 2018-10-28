@@ -1066,6 +1066,24 @@ class BackendUtilityTest extends UnitTestCase
 
     /**
      * @test
+     */
+    public function fixVersioningPidDoesNotChangeValuesForNoBeUserAvailable()
+    {
+        $GLOBALS['BE_USER'] = null;
+        $tableName = 'table_a';
+        $GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'] = 'not_empty';
+        $rr = [
+            'pid' => -1,
+            't3ver_oid' => 7,
+            't3ver_wsid' => 42,
+        ];
+        $reference = $rr;
+        BackendUtility::fixVersioningPid($tableName, $rr);
+        $this->assertSame($reference, $rr);
+    }
+
+    /**
+     * @test
      * @dataProvider unfitResolveFileReferencesTableConfig
      */
     public function returnNullForUnfitTableConfigInResolveFileReferences(array $config)
@@ -1115,6 +1133,33 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
+    public function workspaceOLDoesNotChangeValuesForNoBeUserAvailable()
+    {
+        $GLOBALS['BE_USER'] = null;
+        $tableName = 'table_a';
+        $row = [
+            'uid' => 1,
+            'pid' => 17,
+        ];
+        $reference = $row;
+        BackendUtility::workspaceOL($tableName, $row);
+        $this->assertSame($reference, $row);
+    }
+
+    /**
+     * @test
+     */
+    public function versioningPlaceholderClauseReturnsEmptyIfNoBeUserIsAvailable()
+    {
+        $GLOBALS['BE_USER'] = null;
+        $tableName = 'table_a';
+        $GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'] = 'not_empty';
+        $this->assertSame('', BackendUtility::versioningPlaceholderClause($tableName));
+    }
+
+    /**
+     * @test
+     */
     public function resolveFileReferencesReturnsEmptyResultForNoReferencesAvailable()
     {
         $tableName = 'table_a';
@@ -1141,5 +1186,37 @@ class BackendUtilityTest extends UnitTestCase
         ];
 
         $this->assertEmpty(BackendUtility::resolveFileReferences($tableName, $fieldName, $elementData));
+    }
+
+    /**
+     * @test
+     */
+    public function getWorkspaceWhereClauseReturnsEmptyIfNoBeUserIsAvailable()
+    {
+        $GLOBALS['BE_USER'] = null;
+        $tableName = 'table_a';
+        $GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'] = 'not_empty';
+        $this->assertSame('', BackendUtility::getWorkspaceWhereClause($tableName));
+    }
+
+    /**
+     * @test
+     */
+    public function wsMapIdReturnsLiveIdIfNoBeUserIsAvailable()
+    {
+        $GLOBALS['BE_USER'] = null;
+        $tableName = 'table_a';
+        $uid = 42;
+        $this->assertSame(42, BackendUtility::wsMapId($tableName, $uid));
+    }
+
+    /**
+     * @test
+     */
+    public function getMovePlaceholderReturnsFalseIfNoBeUserIsAvailable()
+    {
+        $GLOBALS['BE_USER'] = null;
+        $tableName = 'table_a';
+        $this->assertFalse(BackendUtility::getMovePlaceholder($tableName, 42));
     }
 }
