@@ -18,6 +18,7 @@ use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -286,16 +287,22 @@ class ReferenceIndex
                 $result['deletedNodes'] = count($hashList);
                 $result['deletedNodes_hashList'] = implode(',', $hashList);
                 if (!$testOnly) {
-                    $queryBuilder = $connection->createQueryBuilder();
-                    $queryBuilder
-                        ->delete('sys_refindex')
-                        ->where(
-                            $queryBuilder->expr()->in(
-                                'hash',
-                                $queryBuilder->createNamedParameter($hashList, Connection::PARAM_STR_ARRAY)
+                    $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
+                    foreach (array_chunk($hashList, $maxBindParameters - 10, true) as $chunk) {
+                        if (empty($chunk)) {
+                            continue;
+                        }
+                        $queryBuilder = $connection->createQueryBuilder();
+                        $queryBuilder
+                            ->delete('sys_refindex')
+                            ->where(
+                                $queryBuilder->expr()->in(
+                                    'hash',
+                                    $queryBuilder->createNamedParameter($chunk, Connection::PARAM_STR_ARRAY)
+                                )
                             )
-                        )
-                        ->execute();
+                            ->execute();
+                    }
                 }
             }
         }
