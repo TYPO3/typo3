@@ -58,8 +58,8 @@ class ImageManipulationController
     public function getWizardContent(ServerRequestInterface $request): ResponseInterface
     {
         if ($this->isSignatureValid($request)) {
-            $queryParams = json_decode($request->getQueryParams()['arguments'], true);
-            $fileUid = $queryParams['image'];
+            $parsedBody = json_decode($request->getParsedBody()['arguments'], true);
+            $fileUid = $parsedBody['image'];
             $image = null;
             if (MathUtility::canBeInterpretedAsInteger($fileUid)) {
                 try {
@@ -69,7 +69,7 @@ class ImageManipulationController
             }
             $viewData = [
                 'image' => $image,
-                'cropVariants' => $queryParams['cropVariants']
+                'cropVariants' => $parsedBody['cropVariants']
             ];
             $content = $this->templateView->renderSection('Main', $viewData);
             return new HtmlResponse($content);
@@ -80,12 +80,12 @@ class ImageManipulationController
     /**
      * Check if hmac signature is correct
      *
-     * @param ServerRequestInterface $request the request with the GET parameters
+     * @param ServerRequestInterface $request the request with the POST parameters
      * @return bool
      */
     protected function isSignatureValid(ServerRequestInterface $request): bool
     {
-        $token = GeneralUtility::hmac($request->getQueryParams()['arguments'], 'ajax_wizard_image_manipulation');
-        return hash_equals($token, $request->getQueryParams()['signature']);
+        $token = GeneralUtility::hmac($request->getParsedBody()['arguments'], 'ajax_wizard_image_manipulation');
+        return hash_equals($token, $request->getParsedBody()['signature']);
     }
 }
