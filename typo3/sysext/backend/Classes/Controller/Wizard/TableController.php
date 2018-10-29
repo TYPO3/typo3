@@ -354,39 +354,27 @@ class TableController extends AbstractWizardController
             // Close
             $closeButton = $buttonBar->makeLinkButton()
                 ->setHref($this->P['returnUrl'])
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL));
-            $buttonBar->addButton($closeButton);
+                ->setShowLabelText(true);
+            $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
             // Save
             $saveButton = $buttonBar->makeInputButton()
                 ->setName('_savedok')
                 ->setValue('1')
                 ->setForm('TableController')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'));
-            // Save & Close
-            $saveAndCloseButton = $buttonBar->makeInputButton()
-                ->setName('_saveandclosedok')
-                ->setValue('1')
-                ->setForm('TableController')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveCloseDoc'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                    'actions-document-save-close',
-                    Icon::SIZE_SMALL
-                ));
-            $splitButtonElement = $buttonBar->makeSplitButton()
-                ->addItem($saveButton)
-                ->addItem($saveAndCloseButton);
-
-            $buttonBar->addButton($splitButtonElement, ButtonBar::BUTTON_POSITION_LEFT, 3);
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
+                ->setShowLabelText(true);
+            $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
             // Reload
             $reloadButton = $buttonBar->makeInputButton()
                 ->setName('_refresh')
                 ->setValue('1')
                 ->setForm('TableController')
-                ->setTitle($this->getLanguageService()->getLL('forms_refresh'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL));
-            $buttonBar->addButton($reloadButton);
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL))
+                ->setTitle($this->getLanguageService()->getLL('forms_refresh'));
+            $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
         }
     }
 
