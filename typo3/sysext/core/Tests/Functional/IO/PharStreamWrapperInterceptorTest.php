@@ -14,10 +14,10 @@ namespace TYPO3\CMS\Core\Tests\Functional\IO;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\IO\PharStreamWrapper;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
+use TYPO3\PharStreamWrapper\Exception;
 
-class PharStreamWrapperTest extends FunctionalTestCase
+class PharStreamWrapperInterceptorTest extends FunctionalTestCase
 {
     /**
      * @var array
@@ -40,15 +40,9 @@ class PharStreamWrapperTest extends FunctionalTestCase
         if (!in_array('phar', stream_get_wrappers())) {
             $this->markTestSkipped('Phar stream wrapper is not registered');
         }
-
-        stream_wrapper_unregister('phar');
-        stream_wrapper_register('phar', PharStreamWrapper::class);
-    }
-
-    protected function tearDown()
-    {
-        stream_wrapper_restore('phar');
-        parent::tearDown();
+        // PharStreamWrapper is not initialized here since it relies on being
+        // properly defined in \TYPO3\CMS\Core\Core\Bootstrap - thus, it tests
+        // are expected to fail in case PharStreamWrapper is not initialized
     }
 
     public function directoryActionAllowsInvocationDataProvider()
@@ -146,7 +140,7 @@ class PharStreamWrapperTest extends FunctionalTestCase
      *
      * @test
      * @dataProvider directoryActionDeniesInvocationDataProvider
-     * @expectedException \TYPO3\CMS\Core\IO\PharStreamWrapperException
+     * @expectedException Exception
      * @expectedExceptionCode 1530103998
      */
     public function directoryActionDeniesInvocation($path)
@@ -282,7 +276,7 @@ class PharStreamWrapperTest extends FunctionalTestCase
      *
      * @test
      * @dataProvider urlStatDeniesInvocationDataProvider
-     * @expectedException \TYPO3\CMS\Core\IO\PharStreamWrapperException
+     * @expectedException Exception
      * @expectedExceptionCode 1530103998
      */
     public function urlStatDeniesInvocation($functionName, $path)
@@ -362,7 +356,7 @@ class PharStreamWrapperTest extends FunctionalTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\IO\PharStreamWrapperException
+     * @expectedException Exception
      * @expectedExceptionCode 1530103998
      */
     public function streamOpenDeniesInvocationForFileOpen()
@@ -373,7 +367,7 @@ class PharStreamWrapperTest extends FunctionalTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\IO\PharStreamWrapperException
+     * @expectedException Exception
      * @expectedExceptionCode 1530103998
      */
     public function streamOpenDeniesInvocationForFileGetContents()
@@ -384,7 +378,7 @@ class PharStreamWrapperTest extends FunctionalTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\IO\PharStreamWrapperException
+     * @expectedException Exception
      * @expectedExceptionCode 1530103998
      */
     public function streamOpenDeniesInvocationForInclude()

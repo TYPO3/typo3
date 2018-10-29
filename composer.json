@@ -47,7 +47,8 @@
 		"psr/http-message": "~1.0",
 		"cogpowered/finediff": "~0.3.1",
 		"mso/idna-convert": "^0.9.1",
-		"symfony/debug": "^2.7"
+		"symfony/debug": "^2.7",
+		"typo3/phar-stream-wrapper": "^2.0.1"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.8.0",
