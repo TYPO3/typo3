@@ -37,7 +37,7 @@ class PharStreamWrapperInterceptor implements \TYPO3\PharStreamWrapper\Assertabl
             return true;
         }
         throw new Exception(
-            sprintf('Executing  %s is denied', $path),
+            sprintf('Executing %s is denied', $path),
             1530103998
         );
     }
@@ -114,19 +114,5 @@ class PharStreamWrapperInterceptor implements \TYPO3\PharStreamWrapper\Assertabl
         }
 
         return null;
-    }
-
-    /**
-     * Determines whether the requested path is the base file.
-     *
-     * @param string $path
-     * @return bool
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function isBaseFile(string $path): bool
-    {
-        $path = $this->normalizePath($path);
-        $baseFile = $this->determineBaseFile($path);
-        return $path === $baseFile;
     }
 }
