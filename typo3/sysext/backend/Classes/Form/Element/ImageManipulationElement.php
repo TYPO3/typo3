@@ -35,6 +35,11 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 class ImageManipulationElement extends AbstractFormElement
 {
     /**
+     * @var string
+     */
+    private $wizardRouteName = 'ajax_wizard_image_manipulation';
+
+    /**
      * Default element configuration
      *
      * @var array
@@ -172,7 +177,8 @@ class ImageManipulationElement extends AbstractFormElement
                 'validation' => '[]'
             ],
             'config' => $config,
-            'wizardUri' => $this->getWizardUri($config['cropVariants'], $file),
+            'wizardUri' => $this->getWizardUri(),
+            'wizardPayload' => json_encode($this->getWizardPayload($config['cropVariants'], $file)),
             'previewUrl' => $this->getPreviewUrl($this->data['databaseRow'], $file),
         ];
 
@@ -299,19 +305,27 @@ class ImageManipulationElement extends AbstractFormElement
     }
 
     /**
-     * @param array $cropVariants
-     * @param File $image
      * @return string
      */
-    protected function getWizardUri(array $cropVariants, File $image): string
+    protected function getWizardUri(): string
     {
-        $routeName = 'ajax_wizard_image_manipulation';
+        return (string)$this->uriBuilder->buildUriFromRoute($this->wizardRouteName);
+    }
+
+    /**
+     * @param array $cropVariants
+     * @param File $image
+     * @return array
+     */
+    protected function getWizardPayload(array $cropVariants, File $image): array
+    {
         $arguments = [
             'cropVariants' => $cropVariants,
             'image' => $image->getUid(),
         ];
         $uriArguments['arguments'] = json_encode($arguments);
-        $uriArguments['signature'] = GeneralUtility::hmac($uriArguments['arguments'], $routeName);
-        return (string)$this->uriBuilder->buildUriFromRoute($routeName, $uriArguments);
+        $uriArguments['signature'] = GeneralUtility::hmac($uriArguments['arguments'], $this->wizardRouteName);
+
+        return $uriArguments;
     }
 }

@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "TYPO3/CMS/Backend/Modal", "jquery", "jquery-ui/draggable", "jquery-ui/resizable"], function (require, exports, ImagesLoaded, Modal, $) {
+define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "TYPO3/CMS/Backend/Icons", "TYPO3/CMS/Backend/Modal", "jquery", "jquery-ui/draggable", "jquery-ui/resizable"], function (require, exports, ImagesLoaded, Icons, Modal, $) {
     "use strict";
     /**
      * Module: TYPO3/CMS/Backend/ImageManipulation
@@ -225,54 +225,61 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
             var buttonDismissText = this.trigger.data('buttonDismissText');
             var buttonSaveText = this.trigger.data('buttonSaveText');
             var imageUri = this.trigger.data('url');
+            var payload = this.trigger.data('payload');
             var initCropperModal = this.initializeCropperModal.bind(this);
-            /**
-             * Open modal with image to crop
-             */
-            this.currentModal = Modal.advanced({
-                additionalCssClasses: ['modal-image-manipulation'],
-                ajaxCallback: initCropperModal,
-                buttons: [
-                    {
-                        btnClass: 'btn-default pull-left',
-                        dataAttributes: {
-                            method: 'preview',
+            Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).done(function (icon) {
+                /**
+                 * Open modal with image to crop
+                 */
+                _this.currentModal = Modal.advanced({
+                    additionalCssClasses: ['modal-image-manipulation'],
+                    buttons: [
+                        {
+                            btnClass: 'btn-default pull-left',
+                            dataAttributes: {
+                                method: 'preview',
+                            },
+                            icon: 'actions-view',
+                            text: buttonPreviewText,
                         },
-                        icon: 'actions-view',
-                        text: buttonPreviewText,
-                    },
-                    {
-                        btnClass: 'btn-default',
-                        dataAttributes: {
-                            method: 'dismiss',
+                        {
+                            btnClass: 'btn-default',
+                            dataAttributes: {
+                                method: 'dismiss',
+                            },
+                            icon: 'actions-close',
+                            text: buttonDismissText,
                         },
-                        icon: 'actions-close',
-                        text: buttonDismissText,
-                    },
-                    {
-                        btnClass: 'btn-primary',
-                        dataAttributes: {
-                            method: 'save',
+                        {
+                            btnClass: 'btn-primary',
+                            dataAttributes: {
+                                method: 'save',
+                            },
+                            icon: 'actions-document-save',
+                            text: buttonSaveText,
                         },
-                        icon: 'actions-document-save',
-                        text: buttonSaveText,
+                    ],
+                    callback: function (currentModal) {
+                        $.post({
+                            data: payload,
+                            dataType: 'html',
+                            url: imageUri,
+                        }).done(function (response) {
+                            initCropperModal();
+                            currentModal.find('.t3js-modal-body').append(response).addClass('cropper');
+                        });
                     },
-                ],
-                callback: function (currentModal) {
-                    currentModal.find('.t3js-modal-body')
-                        .addClass('cropper');
-                },
-                content: imageUri,
-                size: Modal.sizes.full,
-                style: Modal.styles.dark,
-                title: modalTitle,
-                type: 'ajax',
+                    content: '<div class="modal-loading">' + icon + '</div>',
+                    size: Modal.sizes.full,
+                    style: Modal.styles.dark,
+                    title: modalTitle,
+                });
+                _this.currentModal.on('hide.bs.modal', function (e) {
+                    _this.destroy();
+                });
+                // Do not dismiss the modal when clicking beside it to avoid data loss
+                _this.currentModal.data('bs.modal').options.backdrop = 'static';
             });
-            this.currentModal.on('hide.bs.modal', function (e) {
-                _this.destroy();
-            });
-            // Do not dismiss the modal when clicking beside it to avoid data loss
-            this.currentModal.data('bs.modal').options.backdrop = 'static';
         };
         /**
          * @method init
@@ -794,7 +801,9 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
          */
         ImageManipulation.prototype.destroy = function () {
             if (this.currentModal) {
-                this.cropper.cropper('destroy');
+                if (typeof this.cropper !== 'undefined' && this.cropper !== null) {
+                    this.cropper.cropper('destroy');
+                }
                 this.cropper = null;
                 this.currentModal = null;
                 this.data = null;

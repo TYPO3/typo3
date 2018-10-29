@@ -12,11 +12,13 @@
  */
 
 /// <amd-dependency path='TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min' name='ImagesLoaded'>
+/// <amd-dependency path='TYPO3/CMS/Backend/Icons' name='Icons'>
 /// <amd-dependency path='TYPO3/CMS/Backend/Modal' name='Modal'>
 
 import $ = require('jquery');
 import 'jquery-ui/draggable';
 import 'jquery-ui/resizable';
+declare const Icons: any;
 declare const Modal: any;
 declare const ImagesLoaded: any;
 
@@ -230,55 +232,68 @@ class ImageManipulation {
     const buttonDismissText: string = this.trigger.data('buttonDismissText');
     const buttonSaveText: string = this.trigger.data('buttonSaveText');
     const imageUri: string = this.trigger.data('url');
+    const payload: object = this.trigger.data('payload');
     const initCropperModal: Function = this.initializeCropperModal.bind(this);
 
-    /**
-     * Open modal with image to crop
-     */
-    this.currentModal = Modal.advanced({
-      additionalCssClasses: ['modal-image-manipulation'],
-      ajaxCallback: initCropperModal,
-      buttons: [
-        {
-          btnClass: 'btn-default pull-left',
-          dataAttributes: {
+    Icons.getIcon(
+      'spinner-circle',
+      Icons.sizes.default,
+      null,
+      null,
+      Icons.markupIdentifiers.inline
+    ).done((icon: string): void => {
+      /**
+       * Open modal with image to crop
+       */
+      this.currentModal = Modal.advanced({
+        additionalCssClasses: ['modal-image-manipulation'],
+        buttons: [
+          {
+            btnClass: 'btn-default pull-left',
+            dataAttributes: {
               method: 'preview',
+            },
+            icon: 'actions-view',
+            text: buttonPreviewText,
           },
-          icon: 'actions-view',
-          text: buttonPreviewText,
-        },
-        {
-          btnClass: 'btn-default',
-          dataAttributes: {
+          {
+            btnClass: 'btn-default',
+            dataAttributes: {
               method: 'dismiss',
+            },
+            icon: 'actions-close',
+            text: buttonDismissText,
           },
-          icon: 'actions-close',
-          text: buttonDismissText,
-        },
-        {
-          btnClass: 'btn-primary',
-          dataAttributes: {
+          {
+            btnClass: 'btn-primary',
+            dataAttributes: {
               method: 'save',
+            },
+            icon: 'actions-document-save',
+            text: buttonSaveText,
           },
-          icon: 'actions-document-save',
-          text: buttonSaveText,
+        ],
+        callback: (currentModal: JQuery): void => {
+          $.post({
+            data: payload,
+            dataType: 'html',
+            url: imageUri,
+          }).done((response: string): void => {
+            initCropperModal();
+            currentModal.find('.t3js-modal-body').append(response).addClass('cropper');
+          });
         },
-      ],
-      callback: (currentModal: JQuery): void => {
-        currentModal.find('.t3js-modal-body')
-          .addClass('cropper');
-      },
-      content: imageUri,
-      size: Modal.sizes.full,
-      style: Modal.styles.dark,
-      title: modalTitle,
-      type: 'ajax',
+        content: '<div class="modal-loading">' + icon + '</div>',
+        size: Modal.sizes.full,
+        style: Modal.styles.dark,
+        title: modalTitle,
+      });
+      this.currentModal.on('hide.bs.modal', (e: JQueryEventObject): void => {
+        this.destroy();
+      });
+      // Do not dismiss the modal when clicking beside it to avoid data loss
+      this.currentModal.data('bs.modal').options.backdrop = 'static';
     });
-    this.currentModal.on('hide.bs.modal', (e: JQueryEventObject): void => {
-      this.destroy();
-    });
-    // Do not dismiss the modal when clicking beside it to avoid data loss
-    this.currentModal.data('bs.modal').options.backdrop = 'static';
   }
 
   /**
@@ -947,7 +962,9 @@ class ImageManipulation {
    */
   private destroy(): void {
     if (this.currentModal) {
-      this.cropper.cropper('destroy');
+      if (typeof this.cropper !== 'undefined' && this.cropper !== null) {
+        this.cropper.cropper('destroy');
+      }
       this.cropper = null;
       this.currentModal = null;
       this.data = null;
