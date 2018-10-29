@@ -309,11 +309,17 @@
 			<trans-unit id="imwizard.ratio.1_1">
 				<source>1:1</source>
 			</trans-unit>
+			<trans-unit id="imwizard.ratio.191_1">
+				<source>19.1:1</source>
+			</trans-unit>
 			<trans-unit id="imwizard.ratio.free">
 				<source>Free</source>
 			</trans-unit>
 			<trans-unit id="imwizard.crop_variant.default">
 				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="imwizard.crop_variant.social">
+				<source>Social media</source>
 			</trans-unit>
 			<trans-unit id="imwizard.selection">
 				<source>Selected Size</source>

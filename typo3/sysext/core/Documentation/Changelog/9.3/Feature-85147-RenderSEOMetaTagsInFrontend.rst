@@ -12,6 +12,8 @@ Description
 The SEO meta tags that can be set in the page properties, are now rendered in frontend by default if the system extension
 SEO is installed.
 
+The og:image and twitter:image will be rendered in the 1.91:1 aspect ratio by default. This ratio is used by most of the
+social networks when showing an image of the shared link. You can also choose a free ratio or add ratio's yourself.
 
 Impact
 ======
