@@ -696,7 +696,7 @@ class FileList
                 $content = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
                         'actions-move-up',
                         Icon::SIZE_SMALL
-                    )->render() . '</a> <i>[1 - ' . $pointer . ']</i>';
+                    )->render() . '</a> <i>[' . (max(0, $pointer - $this->iLimit) + 1) . ' - ' . $pointer . ']</i>';
                 break;
             case 'rwd':
                 $href = $this->listURL() . '&pointer=' . $pointer . $tParam;
