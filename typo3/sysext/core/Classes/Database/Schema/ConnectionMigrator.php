@@ -1173,13 +1173,23 @@ class ConnectionMigrator
         $queryBuilder = $this->connection->createQueryBuilder();
         $result = $queryBuilder
             ->select(
-                'TABLE_NAME AS table',
-                'ENGINE AS engine',
-                'ROW_FORMAT AS row_format',
-                'TABLE_COLLATION AS collate',
-                'TABLE_COMMENT AS comment'
+                'tables.TABLE_NAME AS table',
+                'tables.ENGINE AS engine',
+                'tables.ROW_FORMAT AS row_format',
+                'tables.TABLE_COLLATION AS collate',
+                'tables.TABLE_COMMENT AS comment',
+                'CCSA.character_set_name AS charset'
             )
-            ->from('information_schema.TABLES')
+            ->from('information_schema.TABLES', 'tables')
+            ->join(
+                'tables',
+                'information_schema.COLLATION_CHARACTER_SET_APPLICABILITY',
+                'CCSA',
+                $queryBuilder->expr()->eq(
+                    'CCSA.collation_name',
+                    $queryBuilder->quoteIdentifier('tables.table_collation')
+                )
+            )
             ->where(
                 $queryBuilder->expr()->eq(
                     'TABLE_TYPE',

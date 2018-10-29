@@ -69,6 +69,8 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
             $tableDifferences = GeneralUtility::makeInstance(TableDiff::class, $fromTable->getName());
             $tableDifferences->fromTable = $fromTable;
         } else {
+            $renamedColumns = $tableDifferences->renamedColumns;
+            $renamedIndexes = $tableDifferences->renamedIndexes;
             // Rebuild TableDiff with enhanced TYPO3 TableDiff class
             $tableDifferences = GeneralUtility::makeInstance(
                 TableDiff::class,
@@ -81,6 +83,8 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
                 $tableDifferences->removedIndexes,
                 $tableDifferences->fromTable
             );
+            $tableDifferences->renamedColumns = $renamedColumns;
+            $tableDifferences->renamedIndexes = $renamedIndexes;
         }
 
         // Set the table options to be parsed in the AlterTable event.
