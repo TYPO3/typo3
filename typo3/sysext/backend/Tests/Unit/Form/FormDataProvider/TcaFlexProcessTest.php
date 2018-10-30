@@ -52,6 +52,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [],
             'processedTca' => [
                 'columns' => [
@@ -77,6 +78,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -141,6 +143,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -220,6 +223,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -299,6 +303,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -378,6 +383,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -457,6 +463,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -520,6 +527,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -591,6 +599,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -662,6 +671,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -735,6 +745,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -841,6 +852,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -904,6 +916,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -953,6 +966,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -1002,6 +1016,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [
@@ -1109,6 +1124,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -1169,6 +1185,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -1229,6 +1246,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -1289,6 +1307,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -1349,6 +1368,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -1408,6 +1428,7 @@ class TcaFlexProcessTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
