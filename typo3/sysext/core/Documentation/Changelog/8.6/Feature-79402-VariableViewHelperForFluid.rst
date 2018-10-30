@@ -18,7 +18,7 @@ The ViewHelper allows variables to be assigned in the template:
     <f:variable name="myvariable">My variable's content</f:variable>
     <f:variable name="myvariable" value="My variable's content"/>
     {f:variable(name: 'myvariable', value: 'My variable\'s content')}
-    {myoriginalvariable -> f:variable.set(name: 'mynewvariable')}
+    {myoriginalvariable -> f:variable(name: 'mynewvariable')}
 
 
 Impact
