@@ -566,7 +566,7 @@ abstract public class AbstractCoreSpec {
                             "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
                             "        --rm \\\n" +
                             "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
-                            "        bin/bash -c \"cd ${PWD}; ./bin/phpunit $*\"\n" +
+                            "        bin/bash -c \"cd ${PWD}; php -n -c /etc/php/cli-no-xdebug/php.ini bin/phpunit $*\"\n" +
                             "}\n" +
                             "\n" +
                             "phpunit --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "FunctionalTests-Job-" + i + ".xml"
@@ -636,7 +636,7 @@ abstract public class AbstractCoreSpec {
                             "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
                             "        --rm \\\n" +
                             "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
-                            "        bin/bash -c \"cd ${PWD}; ./bin/phpunit $*\"\n" +
+                            "        bin/bash -c \"cd ${PWD}; php -n -c /etc/php/cli-no-xdebug/php.ini bin/phpunit $*\"\n" +
                             "}\n" +
                             "\n" +
                             "phpunit --exclude-group not-mssql --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "FunctionalTests-Job-" + i + ".xml"
@@ -703,7 +703,7 @@ abstract public class AbstractCoreSpec {
                             "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
                             "        --rm \\\n" +
                             "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
-                            "        bin/bash -c \"cd ${PWD}; ./bin/phpunit $*\"\n" +
+                            "        bin/bash -c \"cd ${PWD}; php -n -c /etc/php/cli-no-xdebug/php.ini bin/phpunit $*\"\n" +
                             "}\n" +
                             "\n" +
                             "phpunit --exclude-group not-postgres --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "FunctionalTests-Job-" + i + ".xml"
@@ -766,7 +766,7 @@ abstract public class AbstractCoreSpec {
                             "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
                             "        --rm \\\n" +
                             "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
-                            "        bin/bash -c \"cd ${PWD}; ./bin/phpunit $*\"\n" +
+                            "        bin/bash -c \"cd ${PWD}; php -n -c /etc/php/cli-no-xdebug/php.ini bin/phpunit $*\"\n" +
                             "}\n" +
                             "\n" +
                             "phpunit --exclude-group not-sqlite --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "FunctionalTests-Job-" + i + ".xml"
