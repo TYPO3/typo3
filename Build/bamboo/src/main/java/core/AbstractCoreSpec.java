@@ -772,7 +772,7 @@ abstract public class AbstractCoreSpec {
      */
     protected Job getJobLintScssTs(String requirementIdentifier) {
         return new Job("Lint scss ts", new BambooKey("LSTS"))
-            .description("Run npm lint, run npm run build-js")
+            .description("Lint scss and ts, build css and js, test git is clean")
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
@@ -797,11 +797,11 @@ abstract public class AbstractCoreSpec {
                         "yarn install"
                     ),
                 new ScriptTask()
-                    .description("Run npm lint")
+                    .description("Run grunt lint")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        "function npm() {\n" +
+                        "function grunt() {\n" +
                         "    docker run \\\n" +
                         "        -u ${HOST_UID} \\\n" +
                         "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
@@ -810,17 +810,17 @@ abstract public class AbstractCoreSpec {
                         "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
                         "        --rm \\\n" +
                         "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
-                        "        bin/bash -c \"cd ${PWD}/Build; npm $*\"\n" +
+                        "        bin/bash -c \"cd ${PWD}/Build; ./node_modules/grunt/bin/grunt $*\"\n" +
                         "}\n" +
                         "\n" +
-                        "npm run lint"
+                        "grunt lint"
                     ),
                 new ScriptTask()
-                    .description("Run npm build-js")
+                    .description("Run grunt scripts")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        "function npm() {\n" +
+                        "function grunt() {\n" +
                         "    docker run \\\n" +
                         "        -u ${HOST_UID} \\\n" +
                         "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
@@ -829,10 +829,29 @@ abstract public class AbstractCoreSpec {
                         "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
                         "        --rm \\\n" +
                         "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
-                        "        bin/bash -c \"cd ${PWD}/Build; npm $*\"\n" +
+                        "        bin/bash -c \"cd ${PWD}/Build; ./node_modules/grunt/bin/grunt $*\"\n" +
                         "}\n" +
                         "\n" +
-                        "npm run build-js"
+                        "grunt scripts"
+                    ),
+                new ScriptTask()
+                    .description("Run grunt css")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "function grunt() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        -e HOME=${HOME} \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}/Build; ./node_modules/grunt/bin/grunt $*\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "grunt css"
                     ),
                 new ScriptTask()
                     .description("git status to check for changed files after build-js")
