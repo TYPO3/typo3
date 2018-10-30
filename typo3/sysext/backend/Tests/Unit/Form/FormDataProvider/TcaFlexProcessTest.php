@@ -53,6 +53,7 @@ class TcaFlexProcessTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [],
             'processedTca' => [
                 'columns' => [
@@ -78,6 +79,7 @@ class TcaFlexProcessTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -142,6 +144,7 @@ class TcaFlexProcessTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'selectTreeCompileItems' => false,
             'databaseRow' => [
                 'uid' => 5,
@@ -223,6 +226,7 @@ class TcaFlexProcessTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'selectTreeCompileItems' => false,
             'databaseRow' => [
                 'uid' => 5,
@@ -304,6 +308,7 @@ class TcaFlexProcessTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'selectTreeCompileItems' => false,
             'databaseRow' => [
                 'uid' => 5,
@@ -385,6 +390,7 @@ class TcaFlexProcessTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'selectTreeCompileItems' => false,
             'databaseRow' => [
                 'uid' => 5,
@@ -466,6 +472,7 @@ class TcaFlexProcessTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'selectTreeCompileItems' => false,
             'databaseRow' => [
                 'uid' => 5,
@@ -531,6 +538,7 @@ class TcaFlexProcessTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'selectTreeCompileItems' => false,
             'databaseRow' => [
                 'uid' => 5,
@@ -604,6 +612,7 @@ class TcaFlexProcessTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'selectTreeCompileItems' => false,
             'databaseRow' => [
                 'uid' => 5,
@@ -678,6 +687,7 @@ class TcaFlexProcessTest extends UnitTestCase
         $input = [
             'tableName' => 'aTable',
             'selectTreeCompileItems' => false,
+            'effectivePid' => 1,
             'databaseRow' => [
                 'uid' => 5,
                 'aField' => [
@@ -753,6 +763,7 @@ class TcaFlexProcessTest extends UnitTestCase
         $input = [
             'tableName' => 'aTable',
             'selectTreeCompileItems' => false,
+            'effectivePid' => 1,
             'databaseRow' => [
                 'uid' => 5,
                 'aField' => [
@@ -860,6 +871,7 @@ class TcaFlexProcessTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'selectTreeCompileItems' => false,
             'databaseRow' => [
                 'uid' => 5,
@@ -925,6 +937,7 @@ class TcaFlexProcessTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -974,6 +987,7 @@ class TcaFlexProcessTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -1023,6 +1037,7 @@ class TcaFlexProcessTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'selectTreeCompileItems' => false,
             'databaseRow' => [
                 'uid' => 5,
@@ -1132,6 +1147,7 @@ class TcaFlexProcessTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -1192,6 +1208,7 @@ class TcaFlexProcessTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -1252,6 +1269,7 @@ class TcaFlexProcessTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -1312,6 +1330,7 @@ class TcaFlexProcessTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'effectivePid' => 1,
             'databaseRow' => [
                 'aField' => [
                     'data' => [],
@@ -1373,6 +1392,7 @@ class TcaFlexProcessTest extends UnitTestCase
         $input = [
             'tableName' => 'aTable',
             'selectTreeCompileItems' => false,
+            'effectivePid' => 1,
             'databaseRow' => [
                 'uid' => 5,
                 'aField' => [
@@ -1434,6 +1454,7 @@ class TcaFlexProcessTest extends UnitTestCase
         $input = [
             'tableName' => 'aTable',
             'selectTreeCompileItems' => false,
+            'effectivePid' => 1,
             'databaseRow' => [
                 'uid' => 5,
                 'aField' => [
