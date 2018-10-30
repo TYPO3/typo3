@@ -332,6 +332,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
                     $queryBuilder->expr()->isNull('g.hidden')
                 )
             );
+            $queryBuilder->orderBy('t.nextexecution', 'ASC');
         } else {
             $queryBuilder->where(
                 $queryBuilder->expr()->eq('t.uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
