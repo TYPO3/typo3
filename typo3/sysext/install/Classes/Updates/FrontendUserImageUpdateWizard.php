@@ -124,8 +124,8 @@ class FrontendUserImageUpdateWizard implements UpgradeWizardInterface, LoggerAwa
      */
     public function updateNecessary(): bool
     {
-        $this->init();
-        return $this->recordOffset !== [];
+        $this->registry = GeneralUtility::makeInstance(Registry::class);
+        return $this->registry->get($this->registryNamespace, 'recordOffset') === null;
     }
 
     /**
@@ -307,7 +307,6 @@ class FrontendUserImageUpdateWizard implements UpgradeWizardInterface, LoggerAwa
                     'tablenames' => $this->table,
                     'crdate' => time(),
                     'tstamp' => time(),
-                    'sorting' => $i + 256,
                     'sorting_foreign' => $i,
                 ];
 
