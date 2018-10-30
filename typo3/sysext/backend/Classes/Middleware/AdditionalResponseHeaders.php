@@ -37,8 +37,9 @@ class AdditionalResponseHeaders implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['HTTP']['Response']['Headers'] ?? [] as $header => $value) {
-            $response = $response->withAddedHeader($header, $value);
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['HTTP']['Response']['Headers'] ?? [] as $header) {
+            [$headerName, $value] = explode(':', $header, 2);
+            $response = $response->withAddedHeader($headerName, trim($value));
         }
         return $response;
     }
