@@ -325,6 +325,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
                 ),
                 $queryBuilder->expr()->eq('t.deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             );
+            $queryBuilder->orderBy('t.nextexecution', 'ASC');
         } else {
             $queryBuilder->where(
                 $queryBuilder->expr()->eq('t.uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
