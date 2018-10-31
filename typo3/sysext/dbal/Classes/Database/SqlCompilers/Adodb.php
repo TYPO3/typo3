@@ -289,7 +289,7 @@ class Adodb extends AbstractCompiler
                 switch (true) {
                     case $feature === 'UNSIGNED' && !$this->databaseConnection->runningADOdbDriver('mysql'):
                     case $feature === 'NOTNULL' && $this->databaseConnection->runningADOdbDriver('oci8'):
-                        continue;
+                        continue 2;
                     case $feature === 'AUTO_INCREMENT':
                         $cfg .= ' AUTOINCREMENT';
                         break;

@@ -90,18 +90,21 @@ public class PreMergeSpec extends AbstractCoreSpec {
         jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP70"));
         jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP71"));
         jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP72"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP73"));
 
         jobsMainStage.add(this.getJobLintPhp("PHP55"));
         jobsMainStage.add(this.getJobLintPhp("PHP56"));
         jobsMainStage.add(this.getJobLintPhp("PHP70"));
         jobsMainStage.add(this.getJobLintPhp("PHP71"));
         jobsMainStage.add(this.getJobLintPhp("PHP72"));
+        jobsMainStage.add(this.getJobLintPhp("PHP73"));
 
         jobsMainStage.add(this.getJobUnitPhp("PHP55"));
         jobsMainStage.add(this.getJobUnitPhp("PHP56"));
         jobsMainStage.add(this.getJobUnitPhp("PHP70"));
         jobsMainStage.add(this.getJobUnitPhp("PHP71"));
         jobsMainStage.add(this.getJobUnitPhp("PHP72"));
+        jobsMainStage.add(this.getJobUnitPhp("PHP73"));
 
         Stage stageMainStage = new Stage("Main stage")
             .jobs(jobsMainStage.toArray(new Job[jobsMainStage.size()]));
