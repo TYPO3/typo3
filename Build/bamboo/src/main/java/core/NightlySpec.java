@@ -71,10 +71,13 @@ public class NightlySpec extends AbstractCoreSpec {
         jobsMainStage.add(this.getJobComposerValidate("PHP72"));
 
         jobsMainStage.add(this.getJobAcceptanceTestInstallMysql("PHP72"));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql("PHP73"));
 
         jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql("PHP72"));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql("PHP73"));
 
         jobsMainStage.addAll(this.getJobsAcceptanceTestsBackendMysql(this.numberOfAcceptanceTestJobs, "PHP72"));
+        jobsMainStage.addAll(this.getJobsAcceptanceTestsBackendMysql(this.numberOfAcceptanceTestJobs, "PHP73"));
 
         jobsMainStage.add(this.getJobCglCheckFullCore("PHP72"));
 
@@ -83,30 +86,37 @@ public class NightlySpec extends AbstractCoreSpec {
         jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP70"));
         jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP71"));
         jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP72"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP73"));
 
         jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, "PHP70"));
         jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, "PHP71"));
         jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, "PHP72"));
+        // no mssql with php 7.3 yet
+        // jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, "PHP73"));
 
         jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, "PHP70"));
         jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, "PHP71"));
         jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, "PHP72"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, "PHP73"));
 
         jobsMainStage.add(this.getJobUnitJavaScript("PHP72"));
 
         jobsMainStage.add(this.getJobLintPhp("PHP70"));
         jobsMainStage.add(this.getJobLintPhp("PHP71"));
         jobsMainStage.add(this.getJobLintPhp("PHP72"));
+        jobsMainStage.add(this.getJobLintPhp("PHP73"));
 
         jobsMainStage.add(this.getJobLintScssTs("PHP72"));
 
         jobsMainStage.add(this.getJobUnitPhp("PHP70"));
         jobsMainStage.add(this.getJobUnitPhp("PHP71"));
         jobsMainStage.add(this.getJobUnitPhp("PHP72"));
+        jobsMainStage.add(this.getJobUnitPhp("PHP73"));
 
         jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP70"));
         jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP71"));
         jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP72"));
+        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP73"));
 
         Stage stageMainStage = new Stage("Main stage")
             .jobs(jobsMainStage.toArray(new Job[jobsMainStage.size()]));
