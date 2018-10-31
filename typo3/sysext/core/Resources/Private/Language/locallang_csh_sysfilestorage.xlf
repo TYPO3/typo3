@@ -19,7 +19,7 @@
 				<source>The visible identifier for this file storage.</source>
 			</trans-unit>
 			<trans-unit id="name.details">
-				<source>The label entered here will be shown as the name for the entry point in the TYPO Backend. Be sure to make it descriptive and logical for your editors.</source>
+				<source>The label entered here will be shown as the name for the entry point in the TYPO3 Backend. Be sure to make it descriptive and logical for your editors.</source>
 			</trans-unit>
 			<trans-unit id="description.description">
 				<source>A description of this storage.</source>
