@@ -243,7 +243,7 @@ class TcaInputPlaceholders implements FormDataProviderInterface
                     $queryBuilder->createNamedParameter([$currentLanguage, 0], Connection::PARAM_INT_ARRAY)
                 )
             )
-            ->groupBy($languageField)
+            ->groupBy($languageField, 'uid')
             ->execute()
             ->fetchAll();
 
