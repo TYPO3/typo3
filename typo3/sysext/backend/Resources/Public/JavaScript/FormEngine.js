@@ -1172,7 +1172,7 @@ define(['jquery',
       ];
       if ($('.has-error').length === 0) {
         buttons.push({
-          text: TYPO3.lang['buttons.confirm.save and close'] || 'Save and close',
+          text: TYPO3.lang['buttons.confirm.save_and_close'] || 'Save and close',
           btnClass: 'btn-warning',
           name: 'save',
           active: true

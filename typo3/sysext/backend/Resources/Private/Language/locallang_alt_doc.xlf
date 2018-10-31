@@ -57,6 +57,9 @@
 			<trans-unit id="buttons.confirm.close_without_save.no">
 				<source>No, I will continue editing</source>
 			</trans-unit>
+			<trans-unit id="buttons.confirm.save_and_close">
+				<source>Save and close</source>
+			</trans-unit>
 			<trans-unit id="label.confirm.duplicate_record_changed.title">
 				<source>Do you want to save before duplicating this record?</source>
 			</trans-unit>
