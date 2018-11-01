@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1ffc278cee5e98990949d683354301e8",
+    "content-hash": "3fac9f07b17b89422ee4e69daa5191ef",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -4951,22 +4951,37 @@
         },
         {
             "name": "typo3/cms-styleguide",
-            "version": "9.2.1",
+            "version": "9.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "2672fe1750306a6510831a6dae437f134faeab85"
+                "reference": "e945c17a78cfd25ccea6335907fae35e55369d20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/2672fe1750306a6510831a6dae437f134faeab85",
-                "reference": "2672fe1750306a6510831a6dae437f134faeab85",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/e945c17a78cfd25ccea6335907fae35e55369d20",
+                "reference": "e945c17a78cfd25ccea6335907fae35e55369d20",
                 "shasum": ""
             },
             "replace": {
                 "styleguide": "*"
             },
+            "require-dev": {
+                "codeception/codeception": "^2.4",
+                "typo3/cms-about": "^9.5",
+                "typo3/cms-core": "^9.5",
+                "typo3/cms-frontend": "^9.5",
+                "typo3/cms-install": "^9.5",
+                "typo3/testing-framework": "^4.11.0"
+            },
             "type": "typo3-cms-extension",
+            "extra": {
+                "typo3/cms": {
+                    "app-dir": ".Build",
+                    "web-dir": ".Build/Web",
+                    "extension-key": "styleguide"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "TYPO3\\CMS\\Styleguide\\": "Classes/"
@@ -4996,20 +5011,20 @@
                 "typo3",
                 "typo3 backend"
             ],
-            "time": "2018-09-19T10:00:56+00:00"
+            "time": "2018-11-02T12:59:32+00:00"
         },
         {
             "name": "typo3/testing-framework",
-            "version": "4.10.0",
+            "version": "4.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "aa2cde856fc41c475e903d641d80e37ac3c7d2fe"
+                "reference": "cfc5ad04e61898c8144e19ca5f7e8d83203a4b24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/aa2cde856fc41c475e903d641d80e37ac3c7d2fe",
-                "reference": "aa2cde856fc41c475e903d641d80e37ac3c7d2fe",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/cfc5ad04e61898c8144e19ca5f7e8d83203a4b24",
+                "reference": "cfc5ad04e61898c8144e19ca5f7e8d83203a4b24",
                 "shasum": ""
             },
             "require": {
@@ -5020,6 +5035,7 @@
                 "typo3/cms-extbase": "^9.3",
                 "typo3/cms-fluid": "^9.3",
                 "typo3/cms-frontend": "^9.3",
+                "typo3/cms-recordlist": "^9.3",
                 "typo3fluid/fluid": "^2.5"
             },
             "suggest": {
@@ -5055,7 +5071,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2018-10-29T11:25:44+00:00"
+            "time": "2018-11-02T16:00:39+00:00"
         },
         {
             "name": "webmozart/assert",

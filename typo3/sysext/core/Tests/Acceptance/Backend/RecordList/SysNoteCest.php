@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\RecordList;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Facebook\WebDriver\WebDriverKeys;
+use Codeception\Util\Locator;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
@@ -51,10 +51,7 @@ class SysNoteCest
         $I->wait(0.2);
         $I->canSee('New record');
 
-        $I->click('ul.list-tree');
-        // it takes two strokes to get all the way down
-        $I->pressKey('body', WebDriverKeys::PAGE_DOWN);
-        $I->pressKey('body', WebDriverKeys::PAGE_DOWN);
+        $I->scrollTo(Locator::find('span', ['data-table' => 'sys_note']));
         $I->click('Internal note');
 
         $I->fillField('//input[contains(@data-formengine-input-name, "data[sys_note]") and contains(@data-formengine-input-name, "[subject]")]', 'new sys_note');
