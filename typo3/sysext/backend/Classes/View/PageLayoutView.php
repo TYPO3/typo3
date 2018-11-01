@@ -1011,15 +1011,12 @@ class PageLayoutView implements LoggerAwareInterface
                             $languageColumn[$columnId][$lP] = $head[$columnId] . $content[$columnId];
                         }
                         if (is_array($row) && !VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
-                            $singleElementHTML = '';
+                            $singleElementHTML = '<div class="t3-page-ce-dragitem" id="' . StringUtility::getUniqueId() . '">';
                             if (!$lP && ($this->defLangBinding || $row['sys_language_uid'] != -1)) {
                                 $defaultLanguageElementsByColumn[$columnId][] = ($row['_ORIG_uid'] ?? $row['uid']);
                             }
                             $editUidList .= $row['uid'] . ',';
                             $disableMoveAndNewButtons = $this->defLangBinding && $lP > 0 && $this->checkIfTranslationsExistInLanguage($contentRecordsPerColumn, $lP);
-                            if (!$this->tt_contentConfig['languageMode']) {
-                                $singleElementHTML .= '<div class="t3-page-ce-dragitem" id="' . StringUtility::getUniqueId() . '">';
-                            }
                             $singleElementHTML .= $this->tt_content_drawHeader(
                                 $row,
                                 $this->tt_contentConfig['showInfo'] ? 15 : 5,
@@ -1029,7 +1026,7 @@ class PageLayoutView implements LoggerAwareInterface
                             );
                             $innerContent = '<div ' . ($row['_ORIG_uid'] ? ' class="ver-element"' : '') . '>'
                                 . $this->tt_content_drawItem($row) . '</div>';
-                            $singleElementHTML .= '<div class="t3-page-ce-body-inner">' . $innerContent . '</div>'
+                            $singleElementHTML .= '<div class="t3-page-ce-body-inner">' . $innerContent . '</div></div>'
                                 . $this->tt_content_drawFooter($row);
                             $isDisabled = $this->isDisabled('tt_content', $row);
                             $statusHidden = $isDisabled ? ' t3-page-ce-hidden t3js-hidden-record' : '';
@@ -1043,9 +1040,7 @@ class PageLayoutView implements LoggerAwareInterface
                             $singleElementHTML = '<div class="t3-page-ce' . $highlightHeader . ' t3js-page-ce t3js-page-ce-sortable ' . $statusHidden . '" id="element-tt_content-'
                                 . $row['uid'] . '" data-table="tt_content" data-uid="' . $row['uid'] . '"' . $displayNone . '>' . $singleElementHTML . '</div>';
 
-                            if ($this->tt_contentConfig['languageMode']) {
-                                $singleElementHTML .= '<div class="t3-page-ce" data-colpos="' . $columnId . '">';
-                            }
+                            $singleElementHTML .= '<div class="t3-page-ce" data-colpos="' . $columnId . '">';
                             $singleElementHTML .= '<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $columnId . '-' . 'page-' . $id .
                                 '-' . StringUtility::getUniqueId() . '">';
                             // Add icon "new content element below"
