@@ -367,7 +367,7 @@ class LoginRefresh {
    *
    * @param {JQueryEventObject} event
    */
-  protected submitForm(event: JQueryEventObject): void {
+  protected submitForm = (event: JQueryEventObject): void => {
     event.preventDefault();
 
     const $form = this.$loginForm.find('form');
