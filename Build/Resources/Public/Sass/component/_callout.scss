@@ -75,6 +75,9 @@ $callout-notice-border: $state-notice-border;
     margin: 20px 0;
     padding: $callout-padding;
     color: $callout-color;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
 
     .media {
         margin: 0;
