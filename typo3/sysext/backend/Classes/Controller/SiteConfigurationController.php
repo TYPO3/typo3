@@ -251,52 +251,60 @@ class SiteConfigurationController
             $newSysSiteData['rootPageId'] = $pageId;
             foreach ($sysSiteRow as $fieldName => $fieldValue) {
                 $type = $siteTca['site']['columns'][$fieldName]['config']['type'];
-                if ($type === 'input') {
-                    $fieldValue = $this->validateAndProcessValue('site', $fieldName, $fieldValue);
-                    $newSysSiteData[$fieldName] = $fieldValue;
-                } elseif ($type === 'inline') {
-                    $newSysSiteData[$fieldName] = [];
-                    $childRowIds = GeneralUtility::trimExplode(',', $fieldValue, true);
-                    if (!isset($siteTca['site']['columns'][$fieldName]['config']['foreign_table'])) {
-                        throw new \RuntimeException('No foreign_table found for inline type', 1521555037);
-                    }
-                    $foreignTable = $siteTca['site']['columns'][$fieldName]['config']['foreign_table'];
-                    foreach ($childRowIds as $childRowId) {
-                        $childRowData = [];
-                        if (!isset($data[$foreignTable][$childRowId])) {
-                            if (!empty($currentSiteConfiguration[$fieldName][$childRowId])) {
-                                // A collapsed inline record: Fetch data from existing config
-                                $newSysSiteData[$fieldName][] = $currentSiteConfiguration[$fieldName][$childRowId];
-                                continue;
-                            }
-                            throw new \RuntimeException('No data found for table ' . $foreignTable . ' with id ' . $childRowId, 1521555177);
+                switch ($type) {
+                    case 'input':
+                    case 'text':
+                        $fieldValue = $this->validateAndProcessValue('site', $fieldName, $fieldValue);
+                        $newSysSiteData[$fieldName] = $fieldValue;
+                        break;
+
+                    case 'inline':
+                        $newSysSiteData[$fieldName] = [];
+                        $childRowIds = GeneralUtility::trimExplode(',', $fieldValue, true);
+                        if (!isset($siteTca['site']['columns'][$fieldName]['config']['foreign_table'])) {
+                            throw new \RuntimeException('No foreign_table found for inline type', 1521555037);
                         }
-                        $childRow = $data[$foreignTable][$childRowId];
-                        foreach ($childRow as $childFieldName => $childFieldValue) {
-                            if ($childFieldName === 'pid') {
-                                // pid is added by inline by default, but not relevant for yml storage
-                                continue;
+                        $foreignTable = $siteTca['site']['columns'][$fieldName]['config']['foreign_table'];
+                        foreach ($childRowIds as $childRowId) {
+                            $childRowData = [];
+                            if (!isset($data[$foreignTable][$childRowId])) {
+                                if (!empty($currentSiteConfiguration[$fieldName][$childRowId])) {
+                                    // A collapsed inline record: Fetch data from existing config
+                                    $newSysSiteData[$fieldName][] = $currentSiteConfiguration[$fieldName][$childRowId];
+                                    continue;
+                                }
+                                throw new \RuntimeException('No data found for table ' . $foreignTable . ' with id ' . $childRowId, 1521555177);
                             }
-                            $type = $siteTca[$foreignTable]['columns'][$childFieldName]['config']['type'];
-                            switch ($type) {
-                                case 'input':
-                                case 'select':
-                                case 'text':
-                                    $childRowData[$childFieldName] = $childFieldValue;
-                                    break;
-                                case 'check':
-                                    $childRowData[$childFieldName] = (bool)$childFieldValue;
-                                    break;
-                                default:
-                                    throw new \RuntimeException('TCA type ' . $type . ' not implemented in site handling', 1521555340);
+                            $childRow = $data[$foreignTable][$childRowId];
+                            foreach ($childRow as $childFieldName => $childFieldValue) {
+                                if ($childFieldName === 'pid') {
+                                    // pid is added by inline by default, but not relevant for yml storage
+                                    continue;
+                                }
+                                $type = $siteTca[$foreignTable]['columns'][$childFieldName]['config']['type'];
+                                switch ($type) {
+                                    case 'input':
+                                    case 'select':
+                                    case 'text':
+                                        $childRowData[$childFieldName] = $childFieldValue;
+                                        break;
+                                    case 'check':
+                                        $childRowData[$childFieldName] = (bool)$childFieldValue;
+                                        break;
+                                    default:
+                                        throw new \RuntimeException('TCA type ' . $type . ' not implemented in site handling', 1521555340);
+                                }
                             }
+                            $newSysSiteData[$fieldName][] = $childRowData;
                         }
-                        $newSysSiteData[$fieldName][] = $childRowData;
-                    }
-                } elseif ($type === 'select') {
-                    $newSysSiteData[$fieldName] = (int)$fieldValue;
-                } else {
-                    throw new \RuntimeException('TCA type ' . $type . ' not implemented in site handling', 1521032781);
+                        break;
+
+                    case 'select':
+                        $newSysSiteData[$fieldName] = (int)$fieldValue;
+                        break;
+
+                    default:
+                        throw new \RuntimeException('TCA type "' . $type . '" is not implemented in site handling', 1521032781);
                 }
             }
 
