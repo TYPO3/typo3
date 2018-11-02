@@ -373,7 +373,7 @@
 				<source>Pagetitle</source>
 			</trans-unit>
 			<trans-unit id="php_tree_stop">
-				<source>Stop page tree</source>
+				<source>Hide child pages in page tree</source>
 			</trans-unit>
 			<trans-unit id="is_siteroot">
 				<source>Is root of website</source>

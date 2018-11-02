@@ -149,6 +149,9 @@ When specific pages need a longer or shorter cache lifetime than the default, th
 			<trans-unit id="no_search.description">
 				<source>If enabled, this option excludes the page from searching operations on the website.</source>
 			</trans-unit>
+			<trans-unit id="php_tree_stop.description">
+				<source>If enabled, this option excludes the subtree from rendering in the backend.</source>
+			</trans-unit>
 			<trans-unit id="author.description">
 				<source>Enter the page author's name.</source>
 			</trans-unit>
