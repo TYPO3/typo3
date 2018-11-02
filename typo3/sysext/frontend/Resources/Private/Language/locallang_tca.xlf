@@ -349,7 +349,7 @@
 				<source>Media</source>
 			</trans-unit>
 			<trans-unit id="pages.php_tree_stop_formlabel">
-				<source>Stop Page Tree</source>
+				<source>Hide child pages in page tree</source>
 			</trans-unit>
 			<trans-unit id="pages.is_siteroot">
 				<source>Is Root of Website:</source>

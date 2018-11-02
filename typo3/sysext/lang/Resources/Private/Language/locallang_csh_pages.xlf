@@ -99,7 +99,7 @@ More about Page TSconfig | https://docs.typo3.org/typo3cms/TSconfigReference/Pag
 				<source>Page TSconfig customizing layout labels in the Page Module. Note that the Page TSconfig is specific to that page and will be inherited by its subpages.</source>
 			</trans-unit>
 			<trans-unit id="php_tree_stop.description">
-				<source>Stops backend rendering of the page tree in navigation and lists.</source>
+				<source>If enabled, this option excludes the subtree from rendering in the backend.</source>
 			</trans-unit>
 			<trans-unit id="php_tree_stop.details" xml:space="preserve">
 				<source>If you enable this option, the page tree will not expand that branch. Instead you will see a red "+" which indicates that the page tree stops here because the Stop Page Tree option is enabled.
