@@ -106,6 +106,7 @@ entities:
                 - self: {id: 1523, title: 'Five Years', slug: '/my-acme/forecasts/five-years'}
         - self: {id: 1600, title: 'About us', slug: '/about'}
         - self: {id: 1700, title: 'Announcements & News', type: *pageMount, mount: 7100, slug: '/news'}
+        - self: {id: 1800, title: 'Work in progress', hidden: 1, slug: '/never-visible-working-on-it' }
         - self: {id: 404, title: 'Page not found', slug: '/404'}
           entities:
             content:

@@ -97,6 +97,7 @@ entities:
                 - self: {id: 1523, title: 'Five Years'}
         - self: {id: 1600, title: 'About us'}
         - self: {id: 1700, title: 'Announcements & News', type: *pageMount, mount: 7100}
+        - self: {id: 1800, title: 'Work in progress', hidden: 1 }
         - self: {id: 404, title: 'Page not found'}
           entities:
             content:

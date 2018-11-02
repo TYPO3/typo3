@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Regular\Modify;
 use TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Regular\AbstractActionTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
 /**
  * Functional test for the DataHandler
@@ -375,6 +376,37 @@ class ActionTest extends AbstractActionTestCase
         $responseSections = $this->getFrontendResponse($this->recordIds['newSubPageId'], 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1 #1'));
+    }
+
+    /**
+     * @test
+     */
+    public function createPageAndContentWithTcaDefaults()
+    {
+        parent::createPageAndContentWithTcaDefaults();
+        $this->assertAssertionDataSet('createPageNContentWDefaults');
+
+        // first, assert that page cannot be opened without using backend user (since it's hidden)
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest())
+                ->withPageId($this->recordIds['newPageId'])
+        );
+        self::assertSame(404, $response->getStatusCode());
+
+        // then, assert if preview is possible using a backend user
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest())
+                ->withPageId($this->recordIds['newPageId']),
+            (new InternalRequestContext())
+                ->withBackendUserId(self::VALUE_BackendUserId)
+                ->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        $responseSections = ResponseContent::fromString((string)$response->getBody())
+            ->getSections();
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
     /**

@@ -1355,7 +1355,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // If no page, we try to find the page before in the rootLine.
             // Page is 'not found' in case the id itself was not an accessible page. code 1
             $this->pageNotFound = 1;
+            $requestedPageIsHidden = false;
             try {
+                $hiddenField = $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['disabled'] ?? '';
+                $includeHiddenPages = $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages') || $this->isBackendUserLoggedIn();
+                if (!empty($hiddenField) && !$includeHiddenPages) {
+                    // Page is "hidden" => 404 (deliberately done in default language, as this cascades to language overlays)
+                    $rawPageRecord = $this->sys_page->getPage_noCheck($this->id);
+                    $requestedPageIsHidden = (bool)$rawPageRecord[$hiddenField];
+                }
+
                 $requestedPageRowWithoutGroupCheck = $this->sys_page->getPage($this->id, true);
                 if (!empty($requestedPageRowWithoutGroupCheck)) {
                     $this->pageAccessFailureHistory['direct_access'][] = $requestedPageRowWithoutGroupCheck;
@@ -1379,7 +1388,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->rootLine = [];
             }
             // If still no page...
-            if (empty($requestedPageRowWithoutGroupCheck) && empty($this->page)) {
+            if ($requestedPageIsHidden || (empty($requestedPageRowWithoutGroupCheck) && empty($this->page))) {
                 $message = 'The requested page does not exist!';
                 $this->logger->error($message);
                 try {

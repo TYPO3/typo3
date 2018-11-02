@@ -116,9 +116,9 @@ class CanonicalGeneratorTest extends FunctionalTestCase
                 'http://localhost/dummy-1-2-5',
                 '<link rel="canonical" href="http://localhost/dummy-1-2-5"/>' . chr(10),
             ],
-            'uid: 8 without canonical_link AND content_from_pid = 9 (but target page is hidden)' => [
+            'uid: 8 without canonical_link AND content_from_pid = 9 (but target page is hidden) results in no canonical' => [
                 'http://localhost/dummy-1-2-8',
-                '<link rel="canonical" href="http://localhost/dummy-1-2-8"/>' . chr(10),
+                '',
             ],
             'uid: 10 no index' => [
                 'http://localhost/dummy-1-2-10',

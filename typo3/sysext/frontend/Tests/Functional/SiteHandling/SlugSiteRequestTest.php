@@ -699,6 +699,50 @@ class SlugSiteRequestTest extends AbstractTestCase
     /**
      * @return array
      */
+    public function hiddenPageSends404ResponseRegardlessOfVisitorGroupDataProvider(): array
+    {
+        $instructions = [
+            // hidden page, always 404
+            ['https://website.local/never-visible-working-on-it', 0],
+            ['https://website.local/never-visible-working-on-it', 1],
+        ];
+
+        return $this->keysFromTemplate($instructions, '%1$s (user:%2$s)');
+    }
+
+    /**
+     * @test
+     * @dataProvider hiddenPageSends404ResponseRegardlessOfVisitorGroupDataProvider
+     */
+    public function hiddenPageSends404ResponseRegardlessOfVisitorGroup(string $uri, int $frontendUserId)
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [],
+            $this->buildErrorHandlingConfiguration('PHP', [404])
+        );
+
+        $response = $this->executeFrontendRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+                ->withFrontendUserId($frontendUserId)
+        );
+        $json = json_decode((string)$response->getBody(), true);
+
+        self::assertSame(
+            404,
+            $response->getStatusCode()
+        );
+        self::assertThat(
+            $json['message'] ?? null,
+            self::identicalTo('The requested page does not exist!')
+        );
+    }
+
+    /**
+     * @return array
+     */
     public function pageRenderingStopsWithInvalidCacheHashDataProvider(): array
     {
         $domainPaths = [

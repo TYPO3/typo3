@@ -18,6 +18,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\Modify;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\AbstractActionTestCase;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
 /**
  * Functional test for the DataHandler
@@ -534,7 +536,38 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/modifyPageRecord.csv
+     * See DataSet/createPageNContentWDefaults.csv
+     */
+    public function createPageAndContentWithTcaDefaults()
+    {
+        parent::createPageAndContentWithTcaDefaults();
+        $this->assertAssertionDataSet('createPageNContentWDefaults');
+
+        // first, assert that page cannot be opened without using backend user (since it's hidden)
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest())
+                ->withPageId($this->recordIds['newPageId'])
+        );
+        self::assertSame(404, $response->getStatusCode());
+
+        // then, assert if preview is possible using a backend user
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest())
+                ->withPageId($this->recordIds['newPageId']),
+            (new InternalRequestContext())
+                ->withBackendUserId(self::VALUE_BackendUserId)
+        );
+        $responseSections = ResponseContent::fromString((string)$response->getBody())
+            ->getSections();
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+    }
+
+    /**
+     * @test
+     * See DataSet/modifyPage.csv
      */
     public function modifyPage()
     {
