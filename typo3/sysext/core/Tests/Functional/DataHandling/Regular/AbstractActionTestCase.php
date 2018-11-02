@@ -341,6 +341,19 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->moveRecord(self::TABLE_Page, $this->recordIds['newPageId'], -self::VALUE_PageId);
     }
 
+    public function createPageAndContentWithTcaDefaults()
+    {
+        $newTableIds = $this->actionService->createNewRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Page => ['title' => 'Testing #1'],
+                self::TABLE_Content => ['pid' => '__previousUid', 'header' => 'Testing #1']
+            ]
+        );
+        $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][0];
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+    }
+
     public function modifyPage()
     {
         $this->actionService->modifyRecord(self::TABLE_Page, self::VALUE_PageId, ['title' => 'Testing #1']);
