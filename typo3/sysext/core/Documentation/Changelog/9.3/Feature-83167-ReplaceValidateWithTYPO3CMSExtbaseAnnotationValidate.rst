@@ -64,8 +64,8 @@ Example:
 Impact
 ======
 
-In v9 there is no actual impact. Both the simple :php:`@inject` and
-:php:`@TYPO3\CMS\Extbase\Annotation\Inject` can be used side by side.
-However, :php:`@inject` is deprecated in v9 and will be removed in v10.
+In v9 there is no actual impact. Both the simple :php:`@validate` and
+:php:`@TYPO3\CMS\Extbase\Annotation\Validate` can be used side by side.
+However, :php:`@validate` is deprecated in v9 and will be removed in v10.
 
 .. index:: PHP-API, ext:extbase, FullyScanned
