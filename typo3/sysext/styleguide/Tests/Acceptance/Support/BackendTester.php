@@ -1,5 +1,6 @@
 <?php
-namespace TYPO3\CMS\Styleguide\Tests\Functional;
+declare(strict_types = 1);
+namespace TYPO3\CMS\Styleguide\Tests\Acceptance\Support;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,18 +15,14 @@ namespace TYPO3\CMS\Styleguide\Tests\Functional;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3\CMS\Styleguide\Tests\Acceptance\Support\_generated\BackendTesterActions;
+use TYPO3\TestingFramework\Core\Acceptance\Step\FrameSteps;
 
 /**
- * Test case
- */
-class DummyTest extends FunctionalTestCase
+ * Default backend admin or editor actor in the backend
+*/
+class BackendTester extends \Codeception\Actor
 {
-    /**
-     * @test
-     */
-    public function alwaysTrue()
-    {
-        $this->assertTrue(true);
-    }
+    use BackendTesterActions;
+    use FrameSteps;
 }

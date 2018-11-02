@@ -33,11 +33,34 @@
       "TYPO3\\CMS\\Styleguide\\": "Classes/"
     }
   },
+
+  "config": {
+    "vendor-dir": ".Build/vendor",
+    "bin-dir": ".Build/bin"
+  },
+  "require-dev": {
+    "typo3/cms-core": "^9.5",
+    "typo3/cms-frontend": "^9.5",
+    "typo3/cms-install": "^9.5",
+    "typo3/cms-about": "^9.5",
+    "typo3/testing-framework": "^4.11.0",
+    "codeception/codeception": "^2.4"
+  },
   "autoload-dev": {
     "psr-4": {
-      "TYPO3\\CMS\\Styleguide\\Tests\\": "Tests",
-      "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
-      "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/"
+      "TYPO3\\CMS\\Styleguide\\Tests\\": "Tests"
+    }
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
+    ]
+  },
+  "extra": {
+    "typo3/cms": {
+      "app-dir": ".Build",
+      "web-dir": ".Build/Web",
+      "extension-key": "styleguide"
     }
   }
 }

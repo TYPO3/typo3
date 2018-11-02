@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/TYPO3/styleguide.svg?branch=master)](https://travis-ci.org/TYPO3/styleguide)
+
 TYPO3 CMS Backend Styleguide
 ============================
 
