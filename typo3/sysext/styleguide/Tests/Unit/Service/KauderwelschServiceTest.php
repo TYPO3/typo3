@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Styleguide\Tests\Unit;
+namespace TYPO3\CMS\Styleguide\Tests\Unit\Service;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -14,18 +14,19 @@ namespace TYPO3\CMS\Styleguide\Tests\Unit;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class DummyTest extends UnitTestCase
+class KauderwelschServiceTest extends UnitTestCase
 {
     /**
      * @test
      */
-    public function alwaysTrue()
+    public function getWortReturnsWord()
     {
-        $this->assertTrue(true);
+        $this->assertEquals('lipsum', (new KauderwelschService())->getWord());
     }
 }

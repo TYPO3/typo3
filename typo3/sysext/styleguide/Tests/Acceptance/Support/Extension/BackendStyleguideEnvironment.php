@@ -15,9 +15,6 @@ namespace TYPO3\CMS\Styleguide\Tests\Acceptance\Support\Extension;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Codeception\Event\SuiteEvent;
-use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 use TYPO3\TestingFramework\Core\Acceptance\Extension\BackendEnvironment;
 
 /**
