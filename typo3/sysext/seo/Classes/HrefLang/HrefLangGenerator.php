@@ -64,7 +64,7 @@ class HrefLangGenerator
 
     public function generate(): string
     {
-        $hreflangs = '';
+        $hreflangs = [];
         if ((int)$this->typoScriptFrontendController->page['no_index'] === 1) {
             return '';
         }
@@ -72,21 +72,24 @@ class HrefLangGenerator
         if ($GLOBALS['TYPO3_REQUEST']->getAttribute('site') instanceof Site) {
             $languageMenu = GeneralUtility::makeInstance(LanguageMenuProcessor::class);
             $languages = $languageMenu->process($this->cObj, [], [], []);
-            $hreflangs = '';
             foreach ($languages['languagemenu'] as $language) {
                 if ($language['available'] === 1) {
                     $href = $this->getAbsoluteUrl($language['link']);
-                    $hreflangs .= '<link rel="alternate" hreflang="' . htmlspecialchars($language['hreflang']) . '" href="' . htmlspecialchars($href) . '"/>' . LF;
+                    $hreflangs[] =
+                        '<link rel="alternate" hreflang="' . htmlspecialchars($language['hreflang']) . '" href="' . htmlspecialchars($href) . '"/>';
                 }
             }
 
-            $href = $this->getAbsoluteUrl($languages['languagemenu'][0]['link']);
-            $hreflangs .= '<link rel="alternate" hreflang="x-default" href="' . htmlspecialchars($href) . '"/>' . LF;
+            if (count($hreflangs) > 1) {
+                $href = $this->getAbsoluteUrl($languages['languagemenu'][0]['link']);
+                $hreflangs[] =
+                    '<link rel="alternate" hreflang="x-default" href="' . htmlspecialchars($href) . '"/>' . LF;
 
-            $GLOBALS['TSFE']->additionalHeaderData[] = $hreflangs;
+                $GLOBALS['TSFE']->additionalHeaderData[] = implode(LF, $hreflangs);
+            }
         }
 
-        return $hreflangs;
+        return implode(LF, $hreflangs);
     }
 
     /**
