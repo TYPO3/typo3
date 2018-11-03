@@ -72,11 +72,7 @@ class FrontendRestrictionContainer extends AbstractRestrictionContainer
         foreach ($this->restrictions as $restriction) {
             foreach ($queriedTables as $tableAlias => $tableName) {
                 $disableRestriction = false;
-                if ($this->context->getPropertyFromAspect('workspace', 'id', 0) > 0) {
-                    $disableRestriction = !$restriction instanceof DeletedRestriction && !$restriction instanceof FrontendWorkspaceRestriction;
-                }
-
-                if (!$disableRestriction && $restriction instanceof HiddenRestriction) {
+                if ($restriction instanceof HiddenRestriction) {
                     /** @var VisibilityAspect $visibilityAspect */
                     $visibilityAspect = $this->context->getAspect('visibility');
                     // If display of hidden records is requested, we must disable the hidden restriction.
