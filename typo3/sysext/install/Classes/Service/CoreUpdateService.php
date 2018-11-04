@@ -251,7 +251,7 @@ class CoreUpdateService
                 FlashMessage::NOTICE
             ));
         } else {
-            $downloadUri = $this->downloadBaseUri . $version;
+            $downloadUri = $this->downloadBaseUri . '/' . $version;
             $fileLocation = $this->getDownloadTarGzTargetPath($version);
 
             if (@file_exists($fileLocation)) {
@@ -266,7 +266,7 @@ class CoreUpdateService
                 if (!$fileContent) {
                     $success = false;
                     $this->messages->enqueue(new FlashMessage(
-                        '',
+                        'Failed to download ' . $downloadUri,
                         'Download not successful',
                         FlashMessage::ERROR
                     ));

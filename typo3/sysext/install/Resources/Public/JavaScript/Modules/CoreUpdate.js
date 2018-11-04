@@ -56,11 +56,6 @@ define([
       coreUpdateMove: {
         loadingMessage: 'Moving core',
         finishMessage: undefined,
-        nextActionName: 'coreUpdateClearAllCache'
-      },
-      clearAllCache: {
-        loadingMessage: 'Clearing caches',
-        finishMessage: 'Caches cleared',
         nextActionName: 'coreUpdateActivate'
       },
       coreUpdateActivate: {
@@ -85,22 +80,22 @@ define([
     initialize: function(currentModal) {
       var self = this;
       this.currentModal = currentModal;
-      this.getData();
+      this.getData().done(function() {
+        var buttonTemplateSection = currentModal.find(self.selectorTemplate);
+        self.buttonTemplate = buttonTemplateSection.children().clone();
+      });
 
-      var buttonTemplateSection = $(this.selectorTemplate);
-      this.buttonTemplate = buttonTemplateSection.children().clone();
-
-      $(document).on('click', '.t3js-coreUpdate-init', function(e) {
+      currentModal.on('click', '.t3js-coreUpdate-init', function(e) {
         e.preventDefault();
         var action = $(e.target).data('action');
-        $(document).find(self.selectorOutput).empty();
+        currentModal.find(self.selectorOutput).empty();
         self[action]();
       });
     },
 
     getData: function() {
       var modalContent = this.currentModal.find(this.selectorModalBody);
-      $.ajax({
+      return $.ajax({
         url: Router.getUrl('coreUpdateGetData'),
         cache: false,
         success: function(data) {
@@ -140,7 +135,7 @@ define([
      * @param type Either 'development' or 'regular'
      */
     update: function(type) {
-      if (type !== "development") {
+      if (type !== 'development') {
         type = 'regular';
       }
       this.callAction('coreUpdateCheckPreConditions', type);
@@ -173,8 +168,8 @@ define([
             self.callAction(self.actionQueue[actionName].nextActionName, type);
           }
         },
-        error: function(result) {
-          self.handleResult(result);
+        error: function(xhr) {
+          Router.handleAjaxError(xhr, self.currentModal.find(self.selectorModalBody));
         }
       });
     },
@@ -186,22 +181,17 @@ define([
      * @param successMessage Optional success message
      */
     handleResult: function(data, successMessage) {
-      var canContinue = false;
-      var modalContent = this.currentModal.find(this.selectorModalBody);
+      var canContinue = data.success;
       this.removeLoadingMessage();
-      if (data.success === true) {
-        canContinue = true;
-        if (data.status && typeof(data.status) === 'object') {
-          this.showStatusMessages(data.status);
-        }
-        if (data.action && typeof(data.action) === 'object') {
-          this.showActionButton(data.action);
-        }
-        if (successMessage) {
-          this.addMessage(Severity.ok, successMessage);
-        }
-      } else {
-        Router.handleAjaxError(xhr, modalContent);
+
+      if (data.status && typeof(data.status) === 'object') {
+        this.showStatusMessages(data.status);
+      }
+      if (data.action && typeof(data.action) === 'object') {
+        this.showActionButton(data.action);
+      }
+      if (successMessage) {
+        this.addMessage(Severity.ok, successMessage);
       }
       return canContinue;
     },
@@ -213,14 +203,14 @@ define([
      */
     addLoadingMessage: function(messageTitle) {
       var domMessage = FlashMessage.render(Severity.loading, messageTitle);
-      $(this.selectorOutput).append(domMessage);
+      this.currentModal.find(this.selectorOutput).append(domMessage);
     },
 
     /**
      * Remove an enabled loading message
      */
     removeLoadingMessage: function() {
-      $(this.selectorOutput).find('.alert-loading').remove();
+      this.currentModal.find(this.selectorOutput).find('.alert-loading').remove();
     },
 
     /**
@@ -260,12 +250,12 @@ define([
       }
       var domButton = this.buttonTemplate;
       if (action) {
-        domButton.find('button').data('action', action);
+        domButton.data('action', action);
       }
       if (title) {
-        domButton.find('button').text(title);
+        domButton.text(title);
       }
-      $(this.selectorOutput).append(domButton);
+      this.currentModal.find(this.selectorOutput).append(domButton);
     },
 
     /**
@@ -277,7 +267,7 @@ define([
      */
     addMessage: function(severity, title, message) {
       var domMessage = FlashMessage.render(severity, title, message);
-      $(this.selectorOutput).append(domMessage);
+      this.currentModal.find(this.selectorOutput).append(domMessage);
     }
   };
 });
