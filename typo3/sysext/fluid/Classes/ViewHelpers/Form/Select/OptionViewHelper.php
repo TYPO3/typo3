@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form\Select;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper;
 
 /**
- * Adds custom `<option>` tags inside an `<f:form.select>`
+ * Adds custom ``<option>`` tags inside an ``<f:form.select>``
  */
 class OptionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper
 {

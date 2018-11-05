@@ -45,21 +45,20 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * @see http://php.net/manual/function.mb-convert-case.php [1]
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Example">
- * <f:format.case>Some Text with miXed case</f:format.case>
- * </code>
- * <output>
+ * Example::
+ *
+ *    <f:format.case>Some Text with miXed case</f:format.case>
+ *
  * SOME TEXT WITH MIXED CASE
- * </output>
  *
- * <code title="Example with given mode">
- * <f:format.case mode="capital">someString</f:format.case>
- * </code>
- * <output>
+ * Example with given mode::
+ *
+ *    <f:format.case mode="capital">someString</f:format.case>
+ *
  * SomeString
- * </output>
  */
 class CaseViewHelper extends AbstractViewHelper
 {

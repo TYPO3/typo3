@@ -19,31 +19,38 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 /**
  * A view helper for creating links to TYPO3 pages.
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="link to the current page">
- * <f:link.page>page link</f:link.page>
- * </code>
- * <output>
- * <a href="index.php?id=123">page link</f:link.action>
+ * link to the current page::
+ *
+ *    <f:link.page>page link</f:link.page>
+ *
+ * Output::
+ *
+ *    <a href="index.php?id=123">page link</f:link.action>
+ *
  * (depending on the current page and your TS configuration)
- * </output>
  *
- * <code title="query parameters">
- * <f:link.page pageUid="1" additionalParams="{foo: 'bar'}">page link</f:link.page>
- * </code>
- * <output>
- * <a href="index.php?id=1&foo=bar">page link</f:link.action>
- * (depending on your TS configuration)
- * </output>
+ * query parameters::
  *
- * <code title="query parameters for extensions">
- * <f:link.page pageUid="1" additionalParams="{extension_key: {foo: 'bar'}}">page link</f:link.page>
- * </code>
- * <output>
- * <a href="index.php?id=1&extension_key[foo]=bar">page link</f:link.action>
+ *    <f:link.page pageUid="1" additionalParams="{foo: 'bar'}">page link</f:link.page>
+ *
+ * Output::
+ *
+ *    <a href="index.php?id=1&foo=bar">page link</f:link.action>
+ *
  * (depending on your TS configuration)
- * </output>
+ *
+ * query parameters for extensions::
+ *
+ *    <f:link.page pageUid="1" additionalParams="{extension_key: {foo: 'bar'}}">page link</f:link.page>
+ *
+ * Output::
+ *
+ *    <a href="index.php?id=1&extension_key[foo]=bar">page link</f:link.action>
+ *
+ * (depending on your TS configuration)
  */
 class PageViewHelper extends AbstractTagBasedViewHelper
 {

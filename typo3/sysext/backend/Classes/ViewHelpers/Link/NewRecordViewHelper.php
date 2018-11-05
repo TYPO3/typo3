@@ -26,34 +26,38 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * To edit records, use the editRecordViewHelper
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Link to create a new record of a_table after record 17 on the same pid">
- * <be:link.newRecord table="a_table" returnUrl="foo/bar" uid="-17"/>
- * </code>
- * <output>
- * <a href="/typo3/index.php?route=/record/edit&edit[a_table][-17]=new&returnUrl=foo/bar">
- *   Edit record
- * </a>
- * </output>
+ * Link to create a new record of a_table after record 17 on the same pid::
  *
- * <code title="Link to create a new record of a_table on root page">
- * <be:link.newRecord table="a_table" returnUrl="foo/bar""/>
- * </code>
- * <output>
- * <a href="/typo3/index.php?route=/record/edit&edit[a_table][]=new&returnUrl=foo/bar">
- *   Edit record
- * </a>
- * </output>
+ *    <be:link.newRecord table="a_table" returnUrl="foo/bar" uid="-17"/>
  *
- * <code title="Link to create a new record of a_table on page 17">
- * <be:link.newRecord table="a_table" returnUrl="foo/bar" pid="17"/>
- * </code>
- * <output>
- * <a href="/typo3/index.php?route=/record/edit&edit[a_table][-17]=new&returnUrl=foo/bar">
- *   Edit record
- * </a>
- * </output>
+ * Output::
+ *
+ *    <a href="/typo3/index.php?route=/record/edit&edit[a_table][-17]=new&returnUrl=foo/bar">
+ *      Edit record
+ *    </a>
+ *
+ * Link to create a new record of a_table on root page::
+ *
+ *    <be:link.newRecord table="a_table" returnUrl="foo/bar""/>
+ *
+ * Output::
+ *
+ *    <a href="/typo3/index.php?route=/record/edit&edit[a_table][]=new&returnUrl=foo/bar">
+ *      Edit record
+ *    </a>
+ *
+ * Link to create a new record of a_table on page 17::
+ *
+ *    <be:link.newRecord table="a_table" returnUrl="foo/bar" pid="17"/>
+ *
+ * Output::
+ *
+ *    <a href="/typo3/index.php?route=/record/edit&edit[a_table][-17]=new&returnUrl=foo/bar">
+ *      Edit record
+ *    </a>
  */
 class NewRecordViewHelper extends AbstractTagBasedViewHelper
 {

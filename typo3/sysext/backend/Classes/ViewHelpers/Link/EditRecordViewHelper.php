@@ -14,16 +14,18 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * The uid must be given as a positive integer.
  * For new records, use the newRecordViewHelper
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Link to the record-edit action passed to FormEngine">
- * <be:link.editRecord uid="42" table="a_table" returnUrl="foo/bar" />
- * </code>
- * <output>
- * <a href="/typo3/index.php?route=/record/edit&edit[a_table][42]=edit&returnUrl=foo/bar">
- *   Edit record
- * </a>
- * </output>
+ * Link to the record-edit action passed to FormEngine::
+ *
+ *    <be:link.editRecord uid="42" table="a_table" returnUrl="foo/bar" />
+ *
+ * Output::
+ *
+ *    <a href="/typo3/index.php?route=/record/edit&edit[a_table][42]=edit&returnUrl=foo/bar">
+ *      Edit record
+ *    </a>
  */
 class EditRecordViewHelper extends AbstractTagBasedViewHelper
 {

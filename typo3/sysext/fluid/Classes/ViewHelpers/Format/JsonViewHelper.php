@@ -23,29 +23,27 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
 /**
  * Wrapper for PHPs json_encode function.
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="encoding a view variable">
- * {someArray -> f:format.json()}
- * </code>
- * <output>
- * ["array","values"]
+ * encoding a view variable::
+ *
+ *    {someArray -> f:format.json()}
+ *
+ * ``["array","values"]``
  * // depending on the value of {someArray}
- * </output>
  *
- * <code title="associative array">
- * {f:format.json(value: {foo: 'bar', bar: 'baz'})}
- * </code>
- * <output>
- * {"foo":"bar","bar":"baz"}
- * </output>
+ * associative array::
  *
- * <code title="non-associative array with forced object">
- * {f:format.json(value: {0: 'bar', 1: 'baz'}, forceObject: true)}
- * </code>
- * <output>
- * {"0":"bar","1":"baz"}
- * </output>
+ *    {f:format.json(value: {foo: 'bar', bar: 'baz'})}
+ *
+ * ``{"foo":"bar","bar":"baz"}``
+ *
+ * non-associative array with forced object::
+ *
+ *    {f:format.json(value: {0: 'bar', 1: 'baz'}, forceObject: true)}
+ *
+ * ``{"0":"bar","1":"baz"}``
  */
 class JsonViewHelper extends AbstractViewHelper
 {

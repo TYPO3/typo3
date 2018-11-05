@@ -25,31 +25,34 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 /**
  * A ViewHelper to create links from fields supported by the link wizard
  *
- * == Example ==
+ * Example
+ * -------
  *
  * {link} contains "19 _blank - "testtitle with whitespace" &X=y"
  *
- * <code title="minimal usage">
- * <f:link.typolink parameter="{link}">
- * Linktext
- * </f:link.typolink>
- * <output>
- * <a href="index.php?id=19&X=y" title="testtitle with whitespace" target="_blank">
- * Linktext
- * </a>
- * </output>
- * </code>
+ * minimal usage::
  *
- * <code title="Full parameter usage">
- * <f:link.typolink parameter="{link}" target="_blank" class="ico-class" title="some title" additionalParams="&u=b" additionalAttributes="{type:'button'}" useCacheHash="true">
- * Linktext
- * </f:link.typolink>
- * </code>
- * <output>
- * <a href="index.php?id=19&X=y&u=b" title="some title" target="_blank" class="ico-class" type="button">
- * Linktext
- * </a>
- * </output>
+ *    <f:link.typolink parameter="{link}">
+ *       Linktext
+ *    </f:link.typolink>
+ *
+ * Output::
+ *
+ *    <a href="index.php?id=19&X=y" title="testtitle with whitespace" target="_blank">
+ *       Linktext
+ *    </a>
+ *
+ * Full parameter usage::
+ *
+ *    <f:link.typolink parameter="{link}" target="_blank" class="ico-class" title="some title" additionalParams="&u=b" additionalAttributes="{type:'button'}" useCacheHash="true">
+ *       Linktext
+ *    </f:link.typolink>
+ *
+ * Output::
+ *
+ *    <a href="index.php?id=19&X=y&u=b" title="some title" target="_blank" class="ico-class" type="button">
+ *      Linktext
+ *    </a>
  */
 class TypolinkViewHelper extends AbstractViewHelper
 {

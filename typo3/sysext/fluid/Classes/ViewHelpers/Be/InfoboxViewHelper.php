@@ -22,30 +22,37 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
 /**
  * View helper for rendering a styled content infobox markup.
  *
- * = States =
+ * States
+ * ------
  *
  * The Infobox provides different context sensitive states that
  * can be used to provide an additional visual feedback to the
  * to the user to underline the meaning of the information.
  *
- * Possible values are in range from -2 to 2. Please choose a
+ * Possible values are in range from ``-2`` to ``2``. Please choose a
  * meaningful value from the following list.
  *
- * -2: Notices (Default)
- * -1: Information
- * 0: Positive feedback
- * 1: Warnings
- * 2: Error
+ * ``-2``
+ *    Notices (Default)
+ * ``-1``
+ *    Information
+ * ``0``
+ *    Positive feedback
+ * ``1``
+ *    Warnings
+ * ``2``
+ *    Error
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Simple">
- * <f:be.infobox title="Message title">your box content</f:be.infobox>
- * </code>
+ * Simple::
  *
- * <code title="All options">
- * <f:be.infobox title="Message title" message="your box content" state="-2" iconName="check" disableIcon="true" />
- * </code>
+ *    <f:be.infobox title="Message title">your box content</f:be.infobox>
+ *
+ * All options::
+ *
+ *    <f:be.infobox title="Message title" message="your box content" state="-2" iconName="check" disableIcon="true" />
  */
 class InfoboxViewHelper extends AbstractViewHelper
 {

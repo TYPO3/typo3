@@ -24,43 +24,39 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 /**
  * Use this view helper to crop the text between its opening and closing tags.
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Defaults">
- * <f:format.crop maxCharacters="10">This is some very long text</f:format.crop>
- * </code>
- * <output>
+ * Defaults::
+ *
+ *    <f:format.crop maxCharacters="10">This is some very long text</f:format.crop>
+ *
  * This is…
- * </output>
  *
- * <code title="Custom suffix">
- * <f:format.crop maxCharacters="17" append="&nbsp;[more]">This is some very long text</f:format.crop>
- * </code>
- * <output>
+ * Custom suffix::
+ *
+ *    <f:format.crop maxCharacters="17" append="&nbsp;[more]">This is some very long text</f:format.crop>
+ *
  * This is some&nbsp;[more]
- * </output>
  *
- * <code title="Don't respect word boundaries">
- * <f:format.crop maxCharacters="10" respectWordBoundaries="false">This is some very long text</f:format.crop>
- * </code>
- * <output>
+ * Don't respect word boundaries::
+ *
+ *    <f:format.crop maxCharacters="10" respectWordBoundaries="false">This is some very long text</f:format.crop>
+ *
  * This is so…
- * </output>
  *
- * <code title="Don't respect HTML tags">
- * <f:format.crop maxCharacters="28" respectWordBoundaries="false" respectHtml="false">This is some text with <strong>HTML</strong> tags</f:format.crop>
- * </code>
- * <output>
+ * Don't respect HTML tags::
+ *
+ *    <f:format.crop maxCharacters="28" respectWordBoundaries="false" respectHtml="false">This is some text with <strong>HTML</strong> tags</f:format.crop>
+ *
  * This is some text with <stro
- * </output>
  *
- * <code title="Inline notation">
- * {someLongText -> f:format.crop(maxCharacters: 10)}
- * </code>
- * <output>
+ * Inline notation::
+ *
+ *    {someLongText -> f:format.crop(maxCharacters: 10)}
+ *
  * someLongText cropped after 10 characters…
  * (depending on the value of {someLongText})
- * </output>
  */
 class CropViewHelper extends AbstractViewHelper
 {

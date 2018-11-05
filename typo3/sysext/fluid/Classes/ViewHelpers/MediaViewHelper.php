@@ -29,28 +29,32 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * It asks the RendererRegister for the correct Renderer class and if not found it falls
  * back to the ImageViewHelper as that is the "Renderer" class for images in Fluid context.
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Image Object">
- *     <f:media file="{file}" width="400" height="375" />
- * </code>
- * <output>
- *     <img alt="alt set in image record" src="fileadmin/_processed_/323223424.png" width="396" height="375" />
- * </output>
+ * Image Object::
  *
- * <code title="MP4 Video Object">
- *     <f:media file="{file}" width="400" height="375" />
- * </code>
- * <output>
- *     <video width="400" height="375" controls><source src="fileadmin/user_upload/my-video.mp4" type="video/mp4"></video>
- * </output>
+ *    <f:media file="{file}" width="400" height="375" />
  *
- * <code title="MP4 Video Object with loop and autoplay option set">
- *     <f:media file="{file}" width="400" height="375" additionalConfig="{loop: '1', autoplay: '1'}" />
- * </code>
- * <output>
- *     <video width="400" height="375" controls loop><source src="fileadmin/user_upload/my-video.mp4" type="video/mp4"></video>
- * </output>
+ * Output::
+ *
+ *    <img alt="alt set in image record" src="fileadmin/_processed_/323223424.png" width="396" height="375" />
+ *
+ * MP4 Video Object::
+ *
+ *    <f:media file="{file}" width="400" height="375" />
+ *
+ * Output::
+ *
+ *    <video width="400" height="375" controls><source src="fileadmin/user_upload/my-video.mp4" type="video/mp4"></video>
+ *
+ * MP4 Video Object with loop and autoplay option set::
+ *
+ *    <f:media file="{file}" width="400" height="375" additionalConfig="{loop: '1', autoplay: '1'}" />
+ *
+ * Output::
+ *
+ *    <video width="400" height="375" controls loop><source src="fileadmin/user_upload/my-video.mp4" type="video/mp4"></video>
  */
 class MediaViewHelper extends AbstractTagBasedViewHelper
 {

@@ -17,30 +17,36 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 /**
  * View Helper which creates a simple checkbox (<input type="checkbox">).
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Example">
- * <f:form.checkbox name="myCheckBox" value="someValue" />
- * </code>
- * <output>
- * <input type="checkbox" name="myCheckBox" value="someValue" />
- * </output>
+ * Example::
  *
- * <code title="Preselect">
- * <f:form.checkbox name="myCheckBox" value="someValue" checked="{object.value} == 5" />
- * </code>
- * <output>
- * <input type="checkbox" name="myCheckBox" value="someValue" checked="checked" />
+ *    <f:form.checkbox name="myCheckBox" value="someValue" />
+ *
+ * Output::
+ *
+ *    <input type="checkbox" name="myCheckBox" value="someValue" />
+ *
+ * Preselect::
+ *
+ *    <f:form.checkbox name="myCheckBox" value="someValue" checked="{object.value} == 5" />
+ *
+ * Output::
+ *
+ *    <input type="checkbox" name="myCheckBox" value="someValue" checked="checked" />
+ *
  * (depending on $object)
- * </output>
  *
- * <code title="Bind to object property">
- * <f:form.checkbox property="interests" value="TYPO3" />
- * </code>
- * <output>
- * <input type="checkbox" name="user[interests][]" value="TYPO3" checked="checked" />
+ * Bind to object property::
+ *
+ *    <f:form.checkbox property="interests" value="TYPO3" />
+ *
+ * Output::
+ *
+ *    <input type="checkbox" name="user[interests][]" value="TYPO3" checked="checked" />
+ *
  * (depending on property "interests")
- * </output>
  */
 class CheckboxViewHelper extends AbstractFormFieldViewHelper
 {

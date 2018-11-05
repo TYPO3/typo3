@@ -21,31 +21,29 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 /**
  * A view helper for creating URIs to TYPO3 pages.
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="URI to the current page">
- * <f:uri.page>page link</f:uri.page>
- * </code>
- * <output>
- * index.php?id=123
+ * URI to the current page::
+ *
+ *    <f:uri.page>page link</f:uri.page>
+ *
+ * ``index.php?id=123``
  * (depending on the current page and your TS configuration)
- * </output>
  *
- * <code title="query parameters">
- * <f:uri.page pageUid="1" additionalParams="{foo: 'bar'}" />
- * </code>
- * <output>
- * index.php?id=1&foo=bar
- * (depending on your TS configuration)
- * </output>
+ * query parameters::
  *
- * <code title="query parameters for extensions">
- * <f:uri.page pageUid="1" additionalParams="{extension_key: {foo: 'bar'}}" />
- * </code>
- * <output>
- * index.php?id=1&extension_key[foo]=bar
+ *    <f:uri.page pageUid="1" additionalParams="{foo: 'bar'}" />
+ *
+ * ``index.php?id=1&foo=bar``
  * (depending on your TS configuration)
- * </output>
+ *
+ * query parameters for extensions::
+ *
+ *    <f:uri.page pageUid="1" additionalParams="{extension_key: {foo: 'bar'}}" />
+ *
+ * ``index.php?id=1&extension_key[foo]=bar``
+ * (depending on your TS configuration)
  */
 class PageViewHelper extends AbstractViewHelper
 {

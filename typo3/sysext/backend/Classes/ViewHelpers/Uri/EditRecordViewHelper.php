@@ -16,14 +16,14 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * The uid must be given as a positive integer.
  * For new records, use the newRecordViewHelper
  *
- * = Examples =
+ * Examples
+ * ========
  *
- * <code title="URI to the record-edit action passed to FormEngine">
- * <be:uri.editRecord uid="42" table="a_table" returnUrl="foo/bar" />
- * </code>
- * <output>
- * /typo3/index.php?route=/record/edit&edit[a_table][42]=edit&returnUrl=foo/bar
- * </output>
+ * URI to the record-edit action passed to FormEngine::
+ *
+ *    <be:uri.editRecord uid="42" table="a_table" returnUrl="foo/bar" />
+ *
+ * ``/typo3/index.php?route=/record/edit&edit[a_table][42]=edit&returnUrl=foo/bar``
  */
 class EditRecordViewHelper extends AbstractViewHelper
 {

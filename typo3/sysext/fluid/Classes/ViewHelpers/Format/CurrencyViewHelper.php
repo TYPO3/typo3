@@ -21,36 +21,33 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 /**
  * Formats a given float to a currency representation.
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Defaults">
- * <f:format.currency>123.456</f:format.currency>
- * </code>
- * <output>
- * 123,46
- * </output>
+ * Defaults::
  *
- * <code title="All parameters">
- * <f:format.currency currencySign="$" decimalSeparator="." thousandsSeparator="," prependCurrency="true" separateCurrency="false" decimals="2">54321</f:format.currency>
- * </code>
- * <output>
- * $54,321.00
- * </output>
+ *    <f:format.currency>123.456</f:format.currency>
  *
- * <code title="Inline notation">
- * {someNumber -> f:format.currency(thousandsSeparator: ',', currencySign: '€')}
- * </code>
- * <output>
- * 54,321,00 €
+ * ``123,46``
+ *
+ * All parameters::
+ *
+ *    <f:format.currency currencySign="$" decimalSeparator="." thousandsSeparator="," prependCurrency="true" separateCurrency="false" decimals="2">54321</f:format.currency>
+ *
+ * ``$54,321.00``
+ *
+ * Inline notation::
+ *
+ *    {someNumber -> f:format.currency(thousandsSeparator: ',', currencySign: '€')}
+ *
+ * ``54,321,00 €``
  * (depending on the value of {someNumber})
- * </output>
  *
- * <code title="use dash for decimals without value">
- * <f:format.currency useDash="true">123.00</f:format.currency>
- * </code>
- * <output>
- * 123,-
- * </output>
+ * use dash for decimals without value::
+ *
+ *    <f:format.currency useDash="true">123.00</f:format.currency>
+ *
+ * ``123,-``
  */
 class CurrencyViewHelper extends AbstractViewHelper
 {

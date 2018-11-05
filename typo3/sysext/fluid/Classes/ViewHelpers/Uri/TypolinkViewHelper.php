@@ -24,26 +24,25 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 /**
  * A ViewHelper to create uris from fields supported by the link wizard
  *
- * == Example ==
+ * Example
+ * -------
  *
- * {link} contains "19 - - - &X=y"
+ * ``{link}`` contains ``19 - - - &X=y``
  * Please note that due to the nature of typolink you have to provide a
  * full set of parameters if you use the parameter only. Target, class
  * and title will be discarded.
  *
- * <code title="minimal usage">
- * <f:uri.typolink parameter="{link}" />
- * <output>
- * index.php?id=19&X=y
- * </output>
- * </code>
+ * minimal usage::
  *
- * <code title="Full parameter usage">
- * <f:uri.typolink parameter="{link}" additionalParams="&u=b" useCacheHash="true" />
- * </code>
- * <output>
- * index.php?id=19&X=y&u=b
- * </output>
+ *    <f:uri.typolink parameter="{link}" />
+ *
+ * ``index.php?id=19&X=y``
+ *
+ * Full parameter usage::
+ *
+ *    <f:uri.typolink parameter="{link}" additionalParams="&u=b" useCacheHash="true" />
+ *
+ * ``index.php?id=19&X=y&u=b``
  */
 class TypolinkViewHelper extends AbstractViewHelper
 {

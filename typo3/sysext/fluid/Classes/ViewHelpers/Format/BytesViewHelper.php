@@ -23,32 +23,30 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
 /**
  * Formats an integer with a byte count into human-readable form.
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Defaults">
- * {fileSize -> f:format.bytes()}
- * </code>
- * <output>
- * 123 KB
- * // depending on the value of {fileSize}
- * </output>
+ * Defaults::
  *
- * <code title="Defaults">
- * {fileSize -> f:format.bytes(decimals: 2, decimalSeparator: '.', thousandsSeparator: ',')}
- * </code>
- * <output>
- * 1,023.00 B
- * // depending on the value of {fileSize}
- * </output>
+ *    {fileSize -> f:format.bytes()}
+ *
+ * ``123 KB``
+ * Depending on the value of {fileSize}
+ *
+ * Defaults::
+ *
+ *    {fileSize -> f:format.bytes(decimals: 2, decimalSeparator: '.', thousandsSeparator: ',')}
+ *
+ * ``1,023.00 B``
+ * Depending on the value of {fileSize}
  *
  * You may provide an own set of units, like this: B,KB,MB,GB,TB,PB,EB,ZB,YB
- * <code title="custom units">
- * {fileSize -> f:format.bytes(units: '{f:translate(\'viewhelper.format.bytes.units\', \'fluid\')}'
- * </code>
- * <output>
- * 123 KB
- * // depending on the value of {fileSize}
- * </output>
+ * custom units::
+ *
+ *    {fileSize -> f:format.bytes(units: '{f:translate(\'viewhelper.format.bytes.units\', \'fluid\')}'
+ *
+ * ``123 KB``
+ * Depending on the value of {fileSize}
  */
 class BytesViewHelper extends AbstractViewHelper
 {

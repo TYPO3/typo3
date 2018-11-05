@@ -19,15 +19,18 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 /**
  * A view helper for creating Links to extbase actions within widets.
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="URI to the show-action of the current controller">
- * <f:widget.link action="show">link</f:widget.link>
- * </code>
- * <output>
- * <a href="index.php?id=123&tx_myextension_plugin[widgetIdentifier][action]=show&tx_myextension_plugin[widgetIdentifier][controller]=Standard&cHash=xyz">link</a>
+ * URI to the show-action of the current controller::
+ *
+ *    <f:widget.link action="show">link</f:widget.link>
+ *
+ * Output::
+ *
+ *    <a href="index.php?id=123&tx_myextension_plugin[widgetIdentifier][action]=show&tx_myextension_plugin[widgetIdentifier][controller]=Standard&cHash=xyz">link</a>
+ *
  * (depending on the current page, widget and your TS configuration)
- * </output>
  */
 class LinkViewHelper extends AbstractTagBasedViewHelper
 {

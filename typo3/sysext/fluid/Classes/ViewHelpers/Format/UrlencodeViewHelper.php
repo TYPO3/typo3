@@ -24,21 +24,20 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * @see http://www.php.net/manual/function.rawurlencode.php
  * Note: The output is not escaped. You may have to ensure proper escaping on your own.
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="default notation">
- * <f:format.rawurlencode>foo @+%/</f:format.rawurlencode>
- * </code>
- * <output>
- * foo%20%40%2B%25%2F (rawurlencode() applied)
- * </output>
+ * default notation::
  *
- * <code title="inline notation">
- * {text -> f:format.urlencode()}
- * </code>
- * <output>
+ *    <f:format.rawurlencode>foo @+%/</f:format.rawurlencode>
+ *
+ * ``foo%20%40%2B%25%2F`` (rawurlencode() applied)
+ *
+ * inline notation::
+ *
+ *    {text -> f:format.urlencode()}
+ *
  * Url encoded text (rawurlencode() applied)
- * </output>
  */
 class UrlencodeViewHelper extends AbstractViewHelper
 {
