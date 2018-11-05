@@ -60,11 +60,11 @@ class BackendUserAuthenticator implements MiddlewareInterface
         $pathToRoute = $request->getAttribute('routePath', '/login');
 
         Bootstrap::initializeBackendUser();
-        // Register the backend user as aspect
-        $this->setBackendUserAspect(GeneralUtility::makeInstance(Context::class), $GLOBALS['BE_USER']);
         // @todo: once this logic is in this method, the redirect URL should be handled as response here
         Bootstrap::initializeBackendAuthentication($this->isLoggedInBackendUserRequired($pathToRoute));
         Bootstrap::initializeLanguageObject();
+        // Register the backend user as aspect
+        $this->setBackendUserAspect(GeneralUtility::makeInstance(Context::class), $GLOBALS['BE_USER']);
 
         return $handler->handle($request);
     }
