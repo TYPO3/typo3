@@ -166,7 +166,7 @@ class DocumentationFileTest extends UnitTestCase
     {
         $expected = [
             'unittest',
-            'cat:Important',
+            'Important',
         ];
         $result = $this->documentationFileService->findDocumentationFiles(vfsStream::url('root/Changelog/2.0'));
         $key = md5('vfs://root/Changelog/2.0/Important-98574-Issue.rst');

@@ -128,9 +128,11 @@ class DocumentationFile
         $entry['filepath'] = $file;
         $entry['tags'] = $this->extractTags($lines);
         $entry['class'] = 'default';
-        foreach ($entry['tags'] as $tag) {
-            if (strpos($tag, 'cat:') !== false) {
-                $entry['class'] = strtolower(substr($tag, 4));
+        foreach ($entry['tags'] as $key => $tag) {
+            if (strpos($tag, 'cat:') === 0) {
+                $substr = substr($tag, 4);
+                $entry['class'] = strtolower($substr);
+                $entry['tags'][$key] = $substr;
             }
         }
         $entry['tagList'] = implode(',', $entry['tags']);
