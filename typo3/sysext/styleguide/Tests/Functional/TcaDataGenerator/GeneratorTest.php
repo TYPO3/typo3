@@ -31,7 +31,7 @@ class GeneratorTest extends FunctionalTestCase
     ];
 
     /**
-     * Just a dummy to show that at least on test is actually executed on mssql
+     * Just a dummy to show that at least one test is actually executed on mssql
      *
      * @test
      */
