@@ -39,6 +39,7 @@ class FileLinktype extends AbstractLinktype
         }
         return $type;
     }
+
     /**
      * Checks a given URL + /path/filename.ext for validity
      *
@@ -57,7 +58,8 @@ class FileLinktype extends AbstractLinktype
         } catch (FolderDoesNotExistException $e) {
             return false;
         }
-        return !$file->isMissing();
+
+        return ($file !== null) ? !$file->isMissing() : false;
     }
 
     /**
