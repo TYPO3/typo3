@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -317,10 +318,32 @@ class AbstractPlugin
     {
         if (isset($this->conf['_DEFAULT_PI_VARS.']) && is_array($this->conf['_DEFAULT_PI_VARS.'])) {
             $this->conf['_DEFAULT_PI_VARS.'] = $this->applyStdWrapRecursive($this->conf['_DEFAULT_PI_VARS.']);
-            $tmp = $this->conf['_DEFAULT_PI_VARS.'];
+            $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+            $tmp = $typoScriptService->convertTypoScriptArrayToPlainArray($this->conf['_DEFAULT_PI_VARS.']);
             ArrayUtility::mergeRecursiveWithOverrule($tmp, is_array($this->piVars) ? $this->piVars : []);
+            $tmp = $this->removeInternalNodeValue($tmp);
             $this->piVars = $tmp;
         }
+    }
+
+    /**
+     * Remove the internal array key _typoScriptNodeValue
+     *
+     * @param array $typoscript
+     * @return array
+     */
+    protected function removeInternalNodeValue(array $typoscript): array
+    {
+        foreach ($typoscript as $key => $value) {
+            if ($key === '_typoScriptNodeValue') {
+                unset($typoscript[$key]);
+            }
+            if (is_array($value)) {
+                $typoscript[$key] = $this->removeInternalNodeValue($value);
+            }
+        }
+
+        return $typoscript;
     }
 
     /***************************

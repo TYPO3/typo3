@@ -36,11 +36,6 @@ class AbstractPluginTest extends UnitTestCase
     protected $abstractPlugin;
 
     /**
-     * @var array
-     */
-    protected $defaultPiVars;
-
-    /**
      * @var bool
      */
     protected $resetSingletonInstances = true;
@@ -63,7 +58,6 @@ class AbstractPluginTest extends UnitTestCase
             'TEXT' => TextContentObject::class,
         ]);
         $this->abstractPlugin->cObj = $contentObjectRenderer;
-        $this->defaultPiVars = $this->abstractPlugin->piVars;
     }
 
     /**
@@ -82,13 +76,18 @@ class AbstractPluginTest extends UnitTestCase
                             'wrap' => 'test | test'
                         ],
                     ],
+                    'simplevalue' => 'lipsum'
                 ],
                 [
                     'abc' => 'testDEFtest',
+                    'simplevalue' => 'lipsum',
                     'pointer' => '',
                     'mode' => '',
                     'sword' => '',
                     'sort' => '',
+                    'a' => [
+                        'bit' => 'nested'
+                    ]
                 ],
             ],
             'stdWrap on conf, non-recursive, stdWrap 2 levels deep' => [
@@ -109,6 +108,9 @@ class AbstractPluginTest extends UnitTestCase
                     'mode' => '',
                     'sword' => '',
                     'sort' => '',
+                    'a' => [
+                        'bit' => 'nested'
+                    ]
                 ],
             ],
             'stdWrap on conf, recursive' => [
@@ -122,18 +124,55 @@ class AbstractPluginTest extends UnitTestCase
                             ],
                         ],
                     ],
+                    'simple_value' => '45'
                 ],
                 [
-                    'abc.' => [
-                        'def' => 'testDEFtest',
-                        'def.' => [
+                    'abc' => [
+                        'def' => [
                             'ghi' => '123',
                         ],
                     ],
+                    'simple_value' => '45',
                     'pointer' => '',
                     'mode' => '',
                     'sword' => '',
                     'sort' => '',
+                    'a' => [
+                        'bit' => 'nested'
+                    ]
+                ],
+            ],
+            'stdWrap on conf, recursive, default pivars get overridden recursive nested set' => [
+                [
+                    'abc.' => [
+                        'def' => 'DEF',
+                        'def.' => [
+                            'ghi' => '123',
+                            'stdWrap.' => [
+                                'wrap' => 'test | test'
+                            ],
+                        ],
+                    ],
+                    'a' => [
+                        'default-is' => 'uncool'
+                    ],
+                    'simple_value' => '45'
+                ],
+                [
+                    'abc' => [
+                        'def' => [
+                            'ghi' => '123',
+                        ],
+                    ],
+                    'simple_value' => '45',
+                    'pointer' => '',
+                    'mode' => '',
+                    'sword' => '',
+                    'sort' => '',
+                    'a' => [
+                        'default-is' => 'uncool',
+                        'bit' => 'nested'
+                    ]
                 ],
             ],
         ];
@@ -146,7 +185,7 @@ class AbstractPluginTest extends UnitTestCase
     public function piSetPiVarDefaultsStdWrap($input, $expected)
     {
         $this->resetSingletonInstances = true;
-        $this->abstractPlugin->piVars = $this->defaultPiVars;
+        $this->abstractPlugin->piVars['a']['bit'] = 'nested';
 
         $this->abstractPlugin->conf['_DEFAULT_PI_VARS.'] = $input;
         $this->abstractPlugin->pi_setPiVarDefaults();
