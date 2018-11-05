@@ -165,7 +165,7 @@ class DocumentationFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     {
         $expected = [
             'unittest',
-            'cat:Important',
+            'Important',
         ];
         $result = $this->documentationFileService->findDocumentationFiles(vfsStream::url('root/Changelog'));
         $key = md5('vfs://root/Changelog/2.0/Important-98574-Issue.rst');
