@@ -22,21 +22,20 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 /**
  * This ViewHelper generates a HTML dump of the tagged variable.
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Simple">
- * <f:debug>{testVariables.array}</f:debug>
- * </code>
- * <output>
+ * Simple::
+ *
+ *    <f:debug>{testVariables.array}</f:debug>
+ *
  * foobarbazfoo
- * </output>
  *
- * <code title="All Features">
- * <f:debug title="My Title" maxDepth="5" blacklistedClassNames="{0:'Tx_BlogExample_Domain_Model_Administrator'}" plainText="true" ansiColors="false" inline="true" blacklistedPropertyNames="{0:'posts'}">{blogs}</f:debug>
- * </code>
- * <output>
+ * All Features::
+ *
+ *    <f:debug title="My Title" maxDepth="5" blacklistedClassNames="{0:'Tx_BlogExample_Domain_Model_Administrator'}" plainText="true" ansiColors="false" inline="true" blacklistedPropertyNames="{0:'posts'}">{blogs}</f:debug>
+ *
  * [A HTML view of the var_dump]
- * </output>
  */
 class DebugViewHelper extends AbstractViewHelper
 {

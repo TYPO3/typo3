@@ -17,21 +17,24 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 /**
  * Creates a button.
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Defaults">
- * <f:form.button>Send Mail</f:form.button>
- * </code>
- * <output>
- * <button type="submit" name="" value="">Send Mail</button>
- * </output>
+ * Defaults::
  *
- * <code title="Disabled cancel button with some HTML5 attributes">
- * <f:form.button type="reset" name="buttonName" value="buttonValue" disabled="disabled" formmethod="post" formnovalidate="formnovalidate">Cancel</f:form.button>
- * </code>
- * <output>
- * <button disabled="disabled" formmethod="post" formnovalidate="formnovalidate" type="reset" name="myForm[buttonName]" value="buttonValue">Cancel</button>
- * </output>
+ *    <f:form.button>Send Mail</f:form.button>
+ *
+ * Output::
+ *
+ *    <button type="submit" name="" value="">Send Mail</button>
+ *
+ * Disabled cancel button with some HTML5 attributes::
+ *
+ *    <f:form.button type="reset" name="buttonName" value="buttonValue" disabled="disabled" formmethod="post" formnovalidate="formnovalidate">Cancel</f:form.button>
+ *
+ * Output::
+ *
+ *    <button disabled="disabled" formmethod="post" formnovalidate="formnovalidate" type="reset" name="myForm[buttonName]" value="buttonValue">Cancel</button>
  */
 class ButtonViewHelper extends AbstractFormFieldViewHelper
 {

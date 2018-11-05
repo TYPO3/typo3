@@ -28,15 +28,19 @@ use TYPO3Fluid\Fluid\View\Exception;
  * It will render the required HTML for the doc header.
  * All module specific output and further configuration of the doc header
  * must be rendered as children of this view helper.
- * = Examples =
- * <code>
- * <be:moduleLayout>
+ *
+ * Examples
+ * ========
+ *
+ * Default::
+ *
+ *    <be:moduleLayout>
  *     <f:render section="content" />
- * </be:moduleLayout>
- * </code>
- * <output>
- * <!-- HTML of the backend module -->
- * </output>
+ *    </be:moduleLayout>
+ *
+ * Output::
+ *
+ *    <!-- HTML of the backend module -->
  */
 class ModuleLayoutViewHelper extends AbstractViewHelper
 {

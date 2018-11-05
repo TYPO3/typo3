@@ -20,25 +20,24 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 /**
  * View helper which allows you to create extbase based modules in the style of TYPO3 default modules.
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Simple">
- * <f:be.container>your module content</f:be.container>
- * </code>
- * <output>
+ * Simple::
+ *
+ *    <f:be.container>your module content</f:be.container>
+ *
  * "your module content" wrapped with proper head & body tags.
  * Default backend CSS styles and JavaScript will be included
- * </output>
  *
- * <code title="All options">
- * <f:be.container pageTitle="foo" includeCssFiles="{0: '{f:uri.resource(path:\'Css/Styles.css\')}'}" includeJsFiles="{0: '{f:uri.resource(path:\'JavaScript/Library1.js\')}', 1: '{f:uri.resource(path:\'JavaScript/Library2.js\')}'}" addJsInlineLabels="{0: 'label1', 1: 'label2'}">your module content</f:be.container>
- * </code>
- * <output>
+ * All options::
+ *
+ *    <f:be.container pageTitle="foo" includeCssFiles="{0: '{f:uri.resource(path:\'Css/Styles.css\')}'}" includeJsFiles="{0: '{f:uri.resource(path:\'JavaScript/Library1.js\')}', 1: '{f:uri.resource(path:\'JavaScript/Library2.js\')}'}" addJsInlineLabels="{0: 'label1', 1: 'label2'}">your module content</f:be.container>
+ *
  * "your module content" wrapped with proper head & body tags.
- * Custom CSS file EXT:your_extension/Resources/Public/Css/styles.css and
- * JavaScript files EXT:your_extension/Resources/Public/JavaScript/Library1.js and EXT:your_extension/Resources/Public/JavaScript/Library2.js
+ * Custom CSS file ``EXT:your_extension/Resources/Public/Css/styles.css`` and
+ * JavaScript files ``EXT:your_extension/Resources/Public/JavaScript/Library1.js`` and ``EXT:your_extension/Resources/Public/JavaScript/Library2.js``
  * will be loaded, plus some inline labels for usage in JS code.
- * </output>
  */
 class ContainerViewHelper extends AbstractBackendViewHelper
 {

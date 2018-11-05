@@ -25,21 +25,20 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  * set to something else than "Display no help information" in the Users settings
  * Note: This view helper is experimental!
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Default">
- * <f:be.labels.csh />
- * </code>
- * <output>
+ * Default::
+ *
+ *    <f:be.labels.csh />
+ *
  * CSH label as known from the TYPO3 backend.
- * </output>
  *
- * <code title="Full configuration">
- * <f:be.labels.csh table="xMOD_csh_corebe" field="someCshKey" label="lang/Resources/Private/Language/locallang/header.languages" />
- * </code>
- * <output>
+ * Full configuration::
+ *
+ *    <f:be.labels.csh table="xMOD_csh_corebe" field="someCshKey" label="lang/Resources/Private/Language/locallang/header.languages" />
+ *
  * CSH label as known from the TYPO3 backend with some custom settings.
- * </output>
  */
 class CshViewHelper extends AbstractBackendViewHelper
 {

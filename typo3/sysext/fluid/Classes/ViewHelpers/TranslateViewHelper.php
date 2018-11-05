@@ -24,52 +24,47 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Translate a key from locallang. The files are loaded from the folder
  * "Resources/Private/Language/".
  *
- * == Examples ==
+ * Examples
+ * --------
  *
- * <code title="Translate key">
- * <f:translate key="key1" />
- * </code>
- * <output>
+ * Translate key::
+ *
+ *    <f:translate key="key1" />
+ *
  * value of key "key1" in the current website language
- * </output>
  *
- * <code title="Keep HTML tags">
- * <f:format.raw><f:translate key="htmlKey" /></f:format.raw>
- * </code>
- * <output>
+ * Keep HTML tags::
+ *
+ *    <f:format.raw><f:translate key="htmlKey" /></f:format.raw>
+ *
  * value of key "htmlKey" in the current website language, no htmlspecialchars applied
- * </output>
  *
- * <code title="Translate key from custom locallang file">
- * <f:translate key="LLL:EXT:myext/Resources/Private/Language/locallang.xlf:key1" />
- * </code>
- * <output>
+ * Translate key from custom locallang file::
+ *
+ *    <f:translate key="LLL:EXT:myext/Resources/Private/Language/locallang.xlf:key1" />
+ *
  * value of key "key1" in the current website language
- * </output>
  *
- * <code title="Inline notation with arguments and default value">
- * {f:translate(key: 'argumentsKey', arguments: {0: 'dog', 1: 'fox'}, default: 'default value')}
- * </code>
- * <output>
+ * Inline notation with arguments and default value::
+ *
+ *    {f:translate(key: 'argumentsKey', arguments: {0: 'dog', 1: 'fox'}, default: 'default value')}
+ *
  * value of key "argumentsKey" in the current website language
  * with "%1" and "%2" are replaced by "dog" and "fox" (printf)
  * if the key is not found, the output is "default value"
- * </output>
  *
- * <code title="Inline notation with extension name">
- * {f:translate(key: 'someKey', extensionName: 'SomeExtensionName')}
- * </code>
- * <output>
+ * Inline notation with extension name::
+ *
+ *    {f:translate(key: 'someKey', extensionName: 'SomeExtensionName')}
+ *
  * value of key "someKey" in the current website language
  * the locallang file of extension "some_extension_name" will be used
- * </output>
  *
- * <code title="Translate id as in TYPO3 Flow">
- * <f:translate id="key1" />
- * </code>
- * <output>
+ * Translate id as in TYPO3 Flow::
+ *
+ *    <f:translate id="key1" />
+ *
  * value of id "key1" in the current website language
- * </output>
  */
 class TranslateViewHelper extends AbstractViewHelper
 {

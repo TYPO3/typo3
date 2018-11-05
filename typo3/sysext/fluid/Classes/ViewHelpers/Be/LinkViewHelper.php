@@ -20,13 +20,15 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * A view helper for creating URIs to modules.
- * = Examples =
- * <code title="URI to the web_ts module on page 92">
- * <f:be.link route="web_ts" parameters="{id: 92}">Go to web_ts</f:be.link>
- * </code>
- * <output>
- * <a href="/typo3/index.php?route=%2module%2web_ts%2&moduleToken=b6e9c9f?id=92">Go to web_ts</a>
- * </output>
+ *
+ * Examples
+ * --------
+ *
+ * URI to the web_ts module on page 92::
+ *
+ *    <f:be.link route="web_ts" parameters="{id: 92}">Go to web_ts</f:be.link>
+ *
+ * ``<a href="/typo3/index.php?route=%2module%2web_ts%2&moduleToken=b6e9c9f?id=92">Go to web_ts</a>``
  */
 class LinkViewHelper extends AbstractTagBasedViewHelper
 {

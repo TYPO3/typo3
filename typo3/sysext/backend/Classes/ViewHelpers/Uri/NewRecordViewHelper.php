@@ -28,28 +28,26 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * To edit records, use the editRecordViewHelper
  *
- * = Examples =
+ * Examples
+ * ========
  *
- * <code title="Uri to create a new record of a_table after record 17 on the same pid">
- * <be:uri.newRecord table="a_table" returnUrl="foo/bar" uid="-17"/>
- * </code>
- * <output>
- *  /typo3/index.php?route=/record/edit&edit[a_table][-17]=new&returnUrl=foo/bar
- * </output>
+ * Uri to create a new record of a_table after record 17 on the same pid::
  *
- * <code title="Uri to create a new record of a_table on root page">
- * <be:uri.newRecord table="a_table" returnUrl="foo/bar""/>
- * </code>
- * <output>
- *  /typo3/index.php?route=/record/edit&edit[a_table][]=new&returnUrl=foo/bar
- * </output>
+ *    <be:uri.newRecord table="a_table" returnUrl="foo/bar" uid="-17"/>
  *
- * <code title="Uri to create a new record of a_table on page 17">
- * <be:uri.newRecord table="a_table" returnUrl="foo/bar" pid="17"/>
- * </code>
- * <output>
- *  /typo3/index.php?route=/record/edit&edit[a_table][-17]=new&returnUrl=foo/bar
- * </output>
+ * ``/typo3/index.php?route=/record/edit&edit[a_table][-17]=new&returnUrl=foo/bar``
+ *
+ * Uri to create a new record of a_table on root page::
+ *
+ *    <be:uri.newRecord table="a_table" returnUrl="foo/bar""/>
+ *
+ * ``/typo3/index.php?route=/record/edit&edit[a_table][]=new&returnUrl=foo/bar``
+ *
+ * Uri to create a new record of a_table on page 17::
+ *
+ *    <be:uri.newRecord table="a_table" returnUrl="foo/bar" pid="17"/>
+ *
+ * ``/typo3/index.php?route=/record/edit&edit[a_table][-17]=new&returnUrl=foo/bar``
  */
 class NewRecordViewHelper extends AbstractTagBasedViewHelper
 {

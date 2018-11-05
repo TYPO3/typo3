@@ -24,17 +24,16 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 /**
  * View helper which allows you to create extbase based modules in the style of TYPO3 default modules.
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="All options">
- * <f:be.pageRenderer pageTitle="foo" includeCssFiles="0: '{f:uri.resource(path:\'Css/Styles.css\')}'" includeJsFiles="0: '{f:uri.resource(path:\'JavaScript/Library1.js\')}', 1: '{f:uri.resource(path:\'JavaScript/Library2.js\')}'" addJsInlineLabels="{0: 'label1', 1: 'label2'}" />
- * </code>
- * <output>
+ * All options::
  *
- * Custom CSS file EXT:your_extension/Resources/Public/Css/styles.css and
- * JavaScript files EXT:your_extension/Resources/Public/JavaScript/Library1.js and EXT:your_extension/Resources/Public/JavaScript/Library2.js
+ *    <f:be.pageRenderer pageTitle="foo" includeCssFiles="0: '{f:uri.resource(path:\'Css/Styles.css\')}'" includeJsFiles="0: '{f:uri.resource(path:\'JavaScript/Library1.js\')}', 1: '{f:uri.resource(path:\'JavaScript/Library2.js\')}'" addJsInlineLabels="{0: 'label1', 1: 'label2'}" />
+ *
+ * Custom CSS file ``EXT:your_extension/Resources/Public/Css/styles.css`` and
+ * JavaScript files ``EXT:your_extension/Resources/Public/JavaScript/Library1.js`` and ``EXT:your_extension/Resources/Public/JavaScript/Library2.js``
  * will be loaded, plus some inline labels for usage in JS code.
- * </output>
  */
 class PageRendererViewHelper extends AbstractViewHelper
 {

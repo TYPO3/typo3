@@ -23,21 +23,20 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * @see http://www.php.net/manual/en/function.number-format.php
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Defaults">
- * <f:format.number>423423.234</f:format.number>
- * </code>
- * <output>
- * 423,423.20
- * </output>
+ * Defaults::
  *
- * <code title="With all parameters">
- * <f:format.number decimals="1" decimalSeparator="," thousandsSeparator=".">423423.234</f:format.number>
- * </code>
- * <output>
- * 423.423,2
- * </output>
+ *    <f:format.number>423423.234</f:format.number>
+ *
+ * ``423,423.20``
+ *
+ * With all parameters::
+ *
+ *    <f:format.number decimals="1" decimalSeparator="," thousandsSeparator=".">423423.234</f:format.number>
+ *
+ * ``423.423,2``
  */
 class NumberViewHelper extends AbstractViewHelper
 {

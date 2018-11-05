@@ -21,21 +21,20 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * Applies htmlentities() escaping to a value
  * @see http://www.php.net/manual/function.htmlentities.php
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="default notation">
- * <f:format.htmlentities>{text}</f:format.htmlentities>
- * </code>
- * <output>
- * Text with & " ' < > * replaced by HTML entities (htmlentities applied).
- * </output>
+ * default notation::
  *
- * <code title="inline notation">
- * {text -> f:format.htmlentities(encoding: 'ISO-8859-1')}
- * </code>
- * <output>
- * Text with & " ' < > * replaced by HTML entities (htmlentities applied).
- * </output>
+ *    <f:format.htmlentities>{text}</f:format.htmlentities>
+ *
+ * Text with ``&`` ``"`` ``'`` ``<`` ``>`` ``*`` replaced by HTML entities (htmlentities applied).
+ *
+ * inline notation::
+ *
+ *    {text -> f:format.htmlentities(encoding: 'ISO-8859-1')}
+ *
+ * Text with ``&`` ``"`` ``'`` ``<`` ``>`` ``*`` replaced by HTML entities (htmlentities applied).
  */
 class HtmlentitiesViewHelper extends AbstractEncodingViewHelper
 {

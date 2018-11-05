@@ -22,15 +22,18 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Email URI view helper.
  * Generates an email URI incorporating TYPO3s spamProtectEmailAddresses-settings.
  *
- * = Examples
+ * Example
+ * -------
  *
- * <code title="basic email URI">
- * <f:uri.email email="foo@bar.tld" />
- * </code>
- * <output>
- * javascript:linkTo_UnCryptMailto('ocknvq,hqqBdct0vnf');
+ * Basic email URI::
+ *
+ *    <f:uri.email email="foo@bar.tld" />
+ *
+ * Output::
+ *
+ *    javascript:linkTo_UnCryptMailto('ocknvq,hqqBdct0vnf');
+ *
  * (depending on your spamProtectEmailAddresses-settings)
- * </output>
  */
 class EmailViewHelper extends AbstractViewHelper
 {

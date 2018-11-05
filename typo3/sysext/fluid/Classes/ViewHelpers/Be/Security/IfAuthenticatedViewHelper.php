@@ -19,31 +19,29 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 /**
  * This view helper implements an ifAuthenticated/else condition for BE users/groups.
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Basic usage">
- * <f:be.security.ifAuthenticated>
- * This is being shown whenever a BE user is logged in
- * </f:be.security.ifAuthenticated>
- * </code>
- * <output>
+ * Basic usage::
+ *
+ *    <f:be.security.ifAuthenticated>
+ *       This is being shown whenever a BE user is logged in
+ *    </f:be.security.ifAuthenticated>
+ *
  * Everything inside the <f:be.ifAuthenticated> tag is being displayed if you are authenticated with any BE user account.
- * </output>
  *
- * <code title="IfAuthenticated / then / else">
- * <f:be.security.ifAuthenticated>
- * <f:then>
- * This is being shown in case you have access.
- * </f:then>
- * <f:else>
- * This is being displayed in case you do not have access.
- * </f:else>
- * </f:be.security.ifAuthenticated>
- * </code>
- * <output>
+ * IfAuthenticated / then / else::
+ *
+ *    <f:be.security.ifAuthenticated>
+ *       <f:then>
+ *          This is being shown in case you have access.
+ *       </f:then>
+ *       <f:else>
+ *          This is being displayed in case you do not have access.
+ *       </f:else>
+ *    </f:be.security.ifAuthenticated>
+ *
  * Everything inside the "then" tag is displayed if you have access.
- * Otherwise, everything inside the "else"-tag is displayed.
- * </output>
  */
 class IfAuthenticatedViewHelper extends AbstractConditionViewHelper
 {

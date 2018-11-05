@@ -23,10 +23,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * rendering operation but wraps the output with HTML
  * that can be inspected with the admin panel in FE.
  *
- * Replaces `f:render` when the admin panel decides
+ * Replaces ``f:render`` when the admin panel decides
  * (see ViewHelperResolver class). Also possible to use
- * explicitly by using `f:debug.render` instead of the
- * normal `f:render` statement.
+ * explicitly by using ``f:debug.render`` instead of the
+ * normal ``f:render`` statement.
  */
 class RenderViewHelper extends AbstractViewHelper
 {

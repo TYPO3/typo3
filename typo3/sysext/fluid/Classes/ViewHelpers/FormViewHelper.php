@@ -17,28 +17,32 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
 /**
  * Form view helper. Generates a <form> Tag.
  *
- * = Basic usage =
+ * Basic usage
+ * -----------
  *
  * Use <f:form> to output an HTML <form> tag which is targeted at the specified action, in the current controller and package.
  * It will submit the form data via a POST request. If you want to change this, use method="get" as an argument.
- * <code title="Example">
- * <f:form action="...">...</f:form>
- * </code>
+ * Example::
  *
- * = A complex form with a specified encoding type =
+ *    <f:form action="...">...</f:form>
  *
- * <code title="Form with enctype set">
- * <f:form action=".." controller="..." package="..." enctype="multipart/form-data">...</f:form>
- * </code>
+ * A complex form with a specified encoding type
+ * ---------------------------------------------
  *
- * = A Form which should render a domain object =
+ * Form with enctype set::
  *
- * <code title="Binding a domain object to a form">
- * <f:form action="..." name="customer" object="{customer}">
- * <f:form.hidden property="id" />
- * <f:form.textbox property="name" />
- * </f:form>
- * </code>
+ *    <f:form action=".." controller="..." package="..." enctype="multipart/form-data">...</f:form>
+ *
+ * A Form which should render a domain object
+ * ------------------------------------------
+ *
+ * Binding a domain object to a form::
+ *
+ *    <f:form action="..." name="customer" object="{customer}">
+ *       <f:form.hidden property="id" />
+ *       <f:form.textbox property="name" />
+ *    </f:form>
+ *
  * This automatically inserts the value of {customer.name} inside the textbox and adjusts the name of the textbox accordingly.
  */
 class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper

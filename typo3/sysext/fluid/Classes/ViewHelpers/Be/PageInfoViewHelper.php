@@ -25,14 +25,14 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  * View helper which return page info icon as known from TYPO3 backend modules
  * Note: This view helper is experimental!
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code>
- * <f:be.pageInfo />
- * </code>
- * <output>
+ * Default::
+ *
+ *    <f:be.pageInfo />
+ *
  * Page info icon with context menu
- * </output>
  */
 class PageInfoViewHelper extends AbstractBackendViewHelper
 {

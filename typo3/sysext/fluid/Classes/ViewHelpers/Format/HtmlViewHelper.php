@@ -27,29 +27,34 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * You can either specify a path to the TypoScript setting or set the parseFunc options directly.
  * By default lib.parseFunc_RTE is used to parse the string.
  *
- * == Examples ==
+ * Examples
+ * --------
  *
- * <code title="Default parameters">
- * <f:format.html>foo <b>bar</b>. Some <LINK 1>link</LINK>.</f:format.html>
- * </code>
- * <output>
- * <p class="bodytext">foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.</p>
+ * Default parameters::
+ *
+ *    <f:format.html>foo <b>bar</b>. Some <LINK 1>link</LINK>.</f:format.html>
+ *
+ * Output::
+ *
+ *    <p class="bodytext">foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.</p>
+ *
  * (depending on your TYPO3 setup)
- * </output>
  *
- * <code title="Custom parseFunc">
- * <f:format.html parseFuncTSPath="lib.parseFunc">foo <b>bar</b>. Some <LINK 1>link</LINK>.</f:format.html>
- * </code>
- * <output>
- * foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.
- * </output>
+ * Custom parseFunc::
  *
- * <code title="Inline notation">
- * {someText -> f:format.html(parseFuncTSPath: 'lib.parseFunc')}
- * </code>
- * <output>
- * foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.
- * </output>
+ *    <f:format.html parseFuncTSPath="lib.parseFunc">foo <b>bar</b>. Some <LINK 1>link</LINK>.</f:format.html>
+ *
+ * Output::
+ *
+ *    foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.
+ *
+ * Inline notation::
+ *
+ *    {someText -> f:format.html(parseFuncTSPath: 'lib.parseFunc')}
+ *
+ * Output::
+ *
+ *    foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.
  *
  * @see https://docs.typo3.org/typo3cms/TyposcriptReference/Functions/Parsefunc/
  */

@@ -22,28 +22,26 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * Formats a string using PHPs str_pad function.
  * @see http://www.php.net/manual/en/function.str_pad.php
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Defaults">
- * <f:format.padding padLength="10">TYPO3</f:format.padding>
- * </code>
- * <output>
- * TYPO3     (note the trailing whitespace)
- * <output>
+ * Defaults::
  *
- * <code title="Specify padding string">
- * <f:format.padding padLength="10" padString="-=">TYPO3</f:format.padding>
- * </code>
- * <output>
- * TYPO3-=-=-
- * </output>
+ *    <f:format.padding padLength="10">TYPO3</f:format.padding>
  *
- * <code title="Specify padding type">
- * <f:format.padding padLength="10" padString="-" padType="both">TYPO3</f:format.padding>
- * </code>
- * <output>
- * --TYPO3---
- * </output>
+ * ``TYPO3     `` (note the trailing whitespace)
+ *
+ * Specify padding string::
+ *
+ *    <f:format.padding padLength="10" padString="-=">TYPO3</f:format.padding>
+ *
+ * ``TYPO3-=-=-``
+ *
+ * Specify padding type::
+ *
+ *    <f:format.padding padLength="10" padString="-" padType="both">TYPO3</f:format.padding>
+ *
+ * ``--TYPO3---``
  */
 class PaddingViewHelper extends AbstractViewHelper
 {

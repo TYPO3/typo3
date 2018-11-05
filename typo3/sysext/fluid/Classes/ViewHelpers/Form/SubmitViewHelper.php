@@ -17,21 +17,24 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 /**
  * Creates a submit button.
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Defaults">
- * <f:form.submit value="Send Mail" />
- * </code>
- * <output>
- * <input type="submit" />
- * </output>
+ * Defaults::
  *
- * <code title="Dummy content for template preview">
- * <f:submit name="mySubmit" value="Send Mail"><button>dummy button</button></f:submit>
- * </code>
- * <output>
- * <input type="submit" name="mySubmit" value="Send Mail" />
- * </output>
+ *    <f:form.submit value="Send Mail" />
+ *
+ * Output::
+ *
+ *    <input type="submit" />
+ *
+ * Dummy content for template preview::
+ *
+ *    <f:submit name="mySubmit" value="Send Mail"><button>dummy button</button></f:submit>
+ *
+ * Output::
+ *
+ *    <input type="submit" name="mySubmit" value="Send Mail" />
  */
 class SubmitViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper
 {

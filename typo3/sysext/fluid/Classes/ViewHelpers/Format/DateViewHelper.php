@@ -23,63 +23,57 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
 /**
  * Formats an object implementing \DateTimeInterface.
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Defaults">
- * <f:format.date>{dateObject}</f:format.date>
- * </code>
- * <output>
- * 1980-12-13
+ * Defaults::
+ *
+ *    <f:format.date>{dateObject}</f:format.date>
+ *
+ * ``1980-12-13``
  * (depending on the current date)
- * </output>
  *
- * <code title="Custom date format">
- * <f:format.date format="H:i">{dateObject}</f:format.date>
- * </code>
- * <output>
- * 01:23
+ * Custom date format::
+ *
+ *    <f:format.date format="H:i">{dateObject}</f:format.date>
+ *
+ * ``01:23``
  * (depending on the current time)
- * </output>
  *
- * <code title="Relative date with given time">
- * <f:format.date format="Y" base="{dateObject}">-1 year</f:format.date>
- * </code>
- * <output>
- * 2016
+ * Relative date with given time::
+ *
+ *    <f:format.date format="Y" base="{dateObject}">-1 year</f:format.date>
+ *
+ * ``2016``
  * (assuming dateObject is in 2017)
- * </output>
  *
- * <code title="strtotime string">
- * <f:format.date format="d.m.Y - H:i:s">+1 week 2 days 4 hours 2 seconds</f:format.date>
- * </code>
- * <output>
- * 13.12.1980 - 21:03:42
+ * strtotime string::
+ *
+ *    <f:format.date format="d.m.Y - H:i:s">+1 week 2 days 4 hours 2 seconds</f:format.date>
+ *
+ * ``13.12.1980 - 21:03:42``
  * (depending on the current time, see http://www.php.net/manual/en/function.strtotime.php)
- * </output>
  *
- * <code title="Localized dates using strftime date format">
- * <f:format.date format="%d. %B %Y">{dateObject}</f:format.date>
- * </code>
- * <output>
- * 13. Dezember 1980
+ * Localized dates using strftime date format::
+ *
+ *    <f:format.date format="%d. %B %Y">{dateObject}</f:format.date>
+ *
+ * ``13. Dezember 1980``
  * (depending on the current date and defined locale. In the example you see the 1980-12-13 in a german locale)
- * </output>
  *
- * <code title="Inline notation">
- * {f:format.date(date: dateObject)}
- * </code>
- * <output>
- * 1980-12-13
- * (depending on the value of {dateObject})
- * </output>
+ * Inline notation::
  *
- * <code title="Inline notation (2nd variant)">
- * {dateObject -> f:format.date()}
- * </code>
- * <output>
- * 1980-12-13
+ *    {f:format.date(date: dateObject)}
+ *
+ * ``1980-12-13``
  * (depending on the value of {dateObject})
- * </output>
+ *
+ * Inline notation (2nd variant)::
+ *
+ *    {dateObject -> f:format.date()}
+ *
+ * ``1980-12-13``
+ * (depending on the value of {dateObject})
  */
 class DateViewHelper extends AbstractViewHelper
 {

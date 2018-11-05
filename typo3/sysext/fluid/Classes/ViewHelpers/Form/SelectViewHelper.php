@@ -17,42 +17,48 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 /**
  * This view helper generates a <select> dropdown list for the use with a form.
  *
- * = Basic usage =
+ * Basic usage
+ * -----------
  *
  * The most straightforward way is to supply an associative array as the "options" parameter.
  * The array key is used as option key, and the value is used as human-readable name.
  *
- * <code title="Basic usage">
- * <f:form.select name="paymentOptions" options="{payPal: 'PayPal International Services', visa: 'VISA Card'}" />
- * </code>
+ * Basic usage::
  *
- * = Pre-select a value =
+ *    <f:form.select name="paymentOptions" options="{payPal: 'PayPal International Services', visa: 'VISA Card'}" />
+ *
+ * Pre-select a value
+ * ------------------
  *
  * To pre-select a value, set "value" to the option key which should be selected.
- * <code title="Default value">
- * <f:form.select name="paymentOptions" options="{payPal: 'PayPal International Services', visa: 'VISA Card'}" value="visa" />
- * </code>
+ * Default value::
+ *
+ *    <f:form.select name="paymentOptions" options="{payPal: 'PayPal International Services', visa: 'VISA Card'}" value="visa" />
+ *
  * Generates a dropdown box like above, except that "VISA Card" is selected.
  *
  * If the select box is a multi-select box (multiple="1"), then "value" can be an array as well.
  *
- * = Custom options and option group rendering =
+ * Custom options and option group rendering
+ * -----------------------------------------
  *
  * Child nodes can be used to create a completely custom set of ``<option>`` and ``<optgroup>`` tags in a way compatible with
  * the HMAC generation. To do so, leave out the ``options`` argument and use child ViewHelpers:
- * <code title="Custom options and optgroup">
- * <f:form.select name="myproperty">
- *     <f:form.select.option value="1">Option one</f:form.select.option>
- *     <f:form.select.option value="2">Option two</f:form.select.option>
- *     <f:form.select.optgroup>
- *         <f:form.select.option value="3">Grouped option one</f:form.select.option>
- *         <f:form.select.option value="4">Grouped option twi</f:form.select.option>
- *     </f:form.select.optgroup>
- * </f:form.select>
- * </code>
+ * Custom options and optgroup::
+ *
+ *    <f:form.select name="myproperty">
+ *       <f:form.select.option value="1">Option one</f:form.select.option>
+ *       <f:form.select.option value="2">Option two</f:form.select.option>
+ *       <f:form.select.optgroup>
+ *          <f:form.select.option value="3">Grouped option one</f:form.select.option>
+ *          <f:form.select.option value="4">Grouped option twi</f:form.select.option>
+ *       </f:form.select.optgroup>
+ *    </f:form.select>
+ *
  * Note: do not use vanilla ``<option>`` or ``<optgroup>`` tags! They will invalidate the HMAC generation!
  *
- * = Usage on domain objects =
+ * Usage on domain objects
+ * -----------------------
  *
  * If you want to output domain objects, you can just pass them as array into the "options" parameter.
  * To define what domain object value should be used as option key, use the "optionValueField" variable. Same goes for optionLabelField.
@@ -64,9 +70,10 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * If the prependOptionLabel variable is set, an option item is added in first position, bearing an empty string or -
  * If provided, the value of the prependOptionValue variable as value.
  *
- * <code title="Domain objects">
- * <f:form.select name="users" options="{userArray}" optionValueField="id" optionLabelField="firstName" />
- * </code>
+ * Domain objects::
+ *
+ *    <f:form.select name="users" options="{userArray}" optionValueField="id" optionLabelField="firstName" />
+ *
  * In the above example, the userArray is an array of "User" domain objects, with no array key specified.
  *
  * So, in the above example, the method $user->getId() is called to retrieve the key, and $user->getFirstName() to retrieve the displayed value of each entry.

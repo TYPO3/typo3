@@ -17,14 +17,16 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 /**
  * Renders an <input type="hidden" ...> tag.
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Example">
- * <f:form.hidden name="myHiddenValue" value="42" />
- * </code>
- * <output>
- * <input type="hidden" name="myHiddenValue" value="42" />
- * </output>
+ * Example::
+ *
+ *    <f:form.hidden name="myHiddenValue" value="42" />
+ *
+ * Output::
+ *
+ *    <input type="hidden" name="myHiddenValue" value="42" />
  *
  * You can also use the "property" attribute if you have bound an object to the form.
  * See <f:form> for more documentation.

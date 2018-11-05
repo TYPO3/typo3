@@ -27,28 +27,26 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * This ViewHelper renders CObjects from the global TypoScript configuration.
  * NOTE: You have to ensure proper escaping (htmlspecialchars/intval/etc.) on your own!
  *
- * = Examples =
+ * Examples
+ * --------
  *
- * <code title="Render lib object">
- * <f:cObject typoscriptObjectPath="lib.someLibObject" />
- * </code>
- * <output>
+ * Render lib object::
+ *
+ *    <f:cObject typoscriptObjectPath="lib.someLibObject" />
+ *
  * rendered lib.someLibObject
- * </output>
  *
- * <code title="Specify cObject data & current value">
- * <f:cObject typoscriptObjectPath="lib.customHeader" data="{article}" currentValueKey="title" />
- * </code>
- * <output>
+ * Specify cObject data & current value::
+ *
+ *    <f:cObject typoscriptObjectPath="lib.customHeader" data="{article}" currentValueKey="title" />
+ *
  * rendered lib.customHeader. data and current value will be available in TypoScript
- * </output>
  *
- * <code title="inline notation">
- * {article -> f:cObject(typoscriptObjectPath: 'lib.customHeader')}
- * </code>
- * <output>
+ * inline notation::
+ *
+ *    {article -> f:cObject(typoscriptObjectPath: 'lib.customHeader')}
+ *
  * rendered lib.customHeader. data will be available in TypoScript
- * </output>
  */
 class CObjectViewHelper extends AbstractViewHelper
 {
