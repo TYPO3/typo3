@@ -48,7 +48,7 @@ class SuggestWizardController
         $pid = isset($parsedBody['pid']) ? (int)$parsedBody['pid'] : 0;
         $dataStructureIdentifier = '' ?? null;
         if (!empty($parsedBody['dataStructureIdentifier'])) {
-            $dataStructureIdentifier = json_encode($parsedBody['dataStructureIdentifier']);
+            $dataStructureIdentifier = $parsedBody['dataStructureIdentifier'];
         }
         $flexFormSheetName = $parsedBody['flexFormSheetName'] ?? null;
         $flexFormFieldName = $parsedBody['flexFormFieldName'] ?? null;

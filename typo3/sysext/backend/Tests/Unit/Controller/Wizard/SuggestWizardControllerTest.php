@@ -31,6 +31,7 @@ class SuggestWizardControllerTest extends UnitTestCase
      */
     public function getFlexFieldConfigurationThrowsExceptionIfSimpleFlexFieldIsNotFound(): void
     {
+        $dataStructureIdentifier = '{"type":"tca","tableName":"tt_content","fieldName":"pi_flexform","dataStructureKey":"blog_example,list"}';
         $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
         $serverRequestProphecy->getParsedBody()->willReturn([
             'value' => 'theSearchValue',
@@ -38,7 +39,7 @@ class SuggestWizardControllerTest extends UnitTestCase
             'field' => 'aField',
             'uid' => 'aUid',
             'pid' => 'aPid',
-            'dataStructureIdentifier' => ['anIdentifier'],
+            'dataStructureIdentifier' => $dataStructureIdentifier,
             'flexFormSheetName' => 'sDb',
             'flexFormFieldName' => 'aField',
             'flexFormContainerName' => '',
@@ -64,7 +65,7 @@ class SuggestWizardControllerTest extends UnitTestCase
         ];
         $flexFormToolsProphecy = $this->prophesize(FlexFormTools::class);
         GeneralUtility::addInstance(FlexFormTools::class, $flexFormToolsProphecy->reveal());
-        $flexFormToolsProphecy->parseDataStructureByIdentifier(json_encode(['anIdentifier']))->willReturn($dataStructure);
+        $flexFormToolsProphecy->parseDataStructureByIdentifier($dataStructureIdentifier)->willReturn($dataStructure);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480609491);
@@ -76,6 +77,7 @@ class SuggestWizardControllerTest extends UnitTestCase
      */
     public function getFlexFieldConfigurationThrowsExceptionIfSectionContainerFlexFieldIsNotFound(): void
     {
+        $dataStructureIdentifier = '{"type":"tca","tableName":"tt_content","fieldName":"pi_flexform","dataStructureKey":"blog_example,list"}';
         $serverRequestProphecy = $this->prophesize(ServerRequestInterface::class);
         $serverRequestProphecy->getParsedBody()->willReturn([
             'value' => 'theSearchValue',
@@ -83,7 +85,7 @@ class SuggestWizardControllerTest extends UnitTestCase
             'field' => 'aField',
             'uid' => 'aUid',
             'pid' => 'aPid',
-            'dataStructureIdentifier' => ['anIdentifier'],
+            'dataStructureIdentifier' => $dataStructureIdentifier,
             'flexFormSheetName' => 'sDb',
             'flexFormFieldName' => 'aField',
             'flexFormContainerName' => 'aContainer',
@@ -109,7 +111,7 @@ class SuggestWizardControllerTest extends UnitTestCase
         ];
         $flexFormToolsProphecy = $this->prophesize(FlexFormTools::class);
         GeneralUtility::addInstance(FlexFormTools::class, $flexFormToolsProphecy->reveal());
-        $flexFormToolsProphecy->parseDataStructureByIdentifier(json_encode(['anIdentifier']))->willReturn($dataStructure);
+        $flexFormToolsProphecy->parseDataStructureByIdentifier($dataStructureIdentifier)->willReturn($dataStructure);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480611208);
