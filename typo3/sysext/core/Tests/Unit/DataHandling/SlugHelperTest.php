@@ -353,19 +353,80 @@ class SlugHelperTest extends UnitTestCase
         return [
             'simple title' => [
                 'Products',
-                '/parent-page/products'
+                '/parent-page/products',
+                [
+                    'generatorOptions' => [
+                        'fields' => ['title'],
+                        'prefixParentPageSlug' => true,
+                    ],
+                ]
             ],
             'title with spaces' => [
                 'Product Cow',
-                '/parent-page/product-cow'
+                '/parent-page/product-cow',
+                [
+                    'generatorOptions' => [
+                        'fields' => ['title'],
+                        'prefixParentPageSlug' => true,
+                    ],
+                ]
+            ],
+            'title with slash' => [
+                'Product/Cow',
+                '/parent-page/product/cow',
+                [
+                    'generatorOptions' => [
+                        'fields' => ['title'],
+                        'prefixParentPageSlug' => true,
+                    ],
+                ]
+            ],
+            'title with slash and replace' => [
+                'Product/Cow',
+                '/parent-page/productcow',
+                [
+                    'generatorOptions' => [
+                        'fields' => ['title'],
+                        'prefixParentPageSlug' => true,
+                        'replacements' => [
+                            '/' => ''
+                        ]
+                    ],
+                ]
+            ],
+            'title with slash and replace #2' => [
+                'Some Job in city1/city2 (m/w)',
+                '/parent-page/some-job-in-city1-city2',
+                [
+                    'generatorOptions' => [
+                        'fields' => ['title'],
+                        'prefixParentPageSlug' => true,
+                        'replacements' => [
+                            '(m/w)' => '',
+                            '/' => '-'
+                        ]
+                    ],
+                ]
             ],
             'title with invalid characters' => [
                 'Products - Cows',
-                '/parent-page/products-cows'
+                '/parent-page/products-cows',
+                [
+                    'generatorOptions' => [
+                        'fields' => ['title'],
+                        'prefixParentPageSlug' => true,
+                    ],
+                ]
             ],
             'title with only invalid characters' => [
                 '!!!',
-                '/parent-page/default-51cf35392c'
+                '/parent-page/default-51cf35392c',
+                [
+                    'generatorOptions' => [
+                        'fields' => ['title'],
+                        'prefixParentPageSlug' => true,
+                    ],
+                ]
             ],
         ];
     }
@@ -376,7 +437,7 @@ class SlugHelperTest extends UnitTestCase
      * @param string $expected
      * @test
      */
-    public function generatePrependsSlugsForPages(string $input, string $expected)
+    public function generatePrependsSlugsForPages(string $input, string $expected, array $options)
     {
         $GLOBALS['dummyTable']['ctrl'] = [];
         $parentPage = [
@@ -390,12 +451,7 @@ class SlugHelperTest extends UnitTestCase
             [
                 'pages',
                 'slug',
-                [
-                    'generatorOptions' => [
-                        'fields' => ['title'],
-                        'prefixParentPageSlug' => true,
-                    ],
-                ]
+                $options
             ]
         );
         $subject->expects(static::at(0))
