@@ -84,6 +84,8 @@ class LanguageAspectFactory
                 $overlayType = LanguageAspect::OVERLAYS_OFF;
                 break;
             case 'hideNonTranslated':
+                $overlayType = LanguageAspect::OVERLAYS_ON;
+                break;
             default:
                 $overlayType = LanguageAspect::OVERLAYS_ON_WITH_FLOATING;
         }
