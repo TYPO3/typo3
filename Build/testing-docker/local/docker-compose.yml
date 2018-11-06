@@ -79,7 +79,7 @@ services:
           set -x
         fi
         mkdir -p typo3temp/var/tests/ \
-          && ./bin/codecept run Backend -d -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE}
+          && ./bin/codecept run Backend -d -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --html reports.html
       "
 
   prepare_acceptance_install_mariadb10:
@@ -119,7 +119,7 @@ services:
           set -x
         fi
         mkdir -p typo3temp/var/tests/ \
-          && ./bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=mysql
+          && ./bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=mysql --html reports.html
       "
 
   prepare_acceptance_install_postgres10:
@@ -159,7 +159,7 @@ services:
           set -x
         fi
         mkdir -p typo3temp/var/tests/ \
-          && ./bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=postgresql
+          && ./bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=postgresql --html reports.html
       "
 
   prepare_acceptance_install_sqlite:
@@ -186,7 +186,7 @@ services:
           set -x
         fi
         mkdir -p typo3temp/var/tests/ \
-          && ./bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=sqlite
+          && ./bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=sqlite --html reports.html
       "
 
   build_css:
