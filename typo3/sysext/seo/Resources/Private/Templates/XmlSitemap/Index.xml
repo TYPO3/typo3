@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="{xslFile}"?>
 
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:f="http://typo3.org/ns/fluid/ViewHelpers">
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <f:for each="{sitemaps}" as="sitemap">
         <sitemap>
             <f:spaceless>
