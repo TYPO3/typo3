@@ -187,59 +187,67 @@ HTML;
     {
         return <<<STYLESHEET
             html {
-                font-family: sans-serif;
-                line-height: 1.15;
                 -webkit-text-size-adjust: 100%;
                 -ms-text-size-adjust: 100%;
                 -ms-overflow-style: scrollbar;
                 -webkit-tap-highlight-color: transparent;
             }
+
             body {
                 margin: 0;
+            }
+
+            .exception-page {
+                background-color: #eaeaea;
+                color: #212121;
                 font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
                 font-size: 1rem;
                 font-weight: 400;
+                height: 100vh;
                 line-height: 1.5;
-                color: #212121;
+                overflow-x: hidden;
+                overflow-y: scroll;
+                position: absolute;
                 text-align: left;
-                background-color: #eaeaea;
+                top: 0;
+                width: 100vw;
             }
 
-            a {
+            .exception-page a {
                 color: #ff8700;
                 text-decoration: underline;
             }
 
-            a:hover {
+            .exception-page a:hover {
                 text-decoration: none;
             }
 
-            abbr[title] {
+            .exception-page abbr[title] {
                 border-bottom: none;
                 cursor: help;
                 text-decoration: none;
             }
 
-            code,
-            kbd,
-            pre,
-            samp {
+            .exception-page code,
+            .exception-page kbd,
+            .exception-page pre,
+            .exception-page samp {
                 font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
                 font-size: 1em;
             }
 
-            pre {
+            .exception-page pre {
                 background-color: #ffffff;
                 overflow-x: auto;
                 border: 1px solid rgba(0,0,0,0.125);
             }
 
-            pre span {
+            .exception-page pre span {
                 display: block;
                 line-height: 1.3em;
             }
 
-            pre span:before {
+            .exception-page pre span:before {
                 display: inline-block;
                 content: attr(data-line);
                 border-right: 1px solid #b9b9b9;
@@ -251,11 +259,11 @@ HTML;
                 color: #515151;
             }
 
-            pre span.highlight {
+            .exception-page pre span.highlight {
                 background-color: #cce5ff;
             }
 
-            .break-long-words {
+            .exception-page .break-long-words {
                 -ms-word-break: break-all;
                 word-break: break-all;
                 word-break: break-word;
@@ -264,7 +272,7 @@ HTML;
                 hyphens: auto;
             }
 
-            .callout {
+            .exception-page .callout {
                 padding: 1.5rem;
                 background-color: #fff;
                 margin-bottom: 2em;
@@ -272,112 +280,105 @@ HTML;
                 border-left: 3px solid #8c8c8c;
             }
 
-            .callout-title {
+            .exception-page .callout-title {
                 margin: 0;
             }
 
-            .callout-body p:last-child {
+            .exception-page .callout-body p:last-child {
                 margin-bottom: 0;
             }
 
-            .container {
+            .exception-page .container {
                 max-width: 1140px;
                 margin: 0 auto;
                 padding: 0 30px;
             }
 
-            .exception-page {
-                position: relative;
-                height: 100vh;
-                overflow-x: hidden;
-                overflow-y: scroll;
-            }
-
-            .exception-illustration {
+            .exception-page .exception-illustration {
                 width: 3em;
                 height: 3em;
                 float: left;
                 margin-right: 1rem;
             }
 
-            .exception-illustration svg {
+            .exception-page .exception-illustration svg {
                 width: 100%;
             }
 
-            .exception-illustration svg path {
+            .exception-page .exception-illustration svg path {
                 fill: #ff8700;
             }
 
-            .exception-summary {
+            .exception-page .exception-summary {
                 background: #000000;
                 color: #fff;
                 padding: 1.5rem 0;
                 margin-bottom: 2rem;
             }
 
-            .exception-summary h1 {
+            .exception-page .exception-summary h1 {
                 margin: 0;
             }
 
-            .text-muted {
+            .exception-page .text-muted {
                 opacity: 0.5;
             }
 
-            .trace {
+            .exception-page .trace {
                 background-color: #fff;
                 margin-bottom: 2rem;
                 box-shadow: 0 2px 1px rgba(0,0,0,.15);
             }
 
-            .trace-arguments {
+            .exception-page .trace-arguments {
                 color: #8c8c8c;
             }
 
-            .trace-body {
+            .exception-page .trace-body {
             }
 
-            .trace-call {
+            .exception-page .trace-call {
                 margin-bottom: 1rem;
             }
 
-            .trace-class {
+            .exception-page .trace-class {
                 margin: 0;
             }
 
-            .trace-file pre {
+            .exception-page .trace-file pre {
                 margin-top: 1.5rem;
                 margin-bottom: 0;
             }
 
-            .trace-head {
+            .exception-page .trace-head {
                 color: #721c24;
                 background-color: #f8d7da;
                 padding: 1.5rem;
             }
 
-            .trace-message {
+            .exception-page .trace-message {
                 margin-bottom: 0;
             }
 
-            .trace-step {
+            .exception-page .trace-step {
                 padding: 1.5rem;
                 border-bottom: 1px solid #b9b9b9;
             }
 
-            .trace-step > *:first-child {
+            .exception-page .trace-step > *:first-child {
                 margin-top: 0;
             }
 
-            .trace-step > *:last-child {
+            .exception-page .trace-step > *:last-child {
                 margin-bottom: 0;
             }
 
-            .trace-step:nth-child(even)
+            .exception-page .trace-step:nth-child(even)
             {
                 background-color: #fafafa;
             }
 
-            .trace-step:last-child {
+            .exception-page .trace-step:last-child {
                 border-bottom: none;
             }
 STYLESHEET;
