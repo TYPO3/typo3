@@ -918,7 +918,6 @@ var typoscriptWords = {
   'unset': 'reserved',
   'unsetEmpty': 'keyword3',
   'updated': 'keyword3',
-  'uploadFieldsInTopOfEB': 'reserved',
   'uploads': 'keyword3',
   'upper': 'reserved',
   'url': 'keyword2',

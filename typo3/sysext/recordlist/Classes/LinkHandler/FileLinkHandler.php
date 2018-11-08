@@ -123,9 +123,6 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             $uploadForm = $this->mode === 'file' ? $folderUtilityRenderer->uploadForm($selectedFolder, []) : '';
             $createFolder = $folderUtilityRenderer->createFolder($selectedFolder);
 
-            // Insert the upload form on top, if so configured
-            $positionOfUploadFieldsOnTop = $this->getBackendUser()->getTSConfigVal('options.uploadFieldsInTopOfEB');
-            $this->view->assign('positionOfUploadFields', $positionOfUploadFieldsOnTop ? 'top' : 'bottom');
             $this->view->assign('uploadFileForm', $uploadForm);
             $this->view->assign('createFolderForm', $createFolder);
 
