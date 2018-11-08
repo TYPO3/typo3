@@ -139,8 +139,9 @@ class PseudoSiteFinder
             $languageRecords[$uid] = [
                 'languageId' => $uid,
                 'title' => $row['title'],
-                'iso' => $row['language_isocode'] ?? '',
+                'iso-639-1' => $row['language_isocode'] ?? '',
                 'flag' => 'flags-' . $row['flag'],
+                'enabled' => !$row['hidden'],
             ];
         }
 
