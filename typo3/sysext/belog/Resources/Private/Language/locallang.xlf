@@ -240,6 +240,9 @@
 			<trans-unit id="msg_1_5_16">
 				<source>Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)</source>
 			</trans-unit>
+			<trans-unit id="msg_1_5_4">
+				<source>The value of the field "%s" has been changed from "%s" to "%s" as it is required to be unique.</source>
+			</trans-unit>
 			<trans-unit id="type_2">
 				<source>FILE</source>
 			</trans-unit>

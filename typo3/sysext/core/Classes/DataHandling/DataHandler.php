@@ -2337,7 +2337,7 @@ class DataHandler implements LoggerAwareInterface
             }
         }
 
-        $newValue = $value;
+        $newValue = $originalValue = $value;
         $statement = $this->getUniqueCountStatement($newValue, $table, $field, (int)$id, (int)$newPid);
         // For as long as records with the test-value existing, try again (with incremented numbers appended)
         if ($statement->fetchColumn()) {
@@ -2349,6 +2349,10 @@ class DataHandler implements LoggerAwareInterface
                     break;
                 }
             }
+        }
+
+        if ($originalValue !== $newValue) {
+            $this->log($table, $id, 5, 0, 4, 'The value of the field "%s" has been changed from "%s" to "%s" as it is required to be unique.', 1, [$field, $originalValue, $newValue], $newPid);
         }
 
         return $newValue;
@@ -8037,7 +8041,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $recuid Record UID. Zero if NA
      * @param int $action Action number: 0=No category, 1=new record, 2=update record, 3= delete record, 4= move record, 5= Check/evaluate
      * @param int $recpid Normally 0 (zero). If set, it indicates that this log-entry is used to notify the backend of a record which is moved to another location
-     * @param int $error The severity: 0 = message, 1 = error, 2 = System Error, 3 = security notice (admin)
+     * @param int $error The severity: 0 = message, 1 = error, 2 = System Error, 3 = security notice (admin), 4 warning
      * @param string $details Default error message in english
      * @param int $details_nr This number is unique for every combination of $type and $action. This is the error-message number, which can later be used to translate error messages. 0 if not categorized, -1 if temporary
      * @param array $data Array with special information that may go into $details by '%s' marks / sprintf() when the log is shown
@@ -8107,7 +8111,7 @@ class DataHandler implements LoggerAwareInterface
             $log_data = unserialize($row['log_data']);
             $msg = $row['error'] . ': ' . sprintf($row['details'], $log_data[0], $log_data[1], $log_data[2], $log_data[3], $log_data[4]);
             /** @var FlashMessage $flashMessage */
-            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, '', FlashMessage::ERROR, true);
+            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, '', $row['error'] === 4 ? FlashMessage::WARNING : FlashMessage::ERROR, true);
             /** @var FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
