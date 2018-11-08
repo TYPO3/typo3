@@ -13,4 +13,4 @@ As the official recommendation of Microsoft regarding the X-UA-Compatible tag is
 
 The TYPO3 default `.htaccess` and `web.config` files already contain the corresponding settings. If you are using Internet Explorer configured to use compat mode by default, you may need to set these settings to ensure `edge` mode.
 
-.. index:: Backend, ext:backend
+.. index:: Backend, ext:backend, NotScanned
