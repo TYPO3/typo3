@@ -143,12 +143,12 @@ class AbstractProvider implements ProviderInterface
      */
     protected function initDisabledItems()
     {
-        $TSkey = $this->table . ($this->context ? '.' . $this->context : '');
-        $this->disabledItems = GeneralUtility::trimExplode(
-            ',',
-            $this->backendUser->getTSConfig()['options.']['contextMenu.']['table.'][$TSkey . '.']['disableItems'] ?? '',
-            true
-        );
+        if ($this->context) {
+            $tsConfigValue = $this->backendUser->getTSConfig()['options.']['contextMenu.']['table.'][$this->table . '.'][$this->context . '.']['disableItems'] ?? '';
+        } else {
+            $tsConfigValue = $this->backendUser->getTSConfig()['options.']['contextMenu.']['table.'][$this->table . '.']['disableItems'] ?? '';
+        }
+        $this->disabledItems = GeneralUtility::trimExplode(',', $tsConfigValue, true);
     }
 
     /**
