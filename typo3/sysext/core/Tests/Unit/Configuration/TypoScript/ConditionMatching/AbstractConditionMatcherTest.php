@@ -171,47 +171,6 @@ class AbstractConditionMatcherTest extends UnitTestCase
     }
 
     /**
-     * @test
-     */
-    public function checkConditionMatcherForFeatureFunction(): void
-    {
-        $featureName = 'test.testFeature';
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features'][$featureName] = true;
-        $this->assertTrue(
-            $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '")'])
-        );
-        $this->assertTrue(
-            $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '") == true'])
-        );
-        $this->assertTrue(
-            $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '") === true'])
-        );
-        $this->assertFalse(
-            $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '") == false'])
-        );
-        $this->assertFalse(
-            $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '") === false'])
-        );
-
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features'][$featureName] = false;
-        $this->assertFalse(
-            $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '")'])
-        );
-        $this->assertFalse(
-            $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '") == true'])
-        );
-        $this->assertFalse(
-            $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '") === true'])
-        );
-        $this->assertTrue(
-            $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '") == false'])
-        );
-        $this->assertTrue(
-            $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '") === false'])
-        );
-    }
-
-    /**
      * @return array
      */
     public function hostnameDataProvider(): array

@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\ExpressionLanguage\FunctionsProvider;
 
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
-use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -40,7 +39,6 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
             $this->getLikeFunction(),
             $this->getEnvFunction(),
             $this->getDateFunction(),
-            $this->getFeatureToggleFunction(),
         ];
     }
 
@@ -96,16 +94,6 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
         }, function ($arguments, $format) {
             return GeneralUtility::makeInstance(Context::class)
                 ->getAspect('date')->getDateTime()->format($format);
-        });
-    }
-
-    protected function getFeatureToggleFunction(): ExpressionFunction
-    {
-        return new ExpressionFunction('feature', function () {
-            // Not implemented, we only use the evaluator
-        }, function ($arguments, $featureName) {
-            return GeneralUtility::makeInstance(Features::class)
-                ->isFeatureEnabled($featureName);
         });
     }
 }
