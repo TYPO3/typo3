@@ -24,6 +24,7 @@ return [
         'restFiles' => [
             'Feature-83093-ReplaceCascadeWithTYPO3CMSExtbaseAnnotationORMCascade.rst',
             'Deprecation-83093-ReplaceCascadeWithTYPO3CMSExtbaseAnnotationORMCascade.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '@validate' => [

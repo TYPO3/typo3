@@ -592,6 +592,7 @@ The following database fields have been removed:
 The following php doc annotations have been removed:
 
 * `@inject`
+* `@cascade`
 
 Impact
 ======

@@ -53,17 +53,6 @@ class DummyClassWithAllTypesOfProperties
     public $propertyWithTransientAnnotation;
 
     /**
-     * @var DummyClassWithAllTypesOfProperties
-     * @cascade remove
-     */
-    public $propertyWithCascadeAnnotation;
-
-    /**
-     * @cascade remove
-     */
-    public $propertyWithCascadeAnnotationWithoutVarAnnotation;
-
-    /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfProperties>
      */
     public $propertyWithObjectStorageAnnotation;

@@ -311,8 +311,6 @@ class ReflectionServiceTest extends UnitTestCase
                 'propertyWithIgnoredTags',
                 'propertyWithInjectAnnotation',
                 'propertyWithTransientAnnotation',
-                'propertyWithCascadeAnnotation',
-                'propertyWithCascadeAnnotationWithoutVarAnnotation',
                 'propertyWithObjectStorageAnnotation'
             ],
             $service->getClassPropertyNames(Fixture\DummyClassWithAllTypesOfProperties::class)

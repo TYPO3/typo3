@@ -288,23 +288,6 @@ class ClassSchema
             }
 
             if ($docCommentParser->isTaggedWith('var') && !$docCommentParser->isTaggedWith('transient')) {
-                try {
-                    $cascadeAnnotationValues = $docCommentParser->getTagValues('cascade');
-                    $this->properties[$propertyName]['annotations']['cascade'] = $cascadeAnnotationValues[0];
-                } catch (\Exception $e) {
-                }
-
-                if ($this->properties[$propertyName]['annotations']['cascade'] !== null) {
-                    trigger_error(
-                        sprintf(
-                            'Property %s::%s is tagged with @cascade which is deprecated and will be removed in TYPO3 v10.0.',
-                            $reflectionClass->getName(),
-                            $reflectionProperty->getName()
-                        ),
-                        E_USER_DEPRECATED
-                    );
-                }
-
                 if (($annotation = $annotationReader->getPropertyAnnotation($reflectionProperty, Cascade::class)) instanceof Cascade) {
                     /** @var Cascade $annotation */
                     $this->properties[$propertyName]['annotations']['cascade'] = $annotation->value;
