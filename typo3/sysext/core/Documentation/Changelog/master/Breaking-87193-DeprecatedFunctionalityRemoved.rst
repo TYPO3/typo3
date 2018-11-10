@@ -732,6 +732,7 @@ The following php doc annotations have been removed:
 * `@inject`
 * `@internal`
 * `@lazy`
+* `@transient`
 
 Impact
 ======

@@ -19,6 +19,7 @@ return [
         'restFiles' => [
             'Feature-83092-ReplaceTransientWithTYPO3CMSExtbaseAnnotationORMTransient.rst',
             'Deprecation-83092-ReplaceTransientWithTYPO3CMSExtbaseAnnotationORMTransient.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '@cascade' => [

@@ -249,18 +249,6 @@ class ClassSchema
                 $this->properties[$propertyName]['annotations']['transient'] = true;
             }
 
-            if ($docCommentParser->isTaggedWith('transient')) {
-                $this->properties[$propertyName]['annotations']['transient'] = true;
-                trigger_error(
-                    sprintf(
-                        'Property %s::%s is tagged with @transient which is deprecated and will be removed in TYPO3 v10.0.',
-                        $reflectionClass->getName(),
-                        $reflectionProperty->getName()
-                    ),
-                    E_USER_DEPRECATED
-                );
-            }
-
             if ($propertyName !== 'settings'
                 && ($annotationReader->getPropertyAnnotation($reflectionProperty, Inject::class) instanceof Inject)
             ) {
@@ -275,7 +263,7 @@ class ClassSchema
                 }
             }
 
-            if ($docCommentParser->isTaggedWith('var') && !$docCommentParser->isTaggedWith('transient')) {
+            if ($docCommentParser->isTaggedWith('var') && $this->properties[$propertyName]['annotations']['transient'] === false) {
                 if (($annotation = $annotationReader->getPropertyAnnotation($reflectionProperty, Cascade::class)) instanceof Cascade) {
                     /** @var Cascade $annotation */
                     $this->properties[$propertyName]['annotations']['cascade'] = $annotation->value;

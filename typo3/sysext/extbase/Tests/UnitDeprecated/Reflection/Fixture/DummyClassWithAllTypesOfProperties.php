@@ -48,11 +48,6 @@ class DummyClassWithAllTypesOfProperties
     public $propertyWithInjectAnnotation;
 
     /**
-     * @transient
-     */
-    public $propertyWithTransientAnnotation;
-
-    /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfProperties>
      */
     public $propertyWithObjectStorageAnnotation;
