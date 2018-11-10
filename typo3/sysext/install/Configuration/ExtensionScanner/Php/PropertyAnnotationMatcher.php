@@ -12,6 +12,7 @@ return [
         'restFiles' => [
             'Feature-83078-ReplaceLazyWithTYPO3CMSExtbaseAnnotationORMLazy.rst',
             'Deprecation-83078-ReplaceLazyWithTYPO3CMSExtbaseAnnotationORMLazy.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '@transient' => [

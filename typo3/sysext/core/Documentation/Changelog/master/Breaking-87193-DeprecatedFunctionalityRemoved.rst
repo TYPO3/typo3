@@ -662,6 +662,7 @@ The following php doc annotations have been removed:
 * `@inject`
 * `@cascade`
 * `@ignorevalidation`
+* `@lazy`
 
 Impact
 ======

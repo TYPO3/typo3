@@ -245,18 +245,6 @@ class ClassSchema
                 $this->properties[$propertyName]['annotations']['lazy'] = true;
             }
 
-            if ($docCommentParser->isTaggedWith('lazy')) {
-                $this->properties[$propertyName]['annotations']['lazy'] = true;
-                trigger_error(
-                    sprintf(
-                        'Property %s::%s is tagged with @lazy which is deprecated and will be removed in TYPO3 v10.0.',
-                        $reflectionClass->getName(),
-                        $reflectionProperty->getName()
-                    ),
-                    E_USER_DEPRECATED
-                );
-            }
-
             if ($annotationReader->getPropertyAnnotation($reflectionProperty, Transient::class) instanceof Transient) {
                 $this->properties[$propertyName]['annotations']['transient'] = true;
             }

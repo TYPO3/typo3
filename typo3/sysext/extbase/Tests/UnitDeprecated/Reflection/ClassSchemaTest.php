@@ -31,12 +31,6 @@ class ClassSchemaTest extends UnitTestCase
      */
     protected $resetSingletonInstances = true;
 
-    public function testClassSchemaDetectsLazyProperties()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithLazyProperty::class);
-        static::assertTrue($classSchema->getProperty('propertyWithLazyAnnotation')['annotations']['lazy']);
-    }
-
     /**
      * @test
      */
