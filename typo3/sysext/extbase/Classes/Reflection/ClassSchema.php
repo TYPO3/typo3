@@ -287,37 +287,6 @@ class ClassSchema
                 }
             }
 
-            if ($propertyName !== 'settings' && $docCommentParser->isTaggedWith('inject')) {
-                trigger_error(
-                    sprintf(
-                        'Property %s::%s is tagged with @inject which is deprecated and will be removed in TYPO3 v10.0.',
-                        $reflectionClass->getName(),
-                        $reflectionProperty->getName()
-                    ),
-                    E_USER_DEPRECATED
-                );
-                try {
-                    $varValues = $docCommentParser->getTagValues('var');
-                    $this->properties[$propertyName]['annotations']['inject'] = true;
-                    $this->properties[$propertyName]['annotations']['type'] = ltrim($varValues[0], '\\');
-                    $this->properties[$propertyName]['annotations']['dependency'] = ltrim($varValues[0], '\\');
-
-                    if (!$reflectionProperty->isPublic()) {
-                        trigger_error(
-                            sprintf(
-                                'Property %s::%s is not public and tagged with @inject which is deprecated and will stop working in TYPO3 v10.0.',
-                                $reflectionClass->getName(),
-                                $reflectionProperty->getName()
-                            ),
-                            E_USER_DEPRECATED
-                        );
-                    }
-
-                    $this->injectProperties[] = $propertyName;
-                } catch (\Exception $e) {
-                }
-            }
-
             if ($docCommentParser->isTaggedWith('var') && !$docCommentParser->isTaggedWith('transient')) {
                 try {
                     $cascadeAnnotationValues = $docCommentParser->getTagValues('cascade');

@@ -585,6 +585,10 @@ The following database fields have been removed:
 
 * `index_phash.data_page_reg1`
 
+The following php doc annotations have been removed:
+
+* `@inject`
+
 Impact
 ======
 

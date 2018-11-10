@@ -5,6 +5,7 @@ return [
             'Feature-82869-ReplaceInjectWithTYPO3CMSExtbaseAnnotationInject.rst',
             'Deprecation-82869-ReplaceInjectWithTYPO3CMSExtbaseAnnotationInject.rst',
             'Deprecation-86907-DeprecateUsageOfDependencyInjectionWithNonPublicProperties.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '@lazy' => [

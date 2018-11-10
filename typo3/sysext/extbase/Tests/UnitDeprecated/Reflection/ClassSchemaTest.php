@@ -31,18 +31,6 @@ class ClassSchemaTest extends UnitTestCase
      */
     protected $resetSingletonInstances = true;
 
-    public function testClassSchemaDetectsInjectProperties()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithInjectProperty::class);
-        static::assertTrue($classSchema->hasInjectProperties());
-
-        $propertyDefinition = $classSchema->getProperty('propertyWithInjectAnnotation');
-        static::assertTrue($propertyDefinition['annotations']['inject']);
-
-        $injectProperties = $classSchema->getInjectProperties();
-        static::assertArrayHasKey('propertyWithInjectAnnotation', $injectProperties);
-    }
-
     public function testClassSchemaDetectsLazyProperties()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithLazyProperty::class);
