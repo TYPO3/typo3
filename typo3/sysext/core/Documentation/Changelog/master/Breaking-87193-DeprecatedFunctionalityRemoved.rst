@@ -758,6 +758,7 @@ The following php doc annotations have been removed:
 * `@internal`
 * `@lazy`
 * `@transient`
+* `@validate`
 
 Impact
 ======

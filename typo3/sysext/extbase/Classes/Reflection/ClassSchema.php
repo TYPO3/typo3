@@ -213,34 +213,6 @@ class ClassSchema
                 }
             }
 
-            if ($docCommentParser->isTaggedWith('validate')) {
-                trigger_error(
-                    sprintf(
-                        'Property %s::%s is tagged with @validate which is deprecated and will be removed in TYPO3 v10.0.',
-                        $reflectionClass->getName(),
-                        $reflectionProperty->getName()
-                    ),
-                    E_USER_DEPRECATED
-                );
-
-                $validatorResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
-
-                $validateValues = $docCommentParser->getTagValues('validate');
-                foreach ($validateValues as $validateValue) {
-                    $validatorConfiguration = $validatorResolver->parseValidatorAnnotation($validateValue);
-
-                    foreach ($validatorConfiguration['validators'] ?? [] as $validator) {
-                        $validatorObjectName = $validatorResolver->resolveValidatorObjectName($validator['validatorName']);
-
-                        $this->properties[$propertyName]['validators'][] = [
-                            'name' => $validator['validatorName'],
-                            'options' => $validator['validatorOptions'],
-                            'className' => $validatorObjectName,
-                        ];
-                    }
-                }
-            }
-
             if ($annotationReader->getPropertyAnnotation($reflectionProperty, Lazy::class) instanceof Lazy) {
                 $this->properties[$propertyName]['annotations']['lazy'] = true;
             }
@@ -341,42 +313,10 @@ class ClassSchema
             }
 
             foreach ($docCommentParser->getTagsValues() as $tag => $values) {
-                if ($tag === 'validate' && $this->isController && $this->methods[$methodName]['isAction']) {
-                    trigger_error(
-                        sprintf(
-                            'Method %s::%s is tagged with @validate which is deprecated and will be removed in TYPO3 v10.0.',
-                            $reflectionClass->getName(),
-                            $reflectionMethod->getName()
-                        ),
-                        E_USER_DEPRECATED
-                    );
-
-                    $validatorResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
-
-                    foreach ($values as $validate) {
-                        $methodValidatorDefinition = $validatorResolver->parseValidatorAnnotation($validate);
-
-                        foreach ($methodValidatorDefinition['validators'] as $validator) {
-                            $validatorObjectName = $validatorResolver->resolveValidatorObjectName($validator['validatorName']);
-
-                            $argumentValidators[$methodValidatorDefinition['argumentName']][] = [
-                                'name' => $validator['validatorName'],
-                                'options' => $validator['validatorOptions'],
-                                'className' => $validatorObjectName,
-                            ];
-                        }
-                    }
-                }
-                $this->methods[$methodName]['tags'][$tag] = array_map(function ($value) use ($tag) {
-                    // not stripping the dollar sign for @validate annotations is just
-                    // a quick fix for a regression introduced in 9.0.0.
-                    // This exception to the rules will vanish once the resolving of
-                    // validators will take place inside this class and not in the
-                    // controller during runtime.
-                    return $tag === 'validate' ? $value : ltrim($value, '$');
+                $this->methods[$methodName]['tags'][$tag] = array_map(function ($value) {
+                    return ltrim($value, '$');
                 }, $values);
             }
-            unset($methodValidatorDefinition);
 
             foreach ($annotations as $annotation) {
                 if ($annotation instanceof IgnoreValidation) {

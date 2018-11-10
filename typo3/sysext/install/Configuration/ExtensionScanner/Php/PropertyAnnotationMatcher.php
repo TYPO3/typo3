@@ -33,6 +33,7 @@ return [
         'restFiles' => [
             'Feature-83167-ReplaceValidateWithTYPO3CMSExtbaseAnnotationValidate.rst',
             'Deprecation-83167-ReplaceValidateWithTYPO3CMSExtbaseAnnotationValidate.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];
