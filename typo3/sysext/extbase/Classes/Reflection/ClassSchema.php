@@ -385,16 +385,6 @@ class ClassSchema
                         E_USER_DEPRECATED
                     );
                 }
-                if ($tag === 'ignorevalidation') {
-                    trigger_error(
-                        sprintf(
-                            'Method %s::%s is tagged with @ignorevalidation which is deprecated and will be removed in TYPO3 v10.0.',
-                            $reflectionClass->getName(),
-                            $reflectionMethod->getName()
-                        ),
-                        E_USER_DEPRECATED
-                    );
-                }
                 if ($tag === 'flushesCaches') {
                     trigger_error(
                         sprintf(

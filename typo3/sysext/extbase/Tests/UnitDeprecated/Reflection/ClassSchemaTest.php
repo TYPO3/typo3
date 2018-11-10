@@ -37,12 +37,6 @@ class ClassSchemaTest extends UnitTestCase
         static::assertTrue($classSchema->getProperty('propertyWithLazyAnnotation')['annotations']['lazy']);
     }
 
-    public function testClassSchemaDetectsIgnoreValidationAnnotation()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyControllerWithIgnorevalidationAnnotation::class);
-        static::assertTrue(isset($classSchema->getMethod('someAction')['tags']['ignorevalidation']));
-    }
-
     /**
      * @test
      */
