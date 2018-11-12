@@ -1256,6 +1256,9 @@ class DatabaseRecordList
 
                                         $lRow = is_array($tmpRow) ? $tmpRow : $lRow;
                                     }
+                                    if (!$this->isRowListingConditionFulfilled($table, $lRow)) {
+                                        continue;
+                                    }
                                     // In offline workspace, look for alternative record:
                                     BackendUtility::workspaceOL($table, $lRow, $backendUser->workspace, true);
                                     if (is_array($lRow) && $backendUser->checkLanguageAccess($lRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
