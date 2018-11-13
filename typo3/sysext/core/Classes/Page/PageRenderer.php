@@ -1708,7 +1708,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                     $cache->set(
                         $cacheIdentifier,
                         $properties,
-                        ['pageId_' . $this->getTypoScriptFrontendController()->page['uid']]
+                        ['pageId_' . $this->getTypoScriptFrontendController()->page['uid']],
+                        $this->getTypoScriptFrontendController()->get_cache_timeout()
                     );
                 }
             }

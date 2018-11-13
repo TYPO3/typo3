@@ -69,7 +69,8 @@ class PageTitleProviderManager implements SingletonInterface
                     $this->pageCache->set(
                         $cacheIdentifier,
                         $pageTitle,
-                        ['pageTitle_' . $this->getTypoScriptFrontendController()->page['uid']]
+                        ['pageTitle_' . $this->getTypoScriptFrontendController()->page['uid']],
+                        $this->getTypoScriptFrontendController()->get_cache_timeout()
                     );
                     break;
                 }
