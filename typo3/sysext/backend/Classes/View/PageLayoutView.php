@@ -878,6 +878,7 @@ class PageLayoutView implements LoggerAwareInterface
         foreach ($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] as $val) {
             $this->CType_labels[$val[1]] = $this->getLanguageService()->sL($val[0]);
         }
+
         $this->itemLabels = [];
         foreach ($GLOBALS['TCA']['tt_content']['columns'] as $name => $val) {
             $this->itemLabels[$name] = $this->getLanguageService()->sL($val['label']);
@@ -2293,8 +2294,11 @@ class PageLayoutView implements LoggerAwareInterface
                     break;
                 default:
                     $contentType = $this->CType_labels[$row['CType']];
+                    if (!isset($contentType)) {
+                        $contentType =  BackendUtility::getLabelFromItemListMerged($row['pid'], 'tt_content', 'CType', $row['CType']);
+                    }
 
-                    if (isset($contentType)) {
+                    if ($contentType) {
                         $out .= $this->linkEditContent('<strong>' . htmlspecialchars($contentType) . '</strong>', $row) . '<br />';
                         if ($row['bodytext']) {
                             $out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
