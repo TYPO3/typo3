@@ -124,7 +124,7 @@ class PreviewUriBuilder
         $viewScript = $uriBuilder->buildUriFromRoute('workspace_previewcontrols', ['id' => $uid]);
         if ($addDomain === true) {
             $viewScript = $uriBuilder->buildUriFromRoute('workspace_previewcontrols', ['id' => $uid]);
-            return BackendUtility::getViewDomain($uid) . 'index.php?redirect_url=' . urlencode($viewScript);
+            return BackendUtility::getViewDomain($uid) . 'index.php?redirect_url=' . urlencode((string)$viewScript);
         }
         return (string)$viewScript;
     }
