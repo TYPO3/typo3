@@ -157,6 +157,7 @@ class SiteConfiguration
         $yamlFileContents = Yaml::dump($configuration, 99, 2);
         GeneralUtility::writeFile($fileName, $yamlFileContents);
         $this->getCache()->remove($this->cacheIdentifier);
+        $this->getCache()->remove('pseudo-sites');
     }
 
     /**
@@ -194,6 +195,7 @@ class SiteConfiguration
         }
         @unlink($fileName);
         $this->getCache()->remove($this->cacheIdentifier);
+        $this->getCache()->remove('pseudo-sites');
     }
 
     /**
