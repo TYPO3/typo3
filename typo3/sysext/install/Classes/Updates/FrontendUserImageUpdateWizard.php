@@ -93,9 +93,9 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate
     protected $registryNamespace = 'FrontendUserImageUpdateWizard';
 
     /**
-     * @var array
+     * @var array|null
      */
-    protected $recordOffset = [];
+    protected $recordOffset;
 
     /**
      * Constructor
@@ -113,7 +113,7 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate
         $storages = GeneralUtility::makeInstance(StorageRepository::class)->findAll();
         $this->storage = $storages[0];
         $this->registry = GeneralUtility::makeInstance(Registry::class);
-        $this->recordOffset = $this->registry->get($this->registryNamespace, 'recordOffset', []);
+        $this->recordOffset = $this->registry->get($this->registryNamespace, 'recordOffset');
     }
 
     /**
