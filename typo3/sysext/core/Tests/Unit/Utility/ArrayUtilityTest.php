@@ -2712,6 +2712,42 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      */
+    public function stripTagsFromValuesRecursiveExpectNoTypeCast()
+    {
+        $testObject = new \stdClass();
+
+        $input = [
+            'stringWithTags' => '<b>i am evil</b>',
+            'boolean' => true,
+            'integer' => 1,
+            'float' => 1.9,
+            'object' => $testObject,
+            'objectWithStringConversion' => new class {
+                /**
+                 * @return string
+                 */
+                public function __toString()
+                {
+                    return 'i am evil <b>too</b>';
+                }
+            },
+        ];
+
+        $expected = [
+            'stringWithTags' => 'i am evil',
+            'boolean' => true,
+            'integer' => 1,
+            'float' => 1.9,
+            'object' => $testObject,
+            'objectWithStringConversion' => 'i am evil too',
+        ];
+
+        $this->assertSame($expected, ArrayUtility::stripTagsFromValuesRecursive($input));
+    }
+
+    /**
+     * @test
+     */
     public function convertBooleanStringsToBooleanRecursiveExpectConverting()
     {
         $input = [

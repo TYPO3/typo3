@@ -827,10 +827,8 @@ class ArrayUtility
         foreach ($result as $key => $value) {
             if (is_array($value)) {
                 $result[$key] = self::stripTagsFromValuesRecursive($value);
-            } else {
-                if (!is_bool($value)) {
-                    $result[$key] = strip_tags($value);
-                }
+            } elseif (is_string($value) || (is_object($value) && method_exists($value, '__toString'))) {
+                $result[$key] = strip_tags($value);
             }
         }
         return $result;
