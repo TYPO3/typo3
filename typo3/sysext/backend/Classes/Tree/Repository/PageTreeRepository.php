@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Backend\Tree\Repository;
  */
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\PlainDataResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -158,12 +158,7 @@ class PageTreeRepository
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(
-                BackendWorkspaceRestriction::class,
-                $this->currentWorkspace,
-                // set this flag to "true" when inside a workspace
-                $this->currentWorkspace !== 0
-            ));
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->currentWorkspace));
 
         $pageRecords = $queryBuilder
             ->select(...$this->fields)
@@ -181,11 +176,6 @@ class PageTreeRepository
         if ($this->currentWorkspace !== 0 && !empty($pageRecords)) {
             $livePageIds = [];
             foreach ($pageRecords as $pageRecord) {
-                // BackendWorkspaceRestriction includes drafts from ALL workspaces, we need to ensure
-                // that only the live records and the drafts from the current workspace are used
-                if (!in_array((int)$pageRecord['t3ver_wsid'], [0, $this->currentWorkspace], true)) {
-                    continue;
-                }
                 $livePageIds[] = (int)$pageRecord['uid'];
                 $livePagePids[(int)$pageRecord['uid']] = (int)$pageRecord['pid'];
                 if ((int)$pageRecord['t3ver_state'] === VersionState::MOVE_PLACEHOLDER) {
