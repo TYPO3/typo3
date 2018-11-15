@@ -425,6 +425,7 @@ class PageRouter implements RouterInterface
      * /home/about-us
      * /home/
      * /home
+     * /
      *
      * @param string $routePath
      * @return array
@@ -450,6 +451,7 @@ class PageRouter implements RouterInterface
             $candidatePathParts[] = $prefix;
             array_pop($pathParts);
         }
+        $candidatePathParts[] = '/';
         return $candidatePathParts;
     }
 
