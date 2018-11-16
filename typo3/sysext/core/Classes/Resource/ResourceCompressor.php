@@ -160,7 +160,7 @@ class ResourceCompressor
         $filesToInclude = [];
         foreach ($jsFiles as $key => $fileOptions) {
             // invalid section found or no concatenation allowed, so continue
-            if (empty($fileOptions['section']) || !empty($fileOptions['excludeFromConcatenation'])) {
+            if (empty($fileOptions['section']) || !empty($fileOptions['excludeFromConcatenation']) || !empty($fileOptions['nomodule'])) {
                 continue;
             }
             if (!isset($filesToInclude[$fileOptions['section']])) {

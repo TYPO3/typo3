@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Core\Tests\Functional\Page;
 
 /*
@@ -68,7 +69,16 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $headerData = $expectedHeaderData = '<tag method="private" name="test" />';
         $subject->addHeaderData($headerData);
 
-        $subject->addJsLibrary('test', 'fileadmin/test.js', 'text/javascript', false, false, 'wrapBeforeXwrapAfter', false, 'X');
+        $subject->addJsLibrary(
+            'test',
+            'fileadmin/test.js',
+            'text/javascript',
+            false,
+            false,
+            'wrapBeforeXwrapAfter',
+            false,
+            'X'
+        );
         $expectedJsLibraryRegExp = '#wrapBefore<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
 
         $subject->addJsFile('fileadmin/test.js', 'text/javascript', false, false, 'wrapBeforeXwrapAfter', false, 'X');
@@ -133,10 +143,27 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $subject->addFooterData($footerData);
 
         $expectedJsFooterLibraryRegExp = '#wrapBefore<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
-        $subject->addJsFooterLibrary('test', 'fileadmin/test.js', 'text/javascript', false, false, 'wrapBeforeXwrapAfter', false, 'X');
+        $subject->addJsFooterLibrary(
+            'test',
+            'fileadmin/test.js',
+            'text/javascript',
+            false,
+            false,
+            'wrapBeforeXwrapAfter',
+            false,
+            'X'
+        );
 
         $expectedJsFooterRegExp = '#wrapBefore<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
-        $subject->addJsFooterFile('fileadmin/test.js', 'text/javascript', false, false, 'wrapBeforeXwrapAfter', false, 'X');
+        $subject->addJsFooterFile(
+            'fileadmin/test.js',
+            'text/javascript',
+            false,
+            false,
+            'wrapBeforeXwrapAfter',
+            false,
+            'X'
+        );
 
         $jsFooterInlineCode = $expectedJsFooterInlineCodeString = 'var x = "' . $this->getUniqueId('jsFooterInline-') . '"';
         $subject->addJsFooterInlineCode($this->getUniqueId(), $jsFooterInlineCode);
@@ -177,5 +204,88 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         self::assertStringContainsString($expectedLanguageLabel1, $renderedString);
         self::assertStringContainsString($expectedLanguageLabel2, $renderedString);
         self::assertStringContainsString($expectedInlineSettingsReturnValue, $renderedString);
+    }
+
+    /**
+     * @test
+     */
+    public function pageRendererRendersNomoduleJavascript()
+    {
+        $subject = new PageRenderer();
+        $subject->setCharSet('utf-8');
+        $subject->setLanguage('default');
+
+        $subject->addJsFooterLibrary(
+            'test',
+            'fileadmin/test.js',
+            'text/javascript',
+            false,
+            false,
+            '',
+            false,
+            '|',
+            false,
+            '',
+            false,
+            '',
+            true
+        );
+        $expectedJsFooterLibrary = '<script src="fileadmin/test.js" type="text/javascript" nomodule="nomodule"></script>';
+
+        $subject->addJsLibrary(
+            'test2',
+            'fileadmin/test2.js',
+            'text/javascript',
+            false,
+            false,
+            '',
+            false,
+            '|',
+            false,
+            '',
+            false,
+            '',
+            true
+        );
+        $expectedJsLibrary = '<script src="fileadmin/test2.js" type="text/javascript" nomodule="nomodule"></script>';
+
+        $subject->addJsFile(
+            'fileadmin/test3.js',
+            'text/javascript',
+            false,
+            false,
+            '',
+            false,
+            '|',
+            false,
+            '',
+            false,
+            '',
+            true
+        );
+        $expectedJsFile = '<script src="fileadmin/test3.js" type="text/javascript" nomodule="nomodule"></script>';
+
+        $subject->addJsFooterFile(
+            'fileadmin/test4.js',
+            'text/javascript',
+            false,
+            false,
+            '',
+            false,
+            '|',
+            false,
+            '',
+            false,
+            '',
+            true
+        );
+        $expectedJsFooter = '<script src="fileadmin/test4.js" type="text/javascript" nomodule="nomodule"></script>';
+
+        $renderedString = $subject->render();
+
+        self::assertStringContainsString($expectedJsFooterLibrary, $renderedString);
+        self::assertStringContainsString($expectedJsLibrary, $renderedString);
+        self::assertStringContainsString($expectedJsFile, $renderedString);
+        self::assertStringContainsString($expectedJsFooter, $renderedString);
     }
 }

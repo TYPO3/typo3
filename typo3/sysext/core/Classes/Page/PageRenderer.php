@@ -1018,8 +1018,9 @@ class PageRenderer implements SingletonInterface
      * @param string $integrity Subresource Integrity (SRI)
      * @param bool $defer Flag if property 'defer="defer"' should be added to JavaScript tags
      * @param string $crossorigin CORS settings attribute
+     * @param bool $nomodule Flag if property 'nomodule="nomodule"' should be added to JavaScript tags
      */
-    public function addJsLibrary($name, $file, $type = '', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '')
+    public function addJsLibrary($name, $file, $type = 'text/javascript', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false)
     {
         if (!in_array(strtolower($name), $this->jsLibs)) {
             $this->jsLibs[strtolower($name)] = [
@@ -1035,6 +1036,7 @@ class PageRenderer implements SingletonInterface
                 'integrity' => $integrity,
                 'defer' => $defer,
                 'crossorigin' => $crossorigin,
+                'nomodule' => $nomodule,
             ];
         }
     }
@@ -1054,8 +1056,9 @@ class PageRenderer implements SingletonInterface
      * @param string $integrity Subresource Integrity (SRI)
      * @param bool $defer Flag if property 'defer="defer"' should be added to JavaScript tags
      * @param string $crossorigin CORS settings attribute
+     * @param bool $nomodule Flag if property 'nomodule="nomodule"' should be added to JavaScript tags
      */
-    public function addJsFooterLibrary($name, $file, $type = '', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '')
+    public function addJsFooterLibrary($name, $file, $type = 'text/javascript', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false)
     {
         $name .= '_jsFooterLibrary';
         if (!in_array(strtolower($name), $this->jsLibs)) {
@@ -1072,6 +1075,7 @@ class PageRenderer implements SingletonInterface
                 'integrity' => $integrity,
                 'defer' => $defer,
                 'crossorigin' => $crossorigin,
+                'nomodule' => $nomodule,
             ];
         }
     }
@@ -1090,8 +1094,9 @@ class PageRenderer implements SingletonInterface
      * @param string $integrity Subresource Integrity (SRI)
      * @param bool $defer Flag if property 'defer="defer"' should be added to JavaScript tags
      * @param string $crossorigin CORS settings attribute
+     * @param bool $nomodule Flag if property 'nomodule="nomodule"' should be added to JavaScript tags
      */
-    public function addJsFile($file, $type = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '')
+    public function addJsFile($file, $type = 'text/javascript', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false)
     {
         if (!isset($this->jsFiles[$file])) {
             $this->jsFiles[$file] = [
@@ -1107,6 +1112,7 @@ class PageRenderer implements SingletonInterface
                 'integrity' => $integrity,
                 'defer' => $defer,
                 'crossorigin' => $crossorigin,
+                'nomodule' => $nomodule,
             ];
         }
     }
@@ -1125,8 +1131,9 @@ class PageRenderer implements SingletonInterface
      * @param string $integrity Subresource Integrity (SRI)
      * @param bool $defer Flag if property 'defer="defer"' should be added to JavaScript tags
      * @param string $crossorigin CORS settings attribute
+     * @param bool $nomodule Flag if property 'nomodule="nomodule"' should be added to JavaScript tags
      */
-    public function addJsFooterFile($file, $type = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '')
+    public function addJsFooterFile($file, $type = 'text/javascript', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false)
     {
         if (!isset($this->jsFiles[$file])) {
             $this->jsFiles[$file] = [
@@ -1142,6 +1149,7 @@ class PageRenderer implements SingletonInterface
                 'integrity' => $integrity,
                 'defer' => $defer,
                 'crossorigin' => $crossorigin,
+                'nomodule' => $nomodule,
             ];
         }
     }
@@ -2116,9 +2124,10 @@ class PageRenderer implements SingletonInterface
                 $properties['file'] = $this->getStreamlinedFileName($properties['file']);
                 $async = $properties['async'] ? ' async="async"' : '';
                 $defer = $properties['defer'] ? ' defer="defer"' : '';
+                $nomodule = $properties['nomodule'] ? ' nomodule="nomodule"' : '';
                 $integrity = $properties['integrity'] ? ' integrity="' . htmlspecialchars($properties['integrity']) . '"' : '';
                 $crossorigin = $properties['crossorigin'] ? ' crossorigin="' . htmlspecialchars($properties['crossorigin']) . '"' : '';
-                $tag = '<script src="' . htmlspecialchars($properties['file']) . '" type="' . htmlspecialchars($properties['type']) . '"' . $async . $defer . $integrity . $crossorigin . '></script>';
+                $tag = '<script src="' . htmlspecialchars($properties['file']) . '" type="' . htmlspecialchars($properties['type']) . '"' . $async . $defer . $integrity . $crossorigin . $nomodule . '></script>';
                 if ($properties['allWrap']) {
                     $wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
                     $tag = $wrapArr[0] . $tag . $wrapArr[1];
@@ -2161,9 +2170,10 @@ class PageRenderer implements SingletonInterface
                 $type = $properties['type'] ? ' type="' . htmlspecialchars($properties['type']) . '"' : '';
                 $async = $properties['async'] ? ' async="async"' : '';
                 $defer = $properties['defer'] ? ' defer="defer"' : '';
+                $nomodule = $properties['nomodule'] ? ' nomodule="nomodule"' : '';
                 $integrity = $properties['integrity'] ? ' integrity="' . htmlspecialchars($properties['integrity']) . '"' : '';
                 $crossorigin = $properties['crossorigin'] ? ' crossorigin="' . htmlspecialchars($properties['crossorigin']) . '"' : '';
-                $tag = '<script src="' . htmlspecialchars($file) . '"' . $type . $async . $defer . $integrity . $crossorigin . '></script>';
+                $tag = '<script src="' . htmlspecialchars($file) . '"' . $type . $async . $defer . $integrity . $crossorigin . $nomodule . '></script>';
                 if ($properties['allWrap']) {
                     $wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
                     $tag = $wrapArr[0] . $tag . $wrapArr[1];

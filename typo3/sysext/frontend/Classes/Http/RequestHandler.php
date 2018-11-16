@@ -517,7 +517,8 @@ class RequestHandler implements RequestHandlerInterface
                             (bool)$jsFileConfig['async'],
                             $jsFileConfig['integrity'],
                             (bool)$jsFileConfig['defer'],
-                            $crossOrigin
+                            $crossOrigin,
+                            (bool)$jsFileConfig['nomodule']
                         );
                         unset($jsFileConfig);
                     }
@@ -558,7 +559,8 @@ class RequestHandler implements RequestHandlerInterface
                             (bool)$jsFileConfig['async'],
                             $jsFileConfig['integrity'],
                             (bool)$jsFileConfig['defer'],
-                            $crossorigin
+                            $crossorigin,
+                            (bool)$jsFileConfig['nomodule']
                         );
                         unset($jsFileConfig);
                     }
@@ -599,7 +601,8 @@ class RequestHandler implements RequestHandlerInterface
                             (bool)$jsConfig['async'],
                             $jsConfig['integrity'],
                             (bool)$jsConfig['defer'],
-                            $crossorigin
+                            $crossorigin,
+                            (bool)$jsConfig['nomodule']
                         );
                         unset($jsConfig);
                     }
@@ -639,7 +642,8 @@ class RequestHandler implements RequestHandlerInterface
                             (bool)$jsConfig['async'],
                             $jsConfig['integrity'],
                             (bool)$jsConfig['defer'],
-                            $crossorigin
+                            $crossorigin,
+                            (bool)$jsConfig['nomodule']
                         );
                         unset($jsConfig);
                     }
