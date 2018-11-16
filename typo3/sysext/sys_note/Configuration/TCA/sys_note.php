@@ -11,7 +11,8 @@ return [
         'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_note'
         ],
-        'sortby' => 'sorting'
+        'sortby' => 'sorting',
+        'searchFields' => 'subject,message'
     ],
     'interface' => [
         'showRecordFieldList' => 'category,subject,message,personal'
