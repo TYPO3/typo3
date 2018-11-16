@@ -11,12 +11,12 @@ Description
 
 The :php:`RecordsXmlSitemapDataProvider` supports now the configuration `recursive` to include
 records not only from provided list of page ids but also its subpages.
-
+`recursive` refers to the number of levels taken into account beyond the `pid` page. (default: 0)
 
 Impact
 ======
 
-A full example looks is:
+A full example:
 
 .. code-block:: typoscript
 
