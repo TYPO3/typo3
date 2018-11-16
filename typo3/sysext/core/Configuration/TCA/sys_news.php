@@ -17,7 +17,8 @@ return [
         'default_sortby' => 'crdate DESC',
         'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_news'
-        ]
+        ],
+        'searchFields' => 'title,content'
     ],
     'interface' => [
         'showRecordFieldList' => 'hidden,title,content,starttime,endtime'

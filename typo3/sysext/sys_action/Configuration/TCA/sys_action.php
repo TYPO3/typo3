@@ -18,7 +18,8 @@ return [
         'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_action'
         ],
-        'type' => 'type'
+        'type' => 'type',
+        'searchFields' => 'title,description'
     ],
     'interface' => [
         'showRecordFieldList' => 'hidden,title,type,description,assign_to_groups'
