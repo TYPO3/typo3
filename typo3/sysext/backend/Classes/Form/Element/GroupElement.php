@@ -265,13 +265,6 @@ class GroupElement extends AbstractFormElement
             $showDeleteControl = false;
         }
 
-        if ($maxItems === 1) {
-            // If maxItems==1 then automatically replace the current item in list
-            $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] =
-                'setFormValueManipulate(' . GeneralUtility::quoteJSvalue($elementName) . ', \'Remove\');'
-                . $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
-        }
-
         // Check against inline uniqueness - Create some onclick js for delete control and element browser
         // to override record selection in some FAL scenarios - See 'appearance' docs of group element
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
