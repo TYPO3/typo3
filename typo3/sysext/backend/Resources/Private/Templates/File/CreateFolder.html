@@ -39,58 +39,60 @@
         </div>
     </f:if>
     <f:if condition="{moduleUrlOnlineMedia}">
-        <form action="{moduleUrlOnlineMedia}" method="post" name="editform2">
-            <h3><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media" /></h3>
-            <div>
-                <div class="form-group">
-                    <div class="form-section">
-                        <div class="form-group">
-                            <label for="newMedia"><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.label" /></label> {cshFileNewMedia -> f:format.raw()}
-                            <div class="form-control-wrap">
-                                <input class="form-control" type="text" id="newMedia" name="file[newMedia][0][url]"
-                                       placeholder="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.placeholder')}" />
-                                <input type="hidden" name="file[newMedia][0][target]" value="{target}" />
-                            </div>
-                            <div class="help-block">
-                                <f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.allowedProviders" /><br>
-                                <f:for each="{fileExtList}" as="fileExt">
-                                    <span class="label label-success">{fileExt}</span>
-                                </f:for>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <input class="btn btn-default" type="submit" value="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.submit')}" />
-                    <input type="hidden" name="redirect" value="{returnUrl}" />
-                </div>
-            </div>
-        </form>
-        <form action="{moduleUrlTceFile}" method="post" name="editform3">
-            <h3><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.newfile" /></h3>
-            <div>
-                <div class="form-group">
-                    <div class="form-section">
-                        <div class="form-group">
-                            <label for="newfile"><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.label_newfile" /></label> {cshFileNewFile -> f:format.raw()}
-                            <div class="form-control-wrap">
-                                <input class="form-control" type="text" id="newfile" name="file[newfile][0][data]" onchange="changed=true;" />
-                                <input type="hidden" name="file[newfile][0][target]" value="{target}" />
-                            </div>
-                            <div class="help-block">
-                                <f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.allowedFileExtensions" /><br>
-                                <f:for each="{txtFileExtList}" as="fileExt">
-                                    <span class="label label-success">{fileExt}</span>
-                                </f:for>
+        <f:if condition="{fileExtList -> f:count()} > 0">
+            <form action="{moduleUrlOnlineMedia}" method="post" name="editform2">
+                <h3><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media" /></h3>
+                <div>
+                    <div class="form-group">
+                        <div class="form-section">
+                            <div class="form-group">
+                                <label for="newMedia"><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.label" /></label> {cshFileNewMedia -> f:format.raw()}
+                                <div class="form-control-wrap">
+                                    <input class="form-control" type="text" id="newMedia" name="file[newMedia][0][url]"
+                                           placeholder="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.placeholder')}" />
+                                    <input type="hidden" name="file[newMedia][0][target]" value="{target}" />
+                                </div>
+                                <div class="help-block">
+                                    <f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.allowedProviders" /><br>
+                                    <f:for each="{fileExtList}" as="fileExt">
+                                        <span class="label label-success">{fileExt}</span>
+                                    </f:for>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <input class="btn btn-default" type="submit" value="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.submit')}" />
+                        <input type="hidden" name="redirect" value="{returnUrl}" />
+                    </div>
                 </div>
-                <div class="form-group">
-                    <button class="btn btn-default" name="edit" type="submit" value="1"><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.newfile_submit" /></button>
-                    <input type="hidden" name="redirect" value="{returnUrl}" />
+            </form>
+            <form action="{moduleUrlTceFile}" method="post" name="editform3">
+                <h3><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.newfile" /></h3>
+                <div>
+                    <div class="form-group">
+                        <div class="form-section">
+                            <div class="form-group">
+                                <label for="newfile"><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.label_newfile" /></label> {cshFileNewFile -> f:format.raw()}
+                                <div class="form-control-wrap">
+                                    <input class="form-control" type="text" id="newfile" name="file[newfile][0][data]" onchange="changed=true;" />
+                                    <input type="hidden" name="file[newfile][0][target]" value="{target}" />
+                                </div>
+                                <div class="help-block">
+                                    <f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.allowedFileExtensions" /><br>
+                                    <f:for each="{txtFileExtList}" as="fileExt">
+                                        <span class="label label-success">{fileExt}</span>
+                                    </f:for>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-default" name="edit" type="submit" value="1"><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.newfile_submit" /></button>
+                        <input type="hidden" name="redirect" value="{returnUrl}" />
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </f:if>
     </f:if>
 </div>
