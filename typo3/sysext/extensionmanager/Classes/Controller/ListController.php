@@ -141,7 +141,12 @@ class ListController extends AbstractModuleController
         $this->addComposerModeNotification();
         $availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
         ksort($availableAndInstalledExtensions);
-        $this->view->assign('extensions', $availableAndInstalledExtensions);
+        $this->view->assignMultiple(
+            [
+                'extensions' => $availableAndInstalledExtensions,
+                'isComposerMode' => Environment::isComposerMode(),
+            ]
+        );
         $this->handleTriggerArguments();
     }
 

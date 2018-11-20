@@ -40,7 +40,7 @@
 				</f:if>
 				<td>
 					<f:if condition="{extension.updateAvailable}">
-						<f:if condition="{extension.state} == 'excludeFromUpdates'">
+						<f:if condition="{isComposerMode} || {settings.offlineMode} || {extension.state} == 'excludeFromUpdates'">
 							<f:then>
 								<span class="btn btn-default disabled" title="{f:translate(key:'extensionList.updateDisabled')}">
 									<core:icon identifier="actions-system-extension-update" />
