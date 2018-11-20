@@ -32,7 +32,7 @@ The following optional configuration is available:
 - :typoscript:`configuration.storagePid = 1`: Let the link browser start with the given page
 - :typoscript:`configuration.pageTreeMountPoints = 123,456`: Mount the given pages instead of the regular page tree
 
-You can position your own handlers in order as defined in https://docs.typo3.org/typo3cms/extensions/core/7.6/Changelog/7.6/Feature-66369-AddedLinkBrowserAPIs.html
+You can position your own handlers in order as defined in https://docs.typo3.org/typo3cms/extensions/core/latest/Changelog/7.6/Feature-66369-AddedLinkBrowserAPIs.html
 
 
 **TypoScript** is used to generate the actual link in the frontend
