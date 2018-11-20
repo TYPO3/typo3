@@ -281,25 +281,33 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
             array_walk(array_chunk($tags, 100), [$this, 'flushByTags']);
             return;
         }
-        // VERY simple quoting of tags is sufficient here for performance. Tags are already
-        // validated to not contain any bad characters, e.g. they are automatically generated
-        // inside this class and suffixed with a pure integer enforced by DB.
-        $quotedTagList = array_map(function ($value) {
-            return '\'' . $value . '\'';
-        }, $tags);
-
         if ($this->isConnectionMysql($connection)) {
             // Use a optimized query on mysql ... don't use on your own
             // * ansi sql does not know about multi table delete
             // * doctrine query builder does not support join on delete()
-            $connection->executeQuery(
-                'DELETE tags2, cache1'
-                . ' FROM ' . $this->tagsTable . ' AS tags1'
-                . ' JOIN ' . $this->tagsTable . ' AS tags2 ON tags1.identifier = tags2.identifier'
-                . ' JOIN ' . $this->cacheTable . ' AS cache1 ON tags1.identifier = cache1.identifier'
-                . ' WHERE tags1.tag IN (' . implode(',', $quotedTagList) . ')'
-            );
+
+            // using just one query with an tags1.tag IN (  implode(',', $quotedTagList) . ')') was 3  times slower
+
+            foreach ($tags as $tag ) {
+                $quotedTag = '\'' . $tag . '\'';
+                $connection->executeQuery(
+                    'DELETE tags2, cache1'
+                    . ' FROM ' . $this->tagsTable . ' AS tags1'
+                    . ' JOIN ' . $this->tagsTable . ' AS tags2 ON tags1.identifier = tags2.identifier'
+                    . ' JOIN ' . $this->cacheTable . ' AS cache1 ON tags1.identifier = cache1.identifier'
+                    . ' WHERE tags1.tag = ' . $quotedTag
+                );
+            }
+
+
         } else {
+            // VERY simple quoting of tags is sufficient here for performance. Tags are already
+            // validated to not contain any bad characters, e.g. they are automatically generated
+            // inside this class and suffixed with a pure integer enforced by DB.
+            $quotedTagList = array_map(function ($value) {
+                return '\'' . $value . '\'';
+            }, $tags);
+
             $queryBuilder = $connection->createQueryBuilder();
             $result = $queryBuilder->select('identifier')
                 ->from($this->tagsTable)
