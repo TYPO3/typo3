@@ -1607,6 +1607,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 // so additional stdWrap calls within the functions can be removed, since the result will be the same
                 if (!empty($conf[$functionProperties]) && !GeneralUtility::inList($stdWrapDisabledFunctionTypes, $functionType)) {
                     if (array_intersect_key($this->stdWrapOrder, $conf[$functionProperties])) {
+                        // Check if there's already content available before processing
+                        // any ifEmpty or ifBlank stdWrap properties
+                        if (($functionName === 'ifEmpty' && !empty($content)) ||
+                            ($functionName === 'ifBlank' && $content !== '')) {
+                            continue;
+                        }
+
                         $conf[$functionName] = $this->stdWrap($conf[$functionName] ?? '', $conf[$functionProperties] ?? []);
                     }
                 }
