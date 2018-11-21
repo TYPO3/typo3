@@ -20,33 +20,36 @@ A full example:
 
 .. code-block:: typoscript
 
-  config {
-    xmlSitemap {
-        news {
-          provider = TYPO3\CMS\Seo\XmlSitemap\RecordsXmlSitemapDataProvider
-          config {
-            table = tx_news_domain_model_news
-            sortField = sorting
-            lastModifiedField = tstamp
-            pid = 26
-            recursive = 2
-            url {
-              pageId = 25
-              fieldToParameterMap {
-                uid = tx_news_pi1[news]
-              }
+  plugin.tx_seo {
+    config {
+      xmlSitemap {
+         sitemaps {
+            news {
+               provider = TYPO3\CMS\Seo\XmlSitemap\RecordsXmlSitemapDataProvider
+               config {
+                  table = tx_news_domain_model_news
+                  sortField = sorting
+                  lastModifiedField = tstamp
+                  pid = 26
+                  recursive = 2
+                  url {
+                     pageId = 25
+                     fieldToParameterMap {
+                        uid = tx_news_pi1[news]
+                     }
 
-              additionalGetParameters {
-                tx_news_pi1.controller = News
-                tx_news_pi1.action = detail
-              }
+                     additionalGetParameters {
+                        tx_news_pi1.controller = News
+                        tx_news_pi1.action = detail
+                     }
 
-              useCacheHash = 1
+                     useCacheHash = 1
+                  }
+               }
             }
-          }
-        }
+         }
       }
-    }
-  }
+   }
+}
 
 .. index:: Frontend, ext:seo, NotScanned
