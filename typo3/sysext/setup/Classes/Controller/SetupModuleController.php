@@ -681,20 +681,23 @@ class SetupModuleController
         // Compile the languages dropdown
         $langDefault = htmlspecialchars($language->getLL('lang_default'));
         $languageOptions[$langDefault] = '<option value=""' . ($backendUser->uc['lang'] === '' ? ' selected="selected"' : '') . '>' . $langDefault . '</option>';
-        // Traverse the number of languages
-        $locales = GeneralUtility::makeInstance(Locales::class);
-        $languages = $locales->getLanguages();
-        foreach ($languages as $locale => $name) {
-            if ($locale !== 'default') {
-                $defaultName = isset($GLOBALS['LOCAL_LANG']['default']['lang_' . $locale]) ? $GLOBALS['LOCAL_LANG']['default']['lang_' . $locale][0]['source'] : $name;
-                $localizedName = htmlspecialchars($language->getLL('lang_' . $locale));
-                if ($localizedName === '') {
-                    $localizedName = htmlspecialchars($name);
-                }
-                $localLabel = '  -  [' . htmlspecialchars($defaultName) . ']';
-                $available = in_array($locale, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'], true) && is_dir(Environment::getLabelsPath() . '/' . $locale);
-                if ($available) {
-                    $languageOptions[$defaultName] = '<option value="' . $locale . '"' . ($backendUser->uc['lang'] === $locale ? ' selected="selected"' : '') . '>' . $localizedName . $localLabel . '</option>';
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'])) {
+            // Traverse the number of languages
+            $locales = GeneralUtility::makeInstance(Locales::class);
+            $languages = $locales->getLanguages();
+
+            foreach ($languages as $locale => $name) {
+                if ($locale !== 'default') {
+                    $defaultName = isset($GLOBALS['LOCAL_LANG']['default']['lang_' . $locale]) ? $GLOBALS['LOCAL_LANG']['default']['lang_' . $locale][0]['source'] : $name;
+                    $localizedName = htmlspecialchars($language->getLL('lang_' . $locale));
+                    if ($localizedName === '') {
+                        $localizedName = htmlspecialchars($name);
+                    }
+                    $localLabel = '  -  [' . htmlspecialchars($defaultName) . ']';
+                    $available = in_array($locale, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'], true) && is_dir(Environment::getLabelsPath() . '/' . $locale);
+                    if ($available) {
+                        $languageOptions[$defaultName] = '<option value="' . $locale . '"' . ($backendUser->uc['lang'] === $locale ? ' selected="selected"' : '') . '>' . $localizedName . $localLabel . '</option>';
+                    }
                 }
             }
         }
