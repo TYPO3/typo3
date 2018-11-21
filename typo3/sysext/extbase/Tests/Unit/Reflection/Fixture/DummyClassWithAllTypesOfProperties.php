@@ -34,6 +34,8 @@ class DummyClassWithAllTypesOfProperties
 
     private static $privateStaticProperty;
 
+    public $publicPropertyWithDefaultValue = 'foo';
+
     /**
      * @license
      * @copyright

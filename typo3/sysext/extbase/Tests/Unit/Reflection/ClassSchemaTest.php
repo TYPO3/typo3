@@ -95,6 +95,7 @@ class ClassSchemaTest extends UnitTestCase
                 'publicStaticProperty',
                 'protectedStaticProperty',
                 'privateStaticProperty',
+                'publicPropertyWithDefaultValue',
                 'propertyWithIgnoredTags',
                 'propertyWithInjectAnnotation',
                 'propertyWithTransientAnnotation',
@@ -272,6 +273,17 @@ class ClassSchemaTest extends UnitTestCase
 
         $methodDefinition = $classSchema->getMethod('methodWithTypeHintedParam');
         static::assertSame('string', $methodDefinition['params']['param']['type']);
+    }
+
+    /**
+     * @test
+     */
+    public function classSchemaDetectsPropertyDefaultValue()
+    {
+        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
+
+        $propertyDefinition = $classSchema->getProperty('publicPropertyWithDefaultValue');
+        static::assertSame('foo', $propertyDefinition['defaultValue']);
     }
 
     /**

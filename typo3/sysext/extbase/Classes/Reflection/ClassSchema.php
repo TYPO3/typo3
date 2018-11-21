@@ -149,20 +149,23 @@ class ClassSchema
     {
         $annotationReader = new AnnotationReader();
 
+        $defaultProperties = $reflectionClass->getDefaultProperties();
+
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             $propertyName = $reflectionProperty->getName();
 
             $this->properties[$propertyName] = [
-                'default'     => $reflectionProperty->isDefault(),
-                'private'     => $reflectionProperty->isPrivate(),
-                'protected'   => $reflectionProperty->isProtected(),
-                'public'      => $reflectionProperty->isPublic(),
-                'static'      => $reflectionProperty->isStatic(),
-                'type'        => null, // Extbase
-                'elementType' => null, // Extbase
-                'annotations' => [],
-                'tags'        => [],
-                'validators'  => []
+                'default'      => $reflectionProperty->isDefault(),
+                'defaultValue' => $defaultProperties[$propertyName] ?? null,
+                'private'      => $reflectionProperty->isPrivate(),
+                'protected'    => $reflectionProperty->isProtected(),
+                'public'       => $reflectionProperty->isPublic(),
+                'static'       => $reflectionProperty->isStatic(),
+                'type'         => null, // Extbase
+                'elementType'  => null, // Extbase
+                'annotations'  => [],
+                'tags'         => [],
+                'validators'   => []
             ];
 
             $docCommentParser = new DocCommentParser(true);
