@@ -124,6 +124,14 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
     }
 
     /**
+     * @return int
+     */
+    public function getUid(): int
+    {
+        return (int)$this->fieldValue;
+    }
+
+    /**
      * Magic method call implementation.
      *
      * @param string $methodName The name of the property to get
