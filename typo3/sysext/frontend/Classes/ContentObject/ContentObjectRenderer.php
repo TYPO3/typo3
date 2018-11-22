@@ -48,6 +48,7 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -5102,6 +5103,16 @@ class ContentObjectRenderer implements LoggerAwareInterface
                                 $retVal = ArrayUtility::getValueByPath($site->getConfiguration(), $key, '.');
                             } catch (MissingArrayPathException $exception) {
                                 $this->logger->warning(sprintf('getData() with "%s" failed', $key), ['exception' => $exception]);
+                            }
+                        }
+                        break;
+                    case 'sitelanguage':
+                        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+                        $siteLanguage = $request ? $request->getAttribute('language') : null;
+                        if ($siteLanguage instanceof SiteLanguage) {
+                            $config = $siteLanguage->toArray();
+                            if (isset($config[$key])) {
+                                $retVal = $config[$key];
                             }
                         }
                         break;

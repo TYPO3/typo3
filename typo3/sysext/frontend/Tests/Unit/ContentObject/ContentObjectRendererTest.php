@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\ApplicationContext;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -33,6 +34,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\DebugUtility;
@@ -1692,7 +1694,7 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * Checks if getData() works with type "context"
+     * Checks if getData() works with type "site"
      *
      * @test
      */
@@ -1711,6 +1713,23 @@ class ContentObjectRendererTest extends UnitTestCase
         $GLOBALS['TYPO3_REQUEST'] = $serverRequest->reveal();
         $this->assertEquals('http://example.com', $this->subject->getData('site:base'));
         $this->assertEquals('yeah', $this->subject->getData('site:custom.config.nested'));
+    }
+
+    /**
+     * Checks if getData() works with type "siteLanguage"
+     *
+     * @test
+     */
+    public function getDataWithTypeSiteLanguage(): void
+    {
+        $site = new SiteLanguage(1, 'de-de', new Uri('/'), [
+            'title' => 'languageTitle',
+            'navigationTitle' => 'German'
+        ]);
+        $serverRequest = $this->prophesize(ServerRequestInterface::class);
+        $serverRequest->getAttribute('language')->willReturn($site);
+        $GLOBALS['TYPO3_REQUEST'] = $serverRequest->reveal();
+        $this->assertEquals('German', $this->subject->getData('siteLanguage:navigationTitle'));
     }
 
     /**
