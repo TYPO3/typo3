@@ -44,6 +44,52 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
     /**
      * @test
      */
+    public function renderCallsStdWrapWithrightParameters()
+    {
+        $addQueryString = true;
+        $addQueryStringMethod = 'GET,POST';
+        $addQueryStringExclude = 'cHash';
+
+        $this->subject->expects($this->any())->method('renderChildren')->will($this->returnValue('innerContent'));
+        $this->subject->setArguments([
+            'parameter' => '42',
+            'target' => '',
+            'class' => '',
+            'title' => '',
+            'additionalParams' => '',
+            'additionalAttributes' => [],
+            'addQueryString' => $addQueryString,
+            'addQueryStringMethod' => $addQueryStringMethod,
+            'addQueryStringExclude' => $addQueryStringExclude,
+            'absolute' => false
+        ]);
+        $contentObjectRendererMock = $this->createMock(ContentObjectRenderer::class);
+        $contentObjectRendererMock->expects($this->once())
+            ->method('stdWrap')
+            ->with(
+                'innerContent',
+                [
+                    'typolink.' => [
+                        'parameter' => '42',
+                        'ATagParams' => '',
+                        'useCacheHash' => false,
+                        'addQueryString' => $addQueryString,
+                        'addQueryString.' => [
+                            'method' => $addQueryStringMethod,
+                            'exclude' => $addQueryStringExclude,
+                        ],
+                        'forceAbsoluteUrl' => false,
+                    ],
+                ]
+            )
+            ->will($this->returnValue('foo'));
+        GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererMock);
+        $this->assertEquals('foo', $this->subject->render());
+    }
+
+    /**
+     * @test
+     */
     public function renderReturnsResultOfContentObjectRenderer()
     {
         $this->subject->expects($this->any())->method('renderChildren')->will($this->returnValue('innerContent'));
