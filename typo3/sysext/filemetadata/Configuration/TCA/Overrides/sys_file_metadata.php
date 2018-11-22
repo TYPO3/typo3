@@ -260,11 +260,15 @@ $tca = [
         ],
         'copyright' => [
             'exclude' => true,
+            'l10n_display' => '',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.copyright',
             'config' => [
                 'type' => 'text',
                 'cols' => 40,
                 'rows' => 3,
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ],
             ],
         ],
         'location_country' => [
