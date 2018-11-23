@@ -42,4 +42,23 @@ class FileLockStrategyTest extends UnitTestCase
         $lock = $this->getAccessibleMock(FileLockStrategy::class, ['dummy'], ['999999999']);
         self::assertSame(Environment::getVarPath() . '/' . FileLockStrategy::FILE_LOCK_FOLDER . 'flock_' . md5('999999999'), $lock->_get('filePath'));
     }
+
+    /**
+     * @test
+     */
+    public function getPriorityReturnsDefaultPriority()
+    {
+        self::assertEquals(FileLockStrategy::getPriority(), FileLockStrategy::DEFAULT_PRIORITY);
+    }
+
+    /**
+     * @test
+     */
+    public function setPriority()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][\TYPO3\CMS\Core\Locking\FileLockStrategy::class]['priority'] = 10;
+
+        self::assertEquals(10, FileLockStrategy::getPriority());
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][\TYPO3\CMS\Core\Locking\FileLockStrategy::class]['priority']);
+    }
 }

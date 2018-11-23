@@ -129,6 +129,34 @@ return [
                 'StaticValueMapper' => \TYPO3\CMS\Core\Routing\Aspect\StaticValueMapper::class,
             ],
         ],
+        'locking' => [
+            'strategies' => [
+                \TYPO3\CMS\Core\Locking\FileLockStrategy::class => [
+                    // if not set: use default priority of FileLockStrategy
+                    //'priority' => 75,
+
+                    // if not set: use default path of FileLockStrategy
+                    // If you change this, directory must exist!
+                    // 'lockFileDir' => 'typo3temp/var'
+                ],
+                \TYPO3\CMS\Core\Locking\SemaphoreLockStrategy::class => [
+                    // if not set: use default priority of SemaphoreLockStrategy
+                    // 'priority' => 50
+
+                    // empty: use default path of SemaphoreLockStrategy
+                    // If you change this, directory must exist!
+                    // 'lockFileDir' => 'typo3temp/var'
+                ],
+                \TYPO3\CMS\Core\Locking\SimpleLockStrategy::class => [
+                    // if not set: use default priority of SimpleLockStrategy
+                    //'priority' => 25,
+
+                    // empty: use default path of SimpleLockStrategy
+                    // If you change this, directory must exist!
+                    // 'lockFileDir' => 'typo3temp/var'
+                ]
+            ]
+        ],
         'caching' => [
             'cacheConfigurations' => [
                 // The cache_core cache is is for core php code only and must

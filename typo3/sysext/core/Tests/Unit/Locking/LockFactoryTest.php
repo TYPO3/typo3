@@ -19,6 +19,8 @@ use TYPO3\CMS\Core\Locking\FileLockStrategy;
 use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
 use TYPO3\CMS\Core\Locking\SemaphoreLockStrategy;
+use TYPO3\CMS\Core\Locking\SimpleLockStrategy;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Tests\Unit\Locking\Fixtures\DummyLock;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -33,12 +35,32 @@ class LockFactoryTest extends UnitTestCase
     protected $mockFactory;
 
     /**
+     * @var array
+     */
+    protected $strategiesConfigBackup = [];
+
+    /**
      * Set up the tests
      */
     protected function setUp(): void
     {
         parent::setUp();
         $this->mockFactory = $this->getAccessibleMock(LockFactory::class, ['dummy']);
+
+        // backup global configuration
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'])) {
+            $this->strategiesConfigBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'];
+        } else {
+            $this->strategiesConfigBackup = [];
+        }
+    }
+
+    protected function tearDown(): void
+    {
+        // restore global configuration
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'] = $this->strategiesConfigBackup;
+
+        parent::tearDown();
     }
 
     /**
@@ -67,7 +89,10 @@ class LockFactoryTest extends UnitTestCase
     public function getLockerReturnsExpectedClass()
     {
         $this->mockFactory->_set('lockingStrategy', [FileLockStrategy::class => true, DummyLock::class => true]);
-        $locker = $this->mockFactory->createLocker('id', LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_SHARED);
+        $locker = $this->mockFactory->createLocker(
+            'id',
+            LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_SHARED
+        );
         self::assertInstanceOf(FileLockStrategy::class, $locker);
     }
 
@@ -79,6 +104,25 @@ class LockFactoryTest extends UnitTestCase
         $this->mockFactory->_set('lockingStrategy', [SemaphoreLockStrategy::class => true, DummyLock::class => true]);
         $locker = $this->mockFactory->createLocker('id');
         self::assertInstanceOf(DummyLock::class, $locker);
+    }
+
+    /**
+     * @test
+     */
+    public function setPriorityGetLockerReturnsClassWithHighestPriority()
+    {
+        $lowestValue = min([
+            FileLockStrategy::DEFAULT_PRIORITY,
+            SimpleLockStrategy::DEFAULT_PRIORITY,
+            SemaphoreLockStrategy::DEFAULT_PRIORITY
+        ]) - 1;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][FileLockStrategy::class]['priority'] = $lowestValue;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][SemaphoreLockStrategy::class]['priority'] = $lowestValue;
+        $locker = $this->mockFactory->createLocker('id');
+        self::assertInstanceOf(SimpleLockStrategy::class, $locker);
+
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][FileLockStrategy::class]['priority']);
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][SemaphoreLockStrategy::class]['priority']);
     }
 
     /**

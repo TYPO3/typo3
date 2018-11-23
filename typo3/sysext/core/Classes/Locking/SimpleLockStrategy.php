@@ -26,6 +26,8 @@ class SimpleLockStrategy implements LockingStrategyInterface
 {
     const FILE_LOCK_FOLDER = 'lock/';
 
+    const DEFAULT_PRIORITY = 50;
+
     /**
      * @var string File path used for this lock
      */
@@ -55,7 +57,13 @@ class SimpleLockStrategy implements LockingStrategyInterface
         // Tests if the directory for simple locks is available.
         // If not, the directory will be created. The lock path is usually
         // below typo3temp/var, typo3temp/var itself should exist already (or getProjectPath . /var/ respectively)
-        $path = Environment::getVarPath() . '/' . self::FILE_LOCK_FOLDER;
+        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][self::class]['lockFileDir'] ?? false) {
+            $path = Environment::getProjectPath() . '/'
+                    . trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][self::class]['lockFileDir'], ' /')
+                    . '/';
+        } else {
+            $path = Environment::getVarPath() . '/' . self::FILE_LOCK_FOLDER;
+        }
         if (!is_dir($path)) {
             // Not using mkdir_deep on purpose here, if typo3temp/var itself
             // does not exist, this issue should be solved on a different
@@ -183,7 +191,8 @@ class SimpleLockStrategy implements LockingStrategyInterface
      */
     public static function getPriority()
     {
-        return 50;
+        return $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][self::class]['priority']
+            ?? self::DEFAULT_PRIORITY;
     }
 
     /**

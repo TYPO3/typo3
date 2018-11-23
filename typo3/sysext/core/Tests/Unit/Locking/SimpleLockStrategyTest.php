@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Locking;
 
 use PHPUnit\Framework\SkippedTestError;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Locking\SemaphoreLockStrategy;
 use TYPO3\CMS\Core\Locking\SimpleLockStrategy;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -123,5 +124,24 @@ class SimpleLockStrategyTest extends UnitTestCase
             unlink($file);
         }
         self::assertTrue($fileExists);
+    }
+
+    /**
+     * @test
+     */
+    public function getPriorityReturnsDefaultPriority()
+    {
+        self::assertEquals(SemaphoreLockStrategy::getPriority(), SemaphoreLockStrategy::DEFAULT_PRIORITY);
+    }
+
+    /**
+     * @test
+     */
+    public function setPriority()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][\TYPO3\CMS\Core\Locking\SimpleLockStrategy::class]['priority'] = 10;
+
+        self::assertEquals(10, SimpleLockStrategy::getPriority());
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][\TYPO3\CMS\Core\Locking\SimpleLockStrategy::class]['priority']);
     }
 }
