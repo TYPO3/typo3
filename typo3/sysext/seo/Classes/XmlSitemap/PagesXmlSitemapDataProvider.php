@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -85,14 +84,15 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
             $rootPageId = $site->getRootPageId();
         }
 
-        $queryGenerator = GeneralUtility::makeInstance(QueryGenerator::class);
-        $treeList = $queryGenerator->getTreeList($rootPageId, 99);
+        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $treeList = $cObj->getTreeList(-$rootPageId, 99);
+        $treeListArray = GeneralUtility::intExplode(',', $treeList);
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
 
         $constraints = [
-            $queryBuilder->expr()->in('uid', $treeList)
+            $queryBuilder->expr()->in('uid', $treeListArray)
         ];
 
         if (!empty($this->config['additionalWhere'])) {
