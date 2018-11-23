@@ -41,7 +41,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
     protected $backupApplicationContext;
 
     /**
-     * @var AbstractConditionMatcher|\PHPUnit_Framework_MockObject_MockObject
+     * @var AbstractConditionMatcher|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $conditionMatcher;
 
@@ -701,5 +701,59 @@ class AbstractConditionMatcherTest extends UnitTestCase
                 ['userFunc', 'ConditionMatcherUserFunctions::isTrue(1)']
             )
         );
+    }
+
+    public function expressionDataProvider(): array
+    {
+        return [
+            // Default variants
+            '[]' => ['[]', '[]'],
+            '[foo]' => ['[foo]', '[foo]'],
+            '[foo] && [bar]' => ['[foo] && [bar]', '[foo]&&[bar]'],
+            '[foo] AND [bar]' => ['[foo] AND [bar]', '[foo]&&[bar]'],
+            '[foo] and [bar]' => ['[foo] and [bar]', '[foo]&&[bar]'],
+            '[foo] [bar]' => ['[foo] [bar]', '[foo]||[bar]'],
+            '[foo] || [bar]' => ['[foo] || [bar]', '[foo]||[bar]'],
+            '[foo] OR [bar]' => ['[foo] OR [bar]', '[foo]||[bar]'],
+            '[foo] or [bar]' => ['[foo] or [bar]', '[foo]||[bar]'],
+            '[foo] && [bar]&&[baz]' => ['[foo] && [bar]&&[baz]', '[foo]&&[bar]&&[baz]'],
+            '[foo] AND [bar]AND[baz]' => ['[foo] AND [bar]AND[baz]', '[foo]&&[bar]&&[baz]'],
+            '[foo] and [bar]and[baz]' => ['[foo] and [bar]and[baz]', '[foo]&&[bar]&&[baz]'],
+            '[foo] || [bar]||[baz]' => ['[foo] || [bar]||[baz]', '[foo]||[bar]||[baz]'],
+            '[foo] OR [bar]OR[baz]' => ['[foo] OR [bar]OR[baz]', '[foo]||[bar]||[baz]'],
+            '[foo] or [bar]or[baz]' => ['[foo] or [bar]or[baz]', '[foo]||[bar]||[baz]'],
+            '[foo] && [bar]||[baz]' => ['[foo] && [bar]||[baz]', '[foo]&&[bar]||[baz]'],
+            '[foo] AND [bar]OR[baz]' => ['[foo] AND [bar]OR[baz]', '[foo]&&[bar]||[baz]'],
+            '[foo] and [bar]or[baz]' => ['[foo] and [bar]or[baz]', '[foo]&&[bar]||[baz]'],
+            '[foo] || [bar]OR[baz]' => ['[foo] || [bar]OR[baz]', '[foo]||[bar]||[baz]'],
+            '[foo] || [bar]or[baz]' => ['[foo] || [bar]or[baz]', '[foo]||[bar]||[baz]'],
+            '[foo] OR [bar]AND[baz]' => ['[foo] OR [bar]AND[baz]', '[foo]||[bar]&&[baz]'],
+            '[foo] or [bar]and[baz]' => ['[foo] or [bar]and[baz]', '[foo]||[bar]&&[baz]'],
+
+            // Special variants
+            '[foo && bar && baz]' => ['[foo && bar && baz]', '[foo && bar && baz]'],
+            '[foo and bar and baz]' => ['[foo and bar and baz]', '[foo and bar and baz]'],
+            '[foo AND bar AND baz]' => ['[foo AND bar AND baz]', '[foo AND bar AND baz]'],
+            '[foo || bar || baz]' => ['[foo || bar || baz]', '[foo || bar || baz]'],
+            '[foo or bar or baz]' => ['[foo or bar or baz]', '[foo or bar or baz]'],
+            '[foo OR bar OR baz]' => ['[foo OR bar OR baz]', '[foo OR bar OR baz]'],
+            '[request.getParsedBody()[\'type\'] > 0]' => ['[request.getParsedBody()[\'type\'] > 0]', '[request.getParsedBody()[\'type\'] > 0]'],
+            '[request.getParsedBody()[\'type\'] > 0 || request.getQueryParams()[\'type\'] > 0]' => ['[request.getParsedBody()[\'type\'] > 0 || request.getQueryParams()[\'type\'] > 0]', '[request.getParsedBody()[\'type\'] > 0 || request.getQueryParams()[\'type\'] > 0]'],
+            '[request.getParsedBody()[\'type\'] > 0 or request.getQueryParams()[\'type\'] == 1]' => ['[request.getParsedBody()[\'type\'] > 0 or request.getQueryParams()[\'type\'] == 1]', '[request.getParsedBody()[\'type\'] > 0 or request.getQueryParams()[\'type\'] == 1]'],
+            '[ (request.getParsedBody()[\'type\'] > 0) || (request.getQueryParams()[\'type\'] > 0) ]' => ['[ (request.getParsedBody()[\'type\'] > 0) || (request.getQueryParams()[\'type\'] > 0) ]', '[ (request.getParsedBody()[\'type\'] > 0) || (request.getQueryParams()[\'type\'] > 0) ]'],
+            '[request.getParsedBody()[\'tx_news_pi1\'][\'news\'] > 0 || request.getQueryParams()[\'tx_news_pi1\'][\'news\'] > 0]' => ['[request.getParsedBody()[\'tx_news_pi1\'][\'news\'] > 0 || request.getQueryParams()[\'tx_news_pi1\'][\'news\'] > 0]', '[request.getParsedBody()[\'tx_news_pi1\'][\'news\'] > 0 || request.getQueryParams()[\'tx_news_pi1\'][\'news\'] > 0]'],
+            '[request.getQueryParams()[\'tx_news_pi1\'][\'news\'] > 0]' => ['[request.getQueryParams()[\'tx_news_pi1\'][\'news\'] > 0]', '[request.getQueryParams()[\'tx_news_pi1\'][\'news\'] > 0]'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider expressionDataProvider
+     * @param string $expression
+     * @param string $expectedResult
+     */
+    public function normalizeExpressionWorksAsExpected(string $expression, string $expectedResult): void
+    {
+        $this->assertSame($expectedResult, $this->conditionMatcher->_call('normalizeExpression', $expression));
     }
 }

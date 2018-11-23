@@ -48,9 +48,9 @@ class RequestWrapper
         return $this->request->getQueryParams();
     }
 
-    public function getParsedBody()
+    public function getParsedBody(): array
     {
-        return $this->request->getParsedBody();
+        return (array)($this->request->getParsedBody() ?? []);
     }
 
     public function getHeaders(): array

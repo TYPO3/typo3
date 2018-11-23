@@ -146,7 +146,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
     }
 
     /**
-     * Normalizes an expression and removes the first and last square bracket.
+     * Normalizes an expression
      * + OR normalization: "...]OR[...", "...]||[...", "...][..." --> "...]||[..."
      * + AND normalization: "...]AND[...", "...]&&[..."		   --> "...]&&[..."
      *
@@ -156,14 +156,47 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
      */
     protected function normalizeExpression($expression)
     {
-        $normalizedExpression = preg_replace([
-            '/\\]\\s*(OR|\\|\\|)?\\s*\\[/i',
-            '/\\]\\s*(AND|&&)\\s*\\[/i'
-        ], [
-            ']||[',
-            ']&&['
-        ], trim($expression));
-        return $normalizedExpression;
+        $removeSpaces = '/
+          \\s*
+          (                    # subroutine 1
+            \\[
+              (?:
+                [^\\[\\]]      # any character except []
+                | (?1)         # recursive subroutine 1 when brackets are around
+              )*
+            \\]
+          )
+          \\s*
+          /xi';
+
+        $adjacentBrackets = '/
+          (                    # subroutine 1
+            \\[
+              (?:
+                [^\\[\\]]      # any character except []
+                | (?1)         # recursive subroutine 1 when brackets are around
+              )*
+            \\]
+          )
+          (*SKIP)              # avoid backtracking into completed bracket expressions
+          \\[                  # match the following [
+          /xi';
+
+        return preg_replace(
+            [
+                $removeSpaces,
+                '/\\]AND\\[/i',
+                '/\\]OR\\[/i',
+                $adjacentBrackets
+            ],
+            [
+                '\\1',
+                ']&&[',
+                ']||[',
+                '\\1||['
+            ],
+            trim($expression)
+        );
     }
 
     /**
