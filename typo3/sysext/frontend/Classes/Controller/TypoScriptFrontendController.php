@@ -1471,11 +1471,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
             throw new ImmediateResponseException($response, 1533931329);
         }
-        // Init SYS_LASTCHANGED
-        $this->register['SYS_LASTCHANGED'] = (int)$this->page['tstamp'];
-        if ($this->register['SYS_LASTCHANGED'] < (int)$this->page['SYS_LASTCHANGED']) {
-            $this->register['SYS_LASTCHANGED'] = (int)$this->page['SYS_LASTCHANGED'];
-        }
+
+        $this->setRegisterValueForSysLastChanged($this->page);
+
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['fetchPageId-PostProcessing'] ?? [] as $functionReference) {
             $parameters = ['parentObject' => $this];
             GeneralUtility::callUserFunction($functionReference, $parameters, $this);
@@ -2804,6 +2802,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // We'll do this every time since the language aspect might have changed now
             // Doing this ensures that page properties like the page title are returned in the correct language
             $this->page = $this->sys_page->getPageOverlay($this->page, $languageAspect->getContentId());
+
+            // Update SYS_LASTCHANGED for localized page record
+            $this->setRegisterValueForSysLastChanged($this->page);
         }
 
         // Set the language aspect
@@ -3433,18 +3434,34 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected function setSysLastChanged()
     {
         // We only update the info if browsing the live workspace
-        if (!$this->doWorkspacePreview() && $this->page['SYS_LASTCHANGED'] < (int)$this->register['SYS_LASTCHANGED']) {
+        if ($this->page['SYS_LASTCHANGED'] < (int)$this->register['SYS_LASTCHANGED'] && !$this->doWorkspacePreview()) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('pages');
+            $pageId = $this->page['_PAGES_OVERLAY_UID'] ?? $this->id;
             $connection->update(
                 'pages',
                 [
                     'SYS_LASTCHANGED' => (int)$this->register['SYS_LASTCHANGED']
                 ],
                 [
-                    'uid' => (int)$this->id
+                    'uid' => (int)$pageId
                 ]
             );
+        }
+    }
+
+    /**
+     * Set the SYS_LASTCHANGED register value, is also called when a translated page is in use,
+     * so the register reflects the state of the translated page, not the page in the default language.
+     *
+     * @param array $page
+     * @internal
+     */
+    protected function setRegisterValueForSysLastChanged(array $page): void
+    {
+        $this->register['SYS_LASTCHANGED'] = (int)$page['tstamp'];
+        if ($this->register['SYS_LASTCHANGED'] < (int)$page['SYS_LASTCHANGED']) {
+            $this->register['SYS_LASTCHANGED'] = (int)$page['SYS_LASTCHANGED'];
         }
     }
 
