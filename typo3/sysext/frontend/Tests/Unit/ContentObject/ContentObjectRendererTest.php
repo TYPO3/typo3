@@ -1119,7 +1119,8 @@ class ContentObjectRendererTest extends UnitTestCase
                     '10.' => [
                         'search' => '_',
                         'replace' => '1 || 2 || 3',
-                        'useOptionSplitReplace' => '1'
+                        'useOptionSplitReplace' => '1',
+                        'useRegExp' => '0'
                     ]
                 ]
             ],

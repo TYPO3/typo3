@@ -3532,19 +3532,21 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $replace = isset($configuration['replace.'])
                 ? $this->stdWrap($configuration['replace'] ?? null, $configuration['replace.'])
                 : $configuration['replace'] ?? null;
+            $useRegularExpression = false;
             // Determines whether regular expression shall be used
             if (isset($configuration['useRegExp'])
                 || (isset($configuration['useRegExp.']) && $configuration['useRegExp.'])
             ) {
-                $useRegularExpression = isset($configuration['useRegExp.']) ? $this->stdWrap($configuration['useRegExp'], $configuration['useRegExp.']) : $configuration['useRegExp'];
+                $useRegularExpression = isset($configuration['useRegExp.']) ? (bool)$this->stdWrap($configuration['useRegExp'], $configuration['useRegExp.']) : (bool)$configuration['useRegExp'];
             }
+            $useOptionSplitReplace = false;
             // Determines whether replace-pattern uses option-split
             if (isset($configuration['useOptionSplitReplace']) || isset($configuration['useOptionSplitReplace.'])) {
-                $useOptionSplitReplace = isset($configuration['useOptionSplitReplace.']) ? $this->stdWrap($configuration['useOptionSplitReplace'], $configuration['useOptionSplitReplace.']) : $configuration['useOptionSplitReplace'];
+                $useOptionSplitReplace = isset($configuration['useOptionSplitReplace.']) ? (bool)$this->stdWrap($configuration['useOptionSplitReplace'], $configuration['useOptionSplitReplace.']) : (bool)$configuration['useOptionSplitReplace'];
             }
 
             // Performs a replacement by preg_replace()
-            if (isset($useRegularExpression)) {
+            if ($useRegularExpression) {
                 // Get separator-character which precedes the string and separates search-string from the modifiers
                 $separator = $search[0];
                 $startModifiers = strrpos($search, $separator);
@@ -3554,9 +3556,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $modifiers = str_replace('e', '', $modifiers);
                     $search = substr($search, 0, $startModifiers + 1) . $modifiers;
                 }
-                if (empty($useOptionSplitReplace)) {
-                    $content = preg_replace($search, $replace, $content);
-                } else {
+                if ($useOptionSplitReplace) {
                     // init for replacement
                     $splitCount = preg_match_all($search, $content, $matches);
                     $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
@@ -3568,26 +3568,26 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         return preg_replace($search, $replaceArray[$replaceCount - 1][0], $match[0]);
                     };
                     $content = preg_replace_callback($search, $replaceCallback, $content);
-                }
-            } else {
-                if (empty($useOptionSplitReplace)) {
-                    $content = str_replace($search, $replace, $content);
                 } else {
-                    // turn search-string into a preg-pattern
-                    $searchPreg = '#' . preg_quote($search, '#') . '#';
-
-                    // init for replacement
-                    $splitCount = preg_match_all($searchPreg, $content, $matches);
-                    $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
-                    $replaceArray = $typoScriptService->explodeConfigurationForOptionSplit([$replace], $splitCount);
-                    $replaceCount = 0;
-
-                    $replaceCallback = function () use ($replaceArray, $search, &$replaceCount) {
-                        $replaceCount++;
-                        return $replaceArray[$replaceCount - 1][0];
-                    };
-                    $content = preg_replace_callback($searchPreg, $replaceCallback, $content);
+                    $content = preg_replace($search, $replace, $content);
                 }
+            } elseif ($useOptionSplitReplace) {
+                // turn search-string into a preg-pattern
+                $searchPreg = '#' . preg_quote($search, '#') . '#';
+
+                // init for replacement
+                $splitCount = preg_match_all($searchPreg, $content, $matches);
+                $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+                $replaceArray = $typoScriptService->explodeConfigurationForOptionSplit([$replace], $splitCount);
+                $replaceCount = 0;
+
+                $replaceCallback = function () use ($replaceArray, $search, &$replaceCount) {
+                    $replaceCount++;
+                    return $replaceArray[$replaceCount - 1][0];
+                };
+                $content = preg_replace_callback($searchPreg, $replaceCallback, $content);
+            } else {
+                $content = str_replace($search, $replace, $content);
             }
         }
         return $content;
