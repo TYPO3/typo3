@@ -2719,6 +2719,315 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Data provider for the parseFuncParsesNestedTagsProperly test
+     *
+     * @return \Generator multi-dimensional array with test data
+     * @see parseFuncParsesNestedTagsProperly
+     */
+    public function _parseFuncParsesNestedTagsProperlyDataProvider(): \Generator
+    {
+        yield 'list with empty and filled li' => [
+            '<ul>
+    <li></li>
+    <li>second</li>
+</ul>',
+            [
+                'parseFunc'  => '',
+                'parseFunc.' => [
+                    'tags.' => [
+                        'li'  => 'TEXT',
+                        'li.' => [
+                            'wrap'    => '<li>LI:|</li>',
+                            'current' => '1'
+                        ]
+                    ]
+                ]
+            ],
+            '<ul>
+    <li>LI:</li>
+    <li>LI:second</li>
+</ul>',
+        ];
+        yield 'list with filled li wrapped by a div containing text' => [
+            '<div>text<ul><li></li><li>second</li></ul></div>',
+            [
+                'parseFunc'  => '',
+                'parseFunc.' => [
+                    'tags.' => [
+                        'li'  => 'TEXT',
+                        'li.' => [
+                            'wrap'    => '<li>LI:|</li>',
+                            'current' => '1'
+                        ]
+                    ]
+                ]
+            ],
+            '<div>text<ul><li>LI:</li><li>LI:second</li></ul></div>',
+        ];
+        yield 'link list with empty li modification' => [
+            '<ul>
+    <li>
+        <ul>
+            <li></li>
+        </ul>
+    </li>
+</ul>',
+            [
+                'parseFunc'  => '',
+                'parseFunc.' => [
+                    'tags.' => [
+                        'li'  => 'TEXT',
+                        'li.' => [
+                            'wrap'    => '<li>LI:|</li>',
+                            'current' => '1'
+                        ]
+                    ]
+                ]
+            ],
+            '<ul>
+    <li>LI:
+        <ul>
+            <li>LI:</li>
+        </ul>
+    </li>
+</ul>',
+        ];
+
+        yield 'link list with li modifications' => [
+            '<ul>
+    <li>first</li>
+    <li>second
+        <ul>
+            <li>first sub</li>
+            <li>second sub</li>
+        </ul>
+    </li>
+</ul>',
+            [
+                'parseFunc'  => '',
+                'parseFunc.' => [
+                    'tags.' => [
+                        'li'  => 'TEXT',
+                        'li.' => [
+                            'wrap'    => '<li>LI:|</li>',
+                            'current' => '1'
+                        ]
+                    ]
+                ]
+            ],
+            '<ul>
+    <li>LI:first</li>
+    <li>LI:second
+        <ul>
+            <li>LI:first sub</li>
+            <li>LI:second sub</li>
+        </ul>
+    </li>
+</ul>'
+        ];
+        yield 'link list with li modifications and no text' => [
+            '<ul>
+    <li>first</li>
+    <li>
+        <ul>
+            <li>first sub</li>
+            <li>second sub</li>
+        </ul>
+    </li>
+</ul>',
+            [
+                'parseFunc'  => '',
+                'parseFunc.' => [
+                    'tags.' => [
+                        'li'  => 'TEXT',
+                        'li.' => [
+                            'wrap'    => '<li>LI:|</li>',
+                            'current' => '1'
+                        ]
+                    ]
+                ]
+            ],
+            '<ul>
+    <li>LI:first</li>
+    <li>LI:
+        <ul>
+            <li>LI:first sub</li>
+            <li>LI:second sub</li>
+        </ul>
+    </li>
+</ul>',
+        ];
+        yield 'link list with li modifications on third level' => [
+            '<ul>
+    <li>first</li>
+    <li>second
+        <ul>
+            <li>first sub
+                <ul>
+                    <li>first sub sub</li>
+                    <li>second sub sub</li>
+                </ul>
+            </li>
+            <li>second sub</li>
+        </ul>
+    </li>
+</ul>',
+            [
+                'parseFunc'  => '',
+                'parseFunc.' => [
+                    'tags.' => [
+                        'li'  => 'TEXT',
+                        'li.' => [
+                            'wrap'    => '<li>LI:|</li>',
+                            'current' => '1'
+                        ]
+                    ]
+                ]
+            ],
+            '<ul>
+    <li>LI:first</li>
+    <li>LI:second
+        <ul>
+            <li>LI:first sub
+                <ul>
+                    <li>LI:first sub sub</li>
+                    <li>LI:second sub sub</li>
+                </ul>
+            </li>
+            <li>LI:second sub</li>
+        </ul>
+    </li>
+</ul>',
+        ];
+        yield 'link list with li modifications on third level no text' => [
+            '<ul>
+    <li>first</li>
+    <li>
+        <ul>
+            <li>
+                <ul>
+                    <li>first sub sub</li>
+                    <li>first sub sub</li>
+                </ul>
+            </li>
+            <li>second sub</li>
+        </ul>
+    </li>
+</ul>',
+            [
+                'parseFunc'  => '',
+                'parseFunc.' => [
+                    'tags.' => [
+                        'li'  => 'TEXT',
+                        'li.' => [
+                            'wrap'    => '<li>LI:|</li>',
+                            'current' => '1'
+                        ]
+                    ]
+                ]
+            ],
+            '<ul>
+    <li>LI:first</li>
+    <li>LI:
+        <ul>
+            <li>LI:
+                <ul>
+                    <li>LI:first sub sub</li>
+                    <li>LI:first sub sub</li>
+                </ul>
+            </li>
+            <li>LI:second sub</li>
+        </ul>
+    </li>
+</ul>',
+        ];
+        yield 'link list with ul and li modifications' => [
+            '<ul>
+    <li>first</li>
+    <li>second
+        <ul>
+            <li>first sub</li>
+            <li>second sub</li>
+        </ul>
+    </li>
+</ul>',
+            [
+                'parseFunc'  => '',
+                'parseFunc.' => [
+                    'tags.' => [
+                        'ul'  => 'TEXT',
+                        'ul.' => [
+                            'wrap'    => '<ul><li>intro</li>|<li>outro</li></ul>',
+                            'current' => '1'
+                        ],
+                        'li'  => 'TEXT',
+                        'li.' => [
+                            'wrap'    => '<li>LI:|</li>',
+                            'current' => '1'
+                        ]
+                    ]
+                ]
+            ],
+            '<ul><li>intro</li>
+    <li>LI:first</li>
+    <li>LI:second
+        <ul><li>intro</li>
+            <li>LI:first sub</li>
+            <li>LI:second sub</li>
+        <li>outro</li></ul>
+    </li>
+<li>outro</li></ul>',
+        ];
+
+        yield 'link list with li containing p tag and sub list' => [
+            '<ul>
+    <li>first</li>
+    <li>
+        <ul>
+            <li>
+                <p>
+                    <ul>
+                        <li>first sub sub</li>
+                        <li>first sub sub</li>
+                    </ul>
+                </p>
+            </li>
+            <li>second sub</li>
+        </ul>
+    </li>
+</ul>',
+            [
+                'parseFunc'  => '',
+                'parseFunc.' => [
+                    'tags.' => [
+                        'li'  => 'TEXT',
+                        'li.' => [
+                            'wrap'    => '<li>LI:|</li>',
+                            'current' => '1'
+                        ]
+                    ]
+                ]
+            ],
+            '<ul>
+    <li>LI:first</li>
+    <li>LI:
+        <ul>
+            <li>LI:
+                <p>
+                    <ul>
+                        <li>LI:first sub sub</li>
+                        <li>LI:first sub sub</li>
+                    </ul>
+                </p>
+            </li>
+            <li>LI:second sub</li>
+        </ul>
+    </li>
+</ul>',
+        ];
+    }
+
+    /**
      * @test
      * @dataProvider _parseFuncReturnsCorrectHtmlDataProvider
      * @param string $value
@@ -2726,6 +3035,18 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param string $expectedResult
      */
     public function stdWrap_parseFuncReturnsParsedHtml($value, $configuration, $expectedResult): void
+    {
+        self::assertEquals($expectedResult, $this->subject->stdWrap_parseFunc($value, $configuration));
+    }
+
+    /**
+     * @test
+     * @dataProvider _parseFuncParsesNestedTagsProperlyDataProvider
+     * @param string $value
+     * @param array $configuration
+     * @param string $expectedResult
+     */
+    public function parseFuncParsesNestedTagsProperly(string $value, array $configuration, string $expectedResult): void
     {
         self::assertEquals($expectedResult, $this->subject->stdWrap_parseFunc($value, $configuration));
     }

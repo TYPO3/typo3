@@ -3790,7 +3790,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         // Pointer to the total string position
         $pointer = 0;
         // Loaded with the current typo-tag if any.
-        $currentTag = '';
+        $currentTag = null;
         $stripNL = 0;
         $contentAccum = [];
         $contentAccumP = 0;
@@ -3799,7 +3799,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $totalLen = strlen($theValue);
         do {
             if (!$inside) {
-                if (!is_array($currentTag)) {
+                if ($currentTag === null) {
                     // These operations should only be performed on code outside the typotags...
                     // data: this checks that we enter tags ONLY if the first char in the tag is alphanumeric OR '/'
                     $len_p = 0;
@@ -3812,17 +3812,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     } while ($c > 0 && $endChar && ($endChar < 97 || $endChar > 122) && $endChar != 47);
                     $len = $len_p - 1;
                 } else {
-                    // If we're inside a currentTag, just take it to the end of that tag!
-                    $tempContent = strtolower(substr($theValue, $pointer));
-                    $len = strpos($tempContent, '</' . $currentTag[0]);
-                    if (is_string($len) && !$len) {
-                        $len = strlen($tempContent);
-                    }
+                    $len = $this->getContentLengthOfCurrentTag($theValue, $pointer, $currentTag[0]);
                 }
                 // $data is the content until the next <tag-start or end is detected.
                 // In case of a currentTag set, this would mean all data between the start- and end-tags
                 $data = substr($theValue, $pointer, $len);
-                if ($data != '') {
+                if ($data !== false) {
                     if ($stripNL) {
                         // If the previous tag was set to strip NewLines in the beginning of the next data-chunk.
                         $data = preg_replace('/^[ ]*' . CR . '?' . LF . '/', '', $data);
@@ -3832,7 +3827,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         // Constants
                         $tsfe = $this->getTypoScriptFrontendController();
                         $tmpConstants = $tsfe->tmpl->setup['constants.'] ?? null;
-                        if ($conf['constants'] && is_array($tmpConstants)) {
+                        if (!empty($conf['constants']) && is_array($tmpConstants)) {
                             foreach ($tmpConstants as $key => $val) {
                                 if (is_string($val)) {
                                     $data = str_replace('###' . $key . '###', $val, $data);
@@ -3893,6 +3888,16 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             $data = $newstring;
                         }
                     }
+                    // Search for tags to process in current data and
+                    // call this method recursively if found
+                    if (strpos($data, '<') !== false) {
+                        foreach ($conf['tags.'] as $tag => $tagConfig) {
+                            if (strpos($data, '<' . $tag) !== false) {
+                                $data = $this->_parseFunc($data, $conf);
+                                break;
+                            }
+                        }
+                    }
                     $contentAccum[$contentAccumP] = isset($contentAccum[$contentAccumP])
                         ? $contentAccum[$contentAccumP] . $data
                         : $data;
@@ -3909,6 +3914,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
                 $tag = explode(' ', trim($tagContent), 2);
                 $tag[0] = strtolower($tag[0]);
+                // end tag like </li>
                 if ($tag[0][0] === '/') {
                     $tag[0] = substr($tag[0], 1);
                     $tag['out'] = 1;
@@ -3936,15 +3942,15 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         // This flag indicates, that this TypoTag section should NOT be included in the nonTypoTag content.
                         $breakOut = (bool)($theConf['breakoutTypoTagContent'] ?? false);
                         $this->parameters = [];
-                        if ($currentTag[1]) {
+                        if (isset($currentTag[1])) {
                             $params = GeneralUtility::get_tag_attributes($currentTag[1]);
                             if (is_array($params)) {
                                 foreach ($params as $option => $val) {
                                     $this->parameters[strtolower($option)] = $val;
                                 }
                             }
+                            $this->parameters['allParams'] = trim($currentTag[1]);
                         }
-                        $this->parameters['allParams'] = trim($currentTag[1]);
                         // Removes NL in the beginning and end of the tag-content AND at the end of the currentTagBuffer.
                         // $stripNL depends on the configuration of the current tag
                         if ($stripNL) {
@@ -3967,7 +3973,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             unset($contentAccum[$contentAccumP - 1]);
                             $contentAccumP -= 2;
                         }
-                        $currentTag = '';
+                        $currentTag = null;
                         $treated = true;
                     }
                     // other tags
@@ -3977,7 +3983,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 } else {
                     // If a tag was not a typo tag, then it is just added to the content
                     $stripNL = false;
-                    if (GeneralUtility::inList($allowTags, $tag[0]) || $denyTags !== '*' && !GeneralUtility::inList($denyTags, $tag[0])) {
+                    if (GeneralUtility::inList($allowTags, $tag[0]) ||
+                        ($denyTags !== '*' && !GeneralUtility::inList($denyTags, $tag[0]))) {
                         $contentAccum[$contentAccumP] = isset($contentAccum[$contentAccumP])
                             ? $contentAccum[$contentAccumP] . $data
                             : $data;
@@ -7150,5 +7157,48 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
         // Otherwise just return the link text
         return $linkText;
+    }
+
+    /**
+     * Get content length of the current tag that could also contain nested tag contents
+     *
+     * @param string $theValue
+     * @param int $pointer
+     * @param string $currentTag
+     * @return int
+     */
+    protected function getContentLengthOfCurrentTag(string $theValue, int $pointer, string $currentTag): int
+    {
+        $tempContent = strtolower(substr($theValue, $pointer));
+        $startTag = '<' . $currentTag;
+        $endTag = '</' . $currentTag . '>';
+        $offsetCount = 0;
+
+        // Take care for nested tags
+        do {
+            $nextMatchingEndTagPosition = strpos($tempContent, $endTag);
+            $nextSameTypeTagPosition = strpos($tempContent, $startTag);
+
+            // filter out nested tag contents to help getting the correct closing tag
+            if ($nextSameTypeTagPosition !== false && $nextSameTypeTagPosition < $nextMatchingEndTagPosition) {
+                $lastOpeningTagStartPosition = strrpos(substr($tempContent, 0, $nextMatchingEndTagPosition), $startTag);
+                $closingTagEndPosition = $nextMatchingEndTagPosition + strlen($endTag);
+                $offsetCount += $closingTagEndPosition - $lastOpeningTagStartPosition;
+
+                // replace content from latest tag start to latest tag end
+                $tempContent = substr($tempContent, 0, $lastOpeningTagStartPosition) . substr($tempContent, $closingTagEndPosition);
+            }
+        } while (
+            ($nextMatchingEndTagPosition !== false && $nextSameTypeTagPosition !== false) &&
+            $nextSameTypeTagPosition < $nextMatchingEndTagPosition
+        );
+
+        // if no closing tag is found we use length of the whole content
+        $endingOffset = strlen($tempContent);
+        if ($nextMatchingEndTagPosition !== false) {
+            $endingOffset = $nextMatchingEndTagPosition + $offsetCount;
+        }
+
+        return $endingOffset;
     }
 }
