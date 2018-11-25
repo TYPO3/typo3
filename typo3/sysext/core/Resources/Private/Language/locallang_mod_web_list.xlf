@@ -162,6 +162,12 @@
 			<trans-unit id="button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
+			<trans-unit id="button.close">
+				<source>Close</source>
+			</trans-unit>
+			<trans-unit id="button.ok">
+				<source>OK</source>
+			</trans-unit>
 			<trans-unit id="button.delete">
 				<source>Delete</source>
 			</trans-unit>

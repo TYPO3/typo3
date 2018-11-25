@@ -301,7 +301,7 @@ class Modal {
         severity,
         buttons: [
           {
-            text: $element.data('button-close-text') || 'Close',
+            text: $element.data('button-close-text') || TYPO3.lang['button.close'] || 'Close',
             active: true,
             btnClass: 'btn-default',
             trigger: (): void => {
@@ -309,7 +309,7 @@ class Modal {
             }
           },
           {
-            text: $element.data('button-ok-text') || 'OK',
+            text: $element.data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
             btnClass: 'btn-' + Severity.getCssClass(severity),
             trigger: (): void => {
               this.currentModal.trigger('modal-dismiss');

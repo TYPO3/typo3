@@ -277,7 +277,7 @@ define([
                 name: 'copy'
               },
               {
-                text: $(this).data('button-ok-text') || TYPO3.lang['button.move'] || 'Move',
+                text: $(this).data('button-ok-text') || TYPO3.lang['labels.move'] || 'Move',
                 btnClass: 'btn-warning',
                 name: 'move'
               }
