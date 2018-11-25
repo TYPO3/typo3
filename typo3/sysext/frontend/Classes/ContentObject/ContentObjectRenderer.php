@@ -53,6 +53,7 @@ use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
@@ -5097,7 +5098,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
                         $site = $request ? $request->getAttribute('site') : null;
                         if ($site instanceof Site) {
-                            $retVal = ArrayUtility::getValueByPath($site->getConfiguration(), $key, '.');
+                            try {
+                                $retVal = ArrayUtility::getValueByPath($site->getConfiguration(), $key, '.');
+                            } catch (MissingArrayPathException $exception) {
+                                $this->logger->warning(sprintf('getData() with "%s" failed', $key), ['exception' => $exception]);
+                            }
                         }
                         break;
                 }
