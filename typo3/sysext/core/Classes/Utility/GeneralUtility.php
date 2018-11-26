@@ -2620,7 +2620,8 @@ class GeneralUtility
                 unset($params[$key]);
             }
         }
-        return $parts . HttpUtility::buildQueryString($params, '?');
+        $pString = self::implodeArrayForUrl('', $params);
+        return $pString ? $parts . '?' . ltrim($pString, '&') : $parts;
     }
 
     /**
@@ -2639,8 +2640,10 @@ class GeneralUtility
             parse_str($parts['query'], $getP);
         }
         ArrayUtility::mergeRecursiveWithOverrule($getP, $getParams);
-        [$url] = explode('?', $url);
-        return $url . HttpUtility::buildQueryString($getP, '?');
+        $uP = explode('?', $url);
+        $params = self::implodeArrayForUrl('', $getP);
+        $outurl = $uP[0] . ($params ? '?' . substr($params, 1) : '');
+        return $outurl;
     }
 
     /**
