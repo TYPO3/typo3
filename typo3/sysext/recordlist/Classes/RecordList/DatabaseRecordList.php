@@ -1346,7 +1346,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             return '';
         }
         $content = '';
-        $listURL = $this->listURL('', $this->table);
+        $listURL = $this->listURL('', $this->table, 'firstElementNumber');
         // 1 = first page
         // 0 = first element
         $currentPage = floor($this->firstElementNumber / $this->iLimit) + 1;
