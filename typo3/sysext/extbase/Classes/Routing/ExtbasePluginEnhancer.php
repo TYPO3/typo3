@@ -47,12 +47,16 @@ class ExtbasePluginEnhancer extends PluginEnhancer
     public function __construct(array $configuration)
     {
         parent::__construct($configuration);
-        $extensionName = $this->configuration['extension'];
-        $pluginName = $this->configuration['plugin'];
-        $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
-        $pluginSignature = strtolower($extensionName . '_' . $pluginName);
-        $this->namespace = 'tx_' . $pluginSignature;
         $this->routesOfPlugin = $this->configuration['routes'] ?? [];
+        // Only set the namespace if the plugin+extension keys are given. This allows to also use "namespace" property
+        // instead from the parent constructor.
+        if (isset($this->configuration['extension']) && isset($this->configuration['plugin'])) {
+            $extensionName = $this->configuration['extension'];
+            $pluginName = $this->configuration['plugin'];
+            $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
+            $pluginSignature = strtolower($extensionName . '_' . $pluginName);
+            $this->namespace = 'tx_' . $pluginSignature;
+        }
         return;
     }
 

@@ -195,6 +195,9 @@ And generate the following URLs
 In this example, you also see that the `_arguments` parameter can be used to bring them into sub properties of an array,
 which is typically the case within demand objects for filtering functionality.
 
+For the Extbase Plugin Enhancer, it is also possible to configure the namespace directly by skipping `extension`
+and `plugin` properties and just using the `namespace` property as in the regular Plugin Enhancer.
+
 Aspects
 ^^^^^^^
 
