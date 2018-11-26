@@ -97,4 +97,26 @@ class DebuggerUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $result = DebuggerUtility::var_dump($testClass, null, 8, true, false, true, [\stdClass::class]);
         self::assertNotContains($testClass->data, $result);
     }
+
+    /**
+     * @test
+     */
+    public function varDumpShowsDumpOfDateTime()
+    {
+        $date = \DateTime::createFromFormat('Y-m-d H:i:s', '2018-11-26 09:27:28', new \DateTimeZone('UTC'));
+
+        $result = DebuggerUtility::var_dump($date, null, 8, true, false, true, [\stdClass::class]);
+        self::assertContains('2018-11-26T09:27:28', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function varDumpShowsDumpOfDateTimeImmutable()
+    {
+        $date = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2018-11-26 09:27:28', new \DateTimeZone('UTC'));
+
+        $result = DebuggerUtility::var_dump($date, null, 8, true, false, true, [\stdClass::class]);
+        self::assertContains('2018-11-26T09:27:28', $result);
+    }
 }
