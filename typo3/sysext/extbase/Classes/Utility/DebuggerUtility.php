@@ -297,13 +297,13 @@ class DebuggerUtility
             }
         } elseif (self::$renderedObjects->contains($object) && !$plainText) {
             $dump = '<a href="javascript:;" onclick="document.location.hash=\'#' . spl_object_hash($object) . '\';" class="extbase-debug-seeabove">' . $dump . '<span class="extbase-debug-filtered">see above</span></a>';
-        } elseif ($level >= self::$maxDepth && !$object instanceof \DateTime) {
+        } elseif ($level >= self::$maxDepth && !$object instanceof \DateTimeInterface) {
             if ($plainText) {
                 $dump .= ' ' . self::ansiEscapeWrap('max depth', '47;30', $ansiColors);
             } else {
                 $dump .= '<span class="extbase-debug-filtered">max depth</span>';
             }
-        } elseif ($level > 1 && !$object instanceof \DateTime && !$plainText) {
+        } elseif ($level > 1 && !$object instanceof \DateTimeInterface && !$plainText) {
             if (($object instanceof \Countable && empty($object)) || empty($classReflection->getProperties())) {
                 $dump = '<span>' . $dump . '</span>';
             } else {
@@ -314,8 +314,8 @@ class DebuggerUtility
             $objectCount = count($object);
             $dump .= $objectCount > 0 ? ' (' . $objectCount . ' items)' : ' (empty)';
         }
-        if ($object instanceof \DateTime) {
-            $dump .= ' (' . $object->format(\DateTime::RFC3339) . ', ' . $object->getTimestamp() . ')';
+        if ($object instanceof \DateTimeInterface) {
+            $dump .= ' (' . $object->format(\DateTimeInterface::RFC3339) . ', ' . $object->getTimestamp() . ')';
         }
         if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface && !$object->_isNew()) {
             $dump .= ' (uid=' . $object->getUid() . ', pid=' . $object->getPid() . ')';
