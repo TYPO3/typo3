@@ -2204,7 +2204,12 @@ class PageLayoutView implements LoggerAwareInterface
                         $out = $view->render();
                         $drawItem = false;
                     } catch (\Exception $e) {
-                        // Catch any exception to avoid breaking the view
+                        $this->logger->warning(sprintf(
+                            'The backend preview for content element %d can not be rendered using the Fluid template file "%s": %s',
+                            $row['uid'],
+                            $fluidTemplateFile,
+                            $e->getMessage()
+                        ));
                     }
                 }
             }
