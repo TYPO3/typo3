@@ -1,0 +1,9 @@
+config.tx_extbase.persistence {
+  classes {
+    ExtbaseTeam\B\Domain\Model\B {
+      mapping {
+        tableName = tx_a_domain_model_a
+      }
+    }
+  }
+}

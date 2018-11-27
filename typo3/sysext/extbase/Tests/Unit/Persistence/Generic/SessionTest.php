@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
  */
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Persistence\Generic\Session;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -27,7 +28,7 @@ class SessionTest extends UnitTestCase
     public function objectRegisteredWithRegisterReconstitutedEntityCanBeRetrievedWithGetReconstitutedEntities()
     {
         $someObject = new \ArrayObject([]);
-        $session = new Session();
+        $session = new Session(new Container());
         $session->registerReconstitutedEntity($someObject);
 
         $ReconstitutedEntities = $session->getReconstitutedEntities();
@@ -40,7 +41,7 @@ class SessionTest extends UnitTestCase
     public function unregisterReconstitutedEntityRemovesObjectFromSession()
     {
         $someObject = new \ArrayObject([]);
-        $session = new Session();
+        $session = new Session(new Container());
         $session->registerObject($someObject, 'fakeUuid');
         $session->registerReconstitutedEntity($someObject);
         $session->unregisterReconstitutedEntity($someObject);
@@ -56,7 +57,7 @@ class SessionTest extends UnitTestCase
     {
         $object1 = new \stdClass();
         $object2 = new \stdClass();
-        $session = new Session();
+        $session = new Session(new Container());
         $session->registerObject($object1, 12345);
 
         $this->assertTrue($session->hasObject($object1), 'Session claims it does not have registered object.');
@@ -68,7 +69,7 @@ class SessionTest extends UnitTestCase
      */
     public function hasIdentifierReturnsTrueForRegisteredObject()
     {
-        $session = new Session();
+        $session = new Session(new Container());
         $session->registerObject(new \stdClass(), 12345);
 
         $this->assertTrue($session->hasIdentifier('12345', 'stdClass'), 'Session claims it does not have registered object.');
@@ -81,7 +82,7 @@ class SessionTest extends UnitTestCase
     public function getIdentifierByObjectReturnsRegisteredUUIDForObject()
     {
         $object = new \stdClass();
-        $session = new Session();
+        $session = new Session(new Container());
         $session->registerObject($object, 12345);
 
         $this->assertEquals($session->getIdentifierByObject($object), 12345, 'Did not get UUID registered for object.');
@@ -93,7 +94,7 @@ class SessionTest extends UnitTestCase
     public function getObjectByIdentifierReturnsRegisteredObjectForUUID()
     {
         $object = new \stdClass();
-        $session = new Session();
+        $session = new Session(new Container());
         $session->registerObject($object, 12345);
 
         $this->assertSame($session->getObjectByIdentifier('12345', 'stdClass'), $object, 'Did not get object registered for UUID.');
@@ -106,7 +107,7 @@ class SessionTest extends UnitTestCase
     {
         $object1 = new \stdClass();
         $object2 = new \stdClass();
-        $session = new Session();
+        $session = new Session(new Container());
         $session->registerObject($object1, 12345);
         $session->registerObject($object2, 67890);
 
@@ -128,7 +129,7 @@ class SessionTest extends UnitTestCase
      */
     public function newSessionIsEmpty()
     {
-        $persistenceSession = new Session();
+        $persistenceSession = new Session(new Container());
         $reconstitutedObjects = $persistenceSession->getReconstitutedEntities();
         $this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
     }
@@ -138,7 +139,7 @@ class SessionTest extends UnitTestCase
      */
     public function objectCanBeRegisteredAsReconstituted()
     {
-        $persistenceSession = new Session();
+        $persistenceSession = new Session(new Container());
         $entity = $this->createMock(AbstractEntity::class);
         $persistenceSession->registerReconstitutedEntity($entity);
         $reconstitutedObjects = $persistenceSession->getReconstitutedEntities();
@@ -150,7 +151,7 @@ class SessionTest extends UnitTestCase
      */
     public function objectCanBeUnregisteredAsReconstituted()
     {
-        $persistenceSession = new Session();
+        $persistenceSession = new Session(new Container());
         $entity = $this->createMock(AbstractEntity::class);
         $persistenceSession->registerReconstitutedEntity($entity);
         $persistenceSession->unregisterReconstitutedEntity($entity);

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
  */
 
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
+use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
@@ -248,7 +249,7 @@ class DataMapperTest extends UnitTestCase
         $classSchema1 = new ClassSchema(Fixture\DummyParentEntity::class);
         $identifier = 1;
 
-        $session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
+        $session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session(new Container());
         $session->registerObject($child, $identifier);
 
         $mockReflectionService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class)
