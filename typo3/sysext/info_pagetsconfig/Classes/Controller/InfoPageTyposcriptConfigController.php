@@ -248,7 +248,6 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
                     $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
                 )
             )
-            ->groupBy('uid')
             ->execute();
 
         $pageArray = [];
