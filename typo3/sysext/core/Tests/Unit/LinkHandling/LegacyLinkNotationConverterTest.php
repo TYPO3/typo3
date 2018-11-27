@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
  * The TYPO3 project - inspiring people to share!
  */
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\LinkHandling\LegacyLinkNotationConverter;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\File;
@@ -37,7 +38,7 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
             'simple page - old style' => [
                 // original input value
                 '13',
-                // splitted values
+                // split values
                 [
                     'type' => LinkService::TYPE_PAGE,
                     'pageuid' => 13
@@ -82,7 +83,31 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                     'pagealias' => 'alias13'
                 ],
                 't3://page?alias=alias13'
-            ]
+            ],
+            'record of table - old 2-part identifier' => [
+                'record:tx_myext_entity:456',
+                [
+                    'type' => LinkService::TYPE_RECORD,
+                    'identifier' => 'tx_myext_entity',
+                    'table' => 'tx_myext_entity',
+                    'uid' => 456,
+                    'url' => 'record:tx_myext_entity:456',
+                    'value' => 'tx_myext_entity:456'
+                ],
+                't3://record?identifier=tx_myext_entity&uid=456'
+            ],
+            'record of table - old 3-part identifier' => [
+                'record:usage1:tx_myext_entity:456',
+                [
+                    'type' => LinkService::TYPE_RECORD,
+                    'identifier' => 'usage1',
+                    'table' => 'tx_myext_entity',
+                    'uid' => 456,
+                    'url' => 'record:usage1:tx_myext_entity:456',
+                    'value' => 'usage1:tx_myext_entity:456'
+                ],
+                't3://record?identifier=usage1&uid=456'
+            ],
         ];
     }
 
@@ -91,11 +116,10 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
      *
      * @param string $input
      * @param array  $expected
-     * @param string $finalString
      *
      * @dataProvider resolveParametersForNonFilesDataProvider
      */
-    public function resolveReturnsSplitParameters($input, $expected, $finalString): void
+    public function resolveReturnsSplitParameters($input, $expected): void
     {
         $subject = new LegacyLinkNotationConverter();
         $this->assertEquals($expected, $subject->resolve($input));
@@ -105,9 +129,10 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
      * @test
      *
      * @param string $input
-     * @param array  $parameters
+     * @param array $parameters
      * @param string $expected
      *
+     * @throws \TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException
      * @dataProvider resolveParametersForNonFilesDataProvider
      */
     public function splitParametersToUnifiedIdentifier($input, $parameters, $expected): void
@@ -182,12 +207,12 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
      *
      * @param string $input
      * @param array  $expected
-     * @param string $finalString
      *
      * @dataProvider resolveParametersForFilesDataProvider
      */
-    public function resolveFileReferencesToSplitParameters($input, $expected, $finalString): void
+    public function resolveFileReferencesToSplitParameters($input, $expected): void
     {
+        /** @var ResourceStorage|MockObject $storage */
         $storage = $this->getMockBuilder(ResourceStorage::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -231,9 +256,10 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
      * @test
      *
      * @param string $input
-     * @param array  $parameters
+     * @param array $parameters
      * @param string $expected
      *
+     * @throws \TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException
      * @dataProvider resolveParametersForFilesDataProvider
      */
     public function splitParametersToUnifiedIdentifierForFiles($input, $parameters, $expected): void
@@ -269,8 +295,9 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
             $folderData = explode(':', $parameters['folder']);
             /** @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject $storageMock */
             $storage = $this->getMockBuilder(ResourceStorage::class)
+                ->setMethods(['getUid'])
                 ->disableOriginalConstructor()
-                ->getMock(['getUid']);
+                ->getMock();
             $storage->method('getUid')->willReturn($folderData[0]);
             $folderObject->expects($this->any())->method('getStorage')->willReturn($storage);
             $folderObject->expects($this->any())->method('getIdentifier')->willReturn($folderData[1]);
@@ -304,6 +331,9 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
 
     /**
      * @test
+     *
+     * @param string $pharUrl
+     *
      * @dataProvider resolveThrowExceptionWithPharReferencesDataProvider
      */
     public function resolveThrowExceptionWithPharReferences(string $pharUrl)
