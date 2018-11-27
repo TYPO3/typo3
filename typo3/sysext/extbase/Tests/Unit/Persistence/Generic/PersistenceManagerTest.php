@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
  */
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Backend;
 use TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface;
@@ -288,7 +289,7 @@ class PersistenceManagerTest extends UnitTestCase
             PersistenceManager::class,
             ['dummy']
         );
-        $session = new Session();
+        $session = new Session(new Container());
         $changedEntities = new ObjectStorage();
         $entity1 = new $classNameWithNamespace();
         /** @var RepositoryInterface|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $repository */
