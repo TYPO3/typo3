@@ -315,7 +315,6 @@ class InfoPageTyposcriptConfigController
                     $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
                 )
             )
-            ->groupBy('uid')
             ->execute();
 
         $pageArray = [];
