@@ -79,8 +79,17 @@ class LegacyLinkNotationConverter
             $result['url'] = $linkParameter;
             $result['value'] = $linkHandlerValue;
             if ($result['type'] === LinkService::TYPE_RECORD) {
-                list($a['identifier'], $a['table'], $a['uid']) = explode(':', $linkHandlerValue);
-                $result['url'] = $a;
+                list($a['identifier'], $tableAndUid) = explode(':', $linkHandlerValue, 2);
+                $tableAndUid = explode(':', $tableAndUid);
+                if (count($tableAndUid) > 1) {
+                    $a['table'] = $tableAndUid[0];
+                    $a['uid'] = $tableAndUid[1];
+                } else {
+                    // this case can happen if there is the very old linkhandler syntax, which was only record:<table>:<uid>
+                    $a['table'] = $a['identifier'];
+                    $a['uid'] = $tableAndUid[0];
+                }
+                $result = array_merge($result, $a);
             }
         } else {
             // special handling without a scheme
