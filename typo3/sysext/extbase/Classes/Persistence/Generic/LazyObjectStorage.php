@@ -243,27 +243,27 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
     }
 
     /**
-     * @param object $object The object to look for.
+     * @param object $value The object to look for, or the key in the storage.
      * @return bool
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetExists
      */
-    public function offsetExists($object)
+    public function offsetExists($value)
     {
         $this->initialize();
-        return parent::offsetExists($object);
+        return parent::offsetExists($value);
     }
 
     /**
-     * @param object $object The object to look for.
+     * @param object $value The object to look for, or its key in the storage.
      * @return mixed
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetGet
      */
-    public function offsetGet($object)
+    public function offsetGet($value)
     {
         $this->initialize();
-        return parent::offsetGet($object);
+        return parent::offsetGet($value);
     }
 
     /**
@@ -279,14 +279,14 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
     }
 
     /**
-     * @param object $object The object to remove.
+     * @param object $value The object to remove, or its key in the storage.
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetUnset
      */
-    public function offsetUnset($object)
+    public function offsetUnset($value)
     {
         $this->initialize();
-        parent::offsetUnset($object);
+        parent::offsetUnset($value);
     }
 
     /**

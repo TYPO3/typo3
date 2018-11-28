@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Persistence;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 /**
  * The storage for objects. It ensures the uniqueness of an object in the storage. It's a remake of the
  * SplObjectStorage introduced in PHP 5.3.
@@ -156,22 +158,30 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Checks whether an object exists in the storage.
      *
-     * @param object $object The object to look for.
+     * @param object|int $value The object to look for, or the key in the storage.
      * @return bool
      */
-    public function offsetExists($object)
+    public function offsetExists($value)
     {
-        return is_object($object) && isset($this->storage[spl_object_hash($object)]);
+        return is_object($value) && isset($this->storage[spl_object_hash($value)])
+            || MathUtility::canBeInterpretedAsInteger($value) && isset(array_values($this->storage)[$value]);
     }
 
     /**
      * Removes an object from the storage. offsetUnset() is an alias of detach().
      *
-     * @param object $object The object to remove.
+     * @param object|int $value The object to remove, or its key in the storage.
      */
-    public function offsetUnset($object)
+    public function offsetUnset($value)
     {
         $this->isModified = true;
+
+        $object = $value;
+
+        if (MathUtility::canBeInterpretedAsInteger($value)) {
+            $object = $this->offsetGet($value);
+        }
+
         unset($this->storage[spl_object_hash($object)]);
 
         if (empty($this->storage)) {
@@ -183,14 +193,19 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     }
 
     /**
-     * Returns the data associated with an object.
+     * Returns the data associated with an object, or the object itself if an
+     * integer is passed.
      *
-     * @param object $object The object to look for.
-     * @return mixed The data associated with an object in the storage.
+     * @param object|int $value The object to look for, or its key in the storage.
+     * @return mixed The data associated with an object in the storage, or the object itself if an integer is passed.
      */
-    public function offsetGet($object)
+    public function offsetGet($value)
     {
-        return $this->storage[spl_object_hash($object)]['inf'];
+        if (MathUtility::canBeInterpretedAsInteger($value)) {
+            return array_values($this->storage)[$value]['obj'];
+        }
+
+        return $this->storage[spl_object_hash($value)]['inf'];
     }
 
     /**

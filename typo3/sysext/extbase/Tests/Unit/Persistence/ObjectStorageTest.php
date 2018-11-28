@@ -86,6 +86,23 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
+    public function offsetUnsetKeyRemovesAnObjectFromTheStorage()
+    {
+        $objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $object1 = new \stdClass();
+        $object2 = new \stdClass();
+        $objectStorage->attach($object1);
+        $objectStorage->attach($object2, 'foo');
+        $this->assertEquals(count($objectStorage), 2);
+        $objectStorage->offsetUnset(0);
+        $this->assertEquals(count($objectStorage), 1);
+        $objectStorage->offsetUnset(0);
+        $this->assertEquals(count($objectStorage), 0);
+    }
+
+    /**
+     * @test
+     */
     public function offsetGetReturnsTheDataAssociatedWithAnObject()
     {
         $objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
@@ -100,6 +117,20 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
+    public function offsetGetKeyReturnsTheObject()
+    {
+        $objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $object1 = new \stdClass();
+        $object2 = new \stdClass();
+        $objectStorage->attach($object1);
+        $objectStorage->attach($object2);
+        $this->assertSame($object1, $objectStorage->offsetGet(0));
+        $this->assertSame($object2, $objectStorage->offsetGet(1));
+    }
+
+    /**
+     * @test
+     */
     public function offsetExistsChecksWhetherAnObjectExistsInTheStorage()
     {
         $objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
@@ -108,6 +139,17 @@ class ObjectStorageTest extends UnitTestCase
         $objectStorage->attach($object1);
         $this->assertEquals($objectStorage->offsetExists($object1), true);
         $this->assertEquals($objectStorage->offsetExists($object2), false);
+    }
+
+    /**
+     * @test
+     */
+    public function offsetExistsChecksWhetherKeyExistsInTheStorage()
+    {
+        $objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $objectStorage->attach(new \stdClass());
+        $this->assertTrue($objectStorage->offsetExists(0));
+        $this->assertFalse($objectStorage->offsetExists(1));
     }
 
     /**
