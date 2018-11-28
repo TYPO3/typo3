@@ -1,5 +1,5 @@
-INSTALLING TYPO3
-================
+INSTALL TYPO3
+=============
 
 TYPO3 is an open source PHP based web content management system released
 under the GNU GPL. TYPO3 is copyright (c) 1999-2018 by Kasper Skaarhoj.
