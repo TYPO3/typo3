@@ -17,11 +17,12 @@ User manual
 
 Adding the search plugin to a page
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-That is really easy:
+#. Activate "indexed_search" in the Extensions Manager. It is a System Extension so it is allready installed. You just need to activate it.
 
 #. Create a page called "Search" or something like that. This is where
    the search box will appear.
+   
+#. Create an extension template for this page that includes "Indexed Search (Extbase & Fluid)" or include it in your main template.
 
 #. Create a new content element on that page and choose the type
    "General Plugin".
