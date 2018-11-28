@@ -1790,7 +1790,16 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         $out = $view->render();
                         $drawItem = false;
                     } catch (\Exception $e) {
-                        // Catch any exception to avoid breaking the view
+                        GeneralUtility::sysLog(
+                            sprintf(
+                                'The backend preview for content element $d can not be rendered using the Fluid template file "%s": %s',
+                                $row['uid'],
+                                $fluidTemplateFile,
+                                $e->getMessage()
+                            ),
+                            'backend',
+                            GeneralUtility::SYSLOG_SEVERITY_WARNING
+                        );
                     }
                 }
             }
