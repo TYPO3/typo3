@@ -6307,7 +6307,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $queryBuilder->expr()->eq(
                         'pid',
                         $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
-                    )
+                    ),
+                    // tree is only built by language=0 pages
+                    $queryBuilder->expr()->eq('sys_language_uid', 0)
                 )
                 ->orderBy('sorting');
 

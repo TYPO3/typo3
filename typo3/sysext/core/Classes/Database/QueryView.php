@@ -908,6 +908,7 @@ class QueryView
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('sys_language_uid', 0),
                     QueryHelper::stripLogicalOperatorPrefix($permsClause)
                 )
                 ->execute();
