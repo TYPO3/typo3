@@ -17,14 +17,16 @@ User manual
 
 Adding the search plugin to a page
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#. Activate "indexed_search" in the Extensions Manager. You just need to activate it. It is already
+   installed in non-composer mode. Make sure to require the package `typo3/cms-indexed-search` if
+   you run the TYPO3 instance in composer mode.
 
-That is really easy:
+#. Create a page called "Search" or something like that. This is where the search box will appear.
 
-#. Create a page called "Search" or something like that. This is where
-   the search box will appear.
+#. Create an extension template for this page that includes "Indexed Search (Extbase & Fluid)" or
+   include it in your main template.
 
-#. Create a new content element on that page and choose the type
-   "General Plugin".
+#. Create a new content element on that page and choose the type "General Plugin".
 
 #. Then choose the "Selected plugin" to be "Indexed search":
 
