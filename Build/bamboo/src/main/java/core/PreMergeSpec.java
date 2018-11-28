@@ -150,7 +150,7 @@ public class PreMergeSpec extends AbstractCoreSpec {
             .notifications(new Notification()
                 .type(new PlanCompletedNotification())
                 .recipients(new AnyNotificationRecipient(new AtlassianModule("com.atlassian.bamboo.plugins.bamboo-slack:recipient.slack"))
-                    .recipientString("https://intercept.typo3.com/index.php")
+                    .recipientString("https://intercept.typo3.com/bamboo")
                 )
         );
     }
