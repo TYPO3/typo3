@@ -123,7 +123,6 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         if ($withTree) {
             $markup[] = '   <div class="element-browser-main-sidebar">';
             $markup[] = '       <div class="element-browser-body">';
-            $markup[] = '           <h3>' . htmlspecialchars($this->getLanguageService()->getLL('pageTree')) . ':</h3>';
             $markup[] = '           ' . $this->getTemporaryTreeMountCancelNotice();
             $markup[] = '           ' . $tree;
             $markup[] = '       </div>';
@@ -195,7 +194,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             $tablesArr = GeneralUtility::trimExplode(',', $tables, true);
         }
 
-        $out = '<h3>' . htmlspecialchars($this->getLanguageService()->getLL('selectRecords')) . ':</h3>';
+        $out = '';
         // Create the header, showing the current page for which the listing is.
         // Includes link to the page itself, if pages are amount allowed tables.
         $titleLen = (int)$backendUser->uc['titleLen'];
@@ -203,7 +202,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         if (is_array($mainPageRecord)) {
             $pText = htmlspecialchars(GeneralUtility::fixed_lgd_cs($mainPageRecord['title'], $titleLen));
 
-            $out .= $this->iconFactory->getIconForRecord('pages', $mainPageRecord, Icon::SIZE_SMALL)->render();
+            $out .= '<p>' . $this->iconFactory->getIconForRecord('pages', $mainPageRecord, Icon::SIZE_SMALL)->render() . '&nbsp;';
             if (in_array('pages', $tablesArr, true)) {
                 $out .= '<span data-uid="' . htmlspecialchars($mainPageRecord['uid']) . '" data-table="pages" data-title="' . htmlspecialchars($mainPageRecord['title']) . '" data-icon="">';
                 $out .= '<a href="#" data-close="0">'
@@ -216,7 +215,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             } else {
                 $out .= $pText;
             }
-            $out .= '<br />';
+            $out .= '</p>';
         }
 
         $permsClause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);

@@ -213,7 +213,6 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $markup[] = '   <div class="element-browser-panel element-browser-main">';
         $markup[] = '       <div class="element-browser-main-sidebar">';
         $markup[] = '           <div class="element-browser-body">';
-        $markup[] = '               <h3>' . htmlspecialchars($this->getLanguageService()->getLL('folderTree')) . ':</h3>';
         $markup[] = '               ' . $tree;
         $markup[] = '           </div>';
         $markup[] = '       </div>';
