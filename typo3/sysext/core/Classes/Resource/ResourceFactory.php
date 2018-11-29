@@ -25,9 +25,9 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
-// @todo implement constructor-level caching
 /**
  * Factory class for FAL objects
+ * @todo implement constructor-level caching
  */
 class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\SingletonInterface
 {

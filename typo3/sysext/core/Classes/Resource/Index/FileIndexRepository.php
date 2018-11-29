@@ -33,7 +33,7 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
  * Every access to table sys_file_metadata which is not handled by DataHandler
  * has to use this Repository class.
  *
- * This is meant for FAL internal use only!.
+ * @internal This is meant for FAL internal use only!
  */
 class FileIndexRepository implements SingletonInterface
 {
@@ -620,7 +620,7 @@ class FileIndexRepository implements SingletonInterface
         return $fileRecords;
     }
 
-    /*
+    /**
      * Get the SignalSlot dispatcher
      *
      * @return Dispatcher
