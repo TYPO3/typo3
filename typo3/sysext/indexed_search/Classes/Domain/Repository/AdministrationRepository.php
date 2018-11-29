@@ -360,6 +360,7 @@ class AdministrationRepository
 
         while ($row = $res->fetch()) {
             $this->addAdditionalInformation($row);
+            $row['static_page_arguments'] = $row['static_page_arguments'] ? json_decode($row['static_page_arguments'], true) : null;
             $result[] = $row;
 
             if ($row['pcount'] > 1) {
@@ -449,6 +450,7 @@ class AdministrationRepository
     {
         $grListRec = $this->getGrlistRecord($row['phash']);
         $unserializedCHashParams = unserialize($row['cHashParams']);
+        $row['static_page_arguments'] = $row['static_page_arguments'] ? json_decode($row['static_page_arguments'], true) : null;
 
         $row['numberOfWords'] = $this->getNumberOfWords($row['phash']);
         $row['numberOfSections'] = $this->getNumberOfSections($row['phash']);

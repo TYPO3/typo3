@@ -14,6 +14,7 @@ namespace TYPO3\CMS\IndexedSearch;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
@@ -21,6 +22,7 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -190,6 +192,8 @@ class Indexer
     public $indexExternalUrl_content = '';
 
     /**
+     * cHash params array
+     *
      * @var array
      */
     public $cHashParams = [];
@@ -302,9 +306,19 @@ class Indexer
                             // MP variable, if any (Mount Points)
                             // Group list
                             $this->conf['gr_list'] = implode(',', GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]));
-                            $this->conf['cHash'] = $pObj->cHash;
                             // cHash string for additional parameters
+                            $this->conf['cHash'] = $pObj->cHash;
+                            // cHash array with additional parameters
                             $this->conf['cHash_array'] = $pObj->cHash_array;
+                            // page arguments array
+                            $this->conf['staticPageArguments'] = [];
+                            /** @var PageArguments $pageArguments */
+                            if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
+                                $pageArguments = $GLOBALS['TYPO3_REQUEST']->getAttribute('routing', null);
+                                if ($pageArguments instanceof PageArguments) {
+                                    $this->conf['staticPageArguments'] = $pageArguments->getStaticArguments();
+                                }
+                            }
                             // Array of the additional parameters
                             $this->conf['crdate'] = $pObj->page['crdate'];
                             // The creation date of the TYPO3 page
@@ -1460,6 +1474,7 @@ class Indexer
             'phash' => $this->hash['phash'],
             'phash_grouping' => $this->hash['phash_grouping'],
             'cHashParams' => serialize($this->cHashParams),
+            'static_page_arguments' => json_encode($this->conf['staticPageArguments']),
             'contentHash' => $this->content_md5h,
             'data_page_id' => $this->conf['id'],
             // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove along with database field data_page_reg1
@@ -2242,7 +2257,8 @@ class Indexer
             'type' => (int)$this->conf['type'],
             'sys_lang' => (int)$this->conf['sys_language_uid'],
             'MP' => (string)$this->conf['MP'],
-            'cHash' => $this->cHashParams
+            'cHash' => $this->cHashParams,
+            'staticPageArguments' => $this->conf['staticPageArguments'],
         ];
         // Set grouping hash (Identifies a "page" combined of id, type, language, mountpoint and cHash parameters):
         $this->hash['phash_grouping'] = IndexedSearchUtility::md5inthash(serialize($hArray));

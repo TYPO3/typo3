@@ -60,48 +60,46 @@
 							<f:then>
 								<f:for each="{line.lines}" as="l" iteration="i">
 									<tr>
-										<f:then>
-											<td class="nowrap">
-												{line.HTML -> f:format.raw()}
-												<f:if condition="{i.index} == 0"> {line.row.title}</f:if>
-											</td>
-											<td>
-												<a href="{f:uri.action(action:'deleteIndexedItem',arguments:'{id:l.phash,depth:depth,mode:mode}')}" title="{f:translate(key:'administration.removeEntry')}">
-													<core:icon identifier="actions-edit-delete" />
-												</a>
-											</td>
-											<td>
-												<f:image src="{l.icon}" />
-												<f:link.action action="statisticDetails" arguments="{pageHash:l.phash}">{l.item_title}</f:link.action>
-											</td>
-											<f:switch expression="{mode}">
-												<f:case value="content">
+										<td class="nowrap">
+											{line.HTML -> f:format.raw()}
+											<f:if condition="{i.index} == 0"> {line.row.title}</f:if>
+										</td>
+										<td>
+											<a href="{f:uri.action(action:'deleteIndexedItem',arguments:'{id:l.phash,depth:depth,mode:mode}')}" title="{f:translate(key:'administration.removeEntry')}">
+												<core:icon identifier="actions-edit-delete" />
+											</a>
+										</td>
+										<td>
+											<f:image src="{l.icon}" />
+											<f:link.action action="statisticDetails" arguments="{pageHash:l.phash}">{l.item_title}</f:link.action>
+										</td>
+										<f:switch expression="{mode}">
+											<f:case value="content">
+												<td>
+													{l.fulltextData.fulltextdata}
+												</td>
+												<f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
 													<td>
-														{l.fulltextData.fulltextdata}
+														<f:for each="{l.allWords}" as="w">
+															{w}
+														</f:for>
+														<br><br>
+														<em>{f:translate(key:'administration.statistics.count')}: {f:count(subject:l.allWords)}</em>
 													</td>
-													<f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
-														<td>
-															<f:for each="{l.allWords}" as="w">
-																{w}
-															</f:for>
-															<br><br>
-															<em>{f:translate(key:'administration.statistics.count')}: {f:count(subject:l.allWords)}</em>
-														</td>
-													</f:if>
-												</f:case>
-												<f:defaultCase>
-													<f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
-														<td>{l.wordCount}</td>
-													</f:if>
-													<td>
-														<f:format.bytes decimals="1">{l.item_size}</f:format.bytes>
-													</td>
-													<td>
-														<is:format.dateTime>{l.tstamp}</is:format.dateTime>
-													</td>
-												</f:defaultCase>
-											</f:switch>
-										</f:then>
+												</f:if>
+											</f:case>
+											<f:defaultCase>
+												<f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
+													<td>{l.wordCount}</td>
+												</f:if>
+												<td>
+													<f:format.bytes decimals="1">{l.item_size}</f:format.bytes>
+												</td>
+												<td>
+													<is:format.dateTime>{l.tstamp}</is:format.dateTime>
+												</td>
+											</f:defaultCase>
+										</f:switch>
 									</tr>
 								</f:for>
 							</f:then>

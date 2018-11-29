@@ -539,7 +539,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     'cHashParams' => $row['cHashParams'],
                     'data_page_type' => $row['data_page_type'],
                     'data_page_mp' => $pathMP,
-                    'sys_language_uid' => $row['sys_language_uid']
+                    'sys_language_uid' => $row['sys_language_uid'],
+                    'static_page_arguments' => $row['static_page_arguments']
                 ]
             );
 
@@ -1330,6 +1331,9 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $pageLanguage = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'contentId', 0);
         // Parameters for link
         $urlParameters = (array)unserialize($row['cHashParams']);
+        if ($row['static_page_arguments'] !== null) {
+            $urlParameters = array_replace_recursive($urlParameters, json_decode($row['static_page_arguments'], true));
+        }
         // Add &type and &MP variable:
         if ($row['data_page_mp']) {
             $urlParameters['MP'] = $row['data_page_mp'];
