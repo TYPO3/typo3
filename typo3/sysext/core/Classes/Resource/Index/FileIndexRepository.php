@@ -22,6 +22,8 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
+use TYPO3\CMS\Core\Resource\Search\FileSearchQuery;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -561,57 +563,15 @@ class FileIndexRepository implements SingletonInterface
      * Search for files by search word in metadata
      *
      * @param string $searchWord search word
-     *
+     * @deprecated Use FileSearchQuery instead
      * @return array
      */
     public function findBySearchWordInMetaData($searchWord)
     {
-        $metaDataTableName = 'sys_file_metadata';
-        $sysFileTableName = 'sys_file';
-
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($metaDataTableName);
-        $queryBuilder
-            ->select($sysFileTableName . '.*')
-            ->from($metaDataTableName)
-            ->join(
-                $metaDataTableName,
-                $sysFileTableName,
-                $sysFileTableName,
-                $queryBuilder->expr()->eq($metaDataTableName . '.file', $queryBuilder->quoteIdentifier($sysFileTableName . '.uid'))
-            );
-
-        if (null !== $searchWord) {
-            $nameParts = str_getcsv($searchWord, ' ');
-            foreach ($nameParts as $part) {
-                $part = trim($part);
-                if ($part !== '') {
-                    $queryBuilder->orWhere(
-                        $queryBuilder->expr()->like(
-                            $metaDataTableName . '.title',
-                            $queryBuilder->createNamedParameter(
-                                '%' . $queryBuilder->escapeLikeWildcards($part) . '%',
-                                \PDO::PARAM_STR
-                            )
-                        ),
-                        $queryBuilder->expr()->like(
-                            $metaDataTableName . '.description',
-                            $queryBuilder->createNamedParameter(
-                                '%' . $queryBuilder->escapeLikeWildcards($part) . '%',
-                                \PDO::PARAM_STR
-                            )
-                        ),
-                        $queryBuilder->expr()->like(
-                            $metaDataTableName . '.alternative',
-                            $queryBuilder->createNamedParameter(
-                                '%' . $queryBuilder->escapeLikeWildcards($part) . '%',
-                                \PDO::PARAM_STR
-                            )
-                        )
-                    );
-                }
-            }
-        }
-        $result = $queryBuilder->execute();
+        trigger_error(__METHOD__ . ' is deprecated. Use FileSearchQuery instead', \E_USER_DEPRECATED);
+        $searchDemand = FileSearchDemand::createForSearchTerm($searchWord);
+        $searchQuery = FileSearchQuery::createForSearchDemand($searchDemand);
+        $result = $searchQuery->execute();
         $fileRecords = [];
         while ($fileRecord = $result->fetch()) {
             $fileRecords[$fileRecord['identifier']] = $fileRecord;

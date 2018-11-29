@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -250,5 +251,174 @@ class ResourceStorageTest extends FunctionalTestCase
         $subject->deleteFile($file);
 
         $this->assertFalse(file_exists(Environment::getPublicPath() . '/fileadmin/foo/bar.txt'));
+    }
+
+    public function searchFilesFindsFilesInFolderDataProvider(): array
+    {
+        return [
+            'Finds foo recursive by name' => [
+                'foo',
+                '/bar/',
+                true,
+                [],
+                [
+                    '/bar/bla/foo.txt',
+                ],
+            ],
+            'Finds foo not recursive by name' => [
+                'foo',
+                '/bar/bla/',
+                false,
+                [],
+                [
+                    '/bar/bla/foo.txt',
+                ],
+            ],
+            'Finds nothing when not recursive for top level folder' => [
+                'foo',
+                '/bar/',
+                false,
+                [],
+                [],
+            ],
+            'Finds foo by description' => [
+                'fodescrip',
+                '/bar/',
+                true,
+                [],
+                [
+                    '/bar/bla/foo.txt',
+                ],
+            ],
+            'Finds foo by translated description' => [
+                'fotranslated',
+                '/bar/',
+                true,
+                [],
+                [
+                    '/bar/bla/foo.txt',
+                ],
+            ],
+            'Finds blupp by name' => [
+                'blupp',
+                '/bar/',
+                false,
+                [],
+                [
+                    '/bar/blupp.txt',
+                ],
+            ],
+            'Finds only blupp by title for non recursive' => [
+                'title',
+                '/bar/',
+                false,
+                [],
+                [
+                    '/bar/blupp.txt',
+                ],
+            ],
+            'Finds foo and blupp by title for recursive' => [
+                'title',
+                '/bar/',
+                true,
+                [],
+                [
+                    '/bar/blupp.txt',
+                    '/bar/bla/foo.txt',
+                ],
+            ],
+            'Finds foo, baz and blupp with no folder' => [
+                'title',
+                null,
+                true,
+                [],
+                [
+                    '/baz/bla/baz.txt',
+                    '/bar/blupp.txt',
+                    '/bar/bla/foo.txt',
+                ],
+            ],
+            'Finds nothing for not existing' => [
+                'baz',
+                '/bar/',
+                true,
+                [],
+                [],
+            ],
+            'Finds nothing in root, when not recursive' => [
+                'title',
+                '/',
+                false,
+                [],
+                [],
+            ],
+            'Finds nothing, when not recursive and no folder given' => [
+                'title',
+                null,
+                false,
+                [],
+                [],
+            ],
+            'Filter is applied to result' => [
+                'title',
+                null,
+                true,
+                [
+                    function ($itemName) {
+                        return strpos($itemName, 'blupp') !== false ? true : -1;
+                    }
+                ],
+                [
+                    '/bar/blupp.txt',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider searchFilesFindsFilesInFolderDataProvider
+     * @param string $searchTerm
+     * @param string $searchFolder
+     * @param bool $recursive
+     * @param array $filters
+     * @param string[] $expectedIdentifiers
+     * @throws \TYPO3\TestingFramework\Core\Exception
+     */
+    public function searchFilesFindsFilesInFolder(string $searchTerm, ?string $searchFolder, bool $recursive, array $filters, array $expectedIdentifiers)
+    {
+        try {
+            $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+            $this->importDataSet(__DIR__ . '/Fixtures/FileSearch.xml');
+            $this->setUpBackendUserFromFixture(1);
+            $subject = (new StorageRepository())->findByUid(1);
+            $subject->setFileAndFolderNameFilters($filters);
+
+            GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/bar/bla');
+            GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/baz/bla');
+            file_put_contents(Environment::getPublicPath() . '/fileadmin/bar/bla/foo.txt', 'myData');
+            file_put_contents(Environment::getPublicPath() . '/fileadmin/baz/bla/baz.txt', 'myData');
+            file_put_contents(Environment::getPublicPath() . '/fileadmin/bar/blupp.txt', 'myData');
+            clearstatcache();
+
+            $folder = $searchFolder ? ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier('1:' . $searchFolder) : null;
+            $search = FileSearchDemand::createForSearchTerm($searchTerm);
+            if ($recursive) {
+                $search = $search->withRecursive();
+            }
+
+            $result = $subject->searchFiles($search, $folder);
+            $expectedFiles = array_map([$subject, 'getFile'], $expectedIdentifiers);
+            $this->assertSame($expectedFiles, iterator_to_array($result));
+
+            // Check if search also works for non hierarchical storages/drivers
+            $this->inject($subject, 'capabilities', $subject->getCapabilities() & 7);
+            $result = $subject->searchFiles($search, $folder);
+            $expectedFiles = array_map([$subject, 'getFile'], $expectedIdentifiers);
+            $this->assertSame($expectedFiles, iterator_to_array($result));
+        } finally {
+            GeneralUtility::rmdir(Environment::getPublicPath() . '/fileadmin/bar', true);
+            GeneralUtility::rmdir(Environment::getPublicPath() . '/fileadmin/baz', true);
+        }
     }
 }

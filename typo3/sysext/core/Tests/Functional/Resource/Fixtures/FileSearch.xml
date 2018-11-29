@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<sys_file>
+		<uid>1</uid>
+		<pid>0</pid>
+		<storage>1</storage>
+		<identifier>/bar/bla/foo.txt</identifier>
+		<folder_hash>d839c094d3294deb5b61cf7e0fe4f1cddaa96579</folder_hash>
+		<name>foo</name>
+		<identifier_hash>84e70e8b11db88cea944e4d7be107092ab148b72</identifier_hash>
+		<extension>txt</extension>
+		<mime_type>text/plain</mime_type>
+		<sha1>6e237d7c3e98387f924b81aada9b8d1f43f5eb5b</sha1>
+	</sys_file>
+	<sys_file_metadata>
+		<uid>1</uid>
+		<pid>0</pid>
+		<crdate>1556435417</crdate>
+		<file>1</file>
+		<sys_language_uid>0</sys_language_uid>
+		<title>Title for foo</title>
+		<description>FoDescription</description>
+	</sys_file_metadata>
+	<sys_file_metadata>
+		<uid>2</uid>
+		<pid>0</pid>
+		<crdate>1556435427</crdate>
+		<file>1</file>
+		<l10n_parent>1</l10n_parent>
+		<sys_language_uid>1</sys_language_uid>
+		<title>Title for foo</title>
+		<description>FoTranslatedDescription</description>
+	</sys_file_metadata>
+
+	<sys_file>
+		<uid>2</uid>
+		<pid>0</pid>
+		<storage>1</storage>
+		<identifier>/bar/blupp.txt</identifier>
+		<folder_hash>04a7e2dfdf6e35eae326a441224010622d589ee9</folder_hash>
+		<name>blupp</name>
+		<identifier_hash>bdbeddb9d7697ff7508674ed4b5e35e0a397286c</identifier_hash>
+		<extension>txt</extension>
+		<mime_type>text/plain</mime_type>
+		<sha1>6e237d7c3e98387f924b81aada9b8d1f43f5eb5b</sha1>
+	</sys_file>
+	<sys_file_metadata>
+		<uid>3</uid>
+		<pid>0</pid>
+		<crdate>1556435499</crdate>
+		<file>2</file>
+		<sys_language_uid>0</sys_language_uid>
+		<title>Title for blupp</title>
+		<description>BlubDescription</description>
+	</sys_file_metadata>
+
+	<sys_file>
+		<uid>3</uid>
+		<pid>0</pid>
+		<storage>1</storage>
+		<identifier>/baz/bla/baz.txt</identifier>
+		<folder_hash>a0296fe46605d9faec617d7d138bd6d4e87d46f1</folder_hash>
+		<name>baz</name>
+		<identifier_hash>f11e0f830ba618ce3a65f8fbb19f09137c755e24</identifier_hash>
+		<extension>txt</extension>
+		<mime_type>text/plain</mime_type>
+		<sha1>6e237d7c3e98387f924b81aada9b8d1f43f5eb5b</sha1>
+	</sys_file>
+	<sys_file_metadata>
+		<uid>4</uid>
+		<pid>0</pid>
+		<crdate>1556435503</crdate>
+		<file>3</file>
+		<sys_language_uid>0</sys_language_uid>
+		<title>Title for baz</title>
+		<description>BaDescription</description>
+	</sys_file_metadata>
+</dataset>
