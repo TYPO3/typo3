@@ -17,6 +17,7 @@ ignoreFiles+="sysext/core/Tests/Acceptance/Support/_generated/BackendTesterActio
 ignoreFiles+="sysext/core/Tests/Acceptance/Support/_generated/InstallTesterActions.php"
 # a exception in here throws up an code from a previous exception
 ignoreFiles+="sysext/extbase/Classes/Core/Bootstrap.php"
+ignoreFiles+="sysext/form/Classes/Mvc/Property/TypeConverter/UploadedFileReferenceConverter.php"
 
 foundNewFile=0
 oldFilename=""
