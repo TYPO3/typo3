@@ -401,15 +401,7 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
             $pageRenderer->setXmlPrologAndDocType(implode(LF, $docTypeParts));
         }
         // Begin header section:
-        if (($controller->config['config']['htmlTag_setParams'] ?? '') !== 'none') {
-            $_attr = $controller->config['config']['htmlTag_setParams'] ?? GeneralUtility::implodeAttributes($htmlTagAttributes);
-        } else {
-            $_attr = '';
-        }
-        $htmlTag = '<html' . ($_attr ? ' ' . $_attr : '') . '>';
-        if (isset($controller->config['config']['htmlTag_stdWrap.'])) {
-            $htmlTag = $controller->cObj->stdWrap($htmlTag, $controller->config['config']['htmlTag_stdWrap.']);
-        }
+        $htmlTag = $this->generateHtmlTag($htmlTagAttributes, $controller->config['config'] ?? [], $controller->cObj);
         $pageRenderer->setHtmlTag($htmlTag);
         // Head tag:
         $headTag = $controller->pSetup['headTag'] ?? '<head>';
@@ -1110,6 +1102,51 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
                 $excludeFromConcatenation
             );
         }
+    }
+
+    /**
+     * Generates the <html> tag by evaluting TypoScript configuration, usually found via:
+     *
+     * - Adding extra attributes in addition to pre-generated ones (e.g. "dir")
+     *     config.htmlTag.attributes.no-js = 1
+     *     config.htmlTag.attributes.empty-attribute =
+     *
+     * - Adding one full string (no stdWrap!) to the "<html $htmlTagAttributes {config.htmlTag_setParams}>" tag
+     *     config.htmlTag_setParams = string|"none"
+     *
+     *   If config.htmlTag_setParams = none is set, even the pre-generated values are not added at all anymore.
+     *
+     * - "config.htmlTag_stdWrap" always applies over the whole compiled tag.
+     *
+     * @param array $htmlTagAttributes pre-generated attributes by doctype/direction etc. values.
+     * @param array $configuration the TypoScript configuration "config." array
+     * @param ContentObjectRenderer $cObj
+     * @return string the full <html> tag as string
+     */
+    protected function generateHtmlTag(array $htmlTagAttributes, array $configuration, ContentObjectRenderer $cObj): string
+    {
+        if (is_array($configuration['htmlTag.']['attributes.'] ?? null)) {
+            $attributeString = '';
+            foreach ($configuration['htmlTag.']['attributes.'] as $attributeName => $value) {
+                $attributeString .= ' ' . htmlspecialchars($attributeName) . ($value !== '' ? '="' . htmlspecialchars((string)$value) . '"' : '');
+                // If e.g. "htmlTag.attributes.dir" is set, make sure it is not added again with "implodeAttributes()"
+                if (isset($htmlTagAttributes[$attributeName])) {
+                    unset($htmlTagAttributes[$attributeName]);
+                }
+            }
+            $attributeString = ltrim(GeneralUtility::implodeAttributes($htmlTagAttributes) . $attributeString);
+        } elseif (($configuration['htmlTag_setParams'] ?? '') === 'none') {
+            $attributeString = '';
+        } elseif (isset($configuration['htmlTag_setParams'])) {
+            $attributeString = $configuration['htmlTag_setParams'];
+        } else {
+            $attributeString = GeneralUtility::implodeAttributes($htmlTagAttributes);
+        }
+        $htmlTag = '<html' . ($attributeString ? ' ' . $attributeString : '') . '>';
+        if (isset($configuration['htmlTag_stdWrap.'])) {
+            $htmlTag = $cObj->stdWrap($htmlTag, $configuration['htmlTag_stdWrap.']);
+        }
+        return $htmlTag;
     }
 
     /**

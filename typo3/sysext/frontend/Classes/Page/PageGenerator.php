@@ -223,10 +223,22 @@ class PageGenerator
             $pageRenderer->setXmlPrologAndDocType(implode(LF, $docTypeParts));
         }
         // Begin header section:
-        if (($tsfe->config['config']['htmlTag_setParams'] ?? '') !== 'none') {
-            $_attr = $tsfe->config['config']['htmlTag_setParams'] ?? GeneralUtility::implodeAttributes($htmlTagAttributes);
-        } else {
+        if (is_array($tsfe->config['config']['htmlTag.']['attributes.'] ?? null)) {
             $_attr = '';
+            foreach ($tsfe->config['config']['htmlTag.']['attributes.'] as $attributeName => $value) {
+                $_attr .= ' ' . htmlspecialchars($attributeName) . ($value !== '' ? '="' . htmlspecialchars((string)$value) . '"' : '');
+                // If e.g. "htmlTag.attributes.dir" is set, make sure it is not added again with "implodeAttributes()"
+                if (isset($htmlTagAttributes[$attributeName])) {
+                    unset($htmlTagAttributes[$attributeName]);
+                }
+            }
+            $_attr = GeneralUtility::implodeAttributes($htmlTagAttributes) . $_attr;
+        } elseif (($tsfe->config['config']['htmlTag_setParams'] ?? '') === 'none') {
+            $_attr = '';
+        } elseif (isset($tsfe->config['config']['htmlTag_setParams'])) {
+            $_attr = $tsfe->config['config']['htmlTag_setParams'];
+        } else {
+            $_attr = GeneralUtility::implodeAttributes($htmlTagAttributes);
         }
         $htmlTag = '<html' . ($_attr ? ' ' . $_attr : '') . '>';
         if (isset($tsfe->config['config']['htmlTag_stdWrap.'])) {

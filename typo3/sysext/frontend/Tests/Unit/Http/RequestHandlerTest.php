@@ -31,6 +31,71 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class RequestHandlerTest extends UnitTestCase
 {
+    public function generateHtmlTagIncludesAllPossibilitiesDataProvider()
+    {
+        return [
+            'no original values' => [
+                [],
+                [],
+                '<html>'
+            ],
+            'no additional values' => [
+                ['dir' => 'left'],
+                [],
+                '<html dir="left">'
+            ],
+            'no additional values #2' => [
+                ['dir' => 'left', 'xmlns:dir' => 'left'],
+                [],
+                '<html dir="left" xmlns:dir="left">'
+            ],
+            'disable all attributes' => [
+                ['dir' => 'left', 'xmlns:dir' => 'left'],
+                ['htmlTag_setParams' => 'none'],
+                '<html>'
+            ],
+            'only add setParams' => [
+                ['dir' => 'left', 'xmlns:dir' => 'left'],
+                ['htmlTag_setParams' => 'amp'],
+                '<html amp>'
+            ],
+            'attributes property trumps htmlTag_setParams' => [
+                ['dir' => 'left', 'xmlns:dir' => 'left'],
+                ['htmlTag.' => ['attributes.' => ['amp' => '']], 'htmlTag_setParams' => 'none'],
+                '<html dir="left" xmlns:dir="left" amp>'
+            ],
+            'attributes property with mixed values' => [
+                ['dir' => 'left', 'xmlns:dir' => 'left'],
+                ['htmlTag.' => ['attributes.' => ['amp' => '', 'no-js' => 'true', 'additional-enabled' => 0]]],
+                '<html dir="left" xmlns:dir="left" amp no-js="true" additional-enabled="0">'
+            ],
+            'attributes property overrides default settings' => [
+                ['dir' => 'left'],
+                ['htmlTag.' => ['attributes.' => ['amp' => '', 'dir' => 'right']]],
+                '<html amp dir="right">'
+            ],
+        ];
+    }
+
+    /**
+     * Does not test stdWrap functionality.
+     *
+     * @param $htmlTagAttributes
+     * @param $configuration
+     * @param $expectedResult
+     * @test
+     * @dataProvider generateHtmlTagIncludesAllPossibilitiesDataProvider
+     */
+    public function generateHtmlTagIncludesAllPossibilities($htmlTagAttributes, $configuration, $expectedResult)
+    {
+        $subject = $this->getAccessibleMock(RequestHandler::class, ['dummy'], [], '', false);
+        $cObj = $this->prophesize(ContentObjectRenderer::class);
+        $cObj->stdWrap(Argument::cetera())->shouldNotBeCalled();
+        $result = $subject->_call('generateHtmlTag', $htmlTagAttributes, $configuration, $cObj->reveal());
+
+        $this->assertEquals($expectedResult, $result);
+    }
+
     /**
      * @return array
      */
