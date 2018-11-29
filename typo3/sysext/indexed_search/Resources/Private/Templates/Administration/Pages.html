@@ -21,6 +21,7 @@
 					<th><f:translate key="field.sub" /></th>
 					<th><f:translate key="field.language" /></th>
 					<th><f:translate key="field.cHash" /></th>
+					<th><f:translate key="field.staticPageArguments" /></th>
 					<th><f:translate key="field.pHash" /></th>
 				</tr>
 			</thead>
@@ -62,6 +63,13 @@
 					<td>
 						<f:if condition="{data.cHashParams}">
 							<f:for each="{data.cHashParams}" as="value" key="key">
+								{key}={value}<br>
+							</f:for>
+						</f:if>
+					</td>
+					<td>
+						<f:if condition="{data.static_page_arguments}">
+							<f:for each="{data.static_page_arguments}" as="value" key="key">
 								{key}={value}<br>
 							</f:for>
 						</f:if>
