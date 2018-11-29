@@ -63,10 +63,12 @@
     \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:groupList\': info.groupList
     }'}" debug="false"/>
 
-<f:variable name="noCacheLabel">LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:noCache_no</f:variable>
-<f:if condition="{info.noCache}"><f:variable name="noCacheLabel">LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:noCache_yes</f:variable></f:if>
+<f:if condition="{info.noCache}">
+    <f:then><f:variable name="isCachedInfo">LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:noCache_no</f:variable></f:then>
+    <f:else><f:variable name="isCachedInfo">LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:noCache_yes</f:variable></f:else>
+</f:if>
 <f:render partial="Data/TableKeyValue" arguments="{label: 'Cache', data: '{
-    \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:noCache\': noCacheLabel
+    \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:noCache\': isCachedInfo
     }'}" debug="false"/>
 
 <f:render partial="Data/TableKeyValue" arguments="{label: 'UserIntObjects', data: '{
