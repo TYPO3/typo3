@@ -209,7 +209,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
                     $validationResult = $validator->validate($uploadedFile);
                     if ($validationResult->hasErrors()) {
                         $uploadedFile->getStorage()->deleteFile($uploadedFile);
-                        throw new TypeConverterException($validationResult->getErrors()[0]->getMessage(), 1471708999);
+                        throw new TypeConverterException($validationResult->getErrors()[0]->getMessage(), $validationResult->getErrors()[0]->getCode());
                     }
                 }
             }
