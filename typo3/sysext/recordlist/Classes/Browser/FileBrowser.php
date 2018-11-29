@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -250,7 +251,8 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $titleLen = (int)$this->getBackendUser()->uc['titleLen'];
 
         if ($this->searchWord !== '') {
-            $files = $this->fileRepository->searchByName($folder, $this->searchWord);
+            $searchDemand = FileSearchDemand::createForSearchTerm($this->searchWord)->withRecursive();
+            $files = $folder->searchFiles($searchDemand);
         } else {
             $extensionList = !empty($extensionList) && $extensionList[0] === '*' ? [] : $extensionList;
             $files = $this->getFilesInFolder($folder, $extensionList);

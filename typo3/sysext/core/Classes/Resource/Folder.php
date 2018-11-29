@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
+use TYPO3\CMS\Core\Resource\Search\Result\FileSearchResultInterface;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -229,6 +231,23 @@ class Folder implements FolderInterface
         $this->restoreBackedUpFiltersInStorage($backedUpFilters);
 
         return $fileObjects;
+    }
+
+    /**
+     * Returns a file search result based on the given demand.
+     * The result also includes matches in meta data fields that are defined in TCA.
+     *
+     * @param FileSearchDemand $searchDemand
+     * @param int $filterMode The filter mode to use for the found files
+     * @return FileSearchResultInterface
+     */
+    public function searchFiles(FileSearchDemand $searchDemand, int $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS): FileSearchResultInterface
+    {
+        list($backedUpFilters, $useFilters) = $this->prepareFiltersInStorage($filterMode);
+        $searchResult = $this->storage->searchFiles($searchDemand, $this, $useFilters);
+        $this->restoreBackedUpFiltersInStorage($backedUpFilters);
+
+        return $searchResult;
     }
 
     /**

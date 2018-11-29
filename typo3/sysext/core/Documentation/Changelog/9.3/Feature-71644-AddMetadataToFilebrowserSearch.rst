@@ -9,12 +9,6 @@ See :issue:`71644`
 Description
 ===========
 
-Now also searching for `sys_file_metadata` in the filebrowser is possible. The fields title, description and alternative are searched.
-
-
-Impact
-======
-
-Files are displayed whose metadata match the search word.
+This change is now superseded by a more solid solution with `#87610`, which also respects folders in file search.
 
 .. index:: Backend, ext:filelist

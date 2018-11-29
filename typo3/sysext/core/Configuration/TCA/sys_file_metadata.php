@@ -22,12 +22,17 @@ return [
             'ignoreWebMountRestriction' => true,
             'ignoreRootLevelRestriction' => true,
         ],
-        'searchFields' => 'file,title,description,alternative'
+        'searchFields' => 'title,description,alternative'
     ],
     'interface' => [
         'showRecordFieldList' => 'file, title, description, alternative'
     ],
     'columns' => [
+        'crdate' => [
+            'config' => [
+                'type' => 'passthrough',
+            ],
+        ],
         'sys_language_uid' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [

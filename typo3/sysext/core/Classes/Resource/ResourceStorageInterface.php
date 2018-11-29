@@ -62,6 +62,10 @@ interface ResourceStorageInterface
      */
     const CAPABILITY_WRITABLE = 4;
     /**
+     * Whether identifiers contain hierarchy information (folder structure).
+     */
+    const CAPABILITY_HIERARCHICAL_IDENTIFIERS = 8;
+    /**
      * Name of the default processing folder
      */
     const DEFAULT_ProcessingFolder = '_processed_';

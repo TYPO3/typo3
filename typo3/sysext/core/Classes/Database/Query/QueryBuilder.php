@@ -351,12 +351,12 @@ class QueryBuilder
      * 'groupBy', 'having' and 'orderBy'.
      *
      * @param string $sqlPartName
-     * @param string $sqlPart
+     * @param string|array $sqlPart
      * @param bool $append
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function add(string $sqlPartName, string $sqlPart, bool $append = false): QueryBuilder
+    public function add(string $sqlPartName, $sqlPart, bool $append = false): QueryBuilder
     {
         $this->concreteQueryBuilder->add($sqlPartName, $sqlPart, $append);
 

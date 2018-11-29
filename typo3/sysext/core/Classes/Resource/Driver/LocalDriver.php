@@ -75,7 +75,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         $this->capabilities =
             ResourceStorage::CAPABILITY_BROWSABLE
             | ResourceStorage::CAPABILITY_PUBLIC
-            | ResourceStorage::CAPABILITY_WRITABLE;
+            | ResourceStorage::CAPABILITY_WRITABLE
+            | ResourceStorage::CAPABILITY_HIERARCHICAL_IDENTIFIERS;
     }
 
     /**
@@ -89,6 +90,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     public function mergeConfigurationCapabilities($capabilities)
     {
         $this->capabilities &= $capabilities;
+
         return $this->capabilities;
     }
 
