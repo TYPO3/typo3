@@ -179,7 +179,7 @@ class ConfigurationManager
      */
     protected function getAdditionalFactoryConfigurationFileLocation()
     {
-        return Environment::getPublicPath() . '/' . $this->additionalFactoryConfigurationFile;
+        return Environment::getLegacyConfigPath() . '/' . $this->additionalFactoryConfigurationFile;
     }
 
     /**

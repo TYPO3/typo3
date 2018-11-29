@@ -535,8 +535,8 @@ class ConfigurationManagerTest extends UnitTestCase
         $this->testFilesToDelete[] = $factoryConfigurationAbsoluteFile;
         $subject->_set('factoryConfigurationFile', $factoryConfigurationFile);
 
-        $additionalFactoryConfigurationFile = 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '.php';
-        $additionalFactoryConfigurationAbsoluteFile = Environment::getPublicPath() . '/' . $additionalFactoryConfigurationFile;
+        $additionalFactoryConfigurationFile = '../typo3temp/var/tests/' . $this->getUniqueId('test_') . '.php';
+        $additionalFactoryConfigurationAbsoluteFile = Environment::getLegacyConfigPath() . '/' . $additionalFactoryConfigurationFile;
         $uniqueContentString = $this->getUniqueId('string_');
         $validAdditionalFactoryConfigurationFileContent =
             '<?php' . LF .
