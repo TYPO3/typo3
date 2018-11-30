@@ -235,7 +235,7 @@ class ArrayUtility
         foreach ($result as $key => $value) {
             if (is_array($value)) {
                 $result[$key] = self::removeNullValuesRecursive($value);
-            } elseif ($value === null) {
+            } elseif ($value == null) {
                 unset($result[$key]);
             }
         }
