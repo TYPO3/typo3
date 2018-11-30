@@ -174,7 +174,8 @@ class PreviewController
         // Build the "list view" link to the review controller
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $wsSettingsUrl = $uriBuilder->buildUriFromRoute('web_WorkspacesWorkspaces', [
-            'tx_workspaces_web_workspacesworkspaces' => ['action' => 'singleIndex']
+            'tx_workspaces_web_workspacesworkspaces' => ['action' => 'singleIndex'],
+            'id' => $this->pageId
         ], UriBuilder::ABSOLUTE_URL);
 
         // Evaluate available preview modes
@@ -188,6 +189,7 @@ class PreviewController
             $splitPreviewModes = $allPreviewModes;
         }
         $this->moduleTemplate->getPageRenderer()->addInlineSetting('Workspaces', 'SplitPreviewModes', $splitPreviewModes);
+        $this->moduleTemplate->getPageRenderer()->addInlineSetting('Workspaces', 'id', $this->pageId);
 
         $this->view->assignMultiple([
             'logoLink' => TYPO3_URL_GENERAL,
