@@ -406,7 +406,9 @@ class CommandMap
                 $extendedCommandMap[$elementTable][$elementId]['version'] = $properties;
             }
         }
-        $this->remove($table, $versionIds, 'version');
+        foreach ($versionIds as $versionId) {
+            $this->remove($table, $versionId, 'version');
+        }
         $this->mergeToBottom($extendedCommandMap);
     }
 
@@ -463,8 +465,8 @@ class CommandMap
                     throw new \RuntimeException('Command map for [' . $table . '][' . $versionId . '][version] was already set.', 1289391048);
                 }
                 $extractedCommandMap[$table][$versionId]['version'] = $properties;
+                $this->remove($table, $versionId, 'version');
             }
-            $this->remove($table, $versionIdList, 'version');
             $this->mergeToBottom($extractedCommandMap);
         }
     }
