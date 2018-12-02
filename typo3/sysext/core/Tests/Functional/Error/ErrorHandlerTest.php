@@ -23,19 +23,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class ErrorHandlerTest extends FunctionalTestCase
 {
     /**
-     * @var array
-     */
-    protected $configurationToUseInTestInstance = [
-        'DB' => [
-            'Connections' => [
-                'Default' => [
-                    'initCommands' => 'SET NAMES \'UTF8\';',
-                ],
-            ],
-        ],
-    ];
-
-    /**
      * Disabled on sqlite and mssql: They don't support init command "SET NAMES 'UTF8'". That's
      * ok since this test is not about db platform support but error handling in core.
      *
