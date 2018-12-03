@@ -37,6 +37,11 @@ class AbstractPluginTest extends UnitTestCase
     protected $defaultPiVars;
 
     /**
+     * @var bool
+     */
+    protected $resetSingletonInstances = true;
+
+    /**
      * Sets up this testcase
      */
     protected function setUp()

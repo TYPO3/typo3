@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Plugin;
  */
 
 use Doctrine\DBAL\Driver\Statement;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -22,6 +23,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -261,21 +263,25 @@ class AbstractPlugin
                 $this->frontendController->reqCHash();
             }
         }
-        if (!empty($this->frontendController->config['config']['language'])) {
+        $siteLanguage = $this->getCurrentSiteLanguage();
+        if ($siteLanguage) {
+            $this->LLkey = $siteLanguage->getTypo3Language();
+        } elseif (!empty($this->frontendController->config['config']['language'])) {
             $this->LLkey = $this->frontendController->config['config']['language'];
-            if (empty($this->frontendController->config['config']['language_alt'])) {
-                /** @var Locales $locales */
-                $locales = GeneralUtility::makeInstance(Locales::class);
-                if (in_array($this->LLkey, $locales->getLocales())) {
-                    $this->altLLkey = '';
-                    foreach ($locales->getLocaleDependencies($this->LLkey) as $language) {
-                        $this->altLLkey .= $language . ',';
-                    }
-                    $this->altLLkey = rtrim($this->altLLkey, ',');
+        }
+
+        if (empty($this->frontendController->config['config']['language_alt'])) {
+            /** @var Locales $locales */
+            $locales = GeneralUtility::makeInstance(Locales::class);
+            if (in_array($this->LLkey, $locales->getLocales())) {
+                $this->altLLkey = '';
+                foreach ($locales->getLocaleDependencies($this->LLkey) as $language) {
+                    $this->altLLkey .= $language . ',';
                 }
-            } else {
-                $this->altLLkey = $this->frontendController->config['config']['language_alt'];
+                $this->altLLkey = rtrim($this->altLLkey, ',');
             }
+        } else {
+            $this->altLLkey = $this->frontendController->config['config']['language_alt'];
         }
     }
 
@@ -1403,5 +1409,20 @@ class AbstractPlugin
             }
         }
         return $tempArr[$value];
+    }
+
+    /**
+     * Returns the currently configured "site language" if a site is configured (= resolved) in the current request.
+     *
+     * @internal
+     */
+    protected function getCurrentSiteLanguage(): ?SiteLanguage
+    {
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        return $request
+               && $request instanceof ServerRequestInterface
+               && $request->getAttribute('language') instanceof SiteLanguage
+            ? $request->getAttribute('language')
+            : null;
     }
 }
