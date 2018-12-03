@@ -2432,7 +2432,7 @@ class PageLayoutView implements LoggerAwareInterface
                 $allowTranslate = false;
             }
             if (isset($this->languageHasTranslationsCache[$lP]['hasTranslations'])) {
-                $allowCopy = !$this->languageHasTranslationsCache[$lP]['hasTranslations'];
+                $allowCopy = $allowCopy && !$this->languageHasTranslationsCache[$lP]['hasTranslations'];
             }
         }
 
