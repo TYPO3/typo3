@@ -4,6 +4,7 @@ return [
         'restFiles' => [
             'Feature-82869-ReplaceInjectWithTYPO3CMSExtbaseAnnotationInject.rst',
             'Deprecation-82869-ReplaceInjectWithTYPO3CMSExtbaseAnnotationInject.rst',
+            'Deprecation-86907-DeprecateUsageOfDependencyInjectionWithNonPublicProperties.rst',
         ],
     ],
     '@lazy' => [
