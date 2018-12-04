@@ -110,7 +110,7 @@ class SiteLanguage
      * Additional parameters configured for this site language
      * @var array
      */
-    protected $attributes = [];
+    protected $configuration = [];
 
     /**
      * SiteLanguage constructor.
@@ -118,43 +118,44 @@ class SiteLanguage
      * @param int $languageId
      * @param string $locale
      * @param UriInterface $base
-     * @param array $attributes
+     * @param array $configuration
      */
-    public function __construct(int $languageId, string $locale, UriInterface $base, array $attributes)
+    public function __construct(int $languageId, string $locale, UriInterface $base, array $configuration)
     {
         $this->languageId = $languageId;
         $this->locale = $locale;
         $this->base = $base;
-        $this->attributes = $attributes;
-        if (!empty($attributes['title'])) {
-            $this->title = $attributes['title'];
+        $this->configuration = $configuration;
+
+        if (!empty($configuration['title'])) {
+            $this->title = $configuration['title'];
         }
-        if (!empty($attributes['navigationTitle'])) {
-            $this->navigationTitle = $attributes['navigationTitle'];
+        if (!empty($configuration['navigationTitle'])) {
+            $this->navigationTitle = $configuration['navigationTitle'];
         }
-        if (!empty($attributes['flag'])) {
-            $this->flagIdentifier = $attributes['flag'];
+        if (!empty($configuration['flag'])) {
+            $this->flagIdentifier = $configuration['flag'];
         }
-        if (!empty($attributes['typo3Language'])) {
-            $this->typo3Language = $attributes['typo3Language'];
+        if (!empty($configuration['typo3Language'])) {
+            $this->typo3Language = $configuration['typo3Language'];
         }
-        if (!empty($attributes['iso-639-1'])) {
-            $this->twoLetterIsoCode = $attributes['iso-639-1'];
+        if (!empty($configuration['iso-639-1'])) {
+            $this->twoLetterIsoCode = $configuration['iso-639-1'];
         }
-        if (!empty($attributes['hreflang'])) {
-            $this->hreflang = $attributes['hreflang'];
+        if (!empty($configuration['hreflang'])) {
+            $this->hreflang = $configuration['hreflang'];
         }
-        if (!empty($attributes['direction'])) {
-            $this->direction = $attributes['direction'];
+        if (!empty($configuration['direction'])) {
+            $this->direction = $configuration['direction'];
         }
-        if (!empty($attributes['fallbackType'])) {
-            $this->fallbackType = $attributes['fallbackType'];
+        if (!empty($configuration['fallbackType'])) {
+            $this->fallbackType = $configuration['fallbackType'];
         }
-        if (isset($attributes['fallbacks'])) {
-            $this->fallbackLanguageIds = is_array($attributes['fallbacks']) ? $attributes['fallbacks'] : explode(',', $attributes['fallbacks']);
+        if (isset($configuration['fallbacks'])) {
+            $this->fallbackLanguageIds = is_array($configuration['fallbacks']) ? $configuration['fallbacks'] : explode(',', $configuration['fallbacks']);
         }
-        if (isset($attributes['enabled'])) {
-            $this->enabled = (bool)$attributes['enabled'];
+        if (isset($configuration['enabled'])) {
+            $this->enabled = (bool)$configuration['enabled'];
         }
     }
 
@@ -166,7 +167,7 @@ class SiteLanguage
      */
     public function toArray(): array
     {
-        return [
+        return array_merge($this->configuration, [
             'languageId' => $this->getLanguageId(),
             'locale' => $this->getLocale(),
             'base' => (string)$this->getBase(),
@@ -180,7 +181,7 @@ class SiteLanguage
             'fallbackType' => $this->getFallbackType(),
             'enabled' => $this->enabled(),
             'fallbackLanguageIds' => $this->getFallbackLanguageIds(),
-        ];
+        ]);
     }
 
     /**
@@ -220,7 +221,7 @@ class SiteLanguage
      */
     public function getNavigationTitle(): string
     {
-        return $this->navigationTitle ?: $this->getTitle();
+        return $this->navigationTitle ?: $this->title;
     }
 
     /**
