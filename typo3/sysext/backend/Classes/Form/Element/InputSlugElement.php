@@ -215,7 +215,7 @@ class InputSlugElement extends AbstractFormElement
      */
     protected function getPrefix(SiteInterface $site, int $requestLanguageId = 0): string
     {
-        $language = $site->getLanguageById($requestLanguageId);
+        $language = ($requestLanguageId < 0) ? $site->getDefaultLanguage() : $site->getLanguageById($requestLanguageId);
         $base = $language->getBase();
         $baseUrl = (string)$base;
         $baseUrl = rtrim($baseUrl, '/');
