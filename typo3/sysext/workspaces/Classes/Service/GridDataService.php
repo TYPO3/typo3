@@ -177,7 +177,8 @@ class GridDataService implements LoggerAwareInterface
                     $versionArray['label_prevStage'] = htmlspecialchars($stagesObj->getStageTitle($tempStage['uid']));
                     $versionArray['value_prevStage'] = (int)$tempStage['uid'];
                     $versionArray['path_Live'] = htmlspecialchars(BackendUtility::getRecordPath($record['livepid'], '', 999));
-                    $versionArray['path_Workspace'] = htmlspecialchars(BackendUtility::getRecordPath($record['wspid'], '', 999));
+                    // no htmlspecialchars necessary as this is only used in JS via text function
+                    $versionArray['path_Workspace'] = BackendUtility::getRecordPath($record['wspid'], '', 999);
                     $versionArray['workspace_Title'] = htmlspecialchars(WorkspaceService::getWorkspaceTitle($versionRecord['t3ver_wsid']));
                     $versionArray['workspace_Tstamp'] = $versionRecord['tstamp'];
                     $versionArray['workspace_Formated_Tstamp'] = BackendUtility::datetime($versionRecord['tstamp']);
