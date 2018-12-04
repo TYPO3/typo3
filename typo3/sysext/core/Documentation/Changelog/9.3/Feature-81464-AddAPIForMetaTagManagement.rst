@@ -24,7 +24,7 @@ You can use that manager to add your meta tag; see the example below for the :ht
 
 .. code-block:: php
 
-    $metaTagManager = \TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry::getInstance()->getManagerForProperty('og:title');
+    $metaTagManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry::class)->getManagerForProperty('og:title');
     $metaTagManager->addProperty('og:title', 'This is the OG title from a controller');
 
 This code will result in a :html:`<meta property="og:title" content="This is the OG title from a controller" />` tag in frontend.
@@ -33,21 +33,21 @@ If you need to specify sub-properties, e.g. :html:`og:image:width`, you can use 
 
 .. code-block:: php
 
-    $metaTagManager = \TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry::getInstance()->getManagerForProperty('og:image');
+    $metaTagManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry::class)->getManagerForProperty('og:image');
     $metaTagManager->addProperty('og:image', '/path/to/image.jpg', ['width' => 400, 'height' => 400]);
 
 You can also remove a specific property:
 
 .. code-block:: php
 
-    $metaTagManager = \TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry::getInstance()->getManagerForProperty('og:title');
+    $metaTagManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry::class)->getManagerForProperty('og:title');
     $metaTagManager->removeProperty('og:title');
 
 Or remove all previously set meta tags of a specific manager:
 
 .. code-block:: php
 
-    $metaTagManager = \TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry::getInstance()->getManagerForProperty('og:title');
+    $metaTagManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry::class)->getManagerForProperty('og:title');
     $metaTagManager->removeAllProperties();
 
 
@@ -62,7 +62,7 @@ To use the manager, you must register it in :php:`ext_localconf.php`:
 
 .. code-block:: php
 
-    $metaTagManagerRegistry = \TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry::getInstance();
+    $metaTagManagerRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry::class);
     $metaTagManagerRegistry->registerManager(
         'custom',
         \Some\CustomExtension\MetaTag\CustomMetaTagManager::class
@@ -74,7 +74,7 @@ want to implement your own :php:`OpenGraphMetaTagManager`, you can use the follo
 
 .. code-block:: php
 
-    $metaTagManagerRegistry = \TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry::getInstance();
+    $metaTagManagerRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry::class);
     $metaTagManagerRegistry->registerManager(
         'myOwnOpenGraphManager',
         \Some\CustomExtension\MetaTag\MyOpenGraphMetaTagManager::class,
