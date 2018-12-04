@@ -3466,6 +3466,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->pageCacheTags = array_merge($this->pageCacheTags, $tags);
     }
 
+    /**
+     * @return array
+     */
+    public function getPageCacheTags(): array
+    {
+        return $this->pageCacheTags;
+    }
+
     /********************************************
      *
      * Page generation; rendering and inclusion
@@ -5141,6 +5149,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             case 'no_cacheBeforePageGen':
             case 'tempContent':
             case 'pagesTSconfig':
+            case 'pageCacheTags':
             case 'uniqueCounter':
             case 'uniqueString':
             case 'lang':
@@ -5210,6 +5219,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             case 'no_cacheBeforePageGen':
             case 'tempContent':
             case 'pagesTSconfig':
+            case 'pageCacheTags':
             case 'uniqueCounter':
             case 'uniqueString':
             case 'lang':
@@ -5352,6 +5362,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             case 'no_cacheBeforePageGen':
             case 'tempContent':
             case 'pagesTSconfig':
+            case 'pageCacheTags':
             case 'uniqueCounter':
             case 'uniqueString':
             case 'lang':
