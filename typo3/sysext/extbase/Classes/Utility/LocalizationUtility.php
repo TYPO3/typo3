@@ -86,7 +86,6 @@ class LocalizationUtility
             }
             $languageFilePath = static::getLanguageFilePath($extensionName);
         }
-        $languageFilePath = GeneralUtility::getFileAbsFileName($languageFilePath);
         $languageKeys = static::getLanguageKeys();
         if ($languageKey === null) {
             $languageKey = $languageKeys['languageKey'];
