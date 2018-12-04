@@ -3157,6 +3157,14 @@ class TypoScriptFrontendController
         $this->pageCacheTags = array_merge($this->pageCacheTags, $tags);
     }
 
+    /**
+     * @return array
+     */
+    public function getPageCacheTags()
+    {
+        return $this->pageCacheTags;
+    }
+
     /********************************************
      *
      * Page generation; rendering and inclusion
