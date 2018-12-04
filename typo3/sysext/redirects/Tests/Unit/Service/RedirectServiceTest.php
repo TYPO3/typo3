@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\RedirectService;
@@ -413,7 +414,7 @@ class RedirectServiceTest extends UnitTestCase
         $linkServiceProphecy->resolve(Argument::any())->willThrow(new InvalidPathException('', 1516531195));
         GeneralUtility::setSingletonInstance(LinkService::class, $linkServiceProphecy->reveal());
 
-        $result = $this->redirectService->getTargetUrl(['target' => 'invalid'], []);
+        $result = $this->redirectService->getTargetUrl(['target' => 'invalid'], [], new Site('dummy', 13, []));
 
         self::assertNull($result);
     }
@@ -436,7 +437,7 @@ class RedirectServiceTest extends UnitTestCase
         $linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
         GeneralUtility::setSingletonInstance(LinkService::class, $linkServiceProphecy->reveal());
 
-        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, []);
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, [], new Site('dummy', 13, []));
 
         $uri = new Uri('https://example.com/');
         self::assertEquals($uri, $result);
@@ -462,7 +463,7 @@ class RedirectServiceTest extends UnitTestCase
         $linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
         GeneralUtility::setSingletonInstance(LinkService::class, $linkServiceProphecy->reveal());
 
-        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, []);
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, [], new Site('dummy', 13, []));
 
         $uri = new Uri('https://example.com/file.txt');
         self::assertEquals($uri, $result);
@@ -489,7 +490,7 @@ class RedirectServiceTest extends UnitTestCase
         $linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
         GeneralUtility::setSingletonInstance(LinkService::class, $linkServiceProphecy->reveal());
 
-        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, []);
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, [], new Site('dummy', 13, []));
 
         $uri = new Uri('https://example.com/folder/');
         self::assertEquals($uri, $result);
@@ -513,7 +514,7 @@ class RedirectServiceTest extends UnitTestCase
         $linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
         GeneralUtility::setSingletonInstance(LinkService::class, $linkServiceProphecy->reveal());
 
-        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, []);
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, [], new Site('dummy', 13, []));
 
         $uri = new Uri('https://example.com');
         self::assertEquals($uri, $result);
@@ -537,7 +538,7 @@ class RedirectServiceTest extends UnitTestCase
         $linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
         GeneralUtility::setSingletonInstance(LinkService::class, $linkServiceProphecy->reveal());
 
-        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, ['bar' => 3, 'baz' => 4]);
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, ['bar' => 3, 'baz' => 4], new Site('dummy', 13, []));
 
         $uri = new Uri('https://example.com/?bar=2&baz=4&foo=1');
         self::assertEquals($uri, $result);
