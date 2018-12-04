@@ -5738,14 +5738,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param mixed  $type - either "ascii" or a number between -10 and 10, taken from config.spamProtectEmailAddresses
      * @return string encoded version of $string
      */
-    protected function encryptEmail($string, $type)
+    protected function encryptEmail(string $string, $type): string
     {
         $out = '';
         // obfuscates using the decimal HTML entity references for each character
         if ($type === 'ascii') {
-            $stringLength = strlen($string);
-            for ($a = 0; $a < $stringLength; $a++) {
-                $out .= '&#' . ord(substr($string, $a, 1)) . ';';
+            foreach (preg_split('//u', $string, -1, PREG_SPLIT_NO_EMPTY) as $char) {
+                $out .= '&#' . mb_ord($char) . ';';
             }
         } else {
             // like str_rot13() but with a variable offset and a wider character range
@@ -5777,14 +5776,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param mixed  $type - either "ascii" or a number between -10 and 10 taken from config.spamProtectEmailAddresses
      * @return string decoded version of $string
      */
-    protected function decryptEmail($string, $type)
+    protected function decryptEmail(string $string, $type): string
     {
         $out = '';
         // obfuscates using the decimal HTML entity references for each character
         if ($type === 'ascii') {
-            $stringLength = strlen($string);
-            for ($a = 0; $a < $stringLength; $a++) {
-                $out .= '&#' . ord(substr($string, $a, 1)) . ';';
+            foreach (preg_split('//u', $string, -1, PREG_SPLIT_NO_EMPTY) as $char) {
+                $out .= '&#' . mb_ord($char) . ';';
             }
         } else {
             // like str_rot13() but with a variable offset and a wider character range
