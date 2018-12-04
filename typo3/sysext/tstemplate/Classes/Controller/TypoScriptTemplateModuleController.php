@@ -367,7 +367,7 @@ class TypoScriptTemplateModuleController
                 if (empty($record) || VersionState::cast($record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
                     continue;
                 }
-                $additionalFieldsForRootline = ['sorting', 'hidden', 'fe_group', 'starttime', 'endtime', 'shortcut', 'nav_hide', 'module', 'content_from_pid'];
+                $additionalFieldsForRootline = ['sorting', 'shortcut'];
                 $rootline = BackendUtility::BEgetRootLine($record['pid'], '', true, $additionalFieldsForRootline);
                 $this->setInPageArray($pArray, $rootline, $record);
             }

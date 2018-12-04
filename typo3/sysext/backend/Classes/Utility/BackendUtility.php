@@ -393,45 +393,39 @@ class BackendUtility
                     break;
                 }
             }
+            $fields = [
+                'uid',
+                'pid',
+                'title',
+                'doktype',
+                'slug',
+                'tsconfig_includes',
+                'TSconfig',
+                'is_siteroot',
+                't3ver_oid',
+                't3ver_wsid',
+                't3ver_state',
+                't3ver_stage',
+                'backend_layout_next_level',
+                'hidden',
+                'starttime',
+                'endtime',
+                'fe_group',
+                'nav_hide',
+                'content_from_pid',
+                'module',
+                'extendToSubpages'
+            ];
+            $fields = array_merge($fields, $additionalFields);
+            $rootPage = array_fill_keys($fields, null);
             if ($uid == 0) {
-                $theRowArray[] = [
-                    'uid' => 0,
-                    'pid' => null,
-                    'title' => '',
-                    'doktype' => null,
-                    'slug' => null,
-                    'tsconfig_includes' => null,
-                    'TSconfig' => null,
-                    'is_siteroot' => null,
-                    't3ver_oid' => null,
-                    't3ver_wsid' => null,
-                    't3ver_state' => null,
-                    't3ver_stage' => null,
-                    'backend_layout_next_level' => null,
-                    'hidden' => null
-                ];
+                $rootPage['uid'] = 0;
+                $theRowArray[] = $rootPage;
             }
             $c = count($theRowArray);
             foreach ($theRowArray as $val) {
                 $c--;
-                $fields = [
-                    'uid',
-                    'pid',
-                    'title',
-                    'doktype',
-                    'slug',
-                    'tsconfig_includes',
-                    'TSconfig',
-                    'is_siteroot',
-                    't3ver_oid',
-                    't3ver_wsid',
-                    't3ver_state',
-                    't3ver_stage',
-                    'backend_layout_next_level',
-                    'hidden'
-                ];
-                $fields = array_merge($fields, $additionalFields);
-                $output[$c] = array_intersect_key($val, array_combine($fields, $fields));
+                $output[$c] = array_intersect_key($val, $rootPage);
                 if (isset($val['_ORIG_pid'])) {
                     $output[$c]['_ORIG_pid'] = $val['_ORIG_pid'];
                 }
@@ -481,6 +475,13 @@ class BackendUtility
                     't3ver_stage',
                     'backend_layout_next_level',
                     'hidden',
+                    'starttime',
+                    'endtime',
+                    'fe_group',
+                    'nav_hide',
+                    'content_from_pid',
+                    'module',
+                    'extendToSubpages',
                     ...$additionalFields
                 )
                 ->from('pages')
