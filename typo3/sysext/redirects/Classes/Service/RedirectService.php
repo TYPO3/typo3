@@ -23,7 +23,10 @@ use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
@@ -159,9 +162,10 @@ class RedirectService implements LoggerAwareInterface
     /**
      * @param array $matchedRedirect
      * @param array $queryParams
-     * @return UriInterface|Uri|null
+     * @param SiteInterface|null $site
+     * @return UriInterface|null
      */
-    public function getTargetUrl(array $matchedRedirect, array $queryParams)
+    public function getTargetUrl(array $matchedRedirect, array $queryParams, ?SiteInterface $site = null): ?UriInterface
     {
         $this->logger->debug('Found a redirect to process', $matchedRedirect);
         $linkParameterParts = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode((string)$matchedRedirect['target']);
@@ -177,11 +181,10 @@ class RedirectService implements LoggerAwareInterface
             if ($matchedRedirect['keep_query_parameters']) {
                 $url = $this->addQueryParams($queryParams, $url);
             }
-        } else {
-            // If it's a record or page, then boot up TSFE
-            $url = $this->getUriFromCustomLinkDetails($linkDetails, $matchedRedirect);
+            return $url;
         }
-        return $url;
+        // If it's a record or page, then boot up TSFE and use typolink
+        return $this->getUriFromCustomLinkDetails($matchedRedirect, $site, $linkDetails, $queryParams);
     }
 
     /**
@@ -210,36 +213,39 @@ class RedirectService implements LoggerAwareInterface
     /**
      * Called when TypoScript/TSFE is available, so typolink is used to generate the URL
      *
-     * @param array $linkDetails
      * @param array $redirectRecord
+     * @param SiteInterface|null $site
+     * @param array $linkDetails
+     * @param array $queryParams
      * @return UriInterface|null
      */
-    protected function getUriFromCustomLinkDetails(array $linkDetails, array $redirectRecord)
+    protected function getUriFromCustomLinkDetails(array $redirectRecord, ?SiteInterface $site, array $linkDetails, array $queryParams): ?UriInterface
     {
         if (!isset($linkDetails['type'], $GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']])) {
             return null;
         }
-        $this->bootFrontendController();
+        $controller = $this->bootFrontendController($site, $queryParams);
         /** @var AbstractTypolinkBuilder $linkBuilder */
         $linkBuilder = GeneralUtility::makeInstance(
             $GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']],
-            $GLOBALS['TSFE']->cObj,
-            $GLOBALS['TSFE']
+            $controller->cObj,
+            $controller
         );
         try {
             $configuration = [
+                'parameter' => (string)$redirectRecord['target'],
                 'forceAbsoluteUrl' => true,
             ];
             if ($redirectRecord['force_https']) {
                 $configuration['forceAbsoluteUrl.']['scheme'] = 'https';
             }
             if ($redirectRecord['keep_query_parameters']) {
-                $configuration['useCacheHash'] = false;
-                $configuration['addQueryString'] = true;
+                $configuration['additionalParams'] = HttpUtility::buildQueryString($queryParams, '&');
             }
             list($url) = $linkBuilder->build($linkDetails, '', '', $configuration);
             return new Uri($url);
         } catch (UnableToLinkException $e) {
+            return null;
         }
     }
 
@@ -254,16 +260,29 @@ class RedirectService implements LoggerAwareInterface
      * - TSFE->config
      * - TSFE->cObj
      *
-     * So a link to a page could be generated.
+     * So a link to a page can be generated.
+     *
+     * @param SiteInterface|null $site
+     * @param array $queryParams
+     * @return TypoScriptFrontendController
      */
-    protected function bootFrontendController()
+    protected function bootFrontendController(?SiteInterface $site, array $queryParams): TypoScriptFrontendController
     {
         // disable page errors
         $GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling'] = false;
-        $GLOBALS['TSFE']->fetch_the_id();
-        $GLOBALS['TSFE']->getConfigArray();
-        $GLOBALS['TSFE']->settingLanguage();
-        $GLOBALS['TSFE']->settingLocale();
-        $GLOBALS['TSFE']->newCObj();
+        $controller = GeneralUtility::makeInstance(
+            TypoScriptFrontendController::class,
+            null,
+            $site ? $site->getRootPageId() : $GLOBALS['TSFE']->id,
+            0
+        );
+        $controller->fe_user = $GLOBALS['TSFE']->fe_user ?? null;
+        $controller->fetch_the_id();
+        $controller->calculateLinkVars($queryParams);
+        $controller->getConfigArray();
+        $controller->settingLanguage();
+        $controller->settingLocale();
+        $controller->newCObj();
+        return $controller;
     }
 }
