@@ -10,8 +10,8 @@ Description
 ===========
 
 The site configuration allows now to specify variants of the site's base.
-Take the following example: The base of a site is set to `www.domain.tld` but the staging environment uses
-`staging.domain.tld` and the local development uses `www.domain.local`.
+Take the following example: The base of a site is set to `https://www.domain.tld` but the staging environment uses
+`https://staging.domain.tld` and the local development uses `https://www.domain.local`.
 
 The expression language feature is used to define which variant is taken into account.
 

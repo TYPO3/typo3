@@ -47,7 +47,7 @@
 				<source>Fully qualified class name to a class that implements the PageErrorHandlerInterface.</source>
 			</trans-unit>
 			<trans-unit id="site_base_variant.base">
-				<source>For example staging.domain.tld or www.domain.local</source>
+				<source>For example "https://staging.domain.tld" or "http://www.domain.local"</source>
 			</trans-unit>
 			<trans-unit id="site_base_variant.condition">
 				<source>Expression to match this base variant.</source>
