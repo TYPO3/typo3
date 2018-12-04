@@ -63,17 +63,19 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
      * @param string $message
      * @param array $reasons
      * @return ResponseInterface
+     * @throws \RuntimeException
      */
     public function handlePageError(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
     {
         try {
             $resolvedUrl = $this->resolveUrl($request, $this->errorHandlerConfiguration['errorContentSource']);
             $content = null;
+            $report = [];
             if ($resolvedUrl !== (string)$request->getUri()) {
-                $content = GeneralUtility::getUrl($resolvedUrl);
-            }
-            if (!$content) {
-                $content = 'Error handler could not fetch error page: Possible recursion detected.';
+                $content = GeneralUtility::getUrl($resolvedUrl, 0, null, $report);
+                if ($content === false && ((int)$report['error'] === -1 || (int)$report['error'] > 200)) {
+                    throw new \RuntimeException('Error handler could not fetch error page "' . $resolvedUrl . '", reason: ' . $report['message'], 1544172838);
+                }
             }
         } catch (InvalidRouteArgumentsException | SiteNotFoundException $e) {
             $content = 'Invalid error handler configuration: ' . $this->errorHandlerConfiguration['errorContentSource'];
