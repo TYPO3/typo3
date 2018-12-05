@@ -223,7 +223,8 @@ class RedirectService implements LoggerAwareInterface
         /** @var AbstractTypolinkBuilder $linkBuilder */
         $linkBuilder = GeneralUtility::makeInstance(
             $GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']],
-            $GLOBALS['TSFE']->cObj
+            $GLOBALS['TSFE']->cObj,
+            $GLOBALS['TSFE']
         );
         try {
             $configuration = [

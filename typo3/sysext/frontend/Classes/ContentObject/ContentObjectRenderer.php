@@ -5399,7 +5399,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
             /** @var AbstractTypolinkBuilder $linkBuilder */
             $linkBuilder = GeneralUtility::makeInstance(
                 $GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']],
-                $this
+                $this,
+                $tsfe
             );
             try {
                 list($this->lastTypoLinkUrl, $linkText, $target) = $linkBuilder->build($linkDetails, $linkText, $target, $conf);
