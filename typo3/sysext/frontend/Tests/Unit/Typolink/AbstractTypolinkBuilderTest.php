@@ -52,7 +52,6 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
             '',
             false
         );
-        $GLOBALS['TSFE'] = $this->frontendControllerMock;
     }
 
     //////////////////////
@@ -167,19 +166,16 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
      */
     public function forceAbsoluteUrlReturnsCorrectAbsoluteUrl($expected, $url, array $configuration)
     {
+        $this->frontendControllerMock->absRefPrefix = '';
         $contentObjectRendererProphecy = $this->prophesize(ContentObjectRenderer::class);
         $subject = $this->getAccessibleMock(
             AbstractTypolinkBuilder::class,
             ['build'],
-            [$contentObjectRendererProphecy->reveal()],
-            '',
-            false
+            [$contentObjectRendererProphecy->reveal(), $this->frontendControllerMock]
         );
         // Force hostname
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['SCRIPT_NAME'] = '/typo3/index.php';
-        $GLOBALS['TSFE']->absRefPrefix = '';
-
         $this->assertEquals($expected, $subject->_call('forceAbsoluteUrl', $url, $configuration));
     }
 
@@ -192,9 +188,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
         $subject = $this->getAccessibleMock(
             AbstractTypolinkBuilder::class,
             ['build'],
-            [$contentObjectRendererProphecy->reveal()],
-            '',
-            false
+            [$contentObjectRendererProphecy->reveal(), $this->frontendControllerMock]
         );
         // Force hostname
         $_SERVER['HTTP_HOST'] = 'localhost';
@@ -319,7 +313,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
             ['config' => [ 'doctype' => $doctype]];
         $renderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $subject = $this->getMockBuilder(AbstractTypolinkBuilder::class)
-            ->setConstructorArgs([$renderer])
+            ->setConstructorArgs([$renderer, $this->frontendControllerMock])
             ->setMethods(['build'])
             ->getMock();
         $actual = $this->callInaccessibleMethod(
