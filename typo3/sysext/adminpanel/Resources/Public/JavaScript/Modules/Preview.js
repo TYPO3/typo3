@@ -14,7 +14,7 @@ function initializePreviewModule() {
 		var timeVal = document.getElementById('preview_simulateDate-time-hr').value;
 		if (!dateVal && timeVal) {
 			var tempDate = new Date();
-			dateVal = tempDate.getDate() + "-" + tempDate.getMonth() + "-" + tempDate.getFullYear();
+			dateVal = tempDate.getFullYear() + "-" + (tempDate.getMonth() + 1) + "-" + tempDate.getDate();
 		}
 		if (dateVal && !timeVal) {
 			timeVal =  "00:00";
