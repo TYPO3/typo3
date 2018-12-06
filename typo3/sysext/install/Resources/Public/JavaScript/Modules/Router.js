@@ -241,7 +241,7 @@ define([
               + '<p>If this error happens at an early state and no full exception back trace is shown, it may also help'
               + ' to manually increase debugging output in <code>typo3conf/LocalConfiguration.php</code>:'
               + '<code>[\'BE\'][\'debug\'] => true</code>, <code>[\'SYS\'][\'devIPmask\'] => \'*\'</code>, <code>[\'SYS\'][\'displayErrors\'] => 1</code>,'
-              + '<code>[\'SYS\][\'systemLogLevel\'] => 0</code>, <code>[\'SYS\'][\'exceptionalErrors\'] => 12290</code></p>'
+              + '<code>[\'SYS\'][\'systemLogLevel\'] => 0</code>, <code>[\'SYS\'][\'exceptionalErrors\'] => 12290</code></p>'
             + '</div>'
           + '</div>'
           + '<div class="panel-group" role="tablist" aria-multiselectable="true">'

@@ -1,16 +1,16 @@
 
 .. include:: ../../Includes.txt
 
-=========================================================================
-Breaking: #68178 - Drop $GLOBALS['TYPO3_CONF_VARS']['SYS]['form_enctype']
-=========================================================================
+==========================================================================
+Breaking: #68178 - Drop $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype']
+==========================================================================
 
 See :issue:`68178`
 
 Description
 ===========
 
-Setting `$GLOBALS['TYPO3_CONF_VARS']['SYS]['form_enctype']` has been dropped without replacement.
+Setting `$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype']` has been dropped without replacement.
 
 
 Impact
