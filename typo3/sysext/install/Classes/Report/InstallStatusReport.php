@@ -142,6 +142,27 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
     }
 
     /**
+     * Returns all incomplete update wizards.
+     *
+     * Fetches all wizards that are not marked "done" in the registry and filters out
+     * the ones that should not be rendered (= no upgrade required).
+     *
+     * @return array
+     */
+    protected function getIncompleteWizards(): array
+    {
+        $upgradeWizardsService = GeneralUtility::makeInstance(UpgradeWizardsService::class);
+        $incompleteWizards = $upgradeWizardsService->getUpgradeWizardsList();
+        $incompleteWizards = array_filter(
+            $incompleteWizards,
+            function ($wizard) {
+                return $wizard['shouldRenderWizard'];
+            }
+        );
+        return $incompleteWizards;
+    }
+
+    /**
      * Checks if there are still updates to perform
      *
      * @return Status Represents whether the installation is completely updated yet
@@ -155,8 +176,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         // check if there are update wizards left to perform
-        $upgradeWizardsService = GeneralUtility::makeInstance(UpgradeWizardsService::class);
-        $incompleteWizards = $upgradeWizardsService->getUpgradeWizardsList();
+        $incompleteWizards = $this->getIncompleteWizards();
         if (count($incompleteWizards)) {
             // At least one incomplete wizard was found
             $value = $languageService->getLL('status_updateIncomplete');
