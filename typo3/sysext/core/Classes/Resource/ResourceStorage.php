@@ -1153,7 +1153,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @throws \InvalidArgumentException
      * @throws Exception\ExistingTargetFileNameException
-     * @return FileInterface
+     * @return string
      */
     public function sanitizeFileName($fileName, Folder $targetFolder = null)
     {
