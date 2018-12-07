@@ -36,19 +36,21 @@ class Tabs {
     this.storage = Client;
 
     const that = this;
-    $('.t3js-tabs').each(function(this: Element): void {
-      const $tabContainer: JQuery = $(this);
-      that.storeLastActiveTab = $tabContainer.data('storeLastTab') === 1;
-      const currentActiveTab = that.receiveActiveTab($tabContainer.attr('id'));
-      if (currentActiveTab) {
-        $tabContainer.find('a[href="' + currentActiveTab + '"]').tab('show');
-      }
-      $tabContainer.on('show.bs.tab', (e: any) => {
-        if (that.storeLastActiveTab) {
-          const id = e.currentTarget.id;
-          const target = e.target.hash;
-          that.storeActiveTab(id, target);
+    $((): void => {
+      $('.t3js-tabs').each(function(this: Element): void {
+        const $tabContainer: JQuery = $(this);
+        that.storeLastActiveTab = $tabContainer.data('storeLastTab') === 1;
+        const currentActiveTab = that.receiveActiveTab($tabContainer.attr('id'));
+        if (currentActiveTab) {
+          $tabContainer.find('a[href="' + currentActiveTab + '"]').tab('show');
         }
+        $tabContainer.on('show.bs.tab', (e: any) => {
+          if (that.storeLastActiveTab) {
+            const id = e.currentTarget.id;
+            const target = e.target.hash;
+            that.storeActiveTab(id, target);
+          }
+        });
       });
     });
   }
