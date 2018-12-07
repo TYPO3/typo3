@@ -616,6 +616,7 @@ define(['jquery',
         FormEngine.updateHiddenFieldValueFromSelect($listFieldEl, FormEngine.getFieldElement(fieldName));
         FormEngine.legacyFieldChangedCb();
         if (typeof FormEngine.Validation !== 'undefined' && typeof FormEngine.Validation.validate === 'function') {
+          FormEngine.Validation.markFieldAsChanged($listFieldEl);
           FormEngine.Validation.validate();
         }
       }
