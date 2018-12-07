@@ -13,6 +13,7 @@
 
 import * as $ from 'jquery';
 import 'TYPO3/CMS/Core/Contrib/jquery.minicolors';
+import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 
 /**
  * Module: TYPO3/CMS/Backend/ColorPicker
@@ -49,6 +50,16 @@ class ColorPicker {
           .val($element.val())
           .trigger('paste');
         $element.val('');
+      }
+    });
+    // On blur, use the formatted value from minicolors
+    $(document).on('blur', '.t3js-color-picker', (event: Event): void => {
+      const $element = $(event.target);
+      $element.closest('.t3js-formengine-field-item')
+        .find('INPUT[type="hidden"]')
+        .val($element.val());
+      if ($element.val() === '') { // force FormEngineReview if value is empty
+        FormEngine.Validation.validate();
       }
     });
   }
