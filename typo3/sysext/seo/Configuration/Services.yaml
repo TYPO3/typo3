@@ -13,3 +13,9 @@ services:
         identifier: 'legacy-slot'
         method: 'beforeGeneratingCanonical'
         event: TYPO3\CMS\Seo\Event\ModifyUrlForCanonicalTagEvent
+
+  TYPO3\CMS\Seo\HrefLang\HrefLangGenerator:
+    tags:
+      - name: event.listener
+        identifier: 'typo3-seo/hreflangGenerator'
+        event: TYPO3\CMS\Frontend\Event\ModifyHrefLangTagsEvent

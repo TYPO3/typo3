@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -31,6 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Event\ModifyHrefLangTagsEvent;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 
 /**
@@ -61,6 +63,16 @@ class RequestHandler implements RequestHandlerInterface
      * @var TimeTracker
      */
     protected $timeTracker;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     /**
      * Sets the global GET and POST to the values, so if people access $_GET and $_POST
@@ -113,7 +125,7 @@ class RequestHandler implements RequestHandlerInterface
             $this->timeTracker->incStackPointer();
             $this->timeTracker->push($controller->sPre, 'PAGE');
 
-            $controller->content = $this->generatePageContent($controller);
+            $controller->content = $this->generatePageContent($controller, $request);
 
             $this->timeTracker->pull($this->timeTracker->LR ? $controller->content : '');
             $this->timeTracker->decStackPointer();
@@ -164,9 +176,10 @@ class RequestHandler implements RequestHandlerInterface
      * pageRenderer to evaluate includeCSS, headTag etc. TypoScript processing to populate the pageRenderer.
      *
      * @param TypoScriptFrontendController $controller
+     * @param ServerRequestInterface $request
      * @return string
      */
-    protected function generatePageContent(TypoScriptFrontendController $controller): string
+    protected function generatePageContent(TypoScriptFrontendController $controller, ServerRequestInterface $request): string
     {
         // Generate the main content between the <body> tags
         // This has to be done first, as some additional TSFE-related code could have been written
@@ -176,7 +189,7 @@ class RequestHandler implements RequestHandlerInterface
             return $pageContent;
         }
         // Now, populate pageRenderer with all additional data
-        $this->processHtmlBasedRenderingSettings($controller, $controller->getLanguage());
+        $this->processHtmlBasedRenderingSettings($controller, $controller->getLanguage(), $request);
         $pageRenderer = $this->getPageRenderer();
         // Add previously generated page content within the <body> tag afterwards
         $pageRenderer->addBodyContent(LF . $pageContent);
@@ -214,15 +227,14 @@ class RequestHandler implements RequestHandlerInterface
      * At this point, the cacheable content has just been generated (thus, all content is available but hasn't been added
      * to PageRenderer yet). The method is called after the "main" page content, since some JS may be inserted at that point
      * that has been registered by cacheable plugins.
-     *
      * PageRenderer is now populated with all <head> data and additional JavaScript/CSS/FooterData/HeaderData that can be cached.
-     *
      * Once finished, the content is added to the >addBodyContent() functionality.
      *
      * @param TypoScriptFrontendController $controller
      * @param SiteLanguage $siteLanguage
+     * @param ServerRequestInterface $request
      */
-    protected function processHtmlBasedRenderingSettings(TypoScriptFrontendController $controller, SiteLanguage $siteLanguage): void
+    protected function processHtmlBasedRenderingSettings(TypoScriptFrontendController $controller, SiteLanguage $siteLanguage, ServerRequestInterface $request): void
     {
         $pageRenderer = $this->getPageRenderer();
         if ($controller->config['config']['moveJsFromHeaderToFooter'] ?? false) {
@@ -694,6 +706,7 @@ class RequestHandler implements RequestHandlerInterface
             GeneralUtility::callUserFunction($_funcRef, $_params, $_ref);
         }
 
+        $this->generateHrefLangTags($controller, $request);
         $this->generateMetaTagHtml(
             $controller->pSetup['meta.'] ?? [],
             $controller->cObj
@@ -1025,5 +1038,23 @@ class RequestHandler implements RequestHandlerInterface
             $htmlTag = $cObj->stdWrap($htmlTag, $configuration['htmlTag_stdWrap.']);
         }
         return $htmlTag;
+    }
+
+    protected function generateHrefLangTags(TypoScriptFrontendController $controller, ServerRequestInterface $request): void
+    {
+        $hrefLangs = $this->eventDispatcher->dispatch(
+            new ModifyHrefLangTagsEvent($request)
+        )->getHrefLangs();
+        if (count($hrefLangs) > 1) {
+            $data = [];
+            foreach ($hrefLangs as $hrefLang => $href) {
+                $data[] = sprintf('<link %s/>', GeneralUtility::implodeAttributes([
+                    'rel' => 'alternate',
+                    'hreflang' => $hrefLang,
+                    'href' => $href,
+                ], true));
+            }
+            $controller->additionalHeaderData[] = implode(LF, $data);
+        }
     }
 }

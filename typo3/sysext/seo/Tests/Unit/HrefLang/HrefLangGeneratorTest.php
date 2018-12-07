@@ -16,9 +16,10 @@ namespace TYPO3\CMS\Seo\Tests\Unit\HrefLang;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor;
 use TYPO3\CMS\Seo\HrefLang\HrefLangGenerator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -42,14 +43,13 @@ class HrefLangGeneratorTest extends UnitTestCase
             ['getSiteLanguage'],
             [
                 $this->prophesize(ContentObjectRenderer::class)->reveal(),
-                $this->prophesize(TypoScriptFrontendController::class)->reveal(),
-                $this->prophesize(ServerRequestInterface::class)->reveal()
+                $this->prophesize(LanguageMenuProcessor::class)->reveal()
             ]
         );
 
-        $check = $shouldBeCalled ? self::once() : self::never();
-        $subject->expects($check)->method('getSiteLanguage');
-        $subject->_call('getAbsoluteUrl', $url);
+        $siteLanguageProphecy = $this->prophesize(SiteLanguage::class);
+        $siteLanguageProphecy->getBase()->willReturn($this->prophesize(UriInterface::class)->reveal());
+        $subject->_call('getAbsoluteUrl', $url, $siteLanguageProphecy->reveal());
     }
 
     /**

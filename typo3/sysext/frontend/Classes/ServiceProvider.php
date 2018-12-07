@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Frontend;
 
 use ArrayObject;
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Context\Context;
@@ -60,7 +61,7 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getRequestHandler(ContainerInterface $container): Http\RequestHandler
     {
-        return new Http\RequestHandler;
+        return new Http\RequestHandler($container->get(EventDispatcherInterface::class));
     }
 
     /**
