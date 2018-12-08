@@ -115,8 +115,8 @@ public class NightlySpec extends AbstractCoreSpec {
         jobsMainStage.add(this.getJobUnitPhp(0, "PHP73", this.getTaskComposerInstall("PHP73")));
         jobsMainStage.add(this.getJobUnitDeprecatedPhp(0, "PHP72", this.getTaskComposerInstall("PHP72")));
         jobsMainStage.add(this.getJobUnitDeprecatedPhp(0, "PHP73", this.getTaskComposerInstall("PHP73")));
-        jobsMainStage.addAll(this.getJobUnitPhpRandom(0, this.numberOfUnitRandomOrderJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
-        jobsMainStage.addAll(this.getJobUnitPhpRandom(0, this.numberOfUnitRandomOrderJobs, "PHP73", this.getTaskComposerUpdateMax("PHP73")));
+        jobsMainStage.addAll(this.getJobUnitPhpRandom(0, this.numberOfUnitRandomOrderJobs, "PHP72", this.getTaskComposerInstall("PHP72")));
+        jobsMainStage.addAll(this.getJobUnitPhpRandom(0, this.numberOfUnitRandomOrderJobs, "PHP73", this.getTaskComposerInstall("PHP73")));
 
         Stage stageMainStage = new Stage("Main stage")
             .jobs(jobsMainStage.toArray(new Job[jobsMainStage.size()]));
@@ -157,8 +157,10 @@ public class NightlySpec extends AbstractCoreSpec {
         jobsComposerMaxStage.add(this.getJobUnitPhp(1, "PHP73", this.getTaskComposerUpdateMax("PHP73")));
         jobsComposerMaxStage.add(this.getJobUnitDeprecatedPhp(1, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
         jobsComposerMaxStage.add(this.getJobUnitDeprecatedPhp(1, "PHP73", this.getTaskComposerUpdateMax("PHP73")));
-        jobsComposerMaxStage.addAll(this.getJobUnitPhpRandom(1, this.numberOfUnitRandomOrderJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
-        jobsComposerMaxStage.addAll(this.getJobUnitPhpRandom(1, this.numberOfUnitRandomOrderJobs, "PHP73", this.getTaskComposerUpdateMax("PHP73")));
+
+        // Disabled for now since young phpunit with built-in randomizer collides with this one. Needs investigation.
+        //jobsComposerMaxStage.addAll(this.getJobUnitPhpRandom(1, this.numberOfUnitRandomOrderJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        //jobsComposerMaxStage.addAll(this.getJobUnitPhpRandom(1, this.numberOfUnitRandomOrderJobs, "PHP73", this.getTaskComposerUpdateMax("PHP73")));
 
         Stage stageComposerMaxStage = new Stage("Composer update max")
             .jobs(jobsComposerMaxStage.toArray(new Job[jobsComposerMaxStage.size()]));
