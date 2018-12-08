@@ -105,9 +105,6 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
         $currentLocalConfiguration = [
             ['BE/loginSecurityLevel', $current]
         ];
-        $closure = function () {
-            throw new \RuntimeException('Path does not exist in array', 1476109311);
-        };
 
         $this->createConfigurationManagerWithMockedMethods(
             [
@@ -122,7 +119,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
         } else {
             $this->configurationManager->expects($this->once())
                 ->method('getLocalConfigurationValueByPath')
-                ->will($this->returnCallback($closure));
+                ->willThrowException(new \RuntimeException('testing', 1544278754));
         }
         $this->configurationManager->expects($this->once())
             ->method('setLocalConfigurationValueByPath')
@@ -178,9 +175,6 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
         $currentLocalConfiguration = [
             ['FE/loginSecurityLevel', $current]
         ];
-        $closure = function () {
-            throw new \RuntimeException('Path does not exist in array', 1476109311);
-        };
 
         $this->createConfigurationManagerWithMockedMethods(
             [
@@ -195,7 +189,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
         } else {
             $this->configurationManager->expects($this->once())
                 ->method('getLocalConfigurationValueByPath')
-                ->will($this->returnCallback($closure));
+                ->willThrowException(new \RuntimeException('testing', 1544278778));
         }
         if (!$isPackageActive) {
             $this->configurationManager->expects($this->once())
