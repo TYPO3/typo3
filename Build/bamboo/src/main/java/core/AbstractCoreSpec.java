@@ -142,6 +142,44 @@ abstract public class AbstractCoreSpec {
     }
 
     /**
+     * Job creating labels needed for intercept communication
+     */
+    protected Job getJobBuildLabels() {
+        return new Job("Create build labels", new BambooKey("CLFB"))
+            .description("Create changeId and patch set labels from variable access and parsing result of a dummy task")
+            .pluginConfigurations(new AllOtherPluginsConfiguration()
+                .configuration(new MapBuilder()
+                    .put("repositoryDefiningWorkingDirectory", -1)
+                    .put("custom", new MapBuilder()
+                        .put("auto", new MapBuilder()
+                            .put("label", "change-${bamboo.changeUrl}, patchset-${bamboo.patchset}")
+                            .build()
+                        )
+                        .put("buildHangingConfig.enabled", "false")
+                        .put("ncover.path", "")
+                        .put("clover", new MapBuilder()
+                            .put("path", "")
+                            .put("license", "")
+                            .put("useLocalLicenseKey", "true")
+                            .build()
+                        )
+                        .build()
+                    )
+                    .build()
+                )
+            )
+            .tasks(
+                new ScriptTask()
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody("echo \"I'm just here for the labels!\"")
+            )
+            .requirements(
+                this.getRequirementDocker10()
+            )
+            .cleanWorkingDirectory(true);
+    }
+
+    /**
      * Job composer validate
      *
      * @param String requirementIdentifier

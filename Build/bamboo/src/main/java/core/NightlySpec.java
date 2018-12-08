@@ -65,6 +65,13 @@ public class NightlySpec extends AbstractCoreSpec {
      * Returns full Plan definition
      */
     Plan createPlan() {
+        // PREPARATION stage
+        ArrayList<Job> jobsPreparationStage = new ArrayList<Job>();
+        jobsPreparationStage.add(this.getJobBuildLabels());
+        Stage stagePreparation = new Stage("Preparation")
+            .jobs(jobsPreparationStage.toArray(new Job[jobsPreparationStage.size()]));
+
+
         // MAIN stage
         ArrayList<Job> jobsMainStage = new ArrayList<Job>();
 
@@ -127,6 +134,7 @@ public class NightlySpec extends AbstractCoreSpec {
             .description("Execute TYPO3 core 8.7 nightly tests. Auto generated! See Build/bamboo of core git repository.")
             .pluginConfigurations(this.getDefaultPlanPluginConfiguration())
             .stages(
+                stagePreparation,
                 stageMainStage
             )
             .linkedRepositories("github TYPO3 TYPO3.CMS 8.7")
