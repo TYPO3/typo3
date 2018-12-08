@@ -4918,10 +4918,12 @@ class BackendUtility
             }
         }
         if ($pageInfo['starttime'] > $GLOBALS['EXEC_TIME']) {
-            $simTime = '&ADMCMD_simTime=' . $pageInfo['starttime'];
+            $adjustedSimTime = $pageInfo['starttime'] + date('Z', $pageInfo['starttime']);
+            $simTime = '&ADMCMD_simTime=' . $adjustedSimTime;
         }
         if ($pageInfo['endtime'] < $GLOBALS['EXEC_TIME'] && $pageInfo['endtime'] != 0) {
-            $simTime = '&ADMCMD_simTime=' . ($pageInfo['endtime'] - 1);
+            $adjustedSimTime = $pageInfo['endtime'] + date('Z', $pageInfo['endtime']);
+            $simTime = '&ADMCMD_simTime=' . ($adjustedSimTime - 1);
         }
         return $simUser . $simTime;
     }
