@@ -127,6 +127,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
+                'enableMultiSelectFilterTextfield' => true,
                 'foreign_table' => 'sys_filemounts',
                 'foreign_table_where' => ' AND sys_filemounts.pid=0 ORDER BY sys_filemounts.title',
                 'size' => 3,
