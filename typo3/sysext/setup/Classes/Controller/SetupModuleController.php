@@ -694,7 +694,7 @@ class SetupModuleController
                         $localizedName = htmlspecialchars($name);
                     }
                     $localLabel = '  -  [' . htmlspecialchars($defaultName) . ']';
-                    $available = in_array($locale, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'], true) && is_dir(Environment::getLabelsPath() . '/' . $locale);
+                    $available = in_array($locale, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'], true) || is_dir(Environment::getLabelsPath() . '/' . $locale);
                     if ($available) {
                         $languageOptions[$defaultName] = '<option value="' . $locale . '"' . ($backendUser->uc['lang'] === $locale ? ' selected="selected"' : '') . '>' . $localizedName . $localLabel . '</option>';
                     }
