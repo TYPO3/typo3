@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Core\PageTitle;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Cache\Backend\AbstractBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -31,7 +31,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class PageTitleProviderManager implements SingletonInterface
 {
     /**
-     * @var \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
+     * @var FrontendInterface
      */
     protected $pageCache;
 
@@ -57,7 +57,7 @@ class PageTitleProviderManager implements SingletonInterface
 
         foreach ($orderedTitleProviders as $provider => $configuration) {
             $cacheIdentifier =  $this->getTypoScriptFrontendController()->newHash . '-titleTag-' . $provider;
-            if ($this->pageCache instanceof AbstractBackend &&
+            if ($this->pageCache instanceof FrontendInterface &&
                 $pageTitle = $this->pageCache->get($cacheIdentifier)
             ) {
                 break;
