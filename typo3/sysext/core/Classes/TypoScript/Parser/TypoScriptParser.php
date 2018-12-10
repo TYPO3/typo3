@@ -964,7 +964,7 @@ class TypoScriptParser
     }
 
     /**
-     * Splits the unparsed TypoScript content into @import statements
+     * Splits the unparsed TypoScript content into import statements
      *
      * @param string $typoScript unparsed TypoScript
      * @param int $cycleCounter counter to stop recursion
