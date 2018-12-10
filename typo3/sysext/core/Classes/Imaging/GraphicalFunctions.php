@@ -2594,7 +2594,11 @@ class GraphicalFunctions
             $temporaryName = dirname($theFile) . '/' . md5(uniqid('', true)) . '.gif';
             // Rename could fail, if a simultaneous thread is currently working on the same thing
             if (@rename($theFile, $temporaryName)) {
-                $cmd = CommandUtility::imageMagickCommand('convert', '"' . $temporaryName . '" "' . $theFile . '"', $gfxConf['processor_path_lzw']);
+                $cmd = CommandUtility::imageMagickCommand(
+                    'convert',
+                    implode(' ', CommandUtility::escapeShellArguments([$temporaryName, $theFile])),
+                    $gfxConf['processor_path_lzw']
+                );
                 CommandUtility::exec($cmd);
                 unlink($temporaryName);
             }
@@ -2642,7 +2646,7 @@ class GraphicalFunctions
         $newFile = PATH_site . 'typo3temp/assets/images/' . md5($theFile . '|' . filemtime($theFile)) . ($output_png ? '.png' : '.gif');
         $cmd = CommandUtility::imageMagickCommand(
             'convert',
-            '"' . $theFile . '" "' . $newFile . '"',
+            implode(' ', CommandUtility::escapeShellArguments([$theFile, $newFile])),
             $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path']
         );
         CommandUtility::exec($cmd);

@@ -199,7 +199,7 @@ class CommandUtility
         // Try to get the executable with the command 'which'.
         // It does the same like already done, but maybe on other paths
         if (TYPO3_OS !== 'WIN') {
-            $cmd = @self::exec('which ' . $cmd);
+            $cmd = @self::exec('which ' . self::escapeShellArgument($cmd));
             if (@is_executable($cmd)) {
                 self::$applications[$cmd]['app'] = $cmd;
                 self::$applications[$cmd]['path'] = dirname($cmd) . '/';
@@ -232,7 +232,7 @@ class CommandUtility
             if (!$handler) {
                 return -1;
             }
-            $handler .= ' ' . $handlerOpt . ' ';
+            $handler .= ' ' . escapeshellcmd($handlerOpt) . ' ';
         }
 
         // Command
