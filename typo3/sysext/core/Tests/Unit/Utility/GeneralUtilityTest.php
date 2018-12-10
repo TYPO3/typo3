@@ -536,6 +536,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function cmpFqdnReturnsTrue($baseHost, $list)
     {
+        if ($baseHost === '::1' && !gethostbyaddr($baseHost)) {
+            $this->markTestSkipped('Skip test for IPv6 resolution where this is not properly working on the system. Like Travis CI.');
+        }
         $this->assertTrue(GeneralUtility::cmpFQDN($baseHost, $list));
     }
 
