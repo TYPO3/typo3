@@ -148,8 +148,14 @@ class LocalPreviewHelper
         } else {
             // Create the temporary file
             if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled']) {
-                $parameters = '-sample ' . $configuration['width'] . 'x' . $configuration['height'] . ' '
-                    . CommandUtility::escapeShellArgument($originalFileName) . '[0] ' . CommandUtility::escapeShellArgument($targetFilePath);
+                $arguments = CommandUtility::escapeShellArguments([
+                    'width' => $configuration['width'],
+                    'height' => $configuration['height'],
+                    'originalFileName' => $originalFileName,
+                    'targetFilePath' => $targetFilePath,
+                ]);
+                $parameters = '-sample ' . $arguments['width'] . 'x' . $arguments['height'] . ' '
+                    . $arguments['originalFileName'] . '[0] ' . $arguments['targetFilePath'];
 
                 $cmd = CommandUtility::imageMagickCommand('convert', $parameters) . ' 2>&1';
                 CommandUtility::exec($cmd);
