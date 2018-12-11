@@ -4153,7 +4153,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // User name:
             $token = isset($this->config['config']['USERNAME_substToken']) ? trim($this->config['config']['USERNAME_substToken']) : '';
             $search[] = $token ? $token : '<!--###USERNAME###-->';
-            $replace[] = $this->fe_user->user['username'];
+            $replace[] = htmlspecialchars($this->fe_user->user['username']);
             // User uid (if configured):
             $token = isset($this->config['config']['USERUID_substToken']) ? trim($this->config['config']['USERUID_substToken']) : '';
             if ($token) {
