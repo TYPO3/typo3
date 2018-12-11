@@ -859,7 +859,9 @@ define([
                 })
               )
             ),
-            $('<span>', {'class': 'node-dd__name'}).text(securityUtility.encodeHtml(name))
+            $('<span>', {'class': 'node-dd__name'}).html(
+              securityUtility.encodeHtml(name)
+            )
           )
         )
       ).html();
