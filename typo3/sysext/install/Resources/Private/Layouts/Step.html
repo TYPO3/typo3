@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:i="http://typo3.org/ns/TYPO3/CMS/Install/ViewHelpers">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
 	<head>
 		<title>Installing TYPO3 CMS</title>
 		<f:render partial="Action/Common/Headers" arguments="{_all}" />
@@ -7,10 +7,10 @@
 	<body>
 		<div class="container">
 			<div class="page-header">
-				<h1 class="logo-pageheader"><img src="{f:uri.resource(path: 'Images/typo3_orange.svg')}" width="130" class="logo" /> <small> CMS {typo3Version}</small></h1>
+				<h1 class="logo-pageheader"><img src="{f:uri.resource(path: 'Images/typo3_orange.svg')}" width="130" class="logo" /> <small> CMS</small></h1>
 			</div>
 			<div class="row">
-				<h2>Installing TYPO3 CMS <i:constant name="TYPO3_version" /></h2>
+				<h2>Installing TYPO3 CMS</h2>
 
 				<f:if condition="{messages}">
 					<div id="t3-install-step-execution-messages">
