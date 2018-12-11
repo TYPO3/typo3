@@ -16,6 +16,7 @@ import * as $ from 'jquery';
 import NProgress = require('nprogress');
 import Modal = require('./Modal');
 import Severity = require('./Severity');
+import SecurityUtility = require('TYPO3/CMS/Core/SecurityUtility');
 
 interface Response {
   file?: number;
@@ -27,7 +28,9 @@ interface Response {
  * Javascript for show the online media dialog
  */
 class OnlineMedia {
+  private readonly securityUtility: SecurityUtility;
   constructor() {
+    this.securityUtility = new SecurityUtility();
     $((): void => {
       this.registerEvents();
     });
@@ -87,14 +90,24 @@ class OnlineMedia {
     const btnSubmit = $currentTarget.data('btn-submit') || 'Add';
     const placeholder = $currentTarget.data('placeholder') || 'Paste media url here...';
     const allowedExtMarkup = $.map($currentTarget.data('online-media-allowed').split(','), (ext: string): string => {
-      return '<span class="label label-success">' + ext.toUpperCase() + '</span>';
+      return '<span class="label label-success">' + this.securityUtility.encodeHtml(ext.toUpperCase(), false) + '</span>';
     });
     const allowedHelpText = $currentTarget.data('online-media-allowed-help-text') || 'Allow to embed from sources:';
+
+    const $markup = $('<div>')
+        .attr('class', 'form-control-wrap')
+        .append([
+          $('<input>')
+            .attr('type', 'text')
+            .attr('class', 'form-control online-media-url')
+            .attr('placeholder', placeholder),
+          $('<div>')
+            .attr('class', 'help-block')
+            .html(this.securityUtility.encodeHtml(allowedHelpText, false) + '<br>' + allowedExtMarkup.join(' '))
+        ]);
     const $modal = Modal.show(
       $currentTarget.attr('title'),
-      '<div class="form-control-wrap">' +
-      '<input type="text" class="form-control online-media-url" placeholder="' + placeholder + '" />' +
-      '</div><div class="help-block">' + allowedHelpText + '<br>' + allowedExtMarkup.join(' ') + '</div>',
+      $markup,
       Severity.notice,
       [{
         text: btnSubmit,

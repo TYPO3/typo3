@@ -391,7 +391,7 @@ class Modal {
       for (let i = 0; i < configuration.buttons.length; i++) {
         const button = configuration.buttons[i];
         const $button = $('<button />', {'class': 'btn'});
-        $button.html('<span>' + button.text + '</span>');
+        $button.html('<span>' + this.securityUtility.encodeHtml(button.text, false) + '</span>');
         if (button.active) {
           $button.addClass('t3js-active');
         }
