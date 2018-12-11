@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * SlideShare helper class
+ * Youtube helper class
  */
 class YouTubeHelper extends AbstractOEmbedHelper
 {
@@ -33,7 +33,7 @@ class YouTubeHelper extends AbstractOEmbedHelper
     public function getPublicUrl(File $file, $relativeToCurrentScript = false)
     {
         $videoId = $this->getOnlineMediaId($file);
-        return sprintf('https://www.youtube.com/watch?v=%s', $videoId);
+        return sprintf('https://www.youtube.com/watch?v=%s', rawurlencode($videoId));
     }
 
     /**
@@ -99,8 +99,9 @@ class YouTubeHelper extends AbstractOEmbedHelper
      */
     protected function getOEmbedUrl($mediaId, $format = 'json')
     {
-        return sprintf('https://www.youtube.com/oembed?url=%s&format=%s',
-            urlencode(sprintf('https://www.youtube.com/watch?v=%s', $mediaId)),
+        return sprintf(
+            'https://www.youtube.com/oembed?url=%s&format=%s',
+            rawurlencode(sprintf('https://www.youtube.com/watch?v=%s', rawurlencode($mediaId))),
             rawurlencode($format)
         );
     }

@@ -34,7 +34,7 @@ class VimeoHelper extends AbstractOEmbedHelper
     public function getPublicUrl(File $file, $relativeToCurrentScript = false)
     {
         $videoId = $this->getOnlineMediaId($file);
-        return sprintf('https://vimeo.com/%s', $videoId);
+        return sprintf('https://vimeo.com/%s', rawurlencode($videoId));
     }
 
     /**
@@ -92,8 +92,8 @@ class VimeoHelper extends AbstractOEmbedHelper
     {
         return sprintf(
             'https://vimeo.com/api/oembed.%s?url=%s',
-            urlencode($format),
-            urlencode(sprintf('https://vimeo.com/%s', $mediaId))
+            rawurlencode($format),
+            rawurlencode(sprintf('https://vimeo.com/%s', rawurlencode($mediaId)))
         );
     }
 }

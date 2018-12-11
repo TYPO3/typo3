@@ -156,4 +156,27 @@ class VimeoRendererTest extends UnitTestCase
             $this->subject->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
         );
     }
+
+    /**
+     * @test
+     */
+    public function renderOutputIsEscaped()
+    {
+        /** @var VimeoHelper|\PHPUnit_Framework_MockObject_MockObject $vimeoHelper */
+        $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
+        $vimeoHelper->expects($this->any())->method('getOnlineMediaId')->will(
+            $this->returnValue('7331<script>danger</script>\'"random"quotes;')
+        );
+
+        $subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper'], []);
+        $subject->expects($this->any())->method('getOnlineMediaHelper')->will($this->returnValue($vimeoHelper));
+
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileResourceMock = $this->getMock(File::class, [], [], '', false);
+
+        $this->assertSame(
+            '<iframe src="https://player.vimeo.com/video/7331&lt;script&gt;danger&lt;/script&gt;&apos;&quot;random&quot;quotes;?title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200"></iframe>',
+            $subject->render($fileResourceMock, '300m', '200')
+        );
+    }
 }

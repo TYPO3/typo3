@@ -272,4 +272,27 @@ class YouTubeRendererTest extends UnitTestCase
             $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'no-cookie' => 0])
         );
     }
+
+    /**
+     * @test
+     */
+    public function renderOutputIsEscaped()
+    {
+        /** @var YouTubeHelper|\PHPUnit_Framework_MockObject_MockObject $youtubeHelper */
+        $youtubeHelper = $this->getAccessibleMock(YouTubeHelper::class, ['getOnlineMediaId'], ['youtube']);
+        $youtubeHelper->expects($this->any())->method('getOnlineMediaId')->will(
+            $this->returnValue('7331<script>danger</script>\'"random"quotes;')
+        );
+
+        $subject = $this->getAccessibleMock(YouTubeRenderer::class, ['getOnlineMediaHelper'], []);
+        $subject->expects($this->any())->method('getOnlineMediaHelper')->will($this->returnValue($youtubeHelper));
+
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileResourceMock = $this->getMock(File::class, [], [], '', false);
+
+        $this->assertSame(
+            '<iframe src="https://www.youtube-nocookie.com/embed/7331%3Cscript%3Edanger%3C%2Fscript%3E%27%22random%22quotes%3B?autohide=1&amp;controls=2&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
+            $subject->render($fileResourceMock, '300m', '200')
+        );
+    }
 }
