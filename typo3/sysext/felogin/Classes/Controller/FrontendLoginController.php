@@ -932,7 +932,9 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if ($this->frontendController->fe_user->user) {
             // All fields of fe_user will be replaced, scheme is ###FEUSER_FIELDNAME###
             foreach ($this->frontendController->fe_user->user as $field => $value) {
-                $marker['###FEUSER_' . GeneralUtility::strtoupper($field) . '###'] = $this->cObj->stdWrap($value, $this->conf['userfields.'][$field . '.']);
+                $conf = isset($this->conf['userfields.'][$field . '.']) ? $this->conf['userfields.'][$field . '.'] : [];
+                $conf = array_replace_recursive(['htmlSpecialChars' => '1'], $conf);
+                $marker['###FEUSER_' . GeneralUtility::strtoupper($field) . '###'] = $this->cObj->stdWrap($value, $conf);
             }
             // Add ###USER### for compatibility
             $marker['###USER###'] = $marker['###FEUSER_USERNAME###'];
