@@ -16,6 +16,7 @@ import 'bootstrap';
 import * as $ from 'jquery';
 import Icons = require('./Icons');
 import Severity = require('./Severity');
+import SecurityUtility = require('TYPO3/CMS/Core/SecurityUtility');
 
 enum Identifiers {
   modal = '.t3js-modal',
@@ -116,7 +117,10 @@ class Modal {
     ajaxTarget: null
   };
 
-  constructor() {
+  private readonly securityUtility: SecurityUtility;
+
+  constructor(securityUtility: SecurityUtility) {
+    this.securityUtility = securityUtility;
     $(document).on('modal-dismiss', this.dismiss);
     this.initializeMarkupTrigger(document);
   }
@@ -250,9 +254,15 @@ class Modal {
     configuration.title = typeof configuration.title === 'string'
       ? configuration.title
       : this.defaultConfiguration.title;
-    configuration.content = typeof configuration.content === 'string' || typeof configuration.content === 'object'
-      ? configuration.content
-      : this.defaultConfiguration.content;
+    if (typeof configuration.content === 'string') {
+      // A string means, no markup allowed, let's ensure this
+      configuration.content = this.securityUtility.encodeHtml(configuration.content);
+    } else if (typeof configuration.content === 'object') {
+      // An object means, a valid jQuery object with markup, let's get the markup
+      configuration.content = configuration.content.html();
+    } else {
+      configuration.content = this.defaultConfiguration.content;
+    }
     configuration.severity = typeof configuration.severity !== 'undefined'
       ? configuration.severity
       : this.defaultConfiguration.severity;
@@ -375,10 +385,7 @@ class Modal {
       });
     } else {
       if (typeof configuration.content === 'string') {
-        // we need html, check if we have to wrap content in <p>
-        if (!/^<[a-z][\s\S]*>/i.test(configuration.content)) {
-          configuration.content = $('<p />').html(configuration.content);
-        }
+        configuration.content = $('<p />').html(configuration.content);
       }
       currentModal.find(Identifiers.body).append(configuration.content);
     }
@@ -488,7 +495,7 @@ try {
 }
 
 if (!modalObject) {
-  modalObject = new Modal();
+  modalObject = new Modal(new SecurityUtility());
 
   // expose as global object
   TYPO3.Modal = modalObject;
