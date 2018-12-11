@@ -253,8 +253,8 @@ class YouTubeRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen foo="bar" custom-play="preload" width="300" height="200" allow="fullscreen"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'additionalAttributes' => ['foo' => 'bar', 'custom-play' => 'preload']])
+            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen foo="bar" custom-play="preload" sanitizetest="&lt;&gt;&quot;&apos;test" width="300" height="200" allow="fullscreen"></iframe>',
+            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'additionalAttributes' => ['foo' => 'bar', 'custom-play' => 'preload', '<"\'>sanitize^&test' => '<>"\'test']])
         );
     }
 
@@ -339,6 +339,27 @@ class YouTubeRendererTest extends UnitTestCase
         $this->assertSame(
             '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="foo; bar"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'autoplay' => 1, 'allow' => 'foo; bar'])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderOutputIsEscaped()
+    {
+        /** @var YouTubeHelper|\PHPUnit_Framework_MockObject_MockObject $youtubeHelper */
+        $youtubeHelper = $this->getAccessibleMock(YouTubeHelper::class, ['getOnlineMediaId'], ['youtube']);
+        $youtubeHelper->expects($this->any())->method('getOnlineMediaId')->will($this->returnValue('7331<script>danger</script>\'"random"quotes;'));
+
+        $subject = $this->getAccessibleMock(YouTubeRenderer::class, ['getOnlineMediaHelper'], []);
+        $subject->expects($this->any())->method('getOnlineMediaHelper')->will($this->returnValue($youtubeHelper));
+
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileResourceMock = $this->createMock(File::class);
+
+        $this->assertSame(
+            '<iframe src="https://www.youtube-nocookie.com/embed/7331%3Cscript%3Edanger%3C%2Fscript%3E%27%22random%22quotes%3B?autohide=1&amp;controls=2&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            $subject->render($fileResourceMock, '300m', '200')
         );
     }
 }

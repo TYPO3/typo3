@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperInterface;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Vimeo renderer class
@@ -96,8 +95,8 @@ class VimeoRenderer implements FileRendererInterface
 
         return sprintf(
             '<iframe src="%s"%s></iframe>',
-            $src,
-            empty($attributes) ? '' : ' ' . implode(' ', $attributes)
+            htmlspecialchars($src, ENT_QUOTES | ENT_HTML5),
+            empty($attributes) ? '' : ' ' . $this->implodeAttributes($attributes)
         );
     }
 
@@ -146,7 +145,7 @@ class VimeoRenderer implements FileRendererInterface
         $urlParams[] = 'byline=' . (int)!empty($options['showinfo']);
         $urlParams[] = 'portrait=0';
 
-        return sprintf('https://player.vimeo.com/video/%s?%s', $videoId, implode('&amp;', $urlParams));
+        return sprintf('https://player.vimeo.com/video/%s?%s', $videoId, implode('&', $urlParams));
     }
 
     /**
@@ -168,34 +167,59 @@ class VimeoRenderer implements FileRendererInterface
      * @param int|string $width
      * @param int|string $height
      * @param array $options
-     * @return array
+     * @return array pairs of key/value; not yet html-escaped
      */
     protected function collectIframeAttributes($width, $height, array $options)
     {
-        $attributes = ['allowfullscreen'];
+        $attributes = [];
+        $attributes['allowfullscreen'] = true;
+
         if (isset($options['additionalAttributes']) && is_array($options['additionalAttributes'])) {
-            $attributes[] = GeneralUtility::implodeAttributes($options['additionalAttributes'], true, true);
+            $attributes = array_merge($attributes, $options['additionalAttributes']);
         }
         if (isset($options['data']) && is_array($options['data'])) {
-            array_walk($options['data'], function (&$value, $key) {
-                $value = 'data-' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
-            });
-            $attributes[] = implode(' ', $options['data']);
+            array_walk(
+                $options['data'],
+                function (&$value, $key) use (&$attributes) {
+                    $attributes['data-' . $key] = $value;
+                }
+            );
         }
         if ((int)$width > 0) {
-            $attributes[] = 'width="' . (int)$width . '"';
+            $attributes['width'] = (int)$width;
         }
         if ((int)$height > 0) {
-            $attributes[] = 'height="' . (int)$height . '"';
+            $attributes['height'] = (int)$height;
         }
-        if (isset($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->config['config']['doctype'] !== 'html5') {
-            $attributes[] = 'frameborder="0"';
+        if (isset($GLOBALS['TSFE']) &&
+            is_object($GLOBALS['TSFE']) &&
+            $GLOBALS['TSFE']->config['config']['doctype'] !== 'html5') {
+            $attributes['frameborder'] = 0;
         }
         foreach (['class', 'dir', 'id', 'lang', 'style', 'title', 'accesskey', 'tabindex', 'onclick', 'allow'] as $key) {
             if (!empty($options[$key])) {
-                $attributes[] = $key . '="' . htmlspecialchars($options[$key]) . '"';
+                $attributes[$key] = $options[$key];
             }
         }
         return $attributes;
+    }
+
+    /**
+     * @internal
+     * @param array $attributes
+     * @return string
+     */
+    protected function implodeAttributes(array $attributes): string
+    {
+        $attributeList = [];
+        foreach ($attributes as $name => $value) {
+            $name = preg_replace('/[^\p{L}0-9_.-]/u', '', $name);
+            if ($value === true) {
+                $attributeList[] = $name;
+            } else {
+                $attributeList[] = $name . '="' . htmlspecialchars($value, ENT_QUOTES | ENT_HTML5) . '"';
+            }
+        }
+        return implode(' ', $attributeList);
     }
 }
