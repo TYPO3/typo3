@@ -1095,6 +1095,7 @@ return [
         'XCLASS' => []
     ],
     'FE' => [ // Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
+        'enableRecordRegistration' => false, // Boolean: If set, the TYPO3 Frontend checks for a special GET parameter "recs" and adds data to a new or existing session. As this is a potential security risk, it is recommended to disable this option if not specifically needed.
         'addAllowedPaths' => '',        // Additional relative paths (comma-list) to allow TypoScript resources be in. Should be prepended with '/'. If not, then any path where the first part is like this path will match. That is: 'myfolder/ , myarchive' will match eg. 'myfolder/', 'myarchive/', 'myarchive_one/', 'myarchive_2/' ... No check is done to see if this directory actually exists in the root of the site. Paths are matched by simply checking if these strings equals the first part of any TypoScript resource filepath. (See class template, function init() in \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser)
         'debug' => false,        // Boolean: If set, some debug HTML-comments may be output somewhere. Can also be set by TypoScript.
         'noPHPscriptInclude' => false,        // Boolean: If set, PHP-scripts are not included by TypoScript configurations, unless they reside in the folders typo3/ext/, typo3/sysext/ or typo3conf/ext. This is a security option to ensure that users with template-access do not terrorize

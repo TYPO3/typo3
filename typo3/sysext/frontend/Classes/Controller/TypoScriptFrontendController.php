@@ -1087,10 +1087,12 @@ class TypoScriptFrontendController
         $this->fe_user->unpack_uc('');
         // Gets session data
         $this->fe_user->fetchSessionData();
-        $recs = GeneralUtility::_GP('recs');
-        // If any record registration is submitted, register the record.
-        if (is_array($recs)) {
-            $this->fe_user->record_registration($recs, $this->TYPO3_CONF_VARS['FE']['maxSessionDataSize']);
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['enableRecordRegistration'])) {
+            $recs = GeneralUtility::_GP('recs');
+            // If any record registration is submitted, register the record.
+            if (is_array($recs)) {
+                $this->fe_user->record_registration($recs, $this->TYPO3_CONF_VARS['FE']['maxSessionDataSize']);
+            }
         }
         // Call hook for possible manipulation of frontend user object
         if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser'])) {

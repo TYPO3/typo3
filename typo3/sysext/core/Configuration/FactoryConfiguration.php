@@ -32,6 +32,7 @@ return [
     ],
     'FE' => [
         'loginSecurityLevel' => 'rsa',
+        'enableRecordRegistration' => false,
         'cHashIncludePageId' => true,
     ],
     'GFX' => [
