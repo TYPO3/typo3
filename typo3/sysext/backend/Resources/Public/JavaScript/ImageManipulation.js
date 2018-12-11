@@ -269,7 +269,7 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
                             currentModal.find('.t3js-modal-body').append(response).addClass('cropper');
                         });
                     },
-                    content: '<div class="modal-loading">' + icon + '</div>',
+                    content: $('<div class="modal-loading">').append(icon),
                     size: Modal.sizes.full,
                     style: Modal.styles.dark,
                     title: modalTitle,

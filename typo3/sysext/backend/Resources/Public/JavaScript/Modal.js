@@ -236,15 +236,7 @@ define(['jquery',
     // Validation of configuration
     configuration.type = typeof configuration.type === 'string' && configuration.type in Modal.types ? configuration.type : Modal.defaultConfiguration.type;
     configuration.title = typeof configuration.title === 'string' ? configuration.title : Modal.defaultConfiguration.title;
-    if (typeof configuration.content === 'string') {
-      // A string means, no markup allowed, let's ensure this
-      configuration.content = securityUtility.encodeHtml(configuration.content);
-    } else if (typeof configuration.content === 'object') {
-      // An object means, a valid jQuery object with markup, let's get the markup
-      configuration.content = configuration.content.html();
-    } else {
-      configuration.content = Modal.defaultConfiguration.content;
-    }
+    configuration.content = typeof configuration.content === 'string' || typeof configuration.content === 'object' ? configuration.content : Modal.defaultConfiguration.content;
     configuration.severity = typeof configuration.severity !== 'undefined' ? configuration.severity : Modal.defaultConfiguration.severity;
     configuration.buttons = configuration.buttons || Modal.defaultConfiguration.buttons;
     configuration.size = typeof configuration.size === 'string' && configuration.size in Modal.sizes ? configuration.size : Modal.defaultConfiguration.size;
@@ -329,7 +321,9 @@ define(['jquery',
       if (typeof content === 'object') {
         currentModal.find(Modal.identifiers.body).append(content);
       } else {
-        content = $('<p />').html(content);
+        content = $('<p />').html(
+          securityUtility.encodeHtml(content)
+        );
         currentModal.find(Modal.identifiers.body).html(content);
       }
     }
