@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -515,5 +516,94 @@ class FrontendLoginControllerTest extends \TYPO3\TestingFramework\Core\Unit\Unit
         $tsfe = $this->accessibleFixture->_get('frontendController');
         $tsfe->loginUser = true;
         $this->assertSame(['http://www.example.com/snafu'], $this->accessibleFixture->_call('processRedirect'));
+    }
+
+    /**
+     *
+     */
+    public function processUserFieldsRespectsDefaultConfigurationForStdWrapDataProvider()
+    {
+        return [
+            'Simple casing' => [
+                [
+                    'username' => 'Holy',
+                    'lastname' => 'Wood',
+                ],
+                [
+                    'username.' => [
+                        'case' => 'upper'
+                    ]
+                ],
+                [
+                    '###FEUSER_USERNAME###' => 'HOLY',
+                    '###FEUSER_LASTNAME###' => 'Wood',
+                    '###USER###' => 'HOLY'
+                ]
+            ],
+            'Default config applies' => [
+                [
+                    'username' => 'Holy',
+                    'lastname' => 'O" Mally',
+                ],
+                [
+                    'username.' => [
+                        'case' => 'upper'
+                    ]
+                ],
+                [
+                    '###FEUSER_USERNAME###' => 'HOLY',
+                    '###FEUSER_LASTNAME###' => 'O&quot; Mally',
+                    '###USER###' => 'HOLY'
+                ]
+            ],
+            'Specific config overrides default config' => [
+                [
+                    'username' => 'Holy',
+                    'lastname' => 'O" Mally',
+                ],
+                [
+                    'username.' => [
+                        'case' => 'upper'
+                    ],
+                    'lastname.' => [
+                        'htmlSpecialChars' => '0'
+                    ]
+                ],
+                [
+                    '###FEUSER_USERNAME###' => 'HOLY',
+                    '###FEUSER_LASTNAME###' => 'O" Mally',
+                    '###USER###' => 'HOLY'
+                ]
+            ],
+            'No given user returns empty array' => [
+                null,
+                [
+                    'username.' => [
+                        'case' => 'upper'
+                    ],
+                    'lastname.' => [
+                        'htmlSpecialChars' => '0'
+                    ]
+                ],
+                []
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider processUserFieldsRespectsDefaultConfigurationForStdWrapDataProvider
+     */
+    public function processUserFieldsRespectsDefaultConfigurationForStdWrap($userRecord, $fieldConf, $expectedMarkers)
+    {
+        $tsfe = new \stdClass();
+        $tsfe->fe_user = new \stdClass();
+        $tsfe->fe_user->user = $userRecord;
+        $conf = ['userfields.' => $fieldConf];
+        $this->accessibleFixture->_set('cObj', new ContentObjectRenderer());
+        $this->accessibleFixture->_set('frontendController', $tsfe);
+        $this->accessibleFixture->_set('conf', $conf);
+        $actualResult = $this->accessibleFixture->_call('getUserFieldMarkers');
+        $this->assertEquals($expectedMarkers, $actualResult);
     }
 }
