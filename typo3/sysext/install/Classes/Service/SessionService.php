@@ -76,6 +76,7 @@ class SessionService implements SingletonInterface
         session_set_save_handler([$this, 'open'], [$this, 'close'], [$this, 'read'], [$this, 'write'], [$this, 'destroy'], [$this, 'gc']);
         session_save_path($sessionSavePath);
         session_name($this->cookieName);
+        ini_set('session.cookie_httponly', true);
         ini_set('session.cookie_path', (string)GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
         // Always call the garbage collector to clean up stale session files
         ini_set('session.gc_probability', (string)100);
