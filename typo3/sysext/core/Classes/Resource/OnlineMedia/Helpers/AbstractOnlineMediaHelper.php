@@ -58,6 +58,10 @@ abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
     public function getOnlineMediaId(File $file)
     {
         if (!isset($this->onlineMediaIdCache[$file->getUid()])) {
+            // Limiting media identifier to 2048 bytes
+            if ($file->getSize() > 2048) {
+                return '';
+            }
             // By definition these files only contain the ID of the remote media source
             $this->onlineMediaIdCache[$file->getUid()] = trim($file->getContents());
         }
