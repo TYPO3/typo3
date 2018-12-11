@@ -70,7 +70,7 @@ define([
               type: Modal.types.default,
               title: modalTitle,
               size: modalSize,
-              content: '<div class="modal-loading">' + icon + '</div>',
+              content: $('<div class="modal-loading">').append(icon),
               additionalCssClasses: ['install-tool-modal'],
               callback: function (currentModal) {
                 require([requireModule], function (aModule) {

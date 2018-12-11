@@ -269,7 +269,7 @@ class ImageManipulation {
             currentModal.find('.t3js-modal-body').append(response).addClass('cropper');
           });
         },
-        content: '<div class="modal-loading">' + icon + '</div>',
+        content: $('<div class="modal-loading">').append(icon),
         size: Modal.sizes.full,
         style: Modal.styles.dark,
         title: modalTitle,

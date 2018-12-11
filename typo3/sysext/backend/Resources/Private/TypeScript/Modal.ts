@@ -254,15 +254,9 @@ class Modal {
     configuration.title = typeof configuration.title === 'string'
       ? configuration.title
       : this.defaultConfiguration.title;
-    if (typeof configuration.content === 'string') {
-      // A string means, no markup allowed, let's ensure this
-      configuration.content = this.securityUtility.encodeHtml(configuration.content);
-    } else if (typeof configuration.content === 'object') {
-      // An object means, a valid jQuery object with markup, let's get the markup
-      configuration.content = configuration.content.html();
-    } else {
-      configuration.content = this.defaultConfiguration.content;
-    }
+    configuration.content = typeof configuration.content === 'string' || typeof configuration.content === 'object'
+      ? configuration.content
+      : this.defaultConfiguration.content;
     configuration.severity = typeof configuration.severity !== 'undefined'
       ? configuration.severity
       : this.defaultConfiguration.severity;
@@ -385,7 +379,9 @@ class Modal {
       });
     } else {
       if (typeof configuration.content === 'string') {
-        configuration.content = $('<p />').html(configuration.content);
+        configuration.content = $('<p />').html(
+          this.securityUtility.encodeHtml(configuration.content)
+        );
       }
       currentModal.find(Identifiers.body).append(configuration.content);
     }
