@@ -40,6 +40,7 @@ return [
         ],
     ],
     'FE' => [
+        'enableRecordRegistration' => false,
         'loginSecurityLevel' => 'rsa',
     ],
     'GFX' => [

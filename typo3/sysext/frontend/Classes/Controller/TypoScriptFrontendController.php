@@ -1017,10 +1017,12 @@ class TypoScriptFrontendController
         // @deprecated since TYPO3 v8, will be removed in TYPO3 v9
         // @todo: With the removal of that in v9, TYPO3_CONF_VARS maxSessionDataSize can be removed as well,
         // @todo: and a silent ugrade wizard to remove the setting from LocalConfiguration should be added.
-        $recs = GeneralUtility::_GP('recs');
-        if (is_array($recs)) {
-            // If any record registration is submitted, register the record.
-            $this->fe_user->record_registration($recs, $GLOBALS['TYPO3_CONF_VARS']['FE']['maxSessionDataSize']);
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['enableRecordRegistration'])) {
+            $recs = GeneralUtility::_GP('recs');
+            if (is_array($recs)) {
+                // If any record registration is submitted, register the record.
+                $this->fe_user->record_registration($recs, $GLOBALS['TYPO3_CONF_VARS']['FE']['maxSessionDataSize']);
+            }
         }
 
         // Call hook for possible manipulation of frontend user object

@@ -41,6 +41,7 @@ class SecurityStatus implements StatusProviderInterface
     {
         $statuses = [
             'trustedHostsPattern' => $this->getTrustedHostsPatternStatus(),
+            'recordRegistration' => $this->getRecordRegistrationStatus(),
             'adminUserAccount' => $this->getAdminAccountStatus(),
             'fileDenyPattern' => $this->getFileDenyPatternStatus(),
             'htaccessUpload' => $this->getHtaccessUploadStatus(),
@@ -65,6 +66,24 @@ class SecurityStatus implements StatusProviderInterface
             $message = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.install_trustedhosts');
         }
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_trustedHostsPattern'), $value, $message, $severity);
+    }
+
+    /**
+     * Checks if the record registration option is disabled.
+     *
+     * @return \TYPO3\CMS\Reports\Status An object representing whether the check is disabled
+     */
+    protected function getRecordRegistrationStatus()
+    {
+        $value = $this->getLanguageService()->getLL('status_ok');
+        $message = '';
+        $severity = ReportStatus::OK;
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['enableRecordRegistration'])) {
+            $value = $this->getLanguageService()->getLL('status_insecure');
+            $severity = ReportStatus::ERROR;
+            $message = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.install_recordregistration');
+        }
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_recordRegistration'), $value, $message, $severity);
     }
 
     /**

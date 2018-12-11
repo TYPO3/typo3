@@ -1161,6 +1161,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="warning.install_trustedhosts">
 				<source>The trusted hosts pattern check is disabled. Please define the allowed hosts in the [SYS][trustedHostsPattern] section of the Install Tool.</source>
 			</trans-unit>
+			<trans-unit id="warning.install_recordregistration">
+				<source>The record registration functionality is enabled which can lead to frontend user session flooding. Please ensure that you do not need the functionality of evaluating the "&amp;recs=" URL query parameter and disable the [FE][enableRecordRegistration] option within the Install Tool.</source>
+			</trans-unit>
 			<trans-unit id="warning.install_update">
 				<source>This installation is not configured for the TYPO3 version it is running. If you did so intentionally, this message can be safely ignored. If you are unsure, visit the Update Wizard section of the %sInstall Tool%s to see how TYPO3 would change.</source>
 			</trans-unit>

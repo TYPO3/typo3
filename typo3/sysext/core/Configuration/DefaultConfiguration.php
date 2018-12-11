@@ -972,6 +972,7 @@ return [
     ],
     'FE' => [ // Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
         'addAllowedPaths' => '',
+        'enableRecordRegistration' => false,
         'debug' => false,
         'noPHPscriptInclude' => false,
         'compressionLevel' => 0,
