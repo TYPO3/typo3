@@ -525,9 +525,9 @@ class DeletedRecords
         $depth = (int)$depth;
         $begin = (int)$begin;
         $id = abs((int)$id);
-        $theList = [];
+        $theList = [[]];
         if ($begin === 0) {
-            $theList[] = $id;
+            $theList[] = [$id];
         }
         if ($depth > 0) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
@@ -541,14 +541,14 @@ class DeletedRecords
                 ->execute();
             while ($row = $statement->fetch()) {
                 if ($begin <= 0) {
-                    $theList[] = $row['uid'];
+                    $theList[] = [$row['uid']];
                 }
                 if ($depth > 1) {
-                    $theList = array_merge($theList, $this->resolveTree($row['uid'], $depth - 1, $begin - 1, $permsClause));
+                    $theList[] = $this->resolveTree($row['uid'], $depth - 1, $begin - 1, $permsClause);
                 }
             }
         }
-        return $theList;
+        return array_merge(...$theList);
     }
 
     /**

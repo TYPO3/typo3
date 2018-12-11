@@ -5884,7 +5884,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $allFields = 'uid,hidden,starttime,endtime,fe_group,extendToSubpages,doktype,php_tree_stop,mount_pid,mount_pid_ol,t3ver_state' . $addSelectFields;
         $depth = (int)$depth;
         $begin = (int)$begin;
-        $theList = [];
+        $theList = [[]];
         $addId = 0;
         $requestHash = '';
 
@@ -6033,7 +6033,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     // Add ID to list:
                     if ($begin <= 0) {
                         if ($dontCheckEnableFields || $tsfe->checkEnableFields($row)) {
-                            $theList[] = $next_id;
+                            $theList[] = [$next_id];
                         }
                     }
                     // Next level:
@@ -6044,28 +6044,27 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         }
                         // Call recursively, if the id is not in prevID_array:
                         if (!in_array($next_id, $prevId_array)) {
-                            $theList = array_merge(
-                                GeneralUtility::intExplode(
-                                    ',',
-                                    $this->getTreeList(
-                                        $next_id,
-                                        $depth - 1,
-                                        $begin - 1,
-                                        $dontCheckEnableFields,
-                                        $addSelectFields,
-                                        $moreWhereClauses,
-                                        $prevId_array,
-                                        $recursionLevel + 1
-                                    ),
-                                    true
+                            $theList[] = GeneralUtility::intExplode(
+                                ',',
+                                $this->getTreeList(
+                                    $next_id,
+                                    $depth - 1,
+                                    $begin - 1,
+                                    $dontCheckEnableFields,
+                                    $addSelectFields,
+                                    $moreWhereClauses,
+                                    $prevId_array,
+                                    $recursionLevel + 1
                                 ),
-                                $theList
+                                true
                             );
                         }
                     }
                 }
             }
         }
+        $theList = array_merge(...$theList);
+
         // If first run, check if the ID should be returned:
         if (!$recursionLevel) {
             if ($addId) {
@@ -6275,16 +6274,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $storagePid = -$storagePid;
                     }
                 });
-                $expandedPidList = [];
+                $expandedPidList = [[]];
                 foreach ($pidList as $value) {
                     // Implementation of getTreeList allows to pass the id negative to include
                     // it into the result otherwise only childpages are returned
-                    $expandedPidList = array_merge(
-                        GeneralUtility::intExplode(',', $this->getTreeList($value, $conf['recursive'])),
-                        $expandedPidList
-                    );
+                    $expandedPidList[] = GeneralUtility::intExplode(',', $this->getTreeList($value, $conf['recursive']));
                 }
-                $conf['pidInList'] = implode(',', $expandedPidList);
+                $conf['pidInList'] = implode(',', array_merge(...$expandedPidList));
             }
         }
         if ((string)$conf['pidInList'] === '') {

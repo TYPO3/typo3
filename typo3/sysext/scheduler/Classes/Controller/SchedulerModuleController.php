@@ -587,7 +587,7 @@ class SchedulerModuleController
         }
 
         // Get the extra fields to display for each task that needs some
-        $allAdditionalFields = [];
+        $allAdditionalFields = [[]];
         if ($process === 'add') {
             foreach ($registeredClasses as $class => $registrationInfo) {
                 if (!empty($registrationInfo['provider'])) {
@@ -595,7 +595,7 @@ class SchedulerModuleController
                     $providerObject = GeneralUtility::makeInstance($registrationInfo['provider']);
                     if ($providerObject instanceof AdditionalFieldProviderInterface) {
                         $additionalFields = $providerObject->getAdditionalFields($taskInfo, null, $this);
-                        $allAdditionalFields = array_merge($allAdditionalFields, [$class => $additionalFields]);
+                        $allAdditionalFields[] = [$class => $additionalFields];
                     }
                 }
             }
@@ -603,7 +603,7 @@ class SchedulerModuleController
             // only try to fetch additionalFields if the task is valid
             $providerObject = GeneralUtility::makeInstance($registeredClasses[$taskInfo['class']]['provider']);
             if ($providerObject instanceof AdditionalFieldProviderInterface) {
-                $allAdditionalFields[$taskInfo['class']] = $providerObject->getAdditionalFields($taskInfo, $task, $this);
+                $allAdditionalFields[] = [$taskInfo['class'] => $providerObject->getAdditionalFields($taskInfo, $task, $this)];
             }
         }
 
@@ -685,6 +685,7 @@ class SchedulerModuleController
 
         // Display additional fields
         $additionalFieldList = [];
+        $allAdditionalFields = array_merge(...$allAdditionalFields);
         foreach ($allAdditionalFields as $class => $fields) {
             if ($class == $taskInfo['class']) {
                 $additionalFieldsStyle = '';

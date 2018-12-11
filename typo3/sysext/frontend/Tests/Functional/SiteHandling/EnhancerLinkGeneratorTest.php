@@ -507,32 +507,29 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             'end' => '100',
         ];
 
-        $dataSet = [];
+        $dataSet = [[]];
         foreach (range(10, 100, 30) as $value) {
             $languages = [
                 '0' => sprintf('https://acme.us/welcome/enhance/%s%s', $value, $options['pathSuffix'] ?? ''),
                 '1' => sprintf('https://acme.fr/bienvenue/enhance/%s%s', $value, $options['pathSuffix'] ?? ''),
             ];
 
-            $dataSet = array_merge(
-                $dataSet,
-                $this->createDataSet(
-                    $aspect,
-                    $languages,
-                    $this->getEnhancers([
-                        'value' => $value,
-                        'additionalParameters' => $options['additionalParameters'] ?? ''
-                    ]),
-                    'value',
-                    [
-                        'prefix' => 'staticRangeMapper/',
-                        'suffix' => sprintf(', value:%d', $value),
-                    ],
-                    array_key_exists('pageTypeSettings', $options) ? $options['pageTypeSettings'] : []
-                )
+            $dataSet[] = $this->createDataSet(
+                $aspect,
+                $languages,
+                $this->getEnhancers([
+                    'value' => $value,
+                    'additionalParameters' => $options['additionalParameters'] ?? ''
+                ]),
+                'value',
+                [
+                    'prefix' => 'staticRangeMapper/',
+                    'suffix' => sprintf(', value:%d', $value),
+                ],
+                array_key_exists('pageTypeSettings', $options) ? $options['pageTypeSettings'] : []
             );
         }
-        return $dataSet;
+        return array_merge(...$dataSet);
     }
 
     /**
@@ -617,7 +614,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             ]
         ];
 
-        $dataSet = [];
+        $dataSet = [[]];
         foreach ($instructions as $instruction) {
             $templateSuffix = sprintf(
                 ' [%s=>%s]',
@@ -644,12 +641,9 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                 },
                 array_keys($dataSetCandidates)
             );
-            $dataSet = array_merge(
-                $dataSet,
-                array_combine($dataSetCandidatesKeys, $dataSetCandidates)
-            );
+            $dataSet[] = array_combine($dataSetCandidatesKeys, $dataSetCandidates);
         }
-        return $dataSet;
+        return array_merge(...$dataSet);
     }
 
     /**

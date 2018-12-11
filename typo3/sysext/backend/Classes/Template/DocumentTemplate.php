@@ -599,14 +599,14 @@ function jumpToUrl(URL) {
         if (is_array($GLOBALS['TBE_STYLES']['skins'])) {
             // loop over all registered skins
             foreach ($GLOBALS['TBE_STYLES']['skins'] as $skinExtKey => $skin) {
-                $skinStylesheetDirs = $this->stylesheetsSkins;
+                $skinStylesheetDirs = [$this->stylesheetsSkins];
                 // Skins can add custom stylesheetDirectories using
                 // $GLOBALS['TBE_STYLES']['skins']['your_extension_key']['stylesheetDirectories']
                 if (is_array($skin['stylesheetDirectories'])) {
-                    $skinStylesheetDirs = array_merge($skinStylesheetDirs, $skin['stylesheetDirectories']);
+                    $skinStylesheetDirs[] = $skin['stylesheetDirectories'];
                 }
                 // Add all registered directories
-                foreach ($skinStylesheetDirs as $stylesheetDir) {
+                foreach (array_merge(...$skinStylesheetDirs) as $stylesheetDir) {
                     // for EXT:myskin/stylesheets/ syntax
                     if (strpos($stylesheetDir, 'EXT:') === 0) {
                         list($extKey, $path) = explode('/', substr($stylesheetDir, 4), 2);

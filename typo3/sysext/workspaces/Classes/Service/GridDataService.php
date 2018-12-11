@@ -161,11 +161,10 @@ class GridDataService implements LoggerAwareInterface
                     $isDeletedPage = $table === 'pages' && $recordState === 'deleted';
                     $pageId = $table === 'pages' ? $record['uid'] : $record['pid'];
                     $viewUrl = GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForElement($table, $record['uid'], $origRecord, $versionRecord);
-                    $versionArray = [];
+                    $versionArray = $defaultGridColumns;
                     $versionArray['table'] = $table;
                     $versionArray['id'] = $table . ':' . $record['uid'];
                     $versionArray['uid'] = $record['uid'];
-                    $versionArray = array_merge($versionArray, $defaultGridColumns);
                     $versionArray['label_Workspace'] = htmlspecialchars(BackendUtility::getRecordTitle($table, $versionRecord));
                     $versionArray['label_Live'] = htmlspecialchars(BackendUtility::getRecordTitle($table, $origRecord));
                     $versionArray['label_Stage'] = htmlspecialchars($stagesObj->getStageTitle($versionRecord['t3ver_stage']));

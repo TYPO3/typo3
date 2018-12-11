@@ -266,14 +266,14 @@ class FolderTreeView extends AbstractTreeView
         // Get stored tree structure AND updating it if needed according to incoming PM GET var.
         $this->initializePositionSaving();
         // Init done:
-        $treeItems = [];
+        $treeItems = [[]];
         // Traverse mounts:
         foreach ($this->storages as $storageObject) {
             $this->getBrowseableTreeForStorage($storageObject);
             // Add tree:
-            $treeItems = array_merge($treeItems, $this->tree);
+            $treeItems[] = $this->tree;
         }
-        return $this->printTree($treeItems);
+        return $this->printTree(array_merge(...$treeItems));
     }
 
     /**

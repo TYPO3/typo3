@@ -37,13 +37,13 @@ class ClassMapGenerator
      */
     public static function dump($dirs, $file)
     {
-        $maps = [];
+        $maps = [[]];
 
         foreach ($dirs as $dir) {
-            $maps = array_merge($maps, static::createMap($dir));
+            $maps[] = static::createMap($dir);
         }
 
-        file_put_contents($file, sprintf('<?php return %s;', var_export($maps, true)));
+        file_put_contents($file, sprintf('<?php return %s;', var_export(array_merge(...$maps), true)));
     }
 
     /**

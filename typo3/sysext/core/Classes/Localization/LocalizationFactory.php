@@ -117,16 +117,18 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function localizationOverride($fileReference, $languageKey, array &$LOCAL_LANG)
     {
-        $overrides = [];
+        $overrides = [[]];
         $fileReferenceWithoutExtension = $this->store->getFileReferenceWithoutExtension($fileReference);
         $locallangXMLOverride = $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'];
         foreach ($this->store->getSupportedExtensions() as $extension) {
             if (isset($locallangXMLOverride[$languageKey][$fileReferenceWithoutExtension . '.' . $extension]) && is_array($locallangXMLOverride[$languageKey][$fileReferenceWithoutExtension . '.' . $extension])) {
-                $overrides = array_merge($overrides, $locallangXMLOverride[$languageKey][$fileReferenceWithoutExtension . '.' . $extension]);
+                $overrides[] = $locallangXMLOverride[$languageKey][$fileReferenceWithoutExtension . '.' . $extension];
             } elseif (isset($locallangXMLOverride[$fileReferenceWithoutExtension . '.' . $extension]) && is_array($locallangXMLOverride[$fileReferenceWithoutExtension . '.' . $extension])) {
-                $overrides = array_merge($overrides, $locallangXMLOverride[$fileReferenceWithoutExtension . '.' . $extension]);
+                $overrides[] = $locallangXMLOverride[$fileReferenceWithoutExtension . '.' . $extension];
             }
         }
+
+        $overrides = array_merge(...$overrides);
         if (!empty($overrides)) {
             foreach ($overrides as $overrideFile) {
                 $languageOverrideFileName = GeneralUtility::getFileAbsFileName($overrideFile);

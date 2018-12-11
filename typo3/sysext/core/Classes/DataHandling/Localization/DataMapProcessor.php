@@ -271,14 +271,12 @@ class DataMapProcessor
      */
     protected function sanitizeTranslationItem(DataMapItem $item)
     {
-        $fieldNames = [];
+        $fieldNames = [[]];
         foreach ($item->getApplicableScopes() as $scope) {
-            $fieldNames = array_merge(
-                $fieldNames,
-                $this->getFieldNamesForItemScope($item, $scope, false)
-            );
+            $fieldNames[] = $this->getFieldNamesForItemScope($item, $scope, false);
         }
 
+        $fieldNames = array_merge(...$fieldNames);
         $fieldNameMap = array_combine($fieldNames, $fieldNames);
         // separate fields, that are submitted in data-map, but not defined as custom
         $this->sanitizationMap[$item->getTableName()][$item->getId()] = array_intersect_key(

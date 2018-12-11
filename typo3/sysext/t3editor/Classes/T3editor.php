@@ -98,8 +98,8 @@ class T3editor implements SingletonInterface
         }
 
         $this->configuration = [
-            'modes' => [],
-            'addons' => [],
+            'modes' => [[]],
+            'addons' => [[]],
         ];
 
         $cache = $this->getCache();
@@ -117,7 +117,7 @@ class T3editor implements SingletonInterface
                 if (is_file($modesFileNameForPackage)) {
                     $definedModes = require_once $modesFileNameForPackage;
                     if (is_array($definedModes)) {
-                        $this->configuration['modes'] = array_merge($this->configuration['modes'], $definedModes);
+                        $this->configuration['modes'][] = $definedModes;
                     }
                 }
 
@@ -125,10 +125,12 @@ class T3editor implements SingletonInterface
                 if (is_file($addonsFileNameForPackage)) {
                     $definedAddons = require_once $addonsFileNameForPackage;
                     if (is_array($definedAddons)) {
-                        $this->configuration['addons'] = array_merge($this->configuration['addons'], $definedAddons);
+                        $this->configuration['addons'][] = $definedAddons;
                     }
                 }
             }
+            $this->configuration['modes'] = array_merge(...$this->configuration['modes']);
+            $this->configuration['addons'] = array_merge(...$this->configuration['addons']);
             $cache->set($cacheIdentifier, $this->configuration);
         }
 

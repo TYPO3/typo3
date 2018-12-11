@@ -625,19 +625,19 @@ class TranslationService implements SingletonInterface
      */
     protected function flattenTypoScriptLabelArray(array $labelValues, string $parentKey = ''): array
     {
-        $result = [];
+        $result = [[]];
         foreach ($labelValues as $key => $labelValue) {
             if (!empty($parentKey)) {
                 $key = $parentKey . '.' . $key;
             }
             if (is_array($labelValue)) {
                 $labelValue = $this->flattenTypoScriptLabelArray($labelValue, $key);
-                $result = array_merge($result, $labelValue);
+                $result[] = $labelValue;
             } else {
-                $result[$key] = $labelValue;
+                $result[] = [$key => $labelValue];
             }
         }
-        return $result;
+        return array_merge(...$result);
     }
 
     /**

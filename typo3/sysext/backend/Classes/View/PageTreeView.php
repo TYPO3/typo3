@@ -269,7 +269,7 @@ class PageTreeView extends BrowseTreeView
         // Get stored tree structure AND updating it if needed according to incoming PM GET var.
         $this->initializePositionSaving();
         // Init done:
-        $treeArr = [];
+        $treeArr = [[]];
         // Traverse mounts:
         $firstHtml = '';
         foreach ($this->MOUNTS as $idx => $uid) {
@@ -310,9 +310,9 @@ class PageTreeView extends BrowseTreeView
                     $this->getTree($uid);
                 }
                 // Add tree:
-                $treeArr = array_merge($treeArr, $this->tree);
+                $treeArr[] = $this->tree;
             }
         }
-        return $this->printTree($treeArr);
+        return $this->printTree(array_merge(...$treeArr));
     }
 }

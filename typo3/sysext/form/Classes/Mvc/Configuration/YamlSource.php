@@ -62,7 +62,7 @@ class YamlSource
      */
     public function load(array $filesToLoad): array
     {
-        $configuration = [];
+        $configuration = [[]];
         foreach ($filesToLoad as $fileToLoad) {
             if ($fileToLoad instanceof File) {
                 $fileIdentifier = $fileToLoad->getIdentifier();
@@ -90,7 +90,7 @@ class YamlSource
                 $loadedConfiguration = Yaml::parse($rawYamlContent);
 
                 if (is_array($loadedConfiguration)) {
-                    $configuration = array_replace_recursive($configuration, $loadedConfiguration);
+                    $configuration[] = $loadedConfiguration;
                 }
             } catch (ParseException $exception) {
                 throw new ParseErrorException(
@@ -100,7 +100,7 @@ class YamlSource
             }
         }
 
-        $configuration = ArrayUtility::convertBooleanStringsToBooleanRecursive($configuration);
+        $configuration = ArrayUtility::convertBooleanStringsToBooleanRecursive(array_replace_recursive(...$configuration));
         return $configuration;
     }
 

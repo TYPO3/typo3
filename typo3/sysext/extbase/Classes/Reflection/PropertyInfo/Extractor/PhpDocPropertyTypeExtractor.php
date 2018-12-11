@@ -90,13 +90,14 @@ class PhpDocPropertyTypeExtractor implements PropertyTypeExtractorInterface
             return null;
         }
 
-        $types = [];
+        $types = [[]];
         /** @var Var_ $tag */
         foreach ($docBlock->getTagsByName('var') as $tag) {
             if ($tag && null !== $tag->getType()) {
-                $types = array_merge($types, $this->phpDocTypeHelper->getTypes($tag->getType()));
+                $types[] = $this->phpDocTypeHelper->getTypes($tag->getType());
             }
         }
+        $types = array_merge(...$types);
 
         if (!isset($types[0])) {
             return null;

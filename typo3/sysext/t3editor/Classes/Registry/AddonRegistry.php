@@ -75,11 +75,11 @@ class AddonRegistry implements SingletonInterface
      */
     public function compileSettings(array $addons): array
     {
-        $settings = [];
+        $settings = [[]];
         foreach ($addons as $addon) {
-            $settings = array_merge($settings, $addon->getOptions());
+            $settings[] = $addon->getOptions();
         }
 
-        return $settings;
+        return array_merge(...$settings);
     }
 }

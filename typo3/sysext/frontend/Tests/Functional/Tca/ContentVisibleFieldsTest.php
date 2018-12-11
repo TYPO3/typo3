@@ -119,20 +119,21 @@ class ContentVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functional\F
         $formEngineTestService = GeneralUtility::makeInstance(FormTestService::class);
 
         foreach (static::$contentFieldsByType as $contentType => $fieldConfig) {
-            $expectedFields = static::$commonContentFields;
+            $expectedFields = [static::$commonContentFields];
 
             if (empty($fieldConfig['disableHeaderFields'])) {
-                $expectedFields = array_merge($expectedFields, static::$headerFields);
+                $expectedFields[] = static::$headerFields;
             }
 
             if (!empty($fieldConfig['useImageFields'])) {
-                $expectedFields = array_merge($expectedFields, static::$imageFields);
+                $expectedFields[] = static::$imageFields;
             }
 
             if (!empty($fieldConfig['additionalFields'])) {
-                $expectedFields = array_merge($expectedFields, $fieldConfig['additionalFields']);
+                $expectedFields[] = $fieldConfig['additionalFields'];
             }
 
+            $expectedFields = array_merge(...$expectedFields);
             $formResult = $formEngineTestService->createNewRecordForm('tt_content', ['CType' => $contentType]);
             foreach ($expectedFields as $expectedField) {
                 $this->assertNotFalse(

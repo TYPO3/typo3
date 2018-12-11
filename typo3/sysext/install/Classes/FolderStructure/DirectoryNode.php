@@ -110,12 +110,12 @@ class DirectoryNode extends AbstractNode implements NodeInterface
      */
     public function fix(): array
     {
-        $result = $this->fixSelf();
+        $result = [$this->fixSelf()];
         foreach ($this->children as $child) {
             /** @var NodeInterface $child */
-            $result = array_merge($result, $child->fix());
+            $result[] = $child->fix();
         }
-        return $result;
+        return array_merge(...$result);
     }
 
     /**
@@ -238,12 +238,12 @@ class DirectoryNode extends AbstractNode implements NodeInterface
      */
     protected function getChildrenStatus(): array
     {
-        $result = [];
+        $result = [[]];
         foreach ($this->children as $child) {
             /** @var NodeInterface $child */
-            $result = array_merge($result, $child->getStatus());
+            $result[] = $child->getStatus();
         }
-        return $result;
+        return array_merge(...$result);
     }
 
     /**

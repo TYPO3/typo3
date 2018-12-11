@@ -193,12 +193,12 @@ class TreeController
         } else {
             $entryPoints = $this->getAllEntryPointPageTrees();
         }
-        $items = [];
+        $items = [[]];
         foreach ($entryPoints as $page) {
-            $items = array_merge($items, $this->pagesToFlatArray($page, (int)$page['uid']));
+            $items[] = $this->pagesToFlatArray($page, (int)$page['uid']);
         }
 
-        return new JsonResponse($items);
+        return new JsonResponse(array_merge(...$items));
     }
 
     /**
@@ -280,8 +280,8 @@ class TreeController
             $prefix = htmlspecialchars('[' . $pageId . '] ');
         }
 
-        $items = [];
-        $items[] = [
+        $items = [[]];
+        $items[] = [[
             // Used to track if the tree item is collapsed or not
             'stateIdentifier' => $identifier,
             'identifier' => $pageId,
@@ -305,13 +305,13 @@ class TreeController
             'isMountPoint' => $depth === 0,
             'mountPoint' => $entryPoint,
             'workspaceId' => !empty($page['t3ver_oid']) ? $page['t3ver_oid'] : $pageId,
-        ];
+        ]];
         if (!$stopPageTree) {
             foreach ($page['_children'] as $child) {
-                $items = array_merge($items, $this->pagesToFlatArray($child, $entryPoint, $depth + 1, ['backgroundColor' => $backgroundColor]));
+                $items[] = $this->pagesToFlatArray($child, $entryPoint, $depth + 1, ['backgroundColor' => $backgroundColor]);
             }
         }
-        return $items;
+        return array_merge(...$items);
     }
 
     /**

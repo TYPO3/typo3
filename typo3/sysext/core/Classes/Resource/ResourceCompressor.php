@@ -142,7 +142,7 @@ class ResourceCompressor
                 'allWrap' => ''
             ];
             // place the merged stylesheet on top of the stylesheets
-            $cssFiles = array_merge($cssFiles, [$targetFile => $concatenatedOptions]);
+            $cssFiles[$targetFile] = $concatenatedOptions;
         }
         return $cssFiles;
     }
@@ -194,7 +194,7 @@ class ResourceCompressor
                     'async' => $concatenatedJsFileIsAsync && $allFilesToConcatenateAreAsync,
                 ];
                 // place the merged javascript on top of the JS files
-                $jsFiles = array_merge([$targetFile => $concatenatedOptions], $jsFiles);
+                $jsFiles[$targetFile] = $concatenatedOptions;
             }
         }
         return $jsFiles;

@@ -196,18 +196,18 @@ class Locales implements SingletonInterface
      */
     public function getLocaleDependencies($locale)
     {
-        $dependencies = [];
+        $dependencies = [[]];
         if (isset($this->localeDependencies[$locale])) {
-            $dependencies = $this->localeDependencies[$locale];
+            $dependencies[] = $this->localeDependencies[$locale];
             // Search for dependencies recursively
             $localeDependencies = $dependencies;
             foreach ($localeDependencies as $dependency) {
                 if (isset($this->localeDependencies[$dependency])) {
-                    $dependencies = array_merge($dependencies, $this->getLocaleDependencies($dependency));
+                    $dependencies[] = $this->getLocaleDependencies($dependency);
                 }
             }
         }
-        return $dependencies;
+        return array_merge(...$dependencies);
     }
 
     /**

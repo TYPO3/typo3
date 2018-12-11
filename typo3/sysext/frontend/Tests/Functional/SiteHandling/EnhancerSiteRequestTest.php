@@ -493,7 +493,7 @@ class EnhancerSiteRequestTest extends AbstractTestCase
             'end' => '100',
         ];
 
-        $dataSet = [];
+        $dataSet = [[]];
         foreach (range(10, 100, 30) as $value) {
             $enhancerLanguageUris = $this->populateToKeys(
                 ['Simple', 'Plugin', 'Extbase'],
@@ -503,18 +503,15 @@ class EnhancerSiteRequestTest extends AbstractTestCase
                 ]
             );
 
-            $dataSet = array_merge(
-                $dataSet,
-                $this->createDataSet(
-                    $aspect,
-                    $enhancerLanguageUris,
-                    $this->getEnhancers(['value' => $value], true),
-                    'value',
-                    ['prefix' => 'staticRangeMapper/', 'suffix' => sprintf(', value:%d', $value)]
-                )
+            $dataSet[] = $this->createDataSet(
+                $aspect,
+                $enhancerLanguageUris,
+                $this->getEnhancers(['value' => $value], true),
+                'value',
+                ['prefix' => 'staticRangeMapper/', 'suffix' => sprintf(', value:%d', $value)]
             );
         }
-        return $dataSet;
+        return array_merge(...$dataSet);
     }
 
     /**
@@ -547,7 +544,7 @@ class EnhancerSiteRequestTest extends AbstractTestCase
             ['pathSuffix' => '/menu.json', 'type' => 10],
         ];
 
-        $dataSet = [];
+        $dataSet = [[]];
         foreach ($instructions as $instruction) {
             $templateSuffix = sprintf(
                 ' [%s=>%s]',
@@ -579,12 +576,9 @@ class EnhancerSiteRequestTest extends AbstractTestCase
                 },
                 array_keys($dataSetCandidates)
             );
-            $dataSet = array_merge(
-                $dataSet,
-                array_combine($dataSetCandidatesKeys, $dataSetCandidates)
-            );
+            $dataSet[] = array_combine($dataSetCandidatesKeys, $dataSetCandidates);
         }
-        return $dataSet;
+        return array_merge(...$dataSet);
     }
 
     /**

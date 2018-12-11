@@ -309,18 +309,19 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
     protected function untangleFilesArray(array $convolutedFiles)
     {
         $untangledFiles = [];
-        $fieldPaths = [];
+        $fieldPaths = [[]];
         foreach ($convolutedFiles as $firstLevelFieldName => $fieldInformation) {
             if (!is_array($fieldInformation['error'])) {
-                $fieldPaths[] = [$firstLevelFieldName];
+                $fieldPaths[] = [[$firstLevelFieldName]];
             } else {
                 $newFieldPaths = $this->calculateFieldPaths($fieldInformation['error'], $firstLevelFieldName);
                 array_walk($newFieldPaths, function (&$value, $key) {
                     $value = explode('/', $value);
                 });
-                $fieldPaths = array_merge($fieldPaths, $newFieldPaths);
+                $fieldPaths[] = $newFieldPaths;
             }
         }
+        $fieldPaths = array_merge(...$fieldPaths);
         foreach ($fieldPaths as $fieldPath) {
             if (count($fieldPath) === 1) {
                 $fileInformation = $convolutedFiles[$fieldPath[0]];

@@ -72,7 +72,7 @@ class LocalConfigurationValueService
      */
     protected function recursiveConfigurationFetching(array $sections, array $sectionsFromCurrentConfiguration, array $descriptions, array $path = []): array
     {
-        $data = [];
+        $data = [[]];
 
         foreach ($sections as $key => $value) {
             if (!isset($descriptions['items'][$key])) {
@@ -88,7 +88,7 @@ class LocalConfigurationValueService
 
             if ($descriptionType === 'container') {
                 $valueFromCurrentConfiguration = $sectionsFromCurrentConfiguration[$key] ?? null;
-                $data = array_merge($data, $this->recursiveConfigurationFetching($value, $valueFromCurrentConfiguration, $descriptionInfo, $newPath));
+                $data[] = $this->recursiveConfigurationFetching($value, $valueFromCurrentConfiguration, $descriptionInfo, $newPath);
             } elseif (!preg_match('/[' . LF . CR . ']/', (string)$value) || $descriptionType === 'multiline') {
                 $itemData = [];
                 $itemData['key'] = implode('/', $newPath);
@@ -141,7 +141,7 @@ class LocalConfigurationValueService
             }
         }
 
-        return $data;
+        return array_merge(...$data);
     }
 
     /**

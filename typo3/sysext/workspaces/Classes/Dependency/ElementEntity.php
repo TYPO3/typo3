@@ -386,14 +386,15 @@ class ElementEntity
     public function getNestedChildren()
     {
         if (!isset($this->nestedChildren)) {
-            $this->nestedChildren = [];
+            $this->nestedChildren = [[]];
             $children = $this->getChildren();
             /** @var ReferenceEntity $child */
             foreach ($children as $child) {
-                $this->nestedChildren = array_merge($this->nestedChildren, [$child->getElement()->__toString() => $child->getElement()], $child->getElement()->getNestedChildren());
+                $this->nestedChildren[] = [$child->getElement()->__toString() => $child->getElement()];
+                $this->nestedChildren[] = $child->getElement()->getNestedChildren();
             }
         }
-        return $this->nestedChildren;
+        return array_merge(...$this->nestedChildren);
     }
 
     /**

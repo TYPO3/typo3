@@ -340,22 +340,19 @@ class VariableProcessor
             $prefix .= static::LEVEL_DELIMITER;
         }
 
-        $result = [];
+        $result = [[]];
         foreach ($array as $key => $value) {
             if (is_array($value)) {
-                $result = array_merge(
-                    $result,
-                    $this->deflateArray(
-                        $value,
-                        $prefix . $key . static::LEVEL_DELIMITER
-                    )
+                $result[] = $this->deflateArray(
+                    $value,
+                    $prefix . $key . static::LEVEL_DELIMITER
                 );
             } else {
                 $deflatedKey = $this->addHash($prefix . $key);
-                $result[$deflatedKey] = $value;
+                $result[] = [$deflatedKey => $value];
             }
         }
-        return $result;
+        return array_merge(...$result);
     }
 
     /**
