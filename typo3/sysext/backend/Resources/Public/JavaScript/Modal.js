@@ -17,9 +17,12 @@
  */
 define(['jquery',
 		'TYPO3/CMS/Backend/Severity',
+		'TYPO3/CMS/Core/SecurityUtility',
 		'bootstrap'
-	   ], function($, Severity) {
+	   ], function($, Severity, SecurityUtility) {
 	'use strict';
+
+	var securityUtility = new SecurityUtility();
 
 	try {
 		// fetch from parent
@@ -196,10 +199,9 @@ define(['jquery',
 		if (typeof content === 'object') {
 			currentModal.find('.modal-body').append(content);
 		} else {
-			// we need html, check if we have to wrap content in <p>
-			if (!/^<[a-z][\s\S]*>/i.test(content)) {
-				content = $('<p />').text(content);
-			}
+			content = $('<p />').html(
+				securityUtility.encodeHtml(content)
+			);
 			currentModal.find('.modal-body').html(content);
 		}
 
