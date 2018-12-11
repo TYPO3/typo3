@@ -199,9 +199,12 @@ define(['jquery',
 		if (typeof content === 'object') {
 			currentModal.find('.modal-body').append(content);
 		} else {
-			content = $('<p />').html(
-				securityUtility.encodeHtml(content)
-			);
+			// we need html, check if we have to wrap content in <p>
+			if (!/^<[a-z][\s\S]*>/i.test(content)) {
+				content = $('<p />').html(
+					securityUtility.encodeHtml(content)
+				);
+			}
 			currentModal.find('.modal-body').html(content);
 		}
 
