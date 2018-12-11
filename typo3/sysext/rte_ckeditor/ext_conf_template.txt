@@ -1,0 +1,2 @@
+# cat=basic/enable; type=options[latest=latest, 4.7.1 (insecure & backward compatibility)=4.7]; label=Version
+ckeditorVersion = 1

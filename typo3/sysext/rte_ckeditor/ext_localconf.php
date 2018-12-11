@@ -9,6 +9,23 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'][1480314091] = [
 ];
 
 if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
+    if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rte_ckeditor'])) {
+        $extensionConfiguration = unserialize(
+            $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rte_ckeditor'],
+            ['allowed_classes' => false]
+        );
+    }
+
+    switch ($extensionConfiguration['ckeditorVersion'] ?? 'latest') {
+        case '4.7':
+            $ckeditorFolder = 'Resources/Public/JavaScript/Contrib-47/';
+            break;
+        case 'latest':
+        default:
+            $ckeditorFolder = 'Resources/Public/JavaScript/Contrib/';
+            break;
+    }
+
     \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
         \TYPO3\CMS\Core\Page\PageRenderer::class
     )->addRequireJsConfiguration([
@@ -17,7 +34,7 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
         ],
         'paths' => [
             'ckeditor' => \TYPO3\CMS\Core\Utility\PathUtility::getAbsoluteWebPath(
-                    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('rte_ckeditor', 'Resources/Public/JavaScript/Contrib/')
+                    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('rte_ckeditor', $ckeditorFolder)
                 ) . 'ckeditor'
         ]
     ]);

@@ -21,6 +21,7 @@ return [
     'EXT' => [
         'extConf' => [
             'rsaauth' => 'a:1:{s:18:"temporaryDirectory";s:0:"";}',
+            'rte_ckeditor' => 'a:1:{s:15:"ckeditorVersion";s:6:"latest";}',
             'saltedpasswords' => serialize([
                 'BE.' => [
                     'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class,

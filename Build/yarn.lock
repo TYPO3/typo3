@@ -727,10 +727,10 @@ circular-json@^0.5.5:
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.5.9.tgz#932763ae88f4f7dead7a0d09c8a51a4743a53b1d"
   integrity sha512-4ivwqHpIFJZBuhN3g/pEcdbnGUywkBblloGbkglyloVjjR3uT6tieI89MVOfbP2tHX5sgb01FuLgAOzebNlJNQ==
 
-ckeditor@^4.7.1:
-  version "4.7.1"
-  resolved "https://registry.yarnpkg.com/ckeditor/-/ckeditor-4.7.1.tgz#9cfe03b7504049bcda839758d836e95bfc3a3598"
-  integrity sha1-nP4Dt1BASbzag5dY2DbpW/w6NZg=
+ckeditor@^4.11.1:
+  version "4.11.1"
+  resolved "https://registry.yarnpkg.com/ckeditor/-/ckeditor-4.11.1.tgz#ace84b209573abf2b8430c214500e68ab06e7a14"
+  integrity sha512-UhHe02cc/wWJquDQZysEgh0ohLMEMU56zDx+s8prDdjylY/aBDY2xdIiIpbgCBTXdjhrEPIAPyiDS9g3RxYXig==
 
 class-utils@^0.3.5:
   version "0.3.6"
