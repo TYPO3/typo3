@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
 
 /*
@@ -18,11 +19,12 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\YouTubeHelper;
 use TYPO3\CMS\Core\Resource\Rendering\YouTubeRenderer;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Class YouTubeRendererTest
  */
-class YouTubeRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class YouTubeRendererTest extends UnitTestCase
 {
     /**
      * @var YouTubeRenderer|\PHPUnit_Framework_MockObject_MockObject
@@ -92,7 +94,7 @@ class YouTubeRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $this->assertSame(
             '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;loop=1&amp;playlist=7331&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['loop' => 1])
+            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 2, 'loop' => 1])
         );
     }
 
@@ -106,7 +108,7 @@ class YouTubeRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $this->assertSame(
             '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
+            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 2, 'autoplay' => 1])
         );
     }
 
@@ -125,7 +127,7 @@ class YouTubeRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $this->assertSame(
             '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
-            $this->subject->render($fileReferenceMock, '300m', '200')
+            $this->subject->render($fileReferenceMock, '300m', '200', ['controls' => 2])
         );
     }
 
@@ -295,6 +297,27 @@ class YouTubeRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->assertSame(
             '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="foo; bar"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'autoplay' => 1, 'allow' => 'foo; bar'])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderOutputIsEscaped()
+    {
+        /** @var YouTubeHelper|\PHPUnit_Framework_MockObject_MockObject $youtubeHelper */
+        $youtubeHelper = $this->getAccessibleMock(YouTubeHelper::class, ['getOnlineMediaId'], ['youtube']);
+        $youtubeHelper->expects($this->any())->method('getOnlineMediaId')->will($this->returnValue('7331<script>danger</script>\'"random"quotes;'));
+
+        $subject = $this->getAccessibleMock(YouTubeRenderer::class, ['getOnlineMediaHelper'], []);
+        $subject->expects($this->any())->method('getOnlineMediaHelper')->will($this->returnValue($youtubeHelper));
+
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileResourceMock = $this->createMock(File::class);
+
+        $this->assertSame(
+            '<iframe src="https://www.youtube-nocookie.com/embed/7331%3Cscript%3Edanger%3C%2Fscript%3E%27%22random%22quotes%3B?autohide=1&amp;controls=2&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            $subject->render($fileResourceMock, '300m', '200')
         );
     }
 }

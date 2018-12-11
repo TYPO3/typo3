@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
 
 /*
@@ -18,11 +19,12 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\VimeoHelper;
 use TYPO3\CMS\Core\Resource\Rendering\VimeoRenderer;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Class VimeoRendererTest
  */
-class VimeoRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class VimeoRendererTest extends UnitTestCase
 {
     /**
      * @var VimeoRenderer|\PHPUnit_Framework_MockObject_MockObject
@@ -201,6 +203,27 @@ class VimeoRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $this->assertSame(
             '<iframe src="https://player.vimeo.com/video/7331/private0123?title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            $subject->render($fileResourceMock, '300m', '200')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderOutputIsEscaped()
+    {
+        /** @var VimeoHelper|\PHPUnit_Framework_MockObject_MockObject $vimeoHelper */
+        $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
+        $vimeoHelper->expects($this->any())->method('getOnlineMediaId')->will($this->returnValue('7331<script>danger</script>\'"random"quotes;'));
+
+        $subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper'], []);
+        $subject->expects($this->any())->method('getOnlineMediaHelper')->will($this->returnValue($vimeoHelper));
+
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileResourceMock = $this->createMock(File::class);
+
+        $this->assertSame(
+            '<iframe src="https://player.vimeo.com/video/7331&lt;script&gt;danger&lt;/script&gt;&apos;&quot;random&quot;quotes;?title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
             $subject->render($fileResourceMock, '300m', '200')
         );
     }
