@@ -3,7 +3,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Scheduler',
     'description' => 'The TYPO3 Scheduler let\'s you register tasks to happen at a specific time',
     'category' => 'misc',
-    'version' => '7.6.32',
+    'version' => '7.6.33',
     'state' => 'stable',
     'uploadfolder' => 0,
     'createDirs' => '',
@@ -13,7 +13,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '7.6.32',
+            'typo3' => '7.6.33',
         ],
         'conflicts' => [
             'gabriel' => ''

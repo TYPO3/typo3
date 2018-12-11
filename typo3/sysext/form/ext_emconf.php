@@ -10,10 +10,10 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Patrick Broens, Ralf Zimmermann',
     'author_email' => 'patrick@patrickbroens.nl, ralf.zimmermann@tritum.de',
     'author_company' => '',
-    'version' => '7.6.32',
+    'version' => '7.6.33',
     'constraints' => [
         'depends' => [
-            'typo3' => '7.6.32',
+            'typo3' => '7.6.33',
         ],
         'conflicts' => [],
         'suggests' => [],

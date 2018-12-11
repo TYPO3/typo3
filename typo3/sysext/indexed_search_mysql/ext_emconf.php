@@ -10,11 +10,11 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Michael Stucki',
     'author_email' => 'michael@typo3.org',
     'author_company' => '',
-    'version' => '7.6.32',
+    'version' => '7.6.33',
     'constraints' => [
         'depends' => [
-            'typo3' => '7.6.32',
-            'indexed_search' => '7.6.32',
+            'typo3' => '7.6.33',
+            'indexed_search' => '7.6.33',
         ],
         'conflicts' => [],
         'suggests' => [],
