@@ -72,7 +72,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         // Setting MOD_MENU items as we need them for logging:
         $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
         $this->pObj->modMenu_dontValidateList .= ',ts_browser_toplevel_setup,ts_browser_toplevel_const,ts_browser_TLKeys_setup,ts_browser_TLKeys_const';
-        $this->pObj->modMenu_setDefaultList .= ',ts_browser_fixedLgd,ts_browser_showComments';
+        $this->pObj->modMenu_setDefaultList .= ',ts_browser_showComments';
         $this->localLanguageFilePath = 'EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf';
         $this->id = (int)GeneralUtility::_GP('id');
     }
@@ -103,7 +103,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
                 'const' => $lang->getLL('unsubstitutedGreen')
             ],
             'ts_browser_regexsearch' => '1',
-            'ts_browser_fixedLgd' => '1',
             'ts_browser_showComments' => '1',
             'ts_browser_alphaSort' => '1'
         ];
@@ -259,7 +258,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             $this->templateService->constantMode = 'untouched';
         }
         $this->templateService->regexMode = $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'];
-        $this->templateService->fixedLgd = $this->pObj->MOD_SETTINGS['ts_browser_fixedLgd'];
         $this->templateService->linkObjects = true;
         $this->templateService->ext_regLinenumbers = true;
         $this->templateService->ext_regComments = $this->pObj->MOD_SETTINGS['ts_browser_showComments'];
@@ -366,11 +364,10 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             $assigns['tsTree'] = $tree;
 
             // second row options
-            $assigns['isSetupAndCropLinesDisabled'] = $bType === 'setup' && !$this->pObj->MOD_SETTINGS['ts_browser_fixedLgd'];
+            $assigns['isSetupAndCropLinesDisabled'] = $bType === 'setup';
             $assigns['checkBoxShowComments'] = BackendUtility::getFuncCheck($this->id, 'SET[ts_browser_showComments]', $this->pObj->MOD_SETTINGS['ts_browser_showComments'], '', '', 'id="checkTs_browser_showComments"');
             $assigns['checkBoxAlphaSort'] = BackendUtility::getFuncCheck($this->id, 'SET[ts_browser_alphaSort]', $this->pObj->MOD_SETTINGS['ts_browser_alphaSort'], '', '', 'id="checkTs_browser_alphaSort"');
-            $assigns['checkBoxCropLines'] = BackendUtility::getFuncCheck($this->id, 'SET[ts_browser_fixedLgd]', $this->pObj->MOD_SETTINGS['ts_browser_fixedLgd'], '', '', 'id="checkTs_browser_fixedLgd"');
-            if ($bType === 'setup' && !$this->pObj->MOD_SETTINGS['ts_browser_fixedLgd']) {
+            if ($bType === 'setup') {
                 $assigns['dropdownDisplayConstants'] = BackendUtility::getDropdownMenu($this->id, 'SET[ts_browser_const]', $this->pObj->MOD_SETTINGS['ts_browser_const'], $this->pObj->MOD_MENU['ts_browser_const']);
             }
 

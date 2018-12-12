@@ -125,11 +125,6 @@ class ExtendedTemplateService extends TemplateService
     public $regexMode = '';
 
     /**
-     * @var string
-     */
-    public $fixedLgd = '';
-
-    /**
      * @var int
      */
     public $ext_lineNumberOffset = 0;
@@ -463,11 +458,6 @@ class ExtendedTemplateService extends TemplateService
                 $HTML .= '<span class="list-tree-label">[' . $label . ']</span>';
                 if (isset($arr[$key])) {
                     $theValue = $arr[$key];
-                    if ($this->fixedLgd) {
-                        $imgBlocks = ceil(1 + strlen($depthData) / 77);
-                        $lgdChars = 68 - ceil(strlen('[' . $key . ']') * 0.8) - $imgBlocks * 3;
-                        $theValue = $this->ext_fixed_lgd($theValue, $lgdChars);
-                    }
                     // The value has matched the search string
                     if ($this->tsbrowser_searchKeys[$depth] & 2) {
                         $HTML .= ' = <span class="list-tree-value text-danger">' . htmlspecialchars($theValue) . '</span>';
