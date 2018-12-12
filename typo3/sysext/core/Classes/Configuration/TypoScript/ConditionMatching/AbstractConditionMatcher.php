@@ -20,6 +20,7 @@ use Symfony\Component\ExpressionLanguage\SyntaxError;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException;
 use TYPO3\CMS\Core\Error\Exception;
+use TYPO3\CMS\Core\Exception\MissingTsfeException;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -290,6 +291,10 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
             if ($result !== null) {
                 return $result;
             }
+        } catch (MissingTsfeException $e) {
+            // TSFE is not available in the current context (e.g. TSFE in BE context),
+            // we set all conditions false for this case.
+            return false;
         } catch (SyntaxError $exception) {
             // SyntaxException means no support, let's try the fallback
             $message = 'Expression could not be parsed, fallback kicks in.';

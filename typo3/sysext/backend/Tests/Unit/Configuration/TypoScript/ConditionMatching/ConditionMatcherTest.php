@@ -362,4 +362,12 @@ class ConditionMatcherTest extends UnitTestCase
         putenv($testKey . '=testValue');
         $this->assertTrue($this->matchCondition->match('[getenv("' . $testKey . '") == "testValue"]'));
     }
+
+    /**
+     * @test
+     */
+    public function usingTSFEInATestInBeContextIsAlwaysFalse(): void
+    {
+        $this->assertFalse($this->matchCondition->match('[getTSFE().id == 1]'));
+    }
 }

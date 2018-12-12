@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -70,7 +71,7 @@ class ConditionMatcherTest extends UnitTestCase
 
         $this->testGlobalNamespace = $this->getUniqueId('TEST');
         $GLOBALS[$this->testGlobalNamespace] = [];
-        $GLOBALS['TSFE'] = new \stdClass();
+        $GLOBALS['TSFE'] = $this->prophesize(TypoScriptFrontendController::class)->reveal();
         $GLOBALS['TSFE']->page = [];
         $GLOBALS['TSFE']->tmpl = new \stdClass();
         $GLOBALS['TSFE']->tmpl->rootLine = [
