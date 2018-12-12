@@ -272,4 +272,12 @@ class ConditionMatcherTest extends FunctionalTestCase
         putenv($testKey . '=testValue');
         self::assertTrue($this->subject->match('[getenv("' . $testKey . '") == "testValue"]'));
     }
+
+    /**
+     * @test
+     */
+    public function usingTSFEInATestInBeContextIsAlwaysFalse(): void
+    {
+        self::assertFalse($this->subject->match('[getTSFE().id == 1]'));
+    }
 }

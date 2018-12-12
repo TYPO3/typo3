@@ -159,6 +159,9 @@ The following functions are available in **any** context:
 |                        |                       | * `[loginUser('*') == false]` // not logged in          |
 +------------------------+-----------------------+---------------------------------------------------------+
 | getTSFE                | Object                | TypoScriptFrontendController (`$GLOBALS['TSFE']`)       |
+|                        |                       |                                                         |
+|                        |                       | Conditions based on `getTSFE()` used in a context where |
+|                        |                       | TSFE is not available will always evaluate to false.    |
 +------------------------+-----------------------+---------------------------------------------------------+
 | getenv                 | String                | PHP function: :php:`getenv()`                           |
 +------------------------+-----------------------+---------------------------------------------------------+
