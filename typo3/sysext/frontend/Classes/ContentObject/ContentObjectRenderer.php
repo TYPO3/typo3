@@ -6249,36 +6249,30 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1])
             ];
             $requestHash = md5(serialize($parameters));
-
-            $cacheTreeListConnection = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('cache_treelist');
-
-            $queryBuilder = $cacheTreeListConnection->createQueryBuilder();
-            $query = $queryBuilder->select('treelist', 'expires')
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('cache_treelist');
+            $cacheEntry = $queryBuilder->select('treelist')
                 ->from('cache_treelist')
                 ->where(
                     $queryBuilder->expr()->eq(
                         'md5hash',
                         $queryBuilder->createNamedParameter($requestHash, \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->gt(
+                            'expires',
+                            $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq('expires', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
                     )
                 )
-                ->setMaxResults(1);
+                ->setMaxResults(1)
+                ->execute()
+                ->fetch();
 
-            $cacheEntry = $query->execute()->fetch();
-            $cacheEntryExists = is_array($cacheEntry);
-            $cacheEntryIsExpired = $cacheEntry['expires'] <= $GLOBALS['EXEC_TIME'];
-
-            if ($cacheEntryExists) {
-                if (!$cacheEntryIsExpired) {
-                    // Cache hit
-                    return $cacheEntry['treelist'];
-                }
-                $cacheTreeListConnection->delete(
-                    'cache_treelist',
-                    [
-                        'md5hash' => $requestHash
-                    ]
-                );
+            if (is_array($cacheEntry)) {
+                // Cache hit
+                return $cacheEntry['treelist'];
             }
             // If Id less than zero it means we should add the real id to list:
             if ($id < 0) {
@@ -6426,15 +6420,21 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $theList[] = $addId;
                 }
             }
-            GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('cache_treelist')->insert(
-                'cache_treelist',
-                [
-                    'md5hash' => $requestHash,
-                    'pid' => $id,
-                    'treelist' => implode(',', $theList),
-                    'tstamp' => $GLOBALS['EXEC_TIME']
-                ]
-            );
+
+            $cacheEntry = [
+                'md5hash' => $requestHash,
+                'pid' => $id,
+                'treelist' => implode(',', $theList),
+                'tstamp' => $GLOBALS['EXEC_TIME'],
+            ];
+
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('cache_treelist');
+            try {
+                $connection->transactional(function ($connection) use ($cacheEntry) {
+                    $connection->insert('cache_treelist', $cacheEntry);
+                });
+            } catch (\Throwable $e) {
+            }
         }
 
         return implode(',', $theList);
