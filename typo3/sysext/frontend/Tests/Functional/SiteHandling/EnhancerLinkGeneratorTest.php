@@ -108,6 +108,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
      * @param array $enhancers
      * @param string $variableName
      * @param array $templateOptions
+     * @param array $pageTypeSettings
      * @return array
      */
     protected function createDataSet(
@@ -115,7 +116,8 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
         array $languages,
         array $enhancers,
         string $variableName = 'value',
-        array $templateOptions = []
+        array $templateOptions = [],
+        array $pageTypeSettings
     ): array {
         $dataSet = [];
         foreach ($enhancers as $enhancer) {
@@ -128,6 +130,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                     $enhancer['parameters'],
                     $languageId,
                     $expectation,
+                    $pageTypeSettings,
                 ];
             }
         }
@@ -247,7 +250,8 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                 'additionalParameters' => $options['additionalParameters'] ?? ''
             ]),
             'enhance_name',
-            ['prefix' => 'localeModifier/']
+            ['prefix' => 'localeModifier/'],
+            array_key_exists('pageTypeSettings', $options) ? $options['pageTypeSettings'] : []
         );
     }
 
@@ -312,7 +316,8 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                 'additionalParameters' => $options['additionalParameters'] ?? ''
             ]),
             'value',
-            ['prefix' => 'persistedAliasMapper/']
+            ['prefix' => 'persistedAliasMapper/'],
+            array_key_exists('pageTypeSettings', $options) ? $options['pageTypeSettings'] : []
         );
     }
 
@@ -377,7 +382,8 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                 'additionalParameters' => $options['additionalParameters'] ?? ''
             ]),
             'value',
-            ['prefix' => 'persistedPatternMapper/']
+            ['prefix' => 'persistedPatternMapper/'],
+            array_key_exists('pageTypeSettings', $options) ? $options['pageTypeSettings'] : []
         );
     }
 
@@ -449,7 +455,8 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                 'additionalParameters' => $options['additionalParameters'] ?? ''
             ]),
             'value',
-            ['prefix' => 'staticValueMapper/']
+            ['prefix' => 'staticValueMapper/'],
+            array_key_exists('pageTypeSettings', $options) ? $options['pageTypeSettings'] : []
         );
     }
 
@@ -520,7 +527,8 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                     [
                         'prefix' => 'staticRangeMapper/',
                         'suffix' => sprintf(', value:%d', $value),
-                    ]
+                    ],
+                    array_key_exists('pageTypeSettings', $options) ? $options['pageTypeSettings'] : []
                 )
             );
         }
@@ -568,9 +576,45 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
     public function pageTypeDecoratorIsAppliedDataProvider(): array
     {
         $instructions = [
-            ['pathSuffix' => '.html', 'type' => null],
-            ['pathSuffix' => '.html', 'type' => 0],
-            ['pathSuffix' => '/menu.json', 'type' => 10],
+            [
+                'pathSuffix' => '.html',
+                'type' => null,
+                'pageTypeSettings' => $this->createPageTypeDecorator()
+            ],
+            [
+                'pathSuffix' => '.html',
+                'type' => 0,
+                'pageTypeSettings' => $this->createPageTypeDecorator()
+            ],
+            [
+                'pathSuffix' => '/menu.json',
+                'type' => 10,
+                'pageTypeSettings' => $this->createPageTypeDecorator()
+            ],
+            [
+                'pathSuffix' => '/',
+                'type' => null,
+                'pageTypeSettings' => [
+                    'type' => 'PageType',
+                    'default' => '/',
+                    'index' => '/',
+                    'map' => [
+                        'menu.json' => 10,
+                    ]
+                ]
+            ],
+            [
+                'pathSuffix' => '/',
+                'type' => 0,
+                'pageTypeSettings' => [
+                    'type' => 'PageType',
+                    'default' => '/',
+                    'index' => '/',
+                    'map' => [
+                        'menu.json' => 10,
+                    ]
+                ]
+            ]
         ];
 
         $dataSet = [];
@@ -584,7 +628,8 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                 'pathSuffix' => $instruction['pathSuffix'],
                 'additionalParameters' => $instruction['type'] !== null
                     ? '&type=' . $instruction['type']
-                    : ''
+                    : '',
+                'pageTypeSettings' => $instruction['pageTypeSettings']
             ];
             $dataSetCandidates = array_merge(
                 $this->localeModifierDataProvider($dataProviderOptions),
@@ -612,16 +657,21 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
      * @param string $additionalParameters
      * @param int $targetLanguageId
      * @param string $expectation
+     * @param array $pageTypeSettings
      *
      * @test
      * @dataProvider pageTypeDecoratorIsAppliedDataProvider
      */
-    public function pageTypeDecoratorIsApplied(array $enhancer, string $additionalParameters, int $targetLanguageId, string $expectation)
+    public function pageTypeDecoratorIsApplied(array $enhancer, string $additionalParameters, int $targetLanguageId, string $expectation, array $pageTypeSettings)
     {
+        if (empty($pageTypeSettings)) {
+            $pageTypeSettings = $this->createPageTypeDecorator();
+        }
+
         $this->mergeSiteConfiguration('acme-com', [
             'routeEnhancers' => [
                 'Enhancer' => $enhancer,
-                'PageType' => $this->createPageTypeDecorator()
+                'PageType' => $pageTypeSettings
             ]
         ]);
 
