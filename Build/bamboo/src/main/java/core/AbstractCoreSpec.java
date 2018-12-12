@@ -1371,7 +1371,7 @@ abstract public class AbstractCoreSpec {
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
                 this.getScriptTaskComposer(requirementIdentifier) +
-                "composer install -n"
+                "composer install --no-progress --no-suggest --no-interaction"
             )
             .environmentVariables(this.composerRootVersionEnvironment);
     }
