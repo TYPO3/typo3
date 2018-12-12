@@ -30,7 +30,7 @@ developed by a community of contributors and the [TYPO3 Core Development
 Team](https://typo3.org/community/teams/typo3-development/).
 
 To get more info about the GPL license, visit
-http://www.opensource.org/licenses/gpl-license.php
+https://opensource.org/licenses/gpl-license
 
 What is a Content Management Framework?
 ---------------------------------------
