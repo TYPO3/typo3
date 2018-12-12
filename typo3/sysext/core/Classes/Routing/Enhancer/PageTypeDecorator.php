@@ -36,7 +36,7 @@ use TYPO3\CMS\Core\Routing\RouteCollection;
  */
 class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerInterface
 {
-    protected const ROUTE_PATH_DELIMITERS = ['.', '-', '_'];
+    protected const ROUTE_PATH_DELIMITERS = ['.', '-', '_', '/'];
 
     /**
      * @var array
