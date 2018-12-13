@@ -44,6 +44,7 @@ class BackendUtilityHook
     {
         if ($GLOBALS['BE_USER']->workspace !== 0) {
             $viewScript = GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForWorkspaceSplitPreview((int)$pageUid, false);
+            $viewScript .= $additionalGetVars ?: '';
         }
     }
 
