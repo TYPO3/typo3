@@ -333,7 +333,7 @@ define(['jquery',
       for (i = 0; i < buttons.length; i++) {
         var button = buttons[i];
         var $button = $('<button />', {class: 'btn'});
-        $button.html('<span>' + button.text + '</span>');
+        $button.html('<span>' + securityUtility.encodeHtml(button.text, false) + '</span>');
         if (button.active) {
           $button.addClass('t3js-active');
         }

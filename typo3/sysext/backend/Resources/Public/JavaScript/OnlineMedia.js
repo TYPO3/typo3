@@ -19,8 +19,9 @@ define(['jquery',
   'nprogress',
   'TYPO3/CMS/Backend/Modal',
   'TYPO3/CMS/Backend/Severity',
+  'TYPO3/CMS/Core/SecurityUtility',
   'TYPO3/CMS/Lang/Lang'
-], function($, NProgress, Modal, Severity) {
+], function($, NProgress, Modal, Severity, SecurityUtility) {
   'use strict';
 
   /**
@@ -31,6 +32,7 @@ define(['jquery',
    */
   var OnlineMediaPlugin = function(element) {
     var me = this;
+    me.securityUtility = new SecurityUtility();
     me.$btn = $(element);
     me.target = me.$btn.data('target-folder');
     me.irreObjectUid = me.$btn.data('file-irre-object');
@@ -84,17 +86,27 @@ define(['jquery',
      */
     me.triggerModal = function() {
       var allowedExtMarkup = $.map(me.allowed.split(','), function(ext) {
-        return '<span class="label label-success">' + ext.toUpperCase() + '</span>';
+        return '<span class="label label-success">' + me.securityUtility.encodeHtml(ext.toUpperCase(), false) + '</span>';
       });
+      var $markup = $('<div>')
+        .attr('class', 'form-control-wrap')
+        .append([
+          $('<input>')
+            .attr('type', 'text')
+            .attr('class', 'form-control online-media-url')
+            .attr('placeholder', me.placeholder),
+            $('<div>')
+              .attr('class', 'help-block')
+              .html(me.securityUtility.encodeHtml(me.allowedHelpText, false) + '<br>' + allowedExtMarkup.join(' '))
+        ]);
+
       var $modal = Modal.show(
         me.$btn.attr('title'),
-        '<div class="form-control-wrap">' +
-        '<input type="text" class="form-control online-media-url" placeholder="' + me.placeholder + '" />' +
-        '</div><div class="help-block">' + me.allowedHelpText + '<br>' + allowedExtMarkup.join(' ') + '</div>',
+        $markup,
         Severity.notice,
         [{
           text: me.btnSubmit,
-          btnClass: 'btn',
+          btnClass: 'btn btn-primary',
           name: 'ok',
           trigger: function() {
             var url = $modal.find('input.online-media-url').val();
