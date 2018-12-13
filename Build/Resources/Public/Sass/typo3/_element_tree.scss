@@ -118,10 +118,10 @@ $tree-control-icon-size: 12px;
 .list-tree-control {
     @include user-select(none);
 
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     display: block;
-    float: left;
-    margin-top: ceil($tree-line-height / 2) - ceil($tree-control-size / 2);
     margin-left: -($tree-indentation + ceil($tree-control-size / 2));
     text-align: center;
     line-height: $tree-control-size;
