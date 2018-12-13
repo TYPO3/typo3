@@ -106,7 +106,10 @@ lib.parseFunc_RTE {
             encapsTagList = p,pre,h1,h2,h3,h4,h5,h6,hr,dt
             remapTag.DIV = P
             nonWrappedTag = P
+            innerStdWrap_all.ifBlank = &nbsp;
         }
+    }
+    nonTypoTagStdWrap {
         HTMLparser = 1
         HTMLparser {
             keepNonMatchedTags = 1
