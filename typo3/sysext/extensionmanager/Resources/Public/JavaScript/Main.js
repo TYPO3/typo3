@@ -26,9 +26,12 @@ define([
   'TYPO3/CMS/Backend/Tooltip',
   'TYPO3/CMS/Backend/Notification',
   'TYPO3/CMS/Backend/Severity',
+  'TYPO3/CMS/Core/SecurityUtility',
   'datatables',
   'TYPO3/CMS/Backend/jquery.clearable'
-], function($, NProgress, Modal, SplitButtons, Tooltip, Notification, Severity) {
+], function($, NProgress, Modal, SplitButtons, Tooltip, Notification, Severity, SecurityUtility) {
+
+  var securityUtility = new SecurityUtility();
 
   /**
    *
@@ -243,23 +246,41 @@ define([
    * @param {Object} data
    */
   ExtensionManager.updateExtension = function(data) {
-    var message = '<h1>' + TYPO3.lang['extensionList.updateConfirmation.title'] + '</h1>';
-    message += '<h2>' + TYPO3.lang['extensionList.updateConfirmation.message'] + '</h2>';
-    message += '<form>';
     var i = 0;
+    var $form = $('<form>');
     $.each(data.updateComments, function(version, comment) {
-      comment = comment.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1<br />$2');
-      message += '<h3><input type="radio" ' + (i === 0 ? 'checked="checked" ' : '') + 'name="version" value="' + version + '" /> ' + version + '</h3>';
-      message += '<div>' + comment + '</div>';
+      var $input = $('<input>').attr({type: 'radio', name: 'version'}).val(version);
+      if (i === 0) {
+        $input.attr('checked', 'checked');
+      }
+      $form.append([
+        $('<h3>').append([
+          $input,
+          ' ' + securityUtility.encodeHtml(version)
+        ]),
+        $('<div>')
+          .append(
+            comment
+              .replace(/(\r\n|\n\r|\r|\n)/g, '\n')
+              .split(/\n/).map(function(line) {
+                return securityUtility.encodeHtml(line);
+              })
+              .join('<br>')
+          )
+      ]);
       i++;
     });
-    message += '</form>';
+    var $container = $('<div>').append([
+      $('<h1>').text(TYPO3.lang['extensionList.updateConfirmation.title']),
+      $('<h2>').text(TYPO3.lang['extensionList.updateConfirmation.message']),
+      $form
+    ]);
 
     NProgress.done();
 
     Modal.confirm(
       TYPO3.lang['extensionList.updateConfirmation.questionVersionComments'],
-      message,
+      $container,
       Severity.warning,
       [
         {
@@ -386,7 +407,7 @@ define([
   Repository.getDependencies = function(data) {
     NProgress.done();
     if (data.hasDependencies) {
-      Modal.confirm(data.title, data.message, Severity.info, [
+      Modal.confirm(data.title, $(data.message), Severity.info, [
         {
           text: TYPO3.lang['button.cancel'],
           active: true,
@@ -426,7 +447,7 @@ define([
       },
       success: function(data) {
         if (data.errorCount > 0) {
-          Modal.confirm(data.errorTitle, data.errorMessage, Severity.error, [
+          Modal.confirm(data.errorTitle, $(data.errorMessage), Severity.error, [
             {
               text: TYPO3.lang['button.cancel'],
               active: true,
