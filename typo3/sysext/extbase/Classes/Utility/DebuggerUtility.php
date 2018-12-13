@@ -463,7 +463,7 @@ class DebuggerUtility
             $dump .= ' => ';
             $dump .= self::renderDump($value, $level, $plainText, $ansiColors);
         }
-        if ($collection instanceof \Iterator) {
+        if ($collection instanceof \Iterator && !$collection instanceof \Generator) {
             $collection->rewind();
         }
         return $dump;

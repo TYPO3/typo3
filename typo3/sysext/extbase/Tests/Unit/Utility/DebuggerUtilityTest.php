@@ -42,6 +42,20 @@ class DebuggerUtilityTest extends UnitTestCase
     /**
      * @test
      */
+    public function debuggerDoesNotRewindInstancesOfGenerator()
+    {
+        $generator = (function () {
+            yield 1;
+            yield 2;
+            yield 3;
+        })();
+        $result = DebuggerUtility::var_dump($generator, null, 8, true, false, true);
+        $this->assertContains('Generator', $result);
+    }
+
+    /**
+     * @test
+     */
     public function varDumpShowsPropertiesOfStdClassObjects()
     {
         $testObject = new \stdClass();
