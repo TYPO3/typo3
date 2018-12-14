@@ -375,9 +375,20 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         }
         $id = (int)$id;
         // Check if input id is an offline version page in which case we will map id to the online version:
-        $checkRec = BackendUtility::getRecord('pages', $id, 'pid,t3ver_oid');
+        $checkRec = BackendUtility::getRecord(
+            'pages',
+            $id,
+            'pid,t3ver_oid,'
+            . $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] . ','
+            . $GLOBALS['TCA']['pages']['ctrl']['languageField']
+        );
         if ($checkRec['pid'] == -1) {
             $id = (int)$checkRec['t3ver_oid'];
+        }
+        // if current rec is a translation then get uid from l10n_parent instead
+        // because web mounts point to pages in default language and rootline returns uids of default languages
+        if ((int)$checkRec[$GLOBALS['TCA']['pages']['ctrl']['languageField']] !== 0 && (int)$checkRec[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] !== 0) {
+            $id = (int)$checkRec[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']];
         }
         if (!$readPerms) {
             $readPerms = $this->getPagePermsClause(Permission::PAGE_SHOW);
