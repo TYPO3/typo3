@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <be_groups>
+        <uid>1</uid>
+        <pid>0</pid>
+        <title>editor group</title>
+        <lockToDomain></lockToDomain>
+        <workspace_perms>0</workspace_perms>
+        <db_mountpoints>1</db_mountpoints>
+        <tstamp>1544454571</tstamp>
+        <crdate>1542360853</crdate>
+        <deleted>0</deleted>
+        <hidden>0</hidden>
+        <cruser_id>1</cruser_id>
+    </be_groups>
+</dataset>
