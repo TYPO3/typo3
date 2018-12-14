@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d1904ee581a330991e5cad4f7790a271",
+    "content-hash": "4e1deec9404e87d7c6e164e14b497d97",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -5015,32 +5015,32 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "4.11.1",
+            "version": "5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "cfc5ad04e61898c8144e19ca5f7e8d83203a4b24"
+                "reference": "1a773fe87465a81015d5e09151770bbb5f9cf90b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/cfc5ad04e61898c8144e19ca5f7e8d83203a4b24",
-                "reference": "cfc5ad04e61898c8144e19ca5f7e8d83203a4b24",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/1a773fe87465a81015d5e09151770bbb5f9cf90b",
+                "reference": "1a773fe87465a81015d5e09151770bbb5f9cf90b",
                 "shasum": ""
             },
             "require": {
                 "mikey179/vfsstream": "~1.6.0",
                 "phpunit/phpunit": "^7.1",
-                "typo3/cms-backend": "^9.3",
-                "typo3/cms-core": "^9.3",
-                "typo3/cms-extbase": "^9.3",
-                "typo3/cms-fluid": "^9.3",
-                "typo3/cms-frontend": "^9.3",
-                "typo3/cms-recordlist": "^9.3",
+                "typo3/cms-backend": "10.*.*@dev",
+                "typo3/cms-core": "10.*.*@dev",
+                "typo3/cms-extbase": "10.*.*@dev",
+                "typo3/cms-fluid": "10.*.*@dev",
+                "typo3/cms-frontend": "10.*.*@dev",
+                "typo3/cms-recordlist": "10.*.*@dev",
                 "typo3fluid/fluid": "^2.5"
             },
             "suggest": {
                 "codeception/codeception": "^2.4",
-                "typo3/cms-styleguide": "^9.0"
+                "typo3/cms-styleguide": "^10.0"
             },
             "type": "library",
             "autoload": {
@@ -5048,20 +5048,19 @@
                     "TYPO3\\TestingFramework\\": "Classes/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0-or-later"
             ],
             "authors": [
                 {
-                    "name": "The TYPO3 Community",
-                    "homepage": "https://typo3.org/community/",
-                    "role": "Contributor"
+                    "name": "TYPO3 CMS Core Team",
+                    "role": "Developer",
+                    "homepage": "https://forge.typo3.org/projects/typo3cms-core"
                 },
                 {
-                    "name": "TYPO3 CMS Core Team",
-                    "homepage": "https://forge.typo3.org/projects/typo3cms-core",
-                    "role": "Developer"
+                    "name": "The TYPO3 Community",
+                    "role": "Contributor",
+                    "homepage": "https://typo3.org/community/"
                 }
             ],
             "description": "The TYPO3 testing framework provides base classes for unit, functional and acceptance testing.",
@@ -5071,7 +5070,12 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2018-11-02T16:00:39+00:00"
+            "support": {
+                "general": "https://typo3.org/support/",
+                "issues": "https://github.com/TYPO3/testing-framework/issues",
+                "source": "https://github.com/lolli42/testing-framework/tree/5.0.0"
+            },
+            "time": "2018-12-14T15:39:33+00:00"
         },
         {
             "name": "webmozart/assert",
