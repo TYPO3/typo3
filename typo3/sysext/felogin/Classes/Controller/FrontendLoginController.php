@@ -463,8 +463,8 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
         $isBaseURL = !empty($this->frontendController->baseUrl);
         $isFeloginBaseURL = !empty($this->conf['feloginBaseURL']);
         $link = $this->pi_getPageLink($this->frontendController->id, '', [
-            rawurlencode($this->prefixId . '[user]') => $user['uid'],
-            rawurlencode($this->prefixId . '[forgothash]') => $randHash
+            $this->prefixId . '[user]' => $user['uid'],
+            $this->prefixId . '[forgothash]' => $randHash
         ]);
         // Prefix link if necessary
         if ($isFeloginBaseURL) {
