@@ -29,6 +29,8 @@ class IntroductionPackageCest
      */
     public function installTypo3OnMysql(InstallTester $I, Scenario $scenario)
     {
+        $scenario->skip('Disabled until ext:introduction and ext:bootstrap_package are relased as v10 compatible.');
+
         // Calling frontend redirects to installer
         $I->amOnPage('/');
 

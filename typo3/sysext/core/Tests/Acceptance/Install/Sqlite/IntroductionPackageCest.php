@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Install\Sqlite;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Codeception\Scenario;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\InstallTester;
 
 /**
@@ -24,10 +25,13 @@ class IntroductionPackageCest
 {
     /**
      * @param InstallTester $I
+     * @param Scenario $scenario
      * @env sqlite
      */
-    public function installTypo3OnSqlite(InstallTester $I)
+    public function installTypo3OnSqlite(InstallTester $I, Scenario $scenario)
     {
+        $scenario->skip('Disabled until ext:introduction and ext:bootstrap_package are relased as v10 compatible.');
+
         // Calling frontend redirects to installer
         $I->amOnPage('/');
 
