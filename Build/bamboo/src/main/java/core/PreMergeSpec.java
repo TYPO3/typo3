@@ -36,13 +36,13 @@ import com.atlassian.bamboo.specs.model.task.ScriptTaskProperties;
 import com.atlassian.bamboo.specs.util.BambooServer;
 
 /**
- * Core master pre-merge test plan.
+ * Core 9.5 pre-merge test plan.
  */
 @BambooSpec
 public class PreMergeSpec extends AbstractCoreSpec {
 
-    protected static String planName = "Core master pre-merge";
-    protected static String planKey = "GTC";
+    protected static String planName = "Core 9.5 pre-merge";
+    protected static String planKey = "GTC95";
 
     protected int numberOfAcceptanceTestJobs = 10;
     protected int numberOfFunctionalMysqlJobs = 10;
@@ -62,7 +62,7 @@ public class PreMergeSpec extends AbstractCoreSpec {
     }
 
     /**
-     * Core master pre-merge plan is in "TYPO3 core" project of bamboo
+     * Core 9.5 pre-merge plan is in "TYPO3 core" project of bamboo
      */
     Project project() {
         return new Project().name(projectName).key(projectKey);
@@ -123,14 +123,14 @@ public class PreMergeSpec extends AbstractCoreSpec {
 
         // Compile plan
         return new Plan(project(), planName, planKey)
-            .description("Execute TYPO3 core master pre-merge tests. Auto generated! See Build/bamboo of core git repository.")
+            .description("Execute TYPO3 core 9.5 pre-merge tests. Auto generated! See Build/bamboo of core git repository.")
             .pluginConfigurations(this.getDefaultPlanPluginConfiguration())
             .stages(
                 stagePreparation,
                 stageEarly,
                 stageMainStage
             )
-            .linkedRepositories("github TYPO3 TYPO3.CMS")
+            .linkedRepositories("github TYPO3 TYPO3.CMS 9.5")
             .triggers(
                 new RepositoryPollingTrigger()
                     .name("Repository polling for post-merge builds"),

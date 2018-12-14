@@ -30,13 +30,13 @@ import com.atlassian.bamboo.specs.model.task.ScriptTaskProperties;
 import com.atlassian.bamboo.specs.util.BambooServer;
 
 /**
- * Core master nightly test plan.
+ * Core 9.5 nightly test plan.
  */
 @BambooSpec
 public class NightlySpec extends AbstractCoreSpec {
 
-    protected static String planName = "Core master nightly";
-    protected static String planKey = "GTN";
+    protected static String planName = "Core 9.5 nightly";
+    protected static String planKey = "GTN95";
 
     protected int numberOfAcceptanceTestJobs = 8;
     protected int numberOfFunctionalMysqlJobs = 6;
@@ -56,7 +56,7 @@ public class NightlySpec extends AbstractCoreSpec {
     }
 
     /**
-     * Core master pre-merge plan is in "TYPO3 core" project of bamboo
+     * Core 9.5 pre-merge plan is in "TYPO3 core" project of bamboo
      */
     Project project() {
         return new Project().name(projectName).key(projectKey);
@@ -208,7 +208,7 @@ public class NightlySpec extends AbstractCoreSpec {
 
         // Compile plan
         return new Plan(project(), planName, planKey)
-            .description("Execute TYPO3 core master nightly tests. Auto generated! See Build/bamboo of core git repository.")
+            .description("Execute TYPO3 core 9.5 nightly tests. Auto generated! See Build/bamboo of core git repository.")
             .pluginConfigurations(this.getDefaultPlanPluginConfiguration())
             .stages(
                 stagePreparation,
@@ -216,13 +216,13 @@ public class NightlySpec extends AbstractCoreSpec {
                 stageComposerMaxStage,
                 stageComposerMinStage
             )
-            .linkedRepositories("github TYPO3 TYPO3.CMS")
+            .linkedRepositories("github TYPO3 TYPO3.CMS 9.5")
             .triggers(
                 new ScheduledTrigger()
                     .name("Scheduled")
                     .description("daily at night")
                     // daily 03:23
-                    .cronExpression("0 23 3 ? * *")
+                    .cronExpression("0 31 5 ? * *")
             )
             .variables(
                 new Variable("changeUrl", ""),
