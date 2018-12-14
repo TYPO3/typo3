@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e1deec9404e87d7c6e164e14b497d97",
+    "content-hash": "c8b310639fa9435de1ca520df5da93ad",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -4951,16 +4951,16 @@
         },
         {
             "name": "typo3/cms-styleguide",
-            "version": "9.2.2",
+            "version": "10.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "e945c17a78cfd25ccea6335907fae35e55369d20"
+                "reference": "9b716596ba6bd92be2b50a783eeeb9dce46e3c18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/e945c17a78cfd25ccea6335907fae35e55369d20",
-                "reference": "e945c17a78cfd25ccea6335907fae35e55369d20",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/9b716596ba6bd92be2b50a783eeeb9dce46e3c18",
+                "reference": "9b716596ba6bd92be2b50a783eeeb9dce46e3c18",
                 "shasum": ""
             },
             "replace": {
@@ -4968,11 +4968,11 @@
             },
             "require-dev": {
                 "codeception/codeception": "^2.4",
-                "typo3/cms-about": "^9.5",
-                "typo3/cms-core": "^9.5",
-                "typo3/cms-frontend": "^9.5",
-                "typo3/cms-install": "^9.5",
-                "typo3/testing-framework": "^4.11.0"
+                "typo3/cms-about": "10.*.*@dev",
+                "typo3/cms-core": "10.*.*@dev",
+                "typo3/cms-frontend": "10.*.*@dev",
+                "typo3/cms-install": "10.*.*@dev",
+                "typo3/testing-framework": "^5.0.0"
             },
             "type": "typo3-cms-extension",
             "extra": {
@@ -5011,7 +5011,7 @@
                 "typo3",
                 "typo3 backend"
             ],
-            "time": "2018-11-02T12:59:32+00:00"
+            "time": "2018-12-14T18:29:40+00:00"
         },
         {
             "name": "typo3/testing-framework",
