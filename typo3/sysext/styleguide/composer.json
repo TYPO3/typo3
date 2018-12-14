@@ -46,6 +46,8 @@
     "typo3/testing-framework": "^5.0.0",
     "codeception/codeception": "^2.4"
   },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "autoload-dev": {
     "psr-4": {
       "TYPO3\\CMS\\Styleguide\\Tests\\": "Tests"
