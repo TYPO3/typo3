@@ -1395,7 +1395,7 @@ abstract public class AbstractCoreSpec {
                 this.getScriptTaskBashInlineBody() +
                 this.getScriptTaskComposer(requirementIdentifier) +
                 "composer install -n\n" +
-                "composer update --with-dependencies -n"
+                "composer update --with-dependencies --no-progress -n"
             )
             .environmentVariables(this.composerRootVersionEnvironment);
     }
@@ -1419,7 +1419,7 @@ abstract public class AbstractCoreSpec {
                 this.getScriptTaskBashInlineBody() +
                 this.getScriptTaskComposer(requirementIdentifier) +
                 "composer install -n\n" +
-                "composer update --prefer-lowest -n"
+                "composer update --prefer-lowest --no-progress -n"
             )
             .environmentVariables(this.composerRootVersionEnvironment);
     }
