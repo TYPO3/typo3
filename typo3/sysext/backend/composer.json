@@ -14,7 +14,7 @@
 	},
 	"require": {
 		"php": ">=7.0.0 <=7.2.99",
-		"typo3/cms-core": "8.7.*@dev"
+		"typo3/cms-core": "8.7.22"
 	},
 	"conflict": {
 		"typo3/cms": "*"
