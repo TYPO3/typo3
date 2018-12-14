@@ -25,9 +25,6 @@
 		"typo3/cms-scheduler": "For garbage collection of search statistics"
 	},
 	"extra": {
-		"branch-alias": {
-			"dev-master": "9.5.x-dev"
-		},
 		"typo3/cms": {
 			"extension-key": "indexed_search"
 		}

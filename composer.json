@@ -98,9 +98,6 @@
 				"typo3/sysext/t3editor/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/workspaces/Migrations/Code/ClassAliasMap.php"
 			]
-		},
-		"branch-alias": {
-			"dev-master": "9.5.x-dev"
 		}
 	},
 	"scripts": {

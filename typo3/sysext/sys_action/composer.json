@@ -23,9 +23,6 @@
 		"sys_action": "*"
 	},
 	"extra": {
-		"branch-alias": {
-			"dev-master": "9.5.x-dev"
-		},
 		"typo3/cms": {
 			"extension-key": "sys_action"
 		}
