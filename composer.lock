@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fcd4ef2d6e8503242ec4561f39c9d361",
+    "content-hash": "e7c4bcdfc8d52160f00e242229cf54ab",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -4235,7 +4235,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.0.0 <=7.2.99",
+        "php": "^7.0 <7.4",
         "ext-json": "*",
         "ext-pcre": "*",
         "ext-session": "*",
