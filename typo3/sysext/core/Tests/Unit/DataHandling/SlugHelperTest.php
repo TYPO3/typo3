@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling;
 
 /*
@@ -481,6 +482,137 @@ class SlugHelperTest extends UnitTestCase
         static::assertEquals(
             $expected,
             $subject->generate(['title' => $input, 'uid' => 13], 13)
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function generateSlugWithNavTitleAndFallbackForPagesDataProvider(): array
+    {
+        return [
+            'title and empty nav_title' => [
+                ['title' => 'Products', 'nav_title' => '', 'subtitle' => ''],
+                '/products',
+                [
+                    'generatorOptions' => [
+                        'fields' => [
+                            ['nav_title', 'title']
+                        ],
+                    ],
+                ]
+            ],
+            'title and nav_title' => [
+                ['title' => 'Products', 'nav_title' => 'Best products', 'subtitle' => ''],
+                '/best-products',
+                [
+                    'generatorOptions' => [
+                        'fields' => [
+                            ['nav_title', 'title']
+                        ],
+                    ],
+                ]
+            ],
+            'title and nav_title and subtitle' => [
+                ['title' => 'Products', 'nav_title' => 'Best products', 'subtitle' => 'Product subtitle'],
+                '/product-subtitle',
+                [
+                    'generatorOptions' => [
+                        'fields' => [
+                            ['subtitle', 'nav_title', 'title']
+                        ],
+                    ],
+                ]
+            ],
+            'definition with a non existing field (misconfiguration)' => [
+                ['title' => 'Products', 'nav_title' => '', 'subtitle' => ''],
+                '/products',
+                [
+                    'generatorOptions' => [
+                        'fields' => [
+                            ['custom_field', 'title']
+                        ],
+                    ],
+                ]
+            ],
+            'empty fields deliver default slug' => [
+                ['title' => '', 'nav_title' => '', 'subtitle' => ''],
+                '/default-b4dac929c2',
+                [
+                    'generatorOptions' => [
+                        'fields' => [
+                            ['nav_title', 'title']
+                        ],
+                    ],
+                ]
+            ],
+            'fallback combined with a second field' => [
+                ['title' => 'Products', 'nav_title' => 'Best products', 'subtitle' => 'Product subtitle'],
+                '/best-products/product-subtitle',
+                [
+                    'generatorOptions' => [
+                        'fields' => [
+                            ['nav_title', 'title'], 'subtitle'
+                        ],
+                    ],
+                ]
+            ],
+            'empty config array deliver default slug' => [
+                ['title' => 'Products', 'nav_title' => 'Best products', 'subtitle' => 'Product subtitle'],
+                '/default-e13d142b36',
+                [
+                    'generatorOptions' => [
+                        'fields' => [
+                            []
+                        ],
+                    ],
+                ]
+            ],
+            'empty config deliver default slug' => [
+                ['title' => 'Products', 'nav_title' => 'Best products', 'subtitle' => 'Product subtitle'],
+                '/default-e13d142b36',
+                [
+                    'generatorOptions' => [
+                        'fields' => [],
+                    ],
+                ]
+            ],
+            'combine two fallbacks' => [
+                ['title' => 'Products', 'nav_title' => 'Best products', 'subtitle' => 'Product subtitle', 'seo_title' => 'SEO product title'],
+                '/seo-product-title/products',
+                [
+                    'generatorOptions' => [
+                        'fields' => ['seo_title', 'title'], ['nav_title', 'subtitle'],
+                    ],
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider generateSlugWithNavTitleAndFallbackForPagesDataProvider
+     * @param array $input
+     * @param string $expected
+     * @param array $options
+     * @test
+     */
+    public function generateSlugWithNavTitleAndFallbackForPages(array $input, string $expected, array $options)
+    {
+        $GLOBALS['dummyTable']['ctrl'] = [];
+        $subject = new SlugHelper(
+            'pages',
+            'slug',
+            ['generatorOptions' => $options['generatorOptions']]
+        );
+        static::assertEquals(
+            $expected,
+            $subject->generate([
+                'title' => $input['title'],
+                'nav_title' => $input['nav_title'],
+                'subtitle' => $input['subtitle'],
+                'seo_title' => $input['seo_title'] ?? '',
+                'uid' => 13
+            ], 13)
         );
     }
 }
