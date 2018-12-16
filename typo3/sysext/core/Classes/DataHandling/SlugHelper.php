@@ -182,11 +182,21 @@ class SlugHelper
         $slugParts = [];
 
         $replaceConfiguration = $this->configuration['generatorOptions']['replacements'] ?? [];
-        foreach ($this->configuration['generatorOptions']['fields'] ?? [] as $fieldName) {
-            if (!empty($recordData[$fieldName])) {
-                $pieceOfSlug = $recordData[$fieldName];
-                $pieceOfSlug = str_replace(array_keys($replaceConfiguration), array_values($replaceConfiguration), $pieceOfSlug);
-                $slugParts[] = $pieceOfSlug;
+        foreach ($this->configuration['generatorOptions']['fields'] ?? [] as $fieldNameParts) {
+            if (is_string($fieldNameParts)) {
+                $fieldNameParts = GeneralUtility::trimExplode(',', $fieldNameParts);
+            }
+            foreach ($fieldNameParts as $fieldName) {
+                if (!empty($recordData[$fieldName])) {
+                    $pieceOfSlug = $recordData[$fieldName];
+                    $pieceOfSlug = str_replace(
+                        array_keys($replaceConfiguration),
+                        array_values($replaceConfiguration),
+                        $pieceOfSlug
+                    );
+                    $slugParts[] = $pieceOfSlug;
+                    break;
+                }
             }
         }
         $slug = implode($fieldSeparator, $slugParts);

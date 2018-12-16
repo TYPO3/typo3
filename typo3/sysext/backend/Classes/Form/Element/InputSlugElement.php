@@ -166,8 +166,13 @@ class InputSlugElement extends AbstractFormElement
 
         [$commonElementPrefix] = GeneralUtility::revExplode('[', $parameterArray['itemFormElName'], 2);
         $validInputNamesToListenTo = [];
-        foreach ($config['generatorOptions']['fields'] ?? [] as $listenerFieldName) {
-            $validInputNamesToListenTo[$listenerFieldName] = $commonElementPrefix . '[' . htmlspecialchars($listenerFieldName) . ']';
+        foreach ($config['generatorOptions']['fields'] ?? [] as $fieldNameParts) {
+            if (is_string($fieldNameParts)) {
+                $fieldNameParts = GeneralUtility::trimExplode(',', $fieldNameParts);
+            }
+            foreach ($fieldNameParts as $listenerFieldName) {
+                $validInputNamesToListenTo[$listenerFieldName] = $commonElementPrefix . '[' . htmlspecialchars($listenerFieldName) . ']';
+            }
         }
         $parentPageId = $this->data['parentPageRow']['uid'] ?? 0;
         $signature = GeneralUtility::hmac(
