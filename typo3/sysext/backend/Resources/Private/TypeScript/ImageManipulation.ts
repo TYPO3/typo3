@@ -14,6 +14,7 @@
 import * as $ from 'jquery';
 import 'jquery-ui/draggable';
 import 'jquery-ui/resizable';
+import FormEngineValidation = require('TYPO3/CMS/Backend/FormEngineValidation');
 import Icons = require('./Icons');
 import Modal = require('./Modal');
 import ImagesLoaded = require('TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min');
@@ -936,6 +937,7 @@ class ImageManipulation {
     this.trigger.attr('data-crop-variants', JSON.stringify(data));
     this.setPreviewImages(data);
     hiddenField.val(cropVariants);
+    FormEngineValidation.markFieldAsChanged(hiddenField);
     this.currentModal.modal('hide');
   }
 
