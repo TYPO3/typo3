@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "TYPO3/CMS/Backend/Icons", "TYPO3/CMS/Backend/Modal", "jquery", "jquery-ui/draggable", "jquery-ui/resizable"], function (require, exports, ImagesLoaded, Icons, Modal, $) {
+define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "TYPO3/CMS/Backend/FormEngineValidation", "TYPO3/CMS/Backend/Icons", "TYPO3/CMS/Backend/Modal", "jquery", "jquery-ui/draggable", "jquery-ui/resizable"], function (require, exports, ImagesLoaded, FormEngineValidation, Icons, Modal, $) {
     "use strict";
     /**
      * Module: TYPO3/CMS/Backend/ImageManipulation
@@ -792,6 +792,7 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
             this.trigger.attr('data-crop-variants', JSON.stringify(data));
             this.setPreviewImages(data);
             hiddenField.val(cropVariants);
+            FormEngineValidation.markFieldAsChanged(hiddenField);
             this.currentModal.modal('hide');
         };
         /**

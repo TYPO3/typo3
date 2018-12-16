@@ -12,12 +12,14 @@
  */
 
 /// <amd-dependency path='TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min' name='ImagesLoaded'>
+/// <amd-dependency path='TYPO3/CMS/Backend/FormEngineValidation' name='FormEngineValidation'>
 /// <amd-dependency path='TYPO3/CMS/Backend/Icons' name='Icons'>
 /// <amd-dependency path='TYPO3/CMS/Backend/Modal' name='Modal'>
 
 import $ = require('jquery');
 import 'jquery-ui/draggable';
 import 'jquery-ui/resizable';
+declare const FormEngineValidation: any;
 declare const Icons: any;
 declare const Modal: any;
 declare const ImagesLoaded: any;
@@ -952,6 +954,7 @@ class ImageManipulation {
     this.trigger.attr('data-crop-variants', JSON.stringify(data));
     this.setPreviewImages(data);
     hiddenField.val(cropVariants);
+    FormEngineValidation.markFieldAsChanged(hiddenField);
     this.currentModal.modal('hide');
   }
 
