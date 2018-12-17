@@ -112,7 +112,6 @@ abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
         $temporaryFile = GeneralUtility::tempnam('online_media');
         GeneralUtility::writeFileToTypo3tempDir($temporaryFile, $onlineMediaId);
         $file = $targetFolder->addFile($temporaryFile, $fileName, DuplicationBehavior::RENAME);
-        GeneralUtility::unlink_tempfile($temporaryFile);
         return $file;
     }
 
