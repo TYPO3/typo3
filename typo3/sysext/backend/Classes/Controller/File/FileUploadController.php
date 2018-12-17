@@ -232,31 +232,22 @@ class FileUploadController
      */
     protected function renderUploadFormInternal(): string
     {
-        // Make checkbox for "overwrite"
         $content = '
-            <div id="c-override">
-                <p class="checkbox"><label for="overwriteExistingFiles"><input type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="replace" /> ' . htmlspecialchars($this->getLanguageService()->getLL('overwriteExistingFiles')) . '</label></p>
-                <p>' . htmlspecialchars($this->getLanguageService()->getLL('uploadMultipleFilesInfo')) . '</p>
-            </div>
-            ';
-        // Produce the number of upload-fields needed:
-        $content .= '
-            <div id="c-upload">
-        ';
-        // Adding 'size="50" ' for the sake of Mozilla!
-        $content .= '
-                <input type="file" multiple="multiple" name="upload_1[]" />
+            <div class="form-group">
+                <input type="file" multiple="multiple" class="form-control" name="upload_1[]" />
                 <input type="hidden" name="data[upload][1][target]" value="' . htmlspecialchars($this->folderObject->getCombinedIdentifier()) . '" />
-                <input type="hidden" name="data[upload][1][data]" value="1" /><br />
-            ';
-        $content .= '
+                <input type="hidden" name="data[upload][1][data]" value="1" />
             </div>
-        ';
-        // Submit button:
-        $content .= '
-            <div id="c-submit">
-                <input type="hidden" name="data[upload][1][redirect]" value="' . $this->returnUrl . '" /><br />
-                <input class="btn btn-default" type="submit" value="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.php.submit')) . '" />
+            <div class="checkbox">
+                <label for="overwriteExistingFiles">
+                <input type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="replace" /> ' . htmlspecialchars($this->getLanguageService()->getLL('overwriteExistingFiles')) . '</label>
+            </div>
+            <div>
+                <input type="hidden" name="data[upload][1][redirect]" value="' . $this->returnUrl . '" />
+                <input class="btn btn-primary" type="submit" value="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.php.submit')) . '" />
+            </div>
+            <div class="callout callout-warning">
+              ' . htmlspecialchars($this->getLanguageService()->getLL('uploadMultipleFilesInfo')) . '
             </div>
         ';
 
