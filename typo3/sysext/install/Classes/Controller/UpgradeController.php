@@ -24,6 +24,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -883,9 +884,14 @@ class UpgradeController extends AbstractController
         // ext_localconf, db and ext_tables must be loaded for the updates :(
         $this->loadExtLocalconfDatabaseAndExtTables();
         $upgradeWizardsService = new UpgradeWizardsService();
-        $adds = $upgradeWizardsService->getBlockingDatabaseAdds();
+        $adds = [];
         $needsUpdate = false;
-        if (!empty($adds)) {
+        try {
+            $adds = $upgradeWizardsService->getBlockingDatabaseAdds();
+            if (!empty($adds)) {
+                $needsUpdate = true;
+            }
+        } catch (StatementException $exception) {
             $needsUpdate = true;
         }
         return new JsonResponse([
