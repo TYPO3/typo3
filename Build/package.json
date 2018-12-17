@@ -3,10 +3,14 @@
   "description": "TYPO3 CMS is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.",
   "repository": "https://git.typo3.org/Packages/TYPO3.CMS.git",
   "readme": "../README.md",
-  "homepage": "https://www.typo3.org",
+  "homepage": "https://typo3.org",
   "author": "TYPO3 CMS Core Team",
-  "version": "9.0.0-dev",
+  "version": "10.0.0-dev",
   "license": "GPL-2.0+",
+  "engines": {
+    "node": ">=8.0.0 <9.0.0",
+    "yarn": "^1.10.0"
+  },
   "devDependencies": {
     "@claviska/jquery-minicolors": "^2.2.6",
     "@types/bootstrap": "^3.3.34",
