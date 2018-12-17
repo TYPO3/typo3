@@ -164,8 +164,10 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate
                 $this->registry->set($this->registryNamespace, 'recordOffset', $this->recordOffset);
             } while (count($records) === self::RECORDS_PER_QUERY);
 
-            $this->markWizardAsDone();
             $this->registry->remove($this->registryNamespace, 'recordOffset');
+            if (empty($customMessage)) {
+                $this->markWizardAsDone();
+            }
         } catch (\Exception $e) {
             $customMessage .= PHP_EOL . $e->getMessage();
         }
