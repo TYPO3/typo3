@@ -167,7 +167,8 @@ return [
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ext/saltedpasswords\'][\'saltMethods\']' => [
         'restFiles' => [
-            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst'
+            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'hook_previewInfo\']' => [

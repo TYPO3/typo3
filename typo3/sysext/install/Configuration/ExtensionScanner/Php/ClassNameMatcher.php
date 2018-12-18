@@ -720,6 +720,7 @@ return [
     'TYPO3\CMS\Saltedpasswords\SaltedPasswordService' => [
         'restFiles' => [
             'Deprecation-85761-SaltedPasswordService.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Service\FlexFormService' => [
@@ -729,92 +730,110 @@ return [
     ],
     'TYPO3\CMS\Core\Crypto\PasswordHashing\Salt\ComposedPasswordHashInterface' => [
         'restFiles' => [
-            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst'
+            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Crypto\PasswordHashing\Salt\AbstractComposedSalt' => [
         'restFiles' => [
-            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst'
+            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Crypto\PasswordHashing\Utility\ExtensionManagerConfigurationUtility' => [
         'restFiles' => [
-            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst'
+            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Crypto\PasswordHashing\Utility\SaltedPasswordsUtility' => [
         'restFiles' => [
-            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst'
+            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\Argon2ISalt' => [
         'restFiles' => [
             'Deprecation-85833-ExtensionSaltedpasswordsMergedIntoCoreExtension.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\BcryptSalt' => [
         'restFiles' => [
             'Deprecation-85833-ExtensionSaltedpasswordsMergedIntoCoreExtension.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt' => [
         'restFiles' => [
             'Deprecation-85833-ExtensionSaltedpasswordsMergedIntoCoreExtension.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Exception\InvalidSaltException' => [
         'restFiles' => [
             'Deprecation-85833-ExtensionSaltedpasswordsMergedIntoCoreExtension.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\Md5Salt' => [
         'restFiles' => [
             'Deprecation-85833-ExtensionSaltedpasswordsMergedIntoCoreExtension.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\SaltFactory' => [
         'restFiles' => [
             'Deprecation-85833-ExtensionSaltedpasswordsMergedIntoCoreExtension.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\SaltInterface' => [
         'restFiles' => [
             'Deprecation-85833-ExtensionSaltedpasswordsMergedIntoCoreExtension.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt' => [
         'restFiles' => [
             'Deprecation-85833-ExtensionSaltedpasswordsMergedIntoCoreExtension.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt' => [
         'restFiles' => [
             'Deprecation-85833-ExtensionSaltedpasswordsMergedIntoCoreExtension.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\AbstractComposedSalt' => [
         'restFiles' => [
             'Deprecation-85833-ExtensionSaltedpasswordsMergedIntoCoreExtension.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\ComposedSaltInterface' => [
         'restFiles' => [
             'Deprecation-85833-ExtensionSaltedpasswordsMergedIntoCoreExtension.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Utility\ExensionManagerConfigurationUtility' => [
         'restFiles' => [
             'Deprecation-85833-ExtensionSaltedpasswordsMergedIntoCoreExtension.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\SaltedPasswordsService' => [
         'restFiles' => [
             'Deprecation-85833-ExtensionSaltedpasswordsMergedIntoCoreExtension.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility' => [
         'restFiles' => [
             'Deprecation-85833-ExtensionSaltedpasswordsMergedIntoCoreExtension.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Workspaces\Service\AutoPublishService' => [

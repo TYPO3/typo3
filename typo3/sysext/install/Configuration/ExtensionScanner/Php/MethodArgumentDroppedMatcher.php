@@ -181,24 +181,28 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\Md5Salt->getHashedPassword' => [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt->getHashedPassword' => [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt->getHashedPassword' => [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Page\PageRenderer->addInlineLanguageLabelArray' => [

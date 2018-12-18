@@ -37,8 +37,6 @@ class BcryptPasswordHash implements PasswordHashInterface
      * Raise default PHP cost (10). At the time of this writing, this leads to
      * 150-200ms computing time on a casual I7 CPU.
      *
-     * Note the default values are set again in 'setOptions' below if needed.
-     *
      * @var array
      */
     protected $options = [
@@ -98,14 +96,10 @@ class BcryptPasswordHash implements PasswordHashInterface
      * Extend parent method to workaround bcrypt limitations.
      *
      * @param string $password Plaintext password to create a salted hash from
-     * @param string $salt Deprecated optional custom salt to use
      * @return string Salted hashed password
      */
-    public function getHashedPassword(string $password, string $salt = null)
+    public function getHashedPassword(string $password)
     {
-        if ($salt !== null) {
-            trigger_error(static::class . ': using a custom salt is deprecated in PHP password api and thus ignored.', E_USER_DEPRECATED);
-        }
         $hashedPassword = null;
         if ($password !== '') {
             $password = $this->processPlainPassword($password);
@@ -173,42 +167,5 @@ class BcryptPasswordHash implements PasswordHashInterface
     protected function isValidBcryptCost(int $cost): bool
     {
         return $cost >= PASSWORD_BCRYPT_DEFAULT_COST && $cost <= 31;
-    }
-
-    /**
-     * @return array
-     * @deprecated and will be removed in TYPO3 v10.0.
-     */
-    public function getOptions(): array
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        return $this->options;
-    }
-
-    /**
-     * Set new memory_cost, time_cost, and thread values.
-     *
-     * @param array $options
-     * @deprecated and will be removed in TYPO3 v10.0.
-     */
-    public function setOptions(array $options): void
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        $newOptions = [];
-
-        // Check options for validity, else use hard coded defaults
-        if (isset($options['cost'])) {
-            if (!$this->isValidBcryptCost((int)$options['cost'])) {
-                throw new \InvalidArgumentException(
-                    'cost must not be lower than ' . PASSWORD_BCRYPT_DEFAULT_COST . ' or higher than 31',
-                    1526042084
-                );
-            }
-            $newOptions['cost'] = (int)$options['cost'];
-        } else {
-            $newOptions['cost'] = 12;
-        }
-
-        $this->options = $newOptions;
     }
 }

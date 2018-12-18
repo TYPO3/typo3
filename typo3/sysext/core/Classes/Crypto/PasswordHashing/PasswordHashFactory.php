@@ -24,15 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PasswordHashFactory
 {
     /**
-     * An instance of the salted hashing method.
-     * This member is set in the getSaltingInstance() function.
-     *
-     * @var PasswordHashInterface
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    protected static $instance;
-
-    /**
      * Find a hash class that handles given hash and return an instance of it.
      *
      * @param string $hash Given hash to find instance for
@@ -149,108 +140,6 @@ class PasswordHashFactory
         if (!is_array($saltMethods) || empty($saltMethods)) {
             throw new \RuntimeException('No password hash methods configured', 1533948733);
         }
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'])) {
-            trigger_error(
-                'Registering additional hash algorithms in $GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ext/saltedpasswords\'][\'saltMethods\']'
-                . ' has been deprecated. Extend $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'availablePasswordHashAlgorithms\'] instead',
-                E_USER_DEPRECATED
-            );
-            $configuredMethods = (array)$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'];
-            if (!empty($configuredMethods)) {
-                $saltMethods = array_merge($saltMethods, $configuredMethods);
-            }
-        }
         return $saltMethods;
-    }
-
-    /**
-     * Obtains a salting hashing method instance.
-     *
-     * This function will return an instance of a class that implements
-     * \TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface
-     *
-     * Use parameter NULL to reset the factory!
-     *
-     * @param string|null $saltedHash Salted hashed password to determine the type of used method from or NULL to reset to the default type
-     * @param string $mode The TYPO3 mode (FE or BE) saltedpasswords shall be used for
-     * @return PasswordHashInterface|null An instance of salting hash method class or null if given hash is not supported
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public static function getSaltingInstance($saltedHash = '', $mode = TYPO3_MODE)
-    {
-        trigger_error(
-            'This method is obsolete and will be removed in TYPO3 v10.0. Use get() and getDefaultHashInstance() instead.',
-            E_USER_DEPRECATED
-        );
-        // Creating new instance when
-        // * no instance existing
-        // * a salted hash given to determine salted hashing method from
-        // * a NULL parameter given to reset instance back to default method
-        if (!is_object(self::$instance) || !empty($saltedHash) || $saltedHash === null) {
-            // Determine method by checking the given hash
-            if (!empty($saltedHash)) {
-                $result = self::determineSaltingHashingMethod($saltedHash, $mode);
-                if (!$result) {
-                    self::$instance = null;
-                }
-            } else {
-                $classNameToUse = SaltedPasswordsUtility::getDefaultSaltingHashingMethod($mode);
-                self::$instance = GeneralUtility::makeInstance($classNameToUse);
-            }
-        }
-        return self::$instance;
-    }
-
-    /**
-     * Method tries to determine the salting hashing method used for given salt.
-     *
-     * Method implicitly sets the instance of the found method object in the class property when found.
-     *
-     * @param string $saltedHash
-     * @param string $mode (optional) The TYPO3 mode (FE or BE) saltedpasswords shall be used for
-     * @return bool TRUE, if salting hashing method has been found, otherwise FALSE
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public static function determineSaltingHashingMethod(string $saltedHash, $mode = TYPO3_MODE): bool
-    {
-        trigger_error(
-            'This method is obsolete and will be removed in TYPO3 v10.0.',
-            E_USER_DEPRECATED
-        );
-        $registeredMethods = static::getRegisteredSaltedHashingMethods();
-        $defaultClassName = SaltedPasswordsUtility::getDefaultSaltingHashingMethod($mode);
-        unset($registeredMethods[$defaultClassName]);
-        // place the default method first in the order
-        $registeredMethods = [$defaultClassName => $defaultClassName] + $registeredMethods;
-        $methodFound = false;
-        foreach ($registeredMethods as $method) {
-            $objectInstance = GeneralUtility::makeInstance($method);
-            if ($objectInstance instanceof PasswordHashInterface && $objectInstance->isAvailable()) {
-                $methodFound = $objectInstance->isValidSaltedPW($saltedHash);
-                if ($methodFound) {
-                    self::$instance = $objectInstance;
-                    break;
-                }
-            }
-        }
-        return $methodFound;
-    }
-
-    /**
-     * Method sets a custom salting hashing method class.
-     *
-     * @param string $resource Object resource to use (e.g. \TYPO3\CMS\Core\Crypto\PasswordHashing\BlowfishPasswordHash::class)
-     * @return PasswordHashInterface|null An instance of salting hashing method object or null
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public static function setPreferredHashingMethod(string $resource)
-    {
-        trigger_error('This method is obsolete and will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        self::$instance = null;
-        $objectInstance = GeneralUtility::makeInstance($resource);
-        if ($objectInstance instanceof PasswordHashInterface) {
-            self::$instance = $objectInstance;
-        }
-        return self::$instance;
     }
 }

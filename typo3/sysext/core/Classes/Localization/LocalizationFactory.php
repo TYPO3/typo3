@@ -84,17 +84,6 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
             trigger_error('There is a reference to "' . $fileReference . '", which has been moved to "EXT:' . $mapping[$filePath] . '". This fallback will be removed with TYPO3 v10.0.', E_USER_DEPRECATED);
             $fileReference = 'EXT:' . $mapping[$filePath];
         }
-        // @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0
-        // this is a fallback to convert references to old 'saltedpasswords' locallang files to the new location
-        if (strpos($fileReference, 'EXT:saltedpasswords/Resources/Private/Language/') === 0) {
-            $mapping = [
-                'saltedpasswords/Resources/Private/Language/locallang.xlf' => 'core/Resources/Private/Language/locallang_deprecated_saltedpasswords.xlf',
-                'saltedpasswords/Resources/Private/Language/locallang_em.xlf' => 'core/Resources/Private/Language/locallang_deprecated_saltedpasswords_em.xlf',
-            ];
-            $filePath = substr($fileReference, 4);
-            trigger_error('There is a reference to "' . $fileReference . '", which has been moved to "EXT:' . $mapping[$filePath] . '". This fallback will be removed with TYPO3 v10.0.', E_USER_DEPRECATED);
-            $fileReference = 'EXT:' . $mapping[$filePath];
-        }
 
         $hash = md5($fileReference . $languageKey);
 

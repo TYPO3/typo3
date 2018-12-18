@@ -581,6 +581,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85027-SaltedPasswordsRelatedMethodsAndClasses.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::arrayToLogString' => [
@@ -641,6 +642,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-85796-SaltedPasswordsCleanups.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::determineSaltingHashingMethod' => [
@@ -648,6 +650,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-85796-SaltedPasswordsCleanups.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::setPreferredHashingMethod' => [
@@ -655,6 +658,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85796-SaltedPasswordsCleanups.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::getNumberOfBackendUsersWithInsecurePassword' => [
@@ -662,6 +666,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-85796-SaltedPasswordsCleanups.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::renderList' => [

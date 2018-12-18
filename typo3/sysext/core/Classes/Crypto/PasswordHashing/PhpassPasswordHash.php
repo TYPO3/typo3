@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Crypto\PasswordHashing;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -32,16 +31,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PhpassPasswordHash implements PasswordHashInterface
 {
-    use PublicMethodDeprecationTrait;
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicMethods = [
-        'isValidSalt' => 'Using PhpassPasswordHash::isValidSalt() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'base64Encode' => 'Using PhpassPasswordHash::base64Encode() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-    ];
-
     /**
      * Prefix for the password hash.
      */
@@ -53,37 +42,6 @@ class PhpassPasswordHash implements PasswordHashInterface
     protected $options = [
         'hash_count' => 14
     ];
-
-    /**
-     * Keeps a string for mapping an int to the corresponding
-     * base 64 character.
-     *
-     * @deprecated and will be removed in TYPO3 v10.0.
-     */
-    const ITOA64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-
-    /**
-     * The default log2 number of iterations for password stretching.
-     *
-     * @deprecated and will be removed in TYPO3 v10.0.
-     */
-    const HASH_COUNT = 14;
-
-    /**
-     * The default maximum allowed log2 number of iterations for
-     * password stretching.
-     *
-     * @deprecated and will be removed in TYPO3 v10.0.
-     */
-    const MAX_HASH_COUNT = 24;
-
-    /**
-     * The default minimum allowed log2 number of iterations for
-     * password stretching.
-     *
-     * @deprecated and will be removed in TYPO3 v10.0.
-     */
-    const MIN_HASH_COUNT = 7;
 
     /**
      * Constructor sets options if given
@@ -133,14 +91,10 @@ class PhpassPasswordHash implements PasswordHashInterface
      * Method creates a salted hash for a given plaintext password
      *
      * @param string $password Plaintext password to create a salted hash from
-     * @param string $salt Deprecated optional custom salt with setting to use
      * @return string|null salted hashed password
      */
-    public function getHashedPassword(string $password, string $salt = null)
+    public function getHashedPassword(string $password)
     {
-        if ($salt !== null) {
-            trigger_error(static::class . ': using a custom salt is deprecated.', E_USER_DEPRECATED);
-        }
         $saltedPW = null;
         if (!empty($password)) {
             if (empty($salt) || !$this->isValidSalt($salt)) {
@@ -358,103 +312,5 @@ class PhpassPasswordHash implements PasswordHashInterface
     {
         // Calculates bytes in bits in base64
         return (int)ceil($byteLength * 8 / 6);
-    }
-
-    /**
-     * Method returns log2 number of iterations for password stretching.
-     *
-     * @return int log2 number of iterations for password stretching
-     * @deprecated and will be removed in TYPO3 v10.0.
-     */
-    public function getHashCount(): int
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        return $this->options['hash_count'];
-    }
-
-    /**
-     * Method returns maximum allowed log2 number of iterations for password stretching.
-     *
-     * @return int Maximum allowed log2 number of iterations for password stretching
-     * @deprecated and will be removed in TYPO3 v10.0.
-     */
-    public function getMaxHashCount(): int
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        return 24;
-    }
-
-    /**
-     * Method returns minimum allowed log2 number of iterations for password stretching.
-     *
-     * @return int Minimum allowed log2 number of iterations for password stretching
-     * @deprecated and will be removed in TYPO3 v10.0.
-     */
-    public function getMinHashCount(): int
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        return 7;
-    }
-
-    /**
-     * Returns length of a Blowfish salt in bytes.
-     *
-     * @return int Length of a Blowfish salt in bytes
-     * @deprecated and will be removed in TYPO3 v10.0.
-     */
-    public function getSaltLength(): int
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        return 6;
-    }
-
-    /**
-     * Returns setting string of PHPass salted hashes.
-     *
-     * @return string Setting string of PHPass salted hashes
-     * @deprecated and will be removed in TYPO3 v10.0.
-     */
-    public function getSetting(): string
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        return self::PREFIX;
-    }
-
-    /**
-     * Method sets log2 number of iterations for password stretching.
-     *
-     * @param int $hashCount log2 number of iterations for password stretching to set
-     * @deprecated and will be removed in TYPO3 v10.0.
-     */
-    public function setHashCount(int $hashCount = null)
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        if ($hashCount >= 7 && $hashCount <= 24) {
-            $this->options['hash_count'] = $hashCount;
-        }
-    }
-
-    /**
-     * Method sets maximum allowed log2 number of iterations for password stretching.
-     *
-     * @param int $maxHashCount Maximum allowed log2 number of iterations for password stretching to set
-     * @deprecated and will be removed in TYPO3 v10.0.
-     */
-    public function setMaxHashCount(int $maxHashCount = null)
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        // Empty, max hash count is hard coded to 24
-    }
-
-    /**
-     * Method sets minimum allowed log2 number of iterations for password stretching.
-     *
-     * @param int $minHashCount Minimum allowed log2 number of iterations for password stretching to set
-     * @deprecated and will be removed in TYPO3 v10.0.
-     */
-    public function setMinHashCount(int $minHashCount = null)
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        // Empty, max hash count is hard coded to 7
     }
 }
