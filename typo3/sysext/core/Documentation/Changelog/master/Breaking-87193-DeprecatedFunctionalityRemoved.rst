@@ -15,6 +15,9 @@ The following PHP classes that have been previously deprecated for v9 have been 
 * :php:`TYPO3\CMS\Core\Resource\Utility\BackendUtility`
 * :php:`TYPO3\CMS\Core\Utility\ClientUtility`
 * :php:`TYPO3\CMS\Core\Utility\PhpOptionsUtility`
+* :php:`TYPO3\CMS\Workspaces\Service\AutoPublishService`
+* :php:`TYPO3\CMS\Workspaces\Task\AutoPublishTask`
+* :php:`TYPO3\CMS\Workspaces\Task\CleanupPreviewLinkTask`
 
 The following PHP class methods that have been previously deprecated for v9 have been removed:
 
@@ -41,6 +44,11 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->parsedCharsets` changed from public to protected
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->toASCII` changed from public to protected
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->twoByteSets` changed from public to protected
+
+The following scheduler tasks have been removed:
+
+* EXT:workspaces CleanupPreviewLinkTask
+* EXT:workspaces AutoPublishTask
 
 Impact
 ======

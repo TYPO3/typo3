@@ -10,6 +10,5 @@ return [
     'TYPO3\\CMS\\Version\\Dependency\\ReferenceEntity' => \TYPO3\CMS\Workspaces\Dependency\ReferenceEntity::class,
     'TYPO3\\CMS\\Version\\Hook\\DataHandlerHook' => \TYPO3\CMS\Workspaces\Hook\DataHandlerHook::class,
     'TYPO3\\CMS\\Version\\Hook\\PreviewHook' => \TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder::class,
-    'TYPO3\\CMS\\Version\\Task\\AutoPublishTask' => \TYPO3\CMS\Workspaces\Task\AutoPublishTask::class,
     'TYPO3\\CMS\\Version\\Utility\\WorkspacesUtility' => \TYPO3\CMS\Workspaces\Service\WorkspaceService::class,
 ];

@@ -12,18 +12,6 @@
 			<trans-unit id="mlang_labels_tablabel">
 				<source>Create and handle versioning workflows</source>
 			</trans-unit>
-			<trans-unit id="autopublishTask.name">
-				<source>Workspaces auto-publication (outdated, use the Symfony Command)</source>
-			</trans-unit>
-			<trans-unit id="autopublishTask.description">
-				<source>This tasks checks any workspace that has a publication date set in the past and automatically publishes it.</source>
-			</trans-unit>
-			<trans-unit id="cleanupPreviewLinkTask.name">
-				<source>Workspaces cleanup preview links (outdated, use the Symfony Command)</source>
-			</trans-unit>
-			<trans-unit id="cleanupPreviewLinkTask.description">
-				<source>This task delete old preview links</source>
-			</trans-unit>
 			<trans-unit id="stage_ready_to_publish">
 				<source>Ready to publish</source>
 			</trans-unit>
