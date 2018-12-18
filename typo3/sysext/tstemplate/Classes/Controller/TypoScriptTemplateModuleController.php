@@ -21,8 +21,6 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -37,7 +35,6 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
@@ -48,76 +45,11 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
  */
 class TypoScriptTemplateModuleController
 {
-    use PublicPropertyDeprecationTrait;
-    use PublicMethodDeprecationTrait;
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicProperties = [
-        'textExtensions' => 'Using TypoScriptTemplateModuleController::$textExtensions is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'pageinfo' => 'Using TypoScriptTemplateModuleController::$pageinfo is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'id' => 'Using TypoScriptTemplateModuleController::$id is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'modTSconfig' => 'Using TypoScriptTemplateModuleController::$modTSconfig is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'content' => 'Using TypoScriptTemplateModuleController::$content is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'extObj' => 'Using TypoScriptTemplateModuleController::$extObj is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'access' => 'Using TypoScriptTemplateModuleController::$access is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'perms_clause' => 'Using TypoScriptTemplateModuleController::$perms_clause is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'extClassConf' => 'Using TypoScriptTemplateModuleController::$extClassConf is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'edit' => 'Using TypoScriptTemplateModuleController::$edit is deprecated, property will be removed in TYPO3 v10.0.',
-        'modMenu_type' => 'Using TypoScriptTemplateModuleController::$modMenu_type is deprecated, property will be removed in TYPO3 v10.0.',
-        'MCONF' => 'Using TypoScriptTemplateModuleController::$MCONF is deprecated, property will be removed in TYPO3 v10.0.',
-        'CMD' => 'Using TypoScriptTemplateModuleController::$CMD is deprecated, property will be removed in TYPO3 v10.0.',
-        'sObj' => 'Using TypoScriptTemplateModuleController::$sObj is deprecated, property will be removed in TYPO3 v10.0.',
-    ];
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicMethods = [
-        'getExternalItemConfig' => 'Using TypoScriptTemplateModuleController::getExternalItemConfig() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'init' => 'Using TypoScriptTemplateModuleController::init() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'clearCache' => 'Using TypoScriptTemplateModuleController::clearCache() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'main' => 'Using TypoScriptTemplateModuleController::main() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'setInPageArray' => 'Using TypoScriptTemplateModuleController::setInPageArray() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'menuConfig' => 'Using TypoScriptTemplateModuleController::menuConfig() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'mergeExternalItems' => 'Using TypoScriptTemplateModuleController::mergeExternalItems() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'handleExternalFunctionValue' => 'Using TypoScriptTemplateModuleController::handleExternalFunctionValue() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'checkExtObj' => 'Using TypoScriptTemplateModuleController::checkExtObj() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'extObjContent' => 'Using TypoScriptTemplateModuleController::extObjContent() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'getExtObjContent' => 'Using TypoScriptTemplateModuleController::getExtObjContent() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'checkSubExtObj' => 'Using TypoScriptTemplateModuleController::checkSubExtObj() is deprecated, method will be removed in TYPO3 v10.0.',
-        'extObjHeader' => 'Using TypoScriptTemplateModuleController::extObjHeader() is deprecated, method will be removed in TYPO3 v10.0.',
-    ];
 
     /**
      * @var string
      */
     protected $perms_clause;
-
-    /**
-     * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $sObj;
-
-    /**
-     * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $edit;
-
-    /**
-     * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $textExtensions = 'html,htm,txt,css,tmpl,inc,js';
-
-    /**
-     * @var string Written by client classes.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove last usages, too.
-     */
-    protected $modMenu_type = '';
 
     /**
      * @var string
@@ -159,25 +91,9 @@ class TypoScriptTemplateModuleController
     protected $templateService;
 
     /**
-     * Loaded with the global array $MCONF which holds some module configuration from the conf.php file of backend modules.
-     *
-     * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $MCONF = [];
-
-    /**
      * @var int GET/POST var 'id'
      */
     protected $id;
-
-    /**
-     * The value of GET/POST var, 'CMD'
-     *
-     * @var mixed
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $CMD;
 
     /**
      * The module menu items array. Each key represents a key for which values can range between the items in the array of that key.
@@ -235,10 +151,6 @@ class TypoScriptTemplateModuleController
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->getLanguageService()->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang.xlf');
 
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-        $this->MCONF = [
-            'name' => $this->moduleName
-        ];
         $this->moduleTemplate->addJavaScriptCode(
             'jumpToUrl',
             '
@@ -255,15 +167,9 @@ class TypoScriptTemplateModuleController
      */
     protected function init()
     {
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-        $this->CMD = GeneralUtility::_GP('CMD');
         $this->menuConfig();
         $this->handleExternalFunctionValue();
         $this->id = (int)GeneralUtility::_GP('id');
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-        $this->sObj = GeneralUtility::_GP('sObj');
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-        $this->edit = GeneralUtility::_GP('edit');
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
     }
 
@@ -424,9 +330,6 @@ class TypoScriptTemplateModuleController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-        $GLOBALS['SOBE'] = $this;
-
         $this->init();
 
         // Checking for first level external objects
@@ -608,7 +511,7 @@ class TypoScriptTemplateModuleController
             $this->MOD_MENU,
             GeneralUtility::_GP('SET'),
             'web_ts',
-            $this->modMenu_type,
+            '',
             $this->modMenu_dontValidateList,
             $this->modMenu_setDefaultList
         );
@@ -709,60 +612,6 @@ page.10.value = HELLO WORLD!
     }
 
     /**
-     * Get the list
-     *
-     * @param array $pArray
-     * @param array $lines
-     * @param int $c
-     * @return array
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
-     */
-    public function renderList($pArray, $lines = [], $c = 0)
-    {
-        trigger_error(
-            'The method `TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::renderList` has been deprecated and should not be used any longer, this method will be removed in TYPO3 v10.0',
-            E_USER_DEPRECATED
-        );
-
-        if (!is_array($pArray)) {
-            return $lines;
-        }
-
-        $statusCheckedIcon = $this->moduleTemplate->getIconFactory()
-            ->getIcon('status-status-checked', Icon::SIZE_SMALL)->render();
-        foreach ($pArray as $k => $v) {
-            if (MathUtility::canBeInterpretedAsInteger($k)) {
-                $line = [];
-                $key = $k . '_';
-                $line['marginLeft'] = $c * 20;
-                $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($pArray[$k], 30);
-                $line['icon'] = $this->moduleTemplate->getIconFactory()
-                    ->getIconForRecord(
-                        'pages',
-                        BackendUtility::getRecordWSOL('pages', $k),
-                        Icon::SIZE_SMALL
-                    )->render();
-                if (!empty($pArray[$key])) {
-                    $line['href'] = GeneralUtility::linkThisScript(['id' => (int)$k]);
-                    $line['title'] = 'ID: ' . (int)$k;
-                    $line['count'] = $pArray[$k . '_']['count'];
-                    $line['root_max_val'] = ($pArray[$key]['root_max_val'] > 0 ? $statusCheckedIcon : '&nbsp;');
-                    $line['root_min_val'] = ($pArray[$key]['root_min_val'] === 0 ? $statusCheckedIcon : '&nbsp;');
-                } else {
-                    $line['href'] = '';
-                    $line['title'] = '';
-                    $line['count'] = '';
-                    $line['root_max_val'] = '';
-                    $line['root_min_val'] = '';
-                }
-                $lines[] = $line;
-                $lines = $this->renderList($pArray[$k . '.'], $lines, $c + 1);
-            }
-        }
-        return $lines;
-    }
-
-    /**
      * Returns a new standalone view, shorthand function
      *
      * @param string $extensionName
@@ -838,7 +687,7 @@ page.10.value = HELLO WORLD!
                 unset($this->MOD_MENU['function'][$key]);
             }
         }
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), 'web_ts', $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), 'web_ts', '', $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
     }
 
     /**
@@ -913,33 +762,7 @@ page.10.value = HELLO WORLD!
             $this->extObj = GeneralUtility::makeInstance($this->extClassConf['name']);
             $this->extObj->init($this);
             // Re-write:
-            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), 'web_ts', $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
-        }
-    }
-
-    /**
-     * Calls the checkExtObj function in sub module if present.
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function checkSubExtObj()
-    {
-        if (is_object($this->extObj) && is_callable([$this->extObj, 'checkExtObj'])) {
-            $this->extObj->checkExtObj();
-        }
-    }
-
-    /**
-     * Calls the 'header' function inside the "Function menu module" if present.
-     * A header function might be needed to add JavaScript or other stuff in the head.
-     * This can't be done in the main function because the head is already written.
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function extObjHeader()
-    {
-        if (is_callable([$this->extObj, 'head'])) {
-            $this->extObj->head();
+            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), 'web_ts', '', $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
         }
     }
 

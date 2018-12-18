@@ -370,6 +370,30 @@ The following class methods have changed visibility:
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->setPageCacheContent()` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->setSysLastChanged()` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->tempPageCacheContent()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->checkExtObj()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->checkSubExtObj()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->clearCache()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->extObjContent()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->extObjHeader()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->getExternalItemConfig()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->getExtObjContent()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->init()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->handleExternalFunctionValue()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->main()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->menuConfig()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->mergeExternalItems()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->setInPageArray()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerModuleFunctionController->initialize_editor()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerModuleFunctionController->handleExternalFunctionValue()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerModuleFunctionController->modMenu()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateConstantEditorModuleFunctionController->initialize_editor()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateConstantEditorModuleFunctionController->handleExternalFunctionValue()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController->initialize_editor()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController->handleExternalFunctionValue()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController->tableRowData()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController->initialize_editor()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController->handleExternalFunctionValue()` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController->modMenu()` changed from public to protected
 
 
 The following class properties have changed visibility:
@@ -403,6 +427,38 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->tempContent` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->uniqueCounter` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->uniqueString` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->access` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->CMD` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->content` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->edit` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->extClassConf` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->extObj` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->id` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->MCONF` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->modMenu_type` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->modTSconfig` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->pageinfo` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->perms_clause` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->sObj` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->textExtensions` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerModuleFunctionController->extClassConf` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerModuleFunctionController->function_key` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerModuleFunctionController->localLangFile` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerModuleFunctionController->pObj` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateConstantEditorModuleFunctionController->extClassConf` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateConstantEditorModuleFunctionController->function_key` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateConstantEditorModuleFunctionController->localLangFile` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateConstantEditorModuleFunctionController->pObj` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController->extClassConf` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController->function_key` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController->localLangFile` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController->pObj` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController->tce_processed` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController->extClassConf` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController->function_key` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController->localLangFile` changed from public to protected
+* :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController->pObj` changed from public to protected
+
 
 The following scheduler tasks have been removed:
 
