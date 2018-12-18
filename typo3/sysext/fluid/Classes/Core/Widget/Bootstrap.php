@@ -78,7 +78,7 @@ class Bootstrap
      * Configures the object manager object configuration from
      * config.tx_extbase.objects
      *
-     * @param $isInternalCall bool Set to true by Boostrap, not by extensions
+     * @param $isInternalCall bool Set to true by Bootstrap, not by extensions
      * @see initialize()
      * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */

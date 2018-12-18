@@ -11,7 +11,7 @@ Description
 ===========
 
 The function :code:`isLocalconfWritable()` :code:`from \TYPO3\CMS\Core\Utility\ExtensionManagementUtility` has been removed.
-The boostrap now just checks for the existence of the file and redirects to the install tool if it doesn't exist.
+The bootstrap now just checks for the existence of the file and redirects to the install tool if it doesn't exist.
 
 Impact
 ======

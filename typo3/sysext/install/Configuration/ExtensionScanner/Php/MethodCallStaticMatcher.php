@@ -659,60 +659,60 @@ return [
             'Deprecation-81430-TypoScriptTemplateModuleControllerrenderList.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Core\Boostrap::usesComposerClassLoading' => [
+    'TYPO3\CMS\Core\Core\Bootstrap::usesComposerClassLoading' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-85821-BoostrapMethods.rst',
+            'Deprecation-85821-BootstrapMethods.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Core\Boostrap::getInstance' => [
+    'TYPO3\CMS\Core\Core\Bootstrap::getInstance' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-85821-BoostrapMethods.rst',
+            'Deprecation-85821-BootstrapMethods.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Core\Boostrap::checkIfEssentialConfigurationExists' => [
+    'TYPO3\CMS\Core\Core\Bootstrap::checkIfEssentialConfigurationExists' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85821-BoostrapMethods.rst',
+            'Deprecation-85821-BootstrapMethods.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Core\Boostrap::loadConfigurationAndInitialize' => [
+    'TYPO3\CMS\Core\Core\Bootstrap::loadConfigurationAndInitialize' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
-            'Deprecation-85821-BoostrapMethods.rst',
+            'Deprecation-85821-BootstrapMethods.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Core\Boostrap::populateLocalConfiguration' => [
+    'TYPO3\CMS\Core\Core\Bootstrap::populateLocalConfiguration' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85821-BoostrapMethods.rst',
+            'Deprecation-85821-BootstrapMethods.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Core\Boostrap::disableCoreCache' => [
+    'TYPO3\CMS\Core\Core\Bootstrap::disableCoreCache' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-85821-BoostrapMethods.rst',
+            'Deprecation-85821-BootstrapMethods.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Core\Boostrap::initializeCachingFramework' => [
+    'TYPO3\CMS\Core\Core\Bootstrap::initializeCachingFramework' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85821-BoostrapMethods.rst',
+            'Deprecation-85821-BootstrapMethods.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Core\Boostrap::setFinalCachingFrameworkCacheConfiguration' => [
+    'TYPO3\CMS\Core\Core\Bootstrap::setFinalCachingFrameworkCacheConfiguration' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85821-BoostrapMethods.rst',
+            'Deprecation-85821-BootstrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageGenerator::renderContent' => [
