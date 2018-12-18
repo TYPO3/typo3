@@ -3054,46 +3054,46 @@ return [
             'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Core\Boostrap->configure' => [
+    'TYPO3\CMS\Core\Core\Bootstrap->configure' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-85821-BoostrapMethods.rst',
+            'Deprecation-85821-BootstrapMethods.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Core\Boostrap->setEarlyInstance' => [
+    'TYPO3\CMS\Core\Core\Bootstrap->setEarlyInstance' => [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
-            'Deprecation-85821-BoostrapMethods.rst',
+            'Deprecation-85821-BootstrapMethods.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Core\Boostrap->getEarlyInstance' => [
+    'TYPO3\CMS\Core\Core\Bootstrap->getEarlyInstance' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85821-BoostrapMethods.rst',
+            'Deprecation-85821-BootstrapMethods.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Core\Boostrap->getEarlyInstances' => [
+    'TYPO3\CMS\Core\Core\Bootstrap->getEarlyInstances' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-85821-BoostrapMethods.rst',
+            'Deprecation-85821-BootstrapMethods.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Core\Boostrap->initializePackageManagement' => [
+    'TYPO3\CMS\Core\Core\Bootstrap->initializePackageManagement' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85821-BoostrapMethods.rst',
+            'Deprecation-85821-BootstrapMethods.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Core\Boostrap->setRequestType' => [
+    'TYPO3\CMS\Core\Core\Bootstrap->setRequestType' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85821-BoostrapMethods.rst',
+            'Deprecation-85821-BootstrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->initFEuser' => [

@@ -111,7 +111,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
      * Configures the object manager object configuration from
      * config.tx_extbase.objects and plugin.tx_foo.objects
      *
-     * @param bool $isInternalCall Set to true by Boostrap, not by extensions
+     * @param bool $isInternalCall Set to true by Bootstrap, not by extensions
      * @see initialize()
      * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */

@@ -448,7 +448,7 @@ class Bootstrap
      *
      * @param bool $allowCaching Whether to allow caching - affects cache_core (autoloader)
      * @param string $packageManagerClassName Define an alternative package manager implementation (usually for the installer)
-     * @param bool $isInternalCall Set to true by boostrap, not by extensions
+     * @param bool $isInternalCall Set to true by bootstrap, not by extensions
      * @return Bootstrap|null
      * @internal This is not a public API method, do not use in own extensions
      * @deprecated will be set to removed in TYPO3 v10.0.
