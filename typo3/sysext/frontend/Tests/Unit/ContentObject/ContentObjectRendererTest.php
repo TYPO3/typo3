@@ -20,8 +20,10 @@ use PHPUnit\Framework\Exception;
 use Prophecy\Argument;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -125,6 +127,11 @@ class ContentObjectRendererTest extends UnitTestCase
     ];
 
     /**
+     * @var \Prophecy\Prophecy\ObjectProphecy|CacheManager
+     */
+    protected $cacheManager;
+
+    /**
      * Set up
      */
     protected function setUp(): void
@@ -155,6 +162,9 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->frontendControllerMock->page = [];
         $this->frontendControllerMock->sys_page = $pageRepositoryMock;
         $GLOBALS['TSFE'] = $this->frontendControllerMock;
+
+        $this->cacheManager = $this->prophesize(CacheManager::class);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $this->cacheManager->reveal());
 
         $this->subject = $this->getAccessibleMock(
             ContentObjectRenderer::class,
@@ -2716,14 +2726,14 @@ class ContentObjectRendererTest extends UnitTestCase
                     'extTarget' => '_blank',
                     'title' => 'Open new window',
                 ],
-                '<a href="http://typo3.org" title="Open new window" target="_blank" class="url-class">TYPO3</a>',
+                '<a href="http://typo3.org" title="Open new window" target="_blank" class="url-class" rel="noopener noreferrer">TYPO3</a>',
             ],
             'Link to url with attributes in parameter' => [
                 'TYPO3',
                 [
                     'parameter' => 'http://typo3.org _blank url-class "Open new window"',
                 ],
-                '<a href="http://typo3.org" title="Open new window" target="_blank" class="url-class">TYPO3</a>',
+                '<a href="http://typo3.org" title="Open new window" target="_blank" class="url-class" rel="noopener noreferrer">TYPO3</a>',
             ],
             'Link to url with script tag' => [
                 '',
@@ -2792,6 +2802,10 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
+
+        $this->cacheManager->getCache('runtime')->willReturn(new NullBackend(''));
+        $this->cacheManager->getCache('core')->willReturn(new NullFrontend(''));
+
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
 
         $this->assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));

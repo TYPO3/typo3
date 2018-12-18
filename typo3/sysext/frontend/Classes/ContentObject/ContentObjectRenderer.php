@@ -51,6 +51,7 @@ use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -5118,6 +5119,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         // Prevent trouble with double and missing spaces between attributes and merge params before implode
         $finalTagAttributes = array_merge($tagAttributes, GeneralUtility::get_tag_attributes($finalTagParts['aTagParams']));
+        $finalTagAttributes = $this->addSecurityRelValues($finalTagAttributes, $target, $tagAttributes['href']);
         $finalAnchorTag = '<a ' . GeneralUtility::implodeAttributes($finalTagAttributes) . '>';
 
         if (!empty($finalTagParts['aTagParams'])) {
@@ -5164,6 +5166,66 @@ class ContentObjectRenderer implements LoggerAwareInterface
             return $finalAnchorTag . $this->wrap($linkText, $wrap) . '</a>';
         }
         return $this->wrap($finalAnchorTag . $linkText . '</a>', $wrap);
+    }
+
+    protected function addSecurityRelValues(array $tagAttributes, string $target, string $url): array
+    {
+        $relAttribute = 'noopener noreferrer';
+        if ($target !== '_blank' || $this->isInternalUrl($url)) {
+            return $tagAttributes;
+        }
+
+        if (!isset($tagAttributes['rel'])) {
+            $tagAttributes['rel'] = $relAttribute;
+            return $tagAttributes;
+        }
+
+        $tagAttributes['rel'] = implode(' ', array_unique(array_merge(
+            GeneralUtility::trimExplode(' ', $relAttribute),
+            GeneralUtility::trimExplode(' ', $tagAttributes['rel'])
+        )));
+
+        return $tagAttributes;
+    }
+
+    /**
+     * Checks whether the given url is an internal url.
+     *
+     * It will check the host part only, against all configured sites
+     * whether the given host is any. If so, the url is considered internal
+     *
+     * @param string $url The url to check.
+     * @return bool
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     */
+    protected function isInternalUrl(string $url): bool
+    {
+        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
+        $parsedUrl = parse_url($url);
+        $foundDomains = 0;
+        if (!isset($parsedUrl['host'])) {
+            return true;
+        }
+
+        $cacheIdentifier = sha1('isInternalDomain' . $parsedUrl['host']);
+
+        if ($cache->has($cacheIdentifier) === false) {
+            foreach (GeneralUtility::makeInstance(SiteFinder::class)->getAllSites() as $site) {
+                if ($site->getBase()->getHost() === $parsedUrl['host']) {
+                    ++$foundDomains;
+                    break;
+                }
+
+                if ($site->getBase()->getHost() === '' && GeneralUtility::isOnCurrentHost($url)) {
+                    ++$foundDomains;
+                    break;
+                }
+            }
+
+            $cache->set($cacheIdentifier, $foundDomains > 0);
+        }
+
+        return (bool)$cache->get($cacheIdentifier);
     }
 
     /**
