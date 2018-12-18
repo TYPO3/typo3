@@ -4730,7 +4730,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             /** @var CharsetConverter $charsetConverter */
             $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
             try {
-                $content = $charsetConverter->conv($content, 'utf-8', $this->metaCharset, true);
+                $content = $charsetConverter->conv($content, 'utf-8', $this->metaCharset);
             } catch (UnknownCharsetException $e) {
                 throw new \RuntimeException('Invalid config.metaCharset: ' . $e->getMessage(), 1508916185);
             }

@@ -373,7 +373,8 @@ return [
     ],
     'TYPO3\CMS\Core\Charset\CharsetConverter->synonyms' => [
         'restFiles' => [
-            'Deprecation-85122-FunctionalityInCharsetConverter.rst'
+            'Deprecation-85122-FunctionalityInCharsetConverter.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepository->versioningPreview' => [

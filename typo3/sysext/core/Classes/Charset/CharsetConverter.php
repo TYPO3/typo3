@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Charset;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -52,21 +51,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CharsetConverter implements SingletonInterface
 {
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * List of all deprecated public properties
-     * @var array
-     */
-    protected $deprecatedPublicProperties = [
-        'noCharByteVal' => 'Using $noCharByteVal of class CharsetConverter from the outside is discouraged, as this only reflects a fixed constant.',
-        'parsedCharsets' => 'Using $parsedCharsets of class CharsetConverter from the outside is discouraged, as this only reflects a local runtime cache.',
-        'toASCII' => 'Using $toASCII of class CharsetConverter from the outside is discouraged, as this only reflects a local runtime cache.',
-        'twoByteSets' => 'Using $twoByteSets of class CharsetConverter from the outside is discouraged.',
-        'eucBasedSets' => 'Using $eucBasedSets of class CharsetConverter from the outside is discouraged.',
-        'synonyms' => 'Using $synonyms of class CharsetConverter from the outside is discouraged, as this functionality will be removed in TYPO3 v10.0.',
-    ];
-
     /**
      * ASCII Value for chars with no equivalent.
      *
@@ -109,115 +93,6 @@ class CharsetConverter implements SingletonInterface
         'shift_jis' => 1
     ];
 
-    /**
-     * @link http://developer.apple.com/documentation/macos8/TextIntlSvcs/TextEncodingConversionManager/TEC1.5/TEC.b0.html
-     * @link http://czyborra.com/charsets/iso8859.html
-     *
-     * @var array
-     * @deprecated will be removed in TYPO3 v10.0 alongside parse_charset()
-     */
-    protected $synonyms = [
-        'us' => 'ascii',
-        'us-ascii' => 'ascii',
-        'cp819' => 'iso-8859-1',
-        'ibm819' => 'iso-8859-1',
-        'iso-ir-100' => 'iso-8859-1',
-        'iso-ir-101' => 'iso-8859-2',
-        'iso-ir-109' => 'iso-8859-3',
-        'iso-ir-110' => 'iso-8859-4',
-        'iso-ir-144' => 'iso-8859-5',
-        'iso-ir-127' => 'iso-8859-6',
-        'iso-ir-126' => 'iso-8859-7',
-        'iso-ir-138' => 'iso-8859-8',
-        'iso-ir-148' => 'iso-8859-9',
-        'iso-ir-157' => 'iso-8859-10',
-        'iso-ir-179' => 'iso-8859-13',
-        'iso-ir-199' => 'iso-8859-14',
-        'iso-ir-203' => 'iso-8859-15',
-        'csisolatin1' => 'iso-8859-1',
-        'csisolatin2' => 'iso-8859-2',
-        'csisolatin3' => 'iso-8859-3',
-        'csisolatin5' => 'iso-8859-9',
-        'csisolatin8' => 'iso-8859-14',
-        'csisolatin9' => 'iso-8859-15',
-        'csisolatingreek' => 'iso-8859-7',
-        'iso-celtic' => 'iso-8859-14',
-        'latin1' => 'iso-8859-1',
-        'latin2' => 'iso-8859-2',
-        'latin3' => 'iso-8859-3',
-        'latin5' => 'iso-8859-9',
-        'latin6' => 'iso-8859-10',
-        'latin8' => 'iso-8859-14',
-        'latin9' => 'iso-8859-15',
-        'l1' => 'iso-8859-1',
-        'l2' => 'iso-8859-2',
-        'l3' => 'iso-8859-3',
-        'l5' => 'iso-8859-9',
-        'l6' => 'iso-8859-10',
-        'l8' => 'iso-8859-14',
-        'l9' => 'iso-8859-15',
-        'cyrillic' => 'iso-8859-5',
-        'arabic' => 'iso-8859-6',
-        'tis-620' => 'iso-8859-11',
-        'win874' => 'windows-874',
-        'win1250' => 'windows-1250',
-        'win1251' => 'windows-1251',
-        'win1252' => 'windows-1252',
-        'win1253' => 'windows-1253',
-        'win1254' => 'windows-1254',
-        'win1255' => 'windows-1255',
-        'win1256' => 'windows-1256',
-        'win1257' => 'windows-1257',
-        'win1258' => 'windows-1258',
-        'cp1250' => 'windows-1250',
-        'cp1251' => 'windows-1251',
-        'cp1252' => 'windows-1252',
-        'ms-ee' => 'windows-1250',
-        'ms-ansi' => 'windows-1252',
-        'ms-greek' => 'windows-1253',
-        'ms-turk' => 'windows-1254',
-        'winbaltrim' => 'windows-1257',
-        'koi-8ru' => 'koi-8r',
-        'koi8r' => 'koi-8r',
-        'cp878' => 'koi-8r',
-        'mac' => 'macroman',
-        'macintosh' => 'macroman',
-        'euc-cn' => 'gb2312',
-        'x-euc-cn' => 'gb2312',
-        'euccn' => 'gb2312',
-        'cp936' => 'gb2312',
-        'big-5' => 'big5',
-        'cp950' => 'big5',
-        'eucjp' => 'euc-jp',
-        'sjis' => 'shift_jis',
-        'shift-jis' => 'shift_jis',
-        'cp932' => 'shift_jis',
-        'cp949' => 'euc-kr',
-        'utf7' => 'utf-7',
-        'utf8' => 'utf-8',
-        'utf16' => 'utf-16',
-        'utf32' => 'utf-32',
-        'ucs2' => 'ucs-2',
-        'ucs4' => 'ucs-4'
-    ];
-
-    /**
-     * Normalize - changes input character set to lowercase letters.
-     *
-     * @param string $charset Input charset
-     * @return string Normalized charset
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0
-     */
-    public function parse_charset($charset)
-    {
-        trigger_error('Method CharsetConverter->parse_charset() will be removed in TYPO3 v10.0. Use native mbstring functions directly.', E_USER_DEPRECATED);
-        $charset = trim(strtolower($charset));
-        if (isset($this->synonyms[$charset])) {
-            $charset = $this->synonyms[$charset];
-        }
-        return $charset;
-    }
-
     /********************************************
      *
      * Charset Conversion functions
@@ -229,24 +104,15 @@ class CharsetConverter implements SingletonInterface
      * @param string $inputString Input string
      * @param string $fromCharset From charset (the current charset of the string)
      * @param string $toCharset To charset (the output charset wanted)
-     * @param bool $useEntityForNoChar If set, then characters that are not available in the destination character set will be encoded as numeric entities
      * @return string Converted string
-     * @see convArray()
      */
-    public function conv($inputString, $fromCharset, $toCharset, $useEntityForNoChar = null)
+    public function conv($inputString, $fromCharset, $toCharset)
     {
         if ($fromCharset === $toCharset) {
             return $inputString;
         }
-        if ($useEntityForNoChar === null) {
-            $useEntityForNoChar = false;
-        }
-        if (!$useEntityForNoChar) {
-            trigger_error('Calling CharsetConverter->conv() without the necessity to convert the entities for unavailable characters is discouraged, and will not be possible via conv() anymore in TYPO3 v10.0. Use native mb_convert_encoding() directly, or set the 4th parameter of conv() to true.', E_USER_DEPRECATED);
-        }
-
         // PHP-libs don't support fallback to SGML entities, but UTF-8 handles everything
-        if ($toCharset === 'utf-8' || !$useEntityForNoChar) {
+        if ($toCharset === 'utf-8') {
             // Returns FALSE for unsupported charsets
             $convertedString = mb_convert_encoding($inputString, $toCharset, $fromCharset);
             if (false !== $convertedString) {
@@ -257,32 +123,9 @@ class CharsetConverter implements SingletonInterface
             $inputString = $this->utf8_encode($inputString, $fromCharset);
         }
         if ($toCharset !== 'utf-8') {
-            $inputString = $this->utf8_decode($inputString, $toCharset, $useEntityForNoChar);
+            $inputString = $this->utf8_decode($inputString, $toCharset, true);
         }
         return $inputString;
-    }
-
-    /**
-     * Convert all elements in ARRAY with type string from one charset to another charset.
-     * NOTICE: Array is passed by reference!
-     *
-     * @param array $array Input array, possibly multidimensional
-     * @param string $fromCharset From charset (the current charset of the string)
-     * @param string $toCharset To charset (the output charset wanted)
-     * @param bool $useEntityForNoChar If set, then characters that are not available in the destination character set will be encoded as numeric entities
-     * @see conv()
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0
-     */
-    public function convArray(&$array, $fromCharset, $toCharset, $useEntityForNoChar = false)
-    {
-        trigger_error('Method CharsetConverter->convArray() will be removed in TYPO3 v10.0. Use conv() directly and loop over the array in the callers code.', E_USER_DEPRECATED);
-        foreach ($array as $key => $value) {
-            if (is_array($array[$key])) {
-                $this->convArray($array[$key], $fromCharset, $toCharset, $useEntityForNoChar);
-            } elseif (is_string($array[$key])) {
-                $array[$key] = $this->conv($array[$key], $fromCharset, $toCharset, $useEntityForNoChar);
-            }
-        }
     }
 
     /**
@@ -412,92 +255,6 @@ class CharsetConverter implements SingletonInterface
             return $outStr;
         }
         return '';
-    }
-
-    /**
-     * Converts all chars > 127 to numeric entities.
-     *
-     * @param string $str Input string
-     * @return string Output string
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0
-     */
-    public function utf8_to_entities($str)
-    {
-        trigger_error('Method CharsetConverter->utf8_to_entities() will be removed in TYPO3 v10.0. Use native PHP functions instead.', E_USER_DEPRECATED);
-        $strLen = strlen($str);
-        $outStr = '';
-        // Traverse each char in UTF-8 string.
-        for ($a = 0; $a < $strLen; $a++) {
-            $chr = substr($str, $a, 1);
-            $ord = ord($chr);
-            // This means multibyte! (first byte!)
-            if ($ord > 127) {
-                // Since the first byte must have the 7th bit set we check that. Otherwise we might be in the middle of a byte sequence.
-                if ($ord & 64) {
-                    // Add first byte
-                    $buf = $chr;
-                    // For each byte in multibyte string...
-                    for ($b = 0; $b < 8; $b++) {
-                        // Shift it left and ...
-                        $ord = $ord << 1;
-                        // ... and with 8th bit - if that is set, then there are still bytes in sequence.
-                        if ($ord & 128) {
-                            $a++;
-                            // ... and add the next char.
-                            $buf .= substr($str, $a, 1);
-                        } else {
-                            break;
-                        }
-                    }
-                    $outStr .= '&#' . $this->utf8CharToUnumber($buf, true) . ';';
-                } else {
-                    $outStr .= chr($this->noCharByteVal);
-                }
-            } else {
-                $outStr .= $chr;
-            }
-        }
-        return $outStr;
-    }
-
-    /**
-     * Converts numeric entities (UNICODE, eg. decimal (&#1234;) or hexadecimal (&#x1b;)) to UTF-8 multibyte chars.
-     * All string-HTML entities (like &amp; or &pound;) will be converted as well
-     * @param string $str Input string, UTF-8
-     * @return string Output string
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0
-     */
-    public function entities_to_utf8($str)
-    {
-        trigger_error('Method CharsetConverter->entities_to_utf8() will be removed in TYPO3 v10.0. Use native PHP function html_entity_decode() instead.', E_USER_DEPRECATED);
-        $trans_tbl = array_flip(get_html_translation_table(HTML_ENTITIES, ENT_COMPAT));
-        $token = md5(microtime());
-        $parts = explode($token, preg_replace('/(&([#[:alnum:]]*);)/', $token . '${2}' . $token, $str));
-        foreach ($parts as $k => $v) {
-            // Only take every second element
-            if ($k % 2 === 0) {
-                continue;
-            }
-            $position = 0;
-            // Dec or hex entities
-            if (substr($v, $position, 1) === '#') {
-                $position++;
-                if (substr($v, $position, 1) === 'x') {
-                    $v = hexdec(substr($v, ++$position));
-                } else {
-                    $v = substr($v, $position);
-                }
-                $parts[$k] = $this->UnumberToChar($v);
-            } elseif (isset($trans_tbl['&' . $v . ';'])) {
-                // Other entities:
-                $v = $trans_tbl['&' . $v . ';'];
-                $parts[$k] = $v;
-            } else {
-                // No conversion:
-                $parts[$k] = '&' . $v . ';';
-            }
-        }
-        return implode('', $parts);
     }
 
     /**
@@ -922,52 +679,6 @@ class CharsetConverter implements SingletonInterface
      ********************************************/
 
     /**
-     * Truncates a string and pre-/appends a string.
-     * Unit tested by Kasper
-     *
-     * @param string $charset The character set
-     * @param string $string Character string
-     * @param int $len Length (in characters)
-     * @param string $crop Crop signifier
-     * @return string The shortened string
-     * @see substr(), mb_strimwidth()
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0
-     */
-    public function crop($charset, $string, $len, $crop = '')
-    {
-        trigger_error('Method CharsetConverter->crop() will be removed in TYPO3 v10.0. Use native PHP mbstring functions instead.', E_USER_DEPRECATED);
-        if ((int)$len === 0 || mb_strlen($string, $charset) <= abs($len)) {
-            return $string;
-        }
-        if ($len > 0) {
-            $string = mb_substr($string, 0, $len, $charset) . $crop;
-        } else {
-            $string = $crop . mb_substr($string, $len, mb_strlen($string, $charset), $charset);
-        }
-        return $string;
-    }
-
-    /**
-     * Equivalent of lcfirst/ucfirst but using character set.
-     *
-     * @param string $charset
-     * @param string $string
-     * @param string $case can be 'toLower' or 'toUpper'
-     * @return string
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0.
-     */
-    public function convCaseFirst($charset, $string, $case)
-    {
-        trigger_error('Method CharsetConverter->convCaseFirst() will be removed in TYPO3 v10.0. Use native PHP mbstring functions instead.', E_USER_DEPRECATED);
-        $firstChar = mb_substr($string, 0, 1, $charset);
-        $firstChar = $case === 'toLower'
-            ? mb_strtolower($firstChar, $charset)
-            : mb_strtoupper($firstChar, $charset);
-        $remainder = mb_substr($string, 1, null, $charset);
-        return $firstChar . $remainder;
-    }
-
-    /**
      * Converts special chars (like æøåÆØÅ, umlauts etc) to ascii equivalents (usually double-bytes, like æ => ae etc.)
      *
      * @param string $charset Character set of string
@@ -1023,55 +734,6 @@ class CharsetConverter implements SingletonInterface
      * Internal UTF-8 string operation functions
      *
      ********************************************/
-
-    /**
-     * Translates a character position into an 'absolute' byte position.
-     * Unit tested by Kasper.
-     *
-     * @param string $str UTF-8 string
-     * @param int $pos Character position (negative values start from the end)
-     * @return int Byte position
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0.
-     */
-    public function utf8_char2byte_pos($str, $pos)
-    {
-        trigger_error('Method CharsetConverter->utf8_char2byte_pos() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        // Number of characters found
-        $n = 0;
-        // Number of characters wanted
-        $p = abs($pos);
-        if ($pos >= 0) {
-            $i = 0;
-            $d = 1;
-        } else {
-            $i = strlen($str) - 1;
-            $d = -1;
-        }
-        for (; isset($str[$i]) && $n < $p; $i += $d) {
-            $c = (int)ord($str[$i]);
-            // single-byte (0xxxxxx)
-            if (!($c & 128)) {
-                $n++;
-            } elseif (($c & 192) === 192) {
-                // Multi-byte starting byte (11xxxxxx)
-                $n++;
-            }
-        }
-        if (!isset($str[$i])) {
-            // Offset beyond string length
-            return false;
-        }
-        if ($pos >= 0) {
-            // Skip trailing multi-byte data bytes
-            while (ord($str[$i]) & 128 && !(ord($str[$i]) & 64)) {
-                $i++;
-            }
-        } else {
-            // Correct offset
-            $i++;
-        }
-        return $i;
-    }
 
     /**
      * Maps all characters of an UTF-8 string.

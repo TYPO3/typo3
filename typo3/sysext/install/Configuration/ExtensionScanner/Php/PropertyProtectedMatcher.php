@@ -584,27 +584,32 @@ return [
     ],
     'TYPO3\CMS\Core\Charset\CharsetConverter->noCharByteVal' => [
         'restFiles' => [
-            'Deprecation-85122-FunctionalityInCharsetConverter.rst'
+            'Deprecation-85122-FunctionalityInCharsetConverter.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Charset\CharsetConverter->parsedCharsets' => [
         'restFiles' => [
-            'Deprecation-85122-FunctionalityInCharsetConverter.rst'
+            'Deprecation-85122-FunctionalityInCharsetConverter.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Charset\CharsetConverter->toASCII' => [
         'restFiles' => [
-            'Deprecation-85122-FunctionalityInCharsetConverter.rst'
+            'Deprecation-85122-FunctionalityInCharsetConverter.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Charset\CharsetConverter->twoByteSets' => [
         'restFiles' => [
-            'Deprecation-85122-FunctionalityInCharsetConverter.rst'
+            'Deprecation-85122-FunctionalityInCharsetConverter.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Charset\CharsetConverter->eucBasedSets' => [
         'restFiles' => [
-            'Deprecation-85122-FunctionalityInCharsetConverter.rst'
+            'Deprecation-85122-FunctionalityInCharsetConverter.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Setup\Controller\SetupModuleController->OLD_BE_USER' => [
