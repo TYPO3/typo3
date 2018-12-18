@@ -9,6 +9,13 @@ See :issue:`87193`
 Description
 ===========
 
+The following PHP classes that have been previously deprecated for v9 have been removed:
+
+* :php:`TYPO3\CMS\Core\Encoder\JavaScriptEncoder`
+* :php:`TYPO3\CMS\Core\Resource\Utility\BackendUtility`
+* :php:`TYPO3\CMS\Core\Utility\ClientUtility`
+* :php:`TYPO3\CMS\Core\Utility\PhpOptionsUtility`
+
 The following PHP class methods that have been previously deprecated for v9 have been removed:
 
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->convArray()`

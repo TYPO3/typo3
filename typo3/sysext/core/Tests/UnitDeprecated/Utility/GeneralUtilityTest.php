@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for the \TYPO3\CMS\Core\Utility\ClientUtility class.
+ * Test case
  */
 class GeneralUtilityTest extends UnitTestCase
 {

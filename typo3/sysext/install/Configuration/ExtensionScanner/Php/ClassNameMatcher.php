@@ -460,6 +460,7 @@ return [
     'TYPO3\CMS\Core\Utility\ClientUtility' => [
         'restFiles' => [
             'Deprecation-82903-DeprecateClientUtility.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeCommands' => [
@@ -682,11 +683,13 @@ return [
     'TYPO3\CMS\Core\Utility\PhpOptionsUtility' => [
         'restFiles' => [
             'Deprecation-85102-PhpOptionsUtility.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Encoding\JavaScriptEncoder' => [
         'restFiles' => [
             'Deprecation-85120-JavaScriptEncoder.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\ExternalPageUrlHandler' => [
@@ -947,6 +950,12 @@ return [
     'TYPO3\CMS\Install\Updates\AbstractUpdate' => [
         'restFiles' => [
             'Deprecation-86366-MethodsInAbstractUpdate.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\Utility\BackendUtility' => [
+        'restFiles' => [
+            'Deprecation-73585-DeprecateTYPO3CMSCoreResourceUtilityBackendUtilitygetFlashMessageForMissingFile.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];
