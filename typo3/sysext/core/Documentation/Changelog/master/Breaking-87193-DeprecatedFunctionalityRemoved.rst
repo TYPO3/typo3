@@ -57,6 +57,23 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->parse_charset()`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->utf8_char2byte_pos()`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->utf8_to_entities()`
+* :php:`TYPO3\CMS\Core\Core\Bootstrap->__construct()`
+* :php:`TYPO3\CMS\Core\Core\Bootstrap->configure()`
+* :php:`TYPO3\CMS\Core\Core\Bootstrap->createApplicationContext()`
+* :php:`TYPO3\CMS\Core\Core\Bootstrap->checkIfEssentialConfigurationExists()`
+* :php:`TYPO3\CMS\Core\Core\Bootstrap->defineTypo3RequestTypes()`
+* :php:`TYPO3\CMS\Core\Core\Bootstrap->disableCoreCaches()`
+* :php:`TYPO3\CMS\Core\Core\Bootstrap->getEarlyInstance()`
+* :php:`TYPO3\CMS\Core\Core\Bootstrap->getEarlyInstances()`
+* :php:`TYPO3\CMS\Core\Core\Bootstrap->getInstance()`
+* :php:`TYPO3\CMS\Core\Core\Bootstrap->initializeCachingFramework()`
+* :php:`TYPO3\CMS\Core\Core\Bootstrap->initializePackageManagement()`
+* :php:`TYPO3\CMS\Core\Core\Bootstrap->loadConfigurationAndInitialize()`
+* :php:`TYPO3\CMS\Core\Core\Bootstrap->populateLocalConfiguration()`
+* :php:`TYPO3\CMS\Core\Core\Bootstrap->setEarlyInstance()`
+* :php:`TYPO3\CMS\Core\Core\Bootstrap->setFinalCachingFrameworkCacheConfiguration()`
+* :php:`TYPO3\CMS\Core\Core\Bootstrap->setRequestType()`
+* :php:`TYPO3\CMS\Core\Core\Bootstrap->usesComposerClassLoading()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash->getOptions()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash->setOptions()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash->getOptions()`
@@ -117,8 +134,10 @@ The following PHP static class methods that have been previously deprecated for 
 
 The following methods changed signature according to previous deprecations in v9 at the end of the argument list:
 
-* :php:`TYPO3\CMS\Core\Charset\CharsetConverter->conv()` - Fourth argument dropped
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig()` - Second and third argument dropped
+* :php:`TYPO3\CMS\Core\Charset\CharsetConverter->conv()` - Fourth argument dropped
+* :php:`TYPO3\CMS\Core\Core\Bootstrap->checkIfEssentialConfigurationExists()` - First argument mandatory
+* :php:`TYPO3\CMS\Core\Core\Bootstrap->populateLocalConfiguration()` - First argument mandatory
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\BlowfishPasswordHash->getHashedPassword()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\Md5PasswordHash->getHashedPassword()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash->getHashedPassword()` - Second argument dropped
