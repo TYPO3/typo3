@@ -1624,6 +1624,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-83118-DeleteClauseMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_spaceBefore' => [
@@ -2338,6 +2339,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-84725-SysDomainResolvingMovedIntoMiddleware.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->connectToDB' => [
@@ -2548,6 +2550,7 @@ return [
         'maximumNumberOfArguments' => 6,
         'restFiles' => [
             'Deprecation-85130-TSFE-getPageShortcutMovedToPageRepository.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Reflection\ReflectionService->getClassTagsValues' => [
@@ -2645,7 +2648,8 @@ return [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
-            'Deprecation-85557-PageRepository-getRootLine.rst'
+            'Deprecation-85557-PageRepository-getRootLine.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->calcIntExplode' => [
@@ -2702,6 +2706,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85554-PageRepository-checkWorkspaceAccess.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->initTemplate' => [
@@ -2730,6 +2735,7 @@ return [
         'maximumNumberOfArguments' => 7,
         'restFiles' => [
             'Deprecation-85699-MethodsInPageRepository.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\ModuleTemplate->loadJavascriptLib' => [
@@ -2758,6 +2764,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-85699-MethodsInPageRepository.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepository->movePlhOL' => [
@@ -2765,6 +2772,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-85699-MethodsInPageRepository.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepository->getMovePlaceholder' => [
@@ -2772,6 +2780,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-85699-MethodsInPageRepository.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Service\EnvironmentService->isEnvironmentInCliMode' => [
@@ -3258,7 +3267,8 @@ return [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85971-DeprecatePageRepository-getFirstWebPage.rst'
+            'Deprecation-85971-DeprecatePageRepository-getFirstWebPage.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extensionmanager\Command\ExtensionCommandController->installCommand' => [

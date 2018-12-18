@@ -103,6 +103,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-81218-NoWSOLArgumentInPageRepository-getRawRecord.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\History\RecordHistory->performRollback' => [

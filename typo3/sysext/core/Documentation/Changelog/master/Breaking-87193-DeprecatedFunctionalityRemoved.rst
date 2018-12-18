@@ -87,14 +87,13 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setHashCount()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setMaxHashCount()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setMinHashCount()`
-
-
-The following PHP static class methods that have been previously deprecated for v9 have been removed:
-
-* :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory::determineSaltingHashingMethod()`
-* :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory::getSaltingInstance()`
-* :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory::setPreferredHashingMethod()`
-
+* :php:`TYPO3\CMS\Frontend\Page\PageRepository->getFirstWebPage()`
+* :php:`TYPO3\CMS\Frontend\Page\PageRepository->getDomainStartPage()`
+* :php:`TYPO3\CMS\Frontend\Page\PageRepository->getRootLine()`
+* :php:`TYPO3\CMS\Frontend\Page\PageRepository->getRecordsByField()`
+* :php:`TYPO3\CMS\Frontend\Page\PageRepository->deleteClause()`
+* :php:`TYPO3\CMS\Frontend\Page\PageRepository->checkWorkspaceAccess()`
+* :php:`TYPO3\CMS\Frontend\Page\PageRepository->getFileReferences()`
 
 
 The following PHP static class methods that have been previously deprecated for v9 have been removed:
@@ -111,6 +110,9 @@ The following PHP static class methods that have been previously deprecated for 
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getPidForModTSconfig()`
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getDomainStartPage()`
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::shortcutExists()`
+* :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory::determineSaltingHashingMethod()`
+* :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory::getSaltingInstance()`
+* :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory::setPreferredHashingMethod()`
 
 
 The following methods changed signature according to previous deprecations in v9 at the end of the argument list:
@@ -121,11 +123,16 @@ The following methods changed signature according to previous deprecations in v9
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\Md5PasswordHash->getHashedPassword()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash->getHashedPassword()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->getHashedPassword()` - Second argument dropped
+* :php:`TYPO3\CMS\Frontend\Page\PageRepository->getRawRecord()` - Fourth argument dropped
 
 
 The following public class properties have been dropped:
 
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->synonyms`
+* :php:`TYPO3\CMS\Frontend\Page\PageRepository->error_getRootLine_failPid`
+* :php:`TYPO3\CMS\Frontend\Page\PageRepository->error_getRootLine`
+* :php:`TYPO3\CMS\Frontend\Page\PageRepository->versioningPreview`
+* :php:`TYPO3\CMS\Frontend\Page\PageRepository->workspaceCache`
 
 
 The following class methods have changed visibility:
@@ -147,6 +154,8 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->parsedCharsets` changed from public to protected
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->toASCII` changed from public to protected
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->twoByteSets` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Page\PageRepository->sys_language_uid` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Page\PageRepository->versioningWorkspaceId` changed from public to protected
 
 The following scheduler tasks have been removed:
 

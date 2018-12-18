@@ -18,8 +18,6 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -31,11 +29,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
-use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
-use TYPO3\CMS\Core\Resource\FileRepository;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -49,31 +43,6 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 class PageRepository implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
-    use PublicPropertyDeprecationTrait;
-    use PublicMethodDeprecationTrait;
-
-    /**
-     * List of all deprecated public properties
-     * @var array
-     */
-    protected $deprecatedPublicProperties = [
-        'versioningPreview' => 'Using $versioningPreview of class PageRepository is discouraged, just use versioningWorkspaceId to determine if a workspace should be previewed.',
-        'workspaceCache' => 'Using $workspaceCache of class PageRepository from the outside is discouraged, as this only reflects a local runtime cache.',
-        'error_getRootLine' => 'Using $error_getRootLine of class PageRepository from the outside is deprecated as this property only exists for legacy reasons.',
-        'error_getRootLine_failPid' => 'Using $error_getRootLine_failPid of class PageRepository from the outside is deprecated as this property only exists for legacy reasons.',
-        'sys_language_uid' => 'Using $sys_language_uid of class PageRepository from the outside is deprecated as this information is now stored within the Context Language Aspect given by the constructor.',
-        'versioningWorkspaceId' => 'Using $versioningWorkspaceId of class PageRepository from the outside is deprecated as this information is now stored within the Context Workspace Aspect given by the constructor.',
-    ];
-
-    /**
-     * List of all deprecated public methods
-     * @var array
-     */
-    protected $deprecatedPublicMethods = [
-        'init' => 'init() is now called implicitly on object creation, and is not necessary anymore to be called explicitly. Calling init() will throw an error in TYPO3 v10.0.',
-        'movePlhOL' => 'Using movePlhOL is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'getMovePlaceholder' => 'Using getMovePlaceholder is deprecated and will not be possible anymore in TYPO3 v10.0.'
-    ];
 
     /**
      * This is not the final clauses. There will normally be conditions for the
@@ -92,71 +61,22 @@ class PageRepository implements LoggerAwareInterface
     public $where_groupAccess = '';
 
     /**
+     * Can be migrated away later to use context API directly.
+     *
      * @var int
-     * @deprecated will be removed in TYPO3 v10.0, all occurrences should be replaced with the language->id() aspect property in TYPO3 v10.0
-     * However, the usage within the class is kept as the property could be overwritten by third-party classes
      */
     protected $sys_language_uid = 0;
 
     /**
-     * If TRUE, versioning preview of other record versions is allowed. THIS MUST
-     * ONLY BE SET IF the page is not cached and truly previewed by a backend
-     * user!!!
-     *
-     * @var bool
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0. As $versioningWorkspaceId now indicates what records to fetch.
-     */
-    protected $versioningPreview = false;
-
-    /**
+     * Can be migrated away later to use context API directly.
      * Workspace ID for preview
      * If > 0, versioning preview of other record versions is allowed. THIS MUST
      * ONLY BE SET IF the page is not cached and truly previewed by a backend
      * user!
      *
      * @var int
-     * @deprecated This method will be kept protected from TYPO3 v10.0 on, instantiate a new pageRepository object with a custom workspace aspect to override this setting.
      */
     protected $versioningWorkspaceId = 0;
-
-    /**
-     * @var array
-     */
-    protected $workspaceCache = [];
-
-    /**
-     * Error string set by getRootLine()
-     *
-     * @var string
-     */
-    protected $error_getRootLine = '';
-
-    /**
-     * Error uid set by getRootLine()
-     *
-     * @var int
-     */
-    protected $error_getRootLine_failPid = 0;
-
-    /**
-     * @var array
-     */
-    protected $cache_getPage = [];
-
-    /**
-     * @var array
-     */
-    protected $cache_getPage_noCheck = [];
-
-    /**
-     * @var array
-     */
-    protected $cache_getPageIdFromAlias = [];
-
-    /**
-     * @var array
-     */
-    protected $cache_getMountPointInfo = [];
 
     /**
      * Computed properties that are added to database rows.
@@ -392,41 +312,6 @@ class PageRepository implements LoggerAwareInterface
     }
 
     /**
-     * Returns the $row of the first web-page in the tree (for the default menu...)
-     *
-     * @param int $uid The page id for which to fetch first subpages (PID)
-     * @return mixed If found: The page record (with overlaid localized fields, if any). If NOT found: blank value (not array!)
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::fetch_the_id()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Use getMenu() to fetch all subpages of a page.
-     */
-    public function getFirstWebPage($uid)
-    {
-        trigger_error('PageRepository->getFirstWebPage() will be removed in TYPO3 v10.0. Use "getMenu()" instead.', E_USER_DEPRECATED);
-        $output = '';
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()->removeAll();
-        $row = $queryBuilder->select('*')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
-                QueryHelper::stripLogicalOperatorPrefix($this->where_hid_del),
-                QueryHelper::stripLogicalOperatorPrefix($this->where_groupAccess)
-            )
-            ->orderBy('sorting')
-            ->setMaxResults(1)
-            ->execute()
-            ->fetch();
-
-        if ($row) {
-            $this->versionOL('pages', $row);
-            if (is_array($row)) {
-                $output = $this->getPageOverlay($row);
-            }
-        }
-        return $output;
-    }
-
-    /**
      * Returns a pagerow for the page with alias $alias
      *
      * @param string $alias The alias to look up the page uid for.
@@ -512,10 +397,6 @@ class PageRepository implements LoggerAwareInterface
      */
     public function getPageOverlay($pageInput, $languageUid = null)
     {
-        if ($languageUid === -1) {
-            trigger_error('Calling getPageOverlay() with "-1" as languageId is discouraged and will be unsupported in TYPO3 v10.0. Omit the parameter or use "null" instead.', E_USER_DEPRECATED);
-            $languageUid = null;
-        }
         $rows = $this->getPagesOverlay([$pageInput], $languageUid);
         // Always an array in return
         return $rows[0] ?? [];
@@ -539,9 +420,6 @@ class PageRepository implements LoggerAwareInterface
         }
         // Initialize:
         if ($languageUid === null) {
-            $languageUid = $this->sys_language_uid;
-        } elseif ($languageUid < 0) {
-            trigger_error('Calling getPagesOverlay() with "-1" as languageId is discouraged and will be unsupported in TYPO3 v10.0. Omit the parameter or use "null" instead.', E_USER_DEPRECATED);
             $languageUid = $this->sys_language_uid;
         }
         foreach ($pagesInput as &$origPage) {
@@ -1056,106 +934,6 @@ class PageRepository implements LoggerAwareInterface
     }
 
     /**
-     * Will find the page carrying the domain record matching the input domain.
-     *
-     * @param string $domain Domain name to search for. Eg. "www.typo3.com". Typical the HTTP_HOST value.
-     * @param string $path Path for the current script in domain. Eg. "/somedir/subdir". Typ. supplied by \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME')
-     * @param string $request_uri Request URI: Used to get parameters from if they should be appended. Typ. supplied by \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')
-     * @return mixed If found, returns integer with page UID where found. Otherwise blank. Might exit if location-header is sent, see description.
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::findDomainRecord()
-     * @deprecated will be removed in TYPO3 v10.0.
-     */
-    public function getDomainStartPage($domain, $path = '', $request_uri = '')
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0. As the SiteResolver middleware resolves the domain start page.', E_USER_DEPRECATED);
-        $domain = explode(':', $domain);
-        $domain = strtolower(preg_replace('/\\.$/', '', $domain[0]));
-        // Removing extra trailing slashes
-        $path = trim(preg_replace('/\\/[^\\/]*$/', '', $path));
-        // Appending to domain string
-        $domain .= $path;
-        $domain = preg_replace('/\\/*$/', '', $domain);
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()->removeAll();
-        $row = $queryBuilder
-            ->select(
-                'pages.uid'
-            )
-            ->from('pages')
-            ->from('sys_domain')
-            ->where(
-                $queryBuilder->expr()->eq('pages.uid', $queryBuilder->quoteIdentifier('sys_domain.pid')),
-                $queryBuilder->expr()->eq(
-                    'sys_domain.hidden',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->eq(
-                        'sys_domain.domainName',
-                        $queryBuilder->createNamedParameter($domain, \PDO::PARAM_STR)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'sys_domain.domainName',
-                        $queryBuilder->createNamedParameter($domain . '/', \PDO::PARAM_STR)
-                    )
-                ),
-                QueryHelper::stripLogicalOperatorPrefix($this->where_hid_del),
-                QueryHelper::stripLogicalOperatorPrefix($this->where_groupAccess)
-            )
-            ->setMaxResults(1)
-            ->execute()
-            ->fetch();
-
-        if (!$row) {
-            return '';
-        }
-        return $row['uid'];
-    }
-
-    /**
-     * Returns array with fields of the pages from here ($uid) and back to the root
-     *
-     * NOTICE: This function only takes deleted pages into account! So hidden,
-     * starttime and endtime restricted pages are included no matter what.
-     *
-     * Further: If any "recycler" page is found (doktype=255) then it will also block
-     * for the rootline)
-     *
-     * If you want more fields in the rootline records than default such can be added
-     * by listing them in $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields']
-     *
-     * @param int $uid The page uid for which to seek back to the page tree root.
-     * @param string $MP Commalist of MountPoint parameters, eg. "1-2,3-4" etc. Normally this value comes from the GET var, MP
-     * @param bool $ignoreMPerrors If set, some errors related to Mount Points in root line are ignored.
-     * @throws \Exception
-     * @throws \RuntimeException
-     * @return array Array with page records from the root line as values. The array is ordered with the outer records first and root record in the bottom. The keys are numeric but in reverse order. So if you traverse/sort the array by the numeric keys order you will get the order from root and out. If an error is found (like eternal looping or invalid mountpoint) it will return an empty array.
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getPageAndRootline()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function getRootLine($uid, $MP = '', $ignoreMPerrors = null)
-    {
-        trigger_error('Calling PageRepository->getRootLine() will be removed in TYPO3 v10.0. Use RootlineUtility directly.', E_USER_DEPRECATED);
-        $rootline = GeneralUtility::makeInstance(RootlineUtility::class, $uid, $MP, $this->context);
-        try {
-            return $rootline->get();
-        } catch (\RuntimeException $ex) {
-            if ($ignoreMPerrors) {
-                $this->error_getRootLine = $ex->getMessage();
-                if (substr($this->error_getRootLine, -7) === 'uid -1.') {
-                    $this->error_getRootLine_failPid = -1;
-                }
-                return [];
-            }
-            if ($ex->getCode() === 1343589451) {
-                /** @see \TYPO3\CMS\Core\Utility\RootlineUtility::getRecordArray */
-                return [];
-            }
-            throw $ex;
-        }
-    }
-
-    /**
      * Returns the redirect URL for the input page row IF the doktype is set to 3.
      *
      * @param array $pagerow The page row to return URL type for
@@ -1362,11 +1140,10 @@ class PageRepository implements LoggerAwareInterface
      * @param string $table The table name to search
      * @param int $uid The uid to look up in $table
      * @param string $fields The fields to select, default is "*
-     * @param bool $noWSOL If set, no version overlay is applied
      * @return mixed Returns array (the record) if found, otherwise blank/0 (zero)
      * @see getPage_noCheck()
      */
-    public function getRawRecord($table, $uid, $fields = '*', $noWSOL = null)
+    public function getRawRecord($table, $uid, $fields = '*')
     {
         $uid = (int)$uid;
         if (isset($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]) && $uid > 0) {
@@ -1381,13 +1158,7 @@ class PageRepository implements LoggerAwareInterface
                 ->fetch();
 
             if ($row) {
-                if ($noWSOL !== null) {
-                    trigger_error('The fourth parameter of PageRepository->getRawRecord() will be removed in TYPO3 v10.0. Use a SQL statement directly.', E_USER_DEPRECATED);
-                }
-                // @deprecated - remove this if-clause in TYPO3 v10.0
-                if (!$noWSOL) {
-                    $this->versionOL($table, $row);
-                }
+                $this->versionOL($table, $row);
                 if (is_array($row)) {
                     return $row;
                 }
@@ -1396,86 +1167,11 @@ class PageRepository implements LoggerAwareInterface
         return 0;
     }
 
-    /**
-     * Selects records based on matching a field (ei. other than UID) with a value
-     *
-     * @param string $theTable The table name to search, eg. "pages" or "tt_content
-     * @param string $theField The fieldname to match, eg. "uid" or "alias
-     * @param string $theValue The value that fieldname must match, eg. "123" or "frontpage
-     * @param string $whereClause Optional additional WHERE clauses put in the end of the query. DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
-     * @param string $groupBy Optional GROUP BY field(s). If none, supply blank string.
-     * @param string $orderBy Optional ORDER BY field(s). If none, supply blank string.
-     * @param string $limit Optional LIMIT value ([begin,]max). If none, supply blank string.
-     * @return mixed Returns array (the record) if found, otherwise nothing (void)
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
-     */
-    public function getRecordsByField($theTable, $theField, $theValue, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '')
-    {
-        trigger_error('PageRepository->getRecordsByField() should not be used any longer, this method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        if (is_array($GLOBALS['TCA'][$theTable])) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($theTable);
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-            $queryBuilder->select('*')
-                ->from($theTable)
-                ->where($queryBuilder->expr()->eq($theField, $queryBuilder->createNamedParameter($theValue)));
-
-            if ($whereClause !== '') {
-                $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($whereClause));
-            }
-
-            if ($groupBy !== '') {
-                $queryBuilder->groupBy(QueryHelper::parseGroupBy($groupBy));
-            }
-
-            if ($orderBy !== '') {
-                foreach (QueryHelper::parseOrderBy($orderBy) as $orderPair) {
-                    list($fieldName, $order) = $orderPair;
-                    $queryBuilder->addOrderBy($fieldName, $order);
-                }
-            }
-
-            if ($limit !== '') {
-                if (strpos($limit, ',')) {
-                    $limitOffsetAndMax = GeneralUtility::intExplode(',', $limit);
-                    $queryBuilder->setFirstResult((int)$limitOffsetAndMax[0]);
-                    $queryBuilder->setMaxResults((int)$limitOffsetAndMax[1]);
-                } else {
-                    $queryBuilder->setMaxResults((int)$limit);
-                }
-            }
-
-            $rows = $queryBuilder->execute()->fetchAll();
-
-            if (!empty($rows)) {
-                return $rows;
-            }
-        }
-        return null;
-    }
-
     /********************************
      *
      * Standard clauses
      *
      ********************************/
-
-    /**
-     * Returns the "AND NOT deleted" clause for the tablename given IF
-     * $GLOBALS['TCA'] configuration points to such a field.
-     *
-     * @param string $table Tablename
-     * @return string
-     * @see enableFields()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use QueryBuilders' Restrictions directly instead.
-     */
-    public function deleteClause($table)
-    {
-        trigger_error('PageRepository->deleteClause() will be removed in TYPO3 v10.0. The delete clause can be applied via the DeletedRestrictions via QueryBuilder.', E_USER_DEPRECATED);
-        return $GLOBALS['TCA'][$table]['ctrl']['delete'] ? ' AND ' . $table . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete'] . '=0' : '';
-    }
 
     /**
      * Returns a part of a WHERE clause which will filter out records with start/end
@@ -1987,79 +1683,6 @@ class PageRepository implements LoggerAwareInterface
     }
 
     /**
-     * Checks if user has access to workspace.
-     *
-     * @param int $wsid Workspace ID
-     * @return bool true if the backend user has access to a certain workspace
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. Use $BE_USER->checkWorkspace() directly if necessary.
-     */
-    public function checkWorkspaceAccess($wsid)
-    {
-        trigger_error('PageRepository->checkWorkspaceAccess() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        if (!$this->getBackendUser() || !ExtensionManagementUtility::isLoaded('workspaces')) {
-            return false;
-        }
-        if (!isset($this->workspaceCache[$wsid])) {
-            $this->workspaceCache[$wsid] = $this->getBackendUser()->checkWorkspace($wsid);
-        }
-        return (string)$this->workspaceCache[$wsid]['_ACCESS'] !== '';
-    }
-
-    /**
-     * Gets file references for a given record field.
-     *
-     * @param string $tableName Name of the table
-     * @param string $fieldName Name of the field
-     * @param array $element The parent element referencing to files
-     * @return array
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
-     */
-    public function getFileReferences($tableName, $fieldName, array $element)
-    {
-        trigger_error('PageRepository->getFileReferences() should not be used any longer, this method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        /** @var FileRepository $fileRepository */
-        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-        $currentId = !empty($element['uid']) ? $element['uid'] : 0;
-
-        // Fetch the references of the default element
-        try {
-            $references = $fileRepository->findByRelation($tableName, $fieldName, $currentId);
-        } catch (FileDoesNotExistException $e) {
-            /**
-             * We just catch the exception here
-             * Reasoning: There is nothing an editor or even admin could do
-             */
-            return [];
-        } catch (\InvalidArgumentException $e) {
-            /**
-             * The storage does not exist anymore
-             * Log the exception message for admins as they maybe can restore the storage
-             */
-            $logMessage = $e->getMessage() . ' (table: "' . $tableName . '", fieldName: "' . $fieldName . '", currentId: ' . $currentId . ')';
-            $this->logger->error($logMessage, ['exception' => $e]);
-            return [];
-        }
-
-        $localizedId = null;
-        if (isset($element['_LOCALIZED_UID'])) {
-            $localizedId = $element['_LOCALIZED_UID'];
-        } elseif (isset($element['_PAGES_OVERLAY_UID'])) {
-            $localizedId = $element['_PAGES_OVERLAY_UID'];
-        }
-
-        $isTableLocalizable = (
-            !empty($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
-            && !empty($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
-        );
-        if ($isTableLocalizable && $localizedId !== null) {
-            $localizedReferences = $fileRepository->findByRelation($tableName, $fieldName, $localizedId);
-            $references = $localizedReferences;
-        }
-
-        return $references;
-    }
-
-    /**
      * Purges computed properties from database rows,
      * such as _ORIG_uid or _ORIG_pid for instance.
      *
@@ -2074,17 +1697,6 @@ class PageRepository implements LoggerAwareInterface
             }
         }
         return $row;
-    }
-
-    /**
-     * Returns the current BE user.
-     *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-     * @deprecated will be removed in TYPO3 v10.0 as will not be used anymore then because checkWorkspaceAccess() will be removed.
-     */
-    protected function getBackendUser()
-    {
-        return $GLOBALS['BE_USER'];
     }
 
     /**

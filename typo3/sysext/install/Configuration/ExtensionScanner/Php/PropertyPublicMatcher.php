@@ -224,16 +224,19 @@ return [
     'TYPO3\CMS\Frontend\Page\PageRepository->workspaceCache' => [
         'restFiles' => [
             'Deprecation-81318-PublicPropertiesOfPageRepository.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepository->error_getRootLine' => [
         'restFiles' => [
             'Deprecation-81318-PublicPropertiesOfPageRepository.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepository->error_getRootLine_failPid' => [
         'restFiles' => [
             'Deprecation-81318-PublicPropertiesOfPageRepository.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->matchAll' => [
@@ -380,6 +383,7 @@ return [
     'TYPO3\CMS\Frontend\Page\PageRepository->versioningPreview' => [
         'restFiles' => [
             'Deprecation-85078-PageRepositoryVersioningPreview.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\IndexedSearch\Lexer->csObj' => [
@@ -439,12 +443,14 @@ return [
     ],
     'TYPO3\CMS\Frontend\Page\PageRepository->sys_language_uid' => [
         'restFiles' => [
-            'Deprecation-85543-Language-relatedPropertiesInTypoScriptFrontendControllerAndPageRepository.rst'
+            'Deprecation-85543-Language-relatedPropertiesInTypoScriptFrontendControllerAndPageRepository.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepository->versioningWorkspaceId' => [
         'restFiles' => [
-            'Deprecation-85556-PageRepository-versioningWorkspaceId.rst'
+            'Deprecation-85556-PageRepository-versioningWorkspaceId.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->fileCache' => [
