@@ -97,9 +97,7 @@ class PhpassPasswordHash implements PasswordHashInterface
     {
         $saltedPW = null;
         if (!empty($password)) {
-            if (empty($salt) || !$this->isValidSalt($salt)) {
-                $salt = $this->getGeneratedSalt();
-            }
+            $salt = $this->getGeneratedSalt();
             $saltedPW = $this->cryptPassword($password, $this->applySettingsToSalt($salt));
         }
         return $saltedPW;

@@ -69,9 +69,7 @@ class Md5PasswordHash implements PasswordHashInterface
     {
         $saltedPW = null;
         if (!empty($password)) {
-            if (empty($salt) || !$this->isValidSalt($salt)) {
-                $salt = $this->getGeneratedSalt();
-            }
+            $salt = $this->getGeneratedSalt();
             $saltedPW = crypt($password, $this->applySettingsToSalt($salt));
         }
         return $saltedPW;
