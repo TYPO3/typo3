@@ -194,6 +194,20 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->initMPmap_create()`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->linkData()`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->printTitle()`
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility->_GETset()`
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility->arrayToLogString()`
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility->clientInfo()`
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility->deprecationLog()`
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility->devLog()`
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility->getDeprecationLogFileName()`
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility->getHostname()`
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility->getUserObj()`
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility->initSysLog()`
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility->llXmlAutoFileName()`
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility->logDeprecatedFunction()`
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility->logDeprecatedViewHelperAttribute()`
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility->sysLog()`
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility->unQuoteFilenames()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->addParams()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->calcIntExplode()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->currentPageUrl()`
@@ -245,6 +259,9 @@ The following methods changed signature according to previous deprecations in v9
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->getHashedPassword()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Http\Dispatcher->dispatch()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Package\PackageManager->__construct()` - First argument mandatory
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility->explodeUrl2Array()` - Second argument dropped
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility->getUrl()` - Third argument must be an array of arrays if given
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility->mkdir_deep()` - Second argument dropped
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getRawRecord()` - Fourth argument dropped
 
 
@@ -339,11 +356,17 @@ The following constants have been dropped:
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash::HASH_COUNT`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash::MAX_HASH_COUNT`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash::MIN_HASH_COUNT`
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR`
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_FATAL`
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_INFO`
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_NOTICE`
+* :php:`TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING`
 
 
 The following global options are ignored:
 
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']`
 
 
 The following language files and aliases have been removed:

@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Utility;
  */
 
 use GuzzleHttp\Exception\RequestException;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -23,11 +22,9 @@ use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * The legendary "t3lib_div" class - Miscellaneous functions for general purpose.
@@ -43,14 +40,6 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class GeneralUtility
 {
-    // Severity constants used by \TYPO3\CMS\Core\Utility\GeneralUtility::devLog()
-    // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-    const SYSLOG_SEVERITY_INFO = 0;
-    const SYSLOG_SEVERITY_NOTICE = 1;
-    const SYSLOG_SEVERITY_WARNING = 2;
-    const SYSLOG_SEVERITY_ERROR = 3;
-    const SYSLOG_SEVERITY_FATAL = 4;
-
     const ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL = '.*';
     const ENV_TRUSTED_HOSTS_PATTERN_SERVER_NAME = 'SERVER_NAME';
 
@@ -216,42 +205,6 @@ class GeneralUtility
             $value = (string)$value;
         }
         return $value;
-    }
-
-    /**
-     * Writes input value to $_GET.
-     *
-     * @param mixed $inputGet
-     * @param string $key
-     * @deprecated since TYPO3 v9 LTS, will be removed in TYPO3 v10.0.
-     */
-    public static function _GETset($inputGet, $key = '')
-    {
-        trigger_error('GeneralUtility::_GETset() will be removed in TYPO3 v10.0. Use a PSR-15 middleware to set query parameters on the request object or set $_GET directly.', E_USER_DEPRECATED);
-        if ($key != '') {
-            if (strpos($key, '|') !== false) {
-                $pieces = explode('|', $key);
-                $newGet = [];
-                $pointer = &$newGet;
-                foreach ($pieces as $piece) {
-                    $pointer = &$pointer[$piece];
-                }
-                $pointer = $inputGet;
-                $mergedGet = $_GET;
-                ArrayUtility::mergeRecursiveWithOverrule($mergedGet, $newGet);
-                $_GET = $mergedGet;
-                $GLOBALS['HTTP_GET_VARS'] = $mergedGet;
-            } else {
-                $_GET[$key] = $inputGet;
-                $GLOBALS['HTTP_GET_VARS'][$key] = $inputGet;
-            }
-        } elseif (is_array($inputGet)) {
-            $_GET = $inputGet;
-            $GLOBALS['HTTP_GET_VARS'] = $inputGet;
-            if (isset($GLOBALS['TYPO3_REQUEST']) && $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
-                $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withQueryParams($inputGet);
-            }
-        }
     }
 
     /*************************
@@ -1190,26 +1143,17 @@ class GeneralUtility
      * then this method is for you.
      *
      * @param string $string GETvars string
-     * @param bool $multidim If set, the string will be parsed into a multidimensional array if square brackets are used in variable names (using PHP function parse_str())
      * @return array Array of values. All values AND keys are rawurldecoded() as they properly should be. But this means that any implosion of the array again must rawurlencode it!
      * @see implodeArrayForUrl()
      */
-    public static function explodeUrl2Array($string, $multidim = null)
+    public static function explodeUrl2Array($string)
     {
         $output = [];
-        if ($multidim) {
-            trigger_error('GeneralUtility::explodeUrl2Array() with a multi-dimensional explode functionality will be removed in TYPO3 v10.0. is built-in PHP with "parse_str($input, $output);". Use the native PHP methods instead.', E_USER_DEPRECATED);
-            parse_str($string, $output);
-        } else {
-            if ($multidim !== null) {
-                trigger_error('GeneralUtility::explodeUrl2Array() does not need a second method argument anymore, and will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-            }
-            $p = explode('&', $string);
-            foreach ($p as $v) {
-                if ($v !== '') {
-                    list($pK, $pV) = explode('=', $v, 2);
-                    $output[rawurldecode($pK)] = rawurldecode($pV);
-                }
+        $p = explode('&', $string);
+        foreach ($p as $v) {
+            if ($v !== '') {
+                list($pK, $pV) = explode('=', $v, 2);
+                $output[rawurldecode($pK)] = rawurldecode($pV);
             }
         }
         return $output;
@@ -1818,15 +1762,8 @@ class GeneralUtility
         }
         // Looks like it's an external file, use Guzzle by default
         if (preg_match('/^(?:http|ftp)s?|s(?:ftp|cp):/', $url)) {
-            /** @var RequestFactory $requestFactory */
             $requestFactory = static::makeInstance(RequestFactory::class);
             if (is_array($requestHeaders)) {
-                // Check is $requestHeaders is an associative array or not
-                if (count(array_filter(array_keys($requestHeaders), 'is_string')) === 0) {
-                    trigger_error('Request headers as colon-separated string will stop working in TYPO3 v10.0, use an associative array instead.', E_USER_DEPRECATED);
-                    // Convert cURL style lines of headers to Guzzle key/value(s) pairs.
-                    $requestHeaders = static::splitHeaderLines($requestHeaders);
-                }
                 $configuration = ['headers' => $requestHeaders];
             } else {
                 $configuration = [];
@@ -2118,24 +2055,16 @@ class GeneralUtility
      * sets permissions on newly created directories.
      *
      * @param string $directory Target directory to create. Must a have trailing slash
-     * @param string $deepDirectory Directory to create. This second parameter is deprecated since TYPO3 v9, and will be removed in TYPO3 v10.0.
      * @throws \InvalidArgumentException If $directory or $deepDirectory are not strings
      * @throws \RuntimeException If directory could not be created
      */
-    public static function mkdir_deep($directory, $deepDirectory = '')
+    public static function mkdir_deep($directory)
     {
         if (!is_string($directory)) {
             throw new \InvalidArgumentException('The specified directory is of type "' . gettype($directory) . '" but a string is expected.', 1303662955);
         }
-        if (!is_string($deepDirectory)) {
-            throw new \InvalidArgumentException('The specified directory is of type "' . gettype($deepDirectory) . '" but a string is expected.', 1303662956);
-        }
         // Ensure there is only one slash
         $fullPath = rtrim($directory, '/') . '/';
-        if ($deepDirectory !== '') {
-            trigger_error('Second argument $deepDirectory of GeneralUtility::mkdir_deep() will be removed in TYPO3 v10.0, use a combined string as first argument instead.', E_USER_DEPRECATED);
-            $fullPath .= ltrim($deepDirectory, '/');
-        }
         if ($fullPath !== '/' && !is_dir($fullPath)) {
             $firstCreatedPath = static::createDirectoryPath($fullPath);
             if ($firstCreatedPath !== '') {
@@ -3042,113 +2971,6 @@ class GeneralUtility
         return round(microtime(true) * 1000);
     }
 
-    /**
-     * Client Browser Information
-     *
-     * @param string $useragent Alternative User Agent string (if empty, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT') is used)
-     * @return array Parsed information about the HTTP_USER_AGENT in categories BROWSER, VERSION, SYSTEM
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
-     */
-    public static function clientInfo($useragent = '')
-    {
-        trigger_error('GeneralUtility::clientInfo() will be removed in TYPO3 v10.0. Use your own detection via HTTP_USER_AGENT Server string.', E_USER_DEPRECATED);
-        if (!$useragent) {
-            $useragent = self::getIndpEnv('HTTP_USER_AGENT');
-        }
-        $bInfo = [];
-        // Which browser?
-        if (strpos($useragent, 'Konqueror') !== false) {
-            $bInfo['BROWSER'] = 'konqu';
-        } elseif (strpos($useragent, 'Opera') !== false) {
-            $bInfo['BROWSER'] = 'opera';
-        } elseif (strpos($useragent, 'MSIE') !== false) {
-            $bInfo['BROWSER'] = 'msie';
-        } elseif (strpos($useragent, 'Mozilla') !== false) {
-            $bInfo['BROWSER'] = 'net';
-        } elseif (strpos($useragent, 'Flash') !== false) {
-            $bInfo['BROWSER'] = 'flash';
-        }
-        if (isset($bInfo['BROWSER'])) {
-            // Browser version
-            switch ($bInfo['BROWSER']) {
-                case 'net':
-                    $bInfo['VERSION'] = (float)substr($useragent, 8);
-                    if (strpos($useragent, 'Netscape6/') !== false) {
-                        $bInfo['VERSION'] = (float)substr(strstr($useragent, 'Netscape6/'), 10);
-                    }
-                    // Will we ever know if this was a typo or intention...?! :-(
-                    if (strpos($useragent, 'Netscape/6') !== false) {
-                        $bInfo['VERSION'] = (float)substr(strstr($useragent, 'Netscape/6'), 10);
-                    }
-                    if (strpos($useragent, 'Netscape/7') !== false) {
-                        $bInfo['VERSION'] = (float)substr(strstr($useragent, 'Netscape/7'), 9);
-                    }
-                    break;
-                case 'msie':
-                    $tmp = strstr($useragent, 'MSIE');
-                    $bInfo['VERSION'] = (float)preg_replace('/^[^0-9]*/', '', substr($tmp, 4));
-                    break;
-                case 'opera':
-                    $tmp = strstr($useragent, 'Opera');
-                    $bInfo['VERSION'] = (float)preg_replace('/^[^0-9]*/', '', substr($tmp, 5));
-                    break;
-                case 'konqu':
-                    $tmp = strstr($useragent, 'Konqueror/');
-                    $bInfo['VERSION'] = (float)substr($tmp, 10);
-                    break;
-            }
-            // Client system
-            if (strpos($useragent, 'Win') !== false) {
-                $bInfo['SYSTEM'] = 'win';
-            } elseif (strpos($useragent, 'Mac') !== false) {
-                $bInfo['SYSTEM'] = 'mac';
-            } elseif (strpos($useragent, 'Linux') !== false || strpos($useragent, 'X11') !== false || strpos($useragent, 'SGI') !== false || strpos($useragent, ' SunOS ') !== false || strpos($useragent, ' HP-UX ') !== false) {
-                $bInfo['SYSTEM'] = 'unix';
-            }
-        }
-        return $bInfo;
-    }
-
-    /**
-     * Get the fully-qualified domain name of the host.
-     *
-     * @param bool $requestHost Use request host (when not in CLI mode).
-     * @return string The fully-qualified host name.
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
-     */
-    public static function getHostname($requestHost = true)
-    {
-        trigger_error('GeneralUtility::getHostname() should not be used any longer, this method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        $host = '';
-        // If not called from the command-line, resolve on getIndpEnv()
-        if ($requestHost && !Environment::isCli()) {
-            $host = self::getIndpEnv('HTTP_HOST');
-        }
-        if (!$host) {
-            // will fail for PHP 4.1 and 4.2
-            $host = @php_uname('n');
-            // 'n' is ignored in broken installations
-            if (strpos($host, ' ')) {
-                $host = '';
-            }
-        }
-        // We have not found a FQDN yet
-        if ($host && strpos($host, '.') === false) {
-            $ip = gethostbyname($host);
-            // We got an IP address
-            if ($ip != $host) {
-                $fqdn = gethostbyaddr($ip);
-                if ($ip != $fqdn) {
-                    $host = $fqdn;
-                }
-            }
-        }
-        if (!$host) {
-            $host = 'localhost.localdomain';
-        }
-        return $host;
-    }
-
     /*************************
      *
      * TYPO3 SPECIFIC FUNCTIONS
@@ -3493,57 +3315,6 @@ class GeneralUtility
     }
 
     /**
-     * Returns auto-filename for locallang localizations
-     *
-     * @param string $fileRef Absolute file reference to locallang file
-     * @param string $language Language key
-     * @param bool $sameLocation If TRUE, then locallang localization file name will be returned with same directory as $fileRef
-     * @return string Returns the filename reference for the language unless error occurred in which case it will be NULL
-     * @deprecated in TYPO3 v9.0, will be removed in TYPO3 v10.0, as the functionality has been moved into AbstractXmlParser.
-     */
-    public static function llXmlAutoFileName($fileRef, $language, $sameLocation = false)
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0, the functionality has been moved into AbstractXmlParser.', E_USER_DEPRECATED);
-        // If $fileRef is already prefixed with "[language key]" then we should return it as is
-        $fileName = PathUtility::basename($fileRef);
-        if (self::isFirstPartOfStr($fileName, $language . '.')) {
-            return $fileRef;
-        }
-
-        if ($sameLocation) {
-            return str_replace($fileName, $language . '.' . $fileName, $fileRef);
-        }
-
-        // Analyze file reference
-        if (self::isFirstPartOfStr($fileRef, Environment::getFrameworkBasePath() . '/')) {
-            // Is system
-            $validatedPrefix = Environment::getFrameworkBasePath() . '/';
-        } elseif (self::isFirstPartOfStr($fileRef, Environment::getBackendPath() . '/ext/')) {
-            // Is global
-            $validatedPrefix = Environment::getBackendPath() . '/ext/';
-        } elseif (self::isFirstPartOfStr($fileRef, Environment::getExtensionsPath() . '/')) {
-            // Is local
-            $validatedPrefix = Environment::getExtensionsPath() . '/';
-        } else {
-            $validatedPrefix = '';
-        }
-        if ($validatedPrefix) {
-            // Divide file reference into extension key, directory (if any) and base name:
-            list($file_extKey, $file_extPath) = explode('/', substr($fileRef, strlen($validatedPrefix)), 2);
-            $temp = self::revExplode('/', $file_extPath, 2);
-            if (count($temp) === 1) {
-                array_unshift($temp, '');
-            }
-            // Add empty first-entry if not there.
-            list($file_extPath, $file_fileName) = $temp;
-            // The filename is prefixed with "[language key]." because it prevents the llxmltranslate tool from detecting it.
-            $location = 'typo3conf/l10n/' . $language . '/' . $file_extKey . '/' . ($file_extPath ? $file_extPath . '/' : '');
-            return $location . $language . '.' . $file_fileName;
-        }
-        return null;
-    }
-
-    /**
      * Calls a user-defined function/method in class
      * Such a function/method should look like this: "function proc(&$params, &$ref) {...}"
      *
@@ -3587,27 +3358,6 @@ class GeneralUtility
             throw new \InvalidArgumentException($errorMsg, 1294585867);
         }
         return $content;
-    }
-
-    /**
-     * This method should be avoided, as it will be deprecated completely in TYPO3 v9, and will be removed in TYPO3 v10.0.
-     * Instead use makeInstance() directly.
-     *
-     * Creates and returns reference to a user defined object.
-     * This function can return an object reference if you like.
-     *
-     * @param string $className Class name
-     * @return object The instance of the class asked for. Instance is created with GeneralUtility::makeInstance
-     * @see callUserFunction()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public static function getUserObj($className)
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0, use GeneralUtility::makeInstance() directly instead.', E_USER_DEPRECATED);
-        // Check if class exists:
-        if (class_exists($className)) {
-            return self::makeInstance($className);
-        }
     }
 
     /**
@@ -3941,246 +3691,6 @@ class GeneralUtility
     }
 
     /**
-     * Initialize the system log.
-     *
-     * @see sysLog()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public static function initSysLog()
-    {
-        // Init custom logging
-        $params = ['initLog' => true];
-        $fakeThis = false;
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] ?? [] as $hookMethod) {
-            self::callUserFunction($hookMethod, $params, $fakeThis);
-        }
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] = MathUtility::forceIntegerInRange($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'], 0, 4);
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit'] = true;
-    }
-
-    /**
-     * Logs message to custom "systemLog" handlers and logging API
-     *
-     * This should be implemented around the source code, including the Core and both frontend and backend, logging serious errors.
-     * If you want to implement the sysLog in your applications, simply add lines like:
-     * \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('[write message in English here]', 'extension_key', 'severity');
-     *
-     * @param string $msg Message (in English).
-     * @param string $extKey Extension key (from which extension you are calling the log) or "Core"
-     * @param int $severity \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_* constant
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public static function sysLog($msg, $extKey, $severity = 0)
-    {
-        trigger_error('GeneralUtility::sysLog() will be removed with TYPO3 v10.0.', E_USER_DEPRECATED);
-
-        $severity = MathUtility::forceIntegerInRange($severity, 0, 4);
-        // Is message worth logging?
-        if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] > $severity) {
-            return;
-        }
-        // Initialize logging
-        if (!$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit']) {
-            self::initSysLog();
-        }
-        // Do custom logging; avoid calling debug_backtrace if there are no custom loggers.
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'])) {
-            $params = ['msg' => $msg, 'extKey' => $extKey, 'backTrace' => debug_backtrace(), 'severity' => $severity];
-            $fakeThis = false;
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] as $hookMethod) {
-                self::callUserFunction($hookMethod, $params, $fakeThis);
-            }
-        }
-        // TYPO3 logging enabled?
-        if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog']) {
-            return;
-        }
-
-        static::getLogger()->log(LogLevel::INFO - $severity, $msg, ['extension' => $extKey]);
-    }
-
-    /**
-     * Logs message to the development log.
-     * This should be implemented around the source code, both frontend and backend, logging everything from the flow through an application, messages, results from comparisons to fatal errors.
-     * The result is meant to make sense to developers during development or debugging of a site.
-     * The idea is that this function is only a wrapper for external extensions which can set a hook which will be allowed to handle the logging of the information to any format they might wish and with any kind of filter they would like.
-     * If you want to implement the devLog in your applications, simply add a line like:
-     * \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('[write message in english here]', 'extension key');
-     *
-     * @param string $msg Message (in english).
-     * @param string $extKey Extension key (from which extension you are calling the log)
-     * @param int $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
-     * @param mixed $dataVar Additional data you want to pass to the logger.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public static function devLog($msg, $extKey, $severity = 0, $dataVar = false)
-    {
-        trigger_error('GeneralUtility::devLog() will be removed with TYPO3 v10.0.', E_USER_DEPRECATED);
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['devLog'])) {
-            $params = ['msg' => $msg, 'extKey' => $extKey, 'severity' => $severity, 'dataVar' => $dataVar];
-            $fakeThis = false;
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['devLog'] as $hookMethod) {
-                self::callUserFunction($hookMethod, $params, $fakeThis);
-            }
-        }
-    }
-
-    /**
-     * Writes a message to the deprecation log.
-     *
-     * @param string $msg Message (in English).
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public static function deprecationLog($msg)
-    {
-        static::writeDeprecationLogFileEntry('GeneralUtility::deprecationLog() will be removed in TYPO3 v10.0, use "trigger_error("Given reason", E_USER_DEPRECATED);" to log deprecations.');
-        trigger_error($msg, E_USER_DEPRECATED);
-    }
-
-    /**
-     * Logs the usage of a deprecated fluid ViewHelper argument.
-     * The log message will be generated automatically and contains the template path.
-     * With the third argument of this method it is possible to append some text to the log message.
-     *
-     * example usage:
-     *  if ($htmlEscape !== null) {
-     *      GeneralUtility::logDeprecatedViewHelperAttribute(
-     *          'htmlEscape',
-     *          $renderingContext,
-     *          'Please wrap the view helper in <f:format.raw> if you want to disable HTML escaping, which is enabled by default now.'
-     *      );
-     *  }
-     *
-     * The example above will create this deprecation log message:
-     * 15-02-17 23:12: [typo3/sysext/backend/Resources/Private/Templates/ToolbarItems/HelpToolbarItemDropDown.html]
-     *   The property "htmlEscape" has been deprecated.
-     *   Please wrap the view helper in <f:format.raw> if you want to disable HTML escaping,
-     *   which is enabled by default now.
-     *
-     * @param string $property
-     * @param RenderingContextInterface $renderingContext
-     * @param string $additionalMessage
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public static function logDeprecatedViewHelperAttribute(string $property, RenderingContextInterface $renderingContext, string $additionalMessage = '')
-    {
-        static::writeDeprecationLogFileEntry('GeneralUtility::logDeprecatedViewHelperAttribute() will be removed in TYPO3 v10.0.');
-        $template = $renderingContext->getTemplatePaths()->resolveTemplateFileForControllerAndActionAndFormat(
-            $renderingContext->getControllerName(),
-            $renderingContext->getControllerAction()
-        );
-        $template = str_replace(Environment::getPublicPath() . '/', '', $template);
-        $message = [];
-        $message[] = '[' . $template . ']';
-        $message[] = 'The property "' . $property . '" has been marked as deprecated.';
-        $message[] = $additionalMessage;
-        $message[] = 'Please check also your partial and layout files of this template';
-        trigger_error(implode(' ', $message), E_USER_DEPRECATED);
-    }
-
-    /**
-     * Gets the absolute path to the deprecation log file.
-     *
-     * @return string Absolute path to the deprecation log file
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public static function getDeprecationLogFileName()
-    {
-        static::writeDeprecationLogFileEntry('GeneralUtility::getDeprecationLogFileName() will be removed in TYPO3 v10.0.');
-        return Environment::getVarPath() . '/log/deprecation_' . self::shortMD5(Environment::getProjectPath() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '.log';
-    }
-
-    /**
-     * Logs a call to a deprecated function.
-     * The log message will be taken from the annotation.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public static function logDeprecatedFunction()
-    {
-        static::writeDeprecationLogFileEntry('GeneralUtility::logDeprecatedFunction() will be removed in TYPO3 v10.0.');
-        $trail = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-        if ($trail[1]['type']) {
-            $function = new \ReflectionMethod($trail[1]['class'], $trail[1]['function']);
-        } else {
-            $function = new \ReflectionFunction($trail[1]['function']);
-        }
-        $msg = '';
-        if (preg_match('/@deprecated\\s+(.*)/', $function->getDocComment(), $match)) {
-            $msg = $match[1];
-        }
-        // Write a longer message to the deprecation log: <function> <annotion> - <trace> (<source>)
-        $logMsg = $trail[1]['class'] . $trail[1]['type'] . $trail[1]['function'];
-        $logMsg .= '() - ' . $msg . ' - ' . DebugUtility::debugTrail();
-        $logMsg .= ' (' . PathUtility::stripPathSitePrefix($function->getFileName()) . '#' . $function->getStartLine() . ')';
-        trigger_error($logMsg, E_USER_DEPRECATED);
-    }
-
-    /**
-     * Converts a one dimensional array to a one line string which can be used for logging or debugging output
-     * Example: "loginType: FE; refInfo: Array; HTTP_HOST: www.example.org; REMOTE_ADDR: 192.168.1.5; REMOTE_HOST:; security_level:; showHiddenRecords: 0;"
-     *
-     * @param array $arr Data array which should be outputted
-     * @param mixed $valueList List of keys which should be listed in the output string. Pass a comma list or an array. An empty list outputs the whole array.
-     * @param int $valueLength Long string values are shortened to this length. Default: 20
-     * @return string Output string with key names and their value as string
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0.
-     */
-    public static function arrayToLogString(array $arr, $valueList = [], $valueLength = 20)
-    {
-        trigger_error('GeneralUtility::arrayToLogString() will be removed in TYPO3 v10.0. Use CLI-related methods in your code directly.', E_USER_DEPRECATED);
-        $str = '';
-        if (!is_array($valueList)) {
-            $valueList = self::trimExplode(',', $valueList, true);
-        }
-        $valListCnt = count($valueList);
-        foreach ($arr as $key => $value) {
-            if (!$valListCnt || in_array($key, $valueList)) {
-                $str .= (string)$key . trim(': ' . self::fixed_lgd_cs(str_replace(LF, '|', (string)$value), $valueLength)) . '; ';
-            }
-        }
-        return $str;
-    }
-
-    /**
-     * Explode a string (normally a list of filenames) with whitespaces by considering quotes in that string.
-     *
-     * @param string $parameters The whole parameters string
-     * @param bool $unQuote If set, the elements of the resulting array are unquoted.
-     * @return array Exploded parameters
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
-     */
-    public static function unQuoteFilenames($parameters, $unQuote = false)
-    {
-        trigger_error('GeneralUtility::unQuoteFilenames() should not be used any longer, this method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        $paramsArr = explode(' ', trim($parameters));
-        // Whenever a quote character (") is found, $quoteActive is set to the element number inside of $params. A value of -1 means that there are not open quotes at the current position.
-        $quoteActive = -1;
-        foreach ($paramsArr as $k => $v) {
-            if ($quoteActive > -1) {
-                $paramsArr[$quoteActive] .= ' ' . $v;
-                unset($paramsArr[$k]);
-                if (substr($v, -1) === $paramsArr[$quoteActive][0]) {
-                    $quoteActive = -1;
-                }
-            } elseif (!trim($v)) {
-                // Remove empty elements
-                unset($paramsArr[$k]);
-            } elseif (preg_match('/^(["\'])/', $v) && substr($v, -1) !== $v[0]) {
-                $quoteActive = $k;
-            }
-        }
-        if ($unQuote) {
-            foreach ($paramsArr as $key => &$val) {
-                $val = preg_replace('/(?:^"|"$)/', '', $val);
-                $val = preg_replace('/(?:^\'|\'$)/', '', $val);
-            }
-            unset($val);
-        }
-        // Return reindexed array
-        return array_values($paramsArr);
-    }
-
-    /**
      * Quotes a string for usage as JS parameter.
      *
      * @param string $value the string to encode, may be empty
@@ -4259,22 +3769,5 @@ class GeneralUtility
     protected static function getLogger()
     {
         return static::makeInstance(LogManager::class)->getLogger(__CLASS__);
-    }
-
-    /**
-     * @param string $msg
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    private static function writeDeprecationLogFileEntry($msg)
-    {
-        $date = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ': ');
-        // Write a longer message to the deprecation log
-        $destination = Environment::getVarPath() . '/log/deprecation_' . self::shortMD5(Environment::getProjectPath() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '.log';
-        $file = @fopen($destination, 'a');
-        if ($file) {
-            @fwrite($file, $date . $msg . LF);
-            @fclose($file);
-            self::fixPermissions($destination);
-        }
     }
 }

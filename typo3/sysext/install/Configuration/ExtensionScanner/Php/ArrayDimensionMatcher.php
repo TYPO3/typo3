@@ -122,11 +122,13 @@ return [
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_div.php\'][\'devLog\']' => [
         'restFiles' => [
             'Deprecation-52694-DeprecatedGeneralUtilitydevLog.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'enableDeprecationLog\']' => [
         'restFiles' => [
             'Deprecation-82438-DeprecationMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'fileExtensions\'][\'webspace\'][\'allow\']' => [

@@ -135,14 +135,13 @@ class XliffParserTest extends UnitTestCase
     }
 
     /**
-     * This test will make sure method \TYPO3\CMS\Core\Utility\GeneralUtility::llXmlAutoFileName() will not prefix twice the
+     * This test will make sure method does not prefix twice the
      * language key to the localization file.
      *
      * @test
      */
     public function canOverrideXliffWithFrenchOnly()
     {
-        /** @var $factory LocalizationFactory */
         $factory = new LocalizationFactory;
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['fr'][$this->xliffFileNames['locallang']][] = $this->xliffFileNames['locallang_override_fr'];

@@ -3000,17 +3000,6 @@ class GeneralUtilityTest extends UnitTestCase
         GeneralUtility::mkdir_deep([]);
     }
 
-    /**
-     * @test
-     */
-    public function mkdirDeepThrowsExceptionIfDeepDirectoryIsNotOfTypeString()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1303662956);
-
-        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp/foo', []);
-    }
-
     ///////////////////////////////
     // Tests concerning rmdir
     ///////////////////////////////

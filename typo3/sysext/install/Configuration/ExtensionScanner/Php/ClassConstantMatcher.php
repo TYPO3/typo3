@@ -33,26 +33,31 @@ return [
     'TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_INFO' => [
         'restFiles' => [
             'Deprecation-52694-DeprecatedGeneralUtilitydevLog.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_NOTICE' => [
         'restFiles' => [
             'Deprecation-52694-DeprecatedGeneralUtilitydevLog.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING' => [
         'restFiles' => [
             'Deprecation-52694-DeprecatedGeneralUtilitydevLog.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR' => [
         'restFiles' => [
             'Deprecation-52694-DeprecatedGeneralUtilitydevLog.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_FATAL' => [
         'restFiles' => [
             'Deprecation-52694-DeprecatedGeneralUtilitydevLog.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::ITOA64' => [

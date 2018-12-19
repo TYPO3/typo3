@@ -405,6 +405,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-80993-GeneralUtilitygetUserObj.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Utility\EidUtility::initTCA' => [
@@ -441,6 +442,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-82438-DeprecationMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedViewHelperAttribute' => [
@@ -448,6 +450,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-82438-DeprecationMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::getDeprecationLogFileName' => [
@@ -455,6 +458,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-82438-DeprecationMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction' => [
@@ -462,6 +466,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-82438-DeprecationMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath' => [
@@ -505,6 +510,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-83083-GeneralUtilityllXmlAutoFileName.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::getHash' => [
@@ -589,6 +595,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-85086-GeneralUtilityArrayToLogString.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\PhpOptionsUtility::isSessionAutoStartEnabled' => [
@@ -628,6 +635,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85759-GeneralUtilitygetHostName.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::unQuoteFilenames' => [
@@ -635,6 +643,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-85760-GeneralUtilityunQuoteFilenames.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance' => [
@@ -774,6 +783,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85858-GeneralUtilityclientInfo.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Utility\EidUtility::initLanguage' => [
@@ -817,6 +827,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-86389-GeneralUtility_GETsetAndTSFE-mergingWithGetVars.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

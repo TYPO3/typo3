@@ -117,7 +117,6 @@ class ListSysLogCommand extends Command
     /**
      * Converts a one dimensional array to a one line string which can be used for logging or debugging output
      * Example: "loginType: FE; refInfo: Array; HTTP_HOST: www.example.org; REMOTE_ADDR: 192.168.1.5; REMOTE_HOST:; security_level:; showHiddenRecords: 0;"
-     * Previously found in GeneralUtility::arrayToLogString()
      *
      * @param array $arr Data array which should be outputted
      * @param array $valueList List of keys which should be listed in the output string.
