@@ -20,6 +20,7 @@ The following PHP classes that have been previously deprecated for v9 have been 
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordService`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordsUtility`
 * :php:`TYPO3\CMS\Core\Encoder\JavaScriptEncoder`
+* :php:`TYPO3\CMS\Core\Package\DependencyResolver`
 * :php:`TYPO3\CMS\Core\Resource\Utility\BackendUtility`
 * :php:`TYPO3\CMS\Core\Utility\ClientUtility`
 * :php:`TYPO3\CMS\Core\Utility\PhpOptionsUtility`
@@ -131,6 +132,7 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setHashCount()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setMaxHashCount()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setMinHashCount()`
+* :php:`TYPO3\CMS\Core\Package\PackageManager->injectDependencyResolver()`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->getFileName()`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->getFromMPmap()`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->init()`
@@ -177,6 +179,7 @@ The following methods changed signature according to previous deprecations in v9
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash->getHashedPassword()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->getHashedPassword()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Http\Dispatcher->dispatch()` - Second argument dropped
+* :php:`TYPO3\CMS\Core\Package\PackageManager->__construct()` - First argument mandatory
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getRawRecord()` - Fourth argument dropped
 
 

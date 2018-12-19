@@ -104,14 +104,10 @@ class PackageManager implements SingletonInterface
     /**
      * @param DependencyOrderingService $dependencyOrderingService
      */
-    public function __construct(DependencyOrderingService $dependencyOrderingService = null)
+    public function __construct(DependencyOrderingService $dependencyOrderingService)
     {
         $this->packagesBasePath = Environment::getPublicPath() . '/';
         $this->packageStatesPathAndFilename = Environment::getLegacyConfigPath() . '/PackageStates.php';
-        if ($dependencyOrderingService === null) {
-            trigger_error(self::class . ' without constructor based dependency injection will stop working in TYPO3 v10.0.', E_USER_DEPRECATED);
-            $dependencyOrderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);
-        }
         $this->dependencyOrderingService = $dependencyOrderingService;
     }
 
@@ -122,16 +118,6 @@ class PackageManager implements SingletonInterface
     public function injectCoreCache(FrontendInterface $coreCache)
     {
         $this->coreCache = $coreCache;
-    }
-
-    /**
-     * @param DependencyResolver $dependencyResolver
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     * @internal
-     */
-    public function injectDependencyResolver(DependencyResolver $dependencyResolver)
-    {
-        trigger_error(self::class . '::injectDependencyResolver() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
     }
 
     /**

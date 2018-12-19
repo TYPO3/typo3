@@ -116,6 +116,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $packageName = $this->getUniqueId('foo');
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
+            ->disableOriginalConstructor()
             ->setMethods(['isPackageActive'])
             ->getMock();
         $packageManager->expects($this->once())
@@ -137,6 +138,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                 ->getMock();
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
+            ->disableOriginalConstructor()
             ->setMethods(['isPackageActive', 'getPackage'])
             ->getMock();
         $package->expects($this->once())
@@ -207,6 +209,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                 ->will($this->returnValue($extensionKey));
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
+            ->disableOriginalConstructor()
             ->setMethods(['getActivePackages'])
             ->getMock();
         $packageManager->expects($this->once())
@@ -235,6 +238,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                 ->will($this->returnValue($extensionKey));
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
+            ->disableOriginalConstructor()
             ->setMethods(['getActivePackages'])
             ->getMock();
         $packageManager->expects($this->once())

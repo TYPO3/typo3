@@ -665,6 +665,7 @@ return [
     'TYPO3\CMS\Core\Package\DependencyResolver' => [
         'restFiles' => [
             'Deprecation-84109-DeprecateDependencyResolver.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Recordlist\RecordList' => [

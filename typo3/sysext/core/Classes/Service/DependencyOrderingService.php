@@ -104,9 +104,9 @@ class DependencyOrderingService
             }
         }
 
-        // @internal DependencyResolver
+        // @internal PackageManager
         // this is a dirty special case for suggestion handling of packages
-        // see \TYPO3\CMS\Core\Package\DependencyResolver::convertConfigurationForGraph for details
+        // see \TYPO3\CMS\Core\Package\PackageManager::convertConfigurationForGraph for details
         // DO NOT use this for any other case
         foreach ($identifiers as $id) {
             if (isset($dependencies[$id]['after-resilient'])) {
