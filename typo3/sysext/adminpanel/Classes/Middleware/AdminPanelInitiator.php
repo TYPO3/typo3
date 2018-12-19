@@ -22,7 +22,6 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Adminpanel\Controller\MainController;
 use TYPO3\CMS\Adminpanel\Utility\StateUtility;
-use TYPO3\CMS\Adminpanel\View\AdminPanelView;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -50,10 +49,6 @@ class AdminPanelInitiator implements MiddlewareInterface
                 MainController::class
             );
             $adminPanelController->initialize($request);
-            // legacy handling
-            $beUser = $GLOBALS['BE_USER'];
-            $beUser->adminPanel = GeneralUtility::makeInstance(AdminPanelView::class);
-            $beUser->extAdmEnabled = true;
         }
         return $handler->handle($request);
     }

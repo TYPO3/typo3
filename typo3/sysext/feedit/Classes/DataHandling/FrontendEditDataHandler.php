@@ -16,7 +16,9 @@ namespace TYPO3\CMS\Feedit\DataHandling;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
@@ -24,7 +26,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\View\AdminPanelView;
 
 /**
  * Calls DataHandler and stores data
@@ -208,7 +209,7 @@ class FrontendEditDataHandler
                     ->setMaxResults(2);
 
                 // Disable the default restrictions (but not all) if the admin panel is in preview mode
-                if ($this->user->adminPanel instanceof AdminPanelView && $this->user->adminPanel->extGetFeAdminValue('preview')) {
+                if (StateUtility::isActivatedForUser() && GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('visibility', 'includeHiddenContent')) {
                     $queryBuilder->getRestrictions()
                         ->removeByType(StartTimeRestriction::class)
                         ->removeByType(EndTimeRestriction::class)

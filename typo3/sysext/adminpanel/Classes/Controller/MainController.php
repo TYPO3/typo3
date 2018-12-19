@@ -29,7 +29,6 @@ use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Adminpanel\Service\ModuleLoader;
 use TYPO3\CMS\Adminpanel\Utility\ResourceUtility;
 use TYPO3\CMS\Adminpanel\Utility\StateUtility;
-use TYPO3\CMS\Adminpanel\View\AdminPanelView;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -111,11 +110,6 @@ class MainController implements SingletonInterface
      */
     public function render(ServerRequestInterface $request): string
     {
-        // legacy handling, deprecated, will be removed in TYPO3 v10.0.
-        $adminPanelView = GeneralUtility::makeInstance(AdminPanelView::class);
-        $hookObjectContent = $adminPanelView->callDeprecatedHookObject();
-        // end legacy handling
-
         $resources = ResourceUtility::getResources();
 
         $view = GeneralUtility::makeInstance(StandaloneView::class);
@@ -150,7 +144,6 @@ class MainController implements SingletonInterface
                     'modules' => $this->modules,
                     'settingsModules' => $settingsModules,
                     'parentModules' => $parentModules,
-                    'hookObjectContent' => $hookObjectContent,
                     'saveUrl' => $this->generateBackendUrl('ajax_adminPanel_saveForm'),
                     'moduleResources' => $moduleResources,
                     'requestId' => $requestId,

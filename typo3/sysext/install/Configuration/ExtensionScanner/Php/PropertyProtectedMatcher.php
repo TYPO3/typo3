@@ -835,21 +835,25 @@ return [
     'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->adminPanel' => [
         'restFiles' => [
             'Deprecation-84641-DeprecatedAdminPanelRelatedMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extAdminConfig' => [
         'restFiles' => [
             'Deprecation-84641-DeprecatedAdminPanelRelatedMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extAdmEnabled' => [
         'restFiles' => [
             'Deprecation-84641-DeprecatedAdminPanelRelatedMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->frontendEdit' => [
         'restFiles' => [
             'Deprecation-86110-FrontendEditingController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ADMCMD_preview_BEUSER_uid' => [

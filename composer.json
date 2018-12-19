@@ -86,7 +86,6 @@
 		"typo3/class-alias-loader": {
 			"always-add-alias-loader": true,
 			"class-alias-maps": [
-				"typo3/sysext/adminpanel/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/extbase/Migrations/Code/ClassAliasMap.php"
 			]
 		},

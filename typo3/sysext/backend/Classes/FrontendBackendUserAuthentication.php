@@ -18,22 +18,16 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * TYPO3 backend user authentication in the TSFE frontend.
- * This includes mainly functions related to the Admin Panel
+ * TYPO3 backend user authentication in the Frontend rendering.
+ *
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class FrontendBackendUserAuthentication extends BackendUserAuthentication
 {
-
     /**
      * Form field with login name.
      *
@@ -71,129 +65,6 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
     public $writeAttemptLog = false;
 
     /**
-     * General flag which is set if the adminpanel is enabled at all.
-     *
-     * @var bool
-     * @deprecated since TYPO3 v9, property will be removed in TYPO3 v10.0 - see extension "adminpanel" for new API
-     */
-    public $extAdmEnabled = false;
-
-    /**
-     * @var \TYPO3\CMS\Adminpanel\View\AdminPanelView Instance of admin panel
-     * @deprecated since TYPO3 v9, property will be removed in TYPO3 v10.0 - see extension "adminpanel" for new API
-     */
-    public $adminPanel;
-
-    /**
-     * @var \TYPO3\CMS\Core\FrontendEditing\FrontendEditingController
-     * @deprecated since TYPO3 v9, property will be removed in TYPO3 v10.0 - see extension "feedit" how the functionality could be used.
-     */
-    public $frontendEdit;
-
-    /**
-     * @var array
-     * @deprecated since TYPO3 v9, property will be removed in TYPO3 v10.0 - see extension "adminpanel" for new API
-     */
-    public $extAdminConfig = [];
-
-    /**
-     * Initializes the admin panel.
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 - rewritten as middleware
-     */
-    public function initializeAdminPanel()
-    {
-        trigger_error('FrontendBackendUserAuthentication->initializeAdminPanel() will be removed in TYPO3 v10.0 - initialization is done via middleware.', E_USER_DEPRECATED);
-    }
-
-    /**
-     * Initializes frontend editing.
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 - rewritten as middleware
-     */
-    public function initializeFrontendEdit()
-    {
-        trigger_error('FrontendBackendUserAuthentication->initializeFrontendEdit() will be removed in TYPO3 v10.0 - initialization is done via middleware.', E_USER_DEPRECATED);
-    }
-
-    /**
-     * Determines whether frontend editing is currently active.
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 - see ext "feedit" for API
-     * @return bool Whether frontend editing is active
-     */
-    public function isFrontendEditingActive()
-    {
-        trigger_error('FrontendBackendUserAuthentication->isFrontendEditingActive() will be removed in TYPO3 v10.0 - use underlying TSFE directly.', E_USER_DEPRECATED);
-        return $this->extAdmEnabled && (
-            $this->adminPanel->isAdminModuleEnabled('edit') ||
-            (int)$GLOBALS['TSFE']->displayEditIcons === 1 ||
-            (int)$GLOBALS['TSFE']->displayFieldEditIcons === 1
-        );
-    }
-
-    /**
-     * Delegates to the appropriate view and renders the admin panel content.
-     *
-     * @deprecated since TYPO3 v9 - see ext "adminpanel" for new API
-     * @return string.
-     */
-    public function displayAdminPanel()
-    {
-        trigger_error('FrontendBackendUserAuthentication->displayAdminPanel() will be removed in TYPO3 v10.0 - use MainController of adminpanel extension.', E_USER_DEPRECATED);
-        return $this->adminPanel->display();
-    }
-
-    /**
-     * Determines whether the admin panel is enabled and visible.
-     *
-     * @deprecated since TYPO3 v9 - see ext "adminpanel" for new API
-     * @return bool true if the admin panel is enabled and visible
-     */
-    public function isAdminPanelVisible()
-    {
-        trigger_error('FrontendBackendUserAuthentication->isAdminPanelVisible() will be removed in TYPO3 v10.0 - use new adminpanel API instead.', E_USER_DEPRECATED);
-        return $this->extAdmEnabled && !$this->extAdminConfig['hide'] && $GLOBALS['TSFE']->config['config']['admPanel'];
-    }
-
-    /*****************************************************
-     *
-     * TSFE BE user Access Functions
-     *
-     ****************************************************/
-    /**
-     * Implementing the access checks that the TYPO3 CMS bootstrap script does before a user is ever logged in.
-     * Used in the frontend.
-     *
-     * @return bool Returns TRUE if access is OK
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
-     */
-    public function checkBackendAccessSettingsFromInitPhp()
-    {
-        trigger_error('FrontendBackendUserAuthentication->checkBackendAccessSettingsFromInitPhp() will be removed in TYPO3 v10.0. Use a PSR-15 middleware and backendCheckLogin() instead.', E_USER_DEPRECATED);
-        // Check Hardcoded lock on BE
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] < 0) {
-            return false;
-        }
-        // Check IP
-        if (trim($GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
-            if (!GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
-                return false;
-            }
-        }
-        // Check IP mask based on TSconfig
-        if (!$this->checkLockToIP()) {
-            return false;
-        }
-        // Check SSL (https)
-        if ((bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] && !GeneralUtility::getIndpEnv('TYPO3_SSL')) {
-            return false;
-        }
-        // Finally a check as in BackendUserAuthentication::backendCheckLogin()
-        return $this->isUserAllowedToLogin();
-    }
-
-    /**
      * Implementing the access checks that the TYPO3 CMS bootstrap script does before a user is ever logged in.
      * Used in the frontend.
      *
@@ -214,78 +85,6 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
             return false;
         }
         return $this->isUserAllowedToLogin();
-    }
-
-    /**
-     * Evaluates if the Backend User has read access to the input page record.
-     * The evaluation is based on both read-permission and whether the page is found in one of the users webmounts.
-     * Only if both conditions match, will the function return TRUE.
-     *
-     * Read access means that previewing is allowed etc.
-     *
-     * Used in \TYPO3\CMS\Frontend\Http\RequestHandler
-     *
-     * @param array $pageRec The page record to evaluate for
-     * @return bool TRUE if read access
-     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. Use underlying calls directly.
-     */
-    public function extPageReadAccess($pageRec)
-    {
-        trigger_error('FrontendBackendUserAuthentication->extPageReadAccess() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        return $this->isInWebMount($pageRec['uid']) && $this->doesUserHaveAccess($pageRec, Permission::PAGE_SHOW);
-    }
-
-    /*****************************************************
-     *
-     * TSFE BE user Access Functions
-     *
-     ****************************************************/
-    /**
-     * Generates a list of Page-uid's from $id. List does not include $id itself
-     * The only pages excluded from the list are deleted pages.
-     *
-     * @param int $id Start page id
-     * @param int $depth Depth to traverse down the page tree.
-     * @param int $begin Is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
-     * @param string $perms_clause Perms clause
-     * @return string Returns the list with a comma in the end (if any pages selected!)
-     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0.
-     */
-    public function extGetTreeList($id, $depth, $begin = 0, $perms_clause)
-    {
-        trigger_error('FrontendBackendUserAuthentication->extGetTreeList() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
-
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-        $depth = (int)$depth;
-        $begin = (int)$begin;
-        $id = (int)$id;
-        $theList = '';
-        if ($id && $depth > 0) {
-            $result = $queryBuilder
-                ->select('uid', 'title')
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq('sys_language_uid', 0),
-                    QueryHelper::stripLogicalOperatorPrefix($perms_clause)
-                )
-                ->execute();
-            while ($row = $result->fetch()) {
-                if ($begin <= 0) {
-                    $theList .= $row['uid'] . ',';
-                }
-                if ($depth > 1) {
-                    $theList .= $this->extGetTreeList($row['uid'], $depth - 1, $begin - 1, $perms_clause);
-                }
-            }
-        }
-        return $theList;
     }
 
     /**
@@ -402,41 +201,5 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
             }
         }
         return $allow;
-    }
-
-    /*****************************************************
-     *
-     * Localization handling
-     *
-     ****************************************************/
-    /**
-     * Returns the label for key. If a translation for the language set in $this->uc['lang']
-     * is found that is returned, otherwise the default value.
-     * If the global variable $LOCAL_LANG is NOT an array (yet) then this function loads
-     * the global $LOCAL_LANG array with the content of "EXT:core/Resources/Private/Language/locallang_tsfe.xlf"
-     * such that the values therein can be used for labels in the Admin Panel
-     *
-     * @param string $key Key for a label in the $GLOBALS['LOCAL_LANG'] array of "EXT:core/Resources/Private/Language/locallang_tsfe.xlf
-     * @return string The value for the $key
-     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0.
-     */
-    public function extGetLL($key)
-    {
-        trigger_error('FrontendBackendUserAuthentication->extGetLL() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        if (!is_array($GLOBALS['LOCAL_LANG'])) {
-            $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_tsfe.xlf');
-            if (!is_array($GLOBALS['LOCAL_LANG'])) {
-                $GLOBALS['LOCAL_LANG'] = [];
-            }
-        }
-        return htmlspecialchars($this->getLanguageService()->getLL($key));
-    }
-
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
     }
 }

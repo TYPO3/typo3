@@ -64,6 +64,7 @@ class StateUtility
 
     public static function isHiddenForUser(): bool
     {
-        return (bool)($GLOBALS['BE_USER']->extAdminConfig['hide'] ?? false);
+        $beUser = $GLOBALS['BE_USER'] ?? null;
+        return $beUser->getTSConfig()['admPanel.']['hide'] ?? false;
     }
 }

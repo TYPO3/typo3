@@ -11,6 +11,7 @@ Description
 
 The following PHP classes that have been previously deprecated for v9 have been removed:
 
+* :php:`TYPO3\CMS\Adminpanel\View\AdminPanelView`
 * :php:`TYPO3\CMS\Backend\Controller\LoginFramesetController`
 * :php:`TYPO3\CMS\Backend\Module\AbstractFunctionModule`
 * :php:`TYPO3\CMS\Backend\Module\AbstractModule`
@@ -22,6 +23,7 @@ The following PHP classes that have been previously deprecated for v9 have been 
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordService`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordsUtility`
 * :php:`TYPO3\CMS\Core\Encoder\JavaScriptEncoder`
+* :php:`TYPO3\CMS\Core\FrontendEditing\FrontendEditingController`
 * :php:`TYPO3\CMS\Core\Integrity\DatabaseIntegrityCheck`
 * :php:`TYPO3\CMS\Core\Log\Writer\RuntimeCacheWriter`
 * :php:`TYPO3\CMS\Core\Package\DependencyResolver`
@@ -39,6 +41,7 @@ The following PHP classes that have been previously deprecated for v9 have been 
 
 The following PHP interfaces that have been previously deprecated for v9 have been removed:
 
+* :php:`TYPO3\CMS\Adminpanel\View\AdminPanelViewHookInterface`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\ComposedPasswordHashInterface`
 
 
@@ -55,6 +58,8 @@ The following PHP class aliases that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Extbase\Mvc\Exception\InvalidTemplateResourceException`
 * :php:`TYPO3\CMS\Frontend\Controller\PageInformationController`
 * :php:`TYPO3\CMS\Frontend\Controller\TranslationStatusController`
+* :php:`TYPO3\CMS\Frontend\View\AdminPanelView`
+* :php:`TYPO3\CMS\Frontend\View\AdminPanelViewHookInterface`
 * :php:`TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler`
 * :php:`TYPO3\CMS\Fluid\Core\Exception`
 * :php:`TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode`
@@ -119,6 +124,15 @@ The following PHP class aliases that have been previously deprecated for v9 have
 
 The following PHP class methods that have been previously deprecated for v9 have been removed:
 
+* :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->initializeAdminPanel()`
+* :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->initializeFrontendEdit()`
+* :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->isFrontendEditingActive()`
+* :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->displayAdminPanel()`
+* :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->isAdminPanelVisible()`
+* :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->checkBackendAccessSettingsFromInitPhp()`
+* :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extPageReadAccess()`
+* :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extGetTreeList()`
+* :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extGetLL()`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->convArray()`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->convCaseFirst()`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->crop()`
@@ -236,6 +250,10 @@ The following methods changed signature according to previous deprecations in v9
 
 The following public class properties have been dropped:
 
+* :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extAdmEnabled`
+* :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->adminPanel`
+* :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->frontendEdit`
+* :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extAdminConfig`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->synonyms`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->allowedPaths`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->debug`
@@ -296,6 +314,7 @@ The following scheduler tasks have been removed:
 The following user TSconfig options have been dropped:
 
 * Prefix `mod.` to override page TSconfig is ignored
+* `TSFE.frontendEditingController` to override the frontend editing controller in EXT:feedit
 
 
 The following TypoScript options have been dropped:

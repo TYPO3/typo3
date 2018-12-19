@@ -1934,6 +1934,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84118-VariousPublicMethodsOfAdminPanelViewDeprecated.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\View\AdminPanelView->isAdminModuleEnabled' => [
@@ -1941,6 +1942,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84118-VariousPublicMethodsOfAdminPanelViewDeprecated.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\View\AdminPanelView->saveConfigOptions' => [
@@ -1948,6 +1950,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84118-VariousPublicMethodsOfAdminPanelViewDeprecated.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\View\AdminPanelView->extGetFeAdminValue' => [
@@ -1955,6 +1958,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-84118-VariousPublicMethodsOfAdminPanelViewDeprecated.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\View\AdminPanelView->forcePreview' => [
@@ -1962,6 +1966,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84118-VariousPublicMethodsOfAdminPanelViewDeprecated.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\View\AdminPanelView->isAdminModuleOpen' => [
@@ -1969,6 +1974,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84118-VariousPublicMethodsOfAdminPanelViewDeprecated.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\View\AdminPanelView->extGetHead' => [
@@ -1976,6 +1982,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84118-VariousPublicMethodsOfAdminPanelViewDeprecated.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\View\AdminPanelView->linkSectionHeader' => [
@@ -1983,6 +1990,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84118-VariousPublicMethodsOfAdminPanelViewDeprecated.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\View\AdminPanelView->extGetItem' => [
@@ -1990,6 +1998,7 @@ return [
         'maximumNumberOfArguments' => 5,
         'restFiles' => [
             'Deprecation-84118-VariousPublicMethodsOfAdminPanelViewDeprecated.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView->ext_isLinkable' => [
@@ -2302,6 +2311,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84641-DeprecatedAdminPanelRelatedMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->initializeFrontendEdit' => [
@@ -2309,6 +2319,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84641-DeprecatedAdminPanelRelatedMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->isFrontendEditingActive' => [
@@ -2316,6 +2327,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84641-DeprecatedAdminPanelRelatedMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->displayAdminPanel' => [
@@ -2323,6 +2335,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84641-DeprecatedAdminPanelRelatedMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->isAdminPanelVisible' => [
@@ -2330,6 +2343,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84641-DeprecatedAdminPanelRelatedMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->findDomainRecord' => [
@@ -2729,6 +2743,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84584-AdminPanelViewIsAdminModuleEnabledAndExt_makeToolbarDeprecated.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Adminpanel\View\AdminPanelView->ext_makeToolBar' => [
@@ -2736,6 +2751,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84584-AdminPanelViewIsAdminModuleEnabledAndExt_makeToolbarDeprecated.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ]
     ],
     'TYPO3\CMS\Frontend\Page\PageRepository->getRecordsByField' => [
@@ -3464,28 +3480,32 @@ return [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-86288-FrontendBackendUserAuthenticationMethods.rst'
+            'Deprecation-86288-FrontendBackendUserAuthenticationMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extPageReadAccess' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-86288-FrontendBackendUserAuthenticationMethods.rst'
+            'Deprecation-86288-FrontendBackendUserAuthenticationMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extGetTreeList' => [
         'numberOfMandatoryArguments' => 3,
         'maximumNumberOfArguments' => 4,
         'restFiles' => [
-            'Deprecation-86288-FrontendBackendUserAuthenticationMethods.rst'
+            'Deprecation-86288-FrontendBackendUserAuthenticationMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extGetLL' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-86288-FrontendBackendUserAuthenticationMethods.rst'
+            'Deprecation-86288-FrontendBackendUserAuthenticationMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Cli\Command->isFlushingCaches' => [
