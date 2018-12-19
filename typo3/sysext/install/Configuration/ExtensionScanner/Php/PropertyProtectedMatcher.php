@@ -859,86 +859,103 @@ return [
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ADMCMD_preview_BEUSER_uid' => [
         'restFiles' => [
             'Deprecation-86047-TSFEPropertiesMethodsAndChangeVisibility.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->workspacePreview' => [
         'restFiles' => [
             'Deprecation-86047-TSFEPropertiesMethodsAndChangeVisibility.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->loginAllowedInBranch' => [
         'restFiles' => [
             'Deprecation-86047-TSFEPropertiesMethodsAndChangeVisibility.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->MP_defaults' => [
         'restFiles' => [
             'Deprecation-86047-TSFEPropertiesMethodsAndChangeVisibility.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->debug' => [
         'restFiles' => [
             'Deprecation-86047-TSFEPropertiesMethodsAndChangeVisibility.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->pageAccessFailureHistory' => [
         'restFiles' => [
             'Deprecation-86047-TSFEPropertiesMethodsAndChangeVisibility.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->loginAllowedInBranch_mode' => [
         'restFiles' => [
             'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cacheTimeOutDefault' => [
         'restFiles' => [
             'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cacheContentFlag' => [
         'restFiles' => [
             'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->isClientCachable' => [
         'restFiles' => [
             'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->no_cacheBeforePageGen' => [
         'restFiles' => [
             'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->tempContent' => [
         'restFiles' => [
             'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->pagesTSconfig' => [
         'restFiles' => [
             'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->uniqueCounter' => [
         'restFiles' => [
             'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->uniqueString' => [
         'restFiles' => [
             'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->lang' => [
         'restFiles' => [
             'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cacheExpires' => [
         'restFiles' => [
             'Deprecation-86320-MarkInternalTSFEPropertiesAsProtected.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Html\RteHtmlParser->blockElementList' => [

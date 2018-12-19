@@ -190,16 +190,6 @@ The order of IDs specified may have a significance; Any ID in a branch which is 
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="USERNAME_substToken" type="string">
-			<description><![CDATA[The is the token used on the page, which should be substituted with the current username IF a front-end user is logged in! If no login, the substitution will not happen.]]></description>
-			<default><![CDATA[<!--###USERNAME###-->]]></default>
-		</property>
-		<property name="USERUID_substToken" type="string">
-			<description><![CDATA[The is the token used on the page, which should be substituted with the current users UID IF a front-end user is logged in! If no login, the substitution will not happen.
-This value has no default value and only if you specify a value for this token will a substitution process take place.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="absRefPrefix" type="string">
 			<description><![CDATA[If this value is set, then all relative links in TypoScript are prepended with this string. Used to convert relative paths to absolute paths.
 
@@ -809,12 +799,6 @@ hideNonTranslated : If this keyword is used a record that has no translation wil
 			<description><![CDATA[This value points to the uid of a record from the "sys_language" table and if set, this means that various parts of the frontend display code will select records which are assigned to this language. See ->SELECT
 
 Internally, the value is depending on whether a Alternative Page Language record can be found with that language. If not, the value will default to zero (default language) except if "sys_language_mode" is set to a value like "content_fallback".]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="titleTagFunction " type="string">
-			<description><![CDATA[function-name
-			Passes the default <title>-tag content to this function. No typoScript parameters are passed though.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -2957,15 +2941,6 @@ You can set the ITEM_STATE values USERDEF1 and USERDEF2 (+...RO) from a script/u
 			Enable/Configuration for menu items which are access restricted pages that a user has access to.]]></description>
 			<default><![CDATA[0]]></default>
 		</property>
-		<property name="addParams" type="string">
-			<description><![CDATA[Additional parameter for the menu-links.
-Example:
-"&some_var=some%20value"
-Must be rawurlencoded.
-Applies to GMENU, TMENU, IMGMENU]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="IProcFunc" type="string">
 			<description><![CDATA[The internal array "I" is passed to this function and expected returned as well. Subsequent to this function call the menu item is compiled by implode()'ing the array $I[parts] in the passed array. Thus you may modify this if you need to.
 See example on the testsite and in media/scripts/example_itemArrayProcFunc.php]]></description>
@@ -3322,15 +3297,6 @@ You can set the ITEM_STATE values USERDEF1 and USERDEF2 (+...RO) from a script/u
 			Enable/Configuration for menu items which are access restricted pages that a user has access to.]]></description>
 			<default><![CDATA[0]]></default>
 		</property>
-		<property name="addParams" type="string">
-			<description><![CDATA[Additional parameter for the menu-links.
-Example:
-"&some_var=some%20value"
-Must be rawurlencoded.
-Applies to GMENU, TMENU, IMGMENU]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="dWorkArea" type="string">
 			<description><![CDATA[offset + calc
 			Main offset of the GIFBUILDER-items (also called the "distribution")]]></description>
@@ -3666,15 +3632,6 @@ You can set the ITEM_STATE values USERDEF1 and USERDEF2 (+...RO) from a script/u
 			<description><![CDATA[Boolean / (config)
 			Enable/Configuration for menu items which are access restricted pages that a user has access to.]]></description>
 			<default><![CDATA[0]]></default>
-		</property>
-		<property name="addParams" type="string">
-			<description><![CDATA[Additional parameter for the menu-links.
-Example:
-"&some_var=some%20value"
-Must be rawurlencoded.
-Applies to GMENU, TMENU, IMGMENU]]></description>
-			<default><![CDATA[
-]]></default>
 		</property>
 		<property name="IProcFunc" type="string">
 			<description><![CDATA[function-name
@@ -5199,22 +5156,6 @@ In the GIFBUILDER object this is possible with the "splitRendering" option but i
 ]]></default>
 		</property>
 	</type>
-	<type id="addParams" extends="array">
-		<property name="[myTagProperty]" type="stdWrap">
-			<description><![CDATA[This defines the content of each added property to the tag.
-If there is a tag-property with this name already (case-sensitive!) that property will be overridden!
-If the returned value is a blank string (but not zero!) then the existing (if any) property will not be overridden.
-Example:
-img.addParams.border = 0]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="_offset" type="int">
-			<description><![CDATA[Use this to define which tag you want to manipulate.
-1 is the first tag in the input, 2 is the second, -1 is the last, -2 is the second last]]></description>
-			<default><![CDATA[1]]></default>
-		</property>
-	</type>
 	<type id="CONSTANTS">
 		<property name="[myConstant]" type="string">
 			<description><![CDATA[Constants.
@@ -6187,11 +6128,6 @@ Value must be set and properties are those of ->HTMLparser.
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="addParams" type="addParams">
-			<description><![CDATA[Lets you add tag-parameters to the content if the content is a tag!]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="age" type="string">
 			<description><![CDATA[If enabled with a "1" (number, integer) the content is seen as a date (UNIX-time) and the difference from present time and the content-time is returned as one of these four variations:
 "xx min" or "xx hrs" or "xx days" or "xx yrs"
@@ -6377,22 +6313,6 @@ Note: You can also divide fieldnames by "//". Say, you set "nav_title // title" 
 		</property>
 		<property name="fieldRequired" type="string">
 			<description><![CDATA[value in this field MUST be set]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="filelink" type="filelink">
-			<description><![CDATA[Used to make lists of links to files.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="filelist" type="stdWrap">
-			<description><![CDATA[Reads a directory and returns a list of files.
-The value is exploded by "|" into parameters:
-1: The path
-2: comma-list of allowed extensions (no spaces between); if empty all extensions goes.
-3: sorting: name, size, ext, date, mdate (modification date)
-4: reverse: Set to "r" if you want a reversed sorting
-5: fullpath_flag: If set, the filelist is returned with complete paths, and not just the filename]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>

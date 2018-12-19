@@ -102,9 +102,6 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
             $request = $request->withParsedBody($parsedBody);
             $GLOBALS['TYPO3_REQUEST'] = $request;
         }
-
-        // @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0
-        $this->controller->initializeRedirectUrlHandlers(true);
         return $handler->handle($request);
     }
 

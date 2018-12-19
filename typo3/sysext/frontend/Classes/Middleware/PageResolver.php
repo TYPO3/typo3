@@ -137,9 +137,6 @@ class PageResolver implements MiddlewareInterface
             // At this point, we later get further route modifiers
             // for bw-compat we update $GLOBALS[TYPO3_REQUEST] to be used later in TSFE.
             $GLOBALS['TYPO3_REQUEST'] = $request;
-        } else {
-            // old-school page resolving for realurl, cooluri etc.
-            $this->controller->siteScript = $request->getAttribute('normalizedParams')->getSiteScript();
         }
 
         $this->controller->determineId();

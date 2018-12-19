@@ -14,13 +14,11 @@ namespace TYPO3\CMS\Frontend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Doctrine\DBAL\DBALException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Charset\UnknownCharsetException;
@@ -32,7 +30,6 @@ use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
-use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -43,17 +40,14 @@ use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
-use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -69,10 +63,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Frontend\Compatibility\LegacyDomainResolver;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Http\UrlHandlerInterface;
-use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
@@ -96,16 +87,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
     use PublicMethodDeprecationTrait;
-
-    protected $deprecatedPublicMethods = [
-        'tempPageCacheContent' => 'Using $TSFE->tempPageCacheContent() has been marked as internal as its purpose is to be managed from within TSFE directly.',
-        'realPageCacheContent' => 'Using $TSFE->realPageCacheContent() has been marked as internal as its purpose is to be managed from within TSFE directly.',
-        'setPageCacheContent' => 'Using $TSFE->setPageCacheContent() has been marked as internal as its purpose is to be managed from within TSFE directly.',
-        'clearPageCacheContent_pidList' => 'Using $TSFE->clearPageCacheContent_pidList() has been marked as internal as its purpose is to be managed from within TSFE directly.',
-        'setSysLastChanged' => 'Using $TSFE->setSysLastChanged() has been marked as internal as its purpose is to be managed from within TSFE directly.',
-        'contentStrReplace' => 'Using $TSFE->contentStrReplace() has been marked as internal as its purpose is to be managed from within TSFE directly.',
-        'mergingWithGetVars' => '$TSFE->mergingWithGetVars() will be removed in TYPO3 v10.0. Use a middleware instead to override the PSR-7 request object AND set $_GET on top to achieve the same result.',
-    ];
 
     /**
      * The page id (int)
@@ -185,17 +166,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $sys_page = '';
 
     /**
-     * Contains all URL handler instances that are active for the current request.
-     *
-     * The methods isGeneratePage(), isOutputting() and isINTincScript() depend on this property.
-     *
-     * @var \TYPO3\CMS\Frontend\Http\UrlHandlerInterface[]
-     * @see initializeRedirectUrlHandlers()
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0.
-     */
-    protected $activeUrlHandlers = [];
-
-    /**
      * Is set to 1 if a pageNotFound handler could have been called.
      * @var int
      * @internal
@@ -212,7 +182,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Array containing a history of why a requested page was not accessible.
      * @var array
-     * @deprecated this value has a protected visibility now, as it is only used for internal purpose. Use "getPageAccessFailureReasons()" instead.
      */
     protected $pageAccessFailureHistory = [];
 
@@ -223,62 +192,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $MP = '';
 
     /**
-     * This can be set from applications as a way to tag cached versions of a page
-     * and later perform some external cache management, like clearing only a part
-     * of the cache of a page...
-     * @var int
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public $page_cache_reg1 = 0;
-
-    /**
-     * Contains the value of the current script path that activated the frontend.
-     * Typically "index.php" but by rewrite rules it could be something else! Used
-     * for Speaking Urls / Simulate Static Documents.
-     * @var string
-     * @internal
-     */
-    public $siteScript = '';
-
-    /**
      * The frontend user
      *
      * @var FrontendUserAuthentication
      */
     public $fe_user = '';
-
-    /**
-     * Global flag indicating that a frontend user is logged in. This is set only if
-     * a user really IS logged in. The group-list may show other groups (like added
-     * by IP filter or so) even though there is no user.
-     * @var bool
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. User the information within the context "frontend.user" aspect.
-     */
-    protected $loginUser = false;
-
-    /**
-     * (RO=readonly) The group list, sorted numerically. Group '0,-1' is the default
-     * group, but other groups may be added by other means than a user being logged
-     * in though...
-     * @var string
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. User the information within the context "frontend.user" aspect.
-     */
-    protected $gr_list = '';
-
-    /**
-     * Flag that indicates if a backend user is logged in!
-     * @var bool
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. User the information within the context "backend.user" aspect.
-     */
-    protected $beUserLogin = false;
-
-    /**
-     * Integer, that indicates which workspace is being previewed.
-     * Not in use anymore, as this is part of the workspace preview functionality, use $TSFE->whichWorkspace() instead.
-     * @var int
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. User the information within the context "workspace" aspect.
-     */
-    protected $workspacePreview = 0;
 
     /**
      * Shows whether logins are allowed in branch
@@ -294,13 +212,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected $loginAllowedInBranch_mode = '';
 
     /**
-     * Set to backend user ID to initialize when keyword-based preview is used
-     * @var int
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. User the information within the context "backend.user" aspect.
-     */
-    protected $ADMCMD_preview_BEUSER_uid = 0;
-
-    /**
      * Flag indication that preview is active. This is based on the login of a
      * backend user and whether the backend user has read access to the current
      * page.
@@ -308,23 +219,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @internal
      */
     public $fePreview = 0;
-
-    /**
-     * Flag indicating that hidden pages should be shown, selected and so on. This
-     * goes for almost all selection of pages!
-     * @var bool
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. User the information within the context "visibility" aspect.
-     */
-    protected $showHiddenPage = false;
-
-    /**
-     * Flag indicating that hidden records should be shown. This includes
-     * sys_template and even fe_groups in addition to all
-     * other regular content. So in effect, this includes everything except pages.
-     * @var bool
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. User the information within the context "visibility" aspect.
-     */
-    protected $showHiddenRecords = false;
 
     /**
      * Value that contains the simulated usergroup if any
@@ -509,13 +403,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $divSection = '';
 
     /**
-     * Debug flag. If TRUE special debug-output maybe be shown (which includes html-formatting).
-     * @var bool
-     * @deprecated this property is not in use anymore and will be removed in TYPO3 v10.0.
-     */
-    protected $debug = false;
-
-    /**
      * Default internal target
      * @var string
      */
@@ -532,14 +419,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @var string
      */
     public $fileTarget = '';
-
-    /**
-     * Keys are page ids and values are default &MP (mount point) values to set
-     * when using the linking features...)
-     * @var array
-     * @deprecated this property is not in use anymore and will be removed in TYPO3 v10.0.
-     */
-    protected $MP_defaults = [];
 
     /**
      * If set, typolink() function encrypts email addresses. Is set in pagegen-class.
@@ -598,43 +477,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @var string
      */
     public $displayFieldEditIcons = '';
-
-    /**
-     * Site language, 0 (zero) is default, int+ is uid pointing to a sys_language
-     * record. Should reflect which language menus, templates etc is displayed in
-     * (master language) - but not necessarily the content which could be falling
-     * back to default (see sys_language_content)
-     * @var int
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0 - use LanguageAspect->getId() instead.
-     */
-    protected $sys_language_uid = 0;
-
-    /**
-     * Site language mode for content fall back.
-     * @var string
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0 - use LanguageAspect->getFallbackChain() instead.
-     */
-    protected $sys_language_mode = '';
-
-    /**
-     * Site content selection uid (can be different from sys_language_uid if content
-     * is to be selected from a fall-back language. Depends on sys_language_mode)
-     * @var int
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0 - use LanguageAspect->getContentId() instead.
-     */
-    protected $sys_language_content = 0;
-
-    /**
-     * Site content overlay flag; If set - and sys_language_content is > 0 - ,
-     * records selected will try to look for a translation pointing to their uid. (If
-     * configured in [ctrl][languageField] / [ctrl][transOrigP...]
-     * Possible values: [0,1,hideNonTranslated]
-     * This flag is set based on TypoScript config.sys_language_overlay setting
-     *
-     * @var int|string
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0 - use LanguageAspect->getOverlayType() instead.
-     */
-    protected $sys_language_contentOL = 0;
 
     /**
      * Is set to the iso code of the sys_language_content if that is properly defined
@@ -728,25 +570,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $indexedDocTitle = '';
 
     /**
-     * Alternative page title (normally the title of the page record). Can be set
-     * from applications you make.
-     * @var string
-     * @internal
-     */
-    public $altPageTitle = '';
-
-    /**
      * The base URL set for the page header.
      * @var string
      */
     public $baseUrl = '';
-
-    /**
-     * IDs we already rendered for this page (to make sure they are unique)
-     * @var array
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
-     */
-    private $usedUniqueIds = [];
 
     /**
      * Page content render object
@@ -768,13 +595,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @var string
      */
     public $metaCharset = 'utf-8';
-
-    /**
-     * Set to the system language key (used on the site)
-     * @var string
-     * @internal
-     */
-    protected $lang = '';
 
     /**
      * Internal calculations for labels
@@ -805,13 +625,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @var array
      */
     protected $pageCacheTags = [];
-
-    /**
-     * The cHash Service class used for cHash related functionality
-     *
-     * @var CacheHashCalculator
-     */
-    protected $cacheHash;
 
     /**
      * Content type HTTP header being sent in the request.
@@ -858,42 +671,20 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param array $_ unused, previously defined to set TYPO3_CONF_VARS
      * @param mixed $id The value of GeneralUtility::_GP('id')
      * @param int $type The value of GeneralUtility::_GP('type')
-     * @param bool|string $no_cache The value of GeneralUtility::_GP('no_cache'), evaluated to 1/0, will be unused in TYPO3 v10.0.
+     * @param bool|string $_1 unused, previously the value of GeneralUtility::_GP('no_cache')
      * @param string $cHash The value of GeneralUtility::_GP('cHash')
      * @param string $_2 previously was used to define the jumpURL
      * @param string $MP The value of GeneralUtility::_GP('MP')
      */
-    public function __construct($_ = null, $id, $type, $no_cache = null, $cHash = '', $_2 = null, $MP = '')
+    public function __construct($_ = null, $id, $type, $_1 = null, $cHash = '', $_2 = null, $MP = '')
     {
         // Setting some variables:
         $this->id = $id;
         $this->type = $type;
-        if ($no_cache !== null) {
-            trigger_error('Calling TypoScriptFrontendController->__construct() with $no_cache argument set will be removed in TYPO3 v10.0. Use ->set_no_cache() instead.', E_USER_DEPRECATED);
-            if ($no_cache) {
-                if ($GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter']) {
-                    $warning = '&no_cache=1 has been ignored because $TYPO3_CONF_VARS[\'FE\'][\'disableNoCacheParameter\'] is set!';
-                    $this->getTimeTracker()->setTSlogMessage($warning, 2);
-                } else {
-                    $warning = '&no_cache=1 has been supplied, so caching is disabled! URL: "' . GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '"';
-                    $this->disableCache();
-                }
-                // note: we need to instantiate the logger manually here since the injection happens after the constructor
-                GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__)->warning($warning);
-            }
-        }
         $this->cHash = $cHash;
         $this->MP = $GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] ? (string)$MP : '';
         $this->uniqueString = md5(microtime());
         $this->initPageRenderer();
-        // Call post processing function for constructor:
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc'])) {
-            trigger_error('The "tslib_fe-PostProc" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
-        }
-        $this->cacheHash = GeneralUtility::makeInstance(CacheHashCalculator::class);
         $this->initCaches();
         // Use the global context for now
         $this->context = GeneralUtility::makeInstance(Context::class);
@@ -920,48 +711,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->contentType = $contentType;
     }
 
-    /**
-     * Connect to SQL database. May exit after outputting an error message
-     * or some JavaScript redirecting to the install tool.
-     *
-     * @throws \RuntimeException
-     * @throws ServiceUnavailableException
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0.
-     */
-    public function connectToDB()
-    {
-        trigger_error('The method "' . __METHOD__ . '" will be removed in TYPO3 v10.0, as the database connection is checked in the TypoScriptFrontendInitialization middleware.', E_USER_DEPRECATED);
-        try {
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
-            $connection->connect();
-        } catch (DBALException $exception) {
-            // Cannot connect to current database
-            $message = sprintf(
-                'Cannot connect to the configured database. Connection failed with: "%s"',
-                $exception->getMessage()
-            );
-            $this->logger->emergency($message, ['exception' => $exception]);
-            try {
-                $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction(
-                    $GLOBALS['TYPO3_REQUEST'],
-                    $message,
-                    ['code' => PageAccessFailureReasons::DATABASE_CONNECTION_FAILED]
-                );
-                throw new ImmediateResponseException($response, 1533931298);
-            } catch (ServiceUnavailableException $e) {
-                throw new ServiceUnavailableException($message, 1301648782);
-            }
-        }
-        // Call post processing function for DB connection
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB'])) {
-            trigger_error('The "connectToDB" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
-            $_params = ['pObj' => &$this];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
-        }
-    }
-
     /********************************************
      *
      * Initializing, resolving page id
@@ -973,46 +722,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected function initCaches()
     {
         $this->pageCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_pages');
-    }
-
-    /**
-     * Initializes the front-end login user.
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. Use the PSR-15 middleware instead to set up the Frontend User object.
-     */
-    public function initFEuser()
-    {
-        trigger_error('$TSFE->initFEuser() will be removed in TYPO3 v10.0. Use the FrontendUserAuthenticator middleware instead to initialize a Frontend User object.', E_USER_DEPRECATED);
-        $this->fe_user = GeneralUtility::makeInstance(FrontendUserAuthentication::class);
-        // List of pid's acceptable
-        $pid = GeneralUtility::_GP('pid');
-        $this->fe_user->checkPid_value = $pid ? implode(',', GeneralUtility::intExplode(',', $pid)) : 0;
-        // Check if a session is transferred:
-        if (GeneralUtility::_GP('FE_SESSION_KEY')) {
-            $fe_sParts = explode('-', GeneralUtility::_GP('FE_SESSION_KEY'));
-            // If the session key hash check is OK:
-            if (md5($fe_sParts[0] . '/' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) === (string)$fe_sParts[1]) {
-                $cookieName = FrontendUserAuthentication::getCookieName();
-                $_COOKIE[$cookieName] = $fe_sParts[0];
-                if (isset($_SERVER['HTTP_COOKIE'])) {
-                    // See http://forge.typo3.org/issues/27740
-                    $_SERVER['HTTP_COOKIE'] .= ';' . $cookieName . '=' . $fe_sParts[0];
-                }
-                $this->fe_user->forceSetCookie = true;
-                $this->fe_user->dontSetCookie = false;
-                unset($cookieName);
-            }
-        }
-        $this->fe_user->start();
-        $this->fe_user->unpack_uc();
-
-        // Call hook for possible manipulation of frontend user object
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser'])) {
-            trigger_error('The "initFEuser" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
-            $_params = ['pObj' => &$this];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
-        }
     }
 
     /**
@@ -1075,26 +784,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Provides ways to bypass the '?id=[xxx]&type=[xx]' format, using either PATH_INFO or virtual HTML-documents (using Apache mod_rewrite)
-     *
-     * Two options:
-     * 1) Use PATH_INFO (also Apache) to extract id and type from that var. Does not require any special modules compiled with apache. (less typical)
-     * 2) Using hook which enables features like those provided from "realurl" extension (AKA "Speaking URLs")
-     *
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0.
-     */
-    public function checkAlternativeIdMethods()
-    {
-        trigger_error('$TSFE->checkAlternativeIdMethods() will removed in TYPO3 v10.0, extensions should use a Frontend PSR-15-based middleware to hook into the frontend process. There is no need to call this method directly.', E_USER_DEPRECATED);
-        $this->siteScript = GeneralUtility::getIndpEnv('TYPO3_SITE_SCRIPT');
-        // Call post processing function for custom URL methods.
-        $_params = ['pObj' => &$this];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkAlternativeIdMethods-PostProc'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-        }
-    }
-
-    /**
      * Clears the preview-flags, sets sim_exec_time to current time.
      * Hidden pages must be hidden as default, $GLOBALS['SIM_EXEC_TIME'] is set to $GLOBALS['EXEC_TIME']
      * in bootstrap initializeGlobalTimeVariables(). Alter it by adding or subtracting seconds.
@@ -1122,64 +811,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function isBackendUserLoggedIn()
     {
         return (bool)$this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false);
-    }
-
-    /**
-     * Creates the backend user object and returns it.
-     *
-     * @return FrontendBackendUserAuthentication the backend user object
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0.
-     */
-    public function initializeBackendUser()
-    {
-        trigger_error('$TSFE->initializeBackendUser() will be removed in TYPO3 v10.0. Extensions should ensure that the BackendAuthenticator middleware is run to load a backend user.', E_USER_DEPRECATED);
-        // PRE BE_USER HOOK
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'])) {
-            trigger_error('The "preBeUser" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'] as $_funcRef) {
-                $_params = [];
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
-        }
-        $backendUserObject = null;
-        // If the backend cookie is set,
-        // we proceed and check if a backend user is logged in.
-        if ($_COOKIE[BackendUserAuthentication::getCookieName()]) {
-            $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] = microtime(true);
-            $this->getTimeTracker()->push('Back End user initialized');
-            $this->beUserLogin = false;
-            // New backend user object
-            $backendUserObject = GeneralUtility::makeInstance(FrontendBackendUserAuthentication::class);
-            $backendUserObject->start();
-            $backendUserObject->unpack_uc();
-            if (!empty($backendUserObject->user['uid'])) {
-                $backendUserObject->fetchGroupData();
-            }
-            // Unset the user initialization if any setting / restriction applies
-            if (!$backendUserObject->checkBackendAccessSettingsFromInitPhp() || empty($backendUserObject->user['uid'])) {
-                $backendUserObject = null;
-            }
-            $this->getTimeTracker()->pull();
-            $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] = microtime(true);
-        }
-        $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $backendUserObject));
-        $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $backendUserObject ? $backendUserObject->workspace : 0));
-        // POST BE_USER HOOK
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'])) {
-            trigger_error('The "postBeUser" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'])) {
-                $_params = [
-                    'BE_USER' => &$backendUserObject
-                ];
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'] as $_funcRef) {
-                    GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                }
-                // Set the aspect again, in case it got changed
-                $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $backendUserObject));
-                $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $backendUserObject ? $backendUserObject->workspace : 0));
-            }
-        }
-        return $backendUserObject;
     }
 
     /**
@@ -1691,28 +1322,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Get page shortcut; Finds the records pointed to by input value $SC (the shortcut value).
-     *
-     * @param int $SC The value of the "shortcut" field from the pages record
-     * @param int $mode The shortcut mode: 1 will select first subpage, 2 a random subpage, 3 the parent page; default is the page pointed to by $SC
-     * @param int $thisUid The current page UID of the page which is a shortcut
-     * @param int $itera Safety feature which makes sure that the function is calling itself recursively max 20 times (since this function can find shortcuts to other shortcuts to other shortcuts...)
-     * @param array $pageLog An array filled with previous page uids tested by the function - new page uids are evaluated against this to avoid going in circles.
-     * @param bool $disableGroupCheck If true, the group check is disabled when fetching the target page (needed e.g. for menu generation)
-     * @throws \RuntimeException
-     * @throws ShortcutTargetPageNotFoundException
-     * @return mixed Returns the page record of the page that the shortcut pointed to.
-     * @internal
-     * @see getPageAndRootline()
-     * @deprecated As this method conceptually belongs to PageRepository, it is moved in PageRepository, and will be removed in TYPO3 v10.0.
-     */
-    public function getPageShortcut($SC, $mode, $thisUid, $itera = 20, $pageLog = [], $disableGroupCheck = false)
-    {
-        trigger_error('$TSFE->getPageShortcut() has been moved to PageRepository, use the PageRepository directly to call this functionality, as this method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        return $this->sys_page->getPageShortcut($SC, $mode, $thisUid, $itera, $pageLog, $disableGroupCheck);
-    }
-
-    /**
      * Checks if visibility of the page is blocked upwards in the root line.
      *
      * If any page in the root line is blocking visibility, true is returend.
@@ -1951,235 +1560,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Page unavailable handler for use in frontend plugins from extensions.
-     *
-     * @param string $reason Reason text
-     * @param string $header HTTP header to send
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function pageUnavailableAndExit($reason = '', $header = '')
-    {
-        trigger_error('$TSFE->pageUnavailableAndExit() will be removed in TYPO3 v10.0. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
-        $header = $header ?: $GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling_statheader'];
-        $this->pageUnavailableHandler($GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling'], $header, $reason);
-        die;
-    }
-
-    /**
-     * Page-not-found handler for use in frontend plugins from extensions.
-     *
-     * @param string $reason Reason text
-     * @param string $header HTTP header to send
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function pageNotFoundAndExit($reason = '', $header = '')
-    {
-        trigger_error('$TSFE->pageNotFoundAndExit() will be removed in TYPO3 v10.0. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
-        $header = $header ?: $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling_statheader'];
-        $this->pageNotFoundHandler($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling'], $header, $reason);
-        die;
-    }
-
-    /**
-     * Checks whether the pageUnavailableHandler should be used. To be used, pageUnavailable_handling must be set
-     * and devIPMask must not match the current visitor's IP address.
-     *
-     * @return bool TRUE/FALSE whether the pageUnavailable_handler should be used.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function checkPageUnavailableHandler()
-    {
-        trigger_error('$TSFE->checkPageUnavailableHandler() will be removed in TYPO3 v10.0. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
-        if (
-            $GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling']
-            && !GeneralUtility::cmpIP(
-                GeneralUtility::getIndpEnv('REMOTE_ADDR'),
-                $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']
-            )
-        ) {
-            $checkPageUnavailableHandler = true;
-        } else {
-            $checkPageUnavailableHandler = false;
-        }
-        return $checkPageUnavailableHandler;
-    }
-
-    /**
-     * Page unavailable handler. Acts a wrapper for the pageErrorHandler method.
-     *
-     * @param mixed $code See ['FE']['pageUnavailable_handling'] for possible values
-     * @param string $header If set, this is passed directly to the PHP function, header()
-     * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function pageUnavailableHandler($code, $header, $reason)
-    {
-        trigger_error('$TSFE->pageUnavailableHandler() will be removed in TYPO3 v10.0. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
-        $this->pageErrorHandler($code, $header, $reason);
-    }
-
-    /**
-     * Page not found handler. Acts a wrapper for the pageErrorHandler method.
-     *
-     * @param mixed $code See docs of ['FE']['pageNotFound_handling'] for possible values
-     * @param string $header If set, this is passed directly to the PHP function, header()
-     * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function pageNotFoundHandler($code, $header = '', $reason = '')
-    {
-        trigger_error('$TSFE->pageNotFoundHandler() will be removed in TYPO3 v10.0. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
-        $this->pageErrorHandler($code, $header, $reason);
-    }
-
-    /**
-     * Generic error page handler.
-     * Exits.
-     *
-     * @param mixed $code See docs of ['FE']['pageNotFound_handling'] and ['FE']['pageUnavailable_handling'] for all possible values
-     * @param string $header If set, this is passed directly to the PHP function, header()
-     * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
-     * @throws \RuntimeException
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function pageErrorHandler($code, $header = '', $reason = '')
-    {
-        trigger_error('$TSFE->pageErrorHandler() will be removed in TYPO3 v10.0. Use TYPO3\'s ErrorController with Request/Response objects instead.', E_USER_DEPRECATED);
-        // Issue header in any case:
-        if ($header) {
-            $headerArr = preg_split('/\\r|\\n/', $header, -1, PREG_SPLIT_NO_EMPTY);
-            foreach ($headerArr as $header) {
-                header($header);
-            }
-        }
-        // Create response:
-        // Simply boolean; Just shows TYPO3 error page with reason:
-        if (strtolower($code) === 'true' || (string)$code === '1' || is_bool($code)) {
-            echo GeneralUtility::makeInstance(ErrorPageController::class)->errorAction(
-                'Page Not Found',
-                'The page did not exist or was inaccessible.' . ($reason ? ' Reason: ' . $reason : '')
-            );
-        } elseif (GeneralUtility::isFirstPartOfStr($code, 'USER_FUNCTION:')) {
-            $funcRef = trim(substr($code, 14));
-            $params = [
-                'currentUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
-                'reasonText' => $reason,
-                'pageAccessFailureReasons' => $this->getPageAccessFailureReasons()
-            ];
-            try {
-                echo GeneralUtility::callUserFunction($funcRef, $params, $this);
-            } catch (\Exception $e) {
-                throw new \RuntimeException('Error: 404 page by USER_FUNCTION "' . $funcRef . '" failed.', 1509296032, $e);
-            }
-        } elseif (GeneralUtility::isFirstPartOfStr($code, 'READFILE:')) {
-            $readFile = GeneralUtility::getFileAbsFileName(trim(substr($code, 9)));
-            if (@is_file($readFile)) {
-                echo str_replace(
-                    [
-                        '###CURRENT_URL###',
-                        '###REASON###'
-                    ],
-                    [
-                        GeneralUtility::getIndpEnv('REQUEST_URI'),
-                        htmlspecialchars($reason)
-                    ],
-                    file_get_contents($readFile)
-                );
-            } else {
-                throw new \RuntimeException('Configuration Error: 404 page "' . $readFile . '" could not be found.', 1294587214);
-            }
-        } elseif (GeneralUtility::isFirstPartOfStr($code, 'REDIRECT:')) {
-            HttpUtility::redirect(substr($code, 9));
-        } elseif ($code !== '') {
-            // Check if URL is relative
-            $url_parts = parse_url($code);
-            // parse_url could return an array without the key "host", the empty check works better than strict check
-            if (empty($url_parts['host'])) {
-                $url_parts['host'] = GeneralUtility::getIndpEnv('HTTP_HOST');
-                if ($code[0] === '/') {
-                    $code = GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . $code;
-                } else {
-                    $code = GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $code;
-                }
-                $checkBaseTag = false;
-            } else {
-                $checkBaseTag = true;
-            }
-            // Check recursion
-            if ($code == GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) {
-                if ($reason == '') {
-                    $reason = 'Page cannot be found.';
-                }
-                $reason .= LF . LF . 'Additionally, ' . $code . ' was not found while trying to retrieve the error document.';
-                throw new \RuntimeException(nl2br(htmlspecialchars($reason)), 1294587215);
-            }
-            // Prepare headers
-            $headerArr = [
-                'User-agent: ' . GeneralUtility::getIndpEnv('HTTP_USER_AGENT'),
-                'Referer: ' . GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')
-            ];
-            $report = [];
-            $res = GeneralUtility::getUrl($code, 1, $headerArr, $report);
-            if ((int)$report['error'] !== 0 && (int)$report['error'] !== 200) {
-                throw new \RuntimeException('Failed to fetch error page "' . $code . '", reason: ' . $report['message'], 1509296606);
-            }
-            // Header and content are separated by an empty line
-            list($header, $content) = explode(CRLF . CRLF, $res, 2);
-            $content .= CRLF;
-            if (false === $res) {
-                // Last chance -- redirect
-                HttpUtility::redirect($code);
-            } else {
-                // Forward these response headers to the client
-                $forwardHeaders = [
-                    'Content-Type:'
-                ];
-                $headerArr = preg_split('/\\r|\\n/', $header, -1, PREG_SPLIT_NO_EMPTY);
-                foreach ($headerArr as $header) {
-                    foreach ($forwardHeaders as $h) {
-                        if (preg_match('/^' . $h . '/', $header)) {
-                            header($header);
-                        }
-                    }
-                }
-                // Put <base> if necessary
-                if ($checkBaseTag) {
-                    // If content already has <base> tag, we do not need to do anything
-                    if (false === stristr($content, '<base ')) {
-                        // Generate href for base tag
-                        $base = $url_parts['scheme'] . '://';
-                        if ($url_parts['user'] != '') {
-                            $base .= $url_parts['user'];
-                            if ($url_parts['pass'] != '') {
-                                $base .= ':' . $url_parts['pass'];
-                            }
-                            $base .= '@';
-                        }
-                        $base .= $url_parts['host'];
-                        // Add path portion skipping possible file name
-                        $base .= preg_replace('/(.*\\/)[^\\/]*/', '${1}', $url_parts['path']);
-                        // Put it into content (generate also <head> if necessary)
-                        $replacement = LF . '<base href="' . htmlentities($base) . '" />' . LF;
-                        if (stristr($content, '<head>')) {
-                            $content = preg_replace('/(<head>)/i', '\\1' . $replacement, $content);
-                        } else {
-                            $content = preg_replace('/(<html[^>]*>)/i', '\\1<head>' . $replacement . '</head>', $content);
-                        }
-                    }
-                }
-                // Output the content
-                echo $content;
-            }
-        } else {
-            echo GeneralUtility::makeInstance(ErrorPageController::class)->errorAction(
-                'Page Not Found',
-                $reason ? 'Reason: ' . $reason : 'Page cannot be found.'
-            );
-        }
-        die;
-    }
-
-    /**
      * Fetches the integer page id for a page alias.
      * Looks if ->id is not an integer and if so it will search for a page alias and if found the page uid of that page is stored in $this->id
      */
@@ -2195,87 +1575,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
     }
 
-    /**
-     * Merging values into the global $_GET
-     *
-     * @param array $GET_VARS Array of key/value pairs that will be merged into the current GET-vars. (Non-escaped values)
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. This was mainly used in RealURL to set $id etc. but should be done manually instead.
-     */
-    protected function mergingWithGetVars($GET_VARS)
-    {
-        if (is_array($GET_VARS)) {
-            // Getting $_GET var, unescaped.
-            $realGet = GeneralUtility::_GET();
-            if (!is_array($realGet)) {
-                $realGet = [];
-            }
-            // Merge new values on top:
-            ArrayUtility::mergeRecursiveWithOverrule($realGet, $GET_VARS);
-            // Write values back to $_GET
-            $_GET = $realGet;
-            $GLOBALS['HTTP_GET_VARS'] = $realGet;
-            // Setting these specifically (like in the init-function):
-            if (isset($GET_VARS['type'])) {
-                $this->type = (int)$GET_VARS['type'];
-            }
-            if (isset($GET_VARS['cHash'])) {
-                $this->cHash = $GET_VARS['cHash'];
-            }
-            if (isset($GET_VARS['MP'])) {
-                $this->MP = $GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] ? $GET_VARS['MP'] : '';
-            }
-            if (isset($GET_VARS['no_cache']) && $GET_VARS['no_cache']) {
-                $this->set_no_cache('no_cache is requested via GET parameter');
-            }
-        }
-    }
-
     /********************************************
      *
      * Template and caching related functions.
      *
      *******************************************/
-    /**
-     * Calculates a hash string based on additional parameters in the url.
-     *
-     * Calculated hash is stored in $this->cHash_array.
-     * This is used to cache pages with more parameters than just id and type.
-     *
-     * @see reqCHash()
-     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. This validation is done in the PageParameterValidator PSR-15 middleware.
-     */
-    public function makeCacheHash()
-    {
-        trigger_error('$TSFE->makeCacheHash() will be removed in TYPO3 v10.0, as this is now handled in the PSR-15 middleware.', E_USER_DEPRECATED);
-        // No need to test anything if caching was already disabled.
-        if ($this->no_cache && !$GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError']) {
-            return;
-        }
-        $GET = GeneralUtility::_GET();
-        if ($this->cHash && is_array($GET)) {
-            // Make sure we use the page uid and not the page alias
-            $GET['id'] = $this->id;
-            $this->cHash_array = $this->cacheHash->getRelevantParameters(HttpUtility::buildQueryString($GET));
-            $cHash_calc = $this->cacheHash->calculateCacheHash($this->cHash_array);
-            if (!hash_equals($cHash_calc, $this->cHash)) {
-                if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError']) {
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                        $GLOBALS['TYPO3_REQUEST'],
-                        'Request parameters could not be validated (&cHash comparison failed)',
-                        ['code' => PageAccessFailureReasons::CACHEHASH_COMPARISON_FAILED]
-                    );
-                    throw new ImmediateResponseException($response, 1533931352);
-                }
-                $this->disableCache();
-                $this->getTimeTracker()->setTSlogMessage('The incoming cHash "' . $this->cHash . '" and calculated cHash "' . $cHash_calc . '" did not match, so caching was disabled. The fieldlist used was "' . implode(',', array_keys($this->cHash_array)) . '"', 2);
-            }
-        } elseif (is_array($GET)) {
-            // No cHash is set, check if that is correct
-            if ($this->cacheHash->doParametersRequireCacheHash(HttpUtility::buildQueryString($GET))) {
-                $this->reqCHash();
-            }
-        }
-    }
 
     /**
      * Will disable caching if the cHash value was not set when having dynamic arguments in GET query parameters.
@@ -2311,16 +1615,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function setPageArguments(PageArguments $pageArguments)
     {
         $this->pageArguments = $pageArguments;
-    }
-
-    /**
-     * Initialize the TypoScript template parser
-     * @deprecated since TYPO3 v9.4 will be removed in TYPO3 v10.0. Either instantiate $TSFE->tmpl yourself, if really necessary.
-     */
-    public function initTemplate()
-    {
-        trigger_error('$TSFE->initTemplate() will be removed in TYPO3 v10.0. Instantiating TemplateService is done implicitly on usage within $TSFE directly.', E_USER_DEPRECATED);
-        $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context);
     }
 
     /**
@@ -2425,7 +1719,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     // Restore page title information, this is needed to generate the page title for
                     // partially cached pages.
                     $this->page['title'] = $row['pageTitleInfo']['title'];
-                    $this->altPageTitle = $row['pageTitleInfo']['altPageTitle'];
                     $this->indexedDocTitle = $row['pageTitleInfo']['indexedDocTitle'];
 
                     if (isset($this->config['config']['debug'])) {
@@ -2609,10 +1902,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     if (is_array($this->pSetup['config.'])) {
                         ArrayUtility::mergeRecursiveWithOverrule($this->config['config'], $this->pSetup['config.']);
                     }
-                    // @deprecated since TYPO3 v9, can be removed in TYPO3 v10.0
-                    if ($this->config['config']['typolinkCheckRootline']) {
-                        $this->logDeprecatedTyposcript('config.typolinkCheckRootline', 'The functionality is always enabled since TYPO3 v9 and can be removed from your TypoScript code');
-                    }
                     // Set default values for removeDefaultJS and inlineStyle2TempFile so CSS and JS are externalized if compatversion is higher than 4.0
                     if (!isset($this->config['config']['removeDefaultJS'])) {
                         $this->config['config']['removeDefaultJS'] = 'external';
@@ -2709,7 +1998,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         } else {
             $languageKey = $this->config['config']['language'] ?? 'default';
         }
-        $this->lang = $languageKey;
         $this->setOutputLanguage($languageKey);
 
         // Rendering charset of HTML page.
@@ -2927,89 +2215,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Handle data submission
-     * This is done at this point, because we need the config values
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function handleDataSubmission()
-    {
-        trigger_error('$TSFE->handleDataSubmission() will be removed in TYPO3 v10.0. Use a PSR-15 middleware. The hooks are still executed as PSR-15 middleware but will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        // Hook for processing data submission to extensions
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'] ?? [] as $className) {
-            $_procObj = GeneralUtility::makeInstance($className);
-            $_procObj->checkDataSubmission($this);
-        }
-    }
-
-    /**
-     * Loops over all configured URL handlers and registers all active handlers in the redirect URL handler array.
-     *
-     * @param bool $calledFromCore if set to true, no deprecation warning will be triggered
-     * @see $activeRedirectUrlHandlers
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0. Do not call this method anymore, and also ensure that all urlHandlers are migrated to PSR-15 middlewares.
-     */
-    public function initializeRedirectUrlHandlers($calledFromCore = false)
-    {
-        $urlHandlers = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlHandlers'] ?? false;
-        if (!$urlHandlers) {
-            if (!$calledFromCore) {
-                trigger_error('$TSFE->initializeRedirectUrlHandlers() will be removed in TYPO3 v10.0. Do not call this method anymore and implement UrlHandlers by PSR-15 middlewares instead.', E_USER_DEPRECATED);
-            }
-            return;
-        }
-        trigger_error('The system has registered RedirectUrlHandlers via $TYPO3_CONF_VARS[SC_OPTIONS][urlProcessing][urlHandlers]. This functionality will be removed in TYPO3 v10.0. Ensure that extensions using this functionality switch to PSR-15 middlewares instead.', E_USER_DEPRECATED);
-
-        foreach ($urlHandlers as $identifier => $configuration) {
-            if (empty($configuration) || !is_array($configuration)) {
-                throw new \RuntimeException('Missing configuration for URL handler "' . $identifier . '".', 1442052263);
-            }
-            if (!is_string($configuration['handler']) || empty($configuration['handler']) || !class_exists($configuration['handler']) || !is_subclass_of($configuration['handler'], UrlHandlerInterface::class)) {
-                throw new \RuntimeException('The URL handler "' . $identifier . '" defines an invalid provider. Ensure the class exists and implements the "' . UrlHandlerInterface::class . '".', 1442052249);
-            }
-        }
-
-        $orderedHandlers = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($urlHandlers);
-
-        foreach ($orderedHandlers as $configuration) {
-            /** @var UrlHandlerInterface $urlHandler */
-            $urlHandler = GeneralUtility::makeInstance($configuration['handler']);
-            if ($urlHandler->canHandleCurrentUrl()) {
-                $this->activeUrlHandlers[] = $urlHandler;
-            }
-        }
-    }
-
-    /**
-     * Loops over all registered URL handlers and lets them process the current URL.
-     *
-     * If no handler has stopped the current process (e.g. by redirecting) and a
-     * the redirectUrl property is not empty, the user will be redirected to this URL.
-     *
-     * @internal Should be called by the FrontendRequestHandler only.
-     * @return ResponseInterface|null
-     * @param bool $calledFromCore if set to true, no deprecation warning will be triggered
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0. Do not call this method anymore, and also ensure that all urlHandlers are migrated to PSR-15 middlewares.
-     */
-    public function redirectToExternalUrl($calledFromCore = false)
-    {
-        if (!$calledFromCore) {
-            trigger_error('$TSFE->redirectToExternalUrl() will be removed in TYPO3 v10.0. Do not call this method anymore and implement UrlHandlers by PSR-15 middlewares instead.', E_USER_DEPRECATED);
-        }
-        foreach ($this->activeUrlHandlers as $redirectHandler) {
-            $response = $redirectHandler->handle();
-            if ($response instanceof ResponseInterface) {
-                return $response;
-            }
-        }
-
-        if (!empty($this->activeUrlHandlers)) {
-            throw new \RuntimeException('A URL handler is active but did not process the URL.', 1442305505);
-        }
-
-        return null;
-    }
-
-    /**
      * Sets the URL_ID_TOKEN in the internal var, $this->getMethodUrlIdToken
      * This feature allows sessions to use a GET-parameter instead of a cookie.
      */
@@ -3028,12 +2233,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param array $queryParams $_GET (usually called with a PSR-7 $request->getQueryParams())
      */
-    public function calculateLinkVars(array $queryParams = null)
+    public function calculateLinkVars(array $queryParams)
     {
-        if ($queryParams === null) {
-            trigger_error('Calling $TSFE->calculateLinkVars() without first argument will not be supported in TYPO3 v10.0. anymore, and needs to be an array.', E_USER_DEPRECATED);
-            $queryParams = GeneralUtility::_GET();
-        }
         $this->linkVars = '';
         if (empty($this->config['config']['linkVars'])) {
             return;
@@ -3175,21 +2376,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Redirect to target page if the current page is an overlaid mountpoint.
-     *
-     * If the current page is of type mountpoint and should be overlaid with the contents of the mountpoint page
-     * and is accessed directly, the user will be redirected to the mountpoint context.
-     * @deprecated in TYPO3 9, will be removed in TYPO3 10
-     */
-    public function checkPageForMountpointRedirect()
-    {
-        trigger_error('$TSFE->checkPageForMountpointRedirect() will be removed in TYPO3 v10.0, as this is now handled within a PSR-15 middleware.', E_USER_DEPRECATED);
-        if (!empty($this->originalMountPointPage) && $this->originalMountPointPage['doktype'] == PageRepository::DOKTYPE_MOUNTPOINT) {
-            $this->redirectToCurrentPage();
-        }
-    }
-
-    /**
      * Returns URI of target page, if the current page is a Shortcut.
      *
      * If the current page is of type shortcut and accessed directly via its URL,
@@ -3206,37 +2392,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
 
         return null;
-    }
-
-    /**
-     * Redirect to target page, if the current page is a Shortcut.
-     *
-     * If the current page is of type shortcut and accessed directly via its URL, this function redirects to the
-     * Shortcut target using a Location header.
-     * @deprecated in TYPO3 9, will be removed in TYPO3 10
-     */
-    public function checkPageForShortcutRedirect()
-    {
-        trigger_error('$TSFE->checkPageForShortcutRedirect() will be removed in TYPO3 v10.0, as this is now done within a PSR-15 middleware.', E_USER_DEPRECATED);
-        if (!empty($this->originalShortcutPage) && (int)$this->originalShortcutPage['doktype'] === PageRepository::DOKTYPE_SHORTCUT) {
-            $this->redirectToCurrentPage();
-        }
-    }
-
-    /**
-     * Builds a typolink to the current page, appends the type parameter if required
-     * and redirects the user to the generated URL using a Location header.
-     * @deprecated in TYPO3 9, will be removed in TYPO3 10
-     */
-    protected function redirectToCurrentPage()
-    {
-        trigger_error('$TSFE->redirectToCurrentPage() will be removed in TYPO3 v10.0, as this is now done within a PSR-15 middleware.', E_USER_DEPRECATED);
-        $redirectUrl = $this->getUriToCurrentPageForRedirect($GLOBALS['TYPO3_REQUEST']);
-        // Prevent redirection loop
-        if (!empty($redirectUrl) && GeneralUtility::getIndpEnv('REQUEST_URI') !== '/' . $redirectUrl) {
-            // redirect and exit
-            HttpUtility::redirect($redirectUrl, HttpUtility::HTTP_STATUS_307);
-        }
     }
 
     /**
@@ -3275,7 +2430,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function isGeneratePage()
     {
-        return !$this->cacheContentFlag && empty($this->activeUrlHandlers);
+        return !$this->cacheContentFlag;
     }
 
     /**
@@ -3379,19 +2534,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             'tstamp' => $GLOBALS['EXEC_TIME'],
             'pageTitleInfo' => [
                 'title' => $this->page['title'],
-                'altPageTitle' => $this->altPageTitle,
                 'indexedDocTitle' => $this->indexedDocTitle
             ]
         ];
         $this->cacheExpires = $expirationTstamp;
         $this->pageCacheTags[] = 'pageId_' . $cacheData['page_id'];
-        if ($this->page_cache_reg1) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove this "if" along with property page_cache_reg1
-            trigger_error('$TSFE->page_cache_reg1 will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-            $reg1 = (int)$this->page_cache_reg1;
-            $cacheData['reg1'] = $reg1;
-            $this->pageCacheTags[] = 'reg1_' . $reg1;
-        }
         if (!empty($this->page['cache_tags'])) {
             $tags = GeneralUtility::trimExplode(',', $this->page['cache_tags'], true);
             $this->pageCacheTags = array_merge($this->pageCacheTags, $tags);
@@ -3511,12 +2658,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param ServerRequestInterface $request
      */
-    public function preparePageContentGeneration(ServerRequestInterface $request = null)
+    public function preparePageContentGeneration(ServerRequestInterface $request)
     {
-        if ($request === null) {
-            trigger_error('$TSFE->preparePageContentGeneration() requires a ServerRequestInterface as first argument, add this argument in order to avoid this deprecation error.', E_USER_DEPRECATED);
-            $request = ServerRequestFactory::fromGlobals();
-        }
         $this->getTimeTracker()->push('Prepare page content generation');
         if (isset($this->page['content_from_pid']) && $this->page['content_from_pid'] > 0) {
             // make REAL copy of TSFE object - not reference!
@@ -3528,19 +2671,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->contentPid = (int)$temp_copy_TSFE->id;
             unset($temp_copy_TSFE);
         }
-        if ($this->config['config']['MP_defaults'] ?? false) {
-            $temp_parts = GeneralUtility::trimExplode('|', $this->config['config']['MP_defaults'], true);
-            foreach ($temp_parts as $temp_p) {
-                list($temp_idP, $temp_MPp) = explode(':', $temp_p, 2);
-                $temp_ids = GeneralUtility::intExplode(',', $temp_idP);
-                foreach ($temp_ids as $temp_id) {
-                    $this->MP_defaults[$temp_id] = $temp_MPp;
-                }
-            }
-        }
         // Global vars...
         $this->indexedDocTitle = $this->page['title'] ?? null;
-        $this->debug = !empty($this->config['config']['debug']);
         // Base url:
         if (isset($this->config['config']['baseURL'])) {
             $this->baseUrl = $this->config['config']['baseURL'];
@@ -3671,7 +2803,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Generate the page title, can be called multiple times,
-     * as $this->altPageTitle might have been modified by an uncached plugin etc.
+     * as PageTitleProvider might have been modified by an uncached plugin etc.
      *
      * @return string the generated page title
      */
@@ -3699,16 +2831,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             (bool)($this->config['config']['pageTitleFirst'] ?? false),
             $pageTitleSeparator
         );
-        if ($this->config['config']['titleTagFunction'] ?? false) {
-            // @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
-            $this->logDeprecatedTyposcript('config.titleTagFunction', 'Please use the new TitleTag API to create custom title tags. Deprecated in version 9, will be removed in version 10');
-
-            $titleTagContent = $this->cObj->callUserFunction(
-                $this->config['config']['titleTagFunction'],
-                [],
-                $titleTagContent
-            );
-        }
         // stdWrap around the title tag
         if (isset($this->config['config']['pageTitle.']) && is_array($this->config['config']['pageTitle.'])) {
             $titleTagContent = $this->cObj->stdWrap($titleTagContent, $this->config['config']['pageTitle.']);
@@ -3908,7 +3030,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function isINTincScript()
     {
-        return is_array($this->config['INTincScript']) && empty($this->activeUrlHandlers);
+        return is_array($this->config['INTincScript']);
     }
 
     /********************************************
@@ -3925,73 +3047,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function isOutputting()
     {
         // Initialize by status if there is a Redirect URL
-        $enableOutput = empty($this->activeUrlHandlers);
+        $enableOutput = true;
         // Call hook for possible disabling of output:
         $_params = ['pObj' => &$this, 'enableOutput' => &$enableOutput];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['isOutputting'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         return $enableOutput;
-    }
-
-    /**
-     * Process the output before it's actually outputted. Sends headers also.
-     *
-     * This includes substituting the "username" comment, sending additional headers
-     * (as defined in the TypoScript "config.additionalHeaders" object), XHTML cleaning content (if configured)
-     * Works on $this->content.
-     *
-     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0.
-     */
-    public function processOutput()
-    {
-        trigger_error('TypoScriptFrontendController->processOutput() will be removed in TYPO3 v10.0. Use streamFile() instead.', E_USER_DEPRECATED);
-        $this->sendHttpHeadersDirectly();
-        $this->processContentForOutput();
-    }
-
-    /**
-     * Runs PHP header() calls. In an ideal world, this should never happen, but we keep it for bw compat.
-     *
-     * @internal
-     */
-    public function sendHttpHeadersDirectly()
-    {
-        // Set header for charset-encoding unless disabled
-        if (empty($this->config['config']['disableCharsetHeader'])) {
-            $headLine = 'Content-Type: ' . $this->contentType . '; charset=' . trim($this->metaCharset);
-            header($headLine);
-        }
-        // Set header for content language unless disabled
-        if (empty($this->config['config']['disableLanguageHeader']) && !empty($this->sys_language_isocode)) {
-            $headLine = 'Content-Language: ' . trim($this->sys_language_isocode);
-            header($headLine);
-        }
-        // Set cache related headers to client (used to enable proxy / client caching!)
-        if (!empty($this->config['config']['sendCacheHeaders'])) {
-            $headers = $this->getCacheHeaders();
-            foreach ($headers as $header => $value) {
-                header($header . ': ' . $value);
-            }
-        }
-        // Set additional headers if any have been configured via TypoScript
-        $additionalHeaders = $this->getAdditionalHeaders();
-        foreach ($additionalHeaders as $headerConfig) {
-            header(
-                $headerConfig['header'],
-                // "replace existing headers" is turned on by default, unless turned off
-                $headerConfig['replace'],
-                $headerConfig['statusCode']
-            );
-        }
-        // Send appropriate status code in case of temporary content
-        if ($this->tempContent) {
-            header('HTTP/1.0 503 Service unavailable');
-            $headers = $this->getHttpHeadersForTemporaryContent();
-            foreach ($headers as $header => $value) {
-                header($header . ': ' . $value);
-            }
-        }
     }
 
     /**
@@ -4061,20 +3123,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Send cache headers good for client/reverse proxy caching.
-     * @see getCacheHeaders() for more details
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. Use $TSFE->processOutput to send headers instead.
-     */
-    public function sendCacheHeaders()
-    {
-        trigger_error('$TSFE->sendCacheHeaders() will be removed in TYPO3 v10.0, as all headers are compiled within "processOutput" depending on various scenarios. Use $TSFE->processOutput() instead.', E_USER_DEPRECATED);
-        $headers = $this->getCacheHeaders();
-        foreach ($headers as $header => $value) {
-            header($header . ': ' . $value);
-        }
-    }
-
-    /**
      * Get cache headers good for client/reverse proxy caching.
      * This function should not be called if the page content is temporary (like for "Page is being generated..."
      * message, but in that case it is ok because the config-variables are not yet available and so will not allow to
@@ -4137,8 +3185,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function isStaticCacheble()
     {
-        $doCache = !$this->no_cache && !$this->isINTincScript() && !$this->isUserOrGroupSet();
-        return $doCache;
+        return !$this->no_cache && !$this->isINTincScript() && !$this->isUserOrGroupSet();
     }
 
     /**
@@ -4148,19 +3195,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         $search = [];
         $replace = [];
-        // Substitutes username mark with the username
-        if (!empty($this->fe_user->user['uid'])) {
-            // User name:
-            $token = isset($this->config['config']['USERNAME_substToken']) ? trim($this->config['config']['USERNAME_substToken']) : '';
-            $search[] = $token ? $token : '<!--###USERNAME###-->';
-            $replace[] = htmlspecialchars($this->fe_user->user['username']);
-            // User uid (if configured):
-            $token = isset($this->config['config']['USERUID_substToken']) ? trim($this->config['config']['USERUID_substToken']) : '';
-            if ($token) {
-                $search[] = $token;
-                $replace[] = $this->fe_user->user['uid'];
-            }
-        }
         // Substitutes get_URL_ID in case of GET-fallback
         if ($this->getMethodUrlIdToken) {
             $search[] = $this->getMethodUrlIdToken;
@@ -4176,56 +3210,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         if (!empty($search)) {
             $this->content = str_replace($search, $replace, $this->content);
-        }
-    }
-
-    /**
-     * Stores session data for the front end user
-     *
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0, as this is a simple wrapper method.
-     */
-    public function storeSessionData()
-    {
-        trigger_error('$TSFE->storeSessionData() will be removed in TYPO3 v10.0. Use the call on the FrontendUserAuthentication object directly instead.', E_USER_DEPRECATED);
-        $this->fe_user->storeSessionData();
-    }
-
-    /**
-     * Outputs preview info.
-     *
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. Use "hook_eofe" instead.
-     */
-    public function previewInfo()
-    {
-        trigger_error('$TSFE->previewInfo() will be removed in TYPO3 v10.0, as this is now called by the Frontend RequestHandler.', E_USER_DEPRECATED);
-    }
-
-    /**
-     * End-Of-Frontend hook
-     *
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. Functionality still exists.
-     */
-    public function hook_eofe()
-    {
-        trigger_error('$TSFE->hook_eofe() will be removed in TYPO3 v10.0. The hook is now executed within Frontend RequestHandler.', E_USER_DEPRECATED);
-        $_params = ['pObj' => &$this];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-        }
-    }
-
-    /**
-     * Sends HTTP headers for temporary content.
-     * These headers prevent search engines from caching temporary content and asks them to revisit this page again.
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. Use $TSFE->processOutput to send headers instead.
-     */
-    public function addTempContentHttpHeaders()
-    {
-        trigger_error('$TSFE->addTempContentHttpHeaders() will be removed in TYPO3 v10.0, as all headers are compiled within "processOutput" depending on various scenarios. Use $TSFE->processOutput() instead.', E_USER_DEPRECATED);
-        header('HTTP/1.0 503 Service unavailable');
-        $headers = $this->getHttpHeadersForTemporaryContent();
-        foreach ($headers as $header => $value) {
-            header($header . ': ' . $value);
         }
     }
 
@@ -4431,56 +3415,19 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Sets JavaScript code in the additionalJavaScript array
      *
-     * @param string $key is the key in the array, for num-key let the value be empty. Note reserved keys 'openPic' and 'mouseOver'
+     * @param string $key is the key in the array, for num-key let the value be empty. Note reserved key: 'openPic'
      * @param string $content is the content if you want any
-     * @see \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::writeMenu(), ContentObjectRenderer::imageLinkWrap()
+     * @see ContentObjectRenderer::imageLinkWrap()
      */
     public function setJS($key, $content = '')
     {
-        if ($key) {
-            switch ($key) {
-                case 'mouseOver':
-                    trigger_error('$TSFE->setJS("mouseOver") will be removed in TYPO3 v10.0. If necessary, use setJS() with your recommended code.', E_USER_DEPRECATED);
-                    // Rollover functionality will be removed in TYPO3 v10.0
-                    $this->additionalJavaScript[$key] = '		// JS function for mouse-over
-		function over(name, imgObj) {	//
-			if (document[name]) {document[name].src = eval(name+"_h.src");}
-			else if (document.getElementById && document.getElementById(name)) {document.getElementById(name).src = eval(name+"_h.src");}
-			else if (imgObj)	{imgObj.src = eval(name+"_h.src");}
-		}
-			// JS function for mouse-out
-		function out(name, imgObj) {	//
-			if (document[name]) {document[name].src = eval(name+"_n.src");}
-			else if (document.getElementById && document.getElementById(name)) {document.getElementById(name).src = eval(name+"_n.src");}
-			else if (imgObj)	{imgObj.src = eval(name+"_n.src");}
-		}';
-                    break;
-                case 'openPic':
-                    $this->additionalJavaScript[$key] = '	function openPic(url, winName, winParams) {	//
-			var theWindow = window.open(url, winName, winParams);
-			if (theWindow)	{theWindow.focus();}
-		}';
-                    break;
-                default:
-                    $this->additionalJavaScript[$key] = $content;
-            }
-        }
-    }
-
-    /**
-     * Sets CSS data in the additionalCSS array
-     *
-     * @param string $key Is the key in the array, for num-key let the value be empty
-     * @param string $content Is the content if you want any
-     * @see setJS()
-     *
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0
-     */
-    public function setCSS($key, $content)
-    {
-        trigger_error('$TSFE->setCSS() will be removed in TYPO3 v10.0, use PageRenderer instead to add CSS.', E_USER_DEPRECATED);
-        if ($key) {
-            $this->additionalCSS[$key] = $content;
+        if ($key === 'openPic') {
+            $this->additionalJavaScript[$key] = '	function openPic(url, winName, winParams) {
+                var theWindow = window.open(url, winName, winParams);
+                if (theWindow)	{theWindow.focus();}
+            }';
+        } elseif ($key) {
+            $this->additionalJavaScript[$key] = $content;
         }
     }
 
@@ -4599,29 +3546,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         return $cachedCacheLifetime;
     }
 
-    /**
-     * Returns a unique id to be used as a XML ID (in HTML / XHTML mode)
-     *
-     * @param string $desired The desired id. If already used it is suffixed with a number
-     * @return string The unique id
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0 - as this functionality is not needed anymore and does not belong in this Class conceptually.
-     */
-    public function getUniqueId($desired = '')
-    {
-        trigger_error('$TSFE->getUniqueId() will be removed in TYPO3 v10.0, implement this functionality on your own with a proper Singleton Pattern which can be used outside of the frontend scope as well, if needed.', E_USER_DEPRECATED);
-        if ($desired === '') {
-            // id has to start with a letter to reach XHTML compliance
-            $uniqueId = 'a' . $this->uniqueHash();
-        } else {
-            $uniqueId = $desired;
-            for ($i = 1; isset($this->usedUniqueIds[$uniqueId]); $i++) {
-                $uniqueId = $desired . '_' . $i;
-            }
-        }
-        $this->usedUniqueIds[$uniqueId] = true;
-        return $uniqueId;
-    }
-
     /*********************************************
      *
      * Localization and character set conversion
@@ -4636,57 +3560,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function sL($input)
     {
         return $this->languageService->sL($input);
-    }
-
-    /**
-     * Read locallang files - for frontend applications
-     *
-     * @param string $fileRef Reference to a relative filename to include.
-     * @return array Returns the $LOCAL_LANG array found in the file. If no array found, returns empty array.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function readLLfile($fileRef)
-    {
-        trigger_error('$TSFE->readLLfile() will be removed in TYPO3 v10.0. The method LanguageService->includeLLFile() can be used directly.', E_USER_DEPRECATED);
-        return $this->languageService->includeLLFile($fileRef, false, true);
-    }
-
-    /**
-     * Returns 'locallang' label - may need initializing by initLLvars
-     *
-     * @param string $index Local_lang key for which to return label (language is determined by $this->lang)
-     * @param array $LOCAL_LANG The locallang array in which to search
-     * @return string|false Label value of $index key.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use LanguageService->getLLL() directly
-     */
-    public function getLLL($index, $LOCAL_LANG)
-    {
-        trigger_error('$TSFE->getLLL() will be removed in TYPO3 v10.0. The method LanguageService->getLLL() can be used directly.', E_USER_DEPRECATED);
-        if (isset($LOCAL_LANG[$this->lang][$index][0]['target'])) {
-            return $LOCAL_LANG[$this->lang][$index][0]['target'];
-        }
-        if (isset($LOCAL_LANG['default'][$index][0]['target'])) {
-            return $LOCAL_LANG['default'][$index][0]['target'];
-        }
-        return false;
-    }
-
-    /**
-     * Initializing the getLL variables needed.
-     *
-     * @see settingLanguage()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function initLLvars()
-    {
-        trigger_error('$TSFE->initLLvars() will be removed in TYPO3 v10.0, the initialization can be altered via hooks within settingLanguage().', E_USER_DEPRECATED);
-        $this->lang = $this->config['config']['language'] ?: 'default';
-        $this->setOutputLanguage($this->lang);
-
-        // Rendering charset of HTML page.
-        if ($this->config['config']['metaCharset']) {
-            $this->metaCharset = trim(strtolower($this->config['config']['metaCharset']));
-        }
     }
 
     /**
@@ -4723,37 +3596,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
         }
         return $content;
-    }
-
-    /**
-     * Converts the $_POST array from metaCharset (page HTML charset from input form) to utf-8 (internal processing) IF the two charsets are different.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function convPOSTCharset()
-    {
-        trigger_error('$TSFE->convPOSTCharset() will be removed in TYPO3 v10.0. A PSR-15 middleware is now taking care of the conversion. It seems you called this method from your own bootstrap code - ensure that the PrepareTypoScriptFrontendRendering middleware is called and you can remove the method call.', E_USER_DEPRECATED);
-        if ($this->metaCharset !== 'utf-8' && is_array($_POST) && !empty($_POST)) {
-            $this->convertCharsetRecursivelyToUtf8($_POST, $this->metaCharset);
-            $GLOBALS['HTTP_POST_VARS'] = $_POST;
-        }
-    }
-
-    /**
-     * Small helper function to convert charsets for arrays to UTF-8
-     *
-     * @param mixed $data given by reference (string/array usually)
-     * @param string $fromCharset convert FROM this charset
-     * @deprecated since TYPO3 v9, will be removed when convPOSTCharset() is removed as well in TYPO3 v10.0.
-     */
-    protected function convertCharsetRecursivelyToUtf8(&$data, string $fromCharset)
-    {
-        foreach ($data as $key => $value) {
-            if (is_array($data[$key])) {
-                $this->convertCharsetRecursivelyToUtf8($data[$key], $fromCharset);
-            } elseif (is_string($data[$key])) {
-                $data[$key] = mb_convert_encoding($data[$key], 'utf-8', $fromCharset);
-            }
-        }
     }
 
     /**
@@ -4885,51 +3727,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Whether the given domain name (potentially including a path segment) matches currently requested host or
-     * the host including the path segment
-     *
-     * @param string $domainName
-     * @return bool
-     * @deprecated will be removed in TYPO3 v10.0.
-     */
-    public function domainNameMatchesCurrentRequest($domainName)
-    {
-        trigger_error('$TSFE->domainNameMatchesCurrentRequest() will be removed in TYPO3 v10.0, use LegacyDomainResolver instead.', E_USER_DEPRECATED);
-        $currentDomain = GeneralUtility::getIndpEnv('HTTP_HOST');
-        $currentPathSegment = trim(preg_replace('|/[^/]*$|', '', GeneralUtility::getIndpEnv('SCRIPT_NAME')));
-        return $currentDomain === $domainName || $currentDomain . $currentPathSegment === $domainName;
-    }
-
-    /**
-     * Obtains domain data for the target pid. Domain data is an array with
-     * 'pid' and 'domainName' members (see sys_domain table for meaning of these fields).
-     *
-     * @param int $targetPid Target page id
-     * @return mixed Return domain data or NULL
-     * @deprecated will be removed in TYPO3 v10.0.
-     */
-    public function getDomainDataForPid($targetPid)
-    {
-        trigger_error('$TSFE->getDomainDataForPid() will be removed in TYPO3 v10.0, use LegacyDomainResolver instead.', E_USER_DEPRECATED);
-        return GeneralUtility::makeInstance(LegacyDomainResolver::class)->matchPageId((int)$targetPid, $GLOBALS['TYPO3_REQUEST']);
-    }
-
-    /**
-     * Obtains the domain name for the target pid. If there are several domains,
-     * the first is returned.
-     *
-     * @param int $targetPid Target page id
-     * @return mixed Return domain name or NULL if not found
-     * @deprecated will be removed in TYPO3 v10.0.
-     */
-    public function getDomainNameForPid($targetPid)
-    {
-        trigger_error('$TSFE->getDomainNameForPid() will be removed in TYPO3 v10.0, use LegacyDomainResolver instead.', E_USER_DEPRECATED);
-        $domainData = GeneralUtility::makeInstance(LegacyDomainResolver::class)->matchPageId((int)$targetPid, $GLOBALS['TYPO3_REQUEST']);
-        return $domainData ? $domainData['domainName'] : null;
-    }
-
-    /**
      * Fetches the originally requested id, fallsback to $this->id
      *
      * @return int the originally requested page uid
@@ -5012,8 +3809,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Send additional headers from config.additionalHeaders
-     *
-     * @see processOutput()
      */
     protected function getAdditionalHeaders(): array
     {
@@ -5071,381 +3866,5 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             return $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
         }
         return null;
-    }
-
-    /**
-     * Deprecation messages for TYPO3 v9 - public properties of TSFE which have been moved as
-     */
-
-    /**
-     * Checks if the property of the given name is set.
-     *
-     * Unmarked protected properties must return false as usual.
-     * Marked properties are evaluated by isset().
-     *
-     * This method is not called for public properties.
-     *
-     * @param string $propertyName
-     * @return bool
-     */
-    public function __isset(string $propertyName)
-    {
-        switch ($propertyName) {
-            case 'sys_language_uid':
-                trigger_error('Property $TSFE->sys_language_uid is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
-                return isset($this->$propertyName);
-            case 'sys_language_content':
-                trigger_error('Property $TSFE->sys_language_content is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
-                return isset($this->$propertyName);
-            case 'sys_language_contentOL':
-                trigger_error('Property $TSFE->sys_language_contentOL is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
-                return isset($this->$propertyName);
-            case 'sys_language_mode':
-                trigger_error('Property $TSFE->sys_language_mode is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
-                return isset($this->$propertyName);
-            case 'loginUser':
-                trigger_error('Property $TSFE->loginUser is not in use anymore as this information is now stored within the frontend.user aspect.', E_USER_DEPRECATED);
-                return isset($this->$propertyName);
-            case 'gr_list':
-                trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.', E_USER_DEPRECATED);
-                return isset($this->$propertyName);
-            case 'beUserLogin':
-                trigger_error('Property $TSFE->beUserLogin is not in use anymore as this information is now stored within the backend.user aspect.', E_USER_DEPRECATED);
-                return isset($this->$propertyName);
-            case 'showHiddenPage':
-                trigger_error('Property $TSFE->showHiddenPage is not in use anymore as this information is now stored within the visibility aspect.', E_USER_DEPRECATED);
-                return isset($this->$propertyName);
-            case 'showHiddenRecords':
-                trigger_error('Property $TSFE->showHiddenRecords is not in use anymore as this information is now stored within the visibility aspect.', E_USER_DEPRECATED);
-                return isset($this->$propertyName);
-            case 'ADMCMD_preview_BEUSER_uid':
-                trigger_error('Property $TSFE->ADMCMD_preview_BEUSER_uid is not in use anymore as this information is now stored within the backend.user aspect.', E_USER_DEPRECATED);
-                return isset($this->$propertyName);
-            case 'workspacePreview':
-                trigger_error('Property $TSFE->workspacePreview is not in use anymore as this information is now stored within the workspace aspect.', E_USER_DEPRECATED);
-                return isset($this->$propertyName);
-            case 'loginAllowedInBranch':
-                trigger_error('Property $TSFE->loginAllowedInBranch is marked as protected now as it only contains internal state. Use checkIfLoginAllowedInBranch() instead.', E_USER_DEPRECATED);
-                return isset($this->$propertyName);
-            // Regular deprecations / property visibility changes
-            case 'loginAllowedInBranch_mode':
-            case 'cacheTimeOutDefault':
-            case 'cacheContentFlag':
-            case 'cacheExpires':
-            case 'isClientCachable':
-            case 'no_cacheBeforePageGen':
-            case 'tempContent':
-            case 'pagesTSconfig':
-            case 'pageCacheTags':
-            case 'uniqueCounter':
-            case 'uniqueString':
-            case 'lang':
-            case 'MP_defaults':
-            case 'debug':
-            case 'pageAccessFailureHistory':
-                trigger_error('Property $TSFE->' . $propertyName . ' is marked as protected now as it only contains internal state.', E_USER_DEPRECATED);
-                return isset($this->$propertyName);
-        }
-        return false;
-    }
-
-    /**
-     * Gets the value of the property of the given name if tagged.
-     *
-     * The evaluation is done in the assumption that this method is never
-     * reached for a public property.
-     *
-     * @param string $propertyName
-     * @return mixed
-     */
-    public function __get(string $propertyName)
-    {
-        switch ($propertyName) {
-            case 'sys_language_uid':
-                trigger_error('Property $TSFE->sys_language_uid is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
-                return $this->context->getPropertyFromAspect('language', 'id', 0);
-            case 'sys_language_content':
-                trigger_error('Property $TSFE->sys_language_content is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
-                return $this->context->getPropertyFromAspect('language', 'contentId', 0);
-            case 'sys_language_contentOL':
-                trigger_error('Property $TSFE->sys_language_contentOL is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
-                return $this->context->getPropertyFromAspect('language', 'legacyOverlayType', '0');
-            case 'sys_language_mode':
-                trigger_error('Property $TSFE->sys_language_mode is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
-                return $this->context->getPropertyFromAspect('language', 'legacyLanguageMode', '');
-            case 'loginUser':
-                trigger_error('Property $TSFE->loginUser is not in use anymore as this information is now stored within the frontend.user aspect.', E_USER_DEPRECATED);
-                return $this->context->getPropertyFromAspect('frontend.user', 'isLoggedIn', false);
-            case 'gr_list':
-                trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.', E_USER_DEPRECATED);
-                return implode(',', $this->context->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]));
-            case 'beUserLogin':
-                trigger_error('Property $TSFE->beUserLogin is not in use anymore as this information is now stored within the backend.user aspect.', E_USER_DEPRECATED);
-                return $this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false);
-            case 'showHiddenPage':
-                trigger_error('Property $TSFE->showHiddenPage is not in use anymore as this information is now stored within the visibility aspect.', E_USER_DEPRECATED);
-                return $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages', false);
-            case 'showHiddenRecords':
-                trigger_error('Property $TSFE->showHiddenRecords is not in use anymore as this information is now stored within the visibility aspect.', E_USER_DEPRECATED);
-                return $this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false);
-            case 'ADMCMD_preview_BEUSER_uid':
-                trigger_error('Property $TSFE->ADMCMD_preview_BEUSER_uid is not in use anymore as this information is now stored within the backend.user aspect.', E_USER_DEPRECATED);
-                return $this->context->getPropertyFromAspect('backend.user', 'id', 0);
-            case 'workspacePreview':
-                trigger_error('Property $TSFE->workspacePreview is not in use anymore as this information is now stored within the workspace aspect.', E_USER_DEPRECATED);
-                return $this->context->getPropertyFromAspect('workspace', 'id', 0);
-            case 'loginAllowedInBranch':
-                trigger_error('Property $TSFE->loginAllowedInBranch is marked as protected now as it only contains internal state. Use checkIfLoginAllowedInBranch() instead.', E_USER_DEPRECATED);
-                break;
-            // Regular deprecations / property visibility changes
-            case 'loginAllowedInBranch_mode':
-            case 'cacheTimeOutDefault':
-            case 'cacheContentFlag':
-            case 'cacheExpires':
-            case 'isClientCachable':
-            case 'no_cacheBeforePageGen':
-            case 'tempContent':
-            case 'pagesTSconfig':
-            case 'pageCacheTags':
-            case 'uniqueCounter':
-            case 'uniqueString':
-            case 'lang':
-            case 'MP_defaults':
-            case 'debug':
-            case 'pageAccessFailureHistory':
-                trigger_error('Property $TSFE->' . $propertyName . ' is marked as protected now as it only contains internal state.', E_USER_DEPRECATED);
-                break;
-        }
-        return $this->$propertyName;
-    }
-
-    /**
-     * Sets the property of the given name if tagged.
-     *
-     * Additionally it's allowed to set unknown properties.
-     *
-     * The evaluation is done in the assumption that this method is never
-     * reached for a public property.
-     *
-     * @param string $propertyName
-     * @param mixed $propertyValue
-     */
-    public function __set(string $propertyName, $propertyValue)
-    {
-        switch ($propertyName) {
-            case 'sys_language_uid':
-                trigger_error('Property $TSFE->sys_language_uid is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
-                /** @var LanguageAspect $aspect */
-                $aspect = $this->context->getAspect('language');
-                $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, (int)$propertyValue, $aspect->getContentId(), $aspect->getOverlayType(), $aspect->getFallbackChain()));
-                break;
-            case 'sys_language_content':
-                trigger_error('Property $TSFE->sys_language_content is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
-                /** @var LanguageAspect $aspect */
-                $aspect = $this->context->getAspect('language');
-                $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $aspect->getId(), (int)$propertyValue, $aspect->getOverlayType(), $aspect->getFallbackChain()));
-                break;
-            case 'sys_language_contentOL':
-                trigger_error('Property $TSFE->sys_language_contentOL is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
-                /** @var LanguageAspect $aspect */
-                $aspect = $this->context->getAspect('language');
-                switch ((string)$propertyValue) {
-                    case 'hideNonTranslated':
-                        $overlayType = LanguageAspect::OVERLAYS_ON_WITH_FLOATING;
-                        break;
-                    case '1':
-                        $overlayType = LanguageAspect::OVERLAYS_MIXED;
-                        break;
-                    default:
-                        $overlayType = LanguageAspect::OVERLAYS_OFF;
-                }
-                $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $aspect->getId(), $aspect->getContentId(), $overlayType, $aspect->getFallbackChain()));
-                break;
-            case 'sys_language_mode':
-                trigger_error('Property $TSFE->sys_language_mode is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
-                /** @var LanguageAspect $aspect */
-                $aspect = $this->context->getAspect('language');
-                switch ((string)$propertyValue) {
-                    case 'strict':
-                        $fallBackOrder = [];
-                        break;
-                    // Ignore anything if a page cannot be found, and resolve pageId=0 instead.
-                    case 'ignore':
-                        $fallBackOrder = [-1];
-                        break;
-                    case 'fallback':
-                    case 'content_fallback':
-                        if (!empty($propertyValue)) {
-                            $fallBackOrder = GeneralUtility::trimExplode(',', $propertyValue);
-                            // no strict typing explictly done here
-                            if (!in_array(0, $fallBackOrder) && !in_array('pageNotFound', $fallBackOrder)) {
-                                $fallBackOrder[] = 'pageNotFound';
-                            }
-                        } else {
-                            $fallBackOrder = [0];
-                        }
-                        break;
-                    case '':
-                        $fallBackOrder = ['off'];
-                        break;
-                    default:
-                        $fallBackOrder = [0];
-                }
-                $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $aspect->getId(), $aspect->getContentId(), $aspect->getOverlayType(), $fallBackOrder));
-                break;
-            case 'loginUser':
-                trigger_error('Property $TSFE->loginUser is not in use anymore as this information is now stored within the frontend.user aspect.', E_USER_DEPRECATED);
-                /** @var UserAspect $aspect */
-                $aspect = $this->context->getAspect('frontend.user');
-                if ($propertyValue) {
-                    $aspect = GeneralUtility::makeInstance(UserAspect::class, $this->fe_user ?: null, $aspect->getGroupIds());
-                } else {
-                    $aspect = GeneralUtility::makeInstance(UserAspect::class, null, $aspect->getGroupIds());
-                }
-                $this->context->setAspect('frontend.user', $aspect);
-                break;
-            case 'gr_list':
-                trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.', E_USER_DEPRECATED);
-                $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user ?: null, GeneralUtility::intExplode(',', $propertyValue)));
-                break;
-            case 'beUserLogin':
-                trigger_error('Property $TSFE->beUserLogin is not in use anymore as this information is now stored within the backend.user aspect.', E_USER_DEPRECATED);
-                if ($propertyValue) {
-                    $aspect = GeneralUtility::makeInstance(UserAspect::class, $GLOBALS['BE_USER']);
-                } else {
-                    $aspect = GeneralUtility::makeInstance(UserAspect::class);
-                }
-                $this->context->setAspect('backend.user', $aspect);
-                break;
-            case 'showHiddenPage':
-            case 'showHiddenRecords':
-                trigger_error('Property $TSFE->' . $propertyName . ' is not in use anymore as this information is now stored within the visibility aspect.', E_USER_DEPRECATED);
-                /** @var VisibilityAspect $aspect */
-                $aspect = $this->context->getAspect('visibility');
-                if ($propertyName === 'showHiddenPage') {
-                    $newAspect = GeneralUtility::makeInstance(VisibilityAspect::class, (bool)$propertyValue, $aspect->includeHiddenContent(), $aspect->includeDeletedRecords());
-                } else {
-                    $newAspect = GeneralUtility::makeInstance(VisibilityAspect::class, $aspect->includeHiddenPages(), (bool)$propertyValue, $aspect->includeDeletedRecords());
-                }
-                $this->context->setAspect('visibility', $newAspect);
-                break;
-            case 'ADMCMD_preview_BEUSER_uid':
-                trigger_error('Property $TSFE->ADMCMD_preview_BEUSER_uid is not in use anymore as this information is now stored within the backend.user aspect.', E_USER_DEPRECATED);
-                // No need to update an aspect here
-                break;
-            case 'workspacePreview':
-                trigger_error('Property $TSFE->workspacePreview is not in use anymore as this information is now stored within the workspace aspect.', E_USER_DEPRECATED);
-                $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, (int)$propertyValue));
-                break;
-            case 'loginAllowedInBranch':
-                trigger_error('Property $TSFE->loginAllowedInBranch is marked as protected now as it only contains internal state. Use checkIfLoginAllowedInBranch() instead.', E_USER_DEPRECATED);
-                break;
-            // Regular deprecations / property visibility changes
-            case 'loginAllowedInBranch_mode':
-            case 'cacheTimeOutDefault':
-            case 'cacheContentFlag':
-            case 'cacheExpires':
-            case 'isClientCachable':
-            case 'no_cacheBeforePageGen':
-            case 'tempContent':
-            case 'pagesTSconfig':
-            case 'pageCacheTags':
-            case 'uniqueCounter':
-            case 'uniqueString':
-            case 'lang':
-            case 'MP_defaults':
-            case 'debug':
-            case 'pageAccessFailureHistory':
-                trigger_error('Property $TSFE->' . $propertyName . ' is marked as protected now as it only contains internal state.', E_USER_DEPRECATED);
-                break;
-        }
-        $this->$propertyName = $propertyValue;
-    }
-
-    /**
-     * Unsets the property of the given name if tagged.
-     *
-     * @param string $propertyName
-     */
-    public function __unset(string $propertyName)
-    {
-        switch ($propertyName) {
-            case 'sys_language_uid':
-                trigger_error('Property $TSFE->sys_language_uid is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
-                $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class));
-                break;
-            case 'sys_language_content':
-                trigger_error('Property $TSFE->sys_language_content is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
-                /** @var LanguageAspect $aspect */
-                $aspect = $this->context->getAspect('language');
-                $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $aspect->getId(), 0, $aspect->getOverlayType()));
-                break;
-            case 'sys_language_contentOL':
-                trigger_error('Property $TSFE->sys_language_contentOL is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
-                /** @var LanguageAspect $aspect */
-                $aspect = $this->context->getAspect('language');
-                $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $aspect->getId(), $aspect->getContentId(), LanguageAspect::OVERLAYS_OFF));
-                break;
-            case 'sys_language_mode':
-                trigger_error('Property $TSFE->sys_language_mode is not in use anymore as this information is now stored within the language aspect.', E_USER_DEPRECATED);
-                /** @var LanguageAspect $aspect */
-                $aspect = $this->context->getAspect('language');
-                $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $aspect->getId(), $aspect->getContentId(), $aspect->getOverlayType(), ['off']));
-                break;
-            case 'loginUser':
-                /** @var UserAspect $aspect */
-                $aspect = $this->context->getAspect('frontend.user');
-                $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, null, $aspect->getGroupIds()));
-                break;
-            case 'gr_list':
-                trigger_error('Property $TSFE->gr_list is not in use anymore as this information is now stored within the frontend.user aspect.', E_USER_DEPRECATED);
-                $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user ?: null, []));
-                break;
-            case 'beUserLogin':
-                trigger_error('Property $TSFE->beUserLogin is not in use anymore as this information is now stored within the backend.user aspect.', E_USER_DEPRECATED);
-                $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class));
-                break;
-            case 'showHiddenPage':
-            case 'showHiddenRecords':
-                trigger_error('Property $TSFE->' . $propertyName . ' is not in use anymore as this information is now stored within the visibility aspect.', E_USER_DEPRECATED);
-                /** @var VisibilityAspect $aspect */
-                $aspect = $this->context->getAspect('visibility');
-                if ($propertyName === 'showHiddenPage') {
-                    $newAspect = GeneralUtility::makeInstance(VisibilityAspect::class, false, $aspect->includeHiddenContent(), $aspect->includeDeletedRecords());
-                } else {
-                    $newAspect = GeneralUtility::makeInstance(VisibilityAspect::class, $aspect->includeHiddenPages(), false, $aspect->includeDeletedRecords());
-                }
-                $this->context->setAspect('visibility', $newAspect);
-                break;
-            case 'ADMCMD_preview_BEUSER_uid':
-                trigger_error('Property $TSFE->ADMCMD_preview_BEUSER_uid is not in use anymore as this information is now stored within the backend.user aspect.', E_USER_DEPRECATED);
-                // No need to update an aspect here
-                break;
-            case 'workspacePreview':
-                trigger_error('Property $TSFE->workspacePreview is not in use anymore as this information is now stored within the workspace aspect.', E_USER_DEPRECATED);
-                $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, 0));
-                break;
-            case 'loginAllowedInBranch':
-                trigger_error('Property $TSFE->loginAllowedInBranch is marked as protected now as it only contains internal state. Use checkIfLoginAllowedInBranch() instead.', E_USER_DEPRECATED);
-                break;
-            // Regular deprecations / property visibility changes
-            case 'loginAllowedInBranch_mode':
-            case 'cacheTimeOutDefault':
-            case 'cacheContentFlag':
-            case 'cacheExpires':
-            case 'isClientCachable':
-            case 'no_cacheBeforePageGen':
-            case 'tempContent':
-            case 'pagesTSconfig':
-            case 'uniqueCounter':
-            case 'uniqueString':
-            case 'lang':
-            case 'MP_defaults':
-            case 'debug':
-            case 'pageAccessFailureHistory':
-                trigger_error('Property $TSFE->' . $propertyName . ' is marked as protected now as it only contains internal state.', E_USER_DEPRECATED);
-                break;
-        }
-        unset($this->$propertyName);
     }
 }

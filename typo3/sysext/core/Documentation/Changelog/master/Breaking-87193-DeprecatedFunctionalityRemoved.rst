@@ -27,11 +27,15 @@ The following PHP classes that have been previously deprecated for v9 have been 
 * :php:`TYPO3\CMS\Core\Integrity\DatabaseIntegrityCheck`
 * :php:`TYPO3\CMS\Core\Log\Writer\RuntimeCacheWriter`
 * :php:`TYPO3\CMS\Core\Package\DependencyResolver`
+* :php:`TYPO3\CMS\Core\PageTitle\AltPageTitleProvider`
 * :php:`TYPO3\CMS\Core\Resource\Service\UserStorageCapabilityService`
 * :php:`TYPO3\CMS\Core\Resource\Utility\BackendUtility`
 * :php:`TYPO3\CMS\Core\Utility\ClientUtility`
 * :php:`TYPO3\CMS\Core\Utility\PhpOptionsUtility`
 * :php:`TYPO3\CMS\Frontend\Http\EidRequestHandler`
+* :php:`TYPO3\CMS\Frontend\Page\ExternalPageUrlHandler`
+* :php:`TYPO3\CMS\Frontend\Page\PageGenerator`
+* :php:`TYPO3\CMS\Frontend\Utility\EidUtility`
 * :php:`TYPO3\CMS\Recordlist\Controller\ElementBrowserFramesetController`
 * :php:`TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList`
 * :php:`TYPO3\CMS\Workspaces\Service\AutoPublishService`
@@ -43,6 +47,7 @@ The following PHP interfaces that have been previously deprecated for v9 have be
 
 * :php:`TYPO3\CMS\Adminpanel\View\AdminPanelViewHookInterface`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\ComposedPasswordHashInterface`
+* :php:`TYPO3\CMS\Frontend\Http\UrlHandlerInterface`
 
 
 The following PHP class aliases that have been previously deprecated for v9 have been removed:
@@ -218,6 +223,43 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_addParams()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_filelink()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_filelist()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->addTempContentHttpHeaders()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->checkAlternativeIdMethods()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->checkPageForMountpointRedirect()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->checkPageForShortcutRedirect()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->checkPageUnavailableHandler()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->connectToDB()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->convertCharsetRecursivelyToUtf8()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->convPOSTCharset()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->domainNameMatchesCurrentRequest()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getDomainDataForPid()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getDomainNameForPid()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getLLL()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getPageShortcut()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getUniqueId()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->handleDataSubmission()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->hook_eofe()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->initFEuser()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->initializeBackendUser()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->initializeRedirectUrlHandlers()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->initLLvars()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->initTemplate()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->makeCacheHash()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->mergingWithGetVars()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->pageErrorHandler()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->pageNotFoundAndExit()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->pageNotFoundHandler()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->pageUnavailableAndExit()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->pageUnavailableHandler()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->previewInfo()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->processOutput()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->readLLfile()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->redirectToCurrentPage()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->redirectToExternalUrl()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sendCacheHeaders()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sendHttpHeadersDirectly()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->setCSS()`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->storeSessionData()`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getFirstWebPage()`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getDomainStartPage()`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getRootLine()`
@@ -263,6 +305,10 @@ The following methods changed signature according to previous deprecations in v9
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility->getUrl()` - Third argument must be an array of arrays if given
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility->mkdir_deep()` - Second argument dropped
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getRawRecord()` - Fourth argument dropped
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->__construct()` - Fourth argument unused
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->calculateLinkVars()` - First argument mandatory
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->preparePageContentGeneration()` - First argument mandatory
+
 
 
 The following public class properties have been dropped:
@@ -278,6 +324,24 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->frames`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->MPmap`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->whereClause`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->activeUrlHandlers`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ADMCMD_preview_BEUSER_uid`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->altPageTitle`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->beUserLogin`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->debug`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->gr_list`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->lang`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->loginUser`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->MP_defaults`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->page_cache_reg1`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->showHiddenPage`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->showHiddenRecords`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->siteScript`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sys_language_content`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sys_language_contentOL`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sys_language_mode`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sys_language_uid`
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->workspacePreview`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->error_getRootLine_failPid`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->error_getRootLine`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->versioningPreview`
@@ -300,6 +364,12 @@ The following class methods have changed visibility:
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->processIncludes()` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->substituteConstants()` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->versionOL()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->clearPageCacheContent_pidList()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->contentStrReplace()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->realPageCacheContent()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->setPageCacheContent()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->setSysLastChanged()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->tempPageCacheContent()` changed from public to protected
 
 
 The following class properties have changed visibility:
@@ -320,7 +390,19 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->sectionsMatch` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->simulationHiddenOrTime` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->sitetitle` changed from public to protected
-
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cacheContentFlag` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cacheExpires` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cacheTimeOutDefault` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->isClientCachable` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->loginAllowedInBranch` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->loginAllowedInBranch_mode` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->no_cacheBeforePageGen` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->pageAccessFailureHistory` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->pageCacheTags` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->pagesTSconfig` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->tempContent` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->uniqueCounter` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->uniqueString` changed from public to protected
 
 The following scheduler tasks have been removed:
 
@@ -336,6 +418,13 @@ The following user TSconfig options have been dropped:
 
 The following TypoScript options have been dropped:
 
+* `config.concatenateJsAndCss`
+* `config.titleTagFunction`
+* `config.typolinkCheckRootline`
+* `config.USERNAME_substToken`
+* `config.USERUID_substToken`
+* `page.javascriptLibs`
+* `page.javascriptLibs.jQuery`
 * `stdWrap.addParams`
 * `stdWrap.filelink`
 * `stdWrap.filelist`
@@ -383,11 +472,12 @@ The following global variables have been removed:
 The following hooks have been removed:
 
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preBeUser']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkAlternativeIdMethods-PostProc']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission']`
-* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_previewInfo']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc']`
 
 
 The following feature is now always enabled:
@@ -402,6 +492,9 @@ The following features have been removed:
   `$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['my_eID'] = 'EXT:benni/Scripts/download.php'` will not work anymore.
   Instead, they must contain a target (callable, class/method, function).
 
+The following database fields have been removed:
+
+* `index_phash.data_page_reg1`
 
 Impact
 ======

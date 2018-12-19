@@ -938,7 +938,6 @@ class PageRepository implements LoggerAwareInterface
      *
      * @param array $pagerow The page row to return URL type for
      * @return string|bool The URL from based on the data from "pages:url". False if not found.
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::initializeRedirectUrlHandlers()
      */
     public function getExtURL($pagerow)
     {

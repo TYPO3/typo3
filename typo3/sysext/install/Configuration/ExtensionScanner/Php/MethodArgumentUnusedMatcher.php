@@ -37,6 +37,7 @@ return [
         'unusedArgumentNumbers' => [ 4 ],
         'restFiles' => [
             'Deprecation-86002-TSFEConstructorWithNo_cacheArgument.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

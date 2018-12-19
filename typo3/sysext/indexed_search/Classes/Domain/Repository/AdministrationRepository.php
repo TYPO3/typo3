@@ -148,8 +148,6 @@ class AdministrationRepository
                 'cHashParams',
                 'data_filename',
                 'data_page_id',
-                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove along with database field data_page_reg1
-                'data_page_reg1',
                 'data_page_type',
                 'data_page_mp',
                 'gr_list',
@@ -334,8 +332,6 @@ class AdministrationRepository
                 'cHashParams',
                 'data_filename',
                 'data_page_id',
-                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove along with database field data_page_reg1
-                'data_page_reg1',
                 'data_page_type',
                 'data_page_mp',
                 'gr_list',
@@ -501,8 +497,6 @@ class AdministrationRepository
                 'IP.cHashParams',
                 'IP.data_filename',
                 'IP.data_page_id',
-                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove along with database field data_page_reg1
-                'IP.data_page_reg1',
                 'IP.data_page_type',
                 'IP.data_page_mp',
                 'IP.gr_list',
@@ -538,8 +532,6 @@ class AdministrationRepository
                 'IP.cHashParams',
                 'IP.data_filename',
                 'IP.data_page_id',
-                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove along with database field data_page_reg1
-                'IP.data_page_reg1',
                 'IP.data_page_type',
                 'IP.data_page_mp',
                 'IP.gr_list',

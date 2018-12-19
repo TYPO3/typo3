@@ -141,14 +141,6 @@ $metaTagManagerRegistry->registerManager(
 unset($metaTagManagerRegistry);
 
 // Add module configuration
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(trim('
-    config.pageTitleProviders {
-        altPageTitle {
-            provider = TYPO3\CMS\Core\PageTitle\AltPageTitleProvider
-            before = record
-        }
-        record {
-            provider = TYPO3\CMS\Core\PageTitle\RecordPageTitleProvider
-        }
-    }
-'));
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
+    'config.pageTitleProviders.record.provider = TYPO3\CMS\Core\PageTitle\RecordPageTitleProvider'
+);

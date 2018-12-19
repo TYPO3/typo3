@@ -202,13 +202,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         // Store session data for fe_users
         $controller->fe_user->storeSessionData();
 
-        // @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0.
-        $redirectResponse = $controller->redirectToExternalUrl(true);
-        if ($redirectResponse instanceof ResponseInterface) {
-            $controller->sendHttpHeadersDirectly();
-            return $redirectResponse;
-        }
-
         // Statistics
         $GLOBALS['TYPO3_MISC']['microtime_end'] = microtime(true);
         if ($isOutputting && ($controller->config['config']['debug'] ?? !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']))) {
@@ -551,29 +544,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         $style .= $controller->cObj->cObjGet($controller->pSetup['cssInline.'] ?? null, 'cssInline.');
         if (trim($style)) {
             $this->addCssToPageRenderer($controller, $style, true, 'additionalTSFEInlineStyle');
-        }
-        // Javascript Libraries
-        if (isset($controller->pSetup['javascriptLibs.']) && is_array($controller->pSetup['javascriptLibs.'])) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, the setting page.javascriptLibs has been deprecated and will be removed in TYPO3 v10.0.
-            trigger_error('The setting page.javascriptLibs will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-
-            // Include jQuery into the page renderer
-            if (!empty($controller->pSetup['javascriptLibs.']['jQuery'])) {
-                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, the setting page.javascriptLibs.jQuery has been deprecated and will be removed in TYPO3 v10.0.
-                trigger_error('The setting page.javascriptLibs.jQuery will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-
-                $jQueryTS = $controller->pSetup['javascriptLibs.']['jQuery.'];
-                // Check if version / source is set, if not set variable to "NULL" to use the default of the page renderer
-                $version = $jQueryTS['version'] ?? null;
-                $source = $jQueryTS['source'] ?? null;
-                // When "noConflict" is not set or "1" enable the default jQuery noConflict mode, otherwise disable the namespace
-                if (!isset($jQueryTS['noConflict']) || !empty($jQueryTS['noConflict'])) {
-                    $namespace = 'noConflict';
-                } else {
-                    $namespace = PageRenderer::JQUERY_NAMESPACE_NONE;
-                }
-                $pageRenderer->loadJquery($version, $source, $namespace, true);
-            }
         }
         // JavaScript library files
         if (isset($controller->pSetup['includeJSLibs.']) && is_array($controller->pSetup['includeJSLibs.'])) {
@@ -947,13 +917,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
             $pageRenderer->enableConcatenateCss();
         }
         if ($controller->config['config']['concatenateJs'] ?? false) {
-            $pageRenderer->enableConcatenateJavascript();
-        }
-        // Backward compatibility for old configuration
-        // @deprecated - remove this option in TYPO3 v10.0.
-        if ($controller->config['config']['concatenateJsAndCss'] ?? false) {
-            trigger_error('Setting config.concatenateJsAndCss is deprecated in favor of config.concatenateJs and config.concatenateCss, and will have no effect anymore in TYPO3 v10.0.', E_USER_DEPRECATED);
-            $pageRenderer->enableConcatenateCss();
             $pageRenderer->enableConcatenateJavascript();
         }
         // Add header data block

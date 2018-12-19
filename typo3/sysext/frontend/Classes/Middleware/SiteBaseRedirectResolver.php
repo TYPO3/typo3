@@ -79,6 +79,7 @@ class SiteBaseRedirectResolver implements MiddlewareInterface
         }
         return $handler->handle($request);
     }
+
     /**
      * Checks if the language is allowed in Frontend, if not, check if there is valid BE user
      *

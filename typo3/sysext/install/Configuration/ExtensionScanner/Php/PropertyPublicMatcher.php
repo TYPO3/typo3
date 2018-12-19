@@ -341,6 +341,7 @@ return [
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->page_cache_reg1' => [
         'restFiles' => [
             'Deprecation-83905-TypoScriptFrontendController-page_cache_reg1.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ]
     ],
     'TYPO3\CMS\Backend\Tree\View\AbstractTreeView->dataLookup' => [
@@ -412,47 +413,56 @@ return [
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->showHiddenPage' => [
         'restFiles' => [
-            'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst'
+            'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->showHiddenRecords' => [
         'restFiles' => [
-            'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst'
+            'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->gr_list' => [
         'restFiles' => [
-            'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst'
+            'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->loginUser' => [
         'restFiles' => [
-            'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst'
+            'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->beUserLogin' => [
         'restFiles' => [
-            'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst'
+            'Deprecation-85389-VariousPublicPropertiesInFavorOfContextAPI.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sys_language_uid' => [
         'restFiles' => [
-            'Deprecation-85543-Language-relatedPropertiesInTypoScriptFrontendControllerAndPageRepository.rst'
+            'Deprecation-85543-Language-relatedPropertiesInTypoScriptFrontendControllerAndPageRepository.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sys_language_content' => [
         'restFiles' => [
-            'Deprecation-85543-Language-relatedPropertiesInTypoScriptFrontendControllerAndPageRepository.rst'
+            'Deprecation-85543-Language-relatedPropertiesInTypoScriptFrontendControllerAndPageRepository.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sys_language_contentOL' => [
         'restFiles' => [
-            'Deprecation-85543-Language-relatedPropertiesInTypoScriptFrontendControllerAndPageRepository.rst'
+            'Deprecation-85543-Language-relatedPropertiesInTypoScriptFrontendControllerAndPageRepository.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sys_language_mode' => [
         'restFiles' => [
-            'Deprecation-85543-Language-relatedPropertiesInTypoScriptFrontendControllerAndPageRepository.rst'
+            'Deprecation-85543-Language-relatedPropertiesInTypoScriptFrontendControllerAndPageRepository.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepository->sys_language_uid' => [

@@ -712,11 +712,13 @@ return [
     'TYPO3\CMS\Frontend\Page\ExternalPageUrlHandler' => [
         'restFiles' => [
             'Deprecation-85124-RedirectingUrlHandlerHookConcept.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Http\UrlHandlerInterface' => [
         'restFiles' => [
             'Deprecation-85124-RedirectingUrlHandlerHookConcept.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Log\Writer\RuntimeCacheWriter' => [
@@ -1006,6 +1008,21 @@ return [
     'TYPO3\CMS\Core\Resource\Utility\BackendUtility' => [
         'restFiles' => [
             'Deprecation-73585-DeprecateTYPO3CMSCoreResourceUtilityBackendUtilitygetFlashMessageForMissingFile.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\PageTitle\AltPageTitleProvider' => [
+        'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Page\PageGenerator' => [
+        'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Utility\EidUtility' => [
+        'restFiles' => [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
