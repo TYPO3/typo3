@@ -115,21 +115,6 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderCallsTemplateServiceGetFileNameForGivenTemplateFile(): void
-    {
-        $this->addMockViewToSubject();
-        /** @var $templateService \PHPUnit_Framework_MockObject_MockObject */
-        $templateService = $GLOBALS['TSFE']->tmpl;
-        $templateService
-            ->expects($this->any())
-            ->method('getFileName')
-            ->with('foo');
-        $this->subject->render(['file' => 'foo']);
-    }
-
-    /**
-     * @test
-     */
     public function renderCallsStandardWrapForGivenTemplateFileWithStandardWrap(): void
     {
         $this->addMockViewToSubject();

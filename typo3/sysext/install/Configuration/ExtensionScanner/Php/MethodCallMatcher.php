@@ -1744,6 +1744,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-83254-MovedPageGenerationMethodsIntoTSFE.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Html\RteHtmlParser->transformStyledATags' => [
@@ -2276,6 +2277,7 @@ return [
         'maximumNumberOfArguments' => 8,
         'restFiles' => [
             'Deprecation-84637-TemplateService-linkDataFunctionalityMovedInPageLinkBuilder.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->getFromMPmap' => [
@@ -2283,6 +2285,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84637-TemplateService-linkDataFunctionalityMovedInPageLinkBuilder.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->initMPmap_create' => [
@@ -2290,6 +2293,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-84637-TemplateService-linkDataFunctionalityMovedInPageLinkBuilder.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->initializeAdminPanel' => [
@@ -2641,7 +2645,8 @@ return [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85445-TemplateService-getFileName.rst'
+            'Deprecation-85445-TemplateService-getFileName.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepository->getRootLine' => [
@@ -3666,42 +3671,48 @@ return [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-86439-MarkSeveralMethodsWithinTemplateServiceAsInternal.rst'
+            'Deprecation-86439-MarkSeveralMethodsWithinTemplateServiceAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->versionOL' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-86439-MarkSeveralMethodsWithinTemplateServiceAsInternal.rst'
+            'Deprecation-86439-MarkSeveralMethodsWithinTemplateServiceAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->processIncludes' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-86439-MarkSeveralMethodsWithinTemplateServiceAsInternal.rst'
+            'Deprecation-86439-MarkSeveralMethodsWithinTemplateServiceAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->mergeConstantsFromPageTSconfig' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-86439-MarkSeveralMethodsWithinTemplateServiceAsInternal.rst'
+            'Deprecation-86439-MarkSeveralMethodsWithinTemplateServiceAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->flattenSetup' => [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
-            'Deprecation-86439-MarkSeveralMethodsWithinTemplateServiceAsInternal.rst'
+            'Deprecation-86439-MarkSeveralMethodsWithinTemplateServiceAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->substituteConstants' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-86439-MarkSeveralMethodsWithinTemplateServiceAsInternal.rst'
+            'Deprecation-86439-MarkSeveralMethodsWithinTemplateServiceAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->isPSet' => [

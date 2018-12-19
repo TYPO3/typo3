@@ -107,6 +107,12 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setHashCount()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setMaxHashCount()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setMinHashCount()`
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->getFileName()`
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->getFromMPmap()`
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->init()`
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->initMPmap_create()`
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->linkData()`
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->printTitle()`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getFirstWebPage()`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getDomainStartPage()`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getRootLine()`
@@ -153,6 +159,12 @@ The following methods changed signature according to previous deprecations in v9
 The following public class properties have been dropped:
 
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->synonyms`
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->allowedPaths`
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->debug`
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->fileCache`
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->frames`
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->MPmap`
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->whereClause`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->error_getRootLine_failPid`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->error_getRootLine`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->versioningPreview`
@@ -169,6 +181,12 @@ The following class methods have changed visibility:
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash->isValidSalt()` changed from public to protected
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->base64Encode()` changed from public to protected
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->isValidSalt()` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->flattenSetup()` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->mergeConstantsFromPageTSconfig()` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->prependStaticExtra()` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->processIncludes()` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->substituteConstants()` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->versionOL()` changed from public to protected
 
 
 The following class properties have changed visibility:
@@ -180,6 +198,15 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->twoByteSets` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->sys_language_uid` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->versioningWorkspaceId` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->absoluteRootLine` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->matchAll` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->nextLevel` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->outermostRootlineIndexWithTemplate` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->rootId` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->rowSum` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->sectionsMatch` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->simulationHiddenOrTime` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\TemplateService->sitetitle` changed from public to protected
 
 
 The following scheduler tasks have been removed:

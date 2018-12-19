@@ -242,71 +242,85 @@ return [
     'TYPO3\CMS\Core\TypoScript\TemplateService->matchAll' => [
         'restFiles' => [
             'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->whereClause' => [
         'restFiles' => [
             'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->debug' => [
         'restFiles' => [
             'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->allowedPaths' => [
         'restFiles' => [
             'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->simulationHiddenOrTime' => [
         'restFiles' => [
             'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->nextLevel' => [
         'restFiles' => [
             'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->rootId' => [
         'restFiles' => [
             'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->absoluteRootLine' => [
         'restFiles' => [
             'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->outermostRootlineIndexWithTemplate' => [
         'restFiles' => [
             'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->rowSum' => [
         'restFiles' => [
             'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->sitetitle' => [
         'restFiles' => [
             'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->sectionsMatch' => [
         'restFiles' => [
             'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->frames' => [
         'restFiles' => [
             'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->MPmap' => [
         'restFiles' => [
             'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Impexp\Export->maxFileSize' => [
@@ -455,7 +469,8 @@ return [
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->fileCache' => [
         'restFiles' => [
-            'Deprecation-85445-TemplateService-getFileName.rst'
+            'Deprecation-85445-TemplateService-getFileName.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\View\PageLayoutView->languageIconTitles' => [
