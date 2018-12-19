@@ -36,6 +36,15 @@ The following PHP interfaces that have been previously deprecated for v9 have be
 
 The following PHP class aliases that have been previously deprecated for v9 have been removed:
 
+* :php:`TYPO3\CMS\Backend\AjaxLoginHandler`
+* :php:`TYPO3\CMS\Backend\Form\Wizard\ImageManipulationWizard`
+* :php:`TYPO3\CMS\Cshmanual\Domain\Repository\TableManualRepository`
+* :php:`TYPO3\CMS\Frontend\Controller\PageInformationController`
+* :php:`TYPO3\CMS\Frontend\Controller\TranslationStatusController`
+* :php:`TYPO3\CMS\InfoPagetsconfig\Controller\InfoPageTyposcriptConfigController`
+* :php:`TYPO3\CMS\Lowlevel\Command\WorkspaceVersionRecordsCommand`
+* :php:`TYPO3\CMS\Lowlevel\View\ConfigurationView`
+* :php:`TYPO3\CMS\Recordlist\RecordList`
 * :php:`TYPO3\CMS\Saltedpasswords\Exception\InvalidSaltException`
 * :php:`TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt`
 * :php:`TYPO3\CMS\Saltedpasswords\Salt\AbstractComposedSalt`
@@ -51,6 +60,19 @@ The following PHP class aliases that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Saltedpasswords\SaltedPasswordsService`
 * :php:`TYPO3\CMS\Saltedpasswords\Utility\ExensionManagerConfigurationUtility`
 * :php:`TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility`
+* :php:`TYPO3\CMS\Sv\Report\ServicesListReport`
+* :php:`TYPO3\CMS\T3editor\CodeCompletion`
+* :php:`TYPO3\CMS\T3editor\TypoScriptReferenceLoader`
+* :php:`TYPO3\CMS\Version\DataHandler\CommandMap`
+* :php:`TYPO3\CMS\Version\Dependency\DependencyEntityFactory`
+* :php:`TYPO3\CMS\Version\Dependency\DependencyResolver`
+* :php:`TYPO3\CMS\Version\Dependency\ElementEntity`
+* :php:`TYPO3\CMS\Version\Dependency\ElementEntityProcessor`
+* :php:`TYPO3\CMS\Version\Dependency\EventCallback`
+* :php:`TYPO3\CMS\Version\Dependency\ReferenceEntity`
+* :php:`TYPO3\CMS\Version\Hook\DataHandlerHook`
+* :php:`TYPO3\CMS\Version\Hook\PreviewHook`
+* :php:`TYPO3\CMS\Version\Utility\WorkspacesUtility`
 
 
 The following PHP class methods that have been previously deprecated for v9 have been removed:
@@ -145,7 +167,7 @@ The following PHP static class methods that have been previously deprecated for 
 
 The following methods changed signature according to previous deprecations in v9 at the end of the argument list:
 
-* :php:`TYPO3\CMS\Backend\Http\RouteDispatcher->dispatch() - Second argument dropped
+* :php:`TYPO3\CMS\Backend\Http\RouteDispatcher->dispatch()` - Second argument dropped
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig()` - Second and third argument dropped
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->conv()` - Fourth argument dropped
 * :php:`TYPO3\CMS\Core\Core\Bootstrap->checkIfEssentialConfigurationExists()` - First argument mandatory
@@ -154,7 +176,7 @@ The following methods changed signature according to previous deprecations in v9
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\Md5PasswordHash->getHashedPassword()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash->getHashedPassword()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->getHashedPassword()` - Second argument dropped
-* :php:`TYPO3\CMS\Core\Http\Dispatcher->dispatch() - Second argument dropped
+* :php:`TYPO3\CMS\Core\Http\Dispatcher->dispatch()` - Second argument dropped
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getRawRecord()` - Fourth argument dropped
 
 

@@ -31,12 +31,6 @@
 				"partOfFactoryDefault": true
 			},
 			"extension-key": "info"
-		},
-		"typo3/class-alias-loader": {
-			"always-add-alias-loader": true,
-			"class-alias-maps": [
-				"Migrations/Code/ClassAliasMap.php"
-			]
 		}
 	},
 	"autoload": {

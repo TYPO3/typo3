@@ -162,6 +162,7 @@ return [
     'TYPO3\CMS\Sv\Report\ServicesListReport' => [
         'restFiles' => [
             'Breaking-81536-MoveOfServicesListReportFromSvToReports.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Sv\AbstractAuthenticationService' => [
@@ -415,11 +416,13 @@ return [
     'TYPO3\CMS\Lowlevel\View\ConfigurationView' => [
         'restFiles' => [
             'Deprecation-82744-RenameExtlowlevelViewToLowlevelController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Lowlevel\View\DatabaseIntegrityView' => [
         'restFiles' => [
             'Deprecation-82744-RenameExtlowlevelViewToLowlevelController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\Container\ClassInfo' => [
@@ -458,6 +461,7 @@ return [
     'TYPO3\CMS\Backend\AjaxLoginHandler' => [
         'restFiles' => [
             'Deprecation-82805-RenamedAjaxLoginHandlerPHPClass.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\ClientUtility' => [
@@ -666,21 +670,25 @@ return [
     'TYPO3\CMS\Recordlist\RecordList' => [
         'restFiles' => [
             'Deprecation-84399-ClassRecordListRenamedToRecordListController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\T3editor\CodeCompletion' => [
         'restFiles' => [
             'Deprecation-84410-CodeCompletionRenamedToCodeCompletionController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Form\Wizard\ImageManipulationWizard' => [
         'restFiles' => [
             'Deprecation-84409-ImageManipulationWizardRenamedToImageManipulationController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\T3editor\TypoScriptReferenceLoader' => [
         'restFiles' => [
             'Deprecation-84411-TypoScriptReferenceLoaderRenamedToTypoScriptReferenceController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\PhpOptionsUtility' => [
