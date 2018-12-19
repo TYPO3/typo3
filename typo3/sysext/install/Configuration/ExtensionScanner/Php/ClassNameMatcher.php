@@ -168,11 +168,13 @@ return [
     'TYPO3\CMS\Sv\AbstractAuthenticationService' => [
         'restFiles' => [
             'Breaking-81536-MoveOfServicesListReportFromSvToReports.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Sv\AuthenticationService' => [
         'restFiles' => [
             'Breaking-81536-MoveOfServicesListReportFromSvToReports.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Configuration\Exception\ContainerIsLockedException' => [

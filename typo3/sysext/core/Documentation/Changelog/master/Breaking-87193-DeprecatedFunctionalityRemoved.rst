@@ -45,10 +45,16 @@ The following PHP class aliases that have been previously deprecated for v9 have
 
 * :php:`TYPO3\CMS\Backend\AjaxLoginHandler`
 * :php:`TYPO3\CMS\Backend\Form\Wizard\ImageManipulationWizard`
+* :php:`TYPO3\CMS\Core\History\RecordHistory`
+* :php:`TYPO3\CMS\Core\IO\PharStreamWrapper`
+* :php:`TYPO3\CMS\Core\IO\PharStreamWrapperException`
+* :php:`TYPO3\CMS\Core\Tree\TableConfiguration\ExtJsArrayTreeRenderer`
+* :php:`TYPO3\CMS\ContextHelp\Controller\ContextHelpAjaxController`
 * :php:`TYPO3\CMS\Cshmanual\Domain\Repository\TableManualRepository`
 * :php:`TYPO3\CMS\Frontend\Controller\PageInformationController`
 * :php:`TYPO3\CMS\Frontend\Controller\TranslationStatusController`
 * :php:`TYPO3\CMS\InfoPagetsconfig\Controller\InfoPageTyposcriptConfigController`
+* :php:`TYPO3\CMS\Lang\LanguageService`
 * :php:`TYPO3\CMS\Lowlevel\Command\WorkspaceVersionRecordsCommand`
 * :php:`TYPO3\CMS\Lowlevel\View\ConfigurationView`
 * :php:`TYPO3\CMS\Recordlist\RecordList`
@@ -67,6 +73,8 @@ The following PHP class aliases that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Saltedpasswords\SaltedPasswordsService`
 * :php:`TYPO3\CMS\Saltedpasswords\Utility\ExensionManagerConfigurationUtility`
 * :php:`TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility`
+* :php:`TYPO3\CMS\Sv\AbstractAuthenticationService`
+* :php:`TYPO3\CMS\Sv\AuthenticationService`
 * :php:`TYPO3\CMS\Sv\Report\ServicesListReport`
 * :php:`TYPO3\CMS\T3editor\CodeCompletion`
 * :php:`TYPO3\CMS\T3editor\TypoScriptReferenceLoader`
