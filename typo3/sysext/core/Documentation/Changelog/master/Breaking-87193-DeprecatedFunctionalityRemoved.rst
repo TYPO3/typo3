@@ -11,19 +11,25 @@ Description
 
 The following PHP classes that have been previously deprecated for v9 have been removed:
 
+* :php:`TYPO3\CMS\Backend\Controller\LoginFramesetController`
 * :php:`TYPO3\CMS\Backend\Module\AbstractFunctionModule`
 * :php:`TYPO3\CMS\Backend\Module\AbstractModule`
 * :php:`TYPO3\CMS\Backend\Module\BaseScriptClass`
 * :php:`TYPO3\CMS\Backend\RecordList\AbstractRecordList`
+* :php:`TYPO3\CMS\Core\Cache\Frontend\StringFrontend`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\AbstractComposedSalt`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\ExtensionManagerConfigurationUtility`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordService`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordsUtility`
 * :php:`TYPO3\CMS\Core\Encoder\JavaScriptEncoder`
+* :php:`TYPO3\CMS\Core\Integrity\DatabaseIntegrityCheck`
+* :php:`TYPO3\CMS\Core\Log\Writer\RuntimeCacheWriter`
 * :php:`TYPO3\CMS\Core\Package\DependencyResolver`
+* :php:`TYPO3\CMS\Core\Resource\Service\UserStorageCapabilityService`
 * :php:`TYPO3\CMS\Core\Resource\Utility\BackendUtility`
 * :php:`TYPO3\CMS\Core\Utility\ClientUtility`
 * :php:`TYPO3\CMS\Core\Utility\PhpOptionsUtility`
+* :php:`TYPO3\CMS\Recordlist\Controller\ElementBrowserFramesetController`
 * :php:`TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList`
 * :php:`TYPO3\CMS\Workspaces\Service\AutoPublishService`
 * :php:`TYPO3\CMS\Workspaces\Task\AutoPublishTask`

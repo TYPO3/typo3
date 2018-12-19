@@ -717,16 +717,19 @@ return [
     'TYPO3\CMS\Core\Log\Writer\RuntimeCacheWriter' => [
         'restFiles' => [
             'Deprecation-85687-DeprecateRuntimeCacheWriter.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\LoginFramesetController' => [
         'restFiles' => [
             'Deprecation-85707-LoginFramesetController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Integrity\DatabaseIntegrityCheck' => [
         'restFiles' => [
             'Deprecation-85727-DatabaseIntegrityCheckMovedToEXTlowlevel.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\SaltedPasswordService' => [
@@ -969,6 +972,13 @@ return [
     'TYPO3\CMS\Core\Resource\Service\UserStorageCapabilityService' => [
         'restFiles' => [
             'Deprecation-86109-ClassUserStorageCapabilityService.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Cache\Frontend\StringFrontend' => [
+        'restFiles' => [
+            'Deprecation-81434-StringCacheFrontendDeprecated.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Module\BaseScriptClass' => [

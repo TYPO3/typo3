@@ -163,13 +163,6 @@ return [
         'target' => Controller\ContentElement\ElementInformationController::class . '::mainAction'
     ],
 
-    // Register browser
-    // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-    'browser' => [
-        'path' => '/record/browse',
-        'target' => \TYPO3\CMS\Recordlist\Controller\ElementBrowserFramesetController::class . '::mainAction'
-    ],
-
     // Dummy document - displays nothing but background color.
     'dummy' => [
         'path' => '/empty',
