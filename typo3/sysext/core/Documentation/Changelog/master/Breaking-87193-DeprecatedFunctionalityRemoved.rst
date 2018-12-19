@@ -194,6 +194,10 @@ The following language files and aliases have been removed:
 * :php:`EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf`
 
 
+The following global variables have been removed:
+
+* :php:`$GLOBALS['TYPO3_LOADED_EXT']`
+
 Impact
 ======
 

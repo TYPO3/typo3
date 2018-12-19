@@ -23,6 +23,7 @@ return [
     '$GLOBALS[\'TYPO3_LOADED_EXT\']' => [
         'restFiles' => [
             'Deprecation-86404-GLOBALSTYPO3_LOADED_EXT.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

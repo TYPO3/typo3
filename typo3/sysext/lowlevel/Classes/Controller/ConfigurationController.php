@@ -62,12 +62,6 @@ class ConfigurationController
             'type' => 'global',
             'globalKey' => 'TCA_DESCR',
         ],
-        // @deprecated will be removed in TYPO3 v10.0
-        'loadedExt' => [
-            'label' => 'loadedExt',
-            'type' => 'global',
-            'globalKey' => 'TYPO3_LOADED_EXT',
-        ],
         'services' => [
             'label' => 't3services',
             'key' => 'services',
