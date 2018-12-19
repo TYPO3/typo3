@@ -372,11 +372,13 @@ return [
     'TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList' => [
         'restFiles' => [
             'Breaking-82334-AbstractRecordList.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\RecordList\AbstractRecordList' => [
         'restFiles' => [
             'Breaking-82334-AbstractRecordList.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Belog\Domain\Model\HistoryEntry' => [

@@ -14,6 +14,7 @@ The following PHP classes that have been previously deprecated for v9 have been 
 * :php:`TYPO3\CMS\Backend\Module\AbstractFunctionModule`
 * :php:`TYPO3\CMS\Backend\Module\AbstractModule`
 * :php:`TYPO3\CMS\Backend\Module\BaseScriptClass`
+* :php:`TYPO3\CMS\Backend\RecordList\AbstractRecordList`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\AbstractComposedSalt`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\ExtensionManagerConfigurationUtility`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordService`
@@ -22,6 +23,7 @@ The following PHP classes that have been previously deprecated for v9 have been 
 * :php:`TYPO3\CMS\Core\Resource\Utility\BackendUtility`
 * :php:`TYPO3\CMS\Core\Utility\ClientUtility`
 * :php:`TYPO3\CMS\Core\Utility\PhpOptionsUtility`
+* :php:`TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList`
 * :php:`TYPO3\CMS\Workspaces\Service\AutoPublishService`
 * :php:`TYPO3\CMS\Workspaces\Task\AutoPublishTask`
 * :php:`TYPO3\CMS\Workspaces\Task\CleanupPreviewLinkTask`

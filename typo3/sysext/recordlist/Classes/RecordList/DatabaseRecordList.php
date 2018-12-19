@@ -1076,17 +1076,14 @@ class DatabaseRecordList
             // Get the two previous rows for sorting if displaying page > 1
             $this->firstElementNumber -= 2;
             $this->iLimit += 2;
-            // (API function from TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList)
             $queryBuilder = $this->getQueryBuilder($table, $id, $additionalConstraints);
             $this->firstElementNumber += 2;
             $this->iLimit -= 2;
         } else {
-            // (API function from TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList)
             $queryBuilder = $this->getQueryBuilder($table, $id, $additionalConstraints);
         }
 
         // Finding the total amount of records on the page
-        // (API function from TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList)
         $this->setTotalItems($table, $id, $additionalConstraints);
 
         // Init:
