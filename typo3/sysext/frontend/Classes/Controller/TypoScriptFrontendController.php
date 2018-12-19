@@ -4194,23 +4194,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Outputs preview info.
      *
      * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. Use "hook_eofe" instead.
-     * @param bool $isCoreCall if set to true, there will be no deprecation message.
      */
-    public function previewInfo($isCoreCall = false)
+    public function previewInfo()
     {
-        if (!$isCoreCall) {
-            trigger_error('$TSFE->previewInfo() will be removed in TYPO3 v10.0, as this is now called by the Frontend RequestHandler.', E_USER_DEPRECATED);
-        } elseif (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_previewInfo'])) {
-            trigger_error('The hook "hook_previewInfo" will be removed in TYPO3 v10.0, but is still in use. Use "hook_eofe" instead.', E_USER_DEPRECATED);
-        }
-        if ($this->fePreview !== 0) {
-            $previewInfo = '';
-            $_params = ['pObj' => &$this];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_previewInfo'] ?? [] as $_funcRef) {
-                $previewInfo .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
-            $this->content = str_ireplace('</body>', $previewInfo . '</body>', $this->content);
-        }
+        trigger_error('$TSFE->previewInfo() will be removed in TYPO3 v10.0, as this is now called by the Frontend RequestHandler.', E_USER_DEPRECATED);
     }
 
     /**

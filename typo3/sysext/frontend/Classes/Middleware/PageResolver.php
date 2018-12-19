@@ -140,10 +140,6 @@ class PageResolver implements MiddlewareInterface
         } else {
             // old-school page resolving for realurl, cooluri etc.
             $this->controller->siteScript = $request->getAttribute('normalizedParams')->getSiteScript();
-            if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkAlternativeIdMethods-PostProc'])) {
-                trigger_error('The "checkAlternativeIdMethods-PostProc" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
-                $this->checkAlternativeIdMethods($this->controller);
-            }
         }
 
         $this->controller->determineId();
@@ -153,31 +149,10 @@ class PageResolver implements MiddlewareInterface
             unset($GLOBALS['BE_USER']);
             // Register an empty backend user as aspect
             $this->setBackendUserAspect(GeneralUtility::makeInstance(Context::class), null);
-            if (!$hasSiteConfiguration) {
-                $this->checkAlternativeIdMethods($this->controller);
-            }
             $this->controller->determineId();
         }
 
         return $handler->handle($request);
-    }
-
-    /**
-     * Provides ways to bypass the '?id=[xxx]&type=[xx]' format, using either PATH_INFO or Server Rewrites
-     *
-     * Two options:
-     * 1) Use PATH_INFO (also Apache) to extract id and type from that var. Does not require any special modules compiled with apache. (less typical)
-     * 2) Using hook which enables features like those provided from "realurl" extension (AKA "Speaking URLs")
-     *
-     * @param TypoScriptFrontendController $tsfe
-     */
-    protected function checkAlternativeIdMethods(TypoScriptFrontendController $tsfe)
-    {
-        // Call post processing function for custom URL methods.
-        $_params = ['pObj' => &$tsfe];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkAlternativeIdMethods-PostProc'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $tsfe);
-        }
     }
 
     /**

@@ -215,10 +215,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
             $response = $response->withHeader('X-TYPO3-Parsetime', $this->timeTracker->getParseTime() . 'ms');
         }
 
-        // Preview info
-        // @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
-        $controller->previewInfo(true);
-
         // Hook for "end-of-frontend"
         $_params = ['pObj' => &$controller];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe'] ?? [] as $_funcRef) {

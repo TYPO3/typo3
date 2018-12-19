@@ -105,16 +105,6 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
 
         // @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0
         $this->controller->initializeRedirectUrlHandlers(true);
-
-        // Hook for processing data submission to extensions
-        // This is done at this point, because we need the config values
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'])) {
-            trigger_error('The "checkDataSubmission" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'] as $className) {
-                GeneralUtility::makeInstance($className)->checkDataSubmission($this->controller);
-            }
-        }
-
         return $handler->handle($request);
     }
 

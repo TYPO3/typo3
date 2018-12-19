@@ -79,15 +79,6 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface, LoggerAwa
                 throw new ServiceUnavailableException($message, 1526013723);
             }
         }
-        // Call post processing function for DB connection:
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB'])) {
-            trigger_error('The "connectToDB" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
-            $_params = ['pObj' => &$GLOBALS['TSFE']];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $GLOBALS['TSFE']);
-            }
-        }
-
         return $handler->handle($request);
     }
 }

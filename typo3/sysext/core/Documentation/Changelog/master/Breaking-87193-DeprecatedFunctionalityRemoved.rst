@@ -29,6 +29,7 @@ The following PHP classes that have been previously deprecated for v9 have been 
 * :php:`TYPO3\CMS\Core\Resource\Utility\BackendUtility`
 * :php:`TYPO3\CMS\Core\Utility\ClientUtility`
 * :php:`TYPO3\CMS\Core\Utility\PhpOptionsUtility`
+* :php:`TYPO3\CMS\Frontend\Http\EidRequestHandler`
 * :php:`TYPO3\CMS\Recordlist\Controller\ElementBrowserFramesetController`
 * :php:`TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList`
 * :php:`TYPO3\CMS\Workspaces\Service\AutoPublishService`
@@ -311,14 +312,27 @@ The following global variables have been removed:
 * :php:`$GLOBALS['TYPO3_LOADED_EXT']`
 
 
+The following hooks have been removed:
+
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preBeUser']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkAlternativeIdMethods-PostProc']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_previewInfo']`
+
+
 The following feature is now always enabled:
 
 * :php:`simplifiedControllerActionDispatching` - Backend controller actions do not receive a prepared response object anymore
 
 
-The following feature has been removed:
+The following features have been removed:
 
 * Migration from v4 to v5 PackagesStates.php
+* `eID` script targets cannot define a script path anymore:
+  `$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['my_eID'] = 'EXT:benni/Scripts/download.php'` will not work anymore.
+  Instead, they must contain a target (callable, class/method, function).
 
 
 Impact

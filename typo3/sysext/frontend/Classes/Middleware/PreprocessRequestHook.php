@@ -19,7 +19,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Calls a hook before processing a request for the TYPO3 Frontend.
@@ -45,14 +44,6 @@ class PreprocessRequestHook implements MiddlewareInterface
         $request = $request->withAttribute('_originalGetParameters', $_GET);
         if ($request->getMethod() === 'POST') {
             $request = $request->withAttribute('_originalPostParameters', $_POST);
-        }
-        // Set original parameters
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'])) {
-            trigger_error('The "preprocessRequest" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'] as $hookFunction) {
-                $hookParameters = [];
-                GeneralUtility::callUserFunction($hookFunction, $hookParameters, $hookParameters);
-            }
         }
         return $handler->handle($request);
     }

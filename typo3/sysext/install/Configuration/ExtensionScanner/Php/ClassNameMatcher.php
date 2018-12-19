@@ -115,6 +115,7 @@ return [
     'TYPO3\CMS\Frontend\Http\EidRequestHandler' => [
         'restFiles' => [
             'Deprecation-83803-DeprecateEidRequestHandler.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Http\AjaxRequestHandler' => [
