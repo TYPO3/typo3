@@ -540,7 +540,7 @@ class TranslationStatusController
     }
 
     /**
-     * Since the AbstractFunctionModule cannot access the current request yet, we'll do it "old school"
+     * Since the controller does not access the current request yet, we'll do it "old school"
      * to fetch the Site based on the current ID.
      */
     protected function initializeSiteLanguages()

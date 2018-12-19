@@ -402,6 +402,7 @@ return [
     'TYPO3\CMS\Backend\Module\AbstractModule' => [
         'restFiles' => [
             'Breaking-82689-BackendAbstractWizardControllerNotExtendsAbstractModule.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\ConfigurationForm' => [
@@ -962,11 +963,13 @@ return [
     'TYPO3\CMS\Backend\Module\BaseScriptClass' => [
         'restFiles' => [
             'Deprecation-86225-ClassesBaseScriptClassAndAbstractFunctionModule.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Module\AbstractFunctionModule' => [
         'restFiles' => [
             'Deprecation-86225-ClassesBaseScriptClassAndAbstractFunctionModule.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Install\Updates\AbstractUpdate' => [

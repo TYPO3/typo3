@@ -11,6 +11,9 @@ Description
 
 The following PHP classes that have been previously deprecated for v9 have been removed:
 
+* :php:`TYPO3\CMS\Backend\Module\AbstractFunctionModule`
+* :php:`TYPO3\CMS\Backend\Module\AbstractModule`
+* :php:`TYPO3\CMS\Backend\Module\BaseScriptClass`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\AbstractComposedSalt`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\ExtensionManagerConfigurationUtility`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordService`

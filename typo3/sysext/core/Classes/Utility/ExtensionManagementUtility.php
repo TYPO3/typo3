@@ -950,7 +950,6 @@ class ExtensionManagementUtility
      * @param string $title Title of module
      * @param string $MM_key Menu array key - default is "function
      * @param string $WS Workspace conditions. Blank means all workspaces, any other string can be a comma list of "online", "offline" and "custom
-     * @see \TYPO3\CMS\Backend\Module\BaseScriptClass::mergeExternalItems()
      */
     public static function insertModuleFunction($modname, $className, $_ = null, $title, $MM_key = 'function', $WS = '')
     {

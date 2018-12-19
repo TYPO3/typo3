@@ -664,7 +664,9 @@ function jumpToUrl(URL) {
 
     /**
      * Insert post rendering document style into already rendered content
-     * This is needed for extobjbase
+     *
+     * @todo: Review this, it may be obsolete or could be done differently?
+     * @todo: Previous comment was: "This is needed for extobjbase" (AbstractFunctionModule)
      *
      * @param string $content style-content to insert.
      * @return string content with inserted styles

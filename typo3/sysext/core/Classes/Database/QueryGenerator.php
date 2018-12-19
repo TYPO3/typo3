@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
@@ -1731,7 +1730,7 @@ class QueryGenerator
     }
 
     /**
-     * @return BaseScriptClass
+     * @return object
      */
     protected function getModule()
     {

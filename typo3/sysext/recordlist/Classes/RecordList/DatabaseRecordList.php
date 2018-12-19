@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Recordlist\RecordList;
  */
 
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
-use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\RecordList\RecordListGetTableHookInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -2886,7 +2885,7 @@ class DatabaseRecordList
     }
 
     /**
-     * @return BaseScriptClass
+     * @return object
      */
     protected function getModule()
     {

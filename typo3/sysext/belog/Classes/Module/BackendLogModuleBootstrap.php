@@ -21,7 +21,7 @@ use TYPO3\CMS\Extbase\Core\Bootstrap;
 /**
  * This class is a wrapper for WebInfo controller of belog.
  * It is registered in ext_tables.php with \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction()
- * and called by the info extension via SCbase functionality.
+ * and called by the info extension.
  *
  * Extbase currently provides no way to register a "TBE_MODULES_EXT" module directly,
  * therefore we need to bootstrap extbase on our own here to jump to the WebInfo controller.
