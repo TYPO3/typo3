@@ -67,16 +67,6 @@ class CacheManager implements SingletonInterface
     protected $disableCaching = false;
 
     /**
-     * Used by Bootstrap to define whether the configuration has been set finally.
-     * Controls whether a deprecation warning is logged in getCache().
-     * This property will be removed in TYPO3 v10.0.
-     *
-     * @var bool
-     * @internal
-     */
-    protected $limbo = false;
-
-    /**
      * @param bool $disableCaching
      */
     public function __construct(bool $disableCaching = false)
@@ -113,15 +103,19 @@ class CacheManager implements SingletonInterface
      * Registers a cache so it can be retrieved at a later point.
      *
      * @param FrontendInterface $cache The cache frontend to be registered
+     * @param array $groups Cache groups to be associated to the cache
      * @throws DuplicateIdentifierException if a cache with the given identifier has already been registered.
      */
-    public function registerCache(FrontendInterface $cache)
+    public function registerCache(FrontendInterface $cache, array $groups = [])
     {
         $identifier = $cache->getIdentifier();
         if (isset($this->caches[$identifier])) {
             throw new DuplicateIdentifierException('A cache with identifier "' . $identifier . '" has already been registered.', 1203698223);
         }
         $this->caches[$identifier] = $cache;
+        foreach ($groups as $groupIdentifier) {
+            $this->cacheGroups[$groupIdentifier][] = $identifier;
+        }
     }
 
     /**
@@ -280,10 +274,6 @@ class CacheManager implements SingletonInterface
      */
     protected function createCache($identifier)
     {
-        // @deprecated will be removed with TYPO3 v10.0
-        if ($this->limbo) {
-            trigger_error('Usage of ' . self::class . '->createCache(\'' . $identifier . '\') in ext_localconf.php will not be supported in TYPO3 v10.0.', E_USER_DEPRECATED);
-        }
         if (isset($this->cacheConfigurations[$identifier]['frontend'])) {
             $frontend = $this->cacheConfigurations[$identifier]['frontend'];
         } else {
@@ -339,19 +329,5 @@ class CacheManager implements SingletonInterface
         }
 
         $this->registerCache($frontendInstance);
-    }
-
-    /**
-     * Sets the limbo state
-     *
-     * If limbo is enable, then getCache() will log a deprecation warning.
-     * This method will be removed in TYPO3 v10.0.
-     *
-     * @param bool $limbo
-     * @internal
-     */
-    public function setLimbo(bool $limbo)
-    {
-        $this->limbo = $limbo;
     }
 }

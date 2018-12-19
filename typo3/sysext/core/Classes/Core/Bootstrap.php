@@ -19,8 +19,13 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use TYPO3\CMS\Core\Cache\Backend\BackendInterface;
+use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Exception\InvalidBackendException;
+use TYPO3\CMS\Core\Cache\Exception\InvalidCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\IO\PharStreamWrapperInterceptor;
@@ -77,11 +82,10 @@ class Bootstrap
         static::initializeErrorHandling();
         static::initializeIO();
 
+        $disableCaching = $failsafe ? true : false;
+
         $logManager = new LogManager($requestId);
-        $cacheManager = static::createCacheManager($failsafe ? true : false);
-        $coreCache = $cacheManager->getCache('cache_core');
-        $assetsCache = $cacheManager->getCache('assets');
-        $cacheManager->setLimbo(true);
+        $coreCache = static::createCache('cache_core', $disableCaching);
         $packageManager = static::createPackageManager(
             $failsafe ? FailsafePackageManager::class : PackageManager::class,
             $coreCache
@@ -91,7 +95,6 @@ class Bootstrap
         // They should be fetched through a container (later) but currently a PackageManager
         // singleton instance is required by PackageManager->activePackageDuringRuntime
         GeneralUtility::setSingletonInstance(LogManager::class, $logManager);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
         GeneralUtility::setSingletonInstance(PackageManager::class, $packageManager);
         ExtensionManagementUtility::setPackageManager($packageManager);
 
@@ -101,22 +104,30 @@ class Bootstrap
         $locales = Locales::initialize();
         static::setMemoryLimit();
 
+        $assetsCache = static::createCache('assets', $disableCaching);
         if (!$failsafe) {
             IconRegistry::setCache($assetsCache);
             PageRenderer::setCache($assetsCache);
             static::loadTypo3LoadedExtAndExtLocalconf(true, $coreCache);
-            static::setFinalCachingFrameworkCacheConfiguration($cacheManager);
             static::unsetReservedGlobalVariables();
             static::loadBaseTca(true, $coreCache);
             static::checkEncryptionKey();
         }
-        $cacheManager->setLimbo(false);
+
+        // Create the global CacheManager singleton instance and inject early cache instances.
+        // This can be removed once we have a system wide dependency injection container, where
+        // the CacheManager instance could be created on demand (early cache instances would
+        // be injected as dependency from $defaultContainerEntries)
+        $cacheManager = static::createCacheManager($disableCaching, [$coreCache, $assetsCache]);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
 
         $defaultContainerEntries = [
             ClassLoader::class => $classLoader,
             'request.id' => $requestId,
             ConfigurationManager::class => $configurationManager,
             LogManager::class => $logManager,
+            'cache.core' => $coreCache,
+            'cache.assets' => $assetsCache,
             CacheManager::class => $cacheManager,
             PackageManager::class => $packageManager,
             Locales::class => $locales,
@@ -339,17 +350,66 @@ class Bootstrap
     }
 
     /**
+     * Instantiates an early cache instance
+     *
+     * Creates a cache instances independently from the CacheManager.
+     * The is used to create the core cache during early bootstrap when the CacheManager
+     * is not yet available (i.e. configuration is not yet loaded).
+     *
+     * @param string $identifier
+     * @param bool $disableCaching
+     * @return FrontendInterface
+     * @internal
+     */
+    protected static function createCache(string $identifier, bool $disableCaching = false): FrontendInterface
+    {
+        $configuration = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][$identifier] ?? [];
+
+        $frontend = $configuration['frontend'] ?? VariableFrontend::class;
+        $backend = $configuration['backend'] ?? Typo3DatabaseBackend::class;
+        $options = $configuration['options'] ?? [];
+
+        if ($disableCaching) {
+            $backend = NullBackend::class;
+            $options = [];
+        }
+
+        $backendInstance = new $backend('production', $options);
+        if (!$backendInstance instanceof BackendInterface) {
+            throw new InvalidBackendException('"' . $backend . '" is not a valid cache backend object.', 1545260108);
+        }
+        if (is_callable([$backendInstance, 'initializeObject'])) {
+            $backendInstance->initializeObject();
+        }
+
+        $frontendInstance = new $frontend($identifier, $backendInstance);
+        if (!$frontendInstance instanceof FrontendInterface) {
+            throw new InvalidCacheException('"' . $frontend . '" is not a valid cache frontend object.', 1545260109);
+        }
+        if (is_callable([$frontendInstance, 'initializeObject'])) {
+            $frontendInstance->initializeObject();
+        }
+
+        return $frontendInstance;
+    }
+
+    /**
      * Initialize caching framework, and re-initializes it (e.g. in the install tool) by recreating the instances
      * again despite the Singleton instance
      *
      * @param bool $disableCaching
+     * @param array $defaultCaches
      * @return CacheManager
      * @internal This is not a public API method, do not use in own extensions
      */
-    public static function createCacheManager(bool $disableCaching = false): CacheManager
+    public static function createCacheManager(bool $disableCaching = false, array $defaultCaches = []): CacheManager
     {
+        $cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
         $cacheManager = new CacheManager($disableCaching);
-        $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+        $cacheManager->setCacheConfigurations($cacheConfigurations);
+        foreach ($defaultCaches as $cache) {
+            $cacheManager->registerCache($cache, $cacheConfigurations[$cache->getIdentifier()]['groups'] ?? ['all']);
+        }
         return $cacheManager;
     }
 
@@ -454,21 +514,6 @@ class Bootstrap
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit'] > 16) {
             @ini_set('memory_limit', (string)((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit'] . 'm'));
         }
-    }
-
-    /**
-     * Extensions may register new caches, so we set the
-     * global cache array to the manager again at this point
-     *
-     * @param CacheManager $cacheManager
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    protected static function setFinalCachingFrameworkCacheConfiguration(CacheManager $cacheManager = null)
-    {
-        if ($cacheManager === null) {
-            $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-        }
-        $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
     }
 
     /**
