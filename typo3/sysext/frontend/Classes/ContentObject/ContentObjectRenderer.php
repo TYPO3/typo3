@@ -43,7 +43,6 @@ use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
@@ -58,7 +57,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
@@ -121,10 +119,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         'cObject' => 'cObject',
         'cObject.' => 'array',
         'numRows.' => 'array',
-        // @deprecated - will be removed in TYPO3 v10.0.
-        'filelist' => 'dir',
-        // @deprecated - will be removed in TYPO3 v10.0.
-        'filelist.' => 'array',
         'preUserFunc' => 'functionName',
         'stdWrapOverride' => 'hook',
         // this is a placeholder for the second Hook
@@ -212,10 +206,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         'innerWrap.' => 'array',
         'innerWrap2' => 'wrap',
         'innerWrap2.' => 'array',
-        // @deprecated - will be removed in TYPO3 v10.0.
-        'addParams.' => 'array',
-        // @deprecated - will be removed in TYPO3 v10.0.
-        'filelink.' => 'array',
         'preCObject' => 'cObject',
         'preCObject.' => 'array',
         'postCObject' => 'cObject',
@@ -1835,20 +1825,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * filelist
-     * Will create a list of files based on some additional parameters
-     *
-     * @param string $content Input value undergoing processing in this function.
-     * @param array $conf stdWrap properties for filelist.
-     * @return string The processed input value
-     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. Use cObject FILES instead.
-     */
-    public function stdWrap_filelist($content = '', $conf = [])
-    {
-        return $this->filelist($conf['filelist'], true);
-    }
-
-    /**
      * preUserFunc
      * Will execute a user public function before the content will be modified by any other stdWrap function
      *
@@ -2568,35 +2544,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * addParams
-     * Adds tag attributes to any content that is a tag
-     *
-     * @param string $content Input value undergoing processing in this function.
-     * @param array $conf stdWrap properties for addParams.
-     * @return string The processed input value
-     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0.
-     */
-    public function stdWrap_addParams($content = '', $conf = [])
-    {
-        return $this->addParams($content, $conf['addParams.'] ?? [], true);
-    }
-
-    /**
-     * filelink
-     * Used to make lists of links to files
-     * See wrap
-     *
-     * @param string $content Input value undergoing processing in this function.
-     * @param array $conf stdWrap properties for filelink.
-     * @return string The processed input value
-     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. Use cObject FILES instead.
-     */
-    public function stdWrap_filelink($content = '', $conf = [])
-    {
-        return $this->filelink($content, $conf['filelink.'] ?? [], true);
-    }
-
-    /**
      * preCObject
      * A content object that is prepended to the current content but between the innerWraps and the rest of the wraps
      *
@@ -3120,115 +3067,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * Reads a directory for files and returns the filepaths in a string list separated by comma.
-     * Implements the stdWrap property "filelist"
-     *
-     * @param string $data The command which contains information about what files/directory listing to return. See the "filelist" property of stdWrap for details.
-     * @param bool $isCoreCall if set, the deprecation message is suppressed
-     * @return string Comma list of files.
-     * @internal
-     * @see stdWrap()
-     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. Use cObject FILES instead.
-     */
-    public function filelist($data, bool $isCoreCall = false)
-    {
-        if (!$isCoreCall) {
-            trigger_error('ContentObjectRenderer->filelist() will be removed in TYPO3 v10.0. Use cObject FILES instead.', E_USER_DEPRECATED);
-        }
-        $data = trim($data);
-        if ($data === '') {
-            return '';
-        }
-        list($possiblePath, $ext_list, $sorting, $reverse, $useFullPath) = GeneralUtility::trimExplode('|', $data);
-        // read directory:
-        // MUST exist!
-        $path = '';
-        // proceeds if no '//', '..' or '\' is in the $theFile
-        if (GeneralUtility::validPathStr($possiblePath)) {
-            // Removes all dots, slashes and spaces after a path.
-            $possiblePath = preg_replace('/[\\/\\. ]*$/', '', $possiblePath);
-            if (!GeneralUtility::isAbsPath($possiblePath) && @is_dir($possiblePath)) {
-                // Now check if it matches one of the FAL storages
-                $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-                $storages = $storageRepository->findAll();
-                foreach ($storages as $storage) {
-                    if ($storage->getDriverType() === 'Local' && $storage->isPublic() && $storage->isOnline()) {
-                        $folder = $storage->getPublicUrl($storage->getRootLevelFolder(), true);
-                        if (GeneralUtility::isFirstPartOfStr($possiblePath . '/', $folder)) {
-                            $path = $possiblePath;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        if (!$path) {
-            return '';
-        }
-        $items = [
-            'files' => [],
-            'sorting' => []
-        ];
-        $ext_list = strtolower(GeneralUtility::uniqueList($ext_list));
-        // Read dir:
-        $d = @dir($path);
-        if (is_object($d)) {
-            $count = 0;
-            while ($entry = $d->read()) {
-                if ($entry !== '.' && $entry !== '..') {
-                    // Because of odd PHP-error where <br />-tag is sometimes placed after a filename!!
-                    $wholePath = $path . '/' . $entry;
-                    if (file_exists($wholePath) && filetype($wholePath) === 'file') {
-                        $info = GeneralUtility::split_fileref($wholePath);
-                        if (!$ext_list || GeneralUtility::inList($ext_list, $info['fileext'])) {
-                            $items['files'][] = $info['file'];
-                            switch ($sorting) {
-                                case 'name':
-                                    $items['sorting'][] = strtolower($info['file']);
-                                    break;
-                                case 'size':
-                                    $items['sorting'][] = filesize($wholePath);
-                                    break;
-                                case 'ext':
-                                    $items['sorting'][] = $info['fileext'];
-                                    break;
-                                case 'date':
-                                    $items['sorting'][] = filectime($wholePath);
-                                    break;
-                                case 'mdate':
-                                    $items['sorting'][] = filemtime($wholePath);
-                                    break;
-                                default:
-                                    $items['sorting'][] = $count;
-                            }
-                            $count++;
-                        }
-                    }
-                }
-            }
-            $d->close();
-        }
-        // Sort if required
-        if (!empty($items['sorting'])) {
-            if (strtolower($reverse) !== 'r') {
-                asort($items['sorting']);
-            } else {
-                arsort($items['sorting']);
-            }
-        }
-        if (!empty($items['files'])) {
-            // Make list
-            reset($items['sorting']);
-            $list_arr = [];
-            foreach ($items['sorting'] as $key => $v) {
-                $list_arr[] = $useFullPath ? $path . '/' . $items['files'][$key] : $items['files'][$key];
-            }
-            return implode(',', $list_arr);
-        }
-        return '';
-    }
-
-    /**
      * Passes the input value, $theValue, to an instance of "\TYPO3\CMS\Core\Html\HtmlParser"
      * together with the TypoScript options which are first converted from a TS style array
      * to a set of arrays with options for the \TYPO3\CMS\Core\Html\HtmlParser class.
@@ -3524,226 +3362,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * Implements the TypoScript function "addParams"
-     *
-     * @param string $content The string with the HTML tag.
-     * @param array $conf The TypoScript configuration properties
-     * @param bool $isCoreCall if set, the deprecation message is suppressed
-     * @return string The modified string
-     * @todo Make it XHTML compatible. Will not present "/>" endings of tags right now. Further getting the tagname might fail if it is not separated by a normal space from the attributes.
-     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0.
-     */
-    public function addParams($content, $conf, $isCoreCall = false)
-    {
-        if (!$isCoreCall) {
-            trigger_error('ContentObjectRenderer->addParams() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        }
-        // For XHTML compliance.
-        $lowerCaseAttributes = true;
-        if (!is_array($conf)) {
-            return $content;
-        }
-        $key = 1;
-        $parts = explode('<', $content);
-        if (isset($conf['_offset']) && (int)$conf['_offset']) {
-            $key = (int)$conf['_offset'] < 0 ? count($parts) + (int)$conf['_offset'] : (int)$conf['_offset'];
-        }
-        $subparts = explode('>', $parts[$key] ?? '');
-        if (trim($subparts[0])) {
-            // Get attributes and name
-            $attribs = GeneralUtility::get_tag_attributes('<' . $subparts[0] . '>');
-            list($tagName) = explode(' ', $subparts[0], 2);
-            // adds/overrides attributes
-            foreach ($conf as $pkey => $val) {
-                if (substr($pkey, -1) !== '.' && $pkey[0] !== '_') {
-                    $tmpVal = isset($conf[$pkey . '.']) ? $this->stdWrap($conf[$pkey], $conf[$pkey . '.']) : (string)$val;
-                    if ($lowerCaseAttributes) {
-                        $pkey = strtolower($pkey);
-                    }
-                    if ($tmpVal !== '') {
-                        $attribs[$pkey] = $tmpVal;
-                    }
-                }
-            }
-            // Re-assembles the tag and content
-            $subparts[0] = trim($tagName . ' ' . GeneralUtility::implodeAttributes($attribs));
-            $parts[$key] = implode('>', $subparts);
-            $content = implode('<', $parts);
-        }
-        return $content;
-    }
-
-    /**
-     * Creates a list of links to files.
-     * Implements the stdWrap property "filelink"
-     *
-     * @param string $theValue The filename to link to, possibly prefixed with $conf[path]
-     * @param array $conf TypoScript parameters for the TypoScript function ->filelink
-     * @param bool $isCoreCall if set, the deprecation message is suppressed
-     * @return string The link to the file possibly with icons, thumbnails, size in bytes shown etc.
-     * @internal
-     * @see stdWrap()
-     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. Use cObject FILES instead.
-     */
-    public function filelink($theValue, $conf, $isCoreCall = false)
-    {
-        if (!$isCoreCall) {
-            trigger_error('ContentObjectRenderer->filelink() will be removed in TYPO3 v10.0. Use cObject FILES instead.', E_USER_DEPRECATED);
-        }
-        $conf['path'] = isset($conf['path.'])
-            ? $this->stdWrap($conf['path'] ?? '', $conf['path.'])
-            : ($conf['path'] ?? '');
-        $theFile = trim($conf['path']) . $theValue;
-        if (!@is_file($theFile)) {
-            return '';
-        }
-        $theFileEnc = str_replace('%2F', '/', rawurlencode($theFile));
-        $title = $conf['title'] ?? '';
-        if (isset($conf['title.'])) {
-            $title = $this->stdWrap($title, $conf['title.']);
-        }
-        $target = $conf['target'] ?? '';
-        if (isset($conf['target.'])) {
-            $target = $this->stdWrap($target, $conf['target.']);
-        }
-        $tsfe = $this->getTypoScriptFrontendController();
-
-        $typoLinkConf = [
-            'parameter' => $theFileEnc,
-            'fileTarget' => $target,
-            'title' => $title,
-            'ATagParams' => $this->getATagParams($conf)
-        ];
-
-        if (isset($conf['typolinkConfiguration.'])) {
-            $additionalTypoLinkConfiguration = $conf['typolinkConfiguration.'];
-            // We only allow additional configuration. This is why the generated conf overwrites the additional conf.
-            ArrayUtility::mergeRecursiveWithOverrule($additionalTypoLinkConfiguration, $typoLinkConf);
-            $typoLinkConf = $additionalTypoLinkConfiguration;
-        }
-
-        $theLinkWrap = $this->typoLink('|', $typoLinkConf);
-        $theSize = filesize($theFile);
-        $fI = GeneralUtility::split_fileref($theFile);
-        $icon = '';
-        if ($conf['icon'] ?? false) {
-            $conf['icon.']['path'] = isset($conf['icon.']['path.'])
-                ? $this->stdWrap($conf['icon.']['path'], $conf['icon.']['path.'])
-                : $conf['icon.']['path'];
-            $iconPath = !empty($conf['icon.']['path'])
-                ? $conf['icon.']['path']
-                : GeneralUtility::getFileAbsFileName('EXT:frontend/Resources/Public/Icons/FileIcons/');
-            $conf['icon.']['ext'] = isset($conf['icon.']['ext.'])
-                ? $this->stdWrap($conf['icon.']['ext'], $conf['icon.']['ext.'])
-                : $conf['icon.']['ext'];
-            $iconExt = !empty($conf['icon.']['ext']) ? '.' . $conf['icon.']['ext'] : '.gif';
-            $icon = @is_file($iconPath . $fI['fileext'] . $iconExt)
-                ? $iconPath . $fI['fileext'] . $iconExt
-                : $iconPath . 'default' . $iconExt;
-            $icon = PathUtility::stripPathSitePrefix($icon);
-            // Checking for images: If image, then return link to thumbnail.
-            $IEList = isset($conf['icon_image_ext_list.']) ? $this->stdWrap($conf['icon_image_ext_list'], $conf['icon_image_ext_list.']) : $conf['icon_image_ext_list'];
-            $image_ext_list = str_replace(' ', '', strtolower($IEList));
-            if ($fI['fileext'] && GeneralUtility::inList($image_ext_list, $fI['fileext'])) {
-                if ($conf['iconCObject']) {
-                    $icon = $this->cObjGetSingle($conf['iconCObject'], $conf['iconCObject.'], 'iconCObject');
-                } else {
-                    $notFoundThumb = GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/Images/NotFound.gif');
-                    $notFoundThumb = PathUtility::stripPathSitePrefix($notFoundThumb);
-                    $sizeParts = [64, 64];
-                    if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails']) {
-                        // using the File Abstraction Layer to generate a preview image
-                        try {
-                            /** @var File $fileObject */
-                            $fileObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($theFile);
-                            if ($fileObject->isMissing()) {
-                                $icon = $notFoundThumb;
-                            } else {
-                                $fileExtension = $fileObject->getExtension();
-                                if ($fileExtension === 'ttf' || GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)) {
-                                    if ($conf['icon_thumbSize'] || $conf['icon_thumbSize.']) {
-                                        $thumbSize = isset($conf['icon_thumbSize.']) ? $this->stdWrap($conf['icon_thumbSize'], $conf['icon_thumbSize.']) : $conf['icon_thumbSize'];
-                                        $sizeParts = explode('x', $thumbSize);
-                                    }
-                                    $icon = $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, [
-                                        'width' => $sizeParts[0],
-                                        'height' => $sizeParts[1]
-                                    ])->getPublicUrl(true);
-                                }
-                            }
-                        } catch (ResourceDoesNotExistException $exception) {
-                            $icon = $notFoundThumb;
-                        }
-                    } else {
-                        $icon = $notFoundThumb;
-                    }
-                    $urlPrefix = '';
-                    if (parse_url($icon, PHP_URL_HOST) === null) {
-                        $urlPrefix = $tsfe->absRefPrefix;
-                    }
-                    $icon = '<img src="' . htmlspecialchars($urlPrefix . $icon) . '"' .
-                        ' width="' . (int)$sizeParts[0] . '" height="' . (int)$sizeParts[1] . '" ' .
-                        $this->getBorderAttr(' border="0"') . '' . $this->getAltParam($conf) . ' />';
-                }
-            } else {
-                $conf['icon.']['widthAttribute'] = isset($conf['icon.']['widthAttribute.'])
-                    ? $this->stdWrap($conf['icon.']['widthAttribute'], $conf['icon.']['widthAttribute.'])
-                    : $conf['icon.']['widthAttribute'];
-                $iconWidth = !empty($conf['icon.']['widthAttribute']) ? $conf['icon.']['widthAttribute'] : 18;
-                $conf['icon.']['heightAttribute'] = isset($conf['icon.']['heightAttribute.'])
-                    ? $this->stdWrap($conf['icon.']['heightAttribute'], $conf['icon.']['heightAttribute.'])
-                    : $conf['icon.']['heightAttribute'];
-                $iconHeight = !empty($conf['icon.']['heightAttribute']) ? (int)$conf['icon.']['heightAttribute'] : 16;
-                $icon = '<img src="' . htmlspecialchars($tsfe->absRefPrefix . $icon) . '" width="' . (int)$iconWidth . '" height="' . (int)$iconHeight . '"'
-                    . $this->getBorderAttr(' border="0"') . $this->getAltParam($conf) . ' />';
-            }
-            if ($conf['icon_link'] && !$conf['combinedLink']) {
-                $icon = $this->wrap($icon, $theLinkWrap);
-            }
-            $icon = isset($conf['icon.']) ? $this->stdWrap($icon, $conf['icon.']) : $icon;
-        }
-        $size = '';
-        if ($conf['size'] ?? false) {
-            $size = isset($conf['size.']) ? $this->stdWrap($theSize, $conf['size.']) : $theSize;
-        }
-        // Wrapping file label
-        if ($conf['removePrependedNumbers'] ?? false) {
-            $theValue = preg_replace('/_[0-9][0-9](\\.[[:alnum:]]*)$/', '\\1', $theValue);
-        }
-        if (isset($conf['labelStdWrap.'])) {
-            $theValue = $this->stdWrap($theValue, $conf['labelStdWrap.']);
-        }
-        // Wrapping file
-        $wrap = isset($conf['wrap.'])
-            ? $this->stdWrap($conf['wrap'] ?? '', $conf['wrap.'])
-            : ($conf['wrap'] ?? '');
-        if ($conf['combinedLink'] ?? false) {
-            $theValue = $icon . $theValue;
-            if ($conf['ATagBeforeWrap']) {
-                $theValue = $this->wrap($this->wrap($theValue, $wrap), $theLinkWrap);
-            } else {
-                $theValue = $this->wrap($this->wrap($theValue, $theLinkWrap), $wrap);
-            }
-            $file = isset($conf['file.']) ? $this->stdWrap($theValue, $conf['file.']) : $theValue;
-            // output
-            $output = $file . $size;
-        } else {
-            if ($conf['ATagBeforeWrap'] ?? false) {
-                $theValue = $this->wrap($this->wrap($theValue, $wrap), $theLinkWrap);
-            } else {
-                $theValue = $this->wrap($this->wrap($theValue, $theLinkWrap), $wrap);
-            }
-            $file = isset($conf['file.']) ? $this->stdWrap($theValue, $conf['file.']) : $theValue;
-            // output
-            $output = $icon . $file . $size;
-        }
-        if (isset($conf['stdWrap.'])) {
-            $output = $this->stdWrap($output, $conf['stdWrap.']);
-        }
-        return $output;
-    }
-
-    /**
      * Performs basic mathematical evaluation of the input string. Does NOT take parathesis and operator precedence into account! (for that, see \TYPO3\CMS\Core\Utility\MathUtility::calculateWithPriorityToAdditionAndSubtraction())
      *
      * @param string $val The string to evaluate. Example: "3+4*10/5" will generate "35". Only integer numbers can be used.
@@ -3778,26 +3396,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
         }
         return $value;
-    }
-
-    /**
-     * This explodes a comma-list into an array where the values are parsed through ContentObjectRender::calc() and cast to (int)(so you are sure to have integers in the output array)
-     * Used to split and calculate min and max values for GMENUs.
-     *
-     * @param string $delim Delimited to explode by
-     * @param string $string The string with parts in (where each part is evaluated by ->calc())
-     * @return array And array with evaluated values.
-     * @see calc(), \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::makeGifs()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. It is solely used in GMENU, which can be handled there directly.
-     */
-    public function calcIntExplode($delim, $string)
-    {
-        trigger_error('calcIntExplode will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        $temp = explode($delim, $string);
-        foreach ($temp as $key => $val) {
-            $temp[$key] = (int)$this->calc($val);
-        }
-        return $temp;
     }
 
     /**
@@ -5621,37 +5219,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * Generates a typolink and returns the two link tags - start and stop - in an array
-     *
-     * @param array $conf "typolink" TypoScript properties
-     * @return array An array with two values in key 0+1, each value being the start and close <a>-tag of the typolink properties being inputted in $conf
-     * @see typolink()
-     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. Use typoLink() instead.
-     */
-    public function typolinkWrap($conf)
-    {
-        trigger_error('ContentObjectRenderer->typolinkWrap() will be removed in TYPO3 v10.0. Use $cObj->typoLink() instead.', E_USER_DEPRECATED);
-        $k = md5(microtime());
-        return explode($k, $this->typoLink($k, $conf));
-    }
-
-    /**
-     * Returns the current page URL
-     *
-     * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
-     * @param int $id An alternative ID to the current id ($GLOBALS['TSFE']->id)
-     * @return string The URL
-     * @see getTypoLink_URL()
-     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. Use getTypoLink_URL() instead.
-     */
-    public function currentPageUrl($urlParameters = [], $id = 0)
-    {
-        trigger_error('ContentObjectRenderer->currentPageUrl() will be removed in TYPO3 v10.0. Use $cObj->getTypoLink_URL() instead.', E_USER_DEPRECATED);
-        $tsfe = $this->getTypoScriptFrontendController();
-        return $this->getTypoLink_URL($id ?: $tsfe->id, $urlParameters, $tsfe->sPre);
-    }
-
-    /**
      * Loops over all configured URL modifier hooks (if available) and returns the generated URL or NULL if no URL was generated.
      *
      * @param string $context The context in which the method is called (e.g. typoLink).
@@ -6170,28 +5737,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Database functions, making of queries
      *
      ***********************************************/
-
-    /**
-     * Returns a part of a WHERE clause which will filter out records with start/end times or hidden/fe_groups fields
-     * set to values that should de-select them according to the current time, preview settings or user login.
-     * Definitely a frontend function.
-     * THIS IS A VERY IMPORTANT FUNCTION: Basically you must add the output from this function for EVERY select query you create
-     * for selecting records of tables in your own applications - thus they will always be filtered according to the "enablefields"
-     * configured in TCA
-     * Simply calls \TYPO3\CMS\Frontend\Page\PageRepository::enableFields() BUT will send the show_hidden flag along!
-     * This means this function will work in conjunction with the preview facilities of the frontend engine/Admin Panel.
-     *
-     * @param string $table The table for which to get the where clause
-     * @param bool $show_hidden If set, then you want NOT to filter out hidden records. Otherwise hidden record are filtered based on the current preview settings.
-     * @param array $ignore_array Array you can pass where keys can be "disabled", "starttime", "endtime", "fe_group" (keys from "enablefields" in TCA) and if set they will make sure that part of the clause is not added. Thus disables the specific part of the clause. For previewing etc.
-     * @return string The part of the where clause on the form " AND [fieldname]=0 AND ...". Eg. " AND hidden=0 AND starttime < 123345567
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
-     */
-    public function enableFields($table, $show_hidden = false, array $ignore_array = [])
-    {
-        trigger_error('cObj->enableFields() will be removed in TYPO3 v10.0. should be used from the PageRepository->enableFields() functionality directly.', E_USER_DEPRECATED);
-        return $this->getTypoScriptFrontendController()->sys_page->enableFields($table, $show_hidden ? true : -1, $ignore_array);
-    }
 
     /**
      * Generates a list of Page-uid's from $id. List does not include $id itself

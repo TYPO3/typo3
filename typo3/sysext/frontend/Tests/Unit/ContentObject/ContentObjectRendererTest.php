@@ -3639,7 +3639,7 @@ class ContentObjectRendererTest extends UnitTestCase
             }
         }
         $this->assertSame(1, $notCallable);
-        $this->assertSame(85, $callable);
+        $this->assertSame(82, $callable);
     }
 
     /**
@@ -3684,7 +3684,7 @@ class ContentObjectRendererTest extends UnitTestCase
             }
         }
         $this->assertSame($expectExceptions, $exceptions);
-        $this->assertSame(85, $count);
+        $this->assertSame(82, $count);
     }
 
     /***************************************************************************

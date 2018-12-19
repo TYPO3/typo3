@@ -1188,7 +1188,6 @@ class PageRepository implements LoggerAwareInterface
      * @param bool $noVersionPreview If set, enableFields will be applied regardless of any versioning preview settings which might otherwise disable enableFields
      * @throws \InvalidArgumentException
      * @return string The clause starting like " AND ...=... AND ...=...
-     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::enableFields()
      */
     public function enableFields($table, $show_hidden = -1, $ignore_array = [], $noVersionPreview = false)
     {

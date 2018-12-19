@@ -145,6 +145,16 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->initMPmap_create()`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->linkData()`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->printTitle()`
+* :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->addParams()`
+* :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->calcIntExplode()`
+* :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->currentPageUrl()`
+* :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->enableFields()`
+* :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->filelink()`
+* :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->filelist()`
+* :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->typolinkWrap()`
+* :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_addParams()`
+* :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_filelink()`
+* :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_filelist()`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getFirstWebPage()`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getDomainStartPage()`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getRootLine()`
@@ -251,6 +261,13 @@ The following scheduler tasks have been removed:
 The following user TSconfig options have been dropped:
 
 * Prefix `mod.` to override page TSconfig is ignored
+
+
+The following TypoScript options have been dropped:
+
+* `stdWrap.addParams`
+* `stdWrap.filelink`
+* `stdWrap.filelist`
 
 
 The following constants have been dropped:
