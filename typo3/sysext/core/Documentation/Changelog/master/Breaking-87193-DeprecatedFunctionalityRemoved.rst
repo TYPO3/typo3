@@ -137,6 +137,7 @@ The following PHP static class methods that have been previously deprecated for 
 
 The following methods changed signature according to previous deprecations in v9 at the end of the argument list:
 
+* :php:`TYPO3\CMS\Backend\Http\RouteDispatcher->dispatch() - Second argument dropped
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig()` - Second and third argument dropped
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->conv()` - Fourth argument dropped
 * :php:`TYPO3\CMS\Core\Core\Bootstrap->checkIfEssentialConfigurationExists()` - First argument mandatory
@@ -145,6 +146,7 @@ The following methods changed signature according to previous deprecations in v9
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\Md5PasswordHash->getHashedPassword()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash->getHashedPassword()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->getHashedPassword()` - Second argument dropped
+* :php:`TYPO3\CMS\Core\Http\Dispatcher->dispatch() - Second argument dropped
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getRawRecord()` - Fourth argument dropped
 
 
@@ -179,14 +181,17 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->sys_language_uid` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->versioningWorkspaceId` changed from public to protected
 
+
 The following scheduler tasks have been removed:
 
 * EXT:workspaces CleanupPreviewLinkTask
 * EXT:workspaces AutoPublishTask
 
+
 The following user TSconfig options have been dropped:
 
 * Prefix `mod.` to override page TSconfig is ignored
+
 
 The following constants have been dropped:
 
@@ -219,6 +224,12 @@ The following language files and aliases have been removed:
 The following global variables have been removed:
 
 * :php:`$GLOBALS['TYPO3_LOADED_EXT']`
+
+
+The following feature is now always enabled:
+
+* :php:`simplifiedControllerActionDispatching` - Backend controller actions do not receive a prepared response object anymore
+
 
 Impact
 ======

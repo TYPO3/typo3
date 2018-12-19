@@ -91,23 +91,19 @@ class EidRequestHandler implements RequestHandlerInterface, PsrRequestHandlerInt
         // Remove any output produced until now
         ob_clean();
 
-        /** @var Response $response */
-        $response = GeneralUtility::makeInstance(Response::class);
-
         $eID = $request->getParsedBody()['eID'] ?? $request->getQueryParams()['eID'] ?? '';
 
         if (empty($eID) || !isset($GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include'][$eID])) {
-            return $response->withStatus(404, 'eID not registered');
+            return (new Response())->withStatus(404, 'eID not registered');
         }
 
         $configuration = $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include'][$eID];
 
         // Simple check to make sure that it's not an absolute file (to use the fallback)
         if (strpos($configuration, '::') !== false || is_callable($configuration)) {
-            /** @var Dispatcher $dispatcher */
             $dispatcher = GeneralUtility::makeInstance(Dispatcher::class);
             $request = $request->withAttribute('target', $configuration);
-            return $dispatcher->dispatch($request, $response);
+            return $dispatcher->dispatch($request);
         }
 
         $scriptPath = GeneralUtility::getFileAbsFileName($configuration);

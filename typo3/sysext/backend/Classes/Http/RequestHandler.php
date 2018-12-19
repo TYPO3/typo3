@@ -57,20 +57,10 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        // Use a custom pre-created response for AJAX calls
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0: No prepared $response to RouteDispatcher any longer
-        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
-            $response = new Response('php://temp', 200, [
-                'Content-Type' => 'application/json; charset=utf-8',
-                'X-JSON' => 'true'
-            ]);
-        } else {
-            $response = new Response();
-        }
         try {
             // Check if the router has the available route and dispatch.
             $dispatcher = GeneralUtility::makeInstance(RouteDispatcher::class);
-            return $dispatcher->dispatch($request, $response);
+            return $dispatcher->dispatch($request);
         } catch (InvalidRequestTokenException $e) {
             // When token was invalid redirect to login
             $url = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir;

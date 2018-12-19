@@ -53,21 +53,17 @@ class EidHandler implements MiddlewareInterface
         // Remove any output produced until now
         ob_clean();
 
-        /** @var Response $response */
-        $response = GeneralUtility::makeInstance(Response::class);
-
         if (empty($eID) || !isset($GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include'][$eID])) {
-            return $response->withStatus(404, 'eID not registered');
+            return (new Response())->withStatus(404, 'eID not registered');
         }
 
         $configuration = $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include'][$eID];
 
         // Simple check to make sure that it's not an absolute file (to use the fallback)
         if (strpos($configuration, '::') !== false || is_callable($configuration)) {
-            /** @var Dispatcher $dispatcher */
             $dispatcher = GeneralUtility::makeInstance(Dispatcher::class);
             $request = $request->withAttribute('target', $configuration);
-            return $dispatcher->dispatch($request, $response) ?? new NullResponse();
+            return $dispatcher->dispatch($request) ?? new NullResponse();
         }
         trigger_error(
             'eID "' . $eID . '" is registered with a script to a file. This behaviour will be removed in TYPO3 v10.0.'

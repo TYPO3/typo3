@@ -66,7 +66,6 @@ class AjaxRequestHandler implements RequestHandlerInterface, PsrRequestHandlerIn
             'X-JSON' => 'true'
         ]);
 
-        /** @var RouteDispatcher $dispatcher */
         $dispatcher = GeneralUtility::makeInstance(RouteDispatcher::class);
         return $dispatcher->dispatch($request, $response);
     }

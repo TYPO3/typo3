@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -31,42 +30,14 @@ class Dispatcher implements DispatcherInterface
      * Main method that fetches the target from the request and calls the target directly
      *
      * @param ServerRequestInterface $request the current server request
-     * @param ResponseInterface $response the prepared response @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      * @return ResponseInterface the filled response by the callable/controller/action
      * @throws \InvalidArgumentException if the defined target is invalid
      */
-    public function dispatch(ServerRequestInterface $request, ResponseInterface $response = null): ResponseInterface
+    public function dispatch(ServerRequestInterface $request): ResponseInterface
     {
         $targetIdentifier = $request->getAttribute('target');
         $target = $this->getCallableFromTarget($targetIdentifier);
         $arguments = [$request];
-
-        // @deprecated Test if target accepts one (ok) or two (deprecated) arguments
-        $scanForResponse = !GeneralUtility::makeInstance(Features::class)
-            ->isFeatureEnabled('simplifiedControllerActionDispatching');
-        if ($scanForResponse) {
-            if (is_array($targetIdentifier)) {
-                $controllerActionName = implode('::', $targetIdentifier);
-                $targetReflection = new \ReflectionMethod($controllerActionName);
-            } elseif (is_string($targetIdentifier) && strpos($targetIdentifier, '::') !== false) {
-                $controllerActionName = $targetIdentifier;
-                $targetReflection = new \ReflectionMethod($controllerActionName);
-            } elseif (is_callable($targetIdentifier)) {
-                $controllerActionName = 'closure function';
-                $targetReflection = new \ReflectionFunction($targetIdentifier);
-            } else {
-                $controllerActionName = $targetIdentifier . '::__invoke';
-                $targetReflection = new \ReflectionMethod($controllerActionName);
-            }
-            if ($targetReflection->getNumberOfParameters() >= 2) {
-                trigger_error(
-                    'Handing over second argument $response to controller action ' . $controllerActionName . '() is deprecated and will be removed in TYPO3 v10.0.',
-                    E_USER_DEPRECATED
-                );
-                $arguments[] = $response;
-            }
-        }
-
         return call_user_func_array($target, $arguments);
     }
 
