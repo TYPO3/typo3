@@ -216,29 +216,11 @@ class PackageManager implements SingletonInterface
      */
     protected function loadPackageStates()
     {
-        $forcePackageStatesRewrite = false;
         $this->packageStatesConfiguration = @include $this->packageStatesPathAndFilename ?: [];
-        if (!isset($this->packageStatesConfiguration['version']) || $this->packageStatesConfiguration['version'] < 4) {
-            $this->packageStatesConfiguration = [];
-        } elseif ($this->packageStatesConfiguration['version'] === 4) {
-            // Convert to v5 format which only includes a list of active packages.
-            // Deprecated since version 8, will be removed in version 10.
-            $activePackages = [];
-            foreach ($this->packageStatesConfiguration['packages'] as $packageKey => $packageConfiguration) {
-                if ($packageConfiguration['state'] !== 'active') {
-                    continue;
-                }
-                $activePackages[$packageKey] = ['packagePath' => $packageConfiguration['packagePath']];
-            }
-            $this->packageStatesConfiguration['packages'] = $activePackages;
-            $this->packageStatesConfiguration['version'] = 5;
-            $forcePackageStatesRewrite = true;
-        }
-        if ($this->packageStatesConfiguration !== []) {
-            $this->registerPackagesFromConfiguration($this->packageStatesConfiguration['packages'], false, $forcePackageStatesRewrite);
-        } else {
+        if (!isset($this->packageStatesConfiguration['version']) || $this->packageStatesConfiguration['version'] < 5) {
             throw new Exception\PackageStatesUnavailableException('The PackageStates.php file is either corrupt or unavailable.', 1381507733);
         }
+        $this->registerPackagesFromConfiguration($this->packageStatesConfiguration['packages'], false);
     }
 
     /**
@@ -367,12 +349,12 @@ class PackageManager implements SingletonInterface
      *
      * @param array $packages
      * @param bool $registerOnlyNewPackages
-     * @param bool $packageStatesHasChanged
      * @throws Exception\InvalidPackageStateException
      * @throws Exception\PackageStatesFileNotWritableException
      */
-    protected function registerPackagesFromConfiguration(array $packages, $registerOnlyNewPackages = false, $packageStatesHasChanged = false)
+    protected function registerPackagesFromConfiguration(array $packages, $registerOnlyNewPackages = false)
     {
+        $packageStatesHasChanged = false;
         foreach ($packages as $packageKey => $stateConfiguration) {
             if ($registerOnlyNewPackages && $this->isPackageRegistered($packageKey)) {
                 continue;

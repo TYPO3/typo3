@@ -308,6 +308,11 @@ The following feature is now always enabled:
 * :php:`simplifiedControllerActionDispatching` - Backend controller actions do not receive a prepared response object anymore
 
 
+The following feature has been removed:
+
+* Migration from v4 to v5 PackagesStates.php
+
+
 Impact
 ======
 
