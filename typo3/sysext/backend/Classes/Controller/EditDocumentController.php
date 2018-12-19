@@ -2171,6 +2171,10 @@ class EditDocumentController
                 $pageId = (int)$fullRecord['pid'];
             }
         } else {
+            if ($table === 'pages' && $id > 0) {
+                $fullRecord = BackendUtility::getRecordWSOL('pages', $id);
+                $id = (int)($fullRecord['t3ver_oid'] ?: $fullRecord['uid']);
+            }
             $pageId = $id;
         }
         $site = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId($pageId);
