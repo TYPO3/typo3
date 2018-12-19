@@ -76,7 +76,7 @@ class CheckboxViewHelper extends AbstractFormFieldViewHelper
     /**
      * Renders the checkbox.
      *
-     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      * @return string
      */
     public function render()

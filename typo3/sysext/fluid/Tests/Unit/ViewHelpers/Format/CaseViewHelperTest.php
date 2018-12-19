@@ -69,7 +69,7 @@ class CaseViewHelperTest extends ViewHelperBaseTestcase
      */
     public function viewHelperThrowsExceptionIfIncorrectModeIsGiven()
     {
-        $this->expectException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException::class);
+        $this->expectException(\TYPO3Fluid\Fluid\Core\ViewHelper\Exception::class);
         $this->expectExceptionCode(1358349150);
         $this->setArgumentsUnderTest(
             $this->viewHelper,

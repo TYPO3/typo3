@@ -336,6 +336,7 @@ return [
     'TYPO3\CMS\Extbase\Mvc\Exception\InvalidTemplateResourceException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extensionmanager\Utility\DatabaseUtility' => [
@@ -361,6 +362,7 @@ return [
     'TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider' => [
         'restFiles' => [
             'Important-82229-FluidImplementationOfCmsVariableProviderRemoved.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\FrontendEditing\FrontendEditingController' => [

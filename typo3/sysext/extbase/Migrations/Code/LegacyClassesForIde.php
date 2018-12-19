@@ -38,9 +38,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception {
     class InvalidViewHelperException extends \TYPO3\CMS\Extbase\Exception
     {
     }
-    class InvalidTemplateResourceException extends \TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException
-    {
-    }
 }
 
 namespace TYPO3\CMS\Extbase\Object\Container\Exception {

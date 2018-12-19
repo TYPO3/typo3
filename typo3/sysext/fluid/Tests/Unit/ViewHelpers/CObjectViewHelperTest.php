@@ -145,7 +145,7 @@ class CObjectViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
 
-        $this->expectException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception::class);
+        $this->expectException(\TYPO3Fluid\Fluid\Core\ViewHelper\Exception::class);
         $this->expectExceptionCode($exceptionCode);
         $this->viewHelper->initializeArgumentsAndRender();
     }

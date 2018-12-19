@@ -56,7 +56,6 @@ return [
 
     // Fluid
     'TYPO3\\CMS\\Extbase\\Mvc\\Exception\\InvalidViewHelperException' => \TYPO3\CMS\Extbase\Exception::class,
-    'TYPO3\\CMS\\Extbase\\Mvc\\Exception\\InvalidTemplateResourceException' => \TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException::class,
 
     // Service
     'TYPO3\\CMS\\Extbase\\Service\\FlexFormService' => \TYPO3\CMS\Core\Service\FlexFormService::class,

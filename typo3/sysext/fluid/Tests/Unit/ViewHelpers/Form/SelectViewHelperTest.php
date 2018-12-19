@@ -490,7 +490,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue(null));
         $this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
-        $this->expectException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception::class);
+        $this->expectException(\TYPO3Fluid\Fluid\Core\ViewHelper\Exception::class);
         $this->expectExceptionCode(1247826696);
 
         $user = new UserDomainClass(1, 'Ingmar', 'Schlecht');

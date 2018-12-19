@@ -87,8 +87,7 @@
 			"always-add-alias-loader": true,
 			"class-alias-maps": [
 				"typo3/sysext/adminpanel/Migrations/Code/ClassAliasMap.php",
-				"typo3/sysext/extbase/Migrations/Code/ClassAliasMap.php",
-				"typo3/sysext/fluid/Migrations/Code/ClassAliasMap.php"
+				"typo3/sysext/extbase/Migrations/Code/ClassAliasMap.php"
 			]
 		},
 		"branch-alias": {
