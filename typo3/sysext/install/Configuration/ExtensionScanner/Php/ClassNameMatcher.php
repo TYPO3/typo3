@@ -949,4 +949,9 @@ return [
             'Deprecation-86366-MethodsInAbstractUpdate.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Cache\Frontend\StringFrontend' => [
+        'restFiles' => [
+            'Deprecation-81434-StringCacheFrontendDeprecated.rst',
+        ],
+    ],
 ];
