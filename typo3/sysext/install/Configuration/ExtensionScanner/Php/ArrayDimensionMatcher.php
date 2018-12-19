@@ -216,4 +216,9 @@ return [
             'Deprecation-86279-VariousHooksAndPSR-15Middlewares.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'checkDataSubmission\']' => [
+        'restFiles' => [
+            'Deprecation-86279-VariousHooksAndPSR-15Middlewares.rst',
+        ],
+    ],
 ];
