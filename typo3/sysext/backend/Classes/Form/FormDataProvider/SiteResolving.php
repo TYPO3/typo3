@@ -36,8 +36,16 @@ class SiteResolving implements FormDataProviderInterface
      */
     public function addData(array $result): array
     {
-        $pageIdDefaultLanguage = (int)($result['defaultLanguagePageRow']['uid'] ?? $result['effectivePid']);
-        $result['site'] = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId($pageIdDefaultLanguage);
+        if ($result['defaultLanguagePageRow']['t3ver_oid'] ?? null) {
+            $pageIdDefaultLanguage = (int)$result['defaultLanguagePageRow']['t3ver_oid'];
+        } elseif ($result['defaultLanguagePageRow']['uid'] ?? null) {
+            $pageIdDefaultLanguage = (int)$result['defaultLanguagePageRow']['uid'];
+        } elseif (array_key_exists('tableName', $result) && $result['tableName'] === 'pages') {
+            $pageIdDefaultLanguage = $result['databaseRow']['t3ver_oid'] ?? $result['databaseRow']['uid'] ?? $result['effectivePid'];
+        } else {
+            $pageIdDefaultLanguage = $result['effectivePid'];
+        }
+        $result['site'] = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId((int)$pageIdDefaultLanguage);
         return $result;
     }
 }
