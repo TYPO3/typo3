@@ -109,7 +109,8 @@ class SystemEnvironmentBuilder
      */
     protected static function defineBaseConstants()
     {
-        // Check one of the constants and return early if defined already
+        // Check one of the constants and return early if already defined,
+        // needed if multiple requests are handled in one process, for instance in functional testing.
         if (defined('TYPO3_version')) {
             return;
         }
@@ -511,7 +512,9 @@ class SystemEnvironmentBuilder
      */
     protected static function defineTypo3RequestTypes()
     {
-        if (defined('TYPO3_REQUESTTYPE_FE')) { // @todo remove once Bootstrap::getInstance() is dropped
+        // Check one of the constants and return early if already defined,
+        // needed if multiple requests are handled in one process, for instance in functional testing.
+        if (defined('TYPO3_REQUESTTYPE_FE')) {
             return;
         }
         define('TYPO3_REQUESTTYPE_FE', self::REQUESTTYPE_FE);
@@ -528,7 +531,9 @@ class SystemEnvironmentBuilder
      */
     protected static function setRequestType(int $requestType)
     {
-        if (defined('TYPO3_REQUESTTYPE')) { // @todo remove once Bootstrap::getInstance() is dropped
+        // Return early if already defined,
+        // needed if multiple requests are handled in one process, for instance in functional testing.
+        if (defined('TYPO3_REQUESTTYPE')) {
             return;
         }
         define('TYPO3_REQUESTTYPE', $requestType);
@@ -541,7 +546,9 @@ class SystemEnvironmentBuilder
      */
     protected static function defineLegacyConstants(string $mode)
     {
-        if (defined('TYPO3_MODE')) { // @todo remove once Bootstrap::getInstance() is dropped
+        // Return early if already defined,
+        // needed if multiple requests are handled in one process, for instance in functional testing.
+        if (defined('TYPO3_MODE')) {
             return;
         }
         define('TYPO3_MODE', $mode);
