@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Backend\Utility;
  */
 
 use Psr\Log\LoggerInterface;
-use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
+use TYPO3\CMS\Backend\Configuration\TsConfigParser;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -69,50 +69,11 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class BackendUtility
 {
-    /**
-     * Cache the TCA configuration of tables with their types during runtime
-     *
-     * @var array
-     * @see self::getTCAtypes()
-     * @deprecated since TYPO3 v9.4 will be removed in TYPO3 v10.0.
-     */
-    protected static $tcaTableTypeConfigurationCache = [];
-
     /*******************************************
      *
      * SQL-related, selecting records, searching
      *
      *******************************************/
-    /**
-     * Returns the WHERE clause " AND NOT [tablename].[deleted-field]" if a deleted-field
-     * is configured in $GLOBALS['TCA'] for the tablename, $table
-     * This function should ALWAYS be called in the backend for selection on tables which
-     * are configured in $GLOBALS['TCA'] since it will ensure consistent selection of records,
-     * even if they are marked deleted (in which case the system must always treat them as non-existent!)
-     * In the frontend a function, ->enableFields(), is known to filter hidden-field, start- and endtime
-     * and fe_groups as well. But that is a job of the frontend, not the backend. If you need filtering
-     * on those fields as well in the backend you can use ->BEenableFields() though.
-     *
-     * @param string $table Table name present in $GLOBALS['TCA']
-     * @param string $tableAlias Table alias if any
-     * @return string WHERE clause for filtering out deleted records, eg " AND tablename.deleted=0
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, the DeletedRestriction functionality should be used instead.
-     */
-    public static function deleteClause($table, $tableAlias = '')
-    {
-        trigger_error('BackendUtility::deleteClause() will be removed in TYPO3 v10.0. Add the delete statement directly in your SQL statement via the DeletedRestriction.', E_USER_DEPRECATED);
-        if (empty($GLOBALS['TCA'][$table]['ctrl']['delete'])) {
-            return '';
-        }
-        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($table)
-            ->expr();
-        return ' AND ' . $expressionBuilder->eq(
-                ($tableAlias ?: $table) . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete'],
-                0
-            );
-    }
-
     /**
      * Gets record with uid = $uid from $table
      * You can set $field to a list of fields (default is '*')
@@ -585,18 +546,6 @@ class BackendUtility
     }
 
     /**
-     * Gets the original translation pointer table, which is always the same table
-     *
-     * @param string $table Name of the table
-     * @return string Pointer table (if any)
-     */
-    public static function getOriginalTranslationTable($table)
-    {
-        trigger_error('Starting with TYPO3 v9, the translation table is always the same as the original table, because pages_language_overlay has been migrated into pages table.', E_USER_DEPRECATED);
-        return $table;
-    }
-
-    /**
      * Determines whether a table is localizable and has the languageField and transOrigPointerField set in $GLOBALS['TCA'].
      *
      * @param string $table The table to check
@@ -642,91 +591,6 @@ class BackendUtility
             }
         }
         return false;
-    }
-
-    /**
-     * Returns the "types" configuration parsed into an array for the record, $rec, from table, $table
-     *
-     * @param string $table Table name (present in TCA)
-     * @param array $rec Record from $table
-     * @param bool $useFieldNameAsKey If $useFieldNameAsKey is set, then the fieldname is associative keys in the return array, otherwise just numeric keys.
-     * @return array|null
-     * @deprecated since TYPO3 v9.4 will be removed in TYPO3 v10.0.
-     */
-    public static function getTCAtypes($table, $rec, $useFieldNameAsKey = false)
-    {
-        trigger_error('BackendUtility::getTCAtypes() will be removed in TYPO3 v10.0. The method is not in use anymore.', E_USER_DEPRECATED);
-        if (isset($GLOBALS['TCA'][$table])) {
-            // Get type value:
-            $fieldValue = self::getTCAtypeValue($table, $rec);
-            $cacheIdentifier = $table . '-type-' . $fieldValue . '-fnk-' . $useFieldNameAsKey;
-
-            // Fetch from first-level-cache if available
-            if (isset(self::$tcaTableTypeConfigurationCache[$cacheIdentifier])) {
-                return self::$tcaTableTypeConfigurationCache[$cacheIdentifier];
-            }
-
-            // Get typesConf
-            $typesConf = $GLOBALS['TCA'][$table]['types'][$fieldValue] ?? null;
-            // Get fields list and traverse it
-            $fieldList = explode(',', $typesConf['showitem']);
-
-            // Add subtype fields e.g. for a valid RTE transformation
-            // The RTE runs the DB -> RTE transformation only, if the RTE field is part of the getTCAtypes array
-            if (isset($typesConf['subtype_value_field'])) {
-                $subType = $rec[$typesConf['subtype_value_field']];
-                if (isset($typesConf['subtypes_addlist'][$subType])) {
-                    $subFields = GeneralUtility::trimExplode(',', $typesConf['subtypes_addlist'][$subType], true);
-                    $fieldList = array_merge($fieldList, $subFields);
-                }
-            }
-
-            // Add palette fields e.g. for a valid RTE transformation
-            $paletteFieldList = [];
-            foreach ($fieldList as $fieldData) {
-                $fieldDataArray = GeneralUtility::trimExplode(';', $fieldData);
-                // first two entries would be fieldname and altTitle, they are not used here.
-                $pPalette = $fieldDataArray[2] ?? null;
-                if ($pPalette
-                    && isset($GLOBALS['TCA'][$table]['palettes'][$pPalette])
-                    && is_array($GLOBALS['TCA'][$table]['palettes'][$pPalette])
-                    && isset($GLOBALS['TCA'][$table]['palettes'][$pPalette]['showitem'])
-                ) {
-                    $paletteFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['palettes'][$pPalette]['showitem'], true);
-                    foreach ($paletteFields as $paletteField) {
-                        if ($paletteField !== '--linebreak--') {
-                            $paletteFieldList[] = $paletteField;
-                        }
-                    }
-                }
-            }
-            $fieldList = array_merge($fieldList, $paletteFieldList);
-            $altFieldList = [];
-            // Traverse fields in types config and parse the configuration into a nice array:
-            foreach ($fieldList as $k => $v) {
-                $vArray = GeneralUtility::trimExplode(';', $v);
-                $fieldList[$k] = [
-                    'field' => $vArray[0],
-                    'title' => $vArray[1] ?? null,
-                    'palette' => $vArray[2] ?? null,
-                    'spec' => [],
-                    'origString' => $v
-                ];
-                if ($useFieldNameAsKey) {
-                    $altFieldList[$fieldList[$k]['field']] = $fieldList[$k];
-                }
-            }
-            if ($useFieldNameAsKey) {
-                $fieldList = $altFieldList;
-            }
-
-            // Add to first-level-cache
-            self::$tcaTableTypeConfigurationCache[$cacheIdentifier] = $fieldList;
-
-            // Return array:
-            return $fieldList;
-        }
-        return null;
     }
 
     /**
@@ -797,47 +661,6 @@ class BackendUtility
 
     /*******************************************
      *
-     * Caching related
-     *
-     *******************************************/
-    /**
-     * Stores $data in the 'cache_hash' cache with the hash key, $hash
-     * and visual/symbolic identification, $ident
-     *
-     * @param string $hash 32 bit hash string (eg. a md5 hash of a serialized array identifying the data being stored)
-     * @param mixed $data The data to store
-     * @param string $ident $ident is just a textual identification in order to inform about the content!
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use the Caching Framework directly
-     */
-    public static function storeHash($hash, $data, $ident)
-    {
-        trigger_error('BackendUtility::storeHash() will be removed in TYPO3 v10.0, use the Caching Framework directly.', E_USER_DEPRECATED);
-        $cacheManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
-        $cacheManager->getCache('cache_hash')->set($hash, $data, ['ident_' . $ident], 0);
-    }
-
-    /**
-     * Returns data stored for the hash string in the cache "cache_hash"
-     * Can be used to retrieved a cached value, array or object
-     *
-     * @param string $hash The hash-string which was used to store the data value
-     * @return mixed The "data" from the cache
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use the Caching Framework directly
-     */
-    public static function getHash($hash)
-    {
-        trigger_error('BackendUtility::getHash() will be removed in TYPO3 v10.0, use the Caching Framework directly.', E_USER_DEPRECATED);
-        $cacheManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
-        $cacheEntry = $cacheManager->getCache('cache_hash')->get($hash);
-        $hashContent = null;
-        if ($cacheEntry) {
-            $hashContent = $cacheEntry;
-        }
-        return $hashContent;
-    }
-
-    /*******************************************
-     *
      * TypoScript related
      *
      *******************************************/
@@ -845,82 +668,49 @@ class BackendUtility
      * Returns the Page TSconfig for page with id, $id
      *
      * @param int $id Page uid for which to create Page TSconfig
-     * @param array $rootLine @deprecated
-     * @param bool $returnPartArray @deprecated
      * @return array Page TSconfig
      * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
      */
-    public static function getPagesTSconfig($id, $rootLine = null, $returnPartArray = false)
+    public static function getPagesTSconfig($id)
     {
         $id = (int)$id;
 
         $cache = self::getRuntimeCache();
-        if ($returnPartArray === false
-            && $rootLine === null
-            && $cache->has('pagesTsConfigIdToHash' . $id)
-        ) {
+        if ($cache->has('pagesTsConfigIdToHash' . $id)) {
             return $cache->get('pagesTsConfigHashToContent' . $cache->get('pagesTsConfigIdToHash' . $id));
         }
-        $tsConfig = [];
-        // No custom rootline, so the results can be cached
-        if (!is_array($rootLine)) {
-            $rootLine = self::BEgetRootLine($id, '', true);
-            $useCacheForCurrentPageId = true;
-        } else {
-            trigger_error('Calling BackendUtility::getPagesTSconfig() with a custom rootline handed over as second argument will be removed in TYPO3 v10.0. Use TYPO3\CMS\Backend\Utility\BackendUtility::getRawPagesTSconfig() instead and parse PageTS yourself.', E_USER_DEPRECATED);
-            $useCacheForCurrentPageId = false;
-        }
 
+        $tsConfig = [];
+        $rootLine = self::BEgetRootLine($id, '', true);
         $TSdataArray = static::getRawPagesTSconfig($id, $rootLine);
-        if ($returnPartArray) {
-            trigger_error('Calling BackendUtility::getPagesTSconfig() with a third parameter to return the unparsed array directly will be removed in TYPO3 v10.0. Use TYPO3\CMS\Backend\Utility\BackendUtility::getRawPagesTSconfig() instead.', E_USER_DEPRECATED);
-            return $TSdataArray;
-        }
+
         // Parsing the page TS-Config
         $pageTs = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
-        /* @var \TYPO3\CMS\Backend\Configuration\TsConfigParser $parseObj */
-        $parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TsConfigParser::class);
+        $parseObj = GeneralUtility::makeInstance(TsConfigParser::class);
         $res = $parseObj->parseTSconfig($pageTs, 'PAGES', $id, $rootLine);
         if ($res) {
             $tsConfig = $res['TSconfig'];
         }
         $cacheHash = $res['hash'];
+
         // Get User TSconfig overlay, if no backend user is logged-in, this needs to be checked as well
         if (static::getBackendUserAuthentication()) {
             $userTSconfig = static::getBackendUserAuthentication()->getTSConfig() ?? [];
         } else {
             $userTSconfig = [];
         }
-        $isCacheHashExtendedWithUserUid = false;
+
         if (is_array($userTSconfig['page.'] ?? null)) {
+            // Override page TSconfig with user TSconfig
             ArrayUtility::mergeRecursiveWithOverrule($tsConfig, $userTSconfig['page.']);
-            $isCacheHashExtendedWithUserUid = true;
             $cacheHash .= '_user' . static::getBackendUserAuthentication()->user['uid'];
         }
 
-        // Overlay page "mod." ts with user ts in a special and deprecated way
-        if (is_array($userTSconfig['mod.'] ?? null)) {
-            // @deprecated This entire "if" and variable $isCacheHashExtendedWithUserUid can be deleted in TYPO3 v10.0
-            trigger_error(
-                'Overriding page TSconfig "mod." with user TSconfig "mod." is deprecated. Use user TSconfig "page.mod." instead.',
-                E_USER_DEPRECATED
-            );
-            if (!is_array($tsConfig['mod.'])) {
-                $tsConfig['mod.'] = [];
-            }
-            ArrayUtility::mergeRecursiveWithOverrule($tsConfig['mod.'], $userTSconfig['mod.']);
-            if (!$isCacheHashExtendedWithUserUid) {
-                $cacheHash .= '_user' . static::getBackendUserAuthentication()->user['uid'];
-            }
-        }
-
-        if ($useCacheForCurrentPageId) {
-            // Many pages end up with the same ts config. To reduce memory usage, the cache
-            // entries are a linked list: One or more pids point to content hashes which then
-            // contain the cached content.
-            $cache->set('pagesTsConfigHashToContent' . $cacheHash, $tsConfig, ['pagesTsConfig']);
-            $cache->set('pagesTsConfigIdToHash' . $id, $cacheHash, ['pagesTsConfig']);
-        }
+        // Many pages end up with the same ts config. To reduce memory usage, the cache
+        // entries are a linked list: One or more pids point to content hashes which then
+        // contain the cached content.
+        $cache->set('pagesTsConfigHashToContent' . $cacheHash, $tsConfig, ['pagesTsConfig']);
+        $cache->set('pagesTsConfigIdToHash' . $id, $cacheHash, ['pagesTsConfig']);
 
         return $tsConfig;
     }
@@ -1058,25 +848,6 @@ class BackendUtility
         // sort records by $sortField. This is not done in the query because the title might have been overwritten by
         // self::getRecordTitle();
         return ArrayUtility::sortArraysByKey($result, $titleField);
-    }
-
-    /**
-     * Returns an array with be_groups records (like ->getGroupNames) but:
-     * - if the current BE_USER is admin, then all groups are returned, otherwise only groups that the current user is member of (usergroup_cached_list) will be returned.
-     *
-     * @param string $fields Field list; $fields specify the fields selected (default: title,uid)
-     * @return array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public static function getListGroupNames($fields = 'title, uid')
-    {
-        trigger_error('BackendUtility::getListGroupNames() will be removed in TYPO3 v10.0, you should generate the list of backend user groups by yourself.', E_USER_DEPRECATED);
-        $beUser = static::getBackendUserAuthentication();
-        $exQ = '';
-        if (!$beUser->isAdmin()) {
-            $exQ = ' AND uid IN (' . ($beUser->user['usergroup_cached_list'] ?: 0) . ')';
-        }
-        return self::getGroupNames($fields, $exQ);
     }
 
     /**
@@ -2770,7 +2541,7 @@ class BackendUtility
      *
      * @param string $parameters Set of GET params to send. Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World
      * @param string|int $redirectUrl Redirect URL, default is to use GeneralUtility::getIndpEnv('REQUEST_URI'), -1 means to generate an URL for JavaScript using T3_THIS_LOCATION
-     * @return string URL to BackendUtility::getModuleUrl('tce_db') + parameters
+     * @return string
      */
     public static function getLinkToDataHandlerAction($parameters, $redirectUrl = '')
     {
@@ -2898,32 +2669,6 @@ class BackendUtility
             }
         }
         return $domain;
-    }
-
-    /**
-     * Returns the merged User/Page TSconfig for page id, $id.
-     * Please read details about module programming elsewhere!
-     *
-     * @param int $id Page uid
-     * @param string $TSref An object string which determines the path of the TSconfig to return.
-     * @return array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use getPagesTSconfig() instead
-     */
-    public static function getModTSconfig($id, $TSref)
-    {
-        trigger_error(
-            'BackendUtility::getModTSconfig() will be removed in TYPO3 v10.0.'
-            . ' Use BackendUtility::getPagesTSconfig() to retrieve the full page TSconfig array instead.',
-            E_USER_DEPRECATED
-        );
-        $beUser = static::getBackendUserAuthentication();
-        $pageTS_modOptions = $beUser->getTSConfig($TSref, static::getPagesTSconfig($id));
-        $BE_USER_modOptions = $beUser->getTSConfig($TSref);
-        if ($BE_USER_modOptions['value'] === null) {
-            unset($BE_USER_modOptions['value']);
-        }
-        ArrayUtility::mergeRecursiveWithOverrule($pageTS_modOptions, $BE_USER_modOptions);
-        return $pageTS_modOptions;
     }
 
     /**
@@ -3116,31 +2861,6 @@ class BackendUtility
     }
 
     /**
-     * Removes menu items from $itemArray if they are configured to be removed by TSconfig for the module ($modTSconfig)
-     * See Inside TYPO3 about how to program modules and use this API.
-     *
-     * @param array $modTSconfig Module TS config array
-     * @param array $itemArray Array of items from which to remove items.
-     * @param string $TSref $TSref points to the "object string" in $modTSconfig
-     * @return array The modified $itemArray is returned.
-     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0
-     */
-    public static function unsetMenuItems($modTSconfig, $itemArray, $TSref)
-    {
-        trigger_error('BackendUtility::getPidForModTSconfig() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        // Getting TS-config options for this module for the Backend User:
-        $conf = static::getBackendUserAuthentication()->getTSConfig($TSref, $modTSconfig);
-        if (is_array($conf['properties'])) {
-            foreach ($conf['properties'] as $key => $val) {
-                if (!$val) {
-                    unset($itemArray[$key]);
-                }
-            }
-        }
-        return $itemArray;
-    }
-
-    /**
      * Call to update the page tree frame (or something else..?) after
      * use 'updatePageTree' as a first parameter will set the page tree to be updated.
      *
@@ -3301,26 +3021,6 @@ class BackendUtility
             return $settings;
         }
         die('Wrong module name: "' . $modName . '"');
-    }
-
-    /**
-     * Returns the URL to a given module
-     *
-     * @param string $moduleName Name of the module
-     * @param array $urlParameters URL parameters that should be added as key value pairs
-     * @return string Calculated URL
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Use UriBuilder instead.
-     */
-    public static function getModuleUrl($moduleName, $urlParameters = [])
-    {
-        trigger_error('BackendUtility::getModuleUrl() will be removed in TYPO3 v10.0, use UriBuilder->buildUriFromRoute() instead.', E_USER_DEPRECATED);
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        try {
-            $uri = $uriBuilder->buildUriFromRoute($moduleName, $urlParameters);
-        } catch (\TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException $e) {
-            $uri = $uriBuilder->buildUriFromRoutePath($moduleName, $urlParameters);
-        }
-        return (string)$uri;
     }
 
     /*******************************************
@@ -3541,22 +3241,6 @@ class BackendUtility
     }
 
     /**
-     * Return $uid if $table is pages and $uid is int - otherwise the $pid
-     *
-     * @param string $table Table name
-     * @param int $uid Record uid
-     * @param int $pid Record pid
-     * @return int
-     * @internal
-     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0
-     */
-    public static function getPidForModTSconfig($table, $uid, $pid)
-    {
-        trigger_error('BackendUtility::getPidForModTSconfig() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        return $table === 'pages' && MathUtility::canBeInterpretedAsInteger($uid) ? $uid : $pid;
-    }
-
-    /**
      * Return the real pid of a record and caches the result.
      * The non-cached method needs database queries to do the job, so this method
      * can be used if code sometimes calls the same record multiple times to save
@@ -3618,56 +3302,6 @@ class BackendUtility
             }
         }
         return null;
-    }
-
-    /**
-     * Returns the sys_domain record for $domain, optionally with $path appended.
-     *
-     * @param string $domain Domain name
-     * @param string $path Appended path
-     * @return array|bool Domain record, if found, false otherwise
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. Use Link Generation / Router instead.
-     */
-    public static function getDomainStartPage($domain, $path = '')
-    {
-        trigger_error('BackendUtility::getDomainStartPage() will be removed in TYPO3 v10.0. Use the new Link Generation functionality instead.', E_USER_DEPRECATED);
-        $domain = explode(':', $domain);
-        $domain = strtolower(preg_replace('/\\.$/', '', $domain[0]));
-        // Path is calculated.
-        $path = trim(preg_replace('/\\/[^\\/]*$/', '', $path));
-        // Stuff
-        $domain .= $path;
-
-        $queryBuilder = static::getQueryBuilderForTable('sys_domain');
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-        $result = $queryBuilder
-            ->select('sys_domain.*')
-            ->from('sys_domain')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'sys_domain.pid',
-                    $queryBuilder->quoteIdentifier('pages.uid')
-                ),
-                $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->eq(
-                        'sys_domain.domainName',
-                        $queryBuilder->createNamedParameter($domain, \PDO::PARAM_STR)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'sys_domain.domainName',
-                        $queryBuilder->createNamedParameter($domain . '/', \PDO::PARAM_STR)
-                    )
-                )
-
-            )
-            ->execute()
-            ->fetch();
-
-        return $result;
     }
 
     /**
@@ -4509,25 +4143,6 @@ class BackendUtility
     public static function isRootLevelRestrictionIgnored($table)
     {
         return !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction']);
-    }
-
-    /**
-     * Exists already a shortcut entry for this TYPO3 url?
-     *
-     * @param string $url
-     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0.
-     *
-     * @return bool
-     */
-    public static function shortcutExists($url)
-    {
-        trigger_error(
-            'Method BackendUtility::shortcutExists() has been marked as deprecated and will be removed in TYPO3 v10.0. Use an instance of ShortcutRepository instead.',
-            E_USER_DEPRECATED
-        );
-
-        $shortcutRepository = GeneralUtility::makeInstance(ShortcutRepository::class);
-        return $shortcutRepository->shortcutExists($url);
     }
 
     /**

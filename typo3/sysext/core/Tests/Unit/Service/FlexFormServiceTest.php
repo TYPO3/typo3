@@ -101,8 +101,7 @@ class FlexFormServiceTest extends UnitTestCase
             ]
         ];
 
-        // The subject calls xml2array statically, which calls getHash and setHash statically, which uses
-        // caches, those need to be mocked.
+        // The subject calls xml2array statically, which calls a runtime cache, this need to be mocked.
         $cacheManagerMock = $this->createMock(\TYPO3\CMS\Core\Cache\CacheManager::class);
         $cacheMock = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class);
         $cacheManagerMock->expects($this->any())->method('getCache')->will($this->returnValue($cacheMock));

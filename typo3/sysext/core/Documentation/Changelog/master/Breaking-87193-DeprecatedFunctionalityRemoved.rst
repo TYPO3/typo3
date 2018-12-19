@@ -29,9 +29,28 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->utf8_char2byte_pos()`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->utf8_to_entities()`
 
+
+The following PHP static class methods that have been previously deprecated for v9 have been removed:
+
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause()`
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getOriginalTranslationTable()`
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getTCAtypes()`
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::storeHash()`
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getHash()`
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getListGroupNames()`
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig()`
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::unsetMenuItems()`
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl()`
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getPidForModTSconfig()`
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getDomainStartPage()`
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::shortcutExists()`
+
+
 The following methods changed signature according to previous deprecations in v9 at the end of the argument list:
 
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->conv()` - Fourth argument dropped
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig()` - Second and third argument dropped
+
 
 The following public class properties have been dropped:
 
@@ -49,6 +68,11 @@ The following scheduler tasks have been removed:
 
 * EXT:workspaces CleanupPreviewLinkTask
 * EXT:workspaces AutoPublishTask
+
+The following user TSconfig options have been dropped:
+
+* Prefix `mod.` to override page TSconfig is ignored
+
 
 Impact
 ======

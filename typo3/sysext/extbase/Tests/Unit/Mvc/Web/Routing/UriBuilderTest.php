@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing;
  */
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -89,10 +88,6 @@ class UriBuilderTest extends UnitTestCase
         $router->addRoute('module_key', new Route('/test/Path', []));
         $router->addRoute('module_key2', new Route('/test/Path2', []));
         $router->addRoute('', new Route('', []));
-        // Mocking backend user is required for backend URI generation as BackendUtility::getModuleUrl() is called
-        $backendUserMock = $this->createMock(BackendUserAuthentication::class);
-        $backendUserMock->expects($this->any())->method('check')->will($this->returnValue(true));
-        $GLOBALS['BE_USER'] = $backendUserMock;
     }
 
     /**
