@@ -52,17 +52,6 @@ class LogoutController
 
     /**
      * Performs the logout processing
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function logout()
-    {
-        trigger_error('LogoutController->logout() will be replaced by protected method processLogout() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-        $this->processLogout();
-    }
-
-    /**
-     * Performs the logout processing
      */
     protected function processLogout(): void
     {

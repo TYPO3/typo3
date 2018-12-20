@@ -174,26 +174,12 @@ class LoginController implements LoggerAwareInterface
     /**
      * Main function - creating the login/logout form
      *
-     * @throws Exception
-     * @return string The content to output
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function main(): string
-    {
-        trigger_error('LoginController->main() will be replaced by protected method createLoginLogoutForm() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-        return $this->createLoginLogoutForm($GLOBALS['TYPO3_REQUEST']);
-    }
-
-    /**
-     * Main function - creating the login/logout form
-     *
      * @param ServerRequestInterface $request
      * @return string $content
      * @throws Exception
      */
     protected function createLoginLogoutForm(ServerRequestInterface $request): string
     {
-        /** @var PageRenderer $pageRenderer */
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Login');
 
@@ -373,17 +359,6 @@ class LoginController implements LoggerAwareInterface
             $formProtection->storeSessionTokenInRegistry();
             $this->redirectToUrl();
         }
-    }
-
-    /**
-     * Making interface selector
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function makeInterfaceSelectorBox(): void
-    {
-        trigger_error('LoginController->makeInterfaceSelectorBox() will be replaced by protected method makeInterfaceSelector() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-        $this->makeInterfaceSelector($GLOBALS['TYPO3_REQUEST']);
     }
 
     /**

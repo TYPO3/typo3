@@ -2666,7 +2666,6 @@ class DatabaseRecordList
      *
      * @param string $table Table name
      * @return bool Returns TRUE if a link for creating new records should be displayed for $table
-     * @see \TYPO3\CMS\Backend\Controller\NewRecordController::showNewRecLink
      */
     public function showNewRecLink($table)
     {

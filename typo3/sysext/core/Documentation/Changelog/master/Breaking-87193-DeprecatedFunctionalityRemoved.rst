@@ -191,6 +191,19 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->openInNewWindowLink()`
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->setDocument()`
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->shortCutLink()`
+* :php:`TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->initPage()`
+* :php:`TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->main()`
+* :php:`TYPO3\CMS\Backend\Controller\LoginController->main()`
+* :php:`TYPO3\CMS\Backend\Controller\LoginController->makeInterfaceSelectorBox()`
+* :php:`TYPO3\CMS\Backend\Controller\LogoutController->logout()`
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->isTableAllowedForThisPage()`
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->linkWrap()`
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->main()`
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->pagesonly()`
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->regularNew()`
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->showNewRecLink()`
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->sortNewRecordsByConfig()`
+* :php:`TYPO3\CMS\Backend\Controller\UserSettingsController->process()`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->initializeAdminPanel()`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->initializeFrontendEdit()`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->isFrontendEditingActive()`
@@ -483,6 +496,7 @@ The following public class properties have been dropped:
 
 The following class methods have changed visibility:
 
+* :php:`TYPO3\CMS\Backend\Controller\BackendController->render()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->closeDocument()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->compileForm()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->fixWSversioningInEditConf()` changed from public to protected
@@ -591,6 +605,28 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->viewId` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->viewId_addParams` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->viewUrl` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->content` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->foldertree` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->currentSubScript` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->cMR` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->allowedNewTables` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->allowedNewTables_pid` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->code` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->content` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->deniedNewTables` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->deniedNewTables_pid` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->newContentInto` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->newPagesAfter` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->newPagesInto` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->pageinfo` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->pagesOnly` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->perms_clause` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->pidInfo` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->R_URI` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->returnUrl` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->tRows` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->web_list_modTSconfig` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\NewRecordController->web_list_modTSconfig_pid` changed from public to protected
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->checkWorkspaceCurrent_cache` changed from public to protected
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->TSdataArray` changed from public to protected
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTS` changed from public to protected

@@ -2166,6 +2166,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84273-ProtectedMethodsAndPropertiesInFileSystemNavigationFrameController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\LogoutController->logout' => [
@@ -2173,6 +2174,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84275-ProtectedMethodInLogoutController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->getLabelForTableColumn' => [
@@ -2194,6 +2196,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84274-ProtectedMethodsAndPropertiesInLoginController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\FileUploadController->renderUploadForm' => [

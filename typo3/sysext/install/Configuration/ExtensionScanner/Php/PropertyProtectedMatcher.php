@@ -297,16 +297,19 @@ return [
     'TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->foldertree' => [
         'restFiles' => [
             'Deprecation-84273-ProtectedMethodsAndPropertiesInFileSystemNavigationFrameController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->currentSubScript' => [
         'restFiles' => [
             'Deprecation-84273-ProtectedMethodsAndPropertiesInFileSystemNavigationFrameController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->cMR' => [
         'restFiles' => [
             'Deprecation-84273-ProtectedMethodsAndPropertiesInFileSystemNavigationFrameController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->sys_language' => [
@@ -447,76 +450,91 @@ return [
     'TYPO3\CMS\Backend\Controller\NewRecordController->pidInfo' => [
         'restFiles' => [
             'Deprecation-84341-ProtectedMethodsAndPropertiesInNewRecordController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\NewRecordController->newPagesInto' => [
         'restFiles' => [
             'Deprecation-84341-ProtectedMethodsAndPropertiesInNewRecordController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\NewRecordController->newContentInto' => [
         'restFiles' => [
             'Deprecation-84341-ProtectedMethodsAndPropertiesInNewRecordController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\NewRecordController->newPagesAfter' => [
         'restFiles' => [
             'Deprecation-84341-ProtectedMethodsAndPropertiesInNewRecordController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\NewRecordController->web_list_modTSconfig' => [
         'restFiles' => [
             'Deprecation-84341-ProtectedMethodsAndPropertiesInNewRecordController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\NewRecordController->allowedNewTables' => [
         'restFiles' => [
             'Deprecation-84341-ProtectedMethodsAndPropertiesInNewRecordController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\NewRecordController->deniedNewTables' => [
         'restFiles' => [
             'Deprecation-84341-ProtectedMethodsAndPropertiesInNewRecordController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\NewRecordController->web_list_modTSconfig_pid' => [
         'restFiles' => [
             'Deprecation-84341-ProtectedMethodsAndPropertiesInNewRecordController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\NewRecordController->allowedNewTables_pid' => [
         'restFiles' => [
             'Deprecation-84341-ProtectedMethodsAndPropertiesInNewRecordController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\NewRecordController->deniedNewTables_pid' => [
         'restFiles' => [
             'Deprecation-84341-ProtectedMethodsAndPropertiesInNewRecordController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\NewRecordController->code' => [
         'restFiles' => [
             'Deprecation-84341-ProtectedMethodsAndPropertiesInNewRecordController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\NewRecordController->R_URI' => [
         'restFiles' => [
             'Deprecation-84341-ProtectedMethodsAndPropertiesInNewRecordController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\NewRecordController->returnUrl' => [
         'restFiles' => [
             'Deprecation-84341-ProtectedMethodsAndPropertiesInNewRecordController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\NewRecordController->pagesOnly' => [
         'restFiles' => [
             'Deprecation-84341-ProtectedMethodsAndPropertiesInNewRecordController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\NewRecordController->tRows' => [
         'restFiles' => [
             'Deprecation-84341-ProtectedMethodsAndPropertiesInNewRecordController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\Wizard\EditController->doClose' => [

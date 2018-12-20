@@ -24,7 +24,6 @@ use TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView;
 use TYPO3\CMS\Backend\Tree\View\PagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -34,7 +33,6 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
@@ -44,32 +42,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class NewRecordController
 {
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * @var array
-     */
-    protected $deprecatedPublicProperties = [
-        'pageinfo' => 'Using $pageinfo of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
-        'pidInfo' => 'Using $pidInfo of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
-        'newPagesInto' => 'Using $newPagesInto of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
-        'newContentInto' => 'Using $newContentInto of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
-        'newPagesAfter' => 'Using $newPagesAfter of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
-        'web_list_modTSconfig' => 'Using $web_list_modTSconfig of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
-        'allowedNewTables' => 'Using $allowedNewTables of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
-        'deniedNewTables' => 'Using $deniedNewTables of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
-        'web_list_modTSconfig_pid' => 'Using $web_list_modTSconfig_pid of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
-        'allowedNewTables_pid' => 'Using $allowedNewTables_pid of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
-        'deniedNewTables_pid' => 'Using $deniedNewTables_pid of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
-        'code' => 'Using $code of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
-        'R_URI' => 'Using $R_URI of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
-        'returnUrl' => 'Using $returnUrl of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
-        'pagesOnly' => 'Using $pagesOnly of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
-        'perms_clause' => 'Using $perms_clause of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
-        'content' => 'Using $content of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
-        'tRows' => 'Using $tRows of class NewRecordController from outside is discouraged as this variable is only used for internal storage.',
-    ];
-
     /**
      * @var array
      */
@@ -201,9 +173,6 @@ class NewRecordController
 
         // @see \TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView::expandNext()
         $GLOBALS['SOBE'] = $this;
-
-        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
-        $this->init($GLOBALS['TYPO3_REQUEST']);
     }
 
     /**
@@ -215,6 +184,7 @@ class NewRecordController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->init($request);
         $response = $this->renderContent($request);
 
         if (empty($response)) {
@@ -222,109 +192,6 @@ class NewRecordController
         }
 
         return $response;
-    }
-
-    /**
-     * Main processing, creating the list of new record tables to select from
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function main()
-    {
-        trigger_error('NewRecordController->main() will be replaced by protected method renderContent() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-
-        $response = $this->renderContent($GLOBALS['TYPO3_REQUEST']);
-
-        if ($response instanceof RedirectResponse) {
-            HttpUtility::redirect($response->getHeaders()['location'][0]);
-        }
-    }
-
-    /**
-     * Creates the position map for pages wizard
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function pagesOnly()
-    {
-        trigger_error('NewRecordController->pagesOnly() will be replaced by protected method renderPositionTree() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-        $this->renderPositionTree();
-    }
-
-    /**
-     * Create a regular new element (pages and records)
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function regularNew()
-    {
-        trigger_error('NewRecordController->regularNew() will be replaced by protected method renderNewRecordControls() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-        $this->renderNewRecordControls($GLOBALS['TYPO3_REQUEST']);
-    }
-
-    /**
-     * User array sort function used by renderNewRecordControls
-     *
-     * @param string $a First array element for compare
-     * @param string $b First array element for compare
-     * @return int -1 for lower, 0 for equal, 1 for greater
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function sortNewRecordsByConfig($a, $b)
-    {
-        trigger_error('NewRecordController->sortNewRecordsByConfig() will be replaced by protected method sortTableRows() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-        return $this->sortTableRows($a, $b);
-    }
-
-    /**
-     * Links the string $code to a create-new form for a record in $table created on page $pid
-     *
-     * @param string $linkText Link text
-     * @param string $table Table name (in which to create new record)
-     * @param int $pid PID value for the "&edit['.$table.']['.$pid.']=new" command (positive/negative)
-     * @param bool $addContentTable If $addContentTable is set, then a new tt_content record is created together with pages
-     * @return string The link.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function linkWrap($linkText, $table, $pid, $addContentTable = false)
-    {
-        trigger_error('NewRecordController->linkWrap() will be replaced by protected method renderLink() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-        return $this->renderLink($linkText, $table, $pid, $addContentTable);
-    }
-
-    /**
-     * Returns TRUE if the tablename $checkTable is allowed to be created on the page with record $pid_row
-     *
-     * @param array $pid_row Record for parent page.
-     * @param string $checkTable Table name to check
-     * @return bool Returns TRUE if the tablename $checkTable is allowed to be created on the page with record $pid_row
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function isTableAllowedForThisPage($pid_row, $checkTable)
-    {
-        trigger_error('NewRecordController->isTableAllowedForThisPage() will be replaced by protected method isTableAllowedOnPage() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-        return $this->isTableAllowedOnPage($checkTable, $pid_row);
-    }
-
-    /**
-     * Returns TRUE if:
-     * - $allowedNewTables and $deniedNewTables are empty
-     * - the table is not found in $deniedNewTables and $allowedNewTables is not set or the $table tablename is found in
-     *   $allowedNewTables
-     *
-     * If $table tablename is found in $allowedNewTables and $deniedNewTables, $deniedNewTables
-     * has priority over $allowedNewTables.
-     *
-     * @param string $table Table name to test if in allowedTables
-     * @param array $allowedNewTables Array of new tables that are allowed.
-     * @param array $deniedNewTables Array of new tables that are not allowed.
-     * @return bool Returns TRUE if a link for creating new records should be displayed for $table
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function showNewRecLink($table, array $allowedNewTables = [], array $deniedNewTables = [])
-    {
-        trigger_error('NewRecordController->showNewRecLink() will be replaced by protected method isRecordCreationAllowedForTable() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-        return $this->isRecordCreationAllowedForTable($table, $allowedNewTables, $deniedNewTables);
     }
 
     /**

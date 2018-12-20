@@ -29,19 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class UserSettingsController
 {
     /**
-     * @var BackendUserConfiguration
-     */
-    protected $backendUserConfiguration;
-
-    /**
-     * Initializes the backendUserConfiguration
-     */
-    public function __construct()
-    {
-        $this->backendUserConfiguration = GeneralUtility::makeInstance(BackendUserConfiguration::class);
-    }
-
-    /**
      * Processes all AJAX calls and returns a JSON for the data
      *
      * @param ServerRequestInterface $request
@@ -53,68 +40,37 @@ class UserSettingsController
         $action = $request->getParsedBody()['action'] ?? $request->getQueryParams()['action'] ?? '';
         $key = $request->getParsedBody()['key'] ?? $request->getQueryParams()['key'] ?? '';
         $value = $request->getParsedBody()['value'] ?? $request->getQueryParams()['value'] ?? '';
-        $data = $this->processRequest($action, $key, $value);
-
-        return (new JsonResponse())->setPayload($data);
-    }
-
-    /**
-     * Process data
-     *
-     * @param string $action
-     * @param string $key
-     * @param string $value
-     * @return mixed
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function process($action, $key = '', $value = '')
-    {
-        trigger_error('UserSettingsController->process() will be replaced by protected method processRequest() in TYPO3 v10.0. Do not call from other extensions.', E_USER_DEPRECATED);
-        return $this->processRequest($action, $key, $value);
-    }
-
-    /**
-     * Process data
-     *
-     * @param string $action
-     * @param string $key
-     * @param mixed $value
-     * @return mixed
-     */
-    protected function processRequest(string $action, string $key = '', $value = '')
-    {
+        $backendUserConfiguration = GeneralUtility::makeInstance(BackendUserConfiguration::class);
         switch ($action) {
             case 'get':
-                $content = $this->backendUserConfiguration->get($key);
+                $content = $backendUserConfiguration->get($key);
                 break;
             case 'getAll':
-                $content = $this->backendUserConfiguration->getAll();
+                $content = $backendUserConfiguration->getAll();
                 break;
             case 'set':
-                $this->backendUserConfiguration->set($key, $value);
-                $content = $this->backendUserConfiguration->getAll();
+                $backendUserConfiguration->set($key, $value);
+                $content = $backendUserConfiguration->getAll();
                 break;
             case 'addToList':
-                $this->backendUserConfiguration->addToList($key, $value);
-                $content = $this->backendUserConfiguration->getAll();
+                $backendUserConfiguration->addToList($key, $value);
+                $content = $backendUserConfiguration->getAll();
                 break;
             case 'removeFromList':
-                $this->backendUserConfiguration->removeFromList($key, $value);
-                $content = $this->backendUserConfiguration->getAll();
+                $backendUserConfiguration->removeFromList($key, $value);
+                $content = $backendUserConfiguration->getAll();
                 break;
             case 'unset':
-                $this->backendUserConfiguration->unsetOption($key);
-                $content = $this->backendUserConfiguration->getAll();
+                $backendUserConfiguration->unsetOption($key);
+                $content = $backendUserConfiguration->getAll();
                 break;
             case 'clear':
-                $this->backendUserConfiguration->clear();
+                $backendUserConfiguration->clear();
                 $content = ['result' => true];
                 break;
             default:
                 $content = ['result' => false];
         }
-
-        return $content;
+        return (new JsonResponse())->setPayload($content);
     }
 }

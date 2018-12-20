@@ -20,7 +20,6 @@ use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
@@ -41,15 +40,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class BackendController
 {
-    use PublicMethodDeprecationTrait;
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicMethods = [
-        'render' => 'Using BackendController::render() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-    ];
-
     /**
      * @var string
      */
