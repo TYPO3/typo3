@@ -19,14 +19,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -38,42 +34,6 @@ use TYPO3\CMS\Taskcenter\TaskInterface;
  */
 class TaskModuleController
 {
-    use PublicPropertyDeprecationTrait;
-    use PublicMethodDeprecationTrait;
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicProperties = [
-        'MCONF' => 'Using TaskModuleController::$MCONF is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'id' => 'Using TaskModuleController::$id is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'MOD_MENU' => 'Using TaskModuleController::$MOD_MENU is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'modMenu_type' => 'Using TaskModuleController::$modMenu_type is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'modMenu_setDefaultList' => 'Using TaskModuleController::$$modMenu_setDefaultList is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'modMenu_dontValidateList' => 'Using TaskModuleController::$modMenu_dontValidateList is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'content' => 'Using TaskModuleController::$content is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'perms_clause' => 'Using TaskModuleController::$perms_clause is deprecated, the property will be removed in TYPO3 v10.0.',
-        'CMD' => 'Using TaskModuleController::$CMD is deprecated, the property will be removed in TYPO3 v10.0.',
-        'extClassConf' => 'Using TaskModuleController::$extClassConf is deprecated, the property will be removed in TYPO3 v10.0.',
-        'extObj' => 'Using TaskModuleController::$extObj is deprecated, the property will be removed in TYPO3 v10.0.',
-    ];
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicMethods = [
-        'menuConfig' => 'Using TaskModuleController::menuConfig() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'mergeExternalItems' => 'Using TaskModuleController::mergeExternalItems() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'handleExternalFunctionValue' => 'Using TaskModuleController::handleExternalFunctionValue() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'getExternalItemConfig' => 'Using TaskModuleController::getExternalItemConfig() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'main' => 'Using TaskModuleController::main() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'urlInIframe' => 'Using TaskModuleController::urlInIframe() is deprecated. The method will be removed in TYPO3 v10.0.',
-        'extObjHeader' => 'Using TaskModuleController::extObjHeader() is deprecated. The method will be removed in TYPO3 v10.0.',
-        'checkSubExtObj' => 'Using TaskModuleController::checkSubExtObj() is deprecated. The method will be removed in TYPO3 v10.0.',
-        'checkExtObj' => 'Using TaskModuleController::checkExtObj() is deprecated. The method will be removed in TYPO3 v10.0.',
-        'extObjContent' => 'Using TaskModuleController::extObjContent() is deprecated. The method will be removed in TYPO3 v10.0.',
-        'getExtObjContent' => 'Using TaskModuleController::getExtObjContent() is deprecated. The method will be removed in TYPO3 v10.0.',
-    ];
 
     /**
      * Loaded with the global array $MCONF which holds some module configuration from the conf.php file of backend modules.
@@ -90,24 +50,6 @@ class TaskModuleController
      * @var int
      */
     protected $id;
-
-    /**
-     * The value of GET/POST var, 'CMD'
-     *
-     * @see init()
-     * @var mixed
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $CMD;
-
-    /**
-     * A WHERE clause for selection records from the pages table based on read-permissions of the current backend user.
-     *
-     * @see init()
-     * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $perms_clause;
 
     /**
      * The module menu items array. Each key represents a key for which values can range between the items in the array of that key.
@@ -165,29 +107,11 @@ class TaskModuleController
     protected $modMenu_setDefaultList = '';
 
     /**
-     * Contains module configuration parts from TBE_MODULES_EXT if found
-     *
-     * @see handleExternalFunctionValue()
-     * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $extClassConf;
-
-    /**
      * Generally used for accumulating the output content of backend modules
      *
      * @var string
      */
     protected $content = '';
-
-    /**
-     * May contain an instance of a 'Function menu module' which connects to this backend module.
-     *
-     * @see checkExtObj()
-     * @var \object
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $extObj;
 
     /**
      * @var array
@@ -223,12 +147,7 @@ class TaskModuleController
             $this->MCONF = $GLOBALS['MCONF'];
         }
         $this->id = (int)GeneralUtility::_GP('id');
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-        $this->CMD = GeneralUtility::_GP('CMD');
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-        $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
         $this->menuConfig();
-        $this->handleExternalFunctionValue();
     }
 
     /**
@@ -307,9 +226,6 @@ class TaskModuleController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-        $GLOBALS['SOBE'] = $this;
-
         $this->main();
         $this->moduleTemplate->setContent($this->content);
         return new HtmlResponse($this->moduleTemplate->renderContent());
@@ -623,23 +539,6 @@ class TaskModuleController
     }
 
     /**
-     * Returns HTML code to dislay an url in an iframe at the right side of the taskcenter
-     *
-     * @param string $url Url to display
-     * @return string Code that inserts the iframe (HTML)
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remember to remove the fluid template, too.
-     */
-    protected function urlInIframe($url)
-    {
-        $urlView = GeneralUtility::makeInstance(StandaloneView::class);
-        $urlView->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:taskcenter/Resources/Private/Partials/UrlInIframe.html'
-        ));
-        $urlView->assign('url', $url);
-        return $urlView->render();
-    }
-
-    /**
      * Create a unique key from a string which can be used in JS for sorting
      * Therefore '_' are replaced
      *
@@ -704,133 +603,5 @@ class TaskModuleController
             }
         }
         return $menuArr;
-    }
-
-    /**
-     * Loads $this->extClassConf with the configuration for the CURRENT function of the menu.
-     *
-     * @param string $MM_key The key to MOD_MENU for which to fetch configuration. 'function' is default since it is first and foremost used to get information per "extension object" (I think that is what its called)
-     * @param string $MS_value The value-key to fetch from the config array. If NULL (default) MOD_SETTINGS[$MM_key] will be used. This is useful if you want to force another function than the one defined in MOD_SETTINGS[function]. Call this in init() function of your Script Class: handleExternalFunctionValue('function', $forcedSubModKey)
-     * @see getExternalItemConfig(), init()
-     */
-    protected function handleExternalFunctionValue($MM_key = 'function', $MS_value = null)
-    {
-        if ($MS_value === null) {
-            $MS_value = $this->MOD_SETTINGS[$MM_key];
-        }
-        $this->extClassConf = $this->getExternalItemConfig($this->MCONF['name'], $MM_key, $MS_value);
-    }
-
-    /**
-     * Returns configuration values from the global variable $TBE_MODULES_EXT for the module given.
-     * For example if the module is named "web_info" and the "function" key ($menuKey) of MOD_SETTINGS is "stat" ($value) then you will have the values of $TBE_MODULES_EXT['webinfo']['MOD_MENU']['function']['stat'] returned.
-     *
-     * @param string $modName Module name
-     * @param string $menuKey Menu key, eg. "function" for the function menu. See $this->MOD_MENU
-     * @param string $value Optionally the value-key to fetch from the array that would otherwise have been returned if this value was not set. Look source...
-     * @return mixed The value from the TBE_MODULES_EXT array.
-     * @see handleExternalFunctionValue()
-     */
-    protected function getExternalItemConfig($modName, $menuKey, $value = '')
-    {
-        if (isset($GLOBALS['TBE_MODULES_EXT'][$modName])) {
-            return (string)$value !== '' ? $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey][$value] : $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
-        }
-        return null;
-    }
-
-    /**
-     * Creates an instance of the class found in $this->extClassConf['name'] in $this->extObj if any (this should hold three keys, "name", "path" and "title" if a "Function menu module" tries to connect...)
-     * This value in extClassConf might be set by an extension (in an ext_tables/ext_localconf file) which thus "connects" to a module.
-     * The array $this->extClassConf is set in handleExternalFunctionValue() based on the value of MOD_SETTINGS[function]
-     * If an instance is created it is initiated with $this passed as value and $this->extClassConf as second argument. Further the $this->MOD_SETTING is cleaned up again after calling the init function.
-     *
-     * @see handleExternalFunctionValue(), \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), $extObj
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function checkExtObj()
-    {
-        if (is_array($this->extClassConf) && $this->extClassConf['name']) {
-            $this->extObj = GeneralUtility::makeInstance($this->extClassConf['name']);
-            $this->extObj->init($this, $this->extClassConf);
-            // Re-write:
-            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
-        }
-    }
-
-    /**
-     * Calls the checkExtObj function in sub module if present.
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function checkSubExtObj()
-    {
-        if (is_object($this->extObj)) {
-            $this->extObj->checkExtObj();
-        }
-    }
-
-    /**
-     * Calls the 'header' function inside the "Function menu module" if present.
-     * A header function might be needed to add JavaScript or other stuff in the head. This can't be done in the main function because the head is already written.
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function extObjHeader()
-    {
-        if (is_callable([$this->extObj, 'head'])) {
-            $this->extObj->head();
-        }
-    }
-
-    /**
-     * Calls the 'main' function inside the "Function menu module" if present
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function extObjContent()
-    {
-        if ($this->extObj === null) {
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
-                $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:no_modules_registered'),
-                $this->getLanguageService()->getLL('title'),
-                FlashMessage::ERROR
-            );
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
-            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-            $defaultFlashMessageQueue->enqueue($flashMessage);
-        } else {
-            $this->extObj->pObj = $this;
-            if (is_callable([$this->extObj, 'main'])) {
-                $this->content .= $this->extObj->main();
-            }
-        }
-    }
-
-    /**
-     * Return the content of the 'main' function inside the "Function menu module" if present
-     *
-     * @return string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function getExtObjContent()
-    {
-        $savedContent = $this->content;
-        $this->content = '';
-        $this->extObjContent();
-        $newContent = $this->content;
-        $this->content = $savedContent;
-        return $newContent;
-    }
-
-    /**
-     * @return PageRenderer
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function getPageRenderer(): PageRenderer
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }
