@@ -62,16 +62,15 @@ class NodeVisitor extends NodeVisitorAbstract
                     'env',
                     // PHPCheckStyle
                     'SuppressWarnings', 'noinspection',
-                    // Extbase related (deprecated), will be removed in TYPO3 v10.0
-                    'transient',
-                    'cli', // this is still used in Extbase\Tests\UnitDeprecated
-                    'flushesCaches', // still used in MockCCommandController test fixture, will be removed in TYPO3 v10.0
                     // Extbase related
                     'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\IgnoreValidation', 'Extbase\\\\IgnoreValidation', 'IgnoreValidation',
                     'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\Inject', 'Extbase\\\\Inject', 'Inject',
                     'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\Validate', 'Extbase\\\\Validate', 'Validate',
-                    'Transient', 'Extbase\\\\ORM\\\\Lazy', 'Enum',
                     'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\ORM\\\\Cascade', 'Extbase\\\\ORM\\\\Cascade', 'Cascade',
+                    'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\ORM\\\\Lazy', 'Extbase\\\\ORM\\\\Lazy', 'Lazy',
+                    'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\ORM\\\\Transient', 'Extbase\\\\ORM\\\\Transient', 'Transient',
+                    // annotations shipped with doctrine/annotations
+                    'Doctrine\\\\Common\\\\Annotations\\\\Annotation\\\\Enum', 'Enum',
                     // Extension scanner
                     'extensionScannerIgnoreFile', 'extensionScannerIgnoreLine'
                 ];
@@ -102,8 +101,6 @@ $finder = new Symfony\Component\Finder\Finder();
 $finder->files()
     ->in(__DIR__ . '/../../typo3/')
     ->name('/\.php$/')
-    // black list some deprecated unit test fixture files that test old deprecations
-    ->notPath('/.*sysext\/extbase\/Tests\/UnitDeprecated\/Reflection\/Fixture/')
     // black list some unit test fixture files from extension scanner that test matchers of old annotations
     ->notName('MethodAnnotationMatcherFixture.php')
     ->notName('PropertyAnnotationMatcherFixture.php')

@@ -242,21 +242,6 @@ class Bootstrap
         /** @see initializeAnnotationRegistry */
         AnnotationRegistry::registerLoader([$classLoader, 'loadClass']);
 
-        /*
-         * All annotations defined by and for Extbase need to be
-         * ignored during their deprecation. Later, their usage may and
-         * should throw an Exception
-         */
-        AnnotationReader::addGlobalIgnoredName('inject');
-        AnnotationReader::addGlobalIgnoredName('transient');
-        AnnotationReader::addGlobalIgnoredName('lazy');
-        AnnotationReader::addGlobalIgnoredName('validate');
-        AnnotationReader::addGlobalIgnoredName('cascade');
-        AnnotationReader::addGlobalIgnoredName('cli');
-        AnnotationReader::addGlobalIgnoredName('flushesCaches');
-        AnnotationReader::addGlobalIgnoredName('uuid');
-        AnnotationReader::addGlobalIgnoredName('identity');
-
         // Annotations used in unit tests
         AnnotationReader::addGlobalIgnoredName('test');
 
