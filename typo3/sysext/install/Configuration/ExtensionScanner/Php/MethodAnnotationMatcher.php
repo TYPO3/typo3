@@ -10,6 +10,7 @@ return [
     '@cli' => [
         'restFiles' => [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

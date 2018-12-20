@@ -911,7 +911,8 @@ return [
     ],
     'TYPO3\CMS\Extensionmanager\Command\ExtensionCommandController' => [
         'restFiles' => [
-            'Deprecation-85996-ExtensionManagerCommandController.rst'
+            'Deprecation-85996-ExtensionManagerCommandController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject' => [
@@ -927,86 +928,103 @@ return [
     'TYPO3\CMS\Extbase\Command\CoreCommand' => [
         'restFiles' => [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Command\ExtbaseCommand' => [
         'restFiles' => [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Command\HelpCommand' => [
         'restFiles' => [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Command\HelpCommandController' => [
         'restFiles' => [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Cli\Command' => [
         'restFiles' => [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition' => [
         'restFiles' => [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Cli\CommandManager' => [
         'restFiles' => [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Cli\ConsoleOutput' => [
         'restFiles' => [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Cli\Request' => [
         'restFiles' => [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder' => [
         'restFiles' => [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Cli\RequestHandler' => [
         'restFiles' => [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\CommandController' => [
         'restFiles' => [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Exception\AmbiguousCommandIdentifierException' => [
         'restFiles' => [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Exception\CommandException' => [
         'restFiles' => [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Scheduler\FieldProvider' => [
         'restFiles' => [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Scheduler\Task' => [
         'restFiles' => [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Scheduler\TaskExecutor' => [
         'restFiles' => [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\Service\UserStorageCapabilityService' => [

@@ -33,6 +33,25 @@ The following PHP classes that have been previously deprecated for v9 have been 
 * :php:`TYPO3\CMS\Core\Resource\Utility\BackendUtility`
 * :php:`TYPO3\CMS\Core\Utility\ClientUtility`
 * :php:`TYPO3\CMS\Core\Utility\PhpOptionsUtility`
+* :php:`TYPO3\CMS\Extbase\Command\CoreCommand`
+* :php:`TYPO3\CMS\Extbase\Command\ExtbaseCommand`
+* :php:`TYPO3\CMS\Extbase\Command\HelpCommand`
+* :php:`TYPO3\CMS\Extbase\Command\HelpCommandController`
+* :php:`TYPO3\CMS\Extbase\Mvc\Cli\Command`
+* :php:`TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition`
+* :php:`TYPO3\CMS\Extbase\Mvc\Cli\CommandManager`
+* :php:`TYPO3\CMS\Extbase\Mvc\Cli\ConsoleOutput`
+* :php:`TYPO3\CMS\Extbase\Mvc\Cli\Request`
+* :php:`TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder`
+* :php:`TYPO3\CMS\Extbase\Mvc\Cli\RequestHandler`
+* :php:`TYPO3\CMS\Extbase\Mvc\Cli\Response`
+* :php:`TYPO3\CMS\Extbase\Mvc\Cli\Controller\CommandController`
+* :php:`TYPO3\CMS\Extbase\Mvc\Exception\AmbiguousCommandIdentifierException`
+* :php:`TYPO3\CMS\Extbase\Mvc\Exception\CommandException`
+* :php:`TYPO3\CMS\Extbase\Scheduler\FieldProvider`
+* :php:`TYPO3\CMS\Extbase\Scheduler\Task`
+* :php:`TYPO3\CMS\Extbase\Scheduler\TaskExecutor`
+* :php:`TYPO3\CMS\Extensionmanager\Command\ExtensionCommandController`
 * :php:`TYPO3\CMS\Frontend\Http\EidRequestHandler`
 * :php:`TYPO3\CMS\Frontend\Page\ExternalPageUrlHandler`
 * :php:`TYPO3\CMS\Frontend\Page\PageGenerator`
@@ -47,6 +66,7 @@ The following PHP classes that have been previously deprecated for v9 have been 
 The following PHP interfaces that have been previously deprecated for v9 have been removed:
 
 * :php:`TYPO3\CMS\Adminpanel\View\AdminPanelViewHookInterface`
+* :php:`TYPO3\CMS\Extbase\Mvc\Cli\Controller\CommandControllerInterface`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\ComposedPasswordHashInterface`
 * :php:`TYPO3\CMS\Frontend\Http\UrlHandlerInterface`
 
@@ -253,6 +273,9 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility->logDeprecatedViewHelperAttribute()`
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility->sysLog()`
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility->unQuoteFilenames()`
+* :php:`TYPO3\CMS\Extbase\Core\Bootstrap->configureObjectManager()`
+* :php:`TYPO3\CMS\Extbase\Service\EnvironmentService->isEnvironmentInCliMode`
+* :php:`TYPO3\CMS\Fluid\Core\Widget\Bootstrap->configureObjectManager()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->addParams()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->calcIntExplode()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->currentPageUrl()`
@@ -596,6 +619,7 @@ The following class properties have changed visibility:
 
 The following scheduler tasks have been removed:
 
+* EXT:extbase Task
 * EXT:workspaces CleanupPreviewLinkTask
 * EXT:workspaces AutoPublishTask
 
@@ -611,10 +635,12 @@ The following TypoScript options have been dropped:
 * `config.concatenateJsAndCss`
 * `config.titleTagFunction`
 * `config.typolinkCheckRootline`
+* `config.tx_extbase.objects`
 * `config.USERNAME_substToken`
 * `config.USERUID_substToken`
 * `page.javascriptLibs`
 * `page.javascriptLibs.jQuery`
+* `plugin.tx_%plugin%.objects`
 * `stdWrap.addParams`
 * `stdWrap.filelink`
 * `stdWrap.filelist`
@@ -699,9 +725,12 @@ The following database fields have been removed:
 
 The following php doc annotations have been removed:
 
-* `@inject`
 * `@cascade`
+* `@cli`
+* `@flushesCaches`
 * `@ignorevalidation`
+* `@inject`
+* `@internal`
 * `@lazy`
 
 Impact

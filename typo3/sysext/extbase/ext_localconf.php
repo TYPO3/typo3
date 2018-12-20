@@ -31,16 +31,4 @@ unset($extbaseObjectContainer);
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(\TYPO3\CMS\Extbase\Property\TypeConverter\StaticFileCollectionConverter::class);
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(\TYPO3\CMS\Extbase\Property\TypeConverter\FolderConverter::class);
 
-// register help command
-// @deprecated will be removed in TYPO3 v10.0. Use symfony/console commands instead
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = \TYPO3\CMS\Extbase\Command\HelpCommandController::class;
-
-// @deprecated will be removed in TYPO3 v10.0. Use symfony/console commands instead
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Extbase\Scheduler\Task::class] = [
-    'extension' => 'extbase',
-    'title' => 'LLL:EXT:extbase/Resources/Private/Language/locallang_db.xlf:task.name',
-    'description' => 'LLL:EXT:extbase/Resources/Private/Language/locallang_db.xlf:task.description',
-    'additionalFields' => \TYPO3\CMS\Extbase\Scheduler\FieldProvider::class
-];
-
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'][] = \TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue::class;

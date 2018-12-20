@@ -48,7 +48,6 @@ class Bootstrap
     {
         $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $this->initializeConfiguration($configuration);
-        $this->configureObjectManager(true);
         $ajaxWidgetContextHolder = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder::class);
         $widgetIdentifier = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('fluid-widget-id');
         $widgetContext = $ajaxWidgetContextHolder->get($widgetIdentifier);
@@ -72,32 +71,5 @@ class Bootstrap
         $contentObject = $this->cObj ?? \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
         $this->configurationManager->setContentObject($contentObject);
         $this->configurationManager->setConfiguration($configuration);
-    }
-
-    /**
-     * Configures the object manager object configuration from
-     * config.tx_extbase.objects
-     *
-     * @param $isInternalCall bool Set to true by Bootstrap, not by extensions
-     * @see initialize()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function configureObjectManager(bool $isInternalCall = false)
-    {
-        if (!$isInternalCall) {
-            trigger_error(self::class . '->configureObjectManager() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        }
-        $typoScriptSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-        if (!is_array($typoScriptSetup['config.']['tx_extbase.']['objects.'])) {
-            return;
-        }
-        trigger_error('Overriding object implementations via TypoScript settings config.tx_extbase.objects and plugin.tx_%plugin%.objects will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        $objectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\Container::class);
-        foreach ($typoScriptSetup['config.']['tx_extbase.']['objects.'] as $classNameWithDot => $classConfiguration) {
-            if (isset($classConfiguration['className'])) {
-                $originalClassName = rtrim($classNameWithDot, '.');
-                $objectContainer->registerImplementation($originalClassName, $classConfiguration['className']);
-            }
-        }
     }
 }

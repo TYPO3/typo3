@@ -3,8 +3,6 @@ config.tx_extbase {
 		requestHandlers {
 			TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler = TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler
 			TYPO3\CMS\Extbase\Mvc\Web\BackendRequestHandler = TYPO3\CMS\Extbase\Mvc\Web\BackendRequestHandler
-      // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Use symfony/console commands instead.
-			TYPO3\CMS\Extbase\Mvc\Cli\RequestHandler = TYPO3\CMS\Extbase\Mvc\Cli\RequestHandler
 		}
 		throwPageNotFoundExceptionIfActionCantBeResolved = 0
 	}

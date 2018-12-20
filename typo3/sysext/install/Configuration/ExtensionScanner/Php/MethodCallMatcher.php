@@ -2847,6 +2847,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-85807-EnvironmentServiceisEnvironmentInCliMode.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Saltedpasswords\Salt\Argon2iSalt->getOptions' => [
@@ -3523,6 +3524,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-86270-ExtbaseXclassViaTypoScriptSettings.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Fluid\Core\Widget\Bootstrap->configureObjectManager' => [
@@ -3530,6 +3532,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-86270-ExtbaseXclassViaTypoScriptSettings.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->checkBackendAccessSettingsFromInitPhp' => [

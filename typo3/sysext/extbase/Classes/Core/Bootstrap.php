@@ -18,8 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Extbase\Mvc\Cli\Response as CliResponse;
-use TYPO3\CMS\Extbase\Mvc\Web\Response as WebResponse;
+use TYPO3\CMS\Extbase\Mvc\Web\Response as ExtbaseResponse;
 
 /**
  * Creates a request an dispatches it to the controller which was specified
@@ -77,7 +76,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
         }
         $this->initializeObjectManager();
         $this->initializeConfiguration($configuration);
-        $this->configureObjectManager(true);
         $this->initializePersistence();
     }
 
@@ -108,33 +106,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     }
 
     /**
-     * Configures the object manager object configuration from
-     * config.tx_extbase.objects and plugin.tx_foo.objects
-     *
-     * @param bool $isInternalCall Set to true by Bootstrap, not by extensions
-     * @see initialize()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function configureObjectManager($isInternalCall = false)
-    {
-        if (!$isInternalCall) {
-            trigger_error(self::class . '::configureObjectManager() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        }
-        $frameworkSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        if (!isset($frameworkSetup['objects']) || !is_array($frameworkSetup['objects'])) {
-            return;
-        }
-        trigger_error('Overriding object implementations via TypoScript settings config.tx_extbase.objects and plugin.tx_%plugin%.objects will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        $objectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\Container::class);
-        foreach ($frameworkSetup['objects'] as $classNameWithDot => $classConfiguration) {
-            if (isset($classConfiguration['className'])) {
-                $originalClassName = rtrim($classNameWithDot, '.');
-                $objectContainer->registerImplementation($originalClassName, $classConfiguration['className']);
-            }
-        }
-    }
-
-    /**
      * Initializes the persistence framework
      *
      * @see initialize()
@@ -160,7 +131,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     }
 
     /**
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\CommandException Is thrown if the response object defined an exit code > 0
      * @return string
      */
     protected function handleRequest()
@@ -179,9 +149,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
             $content = $response->shutdown();
             $this->resetSingletons();
             $this->objectManager->get(\TYPO3\CMS\Extbase\Service\CacheService::class)->clearCachesOfRegisteredPageIds();
-            if ($response instanceof CliResponse && $response->getExitCode()) {
-                throw new \TYPO3\CMS\Extbase\Mvc\Exception\CommandException('The request has been terminated as the response defined an exit code.', $response->getExitCode());
-            }
         }
 
         return $content;
@@ -213,7 +180,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
         /** @var \TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver $requestHandlerResolver */
         $requestHandlerResolver = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver::class);
         $requestHandler = $requestHandlerResolver->resolveRequestHandler();
-        /** @var WebResponse $extbaseResponse */
+        /** @var ExtbaseResponse $extbaseResponse */
         $extbaseResponse = $requestHandler->handleRequest();
 
         // Convert to PSR-7 response and hand it back to TYPO3 Core
@@ -226,10 +193,10 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     /**
      * Converts a Extbase response object into a PSR-7 Response
      *
-     * @param WebResponse $extbaseResponse
+     * @param ExtbaseResponse $extbaseResponse
      * @return ResponseInterface
      */
-    protected function convertExtbaseResponseToPsr7Response(WebResponse $extbaseResponse): ResponseInterface
+    protected function convertExtbaseResponseToPsr7Response(ExtbaseResponse $extbaseResponse): ResponseInterface
     {
         $response = new \TYPO3\CMS\Core\Http\Response(
             'php://temp',
