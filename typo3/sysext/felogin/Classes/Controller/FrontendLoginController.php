@@ -1063,27 +1063,7 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
                     $site = $this->siteFinder->getSiteByPageId((int)$this->frontendController->id);
                     return $site->getBase()->getHost() === $host;
                 } catch (SiteNotFoundException $e) {
-
-                    // Removes the last path segment and slash sequences like /// (if given):
-                    $path = preg_replace('#/+[^/]*$#', '', $parsedUrl['path'] ?? '');
-
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_domain');
-                    $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
-                    $localDomains = $queryBuilder->select('domainName')
-                        ->from('sys_domain')
-                        ->execute()
-                        ->fetchAll();
-
-                    if (is_array($localDomains)) {
-                        foreach ($localDomains as $localDomain) {
-                            // strip trailing slashes (if given)
-                            $domainName = rtrim($localDomain['domainName'], '/');
-                            if (GeneralUtility::isFirstPartOfStr($host . $path . '/', $domainName . '/')) {
-                                $result = true;
-                                break;
-                            }
-                        }
-                    }
+                    // nothing found
                 }
             }
         }

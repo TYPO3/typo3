@@ -41,12 +41,10 @@ class SiteDataHandlerCacheHook
      */
     public function processDatamap_afterDatabaseOperations(string $status, string $table, $recordId, array $updatedFields, DataHandler $dataHandler)
     {
-        if ($table === 'sys_domain'
-            || $table === 'sys_language'
+        if ($table === 'sys_language'
             || ($status === 'new' && $table === 'pages' && (int)$updatedFields['pid'] === 0)
         ) {
             $this->getCache()->remove('pseudo-sites');
-            $this->getCache()->remove('legacy-domains');
             // After evicting caches, we need to make sure these are re-initialized within the
             // current request if needed. Easiest solution is to purge the SiteMatcher singleton.
             GeneralUtility::removeSingletonInstance(SiteMatcher::class, GeneralUtility::makeInstance(SiteMatcher::class));
@@ -66,9 +64,8 @@ class SiteDataHandlerCacheHook
      */
     public function processCmdmap_postProcess(string $command, string $table, $id, $value, DataHandler $dataHandler, $pasteUpdate, array $pasteDatamap)
     {
-        if ($table === 'sys_domain' || $table === 'sys_language') {
+        if ($table === 'sys_language') {
             $this->getCache()->remove('pseudo-sites');
-            $this->getCache()->remove('legacy-domains');
         }
     }
 

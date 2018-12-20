@@ -295,12 +295,11 @@ class ViewModuleController
      * Get domain name for requested page id
      *
      * @param int $pageId
-     * @return string|null Domain name from first sys_domains-Record or from TCEMAIN.previewDomain, NULL if neither is configured
+     * @return string|null Domain name from TCEMAIN.previewDomain, NULL if not configured
      */
     protected function getDomainName(int $pageId)
     {
-        $previewDomainConfig = BackendUtility::getPagesTSconfig($pageId)['TCEMAIN.']['previewDomain'] ?? '';
-        return $previewDomainConfig ?: BackendUtility::firstDomainRecord(BackendUtility::BEgetRootLine($pageId));
+        return BackendUtility::getPagesTSconfig($pageId)['TCEMAIN.']['previewDomain'] ?? '';
     }
 
     /**

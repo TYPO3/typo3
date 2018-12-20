@@ -118,16 +118,6 @@ CREATE TABLE pages_language_overlay (
 );
 
 #
-# Table structure for table 'sys_domain'
-#
-CREATE TABLE sys_domain (
-	domainName varchar(255) DEFAULT '' NOT NULL,
-
-	KEY getSysDomain (hidden),
-	KEY getDomainStartPage (pid,hidden,domainName(100))
-);
-
-#
 # Table structure for table 'sys_template'
 #
 CREATE TABLE sys_template (

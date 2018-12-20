@@ -26,8 +26,6 @@ entitySettings:
     tableName: 'tt_content'
     languageColumnNames: ['l18n_parent', 'l10n_source']
     columnNames: {title: 'header', type: 'CType'}
-  domain:
-    tableName: 'sys_domain'
   workspace:
     tableName: 'sys_workspace'
   language:
@@ -136,9 +134,6 @@ entities:
             - self: {id: 3110, title: 'EN: Markets', slug: '/archive/markets'}
             - self: {id: 3120, title: 'EN: Products', slug: '/archive/products'}
             - self: {id: 3130, title: 'EN: Partners', slug: '/archive/partners'}
-      entities:
-        domain:
-          - self: {domainName: 'archive.acme.com'}
     - self: {id: 7000, title: 'Common Collection', type: *pageFolder, slug: '/common'}
       children:
         - self: {id: 7100, title: 'Announcements & News', slug: '/common/news'}

@@ -828,7 +828,6 @@
         'SWORD_PARAMS': kw('SWORD_PARAMS'),
         'sword_standAlone': kw('sword_standAlone'),
         'sys_dmail': B,
-        'sys_domain': B,
         'sys_filemounts': B,
         'sys_language_mode': kw('sys_language_mode'),
         'sys_language_overlay': kw('sys_language_overlay'),

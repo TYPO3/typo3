@@ -14,9 +14,6 @@ namespace TYPO3\CMS\Core\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
-
 /**
  * Class to handle mail specific functionality
  */
@@ -75,40 +72,11 @@ class MailUtility
         // default, first check the localconf setting
         $address = $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'];
         if (!GeneralUtility::validEmail($address)) {
-            // just get us a domain record we can use as the host
-            $host = '';
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('sys_domain');
-
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
-
-            $domainRecord = $queryBuilder
-                ->select('domainName')
-                ->from('sys_domain')
-                ->orderBy('pid', 'ASC')
-                ->orderBy('sorting', 'ASC')
-                ->execute()
-                ->fetch();
-
-            if (!empty($domainRecord['domainName'])) {
-                $tempUrl = $domainRecord['domainName'];
-                if (!GeneralUtility::isFirstPartOfStr($tempUrl, 'http')) {
-                    // shouldn't be the case anyways, but you never know
-                    // ... there're crazy people out there
-                    $tempUrl = 'http://' . $tempUrl;
-                }
-                $host = parse_url($tempUrl, PHP_URL_HOST);
-            }
-            $address = 'no-reply@' . $host;
+            // still nothing, get host name from server
+            $address = 'no-reply@' . php_uname('n');
             if (!GeneralUtility::validEmail($address)) {
-                // still nothing, get host name from server
-                $address = 'no-reply@' . php_uname('n');
-                if (!GeneralUtility::validEmail($address)) {
-                    // if everything fails use a dummy address
-                    $address = 'no-reply@example.com';
-                }
+                // if everything fails use a dummy address
+                $address = 'no-reply@example.com';
             }
         }
         return $address;

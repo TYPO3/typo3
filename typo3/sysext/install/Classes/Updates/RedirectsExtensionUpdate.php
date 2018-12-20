@@ -129,6 +129,16 @@ class RedirectsExtensionUpdate extends AbstractDownloadExtensionUpdate
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $connection = $connectionPool->getConnectionByName('Default');
+        $tables = $connection->getSchemaManager()->listTables();
+        $tableExists = false;
+        foreach ($tables as $table) {
+            if (strtolower($table->getName()) === 'sys_domain') {
+                $tableExists = true;
+            }
+        }
+        if (!$tableExists) {
+            return false;
+        }
         $columns = $connection->getSchemaManager()->listTableColumns('sys_domain');
         if (isset($columns['redirectto'])) {
             // table is available, now check if there are entries in it

@@ -1147,7 +1147,6 @@ return [
                 fe_users.before = pages
                 sys_template.after = pages
                 backend_layout.after = pages
-                sys_domain.after = sys_template
                 tt_content.after = pages,backend_layout,sys_template
                 sys_category.after = tt_content
             }

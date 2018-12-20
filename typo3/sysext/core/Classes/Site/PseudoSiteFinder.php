@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Site\Entity\PseudoSite;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Frontend\Compatibility\LegacyDomainResolver;
 
 /**
  * Methods related to "pseudo-sites" = sites that do not have a configuration yet.
@@ -58,7 +57,7 @@ class PseudoSiteFinder
     }
 
     /**
-     * Fetches all site root pages, all sys_language and sys_domain records and forms pseudo-sites,
+     * Fetches all site root pages, all sys_language records and forms pseudo-sites,
      * but only for the pagetree's that do not have a site configuration available.
      */
     protected function populate()
@@ -66,33 +65,22 @@ class PseudoSiteFinder
         $data = $this->cache->get($this->cacheIdentifier);
         if (empty($data)) {
             $allLanguages = $this->getAllLanguageRecords();
-            $groupedDomains = GeneralUtility::makeInstance(LegacyDomainResolver::class)->getGroupedDomainsPerPage();
             $availablePages = $this->getAllRootPagesWithoutSiteConfiguration();
-            $this->cache->set($this->cacheIdentifier, json_encode([$allLanguages, $groupedDomains, $availablePages]));
+            $this->cache->set($this->cacheIdentifier, json_encode([$allLanguages, $availablePages]));
         } else {
             // Due to the nature of PhpFrontend, the `<?php` and `#` wraps have to be removed
             $data = preg_replace('/^<\?php\s*|\s*#$/', '', $data);
-            list($allLanguages, $groupedDomains, $availablePages) = json_decode($data, true);
+            list($allLanguages, $availablePages) = json_decode($data, true);
         }
 
         $this->pseudoSites = [];
         foreach ($availablePages as $row) {
             $rootPageId = (int)$row['uid'];
             $site = new PseudoSite($rootPageId, [
-                'domains' => $groupedDomains[$rootPageId] ?? [],
+                'domains' => [],
                 'languages' => $allLanguages
             ]);
-            unset($groupedDomains[$rootPageId]);
             $this->pseudoSites[$rootPageId] = $site;
-        }
-
-        // Now add the records where there is a sys_domain record but not configured as root page
-        foreach ($groupedDomains as $rootPageId => $domainRecords) {
-            $site = new PseudoSite((int)$rootPageId, [
-                'domains' => $domainRecords,
-                'languages' => $allLanguages
-            ]);
-            $this->pseudoSites[(int)$rootPageId] = $site;
         }
 
         // Now lets an empty Pseudo-Site for visiting things on pid=0

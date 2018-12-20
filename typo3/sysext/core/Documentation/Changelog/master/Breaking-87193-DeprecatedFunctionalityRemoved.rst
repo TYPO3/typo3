@@ -373,17 +373,18 @@ The following PHP class methods that have been previously deprecated for v9 have
 The following PHP static class methods that have been previously deprecated for v9 have been removed:
 
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause()`
-* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getOriginalTranslationTable()`
-* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getTCAtypes()`
-* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::storeHash()`
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::firstDomainRecord()`
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getDomainStartPage()`
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getHash()`
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getListGroupNames()`
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig()`
-* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::unsetMenuItems()`
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl()`
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getOriginalTranslationTable()`
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getPidForModTSconfig()`
-* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getDomainStartPage()`
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getTCAtypes()`
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::shortcutExists()`
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::storeHash()`
+* :php:`TYPO3\CMS\Backend\Utility\BackendUtility::unsetMenuItems()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory::determineSaltingHashingMethod()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory::getSaltingInstance()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory::setPreferredHashingMethod()`
@@ -896,6 +897,11 @@ The following features have been removed:
 * `eID` script targets cannot define a script path anymore:
   `$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['my_eID'] = 'EXT:benni/Scripts/download.php'` will not work anymore.
   Instead, they must contain a target (callable, class/method, function).
+
+
+The following database tables have been removed:
+
+* `sys_domain` - Use site configuration instead
 
 
 The following database fields have been removed:

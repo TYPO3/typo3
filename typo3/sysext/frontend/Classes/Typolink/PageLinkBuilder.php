@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Frontend\Compatibility\LegacyDomainResolver;
 use TYPO3\CMS\Frontend\ContentObject\TypolinkModifyLinkConfigForPageLinksHookInterface;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -407,14 +406,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         $enableLinksAcrossDomains = $tsfe->config['config']['typolinkEnableLinksAcrossDomains'];
         $targetDomain = '';
         $currentDomain = (string)GeneralUtility::getIndpEnv('HTTP_HOST');
-        if (!empty($MPvarAcc)) {
-            $domainResolver = GeneralUtility::makeInstance(LegacyDomainResolver::class);
-            $targetDomainRecord = $domainResolver->matchPageId((int)$page['uid'], $GLOBALS['TYPO3_REQUEST']);
-            // Do not prepend the domain if it is the current hostname
-            if (!empty($targetDomainRecord) && !$targetDomainRecord['isCurrentDomain']) {
-                $targetDomain = $targetDomainRecord['domainName'];
-            }
-        }
         $absoluteUrlScheme = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https' : 'http';
         // URL shall be absolute:
         if (isset($conf['forceAbsoluteUrl']) && $conf['forceAbsoluteUrl']) {

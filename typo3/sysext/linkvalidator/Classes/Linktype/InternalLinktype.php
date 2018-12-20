@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -337,15 +336,6 @@ class InternalLinktype extends AbstractLinktype
     public function getBrokenUrl($row)
     {
         $domain = rtrim(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), '/');
-        $rootLine = BackendUtility::BEgetRootLine($row['record_pid']);
-        // checks alternate domains
-        if (!empty($rootLine)) {
-            $protocol = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
-            $domainRecord = BackendUtility::firstDomainRecord($rootLine);
-            if (!empty($domainRecord)) {
-                $domain = $protocol . $domainRecord;
-            }
-        }
         return $domain . '/index.php?id=' . $row['url'];
     }
 }

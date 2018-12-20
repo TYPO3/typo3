@@ -15,13 +15,8 @@ namespace TYPO3\CMS\Redirects\Tests\Unit\FormDataProvider;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Doctrine\DBAL\Driver\Statement;
-use Prophecy\Prophecy\ObjectProphecy;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\FormDataProvider\ValuePickerItemDataProvider;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -61,18 +56,14 @@ class ValuePickerItemDataProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataAddsDomainNameAsKeyAndValueToRedirectValuePicker()
+    public function addDataAddsHostsAsKeyAndValueToRedirectValuePicker()
     {
-        $statementProphecy = $this->setUpDatabase();
-        $statementProphecy->fetchAll()->willReturn(
-            [
-                ['domainName' => 'bar.test'],
-                ['domainName' => 'foo.test'],
-            ]
-        );
         // no results for now
         $siteFinderProphecy = $this->prophesize(SiteFinder::class);
-        $siteFinderProphecy->getAllSites()->willReturn([]);
+        $siteFinderProphecy->getAllSites()->willReturn([
+            new Site('bar', 13, ['base' => 'bar.test']),
+            new Site('foo', 14, ['base' => 'foo.test'])
+        ]);
         $valuePickerItemDataProvider = new ValuePickerItemDataProvider($siteFinderProphecy->reveal());
         $actualResult = $valuePickerItemDataProvider->addData($this->sysRedirectResultSet);
         $expected = $this->sysRedirectResultSet;
@@ -86,33 +77,13 @@ class ValuePickerItemDataProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataDoesNotChangeResultSetIfNoSysDomainsAreFound()
+    public function addDataDoesNotChangeResultSetIfNoSitessAreFound()
     {
-        $statementProphecy = $this->setUpDatabase();
-        $statementProphecy->fetchAll()->willReturn([]);
         $siteFinderProphecy = $this->prophesize(SiteFinder::class);
         $siteFinderProphecy->getAllSites()->willReturn([]);
         $valuePickerItemDataProvider = new ValuePickerItemDataProvider($siteFinderProphecy->reveal());
         $actualResult = $valuePickerItemDataProvider->addData($this->sysRedirectResultSet);
 
         self::assertSame($this->sysRedirectResultSet, $actualResult);
-    }
-
-    /**
-     * @return \Doctrine\DBAL\Driver\Statement|\Prophecy\Prophecy\ObjectProphecy
-     */
-    private function setUpDatabase(): ObjectProphecy
-    {
-        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphecy->getQueryBuilderForTable('sys_domain')->willReturn($queryBuilderProphecy->reveal());
-        $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
-        $queryBuilderProphecy->getRestrictions()->willReturn($queryRestrictionContainerProphecy->reveal());
-        $queryBuilderProphecy->select('domainName')->willReturn($queryBuilderProphecy->reveal());
-        $queryBuilderProphecy->from('sys_domain')->willReturn($queryBuilderProphecy->reveal());
-        $statementProphecy = $this->prophesize(Statement::class);
-        $queryBuilderProphecy->execute()->willReturn($statementProphecy->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
-        return $statementProphecy;
     }
 }

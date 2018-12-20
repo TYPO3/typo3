@@ -15,18 +15,10 @@ namespace TYPO3\CMS\Felogin\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Prophecy\Argument;
-use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\LoginType;
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -51,10 +43,7 @@ class FrontendLoginControllerTest extends UnitTestCase
      */
     protected $testSitePath;
 
-    /**
-     * @var string
-     */
-    protected $testTableName;
+    protected $resetSingletonInstances = true;
 
     /**
      * Set up
@@ -62,7 +51,6 @@ class FrontendLoginControllerTest extends UnitTestCase
     protected function setUp()
     {
         $GLOBALS['TSFE'] = new \stdClass();
-        $this->testTableName = 'sys_domain';
         $this->testHostName = 'hostname.tld';
         $this->testSitePath = '/';
         $this->accessibleFixture = $this->getAccessibleMock(\TYPO3\CMS\Felogin\Controller\FrontendLoginController::class, ['dummy']);
@@ -70,22 +58,12 @@ class FrontendLoginControllerTest extends UnitTestCase
         $this->accessibleFixture->_set('frontendController', $this->createMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class));
         $this->accessibleFixture->setLogger(new NullLogger());
 
+        $site = new Site('dummy', 1, ['base' => 'http://sub.domainhostname.tld/path/']);
         $mockedSiteFinder = $this->getAccessibleMock(SiteFinder::class, ['getSiteByPageId'], [], '', false, false);
-        $mockedSiteFinder->method('getSiteByPageId')->willThrowException(new SiteNotFoundException('Site not found', 1536819047));
+        $mockedSiteFinder->method('getSiteByPageId')->willReturn($site);
         $this->accessibleFixture->_set('siteFinder', $mockedSiteFinder);
 
         $this->setUpFakeSitePathAndHost();
-    }
-
-    /**
-     * Tear down
-     */
-    protected function tearDown()
-    {
-        // setUpDatabaseMock() prepares some instances via addInstance(), but not all
-        // tests use that instance. purgeInstances() removes left overs
-        GeneralUtility::purgeInstances();
-        parent::tearDown();
     }
 
     /**
@@ -95,42 +73,6 @@ class FrontendLoginControllerTest extends UnitTestCase
     {
         $_SERVER['ORIG_PATH_INFO'] = $_SERVER['PATH_INFO'] = $_SERVER['ORIG_SCRIPT_NAME'] = $_SERVER['SCRIPT_NAME'] = $this->testSitePath . TYPO3_mainDir;
         $_SERVER['HTTP_HOST'] = $this->testHostName;
-    }
-
-    /**
-     * Mock database
-     */
-    protected function setUpDatabaseMock()
-    {
-        /** @var Connection|ObjectProphecy $connection */
-        $connection = $this->prophesize(Connection::class);
-        $connection->getDatabasePlatform()->willReturn(new MockPlatform());
-        $connection->getExpressionBuilder()->willReturn(new ExpressionBuilder($connection->reveal()));
-        $connection->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
-
-        // TODO: This should rather be a functional test if we need a query builder
-        // or we should clean up the code itself to not need to mock internal behavior here
-        $queryBuilder = new QueryBuilder(
-            $connection->reveal(),
-            null,
-            new \Doctrine\DBAL\Query\QueryBuilder($connection->reveal())
-        );
-
-        /** @var \Doctrine\DBAL\Driver\Statement|ObjectProphecy $resultSet */
-        $resultSet = $this->prophesize(\Doctrine\DBAL\Driver\Statement::class);
-        $resultSet->fetchAll()->willReturn([
-            ['domainName' => 'domainhostname.tld'],
-            ['domainName' => 'otherhostname.tld/path'],
-            ['domainName' => 'sub.domainhostname.tld/path/']
-        ]);
-
-        /** @var ConnectionPool|ObjectProphecy $connectionPool */
-        $connectionPool = $this->prophesize(ConnectionPool::class);
-        $connectionPool->getQueryBuilderForTable('sys_domain')->willReturn($queryBuilder);
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
-
-        $connection->executeQuery('SELECT domainName FROM sys_domain', Argument::cetera())
-            ->willReturn($resultSet->reveal());
     }
 
     /**
@@ -179,10 +121,10 @@ class FrontendLoginControllerTest extends UnitTestCase
     public function validateRedirectUrlClearsUrlDataProvider()
     {
         return [
-            'absolute URL, hostname not in sys_domain, trailing slash' => ['http://badhost.tld/'],
-            'absolute URL, hostname not in sys_domain, no trailing slash' => ['http://badhost.tld'],
-            'absolute URL, subdomain in sys_domain, but main domain not, trailing slash' => ['http://domainhostname.tld.badhost.tld/'],
-            'absolute URL, subdomain in sys_domain, but main domain not, no trailing slash' => ['http://domainhostname.tld.badhost.tld'],
+            'absolute URL, hostname not in site, trailing slash' => ['http://badhost.tld/'],
+            'absolute URL, hostname not in site, no trailing slash' => ['http://badhost.tld'],
+            'absolute URL, subdomain in site, but main domain not, trailing slash' => ['http://domainhostname.tld.badhost.tld/'],
+            'absolute URL, subdomain in site, but main domain not, no trailing slash' => ['http://domainhostname.tld.badhost.tld'],
             'non http absolute URL 1' => ['its://domainhostname.tld/itunes/'],
             'non http absolute URL 2' => ['ftp://domainhostname.tld/download/'],
             'XSS attempt 1' => ['javascript:alert(123)'],
@@ -203,7 +145,6 @@ class FrontendLoginControllerTest extends UnitTestCase
      */
     public function validateRedirectUrlClearsUrl($url)
     {
-        $this->setUpDatabaseMock();
         $this->assertEquals('', $this->accessibleFixture->_call('validateRedirectUrl', $url));
     }
 
@@ -215,17 +156,11 @@ class FrontendLoginControllerTest extends UnitTestCase
     public function validateRedirectUrlKeepsCleanUrlDataProvider()
     {
         return [
-            'sane absolute URL' => ['http://domainhostname.tld/'],
-            'sane absolute URL with script' => ['http://domainhostname.tld/index.php?id=1'],
-            'sane absolute URL with realurl' => ['http://domainhostname.tld/foo/bar/foo.html'],
-            'sane absolute URL with homedir' => ['http://domainhostname.tld/~user/'],
-            'sane absolute URL with some strange chars encoded' => ['http://domainhostname.tld/~user/a%cc%88o%cc%88%c3%9fa%cc%82/foo.html'],
-            'sane absolute URL (domain record with path)' => ['http://otherhostname.tld/path/'],
-            'sane absolute URL with script (domain record with path)' => ['http://otherhostname.tld/path/index.php?id=1'],
-            'sane absolute URL with realurl (domain record with path)' => ['http://otherhostname.tld/path/foo/bar/foo.html'],
-            'sane absolute URL (domain record with path and slash)' => ['http://sub.domainhostname.tld/path/'],
-            'sane absolute URL with script (domain record with path slash)' => ['http://sub.domainhostname.tld/path/index.php?id=1'],
-            'sane absolute URL with realurl (domain record with path slash)' => ['http://sub.domainhostname.tld/path/foo/bar/foo.html'],
+            'sane absolute URL' => ['http://sub.domainhostname.tld/path/'],
+            'sane absolute URL with script' => ['http://sub.domainhostname.tld/path/index.php?id=1'],
+            'sane absolute URL with realurl' => ['http://sub.domainhostname.tld/path/foo/bar/foo.html'],
+            'sane absolute URL with homedir' => ['http://sub.domainhostname.tld/path/~user/'],
+            'sane absolute URL with some strange chars encoded' => ['http://sub.domainhostname.tld/path/~user/a%cc%88o%cc%88%c3%9fa%cc%82/foo.html'],
             'relative URL, no leading slash 1' => ['index.php?id=1'],
             'relative URL, no leading slash 2' => ['foo/bar/index.php?id=2'],
             'relative URL, leading slash, no realurl' => ['/index.php?id=1'],
@@ -240,7 +175,6 @@ class FrontendLoginControllerTest extends UnitTestCase
      */
     public function validateRedirectUrlKeepsCleanUrl($url)
     {
-        $this->setUpDatabaseMock();
         $this->assertEquals($url, $this->accessibleFixture->_call('validateRedirectUrl', $url));
     }
 
@@ -255,8 +189,6 @@ class FrontendLoginControllerTest extends UnitTestCase
             'absolute URL, missing subdirectory' => ['http://hostname.tld/'],
             'absolute URL, wrong subdirectory' => ['http://hostname.tld/hacker/index.php'],
             'absolute URL, correct subdirectory, no trailing slash' => ['http://hostname.tld/subdir'],
-            'absolute URL, correct subdirectory of sys_domain record, no trailing slash' => ['http://otherhostname.tld/path'],
-            'absolute URL, correct subdirectory of sys_domain record, no trailing slash, subdomain' => ['http://sub.domainhostname.tld/path'],
             'relative URL, leading slash, no path' => ['/index.php?id=1'],
             'relative URL, leading slash, wrong path' => ['/de/sub/site.html'],
             'relative URL, leading slash, slash only' => ['/'],
@@ -272,7 +204,6 @@ class FrontendLoginControllerTest extends UnitTestCase
     {
         $this->testSitePath = '/subdir/';
         $this->setUpFakeSitePathAndHost();
-        $this->setUpDatabaseMock();
         $this->assertEquals('', $this->accessibleFixture->_call('validateRedirectUrl', $url));
     }
 
@@ -287,8 +218,7 @@ class FrontendLoginControllerTest extends UnitTestCase
             'absolute URL, correct subdirectory' => ['http://hostname.tld/subdir/'],
             'absolute URL, correct subdirectory, realurl' => ['http://hostname.tld/subdir/de/imprint.html'],
             'absolute URL, correct subdirectory, no realurl' => ['http://hostname.tld/subdir/index.php?id=10'],
-            'absolute URL, correct subdirectory of sys_domain record' => ['http://otherhostname.tld/path/'],
-            'absolute URL, correct subdirectory of sys_domain record, subdomain' => ['http://sub.domainhostname.tld/path/'],
+            'absolute URL, correct subdirectory of site base' => ['http://sub.domainhostname.tld/path/'],
             'relative URL, no leading slash, realurl' => ['de/service/imprint.html'],
             'relative URL, no leading slash, no realurl' => ['index.php?id=1'],
             'relative nested URL, no leading slash, no realurl' => ['foo/bar/index.php?id=2']
@@ -304,7 +234,6 @@ class FrontendLoginControllerTest extends UnitTestCase
     {
         $this->testSitePath = '/subdir/';
         $this->setUpFakeSitePathAndHost();
-        $this->setUpDatabaseMock();
         $this->assertEquals($url, $this->accessibleFixture->_call('validateRedirectUrl', $url));
     }
 

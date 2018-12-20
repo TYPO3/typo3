@@ -45,7 +45,6 @@ use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\Entity\PseudoSite;
-use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
@@ -56,7 +55,6 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Frontend\Compatibility\LegacyDomainResolver;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -2636,15 +2634,6 @@ class BackendUtility
                 } else {
                     $domainName = $previewDomainConfig;
                 }
-            } else {
-                $domainResolver = GeneralUtility::makeInstance(LegacyDomainResolver::class);
-                foreach ($rootLine as $row) {
-                    $domainRecord = $domainResolver->matchRootPageId((int)$row['uid']);
-                    if (is_array($domainRecord)) {
-                        $domainName = rtrim($domainRecord['domainName'], '/');
-                        break;
-                    }
-                }
             }
             if ($domainName === null) {
                 // Fetch the "sys_domain" record: First, check for the given domain,
@@ -3282,26 +3271,6 @@ class BackendUtility
         // $TScID is the id of $table = pages, else it's the pid of the record.
         $TScID = $table === 'pages' && MathUtility::canBeInterpretedAsInteger($uid) ? $uid : $cPid;
         return [$TScID, $cPid];
-    }
-
-    /**
-     * Returns first found domain record "domainName" (without trailing slash) if found in the input $rootLine
-     *
-     * @param array $rootLine Root line array
-     * @return string|null Domain name or NULL
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. Use Link Generation / Router instead.
-     */
-    public static function firstDomainRecord($rootLine)
-    {
-        trigger_error('BackendUtility::firstDomainRecord() will be removed in TYPO3 v10.0. Use the new LigetDomainStartPagenk Generation functionality instead.', E_USER_DEPRECATED);
-        $domainResolver = GeneralUtility::makeInstance(LegacyDomainResolver::class);
-        foreach ($rootLine as $row) {
-            $domain = $domainResolver->matchRootPageId($row['uid']);
-            if (is_array($domain)) {
-                return rtrim($domain['domainName'], '/');
-            }
-        }
-        return null;
     }
 
     /**
