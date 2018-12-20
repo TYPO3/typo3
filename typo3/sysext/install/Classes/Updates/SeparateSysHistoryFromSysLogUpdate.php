@@ -151,7 +151,7 @@ class SeparateSysHistoryFromSysLogUpdate implements UpgradeWizardInterface
             ->execute();
 
         foreach ($result as $row) {
-            $logData = unserialize($row['log_data']);
+            $logData = (array)unserialize($row['log_data']);
             $store = GeneralUtility::makeInstance(
                 RecordHistoryStore::class,
                 RecordHistoryStore::USER_BACKEND,
