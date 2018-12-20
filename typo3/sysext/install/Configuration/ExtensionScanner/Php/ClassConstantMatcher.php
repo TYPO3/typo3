@@ -158,4 +158,14 @@ return [
             'Deprecation-86438-PageRenderer-loadJQuery.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Validation\ValidatorResolver::PATTERN_MATCH_VALIDATORS' => [
+        'restFiles' => [
+            'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Validation\ValidatorResolver::PATTERN_MATCH_VALIDATOROPTIONS' => [
+        'restFiles' => [
+            'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
 ];

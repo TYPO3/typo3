@@ -253,7 +253,6 @@ class PersistentObjectConverterTest extends UnitTestCase
         $mockClassSchema = $this->getMockBuilder(\TYPO3\CMS\Extbase\Reflection\ClassSchema::class)
             ->setConstructorArgs([\TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter\Fixtures\Query::class])
             ->getMock();
-        $mockClassSchema->expects($this->any())->method('getIdentityProperties')->will($this->returnValue(['key1' => 'someType']));
         $this->mockReflectionService->expects($this->any())->method('getClassSchema')->with('SomeType')->will($this->returnValue($mockClassSchema));
 
         $mockConstraint = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Comparison::class)->disableOriginalConstructor()->getMock();
@@ -336,11 +335,6 @@ class PersistentObjectConverterTest extends UnitTestCase
         $expectedObject = new \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSetters();
         $expectedObject->property1 = 'bar';
 
-        $this->mockReflectionService
-            ->expects($this->any())
-            ->method('getMethodParameters')
-            ->with(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSetters::class, '__construct')
-            ->will($this->throwException(new \ReflectionException('testing', 1476107618)));
         $configuration = $this->buildConfiguration([PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => true]);
         $result = $this->converter->convertFrom($source, \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSetters::class, $convertedChildProperties, $configuration);
         $this->assertEquals($expectedObject, $result);
@@ -361,7 +355,6 @@ class PersistentObjectConverterTest extends UnitTestCase
             'propertyNotExisting' => 'bar'
         ];
         $this->mockObjectManager->expects($this->any())->method('get')->with(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSetters::class)->will($this->returnValue($object));
-        $this->mockReflectionService->expects($this->any())->method('getMethodParameters')->with(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSetters::class, '__construct')->will($this->returnValue([]));
         $configuration = $this->buildConfiguration([PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => true]);
         $result = $this->converter->convertFrom($source, \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSetters::class, $convertedChildProperties, $configuration);
         $this->assertSame($object, $result);

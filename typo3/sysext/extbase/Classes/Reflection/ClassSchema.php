@@ -67,25 +67,11 @@ class ClassSchema
     protected $aggregateRoot = false;
 
     /**
-     * The name of the property holding the uuid of an entity, if any.
-     *
-     * @var string
-     */
-    protected $uuidPropertyName;
-
-    /**
      * Properties of the class which need to be persisted
      *
      * @var array
      */
     protected $properties = [];
-
-    /**
-     * The properties forming the identity of an object
-     *
-     * @var array
-     */
-    protected $identityProperties = [];
 
     /**
      * Indicates if the class is a singleton or not.
@@ -252,14 +238,6 @@ class ClassSchema
 
                 $this->properties[$propertyName]['type'] = $type['type'] ? ltrim($type['type'], '\\') : null;
                 $this->properties[$propertyName]['elementType'] = $type['elementType'] ? ltrim($type['elementType'], '\\') : null;
-            }
-
-            if ($docCommentParser->isTaggedWith('uuid')) {
-                $this->setUuidPropertyName($propertyName);
-            }
-
-            if ($docCommentParser->isTaggedWith('identity')) {
-                $this->markAsIdentityProperty($propertyName);
             }
         }
     }
@@ -431,30 +409,6 @@ class ClassSchema
     }
 
     /**
-     * Adds (defines) a specific property and its type.
-     *
-     * @param string $name Name of the property
-     * @param string $type Type of the property
-     * @param bool $lazy Whether the property should be lazy-loaded when reconstituting
-     * @param string $cascade Strategy to cascade the object graph.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function addProperty($name, $type, $lazy = false, $cascade = '')
-    {
-        trigger_error(
-            'This method will be removed in TYPO3 v10.0, properties will be automatically added on ClassSchema construction.',
-            E_USER_DEPRECATED
-        );
-        $type = TypeHandlingUtility::parseType($type);
-        $this->properties[$name] = [
-            'type' => $type['type'],
-            'elementType' => $type['elementType'],
-            'lazy' => $lazy,
-            'cascade' => $cascade
-        ];
-    }
-
-    /**
      * Returns the given property defined in this schema. Check with
      * hasProperty($propertyName) before!
      *
@@ -476,40 +430,6 @@ class ClassSchema
     public function getProperties()
     {
         return $this->properties;
-    }
-
-    /**
-     * Sets the model type of the class this schema is referring to.
-     *
-     * @param int $modelType The model type, one of the MODELTYPE_* constants.
-     * @throws \InvalidArgumentException
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function setModelType($modelType)
-    {
-        trigger_error(
-            'This method will be removed in TYPO3 v10.0, modelType will be automatically set on ClassSchema construction.',
-            E_USER_DEPRECATED
-        );
-        if ($modelType < self::MODELTYPE_ENTITY || $modelType > self::MODELTYPE_VALUEOBJECT) {
-            throw new \InvalidArgumentException('"' . $modelType . '" is an invalid model type.', 1212519195);
-        }
-        $this->modelType = $modelType;
-    }
-
-    /**
-     * Returns the model type of the class this schema is referring to.
-     *
-     * @return int The model type, one of the MODELTYPE_* constants.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function getModelType()
-    {
-        trigger_error(
-            'This method will be removed in TYPO3 v10.0.',
-            E_USER_DEPRECATED
-        );
-        return $this->modelType;
     }
 
     /**
@@ -543,80 +463,6 @@ class ClassSchema
     public function hasProperty($propertyName): bool
     {
         return array_key_exists($propertyName, $this->properties);
-    }
-
-    /**
-     * Sets the property marked as uuid of an object with @uuid
-     *
-     * @param string $propertyName
-     * @throws \InvalidArgumentException
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function setUuidPropertyName($propertyName)
-    {
-        trigger_error(
-            'Tagging properties with @uuid is deprecated and will be removed in TYPO3 v10.0.',
-            E_USER_DEPRECATED
-        );
-        if (!array_key_exists($propertyName, $this->properties)) {
-            throw new \InvalidArgumentException('Property "' . $propertyName . '" must be added to the class schema before it can be marked as UUID property.', 1233863842);
-        }
-        $this->uuidPropertyName = $propertyName;
-    }
-
-    /**
-     * Gets the name of the property marked as uuid of an object
-     *
-     * @return string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function getUuidPropertyName()
-    {
-        trigger_error(
-            'Tagging properties with @uuid is deprecated and will be removed in TYPO3 v10.0.',
-            E_USER_DEPRECATED
-        );
-        return $this->uuidPropertyName;
-    }
-
-    /**
-     * Marks the given property as one of properties forming the identity
-     * of an object. The property must already be registered in the class
-     * schema.
-     *
-     * @param string $propertyName
-     * @throws \InvalidArgumentException
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function markAsIdentityProperty($propertyName)
-    {
-        trigger_error(
-            'Tagging properties with @identity is deprecated and will be removed in TYPO3 v10.0.',
-            E_USER_DEPRECATED
-        );
-        if (!array_key_exists($propertyName, $this->properties)) {
-            throw new \InvalidArgumentException('Property "' . $propertyName . '" must be added to the class schema before it can be marked as identity property.', 1233775407);
-        }
-        if ($this->properties[$propertyName]['annotations']['lazy'] === true) {
-            throw new \InvalidArgumentException('Property "' . $propertyName . '" must not be makred for lazy loading to be marked as identity property.', 1239896904);
-        }
-        $this->identityProperties[$propertyName] = $this->properties[$propertyName]['type'];
-    }
-
-    /**
-     * Gets the properties (names and types) forming the identity of an object.
-     *
-     * @return array
-     * @see markAsIdentityProperty()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function getIdentityProperties()
-    {
-        trigger_error(
-            'Tagging properties with @identity is deprecated and will be removed in TYPO3 v10.0.',
-            E_USER_DEPRECATED
-        );
-        return $this->identityProperties;
     }
 
     /**

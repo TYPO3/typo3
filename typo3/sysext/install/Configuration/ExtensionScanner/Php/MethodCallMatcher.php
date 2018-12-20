@@ -1535,6 +1535,7 @@ return [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 4,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-57594-OptimizeReflectionServiceCacheHandling.rst',
         ],
     ],
@@ -1542,6 +1543,7 @@ return [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-57594-OptimizeReflectionServiceCacheHandling.rst',
         ],
     ],
@@ -1549,6 +1551,7 @@ return [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-57594-OptimizeReflectionServiceCacheHandling.rst',
         ],
     ],
@@ -1556,6 +1559,7 @@ return [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-57594-OptimizeReflectionServiceCacheHandling.rst',
         ],
     ],
@@ -1563,6 +1567,7 @@ return [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-57594-OptimizeReflectionServiceCacheHandling.rst',
         ],
     ],
@@ -1570,6 +1575,7 @@ return [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-57594-OptimizeReflectionServiceCacheHandling.rst',
         ],
     ],
@@ -1577,6 +1583,7 @@ return [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-57594-OptimizeReflectionServiceCacheHandling.rst',
         ],
     ],
@@ -2277,6 +2284,7 @@ return [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-83475-AggregateValidatorInformationInClassSchema-1.rst',
         ],
     ],
@@ -2489,6 +2497,7 @@ return [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-85005-DeprecateMethodsAndConstantsInValidatorResolver.rst',
         ],
     ],
@@ -2496,6 +2505,7 @@ return [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-85005-DeprecateMethodsAndConstantsInValidatorResolver.rst',
         ],
     ],
@@ -2503,6 +2513,7 @@ return [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-85005-DeprecateMethodsAndConstantsInValidatorResolver.rst',
         ],
     ],
@@ -2510,7 +2521,15 @@ return [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-85005-DeprecateMethodsAndConstantsInValidatorResolver.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Validation\ValidatorResolver->getMethodValidateAnnotations' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\Argument->getValidationResults' => [
@@ -2609,6 +2628,7 @@ return [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
         ],
     ],
@@ -2616,6 +2636,7 @@ return [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
         ],
     ],
@@ -2623,6 +2644,7 @@ return [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
         ],
     ],
@@ -2630,6 +2652,7 @@ return [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
         ],
     ],
@@ -2637,6 +2660,7 @@ return [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
         ],
     ],
@@ -2644,6 +2668,7 @@ return [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
         ],
     ],
@@ -2651,6 +2676,7 @@ return [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
         ],
     ],
@@ -2658,6 +2684,7 @@ return [
         'numberOfMandatoryArguments' => 3,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
         ],
     ],
@@ -2665,6 +2692,7 @@ return [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
         ],
     ],
@@ -2672,6 +2700,7 @@ return [
         'numberOfMandatoryArguments' => 3,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-85004-DeprecateMethodsInReflectionService.rst',
         ],
     ],

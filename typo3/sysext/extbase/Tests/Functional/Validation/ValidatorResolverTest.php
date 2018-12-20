@@ -146,20 +146,6 @@ class ValidatorResolverTest extends \TYPO3\TestingFramework\Core\Functional\Func
     /**
      * @test
      */
-    public function buildMethodArgumentsValidatorConjunctionsReturnsEmptyArrayIfMethodHasNoArguments()
-    {
-        $controller = GeneralUtility::makeInstance(ObjectManager::class)->get(Fixture\Controller\TestController::class);
-        $result = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(
-            $controller,
-            'noParamsAction'
-        );
-
-        static::assertSame([], $result);
-    }
-
-    /**
-     * @test
-     */
     public function buildBaseValidatorConjunctionAddsValidatorsDefinedByAnnotationsInTheClassToTheReturnedConjunction()
     {
         $this->validatorResolver->_call(

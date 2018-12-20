@@ -691,6 +691,7 @@ return [
     ],
     'TYPO3\CMS\Extbase\Validation\Validator\RawValidator' => [
         'restFiles' => [
+            'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-83503-DeprecateUnneededRawValidator.rst',
         ],
     ],

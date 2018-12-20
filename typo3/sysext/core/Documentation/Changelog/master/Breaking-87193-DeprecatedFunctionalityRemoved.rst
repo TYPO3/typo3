@@ -61,6 +61,7 @@ The following PHP classes that have been previously deprecated for v9 have been 
 * :php:`TYPO3\CMS\Workspaces\Service\AutoPublishService`
 * :php:`TYPO3\CMS\Workspaces\Task\AutoPublishTask`
 * :php:`TYPO3\CMS\Workspaces\Task\CleanupPreviewLinkTask`
+* :php:`TYPO3\CMS\Extbase\Validation\Validator\RawValidator`
 
 
 The following PHP interfaces that have been previously deprecated for v9 have been removed:
@@ -442,6 +443,30 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Impexp\Export->maxFileSize`
 * :php:`TYPO3\CMS\Impexp\Export->maxRecordSize`
 * :php:`TYPO3\CMS\Impexp\Export->maxExportSize`
+* :php:`TYPO3\CMS\Extbase\Reflection\ClassSchema->addProperty`
+* :php:`TYPO3\CMS\Extbase\Reflection\ClassSchema->setModelType`
+* :php:`TYPO3\CMS\Extbase\Reflection\ClassSchema->getModelType`
+* :php:`TYPO3\CMS\Extbase\Reflection\ClassSchema->setUuidPropertyName`
+* :php:`TYPO3\CMS\Extbase\Reflection\ClassSchema->getUuidPropertyName`
+* :php:`TYPO3\CMS\Extbase\Reflection\ClassSchema->markAsIdentityProperty`
+* :php:`TYPO3\CMS\Extbase\Reflection\ClassSchema->getIdentityProperties`
+* :php:`TYPO3\CMS\Extbase\Reflection\ReflectionService->getClassTagsValues`
+* :php:`TYPO3\CMS\Extbase\Reflection\ReflectionService->getClassTagValues`
+* :php:`TYPO3\CMS\Extbase\Reflection\ReflectionService->getClassPropertyNames`
+* :php:`TYPO3\CMS\Extbase\Reflection\ReflectionService->hasMethod`
+* :php:`TYPO3\CMS\Extbase\Reflection\ReflectionService->getMethodTagsValues`
+* :php:`TYPO3\CMS\Extbase\Reflection\ReflectionService->getMethodParameters`
+* :php:`TYPO3\CMS\Extbase\Reflection\ReflectionService->getPropertyTagsValues`
+* :php:`TYPO3\CMS\Extbase\Reflection\ReflectionService->getPropertyTagValues`
+* :php:`TYPO3\CMS\Extbase\Reflection\ReflectionService->isClassTaggedWith`
+* :php:`TYPO3\CMS\Extbase\Reflection\ReflectionService->isPropertyTaggedWith`
+* :php:`TYPO3\CMS\Extbase\Validation\ValidatorResolver->buildMethodArgumentsValidatorConjunctions`
+* :php:`TYPO3\CMS\Extbase\Validation\ValidatorResolver->buildSubObjectValidator`
+* :php:`TYPO3\CMS\Extbase\Validation\ValidatorResolver->parseValidatorAnnotation`
+* :php:`TYPO3\CMS\Extbase\Validation\ValidatorResolver->parseValidatorOptions`
+* :php:`TYPO3\CMS\Extbase\Validation\ValidatorResolver->unquoteString`
+* :php:`TYPO3\CMS\Extbase\Validation\ValidatorResolver->getMethodValidateAnnotations`
+
 
 
 The following class methods have changed visibility:
@@ -699,6 +724,8 @@ The following class constants have been dropped:
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_INFO`
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_NOTICE`
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING`
+* :php:`TYPO3\CMS\Extbase\Validation\ValidatorResolver::PATTERN_MATCH_VALIDATORS`
+* :php:`TYPO3\CMS\Extbase\Validation\ValidatorResolver::PATTERN_MATCH_VALIDATOROPTIONS`
 
 
 The following constants have been set to protected:
