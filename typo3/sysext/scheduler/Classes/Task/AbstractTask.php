@@ -19,6 +19,7 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Execution;
 
@@ -97,6 +98,29 @@ abstract class AbstractTask implements LoggerAwareInterface
     {
         $this->setScheduler();
         $this->execution = GeneralUtility::makeInstance(Execution::class);
+    }
+
+    /**
+     * Restore logger after save to database
+     */
+    public function __wakeup()
+    {
+        if ($this->logger === null) {
+            $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+        }
+    }
+
+    /**
+     * Prevent several objects from being serialized.
+     * Logger does not need to be saved to task
+     * @return array
+     */
+    public function __sleep()
+    {
+        $vars = get_object_vars($this);
+        unset($vars['logger']);
+
+        return array_keys($vars);
     }
 
     /**
