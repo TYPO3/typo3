@@ -2449,6 +2449,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84980-BackendUserAuthentication-addTScommentDeprecated.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->simplelog' => [
@@ -2456,6 +2457,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-84981-BackendUserAuthentication-simplelogDeprecated.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->getTSConfigVal' => [
@@ -2463,6 +2465,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84993-DeprecateSomeTSconfigRelatedMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->getTSConfigProp' => [
@@ -2470,6 +2473,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84993-DeprecateSomeTSconfigRelatedMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\backend\Tree\View\PagePositionMap->getModConfig' => [
@@ -3356,14 +3360,16 @@ return [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
-            'Deprecation-85960-CompareUidentDeprecated.rst'
+            'Deprecation-85960-CompareUidentDeprecated.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractAuthenticationService->compareUident' => [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
-            'Deprecation-85960-CompareUidentDeprecated.rst'
+            'Deprecation-85960-CompareUidentDeprecated.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepository->getFirstWebPage' => [
@@ -3840,7 +3846,8 @@ return [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
-            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst'
+            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Html\RteHtmlParser->TS_images_db' => [
@@ -3931,7 +3938,8 @@ return [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
-            'Deprecation-86466-AbstractUserAuthentication-fetchUserRecord.rst'
+            'Deprecation-86466-AbstractUserAuthentication-fetchUserRecord.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->nextDivider' => [

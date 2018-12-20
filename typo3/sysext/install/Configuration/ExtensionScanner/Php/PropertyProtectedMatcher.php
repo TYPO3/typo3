@@ -586,27 +586,32 @@ return [
     ],
     'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->TSdataArray' => [
         'restFiles' => [
-            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
+            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTS' => [
         'restFiles' => [
-            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
+            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTSUpdated' => [
         'restFiles' => [
-            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
+            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTS_text' => [
         'restFiles' => [
-            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
+            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTS_dontGetCached' => [
         'restFiles' => [
-            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
+            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Tree\View\PagePositionMap->getModConfigCache' => [
@@ -1037,7 +1042,8 @@ return [
     ],
     'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->checkWorkspaceCurrent_cache' => [
         'restFiles' => [
-            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst'
+            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->raw' => [

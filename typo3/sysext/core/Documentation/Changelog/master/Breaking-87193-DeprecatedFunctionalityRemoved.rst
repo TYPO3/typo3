@@ -76,9 +76,10 @@ The following PHP class aliases that have been previously deprecated for v9 have
 
 * :php:`TYPO3\CMS\Backend\AjaxLoginHandler`
 * :php:`TYPO3\CMS\Backend\Form\Wizard\ImageManipulationWizard`
-* :php:`TYPO3\CMS\Core\History\RecordHistory`
+* :php:`TYPO3\CMS\Core\Database\PdoHelper`
 * :php:`TYPO3\CMS\Core\IO\PharStreamWrapper`
 * :php:`TYPO3\CMS\Core\IO\PharStreamWrapperException`
+* :php:`TYPO3\CMS\Core\History\RecordHistory`
 * :php:`TYPO3\CMS\Core\Tree\TableConfiguration\ExtJsArrayTreeRenderer`
 * :php:`TYPO3\CMS\ContextHelp\Controller\ContextHelpAjaxController`
 * :php:`TYPO3\CMS\Cshmanual\Domain\Repository\TableManualRepository`
@@ -199,6 +200,14 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extPageReadAccess()`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extGetTreeList()`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extGetLL()`
+* :php:`TYPO3\CMS\Core\Authentication\AbstractAuthenticationService->compareUident()`
+* :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->compareUident()`
+* :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->fetchUserRecord()`
+* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->addTScomment()`
+* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->getTSConfigProp()`
+* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->getTSConfigVal()`
+* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->isPSet()`
+* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->simplelog()`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->convArray()`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->convCaseFirst()`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->crop()`
@@ -367,6 +376,8 @@ The following methods changed signature according to previous deprecations in v9
 
 * :php:`TYPO3\CMS\Backend\Http\RouteDispatcher->dispatch()` - Second argument dropped
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig()` - Second and third argument dropped
+* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->modAccess() - Second argument dropped
+* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->getTSConfig() - First and second argument dropped
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->conv()` - Fourth argument dropped
 * :php:`TYPO3\CMS\Core\Core\Bootstrap->checkIfEssentialConfigurationExists()` - First argument mandatory
 * :php:`TYPO3\CMS\Core\Core\Bootstrap->populateLocalConfiguration()` - First argument mandatory
@@ -399,6 +410,7 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->adminPanel`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->frontendEdit`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extAdminConfig`
+* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTS_dontGetCached`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->synonyms`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->allowedPaths`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->debug`
@@ -579,6 +591,11 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->viewId` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->viewId_addParams` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->viewUrl` changed from public to protected
+* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->checkWorkspaceCurrent_cache` changed from public to protected
+* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->TSdataArray` changed from public to protected
+* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTS` changed from public to protected
+* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTSUpdated` changed from public to protected
+* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTS_text` changed from public to protected
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->eucBasedSets` changed from public to protected
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->noCharByteVal` changed from public to protected
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->parsedCharsets` changed from public to protected

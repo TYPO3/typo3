@@ -95,21 +95,6 @@ class AbstractAuthenticationService extends AbstractService
     }
 
     /**
-     * Check the login data with the user record data for builtin login methods
-     *
-     * @param array $user User data array
-     * @param array $loginData Login data array
-     * @param string $passwordCompareStrategy Password compare strategy
-     * @return bool TRUE if login data matched
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function compareUident(array $user, array $loginData, $passwordCompareStrategy = '')
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        return $this->pObj->compareUident($user, $loginData, $passwordCompareStrategy);
-    }
-
-    /**
      * Writes to log database table in pObj
      *
      * @param int $type denotes which module that has submitted the entry. This is the current list:  1=tce_db; 2=tce_file; 3=system (eg. sys_history save); 4=modules; 254=Personal settings changed; 255=login / out action: 1=login, 2=logout, 3=failed login (+ errorcode 3), 4=failure_warning_email sent

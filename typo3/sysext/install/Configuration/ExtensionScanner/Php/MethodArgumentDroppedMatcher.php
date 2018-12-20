@@ -153,7 +153,8 @@ return [
     'TYPO3\CMS\core\Authentication\BackendUserAuthentication->getTSConfig' => [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-84993-DeprecateSomeTSconfigRelatedMethods.rst'
+            'Deprecation-84993-DeprecateSomeTSconfigRelatedMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->fetchOriginLanguage' => [
@@ -217,7 +218,8 @@ return [
     'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->modAccess' => [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
-            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst'
+            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

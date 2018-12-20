@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
@@ -1391,21 +1390,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     }
 
     /**
-     * Check the login data with the user record data for builtin login methods
-     *
-     * @param array $user User data array
-     * @param array $loginData Login data array
-     * @param string $passwordCompareStrategy Alternative passwordCompareStrategy. Used when authentication services wants to override the default.
-     * @return bool TRUE if login data matched
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function compareUident($user, $loginData, $passwordCompareStrategy = '')
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        return (string)$loginData['uident_text'] !== '' && (string)$loginData['uident_text'] === (string)$user[$this->userident_column];
-    }
-
-    /**
      * Garbage collector, removing old expired sessions.
      *
      * @internal
@@ -1507,50 +1491,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             ->where($query->expr()->eq('username', $query->createNamedParameter($name, \PDO::PARAM_STR)));
 
         return $query->execute()->fetch();
-    }
-
-    /**
-     * Get a user from DB by username
-     * provided for usage from services
-     *
-     * @param array $dbUser User db table definition: $this->db_user
-     * @param string $username user name
-     * @param string $extraWhere Additional WHERE clause: " AND ...
-     * @return mixed User array or FALSE
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function fetchUserRecord($dbUser, $username, $extraWhere = '')
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        $user = false;
-        if ($username || $extraWhere) {
-            $query = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($dbUser['table']);
-            $query->getRestrictions()->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-            $constraints = array_filter([
-                QueryHelper::stripLogicalOperatorPrefix($dbUser['check_pid_clause']),
-                QueryHelper::stripLogicalOperatorPrefix($dbUser['enable_clause']),
-                QueryHelper::stripLogicalOperatorPrefix($extraWhere),
-            ]);
-
-            if (!empty($username)) {
-                array_unshift(
-                    $constraints,
-                    $query->expr()->eq(
-                        $dbUser['username_column'],
-                        $query->createNamedParameter($username, \PDO::PARAM_STR)
-                    )
-                );
-            }
-
-            $user = $query->select('*')
-                ->from($dbUser['table'])
-                ->where(...$constraints)
-                ->execute()
-                ->fetch();
-        }
-        return $user;
     }
 
     /**
