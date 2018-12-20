@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Configuration;
  */
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
-use TYPO3\CMS\Extbase\Service\TypoScriptService;
 
 /**
  * Test case

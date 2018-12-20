@@ -181,156 +181,187 @@ return [
     'TYPO3\CMS\Extbase\Configuration\Exception\ContainerIsLockedException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Configuration\Exception\NoSuchFileException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Configuration\Exception\NoSuchOptionException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Exception\InvalidMarkerException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Exception\InvalidViewHelperException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Exception\InvalidRequestTypeException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Exception\RequiredArgumentMissingException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Exception\InvalidCommandIdentifierException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\Container\Exception\CannotInitializeCacheException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\Container\Exception\TooManyRecursionLevelsException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\Exception\WrongScopeException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\InvalidClassException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\InvalidObjectConfigurationException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\InvalidObjectException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\ObjectAlreadyRegisteredException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\UnknownClassException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\UnknownInterfaceException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\UnresolvedDependenciesException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Persistence\Generic\Exception\CleanStateNotMemorizedException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidPropertyTypeException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Persistence\Generic\Exception\MissingBackendException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Property\Exception\FormatNotSupportedException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Property\Exception\InvalidFormatException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Reflection\Exception\InvalidPropertyTypeException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForRequestHashGenerationException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Security\Exception\SyntacticallyWrongRequestHashException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Exception\InvalidUriPatternException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Exception\InvalidOrNoRequestHashException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Validation\Exception\InvalidSubjectException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Validation\Exception\NoValidatorFoundException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Exception\InvalidTemplateResourceException' => [
@@ -748,6 +779,7 @@ return [
     'TYPO3\CMS\Extbase\Service\FlexFormService' => [
         'restFiles' => [
             'Deprecation-85802-MoveFlexFormServiceFromEXTextbaseToEXTcore.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Crypto\PasswordHashing\Salt\ComposedPasswordHashInterface' => [
