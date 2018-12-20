@@ -648,6 +648,31 @@ The following TypoScript options have been dropped:
 
 The following constants have been dropped:
 
+* :php:`PATH_typo3`
+* :php:`PATH_typo3conf`
+* :php:`T3_ERR_SV_GENERAL`
+* :php:`T3_ERR_SV_FILE_NOT_FOUND`
+* :php:`T3_ERR_SV_FILE_READ`
+* :php:`T3_ERR_SV_FILE_WRITE`
+* :php:`T3_ERR_SV_NO_INPUT`
+* :php:`T3_ERR_SV_NOT_AVAIL`
+* :php:`T3_ERR_SV_PROG_FAILED`
+* :php:`T3_ERR_SV_PROG_NOT_FOUND`
+* :php:`T3_ERR_SV_WRONG_SUBTYPE`
+* :php:`TYPO3_URL_CONSULTANCY`
+* :php:`TYPO3_OS`
+* :php:`TYPO3_URL_CONTRIBUTE`
+* :php:`TYPO3_URL_DOCUMENTATION`
+* :php:`TYPO3_URL_DOCUMENTATION_TSCONFIG`
+* :php:`TYPO3_URL_DOCUMENTATION_TSREF`
+* :php:`TYPO3_URL_DOWNLOAD`
+* :php:`TYPO3_URL_MAILINGLISTS`
+* :php:`TYPO3_URL_SECURITY`
+* :php:`TYPO3_URL_SYSTEMREQUIREMENTS`
+
+
+The following class constants have been dropped:
+
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\BlowfishPasswordHash::ITOA64`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\BlowfishPasswordHash::HASH_COUNT`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\BlowfishPasswordHash::MAX_HASH_COUNT`

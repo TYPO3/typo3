@@ -443,7 +443,7 @@ STYLESHEET;
                     $content .= '<pre>';
 
                     for ($line = $startLine; $line < $endLine; $line++) {
-                        $codeLine = str_replace(TAB, ' ', $phpFile[$line - 1]);
+                        $codeLine = str_replace("\t", ' ', $phpFile[$line - 1]);
                         $spanClass = '';
                         if ($line === $lineNumber) {
                             $spanClass = 'highlight';

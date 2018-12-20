@@ -87,7 +87,6 @@ class SystemEnvironmentBuilder
         self::setRequestType($requestType | ($requestType === self::REQUESTTYPE_BE && strpos($_REQUEST['route'] ?? '', '/ajax/') === 0 ? TYPO3_REQUESTTYPE_AJAX : 0));
         self::defineLegacyConstants($requestType === self::REQUESTTYPE_FE ? 'FE' : 'BE');
         self::definePaths($entryPointLevel, $requestType);
-        self::checkMainPathsExist();
         self::initializeGlobalVariables();
         self::initializeGlobalTimeTrackingVariables();
         self::initializeBasicErrorReporting();
@@ -127,56 +126,15 @@ class SystemEnvironmentBuilder
         define('TYPO3_URL_DONATE', 'https://typo3.org/community/contribute/donate/');
         define('TYPO3_URL_WIKI_OPCODECACHE', 'https://wiki.typo3.org/Opcode_Cache');
 
-        // @deprecated since TYPO3 v9.4 and will be removed in TYPO3 v10.0
-        define('TYPO3_URL_MAILINGLISTS', 'http://lists.typo3.org/cgi-bin/mailman/listinfo');
-        define('TYPO3_URL_DOCUMENTATION', 'https://typo3.org/documentation/');
-        define('TYPO3_URL_DOCUMENTATION_TSREF', 'https://docs.typo3.org/typo3cms/TyposcriptReference/');
-        define('TYPO3_URL_DOCUMENTATION_TSCONFIG', 'https://docs.typo3.org/typo3cms/TSconfigReference/');
-        define('TYPO3_URL_CONSULTANCY', 'https://typo3.org/support/professional-services/');
-        define('TYPO3_URL_CONTRIBUTE', 'https://typo3.org/contribute/');
-        define('TYPO3_URL_SECURITY', 'https://typo3.org/teams/security/');
-        define('TYPO3_URL_DOWNLOAD', 'https://typo3.org/download/');
-        define('TYPO3_URL_SYSTEMREQUIREMENTS', 'https://typo3.org/typo3-cms/overview/requirements/');
-
         // A linefeed, a carriage return, a CR-LF combination
         defined('LF') ?: define('LF', chr(10));
         defined('CR') ?: define('CR', chr(13));
         defined('CRLF') ?: define('CRLF', CR . LF);
 
-        // @deprecated since TYPO3 v9.4 and will be removed in TYPO3 v10.0
-        defined('NUL') ?: define('NUL', "\0");
-        defined('TAB') ?: define('TAB', "\t");
-        defined('SUB') ?: define('SUB', chr(26));
-
         // Security related constant: Default value of fileDenyPattern
         define('FILE_DENY_PATTERN_DEFAULT', '\\.(php[3-7]?|phpsh|phtml|pht)(\\..*)?$|^\\.htaccess$');
         // Security related constant: List of file extensions that should be registered as php script file extensions
         define('PHP_EXTENSIONS_DEFAULT', 'php,php3,php4,php5,php6,php7,phpsh,inc,phtml,pht');
-
-        // Operating system identifier
-        // Either "WIN" or empty string
-        defined('TYPO3_OS') ?: define('TYPO3_OS', self::getTypo3Os());
-
-        // Service error constants
-        // @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0, use the class constants in AbstractService instead.
-        // General error - something went wrong
-        define('T3_ERR_SV_GENERAL', -1);
-        // During execution it showed that the service is not available and should be ignored. The service itself should call $this->setNonAvailable()
-        define('T3_ERR_SV_NOT_AVAIL', -2);
-        // Passed subtype is not possible with this service
-        define('T3_ERR_SV_WRONG_SUBTYPE', -3);
-        // Passed subtype is not possible with this service
-        define('T3_ERR_SV_NO_INPUT', -4);
-        // File not found which the service should process
-        define('T3_ERR_SV_FILE_NOT_FOUND', -20);
-        // File not readable
-        define('T3_ERR_SV_FILE_READ', -21);
-        // File not writable
-        define('T3_ERR_SV_FILE_WRITE', -22);
-        // Passed subtype is not possible with this service
-        define('T3_ERR_SV_PROG_NOT_FOUND', -40);
-        // Passed subtype is not possible with this service
-        define('T3_ERR_SV_PROG_FAILED', -41);
     }
 
     /**
@@ -194,7 +152,7 @@ class SystemEnvironmentBuilder
         // Check if the root path has been set in the environment (e.g. by the composer installer)
         if (getenv('TYPO3_PATH_ROOT')) {
             if ($isCli && self::usesComposerClassLoading() && StringUtility::endsWith($scriptPath, 'typo3')) {
-                // PATH_thisScript is used for various path calculations based on the document root
+                // $scriptPath is used for various path calculations based on the document root
                 // Therefore we assume it is always a subdirectory of the document root, which is not the case
                 // in composer mode on cli, as the binary is in the composer bin directory.
                 // Because of that, we enforce the document root path of this binary to be set
@@ -209,10 +167,15 @@ class SystemEnvironmentBuilder
             $scriptPath = $rootPath . $scriptName;
         }
 
+        if (!is_file($scriptPath)) {
+            static::exitWithMessage('Unable to determine path to entry script.');
+        }
+
         if (!defined('PATH_thisScript')) {
             // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
             define('PATH_thisScript', $scriptPath);
         }
+
         // Absolute path of the document root of the instance with trailing slash
         if (!defined('PATH_site')) {
             // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
@@ -222,28 +185,6 @@ class SystemEnvironmentBuilder
         // Hardcoded to "typo3/"
         if (!defined('TYPO3_mainDir')) {
             define('TYPO3_mainDir', 'typo3/');
-        }
-        // Absolute path of the typo3 directory of the instance with trailing slash
-        // Example "/var/www/instance-name/htdocs/typo3/"
-        if (!defined('PATH_typo3')) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-            define('PATH_typo3', PATH_site . TYPO3_mainDir);
-        }
-        // Absolute path to the typo3conf directory with trailing slash
-        // Example "/var/www/instance-name/htdocs/typo3conf/"
-        if (!defined('PATH_typo3conf')) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-            define('PATH_typo3conf', PATH_site . 'typo3conf/');
-        }
-    }
-
-    /**
-     * Check if path and script file name calculation was successful, exit if not.
-     */
-    protected static function checkMainPathsExist()
-    {
-        if (!is_file(PATH_thisScript)) {
-            static::exitWithMessage('Unable to determine path to entry script.');
         }
     }
 
@@ -344,7 +285,7 @@ class SystemEnvironmentBuilder
     }
 
     /**
-     * Calculate PATH_thisScript
+     * Calculate script path.
      *
      * First step in path calculation: Goal is to find the absolute path of the entry script
      * that was called without resolving any links. This is important since the TYPO3 entry
@@ -435,8 +376,8 @@ class SystemEnvironmentBuilder
     }
 
     /**
-     * Calculate the document root part to the instance from PATH_thisScript.
-     * This is based on the amount of subdirectories "under" PATH_site where PATH_thisScript is located.
+     * Calculate the document root part to the instance from $scriptPath.
+     * This is based on the amount of subdirectories "under" PATH_site where $scriptPath is located.
      *
      * The following main scenarios for entry points exist by default in the TYPO3 core:
      * - Directly called documentRoot/index.php (-> FE call or eiD include): index.php is located in the same directory
