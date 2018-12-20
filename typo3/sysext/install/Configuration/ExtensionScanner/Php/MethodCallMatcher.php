@@ -2031,6 +2031,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\EditDocumentController->doProcessData' => [
@@ -2038,6 +2039,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\EditDocumentController->processData' => [
@@ -2045,6 +2047,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\EditDocumentController->makeEditForm' => [
@@ -2052,6 +2055,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\EditDocumentController->compileForm' => [
@@ -2059,6 +2063,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\EditDocumentController->shortCutLink' => [
@@ -2066,6 +2071,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\EditDocumentController->openInNewWindowLink' => [
@@ -2073,6 +2079,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\EditDocumentController->languageSwitch' => [
@@ -2080,6 +2087,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\EditDocumentController->localizationRedirect' => [
@@ -2087,6 +2095,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\EditDocumentController->getLanguages' => [
@@ -2094,6 +2103,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\EditDocumentController->fixWSversioningInEditConf' => [
@@ -2101,6 +2111,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\EditDocumentController->getRecordForEdit' => [
@@ -2108,6 +2119,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\EditDocumentController->compileStoreDat' => [
@@ -2115,6 +2127,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\EditDocumentController->getNewIconMode' => [
@@ -2122,6 +2135,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\EditDocumentController->closeDocument' => [
@@ -2129,6 +2143,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\EditDocumentController->setDocument' => [
@@ -2136,6 +2151,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-84195-ProtectedMethodsAndPropertiesInEditDocumentController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->initPage' => [

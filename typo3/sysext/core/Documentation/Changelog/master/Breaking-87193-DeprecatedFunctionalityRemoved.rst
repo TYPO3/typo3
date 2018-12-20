@@ -163,6 +163,12 @@ The following PHP class aliases that have been previously deprecated for v9 have
 
 The following PHP class methods that have been previously deprecated for v9 have been removed:
 
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->compileStoreDat()`
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->doProcessData()`
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->getNewIconMode()`
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->openInNewWindowLink()`
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->setDocument()`
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->shortCutLink()`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->initializeAdminPanel()`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->initializeFrontendEdit()`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->isFrontendEditingActive()`
@@ -347,6 +353,13 @@ The following methods changed signature according to previous deprecations in v9
 
 The following public class properties have been dropped:
 
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->cacheCmd`
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->content`
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->doc`
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->MCONF`
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->popViewId_addParams`
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->redirect`
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->template`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extAdmEnabled`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->adminPanel`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->frontendEdit`
@@ -384,6 +397,18 @@ The following public class properties have been dropped:
 
 The following class methods have changed visibility:
 
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->closeDocument()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->compileForm()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->fixWSversioningInEditConf()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->getLanguages()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->getRecordForEdit()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->init()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->languageSwitch()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->localizationRedirect()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->main()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->makeEditForm()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->preInit()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->processData()` changed from public to protected
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\BlowfishPasswordHash->base64Encode()` changed from public to protected
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\BlowfishPasswordHash->isValidSalt()` changed from public to protected
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\Md5PasswordHash->base64Encode()` changed from public to protected
@@ -432,13 +457,46 @@ The following class methods have changed visibility:
 
 The following class properties have changed visibility:
 
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->closeDoc` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->cmd` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->columnsOnly` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->defVals` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->docDat` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->docHandler` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->dontStoreDocumentRef` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->doSave` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->editconf` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->errorC` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->firstEl` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->mirror` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->modTSconfig` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->newC` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->noView` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->overrideVals` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->pageinfo` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->popViewId` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->perms_clause` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->recTitle` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->retUrl` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->returnUrl` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->returnEditConf` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->returnNewPageId` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->R_URI` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->R_URL_getvars` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->R_URL_parts` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->storeArray` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->storeTitle` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->storeUrl` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->storeUrlMd5` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->uc` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->viewId` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->viewId_addParams` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->viewUrl` changed from public to protected
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->eucBasedSets` changed from public to protected
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->noCharByteVal` changed from public to protected
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->parsedCharsets` changed from public to protected
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->toASCII` changed from public to protected
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->twoByteSets` changed from public to protected
-* :php:`TYPO3\CMS\Frontend\Page\PageRepository->sys_language_uid` changed from public to protected
-* :php:`TYPO3\CMS\Frontend\Page\PageRepository->versioningWorkspaceId` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->absoluteRootLine` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->matchAll` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->nextLevel` changed from public to protected
@@ -461,6 +519,8 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->tempContent` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->uniqueCounter` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->uniqueString` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Page\PageRepository->sys_language_uid` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\Page\PageRepository->versioningWorkspaceId` changed from public to protected
 * :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->access` changed from public to protected
 * :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->CMD` changed from public to protected
 * :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->content` changed from public to protected
@@ -540,6 +600,14 @@ The following constants have been dropped:
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_INFO`
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_NOTICE`
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING`
+
+
+The following constants have been set to protected:
+
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController::DOCUMENT_CLOSE_MODE_CLEAR_ALL`
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController::DOCUMENT_CLOSE_MODE_DEFAULT`
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController::DOCUMENT_CLOSE_MODE_NO_REDIRECT`
+* :php:`TYPO3\CMS\Backend\Controller\EditDocumentController::DOCUMENT_CLOSE_MODE_REDIRECT`
 
 
 The following global options are ignored:
