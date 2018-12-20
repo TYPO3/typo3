@@ -339,6 +339,8 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->handleExternalFunctionValue()`
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->menuConfig()`
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->mergeExternalItems()`
+* :php:`TYPO3\CMS\Setup\Controller\SetupModuleController->getFormProtection()`
+* :php:`TYPO3\CMS\Setup\Controller\SetupModuleController->simulateUser()`
 
 
 The following PHP static class methods that have been previously deprecated for v9 have been removed:
@@ -584,6 +586,12 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->id` changed from public to protected
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->pageinfo` changed from public to protected
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->perms_clause` changed from public to protected
+* :php:`TYPO3\CMS\Setup\Controller\SetupModuleController->OLD_BE_USER` changed from public to protected
+* :php:`TYPO3\CMS\Setup\Controller\SetupModuleController->MOD_MENU` changed from public to protected
+* :php:`TYPO3\CMS\Setup\Controller\SetupModuleController->MOD_SETTINGS` changed from public to protected
+* :php:`TYPO3\CMS\Setup\Controller\SetupModuleController->content` changed from public to protected
+* :php:`TYPO3\CMS\Setup\Controller\SetupModuleController->overrideConf` changed from public to protected
+* :php:`TYPO3\CMS\Setup\Controller\SetupModuleController->languageUpdate` changed from public to protected
 * :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->access` changed from public to protected
 * :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->CMD` changed from public to protected
 * :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->content` changed from public to protected

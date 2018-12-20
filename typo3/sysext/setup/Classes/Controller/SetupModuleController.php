@@ -21,9 +21,6 @@ use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
@@ -47,8 +44,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SetupModuleController
 {
-    use PublicPropertyDeprecationTrait;
-    use PublicMethodDeprecationTrait;
 
     /**
      * Flag if password has not been updated
@@ -72,39 +67,6 @@ class SetupModuleController
     const PASSWORD_OLD_WRONG = 3;
 
     /**
-     * Properties which have been moved to protected status from public
-     *
-     * @var array
-     */
-    private $deprecatedPublicProperties = [
-        'OLD_BE_USER' => 'Using $OLD_BE_USER of class SetupModuleController from the outside is discouraged, the variable will be removed.',
-        'MOD_MENU' => 'Using $MOD_MENU of class SetupModuleController from the outside is discouraged, the variable will be removed.',
-        'MOD_SETTINGS' => 'Using $MOD_SETTINGS of class SetupModuleController from the outside is discouraged, the variable will be removed.',
-        'content' => 'Using $content of class SetupModuleController from the outside is discouraged, as this variable is only used for internal storage.',
-        'overrideConf' => 'Using $overrideConf of class SetupModuleController from the outside is discouraged, as this variable is only used for internal storage.',
-        'languageUpdate' => 'Using $languageUpdate of class SetupModuleController from the outside is discouraged, as this variable is only used for internal storage.',
-    ];
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicMethods = [
-        'storeIncomingData' => 'Using SetupModuleController::storeIncomingData() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'main' => 'Using SetupModuleController::main() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'init' => 'Using SetupModuleController::init() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-    ];
-
-    /**
-     * @var array
-     */
-    protected $MOD_MENU = [];
-
-    /**
-     * @var array
-     */
-    protected $MOD_SETTINGS = [];
-
-    /**
      * @var string
      */
     protected $content;
@@ -113,11 +75,6 @@ class SetupModuleController
      * @var array
      */
     protected $overrideConf;
-
-    /**
-     * @deprecated will be removed in TYPO3 v10.0
-     */
-    protected $OLD_BE_USER;
 
     /**
      * @var bool
@@ -209,18 +166,6 @@ class SetupModuleController
         $pageRenderer->addInlineLanguageLabelArray([
             'FormEngine.remainingCharacters' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters'),
         ]);
-    }
-
-    /**
-     * Getter for the form protection instance.
-     *
-     * @return \TYPO3\CMS\Core\FormProtection\BackendFormProtection
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function getFormProtection()
-    {
-        trigger_error('SetupModuleController->getFormProtection() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        return $this->formProtection;
     }
 
     /**
@@ -742,65 +687,6 @@ class SetupModuleController
             }
         }
         return '<select id="field_startModule" name="data[startModule]" class="form-control">' . $startModuleSelect . '</select>';
-    }
-
-    /**
-     * Will make the simulate-user selector if the logged in user is administrator.
-     * It will also set the GLOBAL(!) BE_USER to the simulated user selected if any (and set $this->OLD_BE_USER to logged in user)
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function simulateUser()
-    {
-        trigger_error('SetupModuleController->simulateUser() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        // If admin, allow simulation of another user
-        $this->simUser = 0;
-        $this->simulateSelector = '';
-        unset($this->OLD_BE_USER);
-        $currentBeUser = $this->getBackendUser();
-        if ($currentBeUser->isAdmin()) {
-            $this->simUser = (int)GeneralUtility::_GP('simUser');
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
-            $users = $queryBuilder
-                ->select('*')
-                ->from('be_users')
-                ->where(
-                    $queryBuilder->expr()->neq(
-                        'uid',
-                        $queryBuilder->createNamedParameter($currentBeUser->user['uid'], \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->notLike(
-                        'username',
-                        $queryBuilder->createNamedParameter(
-                            $queryBuilder->escapeLikeWildcards('_cli_') . '%',
-                            \PDO::PARAM_STR
-                        )
-                    )
-                )
-                ->orderBy('username')
-                ->execute()
-                ->fetchAll();
-            $opt = [];
-            foreach ($users as $rr) {
-                $label = $rr['username'] . ($rr['realName'] ? ' (' . $rr['realName'] . ')' : '');
-                $opt[] = '<option value="' . (int)$rr['uid'] . '"' . ($this->simUser === (int)$rr['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
-            }
-            if (!empty($opt)) {
-                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                $this->simulateSelector = '<select id="field_simulate" class="form-control" name="simulateUser" onchange="window.location.href=' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('user_setup') . '&simUser=') . '+this.options[this.selectedIndex].value;"><option></option>' . implode('', $opt) . '</select>';
-            }
-        }
-        // This can only be set if the previous code was executed.
-        if ($this->simUser > 0) {
-            // Save old user...
-            $this->OLD_BE_USER = $currentBeUser;
-            // Unset current
-            // New backend user object
-            $currentBeUser = GeneralUtility::makeInstance(BackendUserAuthentication::class);
-            $currentBeUser->setBeUserByUid($this->simUser);
-            $currentBeUser->fetchGroupData();
-            $currentBeUser->backendSetUC();
-        }
     }
 
     /**
