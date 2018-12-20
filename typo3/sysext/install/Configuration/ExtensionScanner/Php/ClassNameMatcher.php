@@ -121,6 +121,7 @@ return [
     'TYPO3\CMS\Backend\Http\AjaxRequestHandler' => [
         'restFiles' => [
             'Deprecation-83853-BackendAjaxRequestHandler.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\FramesetRenderer' => [

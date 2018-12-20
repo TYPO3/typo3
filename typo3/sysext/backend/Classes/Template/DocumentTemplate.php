@@ -354,13 +354,6 @@ function jumpToUrl(URL) {
         $gvList = 'route,' . $gvList;
         $storeUrl = $this->makeShortcutUrl($gvList, $setList);
         $pathInfo = parse_url(GeneralUtility::getIndpEnv('REQUEST_URI'));
-        // Fallback for alt_mod. We still pass in the old xMOD... stuff, but TBE_MODULES only knows about "record_edit".
-        // We still need to pass the xMOD name to createShortcut below, since this is used for icons.
-        $moduleName = $modName === 'xMOD_alt_doc.php' ? 'record_edit' : $modName;
-        // Add the module identifier automatically if typo3/index.php is used:
-        if (GeneralUtility::_GET('M') !== null) {
-            $storeUrl = '&M=' . $moduleName . $storeUrl;
-        }
         if ((int)$motherModName === 1) {
             $motherModule = 'top.currentModuleLoaded';
         } elseif ($motherModName) {

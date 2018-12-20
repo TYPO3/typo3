@@ -87,10 +87,7 @@ class RouteDispatcher extends Dispatcher
         if ($token) {
             return $this->getFormProtection()->validateToken($token, 'route', $route->getOption('_identifier'));
         }
-        // backwards compatibility: check for M and module token params
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-        $token = (string)($request->getParsedBody()['moduleToken'] ?? $request->getQueryParams()['moduleToken']);
-        return $this->getFormProtection()->validateToken($token, 'moduleCall', $request->getParsedBody()['M'] ?? $request->getQueryParams()['M']);
+        return false;
     }
 
     /**

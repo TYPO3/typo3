@@ -654,9 +654,7 @@ class UriBuilder
             }
         } else {
             $id = GeneralUtility::_GP('id');
-            // backwards compatibility: check for M parameter
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-            $route = GeneralUtility::_GP('route') ?: GeneralUtility::_GP('M');
+            $route = GeneralUtility::_GP('route');
             if ($id !== null) {
                 $arguments['id'] = $id;
             }

@@ -747,11 +747,6 @@ class ShortcutRepository
             }
         }
 
-        if (isset($parameters['M']) && empty($parameters['route'])) {
-            $parameters['route'] = $parameters['M'];
-            unset($parameters['M']);
-        }
-
         if (strpos($parsedUrl['path'], 'index.php') !== false && isset($parameters['route'])) {
             $routePath = $parameters['route'];
             /** @var \TYPO3\CMS\Backend\Routing\Router $router */

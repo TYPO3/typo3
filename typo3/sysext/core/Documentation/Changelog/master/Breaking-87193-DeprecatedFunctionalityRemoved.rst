@@ -13,6 +13,7 @@ The following PHP classes that have been previously deprecated for v9 have been 
 
 * :php:`TYPO3\CMS\Adminpanel\View\AdminPanelView`
 * :php:`TYPO3\CMS\Backend\Controller\LoginFramesetController`
+* :php:`TYPO3\CMS\Backend\Http\AjaxRequestHandler`
 * :php:`TYPO3\CMS\Backend\Module\AbstractFunctionModule`
 * :php:`TYPO3\CMS\Backend\Module\AbstractModule`
 * :php:`TYPO3\CMS\Backend\Module\BaseScriptClass`
@@ -577,13 +578,16 @@ The following feature is now always enabled:
 The following features have been removed:
 
 * Migration from v4 to v5 PackagesStates.php
+* Backend modules validated against special GET/POST `M` parameter
 * `eID` script targets cannot define a script path anymore:
   `$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['my_eID'] = 'EXT:benni/Scripts/download.php'` will not work anymore.
   Instead, they must contain a target (callable, class/method, function).
 
+
 The following database fields have been removed:
 
 * `index_phash.data_page_reg1`
+
 
 The following php doc annotations have been removed:
 
