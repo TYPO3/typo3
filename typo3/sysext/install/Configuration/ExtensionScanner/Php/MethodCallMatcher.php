@@ -3419,6 +3419,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-85031-ProtectedImportExportController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Impexp\Controller\ImportExportController->exec_listQueryPid' => [
@@ -3426,6 +3427,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-85031-ProtectedImportExportController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Impexp\Controller\ImportExportController->makeConfigurationForm' => [
@@ -3433,6 +3435,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85031-ProtectedImportExportController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Impexp\Controller\ImportExportController->makeAdvancedOptionsForm' => [
@@ -3440,6 +3443,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85031-ProtectedImportExportController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Impexp\Controller\ImportExportController->makeSaveForm' => [
@@ -3447,6 +3451,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85031-ProtectedImportExportController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Impexp\Controller\ImportExportController->getTableSelectOptions' => [
@@ -3454,6 +3459,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85031-ProtectedImportExportController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Impexp\Controller\ImportExportController->filterPageIds' => [
@@ -3461,6 +3467,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85031-ProtectedImportExportController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->tempPageCacheContent' => [

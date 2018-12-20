@@ -48,12 +48,6 @@
 			<trans-unit id="impexpcore_toggle_all_disabled_records">
 				<source>Toggle disabled records</source>
 			</trans-unit>
-			<trans-unit id="execlistqu_maxNumberLimit">
-				<source>Max number limit!</source>
-			</trans-unit>
-			<trans-unit id="makeconfig_anSqlQueryReturned">
-				<source>An SQL query returned exactly the amount of records specified by the limit value (%s) - that could indicate an incomplete selection of records! Make sure this is on purpose.</source>
-			</trans-unit>
 			<trans-unit id="makeconfig_exportPagetreeConfiguration">
 				<source>Export pagetree configuration</source>
 			</trans-unit>

@@ -61,24 +61,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class Export extends ImportExport
 {
     /**
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. In v10, just remove property, it is not used any longer.
-     * @var int
-     */
-    public $maxFileSize = 1000000;
-
-    /**
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. In v10, just remove property, it is not used any longer.
-     * @var int
-     */
-    public $maxRecordSize = 1000000;
-
-    /**
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. In v10, just remove property, it is not used any longer.
-     * @var int
-     */
-    public $maxExportSize = 10000000;
-
-    /**
      * Set  by user: If set, compression in t3d files is disabled
      *
      * @var bool

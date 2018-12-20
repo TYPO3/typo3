@@ -139,13 +139,15 @@ return [
     'TYPO3\CMS\Impexp\Controller\ImportExportController->addRecordsForPid' => [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
-            'Deprecation-83592-ImpexpRemovedMaximumNumberOfRecordsRestriction.rst'
+            'Deprecation-83592-ImpexpRemovedMaximumNumberOfRecordsRestriction.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Impexp\Controller\ImportExportController->exec_listQueryPid' => [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
-            'Deprecation-83592-ImpexpRemovedMaximumNumberOfRecordsRestriction.rst'
+            'Deprecation-83592-ImpexpRemovedMaximumNumberOfRecordsRestriction.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\core\Authentication\BackendUserAuthentication->getTSConfig' => [

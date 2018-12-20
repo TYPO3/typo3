@@ -307,6 +307,15 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->deleteClause()`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->checkWorkspaceAccess()`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getFileReferences()`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->checkExtObj()`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->checkSubExtObj()`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->extObjContent()`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->extObjHeader()`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->getExtObjContent()`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->getExternalItemConfig()`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->handleExternalFunctionValue()`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->menuConfig()`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->mergeExternalItems()`
 
 
 The following PHP static class methods that have been previously deprecated for v9 have been removed:
@@ -393,6 +402,21 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->error_getRootLine`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->versioningPreview`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->workspaceCache`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->CMD`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->content`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->doc`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->extClassConf`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->extObj`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->MCONF`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->MOD_MENU`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->MOD_SETTINGS`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->modMenu_dontValidateList`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->modMenu_setDefaultList`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->modMenu_type`
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->modTSconfig`
+* :php:`TYPO3\CMS\Impexp\Export->maxFileSize`
+* :php:`TYPO3\CMS\Impexp\Export->maxRecordSize`
+* :php:`TYPO3\CMS\Impexp\Export->maxExportSize`
 
 
 The following class methods have changed visibility:
@@ -429,6 +453,19 @@ The following class methods have changed visibility:
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->setPageCacheContent()` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->setSysLastChanged()` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->tempPageCacheContent()` changed from public to protected
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->addRecordsForPid()` changed from public to protected
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->checkUpload()` changed from public to protected
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->exec_listQueryPid()` changed from public to protected
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->exportData()` changed from public to protected
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->filterPageIds()` changed from public to protected
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->getTableSelectOptions()` changed from public to protected
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->handleExternalFunctionValue()` changed from public to protected
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->importData()` changed from public to protected
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->init()` changed from public to protected
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->main()` changed from public to protected
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->makeAdvancedOptionsForm()` changed from public to protected
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->makeConfigurationForm()` changed from public to protected
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->makeSaveForm()` changed from public to protected
 * :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->checkExtObj()` changed from public to protected
 * :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->checkSubExtObj()` changed from public to protected
 * :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->clearCache()` changed from public to protected
@@ -521,6 +558,9 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->uniqueString` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->sys_language_uid` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->versioningWorkspaceId` changed from public to protected
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->id` changed from public to protected
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->pageinfo` changed from public to protected
+* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->perms_clause` changed from public to protected
 * :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->access` changed from public to protected
 * :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->CMD` changed from public to protected
 * :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController->content` changed from public to protected

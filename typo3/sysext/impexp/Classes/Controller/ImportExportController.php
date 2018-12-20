@@ -16,13 +16,10 @@ namespace TYPO3\CMS\Impexp\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
@@ -41,7 +38,6 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Impexp\Domain\Repository\PresetRepository;
@@ -55,57 +51,6 @@ use TYPO3\CMS\Impexp\View\ExportPageTreeView;
  */
 class ImportExportController
 {
-    use PublicPropertyDeprecationTrait;
-    use PublicMethodDeprecationTrait;
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicProperties = [
-        'pageinfo' => 'Using ImportExportController::$pageinfo is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'id' => 'Using ImportExportController::$id is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'perms_clause' => 'Using ImportExportController::$perms_clause is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'extObj' => 'Using ImportExportController::$extObj is deprecated, the property will be removed in TYPO3 v10.0.',
-        'doc' => 'Using ImportExportController::$doc is deprecated, the property will be removed in TYPO3 v10.0.',
-        'content' => 'Using ImportExportController::$content is deprecated, the property will be removed in TYPO3 v10.0.',
-        'extClassConf' => 'Using ImportExportController::$extClassConf is deprecated, the property will be removed in TYPO3 v10.0.',
-        'modMenu_setDefaultList' => 'Using ImportExportController::$modMenu_setDefaultList is deprecated, the property will be removed in TYPO3 v10.0.',
-        'modMenu_dontValidateList' => 'Using ImportExportController::$modMenu_dontValidateList is deprecated, the property will be removed in TYPO3 v10.0.',
-        'modMenu_type' => 'Using ImportExportController::$modMenu_type is deprecated, the property will be removed in TYPO3 v10.0.',
-        'modTSconfig' => 'Using ImportExportController::$modTSconfig is deprecated, the property will be removed in TYPO3 v10.0.',
-        'MOD_SETTINGS' => 'Using ImportExportController::$MOD_SETTINGS is deprecated, the property will be removed in TYPO3 v10.0.',
-        'MOD_MENU' => 'Using ImportExportController::MOD_MENU is deprecated, the property will be removed in TYPO3 v10.0.',
-        'CMD' => 'Using ImportExportController::$CMD is deprecated, the property will be removed in TYPO3 v10.0.',
-        'MCONF' => 'Using ImportExportController::$MCONF is deprecated, the property will be removed in TYPO3 v10.0.',
-    ];
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicMethods = [
-        'init' => 'Using ImportExportController::init() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'main' => 'Using ImportExportController::main() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'exportData' => 'Using ImportExportController::exportData() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'addRecordsForPid' => 'Using ImportExportController::addRecordsForPid() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'exec_listQueryPid' => 'Using ImportExportController::exec_listQueryPid() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'makeConfigurationForm' => 'Using ImportExportController::makeConfigurationForm() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'makeAdvancedOptionsForm' => 'Using ImportExportController::makeAdvancedOptionsForm() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'makeSaveForm' => 'Using ImportExportController::makeSaveForm() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'importData' => 'Using ImportExportController::importData() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'checkUpload' => 'Using ImportExportController::checkUpload() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'getTableSelectOptions' => 'Using ImportExportController::getTableSelectOptions() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'filterPageIds' => 'Using ImportExportController::filterPageIds() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'getExtObjContent' => 'Using ImportExportController::getExtObjContent() is deprecated, the method will be removed in TYPO3 v10.0.',
-        'extObjContent' => 'Using ImportExportController::extObjContent() is deprecated, the method will be removed in TYPO3 v10.0.',
-        'extObjHeader' => 'Using ImportExportController::extObjHeader() is deprecated, the method will be removed in TYPO3 v10.0.',
-        'checkSubExtObj' => 'Using ImportExportController::checkSubExtObj() is deprecated, the method will be removed in TYPO3 v10.0.',
-        'checkExtObj' => 'Using ImportExportController::checkExtObj() is deprecated, the method will be removed in TYPO3 v10.0.',
-        'getExternalItemConfig' => 'Using ImportExportController::getExternalItemConfig() is deprecated, the method will be removed in TYPO3 v10.0.',
-        'handleExternalFunctionValue' => 'Using ImportExportController::handleExternalFunctionValue() is deprecated, the method will be removed in TYPO3 v10.0.',
-        'mergeExternalItems' => 'Using ImportExportController::mergeExternalItems() is deprecated, the method will be removed in TYPO3 v10.0.',
-        'menuConfig' => 'Using ImportExportController::menuConfig() is deprecated, the method will be removed in TYPO3 v10.0.',
-    ];
-
     /**
      * @var array|\TYPO3\CMS\Core\Resource\File[]
      */
@@ -208,115 +153,6 @@ class ImportExportController
     protected $returnUrl;
 
     /**
-     * Loaded with the global array $MCONF which holds some module configuration from the conf.php file of backend modules.
-     *
-     * @see init()
-     * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $MCONF = [];
-
-    /**
-     * The value of GET/POST var, 'CMD'
-     *
-     * @see init()
-     * @var mixed
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $CMD;
-
-    /**
-     * The module menu items array. Each key represents a key for which values can range between the items in the array of that key.
-     *
-     * @see init()
-     * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $MOD_MENU = [
-        'function' => []
-    ];
-
-    /**
-     * Current settings for the keys of the MOD_MENU array
-     *
-     * @see $MOD_MENU
-     * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $MOD_SETTINGS = [];
-
-    /**
-     * Module TSconfig based on PAGE TSconfig / USER TSconfig
-     *
-     * @see menuConfig()
-     * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Module has no TSconfig options
-     */
-    protected $modTSconfig;
-
-    /**
-     * If type is 'ses' then the data is stored as session-lasting data. This means that it'll be wiped out the next time the user logs in.
-     * Can be set from extension classes of this class before the init() function is called.
-     *
-     * @see menuConfig(), \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
-     * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $modMenu_type = '';
-
-    /**
-     * dontValidateList can be used to list variables that should not be checked if their value is found in the MOD_MENU array. Used for dynamically generated menus.
-     * Can be set from extension classes of this class before the init() function is called.
-     *
-     * @see menuConfig(), \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
-     * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $modMenu_dontValidateList = '';
-
-    /**
-     * List of default values from $MOD_MENU to set in the output array (only if the values from MOD_MENU are not arrays)
-     * Can be set from extension classes of this class before the init() function is called.
-     *
-     * @see menuConfig(), \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
-     * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $modMenu_setDefaultList = '';
-
-    /**
-     * Contains module configuration parts from TBE_MODULES_EXT if found
-     *
-     * @see handleExternalFunctionValue()
-     * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $extClassConf;
-
-    /**
-     * Generally used for accumulating the output content of backend modules
-     *
-     * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $content = '';
-
-    /**
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $doc;
-
-    /**
-     * May contain an instance of a 'Function menu module' which connects to this backend module.
-     *
-     * @see checkExtObj()
-     * @var \object
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $extObj;
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -339,11 +175,6 @@ class ImportExportController
      */
     protected function init()
     {
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-        $this->MCONF['name'] = $this->moduleName;
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-        $this->CMD = GeneralUtility::_GP('CMD');
-
         $this->id = (int)GeneralUtility::_GP('id');
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
@@ -360,11 +191,6 @@ class ImportExportController
     protected function main()
     {
         $this->lang->includeLLFile('EXT:impexp/Resources/Private/Language/locallang.xlf');
-
-        // Start document template object
-        // @deprecated  since TYPO3 v9, will be removed in TYPO3 v10.0. Instantiation will be removed.
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-        $this->doc->bodyTagId = 'imp-exp-mod';
 
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
         if (is_array($this->pageinfo)) {
@@ -480,9 +306,6 @@ class ImportExportController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        // @deprecated  since TYPO3 v9, will be removed in TYPO3 v10.0. Can be removed along with $this->doc.
-        $GLOBALS['SOBE'] = $this;
-
         $this->init();
         $this->main();
         $this->moduleTemplate->setContent($this->standaloneView->render());
@@ -781,9 +604,8 @@ class ImportExportController
      *
      * @param int $k Page id for which to select records to add
      * @param array $tables Array of table names to select from
-     * @param int $maxNumber @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
-    protected function addRecordsForPid($k, $tables, $maxNumber = null)
+    protected function addRecordsForPid($k, $tables)
     {
         if (!is_array($tables)) {
             return;
@@ -791,13 +613,7 @@ class ImportExportController
         foreach ($GLOBALS['TCA'] as $table => $value) {
             if ($table !== 'pages' && (in_array($table, $tables) || in_array('_ALL', $tables))) {
                 if ($this->getBackendUser()->check('tables_select', $table) && !$GLOBALS['TCA'][$table]['ctrl']['is_static']) {
-                    if ($maxNumber !== null) {
-                        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove this if in TYPO3 v10.0
-                        // and the 3rd method argument. trigger_error() is called by method exec_listQueryPid() below
-                        $statement = $this->exec_listQueryPid($table, $k, MathUtility::forceIntegerInRange($maxNumber, 1));
-                    } else {
-                        $statement = $this->exec_listQueryPid($table, $k);
-                    }
+                    $statement = $this->exec_listQueryPid($table, $k);
                     while ($subTrow = $statement->fetch()) {
                         $this->export->export_addRecord($table, $subTrow);
                     }
@@ -811,20 +627,10 @@ class ImportExportController
      *
      * @param string $table Table to select from
      * @param int $pid Page ID to select from
-     * @param int $limit @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      * @return \Doctrine\DBAL\Driver\Statement Query statement
      */
-    protected function exec_listQueryPid($table, $pid, $limit = null)
+    protected function exec_listQueryPid($table, $pid)
     {
-        // @deprecated In v10, remove this if and the method argument
-        if ($limit !== null) {
-            trigger_error(
-                'The third argument of addRecordsForPid() and exec_listQueryPid() has been'
-                . ' deprecated, do not limit exports anymore. The parameter will be removed in TYPO3 v10.0.',
-                E_USER_DEPRECATED
-            );
-        }
-
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
 
         $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
@@ -846,36 +652,12 @@ class ImportExportController
                 )
             );
 
-        // @deprecated In v10, remove this if
-        if ($limit !== null) {
-            $queryBuilder->setMaxResults($limit);
-        }
-
         foreach (QueryHelper::parseOrderBy((string)$orderBy) as $orderPair) {
             list($fieldName, $order) = $orderPair;
             $queryBuilder->addOrderBy($fieldName, $order);
         }
 
-        $statement = $queryBuilder->execute();
-
-        // @deprecated In v10, remove this if, and the two getLL locallang target keys
-        if ($limit !== null && $statement->rowCount() == $limit) {
-            $limitWarning = sprintf($this->lang->getLL('makeconfig_anSqlQueryReturned'), $limit);
-            /** @var FlashMessage $flashMessage */
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
-                $this->lang->getLL('execlistqu_maxNumberLimit'),
-                $limitWarning,
-                FlashMessage::WARNING
-            );
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
-            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-            $defaultFlashMessageQueue->enqueue($flashMessage);
-        }
-
-        return $statement;
+        return $queryBuilder->execute();
     }
 
     /**
@@ -1269,173 +1051,5 @@ class ImportExportController
         }
 
         return $file;
-    }
-
-    /**
-     * Initializes the internal MOD_MENU array setting and unsetting items based on various conditions. It also merges in external menu items from the global array TBE_MODULES_EXT (see mergeExternalItems())
-     * Then MOD_SETTINGS array is cleaned up (see \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()) so it contains only valid values. It's also updated with any SET[] values submitted.
-     * Also loads the modTSconfig internal variable.
-     *
-     * @see init(), $MOD_MENU, $MOD_SETTINGS, \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData(), mergeExternalItems()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function menuConfig()
-    {
-        // Page / user TSconfig settings and blinding of menu-items
-        $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.'][$this->MCONF['name'] . '.'] ?? [];
-        $this->MOD_MENU['function'] = $this->mergeExternalItems($this->MCONF['name'], 'function', $this->MOD_MENU['function']);
-        $blindActions = $this->modTSconfig['properties']['menu.']['function.'] ?? [];
-        foreach ($blindActions as $key => $value) {
-            if (!$value && array_key_exists($key, $this->MOD_MENU['function'])) {
-                unset($this->MOD_MENU['function'][$key]);
-            }
-        }
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
-    }
-
-    /**
-     * Merges menu items from global array $TBE_MODULES_EXT
-     *
-     * @param string $modName Module name for which to find value
-     * @param string $menuKey Menu key, eg. 'function' for the function menu.
-     * @param array $menuArr The part of a MOD_MENU array to work on.
-     * @return array Modified array part.
-     * @internal
-     * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), menuConfig()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function mergeExternalItems($modName, $menuKey, $menuArr)
-    {
-        $mergeArray = $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
-        if (is_array($mergeArray)) {
-            foreach ($mergeArray as $k => $v) {
-                if (((string)$v['ws'] === '' || $this->getBackendUser()->workspace === 0 && GeneralUtility::inList($v['ws'], 'online')) || $this->getBackendUser()->workspace === -1 && GeneralUtility::inList($v['ws'], 'offline') || $this->getBackendUser()->workspace > 0 && GeneralUtility::inList($v['ws'], 'custom')) {
-                    $menuArr[$k] = $this->getLanguageService()->sL($v['title']);
-                }
-            }
-        }
-        return $menuArr;
-    }
-
-    /**
-     * Loads $this->extClassConf with the configuration for the CURRENT function of the menu.
-     *
-     * @param string $MM_key The key to MOD_MENU for which to fetch configuration. 'function' is default since it is first and foremost used to get information per "extension object" (I think that is what its called)
-     * @param string $MS_value The value-key to fetch from the config array. If NULL (default) MOD_SETTINGS[$MM_key] will be used. This is useful if you want to force another function than the one defined in MOD_SETTINGS[function]. Call this in init() function of your Script Class: handleExternalFunctionValue('function', $forcedSubModKey)
-     * @see getExternalItemConfig(), init()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function handleExternalFunctionValue($MM_key = 'function', $MS_value = null)
-    {
-        if ($MS_value === null) {
-            $MS_value = $this->MOD_SETTINGS[$MM_key];
-        }
-        $this->extClassConf = $this->getExternalItemConfig($this->MCONF['name'], $MM_key, $MS_value);
-    }
-
-    /**
-     * Returns configuration values from the global variable $TBE_MODULES_EXT for the module given.
-     * For example if the module is named "web_info" and the "function" key ($menuKey) of MOD_SETTINGS is "stat" ($value) then you will have the values of $TBE_MODULES_EXT['webinfo']['MOD_MENU']['function']['stat'] returned.
-     *
-     * @param string $modName Module name
-     * @param string $menuKey Menu key, eg. "function" for the function menu. See $this->MOD_MENU
-     * @param string $value Optionally the value-key to fetch from the array that would otherwise have been returned if this value was not set. Look source...
-     * @return mixed The value from the TBE_MODULES_EXT array.
-     * @see handleExternalFunctionValue()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function getExternalItemConfig($modName, $menuKey, $value = '')
-    {
-        if (isset($GLOBALS['TBE_MODULES_EXT'][$modName])) {
-            return (string)$value !== '' ? $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey][$value] : $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
-        }
-        return null;
-    }
-
-    /**
-     * Creates an instance of the class found in $this->extClassConf['name'] in $this->extObj if any (this should hold three keys, "name", "path" and "title" if a "Function menu module" tries to connect...)
-     * This value in extClassConf might be set by an extension (in an ext_tables/ext_localconf file) which thus "connects" to a module.
-     * The array $this->extClassConf is set in handleExternalFunctionValue() based on the value of MOD_SETTINGS[function]
-     * If an instance is created it is initiated with $this passed as value and $this->extClassConf as second argument. Further the $this->MOD_SETTING is cleaned up again after calling the init function.
-     *
-     * @see handleExternalFunctionValue(), \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), $extObj
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function checkExtObj()
-    {
-        if (is_array($this->extClassConf) && $this->extClassConf['name']) {
-            $this->extObj = GeneralUtility::makeInstance($this->extClassConf['name']);
-            $this->extObj->init($this, $this->extClassConf);
-            // Re-write:
-            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
-        }
-    }
-
-    /**
-     * Calls the checkExtObj function in sub module if present.
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function checkSubExtObj()
-    {
-        if (is_object($this->extObj)) {
-            $this->extObj->checkExtObj();
-        }
-    }
-
-    /**
-     * Calls the 'header' function inside the "Function menu module" if present.
-     * A header function might be needed to add JavaScript or other stuff in the head.
-     * This can't be done in the main function because the head is already written.
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function extObjHeader()
-    {
-        if (is_callable([$this->extObj, 'head'])) {
-            $this->extObj->head();
-        }
-    }
-
-    /**
-     * Calls the 'main' function inside the "Function menu module" if present
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function extObjContent()
-    {
-        if ($this->extObj === null) {
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
-                $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:no_modules_registered'),
-                $this->getLanguageService()->getLL('title'),
-                FlashMessage::ERROR
-            );
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
-            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-            $defaultFlashMessageQueue->enqueue($flashMessage);
-        } else {
-            $this->extObj->pObj = $this;
-            if (is_callable([$this->extObj, 'main'])) {
-                $this->content .= $this->extObj->main();
-            }
-        }
-    }
-
-    /**
-     * Return the content of the 'main' function inside the "Function menu module" if present
-     *
-     * @return string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function getExtObjContent()
-    {
-        $savedContent = $this->content;
-        $this->content = '';
-        $this->extObjContent();
-        $newContent = $this->content;
-        $this->content = $savedContent;
-        return $newContent;
     }
 }

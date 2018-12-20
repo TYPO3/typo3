@@ -326,16 +326,19 @@ return [
     'TYPO3\CMS\Impexp\Export->maxFileSize' => [
         'restFiles' => [
             'Deprecation-83596-ImpexpRemovedMaxFileSizeRestriction.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Impexp\Export->maxRecordSize' => [
         'restFiles' => [
             'Deprecation-83606-ImpexpSizeHandlingRemoved.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Impexp\Export->maxExportSize' => [
         'restFiles' => [
             'Deprecation-83606-ImpexpSizeHandlingRemoved.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->page_cache_reg1' => [
