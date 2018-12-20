@@ -109,18 +109,6 @@ pages:fe_group</source>
 			<trans-unit id="extendToSubpages.image_descr">
 				<source>This page has access restricted to a certain group and has "Extend to Subpages" set as well. This is reflected in the way the page icon has changed.</source>
 			</trans-unit>
-			<trans-unit id="alias.description">
-				<source>A URL Alias is a unique identification string for a page. You can use this string instead of the ID number to refer to the page.</source>
-			</trans-unit>
-			<trans-unit id="alias.details" xml:space="preserve">
-				<source>Ultimately a page is identified by its ID number. For example, you may access a page in TYPO3 at '.../?id=123'. If the page with ID '123' has the URL Alias 'one_two_three', then the URL '.../?id=one_two_three' would display exactly the same page, because 'one_two_three' is a URL Alias for the ID '123'.
-URL Aliases are normally assigned to only the most frequently used pages rather than all pages. In most TYPO3 configurations you would be able to use the syntax '.. &amp;lt;link one_two_three&amp;gt;go to the page&amp;lt;/link&amp;gt; ..' to create a link to the page. This is easier to remember.
-Another use is if you need to change which page a commonly used link points to. In this case you can delete the URL Alias for the original page and re-add it on the new page. All links using the URL Alias would now refer to the new page and its ID number.</source>
-			</trans-unit>
-			<trans-unit id="alias.syntax" xml:space="preserve">
-				<source>A URL Alias can contain only lowercase alphanumeric characters and must be unique.
-Please note: If the URL Alias already exists in the site, it will have a number added to the end of it.</source>
-			</trans-unit>
 			<trans-unit id="target.description">
 				<source>This sets the default Link Target for menu items linking to this page. Can also used to open the page as a popup window.</source>
 			</trans-unit>

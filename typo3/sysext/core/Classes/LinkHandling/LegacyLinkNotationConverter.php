@@ -46,7 +46,7 @@ class LegacyLinkNotationConverter
      *  - "mailto" an email address
      *  - "url" external URL
      *  - "file" a local file (checked AFTER getPublicUrl() is called)
-     *  - "page" a page (integer or alias)
+     *  - "page" a page (integer)
      *
      * Does NOT check if the page exists or the file exists.
      *
@@ -187,13 +187,6 @@ class LegacyLinkNotationConverter
         } else {
             $result['pageuid'] = $data;
         }
-
-        // expect an alias
-        if (!MathUtility::canBeInterpretedAsInteger($result['pageuid']) && $result['pageuid'] !== 'current') {
-            $result['pagealias'] = $result['pageuid'];
-            unset($result['pageuid']);
-        }
-
         return $result;
     }
 

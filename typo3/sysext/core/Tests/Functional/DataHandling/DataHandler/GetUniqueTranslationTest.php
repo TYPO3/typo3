@@ -31,12 +31,15 @@ class GetUniqueTranslationTest extends AbstractDataHandlerActionTestCase
      */
     public function valueOfUniqueFieldExcludedInTranslationIsUntouchedInTranslation(): void
     {
+        // Mis-using the "keywords" field in the scenario data-set to check for uniqueness
+        $GLOBALS['TCA']['pages']['columns']['keywords']['l10n_mode'] = 'exclude';
+        $GLOBALS['TCA']['pages']['columns']['keywords']['config']['eval'] = 'unique';
         $map = $this->actionService->localizeRecord('pages', self::PAGE_DATAHANDLER, 1);
         $newPageId = $map['pages'][self::PAGE_DATAHANDLER];
         $originalLanguageRecord = BackendUtility::getRecord('pages', self::PAGE_DATAHANDLER);
         $translatedRecord = BackendUtility::getRecord('pages', $newPageId);
 
-        $this->assertEquals('datahandler', $originalLanguageRecord['alias']);
-        $this->assertEquals('datahandler', $translatedRecord['alias']);
+        $this->assertEquals('datahandler', $originalLanguageRecord['keywords']);
+        $this->assertEquals('datahandler', $translatedRecord['keywords']);
     }
 }

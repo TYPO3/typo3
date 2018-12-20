@@ -29,8 +29,6 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\PseudoSiteFinder;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Returns a site or pseudo-site (with sys_domain records) based on a given request.
@@ -89,9 +87,6 @@ class SiteMatcher implements SingletonInterface
 
         $pageId = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0;
 
-        if (!empty($pageId) && !MathUtility::canBeInterpretedAsInteger($pageId)) {
-            $pageId = (int)GeneralUtility::makeInstance(PageRepository::class)->getPageIdFromAlias($pageId);
-        }
         // First, check if we have a _GET/_POST parameter for "id", then a site information can be resolved based.
         if ($pageId > 0) {
             // Loop over the whole rootline without permissions to get the actual site information

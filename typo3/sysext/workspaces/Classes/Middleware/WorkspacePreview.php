@@ -189,7 +189,7 @@ class WorkspacePreview implements MiddlewareInterface
      * Creates a preview user and sets the workspace ID and the current page ID (for accessing the page)
      *
      * @param int $workspaceUid the workspace ID to set
-     * @param mixed $requestedPageId pageID or alias to the current page
+     * @param mixed $requestedPageId pageID to the current page
      * @return PreviewUserAuthentication|bool if the set up of the workspace was successful, the user is returned.
      */
     protected function initializePreviewUser(int $workspaceUid, $requestedPageId)

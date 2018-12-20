@@ -15,8 +15,6 @@ namespace TYPO3\CMS\Core\Database;
  */
 
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -428,7 +426,7 @@ class SoftReferenceIndex
      * Analyze content as a TypoLink value and return an array with properties.
      * TypoLinks format is: <link [typolink] [browser target] [css class] [title attribute] [additionalParams]>.
      * See TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink()
-     * The syntax of the [typolink] part is: [typolink] = [page id or alias][,[type value]][#[anchor, if integer = tt_content uid]]
+     * The syntax of the [typolink] part is: [typolink] = [page id][,[type value]][#[anchor, if integer = tt_content uid]]
      * The extraction is based on how \TYPO3\CMS\Frontend\ContentObject::typolink() behaves.
      *
      * @param string $typolinkValue TypoLink value.
@@ -526,16 +524,7 @@ class SoftReferenceIndex
                 $link_param = $pairParts[0];
                 $finalTagParts['type'] = $pairParts[1]; // Overruling 'type'
             }
-
-            // Checking if the id-parameter is an alias.
-            if ((string)$link_param !== '') {
-                if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($link_param)) {
-                    $finalTagParts['alias'] = $link_param;
-                    $link_param = $this->getPageIdFromAlias($link_param);
-                }
-
-                $finalTagParts['page_id'] = (int)$link_param;
-            }
+            $finalTagParts['page_id'] = (int)$link_param;
         }
 
         return $finalTagParts;
@@ -603,7 +592,7 @@ class SoftReferenceIndex
                         'type' => 'db',
                         'recordRef' => 'pages:' . $tLP['page_id'],
                         'tokenID' => $tokenID,
-                        'tokenValue' => $tLP['alias'] ? $tLP['alias'] : $tLP['page_id']
+                        'tokenValue' => $tLP['page_id']
                     ];
                 }
                 // Add type if applicable
@@ -658,32 +647,6 @@ class SoftReferenceIndex
 
         // Return rebuilt typolink value:
         return $content;
-    }
-
-    /**
-     * Look up and return page uid for alias
-     *
-     * @param string $link_param Page alias string value
-     * @return int Page uid corresponding to alias value.
-     */
-    public function getPageIdFromAlias($link_param)
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-
-        $pageUid = $queryBuilder->select('uid')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq('alias', $queryBuilder->createNamedParameter($link_param, \PDO::PARAM_STR))
-            )
-            ->setMaxResults(1)
-            ->execute()
-            ->fetchColumn(0);
-
-        return (int)$pageUid;
     }
 
     /**

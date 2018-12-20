@@ -279,6 +279,7 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setHashCount()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setMaxHashCount()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setMinHashCount()`
+* :php:`TYPO3\CMS\Core\Database\SoftReferenceIndex->getPageIdFromAlias()`
 * :php:`TYPO3\CMS\Core\DataHandling\DataHandler->getTCEMAIN_TSconfig()`
 * :php:`TYPO3\CMS\Core\DataHandling\DataHandler->newlog2()`
 * :php:`TYPO3\CMS\Core\DataHandling\DataHandler->resorting()`
@@ -373,6 +374,7 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->storeSessionData()`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getFirstWebPage()`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getDomainStartPage()`
+* :php:`TYPO3\CMS\Frontend\Page\PageRepository->getPageIdFromAlias()`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getRootLine()`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getRecordsByField()`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->deleteClause()`
@@ -1059,6 +1061,7 @@ The following database tables have been removed:
 
 The following database fields have been removed:
 
+* `pages.alias`
 * `index_phash.data_page_reg1`
 
 

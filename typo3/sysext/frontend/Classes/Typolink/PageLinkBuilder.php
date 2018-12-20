@@ -50,11 +50,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): array
     {
         $tsfe = $this->getTypoScriptFrontendController();
-        // Checking if the id-parameter is an alias.
-        if (!empty($linkDetails['pagealias'])) {
-            $linkDetails['pageuid'] = $tsfe->sys_page->getPageIdFromAlias($linkDetails['pagealias']);
-        } elseif (empty($linkDetails['pageuid']) || $linkDetails['pageuid'] === 'current') {
-            // If no id or alias is given
+        if (empty($linkDetails['pageuid']) || $linkDetails['pageuid'] === 'current') {
+            // If no id is given
             $linkDetails['pageuid'] = $tsfe->id;
         }
 
@@ -695,10 +692,10 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     /**
      * The mother of all functions creating links/URLs etc in a TypoScript environment.
      * See the references below.
-     * Basically this function takes care of issues such as type,id,alias and Mount Points, URL rewriting (through hooks), M5/B6 encoded parameters etc.
+     * Basically this function takes care of issues such as type,id and Mount Points, URL rewriting (through hooks), M5/B6 encoded parameters etc.
      * It is important to pass all links created through this function since this is the guarantee that globally configured settings for link creating are observed and that your applications will conform to the various/many configuration options in TypoScript Templates regarding this.
      *
-     * @param array $page The page record of the page to which we are creating a link. Needed due to fields like uid, alias, target, title and sectionIndex_uid.
+     * @param array $page The page record of the page to which we are creating a link. Needed due to fields like uid, target, title and sectionIndex_uid.
      * @param string $target Target string
      * @param bool $no_cache If set, then the "&no_cache=1" parameter is included in the URL.
      * @param string $addParams Additional URL parameters to set in the URL. Syntax is "&foo=bar&foo2=bar2" etc. Also used internally to add parameters if needed.
@@ -719,11 +716,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         }
         // Setting ID/alias:
         $script = 'index.php';
-        if ($page['alias']) {
-            $LD['url'] = $script . '?id=' . rawurlencode($page['alias']);
-        } else {
-            $LD['url'] = $script . '?id=' . $page['uid'];
-        }
+        $LD['url'] = $script . '?id=' . $page['uid'];
         // typeNum
         $typeNum = $this->getTypoScriptFrontendController()->tmpl->setup[$target . '.']['typeNum'];
         if (!MathUtility::canBeInterpretedAsInteger($typeOverride) && (int)$this->getTypoScriptFrontendController()->config['config']['forceTypeValue']) {

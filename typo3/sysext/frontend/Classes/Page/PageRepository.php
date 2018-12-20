@@ -312,46 +312,6 @@ class PageRepository implements LoggerAwareInterface
     }
 
     /**
-     * Returns a pagerow for the page with alias $alias
-     *
-     * @param string $alias The alias to look up the page uid for.
-     * @return int Returns page uid (int) if found, otherwise 0 (zero)
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::checkAndSetAlias(), ContentObjectRenderer::typoLink()
-     */
-    public function getPageIdFromAlias($alias)
-    {
-        $alias = strtolower($alias);
-        $cacheIdentifier = 'PageRepository_getPageIdFromAlias_' . md5($alias);
-        $cache = $this->getRuntimeCache();
-        $cacheEntry = $cache->get($cacheIdentifier);
-        if ($cacheEntry !== false) {
-            return $cacheEntry;
-        }
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-        $row = $queryBuilder->select('uid')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq('alias', $queryBuilder->createNamedParameter($alias, \PDO::PARAM_STR)),
-                // "AND pid>=0" because of versioning (means that aliases sent MUST be online!)
-                $queryBuilder->expr()->gte('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
-            )
-            ->setMaxResults(1)
-            ->execute()
-            ->fetch();
-
-        if ($row) {
-            $cache->set($cacheIdentifier, $row['uid']);
-            return $row['uid'];
-        }
-        $cache->set($cacheIdentifier, 0);
-        return 0;
-    }
-
-    /**
      * Master helper method to overlay a record to a language.
      *
      * Be aware that for pages the languageId is taken, and for all other records the contentId.
@@ -481,7 +441,6 @@ class PageRepository implements LoggerAwareInterface
                     // Unset vital fields that are NOT allowed to be overlaid:
                     unset($row['uid']);
                     unset($row['pid']);
-                    unset($row['alias']);
                     $overlays[$origUid] = $row;
                 }
             }
@@ -1439,10 +1398,6 @@ class PageRepository implements LoggerAwareInterface
                     // For page+content the "_ORIG_uid" should actually be used as PID for selection.
                     $wsAlt['_ORIG_uid'] = $wsAlt['uid'];
                     $wsAlt['uid'] = $row['uid'];
-                    // Translate page alias as well so links are pointing to the _online_ page:
-                    if ($table === 'pages') {
-                        $wsAlt['alias'] = $row['alias'];
-                    }
                     // Changing input record to the workspace version alternative:
                     $row = $wsAlt;
                     // Check if it is deleted/new

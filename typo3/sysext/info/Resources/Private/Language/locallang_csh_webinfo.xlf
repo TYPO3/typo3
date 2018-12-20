@@ -29,7 +29,7 @@ EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_9.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="func_0.image_descr" xml:space="preserve">
-				<source>The Basic Settings view offers a very convenient overview of page aliases, start times and access restriction settings in the tree branch.
+				<source>The Basic Settings view offers a very convenient overview of page urls, start times and access restriction settings in the tree branch.
 If you click an edit-icon in the header you will be able to edit that field for all listed pages.</source>
 			</trans-unit>
 			<trans-unit id="func_1.alttitle">

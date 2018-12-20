@@ -101,7 +101,6 @@ class PageArgumentValidator implements MiddlewareInterface
     protected function evaluateCacheHashParameter(array $queryParams, bool $pageNotFoundOnCacheHashError): bool
     {
         if ($this->controller->cHash) {
-            // Make sure we use the page uid and not the page alias
             $queryParams['id'] = $this->controller->id;
             $this->controller->cHash_array = $this->cacheHashCalculator->getRelevantParameters(HttpUtility::buildQueryString($queryParams));
             $cHash_calc = $this->cacheHashCalculator->calculateCacheHash($this->controller->cHash_array);

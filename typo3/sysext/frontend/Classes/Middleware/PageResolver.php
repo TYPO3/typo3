@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
@@ -166,22 +165,15 @@ class PageResolver implements MiddlewareInterface
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(FrontendWorkspaceRestriction::class));
 
-        if (MathUtility::canBeInterpretedAsInteger($pageId)) {
-            $constraint = $queryBuilder->expr()->eq(
-                'uid',
-                $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
-            );
-        } else {
-            $constraint = $queryBuilder->expr()->eq(
-                'alias',
-                $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_STR)
-            );
-        }
-
         $statement = $queryBuilder
             ->select('uid', 'l10n_parent', 'pid')
             ->from('pages')
-            ->where($constraint)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                )
+            )
             ->execute();
 
         $page = $statement->fetch();

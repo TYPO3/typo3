@@ -291,7 +291,6 @@ class TreeController
             'icon' => $icon->getIdentifier(),
             'name' => $visibleText,
             'nameSourceField' => $nameSourceField,
-            'alias' => htmlspecialchars($page['alias'] ?? ''),
             'prefix' => htmlspecialchars($prefix),
             'suffix' => htmlspecialchars($suffix),
             'locked' => is_array($lockInfo),

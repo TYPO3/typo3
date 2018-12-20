@@ -1250,7 +1250,7 @@ class BackendUtility
     }
 
     /**
-     * Returns title-attribute information for a page-record informing about id, alias, doktype, hidden, starttime, endtime, fe_group etc.
+     * Returns title-attribute information for a page-record informing about id, doktype, hidden, starttime, endtime, fe_group etc.
      *
      * @param array $row Input must be a page row ($row) with the proper fields set (be sure - send the full range of fields for the table)
      * @param string $perms_clause This is used to get the record path of the shortcut page, if any (and doktype==4)
@@ -1265,9 +1265,6 @@ class BackendUtility
         if ($row['uid'] === 0) {
             $out = htmlspecialchars($parts[0]);
             return $includeAttrib ? 'title="' . $out . '"' : $out;
-        }
-        if ($row['alias']) {
-            $parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['alias']['label']) . ' ' . $row['alias'];
         }
         if ($row['pid'] < 0) {
             $parts[] = 'v#1.' . $row['t3ver_id'];
@@ -1385,9 +1382,6 @@ class BackendUtility
             $ctrl = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'];
             // Uid is added
             $out .= 'id=' . $row['uid'];
-            if ($table === 'pages' && $row['alias']) {
-                $out .= ' / ' . $row['alias'];
-            }
             if (static::isTableWorkspaceEnabled($table) && $row['pid'] < 0) {
                 $out .= ' - v#1.' . $row['t3ver_id'];
             }

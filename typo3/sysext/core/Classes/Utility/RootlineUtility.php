@@ -81,7 +81,6 @@ class RootlineUtility
         't3ver_wsid',
         't3ver_state',
         'title',
-        'alias',
         'nav_title',
         'media',
         'layout',

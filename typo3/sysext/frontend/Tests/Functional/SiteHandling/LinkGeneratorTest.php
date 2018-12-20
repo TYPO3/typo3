@@ -113,8 +113,8 @@ class LinkGeneratorTest extends AbstractTestCase
     {
         $instructions = [
             // acme.com -> acme.com (same site)
-            [1100, 1000, 'index.php?id=acme-root'],
-            [1100, 1100, 'index.php?id=acme-first'],
+            [1100, 1000, 'index.php?id=1000'],
+            [1100, 1100, 'index.php?id=1100'],
             [1100, 1200, 'index.php?id=1200'],
             [1100, 1210, 'index.php?id=1210'],
             [1100, 404, 'index.php?id=404'],
@@ -122,13 +122,13 @@ class LinkGeneratorTest extends AbstractTestCase
             [1100, 1300, 'index.php?id=1300'],
             [1100, 1310, 'index.php?id=1310'],
             // acme.com -> blog.acme.com (different site)
-            [1100, 2000, 'index.php?id=blog-root'],
+            [1100, 2000, 'index.php?id=2000'],
             [1100, 2100, 'index.php?id=2100'],
             [1100, 2110, 'index.php?id=2110'],
             [1100, 2111, 'index.php?id=2111'],
             // blog.acme.com -> acme.com (different site)
-            [2100, 1000, 'index.php?id=acme-root'],
-            [2100, 1100, 'index.php?id=acme-first'],
+            [2100, 1000, 'index.php?id=1000'],
+            [2100, 1100, 'index.php?id=1100'],
             [2100, 1200, 'index.php?id=1200'],
             [2100, 1210, 'index.php?id=1210'],
             [2100, 404, 'index.php?id=404'],
@@ -174,8 +174,8 @@ class LinkGeneratorTest extends AbstractTestCase
     {
         $instructions = [
             // acme.com -> acme.com (same site)
-            [[7100, 1700], 7110, 1000, 'index.php?id=acme-root'],
-            [[7100, 1700], 7110, 1100, 'index.php?id=acme-first'],
+            [[7100, 1700], 7110, 1000, 'index.php?id=1000'],
+            [[7100, 1700], 7110, 1100, 'index.php?id=1100'],
             [[7100, 1700], 7110, 1200, 'index.php?id=1200'],
             [[7100, 1700], 7110, 1210, 'index.php?id=1210'],
             [[7100, 1700], 7110, 404, 'index.php?id=404'],
@@ -183,13 +183,13 @@ class LinkGeneratorTest extends AbstractTestCase
             [[7100, 1700], 7110, 1300, 'index.php?id=1300'],
             [[7100, 1700], 7110, 1310, 'index.php?id=1310'],
             // acme.com -> blog.acme.com (different site)
-            [[7100, 1700], 7110, 2000, 'index.php?id=blog-root'],
+            [[7100, 1700], 7110, 2000, 'index.php?id=2000'],
             [[7100, 1700], 7110, 2100, 'index.php?id=2100'],
             [[7100, 1700], 7110, 2110, 'index.php?id=2110'],
             [[7100, 1700], 7110, 2111, 'index.php?id=2111'],
             // blog.acme.com -> acme.com (different site)
-            [[7100, 2700], 7110, 1000, 'index.php?id=acme-root'],
-            [[7100, 2700], 7110, 1100, 'index.php?id=acme-first'],
+            [[7100, 2700], 7110, 1000, 'index.php?id=1000'],
+            [[7100, 2700], 7110, 1100, 'index.php?id=1100'],
             [[7100, 2700], 7110, 1200, 'index.php?id=1200'],
             [[7100, 2700], 7110, 1210, 'index.php?id=1210'],
             [[7100, 2700], 7110, 404, 'index.php?id=404'],
@@ -250,11 +250,11 @@ class LinkGeneratorTest extends AbstractTestCase
     {
         $instructions = [
             // acme.com -> acme.com (same site)
-            [1100, 1100, 0, 'index.php?id=acme-first&L=0'],
-            [1100, 1100, 1, 'index.php?id=acme-first&L=1'],
-            [1100, 1100, 2, 'index.php?id=acme-first&L=2'],
-            [1100, 1101, 0, 'index.php?id=acme-first&L=1'],
-            [1100, 1102, 0, 'index.php?id=acme-first&L=2'],
+            [1100, 1100, 0, 'index.php?id=1100&L=0'],
+            [1100, 1100, 1, 'index.php?id=1100&L=1'],
+            [1100, 1100, 2, 'index.php?id=1100&L=2'],
+            [1100, 1101, 0, 'index.php?id=1100&L=1'],
+            [1100, 1102, 0, 'index.php?id=1100&L=2'],
             // acme.com -> products.acme.com (nested sub-site)
             [1100, 1300, 0, 'index.php?id=1300&L=0'],
             [1100, 1310, 0, 'index.php?id=1310&L=0'],
@@ -271,11 +271,11 @@ class LinkGeneratorTest extends AbstractTestCase
             [1100, 3101, 0, 'index.php?id=3100&L=1'],
             [1100, 3102, 0, 'index.php?id=3100&L=2'],
             // blog.acme.com -> acme.com (different site)
-            [2100, 1100, 0, 'index.php?id=acme-first&L=0'],
-            [2100, 1100, 1, 'index.php?id=acme-first&L=1'],
-            [2100, 1100, 2, 'index.php?id=acme-first&L=2'],
-            [2100, 1101, 0, 'index.php?id=acme-first&L=1'],
-            [2100, 1102, 0, 'index.php?id=acme-first&L=2'],
+            [2100, 1100, 0, 'index.php?id=1100&L=0'],
+            [2100, 1100, 1, 'index.php?id=1100&L=1'],
+            [2100, 1100, 2, 'index.php?id=1100&L=2'],
+            [2100, 1101, 0, 'index.php?id=1100&L=1'],
+            [2100, 1102, 0, 'index.php?id=1100&L=2'],
             // blog.acme.com -> archive (outside site)
             [2100, 3100, 0, 'index.php?id=3100&L=0'],
             [2100, 3100, 1, 'index.php?id=3100&L=1'],
@@ -326,8 +326,8 @@ class LinkGeneratorTest extends AbstractTestCase
     {
         $instructions = [
             // acme.com -> acme.com (same site)
-            [1100, 1000, 'index.php?id=acme-root&testing%5Bvalue%5D=1&cHash=7d1f13fa91159dac7feb3c824936b39d'],
-            [1100, 1100, 'index.php?id=acme-first&testing%5Bvalue%5D=1&cHash=f42b850e435f0cedd366f5db749fc1af'],
+            [1100, 1000, 'index.php?id=1000&testing%5Bvalue%5D=1&cHash=7d1f13fa91159dac7feb3c824936b39d'],
+            [1100, 1100, 'index.php?id=1100&testing%5Bvalue%5D=1&cHash=f42b850e435f0cedd366f5db749fc1af'],
             [1100, 1200, 'index.php?id=1200&testing%5Bvalue%5D=1&cHash=784e11c50ea1a13fd7d969df4ec53ea3'],
             [1100, 1210, 'index.php?id=1210&testing%5Bvalue%5D=1&cHash=ccb7067022b9835ebfd8f720722bc708'],
             [1100, 404, 'index.php?id=404&testing%5Bvalue%5D=1&cHash=864e96f586a78a53452f3bf0f4d24591'],
@@ -335,13 +335,13 @@ class LinkGeneratorTest extends AbstractTestCase
             [1100, 1300, 'index.php?id=1300&testing%5Bvalue%5D=1&cHash=dbd6597d72ed5098cce3d03eac1eeefe'],
             [1100, 1310, 'index.php?id=1310&testing%5Bvalue%5D=1&cHash=e64bfc7ab7dd6b70d161e4d556be9726'],
             // acme.com -> blog.acme.com (different site)
-            [1100, 2000, 'index.php?id=blog-root&testing%5Bvalue%5D=1&cHash=a14da633e46dba71640cb85226cd12c5'],
+            [1100, 2000, 'index.php?id=2000&testing%5Bvalue%5D=1&cHash=a14da633e46dba71640cb85226cd12c5'],
             [1100, 2100, 'index.php?id=2100&testing%5Bvalue%5D=1&cHash=d23d74cb50383f8788a9930ec8ba679f'],
             [1100, 2110, 'index.php?id=2110&testing%5Bvalue%5D=1&cHash=bf25eea89f44a9a79dabdca98f38a432'],
             [1100, 2111, 'index.php?id=2111&testing%5Bvalue%5D=1&cHash=42dbaeb9172b6b1ca23b49941e194db2'],
             // blog.acme.com -> acme.com (different site)
-            [2100, 1000, 'index.php?id=acme-root&testing%5Bvalue%5D=1&cHash=7d1f13fa91159dac7feb3c824936b39d'],
-            [2100, 1100, 'index.php?id=acme-first&testing%5Bvalue%5D=1&cHash=f42b850e435f0cedd366f5db749fc1af'],
+            [2100, 1000, 'index.php?id=1000&testing%5Bvalue%5D=1&cHash=7d1f13fa91159dac7feb3c824936b39d'],
+            [2100, 1100, 'index.php?id=1100&testing%5Bvalue%5D=1&cHash=f42b850e435f0cedd366f5db749fc1af'],
             [2100, 1200, 'index.php?id=1200&testing%5Bvalue%5D=1&cHash=784e11c50ea1a13fd7d969df4ec53ea3'],
             [2100, 1210, 'index.php?id=1210&testing%5Bvalue%5D=1&cHash=ccb7067022b9835ebfd8f720722bc708'],
             [2100, 404, 'index.php?id=404&testing%5Bvalue%5D=1&cHash=864e96f586a78a53452f3bf0f4d24591'],
@@ -534,14 +534,14 @@ class LinkGeneratorTest extends AbstractTestCase
         // -> most probably since pid=-1 is not correctly resolved
         $instructions = [
             // acme.com -> acme.com (same site)
-            [1100, 1100, false, 'index.php?id=acme-first'],
-            [1100, 1100, true, 'index.php?id=acme-first'], // @todo Alias not removed, yet
+            [1100, 1100, false, 'index.php?id=1100'],
+            [1100, 1100, true, 'index.php?id=7131'],
             // [1100, 1950, false, 'index.php?id=1950'], // @todo Not generated for new-placeholder
             [1100, 1950, true, 'index.php?id={targetPageId}'],
             // blog.acme.com -> acme.com (different site)
-            [2100, 1100, false, 'index.php?id=acme-first'],
+            [2100, 1100, false, 'index.php?id=1100'],
             // @todo https://acme.us/ not prefixed for resolved version
-            [2100, 1100, true, 'index.php?id=acme-first'], // @todo Alias not removed, yet
+            [2100, 1100, true, 'index.php?id=7131'],
             // [2100, 1950, false, 'index.php?id=1950'], // @todo Not generated for new-placeholder
             // @todo https://acme.us/ not prefixed for resolved version
             [2100, 1950, true, 'index.php?id={targetPageId}'],
@@ -604,7 +604,7 @@ class LinkGeneratorTest extends AbstractTestCase
             'ACME Inc' => [
                 1100,
                 [
-                    ['title' => 'EN: Welcome', 'link' => 'index.php?id=acme-first'],
+                    ['title' => 'EN: Welcome', 'link' => 'index.php?id=1100'],
                     [
                         'title' => 'EN: Features',
                         'link' => 'index.php?id=1200',
@@ -694,7 +694,7 @@ class LinkGeneratorTest extends AbstractTestCase
                                 ],
                             ],
                         ],
-                    ['title' => 'ACME Inc', 'link' => 'index.php?id=acme-first'],
+                    ['title' => 'ACME Inc', 'link' => 'index.php?id=1100'],
                 ]
             ]
         ];
@@ -740,9 +740,9 @@ class LinkGeneratorTest extends AbstractTestCase
             'ACME Inc' => [
                 1100,
                 [
-                    ['title' => 'Default', 'link' => 'index.php?id=acme-first&L=0'],
-                    ['title' => 'French', 'link' => 'index.php?id=acme-first&L=1'],
-                    ['title' => 'Franco-Canadian', 'link' => 'index.php?id=acme-first&L=2'],
+                    ['title' => 'Default', 'link' => 'index.php?id=1100&L=0'],
+                    ['title' => 'French', 'link' => 'index.php?id=1100&L=1'],
+                    ['title' => 'Franco-Canadian', 'link' => 'index.php?id=1100&L=2'],
                 ]
             ],
             'ACME Blog' => [

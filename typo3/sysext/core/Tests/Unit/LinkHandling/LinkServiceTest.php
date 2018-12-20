@@ -69,14 +69,6 @@ class LinkServiceTest extends UnitTestCase
                 ],
                 't3://page?uid=13&type=31&unbel=ievable#uncool'
             ],
-            'page with alias - old style' => [
-                'alias13',
-                [
-                    'type' => LinkService::TYPE_PAGE,
-                    'pagealias' => 'alias13'
-                ],
-                't3://page?alias=alias13'
-            ],
             'http URL' => [
                 'http://www.have.you/ever?did=this',
                 [
@@ -180,42 +172,6 @@ class LinkServiceTest extends UnitTestCase
                     'pageuid' => 13
                 ],
                 't3://page?uid=13'
-            ],
-            'page with alias - cool style' => [
-                't3://page?alias=alias13',
-                [
-                    'type' => LinkService::TYPE_PAGE,
-                    'pagealias' => 'alias13'
-                ],
-                't3://page?alias=alias13'
-            ],
-            'page with alias and type - cool style' => [
-                't3://page?alias=alias13&type=31',
-                [
-                    'type' => LinkService::TYPE_PAGE,
-                    'pagealias' => 'alias13',
-                    'pagetype' => '31'
-                ],
-                't3://page?alias=alias13&type=31'
-            ],
-            'page with alias and parameters - cool style' => [
-                't3://page?alias=alias13&my=additional&parameter=that&are=nice',
-                [
-                    'type' => LinkService::TYPE_PAGE,
-                    'pagealias' => 'alias13',
-                    'parameters' => 'my=additional&parameter=that&are=nice'
-                ],
-                't3://page?alias=alias13&my=additional&parameter=that&are=nice',
-            ],
-            'page with alias and parameters and fragment - cool style' => [
-                't3://page?alias=alias13&my=additional&parameter=that&are=nice#again',
-                [
-                    'type' => LinkService::TYPE_PAGE,
-                    'pagealias' => 'alias13',
-                    'parameters' => 'my=additional&parameter=that&are=nice',
-                    'fragment' => 'again'
-                ],
-                't3://page?alias=alias13&my=additional&parameter=that&are=nice#again',
             ]
         ];
     }

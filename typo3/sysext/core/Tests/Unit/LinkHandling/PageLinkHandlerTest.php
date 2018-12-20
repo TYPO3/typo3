@@ -54,53 +54,6 @@ class PageLinkHandlerTest extends UnitTestCase
                     'pageuid' => 13
                 ],
                 't3://page?uid=13'
-            ],
-            'page with alias - cool style' => [
-                [
-                    'alias' => 'alias13'
-                ],
-                [
-                    'pagealias' => 'alias13'
-                ],
-                't3://page?alias=alias13'
-            ],
-            'page with alias and type - cool style' => [
-                [
-                    'alias' => 'alias13',
-                    'type' => 31
-                ],
-                [
-                    'pagealias' => 'alias13',
-                    'pagetype' => '31'
-                ],
-                't3://page?alias=alias13&type=31'
-            ],
-            'page with alias and parameters - cool style' => [
-                [
-                    'alias' => 'alias13',
-                    'my' => 'additional',
-                    'parameter' => 'that',
-                    'are' => 'nice'
-                ],
-                [
-                    'pagealias' => 'alias13',
-                    'parameters' => 'my=additional&parameter=that&are=nice'
-                ],
-                't3://page?alias=alias13&my=additional&parameter=that&are=nice',
-            ],
-            'page with alias and parameters and fragment - cool style' => [
-                [
-                    'alias' => 'alias13',
-                    'my' => 'additional',
-                    'parameter' => 'that',
-                    'are' => 'nice'
-                ],
-                [
-                    'pagealias' => 'alias13',
-                    'parameters' => 'my=additional&parameter=that&are=nice',
-                    'fragment' => 'again'
-                ],
-                't3://page?alias=alias13&my=additional&parameter=that&are=nice#again',
             ]
         ];
     }

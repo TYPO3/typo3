@@ -1404,13 +1404,7 @@ class Import extends ImportExport
                             list($tempTable, $tempUid) = explode(':', $cfg['subst']['recordRef']);
                             if (isset($this->import_mapId[$tempTable][$tempUid])) {
                                 $insertValue = BackendUtility::wsMapId($tempTable, $this->import_mapId[$tempTable][$tempUid]);
-                                // Look if reference is to a page and the original token value was NOT an integer - then we assume is was an alias and try to look up the new one!
-                                if ($tempTable === 'pages' && !MathUtility::canBeInterpretedAsInteger($cfg['subst']['tokenValue'])) {
-                                    $recWithUniqueValue = BackendUtility::getRecord($tempTable, $insertValue, 'alias');
-                                    if ($recWithUniqueValue['alias']) {
-                                        $insertValue = $recWithUniqueValue['alias'];
-                                    }
-                                } elseif (strpos($cfg['subst']['tokenValue'], ':') !== false) {
+                                if (strpos($cfg['subst']['tokenValue'], ':') !== false) {
                                     list($tokenKey) = explode(':', $cfg['subst']['tokenValue']);
                                     $insertValue = $tokenKey . ':' . $insertValue;
                                 }

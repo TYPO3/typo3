@@ -21,9 +21,6 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -433,34 +430,9 @@ class BackendController
         if ($editId) {
             // Looking up the page to edit, checking permissions:
             $where = ' AND (' . $beUser->getPagePermsClause(Permission::PAGE_EDIT) . ' OR ' . $beUser->getPagePermsClause(Permission::CONTENT_EDIT) . ')';
+            $editRecord = null;
             if (MathUtility::canBeInterpretedAsInteger($editId)) {
                 $editRecord = BackendUtility::getRecordWSOL('pages', $editId, '*', $where);
-            } else {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-                $queryBuilder->getRestrictions()
-                    ->removeAll()
-                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                    ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-
-                $editRecord = $queryBuilder->select('*')
-                    ->from('pages')
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            'alias',
-                            $queryBuilder->createNamedParameter($editId, \PDO::PARAM_STR)
-                        ),
-                        $queryBuilder->expr()->orX(
-                            $beUser->getPagePermsClause(Permission::PAGE_EDIT),
-                            $beUser->getPagePermsClause(Permission::CONTENT_EDIT)
-                        )
-                    )
-                    ->setMaxResults(1)
-                    ->execute()
-                    ->fetch();
-
-                if ($editRecord !== false) {
-                    BackendUtility::workspaceOL('pages', $editRecord);
-                }
             }
             // If the page was accessible, then let the user edit it.
             if (is_array($editRecord) && $beUser->isInWebMount($editRecord['uid'])) {

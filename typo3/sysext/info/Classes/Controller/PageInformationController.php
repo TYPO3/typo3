@@ -21,9 +21,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\PseudoSite;
-use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -230,13 +228,10 @@ class PageInformationController
             $fieldList = str_replace('###ALL_TABLES###', $this->cleanTableNames(), $item['fields']);
             $fields = GeneralUtility::trimExplode(',', $fieldList, true);
             if ((int)$key === 0) {
-                // If "Basic settings" is rendered, hide the alias field on trees that have a site configuration
-                // and hide the slug field on PseudoSites. On NullSites (pid 0), show both.
+                // If "Basic settings" is rendered, hide the slug field on PseudoSites.
                 $site = $request->getAttribute('site');
                 if ($site instanceof PseudoSite) {
                     $fields = array_diff($fields, ['slug']);
-                } elseif ($site instanceof Site && !$site instanceof NullSite) {
-                    $fields = array_diff($fields, ['alias']);
                 }
             }
             $key = trim($key, '.');

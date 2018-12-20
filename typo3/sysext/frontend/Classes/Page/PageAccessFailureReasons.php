@@ -24,6 +24,7 @@ final class PageAccessFailureReasons
     // Page resolving issues
     public const NO_PAGES_FOUND = 'page.database.empty';
     public const PAGE_NOT_FOUND = 'page';
+    /** @deprecated  */
     public const PAGE_ALIAS_NOT_FOUND = 'page.alias';
     public const ROOTLINE_BROKEN = 'page.rootline';
 

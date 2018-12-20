@@ -1554,7 +1554,6 @@ abstract class AbstractMenuContentObject
             $overrideArray = [];
             // If a user script returned the value overrideId in the menu array we use that as page id
             $overrideArray['uid'] = $this->mconf['overrideId'] ?: $this->menuArr[$key]['overrideId'];
-            $overrideArray['alias'] = '';
             // Clear MP parameters since ID was changed.
             $MP_params = '';
         } else {

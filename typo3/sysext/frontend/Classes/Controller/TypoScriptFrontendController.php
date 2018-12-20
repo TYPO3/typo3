@@ -914,8 +914,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function determineIdIsHiddenPage()
     {
-        $field = MathUtility::canBeInterpretedAsInteger($this->id) ? 'uid' : 'alias';
-
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
         $queryBuilder
@@ -927,7 +925,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             ->select('uid', 'hidden', 'starttime', 'endtime')
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($this->id)),
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->gte('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
             ->setMaxResults(1)
@@ -956,7 +954,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * this options:
      *
      * - Splitting $this->id if it contains an additional type parameter.
-     * - Getting the id for an alias in $this->id
      * - Finding the domain record start page
      * - First visible page
      * - Relocating the id below the domain record if outside
@@ -991,7 +988,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * the fact, that is is called repeated times by the method determineId.
      * The reasons are manifold.
      *
-     * 1.) The first part, the creation of sys_page, the type and alias
+     * 1.) The first part, the creation of sys_page and the type
      * resolution don't need to be repeated. They could be separated to be
      * called only once.
      *
@@ -1018,8 +1015,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Initialize the PageRepository has to be done after the frontend usergroups are initialized / resolved, as
         // frontend group aspect is modified before
         $this->sys_page = GeneralUtility::makeInstance(PageRepository::class, $this->context);
-        // If $this->id is a string, it's an alias
-        $this->checkAndSetAlias();
         // The id and type is set to the integer-value - just to be sure...
         $this->id = (int)$this->id;
         $this->type = (int)$this->type;
@@ -1083,13 +1078,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         $GLOBALS['TYPO3_REQUEST'],
                         'ID was outside the domain',
                         $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_HOST_PAGE_MISMATCH)
-                    );
-                    break;
-                case 4:
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                        $GLOBALS['TYPO3_REQUEST'],
-                        'The requested page alias does not exist',
-                        $this->getPageAccessFailureReasons(PageAccessFailureReasons::PAGE_ALIAS_NOT_FOUND)
                     );
                     break;
                 default:
@@ -1554,22 +1542,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->id = $domainStartPage;
                 // re-get the page and rootline if the id was not found.
                 $this->getPageAndRootline();
-            }
-        }
-    }
-
-    /**
-     * Fetches the integer page id for a page alias.
-     * Looks if ->id is not an integer and if so it will search for a page alias and if found the page uid of that page is stored in $this->id
-     */
-    protected function checkAndSetAlias()
-    {
-        if ($this->id && !MathUtility::canBeInterpretedAsInteger($this->id)) {
-            $aid = $this->sys_page->getPageIdFromAlias($this->id);
-            if ($aid) {
-                $this->id = $aid;
-            } else {
-                $this->pageNotFound = 4;
             }
         }
     }

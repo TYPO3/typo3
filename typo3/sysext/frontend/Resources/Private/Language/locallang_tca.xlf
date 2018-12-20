@@ -159,12 +159,6 @@
 			<trans-unit id="pages.target_formlabel">
 				<source>Link Target</source>
 			</trans-unit>
-			<trans-unit id="pages.alias">
-				<source>Alias</source>
-			</trans-unit>
-			<trans-unit id="pages.alias_formlabel">
-				<source>URL Alias</source>
-			</trans-unit>
 			<trans-unit id="pages.url">
 				<source>URL</source>
 			</trans-unit>

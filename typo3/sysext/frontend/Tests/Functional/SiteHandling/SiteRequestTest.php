@@ -110,7 +110,6 @@ class SiteRequestTest extends AbstractTestCase
         $queries = [
             '?',
             '?id=1000',
-            '?id=acme-root'
         ];
 
         return $this->wrapInArray(
@@ -208,7 +207,6 @@ class SiteRequestTest extends AbstractTestCase
 
         $queries = [
             '?id=1100',
-            '?id=acme-first',
         ];
 
         return array_map(
@@ -286,7 +284,6 @@ class SiteRequestTest extends AbstractTestCase
 
         $queries = [
             '?id=1100',
-            '?id=acme-first',
         ];
 
         return array_map(
@@ -588,9 +585,7 @@ class SiteRequestTest extends AbstractTestCase
         $queries = [
             '?',
             '?id=1000',
-            '?id=acme-root',
             '?id=1100',
-            '?id=acme-first',
         ];
 
         $customQueries = [
@@ -773,9 +768,7 @@ class SiteRequestTest extends AbstractTestCase
         $queries = [
             // @todo Currently fails since cHash is verified after(!) redirect to page 1100
             // '?&cHash=7d1f13fa91159dac7feb3c824936b39d&id=1000',
-            // '?&cHash=7d1f13fa91159dac7feb3c824936b39d=acme-root',
             '?&cHash=f42b850e435f0cedd366f5db749fc1af&id=1100',
-            '?&cHash=f42b850e435f0cedd366f5db749fc1af&id=acme-first',
         ];
 
         $customQueries = [

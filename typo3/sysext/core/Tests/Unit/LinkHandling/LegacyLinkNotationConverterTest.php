@@ -97,14 +97,6 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                 ],
                 't3://page?uid=1&type=0&param=2'
             ],
-            'page with alias - old style' => [
-                'alias13',
-                [
-                    'type' => LinkService::TYPE_PAGE,
-                    'pagealias' => 'alias13'
-                ],
-                't3://page?alias=alias13'
-            ],
             'record of table - old 2-part identifier' => [
                 'record:tx_myext_entity:456',
                 [

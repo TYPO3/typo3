@@ -48,7 +48,6 @@ class PageTreeRepository
         'title',
         'nav_title',
         'nav_hide',
-        'alias',
         'php_tree_stop',
         'doktype',
         'is_siteroot',

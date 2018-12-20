@@ -35,12 +35,7 @@ class PageLinkHandler implements LinkHandlingInterface
      */
     public function asString(array $parameters): string
     {
-        $urn = $this->baseUrn;
-        if (isset($parameters['pagealias']) && $parameters['pagealias'] !== 'current') {
-            $urn .= '?alias=' . $parameters['pagealias'];
-        } else {
-            $urn .= '?uid=' . $parameters['pageuid'];
-        }
+        $urn = $this->baseUrn . '?uid=' . $parameters['pageuid'];
         $urn = rtrim($urn, ':');
         // Page type is set and not empty (= "0" in this case means it is not empty)
         if (isset($parameters['pagetype']) && strlen((string)$parameters['pagetype']) > 0) {
@@ -68,10 +63,6 @@ class PageLinkHandler implements LinkHandlingInterface
         if (isset($data['uid'])) {
             $result['pageuid'] = $data['uid'];
             unset($data['uid']);
-        }
-        if (isset($data['alias'])) {
-            $result['pagealias'] = $data['alias'];
-            unset($data['alias']);
         }
         if (isset($data['type'])) {
             $result['pagetype'] = $data['type'];

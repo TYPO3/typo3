@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Does not take "deleted" pages into account, but respects workspace records.
  *
  * This is how it works:
- * - Check if a page has pages.alias filled.
  * - Check if realurl v1 (tx_realurl_pathcache) or v2 (tx_realurl_pathdata) has a page path, use that instead.
  * - If not -> generate the slug.
  *
@@ -118,8 +117,6 @@ class PopulatePageSlugs implements UpgradeWizardInterface
                     $queryBuilder->expr()->isNull($this->fieldName)
                 )
             )
-            // Ensure that fields with alias are managed first
-            ->orderBy('alias', 'desc')
             // Ensure that live workspace records are handled first
             ->addOrderBy('t3ver_wsid', 'asc')
             // Ensure that all pages are run through "per parent page" field, and in the correct sorting values
@@ -147,7 +144,8 @@ class PopulatePageSlugs implements UpgradeWizardInterface
             $pageIdInDefaultLanguage = $languageId > 0 ? (int)$record['l10n_parent'] : $recordId;
             $slug = $suggestedSlugs[$pageIdInDefaultLanguage][$languageId] ?? '';
 
-            // see if an alias field was used, then let's build a slug out of that.
+            // see if an alias field was used, then let's build a slug out of that. This field does not exist in v10
+            // anymore, so this will only be necessary in edge-cases when upgrading from earlier versions with aliases
             if (!empty($record['alias'])) {
                 $slug = $slugHelper->sanitize('/' . $record['alias']);
             }

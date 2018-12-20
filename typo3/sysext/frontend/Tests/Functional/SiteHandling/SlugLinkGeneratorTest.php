@@ -588,12 +588,12 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         $instructions = [
             // acme.com -> acme.com (same site)
             ['https://acme.us/', 1100, 1100, false, '/welcome'],
-            ['https://acme.us/', 1100, 1100, true, '/index.php?id=acme-first'], // @todo Alias not removed, yet
+            ['https://acme.us/', 1100, 1100, true, '/index.php?id=7131'],
             // ['https://acme.us/', 1100, 1950, false, '/?id=1950'], // @todo Not generated for new-placeholder
             ['https://acme.us/', 1100, 1950, true, '/index.php?id={targetPageId}'],
             // blog.acme.com -> acme.com (different site)
             ['https://blog.acme.com/', 2100, 1100, false, 'https://acme.us/welcome'],
-            ['https://blog.acme.com/', 2100, 1100, true, '/index.php?id=acme-first'], // @todo Alias not removed, yet, domain missing
+            ['https://blog.acme.com/', 2100, 1100, true, '/index.php?id=7131'],
             // ['https://blog.acme.com/', 2100, 1950, false, '/?id=1950'], // @todo Not generated for new-placeholder
             ['https://blog.acme.com/', 2100, 1950, true, '/index.php?id={targetPageId}'], // @todo Domain missing
         ];

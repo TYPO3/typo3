@@ -61,10 +61,10 @@ return [
             'page-contentFromPid-hideinmenu' => 'apps-pagetree-page-content-from-page-hideinmenu',
             'default' => 'apps-pagetree-page-default'
         ],
-        'searchFields' => 'title,alias,nav_title,subtitle,url,keywords,description,abstract,author,author_email'
+        'searchFields' => 'title,nav_title,subtitle,url,keywords,description,abstract,author,author_email'
     ],
     'interface' => [
-        'showRecordFieldList' => 'doktype,title,alias,rowDescription,hidden,starttime,endtime,fe_group,url,target,shortcut,keywords,description,abstract,newUntil,lastUpdated,cache_timeout,cache_tags,backend_layout,backend_layout_next_level',
+        'showRecordFieldList' => 'doktype,title,rowDescription,hidden,starttime,endtime,fe_group,url,target,shortcut,keywords,description,abstract,newUntil,lastUpdated,cache_timeout,cache_tags,backend_layout,backend_layout_next_level',
         'maxDBListItems' => 30,
         'maxSingleDBListItems' => 50
     ],
@@ -434,24 +434,6 @@ return [
                 'eval' => 'trim'
             ]
         ],
-        'alias' => [
-            'exclude' => true,
-            'displayCond' => [
-                'AND' => [
-                    'VERSION:IS:false',
-                    'USER:' . \TYPO3\CMS\Core\Compatibility\PseudoSiteTcaDisplayCondition::class . '->isInPseudoSite:pages:true',
-                ],
-            ],
-            'l10n_mode' => 'exclude',
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.alias',
-            'config' => [
-                'type' => 'input',
-                'size' => 50,
-                'max' => 32,
-                'eval' => 'nospace,alphanum_x,lower,unique',
-                'softref' => 'notify'
-            ]
-        ],
         'url' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url',
             'config' => [
@@ -587,7 +569,7 @@ return [
                 'minitems' => 0,
                 'suggestOptions' => [
                     'default' => [
-                        'additionalSearchFields' => 'nav_title, alias, url',
+                        'additionalSearchFields' => 'nav_title, url',
                         'addWhere' => ' AND pages.uid != ###THIS_UID###'
                     ]
                 ],
@@ -640,7 +622,7 @@ return [
                 'minitems' => 0,
                 'suggestOptions' => [
                     'default' => [
-                        'additionalSearchFields' => 'nav_title, alias, url',
+                        'additionalSearchFields' => 'nav_title, url',
                         'addWhere' => ' AND pages.uid != ###THIS_UID###'
                     ]
                 ],
@@ -1114,7 +1096,7 @@ return [
             'showitem' => 'layout, lastUpdated, newUntil, no_search'
         ],
         '3' => [
-            'showitem' => 'alias, target, cache_timeout, cache_tags'
+            'showitem' => 'target, cache_timeout, cache_tags'
         ],
         '5' => [
             'showitem' => 'author, author_email',
@@ -1197,7 +1179,7 @@ return [
         ],
         'links' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.links',
-            'showitem' => 'alias;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.alias_formlabel, --linebreak--, target;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.target_formlabel',
+            'showitem' => 'target;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.target_formlabel',
         ],
         'caching' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.caching',

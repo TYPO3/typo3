@@ -49,9 +49,9 @@ entities:
     - self: {id: 1, title: 'French', code: 'fr'}
     - self: {id: 2, title: 'Franco-Canadian', code: 'fr'}
   page:
-    - self: {id: *idAcmeRootPage, title: 'ACME Inc', type: *pageShortcut, shortcut: 'first', root: true, alias: 'acme-root'}
+    - self: {id: *idAcmeRootPage, title: 'ACME Inc', type: *pageShortcut, shortcut: 'first', root: true}
       children:
-        - self: {id: *idAcmeFirstPage, title: 'EN: Welcome', alias: 'acme-first'}
+        - self: {id: *idAcmeFirstPage, title: 'EN: Welcome'}
           languageVariants:
             - self: {id: 1101, title: 'FR: Welcome', language: 1}
             - self: {id: 1102, title: 'FR-CA: Welcome', language: 2}
@@ -112,7 +112,7 @@ entities:
               - self: {id: 1, username: 'john@doe.local', groups: '10'}
               - self: {id: 2, username: 'manager@other-inc.local', groups: '20'}
               - self: {id: 3, username: 'big-boss@acme-inc.local', groups: '10,20'}
-    - self: {id: 2000, title: 'ACME Blog', type: *pageShortcut, shortcut: 'first', root: true, alias: 'blog-root'}
+    - self: {id: 2000, title: 'ACME Blog', type: *pageShortcut, shortcut: 'first', root: true}
       children:
         - self: {id: 2100, title: 'Authors'}
           children:
