@@ -160,8 +160,16 @@ class TypoLinkGeneratorTest extends AbstractTestCase
                 '<a href="http://typo3.org">Go to TYPO3.org</a>',
             ],
             [
-                't3://record?identifier=content&uid=10001&other=other#fragment',
-                '<a href="/features#c10001">EN: Features</a>',
+                't3://record?identifier=content&uid=400&other=other#fragment',
+                '<a href="/features#c400">EN: Features</a>',
+            ],
+            'Non-existent record' => [
+                't3://record?identifier=content&uid=400000',
+                '',
+            ],
+            'Translated record on default language page' => [
+                't3://record?identifier=content&uid=402',
+                '<a href="/features#c402">EN: Features</a>',
             ],
             [
                 't3://url?url=https://typo3.org%3f%26param-a=a%26param-b=b&other=other#other',
@@ -516,14 +524,15 @@ class TypoLinkGeneratorTest extends AbstractTestCase
     private function invokeTypoLink(string $parameter, AbstractInstruction ...$instructions): ResponseInterface
     {
         $sourcePageId = 1100;
-        $targetPageId = 1200;
 
         $request = (new InternalRequest('https://acme.us/'))
             ->withPageId($sourcePageId)
             ->withInstructions(
                 [
                     $this->createRecordLinksInstruction([
-                        'parameter' => $targetPageId,
+                        'parameter.' => [
+                            'data' => 'field:pid',
+                        ],
                         'section.' => [
                             'data' => 'field:uid',
                             'wrap' => 'c|',
@@ -568,7 +577,6 @@ class TypoLinkGeneratorTest extends AbstractTestCase
                 'config.' => [
                     'recordLinks.' => [
                         'content.' => [
-                            'forceLink' => 1,
                             'typolink.' => $typoLink,
                         ],
                     ],

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -168,12 +169,13 @@ class DatabaseRecordLinkBuilderTest extends UnitTestCase
 
         // Arrange
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
+        $context = new Context();
         $templateService = $this->prophesize(TemplateService::class);
         $pageRepository = $this->prophesize(PageRepository::class);
         $cObj = $this->prophesize(ContentObjectRenderer::class);
         $cObj->getRequest()->willReturn($this->prophesize(ServerRequestInterface::class)->reveal());
 
-        $GLOBALS['TSFE'] = $tsfe->reveal();
+        $tsfe->getContext()->willReturn($context);
         $tsfe->tmpl = $templateService->reveal();
         $tsfe->tmpl->setup = $typoScriptConfig;
         $tsfe->sys_page = $pageRepository->reveal();
@@ -191,7 +193,7 @@ class DatabaseRecordLinkBuilderTest extends UnitTestCase
         $tsfe->getPagesTSconfig()->willReturn($pageTsConfig);
 
         // Act
-        $databaseRecordLinkBuilder = new DatabaseRecordLinkBuilder($cObj->reveal());
+        $databaseRecordLinkBuilder = new DatabaseRecordLinkBuilder($cObj->reveal(), $tsfe->reveal());
         try {
             $databaseRecordLinkBuilder->build($extractedLinkDetails, $linkText, $target, $confFromDb);
         } catch (UnableToLinkException $exception) {
