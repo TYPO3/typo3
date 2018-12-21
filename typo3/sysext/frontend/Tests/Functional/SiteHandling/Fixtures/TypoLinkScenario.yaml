@@ -40,12 +40,19 @@ entities:
             - self: {id: 1102, title: 'FR-CA: Bienvenue', language: 2, slug: '/bienvenue', subtitle: 'salut-et-bienvenue'}
           entities:
             content:
-              - self: {title: 'EN: Content Element #1'}
-              - self: {title: 'EN: Content Element #2'}
+              - self: {id: 300, title: 'EN: Content Element #1'}
+              - self: {id: 310, title: 'EN: Content Element #2'}
         - self: {id: 1200, title: 'EN: Features', slug: '/features'}
           languageVariants:
             - self: {id: 1201, title: 'FR: Features', slug: '/features-fr', language: 1}
             - self: {id: 1202, title: 'FR-CA: Features', slug: '/features-ca', language: 2}
+          entities:
+            content:
+              - self: {id: 400, title: 'EN: Content Element #1'}
+                languageVariants:
+                  - self: {id: 401, title: 'FR: Content Element #1', language: 1 }
+                  - self: {id: 402, title: 'FR-CA: EN: Content Element #1', language: 2, slug: '/bienvenue' }
+              - self: {title: 'EN: Content Element #2'}
         - self: {id: 1300, title: 'Go to TYPO3.org', type: *pageLink, slug: '/external', url: 'typo3.org' }
         - self: {id: 9911, title: '<good>', slug: '/test/good'}
         - self: {id: 9912, title: '<good a="a/" b="thing(1)">', slug: '/test/good-a-b-spaced'}

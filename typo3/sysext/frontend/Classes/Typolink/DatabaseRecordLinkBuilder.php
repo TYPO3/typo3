@@ -47,11 +47,26 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         }
         $typoScriptConfiguration = $configuration[$configurationKey]['typolink.'];
         $linkHandlerConfiguration = $linkHandlerConfiguration[$configurationKey]['configuration.'];
+        $databaseTable = $linkHandlerConfiguration['table'];
 
         if ($configuration[$configurationKey]['forceLink'] ?? false) {
-            $record = $tsfe->sys_page->getRawRecord($linkHandlerConfiguration['table'], $linkDetails['uid']);
+            $record = $tsfe->sys_page->getRawRecord($databaseTable, $linkDetails['uid']);
         } else {
-            $record = $tsfe->sys_page->checkRecord($linkHandlerConfiguration['table'], $linkDetails['uid']);
+            $record = $tsfe->sys_page->checkRecord($databaseTable, $linkDetails['uid']);
+            $languageAspect = $tsfe->getContext()->getAspect('language');
+
+            if ($languageAspect->doOverlays()) {
+                $overlay = $tsfe->sys_page->getRecordOverlay(
+                    $databaseTable,
+                    $record,
+                    $languageAspect->getContentId(),
+                    $languageAspect->getLegacyOverlayType()
+                );
+
+                if (empty($overlay['_LOCALIZED_UID'])) {
+                    $record = 0;
+                }
+            }
         }
         if ($record === 0) {
             throw new UnableToLinkException(
@@ -81,7 +96,7 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         // Build the full link to the record
         $request = $this->contentObjectRenderer->getRequest();
         $localContentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $localContentObjectRenderer->start($record, $linkHandlerConfiguration['table'], $request);
+        $localContentObjectRenderer->start($record, $databaseTable, $request);
         $localContentObjectRenderer->parameters = $this->contentObjectRenderer->parameters;
         $link = $localContentObjectRenderer->typoLink($linkText, $typoScriptConfiguration);
 
