@@ -20,6 +20,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\FormDataProvider\ValuePickerItemDataProvider;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -50,7 +51,9 @@ class ValuePickerItemDataProviderTest extends UnitTestCase
             'tableName' => 'tt_content',
         ];
 
-        $valuePickerItemDataProvider = new ValuePickerItemDataProvider();
+        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
+        $siteFinderProphecy->getAllSites()->willReturn([]);
+        $valuePickerItemDataProvider = new ValuePickerItemDataProvider($siteFinderProphecy->reveal());
         $actualResult = $valuePickerItemDataProvider->addData($result);
         self::assertSame($result, $actualResult);
     }
@@ -63,16 +66,19 @@ class ValuePickerItemDataProviderTest extends UnitTestCase
         $statementProphecy = $this->setUpDatabase();
         $statementProphecy->fetchAll()->willReturn(
             [
-                ['domainName' => 'foo.test'],
                 ['domainName' => 'bar.test'],
+                ['domainName' => 'foo.test'],
             ]
         );
-        $valuePickerItemDataProvider = new ValuePickerItemDataProvider();
+        // no results for now
+        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
+        $siteFinderProphecy->getAllSites()->willReturn([]);
+        $valuePickerItemDataProvider = new ValuePickerItemDataProvider($siteFinderProphecy->reveal());
         $actualResult = $valuePickerItemDataProvider->addData($this->sysRedirectResultSet);
         $expected = $this->sysRedirectResultSet;
         $expected['processedTca']['columns']['source_host']['config']['valuePicker']['items'] = [
-            ['foo.test', 'foo.test'],
             ['bar.test', 'bar.test'],
+            ['foo.test', 'foo.test'],
         ];
         self::assertSame($expected, $actualResult);
     }
@@ -84,7 +90,9 @@ class ValuePickerItemDataProviderTest extends UnitTestCase
     {
         $statementProphecy = $this->setUpDatabase();
         $statementProphecy->fetchAll()->willReturn([]);
-        $valuePickerItemDataProvider = new ValuePickerItemDataProvider();
+        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
+        $siteFinderProphecy->getAllSites()->willReturn([]);
+        $valuePickerItemDataProvider = new ValuePickerItemDataProvider($siteFinderProphecy->reveal());
         $actualResult = $valuePickerItemDataProvider->addData($this->sysRedirectResultSet);
 
         self::assertSame($this->sysRedirectResultSet, $actualResult);
