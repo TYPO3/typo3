@@ -79,15 +79,6 @@ class Typo3QuerySettings implements QuerySettingsInterface
     protected $languageOverlayMode = true;
 
     /**
-     * Language Mode is NOT used when consistentTranslationOverlayHandling is enabled
-     *
-     * Representing sys_language_mode only valid for current context
-     *
-     * @var string
-     */
-    protected $languageMode;
-
-    /**
      * Representing sys_language_uid only valid for current context
      *
      * @var int
@@ -128,7 +119,6 @@ class Typo3QuerySettings implements QuerySettingsInterface
         if ($this->environmentService->isEnvironmentInFrontendMode()) {
             $overlayMode = $languageAspect->getLegacyOverlayType() === 'hideNonTranslated' ? 'hideNonTranslated' : (bool)$languageAspect->getLegacyOverlayType();
             $this->setLanguageOverlayMode($overlayMode);
-            $this->setLanguageMode($languageAspect->getLegacyLanguageMode() ?: null);
         } elseif ((int)GeneralUtility::_GP('L')) {
             // Set language from 'L' parameter
             $this->setLanguageUid((int)GeneralUtility::_GP('L'));
@@ -216,25 +206,24 @@ class Typo3QuerySettings implements QuerySettingsInterface
     }
 
     /**
-     * Language Mode is NOT used when consistentTranslationOverlayHandling is enabled
+     * Language Mode is NOT used anymore, so just avoid using it. Will be deprecated in the future.
      *
-     * @param string $languageMode NULL, "content_fallback", "strict" or "ignore"
+     * @param string $languageMode
      * @return QuerySettingsInterface instance of $this to allow method chaining
      */
     public function setLanguageMode($languageMode = '')
     {
-        $this->languageMode = $languageMode;
         return $this;
     }
 
     /**
-     * Language Mode is NOT used when consistentTranslationOverlayHandling is enabled
+     * Language Mode is NOT used anymore, so just avoid using it. Will be deprecated in the future.
      *
      * @return string NULL, "content_fallback", "strict" or "ignore"
      */
     public function getLanguageMode()
     {
-        return $this->languageMode;
+        return null;
     }
 
     /**

@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
@@ -323,8 +322,8 @@ class Typo3DbQueryParser
     {
         $index = 0;
         foreach ($this->tableAliasMap as $tableAlias => $tableName) {
-            if ($index === 0 || !$this->configurationManager->isFeatureEnabled('consistentTranslationOverlayHandling')) {
-                // With the new behaviour enabled, we only add the pid and language check for the first table (aggregate root).
+            if ($index === 0) {
+                // We only add the pid and language check for the first table (aggregate root).
                 // We know the first table is always the main table for the current query run.
                 $additionalWhereClauses = $this->getAdditionalWhereClause($query->getQuerySettings(), $tableName, $tableAlias);
             } else {
@@ -560,9 +559,7 @@ class Typo3DbQueryParser
      */
     protected function createTypedNamedParameter($value, int $forceType = null): string
     {
-        $consistentHandlingEnabled = $this->configurationManager->isFeatureEnabled('consistentTranslationOverlayHandling');
-        if ($consistentHandlingEnabled
-            && $value instanceof AbstractDomainObject
+        if ($value instanceof AbstractDomainObject
             && $value->_hasProperty('_localizedUid')
             && $value->_getProperty('_localizedUid') > 0
         ) {
@@ -692,12 +689,7 @@ class Typo3DbQueryParser
     {
         $whereClause = [];
         if ($querySettings->getRespectSysLanguage()) {
-            if ($this->configurationManager->isFeatureEnabled('consistentTranslationOverlayHandling')) {
-                $systemLanguageStatement = $this->getLanguageStatement($tableName, $tableAlias, $querySettings);
-            } else {
-                $systemLanguageStatement = $this->getSysLanguageStatement($tableName, $tableAlias, $querySettings);
-            }
-
+            $systemLanguageStatement = $this->getLanguageStatement($tableName, $tableAlias, $querySettings);
             if (!empty($systemLanguageStatement)) {
                 $whereClause[] = $systemLanguageStatement;
             }
@@ -788,88 +780,6 @@ class Typo3DbQueryParser
             $statement .= ' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] . '=0';
         }
         return $statement;
-    }
-
-    /**
-     * Builds the language field statement in a legacy way (when consistentTranslationOverlayHandling flag is disabled)
-     *
-     * @param string $tableName The database table name
-     * @param string $tableAlias The table alias used in the query.
-     * @param QuerySettingsInterface $querySettings The TYPO3 CMS specific query settings
-     * @return string
-     */
-    protected function getSysLanguageStatement($tableName, $tableAlias, $querySettings)
-    {
-        if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
-            if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])) {
-                // Select all entries for the current language
-                // If any language is set -> get those entries which are not translated yet
-                // They will be removed by \TYPO3\CMS\Frontend\Page\PageRepository::getRecordOverlay if not matching overlay mode
-                $languageField = $GLOBALS['TCA'][$tableName]['ctrl']['languageField'];
-
-                if (isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
-                    && $querySettings->getLanguageUid() > 0
-                ) {
-                    $mode = $querySettings->getLanguageMode();
-
-                    if ($mode === 'strict') {
-                        $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
-                        $queryBuilderForSubselect->getRestrictions()->removeAll()->add(new DeletedRestriction());
-                        $queryBuilderForSubselect
-                            ->select($tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
-                            ->from($tableName)
-                            ->where(
-                                $queryBuilderForSubselect->expr()->andX(
-                                    $queryBuilderForSubselect->expr()->gt($tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'], 0),
-                                    $queryBuilderForSubselect->expr()->eq($tableName . '.' . $languageField, (int)$querySettings->getLanguageUid())
-                                )
-                            );
-                        return $this->queryBuilder->expr()->orX(
-                            $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, -1),
-                            $this->queryBuilder->expr()->andX(
-                                $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, (int)$querySettings->getLanguageUid()),
-                                $this->queryBuilder->expr()->eq($tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'], 0)
-                            ),
-                            $this->queryBuilder->expr()->andX(
-                                $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, 0),
-                                $this->queryBuilder->expr()->in(
-                                    $tableAlias . '.uid',
-                                    $queryBuilderForSubselect->getSQL()
-
-                                )
-                            )
-                        );
-                    }
-                    $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
-                    $queryBuilderForSubselect->getRestrictions()->removeAll()->add(new DeletedRestriction());
-                    $queryBuilderForSubselect
-                            ->select($tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
-                            ->from($tableName)
-                            ->where(
-                                $queryBuilderForSubselect->expr()->andX(
-                                    $queryBuilderForSubselect->expr()->gt($tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'], 0),
-                                    $queryBuilderForSubselect->expr()->eq($tableName . '.' . $languageField, (int)$querySettings->getLanguageUid())
-                                )
-                            );
-                    return $this->queryBuilder->expr()->orX(
-                            $this->queryBuilder->expr()->in($tableAlias . '.' . $languageField, [(int)$querySettings->getLanguageUid(), -1]),
-                            $this->queryBuilder->expr()->andX(
-                                $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, 0),
-                                $this->queryBuilder->expr()->notIn(
-                                    $tableAlias . '.uid',
-                                    $queryBuilderForSubselect->getSQL()
-
-                                )
-                            )
-                        );
-                }
-                return $this->queryBuilder->expr()->in(
-                        $tableAlias . '.' . $languageField,
-                        [(int)$querySettings->getLanguageUid(), -1]
-                    );
-            }
-        }
-        return '';
     }
 
     /**

@@ -342,7 +342,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function addSysLanguageStatementWorksForDefaultLanguage()
+    public function addGetLanguageStatementWorksForDefaultLanguage()
     {
         $table = $this->getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
@@ -353,7 +353,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
-        $sql = $mockTypo3DbQueryParser->_callRef('getSysLanguageStatement', $table, $table, $querySettings);
+        $sql = $mockTypo3DbQueryParser->_callRef('getLanguageStatement', $table, $table, $querySettings);
         $expectedSql = $table . '.sys_language_uid IN (0, -1)';
         $this->assertSame($expectedSql, $sql);
     }
@@ -361,7 +361,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function addSysLanguageStatementWorksForNonDefaultLanguage()
+    public function addGetLanguageStatementWorksForNonDefaultLanguage()
     {
         $table = $this->getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
@@ -375,7 +375,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
-        $sql = $mockTypo3DbQueryParser->_callRef('getSysLanguageStatement', $table, $table, $querySettings);
+        $sql = $mockTypo3DbQueryParser->_callRef('getLanguageStatement', $table, $table, $querySettings);
         $result = $table . '.sys_language_uid IN (1, -1)';
         $this->assertSame($result, $sql);
     }
@@ -383,7 +383,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function addSysLanguageStatementWorksInBackendContextWithNoGlobalTypoScriptFrontendControllerAvailable()
+    public function addGetLanguageStatementWorksInBackendContextWithNoGlobalTypoScriptFrontendControllerAvailable()
     {
         $table = $this->getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
@@ -393,7 +393,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
-        $sql = $mockTypo3DbQueryParser->_callRef('getSysLanguageStatement', $table, $table, $querySettings);
+        $sql = $mockTypo3DbQueryParser->_callRef('getLanguageStatement', $table, $table, $querySettings);
         $expectedSql = $table . '.sys_language_uid IN (0, -1)';
         $this->assertSame($expectedSql, $sql);
     }
@@ -401,7 +401,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function addSysLanguageStatementWorksForDefaultLanguageWithoutDeleteStatementReturned()
+    public function addGetLanguageStatementWorksForDefaultLanguageWithoutDeleteStatementReturned()
     {
         $table = $this->getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
@@ -413,7 +413,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
-        $sql = $mockTypo3DbQueryParser->_callRef('getSysLanguageStatement', $table, $table, $querySettings);
+        $sql = $mockTypo3DbQueryParser->_callRef('getLanguageStatement', $table, $table, $querySettings);
         $expectedSql = $table . '.sys_language_uid IN (0, -1)';
         $this->assertSame($expectedSql, $sql);
     }
@@ -421,7 +421,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function addSysLanguageStatementWorksForForeignLanguageWithoutSubselection()
+    public function addGetLanguageStatementWorksForForeignLanguageWithoutSubselection()
     {
         $table = $this->getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
@@ -432,7 +432,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
-        $sql = $mockTypo3DbQueryParser->_callRef('getSysLanguageStatement', $table, $table, $querySettings);
+        $sql = $mockTypo3DbQueryParser->_callRef('getLanguageStatement', $table, $table, $querySettings);
         $expectedSql = $table . '.sys_language_uid IN (2, -1)';
         $this->assertSame($expectedSql, $sql);
     }
@@ -440,7 +440,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function addSysLanguageStatementWorksForForeignLanguageWithSubselectionWithoutDeleteStatementReturned()
+    public function addGetLanguageStatementWorksForForeignLanguageWithSubselectionWithoutDeleteStatementReturned()
     {
         $table = $this->getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
@@ -455,15 +455,15 @@ class Typo3DbQueryParserTest extends UnitTestCase
 
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
 
-        $compositeExpression = $mockTypo3DbQueryParser->_callRef('getSysLanguageStatement', $table, $table, $querySettings);
-        $expectedSql = '(' . $table . '.sys_language_uid IN (2, -1)) OR ((' . $table . '.sys_language_uid = 0) AND (' . $table . '.uid NOT IN (SELECT ' . $table . '.l10n_parent FROM ' . $table . ' WHERE (' . $table . '.l10n_parent > 0) AND (' . $table . '.sys_language_uid = 2))))';
+        $compositeExpression = $mockTypo3DbQueryParser->_callRef('getLanguageStatement', $table, $table, $querySettings);
+        $expectedSql = '(' . $table . '.sys_language_uid = -1) OR ((' . $table . '.sys_language_uid = 2) AND (' . $table . '.l10n_parent IN (SELECT ' . $table . '_dl.uid FROM ' . $table . ' ' . $table . '_dl WHERE (' . $table . '_dl.l10n_parent = 0) AND (' . $table . '_dl.sys_language_uid = 0)))) OR ((' . $table . '.sys_language_uid = 0) AND (' . $table . '.uid NOT IN (SELECT ' . $table . '_to.l10n_parent FROM ' . $table . ' ' . $table . '_dl, ' . $table . ' ' . $table . '_to WHERE (' . $table . '_to.l10n_parent > 0) AND (' . $table . '_to.sys_language_uid = 2))))';
         $this->assertSame($expectedSql, $compositeExpression->__toString());
     }
 
     /**
      * @test
      */
-    public function addSysLanguageStatementWorksForForeignLanguageWithSubselectionTakesDeleteStatementIntoAccountIfNecessary()
+    public function addGetLanguageStatementWorksForForeignLanguageWithSubselectionTakesDeleteStatementIntoAccountIfNecessary()
     {
         $table = $this->getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
@@ -476,20 +476,15 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderProphetWithQueryBuilderForSubselect();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
-        $compositeExpression= $mockTypo3DbQueryParser->_callRef('getSysLanguageStatement', $table, $table, $querySettings);
-        $expectedSql =  '(' . $table . '.sys_language_uid IN (2, -1))' .
-                ' OR ((' . $table . '.sys_language_uid = 0) AND (' . $table . '.uid NOT IN (' .
-                'SELECT ' . $table . '.l10n_parent FROM ' . $table .
-                ' WHERE (' . $table . '.l10n_parent > 0) AND (' .
-                $table . '.sys_language_uid = 2) AND (' .
-                $table . '.deleted = 0))))';
+        $compositeExpression= $mockTypo3DbQueryParser->_callRef('getLanguageStatement', $table, $table, $querySettings);
+        $expectedSql = '(' . $table . '.sys_language_uid = -1) OR ((' . $table . '.sys_language_uid = 2) AND (' . $table . '.l10n_parent IN (SELECT ' . $table . '_dl.uid FROM ' . $table . ' ' . $table . '_dl WHERE (' . $table . '_dl.l10n_parent = 0) AND (' . $table . '_dl.sys_language_uid = 0) AND (' . $table . '_dl.deleted = 0)))) OR ((' . $table . '.sys_language_uid = 0) AND (' . $table . '.uid NOT IN (SELECT ' . $table . '_to.l10n_parent FROM ' . $table . ' ' . $table . '_dl, ' . $table . ' ' . $table . '_to WHERE (' . $table . '_to.l10n_parent > 0) AND (' . $table . '_to.sys_language_uid = 2) AND ((' . $table . '_dl.deleted = 0) AND (' . $table . '_to.deleted = 0)))))';
         $this->assertSame($expectedSql, $compositeExpression->__toString());
     }
 
     /**
      * @test
      */
-    public function addSysLanguageStatementWorksInBackendContextWithSubselectionTakesDeleteStatementIntoAccountIfNecessary()
+    public function addGetLanguageStatementWorksInBackendContextWithSubselectionTakesDeleteStatementIntoAccountIfNecessary()
     {
         $table = 'tt_content';
         $GLOBALS['TCA'][$table]['ctrl'] = [
@@ -504,13 +499,8 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $queryBuilderProphet = $this->getQueryBuilderProphetWithQueryBuilderForSubselect();
 
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
-        $compositeExpression = $mockTypo3DbQueryParser->_callRef('getSysLanguageStatement', $table, $table, $querySettings);
-        $expectedSql = '(' . $table . '.sys_language_uid IN (2, -1))' .
-                ' OR ((' . $table . '.sys_language_uid = 0) AND (' . $table . '.uid NOT IN (' .
-                'SELECT ' . $table . '.l10n_parent FROM ' . $table .
-                ' WHERE (' . $table . '.l10n_parent > 0) AND (' .
-                $table . '.sys_language_uid = 2) AND (' .
-                $table . '.deleted = 0))))';
+        $compositeExpression = $mockTypo3DbQueryParser->_callRef('getLanguageStatement', $table, $table, $querySettings);
+        $expectedSql = '(' . $table . '.sys_language_uid = -1) OR ((' . $table . '.sys_language_uid = 2) AND (' . $table . '.l10n_parent IN (SELECT ' . $table . '_dl.uid FROM ' . $table . ' ' . $table . '_dl WHERE (' . $table . '_dl.l10n_parent = 0) AND (' . $table . '_dl.sys_language_uid = 0) AND (' . $table . '_dl.deleted = 0)))) OR ((' . $table . '.sys_language_uid = 0) AND (' . $table . '.uid NOT IN (SELECT ' . $table . '_to.l10n_parent FROM ' . $table . ' ' . $table . '_dl, ' . $table . ' ' . $table . '_to WHERE (' . $table . '_to.l10n_parent > 0) AND (' . $table . '_to.sys_language_uid = 2) AND ((' . $table . '_dl.deleted = 0) AND (' . $table . '_to.deleted = 0)))))';
         $this->assertSame($expectedSql, $compositeExpression->__toString());
     }
 

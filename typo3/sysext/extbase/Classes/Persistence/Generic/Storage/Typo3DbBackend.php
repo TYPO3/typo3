@@ -31,7 +31,6 @@ use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
-use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\SqlErrorException;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -376,10 +375,8 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             }
         }
 
-        if ($this->configurationManager->isFeatureEnabled('consistentTranslationOverlayHandling') && !empty($rows)) {
+        if (!empty($rows)) {
             $rows = $this->overlayLanguageAndWorkspace($query->getSource(), $rows, $query);
-        } else {
-            $rows = $this->doLanguageAndWorkspaceOverlay($query->getSource(), $rows, $query->getQuerySettings());
         }
 
         return $rows;
@@ -528,115 +525,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         } catch (DBALException $e) {
             throw new SqlErrorException($e->getPrevious()->getMessage(), 1470231748);
         }
-    }
-
-    /**
-     * Performs workspace and language overlay on the given row array. The language and workspace id is automatically
-     * detected (depending on FE or BE context). You can also explicitly set the language/workspace id.
-     *
-     * This method performs overlay in a legacy way (when consistentTranslationOverlayHandling flag is disabled)
-     *
-     * @param Qom\SourceInterface $source The source (selector od join)
-     * @param array $rows
-     * @param QuerySettingsInterface $querySettings The TYPO3 CMS specific query settings
-     * @param int|null $workspaceUid
-     * @return array
-     */
-    protected function doLanguageAndWorkspaceOverlay(Qom\SourceInterface $source, array $rows, QuerySettingsInterface $querySettings, $workspaceUid = null)
-    {
-        if ($source instanceof Qom\SelectorInterface) {
-            $tableName = $source->getSelectorName();
-        } elseif ($source instanceof Qom\JoinInterface) {
-            $tableName = $source->getRight()->getSelectorName();
-        } else {
-            // No proper source, so we do not have a table name here
-            // we cannot do an overlay and return the original rows instead.
-            return $rows;
-        }
-
-        $context = $this->objectManager->get(Context::class);
-        if ($workspaceUid === null) {
-            $workspaceUid = $context->getPropertyFromAspect('workspace', 'id');
-        } else {
-            // A custom query is needed, so a custom context is cloned
-            $workspaceUid = (int)$workspaceUid;
-            $context = clone $context;
-            $context->setAspect('workspace', $this->objectManager->get(WorkspaceAspect::class, $workspaceUid));
-        }
-        $pageRepository = $this->objectManager->get(PageRepository::class, $context);
-
-        // Fetches the move-placeholder in case it is supported
-        // by the table and if there's only one row in the result set
-        // (applying this to all rows does not work, since the sorting
-        // order would be destroyed and possible limits not met anymore)
-        if (!empty($workspaceUid)
-            && BackendUtility::isTableWorkspaceEnabled($tableName)
-            && count($rows) === 1
-        ) {
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
-            $queryBuilder->getRestrictions()->removeAll();
-            $movePlaceholder = $queryBuilder
-                ->select($tableName . '.*')
-                ->from($tableName)
-                ->where(
-                    $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(3, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter($workspaceUid, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq('t3ver_move_id', $queryBuilder->createNamedParameter($rows[0]['uid'], \PDO::PARAM_INT))
-                )
-                ->setMaxResults(1)
-                ->execute()
-                ->fetch();
-            if (!empty($movePlaceholder)) {
-                $rows = [$movePlaceholder];
-            }
-        }
-
-        $overlaidRows = [];
-        foreach ($rows as $row) {
-            // If current row is a translation select its parent
-            if (isset($tableName) && isset($GLOBALS['TCA'][$tableName])
-                && isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
-                && isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
-                && isset($row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']])
-                && $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0
-            ) {
-                $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
-                $queryBuilder->getRestrictions()->removeAll();
-                $row = $queryBuilder
-                    ->select($tableName . '.*')
-                    ->from($tableName)
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            $tableName . '.uid',
-                            $queryBuilder->createNamedParameter(
-                                $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']],
-                                \PDO::PARAM_INT
-                            )
-                        ),
-                        $queryBuilder->expr()->eq(
-                            $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'],
-                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                        )
-                    )
-                    ->setMaxResults(1)
-                    ->execute()
-                    ->fetch();
-            }
-            $pageRepository->versionOL($tableName, $row, true);
-            if ($tableName === 'pages') {
-                $row = $pageRepository->getPageOverlay($row, $querySettings->getLanguageUid());
-            } elseif (isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
-                && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== ''
-                && in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], [-1, 0])
-            ) {
-                $overlayMode = $querySettings->getLanguageMode() === 'strict' ? 'hideNonTranslated' : '';
-                $row = $pageRepository->getRecordOverlay($tableName, $row, $querySettings->getLanguageUid(), $overlayMode);
-            }
-            if (is_array($row)) {
-                $overlaidRows[] = $row;
-            }
-        }
-        return $overlaidRows;
     }
 
     /**

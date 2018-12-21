@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Storage;
 use Doctrine\DBAL\Driver\Statement;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -131,52 +130,5 @@ class Typo3DbBackendTest extends UnitTestCase
         $mockTypo3DbBackend->_set('environmentService', $environmentServiceProphet->reveal());
         $result = $mockTypo3DbBackend->_callRef('getUidOfAlreadyPersistedValueObject', $mockValueObject);
         $this->assertSame($expectedUid, $result);
-    }
-
-    /**
-     * @test
-     */
-    public function doLanguageAndWorkspaceOverlayChangesUidIfInPreview()
-    {
-        $comparisonRow = [
-            'uid' => '42',
-            'pid' => '42',
-            '_ORIG_pid' => '-1',
-            '_ORIG_uid' => '43'
-        ];
-        $row = [
-            'uid' => '42',
-            'pid' => '42'
-        ];
-        $workspaceVersion = [
-            'uid' => '43',
-            'pid' => '-1'
-        ];
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings|\PHPUnit_Framework_MockObject_MockObject $querySettings */
-        $mockQuerySettings = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class)
-            ->setMethods(['dummy'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $workspaceUid = 2;
-
-        $objectManagerMock = $this->getMockBuilder(ObjectManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $sourceMock = new \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Selector('tx_foo', 'Tx_Foo');
-        $context = new Context([
-            'workspace' => new WorkspaceAspect($workspaceUid)
-        ]);
-        /** @var $pageRepositoryMock PageRepository|\PHPUnit_Framework_MockObject_MockObject */
-        $pageRepositoryMock = $this->getMockBuilder(PageRepository::class)
-            ->setMethods(['movePlhOL', 'getWorkspaceVersionOfRecord'])
-            ->setConstructorArgs([$context])
-            ->getMock();
-        $pageRepositoryMock->expects($this->once())->method('getWorkspaceVersionOfRecord')->with($workspaceUid, 'tx_foo', '42')->will($this->returnValue($workspaceVersion));
-        $objectManagerMock->expects($this->at(0))->method('get')->with(Context::class)->willReturn($context);
-        $objectManagerMock->expects($this->at(1))->method('get')->with(PageRepository::class, $context)->willReturn($pageRepositoryMock);
-        $mockTypo3DbBackend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend::class, ['dummy'], [], '', false);
-        $mockTypo3DbBackend->injectObjectManager($objectManagerMock);
-        $this->assertSame([$comparisonRow], $mockTypo3DbBackend->_call('doLanguageAndWorkspaceOverlay', $sourceMock, [$row], $mockQuerySettings));
     }
 }

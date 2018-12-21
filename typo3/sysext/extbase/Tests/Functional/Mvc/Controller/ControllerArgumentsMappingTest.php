@@ -61,7 +61,6 @@ class ControllerArgumentsMappingTest extends \TYPO3\TestingFramework\Core\Functi
 
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $configuration = [
-            'features' => ['consistentTranslationOverlayHandling' => 1],
             'persistence' => [
                 'storagePid' => 20,
                 'classes' => [

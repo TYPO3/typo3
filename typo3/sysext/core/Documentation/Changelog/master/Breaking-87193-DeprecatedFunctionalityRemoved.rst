@@ -885,6 +885,7 @@ The following hooks have been removed:
 
 The following feature is now always enabled:
 
+* Extbase's :php:`consistentTranslationOverlayHandling` - Translations in Extbase are now always consistent
 * :php:`simplifiedControllerActionDispatching` - Backend controller actions do not receive a prepared response object anymore
 
 

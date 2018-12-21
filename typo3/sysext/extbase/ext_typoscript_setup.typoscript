@@ -95,8 +95,5 @@ config.tx_extbase {
 		ignoreAllEnableFieldsInBe = 0
 		# Should be on by default, but can be disabled if all action in the plugin are uncached
 		requireCHashArgumentForActionArguments = 1
-		# if enabled Extbase language overlays should behave the same as in TypoScript rendering
-		# In v10 the flag will be removed, thus new way will be the default
-		consistentTranslationOverlayHandling = 1
 	}
 }

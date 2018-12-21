@@ -65,7 +65,6 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
 
         $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $configuration = [
-            'features' => ['consistentTranslationOverlayHandling' => 1],
             'persistence' => [
                 'storagePid' => 20,
                 'classes' => [
@@ -1082,31 +1081,26 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
              [
                  'language' => 0,
                  'overlay' => LanguageAspect::OVERLAYS_ON,
-                 'mode' => null,
                  'expected' => $lang0Expected
              ],
              [
                  'language' => 0,
                  'overlay' => LanguageAspect::OVERLAYS_ON,
-                 'mode' => 'strict',
                  'expected' => $lang0Expected
              ],
              [
                  'language' => 0,
                  'overlay' => LanguageAspect::OVERLAYS_OFF,
-                 'mode' => null,
                  'expected' => $mixed
              ],
              [
                  'language' => 0,
                  'overlay' => LanguageAspect::OVERLAYS_OFF,
-                 'mode' => 'strict',
                  'expected' => $mixed
              ],
              [
                  'language' => 1,
                  'overlay' => LanguageAspect::OVERLAYS_ON,
-                 'mode' => null,
                  'expected' => [
                      [
                          'title' => 'Blog 1 DK',
@@ -1123,7 +1117,6 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
              [
                  'language' => 1,
                  'overlay' => LanguageAspect::OVERLAYS_ON,
-                 'mode' => 'strict',
                  'expected' => [
                      [
                          'title' => 'Blog 1 DK',
@@ -1140,13 +1133,6 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
              [
                  'language' => 1,
                  'overlay' => LanguageAspect::OVERLAYS_OFF,
-                 'mode' => null,
-                 'expected' => $mixed
-             ],
-             [
-                 'language' => 1,
-                 'overlay' => LanguageAspect::OVERLAYS_OFF,
-                 'mode' => 'strict',
                  'expected' => $mixed
              ],
          ];
@@ -1164,10 +1150,9 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
      * @dataProvider postsWithoutRespectingSysLanguageDataProvider
      * @param int $languageUid
      * @param string|bool $overlay
-     * @param string $languageMode
      * @param array $expected
      */
-    public function postsWithoutRespectingSysLanguage($languageUid, $overlay, $languageMode, $expected)
+    public function postsWithoutRespectingSysLanguage($languageUid, $overlay, $expected)
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('language', new LanguageAspect($languageUid, $languageUid, $overlay));
@@ -1175,7 +1160,6 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $blogRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository::class);
         $query = $blogRepository->createQuery();
         $querySettings = $query->getQuerySettings();
-        $querySettings->setLanguageMode($languageMode);
         $querySettings->setRespectSysLanguage(false);
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
 

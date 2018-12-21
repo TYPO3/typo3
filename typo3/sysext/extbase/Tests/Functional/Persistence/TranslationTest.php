@@ -73,11 +73,6 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $this->setUpBasicFrontendEnvironment();
 
         $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $configuration = [
-            'features' => ['consistentTranslationOverlayHandling' => 1]
-        ];
-        $configurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
-        $configurationManager->setConfiguration($configuration);
         $this->postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
     }
 
@@ -120,7 +115,6 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $querySettings->setLanguageUid(0);
 
         $this->assertFalse($querySettings->getLanguageOverlayMode());
-        $this->assertNull($querySettings->getLanguageMode());
 
         $postCount = $query->execute()->count();
         $this->assertSame(3, $postCount);
@@ -141,7 +135,6 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(1);
-        $querySettings->setLanguageMode('strict');
         $this->assertFalse($querySettings->getLanguageOverlayMode());
 
         $postCount = $query->execute()->count();
@@ -163,7 +156,6 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $querySettings->setLanguageUid(1);
 
         $this->assertFalse($querySettings->getLanguageOverlayMode());
-        $this->assertNull($querySettings->getLanguageMode());
 
         $postCount = $query->execute()->count();
         $this->assertSame(2, $postCount);
@@ -181,7 +173,6 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(2);
         $this->assertFalse($querySettings->getLanguageOverlayMode());
-        $this->assertNull($querySettings->getLanguageMode());
 
         $postCount = $query->execute()->count();
 
@@ -200,7 +191,6 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(1);
         $this->assertFalse($querySettings->getLanguageOverlayMode());
-        $this->assertNull($querySettings->getLanguageMode());
 
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
 
@@ -226,7 +216,6 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(2);
         $this->assertFalse($querySettings->getLanguageOverlayMode());
-        $this->assertNull($querySettings->getLanguageMode());
 
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
 
@@ -251,7 +240,6 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(2);
         $querySettings->setLanguageOverlayMode('hideNonTranslated');
-        $this->assertNull($querySettings->getLanguageMode());
 
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
 
@@ -274,7 +262,6 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(1);
         $this->assertFalse($querySettings->getLanguageOverlayMode());
-        $this->assertNull($querySettings->getLanguageMode());
 
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
 
@@ -301,7 +288,6 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(1);
         $this->assertFalse($querySettings->getLanguageOverlayMode());
-        $this->assertNull($querySettings->getLanguageMode());
 
         $query->setOrderings([
             'blog.title' => QueryInterface::ORDER_ASCENDING,
@@ -417,7 +403,6 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(2);
         $this->assertFalse($querySettings->getLanguageOverlayMode());
-        $this->assertNull($querySettings->getLanguageMode());
 
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
         $query->matching($query->equals('title', 'GR:Post1'));
@@ -441,7 +426,6 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(2);
         $this->assertFalse($querySettings->getLanguageOverlayMode());
-        $this->assertNull($querySettings->getLanguageMode());
 
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
         $query->matching($query->equals('blog.title', 'Blog1'));
@@ -462,7 +446,6 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(0);
         $this->assertFalse($querySettings->getLanguageOverlayMode());
-        $this->assertNull($querySettings->getLanguageMode());
 
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
         $query->matching($query->equals('tags.name', 'Tag1'));
@@ -483,7 +466,6 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(1);
         $this->assertFalse($querySettings->getLanguageOverlayMode());
-        $this->assertNull($querySettings->getLanguageMode());
 
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
         $query->matching($query->equals('tags.name', 'Tag1'));

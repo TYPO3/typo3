@@ -94,10 +94,6 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
             'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/ContentJsonRenderer.typoscript'
 
         ]);
-        $this->addTypoScriptToTemplateRecord(
-            1,
-            'config.tx_extbase.features.consistentTranslationOverlayHandling = 1'
-        );
     }
 
     protected function tearDown()

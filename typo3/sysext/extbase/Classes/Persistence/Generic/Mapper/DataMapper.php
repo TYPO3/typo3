@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
  */
 
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException;
 use TYPO3\CMS\Extbase\Persistence;
@@ -70,11 +69,6 @@ class DataMapper
      * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
      */
     protected $signalSlotDispatcher;
-
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    protected $configurationManager;
 
     /**
      * @var ?QueryInterface
@@ -144,14 +138,6 @@ class DataMapper
     public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher)
     {
         $this->signalSlotDispatcher = $signalSlotDispatcher;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
-    {
-        $this->configurationManager = $configurationManager;
     }
 
     /**
@@ -453,19 +439,17 @@ class DataMapper
         $query->getQuerySettings()->setRespectStoragePage(false);
         $query->getQuerySettings()->setRespectSysLanguage(false);
 
-        if ($this->configurationManager->isFeatureEnabled('consistentTranslationOverlayHandling')) {
-            //we always want to overlay relations as most of the time they are stored in db using default lang uids
-            $query->getQuerySettings()->setLanguageOverlayMode(true);
-            if ($this->query) {
-                $query->getQuerySettings()->setLanguageUid($this->query->getQuerySettings()->getLanguageUid());
+        // we always want to overlay relations as most of the time they are stored in db using default lang uids
+        $query->getQuerySettings()->setLanguageOverlayMode(true);
+        if ($this->query) {
+            $query->getQuerySettings()->setLanguageUid($this->query->getQuerySettings()->getLanguageUid());
 
-                if ($dataMap->getLanguageIdColumnName() !== null && !$this->query->getQuerySettings()->getRespectSysLanguage()) {
-                    //pass language of parent record to child objects, so they can be overlaid correctly in case
-                    //e.g. findByUid is used.
-                    //the languageUid is used for getRecordOverlay later on, despite RespectSysLanguage being false
-                    $languageUid = (int)$parentObject->_getProperty('_languageUid');
-                    $query->getQuerySettings()->setLanguageUid($languageUid);
-                }
+            if ($dataMap->getLanguageIdColumnName() !== null && !$this->query->getQuerySettings()->getRespectSysLanguage()) {
+                //pass language of parent record to child objects, so they can be overlaid correctly in case
+                //e.g. findByUid is used.
+                //the languageUid is used for getRecordOverlay later on, despite RespectSysLanguage being false
+                $languageUid = (int)$parentObject->_getProperty('_languageUid');
+                $query->getQuerySettings()->setLanguageUid($languageUid);
             }
         }
 
