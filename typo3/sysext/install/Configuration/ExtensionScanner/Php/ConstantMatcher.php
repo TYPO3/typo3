@@ -149,4 +149,9 @@ return [
             'Deprecation-85793-SeveralConstantsFromSystemEnvironmentBuilder.rst',
         ]
     ],
+    'PATH_site' => [
+        'restFiles' => [
+            'Deprecation-85285-DeprecatedSystemConstants.rst',
+        ]
+    ]
 ];
