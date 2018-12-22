@@ -3317,6 +3317,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\PageLayoutController->getNumberOfHiddenElements' => [
@@ -3324,6 +3325,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\PageLayoutController->local_linkThisScript' => [
@@ -3331,6 +3333,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\PageLayoutController->pageIsNotLockedForEditors' => [
@@ -3338,6 +3341,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\PageLayoutController->contentIsNotLockedForEditors' => [
@@ -3345,6 +3349,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Info\Controller\TranslationStatusController->getSystemLanguages' => [

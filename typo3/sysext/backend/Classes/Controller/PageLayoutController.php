@@ -25,8 +25,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
@@ -51,52 +49,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class PageLayoutController
 {
-    use PublicMethodDeprecationTrait;
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicMethods = [
-        'init' => 'Using PageLayoutController::init() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'main' => 'Using PageLayoutController::main() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'menuConfig' => 'Using PageLayoutController::menuConfig() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'renderContent' => 'Using PageLayoutController::renderContent() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'clearCache' => 'Using PageLayoutController::clearCache() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'getModuleTemplate' => 'Using PageLayoutController::getModuleTemplate() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'getLocalizedPageTitle' => 'Using PageLayoutController::getLocalizedPageTitle() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'getNumberOfHiddenElements' => 'Using PageLayoutController::getNumberOfHiddenElements() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'local_linkThisScript' => 'Using PageLayoutController::local_linkThisScript() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'pageIsNotLockedForEditors' => 'Using PageLayoutController::pageIsNotLockedForEditors() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'contentIsNotLockedForEditors' => 'Using PageLayoutController::contentIsNotLockedForEditors() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-    ];
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicProperties = [
-        'pointer' => 'Using PageLayoutController::$pointer is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'imagemode' => 'Using PageLayoutController::$imagemode is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'search_field' => 'Using PageLayoutController::$search_field is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'search_levels' => 'Using PageLayoutController::$search_levels is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'showLimit' => 'Using PageLayoutController::$showLimit is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'returnUrl' => 'Using PageLayoutController::$returnUrl is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'clear_cache' => 'Using PageLayoutController::$clear_cache is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'popView' => 'Using PageLayoutController::$popView is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'perms_clause' => 'Using PageLayoutController::$perms_clause is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'modTSconfig' => 'Using PageLayoutController::$modTSconfig is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'modSharedTSconfig' => 'Using PageLayoutController::$modSharedTSconfig is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'descrTable' => 'Using PageLayoutController::$descrTable is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'colPosList' => 'Using PageLayoutController::$colPosList is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'EDIT_CONTENT' => 'Using PageLayoutController::$EDIT_CONTENT is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'CALC_PERMS' => 'Using PageLayoutController::$CALC_PERMS is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'current_sys_language' => 'Using PageLayoutController::$current_sys_language is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'MCONF' => 'Using PageLayoutController::$MCONF is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'MOD_MENU' => 'Using PageLayoutController::$MOD_MENU is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'content' => 'Using PageLayoutController::$content is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'activeColPosList' => 'Using PageLayoutController::$activeColPosList is deprecated and will not be possible anymore in TYPO3 v10.0.',
-    ];
-
     /**
      * Page Id for which to make the listing
      *
@@ -321,9 +273,8 @@ class PageLayoutController
      * Initializing the module
      * @param ServerRequestInterface $request
      */
-    protected function init(ServerRequestInterface $request = null): void
+    protected function init(ServerRequestInterface $request): void
     {
-        $request = $request ?: $GLOBALS['TYPO3_REQUEST'];
         // Set the GPvars from outside
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
@@ -367,9 +318,8 @@ class PageLayoutController
      * Initialize menu array
      * @param ServerRequestInterface $request
      */
-    protected function menuConfig(ServerRequestInterface $request = null): void
+    protected function menuConfig(ServerRequestInterface $request): void
     {
-        $request = $request ?: $GLOBALS['TYPO3_REQUEST'];
         // Set the GPvars from outside
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
@@ -718,9 +668,8 @@ class PageLayoutController
      *
      * @param ServerRequestInterface $request
      */
-    protected function main(ServerRequestInterface $request = null): void
+    protected function main(ServerRequestInterface $request): void
     {
-        $request = $request ?: $GLOBALS['TYPO3_REQUEST'];
         $lang = $this->getLanguageService();
         // Access check...
         // The page will show only if there is a valid page and if this page may be viewed by the user

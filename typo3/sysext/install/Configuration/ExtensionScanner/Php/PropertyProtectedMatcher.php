@@ -709,47 +709,56 @@ return [
     ],
     'TYPO3\CMS\Backend\Controller\PageLayoutController->popView' => [
         'restFiles' => [
-            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst'
+            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\PageLayoutController->modSharedTSconfig' => [
         'restFiles' => [
-            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst'
+            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\PageLayoutController->colPosList' => [
         'restFiles' => [
-            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst'
+            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\PageLayoutController->EDIT_CONTENT' => [
         'restFiles' => [
-            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst'
+            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\PageLayoutController->CALC_PERMS' => [
         'restFiles' => [
-            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst'
+            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\PageLayoutController->MCONF' => [
         'restFiles' => [
-            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst'
+            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\PageLayoutController->MOD_MENU' => [
         'restFiles' => [
-            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst'
+            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\PageLayoutController->current_sys_language' => [
         'restFiles' => [
-            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst'
+            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\PageLayoutController->activeColPosList' => [
         'restFiles' => [
-            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst'
+            'Deprecation-84375-ProtectedMethodsAndPropertiesInPageLayoutController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->menuNumber' => [
