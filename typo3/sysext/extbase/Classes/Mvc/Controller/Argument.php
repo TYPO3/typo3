@@ -305,20 +305,6 @@ class Argument
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Error\Result Validation errors which have occurred.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function getValidationResults()
-    {
-        trigger_error(
-            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
-            E_USER_DEPRECATED
-        );
-
-        return $this->validate();
-    }
-
-    /**
      * Returns a string representation of this argument's value
      *
      * @return string

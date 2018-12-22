@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 /**
  * Testcase for the integer validator
  */
-class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase
+class IntegerValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var string

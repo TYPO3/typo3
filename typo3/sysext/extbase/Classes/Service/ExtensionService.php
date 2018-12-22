@@ -236,12 +236,6 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getTargetPageTypeByFormat($extensionName, $format)
     {
-        // Legacy location
-        $settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, $extensionName);
-        if (isset($settings['view']['formatToPageTypeMapping']) && is_array($settings['view']['formatToPageTypeMapping'])) {
-            trigger_error('Extension "' . $extensionName . '": Defining settings.view.formatToPageTypeMapping will be removed in TYPO3 10. Move definition to view.formatToPageTypeMapping.', E_USER_DEPRECATED);
-            $formatToPageTypeMapping = $settings['view']['formatToPageTypeMapping'];
-        }
         // Default behaviour
         $settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName);
         if (isset($settings['view']['formatToPageTypeMapping']) && is_array($settings['view']['formatToPageTypeMapping'])) {

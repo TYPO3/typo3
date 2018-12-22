@@ -556,6 +556,7 @@ return [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 4,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-83475-AggregateValidatorInformationInClassSchema-2.rst',
         ],
     ],

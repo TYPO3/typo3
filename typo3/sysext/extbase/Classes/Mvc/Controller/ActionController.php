@@ -602,34 +602,4 @@ class ActionController extends AbstractController
         $outputMessage = 'Validation failed while trying to call ' . static::class . '->' . $this->actionMethodName . '().' . PHP_EOL;
         return $outputMessage;
     }
-
-    /**
-     * Returns a map of action method names and their parameters.
-     *
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     *
-     * @return array Array of method parameters by action name
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public static function getActionMethodParameters($objectManager)
-    {
-        trigger_error(
-            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v10.0.',
-            E_USER_DEPRECATED
-        );
-
-        $reflectionService = $objectManager->get(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
-
-        $result = [];
-
-        $className = get_called_class();
-        $methodNames = get_class_methods($className);
-        foreach ($methodNames as $methodName) {
-            if (strlen($methodName) > 6 && strpos($methodName, 'Action', strlen($methodName) - 6) !== false) {
-                $result[$methodName] = $reflectionService->getMethodParameters($className, $methodName);
-            }
-        }
-
-        return $result;
-    }
 }

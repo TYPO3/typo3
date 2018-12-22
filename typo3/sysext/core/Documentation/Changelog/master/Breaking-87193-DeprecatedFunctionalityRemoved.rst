@@ -52,6 +52,8 @@ The following PHP classes that have been previously deprecated for v9 have been 
 * :php:`TYPO3\CMS\Extbase\Scheduler\FieldProvider`
 * :php:`TYPO3\CMS\Extbase\Scheduler\Task`
 * :php:`TYPO3\CMS\Extbase\Scheduler\TaskExecutor`
+* :php:`TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase`
+* :php:`TYPO3\CMS\Extbase\Validation\Validator\RawValidator`
 * :php:`TYPO3\CMS\Extensionmanager\Command\ExtensionCommandController`
 * :php:`TYPO3\CMS\Frontend\Http\EidRequestHandler`
 * :php:`TYPO3\CMS\Frontend\Page\ExternalPageUrlHandler`
@@ -62,7 +64,6 @@ The following PHP classes that have been previously deprecated for v9 have been 
 * :php:`TYPO3\CMS\Workspaces\Service\AutoPublishService`
 * :php:`TYPO3\CMS\Workspaces\Task\AutoPublishTask`
 * :php:`TYPO3\CMS\Workspaces\Task\CleanupPreviewLinkTask`
-* :php:`TYPO3\CMS\Extbase\Validation\Validator\RawValidator`
 
 
 The following PHP interfaces that have been previously deprecated for v9 have been removed:
@@ -298,6 +299,8 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility->sysLog()`
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility->unQuoteFilenames()`
 * :php:`TYPO3\CMS\Extbase\Core\Bootstrap->configureObjectManager()`
+* :php:`TYPO3\CMS\Extbase\Mvc\Controller\Argument->getValidationResults()`
+* :php:`TYPO3\CMS\Extbase\Mvc\Controller\Arguments->getValidationResults()`
 * :php:`TYPO3\CMS\Extbase\Service\EnvironmentService->isEnvironmentInCliMode`
 * :php:`TYPO3\CMS\Fluid\Core\Widget\Bootstrap->configureObjectManager()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->addParams()`
@@ -384,14 +387,15 @@ The following PHP static class methods that have been previously deprecated for 
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory::determineSaltingHashingMethod()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory::getSaltingInstance()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory::setPreferredHashingMethod()`
+* :php:`TYPO3\CMS\Extbase\Mvc\Controller\ActionController::getActionMethodParameters()`
 
 
 The following methods changed signature according to previous deprecations in v9 at the end of the argument list:
 
 * :php:`TYPO3\CMS\Backend\Http\RouteDispatcher->dispatch()` - Second argument dropped
 * :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig()` - Second and third argument dropped
-* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->modAccess() - Second argument dropped
-* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->getTSConfig() - First and second argument dropped
+* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->modAccess()` - Second argument dropped
+* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->getTSConfig()` - First and second argument dropped
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->conv()` - Fourth argument dropped
 * :php:`TYPO3\CMS\Core\Core\Bootstrap->checkIfEssentialConfigurationExists()` - First argument mandatory
 * :php:`TYPO3\CMS\Core\Core\Bootstrap->populateLocalConfiguration()` - First argument mandatory

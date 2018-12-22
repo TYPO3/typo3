@@ -2543,6 +2543,7 @@ return [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-85012-OnlyValidateMethodParamsIfNeeded.rst',
         ],
     ],
@@ -2550,6 +2551,7 @@ return [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-85012-OnlyValidateMethodParamsIfNeeded.rst',
         ],
     ],

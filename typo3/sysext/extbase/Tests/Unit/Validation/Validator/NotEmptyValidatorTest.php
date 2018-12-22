@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 /**
  * Testcase for the not empty validator
  */
-class NotEmptyValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase
+class NotEmptyValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var string

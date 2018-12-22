@@ -697,6 +697,7 @@ return [
     ],
     'TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase' => [
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-83511-DeprecateAbstractValidatorTestcase.rst',
         ],
     ],
