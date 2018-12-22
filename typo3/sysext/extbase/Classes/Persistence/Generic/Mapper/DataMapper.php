@@ -77,67 +77,49 @@ class DataMapper
 
     /**
      * DataMapper constructor.
-     * @param ?QueryInterface $query
+     * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
+     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory
+     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Session $persistenceSession
+     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory
+     * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+     * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+     * @param QueryInterface|null $query
      */
-    public function __construct(?QueryInterface $query = null)
+    public function __construct(
+        \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService,
+        \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory,
+        \TYPO3\CMS\Extbase\Persistence\Generic\Session $persistenceSession,
+        \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory,
+        \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory,
+        \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager,
+        \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher,
+        ?QueryInterface $query = null
+    ) {
+        $this->query = $query;
+        $this->reflectionService = $reflectionService;
+        $this->qomFactory = $qomFactory;
+        $this->persistenceSession = $persistenceSession;
+        $this->dataMapFactory = $dataMapFactory;
+        $this->queryFactory = $queryFactory;
+        $this->objectManager = $objectManager;
+        $this->signalSlotDispatcher = $signalSlotDispatcher;
+
+        if ($query !== null) {
+            trigger_error(
+                'Constructor argument $query will be removed in TYPO3 v11.0, use setQuery method instead.',
+                E_USER_DEPRECATED
+            );
+            $this->query = $query;
+        }
+    }
+
+    /**
+     * @param QueryInterface $query
+     */
+    public function setQuery(QueryInterface $query): void
     {
         $this->query = $query;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
-     */
-    public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService)
-    {
-        $this->reflectionService = $reflectionService;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory
-     */
-    public function injectQomFactory(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory)
-    {
-        $this->qomFactory = $qomFactory;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Session $persistenceSession
-     */
-    public function injectPersistenceSession(\TYPO3\CMS\Extbase\Persistence\Generic\Session $persistenceSession)
-    {
-        $this->persistenceSession = $persistenceSession;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory
-     */
-    public function injectDataMapFactory(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory)
-    {
-        $this->dataMapFactory = $dataMapFactory;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory
-     */
-    public function injectQueryFactory(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory)
-    {
-        $this->queryFactory = $queryFactory;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
-     */
-    public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher)
-    {
-        $this->signalSlotDispatcher = $signalSlotDispatcher;
     }
 
     /**

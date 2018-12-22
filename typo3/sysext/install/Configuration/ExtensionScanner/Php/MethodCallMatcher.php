@@ -4085,4 +4085,12 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
+    'TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper->__construct' => [
+        'numberOfMandatoryArguments' => 7,
+        'maximumNumberOfArguments' => 8,
+        'restFiles' => [
+            'Breaking-87305-UseConstructorInjectionInDataMapper.rst',
+            'Deprecation-87305-UseConstructorInjectionInDataMapper.rst',
+        ],
+    ],
 ];

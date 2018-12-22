@@ -84,7 +84,8 @@ class QueryResult implements QueryResultInterface
      */
     public function initializeObject()
     {
-        $this->dataMapper = $this->objectManager->get(DataMapper::class, $this->query);
+        $this->dataMapper = $this->objectManager->get(DataMapper::class);
+        $this->dataMapper->setQuery($this->query);
     }
 
     /**
