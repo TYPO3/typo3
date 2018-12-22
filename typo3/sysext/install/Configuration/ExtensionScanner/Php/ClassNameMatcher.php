@@ -356,6 +356,7 @@ return [
     ],
     'TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider' => [
         'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
             'Important-82229-FluidImplementationOfCmsVariableProviderRemoved.rst',
         ],
     ],
@@ -952,6 +953,132 @@ return [
     'TYPO3\CMS\Core\Cache\Frontend\StringFrontend' => [
         'restFiles' => [
             'Deprecation-81434-StringCacheFrontendDeprecated.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+            'Breaking-73046-AliasAbstractNode-ViewHelperNodeForBackwardsCompatibility.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\Exception' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode'=> [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+            'Breaking-73046-AliasAbstractNode-ViewHelperNodeForBackwardsCompatibility.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+            'Breaking-82414-RemoveCMSBaseViewHelperClasses.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+            'Breaking-82414-RemoveCMSBaseViewHelperClasses.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+            'Breaking-82414-RemoveCMSBaseViewHelperClasses.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+            'Breaking-82414-RemoveCMSBaseViewHelperClasses.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\ViewHelper\Exception' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\ViewHelper\Facets\PostParseInterface' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperInterface' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\View\Exception' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\View\Exception\InvalidSectionException' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException' => [
+        'restFiles' => [
+            'Deprecation-87277-FluidClassAliases.rst',
         ],
     ],
 ];
