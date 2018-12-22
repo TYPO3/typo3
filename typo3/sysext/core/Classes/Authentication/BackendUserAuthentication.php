@@ -1299,7 +1299,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // Parsing the user TSconfig (or getting from cache)
             $hash = md5('userTS:' . $this->userTS_text);
             $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
-            $cachedContent = $cache->get($hash);
             $parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
             $parseObj->parse($this->userTS_text);
             $this->userTS = $parseObj->setup;

@@ -35,8 +35,6 @@ class StateUtility
         $beUser = $GLOBALS['BE_USER'] ?? null;
         if ($beUser instanceof FrontendBackendUserAuthentication) {
             $adminPanelConfiguration = $beUser->getTSConfig()['admPanel.'] ?? [];
-            // set legacy config
-            $beUser->extAdminConfig = $adminPanelConfiguration;
             if (isset($adminPanelConfiguration['enable.'])) {
                 // only enabled if at least one module is enabled.
                 return (bool)array_filter($adminPanelConfiguration['enable.']);

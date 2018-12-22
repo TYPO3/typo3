@@ -726,7 +726,7 @@ class EditDocumentController
             || isset($parsedBody['_saveandclosedok'])
         ) {
             // Redirect if element should be closed after save
-            return $this->closeDocument(abs($this->closeDoc), $request);
+            return $this->closeDocument((int)abs($this->closeDoc), $request);
         }
         return null;
     }
