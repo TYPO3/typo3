@@ -173,4 +173,9 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ]
     ],
+    'PATH_site' => [
+        'restFiles' => [
+            'Deprecation-85285-DeprecatedSystemConstants.rst',
+        ]
+    ]
 ];
