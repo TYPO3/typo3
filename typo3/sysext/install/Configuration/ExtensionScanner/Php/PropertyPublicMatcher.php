@@ -380,16 +380,19 @@ return [
     'TYPO3\CMS\Backend\Controller\File\EditFileController->origTarget' => [
         'restFiles' => [
             'Deprecation-84295-UseServerRequestInterfaceInFileEditFileController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\EditFileController->target' => [
         'restFiles' => [
             'Deprecation-84295-UseServerRequestInterfaceInFileEditFileController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\EditFileController->doc' => [
         'restFiles' => [
             'Deprecation-84295-UseServerRequestInterfaceInFileEditFileController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Charset\CharsetConverter->synonyms' => [

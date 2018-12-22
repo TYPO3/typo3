@@ -21,11 +21,8 @@ use TYPO3\CMS\Backend\Form\FormResultCompiler;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -35,7 +32,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -44,46 +40,12 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class EditFileController
 {
-    use PublicMethodDeprecationTrait;
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicMethods = [
-        'main' => 'Using EditFileController::main() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-    ];
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicProperties = [
-        'origTarget' => 'Using $origTarget of class EditFileController from outside is discouraged, as this variable is only used for internal storage.',
-        'target' => 'Using $target of class EditFileController from outside is discouraged, as this variable is only used for internal storage.',
-        'returnUrl' => 'Using $returnUrl of class EditFileController from outside is discouraged, as this variable is only used for internal storage.',
-        'content' => 'Using $content of class EditFileController from outside is discouraged, as this variable is only used for internal storage.',
-        'title' => 'Using $title of class EditFileController from outside is discouraged, as this variable is only used for internal storage.',
-        'doc' => 'Using $doc of class EditFileController from outside is discouraged, as this variable is only used for internal storage.',
-    ];
     /**
      * Module content accumulated.
      *
      * @var string
      */
     protected $content;
-
-    /**
-     * @var string
-     */
-    protected $title;
-
-    /**
-     * Document template object
-     *
-     * @var DocumentTemplate
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused
-     */
-    protected $doc;
 
     /**
      * Original input target
@@ -126,35 +88,22 @@ class EditFileController
     public function __construct()
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
-        $this->init($GLOBALS['TYPO3_REQUEST']);
     }
 
     /**
-     * Processes the request, currently everything is handled and put together via "main()"
+     * Processes the request, currently everything is handled and put together via "process()"
      *
      * @param ServerRequestInterface $request the current request
      * @return ResponseInterface the response with the content
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->init($request);
         if ($response = $this->process()) {
             return $response;
         }
 
         return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    /**
-     * Main function, rendering the actual content of the editing page
-     */
-    protected function main()
-    {
-        $response = $this->process();
-
-        if ($response instanceof RedirectResponse) {
-            HttpUtility::redirect($response->getHeaderLine('location'), $response->getStatusCode());
-        }
     }
 
     /**
@@ -189,15 +138,6 @@ class EditFileController
                 1375889832
             );
         }
-
-        // Setting the title and the icon
-        $icon = $this->moduleTemplate->getIconFactory()->getIcon('apps-filetree-root', Icon::SIZE_SMALL)->render();
-        $this->title = $icon
-            . htmlspecialchars(
-                $this->fileObject->getStorage()->getName()
-            ) . ': ' . htmlspecialchars(
-                $this->fileObject->getIdentifier()
-            );
 
         // Setting template object
         $this->moduleTemplate->addJavaScriptCode(

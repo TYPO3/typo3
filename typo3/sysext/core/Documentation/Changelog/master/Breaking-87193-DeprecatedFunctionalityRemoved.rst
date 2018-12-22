@@ -531,6 +531,7 @@ The following class methods have changed visibility:
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->makeEditForm()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->preInit()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->processData()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\EditFileController->main()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->clearCache()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->contentIsNotLockedForEditors()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->getLocalizedPageTitle()` changed from public to protected
@@ -669,6 +670,12 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->viewId` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->viewId_addParams` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->viewUrl` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\EditFileController->origTarget` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\EditFileController->target` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\EditFileController->returnUrl` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\EditFileController->content` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\EditFileController->title` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\EditFileController->doc` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->content` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->foldertree` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->currentSubScript` changed from public to protected

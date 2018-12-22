@@ -2219,6 +2219,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84295-UseServerRequestInterfaceInFileEditFileController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\LoginController->makeInterfaceSelectorBox' => [
