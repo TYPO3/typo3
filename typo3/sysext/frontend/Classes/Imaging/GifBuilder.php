@@ -105,11 +105,10 @@ class GifBuilder extends GraphicalFunctions
      * Initialization of the GIFBUILDER objects, in particular TEXT and IMAGE. This includes finding the bounding box, setting dimensions and offset values before the actual rendering is started.
      * Modifies the ->setup, ->objBB internal arrays
      * Should be called after the ->init() function which initializes the parent class functions/variables in general.
-     * The class \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject also uses gifbuilder and here there is an interesting use since the function findLargestDims() from that class calls the init() and start() functions to find the total dimensions before starting the rendering of the images.
      *
      * @param array $conf TypoScript properties for the GIFBUILDER session. Stored internally in the variable ->setup
      * @param array $data The current data record from \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer. Stored internally in the variable ->data
-     * @see ContentObjectRenderer::getImgResource(), \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::makeGifs(), \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::findLargestDims()
+     * @see ContentObjectRenderer::getImgResource()
      */
     public function start($conf, $data)
     {

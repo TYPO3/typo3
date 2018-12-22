@@ -766,141 +766,169 @@ return [
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->menuNumber' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->entryLevel' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->spacerIDList' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->doktypeExcludeList' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->alwaysActivePIDList' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->imgNamePrefix' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->imgNameNotRandom' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->debug' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->GMENU_fixKey' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->MP_array' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->conf' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->mconf' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->sys_page' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->nextActive' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->menuArr' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->hash' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->result' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->rL_uidRegister' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->INPfixMD5' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->I' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->WMresult' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->WMfreezePrefix' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->WMmenuItems' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->WMsubmenuObjSuffixes' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->WMextraScript' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->WMcObj' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->alternativeMenuTempArray' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->nameAttribute' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->adminPanel' => [

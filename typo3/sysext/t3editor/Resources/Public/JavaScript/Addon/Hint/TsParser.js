@@ -426,10 +426,10 @@ define([
   TsParser.setTreeNodeValue = function(path, value) {
     var treeNode = TsParser.getTreeNode(path);
     // if we are inside a GIFBUILDER Object
-    if (treeNode.parent !== null && (treeNode.parent.value === "GIFBUILDER" || treeNode.parent.getValue() === "GMENU_itemState") && value === "TEXT") {
+    if (treeNode.parent !== null && treeNode.parent.value === "GIFBUILDER" && value === "TEXT") {
       value = 'GB_TEXT';
     }
-    if (treeNode.parent !== null && (treeNode.parent.value === "GIFBUILDER" || treeNode.parent.getValue() === "GMENU_itemState") && value === "IMAGE") {
+    if (treeNode.parent !== null && treeNode.parent.value === "GIFBUILDER" && value === "IMAGE") {
       value = 'GB_IMAGE';
     }
 

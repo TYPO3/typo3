@@ -921,11 +921,13 @@ return [
     'TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\Menu\ImageMenuContentObject' => [
         'restFiles' => [
             'Deprecation-85902-IMGMENUGMENU.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Command\CoreCommand' => [

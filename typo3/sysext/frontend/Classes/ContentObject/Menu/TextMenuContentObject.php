@@ -62,7 +62,6 @@ class TextMenuContentObject extends AbstractMenuContentObject
         $this->WMmenuItems = count($this->result);
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $this->WMsubmenuObjSuffixes = $typoScriptService->explodeConfigurationForOptionSplit(['sOSuffix' => $this->mconf['submenuObjSuffixes']], $this->WMmenuItems);
-        $this->extProc_init();
         foreach ($this->result as $key => $val) {
             $GLOBALS['TSFE']->register['count_HMENU_MENUOBJ']++;
             $GLOBALS['TSFE']->register['count_MENUOBJ']++;
@@ -98,8 +97,6 @@ class TextMenuContentObject extends AbstractMenuContentObject
                 $this->I['linkHREF']['title'] = $titleAttrValue;
             }
 
-            // Calling extra processing function
-            $this->extProc_beforeLinking($key);
             // stdWrap for doNotLinkIt
             if (isset($this->I['val']['doNotLinkIt.'])) {
                 $this->I['val']['doNotLinkIt'] = $this->WMcObj->stdWrap($this->I['val']['doNotLinkIt'], $this->I['val']['doNotLinkIt.']);
@@ -153,7 +150,6 @@ class TextMenuContentObject extends AbstractMenuContentObject
             }
             // Merge parts + beforeAllWrap
             $this->I['theItem'] = implode('', $this->I['parts']);
-            $this->I['theItem'] = $this->extProc_beforeAllWrap($this->I['theItem'], $key);
             // allWrap:
             $allWrap = isset($this->I['val']['allWrap.']) ? $this->WMcObj->stdWrap($this->I['val']['allWrap'], $this->I['val']['allWrap.']) : $this->I['val']['allWrap'];
             $this->I['theItem'] = $this->WMcObj->wrap($this->I['theItem'], $allWrap);
@@ -201,26 +197,6 @@ class TextMenuContentObject extends AbstractMenuContentObject
     }
 
     /**
-     * Called right before the traversing of $this->result begins.
-     * Can be used for various initialization
-     *
-     * @see writeMenu()
-     */
-    protected function extProc_init()
-    {
-    }
-
-    /**
-     * Called right before the creation of the link for the menu item
-     *
-     * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found
-     * @see writeMenu()
-     */
-    protected function extProc_beforeLinking($key)
-    {
-    }
-
-    /**
      * Called right after the creation of links for the menu item. This is also the last function call before the while-loop traversing menu items goes to the next item.
      * This function MUST set $this->WMresult.=[HTML for menu item] to add the generated menu item to the internal accumulation of items.
      *
@@ -235,19 +211,6 @@ class TextMenuContentObject extends AbstractMenuContentObject
         }
         $part = isset($this->I['val']['wrapItemAndSub.']) ? $this->WMcObj->stdWrap($this->I['val']['wrapItemAndSub'], $this->I['val']['wrapItemAndSub.']) : $this->I['val']['wrapItemAndSub'];
         $this->WMresult .= $part ? $this->WMcObj->wrap($this->I['theItem'], $part) : $this->I['theItem'];
-    }
-
-    /**
-     * Called before the "allWrap" happens on the menu item.
-     *
-     * @param string $item The current content of the menu item, $this->I['theItem'], passed along.
-     * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found
-     * @return string The modified version of $item, going back into $this->I['theItem']
-     * @see writeMenu()
-     */
-    protected function extProc_beforeAllWrap($item, $key)
-    {
-        return $item;
     }
 
     /**

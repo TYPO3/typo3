@@ -55,6 +55,8 @@ The following PHP classes that have been previously deprecated for v9 have been 
 * :php:`TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase`
 * :php:`TYPO3\CMS\Extbase\Validation\Validator\RawValidator`
 * :php:`TYPO3\CMS\Extensionmanager\Command\ExtensionCommandController`
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject`
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\ImageMenuContentObject`
 * :php:`TYPO3\CMS\Frontend\Http\EidRequestHandler`
 * :php:`TYPO3\CMS\Frontend\Page\ExternalPageUrlHandler`
 * :php:`TYPO3\CMS\Frontend\Page\PageGenerator`
@@ -313,6 +315,9 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_addParams()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_filelink()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_filelist()`
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject->extProc_beforeAllWrap()`
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject->extProc_beforeLinking()`
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject->extProc_init()`
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->addTempContentHttpHeaders()`
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->checkAlternativeIdMethods()`
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->checkPageForMountpointRedirect()`
@@ -460,6 +465,9 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sys_language_mode`
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sys_language_uid`
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->workspacePreview`
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->debug`
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->GMENU_fixKey`
+* :php:`TYPO3C\MS\Frontend\ContentObject\Menu\AbstractMenuContentObject->WMfreezePrefix`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->error_getRootLine_failPid`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->error_getRootLine`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->versioningPreview`
@@ -548,6 +556,26 @@ The following class methods have changed visibility:
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->processIncludes()` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->substituteConstants()` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->versionOL()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->accessKey()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->changeLinksForAccessRestrictedPages()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->getBannedUids()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->getDoktypeExcludeWhere()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->getMPvar()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->getPageTitle()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->isActive()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->isCurrent()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->isItemState()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->isNext()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->isSubMenu()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->link()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->menuTypoLink()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->procesItemStates()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->setATagParts()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->subMenu()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->userProcess()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject->extProc_afterLinking()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject->extProc_finish()` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject->getBeforeAfter()` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->clearPageCacheContent_pidList()` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->contentStrReplace()` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->realPageCacheContent()` changed from public to protected
@@ -715,6 +743,33 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->tempContent` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->uniqueCounter` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->uniqueString` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->alternativeMenuTempArray` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->alwaysActivePIDlist` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->conf` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->doktypeExcludeList` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->entryLevel` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->hash` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->id` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->I` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->imgNameNotRandom` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->imgNamePrefix` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->INPfixMD5` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->mconf` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->menuArr` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->menuNumber` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->nameAttribute` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->nextActive` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->MP_array` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->result` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->rL_uidRegister` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->spacerIDList` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->sys_page` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->tmpl` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->WMcObj` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->WMextraScript` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->WMmenuItems` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->WMresult` changed from public to protected
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->WMsubmenuObjSuffixes` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->sys_language_uid` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->versioningWorkspaceId` changed from public to protected
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->id` changed from public to protected
@@ -797,6 +852,10 @@ The following TypoScript options have been dropped:
 * `stdWrap.addParams`
 * `stdWrap.filelink`
 * `stdWrap.filelist`
+* `GMENU`
+* `GMENUITEMS`
+* `IMGMENU`
+* `IMGMENUITEMS`
 
 
 The following constants have been dropped:

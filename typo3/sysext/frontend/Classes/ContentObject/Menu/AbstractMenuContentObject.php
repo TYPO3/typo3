@@ -15,8 +15,6 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  */
 
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -39,73 +37,10 @@ use TYPO3\CMS\Frontend\Typolink\PageLinkBuilder;
  *
  * The HMENU content object uses this (or more precisely one of the extension classes).
  * Among others the class generates an array of menu items. Thereafter functions from the subclasses are called.
- * The class is always used through extension classes (like GraphicalMenuContentObject or TextMenuContentObject).
+ * The class is always used through extension classes like TextMenuContentObject.
  */
 abstract class AbstractMenuContentObject
 {
-    use PublicPropertyDeprecationTrait;
-    use PublicMethodDeprecationTrait;
-
-    protected $deprecatedPublicProperties = [
-        'menuNumber' => 'Using $menuNumber of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
-        'entryLevel' => 'Using $entryLevel of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
-        'spacerIDList' => 'Using $spacerIDList of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
-        'doktypeExcludeList' => 'Using $doktypeExcludeList of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
-        'alwaysActivePIDlist' => 'Using $alwaysActivePIDlist of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
-        'imgNamePrefix' => 'Using $imgNamePrefix of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
-        'imgNameNotRandom' => 'Using $imgNameNotRandom of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
-        'debug' => 'Using $debug of cObject HMENU from the outside is discouraged, as this variable is not in use anymore and will be removed in TYPO3 v10.0.',
-        'GMENU_fixKey' => 'Using $GMENU_fixKey of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
-        'MP_array' => 'Using $MP_array of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
-        'conf' => 'Using $conf of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
-        'mconf' => 'Using $mconf of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
-        'tmpl' => 'Using $tmpl of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
-        'sys_page' => 'Using $sys_page of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
-        'id' => 'Using $id of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
-        'nextActive' => 'Using $nextActive of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
-        'menuArr' => 'Using $menuArr of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
-        'hash' => 'Using $hash of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
-        'result' => 'Using $result of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
-        'rL_uidRegister' => 'Using $rL_uidRegister of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
-        'INPfixMD5' => 'Using $INPfixMD5 of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
-        'I' => 'Using $I of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
-        'WMresult' => 'Using $WMresult of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
-        'WMfreezePrefix' => 'Using $WMfreezePrefix of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
-        'WMmenuItems' => 'Using $WMmenuItems of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
-        'WMsubmenuObjSuffixes' => 'Using $WMsubmenuObjSuffixes of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
-        'WMextraScript' => 'Using $WMextraScript of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
-        'WMcObj' => 'Using $WMcObj of cObject HMENU is discouraged, as all graphical-related functionality will be removed in TYPO3 v10.0.',
-        'alternativeMenuTempArray' => 'Using $alternativeMenuTempArray of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
-        'nameAttribute' => 'Using $nameAttribute of cObject HMENU from the outside is discouraged, as this variable is only used for internal storage.',
-    ];
-
-    protected $deprecatedPublicMethods = [
-        'subMenu' => 'Using subMenu() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
-        'link' => 'Using link() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
-        'procesItemStates' => 'Using procesItemStates() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
-        'changeLinksForAccessRestrictedPages' => 'Using changeLinksForAccessRestrictedPages() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
-        'isNext' => 'Using isNext() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
-        'isActive' => 'Using isActive() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
-        'isCurrent' => 'Using isCurrent() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
-        'isSubMenu' => 'Using isSubMenu() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
-        'isItemState' => 'Using isItemState() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
-        'accessKey' => 'Using accessKey() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
-        'userProcess' => 'Using userProcess() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
-        'setATagParts' => 'Using setATagParts() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
-        'getPageTitle' => 'Using getPageTitle() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
-        'getMPvar' => 'Using getMPvar() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
-        'getDoktypeExcludeWhere' => 'Using getDoktypeExcludeWhere() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
-        'getBannedUids' => 'Using getBannedUids() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
-        'menuTypoLink' => 'Using menuTypoLink() within HMENU is discouraged, as this is internal functionality that should not be exposed to the public.',
-        'extProc_RO' => 'Using extProc_RO() within HMENU extensions is discouraged, as rollover functionality will be removed in TYPO3 v10.0.',
-        'extProc_init' => 'Using extProc_init() within HMENU extensions is discouraged, as extending HMENU should only happens via userFunc options.',
-        'extProc_beforeLinking' => 'Using extProc_beforeLinking() within HMENU extensions is discouraged, as extending HMENU should only happens via userFunc options.',
-        'extProc_afterLinking' => 'Using extProc_afterLinking() within HMENU extensions is discouraged, as extending HMENU should only happens via userFunc options.',
-        'extProc_beforeAllWrap' => 'Using extProc_beforeAllWrap() within HMENU extensions is discouraged, as extending HMENU should only happens via userFunc options.',
-        'extProc_finish' => 'Using extProc_finish() within HMENU extensions is discouraged, as extending HMENU should only happens via userFunc options.',
-        'getBeforeAfter' => 'Using getBeforeAfter() within HMENU extensions is discouraged, as extending HMENU should only happens via userFunc options.',
-    ];
-
     /**
      * tells you which menu number this is. This is important when getting data from the setup
      *
@@ -150,21 +85,11 @@ abstract class AbstractMenuContentObject
     protected $imgNameNotRandom = 0;
 
     /**
-     * @var bool
-     */
-    protected $debug = false;
-
-    /**
      * Loaded with the parent cObj-object when a new HMENU is made
      *
      * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
      */
     public $parent_cObj;
-
-    /**
-     * @var string
-     */
-    protected $GMENU_fixKey = 'gmenu';
 
     /**
      * accumulation of mount point data
@@ -181,7 +106,7 @@ abstract class AbstractMenuContentObject
     protected $conf = [];
 
     /**
-     * xMENU configuration (TMENU, GMENU etc)
+     * xMENU configuration (TMENU etc)
      *
      * @var array
      */
@@ -251,11 +176,6 @@ abstract class AbstractMenuContentObject
      * @var string
      */
     protected $WMresult;
-
-    /**
-     * @var string
-     */
-    protected $WMfreezePrefix;
 
     /**
      * @var int
@@ -330,7 +250,6 @@ abstract class AbstractMenuContentObject
         $this->conf = $conf;
         $this->menuNumber = $menuNumber;
         $this->mconf = $conf[$this->menuNumber . $objSuffix . '.'];
-        $this->debug = !empty($tsfe->config['config']['debug']);
         $this->WMcObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         // In XHTML and HTML5 there is no "name" attribute anymore
         switch ($tsfe->xhtmlDoctype) {
@@ -2084,7 +2003,7 @@ abstract class AbstractMenuContentObject
     }
 
     /**
-     * Creates an access-key for a TMENU/GMENU menu item based on the menu item titles first letter
+     * Creates an access-key for a TMENU menu item based on the menu item titles first letter
      *
      * @param string $title Menu item title.
      * @return array Returns an array with keys "code" ("accesskey" attribute for the img-tag) and "alt" (text-addition to the "alt" attribute) if an access key was defined. Otherwise array was empty

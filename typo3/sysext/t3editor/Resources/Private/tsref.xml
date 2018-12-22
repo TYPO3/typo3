@@ -2212,7 +2212,7 @@ Example:
 		</property>
 		<property name="text" type="stdWrap">
 			<description><![CDATA[This is text text-string on the gif-file. The item is rendered only if this string is not empty.
-The cObj->data-array is loaded with the page-record, if for example the GIFBUILDER-object is used by GMENU or IMGMENU]]></description>
+The cObj->data-array is loaded with the page-record, if for the GIFBUILDER-object is used]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -2249,7 +2249,7 @@ Defines which menuObj that should render the menuitems on the various levels.
 
 Example:
 temp.sidemenu = HMENU
-temp.sidemenu.1 = GMENU  ]]></description>
+temp.sidemenu.1 = TMENU  ]]></description>
 			<default><![CDATA[ (no menu)]]></default>
 		</property>
 		<property name="2" type="mObj">
@@ -2258,7 +2258,7 @@ temp.sidemenu.1 = GMENU  ]]></description>
 
 Example:
 temp.sidemenu = HMENU
-temp.sidemenu.1 = GMENU  ]]></description>
+temp.sidemenu.1 = TMENU  ]]></description>
 			<default><![CDATA[ (no menu)]]></default>
 		</property>
 		<property name="3" type="mObj">
@@ -2267,7 +2267,7 @@ temp.sidemenu.1 = GMENU  ]]></description>
 
 Example:
 temp.sidemenu = HMENU
-temp.sidemenu.1 = GMENU  ]]></description>
+temp.sidemenu.1 = TMENU  ]]></description>
 			<default><![CDATA[ (no menu)]]></default>
 		</property>
 		<property name="4" type="mObj">
@@ -2276,7 +2276,7 @@ temp.sidemenu.1 = GMENU  ]]></description>
 
 Example:
 temp.sidemenu = HMENU
-temp.sidemenu.1 = GMENU  ]]></description>
+temp.sidemenu.1 = TMENU  ]]></description>
 			<default><![CDATA[ (no menu)]]></default>
 		</property>
 		<property name="addQueryString" type="string">
@@ -2827,699 +2827,7 @@ The result can be seen in the image below (applied on the testsite package):
 
 
 
-Applies to GMENU, TMENU on >= 2nd level in a menu.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-	</type>
-	<type id="GMENU" extends="mObj">
-		<property name="ACT" type="GMENU_itemState">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for menu items which are found in the rootLine]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="ACTRO" type="GMENU_itemState">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for menu items which are found in the rootLine]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="ACTIFSUB" type="GMENU_itemState">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for menu items which are found in the rootLine and has subpages]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="ACTIFSUBRO" type="GMENU_itemState">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for menu items which are found in the rootLine and has subpages]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="CUR" type="GMENU_itemState">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for a menu item if the item is the current page.]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="CURRO" type="GMENU_itemState">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for a menu item if the item is the current page.]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="CURIFSUB" type="GMENU_itemState">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for a menu item if the item is the current page and has subpages.]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="CURIFSUBRO" type="GMENU_itemState">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for a menu item if the item is the current page and has subpages.]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="IFSUB" type="GMENU_itemState">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for menu items which has subpages]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="IFSUBRO" type="GMENU_itemState">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for menu items which has subpages]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="NO" type="GMENU_itemState">
-			<description><![CDATA[Boolean / (config)
-			The default "Normal" state rendering of Item. This is required for all menus.
-If you specify properties for the "NO" property you do not have to set it "1". Otherwise with no properties setting "NO=1" will render the menu anyways (for TMENU this may make sense).
-
-The simplest menu TYPO3 can generate is then:
-
-page.20 = HMENU
-page.20.1 = TMENU
-page.20.1.NO = 1
-
-That will be pure <a> tags wrapped around page titles.]]></description>
-			<default><![CDATA[1]]></default>
-		</property>
-		<property name="SPC" type="GMENU_itemState">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for 'Spacer' pages.
-Spacers are pages of the doktype "Spacer". These are not viewable pages but "placeholders" which can be used to divide menuitems.
-
-Note: Rollovers doesn't work with spacers, if you use GMENU!]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="USERDEF1" type="GMENU_itemState">
-			<description><![CDATA[Boolean / (config)
-			Userdefined, see .itemArrayProcFunc for details on how to use this.
-You can set the ITEM_STATE values USERDEF1 and USERDEF2 (+...RO) from a script/userfunction processing the menu item array. See HMENU/special=userdefined or the property .itemArrayProcFunc of the menu objects.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="USERDEF1RO" type="GMENU_itemState">
-			<description><![CDATA[Boolean / (config)
-			Userdefined, see .itemArrayProcFunc for details on how to use this.
-You can set the ITEM_STATE values USERDEF1 and USERDEF2 (+...RO) from a script/userfunction processing the menu item array. See HMENU/special=userdefined or the property .itemArrayProcFunc of the menu objects.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="USERDEF2" type="GMENU_itemState">
-			<description><![CDATA[Boolean / (config)
-			(See above)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="USERDEF2RO" type="GMENU_itemState">
-			<description><![CDATA[Boolean / (config)
-			(See above)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="USR" type="GMENU_itemState">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for menu items which are access restricted pages that a user has access to.]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="USRRO" type="GMENU_itemState">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for menu items which are access restricted pages that a user has access to.]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="IProcFunc" type="string">
-			<description><![CDATA[The internal array "I" is passed to this function and expected returned as well. Subsequent to this function call the menu item is compiled by implode()'ing the array $I[parts] in the passed array. Thus you may modify this if you need to.
-See example on the testsite and in media/scripts/example_itemArrayProcFunc.php]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="RO" type="boolean">
-			<description><![CDATA[RollOver configuration enabled / disabled.
-If this is true, RO becomes a GIFBUILDER-object defining the layout of the menuitem when the mouse rolls over it]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="accessKey" type="boolean">
-			<description><![CDATA[If set access-keys are set on the menu-links]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="applyTotalH" type="string">
-			<description><![CDATA[objNumsList (offset)
-
-			This adds the total height of the previously generated menuitems to the offset of the GifBuilderObj's mentioned in this list.
-
-Example:
-This is useful it you want to create a menu with individual items but a common background image that extends to the whole area behind the menu. Then you should setup the background image in each GIFBUILDER-object and include the object-number in this list.
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="applyTotalW" type="string">
-			<description><![CDATA[objNumsList (offset)
-			This adds the total width of the previously generated menuitems to the offset of the GifBuilderObj's mentioned in this list.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="collapse" type="boolean">
-			<description><![CDATA[If set, "active" menuitems that has expanded the next level on the menu will now collapse that menu again.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="debugItemConf" type="string">
-			<description><![CDATA[Outputs (by the debug()-function) the configuration arrays for each menuitem. Useful to debug optionSplit things and such...
-Applies to GMENU, TMENU, IMGMENU]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="disableAltText" type="boolean">
-			<description><![CDATA[If set, the alt-parameter of the images are not set. You can do it manually by "imgParams" (see below)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="distributeX" type="int">
-			<description><![CDATA[int+
-			If set, the total width of all the menuitems will be equal to this number of pixels by adding/subtracting an equal amount of pixels to each menu items width.
-Will overrule any setting for ".useLargestItemX"]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="distributeY" type="int">
-			<description><![CDATA[int+
-			If set, the total height of all the menuitems will be equal to this number of pixels by adding/subtracting an equal amount of pixels to each menu items height.
-Will overrule any setting for ".useLargestItemY"]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="expAll" type="Boolean">
-			<description><![CDATA[If this is true, the menu will always show the menu on the level underneath the menuitem. This corresponds to a situation where a user has clicked a menuitem and the menu folds out the next level. This can enable that to happen on all items as default.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="forceTypeValue" type="int">
-			<description><![CDATA[If set, the &type parameter of the link is forced to this value regardless of target. Overrides the global equivalent in 'config' if set.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="JSWindow" type="boolean">
-			<description><![CDATA[If set, the links of the menu-items will open by JavaScript in a pop-up window.
-
-.newWindow boolean, that lets every menuitem open in its own window opposite to opening in the same window for each click.
-
-.params is the list of parameters sent to the JavaScript open-window function, eg:
-width=200,height=300,status=0,menubar=0
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="max" type="string">
-			<description><![CDATA[x,y (calcInt)"
-
-			Forces the menu as a whole to these maximum dimensions]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="min" type="x,y (calcInt)">
-			<description><![CDATA[Forces the menu as a whole to these minimum dimensions]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="overrideId" type="int">
-			<description><![CDATA[integer (page-id)
-			If set, then all links in the menu will point to this pageid. Instead the real uid of the page is sent by the parameter "&real_uid=[uid]".
-This feature is smart, if you have inserted a menu from somewhere else, perhaps a shared menu, but wants the menuitems to call the same page, which then generates a proper output based on the real_uid.
-Applies to GMENU, TMENU, IMGMENU]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="removeObjectsOfDummy" type="string">
-			<description><![CDATA[objNumsList
-
-			If the menu is forced to a certain minimum dimension, this is a list of objects in the gifbuilder-object that is removed for this last item. This is important to do if the menuitems has elements that should only be applied if the item is actually a menuitem!!]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="stdWrap" type="stdWrap">
-			<description><![CDATA[Wraps the whole item using stdWrap
-
-Example:
-2 = TMENU
-2 {
-  stdWrap.dataWrap = <ul class="{register :
-     parentProperty}"> | </ul>
-  NO {
-    ...
-  }
-}]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="target" type="string">
-			<description><![CDATA[target
-
-			Target of the menulinks]]></description>
-			<default><![CDATA[self]]></default>
-		</property>
-		<property name="submenuObjSuffixes" type="string">
-			<description><![CDATA[Defines a suffix for alternative sub-level menu objects. Useful to create special submenus depending on their parent menu element. See example below.
-
-Example:
-This example will generate a menu where the menu objects for the second level will differ depending on the number of the first level item for which the submenu is rendered. The second level objects used are "2" (the default), "2a" and "2b" (the alternatives). Which of them is used is defined by "1.submenuObjSuffixes" which has the configuration "a |*| |*| b". This configuration means that the first menu element will use configuration "2a" and the last will use "2b" while anything in between will use "2" (no suffix applied)
-
-page.200 = HMENU
-page.200 {
-  1 = TMENU
-  1.wrap = <div style="width:200px; border: 1px solid;">|</div>
-  1.expAll = 1
-  1.submenuObjSuffixes = a |*|  |*| b
-  1.NO.allWrap = <b>|</b><br/>
-
-  2 = TMENU
-  2.NO.allWrap = <div style="background:red;">|</div>
-
-  2a = TMENU
-  2a.NO.allWrap = <div style="background:yellow;">|</div>
-
-  2b = TMENU
-  2b.NO.allWrap = <div style="background:green;">|</div>
-}
-
-The result can be seen in the image below (applied on the testsite package):
-
-
-
-Applies to GMENU, TMENU on >= 2nd level in a menu.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="useLargestItemX" type="boolean">
-			<description><![CDATA[If set, then the width of all menuitems will be equal to the largest of them all.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="useLargestItemY" type="boolean">
-			<description><![CDATA[If set, then the height of all menuitems will be equal to the largest of them all.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="wrap" type="wrap">
-			<description><![CDATA[Wraps only if there were items in the menu!]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-	</type>
-	<type id="GMENU_itemState" extends="GIFBUILDER">
-		<property name="ATagParams" type="string">
-			<description><![CDATA[Additional parameters]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="ATagTitle" type="stdWrap">
-			<description><![CDATA[string /stdWrap
-
-			which defines the title attribute of the a-tag. (See TMENUITEM also)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="additionalParams" type="string">
-			<description><![CDATA[string /stdWrap
-
-			Define parameters that are added to the end of the URL. This must be code ready to insert after the last parameter.
-
-For details, see typolink->additionalParams]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="allStdWrap" type="stdWrap">
-			<description><![CDATA[stdWrap of the whole item]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="allWrap" type="stdWrap">
-			<description><![CDATA[wrap /stdWrap
-
-			Wraps the whole item]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="altImgResource" type="imgResouce">
-			<description><![CDATA[Defines an alternative image to use. If an image returns here, it will override any GIFBUILDER configuration.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="altTarget" type="string">
-			<description><![CDATA[Alternative target which overrides the target defined for the GMENU]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="imgParams" type="string">
-			<description><![CDATA[params
-
-			Parameters for the <img>-tag]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="noLink" type="boolean">
-			<description><![CDATA[If set, the item is NOT linked!]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="subst_elementUid" type="boolean">
-			<description><![CDATA[If set, "{elementUid}" is substituted with the item uid.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="wrap" type="wrap">
-			<description><![CDATA[Wrap of the menu item]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-	</type>
-	<type id="IMGMENU" extends="mObj">
-		<property name="ACT" type="IMGMENUITEM">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for menu items which are found in the rootLine]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="ACTRO" type="IMGMENUITEM">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for menu items which are found in the rootLine]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="ACTIFSUB" type="IMGMENUITEM">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for menu items which are found in the rootLine and has subpages]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="ACTIFSUBRO" type="IMGMENUITEM">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for menu items which are found in the rootLine and has subpages]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="CUR" type="IMGMENUITEM">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for a menu item if the item is the current page.]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="CURRO" type="IMGMENUITEM">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for a menu item if the item is the current page.]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="CURIFSUB" type="IMGMENUITEM">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for a menu item if the item is the current page and has subpages.]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="CURIFSUBRO" type="IMGMENUITEM">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for a menu item if the item is the current page and has subpages.]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="IFSUB" type="IMGMENUITEM">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for menu items which has subpages]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="IFSUBRO" type="IMGMENUITEM">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for menu items which has subpages]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="NO" type="IMGMENUITEM">
-			<description><![CDATA[Boolean / (config)
-			The default "Normal" state rendering of Item. This is required for all menus.
-If you specify properties for the "NO" property you do not have to set it "1". Otherwise with no properties setting "NO=1" will render the menu anyways (for TMENU this may make sense).
-
-The simplest menu TYPO3 can generate is then:
-
-page.20 = HMENU
-page.20.1 = TMENU
-page.20.1.NO = 1
-
-That will be pure <a> tags wrapped around page titles.]]></description>
-			<default><![CDATA[1]]></default>
-		</property>
-		<property name="SPC" type="IMGMENUITEM">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for 'Spacer' pages.
-Spacers are pages of the doktype "Spacer". These are not viewable pages but "placeholders" which can be used to divide menuitems.
-
-Note: Rollovers doesn't work with spacers, if you use GMENU!]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="USERDEF1" type="IMGMENUITEM">
-			<description><![CDATA[Boolean / (config)
-			Userdefined, see .itemArrayProcFunc for details on how to use this.
-You can set the ITEM_STATE values USERDEF1 and USERDEF2 (+...RO) from a script/userfunction processing the menu item array. See HMENU/special=userdefined or the property .itemArrayProcFunc of the menu objects.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="USERDEF1RO" type="IMGMENUITEM">
-			<description><![CDATA[Boolean / (config)
-			Userdefined, see .itemArrayProcFunc for details on how to use this.
-You can set the ITEM_STATE values USERDEF1 and USERDEF2 (+...RO) from a script/userfunction processing the menu item array. See HMENU/special=userdefined or the property .itemArrayProcFunc of the menu objects.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="USERDEF2" type="IMGMENUITEM">
-			<description><![CDATA[Boolean / (config)
-			(See above)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="USERDEF2RO" type="IMGMENUITEM">
-			<description><![CDATA[Boolean / (config)
-			(See above)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="USR" type="IMGMENUITEM">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for menu items which are access restricted pages that a user has access to.]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="USRRO" type="IMGMENUITEM">
-			<description><![CDATA[Boolean / (config)
-			Enable/Configuration for menu items which are access restricted pages that a user has access to.]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="dWorkArea" type="string">
-			<description><![CDATA[offset + calc
-			Main offset of the GIFBUILDER-items (also called the "distribution")]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="debugItemConf" type="string">
-			<description><![CDATA[Outputs (by the debug()-function) the configuration arrays for each menuitem. Useful to debug optionSplit things and such...
-Applies to GMENU, TMENU, IMGMENU]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="debugRenumberedObject" type="boolean">
-			<description><![CDATA[if set, the final GIFBUILDER object configuration is output in order for you to debug your configuration]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="forceTypeValue" type="int">
-			<description><![CDATA[If set, the &type parameter of the link is forced to this value regardless of target.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="imgMapExtras" type="string">
-			<description><![CDATA[<area...>-tags
-			Extra <area...>tags for the image-map]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="JSWindow" type="boolean">
-			<description><![CDATA[If set, the links of the menu-items will open by JavaScript in a pop-up window.
-
-.newWindow boolean, that lets every menuitem open in its own window opposite to opening in the same window for each click.
-
-.params is the list of parameters sent to the JavaScript open-window function, eg:
-width=200,height=300,status=0,menubar=0
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="main" type="GIFBUILDER">
-			<description><![CDATA[Main configuration of the image-map! This defines the "underlay"!]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="overrideId" type="int">
-			<description><![CDATA[integer (page-id)
-			If set, then all links in the menu will point to this pageid. Instead the real uid of the page is sent by the parameter "&real_uid=[uid]".
-This feature is smart, if you have inserted a menu from somewhere else, perhaps a shared menu, but wants the menuitems to call the same page, which then generates a proper output based on the real_uid.
-Applies to GMENU, TMENU, IMGMENU]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="params" type="string">
-			<description><![CDATA[<img>-params
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="target" type="string">
-			<description><![CDATA[target
-			Target of the menulinks]]></description>
-			<default><![CDATA[self]]></default>
-		</property>
-		<property name="wrap" type="wrap">
-			<description><![CDATA[
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-	</type>
-	<type id="IMGMENUITEM">
-		<property name="1" type="GifBuilderObj">
-			<description><![CDATA[NOTE:
-The way a imagemap is made is this; All IMGMENUITEMS are included in one big Gifbuilderobj (and renumbered!!). Because of this, Gifbuilderobjects on the next level will not be able to access the data of each menuitem.
-Also the feature of using [##.w] and [##.h] with +calc is currently not supported by IMGMENUITEMs.
-Therefore all IMAGE-objects on the first level is checked; if "file" or "mask" for any IMAGE-objects are set to "GIFBUILDER", the Gifbuilder-object is parsed to see if any TEXT-objects are present and if so, the TEXT-object is "checked" - which means, that the stdWrap-function is called at a time where the $cObj->data-array is set to the actual menuitem.
-In the example below, the text of each menuitem is rendered by letting the title be rendered on a mask instead of directly on the image. Please observe that the "NO.10"-object is present in order for the image-map coordinates to be generated!!
-
-  NO.6 = IMAGE
-  NO.6.file = masked_pencolor*.gif
-  NO.6.mask = GIFBUILDER
-  NO.6.mask {
-    XY = 500, 200
-    backColor = black
-    10 = TEXT
-    10 {
-      text.field = title
-      fontFile = fileadmin/fonts/caflisch.ttf
-      fontSize = 34
-      fontColor = white
-      angle = 15
-      offset = 48,110
-    }
-    20 = EFFECT
-    20.value = blur=80
-  }
-  NO.10 = TEXT
-  NO.10 {
-    text.field = title
-    fontFile = fileadmin/fonts/caflisch.ttf
-    fontSize = 34
-    angle = 15
-    offset = 48,110
-    hideButCreateMap = 1
-  }]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="2" type="GifBuilderObj">
-			<description><![CDATA[NOTE:
-The way a imagemap is made is this; All IMGMENUITEMS are included in one big Gifbuilderobj (and renumbered!!). Because of this, Gifbuilderobjects on the next level will not be able to access the data of each menuitem.
-Also the feature of using [##.w] and [##.h] with +calc is currently not supported by IMGMENUITEMs.
-Therefore all IMAGE-objects on the first level is checked; if "file" or "mask" for any IMAGE-objects are set to "GIFBUILDER", the Gifbuilder-object is parsed to see if any TEXT-objects are present and if so, the TEXT-object is "checked" - which means, that the stdWrap-function is called at a time where the $cObj->data-array is set to the actual menuitem.
-In the example below, the text of each menuitem is rendered by letting the title be rendered on a mask instead of directly on the image. Please observe that the "NO.10"-object is present in order for the image-map coordinates to be generated!!
-
-  NO.6 = IMAGE
-  NO.6.file = masked_pencolor*.gif
-  NO.6.mask = GIFBUILDER
-  NO.6.mask {
-    XY = 500, 200
-    backColor = black
-    10 = TEXT
-    10 {
-      text.field = title
-      fontFile = fileadmin/fonts/caflisch.ttf
-      fontSize = 34
-      fontColor = white
-      angle = 15
-      offset = 48,110
-    }
-    20 = EFFECT
-    20.value = blur=80
-  }
-  NO.10 = TEXT
-  NO.10 {
-    text.field = title
-    fontFile = fileadmin/fonts/caflisch.ttf
-    fontSize = 34
-    angle = 15
-    offset = 48,110
-    hideButCreateMap = 1
-  }]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="3" type="GifBuilderObj">
-			<description><![CDATA[NOTE:
-The way a imagemap is made is this; All IMGMENUITEMS are included in one big Gifbuilderobj (and renumbered!!). Because of this, Gifbuilderobjects on the next level will not be able to access the data of each menuitem.
-Also the feature of using [##.w] and [##.h] with +calc is currently not supported by IMGMENUITEMs.
-Therefore all IMAGE-objects on the first level is checked; if "file" or "mask" for any IMAGE-objects are set to "GIFBUILDER", the Gifbuilder-object is parsed to see if any TEXT-objects are present and if so, the TEXT-object is "checked" - which means, that the stdWrap-function is called at a time where the $cObj->data-array is set to the actual menuitem.
-In the example below, the text of each menuitem is rendered by letting the title be rendered on a mask instead of directly on the image. Please observe that the "NO.10"-object is present in order for the image-map coordinates to be generated!!
-
-  NO.6 = IMAGE
-  NO.6.file = masked_pencolor*.gif
-  NO.6.mask = GIFBUILDER
-  NO.6.mask {
-    XY = 500, 200
-    backColor = black
-    10 = TEXT
-    10 {
-      text.field = title
-      fontFile = fileadmin/fonts/caflisch.ttf
-      fontSize = 34
-      fontColor = white
-      angle = 15
-      offset = 48,110
-    }
-    20 = EFFECT
-    20.value = blur=80
-  }
-  NO.10 = TEXT
-  NO.10 {
-    text.field = title
-    fontFile = fileadmin/fonts/caflisch.ttf
-    fontSize = 34
-    angle = 15
-    offset = 48,110
-    hideButCreateMap = 1
-  }]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="4" type="GifBuilderObj">
-			<description><![CDATA[NOTE:
-The way a imagemap is made is this; All IMGMENUITEMS are included in one big Gifbuilderobj (and renumbered!!). Because of this, Gifbuilderobjects on the next level will not be able to access the data of each menuitem.
-Also the feature of using [##.w] and [##.h] with +calc is currently not supported by IMGMENUITEMs.
-Therefore all IMAGE-objects on the first level is checked; if "file" or "mask" for any IMAGE-objects are set to "GIFBUILDER", the Gifbuilder-object is parsed to see if any TEXT-objects are present and if so, the TEXT-object is "checked" - which means, that the stdWrap-function is called at a time where the $cObj->data-array is set to the actual menuitem.
-In the example below, the text of each menuitem is rendered by letting the title be rendered on a mask instead of directly on the image. Please observe that the "NO.10"-object is present in order for the image-map coordinates to be generated!!
-
-  NO.6 = IMAGE
-  NO.6.file = masked_pencolor*.gif
-  NO.6.mask = GIFBUILDER
-  NO.6.mask {
-    XY = 500, 200
-    backColor = black
-    10 = TEXT
-    10 {
-      text.field = title
-      fontFile = fileadmin/fonts/caflisch.ttf
-      fontSize = 34
-      fontColor = white
-      angle = 15
-      offset = 48,110
-    }
-    20 = EFFECT
-    20.value = blur=80
-  }
-  NO.10 = TEXT
-  NO.10 {
-    text.field = title
-    fontFile = fileadmin/fonts/caflisch.ttf
-    fontSize = 34
-    angle = 15
-    offset = 48,110
-    hideButCreateMap = 1
-  }]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="distrib" type="string">
-			<description><![CDATA[.distrib is (x,y,v,h +calc) of the distribution of the menuitems. This provides a way to space each item from the other. The codes "textX" and "textY" can be used for the width (X) and height (Y) dimension of each link.
-This works by adding a WORKAREA-GifBuilderObj between each of the IMGMENUITEM ("subset" of a GIFBUILDER-object) and this workarea defines where the text should be printed. As such the "x,y" defines the offset the next item will have (this should be the width of the previous in many cases!) and "v,h" defines the dimensions of the current item.
-In the future TypoScript may provide better ways to position GIFBUILDER-objects on the image-maps! ]]></description>
+Applies to TMENU on >= 2nd level in a menu.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -3592,9 +2900,7 @@ That will be pure <a> tags wrapped around page titles.]]></description>
 		<property name="SPC" type="TMENUITEM">
 			<description><![CDATA[Boolean / (config)
 			Enable/Configuration for 'Spacer' pages.
-Spacers are pages of the doktype "Spacer". These are not viewable pages but "placeholders" which can be used to divide menuitems.
-
-Note: Rollovers doesn't work with spacers, if you use GMENU!]]></description>
+Spacers are pages of the doktype "Spacer". These are not viewable pages but "placeholders" which can be used to divide menuitems.]]></description>
 			<default><![CDATA[0]]></default>
 		</property>
 		<property name="USERDEF1" type="TMENUITEM">
@@ -3652,7 +2958,7 @@ See example on the testsite and in media/scripts/example_itemArrayProcFunc.php]]
 		</property>
 		<property name="debugItemConf" type="string">
 			<description><![CDATA[Outputs (by the debug()-function) the configuration arrays for each menuitem. Useful to debug optionSplit things and such...
-Applies to GMENU, TMENU, IMGMENU]]></description>
+Applies to TMENU]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -3681,14 +2987,13 @@ width=200,height=300,status=0,menubar=0
 			<description><![CDATA[integer (page-id)
 			If set, then all links in the menu will point to this pageid. Instead the real uid of the page is sent by the parameter "&real_uid=[uid]".
 This feature is smart, if you have inserted a menu from somewhere else, perhaps a shared menu, but wants the menuitems to call the same page, which then generates a proper output based on the real_uid.
-Applies to GMENU, TMENU, IMGMENU]]></description>
+Applies to TMENU]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="stdWrap" type="stdWrap">
 			<description><![CDATA[Wraps the whole item using stdWrap
-
-Example: see GMENU.stdWrap]]></description>
+]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -3720,7 +3025,7 @@ The result can be seen in the image below (applied on the testsite package):
 
 
 
-Applies to GMENU, TMENU on >= 2nd level in a menu.]]></description>
+Applies to TMENU on >= 2nd level in a menu.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -4184,7 +3489,7 @@ Additional Note: ONLY active if linkWrap is NOT set and file is NOT GIFBUILDER (
 		</property>
 		<property name="target" type="target">
 			<description><![CDATA[target for link]]></description>
-			<default><![CDATA[For IMGMENU menu objects provided automatically]]></default>
+			<default><![CDATA[]]></default>
 		</property>
 		<property name="titleText" type="string">
 			<description><![CDATA[Value of the title attribute.
@@ -4195,7 +3500,7 @@ Additional Note: ONLY active if linkWrap is NOT set and file is NOT GIFBUILDER (
 		</property>
 		<property name="url" type="string">
 			<description><![CDATA[url to link]]></description>
-			<default><![CDATA[For IMGMENU menu objects provided automatically]]></default>
+			<default><![CDATA[]]></default>
 		</property>
 	</type>
 	<type id="IMGTEXT" extends="cObjArray">
