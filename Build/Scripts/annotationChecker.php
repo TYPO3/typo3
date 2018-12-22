@@ -67,9 +67,10 @@ class NodeVisitor extends NodeVisitorAbstract
                     'cli', // this is still used in Extbase\Tests\UnitDeprecated
                     'flushesCaches', // still used in MockCCommandController test fixture, will be removed in TYPO3 v10.0
                     // Extbase related
+                    'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\IgnoreValidation', 'Extbase\\\\IgnoreValidation', 'IgnoreValidation',
                     'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\Inject', 'Extbase\\\\Inject', 'Inject',
                     'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\Validate', 'Extbase\\\\Validate', 'Validate',
-                    'Transient', 'Extbase\\\\ORM\\\\Lazy', 'IgnoreValidation', 'Enum',
+                    'Transient', 'Extbase\\\\ORM\\\\Lazy', 'Enum',
                     'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\ORM\\\\Cascade', 'Extbase\\\\ORM\\\\Cascade', 'Cascade',
                     // Extension scanner
                     'extensionScannerIgnoreFile', 'extensionScannerIgnoreLine'

@@ -52,7 +52,7 @@ class ContentController extends AbstractController
 
     /**
      * @param \OliverHader\IrreTutorial\Domain\Model\Content $newContent
-     * @ignorevalidation $newContent
+     * @Extbase\IgnoreValidation("newContent")
      */
     public function newAction(\OliverHader\IrreTutorial\Domain\Model\Content $newContent = null)
     {
@@ -70,7 +70,7 @@ class ContentController extends AbstractController
 
     /**
      * @param \OliverHader\IrreTutorial\Domain\Model\Content $content
-     * @ignorevalidation $content
+     * @Extbase\IgnoreValidation("content")
      */
     public function editAction(\OliverHader\IrreTutorial\Domain\Model\Content $content)
     {

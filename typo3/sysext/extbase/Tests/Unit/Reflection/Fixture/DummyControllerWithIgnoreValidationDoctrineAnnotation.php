@@ -26,7 +26,7 @@ class DummyControllerWithIgnoreValidationDoctrineAnnotation
     /**
      * @param $foo
      * @param $bar
-     * @ignorevalidation("foo")
+     * @IgnoreValidation("foo")
      * @IgnoreValidation("bar")
      */
     public function someAction($foo, $bar)

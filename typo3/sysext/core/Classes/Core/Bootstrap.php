@@ -252,7 +252,6 @@ class Bootstrap
         AnnotationReader::addGlobalIgnoredName('lazy');
         AnnotationReader::addGlobalIgnoredName('validate');
         AnnotationReader::addGlobalIgnoredName('cascade');
-        AnnotationReader::addGlobalIgnoredName('ignorevalidation');
         AnnotationReader::addGlobalIgnoredName('cli');
         AnnotationReader::addGlobalIgnoredName('flushesCaches');
         AnnotationReader::addGlobalIgnoredName('uuid');
