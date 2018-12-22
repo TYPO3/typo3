@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Utility\IpAnonymizationUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
@@ -249,7 +250,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * Performs the search, the display and writing stats
      *
      * @param array $search the search parameters, an associative array
-     * @ignorevalidation $search
+     * @Extbase\IgnoreValidation("search")
      */
     public function searchAction($search = [])
     {
@@ -986,7 +987,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * Sort options about the search form
      *
      * @param array $search The search data / params
-     * @ignorevalidation $search
+     * @Extbase\IgnoreValidation("search")
      */
     public function formAction($search = [])
     {
