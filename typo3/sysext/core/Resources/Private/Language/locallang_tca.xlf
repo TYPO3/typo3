@@ -351,6 +351,9 @@
 			<trans-unit id="pages.hidden_toggle_formlabel">
 				<source>Page visible</source>
 			</trans-unit>
+			<trans-unit id="pages.nav_hide">
+				<source>Page not enabled in menus</source>
+			</trans-unit>
 			<trans-unit id="pages.nav_hide_toggle">
 				<source>Page enabled in menus</source>
 			</trans-unit>

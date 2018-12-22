@@ -1552,7 +1552,7 @@ class BackendUtility
             }
         }
         if ($row['nav_hide']) {
-            $parts[] = rtrim($lang->sL($GLOBALS['TCA']['pages']['columns']['nav_hide']['label']), ':');
+            $parts[] = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:pages.nav_hide');
         }
         if ($row['hidden']) {
             $parts[] = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.hidden');
