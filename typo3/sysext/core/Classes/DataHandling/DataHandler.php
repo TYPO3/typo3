@@ -5302,6 +5302,10 @@ class DataHandler implements LoggerAwareInterface
             $this->log($table, $uid, 3, 0, 1, 'Attempt to delete record without delete-permissions. [' . $this->BE_USER->errorMsg . ']');
             return;
         }
+        // Skip processing already deleted records
+        if (!$forceHardDelete && !$undeleteRecord && $this->hasDeletedRecord($table, $uid)) {
+            return;
+        }
 
         // Checking if there is anything else disallowing deleting the record by checking if editing is allowed
         $deletedRecord = $forceHardDelete || $undeleteRecord;
