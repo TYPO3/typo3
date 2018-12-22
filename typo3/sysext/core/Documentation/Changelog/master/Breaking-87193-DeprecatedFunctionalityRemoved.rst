@@ -48,6 +48,7 @@ The following PHP classes that have been previously deprecated for v9 have been 
 * :php:`TYPO3\CMS\Extbase\Mvc\Cli\Controller\CommandController`
 * :php:`TYPO3\CMS\Extbase\Mvc\Exception\AmbiguousCommandIdentifierException`
 * :php:`TYPO3\CMS\Extbase\Mvc\Exception\CommandException`
+* :php:`TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException`
 * :php:`TYPO3\CMS\Extbase\Scheduler\FieldProvider`
 * :php:`TYPO3\CMS\Extbase\Scheduler\Task`
 * :php:`TYPO3\CMS\Extbase\Scheduler\TaskExecutor`

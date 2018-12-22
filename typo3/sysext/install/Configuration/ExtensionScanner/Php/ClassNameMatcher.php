@@ -1010,6 +1010,12 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException' => [
+        'restFiles' => [
+            'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
     'TYPO3\CMS\Extbase\Scheduler\FieldProvider' => [
         'restFiles' => [
             'Deprecation-85977-ExtbaseCommandControllersAndCliAnnotation.rst',
