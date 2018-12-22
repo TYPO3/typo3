@@ -32,7 +32,7 @@ call_user_func(function () {
     $invalidRestFiles = [];
     foreach ($matcherConfigurationFiles as $matcherConfigurationFile) {
         /** @var SplFileInfo $matcherConfigurationFile */
-        $matcherConfigurations = require $matcherConfigurationFile->getPathName();
+        $matcherConfigurations = require $matcherConfigurationFile->getPathname();
         foreach ($matcherConfigurations as $matcherConfiguration) {
             foreach ($matcherConfiguration['restFiles'] as $restFile) {
                 $restFinder = new \Symfony\Component\Finder\Finder();
@@ -41,7 +41,7 @@ call_user_func(function () {
                     ->name($restFile);
                 if ($restFileLocation->count() !== 1) {
                     $invalidRestFiles[] = [
-                        'configurationFile' => $matcherConfigurationFile->getPathName(),
+                        'configurationFile' => $matcherConfigurationFile->getPathname(),
                         'invalidFile' => $restFile,
                     ];
                 }

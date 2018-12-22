@@ -97,7 +97,7 @@ class Bootstrap
 
         static::initializeRuntimeActivatedPackagesFromConfiguration($packageManager);
 
-        static::setDefaultTimeZone();
+        static::setDefaultTimezone();
         $locales = Locales::initialize();
         static::setMemoryLimit();
 

@@ -94,7 +94,7 @@ class Package implements PackageInterface
         $this->packagePath = $packagePath;
         $this->composerManifest = $packageManager->getComposerManifest($this->packagePath);
         $this->loadFlagsFromComposerManifest();
-        $this->createPackageMetadata($packageManager);
+        $this->createPackageMetaData($packageManager);
     }
 
     /**

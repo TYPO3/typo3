@@ -95,7 +95,7 @@ class AjaxWidgetContextHolder implements \TYPO3\CMS\Core\SingletonInterface
             $GLOBALS['TSFE']->fe_user->storeSessionData();
         } else {
             $GLOBALS['BE_USER']->uc[$this->widgetContextsStorageKey] = serialize($this->widgetContexts);
-            $GLOBALS['BE_USER']->writeUc();
+            $GLOBALS['BE_USER']->writeUC();
         }
     }
 }

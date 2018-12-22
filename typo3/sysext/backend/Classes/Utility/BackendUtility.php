@@ -1319,7 +1319,7 @@ class BackendUtility
                     $parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['mount_pid_ol']['label']);
                 }
             } else {
-                $parts[] = $lang->sl('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:no_mount_pid');
+                $parts[] = $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:no_mount_pid');
             }
         }
         if ($row['nav_hide']) {
