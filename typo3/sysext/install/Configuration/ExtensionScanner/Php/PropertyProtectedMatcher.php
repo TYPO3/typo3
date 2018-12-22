@@ -349,11 +349,13 @@ return [
     ],
     'TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->access' => [
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-84284-ProtectedMethodsAndPropertiesInContentElementElementInformationController.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->pageInfo' => [
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-84284-ProtectedMethodsAndPropertiesInContentElementElementInformationController.rst',
         ],
     ],

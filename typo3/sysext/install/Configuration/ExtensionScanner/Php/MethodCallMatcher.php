@@ -2181,6 +2181,7 @@ return [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-84284-ProtectedMethodsAndPropertiesInContentElementElementInformationController.rst',
         ],
     ],

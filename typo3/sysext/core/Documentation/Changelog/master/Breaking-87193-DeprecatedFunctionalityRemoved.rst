@@ -417,6 +417,11 @@ The following methods changed signature according to previous deprecations in v9
 
 The following public class properties have been dropped:
 
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->access`
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->pageInfo`
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->table`
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->type`
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->uid`
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->cacheCmd`
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->content`
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->doc`
@@ -502,6 +507,9 @@ The following public class properties have been dropped:
 The following class methods have changed visibility:
 
 * :php:`TYPO3\CMS\Backend\Controller\BackendController->render()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->getLabelForTableColumn` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->init()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->main()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->closeDocument()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->compileForm()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->fixWSversioningInEditConf()` changed from public to protected
