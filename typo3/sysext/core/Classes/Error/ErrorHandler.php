@@ -40,6 +40,13 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
     protected $exceptionalErrors = 0;
 
     /**
+     * Error levels which should be handled.
+     *
+     * @var int
+     */
+    protected $errorHandlerErrors = 0;
+
+    /**
      * Whether to write a flash message in case of an error
      *
      * @var bool
@@ -55,8 +62,8 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
     {
         $excludedErrors = E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR;
         // reduces error types to those a custom error handler can process
-        $errorHandlerErrors = $errorHandlerErrors & ~$excludedErrors;
-        set_error_handler([$this, 'handleError'], $errorHandlerErrors);
+        $this->errorHandlerErrors = $errorHandlerErrors & ~$excludedErrors;
+        set_error_handler([$this, 'handleError'], $this->errorHandlerErrors);
     }
 
     /**
@@ -96,8 +103,9 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
      */
     public function handleError($errorLevel, $errorMessage, $errorFile, $errorLine)
     {
-        // Don't do anything if error_reporting is disabled by an @ sign
-        if (error_reporting() === 0) {
+        // Don't do anything if error_reporting is disabled by an @ sign or $errorLevel is something we won't handle
+        $shouldHandleErrorLevel = (bool)($this->errorHandlerErrors & $errorLevel);
+        if (error_reporting() === 0 || !$shouldHandleErrorLevel) {
             return true;
         }
         $errorLevels = [
