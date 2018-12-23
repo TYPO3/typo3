@@ -109,11 +109,11 @@ class ArrayBrowser
             $isResult = (bool)$this->searchKeys[$depth];
             $isExpanded = $isArray && ($this->depthKeys[$depth] || $this->expAll);
             $output .= '<li' . ($isResult ? ' class="active"' : '') . '>';
+            $output .= '<span class="list-tree-group">';
             if ($isArray && !$this->expAll) {
                 $goto = 'a' . substr(md5($depth), 0, 6);
                 $output .= '<a class="list-tree-control' . ($isExpanded ? ' list-tree-control-open' : ' list-tree-control-closed') . '" id="' . $goto . '" href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoutePath(GeneralUtility::_GP('route')) . '&node[' . $depth . ']=' . ($isExpanded ? 0 : 1) . '#' . $goto) . '"><i class="fa"></i></a> ';
             }
-            $output .= '<span class="list-tree-group">';
             $output .= $this->wrapArrayKey($key, $depth, !$isArray ? $value : '');
             if (!$isArray) {
                 $output .= ' = <span class="list-tree-value">' . htmlspecialchars($value) . '</span>';
