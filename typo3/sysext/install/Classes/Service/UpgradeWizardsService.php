@@ -462,7 +462,7 @@ class UpgradeWizardsService
      */
     protected function assertIdentifierIsValid(string $identifier): void
     {
-        if ($identifier === '' || !isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier])) {
+        if ($identifier === '' || (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier]) && !is_subclass_of($identifier, RowUpdaterInterface::class))) {
             throw new \RuntimeException('No valid wizard identifier given', 1502721731);
         }
     }
