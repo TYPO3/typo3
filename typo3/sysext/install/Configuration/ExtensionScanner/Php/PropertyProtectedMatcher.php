@@ -701,7 +701,8 @@ return [
     ],
     'TYPO3\CMS\Scheduler\Controller\SchedulerModuleController->CMD' => [
         'restFiles' => [
-            'Deprecation-84387-DeprecatedMethodAndPropertyInSchedulerModuleController.rst'
+            'Deprecation-84387-DeprecatedMethodAndPropertyInSchedulerModuleController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\Template\DocumentTemplate->hasDocheader' => [

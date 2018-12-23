@@ -2803,6 +2803,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-84387-DeprecatedMethodAndPropertyInSchedulerModuleController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Page\PageRenderer->enableConcatenateFiles' => [

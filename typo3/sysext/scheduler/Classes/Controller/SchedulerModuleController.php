@@ -22,8 +22,6 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -51,22 +49,6 @@ use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
  */
 class SchedulerModuleController
 {
-    use PublicMethodDeprecationTrait;
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicMethods = [
-        'addMessage' => 'Using SchedulerModuleController::addMessage() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-    ];
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicProperties = [
-        'CMD' => 'Using SchedulerModuleController::$CMD is deprecated and will not be possible anymore in TYPO3 v10.0. Use SchedulerModuleController::getCurrentAction() instead.',
-    ];
 
     /**
      * Array containing submitted data when editing or adding a task
@@ -1409,8 +1391,6 @@ class SchedulerModuleController
     protected function setCurrentAction(Action $action): void
     {
         $this->action = $action;
-        // @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0
-        $this->CMD = (string)$action;
     }
 
     /**

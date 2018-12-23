@@ -596,6 +596,7 @@ The following class methods have changed visibility:
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->makeAdvancedOptionsForm()` changed from public to protected
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->makeConfigurationForm()` changed from public to protected
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->makeSaveForm()` changed from public to protected
+* :php:`TYPO3\CMS\Scheduler\Controller\SchedulerModuleController->addMessage()` changed from public to protected
 * :php:`TYPO3\CMS\Taskcenter\Controller\TaskModuleController->menuConfig()` changed from public to protected
 * :php:`TYPO3\CMS\Taskcenter\Controller\TaskModuleController->mergeExternalItems()` changed from public to protected
 * :php:`TYPO3\CMS\Taskcenter\Controller\TaskModuleController->handleExternalFunctionValue()` changed from public to protected
@@ -782,6 +783,7 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->id` changed from public to protected
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->pageinfo` changed from public to protected
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->perms_clause` changed from public to protected
+* :php:`TYPO3\CMS\Scheduler\Controller\SchedulerModuleController->CMD` changed from public to protected
 * :php:`TYPO3\CMS\Setup\Controller\SetupModuleController->OLD_BE_USER` changed from public to protected
 * :php:`TYPO3\CMS\Setup\Controller\SetupModuleController->MOD_MENU` changed from public to protected
 * :php:`TYPO3\CMS\Setup\Controller\SetupModuleController->MOD_SETTINGS` changed from public to protected
