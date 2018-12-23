@@ -430,7 +430,7 @@ class ExtendedTemplateService extends TemplateService
                 $goto = substr(md5($depth), 0, 6);
                 $deeper = is_array($arr[$key . '.']) && ($this->tsbrowser_depthKeys[$depth] || $this->ext_expandAllNotes) ? 1 : 0;
                 $PM = is_array($arr[$key . '.']) && !$this->ext_noPMicons ? ($deeper ? 'minus' : 'plus') : 'join';
-                $HTML .= $depthData . '<li>';
+                $HTML .= $depthData . '<li><span class="list-tree-group">';
                 if ($PM !== 'join') {
                     $urlParameters = [
                         'id' => $GLOBALS['SOBE']->id,
@@ -468,9 +468,7 @@ class ExtendedTemplateService extends TemplateService
                         $label = '<a href="' . htmlspecialchars($aHref) . '" title="' . htmlspecialchars($ln) . '">' . $label . '</a>';
                     }
                 }
-                $HTML .= '
-					<span class="list-tree-group">
-						<span class="list-tree-label">[' . $label . ']</span>';
+                $HTML .= '<span class="list-tree-label">[' . $label . ']</span>';
                 if (isset($arr[$key])) {
                     $theValue = $arr[$key];
                     if ($this->fixedLgd) {

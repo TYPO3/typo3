@@ -122,10 +122,10 @@ class TemplateCest
         $I->waitForText('SETUP ROOT');
         // find and open [page] in tree
         $I->see('[page] = PAGE');
-        $I->click('//span[@class="list-tree-label"]/a[text()=\'page\']/../../../a');
+        $I->click('//span[@class="list-tree-label"]/a[text()=\'page\']/../../a');
         // find and open [page][10] in tree
         $I->waitForText('[10] = TEXT');
-        $I->click('//span[@class="list-tree-label"]/a[text()=\'page\']/../../../ul//span[@class="list-tree-label"]/a[text()=\'10\']/../../../a');
+        $I->click('//span[@class="list-tree-label"]/a[text()=\'page\']/../../../ul//span[@class="list-tree-label"]/a[text()=\'10\']/../../a');
         // find and edit [page][10][value] in tree
         $I->waitForText('[value] = Hello Acceptance Test!');
         $I->click('//span[@class="list-tree-label"]/a[text()=\'10\']/../../../ul//span[@class="list-tree-label"]/a[text()=\'value\']');
