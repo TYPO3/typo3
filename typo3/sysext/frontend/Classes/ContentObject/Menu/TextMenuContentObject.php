@@ -58,7 +58,6 @@ class TextMenuContentObject extends AbstractMenuContentObject
         }
 
         $this->WMresult = '';
-        $this->INPfixMD5 = substr(md5(microtime() . 'tmenu'), 0, 4);
         $this->WMmenuItems = count($this->result);
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $this->WMsubmenuObjSuffixes = $typoScriptService->explodeConfigurationForOptionSplit(['sOSuffix' => $this->mconf['submenuObjSuffixes']], $this->WMmenuItems);
@@ -69,7 +68,6 @@ class TextMenuContentObject extends AbstractMenuContentObject
             $this->WMcObj->start($this->menuArr[$key], 'pages');
             $this->I = [];
             $this->I['key'] = $key;
-            $this->I['INPfix'] = ($this->imgNameNotRandom ? '' : '_' . $this->INPfixMD5) . '_' . $key;
             $this->I['val'] = $val;
             $this->I['title'] = isset($this->I['val']['stdWrap.']) ? $this->WMcObj->stdWrap($this->getPageTitle($this->menuArr[$key]['title'], $this->menuArr[$key]['nav_title']), $this->I['val']['stdWrap.']) : $this->getPageTitle($this->menuArr[$key]['title'], $this->menuArr[$key]['nav_title']);
             $this->I['uid'] = $this->menuArr[$key]['uid'];
@@ -167,33 +165,23 @@ class TextMenuContentObject extends AbstractMenuContentObject
     }
 
     /**
-     * Generates the before* and after* images for TMENUs
+     * Generates the before* and after* stdWrap for TMENUs
+     * Evaluates:
+     * - before.stdWrap*
+     * - beforeWrap
+     * - after.stdWrap*
+     * - afterWrap
      *
-     * @param string $pref Can be "before" or "after" and determines which kind of image to create (basically this is the prefix of the TypoScript properties that are read from the ->I['val'] array
-     * @return string The resulting HTML of the image, if any.
+     * @param string $pref Can be "before" or "after" and determines which kind of stdWrap to process (basically this is the prefix of the TypoScript properties that are read from the ->I['val'] array
+     * @return string The resulting HTML
      */
     protected function getBeforeAfter($pref)
     {
-        $res = '';
-        if ($imgInfo = $this->WMcObj->getImgResource($this->I['val'][$pref . 'Img'], $this->I['val'][$pref . 'Img.'])) {
-            $theName = $this->imgNamePrefix . $this->I['uid'] . $this->I['INPfix'] . $pref;
-            $name = ' ' . $this->nameAttribute . '="' . $theName . '"';
-            $GLOBALS['TSFE']->imagesOnPage[] = $imgInfo[3];
-            $res = '<img' . ' src="' . $GLOBALS['TSFE']->absRefPrefix . $imgInfo[3] . '"' . ' width="' . $imgInfo[0] . '"' . ' height="' . $imgInfo[1] . '"' . $name . ($this->I['val'][$pref . 'ImgTagParams'] ? ' ' . $this->I['val'][$pref . 'ImgTagParams'] : '') . $this->parent_cObj->getBorderAttr(' border="0"');
-            if (!strstr($res, 'alt="')) {
-                // Adding alt attribute if not set.
-                $res .= ' alt=""';
-            }
-            $res .= ' />';
-            if ($this->I['val'][$pref . 'ImgLink']) {
-                $res = $this->I['A1'] . $res . $this->I['A2'];
-            }
-        }
         $processedPref = isset($this->I['val'][$pref . '.']) ? $this->WMcObj->stdWrap($this->I['val'][$pref], $this->I['val'][$pref . '.']) : $this->I['val'][$pref];
         if (isset($this->I['val'][$pref . 'Wrap'])) {
-            return $this->WMcObj->wrap($res . $processedPref, $this->I['val'][$pref . 'Wrap']);
+            return $this->WMcObj->wrap($processedPref, $this->I['val'][$pref . 'Wrap']);
         }
-        return $res . $processedPref;
+        return $processedPref;
     }
 
     /**

@@ -468,6 +468,10 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->workspacePreview`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->debug`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->GMENU_fixKey`
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->imgNameNotRandom`
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->imgNamePrefix`
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->INPfixMD5`
+* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->nameAttribute`
 * :php:`TYPO3C\MS\Frontend\ContentObject\Menu\AbstractMenuContentObject->WMfreezePrefix`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->error_getRootLine_failPid`
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->error_getRootLine`
@@ -760,13 +764,9 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->hash` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->id` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->I` changed from public to protected
-* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->imgNameNotRandom` changed from public to protected
-* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->imgNamePrefix` changed from public to protected
-* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->INPfixMD5` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->mconf` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->menuArr` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->menuNumber` changed from public to protected
-* :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->nameAttribute` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->nextActive` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->MP_array` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->result` changed from public to protected
@@ -862,6 +862,8 @@ The following TypoScript options have been dropped:
 * `stdWrap.addParams`
 * `stdWrap.filelink`
 * `stdWrap.filelist`
+* `TMENU.beforeImg`
+* `TMENU.afterImg`
 * `GMENU`
 * `GMENUITEMS`
 * `IMGMENU`

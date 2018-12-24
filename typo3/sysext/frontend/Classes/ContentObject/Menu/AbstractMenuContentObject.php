@@ -75,16 +75,6 @@ abstract class AbstractMenuContentObject
     protected $alwaysActivePIDlist = [];
 
     /**
-     * @var string
-     */
-    protected $imgNamePrefix = 'img';
-
-    /**
-     * @var int
-     */
-    protected $imgNameNotRandom = 0;
-
-    /**
      * Loaded with the parent cObj-object when a new HMENU is made
      *
      * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
@@ -163,11 +153,6 @@ abstract class AbstractMenuContentObject
     protected $rL_uidRegister;
 
     /**
-     * @var string
-     */
-    protected $INPfixMD5;
-
-    /**
      * @var mixed[]
      */
     protected $I;
@@ -203,13 +188,6 @@ abstract class AbstractMenuContentObject
      * @var string
      */
     protected $alternativeMenuTempArray = '';
-
-    /**
-     * Will be 'id' in XHTML-mode
-     *
-     * @var string
-     */
-    protected $nameAttribute = 'name';
 
     /**
      * TRUE to use cHash in generated link (normally only for the language
@@ -251,21 +229,6 @@ abstract class AbstractMenuContentObject
         $this->menuNumber = $menuNumber;
         $this->mconf = $conf[$this->menuNumber . $objSuffix . '.'];
         $this->WMcObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        // In XHTML and HTML5 there is no "name" attribute anymore
-        switch ($tsfe->xhtmlDoctype) {
-            case 'xhtml_strict':
-                // intended fall-through
-            case 'xhtml_11':
-                // intended fall-through
-            case 'html5':
-                // intended fall-through
-            case '':
-                // empty means that it's HTML5 by default
-                $this->nameAttribute = 'id';
-                break;
-            default:
-                $this->nameAttribute = 'name';
-        }
         // Sets the internal vars. $tmpl MUST be the template-object. $sys_page MUST be the sys_page object
         if ($this->conf[$this->menuNumber . $objSuffix] && is_object($tmpl) && is_object($sys_page)) {
             $this->tmpl = $tmpl;
@@ -390,17 +353,10 @@ abstract class AbstractMenuContentObject
             } else {
                 $this->nextActive = '';
             }
-            // imgNamePrefix
-            if ($this->mconf['imgNamePrefix']) {
-                $this->imgNamePrefix = $this->mconf['imgNamePrefix'];
-            }
-            $this->imgNameNotRandom = $this->mconf['imgNameNotRandom'];
-            $retVal = true;
-        } else {
-            $this->getTimeTracker()->setTSlogMessage('ERROR in menu', 3);
-            $retVal = false;
+            return true;
         }
-        return $retVal;
+        $this->getTimeTracker()->setTSlogMessage('ERROR in menu', 3);
+        return false;
     }
 
     /**
