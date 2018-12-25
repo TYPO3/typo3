@@ -270,10 +270,9 @@ class UpgradeController extends AbstractController
         $this->coreUpdateInitialize();
         $messageQueue = new FlashMessageQueue('install');
         if ($this->coreVersionService->isInstalledVersionAReleasedVersion()) {
-            $isDevelopmentUpdateAvailable = $this->coreVersionService->isYoungerPatchDevelopmentReleaseAvailable();
             $isUpdateAvailable = $this->coreVersionService->isYoungerPatchReleaseAvailable();
             $isUpdateSecurityRelevant = $this->coreVersionService->isUpdateSecurityRelevant();
-            if (!$isUpdateAvailable && !$isDevelopmentUpdateAvailable) {
+            if (!$isUpdateAvailable) {
                 $messageQueue->enqueue(new FlashMessage(
                     '',
                     'No regular update available',
@@ -296,14 +295,6 @@ class UpgradeController extends AbstractController
                     ));
                     $action = ['title' => 'Update now', 'action' => 'updateRegular'];
                 }
-            } elseif ($isDevelopmentUpdateAvailable) {
-                $newVersion = $this->coreVersionService->getYoungestPatchDevelopmentRelease();
-                $messageQueue->enqueue(new FlashMessage(
-                    '',
-                    'Update to development release ' . $newVersion . ' is available!',
-                    FlashMessage::INFO
-                ));
-                $action = ['title' => 'Update now', 'action' => 'updateDevelopment'];
             }
         } else {
             $messageQueue->enqueue(new FlashMessage(
@@ -1096,12 +1087,7 @@ class UpgradeController extends AbstractController
                 1380975303
             );
         }
-        if ($type === 'development') {
-            $versionToHandle = $this->coreVersionService->getYoungestPatchDevelopmentRelease();
-        } else {
-            $versionToHandle = $this->coreVersionService->getYoungestPatchRelease();
-        }
-        return $versionToHandle;
+        return $this->coreVersionService->getYoungestPatchRelease();
     }
 
     /**

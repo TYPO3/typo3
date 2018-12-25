@@ -17,11 +17,9 @@ namespace TYPO3\CMS\Install\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 
@@ -96,40 +94,6 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * Legacy ajax call. This silent updater takes care that all extensions configured in LocalConfiguration
-     * EXT/extConf serialized array are "upmerged" to arrays within EXTENSIONS if this extension does not
-     * exist in EXTENSIONS yet.
-     *
-     * @return ResponseInterface
-     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0
-     */
-    public function executeSilentLegacyExtConfExtensionConfigurationUpdateAction(): ResponseInterface
-    {
-        $configurationManager = new ConfigurationManager();
-        try {
-            $oldExtConfSettings = $configurationManager->getConfigurationValueByPath('EXT/extConf');
-        } catch (MissingArrayPathException $e) {
-            // The old 'extConf' array may not exist anymore, set to empty array if so.
-            $oldExtConfSettings = [];
-        }
-        try {
-            $newExtensionSettings = $configurationManager->getConfigurationValueByPath('EXTENSIONS');
-        } catch (MissingArrayPathException $e) {
-            // New 'EXTENSIONS' array may not exist yet, for instance if just upgrading to v9
-            $newExtensionSettings = [];
-        }
-        foreach ($oldExtConfSettings as $extensionName => $extensionSettings) {
-            if (!array_key_exists($extensionName, $newExtensionSettings)) {
-                $newExtensionSettings = $this->removeDotsFromArrayKeysRecursive(unserialize($extensionSettings, ['allowed_classes' => false]));
-                $configurationManager->setLocalConfigurationValueByPath('EXTENSIONS/' . $extensionName, $newExtensionSettings);
-            }
-        }
-        return new JsonResponse([
-            'success' => true,
-        ]);
-    }
-
-    /**
      * Synchronize TYPO3_CONF_VARS['EXTENSIONS'] with possibly new defaults from extensions
      * ext_conf_template.txt files. This make LocalConfiguration the only source of truth for
      * extension configuration and it is always up to date, also if an extension has been
@@ -144,28 +108,5 @@ class LayoutController extends AbstractController
         return new JsonResponse([
             'success' => true,
         ]);
-    }
-
-    /**
-     * Helper method for executeSilentLegacyExtConfExtensionConfigurationUpdateAction(). Old EXT/extConf
-     * settings have dots at the end of array keys if nested arrays were used. The new configuration does
-     * not use this funny nested representation anymore. The method removes all dots at the end of given
-     * array keys recursive to do this transition.
-     *
-     * @param array $settings
-     * @return array New settings
-     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0 along with executeSilentLegacyExtConfExtensionConfigurationUpdateAction()
-     */
-    private function removeDotsFromArrayKeysRecursive(array $settings): array
-    {
-        $settingsWithoutDots = [];
-        foreach ($settings as $key => $value) {
-            if (is_array($value)) {
-                $settingsWithoutDots[rtrim($key, '.')] = $this->removeDotsFromArrayKeysRecursive($value);
-            } else {
-                $settingsWithoutDots[$key] = $value;
-            }
-        }
-        return $settingsWithoutDots;
     }
 }

@@ -124,36 +124,9 @@ define([
         cache: false,
         success: function(data) {
           if (data.success === true) {
-            self.executeSilentLegacyExtConfExtensionConfigurationUpdate();
-          } else {
-            self.executeSilentConfigurationUpdate();
-          }
-        },
-        error: function(xhr) {
-          self.handleAjaxError(xhr);
-        }
-      });
-    },
-
-    /**
-     * Legacy layer to upmerge LocalConfiguration EXT/extConf serialized array keys
-     * to EXTENSIONS array in LocalConfiguration for initial update from v8 to v9.
-     *
-     * @deprecated since TYPO3 v9, will be removed with v10 - re-route executeSilentConfigurationUpdate()
-     * to executeSilentExtensionConfigurationUpdate() on removal of this function.
-     */
-    executeSilentLegacyExtConfExtensionConfigurationUpdate: function() {
-      var self = this;
-      this.updateLoadingInfo('Executing silent extension configuration update');
-      $.ajax({
-        url: this.getUrl('executeSilentLegacyExtConfExtensionConfigurationUpdate', 'layout'),
-        cache: false,
-        success: function(data) {
-          if (data.success === true) {
             self.executeSilentExtensionConfigurationSynchronization();
           } else {
-            var message = InfoBox.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.empty().append(message);
+            self.executeSilentConfigurationUpdate();
           }
         },
         error: function(xhr) {
