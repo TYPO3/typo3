@@ -174,9 +174,6 @@
 			<trans-unit id="LGL.allLanguages">
 				<source>[All]</source>
 			</trans-unit>
-			<trans-unit id="LGL.versionLabel">
-				<source>Versioning Label</source>
-			</trans-unit>
 			<trans-unit id="LGL.error">
 				<source>Error!</source>
 			</trans-unit>

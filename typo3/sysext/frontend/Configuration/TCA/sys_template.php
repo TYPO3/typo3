@@ -222,14 +222,6 @@ return [
                 ],
                 'default' => 0
             ]
-        ],
-        't3ver_label' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
-            'config' => [
-                'type' => 'input',
-                'size' => 30,
-                'max' => 255
-            ]
         ]
     ],
     'types' => [

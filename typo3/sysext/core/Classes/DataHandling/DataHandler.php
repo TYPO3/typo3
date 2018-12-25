@@ -1218,7 +1218,6 @@ class DataHandler implements LoggerAwareInterface
                             // new record created in a workspace - so always refresh pagetree to indicate there is a change in the workspace
                             $this->pagetreeNeedsRefresh = true;
 
-                            $newVersion_placeholderFieldArray['t3ver_label'] = 'INITIAL PLACEHOLDER';
                             // Setting placeholder state value for temporary record
                             $newVersion_placeholderFieldArray['t3ver_state'] = (string)new VersionState(VersionState::NEW_PLACEHOLDER);
                             // Setting workspace - only so display of place holders can filter out those from other workspaces.
@@ -1232,7 +1231,6 @@ class DataHandler implements LoggerAwareInterface
                             $fieldArray['t3ver_id'] = 1;
                             // Setting placeholder state value for version (so it can know it is currently a new version...)
                             $fieldArray['t3ver_state'] = (string)new VersionState(VersionState::NEW_PLACEHOLDER_VERSION);
-                            $fieldArray['t3ver_label'] = 'First draft version';
                             $fieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
                             // When inserted, $this->substNEWwithIDs[$id] will be changed to the uid of THIS version and so the interface will pick it up just nice!
                             $phShadowId = $this->insertDB($table, $id, $fieldArray, true, 0, true);
@@ -1502,7 +1500,6 @@ class DataHandler implements LoggerAwareInterface
                 case 't3ver_count':
                 case 't3ver_stage':
                 case 't3ver_tstamp':
-                    // t3ver_label is not here because it CAN be edited as a regular field!
                     break;
                 case 'l10n_state':
                     $fieldArray[$field] = $fieldValue;
@@ -3557,7 +3554,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         $data = [];
-        $nonFields = array_unique(GeneralUtility::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_id,t3ver_label,t3ver_state,t3ver_count,t3ver_stage,t3ver_tstamp,' . $excludeFields, true));
+        $nonFields = array_unique(GeneralUtility::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_id,t3ver_state,t3ver_count,t3ver_stage,t3ver_tstamp,' . $excludeFields, true));
         BackendUtility::workspaceOL($table, $row, -99, false);
         $row = BackendUtility::purgeComputedPropertiesFromRecord($row);
 
@@ -3880,7 +3877,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // Set up fields which should not be processed. They are still written - just passed through no-questions-asked!
-        $nonFields = ['uid', 'pid', 't3ver_id', 't3ver_oid', 't3ver_wsid', 't3ver_label', 't3ver_state', 't3ver_count', 't3ver_stage', 't3ver_tstamp', 'perms_userid', 'perms_groupid', 'perms_user', 'perms_group', 'perms_everybody'];
+        $nonFields = ['uid', 'pid', 't3ver_id', 't3ver_oid', 't3ver_wsid', 't3ver_state', 't3ver_count', 't3ver_stage', 't3ver_tstamp', 'perms_userid', 'perms_groupid', 'perms_user', 'perms_group', 'perms_everybody'];
 
         // Merge in override array.
         $row = array_merge($row, $overrideArray);
@@ -5842,7 +5839,6 @@ class DataHandler implements LoggerAwareInterface
         $overrideArray = [
             't3ver_id' => $highestVerNumber + 1,
             't3ver_oid' => $id,
-            't3ver_label' => $label ?: $subVer . ' / ' . date('d-m-Y H:m:s'),
             't3ver_wsid' => $this->BE_USER->workspace,
             't3ver_state' => (string)($delete ? new VersionState(VersionState::DELETE_PLACEHOLDER) : new VersionState(VersionState::DEFAULT_STATE)),
             't3ver_count' => 0,

@@ -1114,7 +1114,15 @@ The following database tables have been removed:
 The following database fields have been removed:
 
 * `pages.alias`
+* `pages.t3ver_label`
 * `index_phash.data_page_reg1`
+* `sys_category.t3ver_label`
+* `sys_collection.t3ver_label`
+* `sys_file_collection.t3ver_label`
+* `sys_file_metadata.t3ver_label`
+* `sys_file_reference.t3ver_label`
+* `sys_template.t3ver_label`
+* `tt_content.t3ver_label`
 
 
 The following php doc annotations have been removed:

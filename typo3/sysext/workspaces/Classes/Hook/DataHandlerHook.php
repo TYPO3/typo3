@@ -212,10 +212,7 @@ class DataHandlerHook
                             ->getConnectionForTable($table)
                             ->update(
                                 $table,
-                                [
-                                    't3ver_label' => 'DELETED!',
-                                    't3ver_state' => 2,
-                                ],
+                                ['t3ver_state' => 2],
                                 ['uid' => $id]
                             );
 
@@ -1624,7 +1621,6 @@ class DataHandlerHook
                 $newVersion_placeholderFieldArray['perms_group'] = $access['perms_group'];
                 $newVersion_placeholderFieldArray['perms_everybody'] = $access['perms_everybody'];
             }
-            $newVersion_placeholderFieldArray['t3ver_label'] = 'MovePlaceholder #' . $uid;
             $newVersion_placeholderFieldArray['t3ver_move_id'] = $uid;
             // Setting placeholder state value for temporary record
             $newVersion_placeholderFieldArray['t3ver_state'] = (string)new VersionState(VersionState::MOVE_PLACEHOLDER);

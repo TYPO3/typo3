@@ -681,27 +681,6 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsT3verLabel()
-    {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'versioningWS' => true,
-        ];
-        $result = (new DefaultTcaSchema())->enrich([]);
-        $expectedColumn = new Column(
-            '`t3ver_label`',
-            Type::getType('string'),
-            [
-                'default' => '',
-                'notnull' => true,
-                'length' => 255,
-            ]
-        );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('t3ver_label'));
-    }
-
-    /**
-     * @test
-     */
     public function enrichAddsT3verWsid()
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [

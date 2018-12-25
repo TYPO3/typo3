@@ -395,22 +395,6 @@ class DefaultTcaSchema
                 );
             }
 
-            // workspaces t3ver_label column
-            if (!empty($tableDefinition['ctrl']['versioningWS'])
-                && (bool)$tableDefinition['ctrl']['versioningWS'] === true
-                && !$this->isColumnDefinedForTable($tables, $tableName, 't3ver_label')
-            ) {
-                $tables[$tablePosition]->addColumn(
-                    $this->quote('t3ver_label'),
-                    'string',
-                    [
-                        'default' => '',
-                        'notnull' => true,
-                        'length' => 255,
-                    ]
-                );
-            }
-
             // workspaces t3ver_wsid column
             if (!empty($tableDefinition['ctrl']['versioningWS'])
                 && (bool)$tableDefinition['ctrl']['versioningWS'] === true
@@ -596,7 +580,6 @@ class DefaultTcaSchema
             $prioritizedFieldNames[] = 't3ver_move_id';
             $prioritizedFieldNames[] = 't3ver_count';
             $prioritizedFieldNames[] = 't3ver_tstamp';
-            $prioritizedFieldNames[] = 't3ver_label';
         }
 
         return $prioritizedFieldNames;

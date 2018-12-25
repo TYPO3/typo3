@@ -394,7 +394,6 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         $this->assertEquals(11, $pageRec['t3ver_oid']);
         $this->assertEquals(987654321, $pageRec['t3ver_wsid']);
         $this->assertEquals(-1, $pageRec['t3ver_state']);
-        $this->assertSame('First draft version', $pageRec['t3ver_label']);
     }
 
     /**
@@ -416,7 +415,6 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         $this->assertEquals(11, $pageRec['t3ver_oid']);
         $this->assertEquals(987654321, $pageRec['t3ver_wsid']);
         $this->assertEquals(-1, $pageRec['t3ver_state']);
-        $this->assertSame('First draft version', $pageRec['t3ver_label']);
     }
 
     ////////////////////////////////
