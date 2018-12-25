@@ -985,7 +985,7 @@ The following feature is now always enabled:
 
 * Extbase's :php:`consistentTranslationOverlayHandling` - Translations in Extbase are now always consistent
 * :php:`simplifiedControllerActionDispatching` - Backend controller actions do not receive a prepared response object anymore
-
+* :php:`unifiedPageTranslationHandling` - Page Translations are not within `pages_language_overlay` anymore
 
 The following features have been removed:
 
@@ -999,6 +999,7 @@ The following features have been removed:
 The following database tables have been removed:
 
 * `sys_domain` - Use site configuration instead
+* `pages_language_overlay` - Migrate to `pages` with the upgrade wizard
 
 
 The following database fields have been removed:

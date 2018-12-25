@@ -1,4 +1,5 @@
 <?php
+// @deprecated Remove this file in TYPO3 v11 along with the migration wizard "MigratePagesLanguageOverlayUpdate"
 return [
     'ctrl' => [
         'label' => 'title',

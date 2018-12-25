@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Install\Updates;
  */
 
 use Symfony\Component\Console\Output\OutputInterface;
-use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\LoadTcaService;
@@ -119,7 +118,6 @@ class MigratePagesLanguageOverlayUpdate implements UpgradeWizardInterface, Chatt
         $this->mergePagesLanguageOverlayIntoPages();
         $this->updateInlineRelations();
         $this->updateSysHistoryRelations();
-        $this->enableFeatureFlag();
         return true;
     }
 
@@ -344,16 +342,5 @@ class MigratePagesLanguageOverlayUpdate implements UpgradeWizardInterface, Chatt
         }
 
         return false;
-    }
-
-    /**
-     * Once the update wizard is run through, the feature to not load any pages_language_overlay data can
-     * be activated.
-     *
-     * Basically writes 'SYS/features/unifiedPageTranslationHandling' to LocalConfiguration.php
-     */
-    protected function enableFeatureFlag()
-    {
-        GeneralUtility::makeInstance(ConfigurationManager::class)->enableFeature('unifiedPageTranslationHandling');
     }
 }

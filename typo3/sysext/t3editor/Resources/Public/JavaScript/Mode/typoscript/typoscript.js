@@ -641,7 +641,6 @@
         'PAGE_TSCONFIG_STR': kw('PAGE_TSCONFIG_STR'),
         'pageFrameObj': kw('pageFrameObj'),
         'pages': B,
-        'pages_language_overlay': B,
         'pageTitleFirst': kw('pageTitleFirst'),
         'pageTree': A,
         'parameter': kw('parameter'),

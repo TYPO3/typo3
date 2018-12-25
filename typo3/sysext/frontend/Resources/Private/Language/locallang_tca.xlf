@@ -549,9 +549,6 @@
 			<trans-unit id="sys_template.tabs.access">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="pages_language_overlay">
-				<source>Alternative Page Language</source>
-			</trans-unit>
 			<trans-unit id="backend_layout">
 				<source>Backend Layout</source>
 			</trans-unit>

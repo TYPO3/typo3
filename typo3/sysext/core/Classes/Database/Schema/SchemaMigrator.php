@@ -19,7 +19,6 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\Table;
-use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
@@ -271,16 +270,14 @@ class SchemaMigrator
         // Flatten the array of arrays by one level
         $tables = array_merge(...$tables);
 
-        // @deprecated (?!) Drop any definition of pages_language_overlay in SQL
-        // will be removed in TYPO3 v10.0 once the feature is enabled by default
-        $disabledPagesLanguageOverlay = GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('unifiedPageTranslationHandling');
-
         // Add default TCA fields
         $defaultTcaSchema = GeneralUtility::makeInstance(DefaultTcaSchema::class);
         $tables = $defaultTcaSchema->enrich($tables);
         // Ensure the default TCA fields are ordered
         foreach ($tables as $k => $table) {
-            if ($disabledPagesLanguageOverlay && $table->getName() === 'pages_language_overlay') {
+            // "pages_language_overlay" is hard-coded as never to be added anymore in TYPO3 v10. This safety-net
+            // is @deprecated and can be removed in TYPO3 v11.
+            if ($table->getName() === 'pages_language_overlay') {
                 unset($tables[$k]);
                 continue;
             }
