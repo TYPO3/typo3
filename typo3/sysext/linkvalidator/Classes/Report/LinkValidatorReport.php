@@ -19,8 +19,6 @@ use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -41,27 +39,6 @@ use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
  */
 class LinkValidatorReport
 {
-    use PublicPropertyDeprecationTrait;
-    use PublicMethodDeprecationTrait;
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicProperties = [
-        'pObj' => 'Using LinkValidatorReport::$pObj is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'doc' => 'Using LinkValidatorReport::$doc is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'function_key' => 'Using LinkValidatorReport::$function_key is deprecated, property will be removed in TYPO3 v10.0.',
-        'extClassConf' => 'Using LinkValidatorReport::$extClassConf is deprecated, property will be removed in TYPO3 v10.0.',
-        'localLangFile' => 'Using LinkValidatorReport::$localLangFile is deprecated, property will be removed in TYPO3 v10.0.',
-        'extObj' => 'Using LinkValidatorReport::$extObj is deprecated, property will be removed in TYPO3 v10.0.',
-    ];
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicMethods = [
-        'extObjContent' => 'Using LinkValidatorReport::extObjContent() is deprecated, method will be removed in TYPO3 v10.0.',
-    ];
 
     /**
      * @var DocumentTemplate
@@ -172,47 +149,13 @@ class LinkValidatorReport
     protected $pObj;
 
     /**
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $extObj;
-
-    /**
-     * Can be hardcoded to the name of a locallang.xlf file (from the same directory as the class file) to use/load
-     * and is included / added to $GLOBALS['LOCAL_LANG']
-     *
-     * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $localLangFile = '';
-
-    /**
-     * Contains module configuration parts from TBE_MODULES_EXT if found
-     *
-     * @see handleExternalFunctionValue()
-     * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $extClassConf;
-
-    /**
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $function_key = '';
-
-    /**
      * Init, called from parent object
      *
      * @param InfoModuleController $pObj A reference to the parent (calling) object
      */
     public function init($pObj)
     {
-        $languageService = $this->getLanguageService();
         $this->pObj = $pObj;
-        // Local lang:
-        if (!empty($this->localLangFile)) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-            $languageService->includeLLFile($this->localLangFile);
-        }
         $this->id = (int)GeneralUtility::_GP('id');
     }
 
@@ -886,33 +829,6 @@ class LinkValidatorReport
     protected function isCurrentUserAdmin()
     {
         return $this->getBackendUser()->isAdmin();
-    }
-
-    /**
-     * Called from InfoModuleController until deprecation removal in TYPO3 v10.0
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function checkExtObj()
-    {
-        if (is_array($this->extClassConf) && $this->extClassConf['name']) {
-            $this->extObj = GeneralUtility::makeInstance($this->extClassConf['name']);
-            $this->extObj->init($this->pObj, $this->extClassConf);
-            // Re-write:
-            $this->pObj->MOD_SETTINGS = BackendUtility::getModuleData($this->pObj->MOD_MENU, GeneralUtility::_GP('SET'), 'web_info');
-        }
-    }
-
-    /**
-     * Calls the main function inside ANOTHER sub-submodule which might exist.
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function extObjContent()
-    {
-        if (is_object($this->extObj)) {
-            return $this->extObj->main();
-        }
     }
 
     /**
