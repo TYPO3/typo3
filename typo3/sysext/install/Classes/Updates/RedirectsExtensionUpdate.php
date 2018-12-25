@@ -42,7 +42,7 @@ class RedirectsExtensionUpdate extends AbstractDownloadExtensionUpdate
 
         $this->confirmation = new Confirmation(
             'Are you sure?',
-            'You should install the "adminpanel" only if needed. ' . $this->extension->getDescription(),
+            'You should install the "redirects" extension only if needed. ' . $this->extension->getDescription(),
             true
         );
     }
