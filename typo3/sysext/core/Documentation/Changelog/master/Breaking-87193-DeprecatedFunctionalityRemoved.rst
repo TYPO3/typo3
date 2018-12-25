@@ -371,6 +371,7 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->handleExternalFunctionValue()`
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->menuConfig()`
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->mergeExternalItems()`
+* :php:`TYPO3\CMS\Rsaauth\RsaEncryptionEncoder->getRsaPublicKeyAjaxHandler()`
 * :php:`TYPO3\CMS\Setup\Controller\SetupModuleController->getFormProtection()`
 * :php:`TYPO3\CMS\Setup\Controller\SetupModuleController->simulateUser()`
 
