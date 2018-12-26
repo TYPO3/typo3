@@ -76,6 +76,27 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                 ],
                 't3://page?uid=13&type=31&unbel=ievable#uncool'
             ],
+            'page with type and parameters as another parameter and fragment - old style' => [
+                '13,31,&unbel=ievable&but=possibly#uncool',
+                [
+                    'type' => LinkService::TYPE_PAGE,
+                    'pageuid' => '13',
+                    'pagetype' => '31',
+                    'parameters' => 'unbel=ievable&but=possibly',
+                    'fragment' => 'uncool'
+                ],
+                't3://page?uid=13&type=31&unbel=ievable&but=possibly#uncool'
+            ],
+            'page with type and parameters as third parameter and explicitly allow type=0' => [
+                '1,0,&param=2',
+                [
+                    'type' => LinkService::TYPE_PAGE,
+                    'pageuid' => '1',
+                    'pagetype' => '0',
+                    'parameters' => 'param=2',
+                ],
+                't3://page?uid=1&type=0&param=2'
+            ],
             'page with alias - old style' => [
                 'alias13',
                 [

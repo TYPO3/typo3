@@ -174,6 +174,7 @@ class LegacyLinkNotationConverter
             $result['pageuid'] = 'current';
             $result['fragment'] = substr($data, 1);
         } elseif (strpos($data, ',') !== false) {
+            $data = rtrim($data, ',');
             list($result['pageuid'], $result['pagetype']) = explode(',', $data, 2);
         } elseif (strpos($data, '/') !== false) {
             $data = explode('/', trim($data, '/'));
