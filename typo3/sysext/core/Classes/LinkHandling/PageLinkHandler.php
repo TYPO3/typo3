@@ -42,7 +42,8 @@ class PageLinkHandler implements LinkHandlingInterface
             $urn .= '?uid=' . $parameters['pageuid'];
         }
         $urn = rtrim($urn, ':');
-        if (!empty($parameters['pagetype'])) {
+        // Page type is set and not empty (= "0" in this case means it is not empty)
+        if (isset($parameters['pagetype']) && strlen((string)$parameters['pagetype']) > 0) {
             $urn .= '&type=' . $parameters['pagetype'];
         }
         if (!empty($parameters['parameters'])) {
