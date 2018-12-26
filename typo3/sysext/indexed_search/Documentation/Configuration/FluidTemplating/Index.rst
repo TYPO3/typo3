@@ -30,6 +30,5 @@ The plugin "Indexed Search (Extbase & Fluid based)" can be extended with custom 
        }
    }
 
-The above configuration will made the plugin look for any template in ``myextension`` first and
-fall back to the default ``indexed_search`` template if a template could not be found in
-``myextension``.
+The above configuration will make the plugin look for any template in ``myextension`` at the given relative path first and
+fall back to the default ``indexed_search`` template if the configured template cannot be found.
