@@ -89,11 +89,6 @@ class LoadTcaService
      */
     public function loadSingleExtTablesFile(string $extensionKey)
     {
-        global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
-        global $TBE_MODULES, $TBE_MODULES_EXT, $TCA;
-        global $PAGES_TYPES, $TBE_STYLES;
-        global $_EXTKEY;
-
         $packageManager = GeneralUtility::makeInstance(PackageManager::class);
         try {
             $package = $packageManager->getPackage($extensionKey);
@@ -107,10 +102,6 @@ class LoadTcaService
         $extTablesPath = $package->getPackagePath() . 'ext_tables.php';
         // Load ext_tables.php file of the extension
         if (@file_exists($extTablesPath)) {
-            // $_EXTKEY and $_EXTCONF are available in ext_tables.php
-            // and are explicitly set in cached file as well
-            $_EXTKEY = $extensionKey;
-            $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY] ?? null;
             require $extTablesPath;
         }
     }

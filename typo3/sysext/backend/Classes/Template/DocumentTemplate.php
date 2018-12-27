@@ -642,7 +642,7 @@ function jumpToUrl(URL) {
             foreach ($GLOBALS['TBE_STYLES']['skins'] as $skinExtKey => $skin) {
                 $skinStylesheetDirs = $this->stylesheetsSkins;
                 // Skins can add custom stylesheetDirectories using
-                // $GLOBALS['TBE_STYLES']['skins'][$_EXTKEY]['stylesheetDirectories']
+                // $GLOBALS['TBE_STYLES']['skins']['your_extension_key']['stylesheetDirectories']
                 if (is_array($skin['stylesheetDirectories'])) {
                     $skinStylesheetDirs = array_merge($skinStylesheetDirs, $skin['stylesheetDirectories']);
                 }

@@ -1333,6 +1333,9 @@ The following features have been removed:
 * The array key :php:`uploadfolder` in extensions :php:`ext_emconf.php` files is obsolete and ignored.
 * Standalone install tool entry point :file:`typo3/install/index.php` has been dropped, use :file:`typo3/install.php` instead
 * INCLUDE_TYPOSCRIPT statements in typoscript using a `.txt` ending for a file that ends with `.typoscript` does not work any longer
+* These variables are no longer declared in :file:`ext_tables.php` and :file:`ext_localconf.php` files: :php:`$_EXTKEY`, :php:`$_EXTCONF`,
+  :php:`T3_SERVICES`, :php:`T3_VAR`, :php:`TYPO3_CONF_VARS`, :php:`TBE_MODULES`, :php:`TBE_MODULES_EXT`, :php:`TCA`,
+  :php:`PAGES_TYPES`, :php:`TBE_STYLES`
 
 
 The following database tables have been removed:

@@ -1099,16 +1099,7 @@ class UpgradeController extends AbstractController
     protected function extensionCompatTesterLoadExtLocalconfForExtension(Package $package)
     {
         $extLocalconfPath = $package->getPackagePath() . 'ext_localconf.php';
-        // This is the main array meant to be manipulated in the ext_localconf.php files
-        // In general it is recommended to not rely on it to be globally defined in that
-        // scope but to use $GLOBALS['TYPO3_CONF_VARS'] instead.
-        // Nevertheless we define it here as global for backwards compatibility.
-        global $TYPO3_CONF_VARS;
         if (@file_exists($extLocalconfPath)) {
-            // $_EXTKEY and $_EXTCONF are available in ext_localconf.php
-            // and are explicitly set in cached file as well
-            $_EXTKEY = $package->getPackageKey();
-            $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY] ?? null;
             require $extLocalconfPath;
         }
     }
@@ -1122,18 +1113,7 @@ class UpgradeController extends AbstractController
     protected function extensionCompatTesterLoadExtTablesForExtension(Package $package)
     {
         $extTablesPath = $package->getPackagePath() . 'ext_tables.php';
-        // In general it is recommended to not rely on it to be globally defined in that
-        // scope, but we can not prohibit this without breaking backwards compatibility
-        global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
-        global $TBE_MODULES, $TBE_MODULES_EXT, $TCA;
-        global $PAGES_TYPES, $TBE_STYLES;
-        global $_EXTKEY;
-        // Load each ext_tables.php file of loaded extensions
-        $_EXTKEY = $package->getPackageKey();
         if (@file_exists($extTablesPath)) {
-            // $_EXTKEY and $_EXTCONF are available in ext_tables.php
-            // and are explicitly set in cached file as well
-            $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY] ?? null;
             require $extTablesPath;
         }
     }

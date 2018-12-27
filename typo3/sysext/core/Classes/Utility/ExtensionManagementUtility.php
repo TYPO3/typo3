@@ -1443,18 +1443,9 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function loadSingleExtLocalconfFiles()
     {
-        // This is the main array meant to be manipulated in the ext_localconf.php files
-        // In general it is recommended to not rely on it to be globally defined in that
-        // scope but to use $GLOBALS['TYPO3_CONF_VARS'] instead.
-        // Nevertheless we define it here as global for backwards compatibility.
-        global $TYPO3_CONF_VARS;
         foreach (static::$packageManager->getActivePackages() as $package) {
             $extLocalconfPath = $package->getPackagePath() . 'ext_localconf.php';
             if (@file_exists($extLocalconfPath)) {
-                // $_EXTKEY and $_EXTCONF are available in ext_localconf.php
-                // and are explicitly set in cached file as well
-                $_EXTKEY = $package->getPackageKey();
-                $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY] ?? null;
                 require $extLocalconfPath;
             }
         }
@@ -1473,8 +1464,6 @@ tt_content.' . $key . $suffix . ' {
         $phpCodeToCache[] = ' * Compiled ext_localconf.php cache file';
         $phpCodeToCache[] = ' */';
         $phpCodeToCache[] = '';
-        $phpCodeToCache[] = 'global $TYPO3_CONF_VARS, $T3_SERVICES, $T3_VAR;';
-        $phpCodeToCache[] = '';
         // Iterate through loaded extensions and add ext_localconf content
         foreach (static::$packageManager->getActivePackages() as $package) {
             $extensionKey = $package->getPackageKey();
@@ -1485,10 +1474,6 @@ tt_content.' . $key . $suffix . ' {
                 $phpCodeToCache[] = ' * Extension: ' . $extensionKey;
                 $phpCodeToCache[] = ' * File: ' . $extLocalconfPath;
                 $phpCodeToCache[] = ' */';
-                $phpCodeToCache[] = '';
-                // Set $_EXTKEY and $_EXTCONF for this extension
-                $phpCodeToCache[] = '$_EXTKEY = \'' . $extensionKey . '\';';
-                $phpCodeToCache[] = '$_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY] ?? null;';
                 $phpCodeToCache[] = '';
                 // Add ext_localconf.php content of extension
                 $phpCodeToCache[] = trim(file_get_contents($extLocalconfPath));
@@ -1691,20 +1676,10 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function loadSingleExtTablesFiles()
     {
-        // In general it is recommended to not rely on it to be globally defined in that
-        // scope, but we can not prohibit this without breaking backwards compatibility
-        global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
-        global $TBE_MODULES, $TBE_MODULES_EXT, $TCA;
-        global $PAGES_TYPES, $TBE_STYLES;
-        global $_EXTKEY;
         // Load each ext_tables.php file of loaded extensions
         foreach (static::$packageManager->getActivePackages() as $package) {
             $extTablesPath = $package->getPackagePath() . 'ext_tables.php';
             if (@file_exists($extTablesPath)) {
-                // $_EXTKEY and $_EXTCONF are available in ext_tables.php
-                // and are explicitly set in cached file as well
-                $_EXTKEY = $package->getPackageKey();
-                $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY] ?? null;
                 require $extTablesPath;
             }
         }
@@ -1721,11 +1696,6 @@ tt_content.' . $key . $suffix . ' {
         $phpCodeToCache[] = ' * Compiled ext_tables.php cache file';
         $phpCodeToCache[] = ' */';
         $phpCodeToCache[] = '';
-        $phpCodeToCache[] = 'global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;';
-        $phpCodeToCache[] = 'global $TBE_MODULES, $TBE_MODULES_EXT, $TCA;';
-        $phpCodeToCache[] = 'global $PAGES_TYPES, $TBE_STYLES;';
-        $phpCodeToCache[] = 'global $_EXTKEY;';
-        $phpCodeToCache[] = '';
         // Iterate through loaded extensions and add ext_tables content
         foreach (static::$packageManager->getActivePackages() as $package) {
             $extensionKey = $package->getPackageKey();
@@ -1736,10 +1706,6 @@ tt_content.' . $key . $suffix . ' {
                 $phpCodeToCache[] = ' * Extension: ' . $extensionKey;
                 $phpCodeToCache[] = ' * File: ' . $extTablesPath;
                 $phpCodeToCache[] = ' */';
-                $phpCodeToCache[] = '';
-                // Set $_EXTKEY and $_EXTCONF for this extension
-                $phpCodeToCache[] = '$_EXTKEY = \'' . $extensionKey . '\';';
-                $phpCodeToCache[] = '$_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY] ?? null;';
                 $phpCodeToCache[] = '';
                 // Add ext_tables.php content of extension
                 $phpCodeToCache[] = trim(file_get_contents($extTablesPath));
