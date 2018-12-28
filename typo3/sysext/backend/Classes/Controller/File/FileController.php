@@ -124,15 +124,7 @@ class FileController
         if ($request->getParsedBody()['edit'] ?? '') {
             /** @var File $file */
             $file = $this->fileData['newfile'][0];
-            $properties = $file->getProperties();
-            $urlParameters = [
-                'target' =>  $properties['storage'] . ':' . $properties['identifier']
-            ];
-            if ($this->redirect) {
-                $urlParameters['returnUrl'] = $this->redirect;
-            }
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $this->redirect = (string)$uriBuilder->buildUriFromRoute('file_edit', $urlParameters);
+            $this->redirect = $this->getFileEditRedirect($file) ?? $this->redirect;
         }
         if ($this->redirect) {
             return new RedirectResponse(
@@ -259,6 +251,30 @@ class FileController
         $this->fileProcessor->setExistingFilesConflictMode($this->overwriteExistingFiles);
         $this->fileProcessor->start($this->file);
         $this->fileData = $this->fileProcessor->processData();
+    }
+
+    /**
+     * Gets URI to be used for editing given file (if file extension is defined in textfile_ext)
+     *
+     * @param File $file to be edited
+     * @return string|null URI to be redirected to
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     */
+    protected function getFileEditRedirect(File $file): ?string
+    {
+        $textFileExtensionList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'] ?? '';
+        if (!GeneralUtility::inList($textFileExtensionList, $file->getExtension())) {
+            return null;
+        }
+        $properties = $file->getProperties();
+        $urlParameters = [
+            'target' =>  $properties['storage'] . ':' . $properties['identifier']
+        ];
+        if ($this->redirect) {
+            $urlParameters['returnUrl'] = $this->redirect;
+        }
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        return (string)$uriBuilder->buildUriFromRoute('file_edit', $urlParameters);
     }
 
     /**
