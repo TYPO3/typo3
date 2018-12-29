@@ -15,12 +15,18 @@ namespace TYPO3\CMS\RteCKEditor\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\RteCKEditor\Form\Element\Event\AfterGetExternalPluginsEvent;
+use TYPO3\CMS\RteCKEditor\Form\Element\Event\AfterPrepareConfigurationForEditorEvent;
+use TYPO3\CMS\RteCKEditor\Form\Element\Event\BeforeGetExternalPluginsEvent;
+use TYPO3\CMS\RteCKEditor\Form\Element\Event\BeforePrepareConfigurationForEditorEvent;
 
 /**
  * Render rich text editor in FormEngine
@@ -69,6 +75,24 @@ class RichTextElement extends AbstractFormElement
      * @var array
      */
     protected $rteConfiguration = [];
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
+     * Container objects give $nodeFactory down to other containers.
+     *
+     * @param NodeFactory $nodeFactory
+     * @param array $data
+     * @param EventDispatcherInterface|null $eventDispatcher
+     */
+    public function __construct(NodeFactory $nodeFactory, array $data, EventDispatcherInterface $eventDispatcher = null)
+    {
+        parent::__construct($nodeFactory, $data);
+        $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
+    }
 
     /**
      * Renders the ckeditor element
@@ -232,6 +256,11 @@ class RichTextElement extends AbstractFormElement
      */
     protected function getExtraPlugins(): array
     {
+        $externalPlugins = $this->rteConfiguration['externalPlugins'] ?? [];
+        $externalPlugins = $this->eventDispatcher
+            ->dispatch(new BeforeGetExternalPluginsEvent($externalPlugins, $this->data))
+            ->getConfiguration();
+
         $urlParameters = [
             'P' => [
                 'table'      => $this->data['tableName'],
@@ -244,21 +273,23 @@ class RichTextElement extends AbstractFormElement
         ];
 
         $pluginConfiguration = [];
-        if (isset($this->rteConfiguration['externalPlugins']) && is_array($this->rteConfiguration['externalPlugins'])) {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            foreach ($this->rteConfiguration['externalPlugins'] as $pluginName => $configuration) {
-                $pluginConfiguration[$pluginName] = [
-                    'resource' => $this->resolveUrlPath($configuration['resource'])
-                ];
-                unset($configuration['resource']);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        foreach ($externalPlugins as $pluginName => $configuration) {
+            $pluginConfiguration[$pluginName] = [
+                'resource' => $this->resolveUrlPath($configuration['resource'])
+            ];
+            unset($configuration['resource']);
 
-                if ($configuration['route']) {
-                    $configuration['routeUrl'] = (string)$uriBuilder->buildUriFromRoute($configuration['route'], $urlParameters);
-                }
-
-                $pluginConfiguration[$pluginName]['config'] = $configuration;
+            if ($configuration['route']) {
+                $configuration['routeUrl'] = (string)$uriBuilder->buildUriFromRoute($configuration['route'], $urlParameters);
             }
+
+            $pluginConfiguration[$pluginName]['config'] = $configuration;
         }
+
+        $pluginConfiguration = $this->eventDispatcher
+            ->dispatch(new AfterGetExternalPluginsEvent($pluginConfiguration, $this->data))
+            ->getConfiguration();
         return $pluginConfiguration;
     }
 
@@ -327,6 +358,11 @@ class RichTextElement extends AbstractFormElement
         if (is_array($this->rteConfiguration['config'])) {
             $configuration = array_replace_recursive($configuration, $this->rteConfiguration['config']);
         }
+
+        $configuration = $this->eventDispatcher
+            ->dispatch(new BeforePrepareConfigurationForEditorEvent($configuration, $this->data))
+            ->getConfiguration();
+
         // Set the UI language of the editor if not hard-coded by the existing configuration
         if (empty($configuration['language'])) {
             $configuration['language'] = $this->getBackendUser()->uc['lang'] ?: ($this->getBackendUser()->user['lang'] ?: 'en');
@@ -348,6 +384,10 @@ class RichTextElement extends AbstractFormElement
         if (is_array($configuration['removeButtons'])) {
             $configuration['removeButtons'] = implode(',', $configuration['removeButtons']);
         }
+
+        $configuration = $this->eventDispatcher
+            ->dispatch(new AfterPrepareConfigurationForEditorEvent($configuration, $this->data))
+            ->getConfiguration();
 
         return $configuration;
     }
