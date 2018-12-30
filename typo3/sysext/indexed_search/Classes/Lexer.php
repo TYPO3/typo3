@@ -15,7 +15,6 @@ namespace TYPO3\CMS\IndexedSearch;
  */
 
 use TYPO3\CMS\Core\Charset\CharsetConverter;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -25,15 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Lexer
 {
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * List of all deprecated public properties
-     * @var array
-     */
-    protected $deprecatedPublicProperties = [
-        'csObj' => 'Using $csObj within Indexing is discouraged, the property will be removed in TYPO3 v10.0 - if needed instantiate CharsetConverter yourself.',
-    ];
 
     /**
      * Debugging options:
@@ -50,14 +40,6 @@ class Lexer
     public $debugString = '';
 
     /**
-     * Charset class object
-     *
-     * @var CharsetConverter
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0 (also the instantiation in the init() method).
-     */
-    public $csObj;
-
-    /**
      * Configuration of the lexer:
      *
      * @var array
@@ -69,15 +51,6 @@ class Lexer
         // Set, if case sensitive indexing is wanted.
         'removeChars' => [45]
     ];
-
-    /**
-     * Constructor: Initializes the charset class
-     */
-    public function __construct()
-    {
-        // @deprecated, can be removed in TYPO3 v10.0.
-        $this->csObj = GeneralUtility::makeInstance(CharsetConverter::class);
-    }
 
     /**
      * Splitting string into words.

@@ -492,6 +492,8 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Impexp\Export->maxFileSize`
 * :php:`TYPO3\CMS\Impexp\Export->maxRecordSize`
 * :php:`TYPO3\CMS\Impexp\Export->maxExportSize`
+* :php:`TYPO3\CMS\IndexedSearch\Lexer->csObj`
+* :php:`TYPO3\CMS\IndexedSearch\Indexer->csObj`
 * :php:`TYPO3\CMS\Extbase\Reflection\ClassSchema->addProperty`
 * :php:`TYPO3\CMS\Extbase\Reflection\ClassSchema->setModelType`
 * :php:`TYPO3\CMS\Extbase\Reflection\ClassSchema->getModelType`

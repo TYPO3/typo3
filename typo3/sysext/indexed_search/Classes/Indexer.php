@@ -14,7 +14,6 @@ namespace TYPO3\CMS\IndexedSearch;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -34,15 +33,6 @@ use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
  */
 class Indexer
 {
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * List of all deprecated public properties
-     * @var array
-     */
-    protected $deprecatedPublicProperties = [
-        'csObj' => 'Using $csObj within Indexing is discouraged, the property will be removed in TYPO3 v10.0 - if needed instantiate CharsetConverter yourself.',
-    ];
 
     /**
      * @var array
@@ -220,14 +210,6 @@ class Indexer
      * @var string
      */
     public $metaphoneContent = '';
-
-    /**
-     * Charset class object
-     *
-     * @var \TYPO3\CMS\Core\Charset\CharsetConverter
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0 (also the instantiation in the init() method).
-     */
-    protected $csObj;
 
     /**
      * Metaphone object, if any
@@ -511,8 +493,6 @@ class Indexer
             $this->metaphoneObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone']);
             $this->metaphoneObj->pObj = $this;
         }
-        // Init charset class:
-        $this->csObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
     }
 
     /**

@@ -409,12 +409,14 @@ return [
     ],
     'TYPO3\CMS\IndexedSearch\Lexer->csObj' => [
         'restFiles' => [
-            'Deprecation-85125-UsagesOfCharsetConverterInCore.rst'
+            'Deprecation-85125-UsagesOfCharsetConverterInCore.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\IndexedSearch\Indexer->csObj' => [
         'restFiles' => [
-            'Deprecation-85125-UsagesOfCharsetConverterInCore.rst'
+            'Deprecation-85125-UsagesOfCharsetConverterInCore.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->showHiddenPage' => [

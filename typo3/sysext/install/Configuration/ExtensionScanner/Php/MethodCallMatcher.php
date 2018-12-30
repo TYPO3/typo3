@@ -2647,7 +2647,8 @@ return [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-85125-UsagesOfCharsetConverterInCore.rst'
+            'Deprecation-85125-UsagesOfCharsetConverterInCore.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\Routing\UriBuilder->buildUriFromModule' => [
