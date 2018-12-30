@@ -395,6 +395,10 @@ The following PHP static class methods that have been previously deprecated for 
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory::determineSaltingHashingMethod()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory::getSaltingInstance()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory::setPreferredHashingMethod()`
+* :php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::configureModule()`
+* :php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionKeyByPrefix()`
+* :php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles()`
+* :php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath()`
 * :php:`TYPO3\CMS\Extbase\Mvc\Controller\ActionController::getActionMethodParameters()`
 
 
@@ -413,6 +417,7 @@ The following methods changed signature according to previous deprecations in v9
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->getHashedPassword()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Http\Dispatcher->dispatch()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Package\PackageManager->__construct()` - First argument mandatory
+* :php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility->explodeUrl2Array()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility->getUrl()` - Third argument must be an array of arrays if given
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility->mkdir_deep()` - Second argument dropped

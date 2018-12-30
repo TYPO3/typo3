@@ -54,7 +54,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     protected function tearDown()
     {
-        ExtensionManagementUtility::clearExtensionKeyMap();
         ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backUpPackageManager);
         ExtensionManagementUtilityAccessibleProxy::setCacheManager(null);
         parent::tearDown();
@@ -1664,7 +1663,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function getExtensionVersionForNotLoadedExtensionReturnsEmptyString()
     {
-        ExtensionManagementUtility::clearExtensionKeyMap();
         $uniqueSuffix = $this->getUniqueId('test');
         $extensionKey = 'unloadedextension' . $uniqueSuffix;
         $this->assertEquals('', ExtensionManagementUtility::getExtensionVersion($extensionKey));
@@ -1675,7 +1673,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function getExtensionVersionForLoadedExtensionReturnsExtensionVersion()
     {
-        ExtensionManagementUtility::clearExtensionKeyMap();
         $uniqueSuffix = $this->getUniqueId('test');
         $extensionKey = 'unloadedextension' . $uniqueSuffix;
         $packageMetaData = $this->getMockBuilder(MetaData::class)

@@ -35,11 +35,6 @@ use TYPO3\CMS\Core\Preparations\TcaPreparation;
 class ExtensionManagementUtility
 {
     /**
-     * @var array
-     */
-    protected static $extensionKeyMap;
-
-    /**
      * TRUE, if ext_tables file was read from cache for this script run.
      * The frontend tends to do that multiple times, but the caching framework does
      * not allow this (via a require_once call). This variable is used to track
@@ -113,26 +108,11 @@ class ExtensionManagementUtility
      * Returns TRUE if the extension with extension key $key is loaded.
      *
      * @param string $key Extension key to test
-     * @param bool $exitOnError If $exitOnError is TRUE and the extension is not loaded the function will die with an error message, this is deprecated and will be removed in TYPO3 v10.0.
      * @return bool
-     * @throws \BadFunctionCallException
      */
-    public static function isLoaded($key, $exitOnError = null)
+    public static function isLoaded($key)
     {
-        // safety net for extensions checking for "EXT:version", can be removed in TYPO3 v10.0.
-        if ($key === 'version') {
-            trigger_error('EXT:version has been moved into EXT:workspaces, you should check against "workspaces", as this might lead to unexpected behaviour in the future.', E_USER_DEPRECATED);
-            $key = 'workspaces';
-        }
-        if ($exitOnError !== null) {
-            trigger_error('Calling ExtensionManagementUtility::isLoaded() with a second argument via "exitOnError" will be removed in TYPO3 v10.0, handle an unloaded package yourself in the future.', E_USER_DEPRECATED);
-        }
-        $isLoaded = static::$packageManager->isPackageActive($key);
-        if ($exitOnError && !$isLoaded) {
-            // @deprecated, once $exitOnError is gone, this check can be removed.
-            throw new \BadFunctionCallException('TYPO3 Fatal Error: Extension "' . $key . '" is not loaded!', 1270853910);
-        }
-        return $isLoaded;
+        return static::$packageManager->isPackageActive($key);
     }
 
     /**
@@ -152,21 +132,6 @@ class ExtensionManagementUtility
     }
 
     /**
-     * Returns the relative path to the extension as measured from the public web path
-     * If the extension is not loaded the function will die with an error message
-     * Useful for images and links from the frontend
-     *
-     * @param string $key Extension key
-     * @return string
-     * @deprecated use extPath() or GeneralUtility::getFileAbsFileName() together with PathUtility::getAbsoluteWebPath() instead.
-     */
-    public static function siteRelPath($key)
-    {
-        trigger_error('ExtensionManagementUtility::siteRelPath() will be removed in TYPO3 v10.0, use extPath() in conjunction with PathUtility::getAbsoluteWebPath() instead.', E_USER_DEPRECATED);
-        return PathUtility::stripPathSitePrefix(self::extPath($key));
-    }
-
-    /**
      * Returns the correct class name prefix for the extension key $key
      *
      * @param string $key Extension key
@@ -176,41 +141,6 @@ class ExtensionManagementUtility
     public static function getCN($key)
     {
         return strpos($key, 'user_') === 0 ? 'user_' . str_replace('_', '', substr($key, 5)) : 'tx_' . str_replace('_', '', $key);
-    }
-
-    /**
-     * Returns the real extension key like 'tt_news' from an extension prefix like 'tx_ttnews'.
-     *
-     * @param string $prefix The extension prefix (e.g. 'tx_ttnews')
-     * @return mixed Real extension key (string)or FALSE (bool) if something went wrong
-     * @deprecated since TYPO3 v9, just use the proper extension key directly
-     */
-    public static function getExtensionKeyByPrefix($prefix)
-    {
-        trigger_error('ExtensionManagementUtility::getExtensionKeyByPrefix() will be removed in TYPO3 v10.0. Use extension keys directly.', E_USER_DEPRECATED);
-        $result = false;
-        // Build map of short keys referencing to real keys:
-        if (!isset(self::$extensionKeyMap)) {
-            self::$extensionKeyMap = [];
-            foreach (static::$packageManager->getActivePackages() as $package) {
-                $shortKey = str_replace('_', '', $package->getPackageKey());
-                self::$extensionKeyMap[$shortKey] = $package->getPackageKey();
-            }
-        }
-        // Lookup by the given short key:
-        $parts = explode('_', $prefix);
-        if (isset(self::$extensionKeyMap[$parts[1]])) {
-            $result = self::$extensionKeyMap[$parts[1]];
-        }
-        return $result;
-    }
-
-    /**
-     * Clears the extension key map.
-     */
-    public static function clearExtensionKeyMap()
-    {
-        self::$extensionKeyMap = null;
     }
 
     /**
@@ -818,36 +748,6 @@ class ExtensionManagementUtility
     }
 
     /**
-     * This method is called from \TYPO3\CMS\Backend\Module\ModuleLoader::checkMod
-     * and it replaces old conf.php.
-     *
-     * @param string $moduleSignature The module name
-     * @return array Configuration of the module
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, addModule() works the same way nowadays.
-     */
-    public static function configureModule($moduleSignature)
-    {
-        trigger_error('ExtensionManagementUtility::configureModule will be removed in TYPO3 v10.0, as the same functionality is found in addModule() as well.', E_USER_DEPRECATED);
-        $moduleConfiguration = $GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature];
-
-        // Register the icon and move it too "iconIdentifier"
-        if (!empty($moduleConfiguration['icon'])) {
-            $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
-            $iconIdentifier = 'module-' . $moduleSignature;
-            $iconProvider = $iconRegistry->detectIconProvider($moduleConfiguration['icon']);
-            $iconRegistry->registerIcon(
-                $iconIdentifier,
-                $iconProvider,
-                ['source' => GeneralUtility::getFileAbsFileName($moduleConfiguration['icon'])]
-            );
-            $moduleConfiguration['iconIdentifier'] = $iconIdentifier;
-            unset($moduleConfiguration['icon']);
-        }
-
-        return $moduleConfiguration;
-    }
-
-    /**
      * Adds a module (main or sub) to the backend interface
      * FOR USE IN ext_tables.php FILES
      *
@@ -859,15 +759,6 @@ class ExtensionManagementUtility
      */
     public static function addModule($main, $sub = '', $position = '', $path = null, $moduleConfiguration = [])
     {
-        if (($moduleConfiguration['navigationComponentId'] ?? '') === 'typo3-pagetree') {
-            trigger_error(
-                'Referencing the navigation component ID "typo3-pagetree" will be removed in TYPO3 v10.0.'
-                . 'Use "TYPO3/CMS/Backend/PageTree/PageTreeElement" instead. Module key: ' . $main . '-' . $sub,
-                E_USER_DEPRECATED
-            );
-            $moduleConfiguration['navigationComponentId'] = 'TYPO3/CMS/Backend/PageTree/PageTreeElement';
-        }
-
         // If there is already a main module by this name:
         // Adding the submodule to the correct position:
         if (isset($GLOBALS['TBE_MODULES'][$main]) && $sub) {
@@ -1869,27 +1760,6 @@ tt_content.' . $key . $suffix . ' {
     protected static function getExtTablesCacheIdentifier()
     {
         return 'ext_tables_' . sha1(TYPO3_version . Environment::getProjectPath() . 'extTables' . serialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']));
-    }
-
-    /**
-     * Remove cache files from php code cache, grouped by 'system'
-     *
-     * This removes the following cache entries:
-     * - autoloader cache registry
-     * - cache loaded extension array
-     * - ext_localconf concatenation
-     * - ext_tables concatenation
-     *
-     * This method is usually only used by extension that fiddle
-     * with the loaded extensions. An example is the extension
-     * manager and the install tool.
-     *
-     * @deprecated CacheManager provides the functionality directly
-     */
-    public static function removeCacheFiles()
-    {
-        trigger_error('ExtensionManagementUtility::removeCacheFiles() will be removed in TYPO3 v10.0. Use CacheManager directly to flush all system caches.', E_USER_DEPRECATED);
-        self::getCacheManager()->flushCachesInGroup('system');
     }
 
     /**
