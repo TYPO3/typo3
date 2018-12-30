@@ -16,12 +16,9 @@ namespace TYPO3\CMS\Filelist\Controller;
 
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -47,32 +44,6 @@ use TYPO3\CMS\Filelist\FileList;
  */
 class FileListController extends ActionController
 {
-    use PublicPropertyDeprecationTrait;
-    use PublicMethodDeprecationTrait;
-
-    private $deprecatedPublicProperties = [
-        'MOD_MENU' => 'Using FileListController::$MOD_MENU is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'MOD_SETTINGS' => 'Using FileListController::$MOD_SETTINGS is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'doc' => 'Using FileListController::$doc is deprecated, property will be removed in TYPO3 v10.0.',
-        'id' => 'Using FileListController::$id is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'pointer' => 'Using FileListController::$pointer is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'table' => 'Using FileListController::$table is deprecated, , property will be removed in TYPO3 v10.0.',
-        'imagemode' => 'Using FileListController::$imagemode is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'cmd' => 'Using FileListController::$cmd is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'filelist' => 'Using FileListController::$filelist is deprecated and will not be possible anymore in TYPO3 v10.0.',
-    ];
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicMethods = [
-        'menuConfig' => 'Using FileListController::menuConfig() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'initializeView' => 'Using FileListController::initializeView() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'initializeIndexAction' => 'Using FileListController::initializeIndexAction() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'indexAction' => 'Using FileListController::indexAction() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'missingFolderAction' => 'Using FileListController::missingFolderAction() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'searchAction' => 'Using FileListController::searchAction() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-    ];
 
     /**
      * @var array
@@ -83,14 +54,6 @@ class FileListController extends ActionController
      * @var array
      */
     protected $MOD_SETTINGS = [];
-
-    /**
-     * Document template object
-     *
-     * @var DocumentTemplate
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    protected $doc;
 
     /**
      * "id" -> the path to list.
@@ -115,13 +78,6 @@ class FileListController extends ActionController
      * @var int
      */
     protected $pointer;
-
-    /**
-     * "Table"
-     * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    protected $table;
 
     /**
      * Thumbnail mode.
@@ -190,14 +146,12 @@ class FileListController extends ActionController
      */
     public function initializeObject()
     {
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
         $this->getLanguageService()->includeLLFile('EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf');
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
 
         // Setting GPvars:
         $this->id = ($combinedIdentifier = GeneralUtility::_GP('id'));
         $this->pointer = GeneralUtility::_GP('pointer');
-        $this->table = GeneralUtility::_GP('table');
         $this->imagemode = GeneralUtility::_GP('imagemode');
         $this->cmd = GeneralUtility::_GP('cmd');
         $this->overwriteExistingFiles = DuplicationBehavior::cast(GeneralUtility::_GP('overwriteExistingFiles'));
@@ -378,8 +332,7 @@ class FileListController extends ActionController
         // There there was access to this file path, continue, make the list
         if ($this->folderObject) {
             $userTsConfig = $this->getBackendUser()->getTSConfig();
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Argument $this will be removed in TYPO3 v10.0.
-            $this->filelist = GeneralUtility::makeInstance(FileList::class, $this);
+            $this->filelist = GeneralUtility::makeInstance(FileList::class);
             $this->filelist->thumbs = $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $this->MOD_SETTINGS['displayThumbs'];
             // Create clipboard object and initialize that
             $this->filelist->clipObj = GeneralUtility::makeInstance(Clipboard::class);

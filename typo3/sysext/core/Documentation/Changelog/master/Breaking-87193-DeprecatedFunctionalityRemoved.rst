@@ -305,6 +305,7 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Extbase\Mvc\Controller\Arguments->getValidationResults()`
 * :php:`TYPO3\CMS\Extbase\Service\EnvironmentService->isEnvironmentInCliMode`
 * :php:`TYPO3\CMS\Fluid\Core\Widget\Bootstrap->configureObjectManager()`
+* :php:`TYPO3\CMS\Filelist\FileFacade::getIcon()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->addParams()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->calcIntExplode()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->currentPageUrl()`
@@ -564,6 +565,13 @@ The following class methods have changed visibility:
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->processIncludes()` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->substituteConstants()` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->versionOL()` changed from public to protected
+* :php:`TYPO3\CMS\Beuser\Controller\BackendUserController->initializeView()` changed from public to protected
+* :php:`TYPO3\CMS\Filelist\Controller\FileListController->menuConfig()` changed from public to protected
+* :php:`TYPO3\CMS\Filelist\Controller\FileListController->initializeView()` changed from public to protected
+* :php:`TYPO3\CMS\Filelist\Controller\FileListController->initializeIndexAction()` changed from public to protected
+* :php:`TYPO3\CMS\Filelist\Controller\FileListController->indexAction()` changed from public to protected
+* :php:`TYPO3\CMS\Filelist\Controller\FileListController->missingFolderAction()` changed from public to protected
+* :php:`TYPO3\CMS\Filelist\Controller\FileListController->searchAction()` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->accessKey()` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->changeLinksForAccessRestrictedPages()` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->getBannedUids()` changed from public to protected
@@ -746,6 +754,15 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->sectionsMatch` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->simulationHiddenOrTime` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->sitetitle` changed from public to protected
+* :php:`TYPO3\CMS\Filelist\Controller\FileListController->MOD_MENU` changed from public to protected
+* :php:`TYPO3\CMS\Filelist\Controller\FileListController->MOD_SETTINGS` changed from public to protected
+* :php:`TYPO3\CMS\Filelist\Controller\FileListController->doc` changed from public to protected
+* :php:`TYPO3\CMS\Filelist\Controller\FileListController->id` changed from public to protected
+* :php:`TYPO3\CMS\Filelist\Controller\FileListController->pointer` changed from public to protected
+* :php:`TYPO3\CMS\Filelist\Controller\FileListController->table` changed from public to protected
+* :php:`TYPO3\CMS\Filelist\Controller\FileListController->imagemode` changed from public to protected
+* :php:`TYPO3\CMS\Filelist\Controller\FileListController->cmd` changed from public to protected
+* :php:`TYPO3\CMS\Filelist\Controller\FileListController->filelist` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cacheContentFlag` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cacheExpires` changed from public to protected
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cacheTimeOutDefault` changed from public to protected

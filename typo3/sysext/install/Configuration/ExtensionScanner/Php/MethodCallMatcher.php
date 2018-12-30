@@ -1868,6 +1868,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-83942-DeprecatedFileFacadegetIcon.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Core\Bootstrap->redirectToInstallTool' => [

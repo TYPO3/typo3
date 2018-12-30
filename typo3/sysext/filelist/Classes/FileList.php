@@ -37,7 +37,6 @@ use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Filelist\Configuration\ThumbnailConfiguration;
-use TYPO3\CMS\Filelist\Controller\FileListController;
 
 /**
  * Class for rendering of File>Filelist
@@ -264,22 +263,14 @@ class FileList
     protected $id = 0;
 
     /**
-     * @var FileListController
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $fileListController;
-
-    /**
      * @var ThumbnailConfiguration
      */
     protected $thumbnailConfiguration;
 
     /**
      * Construct
-     *
-     * @param FileListController $fileListController @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
      */
-    public function __construct(FileListController $fileListController = null)
+    public function __construct()
     {
         $backendUser = $this->getBackendUser();
         if (isset($backendUser->uc['titleLen']) && $backendUser->uc['titleLen'] > 0) {
@@ -288,7 +279,6 @@ class FileList
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->getTranslateTools();
         $this->determineScriptUrl();
-        $this->fileListController = $fileListController;
         $this->thumbnailConfiguration = GeneralUtility::makeInstance(ThumbnailConfiguration::class);
         $this->iLimit = MathUtility::forceIntegerInRange(
             $backendUser->getTSConfig()['options.']['file_list.']['filesPerPage'] ?? $this->iLimit,
