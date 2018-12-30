@@ -424,8 +424,13 @@ class DataMapFactoryTest extends UnitTestCase
             $mockColumnMap->expects($this->never())->method('setDateTimeStorageFormat');
         }
 
-        $accessibleClassName = $this->buildAccessibleProxy(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class);
-        $accessibleDataMapFactory = new $accessibleClassName();
+        $accessibleDataMapFactory = $this->getAccessibleMock(
+            \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class,
+            ['dummy'],
+            [],
+            '',
+            false
+        );
         $accessibleDataMapFactory->_callRef('setFieldEvaluations', $mockColumnMap, $columnDefinition);
     }
 
@@ -520,7 +525,7 @@ class DataMapFactoryTest extends UnitTestCase
      */
     public function resolveTableNameReturnsExpectedTablenames($className, $expected)
     {
-        $dataMapFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class, ['dummy']);
+        $dataMapFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class, ['dummy'], [], '', false);
         $this->assertSame($expected, $dataMapFactory->_call('resolveTableName', $className));
     }
 
@@ -530,7 +535,7 @@ class DataMapFactoryTest extends UnitTestCase
     public function createColumnMapReturnsAValidColumnMap()
     {
         /** @var $dataMapFactory \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory */
-        $dataMapFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class, ['dummy']);
+        $dataMapFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class, ['dummy'], [], '', false);
 
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject $objectManager */
         $objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
@@ -582,7 +587,7 @@ class DataMapFactoryTest extends UnitTestCase
     public function setTypeDetectsTypeAndInternalTypeProperly(array $columnConfiguration, $type, $internalType)
     {
         /** @var $dataMapFactory \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory | AccessibleObjectInterface */
-        $dataMapFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class, ['dummy']);
+        $dataMapFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class, ['dummy'], [], '', false);
 
         /** @var ColumnMap $columnMap */
         $columnMap = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::class, ['dummy'], [], '', false);

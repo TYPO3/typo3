@@ -56,41 +56,21 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
-     */
-    public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService)
-    {
-        $this->reflectionService = $reflectionService;
-    }
-
-    /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     */
-    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
-    {
-        $this->configurationManager = $configurationManager;
-    }
-
-    /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
      * @param \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
      */
-    public function injectCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager)
-    {
+    public function __construct(
+        \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService,
+        \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager,
+        \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager,
+        \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
+    ) {
+        $this->reflectionService = $reflectionService;
+        $this->configurationManager = $configurationManager;
+        $this->objectManager = $objectManager;
         $this->cacheManager = $cacheManager;
-    }
 
-    /**
-     * Lifecycle method
-     */
-    public function initializeObject()
-    {
         $this->dataMapCache = $this->cacheManager->getCache('extbase_datamapfactory_datamap');
     }
 

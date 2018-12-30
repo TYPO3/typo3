@@ -55,6 +55,7 @@ class QueryFactoryTest extends UnitTestCase
         );
 
         $this->dataMapFactory = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class)
+            ->disableOriginalConstructor()
             ->setMethods(['buildDataMap', 'convertClassNameToTableName'])
             ->getMock();
         $this->dataMapFactory->expects($this->any())->method('buildDataMap')->will($this->returnValue($this->dataMap));
