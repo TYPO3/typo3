@@ -103,13 +103,6 @@ class SchedulerModuleController
     protected $iconFactory;
 
     /**
-     * The value of GET/POST var, 'CMD'
-     *
-     * @var mixed
-     */
-    protected $CMD;
-
-    /**
      * @var Action
      */
     protected $action;
