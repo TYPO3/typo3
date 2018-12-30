@@ -85,9 +85,6 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $subject->addCssInlineBlock('general2', 'body {margin:20px;}');
         $subject->addCssInlineBlock('general3', 'h1 {margin:20px;}', null, true);
 
-        $subject->loadJquery(null, null, PageRenderer::JQUERY_NAMESPACE_NONE, true);
-        $expectedJqueryRegExp = '#<script src="typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-
         $expectedBodyContent = $this->getUniqueId('ABCDE-');
         $subject->setBodyContent($expectedBodyContent);
 
@@ -105,7 +102,6 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $this->assertContains($expectedJsInlineCodeString, $renderedString);
         $this->assertContains($expectedCssFileString, $renderedString);
         $this->assertContains($expectedCssInlineBlockOnTopString, $renderedString);
-        $this->assertRegExp($expectedJqueryRegExp, $renderedString);
         $this->assertContains($expectedBodyContent, $renderedString);
         $this->assertContains('<meta property="og:type" content="foobar" />', $renderedString);
         $this->assertContains('<meta name="author" content="foobar" />', $renderedString);
@@ -177,152 +173,5 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $this->assertContains($expectedLanguageLabel1, $renderedString);
         $this->assertContains($expectedLanguageLabel2, $renderedString);
         $this->assertContains($expectedInlineSettingsReturnValue, $renderedString);
-    }
-
-    /**
-     * @return array
-     */
-    public function jqueryNamespaceDataProvider()
-    {
-        return [
-            'Custom namespace falls back to "no conflict"' => [
-                'namespace' => 'MyNameSpace',
-                'matchNoConflict' => true,
-            ],
-            '"None" namespace is respected' => [
-                'namespace' => PageRenderer::JQUERY_NAMESPACE_NONE,
-                'matchNoConflict' => false,
-            ],
-        ];
-    }
-
-    /**
-     * @param string $namespace
-     * @param bool $matchNoConflict
-     * @test
-     * @dataProvider jqueryNamespaceDataProvider
-     */
-    public function loadJqueryRespectsNamespace($namespace, $matchNoConflict)
-    {
-        $subject = new PageRenderer();
-
-        $expectedRegExp = '#<script src="typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-        $noConflictStatement = 'jQuery.noConflict();';
-        $subject->loadJquery(null, null, $namespace, true);
-
-        //jQuery.noConflict();
-        $out = $subject->render();
-        $this->assertRegExp($expectedRegExp, $out);
-
-        if ($matchNoConflict) {
-            $this->assertContains($noConflictStatement, $out);
-        } else {
-            $this->assertNotContains($noConflictStatement, $out);
-        }
-    }
-
-    /**
-     * @test
-     */
-    public function loadJqueryWithDefaultNoConflictModeDoesNotSetNamespace()
-    {
-        $subject = new PageRenderer();
-
-        $expectedRegExp = '#<script src="typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-        $expectedStatement = 'jQuery.noConflict();';
-        $subject->loadJquery(null, null, 'MyNameSpace', true);
-        $out = $subject->render();
-        $this->assertRegExp($expectedRegExp, $out);
-        $this->assertContains($expectedStatement, $out);
-        $this->assertNotContains('var TYPO3 = TYPO3 || {}; TYPO3.', $out);
-    }
-
-    /**
-     * @test
-     */
-    public function loadJqueryWithNamespaceNoneDoesNotIncludeNoConflictHandling()
-    {
-        $subject = new PageRenderer();
-
-        $expectedRegExp = '#<script src="typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-        $subject->loadJquery(null, null, PageRenderer::JQUERY_NAMESPACE_NONE, true);
-        $out = $subject->render();
-        $this->assertRegExp($expectedRegExp, $out);
-        $this->assertNotContains('jQuery.noConflict', $out);
-    }
-
-    /**
-     * @test
-     */
-    public function loadJqueryLoadsTheLatestJqueryVersionInNoConflictModeUncompressedInDebugMode()
-    {
-        $subject = new PageRenderer();
-
-        $expectedRegExp = '#<script src="typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-        $expectedStatement = 'jQuery.noConflict();';
-        $subject->loadJquery(null, null, 'MyNameSpace', true);
-        $subject->enableDebugMode();
-        $out = $subject->render();
-        $this->assertRegExp($expectedRegExp, $out);
-        $this->assertContains($expectedStatement, $out);
-    }
-
-    /**
-     * @return array
-     */
-    public function loadJqueryFromSourceDataProvider()
-    {
-        return [
-            'google with version number' => [
-                '1.6.3',
-                'google',
-                '#<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.js" type="text/javascript"></script>#'
-            ],
-            'msn with version number' => [
-                '1.6.3',
-                'msn',
-                '#<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.3.js" type="text/javascript"></script>#'
-            ],
-            'jquery with version number' => [
-                '1.6.3',
-                'jquery',
-                '#<script src="https://code.jquery.com/jquery-1.6.3.js" type="text/javascript"></script>#'
-            ],
-            'jquery with custom URL' => [
-                '1.6.3',
-                'https://my.cool.cdn/foo/jquery.js',
-                '#<script src="https://my.cool.cdn/foo/jquery.js" type="text/javascript"></script>#'
-            ],
-        ];
-    }
-
-    /**
-     * @param string $version
-     * @param string $source
-     * @param string $regex
-     * @dataProvider loadJqueryFromSourceDataProvider
-     * @test
-     */
-    public function isJqueryLoadedFromSourceUncompressedIfDebugModeIsEnabled($version, $source, $regex)
-    {
-        $subject = new PageRenderer();
-
-        $subject->loadJquery($version, $source, PageRenderer::JQUERY_NAMESPACE_NONE, true);
-        $subject->enableDebugMode();
-        $out = $subject->render();
-        $this->assertRegExp($regex, $out);
-    }
-
-    /**
-     * @test
-     */
-    public function isJqueryLoadedMinifiedFromGoogleByDefault()
-    {
-        $subject = new PageRenderer();
-
-        $expectedRegex = '#<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js" type="text/javascript"></script>#';
-        $subject->loadJquery('1.6.3', 'google', PageRenderer::JQUERY_NAMESPACE_NONE, true);
-        $out = $subject->render();
-        $this->assertRegExp($expectedRegex, $out);
     }
 }

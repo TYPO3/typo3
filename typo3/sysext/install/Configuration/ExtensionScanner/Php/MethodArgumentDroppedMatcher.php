@@ -213,6 +213,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85806-SecondArgumentOfPageRendereraddInlineLanguageLabelArray.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->modAccess' => [

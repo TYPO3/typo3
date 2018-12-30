@@ -1536,7 +1536,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-81464-AddAPIForMetaTagManagement.rst',
-
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Reflection\PropertyReflection->isTaggedWith' => [
@@ -2814,6 +2814,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-65578-ConfigconcatenateJsAndCssAndConcatenateFiles.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Page\PageRenderer->getConcatenateFiles' => [
@@ -2821,6 +2822,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-65578-ConfigconcatenateJsAndCssAndConcatenateFiles.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Page\PageRenderer->disableConcatenateFiles' => [
@@ -2828,6 +2830,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-65578-ConfigconcatenateJsAndCssAndConcatenateFiles.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepository->checkWorkspaceAccess' => [
@@ -3976,7 +3979,8 @@ return [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
-            'Deprecation-86438-PageRenderer-loadJQuery.rst'
+            'Deprecation-86438-PageRenderer-loadJQuery.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->fetchUserRecord' => [

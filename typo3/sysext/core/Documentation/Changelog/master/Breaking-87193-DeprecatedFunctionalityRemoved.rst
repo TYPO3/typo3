@@ -280,6 +280,11 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setMaxHashCount()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setMinHashCount()`
 * :php:`TYPO3\CMS\Core\Package\PackageManager->injectDependencyResolver()`
+* :php:`TYPO3\CMS\Core\Page\PageRenderer::addMetaTag()`
+* :php:`TYPO3\CMS\Core\Page\PageRenderer::disableConcatenateFiles()`
+* :php:`TYPO3\CMS\Core\Page\PageRenderer::enableConcatenateFiles()`
+* :php:`TYPO3\CMS\Core\Page\PageRenderer::getConcatenateFiles()`
+* :php:`TYPO3\CMS\Core\Page\PageRenderer::loadJquery()`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->getFileName()`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->getFromMPmap()`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->init()`
@@ -417,6 +422,7 @@ The following methods changed signature according to previous deprecations in v9
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->getHashedPassword()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Http\Dispatcher->dispatch()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Package\PackageManager->__construct()` - First argument mandatory
+* :php:`TYPO3\CMS\Core\Page\PageRenderer::addInlineLanguageLabelArray()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility->explodeUrl2Array()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility->getUrl()` - Third argument must be an array of arrays if given
@@ -941,6 +947,8 @@ The following class constants have been dropped:
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash::HASH_COUNT`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash::MAX_HASH_COUNT`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash::MIN_HASH_COUNT`
+* :php:`TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_NONE`
+* :php:`TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST`
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR`
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_FATAL`
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_INFO`

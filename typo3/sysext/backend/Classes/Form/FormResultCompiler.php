@@ -267,8 +267,8 @@ class FormResultCompiler
                 $pageRenderer->addInlineLanguageLabelFile($additionalInlineLanguageLabelFile);
             }
         }
-        // @TODO: Refactor jsfunc.inline.js to an AMD module / TypsScript. If this is done, remove loadJquery() call.
-        $pageRenderer->loadJquery(null, null, PageRenderer::JQUERY_NAMESPACE_NONE, true);
+        // @TODO: Refactor jsfunc.inline.js to an AMD module / TypsScript. If this is done, remove the jQuery loading call.
+        $pageRenderer->addJsFile('EXT:core/Resources/Public/JavaScript/Contrib/jquery/jquery.min.js');
         $pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.inline.js');
 
         // todo: change these things in JS
