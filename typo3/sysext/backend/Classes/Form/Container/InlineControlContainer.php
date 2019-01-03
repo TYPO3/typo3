@@ -174,7 +174,6 @@ class InlineControlContainer extends AbstractContainer
 
         $this->inlineData['config'][$nameObject] = [
             'table' => $foreign_table,
-            'md5' => md5($nameObject)
         ];
         $this->inlineData['config'][$nameObject . '-' . $foreign_table] = [
             'min' => $config['minitems'],
@@ -220,8 +219,7 @@ class InlineControlContainer extends AbstractContainer
                         ];
                     }
                     // Note structure of $value is different in select vs. group: It's a uid for select, but an
-                    // array with uid + table for group. This is handled differently on JavaScript side, search
-                    // for 'groupdb' in jsfunc.inline.js for details.
+                    // array with uid + table for group.
                     $uniqueIds[$child['databaseRow']['uid']] = $value;
                 }
             }
@@ -275,7 +273,7 @@ class InlineControlContainer extends AbstractContainer
         }
 
         // Define how to show the "Create new record" link - if there are more than maxitems, hide it
-        if ($numberOfFullLocalizedChildren >= $config['maxitems'] || $uniqueMax > 0 && $numberOfFullLocalizedChildren >= $uniqueMax) {
+        if ($numberOfFullLocalizedChildren >= $config['maxitems'] || ($uniqueMax > 0 && $numberOfFullLocalizedChildren >= $uniqueMax)) {
             $config['inline']['inlineNewButtonStyle'] = 'display: none;';
             $config['inline']['inlineNewRelationButtonStyle'] = 'display: none;';
             $config['inline']['inlineOnlineMediaAddButtonStyle'] = 'display: none;';
@@ -287,7 +285,7 @@ class InlineControlContainer extends AbstractContainer
             $levelLinks = $this->getLevelInteractionLink('newRecord', $nameObject . '-' . $foreign_table, $config);
         }
         // Wrap all inline fields of a record with a <div> (like a container)
-        $html = '<div class="form-group" id="' . $nameObject . '">';
+        $html = '<div class="form-group" id="' . htmlspecialchars($nameObject) . '" data-uid="' . htmlspecialchars($row['uid']) . '" data-foreign-table="' . htmlspecialchars($foreign_table) . '" data-object-group="' . htmlspecialchars($nameObject) . '-' . htmlspecialchars($foreign_table) . '" data-form-field="' . htmlspecialchars($nameForm) . '" data-appearance="' . htmlspecialchars(json_encode($config['appearance'])) . '">';
 
         $fieldInformationResult = $this->renderFieldInformation();
         $html .= $fieldInformationResult['html'];
@@ -361,11 +359,12 @@ class InlineControlContainer extends AbstractContainer
             }
             $html .= '</div>';
         }
-        // Add Drag&Drop functions for sorting to FormEngine::$additionalJS_post
-        if (count($sortableRecordUids) > 1 && $config['appearance']['useSortable']) {
-            $resultArray['additionalJavaScriptPost'][] = 'inline.createDragAndDropSorting("' . $nameObject . '_records");';
-        }
         $resultArray['requireJsModules'] = array_merge($resultArray['requireJsModules'], $this->requireJsModules);
+        $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Container/InlineControlContainer' => '
+            function(InlineControlContainer) {
+                new InlineControlContainer(' . GeneralUtility::quoteJSvalue($nameObject) . ');
+            }'
+        ];
 
         // Publish the uids of the child records in the given order to the browser
         $html .= '<input type="hidden" name="' . $nameForm . '" value="' . implode(',', $sortableRecordUids) . '" '
@@ -390,15 +389,13 @@ class InlineControlContainer extends AbstractContainer
     protected function getLevelInteractionLink($type, $objectPrefix, $conf = [])
     {
         $languageService = $this->getLanguageService();
-        $nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
         $attributes = [];
         switch ($type) {
             case 'newRecord':
                 $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.createnew'));
                 $icon = 'actions-add';
                 $className = 'typo3-newRecordLink';
-                $attributes['class'] = 'btn btn-default inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
-                $attributes['onclick'] = 'return inline.createNewRecord(' . GeneralUtility::quoteJSvalue($objectPrefix) . ')';
+                $attributes['class'] = 'btn btn-default t3js-create-new-button';
                 if (!empty($conf['inline']['inlineNewButtonStyle'])) {
                     $attributes['style'] = $conf['inline']['inlineNewButtonStyle'];
                 }
@@ -415,15 +412,15 @@ class InlineControlContainer extends AbstractContainer
                 $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localizeAllRecords'));
                 $icon = 'actions-document-localize';
                 $className = 'typo3-localizationLink';
-                $attributes['class'] = 'btn btn-default';
-                $attributes['onclick'] = 'return inline.synchronizeLocalizeRecords(' . GeneralUtility::quoteJSvalue($objectPrefix) . ', \'localize\')';
+                $attributes['class'] = 'btn btn-default t3js-synchronizelocalize-button';
+                $attributes['data-type'] = 'localize';
                 break;
             case 'synchronize':
                 $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:synchronizeWithOriginalLanguage'));
                 $icon = 'actions-document-synchronize';
                 $className = 'typo3-synchronizationLink';
-                $attributes['class'] = 'btn btn-default inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
-                $attributes['onclick'] = 'return inline.synchronizeLocalizeRecords(' . GeneralUtility::quoteJSvalue($objectPrefix) . ', \'synchronize\')';
+                $attributes['class'] = 'btn btn-default inlineNewButton t3js-synchronizelocalize-button';
+                $attributes['data-type'] = 'synchronize';
                 break;
             default:
                 $title = '';
@@ -468,7 +465,6 @@ class InlineControlContainer extends AbstractContainer
         $allowed = $groupFieldConfiguration['allowed'];
         $currentStructureDomObjectIdPrefix = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
         $objectPrefix = $currentStructureDomObjectIdPrefix . '-' . $foreign_table;
-        $nameObject = $currentStructureDomObjectIdPrefix;
         $mode = 'db';
         $showUpload = false;
         $elementBrowserEnabled = true;
@@ -494,9 +490,7 @@ class InlineControlContainer extends AbstractContainer
                 $elementBrowserEnabled = (bool)$inlineConfiguration['appearance']['elementBrowserEnabled'];
             }
         }
-        $browserParams = '|||' . $allowed . '|' . $objectPrefix . '|inline.checkUniqueElement||inline.importElement';
-        $onClick = 'setFormValueOpenBrowser(' . GeneralUtility::quoteJSvalue($mode) . ', ' . GeneralUtility::quoteJSvalue($browserParams) . '); return false;';
-
+        $browserParams = '|||' . $allowed . '|' . $objectPrefix;
         $buttonStyle = '';
         if (isset($inlineConfiguration['inline']['inlineNewRelationButtonStyle'])) {
             $buttonStyle = ' style="' . $inlineConfiguration['inline']['inlineNewRelationButtonStyle'] . '"';
@@ -504,8 +498,8 @@ class InlineControlContainer extends AbstractContainer
         $item = '';
         if ($elementBrowserEnabled) {
             $item .= '
-			<a href="#" class="btn btn-default inlineNewRelationButton ' . $this->inlineData['config'][$nameObject]['md5'] . '"
-				' . $buttonStyle . ' onclick="' . htmlspecialchars($onClick) . '" title="' . $createNewRelationText . '">
+			<a href="#" class="btn btn-default t3js-insert-record-button" data-mode="' . htmlspecialchars($mode) . '" data-params="' . htmlspecialchars($browserParams) . '"
+				' . $buttonStyle . ' title="' . $createNewRelationText . '">
 				' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)->render() . '
 				' . $createNewRelationText . '
 			</a>';
@@ -528,7 +522,7 @@ class InlineControlContainer extends AbstractContainer
                 && $folder->getStorage()->checkUserActionPermission('add', 'File')
             ) {
                 $maxFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
-                $item .= ' <a href="#" class="btn btn-default t3js-drag-uploader inlineNewFileUploadButton ' . $this->inlineData['config'][$nameObject]['md5'] . '"
+                $item .= ' <a href="#" class="btn btn-default t3js-drag-uploader inlineNewFileUploadButton"
 					' . $buttonStyle . '
 					data-dropzone-target="#' . htmlspecialchars(StringUtility::escapeCssSelector($currentStructureDomObjectIdPrefix)) . '"
 					data-insert-dropzone-before="1"
@@ -553,7 +547,7 @@ class InlineControlContainer extends AbstractContainer
                     $buttonSubmit = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.submit'));
                     $allowedMediaUrl = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.allowEmbedSources'));
                     $item .= '
-						<span class="btn btn-default t3js-online-media-add-btn ' . $this->inlineData['config'][$nameObject]['md5'] . '"
+						<span class="btn btn-default t3js-online-media-add-btn"
 							' . $buttonStyle . '
 							data-file-irre-object="' . htmlspecialchars($objectPrefix) . '"
 							data-online-media-allowed="' . htmlspecialchars(implode(',', $onlineMediaAllowed)) . '"
@@ -569,7 +563,7 @@ class InlineControlContainer extends AbstractContainer
             }
         }
 
-        $item = '<div class="form-control-wrap">' . $item . '</div>';
+        $item = '<div class="form-control-wrap t3js-inline-controls">' . $item . '</div>';
         $allowedList = '';
         $allowedLabel = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.allowedFileExtensions'));
         foreach ($allowedArray as $allowedItem) {
@@ -604,10 +598,8 @@ class InlineControlContainer extends AbstractContainer
         // Put together the selector box:
         $size = (int)$config['size'];
         $size = $config['autoSizeMax'] ? MathUtility::forceIntegerInRange(count($possibleRecords) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax']) : $size;
-        $onChange = 'return inline.importNewRecord(' . GeneralUtility::quoteJSvalue($nameObject . '-' . $config['foreign_table']) . ')';
         $item = '
-            <select id="' . $nameObject . '-' . $config['foreign_table'] . '_selector" class="form-control"' . ($size ? ' size="' . $size . '"' : '')
-            . ' onchange="' . htmlspecialchars($onChange) . '"' . ($config['foreign_unique'] ? ' isunique="isunique"' : '') . '>
+            <select id="' . $nameObject . '-' . $config['foreign_table'] . '_selector" class="form-control t3js-create-new-selector"' . ($size ? ' size="' . $size . '"' : '') . '>
                 ' . implode('', $opt) . '
             </select>';
 
@@ -633,7 +625,7 @@ class InlineControlContainer extends AbstractContainer
         }
 
         // Wrap the selector and add a spacer to the bottom
-        $item = '<div class="input-group form-group t3js-formengine-validation-marker ' . $this->inlineData['config'][$nameObject]['md5'] . '">' . $item . '</div>';
+        $item = '<div class="input-group form-group t3js-formengine-validation-marker">' . $item . '</div>';
         return $item;
     }
 

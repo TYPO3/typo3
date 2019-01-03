@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -241,20 +240,6 @@ class GroupElement extends AbstractFormElement
             $showDeleteControl = false;
         }
 
-        // Check against inline uniqueness - Create some onclick js for delete control and element browser
-        // to override record selection in some FAL scenarios - See 'appearance' docs of group element
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
-        $deleteControlOnClick = '';
-        if ($this->data['isInlineChild']
-            && $this->data['inlineParentUid']
-            && $this->data['inlineParentConfig']['foreign_table'] === $table
-            && $this->data['inlineParentConfig']['foreign_unique'] === $fieldName
-        ) {
-            $objectPrefix = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']) . '-' . $table;
-            $deleteControlOnClick = 'inline.revertUnique(' . GeneralUtility::quoteJSvalue($objectPrefix) . ',null,' . GeneralUtility::quoteJSvalue($row['uid']) . ');';
-        }
-
         $fieldId = StringUtility::getUniqueId('tceforms-multiselect-');
 
         $selectorAttributes = [
@@ -358,10 +343,10 @@ class GroupElement extends AbstractFormElement
         }
         if ($showDeleteControl) {
             $html[] =           '<a href="#"';
-            $html[] =               ' class="btn btn-default t3js-btn-option t3js-btn-removeoption"';
+            $html[] =               ' class="btn btn-default t3js-btn-option t3js-btn-removeoption t3js-revert-unique"';
             $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
+            $html[] =               ' data-uid="' . htmlspecialchars($row['uid']) . '"';
             $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remove_selected')) . '"';
-            $html[] =               ' onClick="' . $deleteControlOnClick . '"';
             $html[] =           '>';
             $html[] =               $this->iconFactory->getIcon('actions-selection-delete', Icon::SIZE_SMALL)->render();
             $html[] =           '</a>';

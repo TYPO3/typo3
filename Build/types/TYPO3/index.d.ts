@@ -59,6 +59,9 @@ declare namespace TYPO3 {
           $optionEl?: JQuery,
         ): void;
         public reinitialize(): void;
+        public openPopupWindow(mode: string, params: string): JQuery;
+        public initializeNullNoPlaceholderCheckboxes(): void;
+        public initializeNullWithPlaceholderCheckboxes(): void;
       }
 
       export class Wizard {
@@ -76,6 +79,7 @@ declare namespace TYPO3 {
 
 declare namespace TBE_EDITOR {
   export let fieldChanged: Function;
+  export let fieldChanged_fName: Function;
 }
 
 /**
@@ -135,6 +139,7 @@ declare module 'TYPO3/CMS/Backend/LegacyTree';
 
 declare module 'cm/lib/codemirror';
 declare module 'moment';
+declare module 'Sortable';
 
 interface JQueryTypedEvent<T extends Event> extends JQueryEventObject {
   originalEvent: T;

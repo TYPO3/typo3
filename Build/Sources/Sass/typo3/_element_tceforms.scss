@@ -205,6 +205,15 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
     border-top: 0;
 }
 
+.form-irre-object {
+    transition: opacity 0.5s;
+    opacity: 1;
+
+    &--deleted {
+        opacity: 0 !important;
+    }
+}
+
 //
 // TCEforms Inline-Relational-Record-Editing
 //

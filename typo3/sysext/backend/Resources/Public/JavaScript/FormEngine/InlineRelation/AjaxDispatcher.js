@@ -1,0 +1,13 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+var __values=this&&this.__values||function(e){var t="function"==typeof Symbol&&e[Symbol.iterator],n=0;return t?t.call(e):{next:function(){return e&&n>=e.length&&(e=void 0),{value:e&&e[n++],done:!e}}}};define(["require","exports","./AjaxRequest","jquery","../../Notification"],function(require,exports,AjaxRequest_1,$,Notification){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var AjaxDispatcher=function(){function AjaxDispatcher(e){this.objectGroup=null,this.objectGroup=e}return AjaxDispatcher.prototype.newRequest=function(e){return new AjaxRequest_1.AjaxRequest(e,this.objectGroup)},AjaxDispatcher.prototype.getEndpoint=function(e){if(void 0!==TYPO3.settings.ajaxUrls[e])return TYPO3.settings.ajaxUrls[e];throw'Undefined endpoint for route "'+e+'"'},AjaxDispatcher.prototype.send=function(e){var t=this,n=$.ajax(e.getEndpoint(),e.getOptions());return n.done(function(){t.processResponse(n)}).fail(function(){Notification.error("Error "+n.status,n.statusText)}),n},AjaxDispatcher.prototype.processResponse=function(xhr){var json=xhr.responseJSON,e_1,_c;if(json.hasErrors&&$.each(json.messages,function(e,t){Notification.error(t.title,t.message)}),json.stylesheetFiles&&$.each(json.stylesheetFiles,function(e,t){if(t){var n=document.createElement("link");n.rel="stylesheet",n.type="text/css",n.href=t,document.querySelector("head").appendChild(n),delete json.stylesheetFiles[e]}}),"object"==typeof json.inlineData&&(TYPO3.settings.FormEngineInline=$.extend(!0,TYPO3.settings.FormEngineInline,json.inlineData)),"object"==typeof json.requireJsModules)try{for(var _a=__values(json.requireJsModules),_b=_a.next();!_b.done;_b=_a.next()){var requireJsModule=_b.value;new Function(requireJsModule)()}}catch(e){e_1={error:e}}finally{try{_b&&!_b.done&&(_c=_a.return)&&_c.call(_a)}finally{if(e_1)throw e_1.error}}json.scriptCall&&json.scriptCall.length>0&&$.each(json.scriptCall,function(index,value){eval(value)})},AjaxDispatcher}();exports.AjaxDispatcher=AjaxDispatcher});

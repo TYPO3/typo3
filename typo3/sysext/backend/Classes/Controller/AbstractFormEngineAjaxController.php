@@ -52,11 +52,8 @@ abstract class AbstractFormEngineAjaxController
                 $callback = null;
             } elseif (is_array($module)) {
                 // if $module is an array, callback is possible
-                foreach ($module as $key => $value) {
-                    $moduleName = $key;
-                    $callback = $value;
-                    break;
-                }
+                $callback = reset($module);
+                $moduleName = key($module);
             }
             if ($moduleName !== null) {
                 $inlineCodeKey = $moduleName;

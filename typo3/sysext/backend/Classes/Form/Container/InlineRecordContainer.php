@@ -177,7 +177,7 @@ class InlineRecordContainer extends AbstractContainer
 
         if ($inlineConfig['renderFieldsOnly']) {
             // Render "body" part only
-            $html = $html . $combinationHtml;
+            $html .= $combinationHtml;
         } else {
             // Render header row and content (if expanded)
             if ($data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
@@ -187,8 +187,19 @@ class InlineRecordContainer extends AbstractContainer
                 $class .= ' t3-form-field-container-inline-hidden';
             }
             $class .= ($isNewRecord ? ' inlineIsNewRecord' : '');
+
+            $containerAttributes = [
+                'id' => $objectId . '_div',
+                'class' => 'form-irre-object panel panel-default panel-condensed ' . trim($class),
+                'data-object-uid' => $record['uid'],
+                'data-object-id' => $objectId,
+                'data-field-name' => $appendFormFieldNames,
+                'data-topmost-parent-table' => $data['inlineTopMostParentTableName'],
+                'data-topmost-parent-uid' => $data['inlineTopMostParentUid'],
+            ];
+
             $html = '
-				<div class="panel panel-default panel-condensed ' . trim($class) . '" id="' . htmlspecialchars($objectId) . '_div">
+				<div ' . GeneralUtility::implodeAttributes($containerAttributes, true) . '>
 					<div class="panel-heading" data-toggle="formengine-inline" id="' . htmlspecialchars($objectId) . '_header" data-expandSingle="' . ($inlineConfig['appearance']['expandSingle'] ? 1 : 0) . '">
 						<div class="form-irre-header">
 							<div class="form-irre-header-cell form-irre-header-icon">
@@ -409,9 +420,6 @@ class InlineRecordContainer extends AbstractContainer
         $isSysFileReferenceTable = $foreignTable === 'sys_file_reference';
         $enableManualSorting = $tcaTableCtrl['sortby'] || $inlineConfig['MM'] || !$data['isOnSymmetricSide']
             && $inlineConfig['foreign_sortby'] || $data['isOnSymmetricSide'] && $inlineConfig['symmetric_sortby'];
-        $nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($data['inlineFirstPid']);
-        $nameObjectFt = $nameObject . '-' . $foreignTable;
-        $nameObjectFtId = $nameObjectFt . '-' . $rec['uid'];
         $calcPerms = $backendUser->calcPerms(BackendUtility::readPageAccess($rec['pid'], $backendUser->getPagePermsClause(Permission::PAGE_SHOW)));
         // If the listed table is 'pages' we have to request the permission settings for each page:
         $localCalcPerms = false;
@@ -446,7 +454,7 @@ class InlineRecordContainer extends AbstractContainer
                 $cells['info'] = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
             } else {
                 $cells['info'] = '
-				<a class="btn btn-default" href="#" onclick="' . htmlspecialchars('top.TYPO3.InfoWindow.showItem(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($uid) . '); return false;') . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:showInfo')) . '">
+				<a class="btn btn-default" href="#" data-action="infowindow" data-info-table="' . htmlspecialchars($table) . '" data-info-uid="' . htmlspecialchars($uid) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:showInfo')) . '">
 					' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '
 				</a>';
             }
@@ -456,13 +464,12 @@ class InlineRecordContainer extends AbstractContainer
             // "New record after" link (ONLY if the records in the table are sorted by a "sortby"-row or if default values can depend on previous record):
             if ($enabledControls['new'] && ($enableManualSorting || $tcaTableCtrl['useColumnsForDefaultValues'])) {
                 if (!$isPagesTable && $calcPerms & Permission::CONTENT_EDIT || $isPagesTable && $calcPerms & Permission::PAGE_NEW) {
-                    $onClick = 'return inline.createNewRecord(' . GeneralUtility::quoteJSvalue($nameObjectFt) . ',' . GeneralUtility::quoteJSvalue($rec['uid']) . ')';
                     $style = '';
                     if ($inlineConfig['inline']['inlineNewButtonStyle']) {
                         $style = ' style="' . $inlineConfig['inline']['inlineNewButtonStyle'] . '"';
                     }
                     $cells['new'] = '
-                        <a class="btn btn-default inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'] . '" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:new' . ($isPagesTable ? 'Page' : 'Record'))) . '" ' . $style . '>
+                        <a class="btn btn-default t3js-create-new-button" href="#" data-record-uid="' . htmlspecialchars($rec['uid']) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:new' . ($isPagesTable ? 'Page' : 'Record'))) . '" ' . $style . '>
                             ' . $this->iconFactory->getIcon('actions-' . ($isPagesTable ? 'page-new' : 'add'), Icon::SIZE_SMALL)->render() . '
                         </a>';
                 }
@@ -470,7 +477,6 @@ class InlineRecordContainer extends AbstractContainer
             // "Up/Down" links
             if ($enabledControls['sort'] && $permsEdit && $enableManualSorting) {
                 // Up
-                $onClick = 'return inline.changeSorting(' . GeneralUtility::quoteJSvalue($nameObjectFtId) . ', \'1\')';
                 $icon = 'actions-move-up';
                 $class = '';
                 if ($inlineConfig['inline']['first'] == $rec['uid']) {
@@ -478,11 +484,10 @@ class InlineRecordContainer extends AbstractContainer
                     $icon = 'empty-empty';
                 }
                 $cells['sort.up'] = '
-                    <a class="btn btn-default sortingUp' . $class . '" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:moveUp')) . '">
+                    <a class="btn btn-default' . $class . '" href="#" data-action="sort" data-direction="up" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:moveUp')) . '">
                         ' . $this->iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render() . '
                     </a>';
                 // Down
-                $onClick = 'return inline.changeSorting(' . GeneralUtility::quoteJSvalue($nameObjectFtId) . ', \'-1\')';
                 $icon = 'actions-move-down';
                 $class = '';
                 if ($inlineConfig['inline']['last'] == $rec['uid']) {
@@ -491,7 +496,7 @@ class InlineRecordContainer extends AbstractContainer
                 }
 
                 $cells['sort.down'] = '
-                    <a class="btn btn-default sortingDown' . $class . '" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:moveDown')) . '">
+                    <a class="btn btn-default' . $class . '" href="#" data-action="sort" data-direction="down" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:moveDown')) . '">
                         ' . $this->iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render() . '
                     </a>';
             }
@@ -539,27 +544,22 @@ class InlineRecordContainer extends AbstractContainer
             ) {
                 $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete'));
                 $icon = $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render();
-                $cells['delete'] = '<a href="#" class="btn btn-default t3js-editform-delete-inline-record" data-objectid="' . htmlspecialchars($nameObjectFtId) . '" title="' . $title . '">' . $icon . '</a>';
+                $cells['delete'] = '<a href="#" class="btn btn-default t3js-editform-delete-inline-record" title="' . $title . '">' . $icon . '</a>';
             }
 
             // "Hide/Unhide" links:
             $hiddenField = $tcaTableCtrl['enablecolumns']['disabled'];
             if ($enabledControls['hide'] && $permsEdit && $hiddenField && $tcaTableCols[$hiddenField] && (!$tcaTableCols[$hiddenField]['exclude'] || $backendUser->check('non_exclude_fields', $foreignTable . ':' . $hiddenField))) {
-                $onClick = 'return inline.enableDisableRecord(' . GeneralUtility::quoteJSvalue($nameObjectFtId) . ',' .
-                    GeneralUtility::quoteJSvalue($hiddenField) . ')';
-                $className = 't3js-' . $nameObjectFtId . '_disabled';
                 if ($rec[$hiddenField]) {
                     $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:unHide' . ($isPagesTable ? 'Page' : '')));
                     $cells['hide'] = '
-                        <a class="btn btn-default hiddenHandle ' . $className . '" href="#" onclick="
-                            ' . htmlspecialchars($onClick) . '" title="' . $title . '">
+                        <a class="btn btn-default t3js-toggle-visibility-button" data-hidden-field="' . htmlspecialchars($hiddenField) . '" href="#" title="' . $title . '">
                             ' . $this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL)->render() . '
                         </a>';
                 } else {
                     $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:hide' . ($isPagesTable ? 'Page' : '')));
                     $cells['hide'] = '
-                        <a class="btn btn-default hiddenHandle ' . $className . '" href="#" onclick="
-                            ' . htmlspecialchars($onClick) . '" title="' . $title . '">
+                        <a class="btn btn-default t3js-toggle-visibility-button" data-hidden-field="' . htmlspecialchars($hiddenField) . '" href="#" title="' . $title . '">
                             ' . $this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL)->render() . '
                         </a>';
                 }
@@ -573,9 +573,8 @@ class InlineRecordContainer extends AbstractContainer
             }
         } elseif ($data['isInlineDefaultLanguageRecordInLocalizedParentContext'] && $isParentExisting) {
             if ($enabledControls['localize'] && $data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
-                $onClick = 'inline.synchronizeLocalizeRecords(' . GeneralUtility::quoteJSvalue($nameObjectFt) . ', ' . GeneralUtility::quoteJSvalue($rec['uid']) . ');';
                 $cells['localize'] = '
-                    <a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localize')) . '">
+                    <a class="btn btn-default t3js-synchronizelocalize-button" href="#" data-type="' . htmlspecialchars($rec['uid']) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localize')) . '">
                         ' . $this->iconFactory->getIcon('actions-document-localize', Icon::SIZE_SMALL)->render() . '
                     </a>';
             }

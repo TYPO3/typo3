@@ -61,7 +61,7 @@ class ElementBrowser extends AbstractNode
             && $this->data['inlineParentConfig']['foreign_unique'] === $fieldName
         ) {
             $objectPrefix = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']) . '-' . $table;
-            $elementBrowserOnClickInline = $objectPrefix . '|inline.checkUniqueElement|inline.setUniqueElement';
+            $elementBrowserOnClickInline = $objectPrefix;
         }
         $elementBrowserType = $internalType;
         if (is_array($config['appearance']) && isset($config['appearance']['elementBrowserType'])) {

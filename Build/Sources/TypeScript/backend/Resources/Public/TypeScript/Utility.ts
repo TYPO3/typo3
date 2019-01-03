@@ -16,6 +16,29 @@
  */
 class Utility {
   /**
+   * Splits a string by a given delimiter and trims the values
+   *
+   * @param {string} delimiter
+   * @param {string} string
+   * @return Array<string>
+   */
+  public static trimExplode(delimiter: string, string: string): Array<string> {
+    return string.split(delimiter).map((item) => item.trim()).filter((item) => item !== '');
+  }
+
+  /**
+   * Splits a string by a given delimiter and converts the values to integer
+   *
+   * @param {string} delimiter
+   * @param {string} string
+   * @param {boolean} excludeZeroValues
+   * @return Array<number>
+   */
+  public static intExplode(delimiter: string, string: string, excludeZeroValues: boolean = false): Array<number> {
+    return string.split(delimiter).map((item) => parseInt(item, 10)).filter((item) => !isNaN(item) || excludeZeroValues && item === 0);
+  }
+
+  /**
    * Checks if a given number is really a number
    *
    * Taken from:

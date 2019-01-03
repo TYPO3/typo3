@@ -148,25 +148,6 @@ class SingleFieldContainer extends AbstractContainer
             $parameterArray['fieldChangeFunc']['alert'] = $alertMsgOnChange;
         }
 
-        // If this is the child of an inline type and it is the field creating the label
-        if ($this->isInlineChildAndLabelField($table, $fieldName)) {
-            $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-            $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
-            $inlineDomObjectId = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
-            $inlineObjectId = implode(
-                '-',
-                [
-                    $inlineDomObjectId,
-                    $table,
-                    $row['uid']
-                ]
-            );
-            $parameterArray['fieldChangeFunc']['inline'] = 'inline.handleChangedField('
-                    . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . ','
-                    . GeneralUtility::quoteJSvalue($inlineObjectId)
-                . ');';
-        }
-
         // Based on the type of the item, call a render function on a child element
         $options = $this->data;
         $options['parameterArray'] = $parameterArray;

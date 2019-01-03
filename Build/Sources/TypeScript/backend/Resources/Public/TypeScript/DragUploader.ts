@@ -20,10 +20,7 @@ import moment = require('moment');
 import NProgress = require('nprogress');
 import Modal = require('./Modal');
 import Notification = require('./Notification');
-// Do not import TYPO3/CMS/Backend/jsfunc.inline because it is loaded in global scope
-// Import here, will load it twice and produce JS errors.
-// @TODO: Import later, after decoupling has been finished
-//  import 'TYPO3/CMS/Backend/jsfunc.inline';
+import {MessageUtility} from './Utility/MessageUtility';
 
 /**
  * Possible actions for conflicts w/ existing files
@@ -702,12 +699,12 @@ class DragUploader {
    * @param {UploadedFile} file
    */
   public static addFileToIrre(irre_object: number, file: UploadedFile): void {
-    window.inline.delayedImportElement(
-      irre_object,
-      'sys_file',
-      file.uid,
-      'file',
-    );
+    const message = {
+      objectGroup: irre_object,
+      table: 'sys_file',
+      uid: file.uid,
+    };
+    MessageUtility.send(message);
   }
 
   public static init(): void {

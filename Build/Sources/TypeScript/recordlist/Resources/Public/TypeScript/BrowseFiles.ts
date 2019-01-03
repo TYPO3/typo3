@@ -82,18 +82,6 @@ class File {
     }
     return result;
   }
-
-  /**
-   * @param {Array} list
-   */
-  public insertElementMultiple(list: Array<any>): void {
-    for (let i = 0, n = list.length; i < n; i++) {
-      if (typeof BrowseFiles.elements[list[i]] !== 'undefined') {
-        const element: LinkElement = BrowseFiles.elements[list[i]];
-        ElementBrowser.insertMultiple('sys_file', element.uid);
-      }
-    }
-  }
 }
 
 class Selector {
@@ -128,12 +116,8 @@ class Selector {
         }
       });
       if (selectedItems.length > 0) {
-        if (ElementBrowser.hasActionMultipleCode) {
-          BrowseFiles.File.insertElementMultiple(selectedItems);
-        } else {
-          for (let i = 0; i < selectedItems.length; i++) {
-            BrowseFiles.File.insertElement(selectedItems[i]);
-          }
+        for (let i = 0; i < selectedItems.length; i++) {
+          BrowseFiles.File.insertElement(selectedItems[i]);
         }
       }
       ElementBrowser.focusOpenerAndClose();

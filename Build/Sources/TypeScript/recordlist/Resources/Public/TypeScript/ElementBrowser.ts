@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import {MessageUtility} from 'TYPO3/CMS/Backend/Utility/MessageUtility';
 import * as $ from 'jquery';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 
@@ -21,9 +22,6 @@ interface RTESettings {
 
 interface InlineSettings {
   objectId: number;
-  checkUniqueAction: string;
-  addAction: string;
-  insertAction: string;
 }
 
 declare global {
@@ -45,8 +43,7 @@ declare global {
  * ElementBrowser communication with parent windows
  */
 class ElementBrowser {
-  public hasActionMultipleCode: boolean = false;
-
+  private opener: Window = null;
   private thisScriptUrl: string = '';
   private mode: string = '';
   private formFieldName: string = '';
@@ -60,9 +57,6 @@ class ElementBrowser {
   };
   private irre: InlineSettings = {
     objectId: 0,
-    checkUniqueAction: '',
-    addAction: '',
-    insertAction: '',
   };
 
   constructor() {
@@ -75,11 +69,7 @@ class ElementBrowser {
       this.fieldReferenceSlashed = data.fieldReferenceSlashed;
       this.rte.parameters = data.rteParameters;
       this.rte.configuration = data.rteConfiguration;
-      this.irre.checkUniqueAction = data.irreCheckUniqueAction;
-      this.irre.addAction = data.irreAddAction;
-      this.irre.insertAction = data.irreInsertAction;
       this.irre.objectId = data.irreObjectId;
-      this.hasActionMultipleCode = (this.irre.objectId > 0 && this.irre.insertAction !== '');
     });
 
     /**
@@ -129,30 +119,32 @@ class ElementBrowser {
    * Returns the parent document object
    */
   public getParent(): Window | null {
-    let opener: Window = null;
-    if (
-      typeof window.parent !== 'undefined' &&
-      typeof window.parent.document.list_frame !== 'undefined' &&
-      window.parent.document.list_frame.parent.document.querySelector('.t3js-modal-iframe') !== null
-    ) {
-      opener = window.parent.document.list_frame;
-    } else if (
-      typeof window.parent !== 'undefined' &&
-      typeof window.parent.frames.list_frame !== 'undefined' &&
-      window.parent.frames.list_frame.parent.document.querySelector('.t3js-modal-iframe') !== null
-    ) {
-      opener = window.parent.frames.list_frame;
-    } else if (
-      typeof window.frames !== 'undefined' &&
-      typeof window.frames.frameElement !== 'undefined' &&
-      window.frames.frameElement !== null &&
-      window.frames.frameElement.classList.contains('t3js-modal-iframe')
-    ) {
-      opener = (<HTMLFrameElement>window.frames.frameElement).contentWindow.parent;
-    } else if (window.opener) {
-      opener = window.opener;
+    if (this.opener === null) {
+      if (
+        typeof window.parent !== 'undefined' &&
+        typeof window.parent.document.list_frame !== 'undefined' &&
+        window.parent.document.list_frame.parent.document.querySelector('.t3js-modal-iframe') !== null
+      ) {
+        this.opener = window.parent.document.list_frame;
+      } else if (
+        typeof window.parent !== 'undefined' &&
+        typeof window.parent.frames.list_frame !== 'undefined' &&
+        window.parent.frames.list_frame.parent.document.querySelector('.t3js-modal-iframe') !== null
+      ) {
+        this.opener = window.parent.frames.list_frame;
+      } else if (
+        typeof window.frames !== 'undefined' &&
+        typeof window.frames.frameElement !== 'undefined' &&
+        window.frames.frameElement !== null &&
+        window.frames.frameElement.classList.contains('t3js-modal-iframe')
+      ) {
+        this.opener = (<HTMLFrameElement>window.frames.frameElement).contentWindow.parent;
+      } else if (window.opener) {
+        this.opener = window.opener;
+      }
     }
-    return opener;
+
+    return this.opener;
   }
 
   public insertElement(
@@ -166,86 +158,46 @@ class ElementBrowser {
     action: string,
     close: boolean,
   ): boolean {
-    let performAction = true;
-
     // Call a check function in the opener window (e.g. for uniqueness handling):
-    if (this.irre.objectId && this.irre.checkUniqueAction) {
+    if (this.irre.objectId) {
       if (this.getParent()) {
-        const res = this.executeFunctionByName(this.irre.checkUniqueAction, this.getParent(), this.irre.objectId, table, uid, type);
-        if (!res.passed) {
-          if (res.message) {
-            alert(res.message);
-          }
-          performAction = false;
-        }
+        const message = {
+          objectGroup: this.irre.objectId,
+          table: table,
+          uid: uid,
+        };
+        MessageUtility.send(message, this.getParent());
       } else {
         alert('Error - reference to main window is not set properly!');
         this.focusOpenerAndClose();
       }
-    }
-    // Call performing function and finish this action:
-    if (performAction) {
-      // Call helper function to manage data in the opener window:
-      if (this.irre.objectId && this.irre.addAction) {
-        if (this.getParent()) {
-          this.executeFunctionByName(
-            this.irre.addAction, this.getParent(), this.irre.objectId,
-            table, uid, type, this.fieldReferenceSlashed,
-          );
-        } else {
-          alert('Error - reference to main window is not set properly!');
-          this.focusOpenerAndClose();
-        }
-      }
-      if (this.irre.objectId && this.irre.insertAction) {
-        if (this.getParent()) {
-          this.executeFunctionByName(this.irre.insertAction, this.getParent(), this.irre.objectId, table, uid, type);
-          if (close) {
-            this.focusOpenerAndClose();
-          }
-        } else {
-          alert('Error - reference to main window is not set properly!');
-          if (close) {
-            this.focusOpenerAndClose();
-          }
-        }
-      } else if (this.fieldReference && !this.rte.parameters && !this.rte.configuration) {
-        this.addElement(filename, table + '_' + uid, fp, close);
-      } else {
-        if (
-          this.getParent() && this.getParent().content && this.getParent().content.document.editform
-          && this.getParent().content.document.editform[this.formFieldName]
-        ) {
-          this.getParent().group_change(
-            'add',
-            this.fieldReference,
-            this.rte.parameters,
-            this.rte.configuration,
-            this.targetDoc.editform[this.formFieldName],
-            this.getParent().content.document,
-          );
-        } else {
-          alert('Error - reference to main window is not set properly!');
-        }
-        if (close) {
-          this.focusOpenerAndClose();
-        }
-      }
-    }
-    return false;
-  }
 
-  public insertMultiple(table: string, uid: number): boolean {
-    let type = '';
-    if (this.irre.objectId && this.irre.insertAction) {
-      // Call helper function to manage data in the opener window:
-      if (this.getParent()) {
-        this.executeFunctionByName(
-          this.irre.insertAction + 'Multiple', this.getParent(),
-          this.irre.objectId, table, uid, type, this.fieldReference,
+      if (close) {
+        this.focusOpenerAndClose();
+      }
+
+      return true;
+    }
+
+    if (this.fieldReference && !this.rte.parameters && !this.rte.configuration) {
+      this.addElement(filename, table + '_' + uid, fp, close);
+    } else {
+      if (
+        this.getParent() && this.getParent().content && this.getParent().content.document.editform
+        && this.getParent().content.document.editform[this.formFieldName]
+      ) {
+        this.getParent().group_change(
+          'add',
+          this.fieldReference,
+          this.rte.parameters,
+          this.rte.configuration,
+          this.targetDoc.editform[this.formFieldName],
+          this.getParent().content.document,
         );
       } else {
         alert('Error - reference to main window is not set properly!');
+      }
+      if (close) {
         this.focusOpenerAndClose();
       }
     }

@@ -35,7 +35,7 @@ class FileBrowserTest extends UnitTestCase
     {
         [$documentTemplate, $beUser] = $this->setupProphecies();
 
-        $bparams = '|||gif,png,svg|data-4-pages-4-nav_icon-sys_file_reference|inline.checkUniqueElement||inline.importElement';
+        $bparams = '|||gif,png,svg|data-4-pages-4-nav_icon-sys_file_reference';
         $fileBrowser = $this->getAccessibleMock(FileBrowser::class, ['initDocumentTemplate'], [], '', false);
         $fileBrowser->_set('bparams', $bparams);
         $fileBrowser->_set('doc', $documentTemplate->reveal());

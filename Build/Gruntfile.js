@@ -483,7 +483,8 @@ module.exports = function (grunt) {
           // For the moment this is ok, because we stuck on version 1.11.4 which is very old
           // the jquery ui stuff should be replaced by modern libs asap
           // 'jquery-ui/sortable.js': 'jquery-ui/ui/sortable.js',
-          'jquery-ui/widget.js': 'jquery-ui/ui/widget.js'
+          'jquery-ui/widget.js': 'jquery-ui/ui/widget.js',
+          'Sortable.min.js': 'sortablejs/Sortable.min.js'
         }
       }
     },

@@ -11,11 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-// Site configuration backend module FormEngine inline:
-// Override inline 'create' and 'details' route to point to SiteInlineAjaxController
-require(['jquery'], function($) {
-  $(function() {
-    TYPO3.settings.ajaxUrls.record_inline_details = TYPO3.settings.ajaxUrls.site_configuration_inline_details;
-    TYPO3.settings.ajaxUrls.record_inline_create = TYPO3.settings.ajaxUrls.site_configuration_inline_create;
-  });
-});
+export interface InlineResponseInterface {
+  data: string;
+  inlineData: {
+    config: { [key: string]: Object },
+    map: { [key: string]: Array<string> }
+    nested: { [key: string]: Array<Array<string>> },
+  };
+  scriptCall: Array<string>;
+  stylesheetFiles: Array<string>;
+}

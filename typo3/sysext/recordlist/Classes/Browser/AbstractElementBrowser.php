@@ -63,9 +63,6 @@ abstract class AbstractElementBrowser
      * 2: RTE config parameters: RTEtsConfigParams
      * 3: allowed types. Eg. "tt_content" or "gif,jpg,jpeg,tif,bmp,pcx,tga,png,pdf,ai"
      * 4: IRRE uniqueness: target level object-id to perform actions/checks on, eg. "data-4-pages-4-nav_icon-sys_file_reference" ("data-<uid>-<table>-<pid>-<field>-<foreign_table>")
-     * 5: IRRE uniqueness: name of function in opener window that checks if element is already used, eg. "inline.checkUniqueElement"
-     * 6: IRRE uniqueness: name of function in opener window that performs some additional(!) action, eg. "inline.setUniqueElement"
-     * 7: IRRE uniqueness: name of function in opener window that performs action instead of using addElement/insertElement, eg. "inline.importElement"
      *
      * $pArr = explode('|', $this->bparams);
      * $formFieldName = $pArr[0];
@@ -149,7 +146,7 @@ abstract class AbstractElementBrowser
      */
     protected function getBParamDataAttributes()
     {
-        list($fieldRef, $rteParams, $rteConfig, , $irreObjectId, $irreCheckUniqueAction, $irreAddAction, $irreInsertAction) = explode('|', $this->bparams);
+        list($fieldRef, $rteParams, $rteConfig, , $irreObjectId) = explode('|', $this->bparams);
 
         return [
             'data-this-script-url' => strpos($this->thisScript, '?') === false ? $this->thisScript . '?' : $this->thisScript . '&',
@@ -159,9 +156,6 @@ abstract class AbstractElementBrowser
             'data-rte-parameters' => $rteParams,
             'data-rte-configuration' => $rteConfig,
             'data-irre-object-id' => $irreObjectId,
-            'data-irre-check-unique-action' => $irreCheckUniqueAction,
-            'data-irre-add-action' => $irreAddAction,
-            'data-irre-insert-action' => $irreInsertAction,
         ];
     }
 

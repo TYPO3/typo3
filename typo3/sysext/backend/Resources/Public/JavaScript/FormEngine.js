@@ -74,7 +74,7 @@ define(['jquery',
    * @param {String} params additional params for the browser window
    */
   FormEngine.openPopupWindow = setFormValueOpenBrowser = function(mode, params) {
-    Modal.advanced({
+    return Modal.advanced({
       type: Modal.types.iframe,
       content: FormEngine.browserUrl + '&mode=' + mode + '&bparams=' + params,
       size: Modal.sizes.large
@@ -523,33 +523,6 @@ define(['jquery',
     }).on('click', '.t3js-editform-delete-record', function(e) {
       e.preventDefault();
       FormEngine.deleteAction(e, FormEngine.deleteActionCallback);
-    }).on('click', '.t3js-editform-delete-inline-record', function(e) {
-      e.preventDefault();
-      var title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
-      var content = TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete this record?';
-      var $anchorElement = $(this);
-      var $modal = Modal.confirm(title, content, Severity.warning, [
-        {
-          text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
-          active: true,
-          btnClass: 'btn-default',
-          name: 'no'
-        },
-        {
-          text: TYPO3.lang['buttons.confirm.delete_record.yes'] || 'Yes, delete this record',
-          btnClass: 'btn-warning',
-          name: 'yes'
-        }
-      ]);
-      $modal.on('button.clicked', function(e) {
-        if (e.target.name === 'no') {
-          Modal.dismiss();
-        } else if (e.target.name === 'yes') {
-          var objectId = $anchorElement.data('objectid');
-          inline.deleteRecord(objectId);
-          Modal.dismiss();
-        }
-      });
     }).on('click', '.t3js-editform-submitButton', function(event) {
       // remember the clicked submit button. we need to know that in TBE_EDITOR.submitForm();
       var $me = $(this),

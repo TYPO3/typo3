@@ -80,6 +80,7 @@ class SelectSingleElement extends AbstractFormElement
         $config = $parameterArray['fieldConf']['config'];
 
         $selectItems = $parameterArray['fieldConf']['config']['items'];
+        $classList = ['form-control', 'form-control-adapt'];
 
         // Check against inline uniqueness
         /** @var InlineStackProcessor $inlineStackProcessor */
@@ -91,15 +92,11 @@ class SelectSingleElement extends AbstractFormElement
             // See InlineControlContainer where 'inlineData' 'unique' 'used' is set. What exactly is
             // this if supposed to do and when should it kick in and what for?
             $inlineObjectName = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
-            $inlineFormName = $inlineStackProcessor->getCurrentStructureFormPrefix();
             if ($this->data['inlineParentConfig']['foreign_table'] === $table
                 && $this->data['inlineParentConfig']['foreign_unique'] === $field
             ) {
+                $classList[] = 't3js-inline-unique';
                 $uniqueIds = $this->data['inlineData']['unique'][$inlineObjectName . '-' . $table]['used'];
-                $parameterArray['fieldChangeFunc']['inlineUnique'] = 'inline.updateUnique(this,'
-                    . GeneralUtility::quoteJSvalue($inlineObjectName . '-' . $table) . ','
-                    . GeneralUtility::quoteJSvalue($inlineFormName) . ','
-                    . GeneralUtility::quoteJSvalue($row['uid']) . ');';
             }
             // hide uid of parent record for symmetric relations
             if ($this->data['inlineParentConfig']['foreign_table'] === $table
@@ -195,7 +192,7 @@ class SelectSingleElement extends AbstractFormElement
             'id' => $selectId,
             'name' => $parameterArray['itemFormElName'],
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
-            'class' => 'form-control form-control-adapt',
+            'class' => implode(' ', $classList),
         ];
         if ($size) {
             $selectAttributes['size'] = $size;

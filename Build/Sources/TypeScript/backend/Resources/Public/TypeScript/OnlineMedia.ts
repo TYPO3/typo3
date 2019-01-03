@@ -17,6 +17,7 @@ import NProgress = require('nprogress');
 import Modal = require('./Modal');
 import Severity = require('./Severity');
 import SecurityUtility = require('TYPO3/CMS/Core/SecurityUtility');
+import {MessageUtility} from 'TYPO3/CMS/Backend/Utility/MessageUtility';
 
 interface Response {
   file?: number;
@@ -62,7 +63,12 @@ class OnlineMedia {
       },
       (data: Response): void => {
         if (data.file) {
-          window.inline.delayedImportElement(irreObjectUid, 'sys_file', data.file, 'file');
+          const message = {
+            objectGroup: irreObjectUid,
+            table: 'sys_file',
+            uid: data.file,
+          };
+          MessageUtility.send(message);
         } else {
           const $confirm = Modal.confirm(
             'ERROR',
