@@ -345,53 +345,6 @@ class GraphicalFunctions
         $this->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
     }
 
-    /**
-     * @deprecated will be removed in TYPO3 v10.0. As the constructor does everything directly
-     */
-    public function init()
-    {
-        trigger_error('GraphicalFunctions->init() will be removed in TYPO3 v10.0. Simply remove the call to the method, since this is now evaluted in the constructor.', E_USER_DEPRECATED);
-        $gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
-        if (function_exists('imagecreatefromjpeg') && function_exists('imagejpeg')) {
-            $this->gdlibExtensions[] = 'jpg';
-            $this->gdlibExtensions[] = 'jpeg';
-        }
-        if (function_exists('imagecreatefrompng') && function_exists('imagepng')) {
-            $this->gdlibExtensions[] = 'png';
-        }
-        if (function_exists('imagecreatefromgif') && function_exists('imagegif')) {
-            $this->gdlibExtensions[] = 'gif';
-        }
-
-        if ($gfxConf['processor_colorspace'] && in_array($gfxConf['processor_colorspace'], $this->allowedColorSpaceNames, true)) {
-            $this->colorspace = $gfxConf['processor_colorspace'];
-        }
-
-        $this->processorEnabled = (bool)$gfxConf['processor_enabled'];
-        // Setting default JPG parameters:
-        $this->jpegQuality = MathUtility::forceIntegerInRange($gfxConf['jpg_quality'], 10, 100, 85);
-        $this->addFrameSelection = (bool)$gfxConf['processor_allowFrameSelection'];
-        if ($gfxConf['gdlib_png']) {
-            $this->gifExtension = 'png';
-        }
-        $this->imageFileExt = GeneralUtility::trimExplode(',', $gfxConf['imagefile_ext']);
-
-        // Boolean. This is necessary if using ImageMagick 5+.
-        // Effects in Imagemagick 5+ tends to render very slowly!!
-        // - therefore must be disabled in order not to perform sharpen, blurring and such.
-        $this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . $this->jpegQuality;
-
-        // ... but if 'processor_effects' is set, enable effects
-        if ($gfxConf['processor_effects']) {
-            $this->processorEffectsEnabled = true;
-            $this->cmds['jpg'] .= $this->v5_sharpen(10);
-            $this->cmds['jpeg'] .= $this->v5_sharpen(10);
-        }
-        // Secures that images are not scaled up.
-        $this->mayScaleUp = (bool)$gfxConf['processor_allowUpscaling'];
-        $this->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
-    }
-
     /*************************************************
      *
      * Layering images / "IMAGE" GIFBUILDER object

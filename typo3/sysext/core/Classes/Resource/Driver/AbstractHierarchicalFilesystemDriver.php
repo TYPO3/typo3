@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Resource\Driver;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -24,27 +23,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
 {
-    /**
-     * @var CharsetConverter
-     * @deprecated instantiate CharsetConverter yourself in your driver implementation.
-     */
-    protected $charsetConversion;
-
-    /**
-     * Gets the charset conversion object.
-     *
-     * @return CharsetConverter
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0.ß. Instantiate the CharsetConverter object yourself in your driver class.
-     */
-    protected function getCharsetConversion()
-    {
-        trigger_error('Shorthand method "getCharsetConversion()" within the FAL driver method will be removed in TYPO3 v10.0, instantiate CharsetConverter yourself.', E_USER_DEPRECATED);
-        if (!isset($this->charsetConversion)) {
-            $this->charsetConversion = GeneralUtility::makeInstance(CharsetConverter::class);
-        }
-        return $this->charsetConversion;
-    }
-
     /**
      * Wrapper for \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr()
      *

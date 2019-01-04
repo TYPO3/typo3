@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * The New FAL Indexer
@@ -316,10 +315,6 @@ class Indexer
         $fileInfo = $this->transformFromDriverFileInfoArrayToFileObjectFormat($fileInfo);
         $fileInfo['type'] = $this->getFileType($fileInfo['mime_type']);
         $fileInfo['sha1'] = $this->storage->hashFileByIdentifier($identifier, 'sha1');
-        if (!isset($fileInfo['extension'])) {
-            trigger_error('Guessing FAL file extensions will be removed in TYPO3 v10.0. The FAL (' . $this->storage->getDriverType() . ') driver method getFileInfoByIdentifier() should return the file extension.', E_USER_DEPRECATED);
-            $fileInfo['extension'] = PathUtility::pathinfo($fileInfo['name'], PATHINFO_EXTENSION);
-        }
         $fileInfo['missing'] = 0;
 
         return $fileInfo;

@@ -1470,6 +1470,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-52694-DeprecatedGeneralUtilitydevLog.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sendRedirect' => [
@@ -4061,7 +4062,8 @@ return [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 4,
         'restFiles' => [
-            'Deprecation-83793-FALResourceStorage-dumpFileContents.rst'
+            'Deprecation-83793-FALResourceStorage-dumpFileContents.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->processOutput' => [
@@ -4069,6 +4071,13 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-86486-TypoScriptFrontendController-processOutput.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Imaging\GraphicalFunctions->init' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
