@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\DataHandling;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\DBAL\Types\IntegerType;
 use Psr\Log\LoggerAwareInterface;
@@ -26,7 +25,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowLoopException;
@@ -80,15 +78,6 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 class DataHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * @var array
-     */
-    protected $deprecatedPublicProperties = [
-        'updateModeL10NdiffData' => 'Using updateModeL10NdiffData is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'updateModeL10NdiffDataClear' => 'Using updateModeL10NdiffDataClear is deprecated and will not be possible anymore in TYPO3 v10.0.',
-    ];
 
     // *********************
     // Public variables you can configure before using the class:
@@ -176,23 +165,6 @@ class DataHandler implements LoggerAwareInterface
      * @var bool
      */
     protected $useTransOrigPointerField = true;
-
-    /**
-     * TRUE: (traditional) Updates when record is saved. For flexforms, updates if change is made to the localized value.
-     * FALSE: Will not update anything.
-     * "FORCE_FFUPD" (string): Like TRUE, but will force update to the FlexForm Field
-     *
-     * @var bool|string
-     */
-    protected $updateModeL10NdiffData = true;
-
-    /**
-     * If TRUE, the translation diff. fields will in fact be reset so that they indicate that all needs to change again!
-     * It's meant as the opposite of declaring the record translated.
-     *
-     * @var bool
-     */
-    protected $updateModeL10NdiffDataClear = false;
 
     /**
      * If TRUE, workspace restrictions are bypassed on edit an create actions (process_datamap()).
@@ -1544,7 +1516,7 @@ class DataHandler implements LoggerAwareInterface
                         }
                         // Add the value of the original record to the diff-storage content:
                         if ($GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']) {
-                            $originalLanguage_diffStorage[$field] = $this->updateModeL10NdiffDataClear ? '' : $originalLanguageRecord[$field];
+                            $originalLanguage_diffStorage[$field] = $originalLanguageRecord[$field];
                             $diffStorageFlag = true;
                         }
                         // If autoversioning is happening we need to perform a nasty hack. The case is parallel to a similar hack inside checkValue_group_select_file().
@@ -3337,7 +3309,7 @@ class DataHandler implements LoggerAwareInterface
                                 $diffValue = $dataValues_current[$key]['vDEF'];
                             }
                             // Setting the reference value for vDEF for this translation. This will be used for translation tools to make a diff between the vDEF and vDEFbase to see if an update would be fitting.
-                            $dataValues[$key][$vKey . '.vDEFbase'] = $this->updateModeL10NdiffDataClear ? '' : $diffValue;
+                            $dataValues[$key][$vKey . '.vDEFbase'] = $diffValue;
                         }
                     }
                 }
@@ -7619,84 +7591,6 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * Resorts a table.
-     * Used internally by getSortNumber()
-     *
-     * @param string $table Table name
-     * @param int $pid Pid in which to resort records.
-     * @param string $sortColumn Column name used for sorting
-     * @param int $return_SortNumber_After_This_Uid Uid of record from $table in this $pid and for which the return value will be set to a free sorting number after that record. This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
-     * @return int|null If $return_SortNumber_After_This_Uid is set, will contain usable sorting number after that record if found (otherwise 0)
-     * @internal
-     * @see getSortNumber()
-     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0
-     */
-    public function resorting($table, $pid, $sortColumn, $return_SortNumber_After_This_Uid)
-    {
-        trigger_error('DataHandler->resorting() will be removed in TYPO3 v10.0, use the increaseSortingOfFollowingRecords() function instead.', E_USER_DEPRECATED);
-
-        $sortBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? '';
-        if ($sortBy && $sortBy === $sortColumn) {
-            $returnVal = 0;
-            $intervals = $this->sortIntervals;
-            $i = $intervals * 2;
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
-            $queryBuilder = $connection->createQueryBuilder();
-            $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
-
-            $result = $queryBuilder
-                ->select('uid')
-                ->from($table)
-                ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
-                ->orderBy($sortColumn, 'ASC')
-                ->addOrderBy('uid', 'ASC')
-                ->execute();
-            if ($connection->getDatabasePlatform() instanceof SqlitePlatform) {
-                // The default iteration behavior "fetch single row and update it" below can fail on sqlite.
-                // See https://bugs.php.net/bug.php?id=72267 and https://www.sqlite.org/isolation.html for details, money quote:
-                // "If changes occur on the same database connection after a query starts running but before the query completes,
-                // then the query might return a changed row more than once, or it might return a row that was previously deleted."
-                // In this resorting case, sqlite tends to run into infinite loops by returning the same rows over and over again
-                // with their already updated sorting values. As less memory efficient but safe solution, we just fetchAll() all
-                // rows into an array and update them in a second step.
-                $result = $result->fetchAll();
-                foreach ($result as $row) {
-                    $uid = (int)$row['uid'];
-                    if ($uid) {
-                        $connection->update($table, [$sortColumn => $i], ['uid' => (int)$uid]);
-                        // This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
-                        if ($uid == $return_SortNumber_After_This_Uid) {
-                            $i += $intervals;
-                            $returnVal = $i;
-                        }
-                    } else {
-                        die('Fatal ERROR!! No Uid at resorting.');
-                    }
-                    $i += $intervals;
-                }
-            } else {
-                while ($row = $result->fetch()) {
-                    // fetch() and update() single rows in one go
-                    $uid = (int)$row['uid'];
-                    if ($uid) {
-                        $connection->update($table, [$sortColumn => $i], ['uid' => (int)$uid]);
-                        // This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
-                        if ($uid == $return_SortNumber_After_This_Uid) {
-                            $i += $intervals;
-                            $returnVal = $i;
-                        }
-                    } else {
-                        die('Fatal ERROR!! No Uid at resorting.');
-                    }
-                    $i += $intervals;
-                }
-            }
-            return $returnVal;
-        }
-        return null;
-    }
-
-    /**
      * Increases sorting field value of all records with sorting higher than $sortingNumber
      *
      * Used internally by getSortNumber() to "make space" in sorting values when inserting new record
@@ -8092,19 +7986,6 @@ class DataHandler implements LoggerAwareInterface
         }
         list($parentUid) = BackendUtility::getTSCpid($table, $uid, '');
         return [$parentUid];
-    }
-
-    /**
-     * Return TSconfig for a page id
-     *
-     * @param int $tscPID Page id (PID) from which to get configuration.
-     * @return array TSconfig array, if any
-     * @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0.
-     */
-    public function getTCEMAIN_TSconfig($tscPID)
-    {
-        trigger_error('Method getTCEMAIN_TSconfig() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        return BackendUtility::getPagesTSconfig($tscPID)['TCEMAIN.'] ?? [];
     }
 
     /**
@@ -8825,18 +8706,6 @@ class DataHandler implements LoggerAwareInterface
                     GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
                 }
                 break;
-            case 'temp_cached':
-            case 'system':
-                trigger_error(
-                    'Calling clear_cacheCmd() with arguments "temp_cached" or "system", using'
-                    . ' the TSconfig option "options.clearCache.system" will be removed in TYPO3 v10.0, use "all"'
-                    . ' instead or call the group cache clearing of "system" group directly via a custom extension.',
-                    E_USER_DEPRECATED
-                );
-                if ($this->admin || $userTsConfig['options.']['clearCache.']['system'] ?? false) {
-                    $this->getCacheManager()->flushCachesInGroup('system');
-                }
-                break;
         }
 
         $tagsToFlush = [];
@@ -8924,31 +8793,6 @@ class DataHandler implements LoggerAwareInterface
     public function newlog($message, $error = 0)
     {
         return $this->log('', 0, 0, 0, $error, $message, -1);
-    }
-
-    /**
-     * Simple logging function meant to bridge the gap between newlog() and log() with a little more info, in particular the record table/uid and event_pid so we can filter messages per page.
-     *
-     * @param string $message Message string
-     * @param string $table Table name
-     * @param int $uid Record uid
-     * @param int $pid Record PID (from page tree). Will be turned into an event_pid internally in function: Meaning that the PID for a page will be its own UID, not its page tree PID.
-     * @param int $error Error code, see log()
-     * @return int Log entry UID
-     * @see log()
-     * @deprecated since TYPO3 v9 will be removed in TYPO3 v10.0, use DataHandler->log() directly instead.
-     */
-    public function newlog2($message, $table, $uid, $pid = null, $error = 0)
-    {
-        trigger_error('DataHandler->newlog2() will be removed in TYPO3 v10.0, use the generic log() function instead.', E_USER_DEPRECATED);
-        if (!$this->enableLogging) {
-            return 0;
-        }
-        if ($pid === null) {
-            $propArr = $this->getRecordProperties($table, $uid);
-            $pid = $propArr['pid'];
-        }
-        return $this->log($table, $uid, 0, 0, $error, $message, -1, [], $this->eventPid($table, $uid, $pid));
     }
 
     /**

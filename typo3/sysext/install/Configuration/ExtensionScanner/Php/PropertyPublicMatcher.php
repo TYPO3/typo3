@@ -501,4 +501,14 @@ return [
             'Deprecation-85164-LanguageRelatedMethods.rst'
         ],
     ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->updateModeL10NdiffData' => [
+        'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->updateModeL10NdiffDataClear' => [
+        'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
 ];

@@ -279,6 +279,9 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setHashCount()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setMaxHashCount()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setMinHashCount()`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->getTCEMAIN_TSconfig()`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->newlog2()`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->resorting()`
 * :php:`TYPO3\CMS\Core\Imaging\GraphicalFunctions->init()`
 * :php:`TYPO3\CMS\Core\Html\RteHtmlParser->transformStyledATags()`
 * :php:`TYPO3\CMS\Core\Html\RteHtmlParser->TS_links_rte()`
@@ -467,6 +470,8 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extAdminConfig`
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTS_dontGetCached`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->synonyms`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->updateModeL10NdiffData`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->updateModeL10NdiffDataClear`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->allowedPaths`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->debug`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->fileCache`
@@ -916,6 +921,7 @@ The following user TSconfig options have been dropped:
 * `TSFE.frontendEditingController` to override the frontend editing controller in EXT:feedit
 * `RTE.proc.keepPDIVattribs`
 * `RTE.proc.dontRemoveUnknownTags_db`
+* `options.clearCache.system`
 
 
 The following TypoScript options have been dropped:
