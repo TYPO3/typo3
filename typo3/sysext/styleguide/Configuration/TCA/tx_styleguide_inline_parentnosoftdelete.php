@@ -72,16 +72,6 @@ return [
                 'type' => 'passthrough',
             ],
         ],
-
-        't3ver_label' => [
-            'label' => 'version',
-            'config' => [
-                'type' => 'input',
-                'size' => 30,
-                'max' => 255,
-            ],
-        ],
-
         'hidden' => [
             'exclude' => 1,
             'label' => 'disable',
