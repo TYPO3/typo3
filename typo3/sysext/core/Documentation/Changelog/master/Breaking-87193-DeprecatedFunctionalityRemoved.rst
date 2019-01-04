@@ -427,6 +427,7 @@ The following methods changed signature according to previous deprecations in v9
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility->explodeUrl2Array()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility->getUrl()` - Third argument must be an array of arrays if given
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility->mkdir_deep()` - Second argument dropped
+* :php:`TYPO3\CMS\Core\Utility\RootlineUtility->__construct()` - Third optional argument now has to be Context object or null
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->getRawRecord()` - Fourth argument dropped
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->__construct()` - Fourth argument unused
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->calculateLinkVars()` - First argument mandatory

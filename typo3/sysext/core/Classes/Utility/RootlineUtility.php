@@ -101,11 +101,11 @@ class RootlineUtility
     ];
 
     /**
-     * Rootline Context
+     * Database Query Object
      *
      * @var PageRepository
      */
-    protected $pageContext;
+    protected $pageRepository;
 
     /**
      * Query context
@@ -127,23 +127,17 @@ class RootlineUtility
     /**
      * @param int $uid
      * @param string $mountPointParameter
-     * @param PageRepository|Context $context - @deprecated PageRepository is used until TYPO3 v9.4, but now the third parameter should be a Context object
+     * @param Context $context
      * @throws MountPointsDisabledException
      */
     public function __construct($uid, $mountPointParameter = '', $context = null)
     {
         $this->mountPointParameter = trim($mountPointParameter);
-        if ($context instanceof PageRepository) {
-            trigger_error('Calling RootlineUtility with PageRepository as third parameter will be unsupported with TYPO3 v10.0. Use a Context object directly.', E_USER_DEPRECATED);
-            $this->pageContext = $context;
-            $this->context = GeneralUtility::makeInstance(Context::class);
-        } else {
-            if (!($context instanceof Context)) {
-                $context = GeneralUtility::makeInstance(Context::class);
-            }
-            $this->context = $context;
-            $this->pageContext = GeneralUtility::makeInstance(PageRepository::class, $context);
+        if (!($context instanceof Context)) {
+            $context = GeneralUtility::makeInstance(Context::class);
         }
+        $this->context = $context;
+        $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
 
         $this->languageUid = $this->context->getPropertyFromAspect('language', 'id', 0);
         $this->workspaceUid = $this->context->getPropertyFromAspect('workspace', 'id', 0);
@@ -261,11 +255,11 @@ class RootlineUtility
             if (empty($row)) {
                 throw new PageNotFoundException('Could not fetch page data for uid ' . $uid . '.', 1343589451);
             }
-            $this->pageContext->versionOL('pages', $row, false, true);
-            $this->pageContext->fixVersioningPid('pages', $row);
+            $this->pageRepository->versionOL('pages', $row, false, true);
+            $this->pageRepository->fixVersioningPid('pages', $row);
             if (is_array($row)) {
                 if ($this->languageUid > 0) {
-                    $row = $this->pageContext->getPageOverlay($row, $this->languageUid);
+                    $row = $this->pageRepository->getPageOverlay($row, $this->languageUid);
                 }
                 $row = $this->enrichWithRelationFields($row['_PAGES_OVERLAY_UID'] ??  $uid, $row);
                 self::$pageRecordCache[$currentCacheIdentifier] = $row;
