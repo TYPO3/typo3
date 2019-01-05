@@ -3647,6 +3647,8 @@ class DatabaseRecordList
                         'UTF-8',
                         false
                     ) . '">' . $code . '</span>';
+            } else {
+                $code = '<span title="' . $code . '">' . $code . '</span>';
             }
         }
         switch ((string)$this->clickTitleMode) {
