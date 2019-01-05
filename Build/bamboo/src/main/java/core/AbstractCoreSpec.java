@@ -45,6 +45,8 @@ abstract public class AbstractCoreSpec {
     protected static String projectName = "TYPO3 Core";
     protected static String projectKey = "CORE";
 
+    protected String composerRootVersionEnvironment = "COMPOSER_ROOT_VERSION=10.0.0";
+
     protected String testingFrameworkBuildPath = "vendor/typo3/testing-framework/Resources/Core/Build/";
 
     /**
@@ -176,6 +178,7 @@ abstract public class AbstractCoreSpec {
                     this.getScriptTaskComposer(requirementIdentifier) +
                     "composer validate"
                 )
+                .environmentVariables(this.composerRootVersionEnvironment)
         )
         .requirements(
             this.getRequirementDocker10()
@@ -1369,7 +1372,8 @@ abstract public class AbstractCoreSpec {
                 this.getScriptTaskBashInlineBody() +
                 this.getScriptTaskComposer(requirementIdentifier) +
                 "composer install --no-progress --no-suggest --no-interaction"
-            );
+            )
+            .environmentVariables(this.composerRootVersionEnvironment);
     }
 
     /**
@@ -1392,7 +1396,8 @@ abstract public class AbstractCoreSpec {
                 this.getScriptTaskComposer(requirementIdentifier) +
                 "composer install -n\n" +
                 "composer update --with-dependencies --no-progress -n"
-            );
+            )
+            .environmentVariables(this.composerRootVersionEnvironment);
     }
 
     /**
@@ -1415,7 +1420,8 @@ abstract public class AbstractCoreSpec {
                 this.getScriptTaskComposer(requirementIdentifier) +
                 "composer install -n\n" +
                 "composer update --prefer-lowest --no-progress -n"
-            );
+            )
+            .environmentVariables(this.composerRootVersionEnvironment);
     }
 
     /**
