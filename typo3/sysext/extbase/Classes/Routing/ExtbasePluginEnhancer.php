@@ -124,6 +124,13 @@ class ExtbasePluginEnhancer extends PluginEnhancer
         /** @var Route $defaultPageRoute */
         $defaultPageRoute = $collection->get('default');
         foreach ($this->routesOfPlugin as $configuration) {
+            if (!empty($configuration['_controller'])) {
+                $this->applyControllerActionValues(
+                    $configuration['_controller'],
+                    $originalParameters[$this->namespace]
+                );
+            }
+
             $variant = $this->getVariant($defaultPageRoute, $configuration);
             // The enhancer tells us: This given route does not match the parameters
             if (!$this->verifyRequiredParameters($variant, $originalParameters)) {
