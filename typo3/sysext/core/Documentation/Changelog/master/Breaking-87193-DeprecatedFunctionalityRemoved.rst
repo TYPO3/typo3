@@ -1008,6 +1008,7 @@ The following features have been removed:
 * `eID` script targets cannot define a script path anymore:
   `$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['my_eID'] = 'EXT:benni/Scripts/download.php'` will not work anymore.
   Instead, they must contain a target (callable, class/method, function).
+* TCA auto migration from core v6 to core v7 compatible TCA
 
 
 The following database tables have been removed:
@@ -1032,6 +1033,7 @@ The following php doc annotations have been removed:
 * `@lazy`
 * `@transient`
 * `@validate`
+
 
 Impact
 ======

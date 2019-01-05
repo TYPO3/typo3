@@ -94,22 +94,9 @@ class TcaFlexPrepareTest extends UnitTestCase
                                                             <TCEforms>
                                                                 <label>aFlexFieldLabel</label>
                                                                 <config>
-                                                                    <type>text</type>
-                                                                    <default>defaultValue</default>
-                                                                    <wizards>
-                                                                        <t3editor>
-                                                                            <type>userFunc</type>
-                                                                            <userFunc>TYPO3\\CMS\\T3editor\\FormWizard->main</userFunc>
-                                                                            <title>t3editor</title>
-                                                                            <icon>content-table</icon>
-                                                                            <module>
-                                                                                <name>wizard_table</name>
-                                                                            </module>
-                                                                            <params>
-                                                                                <format>html</format>
-                                                                            </params>
-                                                                        </t3editor>
-                                                                    </wizards>
+                                                                    <type>input</type>
+                                                                    <renderType>inputDateTime</renderType>
+                                                                    <max>42</max>
                                                                 </config>
                                                             </TCEforms>
                                                         </aFlexField>
@@ -140,10 +127,8 @@ class TcaFlexPrepareTest extends UnitTestCase
                             'aFlexField' => [
                                 'label' => 'aFlexFieldLabel',
                                 'config' => [
-                                    'type' => 'text',
-                                    'default' => 'defaultValue',
-                                    'renderType' => 't3editor',
-                                    'format' => 'html',
+                                    'type' => 'input',
+                                    'renderType' => 'inputDateTime',
                                 ],
                             ],
                         ],
@@ -196,22 +181,9 @@ class TcaFlexPrepareTest extends UnitTestCase
                                                                             <TCEforms>
                                                                                 <label>aFlexFieldLabel</label>
                                                                                 <config>
-                                                                                    <type>text</type>
-                                                                                    <default>defaultValue</default>
-                                                                                    <wizards>
-                                                                                        <t3editor>
-                                                                                            <type>userFunc</type>
-                                                                                            <userFunc>TYPO3\\CMS\\T3editor\\FormWizard->main</userFunc>
-                                                                                            <title>t3editor</title>
-                                                                                            <icon>content-table</icon>
-                                                                                            <module>
-                                                                                                <name>wizard_table</name>
-                                                                                            </module>
-                                                                                            <params>
-                                                                                                <format>html</format>
-                                                                                            </params>
-                                                                                        </t3editor>
-                                                                                    </wizards>
+                                                                                    <type>input</type>
+                                                                                    <renderType>inputDateTime</renderType>
+                                                                                    <max>42</max>
                                                                                 </config>
                                                                             </TCEforms>
                                                                         </aFlexField>
@@ -255,10 +227,8 @@ class TcaFlexPrepareTest extends UnitTestCase
                                             'aFlexField' => [
                                                 'label' => 'aFlexFieldLabel',
                                                 'config' => [
-                                                    'type' => 'text',
-                                                    'default' => 'defaultValue',
-                                                    'renderType' => 't3editor',
-                                                    'format' => 'html',
+                                                    'type' => 'input',
+                                                    'renderType' => 'inputDateTime',
                                                 ],
                                             ],
                                         ],
