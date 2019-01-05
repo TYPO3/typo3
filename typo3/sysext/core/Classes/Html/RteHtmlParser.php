@@ -17,14 +17,11 @@ namespace TYPO3\CMS\Core\Html;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
 /**
  * Class for parsing HTML for the Rich Text Editor. (also called transformations)
@@ -37,33 +34,6 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
-    use PublicPropertyDeprecationTrait;
-    use PublicMethodDeprecationTrait;
-
-    protected $deprecatedPublicProperties = [
-        'blockElementList' => 'Using $blockElementList of class RteHtmlParser from the outside is discouraged, as this property is only used for internal storage.',
-        'recPid' => 'Using $recPid of class RteHtmlParser from the outside is discouraged, as this property is only used for internal storage.',
-        'elRef' => 'Using $elRef of class RteHtmlParser from the outside is discouraged, as this property is only used for internal storage.',
-        'tsConfig' => 'Using $tsConfig of class RteHtmlParser from the outside is discouraged, as this property is only used for internal storage.',
-        'procOptions' => 'Using $procOptions of class RteHtmlParser from the outside is discouraged, as this property is only used for internal storage.',
-        'TS_transform_db_safecounter' => 'Using $TS_transform_db_safecounter of class RteHtmlParser from the outside is discouraged, as this property is only used for internal storage.',
-        'getKeepTags_cache' => 'Using $getKeepTags_cache of class RteHtmlParser from the outside is discouraged, as this property is only used for internal storage.',
-        'allowedClasses' => 'Using $allowedClasses of class RteHtmlParser from the outside is discouraged, as this property is only used for internal storage.',
-    ];
-
-    protected $deprecatedPublicMethods = [
-        'TS_images_db' => 'Using TS_images_db() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
-        'TS_links_db' => 'Using TS_links_db() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
-        'TS_transform_db' => 'Using TS_transform_db() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
-        'TS_transform_rte' => 'Using TS_transform_rte() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
-        'HTMLcleaner_db' => 'Using HTMLcleaner_db() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
-        'getKeepTags' => 'Using getKeepTags() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
-        'divideIntoLines' => 'Using divideIntoLines() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
-        'setDivTags' => 'Using setDivTags() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
-        'getWHFromAttribs' => 'Using getWHFromAttribs() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
-        'urlInfoForLinkTags' => 'Using urlInfoForLinkTags() of class RteHtmlParser from the outside is discouraged, as this method is not in use anymore and will be removed.',
-        'TS_AtagToAbs' => 'Using TS_AtagToAbs() of class RteHtmlParser from the outside is discouraged, as this method is only available for internal purposes.',
-    ];
 
     /**
      * List of elements that are not wrapped into a "p" tag while doing the transformation.
@@ -210,9 +180,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         // Define which attributes are allowed on <p> tags
         if (isset($this->procOptions['allowAttributes.'])) {
             $this->allowedAttributesForParagraphTags = $this->procOptions['allowAttributes.'];
-        } elseif (isset($this->procOptions['keepPDIVattribs'])) {
-            trigger_error('HTML parsing option "keepPDIVattribs" will not be evaluated anymore in TYPO3 v10.0. Use "allowedAttributes" instead.', E_USER_DEPRECATED);
-            $this->allowedAttributesForParagraphTags = GeneralUtility::trimExplode(',', strtolower($this->procOptions['keepPDIVattribs']), true);
         }
         // Override tags which are allowed outside of <p> tags
         if (isset($this->procOptions['allowTagsOutside'])) {
@@ -282,9 +249,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                             break;
                         case 'ts_images':
                             $value = $this->TS_images_rte($value);
-                            break;
-                        case 'ts_links':
-                            $value = $this->TS_links_rte($value, true);
                             break;
                         case 'css_transform':
                             $value = $this->TS_transform_rte($value);
@@ -570,7 +534,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      *
      * @param string $value Content input
      * @return string Content output
-     * @see TS_links_rte()
      */
     protected function TS_links_db($value)
     {
@@ -581,114 +544,16 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                 $linkService = GeneralUtility::makeInstance(LinkService::class);
                 $linkInformation = $linkService->resolve($tagAttributes['href'] ?? '');
 
-                // Modify parameters, this hook should be deprecated
-                if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'])) {
-                    trigger_error('The hook "t3lib/class.t3lib_parsehtml_proc.php->modifyParams_LinksDb_PostProc" will be removed in TYPO3 v10.0, use LinkService syntax to modify links to be stored in the database.', E_USER_DEPRECATED);
-                    $parameters = [
-                        'currentBlock' => $v,
-                        'linkInformation' => $linkInformation,
-                        'url' => $linkInformation['href'],
-                        'attributes' => $tagAttributes
-                    ];
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'] ?? [] as $className) {
-                        $processor = GeneralUtility::makeInstance($className);
-                        $blockSplit[$k] = $processor->modifyParamsLinksDb($parameters, $this);
-                    }
-                } else {
-                    // Otherwise store the link as <a> tag as default by TYPO3, with the new link service syntax
-                    try {
-                        $tagAttributes['href'] = $linkService->asString($linkInformation);
-                    } catch (UnknownLinkHandlerException $e) {
-                        $tagAttributes['href'] = $linkInformation['href'] ?? $tagAttributes['href'];
-                    }
-
-                    $blockSplit[$k] = '<a ' . GeneralUtility::implodeAttributes($tagAttributes, true) . '>'
-                        . $this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])) . '</a>';
-                }
-            }
-        }
-        return implode('', $blockSplit);
-    }
-
-    /**
-     * Transformation handler: 'ts_links' / direction: "rte"
-     * Converting TYPO3-specific <link> tags to <a> tags
-     *
-     * This functionality is only used to convert legacy <link> tags to the new linking syntax using <a> tags, and will
-     * not be converted back to <link> tags anymore.
-     *
-     * @param string $value Content input
-     * @param bool $internallyCalledFromCore internal option for calls where the Core is still using this function, to supress method deprecations
-     * @return string Content output
-     * @deprecated will be removed in TYPO3 v10.0, only ->TS_AtagToAbs() should be called directly, <link> syntax is deprecated
-     */
-    public function TS_links_rte($value, $internallyCalledFromCore = null)
-    {
-        if ($internallyCalledFromCore === null) {
-            trigger_error('RteHtmlParser->TS_links_rte() will be removed in TYPO3 v10.0, use TS_AtagToAbs() directly and do not use <link> syntax anymore.', E_USER_DEPRECATED);
-        }
-        $hasLinkTags = false;
-        $value = $this->TS_AtagToAbs($value);
-        // Split content by the TYPO3 pseudo tag "<link>"
-        $blockSplit = $this->splitIntoBlock('link', $value, true);
-        foreach ($blockSplit as $k => $v) {
-            // Block
-            if ($k % 2) {
-                $hasLinkTags = true;
-                // Split away the first "<link " part
-                $typoLinkData = explode(' ', substr($this->getFirstTag($v), 0, -1), 2)[1];
-                $tagCode = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($typoLinkData);
-
-                // Parsing the TypoLink data. This parsing is done like in \TYPO3\CMS\Frontend\ContentObject->typoLink()
-                $linkService = GeneralUtility::makeInstance(LinkService::class);
-                $linkInformation = $linkService->resolve($tagCode['url']);
-
+                // Store the link as <a> tag as default by TYPO3, with the link service syntax
                 try {
-                    $href = $linkService->asString($linkInformation);
+                    $tagAttributes['href'] = $linkService->asString($linkInformation);
                 } catch (UnknownLinkHandlerException $e) {
-                    $href = '';
+                    $tagAttributes['href'] = $linkInformation['href'] ?? $tagAttributes['href'];
                 }
 
-                // Modify parameters by a hook
-                if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc'] ?? false)) {
-                    trigger_error('The hook "t3lib/class.t3lib_parsehtml_proc.php->modifyParams_LinksRte_PostProc" will be removed in TYPO3 v10.0, use the link service to properly use .', E_USER_DEPRECATED);
-                    // backwards-compatibility: show an error message if the page is not found
-                    $error = '';
-                    if ($linkInformation['type'] === LinkService::TYPE_PAGE) {
-                        $pageRecord = BackendUtility::getRecord('pages', $linkInformation['pageuid']);
-                        // Page does not exist
-                        if (!is_array($pageRecord)) {
-                            $error = 'Page with ID ' . $linkInformation['pageuid'] . ' not found';
-                        }
-                    }
-                    $parameters = [
-                        'currentBlock' => $v,
-                        'url' => $href,
-                        'tagCode' => $tagCode,
-                        'external' => $linkInformation['type'] === LinkService::TYPE_URL,
-                        'error' => $error
-                    ];
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc'] as $className) {
-                        $processor = GeneralUtility::makeInstance($className);
-                        $blockSplit[$k] = $processor->modifyParamsLinksRte($parameters, $this);
-                    }
-                } else {
-                    $anchorAttributes = [
-                        'href'   => $href,
-                        'target' => $tagCode['target'],
-                        'class'  => $tagCode['class'],
-                        'title'  => $tagCode['title']
-                    ];
-
-                    // Setting the <a> tag
-                    $blockSplit[$k] = '<a ' . GeneralUtility::implodeAttributes($anchorAttributes, true) . '>'
-                        . $this->TS_links_rte($this->removeFirstAndLastTag($blockSplit[$k]), $internallyCalledFromCore)
-                        . '</a>';
-                }
+                $blockSplit[$k] = '<a ' . GeneralUtility::implodeAttributes($tagAttributes, true) . '>'
+                    . $this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])) . '</a>';
             }
-        }
-        if ($hasLinkTags) {
-            trigger_error('Content with <link> syntax was found, update your content to use the t3:// syntax, and migrate your content via the upgrade wizard in the install tool.', E_USER_DEPRECATED);
         }
         return implode('', $blockSplit);
     }
@@ -761,38 +626,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         }
         $this->TS_transform_db_safecounter++;
         return implode(LF, $blockSplit);
-    }
-
-    /**
-     * Wraps a-tags that contain a style attribute with a span-tag
-     * This is not in use anymore, but was necessary before because <a> tags are transformed into <link> tags
-     * in the database, but <link> tags cannot handle style attributes. However, this is considered a
-     * bad approach as it leaves an ugly <span> tag in the database, if allowedTags=span with style attributes are
-     * allowed.
-     *
-     * @param string $value Content input
-     * @return string Content output
-     * @deprecated since TYPO3 v9.0, will be removed in TYPO3 v10.0, see comment above, adding attribuet "rteerror" is not necessary anymore.
-     */
-    public function transformStyledATags($value)
-    {
-        trigger_error('RteHtmlParser->transformStyledATags() will be removed in TYPO3 v10.0. TYPO3 can handle style attribute in anchor tags properly since TYPO3 v8 LTS.', E_USER_DEPRECATED);
-        $blockSplit = $this->splitIntoBlock('A', $value);
-        foreach ($blockSplit as $k => $v) {
-            // If an A-tag was found
-            if ($k % 2) {
-                list($attribArray) = $this->get_tag_attributes($this->getFirstTag($v), true);
-                // If "style" attribute is set and rteerror is not set!
-                if ($attribArray['style'] && !$attribArray['rteerror']) {
-                    $attribArray_copy['style'] = $attribArray['style'];
-                    unset($attribArray['style']);
-                    $bTag = '<span ' . GeneralUtility::implodeAttributes($attribArray_copy, true) . '><a ' . GeneralUtility::implodeAttributes($attribArray, true) . '>';
-                    $eTag = '</a></span>';
-                    $blockSplit[$k] = $bTag . $this->removeFirstAndLastTag($blockSplit[$k]) . $eTag;
-                }
-            }
-        }
-        return implode('', $blockSplit);
     }
 
     /**
@@ -872,12 +705,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     protected function HTMLcleaner_db($content)
     {
         $keepTags = $this->getKeepTags('db');
-        // Default: remove unknown tags.
-        if (isset($this->procOptions['dontRemoveUnknownTags_db'])) {
-            trigger_error('HTMLParser option "dontRemoveUnknownTags_db" will not be evaluted anymore in TYPO3 v10.0. Remove its usages.', E_USER_DEPRECATED);
-        }
-        $keepUnknownTags = (bool)($this->procOptions['dontRemoveUnknownTags_db'] ?? false);
-        return $this->HTMLcleaner($content, $keepTags, $keepUnknownTags);
+        return $this->HTMLcleaner($content, $keepTags, false);
     }
 
     /**
@@ -1135,72 +963,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     }
 
     /**
-     * Parse <A>-tag href and return status of email,external,file or page
-     * This functionality is not in use anymore
-     *
-     * @param string $url URL to analyze.
-     * @return array Information in an array about the URL
-     * @deprecated will be removed in TYPO3 v10.0. Not in use anymore.
-     */
-    protected function urlInfoForLinkTags($url)
-    {
-        $info = [];
-        $url = trim($url);
-        if (strpos(strtolower($url), 'mailto:') === 0) {
-            $info['url'] = trim(substr($url, 7));
-            $info['type'] = 'email';
-        } elseif (strpos($url, '?file:') !== false) {
-            $info['type'] = 'file';
-            $info['url'] = rawurldecode(substr($url, strpos($url, '?file:') + 1));
-        } else {
-            $curURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-            $urlLength = strlen($url);
-            $a = 0;
-            for (; $a < $urlLength; $a++) {
-                if ($url[$a] != $curURL[$a]) {
-                    break;
-                }
-            }
-            $info['relScriptPath'] = substr($curURL, $a);
-            $info['relUrl'] = substr($url, $a);
-            $info['url'] = $url;
-            $info['type'] = 'ext';
-            $siteUrl_parts = parse_url($url);
-            $curUrl_parts = parse_url($curURL);
-            // Hosts should match
-            if ($siteUrl_parts['host'] == $curUrl_parts['host'] && (!$info['relScriptPath'] || defined('TYPO3_mainDir') && strpos($info['relScriptPath'], TYPO3_mainDir) === 0)) {
-                // If the script path seems to match or is empty (FE-EDIT)
-                // New processing order 100502
-                $uP = parse_url($info['relUrl']);
-                if ($info['relUrl'] === '#' . $siteUrl_parts['fragment']) {
-                    $info['url'] = $info['relUrl'];
-                    $info['type'] = 'anchor';
-                } elseif (!trim($uP['path']) || $uP['path'] === 'index.php') {
-                    // URL is a page (id parameter)
-                    $pp = preg_split('/^id=/', $uP['query']);
-                    $pp[1] = preg_replace('/&id=[^&]*/', '', $pp[1]);
-                    $parameters = explode('&', $pp[1]);
-                    $id = array_shift($parameters);
-                    if ($id) {
-                        $info['pageid'] = $id;
-                        $info['cElement'] = $uP['fragment'];
-                        $info['url'] = $id . ($info['cElement'] ? '#' . $info['cElement'] : '');
-                        $info['type'] = 'page';
-                        $info['query'] = $parameters[0] ? '&' . implode('&', $parameters) : '';
-                    }
-                } else {
-                    $info['url'] = $info['relUrl'];
-                    $info['type'] = 'file';
-                }
-            } else {
-                unset($info['relScriptPath']);
-                unset($info['relUrl']);
-            }
-        }
-        return $info;
-    }
-
-    /**
      * Converting <A>-tags to absolute URLs (+ setting rtekeep attribute)
      *
      * @param string $value Content input
@@ -1208,9 +970,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      */
     protected function TS_AtagToAbs($value)
     {
-        if (func_num_args() > 1) {
-            trigger_error('Second argument of RteHtmlParser->TS_AtagToAbs() is not in use and will be removed in TYPO3 v10.0, however the argument in the callers code can be removed without side-effects.', E_USER_DEPRECATED);
-        }
         $blockSplit = $this->splitIntoBlock('A', $value);
         foreach ($blockSplit as $k => $v) {
             // Block

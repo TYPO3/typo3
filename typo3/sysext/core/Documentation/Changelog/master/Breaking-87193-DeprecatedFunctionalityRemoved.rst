@@ -279,6 +279,9 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setHashCount()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setMaxHashCount()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setMinHashCount()`
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->transformStyledATags()`
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->TS_links_rte()`
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->urlInfoForLinkTags()`
 * :php:`TYPO3\CMS\Core\Package\PackageManager->injectDependencyResolver()`
 * :php:`TYPO3\CMS\Core\Page\PageRenderer::addMetaTag()`
 * :php:`TYPO3\CMS\Core\Page\PageRenderer::disableConcatenateFiles()`
@@ -422,6 +425,7 @@ The following methods changed signature according to previous deprecations in v9
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->getHashedPassword()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Http\Dispatcher->dispatch()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Package\PackageManager->__construct()` - First argument mandatory
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->TS_AtagToAbs()` - Second argument dropped and protected
 * :php:`TYPO3\CMS\Core\Page\PageRenderer::addInlineLanguageLabelArray()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded()` - Second argument dropped
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility->explodeUrl2Array()` - Second argument dropped
@@ -571,6 +575,16 @@ The following class methods have changed visibility:
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash->isValidSalt()` changed from public to protected
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->base64Encode()` changed from public to protected
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->isValidSalt()` changed from public to protected
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->TS_images_db()` changed from public to protected
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->TS_links_db()` changed from public to protected
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->TS_transform_db()` changed from public to protected
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->TS_transform_rte()` changed from public to protected
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->HTMLcleaner_db()` changed from public to protected
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->getKeepTags()` changed from public to protected
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->divideIntoLines()` changed from public to protected
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->setDivTags()` changed from public to protected
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->getWHFromAttribs()` changed from public to protected
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->TS_AtagToAbs()` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->flattenSetup()` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->mergeConstantsFromPageTSconfig()` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->prependStaticExtra()` changed from public to protected
@@ -757,6 +771,14 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->parsedCharsets` changed from public to protected
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->toASCII` changed from public to protected
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->twoByteSets` changed from public to protected
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->allowedClasses` changed from public to protected
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->blockElementList` changed from public to protected
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->elRef` changed from public to protected
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->getKeepTags_cache` changed from public to protected
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->procOptions` changed from public to protected
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->recPid` changed from public to protected
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->TS_transform_db_safecounter` changed from public to protected
+* :php:`TYPO3\CMS\Core\Html\RteHtmlParser->tsConfig` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->absoluteRootLine` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->matchAll` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->nextLevel` changed from public to protected
@@ -884,6 +906,8 @@ The following user TSconfig options have been dropped:
 
 * Prefix `mod.` to override page TSconfig is ignored
 * `TSFE.frontendEditingController` to override the frontend editing controller in EXT:feedit
+* `RTE.proc.keepPDIVattribs`
+* `RTE.proc.dontRemoveUnknownTags_db`
 
 
 The following TypoScript options have been dropped:
@@ -993,6 +1017,8 @@ The following hooks have been removed:
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_previewInfo']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc']`
 
 
 The following feature is now always enabled:

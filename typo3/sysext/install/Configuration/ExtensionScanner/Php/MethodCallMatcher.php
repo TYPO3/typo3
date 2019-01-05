@@ -1792,6 +1792,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-83252-Link-tagSyntaxProcesssing.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Html\RteHtmlParser->TS_links_rte' => [
@@ -1799,6 +1800,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-83252-Link-tagSyntaxProcesssing.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->pageUnavailableAndExit' => [
@@ -3902,77 +3904,88 @@ return [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst'
+            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Html\RteHtmlParser->TS_links_db' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst'
+            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Html\RteHtmlParser->TS_transform_db' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst'
+            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Html\RteHtmlParser->TS_transform_rte' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst'
+            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Html\RteHtmlParser->HTMLcleaner_db' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst'
+            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Html\RteHtmlParser->getKeepTags' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst'
+            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Html\RteHtmlParser->divideIntoLines' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
-            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst'
+            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Html\RteHtmlParser->setDivTags' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst'
+            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Html\RteHtmlParser->getWHFromAttribs' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst'
+            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Html\RteHtmlParser->urlInfoForLinkTags' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst'
+            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Html\RteHtmlParser->TS_AtagToAbs' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst'
+            'Deprecation-86441-VariousMethodsAndPropertiesInsideBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Page\PageRenderer->loadJquery' => [

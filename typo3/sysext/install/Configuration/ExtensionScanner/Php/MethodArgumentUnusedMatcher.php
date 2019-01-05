@@ -31,6 +31,7 @@ return [
         'unusedArgumentNumbers' => [ 2 ],
         'restFiles' => [
             'Deprecation-83252-Link-tagSyntaxProcesssing.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->__construct' => [
