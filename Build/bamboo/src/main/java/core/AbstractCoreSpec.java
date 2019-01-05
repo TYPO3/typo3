@@ -170,6 +170,7 @@ abstract public class AbstractCoreSpec {
         .tasks(
             this.getTaskGitCloneRepository(),
             this.getTaskGitCherryPick(),
+            this.getTaskStopDanglingContainers(),
             new ScriptTask()
                 .description("composer validate")
                 .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -199,6 +200,7 @@ abstract public class AbstractCoreSpec {
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
+                this.getTaskStopDanglingContainers(),
                 this.getTaskComposerInstall(requirementIdentifier),
                 new ScriptTask()
                     .description("Execute cgl check script")
@@ -239,6 +241,7 @@ abstract public class AbstractCoreSpec {
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
+                this.getTaskStopDanglingContainers(),
                 composerTask,
                 new ScriptTask()
                     .description("Execute cgl check")
@@ -280,6 +283,7 @@ abstract public class AbstractCoreSpec {
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
+                this.getTaskStopDanglingContainers(),
                 composerTask,
                 this.getTaskPrepareAcceptanceTest(),
                 this.getTaskDockerDependenciesAcceptanceInstallMariadb10(),
@@ -337,6 +341,7 @@ abstract public class AbstractCoreSpec {
         .tasks(
             this.getTaskGitCloneRepository(),
             this.getTaskGitCherryPick(),
+            this.getTaskStopDanglingContainers(),
             composerTask,
             this.getTaskPrepareAcceptanceTest(),
             this.getTaskDockerDependenciesAcceptanceInstallPostgres10(),
@@ -394,6 +399,7 @@ abstract public class AbstractCoreSpec {
         .tasks(
             this.getTaskGitCloneRepository(),
             this.getTaskGitCherryPick(),
+            this.getTaskStopDanglingContainers(),
             composerTask,
             this.getTaskPrepareAcceptanceTest(),
             this.getTaskDockerDependenciesAcceptanceInstallSqlite(),
@@ -455,6 +461,7 @@ abstract public class AbstractCoreSpec {
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
+                    this.getTaskStopDanglingContainers(),
                     composerTask,
                     this.getTaskPrepareAcceptanceTest(),
                     this.getTaskDockerDependenciesAcceptanceBackendMariadb10(),
@@ -542,6 +549,7 @@ abstract public class AbstractCoreSpec {
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
+                    this.getTaskStopDanglingContainers(),
                     composerTask,
                     this.getTaskDockerDependenciesFunctionalMariadb10(),
                     this.getTaskSplitFunctionalJobs(numberOfChunks, requirementIdentifier),
@@ -608,6 +616,7 @@ abstract public class AbstractCoreSpec {
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
+                    this.getTaskStopDanglingContainers(),
                     composerTask,
                     this.getTaskDockerDependenciesFunctionalMssql(),
                     this.getTaskSplitFunctionalJobs(numberOfChunks, requirementIdentifier),
@@ -678,6 +687,7 @@ abstract public class AbstractCoreSpec {
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
+                    this.getTaskStopDanglingContainers(),
                     composerTask,
                     this.getTaskDockerDependenciesFunctionalPostgres10(),
                     this.getTaskSplitFunctionalJobs(numberOfChunks, requirementIdentifier),
@@ -745,6 +755,7 @@ abstract public class AbstractCoreSpec {
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
+                    this.getTaskStopDanglingContainers(),
                     composerTask,
                     this.getTaskSplitFunctionalJobs(numberOfChunks, requirementIdentifier),
                     this.getTaskDockerDependenciesFunctionalSqlite(),
@@ -800,6 +811,7 @@ abstract public class AbstractCoreSpec {
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
+                this.getTaskStopDanglingContainers(),
                 composerTask,
                 new ScriptTask()
                     .description("Execute annotations check script")
@@ -841,6 +853,7 @@ abstract public class AbstractCoreSpec {
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
+                this.getTaskStopDanglingContainers(),
                 composerTask,
                 new ScriptTask()
                     .description("Run duplicate exception code check script")
@@ -991,6 +1004,7 @@ abstract public class AbstractCoreSpec {
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
+                this.getTaskStopDanglingContainers(),
                 composerTask,
                 new ScriptTask()
                     .description("yarn install in Build/ dir")
@@ -1060,6 +1074,7 @@ abstract public class AbstractCoreSpec {
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
+                this.getTaskStopDanglingContainers(),
                 new ScriptTask()
                     .description("Run php lint")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -1098,6 +1113,7 @@ abstract public class AbstractCoreSpec {
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
+                this.getTaskStopDanglingContainers(),
                 new ScriptTask()
                     .description("yarn install in Build/ dir")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -1202,6 +1218,7 @@ abstract public class AbstractCoreSpec {
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
+                this.getTaskStopDanglingContainers(),
                 composerTask,
                 new ScriptTask()
                     .description("Run phpunit")
@@ -1247,6 +1264,7 @@ abstract public class AbstractCoreSpec {
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
+                this.getTaskStopDanglingContainers(),
                 composerTask,
                 new ScriptTask()
                     .description("Run phpunit")
@@ -1296,6 +1314,7 @@ abstract public class AbstractCoreSpec {
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
+                    this.getTaskStopDanglingContainers(),
                     composerTask,
                     new ScriptTask()
                         .description("Run phpunit-randomizer")
@@ -1356,6 +1375,23 @@ abstract public class AbstractCoreSpec {
                 "if [[ $CHANGEURL ]]; then\n" +
                 "    gerrit-cherry-pick https://review.typo3.org/Packages/TYPO3.CMS $CHANGEURLID/$PATCHSET || exit 1\n" +
                 "fi\n"
+            );
+    }
+
+    /**
+     * Safety net task executed before other task that call containers to
+     * stop any dangling containers from a previous run on this agent.
+     */
+    protected Task getTaskStopDanglingContainers() {
+        return new ScriptTask()
+            .description("Stop dangling containers")
+            .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+            .inlineBody(
+                this.getScriptTaskBashInlineBody() +
+                "cd Build/testing-docker/bamboo\n" +
+                "docker-compose down -v\n" +
+                "docker rm -f ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc\n" +
+                "exit 0\n"
             );
     }
 
