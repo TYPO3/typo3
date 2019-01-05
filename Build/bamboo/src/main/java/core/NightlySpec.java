@@ -178,6 +178,7 @@ public class NightlySpec extends AbstractCoreSpec {
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
+                this.getTaskStopDanglingContainers(),
                 this.getTaskComposerInstall(requirementIdentifier),
                 new ScriptTask()
                     .description("Execute cgl check")
