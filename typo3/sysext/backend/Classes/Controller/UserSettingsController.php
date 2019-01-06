@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A wrapper class to call BE_USER->uc
- * used for AJAX and TYPO3.Storage JS object
+ * used for AJAX and Storage/Persistent JS object
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class UserSettingsController
