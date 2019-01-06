@@ -140,9 +140,6 @@ class BackendController
         // load Toolbar class
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar');
 
-        // load Utility class
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Utility');
-
         // load Notification functionality
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Notification');
 

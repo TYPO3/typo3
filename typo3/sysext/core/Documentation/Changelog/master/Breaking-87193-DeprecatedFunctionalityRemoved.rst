@@ -1070,6 +1070,11 @@ The following JavaScript modules have been removed:
 * `TYPO3/CMS/Backend/Storage` - Use either `TYPO3/CMS/Backend/Storage/Client` or `TYPO3/CMS/Backend/Storage/Persistent`
 
 
+The following global instances have been removed:
+
+* `TYPO3.Utility` - require `TYPO3/CMS/Backend/Utility` in your AMD module
+
+
 Impact
 ======
 

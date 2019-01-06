@@ -24,7 +24,7 @@ class Utility {
    * @param {number} value
    * @returns {boolean}
    */
-  public isNumber = (value: number): boolean => {
+  public static isNumber(value: number): boolean {
     return !isNaN(parseFloat(value.toString())) && isFinite(value);
   }
 
@@ -35,7 +35,7 @@ class Utility {
    * @param {string} parameter
    * @returns {string}
    */
-  public getParameterFromUrl = (url: string, parameter: string): string => {
+  public static getParameterFromUrl(url: string, parameter: string): string {
     if (typeof url.split !== 'function') {
       return '';
     }
@@ -66,7 +66,7 @@ class Utility {
    * @param {string} value
    * @returns {string}
    */
-  public updateQueryStringParameter = (url: string, key: string, value: string): string => {
+  public static updateQueryStringParameter(url: string, key: string, value: string): string {
     const re = new RegExp('([?&])' + key + '=.*?(&|$)', 'i');
     const separator = url.indexOf('?') !== -1 ? '&' : '?';
 
@@ -77,8 +77,4 @@ class Utility {
   }
 }
 
-const utilityObject = new Utility();
-
-// @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Use the TYPO3/CMS/Backend/Utility module in AMD instead
-TYPO3.Utility = utilityObject;
-export = utilityObject;
+export = Utility;
