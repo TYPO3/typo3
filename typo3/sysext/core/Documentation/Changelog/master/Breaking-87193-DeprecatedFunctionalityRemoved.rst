@@ -1072,6 +1072,7 @@ The following JavaScript modules have been removed:
 
 The following global instances have been removed:
 
+* `TYPO3.Popover` - require `TYPO3/CMS/Backend/Popover` in your AMD module
 * `TYPO3.Utility` - require `TYPO3/CMS/Backend/Utility` in your AMD module
 
 
