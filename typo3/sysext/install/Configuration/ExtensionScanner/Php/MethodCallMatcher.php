@@ -2270,6 +2270,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\Wizard\TableController->getConfigCode' => [
@@ -2277,6 +2278,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\Wizard\TableController->getTableHTML' => [
@@ -2284,6 +2286,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\Wizard\TableController->changeFunc' => [
@@ -2291,6 +2294,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\Wizard\TableController->cfgArray2CfgString' => [
@@ -2298,6 +2302,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\Wizard\TableController->cfgString2CfgArray' => [
@@ -2305,6 +2310,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-84338-ProtectedMethodsAndPropertiesInTableController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Rsaauth\RsaEncryptionEncoder->getRsaPublicKey' => [

@@ -20,7 +20,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -28,7 +27,6 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -37,24 +35,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class TableController extends AbstractWizardController
 {
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * Properties which have been moved to protected status from public
-     *
-     * @var array
-     */
-    protected $deprecatedPublicProperties = [
-        'content' => 'Using $content of class TableController from the outside is discouraged, as this variable is only used for internal storage.',
-        'inputStyle' => 'Using $inputStyle of class TableController from the outside is discouraged, as this variable is only used for internal storage.',
-        'xmlStorage' => 'Using $xmlStorage of class TableController from the outside is discouraged, as this variable is only used for internal storage.',
-        'numNewRows' => 'Using $numNewRows of class TableController from the outside is discouraged, as this variable is only used for internal storage.',
-        'colsFieldName' => 'Using $colsFieldName of class TableController from the outside is discouraged, as this variable is only used for internal storage.',
-        'P' => 'Using $P of class TableController from the outside is discouraged, as this variable is only used for internal storage.',
-        'TABLECFG' => 'Using $TABLECFG of class TableController from the outside is discouraged, as this variable is only used for internal storage.',
-        'tableParsing_quote' => 'Using $tableParsing_quote of class TableController from the outside is discouraged, as this variable is only used for internal storage.',
-        'tableParsing_delimiter' => 'Using $tableParsing_delimiter of class TableController from the outside is discouraged, as this variable is only used for internal storage.',
-     ];
 
     /**
      * Content accumulation for the module.
@@ -163,125 +143,6 @@ class TableController extends AbstractWizardController
         }
 
         return $response;
-    }
-
-    /**
-     * Main function, rendering the table wizard
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function main()
-    {
-        trigger_error('TableController->main() will be replaced by protected method renderContent() in TYPO3 v10.0. Do not call from other extensions.', E_USER_DEPRECATED);
-
-        $response = $this->renderContent($GLOBALS['TYPO3_REQUEST']);
-
-        if ($response instanceof RedirectResponse) {
-            HttpUtility::redirect($response->getHeaders()['location'][0]);
-        }
-    }
-
-    /**
-     * Draws the table wizard content
-     *
-     * @return string HTML content for the form.
-     * @throws \RuntimeException
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function tableWizard()
-    {
-        trigger_error('TableController->tableWizard() will be replaced by protected method renderTableWizard() in TYPO3 v10.0. Do not call from other extensions.', E_USER_DEPRECATED);
-
-        $result = $this->renderTableWizard($GLOBALS['TYPO3_REQUEST']);
-
-        if ($result instanceof RedirectResponse) {
-            HttpUtility::redirect($result->getHeaders()['location'][0]);
-        }
-
-        return $result;
-    }
-
-    /**
-     * Will get and return the configuration code string
-     * Will also save (and possibly redirect/exit) the content if a save button has been pressed
-     *
-     * @param array $row Current parent record row
-     * @return array Table config code in an array
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function getConfigCode($row)
-    {
-        trigger_error('TableController->getConfigCode() will be replaced by protected method getConfiguration() in TYPO3 v10.0. Do not call from other extensions.', E_USER_DEPRECATED);
-
-        $result = $this->getConfiguration($row, $GLOBALS['TYPO3_REQUEST']);
-
-        if ($result instanceof RedirectResponse) {
-            HttpUtility::redirect($result->getHeaders()['location'][0]);
-        }
-
-        return $result;
-    }
-
-    /**
-     * Creates the HTML for the Table Wizard:
-     *
-     * @param array $configuration Table config array
-     * @return string HTML for the table wizard
-     * @internal
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function getTableHTML($configuration)
-    {
-        trigger_error('TableController->getTableHTML() will be replaced by protected method getTableWizard() in TYPO3 v10.0. Do not call from other extensions.', E_USER_DEPRECATED);
-        return $this->getTableWizard($configuration);
-    }
-
-    /**
-     * Detects if a control button (up/down/around/delete) has been pressed for an item and accordingly it will
-     * manipulate the internal TABLECFG array
-     *
-     * @internal
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function changeFunc()
-    {
-        trigger_error('TableController->changeFunc() will be replaced by protected method manipulateTable() in TYPO3 v10.0. Do not call from other extensions.', E_USER_DEPRECATED);
-        $this->manipulateTable();
-    }
-
-    /**
-     * Converts the input array to a configuration code string
-     *
-     * @param array $cfgArr Array of table configuration (follows the input structure from the table wizard POST form)
-     * @return string The array converted into a string with line-based configuration.
-     * @see cfgString2CfgArray()
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function cfgArray2CfgString($cfgArr)
-    {
-        trigger_error('TableController->cfgArray2CfgString() will be replaced by protected method configurationArrayToString() in TYPO3 v10.0. Do not call from other extensions.', E_USER_DEPRECATED);
-        return $this->configurationArrayToString($cfgArr);
-    }
-
-    /**
-     * Converts the input configuration code string into an array
-     *
-     * @param string $configurationCode Configuration code
-     * @param int $columns Default number of columns
-     * @return array Configuration array
-     * @see cfgArray2CfgString()
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function cfgString2CfgArray($configurationCode, $columns)
-    {
-        trigger_error('TableController->cfgString2CfgArray() will be replaced by protected method configurationStringToArray() in TYPO3 v10.0. Do not call from other extensions.', E_USER_DEPRECATED);
-        return $this->configurationStringToArray($configurationCode, $columns);
     }
 
     /**

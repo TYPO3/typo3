@@ -207,6 +207,12 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Backend\Controller\NewRecordController->regularNew()`
 * :php:`TYPO3\CMS\Backend\Controller\NewRecordController->showNewRecLink()`
 * :php:`TYPO3\CMS\Backend\Controller\NewRecordController->sortNewRecordsByConfig()`
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->cfgArray2CfgString()`
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->cfgString2CfgArray()`
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->changeFunc()`
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->getConfigCode()`
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->getTableHTML()`
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->tableWizard()`
 * :php:`TYPO3\CMS\Backend\Controller\UserSettingsController->process()`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->initializeAdminPanel()`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->initializeFrontendEdit()`
@@ -780,6 +786,15 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->search_field` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->search_levels` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->showLimit` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->content` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->inputStyle` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->xmlStorage` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->numNewRows` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->colsFieldName` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->P` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->TABLECFG` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->tableParsing_quote` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->tableParsing_delimiter` changed from public to protected
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->checkWorkspaceCurrent_cache` changed from public to protected
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->TSdataArray` changed from public to protected
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTS` changed from public to protected
