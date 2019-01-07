@@ -859,7 +859,6 @@ class EditDocumentController
             $linkParameters = array_replace($linkParameters, $additionalGetParameters);
         }
 
-        $linkParameters['no_cache'] = 1;
         return HttpUtility::buildQueryString($linkParameters, '&');
     }
 
