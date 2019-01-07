@@ -247,7 +247,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
         $configuration = $this->buildLanguageConfiguration($identifier, $base);
         $configuration['typo3Language'] = 'default';
         $configuration['flag'] = 'global';
-        unset($configuration['fallbackType']);
+        unset($configuration['fallbackType'], $configuration['fallbacks']);
         return $configuration;
     }
 
@@ -287,7 +287,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
                 $fallbackIdentifiers
             );
             $configuration['fallbackType'] = 'fallback';
-            $configuration['fallbackType'] = implode(',', $fallbackIds);
+            $configuration['fallbacks'] = implode(',', $fallbackIds);
         }
 
         return $configuration;
