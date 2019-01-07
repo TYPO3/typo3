@@ -18,7 +18,6 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
 /**
@@ -169,33 +168,10 @@ class SoftReferenceIndex
                 $pI = pathinfo($srcRef);
                 // If it looks like a local image, continue. Otherwise ignore it.
                 $absPath = GeneralUtility::getFileAbsFileName(Environment::getPublicPath() . '/' . $srcRef);
-                if (!$pI['scheme'] && !$pI['query'] && $absPath && $srcRef !== 'clear.gif') {
-                    // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
+                if (!$pI['scheme'] && !$pI['query'] && $absPath) {
                     // Initialize the element entry with info text here:
-                    $tokenID = $this->makeTokenID($k);
                     $elements[$k] = [];
                     $elements[$k]['matchString'] = $v;
-                    // If the image seems to be an RTE image, then proceed to set up substitution token:
-                    if (GeneralUtility::isFirstPartOfStr($srcRef, 'uploads/') && preg_match('/^RTEmagicC_/', PathUtility::basename($srcRef))) {
-                        // Token and substitute value:
-                        // Make sure the value we work on is found and will get substituted in the content (Very important that the src-value is not DeHSC'ed)
-                        if (strstr($splitContent[$k], $attribs[0]['src'])) {
-                            // Substitute value with token (this is not be an exact method if the value is in there twice, but we assume it will not)
-                            $splitContent[$k] = str_replace($attribs[0]['src'], '{softref:' . $tokenID . '}', $splitContent[$k]);
-                            $elements[$k]['subst'] = [
-                                'type' => 'file',
-                                'relFileName' => $srcRef,
-                                'tokenID' => $tokenID,
-                                'tokenValue' => $attribs[0]['src']
-                            ];
-                            // Finally, notice if the file does not exist.
-                            if (!@is_file($absPath)) {
-                                $elements[$k]['error'] = 'File does not exist!';
-                            }
-                        } else {
-                            $elements[$k]['error'] = 'Could not substitute image source with token!';
-                        }
-                    }
                 }
             }
         }

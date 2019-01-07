@@ -108,9 +108,6 @@ class NodeFactory
 
         // Element wizards
         'defaultLanguageDifferences' => FieldWizard\DefaultLanguageDifferences::class,
-        'fileThumbnails' => FieldWizard\FileThumbnails::class,
-        'fileTypeList' => FieldWizard\FileTypeList::class,
-        'fileUpload' => FieldWizard\FileUpload::class,
         'localizationStateSelector' => FieldWizard\LocalizationStateSelector::class,
         'otherLanguageContent' => FieldWizard\OtherLanguageContent::class,
         'recordsOverview' => FieldWizard\RecordsOverview::class,

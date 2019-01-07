@@ -96,16 +96,6 @@ class Import extends ImportExport
     /**
      * @var array
      */
-    protected $alternativeFileName = [];
-
-    /**
-     * @var array
-     */
-    protected $alternativeFilePath = [];
-
-    /**
-     * @var array
-     */
     protected $filePathMap = [];
 
     /**************************
@@ -139,8 +129,6 @@ class Import extends ImportExport
         $this->import_newId_pids = [];
         // Temporary files stack initialized:
         $this->unlinkFiles = [];
-        $this->alternativeFileName = [];
-        $this->alternativeFilePath = [];
 
         $this->initializeStorageObjects();
     }
@@ -953,8 +941,6 @@ class Import extends ImportExport
         $tce = GeneralUtility::makeInstance(DataHandler::class);
         $tce->dontProcessTransformations = 1;
         $tce->enableLogging = $this->enableLogging;
-        $tce->alternativeFileName = $this->alternativeFileName;
-        $tce->alternativeFilePath = $this->alternativeFilePath;
         return $tce;
     }
 
@@ -1060,11 +1046,7 @@ class Import extends ImportExport
         $valArray = [];
         foreach ($itemArray as $relDat) {
             if (is_array($this->import_mapId[$relDat['table']]) && isset($this->import_mapId[$relDat['table']][$relDat['id']])) {
-                // Since non FAL file relation type group internal_type file_reference are handled as reference to
-                // sys_file records Datahandler requires the value as uid of the the related sys_file record only
-                if ($itemConfig['type'] === 'group' && $itemConfig['internal_type'] === 'file_reference') {
-                    $value = $this->import_mapId[$relDat['table']][$relDat['id']];
-                } elseif ($itemConfig['type'] === 'input' && isset($itemConfig['wizards']['link'])) {
+                if ($itemConfig['type'] === 'input' && isset($itemConfig['wizards']['link'])) {
                     // If an input field has a relation to a sys_file record this need to be converted back to
                     // the public path. But use getPublicUrl here, because could normally only be a local file path.
                     $fileUid = $this->import_mapId[$relDat['table']][$relDat['id']];
@@ -1097,7 +1079,7 @@ class Import extends ImportExport
      * Writes the file from import array to temp dir and returns the filename of it.
      *
      * @param array $fI File information with three keys: "filename" = filename without path, "ID_absFile" = absolute filepath to the file (including the filename), "ID" = md5 hash of "ID_absFile
-     * @return string|null Absolute filename of the temporary filename of the file. In ->alternativeFileName the original name is set.
+     * @return string|null Absolute filename of the temporary filename of the file.
      */
     public function import_addFileNameToBeCopied($fI)
     {
@@ -1117,8 +1099,6 @@ class Import extends ImportExport
             clearstatcache();
             if (@is_file($tmpFile)) {
                 $this->unlinkFiles[] = $tmpFile;
-                $this->alternativeFileName[$tmpFile] = $fI['filename'];
-                $this->alternativeFilePath[$tmpFile] = $this->dat['files'][$fI['ID']]['relFileRef'];
                 return $tmpFile;
             }
             $this->error('Error: temporary file ' . $tmpFile . ' was not written as it should have been!');

@@ -77,25 +77,13 @@ class GroupElement extends AbstractFormElement
         'tableList' => [
             'renderType' => 'tableList',
         ],
-        'fileTypeList' => [
-            'renderType' => 'fileTypeList',
-            'after' => [ 'tableList' ],
-        ],
-        'fileThumbnails' => [
-            'renderType' => 'fileThumbnails',
-            'after' => [ 'fileTypeList' ],
-        ],
         'recordsOverview' => [
             'renderType' => 'recordsOverview',
-            'after' => [ 'fileThumbnails' ],
-        ],
-        'fileUpload' => [
-            'renderType' => 'fileUpload',
-            'after' => [ 'recordsOverview' ],
+            'after' => [ 'tableList' ],
         ],
         'localizationStateSelector' => [
             'renderType' => 'localizationStateSelector',
-            'after' => [ 'fileUpload' ],
+            'after' => [ 'recordsOverview' ],
         ],
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
@@ -145,19 +133,7 @@ class GroupElement extends AbstractFormElement
 
         $listOfSelectedValues = [];
         $selectorOptionsHtml = [];
-        if ($internalType === 'file_reference' || $internalType === 'file') {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
-            foreach ($selectedItems as $selectedItem) {
-                $uidOrPath = $selectedItem['uidOrPath'];
-                $listOfSelectedValues[] = $uidOrPath;
-                $title = $selectedItem['title'];
-                $shortenedTitle = GeneralUtility::fixed_lgd_cs($title, $maxTitleLength);
-                $selectorOptionsHtml[] =
-                    '<option value="' . htmlspecialchars($uidOrPath) . '" title="' . htmlspecialchars($title) . '">'
-                        . htmlspecialchars($this->appendValueToLabelInDebugMode($shortenedTitle, $uidOrPath))
-                    . '</option>';
-            }
-        } elseif ($internalType === 'folder') {
+        if ($internalType === 'folder') {
             foreach ($selectedItems as $selectedItem) {
                 $folder = $selectedItem['folder'];
                 $listOfSelectedValues[] = $folder;

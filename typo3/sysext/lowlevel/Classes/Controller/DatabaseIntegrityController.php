@@ -473,13 +473,8 @@ class DatabaseIntegrityController
         $admin = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
         $fkey_arrays = $admin->getGroupFields('');
         $admin->selectNonEmptyRecordsWithFkeys($fkey_arrays);
-        $fileTest = $admin->testFileRefs();
 
-        if (is_array($fileTest['noFile'])) {
-            ksort($fileTest['noFile']);
-        }
         $this->view->assignMultiple([
-            'files' =>  $fileTest,
             'select_db' => $admin->testDBRefs($admin->getCheckSelectDBRefs()),
             'group_db' => $admin->testDBRefs($admin->getCheckGroupDBRefs())
         ]);

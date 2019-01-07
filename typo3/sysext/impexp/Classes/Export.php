@@ -1012,11 +1012,9 @@ class Export extends ImportExport
                         'relations' => 'element',
                         'filerefs' => 'file',
                         'flexform:db' => 'db_relations',
-                        'flexform:file' => 'file_relations',
                         'flexform:softrefs' => 'softref_relations',
                         'softref_relations' => 'structurePath',
                         'db_relations' => 'path',
-                        'file_relations' => 'path',
                         'path' => 'element',
                         'keys' => 'softref_key',
                         'softref_key' => 'softref_element'

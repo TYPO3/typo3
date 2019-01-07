@@ -13,6 +13,9 @@ The following PHP classes that have been previously deprecated for v9 have been 
 
 * :php:`TYPO3\CMS\Adminpanel\View\AdminPanelView`
 * :php:`TYPO3\CMS\Backend\Controller\LoginFramesetController`
+* :php:`TYPO3\CMS\Backend\Form\Form\FieldWizard\FileThumbnails`
+* :php:`TYPO3\CMS\Backend\Form\Form\FieldWizard\FileTypeList`
+* :php:`TYPO3\CMS\Backend\Form\Form\FieldWizard\FileUpload`
 * :php:`TYPO3\CMS\Backend\Http\AjaxRequestHandler`
 * :php:`TYPO3\CMS\Backend\Module\AbstractFunctionModule`
 * :php:`TYPO3\CMS\Backend\Module\AbstractModule`
@@ -289,9 +292,22 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setHashCount()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setMaxHashCount()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash->setMinHashCount()`
+* :php:`TYPO3\CMS\Core\Database\ReferenceIndex->createEntryData_fileRels()`
+* :php:`TYPO3\CMS\Core\Database\ReferenceIndex->createEntryDataForFileRelationsUsingRecord()`
+* :php:`TYPO3\CMS\Core\Database\ReferenceIndex->destPathFromUploadFolder()`
+* :php:`TYPO3\CMS\Core\Database\ReferenceIndex->getRelations_procFiles()`
+* :php:`TYPO3\CMS\Core\Database\ReferenceIndex->setReferenceValue_fileRels()`
 * :php:`TYPO3\CMS\Core\Database\SoftReferenceIndex->getPageIdFromAlias()`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->checkValue_group_select_file()`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->copyRecord_fixRTEmagicImages()`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->copyRecord_procFilesRefs()`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->deleteRecord_flexFormCallBack()`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->extFileFields()`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->extFileFunctions()`
 * :php:`TYPO3\CMS\Core\DataHandling\DataHandler->getTCEMAIN_TSconfig()`
 * :php:`TYPO3\CMS\Core\DataHandling\DataHandler->newlog2()`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->process_uploads_traverseArray()`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->removeRegisteredFiles()`
 * :php:`TYPO3\CMS\Core\DataHandling\DataHandler->resorting()`
 * :php:`TYPO3\CMS\Core\Imaging\GraphicalFunctions->init()`
 * :php:`TYPO3\CMS\Core\Html\RteHtmlParser->transformStyledATags()`
@@ -331,7 +347,7 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Extbase\Mvc\Controller\Arguments->getValidationResults()`
 * :php:`TYPO3\CMS\Extbase\Service\EnvironmentService->isEnvironmentInCliMode`
 * :php:`TYPO3\CMS\Fluid\Core\Widget\Bootstrap->configureObjectManager()`
-* :php:`TYPO3\CMS\Filelist\FileFacade::getIcon()`
+* :php:`TYPO3\CMS\Filelist\FileFacade->getIcon()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->addParams()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->calcIntExplode()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->currentPageUrl()`
@@ -412,7 +428,10 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Install\Service\CoreVersionService->isYoungerPatchDevelopmentReleaseAvailable()`
 * :php:`TYPO3\CMS\Install\Service\CoreVersionService->getYoungestPatchDevelopmentRelease()`
 * :php:`TYPO3\CMS\Install\Service\CoreVersionService->updateVersionMatrix()`
-* :php:`TYPO3\CMS\Rsaauth\RsaEncryptionEncoder->getRsaPublicKeyAjaxHandler()`
+* :php:`TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck->getFileFields()`
+* :php:`TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck->testFileRefs()`
+* :php:`TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck->whereIsFileReferenced()`
+* :php:`TYPO3\CMS\Rsaauth\RsaEncryptionEncode[r->getRsaPublicKeyAjaxHandler()`
 * :php:`TYPO3\CMS\Setup\Controller\SetupModuleController->getFormProtection()`
 * :php:`TYPO3\CMS\Setup\Controller\SetupModuleController->simulateUser()`
 
@@ -440,6 +459,11 @@ The following PHP static class methods that have been previously deprecated for 
 * :php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles()`
 * :php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath()`
 * :php:`TYPO3\CMS\Extbase\Mvc\Controller\ActionController::getActionMethodParameters()`
+
+
+The following PHP methods have been additionally deprecated and are a no-op now:
+
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->process_uploads()`
 
 
 The following methods changed signature according to previous deprecations in v9 at the end of the argument list:
@@ -471,7 +495,6 @@ The following methods changed signature according to previous deprecations in v9
 * :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->main()` - First argument mandatory
 
 
-
 The following public class properties have been dropped:
 
 * :php:`TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->access`
@@ -493,8 +516,17 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Backend\Template\DocumentTemplate->hasDocheader`
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTS_dontGetCached`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->synonyms`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->alternativeFileName`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->alternativeFilePath`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->autoVersioningUpdate`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->bypassFileHandling`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->copiedFileMap`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->filefunc`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->removeFilesStore`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->RTEmagic_copyIndex`
 * :php:`TYPO3\CMS\Core\DataHandling\DataHandler->updateModeL10NdiffData`
 * :php:`TYPO3\CMS\Core\DataHandling\DataHandler->updateModeL10NdiffDataClear`
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->uploadedFileArray`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->allowedPaths`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->debug`
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->fileCache`
@@ -1006,9 +1038,11 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController->localLangFile` changed from public to protected
 * :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController->pObj` changed from public to protected
 
+
 The following VieHelpers have changed:
 
 * :php:`TYPO3\CMS\Form\ViewHelpers\TranslateElementErrorViewHelper`: The arguments `code`, `arguments` & `defaultValue` have been removed.
+
 
 The following scheduler tasks have been removed:
 
@@ -1090,6 +1124,8 @@ The following class constants have been dropped:
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash::HASH_COUNT`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash::MAX_HASH_COUNT`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash::MIN_HASH_COUNT`
+* :php:`TYPO3\CMS\Core\DataHandling\TableColumnSubType::FILE`
+* :php:`TYPO3\CMS\Core\DataHandling\TableColumnSubType::FILE_REFERENCE`
 * :php:`TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_NONE`
 * :php:`TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST`
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR`
@@ -1128,6 +1164,7 @@ The following global variables have been removed:
 
 The following hooks have been removed:
 
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processUpload']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preBeUser']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest']`
@@ -1147,11 +1184,13 @@ The following hooks don't pass the class reference anymore:
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawHeaderHook']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawFooterHook']`
 
+
 The following feature is now always enabled:
 
 * Extbase's :php:`consistentTranslationOverlayHandling` - Translations in Extbase are now always consistent
 * :php:`simplifiedControllerActionDispatching` - Backend controller actions do not receive a prepared response object anymore
 * :php:`unifiedPageTranslationHandling` - Page Translations are not within `pages_language_overlay` anymore
+
 
 The following features have been removed:
 
@@ -1161,6 +1200,7 @@ The following features have been removed:
   `$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['my_eID'] = 'EXT:benni/Scripts/download.php'` will not work anymore.
   Instead, they must contain a target (callable, class/method, function).
 * TCA auto migration from core v6 to core v7 compatible TCA
+* TCA :php:`type='group'` with :php:`internal_type='file'` and :php:`internal_type='file_reference`
 
 
 The following database tables have been removed:

@@ -47,13 +47,6 @@ class TreeDataProviderFactoryTest extends UnitTestCase
     {
         return [
             'Empty Configuration' => [[], 1288215890],
-            'File Configuration' => [
-                [
-                    'internal_type' => 'file',
-                    'treeConfig' => [],
-                ],
-                1288215891
-            ],
             'Unknown Type' => [
                 [
                     'internal_type' => 'foo',

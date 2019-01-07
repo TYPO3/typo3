@@ -3751,6 +3751,7 @@ return [
         'maximumNumberOfArguments' => 8,
         'restFiles' => [
             'Deprecation-86406-TCATypeGroupInternal_typeFileAndFile_reference.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\DataHandling\DataHandler->copyRecord_procFilesRefs' => [
@@ -3758,6 +3759,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-86406-TCATypeGroupInternal_typeFileAndFile_reference.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\DataHandling\DataHandler->extFileFields' => [
@@ -3765,6 +3767,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-86406-TCATypeGroupInternal_typeFileAndFile_reference.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\DataHandling\DataHandler->extFileFunctions' => [
@@ -3772,6 +3775,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-86406-TCATypeGroupInternal_typeFileAndFile_reference.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Database\ReferenceIndex->getRelations_procFiles' => [
@@ -3779,6 +3783,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-86406-TCATypeGroupInternal_typeFileAndFile_reference.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Integrity\DatabaseIntegrityCheck->getFileFields' => [
@@ -3786,6 +3791,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-86406-TCATypeGroupInternal_typeFileAndFile_reference.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->makeCacheHash' => [
@@ -4091,6 +4097,13 @@ return [
         'restFiles' => [
             'Breaking-87305-UseConstructorInjectionInDataMapper.rst',
             'Deprecation-87305-UseConstructorInjectionInDataMapper.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->process_uploads' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-87305-UseConstructorInjectionInDataMapper.rst',
         ],
     ],
 ];

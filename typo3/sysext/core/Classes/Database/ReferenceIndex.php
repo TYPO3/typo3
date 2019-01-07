@@ -20,17 +20,12 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
@@ -397,23 +392,11 @@ class ReferenceIndex implements LoggerAwareInterface
                 case 'db':
                     $this->createEntryDataForDatabaseRelationsUsingRecord($tableName, $record, $fieldName, '', $deleted, $fieldRelations['itemArray']);
                     break;
-                case 'file_reference':
-                    // not used (see getRelations()), but fallback to file
-                case 'file':
-                    $this->createEntryDataForFileRelationsUsingRecord($tableName, $record, $fieldName, '', $deleted, $fieldRelations['newValueFiles']);
-                    break;
                 case 'flex':
                     // DB references in FlexForms
                     if (is_array($fieldRelations['flexFormRels']['db'])) {
                         foreach ($fieldRelations['flexFormRels']['db'] as $flexPointer => $subList) {
                             $this->createEntryDataForDatabaseRelationsUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, $subList);
-                        }
-                    }
-                    // File references in FlexForms
-                    // @todo #65463 Test correct handling of file references in FlexForms
-                    if (is_array($fieldRelations['flexFormRels']['file'])) {
-                        foreach ($fieldRelations['flexFormRels']['file'] as $flexPointer => $subList) {
-                            $this->createEntryDataForFileRelationsUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, $subList);
                         }
                     }
                     // Soft references in FlexForms
@@ -443,9 +426,9 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param string $field Fieldname of source record (where reference is located)
      * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in [field]
      * @param int $deleted Whether record is deleted-flagged or not
-     * @param string $ref_table For database references; the tablename the reference points to. Special keyword "_FILE" indicates that "ref_string" is a file reference either absolute or relative to Environment::getPublicPath(). Special keyword "_STRING" indicates some special usage (typ. softreference) where "ref_string" is used for the value.
-     * @param int $ref_uid For database references; The UID of the record (zero "ref_table" is "_FILE" or "_STRING")
-     * @param string $ref_string For "_FILE" or "_STRING" references: The filepath (relative to Environment::getPublicPath() or absolute) or other string.
+     * @param string $ref_table For database references; the tablename the reference points to. Special keyword "_STRING" indicates some special usage (typ. softreference) where "ref_string" is used for the value.
+     * @param int $ref_uid For database references; The UID of the record (zero "ref_table" is "_STRING")
+     * @param string $ref_string For "_STRING" references: The string.
      * @param int $sort The sorting order of references if many (the "group" or "select" TCA types). -1 if no sorting order is specified.
      * @param string $softref_key If the reference is a soft reference, this is the soft reference parser key. Otherwise empty.
      * @param string $softref_id Soft reference ID for key. Might be useful for replace operations.
@@ -480,9 +463,9 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param string $fieldName Fieldname of source record (where reference is located)
      * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in [$field]
      * @param int $deleted Whether record is deleted-flagged or not
-     * @param string $referencedTable In database references the tablename the reference points to. Keyword "_FILE" indicates that $referenceString is a file reference, keyword "_STRING" indicates special usage (typ. SoftReference) in $referenceString
-     * @param int $referencedUid In database references the UID of the record (zero $referencedTable is "_FILE" or "_STRING")
-     * @param string $referenceString For "_FILE" or "_STRING" references: The filepath (relative to Environment::getPublicPath() or absolute) or other string.
+     * @param string $referencedTable In database references the tablename the reference points to. Keyword "_STRING" indicates special usage (typ. SoftReference) in $referenceString
+     * @param int $referencedUid In database references the UID of the record (zero $referencedTable is "_STRING")
+     * @param string $referenceString For "_STRING" references: The string.
      * @param int $sort The sorting order of references if many (the "group" or "select" TCA types). -1 if no sorting order is specified.
      * @param string $softReferenceKey If the reference is a soft reference, this is the soft reference parser key. Otherwise empty.
      * @param string $softReferenceId Soft reference ID for key. Might be useful for replace operations.
@@ -558,63 +541,6 @@ class ReferenceIndex implements LoggerAwareInterface
     }
 
     /**
-     * Enter file references to ->relations array
-     *
-     * @param string $table Tablename of source record (where reference is located)
-     * @param int $uid UID of source record (where reference is located)
-     * @param string $fieldName Fieldname of source record (where reference is located)
-     * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in [field]
-     * @param int $deleted Whether record is deleted-flagged or not
-     * @param array $items Data array with file relations
-     */
-    public function createEntryData_fileRels($table, $uid, $fieldName, $flexPointer, $deleted, $items)
-    {
-        $uid = $uid ? (int)$uid : 0;
-        if (!$uid) {
-            return;
-        }
-        $this->createEntryDataForFileRelationsUsingRecord(
-            (string)$table,
-            $this->getRecordRawCached($table, $uid),
-            (string)$fieldName,
-            (string)$flexPointer,
-            $deleted ? (int)$deleted : 0,
-            (array)$items
-        );
-    }
-
-    /**
-     * Add file references to ->relations array based on fetched record
-     *
-     * @param string $tableName Tablename of source record (where reference is located)
-     * @param array $record Record from $tableName
-     * @param string $fieldName Fieldname of source record (where reference is located)
-     * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in $fieldName
-     * @param int $deleted Whether record is deleted-flagged or not
-     * @param array $items Data array with file relations
-     */
-    protected function createEntryDataForFileRelationsUsingRecord(string $tableName, array $record, string $fieldName, string $flexPointer, int $deleted, array $items)
-    {
-        foreach ($items as $sort => $i) {
-            $filePath = $i['ID_absFile'];
-            if (GeneralUtility::isFirstPartOfStr($filePath, Environment::getPublicPath())) {
-                $filePath = PathUtility::stripPathSitePrefix($filePath);
-            }
-            $this->relations[] = $this->createEntryDataUsingRecord(
-                $tableName,
-                $record,
-                $fieldName,
-                $flexPointer,
-                $deleted,
-                '_FILE',
-                0,
-                $filePath,
-                $sort
-            );
-        }
-    }
-
-    /**
      * Enter softref references to ->relations array
      *
      * @param string $table Tablename of source record (where reference is located)
@@ -661,11 +587,6 @@ class ReferenceIndex implements LoggerAwareInterface
                                 list($referencedTable, $referencedUid) = explode(':', $el['subst']['recordRef']);
                                 $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, $referencedTable, $referencedUid, '', -1, $spKey, $subKey);
                                 break;
-                            case 'file_reference':
-                                // not used (see getRelations()), but fallback to file
-                            case 'file':
-                                $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, '_FILE', 0, $el['subst']['relFileName'], -1, $spKey, $subKey);
-                                break;
                             case 'string':
                                 $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, '_STRING', 0, $el['subst']['tokenValue'], -1, $spKey, $subKey);
                                 break;
@@ -685,7 +606,7 @@ class ReferenceIndex implements LoggerAwareInterface
     /**
      * Returns relation information for a $table/$row-array
      * Traverses all fields in input row which are configured in TCA/columns
-     * It looks for hard relations to files and records in the TCA types "select" and "group"
+     * It looks for hard relations to records in the TCA types "select" and "group"
      *
      * @param string $table Table name
      * @param array $row Row from table
@@ -701,36 +622,6 @@ class ReferenceIndex implements LoggerAwareInterface
         foreach ($row as $field => $value) {
             if ($this->shouldExcludeTableColumnFromReferenceIndex($table, $field, $onlyField) === false) {
                 $conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-                // Add files
-                $resultsFromFiles = $this->getRelations_procFiles($value, $conf, $uid);
-                if (!empty($resultsFromFiles)) {
-                    // We have to fill different arrays here depending on the result.
-                    // internal_type file is still a relation of type file and
-                    // since http://forge.typo3.org/issues/49538 internal_type file_reference
-                    // is a database relation to a sys_file record
-                    $fileResultsFromFiles = [];
-                    $dbResultsFromFiles = [];
-                    foreach ($resultsFromFiles as $resultFromFiles) {
-                        if (isset($resultFromFiles['table']) && $resultFromFiles['table'] === 'sys_file') {
-                            $dbResultsFromFiles[] = $resultFromFiles;
-                        } else {
-                            // Creates an entry for the field with all the files:
-                            $fileResultsFromFiles[] = $resultFromFiles;
-                        }
-                    }
-                    if (!empty($fileResultsFromFiles)) {
-                        $outRow[$field] = [
-                            'type' => 'file',
-                            'newValueFiles' => $fileResultsFromFiles
-                        ];
-                    }
-                    if (!empty($dbResultsFromFiles)) {
-                        $outRow[$field] = [
-                            'type' => 'db',
-                            'itemArray' => $dbResultsFromFiles
-                        ];
-                    }
-                }
                 // Add a softref definition for link fields if the TCA does not specify one already
                 if ($conf['type'] === 'input' && $conf['renderType'] === 'inputLink' && empty($conf['softref'])) {
                     $conf['softref'] = 'typolink';
@@ -744,17 +635,16 @@ class ReferenceIndex implements LoggerAwareInterface
                         'itemArray' => $resultsFromDatabase
                     ];
                 }
-                // For "flex" fieldtypes we need to traverse the structure looking for file and db references of course!
+                // For "flex" fieldtypes we need to traverse the structure looking for db references of course!
                 if ($conf['type'] === 'flex') {
                     // Get current value array:
                     // NOTICE: failure to resolve Data Structures can lead to integrity problems with the reference index. Please look up
                     // the note in the JavaDoc documentation for the function FlexFormTools->getDataStructureIdentifier()
                     $currentValueArray = GeneralUtility::xml2array($value);
-                    // Traversing the XML structure, processing files:
+                    // Traversing the XML structure, processing:
                     if (is_array($currentValueArray)) {
                         $this->temp_flexRelations = [
                             'db' => [],
-                            'file' => [],
                             'softrefs' => []
                         ];
                         // Create and call iterator object:
@@ -795,7 +685,7 @@ class ReferenceIndex implements LoggerAwareInterface
     }
 
     /**
-     * Callback function for traversing the FlexForm structure in relation to finding file and DB references!
+     * Callback function for traversing the FlexForm structure in relation to finding DB references!
      *
      * @param array $dsArr Data structure for the current value
      * @param mixed $dataValue Current value
@@ -814,29 +704,6 @@ class ReferenceIndex implements LoggerAwareInterface
             $PA['uid'],
             $PA['field']
         ];
-        // Add files
-        $resultsFromFiles = $this->getRelations_procFiles($dataValue, $dsConf, $uid);
-        if (!empty($resultsFromFiles)) {
-            // We have to fill different arrays here depending on the result.
-            // internal_type file is still a relation of type file and
-            // since http://forge.typo3.org/issues/49538 internal_type file_reference
-            // is a database relation to a sys_file record
-            $fileResultsFromFiles = [];
-            $dbResultsFromFiles = [];
-            foreach ($resultsFromFiles as $resultFromFiles) {
-                if (isset($resultFromFiles['table']) && $resultFromFiles['table'] === 'sys_file') {
-                    $dbResultsFromFiles[] = $resultFromFiles;
-                } else {
-                    $fileResultsFromFiles[] = $resultFromFiles;
-                }
-            }
-            if (!empty($fileResultsFromFiles)) {
-                $this->temp_flexRelations['file'][$structurePath] = $fileResultsFromFiles;
-            }
-            if (!empty($dbResultsFromFiles)) {
-                $this->temp_flexRelations['db'][$structurePath] = $dbResultsFromFiles;
-            }
-        }
         // Add a softref definition for link fields if the TCA does not specify one already
         if ($dsConf['type'] === 'input' && $dsConf['renderType'] === 'inputLink' && empty($dsConf['softref'])) {
             $dsConf['softref'] = 'typolink';
@@ -869,67 +736,6 @@ class ReferenceIndex implements LoggerAwareInterface
                 $this->temp_flexRelations['softrefs'][$structurePath]['tokenizedContent'] = $softRefValue;
             }
         }
-    }
-
-    /**
-     * Check field configuration if it is a file relation field and extract file relations if any
-     *
-     * @param string $value Field value
-     * @param array $conf Field configuration array of type "TCA/columns
-     * @param int $uid Field uid
-     * @return bool|array If field type is OK it will return an array with the files inside. Else FALSE
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
-     */
-    public function getRelations_procFiles($value, $conf, $uid)
-    {
-        if ($conf['type'] !== 'group' || ($conf['internal_type'] !== 'file' && $conf['internal_type'] !== 'file_reference')) {
-            return false;
-        }
-
-        // Collect file values in array:
-        if ($conf['MM']) {
-            $theFileValues = [];
-            $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
-            $dbAnalysis->start('', 'files', $conf['MM'], $uid);
-            foreach ($dbAnalysis->itemArray as $someval) {
-                if ($someval['id']) {
-                    $theFileValues[] = $someval['id'];
-                }
-            }
-        } else {
-            $theFileValues = explode(',', $value);
-        }
-        // Traverse the files and add them:
-        $uploadFolder = $conf['internal_type'] === 'file' ? $conf['uploadfolder'] : '';
-        $destinationFolder = $this->destPathFromUploadFolder($uploadFolder);
-        $newValueFiles = [];
-        foreach ($theFileValues as $file) {
-            if (trim($file)) {
-                $realFile = $destinationFolder . '/' . trim($file);
-                $newValueFile = [
-                    'filename' => PathUtility::basename($file),
-                    'ID' => md5($realFile),
-                    'ID_absFile' => $realFile
-                ];
-                // Set sys_file and id for referenced files
-                if ($conf['internal_type'] === 'file_reference') {
-                    try {
-                        $file = ResourceFactory::getInstance()->retrieveFileOrFolderObject($file);
-                        if ($file instanceof File || $file instanceof Folder) {
-                            // For setting this as sys_file relation later, the keys filename, ID and ID_absFile
-                            // have not to be included, because the are not evaluated for db relations.
-                            $newValueFile = [
-                                'table' => 'sys_file',
-                                'id' => $file->getUid()
-                            ];
-                        }
-                    } catch (\Exception $e) {
-                    }
-                }
-                $newValueFiles[] = $newValueFile;
-            }
-        }
-        return $newValueFiles;
     }
 
     /**
@@ -1049,25 +855,10 @@ class ReferenceIndex implements LoggerAwareInterface
                                 return $error;
                             }
                             break;
-                        case 'file_reference':
-                            // not used (see getRelations()), but fallback to file
-                        case 'file':
-                            $error = $this->setReferenceValue_fileRels($referenceRecord, $fieldRelation['newValueFiles'], $newValue, $dataArray);
-                            if ($error) {
-                                return $error;
-                            }
-                            break;
                         case 'flex':
                             // DB references in FlexForms
                             if (is_array($fieldRelation['flexFormRels']['db'][$referenceRecord['flexpointer']])) {
                                 $error = $this->setReferenceValue_dbRels($referenceRecord, $fieldRelation['flexFormRels']['db'][$referenceRecord['flexpointer']], $newValue, $dataArray, $referenceRecord['flexpointer']);
-                                if ($error) {
-                                    return $error;
-                                }
-                            }
-                            // File references in FlexForms
-                            if (is_array($fieldRelation['flexFormRels']['file'][$referenceRecord['flexpointer']])) {
-                                $error = $this->setReferenceValue_fileRels($referenceRecord, $fieldRelation['flexFormRels']['file'][$referenceRecord['flexpointer']], $newValue, $dataArray, $referenceRecord['flexpointer']);
                                 if ($error) {
                                     return $error;
                                 }
@@ -1096,7 +887,6 @@ class ReferenceIndex implements LoggerAwareInterface
                     $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
                     $dataHandler->dontProcessTransformations = true;
                     $dataHandler->bypassWorkspaceRestrictions = true;
-                    $dataHandler->bypassFileHandling = true;
                     // Otherwise this cannot update things in deleted records...
                     $dataHandler->bypassAccessCheckForRecords = true;
                     // Check has been done previously that there is a backend user which is Admin and also in live workspace
@@ -1150,47 +940,6 @@ class ReferenceIndex implements LoggerAwareInterface
             }
         } else {
             return 'ERROR: table:id pair "' . $refRec['ref_table'] . ':' . $refRec['ref_uid'] . '" did not match that of the record ("' . $itemArray[$refRec['sorting']]['table'] . ':' . $itemArray[$refRec['sorting']]['id'] . '") in sorting index "' . $refRec['sorting'] . '"';
-        }
-
-        return false;
-    }
-
-    /**
-     * Setting a value for a reference for a FILE field:
-     *
-     * @param array $refRec sys_refindex record
-     * @param array $itemArray Array of references from that field
-     * @param string $newValue Value to substitute current value with (or NULL to unset it)
-     * @param array $dataArray Data array in which the new value is set (passed by reference)
-     * @param string $flexPointer Flexform pointer, if in a flex form field.
-     * @return string Error message if any, otherwise FALSE = OK
-     */
-    public function setReferenceValue_fileRels($refRec, $itemArray, $newValue, &$dataArray, $flexPointer = '')
-    {
-        $ID_absFile = PathUtility::stripPathSitePrefix($itemArray[$refRec['sorting']]['ID_absFile']);
-        if ($ID_absFile === (string)$refRec['ref_string'] && $refRec['ref_table'] === '_FILE') {
-            // Setting or removing value:
-            // Remove value:
-            if ($newValue === null) {
-                unset($itemArray[$refRec['sorting']]);
-            } else {
-                $itemArray[$refRec['sorting']]['filename'] = $newValue;
-            }
-            // Traverse and compile new list of records:
-            $saveValue = [];
-            foreach ($itemArray as $fileInfo) {
-                $saveValue[] = $fileInfo['filename'];
-            }
-            // Set in data array:
-            if ($flexPointer) {
-                $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-                $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = [];
-                $flexFormTools->setArrayValueByPath(substr($flexPointer, 0, -1), $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'], implode(',', $saveValue));
-            } else {
-                $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = implode(',', $saveValue);
-            }
-        } else {
-            return 'ERROR: either "' . $refRec['ref_table'] . '" was not "_FILE" or file Environment::getPublicPath()+"' . $refRec['ref_string'] . '" did not match that of the record ("' . $itemArray[$refRec['sorting']]['ID_absFile'] . '") in sorting index "' . $refRec['sorting'] . '"';
         }
 
         return false;
@@ -1270,8 +1019,6 @@ class ReferenceIndex implements LoggerAwareInterface
         return
             $this->isDbReferenceField($configuration)
             ||
-            ($configuration['type'] === 'group' && ($configuration['internal_type'] === 'file' || $configuration['internal_type'] === 'file_reference')) // getRelations_procFiles
-            ||
             ($configuration['type'] === 'input' && $configuration['renderType'] === 'inputLink') // getRelations_procDB
             ||
             $configuration['type'] === 'flex'
@@ -1310,17 +1057,6 @@ class ReferenceIndex implements LoggerAwareInterface
         }
 
         return implode(',', $fields);
-    }
-
-    /**
-     * Returns destination path to an upload folder given by $folder
-     *
-     * @param string $folder Folder relative to TYPO3's public folder ("site path")
-     * @return string Input folder prefixed with Environment::getPublicPath(). No checking for existence is done. Output must be a folder without trailing slash.
-     */
-    public function destPathFromUploadFolder($folder)
-    {
-        return Environment::getPublicPath() . ($folder ? '/' . $folder : '');
     }
 
     /**

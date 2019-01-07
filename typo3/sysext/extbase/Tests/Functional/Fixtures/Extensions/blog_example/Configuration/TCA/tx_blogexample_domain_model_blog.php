@@ -102,7 +102,7 @@ return [
             ]
         ],
         'subtitle' => [
-            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_blog.subtitle',
+            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_post.subtitle',
             'config' => [
                 'type' => 'input',
                 'size' => 20,
@@ -123,16 +123,7 @@ return [
         'logo' => [
             'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_blog.logo',
-            'config' => [
-                'type' => 'group',
-                'internal_type' => 'file',
-                'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
-                'max_size' => 3000,
-                'uploadfolder' => 'uploads/pics',
-                'size' => 1,
-                'maxitems' => 1,
-                'minitems' => 0
-            ]
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('logo')
         ],
         'posts' => [
             'exclude' => true,

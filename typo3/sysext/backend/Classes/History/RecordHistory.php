@@ -237,8 +237,6 @@ class RecordHistory
                     $data[$rollbackData[0]][$rollbackData[1]][$rollbackData[2]] = $diffModified[$rollbackData[0]][$rollbackData[1]][$rollbackData[2]];
                     break;
             }
-            // Removing fields:
-            $data = $this->removeFilefields($rollbackData[0], $data);
             // Writes the data:
             $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->dontProcessTransformations = true;
@@ -399,28 +397,6 @@ class RecordHistory
      * Various helper functions
      *
      *******************************/
-
-    /**
-     * Will traverse the field names in $dataArray and look in $GLOBALS['TCA'] if the fields are of types which cannot
-     * be handled by the sys_history (that is currently group types with internal_type set to "file")
-     *
-     * @param string $table Table name
-     * @param array $dataArray The data array
-     * @return array The modified data array
-     * @internal
-     */
-    protected function removeFilefields($table, $dataArray)
-    {
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
-        if ($GLOBALS['TCA'][$table]) {
-            foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $config) {
-                if ($config['config']['type'] === 'group' && $config['config']['internal_type'] === 'file') {
-                    unset($dataArray[$field]);
-                }
-            }
-        }
-        return $dataArray;
-    }
 
     /**
      * Convert input element reference to workspace version if any.

@@ -367,7 +367,6 @@
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array"/>
-						<file_relations index="file" type="array"/>
 						<softref_relations index="softrefs" type="array"/>
 					</flexform>
 				</field>

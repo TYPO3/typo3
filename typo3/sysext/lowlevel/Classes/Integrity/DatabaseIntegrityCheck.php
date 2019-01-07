@@ -16,14 +16,12 @@ namespace TYPO3\CMS\Lowlevel\Integrity;
 
 use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * This class holds functions used by the TYPO3 backend to check the integrity
@@ -374,7 +372,7 @@ class DatabaseIntegrityCheck
             $cols = $GLOBALS['TCA'][$table]['columns'];
             foreach ($cols as $field => $config) {
                 if ($config['config']['type'] === 'group') {
-                    if ((!$mode || $mode === 'file') && $config['config']['internal_type'] === 'file' || (!$mode || $mode === 'db') && $config['config']['internal_type'] === 'db') {
+                    if ((!$mode || $mode === 'db') && $config['config']['internal_type'] === 'db') {
                         $result[$table][] = $field;
                     }
                 }
@@ -384,26 +382,6 @@ class DatabaseIntegrityCheck
             }
             if ($result[$table]) {
                 $result[$table] = implode(',', $result[$table]);
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * Finds all fields that hold filenames from uploadfolder
-     *
-     * @param string $uploadfolder Path to uploadfolder
-     * @return array An array with all fields listed that have references to files in the $uploadfolder
-     */
-    public function getFileFields($uploadfolder): array
-    {
-        $result = [];
-        foreach ($GLOBALS['TCA'] as $table => $tableConf) {
-            $cols = $GLOBALS['TCA'][$table]['columns'];
-            foreach ($cols as $field => $config) {
-                if ($config['config']['type'] === 'group' && $config['config']['internal_type'] === 'file' && $config['config']['uploadfolder'] == $uploadfolder) {
-                    $result[] = [$table, $field];
-                }
             }
         }
         return $result;
@@ -511,27 +489,6 @@ class DatabaseIntegrityCheck
                             if (trim($row[$field])) {
                                 $fieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
                                 if ($fieldConf['type'] === 'group') {
-                                    if ($fieldConf['internal_type'] === 'file') {
-                                        // Files...
-                                        if ($fieldConf['MM']) {
-                                            $tempArr = [];
-                                            $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
-                                            $dbAnalysis->start('', 'files', $fieldConf['MM'], $row['uid']);
-                                            foreach ($dbAnalysis->itemArray as $somekey => $someval) {
-                                                if ($someval['id']) {
-                                                    $tempArr[] = $someval['id'];
-                                                }
-                                            }
-                                        } else {
-                                            $tempArr = explode(',', trim($row[$field]));
-                                        }
-                                        foreach ($tempArr as $file) {
-                                            $file = trim($file);
-                                            if ($file) {
-                                                $this->checkFileRefs[$fieldConf['uploadfolder']][$file] += 1;
-                                            }
-                                        }
-                                    }
                                     if ($fieldConf['internal_type'] === 'db') {
                                         $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
                                         $dbAnalysis->start(
@@ -569,83 +526,6 @@ class DatabaseIntegrityCheck
                 }
             }
         }
-    }
-
-    /**
-     * Depends on selectNonEmpty.... to be executed first!!
-     *
-     * @return array Report over files; keys are "moreReferences", "noReferences", "noFile", "error
-     */
-    public function testFileRefs(): array
-    {
-        $output = [];
-        // Handle direct references with upload folder setting (workaround)
-        $newCheckFileRefs = [];
-        foreach ($this->checkFileRefs as $folder => $files) {
-            // Only direct references without a folder setting
-            if ($folder !== '') {
-                $newCheckFileRefs[$folder] = $files;
-                continue;
-            }
-            foreach ($files as $file => $references) {
-                // Direct file references have often many references (removes occurrences in the moreReferences section of the result array)
-                if ($references > 1) {
-                    $references = 1;
-                }
-                // The directory must be empty (prevents checking of the root directory)
-                $directory = PathUtility::dirname($file);
-                if ($directory !== '') {
-                    $newCheckFileRefs[$directory][PathUtility::basename($file)] = $references;
-                }
-            }
-        }
-        $this->checkFileRefs = $newCheckFileRefs;
-        foreach ($this->checkFileRefs as $folder => $fileArr) {
-            $path = Environment::getPublicPath() . '/' . $folder;
-            if (@is_dir($path) && @is_readable($path)) {
-                $d = dir($path);
-                while ($entry = $d->read()) {
-                    if (@is_file($path . '/' . $entry)) {
-                        if (isset($fileArr[$entry])) {
-                            if ($fileArr[$entry] > 1) {
-                                $temp = $this->whereIsFileReferenced($folder, $entry);
-                                $tempList = '';
-                                foreach ($temp as $inf) {
-                                    $tempList .= '[' . $inf['table'] . '][' . $inf['uid'] . '][' . $inf['field'] . '] (pid:' . $inf['pid'] . ') - ';
-                                }
-                                $output['moreReferences'][] = [$path, $entry, $fileArr[$entry], $tempList];
-                            }
-                            unset($fileArr[$entry]);
-                        } else {
-                            // Contains workaround for direct references
-                            if (!strstr($entry, 'index.htm') && !preg_match('/^' . preg_quote($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') . '/', $folder)) {
-                                $output['noReferences'][] = [$path, $entry];
-                            }
-                        }
-                    }
-                }
-                $d->close();
-                $tempCounter = 0;
-                foreach ($fileArr as $file => $value) {
-                    // Workaround for direct file references
-                    if (preg_match('/^' . preg_quote($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') . '/', $folder)) {
-                        $file = $folder . '/' . $file;
-                        $folder = '';
-                        $path = Environment::getPublicPath();
-                    }
-                    $temp = $this->whereIsFileReferenced($folder, $file);
-                    $tempList = '';
-                    foreach ($temp as $inf) {
-                        $tempList .= '[' . $inf['table'] . '][' . $inf['uid'] . '][' . $inf['field'] . '] (pid:' . $inf['pid'] . ') - ';
-                    }
-                    $tempCounter++;
-                    $output['noFile'][substr($path, -3) . '_' . substr($file, 0, 3) . '_' . $tempCounter] = [$path, $file, $tempList];
-                }
-            } else {
-                $output['error'][] = [$path];
-            }
-        }
-        return $output;
     }
 
     /**
@@ -730,52 +610,6 @@ class DatabaseIntegrityCheck
                 $dbAnalysis->start($row[$field], $allowedTables, $fieldConf['MM'], $row['uid'], $table, $fieldConf);
                 foreach ($dbAnalysis->itemArray as $tempArr) {
                     if ($tempArr['table'] == $searchTable && $tempArr['id'] == $id) {
-                        $theRecordList[] = [
-                            'table' => $table,
-                            'uid' => $row['uid'],
-                            'field' => $field,
-                            'pid' => $row['pid']
-                        ];
-                    }
-                }
-            }
-        }
-        return $theRecordList;
-    }
-
-    /**
-     * Finding all references to file based on uploadfolder / filename
-     *
-     * @param string $uploadFolder Upload folder where file is found
-     * @param string $filename Filename to search for
-     * @return array Array with other arrays containing information about where references was found
-     */
-    public function whereIsFileReferenced($uploadFolder, $filename): array
-    {
-        // Gets tables / Fields that reference to files
-        $fileFields = $this->getFileFields($uploadFolder);
-        $theRecordList = [];
-        foreach ($fileFields as $info) {
-            list($table, $field) = $info;
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-            $queryBuilder->getRestrictions()->removeAll();
-            $queryResult = $queryBuilder
-                ->select('uid', 'pid', $GLOBALS['TCA'][$table]['ctrl']['label'], $field)
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->like(
-                        $field,
-                        $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards($filename) . '%')
-                    )
-                )
-                ->execute();
-            while ($row = $queryResult->fetch()) {
-                // Now this is the field, where the reference COULD come from.
-                // But we're not guaranteed, so we must carefully examine the data.
-                $tempArr = explode(',', trim($row[$field]));
-                foreach ($tempArr as $file) {
-                    $file = trim($file);
-                    if ($file == $filename) {
                         $theRecordList[] = [
                             'table' => $table,
                             'uid' => $row['uid'],

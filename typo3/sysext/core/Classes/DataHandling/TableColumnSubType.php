@@ -29,16 +29,6 @@ final class TableColumnSubType extends Enumeration
     const DEFAULT_TYPE = '';
 
     const DB = 'DB';
-
-    /**
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
-     */
-    const FILE = 'FILE';
-
-    /**
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
-     */
-    const FILE_REFERENCE = 'FILE_REFERENCE';
     const FOLDER = 'FOLDER';
 
     /**

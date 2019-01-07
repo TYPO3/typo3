@@ -141,11 +141,13 @@ return [
     'TYPO3\CMS\Core\DataHandling\TableColumnSubType::FILE' => [
         'restFiles' => [
             'Deprecation-86406-TCATypeGroupInternal_typeFileAndFile_reference.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\DataHandling\TableColumnSubType::FILE_REFERENCE' => [
         'restFiles' => [
             'Deprecation-86406-TCATypeGroupInternal_typeFileAndFile_reference.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST' => [

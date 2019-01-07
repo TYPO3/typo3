@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Backend\Form\FieldControl;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -53,16 +52,7 @@ class InsertClipboard extends AbstractNode
             'element' => $elementName,
             'clipboardItems' => [],
         ];
-        if ($internalType === 'file_reference' || $internalType === 'file') {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
-            $title = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clipInsert_file'), count($clipboardElements));
-            foreach ($clipboardElements as $clipboardElement) {
-                $dataAttributes['clipboardItems'][] = [
-                    'title' => rawurlencode(PathUtility::basename($clipboardElement['title'])),
-                    'value' => $clipboardElement['value'],
-                ];
-            }
-        } elseif ($internalType === 'db') {
+        if ($internalType === 'db') {
             $title = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clipInsert_db'), count($clipboardElements));
             foreach ($clipboardElements as $clipboardElement) {
                 $dataAttributes['clipboardItems'][] = [

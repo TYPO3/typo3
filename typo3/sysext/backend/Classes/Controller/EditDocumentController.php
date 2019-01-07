@@ -533,8 +533,6 @@ class EditDocumentController
 
         // Perform the saving operation with DataHandler:
         if ($this->doSave === true) {
-            // @todo: Make DataHandler understand UploadedFileInterface and submit $request->getUploadedFiles() instead of $_FILES here
-            $tce->process_uploads($_FILES);
             $tce->process_datamap();
             $tce->process_cmdmap();
         }

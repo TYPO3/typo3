@@ -222,32 +222,16 @@ class RemoteServer
                         $versionRecord['uid']
                     );
 
-                    if ($configuration['type'] === 'group' && $configuration['internal_type'] === 'file') {
-                        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
-                        $versionThumb = BackendUtility::thumbCode($versionRecord, $parameter->table, $fieldName, '');
-                        $liveThumb = BackendUtility::thumbCode($liveRecord, $parameter->table, $fieldName, '');
-                        $diffReturnArray[] = [
-                            'field' => $fieldName,
-                            'label' => $fieldTitle,
-                            'content' => $versionThumb
-                        ];
-                        $liveReturnArray[] = [
-                            'field' => $fieldName,
-                            'label' => $fieldTitle,
-                            'content' => $liveThumb
-                        ];
-                    } else {
-                        $diffReturnArray[] = [
-                            'field' => $fieldName,
-                            'label' => $fieldTitle,
-                            'content' => $diffUtility->makeDiffDisplay($liveRecord[$fieldName], $versionRecord[$fieldName])
-                        ];
-                        $liveReturnArray[] = [
-                            'field' => $fieldName,
-                            'label' => $fieldTitle,
-                            'content' => $parseObj->TS_images_rte($liveRecord[$fieldName])
-                        ];
-                    }
+                    $diffReturnArray[] = [
+                        'field' => $fieldName,
+                        'label' => $fieldTitle,
+                        'content' => $diffUtility->makeDiffDisplay($liveRecord[$fieldName], $versionRecord[$fieldName])
+                    ];
+                    $liveReturnArray[] = [
+                        'field' => $fieldName,
+                        'label' => $fieldTitle,
+                        'content' => $parseObj->TS_images_rte($liveRecord[$fieldName])
+                    ];
                 }
             }
         }

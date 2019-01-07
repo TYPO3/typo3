@@ -79,7 +79,6 @@ class TcaMigration
         $tca = $this->migrateInlineOverrideChildTca($tca);
         $tca = $this->migrateLocalizeChildrenAtParentLocalization($tca);
         $tca = $this->migratePagesLanguageOverlayRemoval($tca);
-        $tca = $this->deprecateTypeGroupInternalTypeFile($tca);
         return $tca;
     }
 
@@ -1977,35 +1976,6 @@ class TcaMigration
                 . ' not used anymore and has been removed automatically in'
                 . ' order to avoid negative side-effects.';
             unset($tca['pages_language_overlay']);
-        }
-        return $tca;
-    }
-
-    /**
-     * type=group with internal_type=file and internal_type=file_reference have
-     * been deprecated in TYPO3 v9 and will be removed in TYPO3 v10.0. This method scans
-     * for usages. This methods does not modify TCA.
-     *
-     * @param array $tca
-     * @return array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function deprecateTypeGroupInternalTypeFile(array $tca): array
-    {
-        foreach ($tca as $table => $tableDefinition) {
-            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
-                continue;
-            }
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if (isset($fieldConfig['config']['type'], $fieldConfig['config']['internal_type'])
-                    && $fieldConfig['config']['type'] === 'group'
-                    && ($fieldConfig['config']['internal_type'] === 'file' || $fieldConfig['config']['internal_type'] === 'file_reference')
-                ) {
-                    $this->messages[] = 'The \'internal_type\' = \'' . $fieldConfig['config']['internal_type'] . '\' property value'
-                        . ' from TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'] is deprecated. It will continue'
-                        . ' to work is TYPO3 v9, but the functionality will be removed in TYPO3 v10.0. Switch to inline FAL instead.';
-                }
-            }
         }
         return $tca;
     }

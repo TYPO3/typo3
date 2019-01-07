@@ -300,7 +300,6 @@ class FrontendEditDataHandler
         if (!empty($data)) {
             $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
             $dataHandler->start($data, []);
-            $dataHandler->process_uploads($_FILES);
             $dataHandler->process_datamap();
             // Save the new UID back into configuration
             $newUID = $dataHandler->substNEWwithIDs['NEW'];

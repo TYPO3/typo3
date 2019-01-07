@@ -256,7 +256,6 @@ class CleanFlexFormsCommand extends Command
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->dontProcessTransformations = true;
         $dataHandler->bypassWorkspaceRestrictions = true;
-        $dataHandler->bypassFileHandling = true;
         // Setting this option allows to also update deleted records (or records on deleted pages) within DataHandler
         $dataHandler->bypassAccessCheckForRecords = true;
 

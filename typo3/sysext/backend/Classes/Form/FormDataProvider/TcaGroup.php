@@ -65,64 +65,7 @@ class TcaGroup implements FormDataProviderInterface
             $items = [];
             $sanitizedClipboardElements = [];
             $internalType = $fieldConfig['config']['internal_type'];
-
-            if ($internalType === 'file_reference' || $internalType === 'file') {
-                // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
-                // Set 'allowed' config to "*" if not set
-                if (empty($fieldConfig['config']['allowed'])) {
-                    $result['processedTca']['columns'][$fieldName]['config']['allowed'] = '*';
-                }
-                // Force empty uploadfolder for file_reference type
-                if ($internalType === 'file_reference') {
-                    $result['processedTca']['columns'][$fieldName]['config']['uploadfolder'] = '';
-                }
-
-                // Simple list of files
-                $fileList = GeneralUtility::trimExplode(',', $databaseRowFieldContent, true);
-                $fileFactory = ResourceFactory::getInstance();
-                foreach ($fileList as $uidOrPath) {
-                    $item = [
-                        'uidOrPath' => $uidOrPath,
-                        'title' => $uidOrPath,
-                    ];
-                    try {
-                        if (MathUtility::canBeInterpretedAsInteger($uidOrPath)) {
-                            $fileObject = $fileFactory->getFileObject($uidOrPath);
-                            $item['title'] = $fileObject->getName();
-                        }
-                    } catch (Exception $exception) {
-                        continue;
-                    }
-                    $items[] = $item;
-                }
-
-                // Register elements from clipboard
-                $allowed = GeneralUtility::trimExplode(',', $result['processedTca']['columns'][$fieldName]['config']['allowed'], true);
-                $clipboard = GeneralUtility::makeInstance(Clipboard::class);
-                $clipboard->initializeClipboard();
-                $clipboardElements = $clipboard->elFromTable('_FILE');
-                if ($allowed[0] !== '*') {
-                    // If there are a set of allowed extensions, filter the content
-                    foreach ($clipboardElements as $elementValue) {
-                        $pathInfo = pathinfo($elementValue);
-                        if (in_array(strtolower($pathInfo['extension']), $allowed)) {
-                            $sanitizedClipboardElements[] = [
-                                'title' => $elementValue,
-                                'value' => $elementValue,
-                            ];
-                        }
-                    }
-                } else {
-                    // If all is allowed, insert all. This does NOT respect any disallowed extensions,
-                    // but those will be filtered away by the DataHandler
-                    foreach ($clipboardElements as $elementValue) {
-                        $sanitizedClipboardElements[] = [
-                            'title' => $elementValue,
-                            'value' => $elementValue,
-                        ];
-                    }
-                }
-            } elseif ($internalType === 'db') {
+            if ($internalType === 'db') {
                 if (empty($fieldConfig['config']['allowed'])) {
                     throw new \RuntimeException(
                         'Mandatory TCA config setting "allowed" missing in field "' . $fieldName . '" of table "' . $result['tableName'] . '"',
@@ -204,7 +147,7 @@ class TcaGroup implements FormDataProviderInterface
             } else {
                 throw new \UnexpectedValueException(
                     'TCA internal_type of field "' . $fieldName . '" in table ' . $result['tableName']
-                    . ' must be set to either "db", "file" or "file_reference"',
+                    . ' must be set to "db" or "folder".',
                     1438780511
                 );
             }

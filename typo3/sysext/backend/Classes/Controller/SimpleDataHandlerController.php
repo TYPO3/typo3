@@ -293,8 +293,6 @@ class SimpleDataHandlerController
         if (is_array($this->mirror)) {
             $this->tce->setMirror($this->mirror);
         }
-        // Register uploaded files
-        $this->tce->process_uploads($_FILES);
         // Execute actions:
         $this->tce->process_datamap();
         $this->tce->process_cmdmap();

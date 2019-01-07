@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowRootExceptio
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidPointerFieldValueException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Richtext;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\Connection;
@@ -55,10 +54,8 @@ use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\File\BasicFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -175,14 +172,6 @@ class DataHandler implements LoggerAwareInterface
     public $bypassWorkspaceRestrictions = false;
 
     /**
-     * If TRUE, file handling of attached files (addition, deletion etc) is bypassed - the value is saved straight away.
-     * YOU MUST KNOW what you are doing with this feature!
-     *
-     * @var bool
-     */
-    public $bypassFileHandling = false;
-
-    /**
      * If TRUE, access check, check for deleted etc. for records is bypassed.
      * YOU MUST KNOW what you are doing if you use this feature!
      *
@@ -225,22 +214,6 @@ class DataHandler implements LoggerAwareInterface
      * @var array
      */
     public $overrideValues = [];
-
-    /**
-     * [filename]=alternative_filename: Use this array to force another name onto a file.
-     * Eg. if you set ['/tmp/blablabal'] = 'my_file.txt' and '/tmp/blablabal' is set for a certain file-field,
-     * then 'my_file.txt' will be used as the name instead.
-     *
-     * @var array
-     */
-    public $alternativeFileName = [];
-
-    /**
-     * Array [filename]=alternative_filepath: Same as alternativeFileName but with relative path to the file
-     *
-     * @var array
-     */
-    public $alternativeFilePath = [];
 
     /**
      * If entries are set in this array corresponding to fields for update, they are ignored and thus NOT updated.
@@ -314,20 +287,6 @@ class DataHandler implements LoggerAwareInterface
      * @var array
      */
     protected $deletedRecords = [];
-
-    /**
-     * A map between input file name and final destination for files being attached to records.
-     *
-     * @var array
-     */
-    public $copiedFileMap = [];
-
-    /**
-     * Contains [table][id][field] of fiels where RTEmagic images was copied. Holds old filename as key and new filename as value.
-     *
-     * @var array
-     */
-    public $RTEmagic_copyIndex = [];
 
     /**
      * Errors are collected in this variable.
@@ -510,20 +469,6 @@ class DataHandler implements LoggerAwareInterface
     public $dbAnalysisStore = [];
 
     /**
-     * For accumulation of files which must be deleted after processing of all input content
-     *
-     * @var array
-     */
-    public $removeFilesStore = [];
-
-    /**
-     * Uploaded files, set by process_uploads()
-     *
-     * @var array
-     */
-    public $uploadedFileArray = [];
-
-    /**
      * Used for tracking references that might need correction after operations
      *
      * @var array
@@ -601,13 +546,6 @@ class DataHandler implements LoggerAwareInterface
     public $callFromImpExp = false;
 
     // Various
-    /**
-     * basicFileFunctions object
-     * For "singleton" file-manipulation object
-     *
-     * @var BasicFileUtility
-     */
-    public $fileFunc;
 
     /**
      * Set to "currentRecord" during checking of values.
@@ -615,13 +553,6 @@ class DataHandler implements LoggerAwareInterface
      * @var array
      */
     public $checkValue_currentRecord = [];
-
-    /**
-     * A signal flag used to tell file processing that auto versioning has happened and hence certain action should be applied.
-     *
-     * @var bool
-     */
-    public $autoVersioningUpdate = false;
 
     /**
      * Disable delete clause
@@ -796,55 +727,13 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * Processing of uploaded files.
-     * It turns out that some versions of PHP arranges submitted data for files different if sent in an array. This function will unify this so the internal array $this->uploadedFileArray will always contain files arranged in the same structure.
+     * Dummy method formerly used for file handling.
      *
-     * @param array $postFiles $_FILES array
+     * @deprecated since TYPO3 v10.0, will be removed in TYPO3 v11.0.
      */
-    public function process_uploads($postFiles)
+    public function process_uploads()
     {
-        if (!is_array($postFiles)) {
-            return;
-        }
-
-        // Editing frozen:
-        if ($this->BE_USER->workspace !== 0 && $this->BE_USER->workspaceRec['freeze']) {
-            $this->newlog('All editing in this workspace has been frozen!', 1);
-            return;
-        }
-        $subA = reset($postFiles);
-        if (is_array($subA)) {
-            if (is_array($subA['name']) && is_array($subA['type']) && is_array($subA['tmp_name']) && is_array($subA['size'])) {
-                // Initialize the uploadedFilesArray:
-                $this->uploadedFileArray = [];
-                // For each entry:
-                foreach ($subA as $key => $values) {
-                    $this->process_uploads_traverseArray($this->uploadedFileArray, $values, $key);
-                }
-            } else {
-                $this->uploadedFileArray = $subA;
-            }
-        }
-    }
-
-    /**
-     * Traverse the upload array if needed to rearrange values.
-     *
-     * @param array $outputArr $this->uploadedFileArray passed by reference
-     * @param array $inputArr Input array  ($_FILES parts)
-     * @param string $keyToSet The current $_FILES array key to set on the outermost level.
-     * @internal
-     * @see process_uploads()
-     */
-    public function process_uploads_traverseArray(&$outputArr, $inputArr, $keyToSet)
-    {
-        if (is_array($inputArr)) {
-            foreach ($inputArr as $key => $value) {
-                $this->process_uploads_traverseArray($outputArr[$key], $inputArr[$key], $keyToSet);
-            }
-        } else {
-            $outputArr[$keyToSet] = $inputArr;
-        }
+        trigger_error('DataHandler->process_uploads() will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
     }
 
     /*********************************************
@@ -987,7 +876,6 @@ class DataHandler implements LoggerAwareInterface
                 $createNewVersion = false;
                 $recordAccess = false;
                 $old_pid_value = '';
-                $this->autoVersioningUpdate = false;
                 // Is it a new record? (Then Id is a string)
                 if (!MathUtility::canBeInterpretedAsInteger($id)) {
                     // Get a fieldArray with default values
@@ -1087,7 +975,6 @@ class DataHandler implements LoggerAwareInterface
                             // Use the new id of the copied/versionized record:
                             $id = $this->autoVersionIdMap[$table][$id];
                             $recordAccess = true;
-                            $this->autoVersioningUpdate = true;
                         } elseif (!$this->bypassWorkspaceRestrictions && ($errorCode = $this->BE_USER->workspaceCannotEditRecord($table, $tempdata))) {
                             $recordAccess = false;
                             // Versioning is required and it must be offline version!
@@ -1117,12 +1004,9 @@ class DataHandler implements LoggerAwareInterface
                                 if (!empty($tce->copyMappingArray[$table][$id])) {
                                     foreach ($tce->copyMappingArray as $origTable => $origIdArray) {
                                         foreach ($origIdArray as $origId => $newId) {
-                                            $this->uploadedFileArray[$origTable][$newId] = $this->uploadedFileArray[$origTable][$origId];
                                             $this->autoVersionIdMap[$origTable][$origId] = $newId;
                                         }
                                     }
-                                    ArrayUtility::mergeRecursiveWithOverrule($this->RTEmagic_copyIndex, $tce->RTEmagic_copyIndex);
-                                    // See where RTEmagic_copyIndex is used inside fillInFieldArray() for more information...
                                     // Update registerDBList, that holds the copied relations to child records:
                                     $registerDBList = array_merge($registerDBList, $tce->registerDBList);
                                     // For the reason that creating a new version of this record, automatically
@@ -1131,7 +1015,6 @@ class DataHandler implements LoggerAwareInterface
                                     // Use the new id of the copied/versionized record:
                                     $id = $this->autoVersionIdMap[$table][$id];
                                     $recordAccess = true;
-                                    $this->autoVersioningUpdate = true;
                                 } else {
                                     $this->newlog('Could not be edited in offline workspace in the branch where found (failure state: \'' . $errorCode . '\'). Auto-creation of version failed!', 1);
                                 }
@@ -1163,7 +1046,7 @@ class DataHandler implements LoggerAwareInterface
                     // create a placeholder array with already processed field content
                     $newVersion_placeholderFieldArray = $fieldArray;
                 }
-                // NOTICE! All manipulation beyond this point bypasses both "excludeFields" AND possible "MM" relations / file uploads to field!
+                // NOTICE! All manipulation beyond this point bypasses both "excludeFields" AND possible "MM" relations to field!
                 // Forcing some values unto field array:
                 // NOTICE: This overriding is potentially dangerous; permissions per field is not checked!!!
                 $fieldArray = $this->overrideFieldArray($table, $fieldArray);
@@ -1205,7 +1088,7 @@ class DataHandler implements LoggerAwareInterface
                     }
                 }
                 // Performing insert/update. If fieldArray has been unset by some userfunction (see hook above), don't do anything
-                // Kasper: Unsetting the fieldArray is dangerous; MM relations might be saved already and files could have been uploaded that are now "lost"
+                // Kasper: Unsetting the fieldArray is dangerous; MM relations might be saved already
                 if (is_array($fieldArray)) {
                     if ($status === 'new') {
                         if ($table === 'pages') {
@@ -1265,7 +1148,6 @@ class DataHandler implements LoggerAwareInterface
         // Process the stack of relations to remap/correct
         $this->processRemapStack();
         $this->dbAnalysisStoreExec();
-        $this->removeRegisteredFiles();
         // Hook: processDatamap_afterAllOperations
         // Note: When this hook gets called, all operations on the submitted data have been finished.
         foreach ($hookObjectsArr as $hookObj) {
@@ -1516,18 +1398,6 @@ class DataHandler implements LoggerAwareInterface
                             $originalLanguage_diffStorage[$field] = $originalLanguageRecord[$field];
                             $diffStorageFlag = true;
                         }
-                        // If autoversioning is happening we need to perform a nasty hack. The case is parallel to a similar hack inside checkValue_group_select_file().
-                        // When a copy or version is made of a record, a search is made for any RTEmagic* images in fields having the "images" soft reference parser applied.
-                        // That should be TRUE for RTE fields. If any are found they are duplicated to new names and the file reference in the bodytext is updated accordingly.
-                        // However, with auto-versioning the submitted content of the field will just overwrite the corrected values. This leaves a) lost RTEmagic files and b) creates a double reference to the old files.
-                        // The only solution I can come up with is detecting when auto versioning happens, then see if any RTEmagic images was copied and if so make a stupid string-replace of the content !
-                        if ($this->autoVersioningUpdate === true) {
-                            if (is_array($this->RTEmagic_copyIndex[$table][$id][$field])) {
-                                foreach ($this->RTEmagic_copyIndex[$table][$id][$field] as $oldRTEmagicName => $newRTEmagicName) {
-                                    $fieldArray[$field] = str_replace(' src="' . $oldRTEmagicName . '"', ' src="' . $newRTEmagicName . '"', $fieldArray[$field]);
-                                }
-                            }
-                        }
                     } elseif ($GLOBALS['TCA'][$table]['ctrl']['origUid'] === $field) {
                         // Allow value for original UID to pass by...
                         $fieldArray[$field] = $fieldValue;
@@ -1564,7 +1434,7 @@ class DataHandler implements LoggerAwareInterface
     /**
      * Evaluates a value according to $table/$field settings.
      * This function is for real database fields - NOT FlexForm "pseudo" fields.
-     * NOTICE: Calling this function expects this: 1) That the data is saved! (files are copied and so on) 2) That files registered for deletion IS deleted at the end (with ->removeRegisteredFiles() )
+     * NOTICE: Calling this function expects this: 1) That the data is saved!
      *
      * @param string $table Table name
      * @param string $field Field name
@@ -1651,18 +1521,14 @@ class DataHandler implements LoggerAwareInterface
         $tcaFieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 
         // Create $recFID only for those types that need it
-        if (
-            $tcaFieldConf['type'] === 'flex'
-            || $tcaFieldConf['type'] === 'group' && ($tcaFieldConf['internal_type'] === 'file' || $tcaFieldConf['internal_type'] === 'file_reference')
-        ) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class. Remove type=group handling.
+        if ($tcaFieldConf['type'] === 'flex') {
             $recFID = $table . ':' . $id . ':' . $field;
         } else {
             $recFID = null;
         }
 
         // Perform processing:
-        $res = $this->checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $this->uploadedFileArray[$table][$id][$field], $tscPID, ['incomingFieldArray' => $incomingFieldArray]);
+        $res = $this->checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, [], $tscPID, ['incomingFieldArray' => $incomingFieldArray]);
         return $res;
     }
 
@@ -2149,12 +2015,6 @@ class DataHandler implements LoggerAwareInterface
                 return [];
             }
         }
-        // For group types:
-        if ($tcaFieldConf['type'] === 'group'
-            && in_array($tcaFieldConf['internal_type'], ['file', 'file_reference'], true)) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
-            $valueArray = $this->checkValue_group_select_file($valueArray, $tcaFieldConf, $curValue, $uploadedFiles, $status, $table, $id, $recFID);
-        }
         // For select types which has a foreign table attached:
         $unsetResult = false;
         if (
@@ -2211,284 +2071,6 @@ class DataHandler implements LoggerAwareInterface
             }
         }
         return $values;
-    }
-
-    /**
-     * Handling files for group/select function
-     *
-     * @param array $valueArray Array of incoming file references. Keys are numeric, values are files (basically, this is the exploded list of incoming files)
-     * @param array $tcaFieldConf Configuration array from TCA of the field
-     * @param string $curValue Current value of the field
-     * @param array $uploadedFileArray Array of uploaded files, if any
-     * @param string $status 'update' or 'new' flag
-     * @param string $table tablename of record
-     * @param int $id UID of record
-     * @param string $recFID Field identifier [table:uid:field] for flexforms
-     * @return array Modified value array
-     *
-     * @throws \RuntimeException
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
-     */
-    public function checkValue_group_select_file($valueArray, $tcaFieldConf, $curValue, $uploadedFileArray, $status, $table, $id, $recFID)
-    {
-        // If file handling should NOT be bypassed, do processing:
-        if (!$this->bypassFileHandling) {
-            // If any files are uploaded, add them to value array
-            // Numeric index means that there are multiple files
-            if (isset($uploadedFileArray[0])) {
-                $uploadedFiles = $uploadedFileArray;
-            } else {
-                // There is only one file
-                $uploadedFiles = [$uploadedFileArray];
-            }
-            foreach ($uploadedFiles as $uploadedFileArray) {
-                if (!empty($uploadedFileArray['name']) && $uploadedFileArray['tmp_name'] !== 'none') {
-                    $valueArray[] = $uploadedFileArray['tmp_name'];
-                    $this->alternativeFileName[$uploadedFileArray['tmp_name']] = $uploadedFileArray['name'];
-                }
-            }
-            // Creating fileFunc object.
-            if (!$this->fileFunc) {
-                $this->fileFunc = GeneralUtility::makeInstance(BasicFileUtility::class);
-            }
-            // Setting permitted extensions.
-            $this->fileFunc->setFileExtensionPermissions($tcaFieldConf['allowed'], $tcaFieldConf['disallowed'] ?: '*');
-        }
-        // If there is an upload folder defined:
-        if ($tcaFieldConf['uploadfolder'] && $tcaFieldConf['internal_type'] === 'file') {
-            $currentFilesForHistory = null;
-            // If filehandling should NOT be bypassed, do processing:
-            if (!$this->bypassFileHandling) {
-                // For logging..
-                $propArr = $this->getRecordProperties($table, $id);
-                // Get destination path:
-                $dest = Environment::getPublicPath() . '/' . $tcaFieldConf['uploadfolder'];
-                // If we are updating:
-                if ($status === 'update') {
-                    // Traverse the input values and convert to absolute filenames in case the update happens to an autoVersionized record.
-                    // Background: This is a horrible workaround! The problem is that when a record is auto-versionized the files of the record get copied and therefore get new names which is overridden with the names from the original record in the incoming data meaning both lost files and double-references!
-                    // The only solution I could come up with (except removing support for managing files when autoversioning) was to convert all relative files to absolute names so they are copied again (and existing files deleted). This should keep references intact but means that some files are copied, then deleted after being copied _again_.
-                    // Actually, the same problem applies to database references in case auto-versioning would include sub-records since in such a case references are remapped - and they would be overridden due to the same principle then.
-                    // Illustration of the problem comes here:
-                    // We have a record 123 with a file logo.gif. We open and edit the files header in a workspace. So a new version is automatically made.
-                    // The versions uid is 456 and the file is copied to "logo_01.gif". But the form data that we sent was based on uid 123 and hence contains the filename "logo.gif" from the original.
-                    // The file management code below will do two things: First it will blindly accept "logo.gif" as a file attached to the record (thus creating a double reference) and secondly it will find that "logo_01.gif" was not in the incoming filelist and therefore should be deleted.
-                    // If we prefix the incoming file "logo.gif" with its absolute path it will be seen as a new file added. Thus it will be copied to "logo_02.gif". "logo_01.gif" will still be deleted but since the files are the same the difference is zero - only more processing and file copying for no reason. But it will work.
-                    if ($this->autoVersioningUpdate === true) {
-                        foreach ($valueArray as $key => $theFile) {
-                            // If it is an already attached file...
-                            if ($theFile === PathUtility::basename($theFile)) {
-                                $valueArray[$key] = Environment::getPublicPath() . '/' . $tcaFieldConf['uploadfolder'] . '/' . $theFile;
-                            }
-                        }
-                    }
-                    // Finding the CURRENT files listed, either from MM or from the current record.
-                    $theFileValues = [];
-                    // If MM relations for the files also!
-                    if ($tcaFieldConf['MM']) {
-                        $dbAnalysis = $this->createRelationHandlerInstance();
-                        /** @var RelationHandler $dbAnalysis */
-                        $dbAnalysis->start('', 'files', $tcaFieldConf['MM'], $id);
-                        foreach ($dbAnalysis->itemArray as $item) {
-                            if ($item['id']) {
-                                $theFileValues[] = $item['id'];
-                            }
-                        }
-                    } else {
-                        $theFileValues = GeneralUtility::trimExplode(',', $curValue, true);
-                    }
-                    $currentFilesForHistory = implode(',', $theFileValues);
-                    // DELETE files: If existing files were found, traverse those and register files for deletion which has been removed:
-                    if (!empty($theFileValues)) {
-                        // Traverse the input values and for all input values which match an EXISTING value, remove the existing from $theFileValues array (this will result in an array of all the existing files which should be deleted!)
-                        foreach ($valueArray as $key => $theFile) {
-                            if ($theFile && strpos(GeneralUtility::fixWindowsFilePath($theFile), '/') === false) {
-                                $theFileValues = ArrayUtility::removeArrayEntryByValue($theFileValues, $theFile);
-                            }
-                        }
-                        // This array contains the filenames in the uploadfolder that should be deleted:
-                        foreach ($theFileValues as $key => $theFile) {
-                            $theFile = trim($theFile);
-                            if (@is_file($dest . '/' . $theFile)) {
-                                $this->removeFilesStore[] = $dest . '/' . $theFile;
-                            } elseif ($theFile) {
-                                $this->log($table, $id, 5, 0, 1, 'Could not delete file \'%s\' (does not exist). (%s)', 10, [$dest . '/' . $theFile, $recFID], $propArr['event_pid']);
-                            }
-                        }
-                    }
-                }
-                // Traverse the submitted values:
-                foreach ($valueArray as $key => $theFile) {
-                    // Init:
-                    $maxSize = (int)$tcaFieldConf['max_size'];
-                    // Must be cleared. Else a faulty fileref may be inserted if the below code returns an error!
-                    $theDestFile = '';
-                    // a FAL file was added, now resolve the file object and get the absolute path
-                    // @todo in future versions this needs to be modified to handle FAL objects natively
-                    if (!empty($theFile) && MathUtility::canBeInterpretedAsInteger($theFile)) {
-                        $fileObject = ResourceFactory::getInstance()->getFileObject($theFile);
-                        $theFile = $fileObject->getForLocalProcessing(false);
-                    }
-                    // NEW FILES? If the value contains '/' it indicates, that the file
-                    // is new and should be added to the uploadsdir (whether its absolute or relative does not matter here)
-                    if (strpos(GeneralUtility::fixWindowsFilePath($theFile), '/') !== false) {
-                        // Check various things before copying file:
-                        // File and destination must exist
-                        if (@is_dir($dest) && (@is_file($theFile) || @is_uploaded_file($theFile))) {
-                            // Finding size.
-                            if (is_uploaded_file($theFile) && $theFile == $uploadedFileArray['tmp_name']) {
-                                $fileSize = $uploadedFileArray['size'];
-                            } else {
-                                $fileSize = filesize($theFile);
-                            }
-                            // Check file size:
-                            if (!$maxSize || $fileSize <= $maxSize * 1024) {
-                                // Prepare filename:
-                                $theEndFileName = $this->alternativeFileName[$theFile] ?? $theFile;
-                                $fI = GeneralUtility::split_fileref($theEndFileName);
-                                // Check for allowed extension:
-                                if ($this->fileFunc->checkIfAllowed($fI['fileext'], $dest, $theEndFileName)) {
-                                    $theDestFile = $this->fileFunc->getUniqueName($this->fileFunc->cleanFileName($fI['file']), $dest);
-                                    // If we have a unique destination filename, then write the file:
-                                    if ($theDestFile) {
-                                        GeneralUtility::upload_copy_move($theFile, $theDestFile);
-                                        // Hook for post-processing the upload action
-                                        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processUpload'] ?? [] as $className) {
-                                            $hookObject = GeneralUtility::makeInstance($className);
-                                            if (!$hookObject instanceof DataHandlerProcessUploadHookInterface) {
-                                                throw new \UnexpectedValueException($className . ' must implement interface ' . DataHandlerProcessUploadHookInterface::class, 1279962349);
-                                            }
-                                            $hookObject->processUpload_postProcessAction($theDestFile, $this);
-                                        }
-                                        $this->copiedFileMap[$theFile] = $theDestFile;
-                                        clearstatcache();
-                                        if (!@is_file($theDestFile)) {
-                                            $this->log($table, $id, 5, 0, 1, 'Copying file \'%s\' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)', 16, [$theFile, PathUtility::dirname($theDestFile), $recFID], $propArr['event_pid']);
-                                        }
-                                    } else {
-                                        $this->log($table, $id, 5, 0, 1, 'Copying file \'%s\' failed!: No destination file (%s) possible!. (%s)', 11, [$theFile, $theDestFile, $recFID], $propArr['event_pid']);
-                                    }
-                                } else {
-                                    $this->log($table, $id, 5, 0, 1, 'File extension \'%s\' not allowed. (%s)', 12, [$fI['fileext'], $recFID], $propArr['event_pid']);
-                                }
-                            } else {
-                                $this->log($table, $id, 5, 0, 1, 'Filesize (%s) of file \'%s\' exceeds limit (%s). (%s)', 13, [GeneralUtility::formatSize($fileSize), $theFile, GeneralUtility::formatSize($maxSize * 1024), $recFID], $propArr['event_pid']);
-                            }
-                        } else {
-                            $this->log($table, $id, 5, 0, 1, 'The destination (%s) or the source file (%s) does not exist. (%s)', 14, [$dest, $theFile, $recFID], $propArr['event_pid']);
-                        }
-                        // If the destination file was created, we will set the new filename in the value array, otherwise unset the entry in the value array!
-                        if (@is_file($theDestFile)) {
-                            $info = GeneralUtility::split_fileref($theDestFile);
-                            // The value is set to the new filename
-                            $valueArray[$key] = $info['file'];
-                        } else {
-                            // The value is set to the new filename
-                            unset($valueArray[$key]);
-                        }
-                    }
-                }
-            }
-            // If MM relations for the files, we will set the relations as MM records and change the valuearray to contain a single entry with a count of the number of files!
-            if ($tcaFieldConf['MM']) {
-                /** @var RelationHandler $dbAnalysis */
-                $dbAnalysis = $this->createRelationHandlerInstance();
-                // Dummy
-                $dbAnalysis->tableArray['files'] = [];
-                foreach ($valueArray as $key => $theFile) {
-                    // Explode files
-                    $dbAnalysis->itemArray[]['id'] = $theFile;
-                }
-                if ($status === 'update') {
-                    $dbAnalysis->writeMM($tcaFieldConf['MM'], $id, 0);
-                    $newFiles = implode(',', $dbAnalysis->getValueArray());
-                    list(, , $recFieldName) = explode(':', $recFID);
-                    if ($currentFilesForHistory != $newFiles) {
-                        $this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$recFieldName] = $currentFilesForHistory;
-                        $this->mmHistoryRecords[$table . ':' . $id]['newRecord'][$recFieldName] = $newFiles;
-                    } else {
-                        $this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$recFieldName] = '';
-                        $this->mmHistoryRecords[$table . ':' . $id]['newRecord'][$recFieldName] = '';
-                    }
-                } else {
-                    $this->dbAnalysisStore[] = [$dbAnalysis, $tcaFieldConf['MM'], $id, 0];
-                }
-                $valueArray = $dbAnalysis->countItems();
-            }
-        } else {
-            if (!empty($valueArray)) {
-                // If filehandling should NOT be bypassed, do processing:
-                if (!$this->bypassFileHandling) {
-                    // For logging..
-                    $propArr = $this->getRecordProperties($table, $id);
-                    foreach ($valueArray as &$theFile) {
-                        // FAL handling: it's a UID, thus it is resolved to the absolute path
-                        if (!empty($theFile) && MathUtility::canBeInterpretedAsInteger($theFile)) {
-                            $fileObject = ResourceFactory::getInstance()->getFileObject($theFile);
-                            $theFile = $fileObject->getForLocalProcessing(false);
-                        }
-                        if ($this->alternativeFilePath[$theFile]) {
-                            // If alternative File Path is set for the file, then it was an import
-                            // don't import the file if it already exists
-                            if (@is_file(Environment::getPublicPath() . '/' . $this->alternativeFilePath[$theFile])) {
-                                $theFile = Environment::getPublicPath() . '/' . $this->alternativeFilePath[$theFile];
-                            } elseif (@is_file($theFile)) {
-                                $dest = PathUtility::dirname(Environment::getPublicPath() . '/' . $this->alternativeFilePath[$theFile]);
-                                if (!@is_dir($dest)) {
-                                    GeneralUtility::mkdir_deep($dest);
-                                }
-                                // Init:
-                                $maxSize = (int)$tcaFieldConf['max_size'];
-                                // Must be cleared. Else a faulty fileref may be inserted if the below code returns an error!
-                                $theDestFile = '';
-                                $fileSize = filesize($theFile);
-                                // Check file size:
-                                if (!$maxSize || $fileSize <= $maxSize * 1024) {
-                                    // Prepare filename:
-                                    $theEndFileName = $this->alternativeFileName[$theFile] ?? $theFile;
-                                    $fI = GeneralUtility::split_fileref($theEndFileName);
-                                    // Check for allowed extension:
-                                    if ($this->fileFunc->checkIfAllowed($fI['fileext'], $dest, $theEndFileName)) {
-                                        $theDestFile = Environment::getPublicPath() . '/' . $this->alternativeFilePath[$theFile];
-                                        // Write the file:
-                                        if ($theDestFile) {
-                                            GeneralUtility::upload_copy_move($theFile, $theDestFile);
-                                            $this->copiedFileMap[$theFile] = $theDestFile;
-                                            clearstatcache();
-                                            if (!@is_file($theDestFile)) {
-                                                $this->log($table, $id, 5, 0, 1, 'Copying file \'%s\' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)', 16, [$theFile, PathUtility::dirname($theDestFile), $recFID], $propArr['event_pid']);
-                                            }
-                                        } else {
-                                            $this->log($table, $id, 5, 0, 1, 'Copying file \'%s\' failed!: No destination file (%s) possible!. (%s)', 11, [$theFile, $theDestFile, $recFID], $propArr['event_pid']);
-                                        }
-                                    } else {
-                                        $this->log($table, $id, 5, 0, 1, 'File extension \'%s\' not allowed. (%s)', 12, [$fI['fileext'], $recFID], $propArr['event_pid']);
-                                    }
-                                } else {
-                                    $this->log($table, $id, 5, 0, 1, 'Filesize (%s) of file \'%s\' exceeds limit (%s). (%s)', 13, [GeneralUtility::formatSize($fileSize), $theFile, GeneralUtility::formatSize($maxSize * 1024), $recFID], $propArr['event_pid']);
-                                }
-                                // If the destination file was created, we will set the new filename in the value array, otherwise unset the entry in the value array!
-                                if (@is_file($theDestFile)) {
-                                    // The value is set to the new filename
-                                    $theFile = $theDestFile;
-                                } else {
-                                    // The value is set to the new filename
-                                    unset($theFile);
-                                }
-                            }
-                        }
-                        if (!empty($theFile)) {
-                            $theFile = GeneralUtility::fixWindowsFilePath($theFile);
-                            if (GeneralUtility::isFirstPartOfStr($theFile, Environment::getPublicPath())) {
-                                $theFile = PathUtility::stripPathSitePrefix($theFile);
-                            }
-                        }
-                    }
-                    unset($theFile);
-                }
-            }
-        }
-        return $valueArray;
     }
 
     /**
@@ -3623,7 +3205,6 @@ class DataHandler implements LoggerAwareInterface
         // Getting the new UID:
         $theNewSQLID = $copyTCE->substNEWwithIDs[$theNewID];
         if ($theNewSQLID) {
-            $this->copyRecord_fixRTEmagicImages($table, BackendUtility::wsMapId($table, $theNewSQLID));
             $this->copyMappingArray[$table][$origUid] = $theNewSQLID;
             // Keep automatically versionized record information:
             if (isset($copyTCE->autoVersionIdMap[$table][$theNewSQLID])) {
@@ -3905,7 +3486,6 @@ class DataHandler implements LoggerAwareInterface
         if ($theNewSQLID) {
             $this->dbAnalysisStoreExec();
             $this->dbAnalysisStore = [];
-            $this->copyRecord_fixRTEmagicImages($table, BackendUtility::wsMapId($table, $theNewSQLID));
             return $this->copyMappingArray[$table][$uid] = $theNewSQLID;
         }
         return null;
@@ -3975,8 +3555,6 @@ class DataHandler implements LoggerAwareInterface
      */
     public function copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $realDestPid, $language = 0, array $workspaceOptions = [])
     {
-        // Process references and files, currently that means only the files, prepending absolute paths (so the DataHandler engine will detect the file as new and one that should be made into a copy)
-        $value = $this->copyRecord_procFilesRefs($conf, $uid, $value);
         $inlineSubType = $this->getInlineFieldType($conf);
         // Get the localization mode for the current (parent) record (keep|select):
         // Register if there are references to take care of or MM is used on an inline field (no change to value):
@@ -4160,8 +3738,6 @@ class DataHandler implements LoggerAwareInterface
     {
         // Extract parameters:
         list($table, $uid, $field, $realDestPid) = $pParams;
-        // Process references and files, currently that means only the files, prepending absolute paths:
-        $dataValue = $this->copyRecord_procFilesRefs($dsConf, $uid, $dataValue);
         // If references are set for this field, set flag so they can be corrected later (in ->remapListedDBRecords())
         if (($this->isReferenceField($dsConf) || $this->getInlineFieldType($dsConf) !== false) && (string)$dataValue !== '') {
             $dataValue = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $dataValue, [], $dsConf, $realDestPid, 0, $workspaceOptions);
@@ -4169,160 +3745,6 @@ class DataHandler implements LoggerAwareInterface
         }
         // Return
         return ['value' => $dataValue];
-    }
-
-    /**
-     * Modifying a field value for any situation regarding files/references:
-     * For attached files: take current file names and prepend absolute paths so they get copied.
-     * For DB references: Nothing done.
-     *
-     * @param array $conf TCE field config
-     * @param int $uid Record UID
-     * @param string $value Field value (eg. list of files)
-     * @return string The (possibly modified) value
-     * @see copyRecord(), copyRecord_flexFormCallBack()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
-     */
-    public function copyRecord_procFilesRefs($conf, $uid, $value)
-    {
-        if ($conf['type'] !== 'group' || ($conf['internal_type'] !== 'file' && $conf['internal_type'] !== 'file_reference')) {
-            return $value;
-        }
-
-        // Get an array with files as values:
-        if ($conf['MM']) {
-            $theFileValues = [];
-            /** @var RelationHandler $dbAnalysis */
-            $dbAnalysis = $this->createRelationHandlerInstance();
-            $dbAnalysis->start('', 'files', $conf['MM'], $uid);
-            foreach ($dbAnalysis->itemArray as $somekey => $someval) {
-                if ($someval['id']) {
-                    $theFileValues[] = $someval['id'];
-                }
-            }
-        } else {
-            $theFileValues = GeneralUtility::trimExplode(',', $value, true);
-        }
-        // Traverse this array of files:
-        $uploadFolder = $conf['internal_type'] === 'file' ? $conf['uploadfolder'] : '';
-        // Prepend absolute paths to files
-        $dest = Environment::getPublicPath() . '/' . $uploadFolder;
-        $newValue = [];
-        foreach ($theFileValues as $file) {
-            if (trim($file)) {
-                $realFile = str_replace('//', '/', $dest . '/' . trim($file));
-                if (@is_file($realFile)) {
-                    $newValue[] = $realFile;
-                }
-            }
-        }
-        // Implode the new filelist into the new value (all files have absolute paths now which means they will get copied when entering DataHandler as new values...)
-        $value = implode(',', $newValue);
-
-        // Return the new value:
-        return $value;
-    }
-
-    /**
-     * Copies any "RTEmagic" image files found in record with table/id to new names.
-     * Usage: After copying a record this function should be called to search for "RTEmagic"-images inside the record. If such are found they should be duplicated to new names so all records have a 1-1 relation to them.
-     * Reason for copying RTEmagic files: a) if you remove an RTEmagic image from a record it will remove the file - any other record using it will have a lost reference! b) RTEmagic images keeps an original and a copy. The copy always is re-calculated to have the correct physical measures as the HTML tag inserting it defines. This is calculated from the original. Two records using the same image could have difference HTML-width/heights for the image and the copy could only comply with one of them. If you don't want a 1-1 relation you should NOT use RTEmagic files but just insert it as a normal file reference to a file inside fileadmin/ folder
-     *
-     * @param string $table Table name
-     * @param int $theNewSQLID Record UID
-     */
-    public function copyRecord_fixRTEmagicImages($table, $theNewSQLID)
-    {
-        // Creating fileFunc object.
-        if (!$this->fileFunc) {
-            $this->fileFunc = GeneralUtility::makeInstance(BasicFileUtility::class);
-        }
-        // Select all RTEmagic files in the reference table from the table/ID
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
-        $queryBuilder->getRestrictions()->removeAll();
-        $rteFileRecords = $queryBuilder
-            ->select('*')
-            ->from('sys_refindex')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'ref_table',
-                    $queryBuilder->createNamedParameter('_FILE', \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->like(
-                    'ref_string',
-                    $queryBuilder->createNamedParameter('%/RTEmagic%', \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
-                    'softref_key',
-                    $queryBuilder->createNamedParameter('images', \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
-                    'tablename',
-                    $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
-                    'recuid',
-                    $queryBuilder->createNamedParameter($theNewSQLID, \PDO::PARAM_INT)
-                )
-            )
-            ->orderBy('sorting', 'DESC')
-            ->execute()
-            ->fetchAll();
-        // Traverse the files found and copy them:
-        if (!is_array($rteFileRecords)) {
-            return;
-        }
-        foreach ($rteFileRecords as $rteFileRecord) {
-            $filename = PathUtility::basename($rteFileRecord['ref_string']);
-            if (!GeneralUtility::isFirstPartOfStr($filename, 'RTEmagicC_')) {
-                continue;
-            }
-            $fileInfo = [];
-            $fileInfo['exists'] = @is_file(Environment::getPublicPath() . '/' . $rteFileRecord['ref_string']);
-            $fileInfo['original'] = mb_substr($rteFileRecord['ref_string'], 0, -mb_strlen($filename)) . 'RTEmagicP_' . preg_replace('/\\.[[:alnum:]]+$/', '', mb_substr($filename, 10));
-            $fileInfo['original_exists'] = @is_file(Environment::getPublicPath() . '/' . $fileInfo['original']);
-            // CODE from tx_impexp and class.rte_images.php adapted for use here:
-            if (!$fileInfo['exists'] || !$fileInfo['original_exists']) {
-                $this->newlog('Trying to copy RTEmagic files (' . $rteFileRecord['ref_string'] . ' / ' . $fileInfo['original'] . ') but one or both were missing', 1);
-                continue;
-            }
-            // Initialize; Get directory prefix for file and set the original name:
-            $dirPrefix = PathUtility::dirname($rteFileRecord['ref_string']) . '/';
-            $rteOrigName = PathUtility::basename($fileInfo['original']);
-            // If filename looks like an RTE file, and the directory is in "uploads/", then process as a RTE file!
-            if ($rteOrigName && GeneralUtility::isFirstPartOfStr($dirPrefix, 'uploads/') && @is_dir(Environment::getPublicPath() . '/' . $dirPrefix)) {
-                // RTE:
-                // From the "original" RTE filename, produce a new "original" destination filename which is unused.
-                $origDestName = $this->fileFunc->getUniqueName($rteOrigName, Environment::getPublicPath() . '/' . $dirPrefix);
-                // Create copy file name:
-                $pI = pathinfo($rteFileRecord['ref_string']);
-                $copyDestName = PathUtility::dirname($origDestName) . '/RTEmagicC_' . mb_substr(PathUtility::basename($origDestName), 10) . '.' . $pI['extension'];
-                if (!@is_file($copyDestName) && !@is_file($origDestName) && $origDestName === GeneralUtility::getFileAbsFileName($origDestName) && $copyDestName === GeneralUtility::getFileAbsFileName($copyDestName)) {
-                    // Making copies:
-                    GeneralUtility::upload_copy_move(Environment::getPublicPath() . '/' . $fileInfo['original'], $origDestName);
-                    GeneralUtility::upload_copy_move(Environment::getPublicPath() . '/' . $rteFileRecord['ref_string'], $copyDestName);
-                    clearstatcache();
-                    // Register this:
-                    $this->RTEmagic_copyIndex[$rteFileRecord['tablename']][$rteFileRecord['recuid']][$rteFileRecord['field']][$rteFileRecord['ref_string']] = PathUtility::stripPathSitePrefix($copyDestName);
-                    // Check and update the record using \TYPO3\CMS\Core\Database\ReferenceIndex
-                    if (@is_file($copyDestName)) {
-                        /** @var ReferenceIndex $sysRefObj */
-                        $sysRefObj = GeneralUtility::makeInstance(ReferenceIndex::class);
-                        $sysRefObj->enableRuntimeCache();
-                        $error = $sysRefObj->setReferenceValue($rteFileRecord['hash'], PathUtility::stripPathSitePrefix($copyDestName), false, true);
-                        if ($error) {
-                            $this->newlog(ReferenceIndex::class . '::setReferenceValue(): ' . $error, 1);
-                        }
-                    } else {
-                        $this->newlog('File "' . $copyDestName . '" was not created!', 1);
-                    }
-                } else {
-                    $this->newlog('Could not construct new unique names for file!', 1);
-                }
-            } else {
-                $this->newlog('Maybe directory of file was not within "uploads/"?', 1);
-            }
-        }
     }
 
     /**
@@ -5272,54 +4694,6 @@ class DataHandler implements LoggerAwareInterface
                 $databaseErrorMessage = $e->getPrevious()->getMessage();
             }
         } else {
-            // Fetches all fields with flexforms and look for files to delete:
-            foreach ($GLOBALS['TCA'][$table]['columns'] as $fieldName => $cfg) {
-                $conf = $cfg['config'];
-                switch ($conf['type']) {
-                    case 'flex':
-                        $flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
-
-                        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                            ->getQueryBuilderForTable($table);
-                        $queryBuilder->getRestrictions()->removeAll();
-
-                        $files = $queryBuilder
-                            ->select('*')
-                            ->from($table)
-                            ->where(
-                                $queryBuilder->expr()->eq(
-                                    'uid',
-                                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                                )
-                            )
-                            ->execute()
-                            ->fetch();
-
-                        $flexObj->traverseFlexFormXMLData($table, $fieldName, $files, $this, 'deleteRecord_flexFormCallBack');
-                        break;
-                }
-            }
-            // Fetches all fields that holds references to files
-            $fileFieldArr = $this->extFileFields($table);
-            if (!empty($fileFieldArr)) {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-                $queryBuilder->getRestrictions()->removeAll();
-                $result = $queryBuilder
-                    ->select(...$fileFieldArr)
-                    ->from($table)
-                    ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
-                    ->execute();
-                if ($row = $result->fetch()) {
-                    $fArray = $fileFieldArr;
-                    // MISSING: Support for MM file relations!
-                    foreach ($fArray as $theField) {
-                        // This deletes files that belonged to this record.
-                        $this->extFileFunctions($table, $theField, $row[$theField]);
-                    }
-                } else {
-                    $this->log($table, $uid, 3, 0, 100, 'Delete: Zero rows in result when trying to read filenames from record which should be deleted');
-                }
-            }
             // Delete the hard way...:
             try {
                 GeneralUtility::makeInstance(ConnectionPool::class)
@@ -5381,36 +4755,6 @@ class DataHandler implements LoggerAwareInterface
                 }
             }
             unset($this->updateRefIndexStack[$table][$uid]);
-        }
-    }
-
-    /**
-     * Call back function for deleting file relations for flexform fields in records which are being completely deleted.
-     *
-     * @param array $dsArr
-     * @param string $dataValue
-     * @param array $PA
-     * @param string $structurePath not used
-     * @param object $pObj not used
-     */
-    public function deleteRecord_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, $pObj)
-    {
-        // Use reference index object to find files in fields:
-        /** @var ReferenceIndex $refIndexObj */
-        $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
-        $refIndexObj->enableRuntimeCache();
-        $files = $refIndexObj->getRelations_procFiles($dataValue, $dsArr['TCEforms']['config'], $PA['uid']);
-        // Traverse files and delete them if the field is a regular file field (and not a file_reference field)
-        if (is_array($files) && $dsArr['TCEforms']['config']['internal_type'] === 'file') {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
-            foreach ($files as $dat) {
-                if (@is_file($dat['ID_absFile'])) {
-                    $file = $this->getResourceFactory()->retrieveFileOrFolderObject($dat['ID_absFile']);
-                    $file->delete();
-                } else {
-                    $this->log('', 0, 3, 0, 100, 'Delete: Referenced file \'' . $dat['ID_absFile'] . '\' that was supposed to be deleted together with its record which didn\'t exist');
-                }
-            }
         }
     }
 
@@ -8033,19 +7377,6 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * Removing files registered for removal before exit
-     */
-    public function removeRegisteredFiles()
-    {
-        foreach ($this->removeFilesStore as $file) {
-            if (@is_file($file)) {
-                $file = $this->getResourceFactory()->retrieveFileOrFolderObject($file);
-                $file->delete();
-            }
-        }
-    }
-
-    /**
      * Returns array, $CPtable, of pages under the $pid going down to $counter levels.
      * Selecting ONLY pages which the user has read-access to!
      *
@@ -8179,26 +7510,6 @@ class DataHandler implements LoggerAwareInterface
             }
         }
         return $newData;
-    }
-
-    /**
-     * Returns all fieldnames from a table which are a list of files
-     *
-     * @param string $table Table name
-     * @return array Array of fieldnames that are either "group" or "file" types.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
-     */
-    public function extFileFields($table)
-    {
-        $listArr = [];
-        if (isset($GLOBALS['TCA'][$table]['columns'])) {
-            foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $configArr) {
-                if ($configArr['config']['type'] === 'group' && ($configArr['config']['internal_type'] === 'file' || $configArr['config']['internal_type'] === 'file_reference')) {
-                    $listArr[] = $field;
-                }
-            }
-        }
-        return $listArr;
     }
 
     /**
@@ -8356,31 +7667,6 @@ class DataHandler implements LoggerAwareInterface
     {
         $regex = '/\s' . sprintf(preg_quote($this->prependLabel($table)), '[0-9]*') . '$/';
         return @preg_replace($regex, '', $value);
-    }
-
-    /**
-     * File functions on external file references. eg. deleting files when deleting record
-     *
-     * @param string $table Table name
-     * @param string $field Field name
-     * @param string $filelist List of files to work on from field
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
-     */
-    public function extFileFunctions($table, $field, $filelist)
-    {
-        $uploadFolder = $GLOBALS['TCA'][$table]['columns'][$field]['config']['uploadfolder'];
-        if ($uploadFolder && trim($filelist) && $GLOBALS['TCA'][$table]['columns'][$field]['config']['internal_type'] === 'file') {
-            $uploadPath = Environment::getPublicPath() . '/' . $uploadFolder;
-            $fileArray = GeneralUtility::trimExplode(',', $filelist, true);
-            foreach ($fileArray as $theFile) {
-                $theFileFullPath = $uploadPath . '/' . $theFile;
-                if (@is_file($theFileFullPath)) {
-                    $this->getResourceFactory()->retrieveFileOrFolderObject($theFileFullPath)->delete();
-                } else {
-                    $this->log($table, 0, 3, 0, 100, 'Delete: Referenced file that was supposed to be deleted together with it\'s record didn\'t exist');
-                }
-            }
-        }
     }
 
     /**

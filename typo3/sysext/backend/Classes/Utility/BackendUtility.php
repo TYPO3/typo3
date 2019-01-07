@@ -36,10 +36,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Resource\AbstractFile;
-use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\RouterInterface;
@@ -1077,16 +1074,16 @@ class BackendUtility
     }
 
     /**
-     * Returns a linked image-tag for thumbnail(s)/fileicons/truetype-font-previews from a database row with a list of image files in a field
+     * Returns a linked image-tag for thumbnail(s)/fileicons/truetype-font-previews from a database row with sys_file_references
      * All $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] extension are made to thumbnails + ttf file (renders font-example)
-     * Thumbsnails are linked to the show_item.php script which will display further details.
+     * Thumbsnails are linked to ShowItemController (/thumbnails route)
      *
      * @param array $row Row is the database row from the table, $table.
      * @param string $table Table name for $row (present in TCA)
-     * @param string $field Field is pointing to the list of image files
+     * @param string $field Field is pointing to the connecting field of sys_file_references
      * @param string $backPath Back path prefix for image tag src="" field
      * @param string $thumbScript UNUSED since FAL
-     * @param string $uploaddir Optional: $uploaddir is the directory relative to Environment::getPublicPath() where the image files from the $field value is found (Is by default set to the entry in $GLOBALS['TCA'] for that field! so you don't have to!)
+     * @param string $uploaddir UNUSED since FAL
      * @param int $abs UNUSED
      * @param string $tparams Optional: $tparams is additional attributes for the image tags
      * @param int|string $size Optional: $size is [w]x[h] of the thumbnail. 64 is default.
@@ -1176,73 +1173,6 @@ class BackendUtility
                     $thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $imgTag . '</a> ';
                 } else {
                     $thumbData .= $imgTag;
-                }
-            }
-        } else {
-            // Find uploaddir automatically
-            if ($uploaddir === null) {
-                $uploaddir = $GLOBALS['TCA'][$table]['columns'][$field]['config']['uploadfolder'];
-            }
-            $uploaddir = rtrim($uploaddir, '/');
-            // Traverse files:
-            $thumbs = GeneralUtility::trimExplode(',', $row[$field], true);
-            $thumbData = '';
-            foreach ($thumbs as $theFile) {
-                if ($theFile) {
-                    $fileName = trim($uploaddir . '/' . $theFile, '/');
-                    try {
-                        /** @var File $fileObject */
-                        $fileObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileName);
-                        // Skip the resource if it's not of type AbstractFile. One case where this can happen if the
-                        // storage has been externally modified and the field value now points to a folder
-                        // instead of a file.
-                        if (!$fileObject instanceof AbstractFile) {
-                            continue;
-                        }
-                        if ($fileObject->isMissing()) {
-                            $thumbData .= '<span class="label label-danger">'
-                                . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
-                                . '</span>&nbsp;' . htmlspecialchars($fileObject->getName()) . '<br />';
-                            continue;
-                        }
-                    } catch (ResourceDoesNotExistException $exception) {
-                        $thumbData .= '<span class="label label-danger">'
-                            . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
-                            . '</span>&nbsp;' . htmlspecialchars($fileName) . '<br />';
-                        continue;
-                    }
-
-                    $fileExtension = $fileObject->getExtension();
-                    if ($fileExtension === 'ttf'
-                        || GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)
-                    ) {
-                        $imageUrl = $fileObject->process(
-                            ProcessedFile::CONTEXT_IMAGEPREVIEW,
-                            [
-                                'width' => $sizeParts[0],
-                                'height' => $sizeParts[1]
-                            ]
-                        )->getPublicUrl(true);
-
-                        $image = '<img src="' . htmlspecialchars($imageUrl) . '" hspace="2" border="0" title="' . htmlspecialchars($fileObject->getName()) . '"' . $tparams . ' alt="" />';
-                        if ($linkInfoPopup) {
-                            $onClick = 'top.TYPO3.InfoWindow.showItem(\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileName) . ',\'\');return false;';
-                            $thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $image . '</a> ';
-                        } else {
-                            $thumbData .= $image;
-                        }
-                    } else {
-                        // Gets the icon
-                        $fileIcon = '<span title="' . htmlspecialchars($fileObject->getName()) . '">'
-                            . $iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)->render()
-                            . '</span>';
-                        if ($linkInfoPopup) {
-                            $onClick = 'top.TYPO3.InfoWindow.showItem(\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileName) . ',\'\'); return false;';
-                            $thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $fileIcon . '</a> ';
-                        } else {
-                            $thumbData .= $fileIcon;
-                        }
-                    }
                 }
             }
         }

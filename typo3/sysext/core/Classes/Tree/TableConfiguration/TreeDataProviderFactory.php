@@ -90,9 +90,6 @@ class TreeDataProviderFactory
             } else {
                 throw new \InvalidArgumentException('TCA Tree configuration is invalid: neither "childrenField" nor "parentField" is set', 1288215889);
             }
-        } elseif ($tcaConfiguration['internal_type'] === 'file' && $dataProvider === null) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Deprecation logged by TcaMigration class.
-            throw new \InvalidArgumentException('TCA Tree configuration is invalid: tree for "internal_type=file" not implemented yet', 1288215891);
         } elseif ($dataProvider === null) {
             throw new \InvalidArgumentException('TCA Tree configuration is invalid: tree for "internal_type=' . $tcaConfiguration['internal_type'] . '" not implemented yet', 1288215892);
         }
