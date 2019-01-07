@@ -24,7 +24,6 @@ use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -55,15 +54,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class DatabaseRecordList
 {
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * @var array
-     */
-    protected $deprecatedPublicProperties = [
-        'newWizards' => 'Using $newWizards of class DatabaseRecordList from outside is discouraged, property will be removed in TYPO3 v10.0.',
-    ];
-
     // *********
     // External:
     // *********
@@ -83,16 +73,6 @@ class DatabaseRecordList
      * @var string[]
      */
     public $deniedNewTables = [];
-
-    /**
-     * If TRUE, the control panel will contain links to the create-new wizards for
-     * pages and tt_content elements (normally, the link goes to just creating a new
-     * element without the wizards!).
-     *
-     * @var bool
-     * @deprecated and unused since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public $newWizards = false;
 
     /**
      * If TRUE, will disable the rendering of clipboard + control panels.
@@ -3357,24 +3337,6 @@ class DatabaseRecordList
         }
 
         $hookName = DatabaseRecordList::class;
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'])) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, the modifyQuery hook should be used instead.
-            trigger_error('The hook ($GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][' . $hookName . '][\'buildQueryParameters\']) will be removed in TYPO3 v10.0, the modifyQuery hook should be used instead.', E_USER_DEPRECATED);
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObject, 'buildQueryParametersPostProcess')) {
-                    $hookObject->buildQueryParametersPostProcess(
-                        $parameters,
-                        $table,
-                        $pageId,
-                        $additionalConstraints,
-                        $fieldList,
-                        $this,
-                        $queryBuilder
-                    );
-                }
-            }
-        }
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['modifyQuery'] ?? [] as $className) {
             $hookObject = GeneralUtility::makeInstance($className);
             if (method_exists($hookObject, 'modifyQuery')) {
@@ -3387,37 +3349,6 @@ class DatabaseRecordList
                     $queryBuilder
                 );
             }
-        }
-
-        // array_unique / array_filter used to eliminate empty and duplicate constraints
-        // the array keys are eliminated by this as well to facilitate argument unpacking
-        // when used with the querybuilder.
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-        if (!empty($parameters['where'])) {
-            $parameters['where'] = array_unique(array_filter(array_values($parameters['where'])));
-        }
-        if (!empty($parameters['where'])) {
-            $this->logDeprecation('where');
-            $queryBuilder->where(...$parameters['where']);
-        }
-        if (!empty($parameters['orderBy'])) {
-            $this->logDeprecation('orderBy');
-            foreach ($parameters['orderBy'] as $fieldNameAndSorting) {
-                list($fieldName, $sorting) = $fieldNameAndSorting;
-                $queryBuilder->addOrderBy($fieldName, $sorting);
-            }
-        }
-        if (!empty($parameters['firstResult']) && $parameters['firstResult'] !== $this->firstElementNumber) {
-            $this->logDeprecation('firstResult');
-            $queryBuilder->setFirstResult((int)$parameters['firstResult']);
-        }
-        if (!empty($parameters['maxResults']) && $parameters['maxResults'] !== $this->iLimit) {
-            $this->logDeprecation('maxResults');
-            $queryBuilder->setMaxResults((int)$parameters['maxResults']);
-        }
-        if (!empty($parameters['groupBy'])) {
-            $this->logDeprecation('groupBy');
-            $queryBuilder->groupBy($parameters['groupBy']);
         }
 
         return $queryBuilder;
@@ -4072,17 +4003,6 @@ class DatabaseRecordList
         }
 
         return $queryBuilder;
-    }
-
-    /**
-     * Method used to log deprecated usage of old buildQueryParametersPostProcess hook arguments
-     *
-     * @param string $index
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 - see method usages
-     */
-    protected function logDeprecation(string $index)
-    {
-        trigger_error('[index: ' . $index . '] $parameters in "buildQueryParameters"-Hook will be removed in TYPO3 v10.0, use $queryBuilder instead.', E_USER_DEPRECATED);
     }
 
     /**

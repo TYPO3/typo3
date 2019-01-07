@@ -609,6 +609,7 @@ return [
     'TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList->newWizards' => [
         'restFiles' => [
             'Deprecation-84463-PageTsConfigOptionModweb_listnewWizardsDropped.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->TSdataArray' => [

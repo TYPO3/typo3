@@ -458,6 +458,7 @@ The following methods changed signature according to previous deprecations in v9
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->__construct()` - Fourth argument unused
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->calculateLinkVars()` - First argument mandatory
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->preparePageContentGeneration()` - First argument mandatory
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->main()` - First argument mandatory
 
 
 
@@ -559,6 +560,9 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Extbase\Validation\ValidatorResolver->parseValidatorOptions`
 * :php:`TYPO3\CMS\Extbase\Validation\ValidatorResolver->unquoteString`
 * :php:`TYPO3\CMS\Extbase\Validation\ValidatorResolver->getMethodValidateAnnotations`
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->doc`
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->imagemode`
+* :php:`TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList->newWizards`
 
 
 
@@ -663,6 +667,11 @@ The following class methods have changed visibility:
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->makeConfigurationForm()` changed from public to protected
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->makeSaveForm()` changed from public to protected
 * :php:`TYPO3\CMS\Linkvalidator\Report\LinkValidatorReport->extObjContent()` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->init()` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->menuConfig()` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->clearCache()` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->main()` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->getModuleTemplate()` changed from public to protected
 * :php:`TYPO3\CMS\Scheduler\Controller\SchedulerModuleController->addMessage()` changed from public to protected
 * :php:`TYPO3\CMS\Taskcenter\Controller\TaskModuleController->menuConfig()` changed from public to protected
 * :php:`TYPO3\CMS\Taskcenter\Controller\TaskModuleController->mergeExternalItems()` changed from public to protected
@@ -878,6 +887,21 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Linkvalidator\Report\LinkValidatorReport->extClassConf` changed from public to protected
 * :php:`TYPO3\CMS\Linkvalidator\Report\LinkValidatorReport->localLangFile` changed from public to protected
 * :php:`TYPO3\CMS\Linkvalidator\Report\LinkValidatorReport->extObj` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->id` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->pointer` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->table` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->search_field` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->search_levels` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->showLimit` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->returnUrl` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->clear_cache` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->cmd` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->cmd_table` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->perms_clause` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->pageinfo` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->MOD_MENU` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->content` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->body` changed from public to protected
 * :php:`TYPO3\CMS\Scheduler\Controller\SchedulerModuleController->CMD` changed from public to protected
 * :php:`TYPO3\CMS\Setup\Controller\SetupModuleController->OLD_BE_USER` changed from public to protected
 * :php:`TYPO3\CMS\Setup\Controller\SetupModuleController->MOD_MENU` changed from public to protected
@@ -1056,6 +1080,13 @@ The following hooks have been removed:
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList']['buildQueryParameters']`
+
+
+The following hooks don't pass the class reference anymore:
+
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawHeaderHook']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawFooterHook']`
 
 The following feature is now always enabled:
 
