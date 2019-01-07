@@ -707,7 +707,8 @@ return [
     ],
     'TYPO3\CMS\Backend\Template\DocumentTemplate->hasDocheader' => [
         'restFiles' => [
-            'Deprecation-85735-MethodAndPropertyInDocumentTemplate.rst'
+            'Deprecation-85735-MethodAndPropertyInDocumentTemplate.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\PageLayoutController->popView' => [

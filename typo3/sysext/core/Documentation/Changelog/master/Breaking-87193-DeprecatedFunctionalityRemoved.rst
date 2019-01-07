@@ -217,6 +217,9 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extPageReadAccess()`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extGetTreeList()`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extGetLL()`
+* :php:`TYPO3\CMS\Backend\Template\DocumentTemplate->addStyleSheet()`
+* :php:`TYPO3\CMS\Backend\Template\DocumentTemplate->formWidth()`
+* :php:`TYPO3\CMS\Backend\Template\DocumentTemplate->xUaCompatible()`
 * :php:`TYPO3\CMS\Core\Authentication\AbstractAuthenticationService->compareUident()`
 * :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->compareUident()`
 * :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->fetchUserRecord()`
@@ -470,6 +473,7 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->adminPanel`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->frontendEdit`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extAdminConfig`
+* :php:`TYPO3\CMS\Backend\Template\DocumentTemplate->hasDocheader`
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTS_dontGetCached`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->synonyms`
 * :php:`TYPO3\CMS\Core\DataHandling\DataHandler->updateModeL10NdiffData`
