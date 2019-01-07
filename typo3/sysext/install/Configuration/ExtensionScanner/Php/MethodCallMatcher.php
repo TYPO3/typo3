@@ -4074,11 +4074,4 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
-    'TYPO3\CMS\Core\Imaging\GraphicalFunctions->init' => [
-        'numberOfMandatoryArguments' => 0,
-        'maximumNumberOfArguments' => 0,
-        'restFiles' => [
-            'Breaking-87193-DeprecatedFunctionalityRemoved.rst'
-        ],
-    ],
 ];
