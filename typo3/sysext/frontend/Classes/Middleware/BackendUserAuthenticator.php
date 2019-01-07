@@ -59,20 +59,7 @@ class BackendUserAuthenticator implements MiddlewareInterface
         if (isset($request->getCookieParams()[BackendUserAuthentication::getCookieName()])) {
             $backendUserObject = $this->initializeBackendUser($request);
         }
-
         $GLOBALS['BE_USER'] = $backendUserObject;
-
-        // POST BE_USER HOOK
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'])) {
-            $_params = [
-                'BE_USER' => &$GLOBALS['BE_USER']
-            ];
-            trigger_error('The "postBeUser" hook will be removed in TYPO3 v10.0 in favor of PSR-15. Use a middleware instead.', E_USER_DEPRECATED);
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $GLOBALS['TSFE']);
-            }
-        }
-
         // Load specific dependencies which are necessary for a valid Backend User
         // like $GLOBALS['LANG'] for labels in the language of the BE User, the router, and ext_tables.php for all modules
         // So things like Frontend Editing and Admin Panel can use this for generating links to the TYPO3 Backend.
