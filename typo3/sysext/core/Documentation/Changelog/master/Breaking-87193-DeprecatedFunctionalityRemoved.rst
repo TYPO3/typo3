@@ -1069,6 +1069,11 @@ The following php doc annotations have been removed:
 * `@validate`
 
 
+The following global JavaScript functions have been removed:
+
+* `launchView()` - Use the method `showItem()` of the `TYPO3/CMS/Backend/InfoWindow` module
+
+
 The following JavaScript modules have been removed:
 
 * `TYPO3/CMS/Backend/Storage` - Use either `TYPO3/CMS/Backend/Storage/Client` or `TYPO3/CMS/Backend/Storage/Persistent`

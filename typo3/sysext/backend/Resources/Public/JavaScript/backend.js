@@ -66,20 +66,6 @@ function str_replace(match, replace, string) {	//
   return output;
 }
 
-
-/**
- * Launcing information window for records/files (fileref as "table" argument)
- */
-function launchView(table, uid) {
-  console.warn('Calling launchView() has been deprecated in v9 and will be removed in v10.0');
-  var thePreviewWindow = window.open(TYPO3.settings.ShowItem.moduleUrl + '&table=' + encodeURIComponent(table) + "&uid=" + encodeURIComponent(uid),
-    "ShowItem" + Math.random().toString(16).slice(2),
-    "width=650,height=600,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
-  if (thePreviewWindow && thePreviewWindow.focus) {
-    thePreviewWindow.focus();
-  }
-}
-
 /**
  * Opens plain window with url
  */
