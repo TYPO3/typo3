@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cbd34e682c7f951eda37a610bdc468a1",
+    "content-hash": "0ecc669ee1c2ba7cab45ae76d15fd49c",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -5015,16 +5015,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "5.0.0",
+            "version": "5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "1a773fe87465a81015d5e09151770bbb5f9cf90b"
+                "reference": "555a52baa86b865175b58c1ef457e5122622799e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/1a773fe87465a81015d5e09151770bbb5f9cf90b",
-                "reference": "1a773fe87465a81015d5e09151770bbb5f9cf90b",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/555a52baa86b865175b58c1ef457e5122622799e",
+                "reference": "555a52baa86b865175b58c1ef457e5122622799e",
                 "shasum": ""
             },
             "require": {
@@ -5040,7 +5040,7 @@
             },
             "suggest": {
                 "codeception/codeception": "^2.4",
-                "typo3/cms-styleguide": "^10.0"
+                "typo3/cms-styleguide": "^9.0"
             },
             "type": "library",
             "autoload": {
@@ -5048,19 +5048,20 @@
                     "TYPO3\\TestingFramework\\": "Classes/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0-or-later"
             ],
             "authors": [
                 {
-                    "name": "TYPO3 CMS Core Team",
-                    "role": "Developer",
-                    "homepage": "https://forge.typo3.org/projects/typo3cms-core"
+                    "name": "The TYPO3 Community",
+                    "homepage": "https://typo3.org/community/",
+                    "role": "Contributor"
                 },
                 {
-                    "name": "The TYPO3 Community",
-                    "role": "Contributor",
-                    "homepage": "https://typo3.org/community/"
+                    "name": "TYPO3 CMS Core Team",
+                    "homepage": "https://forge.typo3.org/projects/typo3cms-core",
+                    "role": "Developer"
                 }
             ],
             "description": "The TYPO3 testing framework provides base classes for unit, functional and acceptance testing.",
@@ -5070,12 +5071,7 @@
                 "tests",
                 "typo3"
             ],
-            "support": {
-                "general": "https://typo3.org/support/",
-                "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/lolli42/testing-framework/tree/5.0.0"
-            },
-            "time": "2018-12-14T15:39:33+00:00"
+            "time": "2019-01-07T20:10:58+00:00"
         },
         {
             "name": "webmozart/assert",
