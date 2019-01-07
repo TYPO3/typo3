@@ -3376,7 +3376,7 @@ class PageLayoutView implements LoggerAwareInterface
                 $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
                 $orderBys = QueryHelper::parseOrderBy((string)$orderBy);
                 foreach ($orderBys as $orderBy) {
-                    $queryBuilder->orderBy($orderBy[0], $orderBy[1]);
+                    $queryBuilder->addOrderBy($orderBy[0], $orderBy[1]);
                 }
             }
         }
