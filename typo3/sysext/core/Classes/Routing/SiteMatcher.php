@@ -24,17 +24,16 @@ use Symfony\Component\Routing\RequestContext;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Site\Entity\PseudoSite;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Site\PseudoSiteFinder;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
- * Returns a site or pseudo-site (with sys_domain records) based on a given request.
+ * Returns a site based on a given request.
  *
  * The main usage is the ->matchRequest() functionality, which receives a request object and boots up
  * Symfony Routing to find the proper route with its defaults / attributes.
@@ -55,19 +54,13 @@ class SiteMatcher implements SingletonInterface
     protected $finder;
 
     /**
-     * @var PseudoSiteFinder
-     */
-    protected $pseudoSiteFinder;
-
-    /**
-     * Injects necessary objects. PseudoSiteFinder is not injectable as this will be become obsolete in the future.
+     * Injects necessary objects.
      *
      * @param SiteFinder|null $finder
      */
     public function __construct(SiteFinder $finder = null)
     {
         $this->finder = $finder ?? GeneralUtility::makeInstance(SiteFinder::class);
-        $this->pseudoSiteFinder = GeneralUtility::makeInstance(PseudoSiteFinder::class);
     }
 
     /**
@@ -82,8 +75,6 @@ class SiteMatcher implements SingletonInterface
         /** Ensure root line caches are flushed */
         RootlineUtility::purgeCaches();
         GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_rootline')->flush();
-        $this->pseudoSiteFinder = GeneralUtility::makeInstance(PseudoSiteFinder::class);
-        $this->pseudoSiteFinder->refresh();
     }
 
     /**
@@ -156,41 +147,19 @@ class SiteMatcher implements SingletonInterface
                     $result['tail']
                 );
             } catch (NoConfigurationException | ResourceNotFoundException $e) {
-                // No site+language combination found so far
+                // At this point we discard a possible found site via ?id=123
+                // Because ?id=123 _can_ only work if the actual domain/site base works
+                // so www.domain-without-site-configuration/index.php?id=123 (where 123 is a page referring
+                // to a page within a site configuration will never be resolved here) properly
+                $site = new NullSite();
             }
-            // At this point we discard a possible found site via ?id=123
-            // Because ?id=123 _can_ only work if the actual domain/site base works
-            // so www.domain-without-site-configuration/index.php?id=123 (where 123 is a page referring
-            // to a page within a site configuration will never be resolved here) properly
-            $site = null;
         }
 
-        // Check against any sys_domain records
-        $collection = $this->getRouteCollectionForVisibleSysDomains();
-        $context = new RequestContext('/', $request->getMethod(), $request->getUri()->getHost());
-        $matcher = new UrlMatcher($collection, $context);
-        try {
-            $result = $matcher->match($request->getUri()->getPath());
-            return new SiteRouteResult($request->getUri(), $result['site'], $result['language'], $result['tail']);
-        } catch (NoConfigurationException | ResourceNotFoundException $e) {
-            // No domain record found
-        }
-        // No domain record found, try resolving "pseudo-site" again
-        if ($site == null) {
-            try {
-                // use the matching "pseudo-site" for $pageId
-                $site = $this->pseudoSiteFinder->getSiteByPageId((int)$pageId);
-            } catch (SiteNotFoundException $exception) {
-                // use the first "pseudo-site" found
-                $allPseudoSites = $this->pseudoSiteFinder->findAll();
-                $site = reset($allPseudoSites);
-            }
-        }
         return new SiteRouteResult($request->getUri(), $site, $language);
     }
 
     /**
-     * If a given page ID is handed in, a Site/PseudoSite/NullSite is returned.
+     * If a given page ID is handed in, a Site/NullSite is returned.
      *
      * @param int $pageId uid of a page in default language
      * @param array|null $rootLine an alternative root line, if already at and.
@@ -202,8 +171,7 @@ class SiteMatcher implements SingletonInterface
         try {
             return $this->finder->getSiteByPageId($pageId, $rootLine);
         } catch (SiteNotFoundException $e) {
-            // Check for a pseudo / null site
-            return $this->pseudoSiteFinder->getSiteByPageId($pageId, $rootLine);
+            return new NullSite();
         }
     }
 
@@ -240,42 +208,6 @@ class SiteMatcher implements SingletonInterface
                     $uri->getScheme()
                 );
                 $identifier = 'site_' . $site->getIdentifier() . '_' . $siteLanguage->getLanguageId();
-                $groupedRoutes[($uri->getScheme() ?: '-') . ($uri->getHost() ?: '-')][$uri->getPath() ?: '/'][$identifier] = $route;
-            }
-        }
-        return $this->createRouteCollectionFromGroupedRoutes($groupedRoutes);
-    }
-
-    /**
-     * Return the page ID (pid) of a sys_domain record, based on a request object, does the infamous
-     * "recursive domain search", to also detect if the domain is like "abc.def.example.com" even if the
-     * sys_domain entry is "example.com".
-     *
-     * @return RouteCollection
-     */
-    protected function getRouteCollectionForVisibleSysDomains(): RouteCollection
-    {
-        $sites = $this->pseudoSiteFinder->findAll();
-        $groupedRoutes = [];
-        foreach ($sites as $site) {
-            if (!$site instanceof PseudoSite) {
-                continue;
-            }
-            foreach ($site->getEntryPoints() as $uri) {
-                // Site has no sys_domain record, it is not valid for a routing entrypoint, but only available
-                // via "id" GET parameter which is handled separately
-                if (!$uri->getHost()) {
-                    continue;
-                }
-                $route = new Route(
-                    ($uri->getPath() ?: '/') . '{tail}',
-                    ['site' => $site, 'language' => null, 'tail' => ''],
-                    array_filter(['tail' => '.*', 'port' => (string)$uri->getPort()]),
-                    ['utf8' => true],
-                    $uri->getHost(),
-                    $uri->getScheme()
-                );
-                $identifier = 'site_' . $site->getIdentifier() . '_' . (string)$uri;
                 $groupedRoutes[($uri->getScheme() ?: '-') . ($uri->getHost() ?: '-')][$uri->getPath() ?: '/'][$identifier] = $route;
             }
         }

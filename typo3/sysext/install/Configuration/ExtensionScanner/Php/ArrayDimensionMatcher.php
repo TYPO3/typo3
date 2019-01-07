@@ -246,6 +246,11 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_tstemplate.php\'][\'linkData-PostProc\']' => [
+        'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
     '$GLOBALS[\'TCA\'][\'sys_history\']' => [
         'restFiles' => [
             'Breaking-87936-TCAForSysHistoryRemoved.rst',

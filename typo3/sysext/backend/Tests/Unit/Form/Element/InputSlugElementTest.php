@@ -58,25 +58,4 @@ class InputSlugElementTest extends UnitTestCase
         static::assertSame('/en', $subject->_call('getPrefix', $site, 0));
         static::assertSame('/de', $subject->_call('getPrefix', $site, 1));
     }
-
-    /**
-     * @test
-     */
-    public function getPrefixThrowsInvalidArgumentExceptionForUndefinedLanguages(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1522960188);
-
-        $site = new Site('www.foo.de', 0, []);
-
-        $subject = $this->getAccessibleMock(
-            InputSlugElement::class,
-            ['dummy'],
-            [],
-            '',
-            false
-        );
-
-        $subject->_call('getPrefix', $site, 99);
-    }
 }

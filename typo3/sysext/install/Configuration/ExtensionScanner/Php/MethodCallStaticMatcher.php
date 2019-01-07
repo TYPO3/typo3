@@ -875,4 +875,11 @@ return [
             'Deprecation-87894-GeneralUtilityidnaEncode.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Context\LanguageAspectFactory::createFromTypoScript' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
 ];

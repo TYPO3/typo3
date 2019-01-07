@@ -1,13 +1,9 @@
 config {
 	no_cache = 1
 	debug = 0
-	xhtml_cleaning = 0
 	admPanel = 0
 	disableAllHeaderCode = 1
 	sendCacheHeaders = 0
-	sys_language_uid = 0
-	sys_language_mode = ignore
-	sys_language_overlay = 1
 	additionalHeaders.10.header = Content-Type: application/json; charset=utf-8
 	additionalHeaders.10.replace = 1
 
@@ -261,12 +257,6 @@ page {
 				pid.data = page:pid
 				title.data = page:title
 			}
-			tsfe.children {
-				sys_language_uid.data = context:language:id
-				sys_language_mode.data = context:language:legacyLanguageMode
-				sys_language_content.data = context:language:contentId
-				sys_language_contentOL.data = context:language:legacyOverlayType
-			}
 			languageInfo.children {
 				id.data = context:language:id
 				contentId.data = context:language:contentId
@@ -279,13 +269,3 @@ page {
 	}
 	stdWrap.postUserFunc = TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Renderer->renderSections
 }
-
-[request.getQueryParams()['L'] == 1 || request.getParsedBody()['L'] == 1]
-config.sys_language_uid = 1
-[end]
-[request.getQueryParams()['L'] == 2 || request.getParsedBody()['L'] == 2]
-config.sys_language_uid = 2
-[end]
-[request.getQueryParams()['L'] == 3 || request.getParsedBody()['L'] == 3]
-config.sys_language_uid = 3
-[end]

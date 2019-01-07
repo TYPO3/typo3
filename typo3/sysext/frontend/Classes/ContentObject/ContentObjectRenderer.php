@@ -5220,7 +5220,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 'method' => 'GET',
                 'exclude' => 'id,type,cHash' . ($linkVars ? ',' . $linkVars : '')
             ];
-            $conf['useCacheHash'] = GeneralUtility::_GET('cHash') ? '1' : '0';
         }
 
         return $this->typoLink_URL($conf);

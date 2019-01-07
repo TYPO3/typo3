@@ -47,16 +47,26 @@ class NullSite implements SiteInterface
      */
     public function __construct(array $languages = null, Uri $baseEntryPoint = null)
     {
-        foreach ($languages ?? [] as $languageConfiguration) {
-            $languageUid = (int)$languageConfiguration['languageId'];
-            // Language configuration does not have a base defined
-            // So the main site base is used (usually done for default languages)
-            $this->languages[$languageUid] = new SiteLanguage(
-                $languageUid,
-                $languageConfiguration['locale'] ?? '',
-                $baseEntryPoint ?: new Uri('/'),
-                $languageConfiguration
+        if (empty($languages)) {
+            // Create the default language if no language configuration is given
+            $this->languages[0] = new SiteLanguage(
+                0,
+                '',
+                new Uri('/'),
+                ['enabled' => true]
             );
+        } else {
+            foreach ($languages ?? [] as $languageConfiguration) {
+                $languageUid = (int)$languageConfiguration['languageId'];
+                // Language configuration does not have a base defined
+                // So the main site base is used (usually done for default languages)
+                $this->languages[$languageUid] = new SiteLanguage(
+                    $languageUid,
+                    $languageConfiguration['locale'] ?? '',
+                    $baseEntryPoint ?: new Uri('/'),
+                    $languageConfiguration
+                );
+            }
         }
     }
 

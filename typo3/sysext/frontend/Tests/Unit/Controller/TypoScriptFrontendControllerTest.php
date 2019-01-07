@@ -122,7 +122,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     {
         $string = $this->getUniqueId();
         $this->subject->page = [];
-        $this->subject->settingLanguage();
+        $this->subject->_call('setOutputLanguage');
         $this->assertEquals($string, $this->subject->sL($string));
     }
 

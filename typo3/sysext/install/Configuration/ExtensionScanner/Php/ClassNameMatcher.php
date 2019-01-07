@@ -1271,4 +1271,14 @@ return [
             'Deprecation-87882-FileRelatedControllersMovedToEXTfilelist.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Site\Entity\PseudoSite' => [
+        'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Site\PseudoSiteFinder' => [
+        'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
 ];

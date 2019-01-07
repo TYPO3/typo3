@@ -117,6 +117,20 @@ class PageRouter implements RouterInterface
         if (!($previousResult instanceof RouteResultInterface)) {
             throw new RouteNotFoundException('No previous result given. Cannot find a page for an empty route part', 1555303496);
         }
+        // Legacy URIs (?id=12345) takes precedence, no matter if a route is given
+        $requestId = (string)($request->getQueryParams()['id'] ?? '');
+        if (!empty($requestId)) {
+            if (!empty($page = $this->resolvePageId($requestId))) {
+                return new PageArguments(
+                    (int)($page['l10n_parent'] ?: $page['uid']),
+                    (string)($request->getQueryParams()['type'] ?? '0'),
+                    [],
+                    [],
+                    $request->getQueryParams()
+                );
+            }
+            throw new RouteNotFoundException('The requested page does not exist.', 1557839801);
+        }
         $urlPath = $previousResult->getTail();
         // Remove the script name (e.g. index.php), if given
         if (!empty($urlPath)) {
@@ -385,6 +399,38 @@ class PageRouter implements RouterInterface
             }
         }
         return $pages;
+    }
+
+    /**
+     * @param string $pageId
+     * @return array|null
+     */
+    protected function resolvePageId(string $pageId): ?array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(FrontendWorkspaceRestriction::class));
+
+        $statement = $queryBuilder
+            ->select('uid', 'l10n_parent', 'pid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                )
+            )
+            ->execute();
+
+        $page = $statement->fetch();
+        if (empty($page)) {
+            return null;
+        }
+        return $page;
     }
 
     /**

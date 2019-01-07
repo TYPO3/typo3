@@ -23,15 +23,10 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Routing\RouteNotFoundException;
 use TYPO3\CMS\Core\Routing\SiteRouteResult;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
@@ -39,11 +34,13 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 
 /**
- * Process the ID, type and other parameters.
+ * Resolve the page ID based on TYPO3's routing functionality configured in a site.
+ *
+ * Processes the page ID, page type (typeNum) and other parameters built from queryArguments and routeParameters.
  * After this point we have an array, TSFE->page, which is the page-record of the current page, $TSFE->id.
  *
- * Now, if there is a backend user logged in and he has NO access to this page,
- * then re-evaluate the id shown!
+ * However, if there is a backend user logged in and he has NO access to this page (and the page is hidden),
+ * then the ID is determined again and the backend user is not considered for the rest of the frontend request.
  */
 class PageResolver implements MiddlewareInterface
 {
@@ -66,88 +63,72 @@ class PageResolver implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $site = $request->getAttribute('site', null);
+
+        if (!$site instanceof Site) {
+            return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                $request,
+                'No site configuration found.',
+                ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
+            );
+        }
+
         // First, resolve the root page of the site, the Page ID of the current domain
-        if (($site = $request->getAttribute('site', null)) instanceof SiteInterface) {
-            $this->controller->domainStartPage = $site->getRootPageId();
-        }
-        $language = $request->getAttribute('language', null);
+        $this->controller->domainStartPage = $site->getRootPageId();
 
-        $hasSiteConfiguration = $language instanceof SiteLanguage && $site instanceof Site;
-
-        // Resolve the page ID based on TYPO3's native routing functionality
-        if ($hasSiteConfiguration) {
-            /** @var SiteRouteResult $previousResult */
-            $previousResult = $request->getAttribute('routing', null);
-            if (!$previousResult) {
-                return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                    $request,
-                    'The requested page does not exist',
-                    ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
-                );
-            }
-
-            $requestId = (string)($request->getQueryParams()['id'] ?? '');
-            if (!empty($requestId)) {
-                // Legacy URIs (?id=12345) takes precedence, not matter if a route is given
-                if (!empty($page = $this->resolvePageId($requestId))) {
-                    $pageArguments = new PageArguments(
-                        (int)($page['l10n_parent'] ?: $page['uid']),
-                        (string)($request->getQueryParams()['type'] ?? '0'),
-                        [],
-                        [],
-                        $request->getQueryParams()
-                    );
-                } else {
-                    return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                        $request,
-                        'The requested page does not exist',
-                        ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
-                    );
-                }
-            } else {
-                // Check for the route
-                try {
-                    $pageArguments = $site->getRouter()->matchRequest($request, $previousResult);
-                } catch (RouteNotFoundException $e) {
-                    return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                        $request,
-                        'The requested page does not exist',
-                        ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
-                    );
-                }
-            }
-            if (!$pageArguments->getPageId()) {
-                return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                    $request,
-                    'The requested page does not exist',
-                    ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
-                );
-            }
-
-            $this->controller->id = $pageArguments->getPageId();
-            $this->controller->type = $pageArguments->getPageType() ?? $this->controller->type;
-            $request = $request->withAttribute('routing', $pageArguments);
-            // stop in case arguments are dirty (=defined twice in route and GET query parameters)
-            if ($pageArguments->areDirty()) {
-                return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                    $request,
-                    'The requested URL is not distinct',
-                    ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
-                );
-            }
-
-            // merge the PageArguments with the request query parameters
-            $queryParams = array_replace_recursive($request->getQueryParams(), $pageArguments->getArguments());
-            $request = $request->withQueryParams($queryParams);
-            $this->controller->setPageArguments($pageArguments);
+        /** @var SiteRouteResult $previousResult */
+        $previousResult = $request->getAttribute('routing', null);
+        if (!$previousResult) {
+            return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                $request,
+                'The requested page does not exist',
+                ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
+            );
         }
 
-        // as long as TSFE throws errors with the global object, this needs to be set, but
-        // should be removed later-on
+        // Check for the route arguments or Query Parameter ID
+        try {
+            /** @var PageArguments $pageArguments */
+            $pageArguments = $site->getRouter()->matchRequest($request, $previousResult);
+        } catch (RouteNotFoundException $e) {
+            return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                $request,
+                'The requested page does not exist',
+                ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
+            );
+        }
+
+        if (!$pageArguments->getPageId()) {
+            return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                $request,
+                'The requested page does not exist',
+                ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
+            );
+        }
+
+        $this->controller->id = $pageArguments->getPageId();
+        $this->controller->type = $pageArguments->getPageType() ?? $this->controller->type;
+        $request = $request->withAttribute('routing', $pageArguments);
+        // stop in case arguments are dirty (=defined twice in route and GET query parameters)
+        if ($pageArguments->areDirty()) {
+            return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                $request,
+                'The requested URL is not distinct',
+                ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
+            );
+        }
+
+        // merge the PageArguments with the request query parameters
+        $queryParams = array_replace_recursive($request->getQueryParams(), $pageArguments->getArguments());
+        $request = $request->withQueryParams($queryParams);
+        $this->controller->setPageArguments($pageArguments);
+
+        // as long as TSFE throws errors with the global object, this needs to be set,
+        // but should be removed later-on
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $this->controller->determineId();
 
-        // No access? Then remove user & Re-evaluate the page-id
+        // No access? Then remove user and re-evaluate the page id
         if ($this->controller->isBackendUserLoggedIn() && !$GLOBALS['BE_USER']->doesUserHaveAccess($this->controller->page, Permission::PAGE_SHOW)) {
             unset($GLOBALS['BE_USER']);
             // Register an empty backend user as aspect
@@ -156,38 +137,6 @@ class PageResolver implements MiddlewareInterface
         }
 
         return $handler->handle($request);
-    }
-
-    /**
-     * @param string $pageId
-     * @return array|null
-     */
-    protected function resolvePageId(string $pageId): ?array
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
-        $queryBuilder
-            ->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(FrontendWorkspaceRestriction::class));
-
-        $statement = $queryBuilder
-            ->select('uid', 'l10n_parent', 'pid')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
-                )
-            )
-            ->execute();
-
-        $page = $statement->fetch();
-        if (empty($page)) {
-            return null;
-        }
-        return $page;
     }
 
     /**

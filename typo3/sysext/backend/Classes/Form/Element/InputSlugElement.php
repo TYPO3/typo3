@@ -220,12 +220,17 @@ class InputSlugElement extends AbstractFormElement
      */
     protected function getPrefix(SiteInterface $site, int $requestLanguageId = 0): string
     {
-        $language = ($requestLanguageId < 0) ? $site->getDefaultLanguage() : $site->getLanguageById($requestLanguageId);
-        $base = $language->getBase();
-        $baseUrl = (string)$base;
-        $baseUrl = rtrim($baseUrl, '/');
-        if (!empty($baseUrl) && empty($base->getScheme()) && $base->getHost() !== '') {
-            $baseUrl = 'http:' . $baseUrl;
+        try {
+            $language = ($requestLanguageId < 0) ? $site->getDefaultLanguage() : $site->getLanguageById($requestLanguageId);
+            $base = $language->getBase();
+            $baseUrl = (string)$base;
+            $baseUrl = rtrim($baseUrl, '/');
+            if (!empty($baseUrl) && empty($base->getScheme()) && $base->getHost() !== '') {
+                $baseUrl = 'http:' . $baseUrl;
+            }
+        } catch (\InvalidArgumentException $e) {
+            // No site found
+            $baseUrl = '';
         }
         return $baseUrl;
     }

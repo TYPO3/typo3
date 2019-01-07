@@ -235,28 +235,25 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('Fluid', [404])
         );
 
-        $expectedStatusCode = 307;
-        $expectedHeaders = ['location' => ['https://website.local/en-en/welcome']];
-
         $uri = 'https://website.other/any/invalid/slug';
         $response = $this->executeFrontendRequest(
             new InternalRequest($uri),
-            $this->internalRequestContext
+            $this->internalRequestContext->withMergedGlobalSettings([
+                'TYPO3_CONF_VARS' => [
+                    'FE' => [
+                        'pageNotFound_handling' => 'READFILE:typo3/sysext/core/Tests/Functional/Fixtures/Frontend/PageError.txt',
+                    ]
+                ]
+            ])
         );
-
         static::assertSame(
-            $expectedStatusCode,
+            404,
             $response->getStatusCode()
         );
-        static::assertSame(
-            $expectedHeaders,
-            $response->getHeaders()
+        static::assertThat(
+            (string)$response->getBody(),
+            static::stringContains('No site configuration found')
         );
-        // @todo Expected page not found response (404) instead
-        // static::assertContains(
-        //     'message: The requested page does not exist',
-        //    (string)$response->getBody()
-        // );
     }
 
     /**

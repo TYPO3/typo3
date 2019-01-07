@@ -616,20 +616,20 @@ abstract class AbstractMenuContentObject
             } else {
                 $iState = $currentLanguageId === $sUid ? 'ACT' : 'NO';
             }
+            $getVars = '';
             if ($this->conf['addQueryString']) {
                 $getVars = $this->parent_cObj->getQueryArguments(
                     $this->conf['addQueryString.'],
-                    ['L' => $sUid],
+                    [],
                     true
                 );
                 $this->analyzeCacheHashRequirements($getVars);
-            } else {
-                $getVars = '&L=' . $sUid;
             }
             // Adding menu item:
             $menuItems[] = array_merge(
                 array_merge($currentPageWithNoOverlay, $lRecs),
                 [
+                    '_PAGES_OVERLAY_REQUESTEDLANGUAGE' => $sUid,
                     'ITEM_STATE' => $iState,
                     '_ADD_GETVARS' => $getVars,
                     '_SAFE' => true
@@ -1989,7 +1989,7 @@ abstract class AbstractMenuContentObject
         // Ensure that the typolink gets an info which language was actually requested. The $page record could be the record
         // from page translation language=1 as fallback but page translation language=2 was requested. Search for
         // "_PAGES_OVERLAY_REQUESTEDLANGUAGE" for more details
-        if ($page['_PAGES_OVERLAY_REQUESTEDLANGUAGE'] ?? 0) {
+        if (isset($page['_PAGES_OVERLAY_REQUESTEDLANGUAGE'])) {
             $conf['language'] = $page['_PAGES_OVERLAY_REQUESTEDLANGUAGE'];
         }
         if ($this->useCacheHash) {

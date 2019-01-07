@@ -16,7 +16,8 @@ namespace TYPO3\CMS\Core\Compatibility;
  */
 
 use TYPO3\CMS\Core\Routing\SiteMatcher;
-use TYPO3\CMS\Core\Site\Entity\PseudoSite;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -77,7 +78,7 @@ class PseudoSiteTcaDisplayCondition
         // If not a Site or a NullSite object, it must be a PseudoSite. We show the slug for
         // NullSites (new pages below root) to simplify the editing workflow a bit.
         $site = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId($defaultLanguagePageId);
-        $isInPseudoSite = ($site instanceof PseudoSite);
+        $isInPseudoSite = !($site instanceof Site || $site instanceof NullSite);
 
         if ($parameters['conditionParameters'][1] === 'false') {
             // Negate if requested

@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Site\PseudoSiteFinder;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -400,14 +399,7 @@ class TreeController
             $site = $siteFinder->getSiteByRootPageId($pageId);
             $domain = (string)$site->getBase();
         } catch (SiteNotFoundException $e) {
-            // No site found, let's see if it is a legacy-pseudo-site
-            $pseudoSiteFinder = GeneralUtility::makeInstance(PseudoSiteFinder::class);
-            try {
-                $site = $pseudoSiteFinder->getSiteByRootPageId($pageId);
-                $domain = trim((string)$site->getBase(), '/');
-            } catch (SiteNotFoundException $e) {
-                // No pseudo-site found either
-            }
+            // No site found
         }
 
         return $domain;

@@ -467,8 +467,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $displayFieldEditIcons = '';
 
     /**
-     * Is set to the iso code of the sys_language_content if that is properly defined
-     * by the sys_language record representing the sys_language_uid.
+     * Is set to the iso code of the current language
      * @var string
      */
     public $sys_language_isocode = '';
@@ -1287,7 +1286,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * If $this->id contains a translated page record, this needs to be resolved to the default language
      * in order for all rootline functionality and access restrictions to be in place further on.
      *
-     * Additionally, if a translated page is found, $this->sys_language_uid/sys_language_content is set as well.
+     * Additionally, if a translated page is found, LanguageAspect is set as well.
      */
     protected function resolveTranslatedPageId()
     {
@@ -1300,11 +1299,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->page = $this->sys_page->getPage($this->page[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']]);
         $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $languageId));
         $this->id = $this->page['uid'];
-        // For common best-practice reasons, this is set, however, will be optional for new routing mechanisms
-        if (!$this->getCurrentSiteLanguage()) {
-            $_GET['L'] = $languageId;
-            $GLOBALS['HTTP_GET_VARS']['L'] = $languageId;
-        }
     }
 
     /**
@@ -1781,7 +1775,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         // Ensure the language base is used for the hash base calculation as well, otherwise TypoScript and page-related rendering
         // is not cached properly as we don't have any language-specific conditions anymore
-        $siteBase = $this->getCurrentSiteLanguage() ? (string)$this->getCurrentSiteLanguage()->getBase() : '';
+        $siteBase = (string)$this->getCurrentSiteLanguage()->getBase();
 
         // Fetch the list of user groups
         /** @var UserAspect $userAspect */
@@ -1924,10 +1918,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
 
         // Auto-configure settings when a site is configured
-        if ($this->getCurrentSiteLanguage()) {
-            $this->config['config']['absRefPrefix'] = $this->config['config']['absRefPrefix'] ?? 'auto';
-        }
-
+        $this->config['config']['absRefPrefix'] = $this->config['config']['absRefPrefix'] ?? 'auto';
         $this->setUrlIdToken();
 
         // Hook for postProcessing the configuration array
@@ -1959,13 +1950,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         Locales::initialize();
 
         $siteLanguage = $this->getCurrentSiteLanguage();
+        if (!$siteLanguage) {
+            throw new PageNotFoundException('Frontend cannot be displayed, as there is no language available', 1557924417);
+        }
 
         // Initialize charset settings etc.
-        if ($siteLanguage) {
-            $languageKey = $siteLanguage->getTypo3Language();
-        } else {
-            $languageKey = $this->config['config']['language'] ?? 'default';
-        }
+        $languageKey = $siteLanguage->getTypo3Language();
         $this->setOutputLanguage($languageKey);
 
         // Rendering charset of HTML page.
@@ -1974,11 +1964,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
 
         // Get values from site language
-        if ($siteLanguage) {
-            $languageAspect = LanguageAspectFactory::createFromSiteLanguage($siteLanguage);
-        } else {
-            $languageAspect = LanguageAspectFactory::createFromTypoScript($this->config['config'] ?? []);
-        }
+        $languageAspect = LanguageAspectFactory::createFromSiteLanguage($siteLanguage);
 
         $languageId = $languageAspect->getId();
         $languageContentId = $languageAspect->getContentId();
@@ -2088,29 +2074,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         // Finding the ISO code for the currently selected language
         // fetched by the sys_language record when not fetching content from the default language
-        if ($siteLanguage = $this->getCurrentSiteLanguage()) {
-            $this->sys_language_isocode = $siteLanguage->getTwoLetterIsoCode();
-        } elseif ($languageAspect->getContentId() > 0) {
-            // using sys_language_content because the ISO code only (currently) affect content selection from FlexForms - which should follow "sys_language_content"
-            // Set the fourth parameter to TRUE in the next two getRawRecord() calls to
-            // avoid versioning overlay to be applied as it generates an SQL error
-            $sys_language_row = $this->sys_page->getRawRecord('sys_language', $languageAspect->getContentId(), 'language_isocode,static_lang_isocode');
-            if (is_array($sys_language_row) && !empty($sys_language_row['language_isocode'])) {
-                $this->sys_language_isocode = $sys_language_row['language_isocode'];
-            }
-            // the DB value is overridden by TypoScript
-            if (!empty($this->config['config']['sys_language_isocode'])) {
-                $this->sys_language_isocode = $this->config['config']['sys_language_isocode'];
-            }
-        } else {
-            // fallback to the TypoScript option when rendering with sys_language_uid=0
-            // also: use "en" by default
-            if (!empty($this->config['config']['sys_language_isocode_default'])) {
-                $this->sys_language_isocode = $this->config['config']['sys_language_isocode_default'];
-            } else {
-                $this->sys_language_isocode = $languageKey !== 'default' ? $languageKey : 'en';
-            }
-        }
+        $this->sys_language_isocode = $siteLanguage->getTwoLetterIsoCode();
 
         $_params = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_postProcess'] ?? [] as $_funcRef) {
@@ -2136,12 +2100,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function settingLocale()
     {
-        // Setting locale
-        $locale = $this->config['config']['locale_all'];
         $siteLanguage = $this->getCurrentSiteLanguage();
-        if ($siteLanguage) {
-            $locale = $siteLanguage->getLocale();
-        }
+        $locale = $siteLanguage->getLocale();
         if ($locale) {
             $availableLocales = GeneralUtility::trimExplode(',', $locale, true);
             // If LC_NUMERIC is set e.g. to 'de_DE' PHP parses float values locale-aware resulting in strings with comma
@@ -3460,7 +3420,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Sets all internal measures what language the page should be rendered.
      * This is not for records, but rather the HTML / charset and the locallang labels
      *
-     * @param string $language - usually set via TypoScript config.language = dk
+     * @param string $language - usually set via Site Handling
      */
     protected function setOutputLanguage($language = 'default')
     {

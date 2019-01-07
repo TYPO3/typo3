@@ -20,11 +20,6 @@ page {
     externalJS.excludeFromConcatenation = 1
     externalJS.disableCompression = 1
   }
-
-  10 = TEXT
-  10 {
-    typolink.parameter = {$localLink}
-  }
   20 = IMAGE
   20 {
     file = {$localImage}

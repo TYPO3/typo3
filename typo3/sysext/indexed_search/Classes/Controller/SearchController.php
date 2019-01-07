@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Html\HtmlParser;
-use TYPO3\CMS\Core\Site\PseudoSiteFinder;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -1442,12 +1441,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 ->getBase()
                 ->getHost();
         } catch (SiteNotFoundException $e) {
-            $pseudoSiteFinder = GeneralUtility::makeInstance(PseudoSiteFinder::class);
-            try {
-                $domain = trim((string)$pseudoSiteFinder->getSiteByPageId($id)->getBase(), '/');
-            } catch (SiteNotFoundException $e) {
-                // site was not found, we return an empty string as default
-            }
+            // site was not found, we return an empty string as default
         }
         return $domain;
     }

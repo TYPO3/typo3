@@ -19,7 +19,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Site\Entity\PseudoSite;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -175,13 +174,6 @@ class PageInformationController
         foreach ($modTSconfig as $key => $item) {
             $fieldList = str_replace('###ALL_TABLES###', $this->cleanTableNames(), $item['fields']);
             $fields = GeneralUtility::trimExplode(',', $fieldList, true);
-            if ((int)$key === 0) {
-                // If "Basic settings" is rendered, hide the slug field on PseudoSites.
-                $site = $request->getAttribute('site');
-                if ($site instanceof PseudoSite) {
-                    $fields = array_diff($fields, ['slug']);
-                }
-            }
             $key = trim($key, '.');
             $this->fieldConfiguration[$key] = [
                 'label' => $item['label'] ? $this->getLanguageService()->sL($item['label']) : $key,

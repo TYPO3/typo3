@@ -34,6 +34,8 @@ The following PHP classes that have been previously deprecated for v9 have been 
 * :php:`TYPO3\CMS\Core\PageTitle\AltPageTitleProvider`
 * :php:`TYPO3\CMS\Core\Resource\Service\UserStorageCapabilityService`
 * :php:`TYPO3\CMS\Core\Resource\Utility\BackendUtility`
+* :php:`TYPO3\CMS\Core\Site\Entity\PseudoSite`
+* :php:`TYPO3\CMS\Core\Site\PseudoSiteFinder`
 * :php:`TYPO3\CMS\Core\TypoScript\ConfigurationForm`
 * :php:`TYPO3\CMS\Core\Utility\ClientUtility`
 * :php:`TYPO3\CMS\Core\Utility\PhpOptionsUtility`
@@ -529,6 +531,7 @@ The following PHP static class methods that have been previously deprecated for 
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory::determineSaltingHashingMethod()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory::getSaltingInstance()`
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory::setPreferredHashingMethod()`
+* :php:`TYPO3\CMS\Core\Context\LanguageAspectFactory::createFromTypoScript()`
 * :php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::configureModule()`
 * :php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionKeyByPrefix()`
 * :php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles()`
@@ -1239,6 +1242,14 @@ The following user TSconfig options have been dropped:
 The following TypoScript options have been dropped:
 
 * `config.concatenateJsAndCss`
+* `config.typolinkEnableLinksAcrossDomains`
+* `config.language`
+* `config.locale_all`
+* `config.sys_language_isocode`
+* `config.sys_language_isocode_default`
+* `config.sys_language_mode`
+* `config.sys_language_overlay`
+* `config.sys_language_uid`
 * `config.titleTagFunction`
 * `config.typolinkCheckRootline`
 * `config.tx_extbase.objects`
@@ -1253,6 +1264,7 @@ The following TypoScript options have been dropped:
 * `stdWrap.filelist`
 * `SVG.noscript`
 * `SVG.value`
+* `typolink.useCacheHash`
 * `TMENU.beforeImg`
 * `TMENU.afterImg`
 * `GMENU`
@@ -1370,6 +1382,7 @@ The following global variables have been removed:
 The following hooks have been removed:
 
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processUpload']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preBeUser']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest']`
