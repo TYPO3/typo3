@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash;
@@ -1190,10 +1189,10 @@ For each website you need a TypoScript template on the main page of your website
      */
     protected function loadExtLocalconfDatabaseAndExtTables()
     {
-        \TYPO3\CMS\Core\Core\Bootstrap::loadTypo3LoadedExtAndExtLocalconf(false);
-        \TYPO3\CMS\Core\Core\Bootstrap::unsetReservedGlobalVariables();
-        \TYPO3\CMS\Core\Core\Bootstrap::loadBaseTca(false);
-        \TYPO3\CMS\Core\Core\Bootstrap::loadExtTables(false);
+        Bootstrap::loadTypo3LoadedExtAndExtLocalconf(false);
+        Bootstrap::unsetReservedGlobalVariables();
+        Bootstrap::loadBaseTca(false);
+        Bootstrap::loadExtTables(false);
     }
 
     /**
