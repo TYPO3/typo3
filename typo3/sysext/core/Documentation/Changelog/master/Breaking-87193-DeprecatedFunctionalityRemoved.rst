@@ -399,6 +399,8 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->handleExternalFunctionValue()`
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->menuConfig()`
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->mergeExternalItems()`
+* :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->checkExtObj()`
+* :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->getSystemLanguages()`
 * :php:`TYPO3\CMS\Install\Service\CoreVersionService->getDownloadBaseUrl()`
 * :php:`TYPO3\CMS\Install\Service\CoreVersionService->isYoungerPatchDevelopmentReleaseAvailable()`
 * :php:`TYPO3\CMS\Install\Service\CoreVersionService->getYoungestPatchDevelopmentRelease()`
@@ -538,6 +540,11 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Impexp\Export->maxExportSize`
 * :php:`TYPO3\CMS\IndexedSearch\Lexer->csObj`
 * :php:`TYPO3\CMS\IndexedSearch\Indexer->csObj`
+* :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->extClassConf`
+* :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->extObj`
+* :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->function_key`
+* :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->localLangFile`
+* :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->pObj`
 * :php:`TYPO3\CMS\Extbase\Reflection\ClassSchema->addProperty`
 * :php:`TYPO3\CMS\Extbase\Reflection\ClassSchema->setModelType`
 * :php:`TYPO3\CMS\Extbase\Reflection\ClassSchema->getModelType`
@@ -667,6 +674,11 @@ The following class methods have changed visibility:
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->makeAdvancedOptionsForm()` changed from public to protected
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->makeConfigurationForm()` changed from public to protected
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->makeSaveForm()` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->extObjContent()` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->getContentElementCount()` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->getLangStatus()` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->renderL10nTable()` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->modMenu()` changed from public to protected
 * :php:`TYPO3\CMS\Linkvalidator\Report\LinkValidatorReport->extObjContent()` changed from public to protected
 * :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->init()` changed from public to protected
 * :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->menuConfig()` changed from public to protected

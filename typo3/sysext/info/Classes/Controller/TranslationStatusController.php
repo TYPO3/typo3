@@ -18,8 +18,6 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -38,30 +36,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TranslationStatusController
 {
-    use PublicPropertyDeprecationTrait;
-    use PublicMethodDeprecationTrait;
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicProperties = [
-        'pObj' => 'Using TranslationStatusController::$pObj is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'function_key' => 'Using TranslationStatusController::function_key$ is deprecated, property will be removed in TYPO3 v10.0.',
-        'extClassConf' => 'Using TranslationStatusController::$extClassConf is deprecated, property will be removed in TYPO3 v10.0.',
-        'localLangFile' => 'Using TranslationStatusController::$localLangFile is deprecated, property will be removed in TYPO3 v10.0.',
-        'extObj' => 'Using TranslationStatusController::$extObj is deprecated, property will be removed in TYPO3 v10.0.',
-    ];
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicMethods = [
-        'getContentElementCount' => 'Using TranslationStatusController::getContentElementCount() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'getLangStatus' => 'Using TranslationStatusController::getLangStatus() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'renderL10nTable' => 'Using TranslationStatusController::renderL10nTable() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'modMenu' => 'Using TranslationStatusController::modMenu() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'extObjContent' => 'Using TranslationStatusController::extObjContent() is deprecated, method will be removed in TYPO3 v10.0.',
-    ];
 
     /**
      * @var IconFactory
@@ -84,26 +58,6 @@ class TranslationStatusController
     protected $id;
 
     /**
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $extObj;
-
-    /**
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $localLangFile = '';
-
-    /**
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $extClassConf;
-
-    /**
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $function_key = '';
-
-    /**
      * Init, called from parent object
      *
      * @param InfoModuleController $pObj A reference to the parent (calling) object
@@ -114,11 +68,7 @@ class TranslationStatusController
         $this->id = (int)GeneralUtility::_GP('id');
         $this->initializeSiteLanguages();
         $this->pObj = $pObj;
-        // Local lang:
-        if (!empty($this->localLangFile)) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-            $this->getLanguageService()->includeLLFile($this->localLangFile);
-        }
+
         // Setting MOD_MENU items as we need them for logging:
         $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
     }
@@ -431,37 +381,6 @@ class TranslationStatusController
     }
 
     /**
-     * Selects all system languages (from sys_language)
-     *
-     * @return array System language records in an array.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function getSystemLanguages()
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        if (!$this->getBackendUser()->isAdmin() && $this->getBackendUser()->groupData['allowed_languages'] !== '') {
-            $allowed_languages = array_flip(explode(',', $this->getBackendUser()->groupData['allowed_languages']));
-        }
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_language')
-            ->select('*')
-            ->from('sys_language')
-            ->orderBy('sorting');
-        $res = $queryBuilder->execute();
-        $outputArray = [];
-        if (is_array($allowed_languages) && !empty($allowed_languages)) {
-            while ($output = $res->fetch()) {
-                if (isset($allowed_languages[$output['uid']])) {
-                    $outputArray[] = $output;
-                }
-            }
-        } else {
-            $outputArray = $res->fetchAll();
-        }
-        return $outputArray;
-    }
-
-    /**
      * Get an alternative language record for a specific page / language
      *
      * @param int $pageId Page ID to look up for.
@@ -548,33 +467,6 @@ class TranslationStatusController
         /** @var SiteInterface $currentSite */
         $currentSite = $GLOBALS['TYPO3_REQUEST']->getAttribute('site');
         $this->siteLanguages = $currentSite->getAvailableLanguages($this->getBackendUser(), false, (int)$this->id);
-    }
-
-    /**
-     * Called from InfoModuleController until deprecation removal in TYPO3 v10.0
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function checkExtObj()
-    {
-        if (is_array($this->extClassConf) && $this->extClassConf['name']) {
-            $this->extObj = GeneralUtility::makeInstance($this->extClassConf['name']);
-            $this->extObj->init($this->pObj, $this->extClassConf);
-            // Re-write:
-            $this->pObj->MOD_SETTINGS = BackendUtility::getModuleData($this->pObj->MOD_MENU, GeneralUtility::_GP('SET'), 'web_info');
-        }
-    }
-
-    /**
-     * Calls the main function inside ANOTHER sub-submodule which might exist.
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function extObjContent()
-    {
-        if (is_object($this->extObj)) {
-            return $this->extObj->main();
-        }
     }
 
     /**
