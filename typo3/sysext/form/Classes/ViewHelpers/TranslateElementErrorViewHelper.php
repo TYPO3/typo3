@@ -40,10 +40,7 @@ class TranslateElementErrorViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         $this->registerArgument('element', RootRenderableInterface::class, 'Form Element to translate', true);
-        $this->registerArgument('error', Error::class, '', false, '');
-        $this->registerArgument('code', 'integer', 'Error code - deprecated', false, '');
-        $this->registerArgument('arguments', 'array', 'Error arguments - deprecated', false, null);
-        $this->registerArgument('defaultValue', 'string', 'The default value - deprecated', false, '');
+        $this->registerArgument('error', Error::class, 'Error', true);
     }
 
     /**
@@ -59,19 +56,10 @@ class TranslateElementErrorViewHelper extends AbstractViewHelper
         $element = $arguments['element'];
         $error = $arguments['error'];
 
-        $code = $arguments['code'];
-        $errorArguments = $arguments['arguments'];
-        $defaultValue = $arguments['defaultValue'];
-
         if ($error instanceof Error) {
             $code = $error->getCode();
             $errorArguments = $error->getArguments();
             $defaultValue = $error->__toString();
-        } else {
-            trigger_error(
-                'TranslateElementErrorViewHelper arguments "code", "arguments" and "defaultValue" will be removed in TYPO3 v10.0. Use "error" instead.',
-                E_USER_DEPRECATED
-            );
         }
 
         /** @var FormRuntime $formRuntime */

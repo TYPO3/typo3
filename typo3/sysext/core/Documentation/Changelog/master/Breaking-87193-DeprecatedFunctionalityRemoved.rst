@@ -1006,6 +1006,9 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController->localLangFile` changed from public to protected
 * :php:`TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController->pObj` changed from public to protected
 
+The following VieHelpers have changed:
+
+* :php:`TYPO3\CMS\Form\ViewHelpers\TranslateElementErrorViewHelper`: The arguments `code`, `arguments` & `defaultValue` have been removed.
 
 The following scheduler tasks have been removed:
 
