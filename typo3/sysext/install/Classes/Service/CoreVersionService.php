@@ -40,20 +40,10 @@ class CoreVersionService
 
     /**
      * Initialize update URI
-     *
-     * @param Registry $registry Deprecated
      */
-    public function __construct(Registry $registry = null)
+    public function __construct()
     {
-        if (null !== $registry) {
-            trigger_error(
-                'The constructor parameter $registry for CoreVersionService is deprecated since TYPO3 v9 and will be removed in TYPO3 v10.0.',
-                E_USER_DEPRECATED
-            );
-            $this->registry = $registry;
-        } else {
-            $this->registry = GeneralUtility::makeInstance(Registry::class);
-        }
+        $this->registry = GeneralUtility::makeInstance(Registry::class);
     }
 
     /**

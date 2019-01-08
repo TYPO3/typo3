@@ -297,13 +297,7 @@ class UpgradeWizardsService
         $class = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier];
         $updateObject = GeneralUtility::makeInstance($class);
         $wizardHtml = '';
-        if (method_exists($updateObject, 'getUserInput')) {
-            $wizardHtml = $updateObject->getUserInput('install[values][' . htmlspecialchars($identifier) . ']');
-            trigger_error(
-                'Deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use ConfirmableInterface directly.',
-                E_USER_DEPRECATED
-            );
-        } elseif ($updateObject instanceof UpgradeWizardInterface && $updateObject instanceof ConfirmableInterface) {
+        if ($updateObject instanceof UpgradeWizardInterface && $updateObject instanceof ConfirmableInterface) {
             $markup = [];
             $radioAttributes = [
                 'type' => 'radio',
@@ -355,71 +349,55 @@ class UpgradeWizardsService
             $updateObject->setOutput($this->output);
         }
         $messages = new FlashMessageQueue('install');
-        // $wizardInputErrorMessage is given as reference to wizard object!
-        $wizardInputErrorMessage = '';
-        if (method_exists($updateObject, 'checkUserInput') &&
-            !$updateObject->checkUserInput($wizardInputErrorMessage)) {
-            trigger_error(
-                'Deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, use ConfirmableInterface.',
-                E_USER_DEPRECATED
-            );
+
+        if ($updateObject instanceof UpgradeWizardInterface) {
+            $requestParams = GeneralUtility::_GP('install');
+            if ($updateObject instanceof ConfirmableInterface) {
+                // value is set in request but is empty
+                $isSetButEmpty = isset($requestParams['values'][$updateObject->getIdentifier()]['install'])
+                    && empty($requestParams['values'][$updateObject->getIdentifier()]['install']);
+
+                $checkValue = (int)$requestParams['values'][$updateObject->getIdentifier()]['install'];
+
+                if ($checkValue === 1) {
+                    // confirmation = yes, we do the update
+                    $performResult = $updateObject->executeUpdate();
+                } elseif ($updateObject->getConfirmation()->isRequired()) {
+                    // confirmation = no, but is required, we do *not* the update and fail
+                    $performResult = false;
+                } elseif ($isSetButEmpty) {
+                    // confirmation = no, but it is *not* required, we do *not* the update, but mark the wizard as done
+                    $this->output->writeln('No changes applied, marking wizard as done.');
+                    // confirmation was set to "no"
+                    $performResult = true;
+                }
+            } else {
+                // confirmation yes or non-confirmable
+                $performResult = $updateObject->executeUpdate();
+            }
+        }
+
+        $stream = $this->output->getStream();
+        rewind($stream);
+        if ($performResult) {
+            if ($updateObject instanceof UpgradeWizardInterface && !($updateObject instanceof RepeatableInterface)) {
+                // mark wizard as done if it's not repeatable and was successful
+                $this->markWizardAsDone($updateObject->getIdentifier());
+            }
             $messages->enqueue(
                 new FlashMessage(
-                    $wizardInputErrorMessage ?: 'Something went wrong!',
-                    'Input parameter broken',
-                    FlashMessage::ERROR
+                    stream_get_contents($stream),
+                    'Update successful'
                 )
             );
         } else {
-            if ($updateObject instanceof UpgradeWizardInterface) {
-                $requestParams = GeneralUtility::_GP('install');
-                if ($updateObject instanceof ConfirmableInterface) {
-                    // value is set in request but is empty
-                    $isSetButEmpty = isset($requestParams['values'][$updateObject->getIdentifier()]['install'])
-                        && empty($requestParams['values'][$updateObject->getIdentifier()]['install']);
-
-                    $checkValue = (int)$requestParams['values'][$updateObject->getIdentifier()]['install'];
-
-                    if ($checkValue === 1) {
-                        // confirmation = yes, we do the update
-                        $performResult = $updateObject->executeUpdate();
-                    } elseif ($updateObject->getConfirmation()->isRequired()) {
-                        // confirmation = no, but is required, we do *not* the update and fail
-                        $performResult = false;
-                    } elseif ($isSetButEmpty) {
-                        // confirmation = no, but it is *not* required, we do *not* the update, but mark the wizard as done
-                        $this->output->writeln('No changes applied, marking wizard as done.');
-                        // confirmation was set to "no"
-                        $performResult = true;
-                    }
-                } else {
-                    // confirmation yes or non-confirmable
-                    $performResult = $updateObject->executeUpdate();
-                }
-            }
-
-            $stream = $this->output->getStream();
-            rewind($stream);
-            if ($performResult) {
-                if ($updateObject instanceof UpgradeWizardInterface && !($updateObject instanceof RepeatableInterface)) {
-                    // mark wizard as done if it's not repeatable and was successful
-                    $this->markWizardAsDone($updateObject->getIdentifier());
-                }
-                $messages->enqueue(
-                    new FlashMessage(
-                        stream_get_contents($stream),
-                        'Update successful'
-                    )
-                );
-            } else {
-                $messages->enqueue(
-                    new FlashMessage(
-                        stream_get_contents($stream),
-                        'Update failed!',
-                        FlashMessage::ERROR
-                    )
-                );
-            }
+            $messages->enqueue(
+                new FlashMessage(
+                    stream_get_contents($stream),
+                    'Update failed!',
+                    FlashMessage::ERROR
+                )
+            );
         }
         return $messages;
     }
