@@ -31,6 +31,7 @@ The following PHP classes that have been previously deprecated for v9 have been 
 * :php:`TYPO3\CMS\Core\PageTitle\AltPageTitleProvider`
 * :php:`TYPO3\CMS\Core\Resource\Service\UserStorageCapabilityService`
 * :php:`TYPO3\CMS\Core\Resource\Utility\BackendUtility`
+* :php:`TYPO3\CMS\Core\TypoScript\ConfigurationForm`
 * :php:`TYPO3\CMS\Core\Utility\ClientUtility`
 * :php:`TYPO3\CMS\Core\Utility\PhpOptionsUtility`
 * :php:`TYPO3\CMS\Extbase\Command\CoreCommand`

@@ -449,6 +449,7 @@ return [
     'TYPO3\CMS\Core\TypoScript\ConfigurationForm' => [
         'restFiles' => [
             'Deprecation-82725-DeprecateConfigurationForm.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Lowlevel\View\ConfigurationView' => [
