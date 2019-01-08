@@ -81,7 +81,7 @@ class ActionMenuViewHelper extends AbstractTagBasedViewHelper
         $this->tag->addAttribute('onchange', 'jumpToUrl(this.options[this.selectedIndex].value, this);');
         $options = '';
         foreach ($this->childNodes as $childNode) {
-            if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode) {
+            if ($childNode instanceof ViewHelperNode) {
                 $options .= $childNode->evaluate($this->renderingContext);
             }
         }
