@@ -809,6 +809,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      */
     protected function looksLikeAFormDefinition(array $data): bool
     {
-        return isset($data['identifier'], $data['type']) && !empty($data['identifier']) && $data['type'] === 'Form';
+        return isset($data['identifier'], $data['type']) && !empty($data['identifier']) && trim($data['type']) === 'Form';
     }
 }
