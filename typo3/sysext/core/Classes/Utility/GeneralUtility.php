@@ -2235,8 +2235,13 @@ class GeneralUtility
     {
         $result = false;
 
+        if (is_link($directory)) {
+            // Avoid attempting to rename the symlink see #87367
+            $directory = realpath($directory);
+        }
+
         if (is_dir($directory)) {
-            $temporaryDirectory = rtrim($directory, '/') . '.' . StringUtility::getUniqueId('remove') . '/';
+            $temporaryDirectory = rtrim($directory, '/') . '.' . StringUtility::getUniqueId('remove');
             if (rename($directory, $temporaryDirectory)) {
                 if ($flushOpcodeCache) {
                     self::makeInstance(OpcodeCacheService::class)->clearAllActive($directory);
