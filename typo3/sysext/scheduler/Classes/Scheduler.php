@@ -339,12 +339,13 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         $row = $queryBuilder->execute()->fetch();
-        if ($row === false) {
-            throw new \OutOfBoundsException('Query could not be executed. Possible defect in tables tx_scheduler_task or tx_scheduler_task_group or DB server problems', 1422044826);
-        }
         if (empty($row)) {
-            // If there are no available tasks, thrown an exception
-            throw new \OutOfBoundsException('No task', 1247827244);
+            if (empty($uid)) {
+                // No uid was passed and no overdue task was found
+                throw new \OutOfBoundsException('No tasks available for execution', 1247827244);
+            }
+            // Although a uid was passed, no task with given was found
+            throw new \OutOfBoundsException('No task with id ' . $uid . ' found', 1422044826);
         }
         /** @var $task Task\AbstractTask */
         $task = unserialize($row['serialized_task_object']);
