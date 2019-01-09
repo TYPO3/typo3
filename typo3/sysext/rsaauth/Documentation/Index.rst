@@ -28,7 +28,7 @@ RSA authentication
       rsa authentication, rsa, encryption
 
 :Copyright:
-      2000-2018
+      2000-2019
 
 :Author:
       TYPO3 CMS Core Development Team

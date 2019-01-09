@@ -117,7 +117,7 @@ class SystemEnvironmentBuilder
         // This version, branch and copyright
         define('TYPO3_version', '9.5.4-dev');
         define('TYPO3_branch', '9.5');
-        define('TYPO3_copyright_year', '1998-2018');
+        define('TYPO3_copyright_year', '1998-2019');
 
         // TYPO3 external links
         define('TYPO3_URL_GENERAL', 'https://typo3.org/');
