@@ -167,13 +167,12 @@ class SystemEnvironmentBuilder
             $scriptPath = $rootPath . $scriptName;
         }
 
-        if (!is_file($scriptPath)) {
-            static::exitWithMessage('Unable to determine path to entry script.');
-        }
-
         if (!defined('PATH_thisScript')) {
             // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
             define('PATH_thisScript', $scriptPath);
+            if (!is_file($scriptPath)) {
+                static::exitWithMessage('Unable to determine path to entry script.');
+            }
         }
 
         // Absolute path of the document root of the instance with trailing slash
