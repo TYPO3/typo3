@@ -5833,8 +5833,6 @@ class DataHandler implements LoggerAwareInterface
             ->setMaxResults(1)
             ->execute()
             ->fetchColumn();
-        // Look for version number of the current:
-        $subVer = $row['t3ver_id'] . '.' . ($highestVerNumber + 1);
         // Set up the values to override when making a raw-copy:
         $overrideArray = [
             't3ver_id' => $highestVerNumber + 1,
