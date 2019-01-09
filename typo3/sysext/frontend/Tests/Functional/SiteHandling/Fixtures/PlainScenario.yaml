@@ -71,12 +71,12 @@ entities:
         - self: {id: 1200, title: 'EN: Features'}
           children:
             - self: {id: 1210, title: 'EN: Frontend Editing'}
-        - self: {id: 1300, title: 'EN: Products', root: true}
+        - self: {id: 1300, title: 'EN: Products'}
           children:
             - self: {id: 1310, title: 'EN: Planets'}
             - self: {id: 1320, title: 'EN: Spaceships'}
             - self: {id: 1330, title: 'EN: Dark Matter'}
-        - self: {id: 1400, title: 'EN: ACME in your Region', root: true}
+        - self: {id: 1400, title: 'EN: ACME in your Region'}
           languageVariants:
             - self: {id: 1401, title: 'FR: ACME in your Region', language: 1}
             - self: {id: 1402, title: 'FR-CA: ACME in your Region', language: 2}

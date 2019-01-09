@@ -250,7 +250,7 @@ class SlugHelper
      */
     public function isUniqueInSite(string $slug, RecordState $state): bool
     {
-        $pageId = (int)$state->resolveNodeIdentifier();
+        $pageId = (int)$state->resolveNodeAggregateIdentifier();
         $recordId = $state->getSubject()->getIdentifier();
         $languageId = $state->getContext()->getLanguageId();
 
