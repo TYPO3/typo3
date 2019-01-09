@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
@@ -39,6 +40,7 @@ use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Package\PackageInterface;
@@ -798,6 +800,8 @@ page.100 =< styles.content.get',
 For each website you need a TypoScript template on the main page of your website (on the top level). For better maintenance all TypoScript should be extracted into external files via <INCLUDE_TYPOSCRIPT: source="FILE:EXT:site_myproject/Configuration/TypoScript/setup.typoscript">.'
                     ]
                 );
+
+                $this->createSiteConfiguration('main', (int)$pageUid, $request);
                 break;
         }
 
@@ -1190,5 +1194,53 @@ For each website you need a TypoScript template on the main page of your website
         \TYPO3\CMS\Core\Core\Bootstrap::unsetReservedGlobalVariables();
         \TYPO3\CMS\Core\Core\Bootstrap::loadBaseTca(false);
         \TYPO3\CMS\Core\Core\Bootstrap::loadExtTables(false);
+    }
+
+    /**
+     * Creates a site configuration with one language "English" which is the de-facto default language for TYPO3 in general.
+     *
+     * @param string $identifier
+     * @param int $rootPageId
+     * @param ServerRequestInterface $request
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     */
+    protected function createSiteConfiguration(string $identifier, int $rootPageId, ServerRequestInterface $request)
+    {
+        $normalizedParams = $request->getAttribute('normalizedParams', null);
+        if (!($normalizedParams instanceof NormalizedParams)) {
+            $normalizedParams = new NormalizedParams(
+                $request->getServerParams(),
+                $GLOBALS['TYPO3_CONF_VARS']['SYS'],
+                Environment::getCurrentScript(),
+                Environment::getPublicPath()
+            );
+        }
+
+        // Create a default site configuration called "main" as best practice
+        $siteConfiguration = GeneralUtility::makeInstance(
+            SiteConfiguration::class,
+            Environment::getConfigPath() . '/sites'
+        );
+        $siteConfiguration->write($identifier, [
+            'rootPageId' => $rootPageId,
+            'base' => $normalizedParams->getSiteUrl(),
+            'languages' => [
+                0 => [
+                    'title' => 'English',
+                    'enabled' => true,
+                    'languageId' => 0,
+                    'base' => '/en/',
+                    'typo3Language' => 'default',
+                    'locale' => 'en_US.UTF-8',
+                    'iso-639-1' => 'en',
+                    'navigationTitle' => 'English',
+                    'hreflang' => 'en-us',
+                    'direction' => 'ltr',
+                    'flag' => 'us',
+                ],
+            ],
+            'errorHandling' => [],
+            'routes' => [],
+        ]);
     }
 }
