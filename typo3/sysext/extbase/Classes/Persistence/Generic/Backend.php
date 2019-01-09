@@ -445,10 +445,10 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $dataMapper = $objectManager->get(DataMapper::class);
         $columnMap = $this->dataMapFactory->buildDataMap($className)->getColumnMap($propertyName);
-        $propertyMetaData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
+        $property = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
         foreach ($this->getRemovedChildObjects($parentObject, $propertyName) as $removedObject) {
             $this->detachObjectFromParentObject($removedObject, $parentObject, $propertyName);
-            if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY && $propertyMetaData['annotations']['cascade'] === 'remove') {
+            if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY && $property->getAnnotationValue('cascade') === 'remove') {
                 $this->removeEntity($removedObject);
             }
         }
@@ -1071,8 +1071,8 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
             if ($columnMap === null) {
                 continue;
             }
-            $propertyMetaData = $classSchema->getProperty($propertyName);
-            if ($propertyMetaData['annotations']['cascade'] === 'remove') {
+            $property = $classSchema->getProperty($propertyName);
+            if ($property->getAnnotationValue('cascade') === 'remove') {
                 if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
                     foreach ($propertyValue as $containedObject) {
                         $this->removeEntity($containedObject);

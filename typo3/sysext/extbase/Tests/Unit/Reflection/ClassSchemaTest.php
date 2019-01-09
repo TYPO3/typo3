@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException;
@@ -214,15 +213,6 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsPropertiesWithLazyAnnotation()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithLazyDoctrineAnnotation::class);
-        static::assertTrue($classSchema->getProperty('propertyWithLazyAnnotation')['annotations']['lazy']);
-    }
-
-    /**
-     * @test
-     */
     public function classSchemaDetectsStaticMethods()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
@@ -283,74 +273,7 @@ class ClassSchemaTest extends UnitTestCase
         $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
 
         $propertyDefinition = $classSchema->getProperty('publicPropertyWithDefaultValue');
-        static::assertSame('foo', $propertyDefinition['defaultValue']);
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsPropertyVisibility()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
-
-        $propertyDefinition = $classSchema->getProperty('publicProperty');
-        static::assertTrue($propertyDefinition['public']);
-        static::assertFalse($propertyDefinition['protected']);
-        static::assertFalse($propertyDefinition['private']);
-
-        $propertyDefinition = $classSchema->getProperty('protectedProperty');
-        static::assertFalse($propertyDefinition['public']);
-        static::assertTrue($propertyDefinition['protected']);
-        static::assertFalse($propertyDefinition['private']);
-
-        $propertyDefinition = $classSchema->getProperty('privateProperty');
-        static::assertFalse($propertyDefinition['public']);
-        static::assertFalse($propertyDefinition['protected']);
-        static::assertTrue($propertyDefinition['private']);
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsInjectProperty()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
-
-        $propertyDefinition = $classSchema->getProperty('propertyWithInjectAnnotation');
-        static::assertTrue($propertyDefinition['annotations']['inject']);
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsTransientProperty()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
-
-        $propertyDefinition = $classSchema->getProperty('propertyWithTransientAnnotation');
-        static::assertTrue($propertyDefinition['annotations']['transient']);
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsCascadeProperty()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
-
-        $propertyDefinition = $classSchema->getProperty('propertyWithCascadeAnnotation');
-        static::assertSame('remove', $propertyDefinition['annotations']['cascade']);
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsCascadePropertyOnlyWithVarAnnotation()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
-
-        $propertyDefinition = $classSchema->getProperty('propertyWithCascadeAnnotationWithoutVarAnnotation');
-        static::assertNull($propertyDefinition['annotations']['cascade']);
+        static::assertSame('foo', $propertyDefinition->getDefaultValue());
     }
 
     /**
@@ -363,18 +286,6 @@ class ClassSchemaTest extends UnitTestCase
         static::assertTrue(in_array('foo', $classSchema->getMethod('someAction')['tags']['ignorevalidation'], true));
         static::assertTrue(in_array('bar', $classSchema->getMethod('someAction')['tags']['ignorevalidation'], true));
         static::assertFalse(in_array('baz', $classSchema->getMethod('someAction')['tags']['ignorevalidation'], true));
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsTypeAndElementType()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
-
-        $propertyDefinition = $classSchema->getProperty('propertyWithObjectStorageAnnotation');
-        static::assertSame(ObjectStorage::class, $propertyDefinition['type']);
-        static::assertSame(Fixture\DummyClassWithAllTypesOfProperties::class, $propertyDefinition['elementType']);
     }
 
     /**
@@ -454,53 +365,6 @@ class ClassSchemaTest extends UnitTestCase
         static::assertArrayNotHasKey('copyright', $tags);
         static::assertArrayNotHasKey('author', $tags);
         static::assertArrayNotHasKey('version', $tags);
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsValidateAnnotationsModelProperties(): void
-    {
-        $this->resetSingletonInstances = true;
-        $classSchema = new ClassSchema(Fixture\DummyModel::class);
-        static::assertSame(
-            [
-                [
-                    'name' => 'StringLength',
-                    'options' => [
-                        'minimum' => 1,
-                        'maximum' => 10,
-                    ],
-                    'className' => StringLengthValidator::class
-                ],
-                [
-                    'name' => 'NotEmpty',
-                    'options' => [],
-                    'className' => NotEmptyValidator::class
-                ],
-                [
-                    'name' => 'TYPO3.CMS.Extbase:NotEmpty',
-                    'options' => [],
-                    'className' => NotEmptyValidator::class
-                ],
-                [
-                    'name' => 'TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator',
-                    'options' => [],
-                    'className' => Fixture\Validation\Validator\DummyValidator::class
-                ],
-                [
-                    'name' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator',
-                    'options' => [],
-                    'className' => NotEmptyValidator::class
-                ],
-                [
-                    'name' => NotEmptyValidator::class,
-                    'options' => [],
-                    'className' => NotEmptyValidator::class
-                ]
-            ],
-            $classSchema->getProperty('propertyWithValidateAnnotations')['validators']
-        );
     }
 
     /**

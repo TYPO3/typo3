@@ -20,6 +20,7 @@ use TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException;
 use TYPO3\CMS\Extbase\Persistence;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 
 /**
@@ -243,10 +244,10 @@ class DataMapper
             }
             $columnMap = $dataMap->getColumnMap($propertyName);
             $columnName = $columnMap->getColumnName();
-            $propertyData = $classSchema->getProperty($propertyName);
+            $propertyType = $classSchema->getProperty($propertyName)->getType();
             $propertyValue = null;
             if (isset($row[$columnName])) {
-                switch ($propertyData['type']) {
+                switch ($propertyType) {
                     case 'integer':
                         $propertyValue = (int)$row[$columnName];
                         break;
@@ -270,16 +271,16 @@ class DataMapper
                             $this->fetchRelated($object, $propertyName, $row[$columnName])
                         );
                         break;
-                    case is_subclass_of($propertyData['type'], \DateTimeInterface::class):
+                    case is_subclass_of($propertyType, \DateTimeInterface::class):
                             $propertyValue = $this->mapDateTime(
                                 $row[$columnName],
                                 $columnMap->getDateTimeStorageFormat(),
-                                $propertyData['type']
+                                $propertyType
                             );
                         break;
                     default:
-                        if (TypeHandlingUtility::isCoreType($propertyData['type'])) {
-                            $propertyValue = $this->mapCoreType($propertyData['type'], $row[$columnName]);
+                        if (TypeHandlingUtility::isCoreType($propertyType)) {
+                            $propertyValue = $this->mapCoreType($propertyType, $row[$columnName]);
                         } else {
                             $propertyValue = $this->mapObjectToClassProperty(
                                 $object,
@@ -347,9 +348,9 @@ class DataMapper
      */
     public function fetchRelated(DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = true)
     {
-        $propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-        if ($enableLazyLoading === true && $propertyMetaData['annotations']['lazy']) {
-            if ($propertyMetaData['type'] === Persistence\ObjectStorage::class) {
+        $property = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
+        if ($enableLazyLoading === true && $property->getAnnotationValue('lazy') === true) {
+            if ($property->getType() === Persistence\ObjectStorage::class) {
                 $result = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage::class, $parentObject, $propertyName, $fieldValue, $this);
             } else {
                 if (empty($fieldValue)) {
@@ -523,9 +524,9 @@ class DataMapper
             if ($fieldValue === '') {
                 $propertyValue = $this->getEmptyRelationValue($parentObject, $propertyName);
             } else {
-                $propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-                if ($this->persistenceSession->hasIdentifier($fieldValue, $propertyMetaData['type'])) {
-                    $propertyValue = $this->persistenceSession->getObjectByIdentifier($fieldValue, $propertyMetaData['type']);
+                $property = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
+                if ($this->persistenceSession->hasIdentifier($fieldValue, $property->getType())) {
+                    $propertyValue = $this->persistenceSession->getObjectByIdentifier($fieldValue, $property->getType());
                 } else {
                     $result = $this->fetchRelated($parentObject, $propertyName, $fieldValue);
                     $propertyValue = $this->mapResultToPropertyValue($parentObject, $propertyName, $result);
@@ -563,15 +564,15 @@ class DataMapper
         if ($result instanceof Persistence\Generic\LoadingStrategyInterface) {
             $propertyValue = $result;
         } else {
-            $propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-            if (in_array($propertyMetaData['type'], ['array', 'ArrayObject', 'SplObjectStorage', Persistence\ObjectStorage::class], true)) {
+            $property = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
+            if (in_array($property->getType(), ['array', 'ArrayObject', 'SplObjectStorage', Persistence\ObjectStorage::class], true)) {
                 $objects = [];
                 foreach ($result as $value) {
                     $objects[] = $value;
                 }
-                if ($propertyMetaData['type'] === 'ArrayObject') {
+                if ($property->getType() === 'ArrayObject') {
                     $propertyValue = new \ArrayObject($objects);
-                } elseif ($propertyMetaData['type'] === Persistence\ObjectStorage::class) {
+                } elseif ($property->getType() === Persistence\ObjectStorage::class) {
                     $propertyValue = new Persistence\ObjectStorage();
                     foreach ($objects as $object) {
                         $propertyValue->attach($object);
@@ -580,7 +581,8 @@ class DataMapper
                 } else {
                     $propertyValue = $objects;
                 }
-            } elseif (strpbrk($propertyMetaData['type'], '_\\') !== false) {
+            } elseif (strpbrk($property->getType(), '_\\') !== false) {
+                // @todo: check the strpbrk function call. Seems to be a check for Tx_Foo_Bar style class names
                 if (is_object($result) && $result instanceof Persistence\QueryResultInterface) {
                     $propertyValue = $result->getFirst();
                 } else {
@@ -676,15 +678,20 @@ class DataMapper
      */
     public function getType($parentClassName, $propertyName)
     {
-        $propertyMetaData = $this->reflectionService->getClassSchema($parentClassName)->getProperty($propertyName);
-        if (!empty($propertyMetaData['elementType'])) {
-            $type = $propertyMetaData['elementType'];
-        } elseif (!empty($propertyMetaData['type'])) {
-            $type = $propertyMetaData['type'];
-        } else {
-            throw new UnexpectedTypeException('Could not determine the child object type.', 1251315967);
+        try {
+            $property = $this->reflectionService->getClassSchema($parentClassName)->getProperty($propertyName);
+
+            if ($property->getElementType() !== null) {
+                return $property->getElementType();
+            }
+
+            if ($property->getType() !== null) {
+                return $property->getType();
+            }
+        } catch (NoSuchPropertyException $e) {
         }
-        return $type;
+
+        throw new UnexpectedTypeException('Could not determine the child object type.', 1251315967);
     }
 
     /**

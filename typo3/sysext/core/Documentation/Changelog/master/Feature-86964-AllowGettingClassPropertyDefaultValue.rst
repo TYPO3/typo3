@@ -22,6 +22,6 @@ It is now possible to get the default value of a class property when using the `
 	    ->getClassSchema(MyClass::class)
 	    ->getProperty('myProperty');
 
-	$defaultValue = $property['defaultValue']; // "foo"
+	$defaultValue = $property->getDefaultValue(); // "foo"
 
 .. index:: PHP-API, ext:extbase, NotScanned

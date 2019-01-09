@@ -153,10 +153,13 @@ class PersistentObjectConverterTest extends UnitTestCase
 
         $this->mockContainer->expects($this->any())->method('getImplementationClassName')->will($this->returnValue('TheTargetType'));
         $mockSchema->expects($this->any())->method('hasProperty')->with('thePropertyName')->will($this->returnValue(true));
-        $mockSchema->expects($this->any())->method('getProperty')->with('thePropertyName')->will($this->returnValue([
-            'type' => 'TheTypeOfSubObject',
-            'elementType' => null
-        ]));
+        $mockSchema->expects($this->any())->method('getProperty')->with('thePropertyName')->will($this->returnValue(new ClassSchema\Property(
+            'thePropertyName',
+            [
+                'type' => 'TheTypeOfSubObject',
+                'elementType' => null
+            ]
+        )));
         $configuration = $this->buildConfiguration([]);
         $this->assertEquals('TheTypeOfSubObject', $this->converter->getTypeOfChildProperty('TheTargetType', 'thePropertyName', $configuration));
     }

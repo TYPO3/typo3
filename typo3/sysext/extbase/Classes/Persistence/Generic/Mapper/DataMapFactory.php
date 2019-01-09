@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
  */
 
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
 
 /**
  * A factory for a data map to map a single table configured in $TCA on a domain object.
@@ -156,12 +157,17 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
             } else {
                 $propertyName = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($columnName);
             }
-            // if (in_array($propertyName, $classPropertyNames)) {
-            // @todo Enable check for property existence
+            // @todo: shall we really create column maps for non existing properties?
+            // @todo: check why this could happen in the first place. TCA definitions for non existing model properties?
             $columnMap = $this->createColumnMap($columnName, $propertyName);
-            $propertyMetaData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
+            try {
+                $property = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
+                [$type, $elementType] = [$property->getType(), $property->getElementType()];
+            } catch (NoSuchPropertyException $e) {
+                [$type, $elementType] = [null, null];
+            }
             $columnMap = $this->setType($columnMap, $columnDefinition['config']);
-            $columnMap = $this->setRelations($columnMap, $columnDefinition['config'], $propertyMetaData);
+            $columnMap = $this->setRelations($columnMap, $columnDefinition['config'], $type, $elementType);
             $columnMap = $this->setFieldEvaluations($columnMap, $columnDefinition['config']);
             $dataMap->addColumnMap($columnMap);
         }
@@ -311,17 +317,19 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param ColumnMap $columnMap The column map
      * @param array|null $columnConfiguration The column configuration from $TCA
-     * @param array $propertyMetaData The property metadata as delivered by the reflection service
+     * @param string|null $type
+     * @param string|null $elementType
      * @return ColumnMap
      */
-    protected function setRelations(ColumnMap $columnMap, $columnConfiguration, $propertyMetaData)
+    protected function setRelations(ColumnMap $columnMap, $columnConfiguration, ?string $type, ?string $elementType)
     {
         if (isset($columnConfiguration)) {
             if (isset($columnConfiguration['MM'])) {
                 $columnMap = $this->setManyToManyRelation($columnMap, $columnConfiguration);
-            } elseif (isset($propertyMetaData['elementType'])) {
+            } elseif ($elementType !== null) {
                 $columnMap = $this->setOneToManyRelation($columnMap, $columnConfiguration);
-            } elseif (isset($propertyMetaData['type']) && strpbrk($propertyMetaData['type'], '_\\') !== false) {
+            } elseif ($type !== null && strpbrk($type, '_\\') !== false) {
+                // @todo: check the strpbrk function call. Seems to be a check for Tx_Foo_Bar style class names
                 $columnMap = $this->setOneToOneRelation($columnMap, $columnConfiguration);
             } elseif (
                 isset($columnConfiguration['type'], $columnConfiguration['renderType'])

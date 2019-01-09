@@ -203,7 +203,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
                 $this->getLogger()->notice('The singleton "' . $classSchema->getClassName() . '" needs a prototype in "' . $injectPropertyName . '". This is often a bad code smell; often you rather want to inject a singleton.');
             }
 
-            if ($classSchema->getProperty($injectPropertyName)['public']) {
+            if ($classSchema->getProperty($injectPropertyName)->isPublic()) {
                 $instance->{$injectPropertyName} = $instanceToInject;
             } else {
                 $propertyReflection = new \ReflectionProperty($instance, $injectPropertyName);

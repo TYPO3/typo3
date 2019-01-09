@@ -28,6 +28,8 @@ use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\Property;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException;
@@ -39,6 +41,26 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
  */
 class ClassSchema
 {
+    /**
+     * @var array
+     */
+    private static $propertyObjects = [];
+
+    /**
+     * @return array
+     */
+    private function buildPropertyObjects(): array
+    {
+        if (!isset(static::$propertyObjects[$this->className])) {
+            static::$propertyObjects[$this->className] = [];
+            foreach ($this->properties as $propertyName => $propertyDefinition) {
+                static::$propertyObjects[$this->className][$propertyName] = new Property($propertyName, $this->properties[$propertyName]);
+            }
+        }
+
+        return static::$propertyObjects[$this->className];
+    }
+
     /**
      * Available model types
      */
@@ -412,27 +434,28 @@ class ClassSchema
     }
 
     /**
-     * Returns the given property defined in this schema. Check with
-     * hasProperty($propertyName) before!
+     * @throws NoSuchPropertyException
      *
      * @param string $propertyName
-     * @return array
+     * @return Property
      */
-    public function getProperty($propertyName)
+    public function getProperty(string $propertyName): Property
     {
-        return isset($this->properties[$propertyName]) && is_array($this->properties[$propertyName])
-            ? $this->properties[$propertyName]
-            : [];
+        $properties = $this->buildPropertyObjects();
+
+        if (!isset($properties[$propertyName])) {
+            throw NoSuchPropertyException::create($this->className, $propertyName);
+        }
+
+        return $properties[$propertyName];
     }
 
     /**
-     * Returns all properties defined in this schema
-     *
-     * @return array
+     * @return array|Property[]
      */
-    public function getProperties()
+    public function getProperties(): array
     {
-        return $this->properties;
+        return $this->buildPropertyObjects();
     }
 
     /**

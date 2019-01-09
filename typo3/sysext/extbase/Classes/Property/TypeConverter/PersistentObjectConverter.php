@@ -120,8 +120,8 @@ class PersistentObjectConverter extends ObjectConverter
         if (!$schema->hasProperty($propertyName)) {
             throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Property "' . $propertyName . '" was not found in target object of type "' . $specificTargetType . '".', 1297978366);
         }
-        $propertyInformation = $schema->getProperty($propertyName);
-        return $propertyInformation['type'] . ($propertyInformation['elementType'] !== null ? '<' . $propertyInformation['elementType'] . '>' : '');
+        $property = $schema->getProperty($propertyName);
+        return $property->getType() . ($property->getElementType() !== null ? '<' . $property->getElementType() . '>' : '');
     }
 
     /**
