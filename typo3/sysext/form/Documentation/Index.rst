@@ -25,7 +25,7 @@ Form
    form
 
 :Copyright:
-   2000-2018
+   2000-2019
 
 :Author:
    TRITUM GmbH
