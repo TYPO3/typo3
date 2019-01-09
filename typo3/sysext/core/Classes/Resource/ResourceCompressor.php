@@ -474,7 +474,7 @@ class ResourceCompressor
             $file = Environment::getPublicPath() . '/' . $filename;
         }
 
-        // check if the file exists, and if so, return the path relative to PATH_thisScript
+        // check if the file exists, and if so, return the path relative to current PHP script
         if (is_file($file)) {
             return rtrim(PathUtility::getRelativePathTo($file), '/');
         }

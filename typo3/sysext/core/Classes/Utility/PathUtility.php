@@ -270,7 +270,7 @@ class PathUtility
      *
      * @param string $path
      *
-     * @return string
+     * @return string Path without trailing slash
      */
     public static function dirnameDuringBootstrap($path): string
     {

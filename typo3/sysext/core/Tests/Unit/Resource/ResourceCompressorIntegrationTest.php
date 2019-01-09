@@ -26,6 +26,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ResourceCompressorIntegrationTest extends BaseTestCase
 {
     /**
+     * @var bool Restore Environment after tests
+     */
+    protected $backupEnvironment = true;
+
+    /**
      * @var TestableResourceCompressor
      */
     protected $resourceCompressor;
@@ -42,6 +47,7 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
 
     public function setUp(): void
     {
+        parent::setUp();
         $this->fixtureDir = 'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/';
         $this->fixtureDirFromTest = GeneralUtility::fixWindowsFilePath(__DIR__ . '/ResourceCompressorTest/Fixtures/');
     }
@@ -105,6 +111,17 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
      */
     public function concatenateCssFilesWorksWithFileFromNonRootPath(): void
     {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getBackendPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
         $testFile = Environment::getPublicPath() . '/typo3temp/var/transient/css_input_with_import.css';
         $this->testFilesToDelete[] = $testFile;
         copy(Environment::getBackendPath() . '/' . $this->fixtureDir . 'css_input_with_import.css', $testFile);

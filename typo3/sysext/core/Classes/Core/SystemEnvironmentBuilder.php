@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Core;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Class to encapsulate base setup of bootstrap.
@@ -86,13 +85,21 @@ class SystemEnvironmentBuilder
         self::defineTypo3RequestTypes();
         self::setRequestType($requestType | ($requestType === self::REQUESTTYPE_BE && strpos($_REQUEST['route'] ?? '', '/ajax/') === 0 ? TYPO3_REQUESTTYPE_AJAX : 0));
         self::defineLegacyConstants($requestType === self::REQUESTTYPE_FE ? 'FE' : 'BE');
-        self::definePaths($entryPointLevel, $requestType);
+        $scriptPath = self::calculateScriptPath($entryPointLevel, $requestType);
+        $rootPath = self::calculateRootPath($entryPointLevel, $requestType);
+
+        if (!defined('PATH_site')) {
+            // Absolute path of the document root of the instance with trailing slash
+            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
+            define('PATH_site', $rootPath . '/');
+        }
+
         self::initializeGlobalVariables();
         self::initializeGlobalTimeTrackingVariables();
         self::initializeBasicErrorReporting();
 
         $applicationContext = static::createApplicationContext();
-        self::initializeEnvironment($applicationContext, $requestType);
+        self::initializeEnvironment($applicationContext, $requestType, $scriptPath);
         GeneralUtility::presetApplicationContext($applicationContext);
     }
 
@@ -135,15 +142,23 @@ class SystemEnvironmentBuilder
         define('FILE_DENY_PATTERN_DEFAULT', '\\.(php[3-7]?|phpsh|phtml|pht)(\\..*)?$|^\\.htaccess$');
         // Security related constant: List of file extensions that should be registered as php script file extensions
         define('PHP_EXTENSIONS_DEFAULT', 'php,php3,php4,php5,php6,php7,phpsh,inc,phtml,pht');
+
+        // Relative path from document root to typo3/ directory, hardcoded to "typo3/"
+        if (!defined('TYPO3_mainDir')) {
+            define('TYPO3_mainDir', 'typo3/');
+        }
     }
 
     /**
-     * Calculate all required base paths and set as constants.
+     * Calculate script path. This is the absolute path to the entry script.
+     * Can be something like '.../public/index.php' or '.../public/typo3/index.php' for
+     * web calls, or '.../bin/typo3' or similar for cli calls.
      *
      * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
      * @param int $requestType
+     * @return string Absolute path to entry script
      */
-    protected static function definePaths(int $entryPointLevel, int $requestType)
+    protected static function calculateScriptPath(int $entryPointLevel, int $requestType): string
     {
         $isCli = self::isCliRequestType($requestType);
         // Absolute path of the entry script that was called
@@ -151,40 +166,45 @@ class SystemEnvironmentBuilder
         $rootPath = self::getRootPathFromScriptPath($scriptPath, $entryPointLevel);
         // Check if the root path has been set in the environment (e.g. by the composer installer)
         if (getenv('TYPO3_PATH_ROOT')) {
-            if ($isCli && self::usesComposerClassLoading() && StringUtility::endsWith($scriptPath, 'typo3')) {
+            if ($isCli && self::usesComposerClassLoading()) {
                 // $scriptPath is used for various path calculations based on the document root
                 // Therefore we assume it is always a subdirectory of the document root, which is not the case
                 // in composer mode on cli, as the binary is in the composer bin directory.
                 // Because of that, we enforce the document root path of this binary to be set
-                $scriptName = '/typo3/sysext/core/bin/typo3';
+                $scriptName = 'typo3/sysext/core/bin/typo3';
             } else {
                 // Base the script path on the path taken from the environment
                 // to make relative path calculations work in case only one of both is symlinked
                 // or has the real path
-                $scriptName = substr($scriptPath, strlen($rootPath));
+                $scriptName = ltrim(substr($scriptPath, strlen($rootPath)), '/');
             }
-            $rootPath = GeneralUtility::fixWindowsFilePath(getenv('TYPO3_PATH_ROOT'));
-            $scriptPath = $rootPath . $scriptName;
+            $rootPath = rtrim(GeneralUtility::fixWindowsFilePath(getenv('TYPO3_PATH_ROOT')), '/');
+            $scriptPath = $rootPath . '/' . $scriptName;
         }
+        return $scriptPath;
+    }
 
-        if (!defined('PATH_thisScript')) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-            define('PATH_thisScript', $scriptPath);
-            if (!is_file($scriptPath)) {
-                static::exitWithMessage('Unable to determine path to entry script.');
-            }
+    /**
+     * Absolute path to the root of the typo3 instance. This is often identical to the web document root path (eg. .../public),
+     * but may be different. For instance helhum/typo3-secure-web uses this: Then, rootPath TYPO3_PATH_ROOT is the absolute path to
+     * the private directory where code and runtime files are located (currently typo3/ext, typo3/sysext, fileadmin, typo3temp),
+     * while TYPO3_PATH_WEB is the public/ web document folder that gets assets like filedamin and Resources/Public folders
+     * from extensions linked in.
+     *
+     * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
+     * @param int $requestType
+     * @return string Absolute path without trailing slash
+     */
+    protected static function calculateRootPath(int $entryPointLevel, int $requestType): string
+    {
+        // Check if the root path has been set in the environment (e.g. by the composer installer)
+        if (getenv('TYPO3_PATH_ROOT')) {
+            return rtrim(GeneralUtility::fixWindowsFilePath(getenv('TYPO3_PATH_ROOT')), '/');
         }
-
-        // Absolute path of the document root of the instance with trailing slash
-        if (!defined('PATH_site')) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-            define('PATH_site', $rootPath . '/');
-        }
-        // Relative path from document root to typo3/ directory
-        // Hardcoded to "typo3/"
-        if (!defined('TYPO3_mainDir')) {
-            define('TYPO3_mainDir', 'typo3/');
-        }
+        $isCli = self::isCliRequestType($requestType);
+        // Absolute path of the entry script that was called
+        $scriptPath = GeneralUtility::fixWindowsFilePath(self::getPathThisScript($isCli));
+        return self::getRootPathFromScriptPath($scriptPath, $entryPointLevel);
     }
 
     /**
@@ -221,12 +241,12 @@ class SystemEnvironmentBuilder
      * Initialize the Environment class
      *
      * @param ApplicationContext $context
-     * @param int|null $requestType
+     * @param int $requestType
+     * @param string $scriptPath
      */
-    public static function initializeEnvironment(ApplicationContext $context, int $requestType = null)
+    protected static function initializeEnvironment(ApplicationContext $context, int $requestType, string $scriptPath)
     {
         // Absolute path of the entry script that was called
-        $scriptPath = PATH_thisScript;
         $sitePath = rtrim(PATH_site, '/');
 
         if (getenv('TYPO3_PATH_ROOT')) {
@@ -387,7 +407,7 @@ class SystemEnvironmentBuilder
      *
      * @param string $scriptPath Calculated path to the entry script
      * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
-     * @return string Absolute path to document root of installation
+     * @return string Absolute path to document root of installation without trailing slash
      */
     protected static function getRootPathFromScriptPath($scriptPath, $entryPointLevel)
     {

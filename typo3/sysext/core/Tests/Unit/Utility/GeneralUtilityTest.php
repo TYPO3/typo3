@@ -53,6 +53,11 @@ class GeneralUtilityTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
+     * @var bool Restore Environment after tests
+     */
+    protected $backupEnvironment = true;
+
+    /**
      * @var \TYPO3\CMS\Core\Package\PackageManager
      */
     protected $backupPackageManager;
@@ -62,6 +67,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     protected function setUp()
     {
+        parent::setUp();
         GeneralUtilityFixture::$isAllowedHostHeaderValueCallCount = 0;
         GeneralUtilityFixture::setAllowHostHeaderValue(false);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL;
@@ -1459,7 +1465,17 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function getIndpEnvTypo3SitePathReturnsStringStartingWithSlash()
     {
-        $_SERVER['SCRIPT_NAME'] = '/typo3/';
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getBackendPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
         $result = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
         $this->assertEquals('/', $result[0]);
     }
@@ -1936,6 +1952,17 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function sanitizeLocalUrlAcceptsNotEncodedValidPaths($path)
     {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getBackendPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
         $this->assertEquals($path, GeneralUtility::sanitizeLocalUrl($path));
     }
 
@@ -1946,6 +1973,17 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function sanitizeLocalUrlAcceptsEncodedValidPaths($path)
     {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getBackendPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
         $this->assertEquals(rawurlencode($path), GeneralUtility::sanitizeLocalUrl(rawurlencode($path)));
     }
 
@@ -1956,29 +1994,26 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function sanitizeLocalUrlValidUrlsDataProvider()
     {
-        $host = 'localhost';
-        $subDirectory = '/cms/';
-
         return [
-            $subDirectory . 'typo3/alt_intro.php' => [
-                $subDirectory . 'typo3/alt_intro.php',
-                $host,
-                $subDirectory,
+            '/cms/typo3/alt_intro.php' => [
+                '/cms/typo3/alt_intro.php',
+                'localhost',
+                '/cms/',
             ],
-            $subDirectory . 'index.php' => [
-                $subDirectory . 'index.php',
-                $host,
-                $subDirectory,
+            '/cms/index.php' => [
+                '/cms/index.php',
+                'localhost',
+                '/cms/',
             ],
-            'http://' . $host . '/typo3/alt_intro.php' => [
-                'http://' . $host . '/typo3/alt_intro.php',
-                $host,
+            'http://localhost/typo3/alt_intro.php' => [
+                'http://localhost/typo3/alt_intro.php',
+                'localhost',
                 '',
             ],
-            'http://' . $host . $subDirectory . 'typo3/alt_intro.php' => [
-                'http://' . $host . $subDirectory . 'typo3/alt_intro.php',
-                $host,
-                $subDirectory,
+            'http://localhost/cms/typo3/alt_intro.php' => [
+                'http://localhost/cms/typo3/alt_intro.php',
+                'localhost',
+                '/cms/',
             ],
         ];
     }
@@ -1992,6 +2027,17 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function sanitizeLocalUrlAcceptsNotEncodedValidUrls($url, $host, $subDirectory)
     {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getBackendPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
         $_SERVER['HTTP_HOST'] = $host;
         $_SERVER['SCRIPT_NAME'] = $subDirectory . 'typo3/index.php';
         $this->assertEquals($url, GeneralUtility::sanitizeLocalUrl($url));
@@ -2006,6 +2052,17 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function sanitizeLocalUrlAcceptsEncodedValidUrls($url, $host, $subDirectory)
     {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getBackendPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
         $_SERVER['HTTP_HOST'] = $host;
         $_SERVER['SCRIPT_NAME'] = $subDirectory . 'typo3/index.php';
         $this->assertEquals(rawurlencode($url), GeneralUtility::sanitizeLocalUrl(rawurlencode($url)));

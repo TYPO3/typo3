@@ -1006,6 +1006,7 @@ The following TypoScript options have been dropped:
 
 The following constants have been dropped:
 
+* :php:`PATH_thisScript`
 * :php:`PATH_typo3`
 * :php:`PATH_typo3conf`
 * :php:`T3_ERR_SV_GENERAL`

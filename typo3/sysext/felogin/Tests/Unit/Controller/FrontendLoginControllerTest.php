@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Felogin\Tests\Unit\Controller;
 
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\LoginType;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -28,6 +29,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FrontendLoginControllerTest extends UnitTestCase
 {
+    /**
+     * @var bool Restore Environment after tests
+     */
+    protected $backupEnvironment = true;
+
     /**
      * @var \TYPO3\CMS\Felogin\Controller\FrontendLoginController|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
@@ -50,6 +56,7 @@ class FrontendLoginControllerTest extends UnitTestCase
      */
     protected function setUp()
     {
+        parent::setUp();
         $GLOBALS['TSFE'] = new \stdClass();
         $this->testHostName = 'hostname.tld';
         $this->testSitePath = '/';
@@ -137,6 +144,17 @@ class FrontendLoginControllerTest extends UnitTestCase
      */
     public function validateRedirectUrlKeepsCleanUrl($url)
     {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getBackendPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
         $this->assertEquals($url, $this->accessibleFixture->_call('validateRedirectUrl', $url));
     }
 
@@ -194,6 +212,17 @@ class FrontendLoginControllerTest extends UnitTestCase
      */
     public function validateRedirectUrlKeepsCleanUrlInSubdirectory($url)
     {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getBackendPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
         $this->testSitePath = '/subdir/';
         $this->setUpFakeSitePathAndHost();
         $this->assertEquals($url, $this->accessibleFixture->_call('validateRedirectUrl', $url));
@@ -386,6 +415,17 @@ class FrontendLoginControllerTest extends UnitTestCase
      */
     public function isInCurrentDomainIgnoresScheme($host, $https, $url)
     {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getBackendPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
         $_SERVER['HTTP_HOST'] = $host;
         $_SERVER['HTTPS'] = $https;
         $this->assertTrue($this->accessibleFixture->_call('isInCurrentDomain', $url));
