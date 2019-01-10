@@ -964,6 +964,16 @@ class NormalizedParamsTest extends UnitTestCase
                 '/var/www/myInstance/Web',
                 'typo3/index.php?id=42&foo=bar'
             ],
+            'redirected to a sub directory' => [
+                'serverParams' => [
+                    'REQUEST_URI' => '/',
+                    'SCRIPT_NAME' => '/public/',
+                    'HTTP_HOST' => 'www.domain.com',
+                ],
+                'pathThisScript' => '/var/www/html/public/index.php',
+                'pathSite' => '/var/www/html/html/public',
+                'expected' => ''
+            ],
         ];
     }
 
