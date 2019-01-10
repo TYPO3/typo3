@@ -76,44 +76,6 @@ class FrontendLoginControllerTest extends UnitTestCase
     }
 
     /**
-     * @test
-     */
-    public function typo3SitePathEqualsStubSitePath()
-    {
-        $this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'), $this->testSitePath);
-    }
-
-    /**
-     * @test
-     */
-    public function typo3SiteUrlEqualsStubSiteUrl()
-    {
-        $this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), ('http://' . $this->testHostName) . $this->testSitePath);
-    }
-
-    /**
-     * @test
-     */
-    public function typo3SitePathEqualsStubSitePathAfterChangingInTest()
-    {
-        $this->testHostName = 'somenewhostname.com';
-        $this->testSitePath = '/somenewpath/';
-        $this->setUpFakeSitePathAndHost();
-        $this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'), $this->testSitePath);
-    }
-
-    /**
-     * @test
-     */
-    public function typo3SiteUrlEqualsStubSiteUrlAfterChangingInTest()
-    {
-        $this->testHostName = 'somenewhostname.com';
-        $this->testSitePath = '/somenewpath/';
-        $this->setUpFakeSitePathAndHost();
-        $this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), ('http://' . $this->testHostName) . $this->testSitePath);
-    }
-
-    /**
      * Data provider for validateRedirectUrlClearsUrl
      *
      * @return array
