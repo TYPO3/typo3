@@ -805,6 +805,6 @@ class NormalizedParams
      */
     protected static function determineSiteScript(string $requestUrl, string $siteUrl): string
     {
-        return substr($requestUrl, strlen($siteUrl));
+        return (string)substr($requestUrl, strlen($siteUrl));
     }
 }
