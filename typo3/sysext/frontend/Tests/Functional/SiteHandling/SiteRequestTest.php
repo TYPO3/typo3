@@ -108,8 +108,7 @@ class SiteRequestTest extends AbstractTestCase
         ];
 
         $queries = [
-            '?',
-            '?id=1000',
+            '',
         ];
 
         return $this->wrapInArray(

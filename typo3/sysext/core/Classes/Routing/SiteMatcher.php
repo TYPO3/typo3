@@ -84,6 +84,7 @@ class SiteMatcher implements SingletonInterface
     {
         $site = null;
         $language = null;
+        $defaultLanguage = null;
 
         $pageId = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0;
 
@@ -96,6 +97,9 @@ class SiteMatcher implements SingletonInterface
                 $languageId = $request->getQueryParams()['L'] ?? $request->getParsedBody()['L'] ?? null;
                 if ($languageId !== null) {
                     $language = $site->getLanguageById((int)$languageId);
+                } else {
+                    // Use this later below
+                    $defaultLanguage = $site->getDefaultLanguage();
                 }
             } catch (SiteNotFoundException $e) {
                 // No site found by the given page
@@ -105,9 +109,9 @@ class SiteMatcher implements SingletonInterface
             }
         }
 
-        // No language found at this point means that the URL was not used with a valid "?id" parameter
+        // No language found at this point means that the URL was not used with a valid "?id=1&L=2" parameter
         // which resulted in a site / language combination that was found. Now, the matching is done
-        // on the incoming URL
+        // on the incoming URL.
         if (!($language instanceof SiteLanguage)) {
             $collection = $this->getRouteCollectionForAllSites();
             $context = new RequestContext(
@@ -123,7 +127,15 @@ class SiteMatcher implements SingletonInterface
             $matcher = new UrlMatcher($collection, $context);
             try {
                 $result = $matcher->match($request->getUri()->getPath());
-                return new SiteRouteResult($request->getUri(), $result['site'], $result['language'], $result['tail']);
+                return new SiteRouteResult(
+                    $request->getUri(),
+                    $result['site'],
+                    // if no language is found, this usually results due to "/" called instead of "/fr/"
+                    // but it could also be the reason that "/index.php?id=23" was called, so the default
+                    // language is used as a fallback here then.
+                    $result['language'] ?? $defaultLanguage,
+                    $result['tail']
+                );
             } catch (NoConfigurationException | ResourceNotFoundException $e) {
                 // No site+language combination found so far
             }
@@ -144,7 +156,12 @@ class SiteMatcher implements SingletonInterface
                 $context->setHost(implode('.', $host));
                 try {
                     $result = $matcher->match($request->getUri()->getPath());
-                    return new SiteRouteResult($request->getUri(), $result['site'], $result['language'], $result['tail']);
+                    return new SiteRouteResult(
+                        $request->getUri(),
+                        $result['site'],
+                        $result['language'],
+                        $result['tail']
+                    );
                 } catch (NoConfigurationException | ResourceNotFoundException $e) {
                     array_shift($host);
                 }
