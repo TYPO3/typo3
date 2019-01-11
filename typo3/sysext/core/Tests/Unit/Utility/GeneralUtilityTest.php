@@ -3025,9 +3025,6 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function mkdirDeepCreatesDirectoryInVfsStream()
     {
-        if (!class_exists('org\\bovigo\\vfs\\vfsStreamWrapper')) {
-            $this->markTestSkipped('mkdirDeepCreatesDirectoryInVfsStream() test not available with this phpunit version.');
-        }
         vfsStreamWrapper::register();
         $baseDirectory = $this->getUniqueId('test_');
         vfsStreamWrapper::setRoot(new vfsStreamDirectory($baseDirectory));
@@ -3197,9 +3194,6 @@ class GeneralUtilityTest extends UnitTestCase
      */
     protected function getFilesInDirCreateTestDirectory()
     {
-        if (!class_exists('org\\bovigo\\vfs\\vfsStreamWrapper')) {
-            $this->markTestSkipped('getFilesInDirCreateTestDirectory() helper method not available without vfsStream.');
-        }
         $structure = [
             'subDirectory' => [
                 'test.php' => 'butter',

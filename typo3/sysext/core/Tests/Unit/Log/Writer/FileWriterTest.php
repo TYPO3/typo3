@@ -41,9 +41,6 @@ class FileWriterTest extends UnitTestCase
 
     protected function setUpVfsStream(): void
     {
-        if (!class_exists('org\\bovigo\\vfs\\vfsStream')) {
-            $this->markTestSkipped('File backend tests are not available with this phpunit version.');
-        }
         vfsStream::setup('LogRoot');
     }
 
