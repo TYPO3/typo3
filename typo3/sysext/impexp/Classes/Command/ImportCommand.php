@@ -56,6 +56,11 @@ class ImportCommand extends Command
                 InputOption::VALUE_NONE,
                 'If set, page IDs of updated records are not corrected (only works in conjunction with the updateRecords option)'
             )->addOption(
+                'forceUid',
+                null,
+                InputOption::VALUE_NONE,
+                'If set, UIDs from file will be forced. (ATTENTION: ADMIN ONLY!)'
+            )->addOption(
                 'enableLog',
                 null,
                 InputOption::VALUE_NONE,
@@ -89,6 +94,8 @@ class ImportCommand extends Command
         $import->update = (bool)($input->hasOption('updateRecords') && $input->getOption('updateRecords'));
         // Only used when $updateRecords is "true"
         $import->global_ignore_pid = (bool)($input->hasOption('ignorePid') && $input->getOption('ignorePid'));
+        // Force using UIDs from File
+        $import->force_all_UIDS = (bool)($input->hasOption('forceUid') && $input->getOption('forceUid'));
         // Enables logging of database actions
         $import->enableLogging = (bool)($input->hasOption('enableLog') && $input->getOption('enableLog'));
 
