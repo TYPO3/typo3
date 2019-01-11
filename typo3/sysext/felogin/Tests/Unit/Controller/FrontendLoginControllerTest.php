@@ -114,6 +114,17 @@ class FrontendLoginControllerTest extends UnitTestCase
      */
     public function validateRedirectUrlClearsUrl($url)
     {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getBackendPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
         $this->assertEquals('', $this->accessibleFixture->_call('validateRedirectUrl', $url));
     }
 

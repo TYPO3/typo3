@@ -88,18 +88,12 @@ class SystemEnvironmentBuilder
         $scriptPath = self::calculateScriptPath($entryPointLevel, $requestType);
         $rootPath = self::calculateRootPath($entryPointLevel, $requestType);
 
-        if (!defined('PATH_site')) {
-            // Absolute path of the document root of the instance with trailing slash
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-            define('PATH_site', $rootPath . '/');
-        }
-
         self::initializeGlobalVariables();
         self::initializeGlobalTimeTrackingVariables();
         self::initializeBasicErrorReporting();
 
         $applicationContext = static::createApplicationContext();
-        self::initializeEnvironment($applicationContext, $requestType, $scriptPath);
+        self::initializeEnvironment($applicationContext, $requestType, $scriptPath, $rootPath);
         GeneralUtility::presetApplicationContext($applicationContext);
     }
 
@@ -243,14 +237,12 @@ class SystemEnvironmentBuilder
      * @param ApplicationContext $context
      * @param int $requestType
      * @param string $scriptPath
+     * @param string $sitePath
      */
-    protected static function initializeEnvironment(ApplicationContext $context, int $requestType, string $scriptPath)
+    protected static function initializeEnvironment(ApplicationContext $context, int $requestType, string $scriptPath, string $sitePath)
     {
-        // Absolute path of the entry script that was called
-        $sitePath = rtrim(PATH_site, '/');
-
         if (getenv('TYPO3_PATH_ROOT')) {
-            $rootPathFromEnvironment = GeneralUtility::fixWindowsFilePath(getenv('TYPO3_PATH_ROOT'));
+            $rootPathFromEnvironment = rtrim(GeneralUtility::fixWindowsFilePath(getenv('TYPO3_PATH_ROOT')), '/');
             if ($sitePath !== $rootPathFromEnvironment) {
                 // This means, that we re-initialized the environment during a single request
                 // This currently only happens in custom code or during functional testing
@@ -311,7 +303,7 @@ class SystemEnvironmentBuilder
      * points are often linked to a central core location, so we can not use the php magic
      * __FILE__ here, but resolve the called script path from given server environments.
      *
-     * This path is important to calculate the document root (PATH_site). The strategy is to
+     * This path is important to calculate the document root. The strategy is to
      * find out the script name that was called in the first place and to subtract the local
      * part from it to find the document root.
      *
@@ -396,7 +388,7 @@ class SystemEnvironmentBuilder
 
     /**
      * Calculate the document root part to the instance from $scriptPath.
-     * This is based on the amount of subdirectories "under" PATH_site where $scriptPath is located.
+     * This is based on the amount of subdirectories "under" root path where $scriptPath is located.
      *
      * The following main scenarios for entry points exist by default in the TYPO3 core:
      * - Directly called documentRoot/index.php (-> FE call or eiD include): index.php is located in the same directory

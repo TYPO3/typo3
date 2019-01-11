@@ -32,7 +32,6 @@ namespace TYPO3\CMS\Core\Core;
  *
  * In your application, use it like this:
  *
- * Instead of writing "PATH_site" call "Environment::getPublicPath() . '/'"
  * Instead of writing "TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI" call "Environment::isCli()"
  */
 class Environment
@@ -134,8 +133,8 @@ class Environment
     }
 
     /**
-     * The public web folder where index.php (= the frontend application) is put. This is equal to the legacy constant
-     * PATH_site, without the trailing slash. For non-composer installations, the project path = the public path.
+     * The public web folder where index.php (= the frontend application) is put, without trailing slash.
+     * For non-composer installations, the project path = the public path.
      *
      * @return string
      */
@@ -226,7 +225,6 @@ class Environment
     }
 
     /**
-     * Previously known as PATH_site . 'typo3conf/ext/'
      * Please note that this might be gone at some point
      *
      * @return string
