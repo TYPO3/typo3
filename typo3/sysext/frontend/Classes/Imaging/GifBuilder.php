@@ -554,7 +554,10 @@ class GifBuilder extends GraphicalFunctions
                 $isStdWrapped[$parameter] = 1;
             }
         }
-        $conf['fontFile'] = $this->checkFile($conf['fontFile']);
+
+        if (!is_null($conf['fontFile'])) {
+            $conf['fontFile'] = $this->checkFile($conf['fontFile']);
+        }
         if (!$conf['fontFile']) {
             $conf['fontFile'] = $this->checkFile('EXT:core/Resources/Private/Font/nimbus.ttf');
         }
