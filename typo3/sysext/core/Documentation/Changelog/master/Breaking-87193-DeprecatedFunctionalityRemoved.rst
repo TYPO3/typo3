@@ -399,6 +399,13 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->handleExternalFunctionValue()`
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->menuConfig()`
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->mergeExternalItems()`
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->extObjHeader()`
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->checkSubExtObj()`
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->getModuleTemplate()`
+* :php:`TYPO3\CMS\Info\Controller\InfoPageTyposcriptConfigController->checkExtObj()`
+* :php:`TYPO3\CMS\Info\Controller\InfoPageTyposcriptConfigController->extObjContent()`
+* :php:`TYPO3\CMS\Info\Controller\PageInformationController->checkExtObj()`
+* :php:`TYPO3\CMS\Info\Controller\PageInformationController->extObjContent()`
 * :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->checkExtObj()`
 * :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->getSystemLanguages()`
 * :php:`TYPO3\CMS\Install\Service\CoreVersionService->getDownloadBaseUrl()`
@@ -540,6 +547,17 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Impexp\Export->maxExportSize`
 * :php:`TYPO3\CMS\IndexedSearch\Lexer->csObj`
 * :php:`TYPO3\CMS\IndexedSearch\Indexer->csObj`
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->CMD`
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->doc`
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->MCONF`
+* :php:`TYPO3\CMS\Info\Controller\InfoPageTyposcriptConfigController->extClassConf`
+* :php:`TYPO3\CMS\Info\Controller\InfoPageTyposcriptConfigController->extObj`
+* :php:`TYPO3\CMS\Info\Controller\InfoPageTyposcriptConfigController->function_key`
+* :php:`TYPO3\CMS\Info\Controller\InfoPageTyposcriptConfigController->localLangFile`
+* :php:`TYPO3\CMS\Info\Controller\PageInformationController->extClassConf`
+* :php:`TYPO3\CMS\Info\Controller\PageInformationController->extObj`
+* :php:`TYPO3\CMS\Info\Controller\PageInformationController->function_key`
+* :php:`TYPO3\CMS\Info\Controller\PageInformationController->localLangFile`
 * :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->extClassConf`
 * :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->extObj`
 * :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->function_key`
@@ -674,6 +692,17 @@ The following class methods have changed visibility:
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->makeAdvancedOptionsForm()` changed from public to protected
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->makeConfigurationForm()` changed from public to protected
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->makeSaveForm()` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->checkExtObj()` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->extObjContent()` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->getExternalItemConfig()` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->getExtObjContent()` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->handleExternalFunctionValue()` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->init()` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->main()` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->menuConfig()` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->mergeExternalItems()` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoPageTyposcriptConfigController->modMenu()` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\PageInformationController->modMenu()` changed from public to protected
 * :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->extObjContent()` changed from public to protected
 * :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->getContentElementCount()` changed from public to protected
 * :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->getLangStatus()` changed from public to protected
@@ -894,6 +923,18 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->id` changed from public to protected
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->pageinfo` changed from public to protected
 * :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->perms_clause` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->content` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->extClassConf` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->extObj` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->id` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->modMenu_dontValidateList` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->modMenu_setDefaultList` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->modMenu_type` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->modTSconfig` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->perms_clause` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoModuleController->pObj` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\PageInformationController->pObj` changed from public to protected
+* :php:`TYPO3\CMS\Info\Controller\InfoPageTyposcriptConfigController->pObj` changed from public to protected
 * :php:`TYPO3\CMS\Linkvalidator\Report\LinkValidatorReport->pObj` changed from public to protected
 * :php:`TYPO3\CMS\Linkvalidator\Report\LinkValidatorReport->doc` changed from public to protected
 * :php:`TYPO3\CMS\Linkvalidator\Report\LinkValidatorReport->function_key` changed from public to protected

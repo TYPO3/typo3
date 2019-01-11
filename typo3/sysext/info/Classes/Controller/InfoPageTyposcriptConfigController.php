@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Info\Controller;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -37,28 +35,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class InfoPageTyposcriptConfigController
 {
-    use PublicPropertyDeprecationTrait;
-    use PublicMethodDeprecationTrait;
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicProperties = [
-        'pObj' => 'Using InfoPageTyposcriptConfigController::$pObj is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'function_key' => 'Using InfoPageTyposcriptConfigController::$function_key is deprecated, property will be removed in TYPO3 v10.0.',
-        'extClassConf' => 'Using InfoPageTyposcriptConfigController::$extClassConf is deprecated, property will be removed in TYPO3 v10.0.',
-        'localLangFile' => 'Using InfoPageTyposcriptConfigController::$localLangFile is deprecated, property will be removed in TYPO3 v10.0.',
-        'extObj' => 'Using InfoPageTyposcriptConfigController::$extObj is deprecated, property will be removed in TYPO3 v10.0.',
-    ];
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicMethods = [
-        'modMenu' => 'Using InfoPageTyposcriptConfigController::modMenu() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'extObjContent' => 'Using InfoPageTyposcriptConfigController::extObjContent() is deprecated, method will be removed in TYPO3 v10.0.',
-    ];
-
     /**
      * @var IconFactory
      */
@@ -80,26 +56,6 @@ class InfoPageTyposcriptConfigController
     protected $id;
 
     /**
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $extObj;
-
-    /**
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $localLangFile = '';
-
-    /**
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $extClassConf;
-
-    /**
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected $function_key = '';
-
-    /**
      * Init, called from parent object
      *
      * @param InfoModuleController $pObj A reference to the parent (calling) object
@@ -111,11 +67,6 @@ class InfoPageTyposcriptConfigController
         $languageService->includeLLFile('EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf');
         $this->view = $this->getFluidTemplateObject();
         $this->pObj = $pObj;
-        // Local lang:
-        if (!empty($this->localLangFile)) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-            $languageService->includeLLFile($this->localLangFile);
-        }
         $this->id = (int)GeneralUtility::_GP('id');
         // Setting MOD_MENU items as we need them for logging:
         $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
@@ -434,33 +385,6 @@ class InfoPageTyposcriptConfigController
 
         $view->getRequest()->setControllerExtensionName('info');
         return $view;
-    }
-
-    /**
-     * Called from InfoModuleController until deprecation removal in TYPO3 v10.0
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function checkExtObj()
-    {
-        if (is_array($this->extClassConf) && $this->extClassConf['name']) {
-            $this->extObj = GeneralUtility::makeInstance($this->extClassConf['name']);
-            $this->extObj->init($this->pObj, $this->extClassConf);
-            // Re-write:
-            $this->pObj->MOD_SETTINGS = BackendUtility::getModuleData($this->pObj->MOD_MENU, GeneralUtility::_GP('SET'), 'web_info');
-        }
-    }
-
-    /**
-     * Calls the main function inside ANOTHER sub-submodule which might exist.
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function extObjContent()
-    {
-        if (is_object($this->extObj)) {
-            return $this->extObj->main();
-        }
     }
 
     /**
