@@ -24,16 +24,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class Md5PasswordHashTest extends UnitTestCase
 {
     /**
-     * Sets up the fixtures for this testcase.
-     */
-    protected function setUp()
-    {
-        if (!CRYPT_MD5) {
-            $this->markTestSkipped('Blowfish is not supported on your platform.');
-        }
-    }
-
-    /**
      * @test
      */
     public function getHashedPasswordReturnsNullWithEmptyPassword()

@@ -24,16 +24,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class BlowfishPasswordHashTest extends UnitTestCase
 {
     /**
-     * Sets up the fixtures for this testcase.
-     */
-    protected function setUp()
-    {
-        if (!CRYPT_BLOWFISH) {
-            $this->markTestSkipped('Blowfish is not supported on your platform.');
-        }
-    }
-
-    /**
      * @test
      */
     public function constructorThrowsExceptionIfHashCountIsTooLow()
