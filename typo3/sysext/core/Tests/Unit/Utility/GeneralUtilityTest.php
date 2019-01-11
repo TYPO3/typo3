@@ -2426,9 +2426,6 @@ class GeneralUtilityTest extends UnitTestCase
         if (Environment::isWindows()) {
             $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
-        if (posix_getegid() === -1) {
-            $this->markTestSkipped('The fixPermissionsSetsGroup() is not available on Mac OS because posix_getegid() always returns -1 on Mac OS.');
-        }
         // Create and prepare test file
         $filename = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
         GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($filename, '42');
@@ -2754,10 +2751,6 @@ class GeneralUtilityTest extends UnitTestCase
     {
         if (Environment::isWindows()) {
             $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
-            return false;
-        }
-        if (posix_getegid() === -1) {
-            $this->markTestSkipped('Function posix_getegid() returns -1, ' . $methodName . '() tests skipped');
             return false;
         }
         $groups = posix_getgroups();
