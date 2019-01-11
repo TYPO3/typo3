@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -166,16 +167,9 @@ class FileController
 
         // go and edit the new created file
         if ($request->getParsedBody()['edit']) {
-            /** @var \TYPO3\CMS\Core\Resource\File $file */
+            /** @var File $file */
             $file = $this->fileData['newfile'][0];
-            $properties = $file->getProperties();
-            $urlParameters = [
-                'target' =>  $properties['storage'] . ':' . $properties['identifier']
-            ];
-            if ($this->redirect) {
-                $urlParameters['returnUrl'] = $this->redirect;
-            }
-            $this->redirect = BackendUtility::getModuleUrl('file_edit', $urlParameters);
+            $this->redirect = $this->getFileEditRedirect($file) ?? $this->redirect;
         }
         if ($this->redirect) {
             return $response
@@ -184,6 +178,29 @@ class FileController
         }
         // empty response
         return $response;
+    }
+
+    /**
+     * Gets URI to be used for editing given file (if file extension is defined in textfile_ext)
+     *
+     * @param File $file to be edited
+     * @return string|null URI to be redirected to
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     */
+    protected function getFileEditRedirect(File $file)
+    {
+        $textFileExtensionList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'] ?? '';
+        if (!GeneralUtility::inList($textFileExtensionList, $file->getExtension())) {
+            return null;
+        }
+        $properties = $file->getProperties();
+        $urlParameters = [
+            'target' =>  $properties['storage'] . ':' . $properties['identifier']
+        ];
+        if ($this->redirect) {
+            $urlParameters['returnUrl'] = $this->redirect;
+        }
+        return BackendUtility::getModuleUrl('file_edit', $urlParameters);
     }
 
     /**
@@ -254,12 +271,12 @@ class FileController
      *
      * The value can be a File, Folder or boolean
      *
-     * @param bool|\TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder $result
+     * @param bool|File|\TYPO3\CMS\Core\Resource\Folder $result
      * @return bool|string|array
      */
     protected function flattenResultDataValue($result)
     {
-        if ($result instanceof \TYPO3\CMS\Core\Resource\File) {
+        if ($result instanceof File) {
             $thumbUrl = '';
             if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $result->getExtension())) {
                 $processedFile = $result->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, []);

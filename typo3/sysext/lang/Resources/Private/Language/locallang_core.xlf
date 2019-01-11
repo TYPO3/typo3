@@ -1101,6 +1101,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="cm.allowedFileExtensions">
 				<source>Allowed file extensions:</source>
 			</trans-unit>
+			<trans-unit id="cm.allowedEditableTextFileExtensions">
+				<source>Allowed editable text file extensions</source>
+			</trans-unit>
 			<trans-unit id="cm.allowEmbedSources">
 				<source>Allowed media sources:</source>
 			</trans-unit>
