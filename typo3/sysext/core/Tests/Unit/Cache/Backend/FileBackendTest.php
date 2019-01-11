@@ -37,10 +37,6 @@ class FileBackendTest extends UnitTestCase
      */
     protected function setUp(): void
     {
-        if (!class_exists(vfsStreamWrapper::class)) {
-            $this->markTestSkipped('File backend tests are not available with this phpunit version.');
-        }
-
         vfsStreamWrapper::register();
         vfsStreamWrapper::setRoot(new vfsStreamDirectory('Foo'));
     }

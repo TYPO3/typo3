@@ -53,9 +53,6 @@ abstract class BaseTestCase extends UnitTestCase
 
     protected function initializeVfs()
     {
-        if (is_callable('org\\bovigo\\vfs\\vfsStream::create') === false) {
-            $this->markTestSkipped('vfsStream::create() does not exist');
-        }
         vfsStream::create($this->vfsContents);
     }
 
