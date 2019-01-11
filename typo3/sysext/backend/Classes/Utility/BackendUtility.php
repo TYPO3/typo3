@@ -1395,7 +1395,7 @@ class BackendUtility
                         'height' => (int)$sizeParts[1],
                         'alt' => $fileReferenceObject->getName(),
                     ];
-                    $imgTag = '<img ' . GeneralUtility::implodeAttributes($attributes, true) . '/>';
+                    $imgTag = '<img ' . GeneralUtility::implodeAttributes($attributes, true) . $tparams . '/>';
                 } else {
                     // Icon
                     $imgTag = '<span title="' . htmlspecialchars($fileObject->getName()) . '">'
