@@ -163,8 +163,8 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
             $icon = '<span style="width: 16px; height: 16px; display: inline-block;"></span>';
             $icon .= '<span title="' . htmlspecialchars($subFolder->getName()) . '">' . $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL) . '</span>';
             // Create links for adding the folder:
-            $aTag = '<a href="#" data-folder-id="' . htmlspecialchars($folderIdentifier) . '" data-close="0">';
-            $aTag_alt = '<a href="#" data-folder-id="' . htmlspecialchars($folderIdentifier) . '" data-close="1">';
+            $aTag = '<a href="#" data-folder-id="' . htmlspecialchars($subFolderIdentifier) . '" data-close="0">';
+            $aTag_alt = '<a href="#" data-folder-id="' . htmlspecialchars($subFolderIdentifier) . '" data-close="1">';
             if (strstr($subFolderIdentifier, ',') || strstr($subFolderIdentifier, '|')) {
                 // In case an invalid character is in the filepath, display error message:
                 $errorMessage = sprintf(htmlspecialchars($lang->getLL('invalidChar')), ', |');
