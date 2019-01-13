@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException;
-use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
-use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -45,40 +43,6 @@ class ClassSchemaTest extends UnitTestCase
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithConstructorAndConstructorArguments::class);
         static::assertTrue($classSchema->hasConstructor());
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsConstructorArguments()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithConstructorAndConstructorArguments::class);
-        static::assertTrue($classSchema->hasConstructor());
-
-        $constructorArguments = $classSchema->getConstructorArguments();
-        static::assertArrayHasKey('foo', $constructorArguments);
-        static::assertArrayHasKey('bar', $constructorArguments);
-
-        $classSchema = new ClassSchema(Fixture\DummyClassWithConstructorAndWithoutConstructorArguments::class);
-        static::assertTrue($classSchema->hasConstructor());
-        static::assertSame([], $classSchema->getConstructorArguments());
-
-        $classSchema = new ClassSchema(Fixture\DummyClassWithoutConstructor::class);
-        static::assertFalse($classSchema->hasConstructor());
-        static::assertSame([], $classSchema->getConstructorArguments());
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsConstructorArgumentsWithDependencies()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithConstructorAndConstructorArgumentsWithDependencies::class);
-        static::assertTrue($classSchema->hasConstructor());
-
-        $methodDefinition = $classSchema->getMethod('__construct');
-        static::assertArrayHasKey('foo', $methodDefinition['params']);
-        static::assertSame(Fixture\DummyClassWithGettersAndSetters::class, $methodDefinition['params']['foo']['dependency']);
     }
 
     /**
@@ -144,29 +108,6 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsMethodVisibility()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
-
-        $methodDefinition = $classSchema->getMethod('publicMethod');
-        static::assertTrue($methodDefinition['public']);
-        static::assertFalse($methodDefinition['protected']);
-        static::assertFalse($methodDefinition['private']);
-
-        $methodDefinition = $classSchema->getMethod('protectedMethod');
-        static::assertFalse($methodDefinition['public']);
-        static::assertTrue($methodDefinition['protected']);
-        static::assertFalse($methodDefinition['private']);
-
-        $methodDefinition = $classSchema->getMethod('privateMethod');
-        static::assertFalse($methodDefinition['public']);
-        static::assertFalse($methodDefinition['protected']);
-        static::assertTrue($methodDefinition['private']);
-    }
-
-    /**
-     * @test
-     */
     public function classSchemaDetectsInjectProperties()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithInjectDoctrineAnnotation::class);
@@ -189,103 +130,12 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsInjectMethods()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
-        static::assertTrue($classSchema->hasInjectMethods());
-
-        $methodDefinition = $classSchema->getMethod('injectSettings');
-        static::assertFalse($methodDefinition['injectMethod']);
-
-        $methodDefinition = $classSchema->getMethod('injectMethodWithoutParam');
-        static::assertFalse($methodDefinition['injectMethod']);
-
-        $methodDefinition = $classSchema->getMethod('injectMethodThatIsProtected');
-        static::assertFalse($methodDefinition['injectMethod']);
-
-        $methodDefinition = $classSchema->getMethod('injectFoo');
-        static::assertTrue($methodDefinition['injectMethod']);
-
-        $injectMethods = $classSchema->getInjectMethods();
-        static::assertArrayHasKey('injectFoo', $injectMethods);
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsStaticMethods()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
-
-        $methodDefinition = $classSchema->getMethod('staticMethod');
-        static::assertTrue($methodDefinition['static']);
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsMandatoryParams()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
-
-        $methodDefinition = $classSchema->getMethod('methodWithMandatoryParam');
-        static::assertFalse($methodDefinition['params']['param']['optional']);
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsNullableParams()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
-
-        $methodDefinition = $classSchema->getMethod('methodWithNullableParam');
-        static::assertTrue($methodDefinition['params']['param']['nullable']);
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsDefaultValueParams()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
-
-        $methodDefinition = $classSchema->getMethod('methodWithDefaultValueParam');
-        static::assertSame('foo', $methodDefinition['params']['param']['default']);
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsParamTypeFromTypeHint()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
-
-        $methodDefinition = $classSchema->getMethod('methodWithTypeHintedParam');
-        static::assertSame('string', $methodDefinition['params']['param']['type']);
-    }
-
-    /**
-     * @test
-     */
     public function classSchemaDetectsPropertyDefaultValue()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
 
         $propertyDefinition = $classSchema->getProperty('publicPropertyWithDefaultValue');
         static::assertSame('foo', $propertyDefinition->getDefaultValue());
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsIgnoreValidationAnnotation()
-    {
-        $classSchema = new ClassSchema(Fixture\DummyControllerWithIgnoreValidationDoctrineAnnotation::class);
-        static::assertTrue(isset($classSchema->getMethod('someAction')['tags']['ignorevalidation']));
-        static::assertTrue(in_array('foo', $classSchema->getMethod('someAction')['tags']['ignorevalidation'], true));
-        static::assertTrue(in_array('bar', $classSchema->getMethod('someAction')['tags']['ignorevalidation'], true));
-        static::assertFalse(in_array('baz', $classSchema->getMethod('someAction')['tags']['ignorevalidation'], true));
     }
 
     /**
@@ -365,53 +215,6 @@ class ClassSchemaTest extends UnitTestCase
         static::assertArrayNotHasKey('copyright', $tags);
         static::assertArrayNotHasKey('author', $tags);
         static::assertArrayNotHasKey('version', $tags);
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsValidateAnnotationsOfControllerActions(): void
-    {
-        $this->resetSingletonInstances = true;
-        $classSchema = new ClassSchema(Fixture\DummyController::class);
-        static::assertSame(
-            [
-                [
-                    'name' => 'StringLength',
-                    'options' => [
-                        'minimum' => 1,
-                        'maximum' => 10,
-                    ],
-                    'className' => StringLengthValidator::class
-                ],
-                [
-                    'name' => 'NotEmpty',
-                    'options' => [],
-                    'className' => NotEmptyValidator::class
-                ],
-                [
-                    'name' => 'TYPO3.CMS.Extbase:NotEmpty',
-                    'options' => [],
-                    'className' => NotEmptyValidator::class
-                ],
-                [
-                    'name' => 'TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator',
-                    'options' => [],
-                    'className' => Fixture\Validation\Validator\DummyValidator::class
-                ],
-                [
-                    'name' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator',
-                    'options' => [],
-                    'className' => NotEmptyValidator::class
-                ],
-                [
-                    'name' => NotEmptyValidator::class,
-                    'options' => [],
-                    'className' => NotEmptyValidator::class
-                ]
-            ],
-            $classSchema->getMethod('methodWithValidateAnnotationsAction')['params']['fooParam']['validators']
-        );
     }
 
     /**

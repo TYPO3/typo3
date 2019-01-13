@@ -162,6 +162,16 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Reflection\ClassSchema::MODELTYPE_ENTITY' => [
+        'restFiles' => [
+            'Important-87427-ClassSchemaConstantsMarkedAsPrivate.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\ClassSchema::MODELTYPE_VALUEOBJECT' => [
+        'restFiles' => [
+            'Important-87427-ClassSchemaConstantsMarkedAsPrivate.rst',
+        ],
+    ],
     'TYPO3\CMS\Extbase\Validation\ValidatorResolver::PATTERN_MATCH_VALIDATORS' => [
         'restFiles' => [
             'Breaking-80700-DeprecatedFunctionalityRemoved.rst',

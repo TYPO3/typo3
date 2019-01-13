@@ -102,14 +102,18 @@ class ObjectConverterTest extends UnitTestCase
     public function getTypeOfChildPropertyShouldUseReflectionServiceToDetermineType(): void
     {
         $classSchemaMock = $this->createMock(ClassSchema::class);
-        $classSchemaMock->expects($this->any())->method('getMethod')->with('__construct')->willReturn([
-            'params' => [
-                'thePropertyName' => [
-                    'type' => 'TheTypeOfSubObject',
-                    'elementType' => null
+        $classSchemaMock->expects($this->any())->method('getMethod')->with('__construct')->willReturn(new ClassSchema\Method(
+            '__construct',
+                [
+                'params' => [
+                    'thePropertyName' => [
+                        'type' => 'TheTypeOfSubObject',
+                        'elementType' => null
+                    ]
                 ]
-            ]
-        ]);
+            ],
+            get_class($classSchemaMock)
+        ));
 
         $this->mockReflectionService
             ->expects($this->any())

@@ -373,11 +373,17 @@ class PersistentObjectConverterTest extends UnitTestCase
             ->expects($this->any())
             ->method('getMethod')
             ->with('__construct')
-            ->willReturn([
-            'params' => [
-                'property1' => ['optional' => false]
-            ]
-        ]);
+            ->willReturn(
+                new ClassSchema\Method(
+                    '__construct',
+                    [
+                        'params' => [
+                            'property1' => ['optional' => false]
+                        ]
+                    ],
+                    get_class($classSchemaMock)
+                )
+            );
 
         $classSchemaMock
             ->expects($this->any())
@@ -417,11 +423,17 @@ class PersistentObjectConverterTest extends UnitTestCase
             ->expects($this->any())
             ->method('getMethod')
             ->with('__construct')
-            ->willReturn([
-                'params' => [
-                    'property1' => ['optional' => true, 'defaultValue' => 'thisIsTheDefaultValue']
-                ]
-            ]);
+            ->willReturn(
+                new ClassSchema\Method(
+                    '__construct',
+                    [
+                        'params' => [
+                            'property1' => ['optional' => true, 'defaultValue' => 'thisIsTheDefaultValue']
+                        ]
+                    ],
+                    get_class($classSchemaMock)
+                )
+            );
 
         $classSchemaMock
             ->expects($this->any())
@@ -455,11 +467,17 @@ class PersistentObjectConverterTest extends UnitTestCase
             ->expects($this->any())
             ->method('getMethod')
             ->with('__construct')
-            ->willReturn([
-                'params' => [
-                    'property1' => ['optional' => false]
-                ]
-            ]);
+            ->willReturn(
+                new ClassSchema\Method(
+                    '__construct',
+                    [
+                        'params' => [
+                            'property1' => ['optional' => false]
+                        ]
+                    ],
+                    get_class($classSchemaMock)
+                )
+            );
 
         $classSchemaMock
             ->expects($this->any())

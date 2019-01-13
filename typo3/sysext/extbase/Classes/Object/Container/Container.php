@@ -188,8 +188,8 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
         if (!$classSchema->hasInjectMethods() && !$classSchema->hasInjectProperties()) {
             return;
         }
-        foreach ($classSchema->getInjectMethods() as $injectMethodName => $classNameToInject) {
-            $instanceToInject = $this->getInstanceInternal($classNameToInject);
+        foreach ($classSchema->getInjectMethods() as $injectMethodName => $injectMethod) {
+            $instanceToInject = $this->getInstanceInternal($injectMethod->getFirstParameter()->getDependency());
             if ($classSchema->isSingleton() && !$instanceToInject instanceof \TYPO3\CMS\Core\SingletonInterface) {
                 $this->getLogger()->notice('The singleton "' . $classSchema->getClassName() . '" needs a prototype in "' . $injectMethodName . '". This is often a bad code smell; often you rather want to inject a singleton.');
             }
@@ -197,6 +197,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
                 $instance->{$injectMethodName}($instanceToInject);
             }
         }
+        // todo: let getInjectProperties return Property objects
         foreach ($classSchema->getInjectProperties() as $injectPropertyName => $classNameToInject) {
             $instanceToInject = $this->getInstanceInternal($classNameToInject);
             if ($classSchema->isSingleton() && !$instanceToInject instanceof \TYPO3\CMS\Core\SingletonInterface) {
@@ -248,29 +249,44 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      */
     private function getConstructorArguments($className, ClassSchema $classSchema, array $givenConstructorArguments)
     {
-        $parameters = [];
-        $constructorArgumentInformation = $classSchema->getConstructorArguments();
-        foreach ($constructorArgumentInformation as $constructorArgumentName => $argumentInformation) {
-            $index = $argumentInformation['position'];
+        // @todo: drop the $className argument here.
+        // @todo: 1) we have that via the $classSchema object
+        // @todo: 2) if we drop the log message, the argument is superfluous
+        //
+        // @todo: -> private function getConstructorArguments(Method $constructor, array $givenConstructorArguments)
+
+        if (!$classSchema->hasConstructor()) {
+            // todo: this check needs to take place outside this method
+            // todo: Instead of passing a ClassSchema object in here, all we need is a Method object instead
+            return [];
+        }
+
+        $arguments = [];
+        foreach ($classSchema->getMethod('__construct')->getParameters() as $methodParameter) {
+            $index = $methodParameter->getPosition();
 
             // Constructor argument given AND argument is a simple type OR instance of argument type
-            if (array_key_exists($index, $givenConstructorArguments) && (!isset($argumentInformation['dependency']) || is_a($givenConstructorArguments[$index], $argumentInformation['dependency']))) {
-                $parameter = $givenConstructorArguments[$index];
+            if (array_key_exists($index, $givenConstructorArguments) &&
+                ($methodParameter->getDependency() === null || is_a($givenConstructorArguments[$index], $methodParameter->getDependency()))
+            ) {
+                $argument = $givenConstructorArguments[$index];
             } else {
-                if (isset($argumentInformation['dependency']) && $argumentInformation['hasDefaultValue'] === false) {
-                    $parameter = $this->getInstanceInternal($argumentInformation['dependency']);
-                    if ($classSchema->isSingleton() && !$parameter instanceof \TYPO3\CMS\Core\SingletonInterface) {
+                if ($methodParameter->getDependency() !== null && !$methodParameter->hasDefaultValue()) {
+                    $argument = $this->getInstanceInternal($methodParameter->getDependency());
+                    if ($classSchema->isSingleton() && !$argument instanceof \TYPO3\CMS\Core\SingletonInterface) {
                         $this->getLogger()->notice('The singleton "' . $className . '" needs a prototype in the constructor. This is often a bad code smell; often you rather want to inject a singleton.');
+                        // todo: the whole injection is flawed anyway, why would we care about injecting prototypes? so, wayne?
+                        // todo: btw: if this is important, we can already detect this case in the class schema.
                     }
-                } elseif ($argumentInformation['hasDefaultValue'] === true) {
-                    $parameter = $argumentInformation['defaultValue'];
+                } elseif ($methodParameter->hasDefaultValue() === true) {
+                    $argument = $methodParameter->getDefaultValue();
                 } else {
                     throw new \InvalidArgumentException('not a correct info array of constructor dependencies was passed!', 1476107941);
                 }
             }
-            $parameters[] = $parameter;
+            $arguments[] = $argument;
         }
-        return $parameters;
+        return $arguments;
     }
 
     /**

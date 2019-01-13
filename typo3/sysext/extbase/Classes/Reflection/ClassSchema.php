@@ -28,7 +28,9 @@ use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchMethodException;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\Method;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Property;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException;
@@ -42,30 +44,20 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 class ClassSchema
 {
     /**
+     * Available model types
+     */
+    private const MODELTYPE_ENTITY = 1;
+    private const MODELTYPE_VALUEOBJECT = 2;
+
+    /**
      * @var array
      */
     private static $propertyObjects = [];
 
     /**
-     * @return array
+     * @var array
      */
-    private function buildPropertyObjects(): array
-    {
-        if (!isset(static::$propertyObjects[$this->className])) {
-            static::$propertyObjects[$this->className] = [];
-            foreach ($this->properties as $propertyName => $propertyDefinition) {
-                static::$propertyObjects[$this->className][$propertyName] = new Property($propertyName, $this->properties[$propertyName]);
-            }
-        }
-
-        return static::$propertyObjects[$this->className];
-    }
-
-    /**
-     * Available model types
-     */
-    const MODELTYPE_ENTITY = 1;
-    const MODELTYPE_VALUEOBJECT = 2;
+    private static $methodObjects = [];
 
     /**
      * Name of the class this schema is referring to
@@ -110,7 +102,7 @@ class ClassSchema
     /**
      * @var array
      */
-    private $methods;
+    private $methods = [];
 
     /**
      * @var array
@@ -334,29 +326,31 @@ class ClassSchema
 
                 $parameterName = $reflectionParameter->getName();
 
+                $ignoreValidationParameters = array_filter($annotations, function ($annotation) use ($parameterName) {
+                    return $annotation instanceof IgnoreValidation && $annotation->argumentName === $parameterName;
+                });
+
                 $this->methods[$methodName]['params'][$parameterName] = [];
                 $this->methods[$methodName]['params'][$parameterName]['position'] = $parameterPosition; // compat
                 $this->methods[$methodName]['params'][$parameterName]['byReference'] = $reflectionParameter->isPassedByReference(); // compat
                 $this->methods[$methodName]['params'][$parameterName]['array'] = $reflectionParameter->isArray(); // compat
                 $this->methods[$methodName]['params'][$parameterName]['optional'] = $reflectionParameter->isOptional();
-                $this->methods[$methodName]['params'][$parameterName]['allowsNull'] = $reflectionParameter->allowsNull(); // compat
+                $this->methods[$methodName]['params'][$parameterName]['allowsNull'] = $reflectionParameter->allowsNull();
                 $this->methods[$methodName]['params'][$parameterName]['class'] = null; // compat
                 $this->methods[$methodName]['params'][$parameterName]['type'] = null;
-                $this->methods[$methodName]['params'][$parameterName]['nullable'] = $reflectionParameter->allowsNull();
-                $this->methods[$methodName]['params'][$parameterName]['default'] = null;
                 $this->methods[$methodName]['params'][$parameterName]['hasDefaultValue'] = $reflectionParameter->isDefaultValueAvailable();
-                $this->methods[$methodName]['params'][$parameterName]['defaultValue'] = null; // compat
+                $this->methods[$methodName]['params'][$parameterName]['defaultValue'] = null;
                 $this->methods[$methodName]['params'][$parameterName]['dependency'] = null; // Extbase DI
+                $this->methods[$methodName]['params'][$parameterName]['ignoreValidation'] = count($ignoreValidationParameters) === 1;
                 $this->methods[$methodName]['params'][$parameterName]['validators'] = [];
 
                 if ($reflectionParameter->isDefaultValueAvailable()) {
-                    $this->methods[$methodName]['params'][$parameterName]['default'] = $reflectionParameter->getDefaultValue();
-                    $this->methods[$methodName]['params'][$parameterName]['defaultValue'] = $reflectionParameter->getDefaultValue(); // compat
+                    $this->methods[$methodName]['params'][$parameterName]['defaultValue'] = $reflectionParameter->getDefaultValue();
                 }
 
                 if (($reflectionType = $reflectionParameter->getType()) instanceof \ReflectionType) {
                     $this->methods[$methodName]['params'][$parameterName]['type'] = (string)$reflectionType;
-                    $this->methods[$methodName]['params'][$parameterName]['nullable'] = $reflectionType->allowsNull();
+                    $this->methods[$methodName]['params'][$parameterName]['allowsNull'] = $reflectionType->allowsNull();
                 }
 
                 if (($parameterClass = $reflectionParameter->getClass()) instanceof \ReflectionClass) {
@@ -500,12 +494,20 @@ class ClassSchema
     }
 
     /**
-     * @param string $name
-     * @return array
+     * @throws NoSuchMethodException
+     *
+     * @param string $methodName
+     * @return Method
      */
-    public function getMethod(string $name): array
+    public function getMethod(string $methodName): Method
     {
-        return $this->methods[$name] ?? [];
+        $methods = $this->buildMethodObjects();
+
+        if (!isset($methods[$methodName])) {
+            throw NoSuchMethodException::create($this->className, $methodName);
+        }
+
+        return $methods[$methodName];
     }
 
     /**
@@ -513,7 +515,7 @@ class ClassSchema
      */
     public function getMethods(): array
     {
-        return $this->methods;
+        return $this->buildMethodObjects();
     }
 
     /**
@@ -605,16 +607,14 @@ class ClassSchema
     }
 
     /**
-     * @return array
+     * @return array|Method[]
      */
     public function getInjectMethods(): array
     {
-        $injectMethods = [];
-        foreach ($this->injectMethods as $injectMethodName) {
-            $injectMethods[$injectMethodName] = reset($this->methods[$injectMethodName]['params'])['dependency'];
-        }
-
-        return $injectMethods;
+        return array_filter($this->buildMethodObjects(), function ($method) {
+            /** @var Method $method */
+            return $method->isInjectMethod();
+        });
     }
 
     /**
@@ -633,12 +633,30 @@ class ClassSchema
     /**
      * @return array
      */
-    public function getConstructorArguments(): array
+    private function buildPropertyObjects(): array
     {
-        if (!$this->hasConstructor()) {
-            return [];
+        if (!isset(static::$propertyObjects[$this->className])) {
+            static::$propertyObjects[$this->className] = [];
+            foreach ($this->properties as $propertyName => $propertyDefinition) {
+                static::$propertyObjects[$this->className][$propertyName] = new Property($propertyName, $propertyDefinition);
+            }
         }
 
-        return $this->methods['__construct']['params'];
+        return static::$propertyObjects[$this->className];
+    }
+
+    /**
+     * @return array|Method[]
+     */
+    private function buildMethodObjects(): array
+    {
+        if (!isset(static::$methodObjects[$this->className])) {
+            static::$methodObjects[$this->className] = [];
+            foreach ($this->methods as $methodName => $methodDefinition) {
+                static::$methodObjects[$this->className][$methodName] = new Method($methodName, $methodDefinition, $this->className);
+            }
+        }
+
+        return static::$methodObjects[$this->className];
     }
 }

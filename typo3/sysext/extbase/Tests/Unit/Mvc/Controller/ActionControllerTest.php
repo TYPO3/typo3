@@ -91,6 +91,8 @@ class ActionControllerTest extends UnitTestCase
 
     /**
      * @test
+     *
+     * @todo: make this a functional test
      */
     public function initializeActionMethodArgumentsRegistersArgumentsFoundInTheSignatureOfTheCurrentActionMethod(): void
     {
@@ -102,44 +104,49 @@ class ActionControllerTest extends UnitTestCase
         $mockArguments->expects($this->at(1))->method('addNewArgument')->with('integerArgument', 'integer', true);
         $mockArguments->expects($this->at(2))->method('addNewArgument')->with('objectArgument', 'F3_Foo_Bar', true);
         $mockController = $this->getAccessibleMock(ActionController::class, ['fooAction', 'evaluateDontValidateAnnotations'], [], '', false);
-        $methodParameters = [
-            'stringArgument' => [
-                'position' => 0,
-                'byReference' => false,
-                'array' => false,
-                'optional' => false,
-                'allowsNull' => false,
-                'type' => 'string',
-                'hasDefaultValue' => false
+
+        $classSchemaMethod = new ClassSchema\Method(
+            'fooAction',
+            [
+                'params' => [
+                    'stringArgument' => [
+                        'position' => 0,
+                        'byReference' => false,
+                        'array' => false,
+                        'optional' => false,
+                        'allowsNull' => false,
+                        'type' => 'string',
+                        'hasDefaultValue' => false
+                    ],
+                    'integerArgument' => [
+                        'position' => 1,
+                        'byReference' => false,
+                        'array' => false,
+                        'optional' => false,
+                        'allowsNull' => false,
+                        'type' => 'integer',
+                        'hasDefaultValue' => false
+                    ],
+                    'objectArgument' => [
+                        'position' => 2,
+                        'byReference' => false,
+                        'array' => false,
+                        'optional' => false,
+                        'allowsNull' => false,
+                        'type' => 'F3_Foo_Bar',
+                        'hasDefaultValue' => false
+                    ]
+                ]
             ],
-            'integerArgument' => [
-                'position' => 1,
-                'byReference' => false,
-                'array' => false,
-                'optional' => false,
-                'allowsNull' => false,
-                'type' => 'integer',
-                'hasDefaultValue' => false
-            ],
-            'objectArgument' => [
-                'position' => 2,
-                'byReference' => false,
-                'array' => false,
-                'optional' => false,
-                'allowsNull' => false,
-                'type' => 'F3_Foo_Bar',
-                'hasDefaultValue' => false
-            ]
-        ];
+            get_class($mockController)
+        );
 
         $classSchemaMock = $this->createMock(ClassSchema::class);
         $classSchemaMock
             ->expects($this->any())
             ->method('getMethod')
             ->with('fooAction')
-            ->willReturn([
-                'params' => $methodParameters
-            ]);
+            ->willReturn($classSchemaMethod);
 
         $mockReflectionService = $this->createMock(ReflectionService::class);
         $mockReflectionService
@@ -165,45 +172,50 @@ class ActionControllerTest extends UnitTestCase
         $mockArguments->expects($this->at(1))->method('addNewArgument')->with('arg2', 'array', false, [21]);
         $mockArguments->expects($this->at(2))->method('addNewArgument')->with('arg3', 'string', false, 42);
         $mockController = $this->getAccessibleMock(ActionController::class, ['fooAction', 'evaluateDontValidateAnnotations'], [], '', false);
-        $methodParameters = [
-            'arg1' => [
-                'position' => 0,
-                'byReference' => false,
-                'array' => false,
-                'optional' => false,
-                'allowsNull' => false,
-                'type' => 'string',
-                'hasDefaultValue' => false
+
+        $classSchemaMethod = new ClassSchema\Method(
+            'fooAction',
+            [
+                'params' => [
+                    'arg1' => [
+                        'position' => 0,
+                        'byReference' => false,
+                        'array' => false,
+                        'optional' => false,
+                        'allowsNull' => false,
+                        'type' => 'string',
+                        'hasDefaultValue' => false
+                    ],
+                    'arg2' => [
+                        'position' => 1,
+                        'byReference' => false,
+                        'array' => true,
+                        'optional' => true,
+                        'defaultValue' => [21],
+                        'allowsNull' => false,
+                        'hasDefaultValue' => true
+                    ],
+                    'arg3' => [
+                        'position' => 2,
+                        'byReference' => false,
+                        'array' => false,
+                        'optional' => true,
+                        'defaultValue' => 42,
+                        'allowsNull' => false,
+                        'type' => 'string',
+                        'hasDefaultValue' => true
+                    ]
+                ]
             ],
-            'arg2' => [
-                'position' => 1,
-                'byReference' => false,
-                'array' => true,
-                'optional' => true,
-                'defaultValue' => [21],
-                'allowsNull' => false,
-                'hasDefaultValue' => true
-            ],
-            'arg3' => [
-                'position' => 2,
-                'byReference' => false,
-                'array' => false,
-                'optional' => true,
-                'defaultValue' => 42,
-                'allowsNull' => false,
-                'type' => 'string',
-                'hasDefaultValue' => true
-            ]
-        ];
+            get_class($mockController)
+        );
 
         $classSchemaMock = $this->createMock(ClassSchema::class);
         $classSchemaMock
             ->expects($this->any())
             ->method('getMethod')
             ->with('fooAction')
-            ->willReturn([
-                'params' => $methodParameters
-            ]);
+            ->willReturn($classSchemaMethod);
 
         $mockReflectionService = $this->createMock(ReflectionService::class);
         $mockReflectionService
@@ -228,24 +240,29 @@ class ActionControllerTest extends UnitTestCase
         $mockRequest = $this->createMock(Request::class);
         $mockArguments = $this->createMock(Arguments::class);
         $mockController = $this->getAccessibleMock(ActionController::class, ['fooAction'], [], '', false);
-        $methodParameters = [
-            'arg1' => [
-                'position' => 0,
-                'byReference' => false,
-                'array' => false,
-                'optional' => false,
-                'allowsNull' => false
-            ]
-        ];
+
+        $classSchemaMethod = new ClassSchema\Method(
+            'fooAction',
+            [
+                'params' => [
+                    'arg1' => [
+                        'position' => 0,
+                        'byReference' => false,
+                        'array' => false,
+                        'optional' => false,
+                        'allowsNull' => false
+                    ]
+                ]
+            ],
+            get_class($mockController)
+        );
 
         $classSchemaMock = $this->createMock(ClassSchema::class);
         $classSchemaMock
             ->expects($this->any())
             ->method('getMethod')
             ->with('fooAction')
-            ->willReturn([
-                'params' => $methodParameters
-            ]);
+            ->willReturn($classSchemaMethod);
 
         $mockReflectionService = $this->createMock(ReflectionService::class);
         $mockReflectionService

@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchMethodException;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchMethodParameterException;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\MethodParameter;
+
 /**
  * This converter transforms arrays to simple objects (POPO) by setting properties.
  */
@@ -119,18 +123,22 @@ class ObjectConverter extends AbstractTypeConverter
         $classSchema = $this->reflectionService->getClassSchema($specificTargetType);
 
         if ($classSchema->hasMethod(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::buildSetterMethodName($propertyName))) {
-            $methodParameters = $classSchema->getMethod(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::buildSetterMethodName($propertyName))['params'] ?? [];
+            $methodParameters = $classSchema->getMethod(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::buildSetterMethodName($propertyName))->getParameters();
+            /** @var MethodParameter $methodParameter */
             $methodParameter = current($methodParameters);
-            if (!isset($methodParameter['type'])) {
+            if ($methodParameter->getType() === null) {
                 throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Setter for property "' . $propertyName . '" had no type hint or documentation in target object of type "' . $specificTargetType . '".', 1303379158);
             }
-            return $methodParameter['type'];
+            return $methodParameter->getType();
         }
-        $methodParameters = $classSchema->getMethod('__construct')['params'] ?? [];
-        if (isset($methodParameters[$propertyName]) && isset($methodParameters[$propertyName]['type'])) {
-            return $methodParameters[$propertyName]['type'];
+        try {
+            $parameterType = $classSchema->getMethod('__construct')->getParameter($propertyName)->getType();
+            if ($parameterType !== null) {
+                return $parameterType;
+            }
+        } catch (NoSuchMethodException|NoSuchMethodParameterException $e) {
+            throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Property "' . $propertyName . '" had no setter or constructor argument in target object of type "' . $specificTargetType . '".', 1303379126);
         }
-        throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Property "' . $propertyName . '" had no setter or constructor argument in target object of type "' . $specificTargetType . '".', 1303379126);
     }
 
     /**
@@ -215,16 +223,16 @@ class ObjectConverter extends AbstractTypeConverter
         $classSchema = $this->reflectionService->getClassSchema($specificObjectType);
 
         if ($classSchema->hasConstructor()) {
-            $constructorSignature = $classSchema->getMethod('__construct')['params'] ?? [];
+            $constructor = $classSchema->getMethod('__construct');
             $constructorArguments = [];
-            foreach ($constructorSignature as $constructorArgumentName => $constructorArgumentInformation) {
-                if (array_key_exists($constructorArgumentName, $possibleConstructorArgumentValues)) {
-                    $constructorArguments[] = $possibleConstructorArgumentValues[$constructorArgumentName];
-                    unset($possibleConstructorArgumentValues[$constructorArgumentName]);
-                } elseif ($constructorArgumentInformation['optional'] === true) {
-                    $constructorArguments[] = $constructorArgumentInformation['defaultValue'];
+            foreach ($constructor->getParameters() as $parameterName => $parameter) {
+                if (array_key_exists($parameterName, $possibleConstructorArgumentValues)) {
+                    $constructorArguments[] = $possibleConstructorArgumentValues[$parameterName];
+                    unset($possibleConstructorArgumentValues[$parameterName]);
+                } elseif ($parameter->isOptional()) {
+                    $constructorArguments[] = $parameter->getDefaultValue();
                 } else {
-                    throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Missing constructor argument "' . $constructorArgumentName . '" for object of type "' . $objectType . '".', 1268734872);
+                    throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Missing constructor argument "' . $parameterName . '" for object of type "' . $objectType . '".', 1268734872);
                 }
             }
             return call_user_func_array([$this->objectManager, 'get'], array_merge([$objectType], $constructorArguments));

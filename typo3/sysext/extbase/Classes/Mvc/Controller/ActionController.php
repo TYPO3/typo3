@@ -200,21 +200,21 @@ class ActionController extends AbstractController
     protected function initializeActionMethodArguments()
     {
         $methodParameters = $this->reflectionService
-                ->getClassSchema(static::class)
-                ->getMethod($this->actionMethodName)['params'] ?? [];
+            ->getClassSchema(static::class)
+            ->getMethod($this->actionMethodName)->getParameters();
 
-        foreach ($methodParameters as $parameterName => $parameterInfo) {
+        foreach ($methodParameters as $parameterName => $parameter) {
             $dataType = null;
-            if (isset($parameterInfo['type'])) {
-                $dataType = $parameterInfo['type'];
-            } elseif ($parameterInfo['array']) {
+            if ($parameter->getType() !== null) {
+                $dataType = $parameter->getType();
+            } elseif ($parameter->isArray()) {
                 $dataType = 'array';
             }
             if ($dataType === null) {
                 throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException('The argument type for parameter $' . $parameterName . ' of method ' . static::class . '->' . $this->actionMethodName . '() could not be detected.', 1253175643);
             }
-            $defaultValue = $parameterInfo['hasDefaultValue'] === true ? $parameterInfo['defaultValue'] : null;
-            $this->arguments->addNewArgument($parameterName, $dataType, $parameterInfo['optional'] === false, $defaultValue);
+            $defaultValue = $parameter->hasDefaultValue() ? $parameter->getDefaultValue() : null;
+            $this->arguments->addNewArgument($parameterName, $dataType, !$parameter->isOptional(), $defaultValue);
         }
     }
 
@@ -232,22 +232,19 @@ class ActionController extends AbstractController
             return;
         }
 
-        $classSchema = $this->reflectionService->getClassSchema(static::class);
-
-        $ignoreValidationAnnotations = array_unique(array_flip(
-            $classSchema->getMethod($this->actionMethodName)['tags']['ignorevalidation'] ?? []
-        ));
+        $classSchemaMethod = $this->reflectionService->getClassSchema(static::class)
+            ->getMethod($this->actionMethodName);
 
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
         foreach ($this->arguments as $argument) {
-            if (isset($ignoreValidationAnnotations[$argument->getName()])) {
+            $classSchemaMethodParameter = $classSchemaMethod->getParameter($argument->getName());
+            if ($classSchemaMethodParameter->ignoreValidation()) {
                 continue;
             }
 
             $validator = $this->objectManager->get(ConjunctionValidator::class);
-            $validatorDefinitions = $classSchema->getMethod($this->actionMethodName)['params'][$argument->getName()]['validators'] ?? [];
 
-            foreach ($validatorDefinitions as $validatorDefinition) {
+            foreach ($classSchemaMethodParameter->getValidators() as $validatorDefinition) {
                 /** @var ValidatorInterface $validatorInstance */
                 $validatorInstance = $this->objectManager->get(
                     $validatorDefinition['className'],
