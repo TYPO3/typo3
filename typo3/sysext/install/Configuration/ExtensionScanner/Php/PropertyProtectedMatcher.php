@@ -399,36 +399,43 @@ return [
     'TYPO3\CMS\Backend\Controller\File\FileUploadController->title' => [
         'restFiles' => [
             'Deprecation-84326-ProtectedMethodsAndPropertiesInFileUploadController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\FileUploadController->target' => [
         'restFiles' => [
             'Deprecation-84326-ProtectedMethodsAndPropertiesInFileUploadController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\FileUploadController->returnUrl' => [
         'restFiles' => [
             'Deprecation-84326-ProtectedMethodsAndPropertiesInFileUploadController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\ReplaceFileController->doc' => [
         'restFiles' => [
             'Deprecation-84334-ProtectedMethodsAndPropertiesInReplaceFileController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\ReplaceFileController->title' => [
         'restFiles' => [
             'Deprecation-84334-ProtectedMethodsAndPropertiesInReplaceFileController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\ReplaceFileController->uid' => [
         'restFiles' => [
             'Deprecation-84334-ProtectedMethodsAndPropertiesInReplaceFileController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\ReplaceFileController->returnUrl' => [
         'restFiles' => [
             'Deprecation-84334-ProtectedMethodsAndPropertiesInReplaceFileController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\Wizard\AddController->processDataFlag' => [
@@ -449,16 +456,19 @@ return [
     'TYPO3\CMS\Backend\Controller\File\RenameFileController->title' => [
         'restFiles' => [
             'Deprecation-84332-ProtectedMethodsAndPropertiesInRenameFileController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\RenameFileController->target' => [
         'restFiles' => [
             'Deprecation-84332-ProtectedMethodsAndPropertiesInRenameFileController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\RenameFileController->returnUrl' => [
         'restFiles' => [
             'Deprecation-84332-ProtectedMethodsAndPropertiesInRenameFileController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\NewRecordController->pidInfo' => [

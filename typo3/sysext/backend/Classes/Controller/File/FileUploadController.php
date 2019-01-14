@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Backend\Controller\File;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -32,25 +31,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FileUploadController
 {
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * @var array
-     */
-    protected $deprecatedPublicProperties = [
-        'title' => 'Using $title of class FileUploadController from outside is discouraged as this variable is only used for internal storage.',
-        'target' => 'Using $target of class FileUploadController from outside is discouraged as this variable is only used for internal storage.',
-        'returnUrl' => 'Using $returnUrl of class FileUploadController from outside is discouraged as this variable is only used for internal storage.',
-        'content' => 'Using $content of class FileUploadController from outside is discouraged as this variable is only used for internal storage.',
-    ];
-
-    /**
-     * Name of the filemount
-     *
-     * @var string
-     */
-    protected $title;
-
     /**
      * Set with the target path inputted in &target
      *
@@ -87,18 +67,6 @@ class FileUploadController
     protected $moduleTemplate;
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
-
-        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
-        $this->init($GLOBALS['TYPO3_REQUEST']);
-    }
-
-    /**
      * Processes the request, currently everything is handled and put together via "renderContent()"
      *
      * @param ServerRequestInterface $request the current request
@@ -106,31 +74,11 @@ class FileUploadController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
+        $this->init($request);
         $this->renderContent();
         return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    /**
-     * Main function, rendering the upload file form fields
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function main()
-    {
-        trigger_error('FileUploadController->main() will be replaced by protected method renderContent() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-        $this->renderContent();
-    }
-
-    /**
-     * This function renders the upload form
-     *
-     * @return string The HTML form as a string, ready for outputting
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function renderUploadForm()
-    {
-        trigger_error('FileUploadController->renderUploadForm() will be replaced by protected method renderUploadFormInternal() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-        return $this->renderUploadFormInternal();
     }
 
     /**

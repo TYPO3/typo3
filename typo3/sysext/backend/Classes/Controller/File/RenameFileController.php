@@ -18,9 +18,7 @@ namespace TYPO3\CMS\Backend\Controller\File;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -37,25 +35,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class RenameFileController
 {
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * @var array
-     */
-    protected $deprecatedPublicProperties = [
-        'title' => 'Using $title of class RenameFileController from outside is discouraged as this variable is only used for internal storage.',
-        'target' => 'Using $target of class RenameFileController from outside is discouraged as this variable is only used for internal storage.',
-        'returnUrl' => 'Using $returnUrl of class RenameFileController from outside is discouraged as this variable is only used for internal storage.',
-        'content' => 'Using $content of class RenameFileController from outside is discouraged as this variable is only used for internal storage.',
-    ];
-
-    /**
-     * Name of the filemount
-     *
-     * @var string
-     */
-    protected $title;
-
     /**
      * Target path
      *
@@ -79,30 +58,11 @@ class RenameFileController
     protected $returnUrl;
 
     /**
-     * Accumulating content
-     *
-     * @var string
-     * @internal
-     */
-    protected $content;
-
-    /**
      * ModuleTemplate object
      *
      * @var ModuleTemplate
      */
     protected $moduleTemplate;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-
-        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
-        $this->init($GLOBALS['TYPO3_REQUEST']);
-    }
 
     /**
      * Processes the request, currently everything is handled and put together via "renderContent()"
@@ -112,20 +72,10 @@ class RenameFileController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->init($request);
         $this->renderContent();
-
         return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    /**
-     * Main function, rendering the content of the rename form
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function main()
-    {
-        trigger_error('RenameFileController->main() will be replaced by protected method renderContent() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-        $this->renderContent();
     }
 
     /**
@@ -259,8 +209,7 @@ class RenameFileController
             'EXT:backend/Resources/Private/Templates/File/RenameFile.html'
         ));
         $view->assignMultiple($assigns);
-        $this->content = $view->render();
-        $this->moduleTemplate->setContent($this->content);
+        $this->moduleTemplate->setContent($view->render());
     }
 
     /**
@@ -269,13 +218,5 @@ class RenameFileController
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * @return DocumentTemplate
-     */
-    protected function getDocumentTemplate(): DocumentTemplate
-    {
-        return $GLOBALS['TBE_TEMPLATE'];
     }
 }

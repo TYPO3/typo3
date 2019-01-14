@@ -20,8 +20,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -40,40 +38,10 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class CreateFolderController
 {
-    use PublicMethodDeprecationTrait;
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicMethods = [
-        'main' => 'Using CreateFolderController::main() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-    ];
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicProperties = [
-        'number' => 'Using $number of class CreateFolderController from outside is discouraged, as this variable is only used for internal storage.',
-        'folderNumber' => 'Using $folderNumber of class CreateFolderController from outside is discouraged, as this variable is only used for internal storage.',
-        'target' => 'Using $target of class CreateFolderController from outside is discouraged, as this variable is only used for internal storage.',
-        'content' => 'Using $content of class CreateFolderController from outside is discouraged, as this variable is only used for internal storage.',
-        'returnUrl' => 'Using $content of class CreateFolderController from outside is discouraged, as this variable is only used for internal storage.',
-        'title' => 'Using $content of class CreateFolderController from outside is discouraged, as this variable is only used for internal storage.',
-    ];
-
     /**
      * @var int
      */
     protected $folderNumber = 10;
-
-    /**
-     * Name of the filemount
-     *
-     * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused
-     */
-    protected $title;
 
     /**
      * @var int
@@ -107,29 +75,11 @@ class CreateFolderController
     protected $pathInfo;
 
     /**
-     * Accumulating content
-     *
-     * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused
-     */
-    protected $content;
-
-    /**
      * ModuleTemplate object
      *
      * @var ModuleTemplate
      */
     protected $moduleTemplate;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
-        $this->init($GLOBALS['TYPO3_REQUEST']);
-    }
 
     /**
      * Processes the request, currently everything is handled and put together via "main()"
@@ -139,6 +89,8 @@ class CreateFolderController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->init($request);
         $this->main();
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }

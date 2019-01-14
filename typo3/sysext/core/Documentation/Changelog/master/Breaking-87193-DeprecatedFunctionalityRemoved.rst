@@ -206,6 +206,11 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->openInNewWindowLink()`
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->setDocument()`
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->shortCutLink()`
+* :php:`TYPO3\CMS\Backend\Controller\File\FileController->finish()`
+* :php:`TYPO3\CMS\Backend\Controller\File\FileUploadController->main()`
+* :php:`TYPO3\CMS\Backend\Controller\File\FileUploadController->renderUploadForm()`
+* :php:`TYPO3\CMS\Backend\Controller\File\RenameFileController->main()`
+* :php:`TYPO3\CMS\Backend\Controller\File\ReplaceFileController->main()`
 * :php:`TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->initPage()`
 * :php:`TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->main()`
 * :php:`TYPO3\CMS\Backend\Controller\LoginController->main()`
@@ -517,6 +522,14 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->popViewId_addParams`
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->redirect`
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->template`
+* :php:`TYPO3\CMS\Backend\Controller\File\CreateFolderController->content`
+* :php:`TYPO3\CMS\Backend\Controller\File\CreateFolderController->title`
+* :php:`TYPO3\CMS\Backend\Controller\File\FileUploadController->title`
+* :php:`TYPO3\CMS\Backend\Controller\File\RenameFileController->content`
+* :php:`TYPO3\CMS\Backend\Controller\File\RenameFileController->title`
+* :php:`TYPO3\CMS\Backend\Controller\File\ReplaceFileController->content`
+* :php:`TYPO3\CMS\Backend\Controller\File\ReplaceFileController->doc`
+* :php:`TYPO3\CMS\Backend\Controller\File\ReplaceFileController->title`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extAdmEnabled`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->adminPanel`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->frontendEdit`
@@ -652,7 +665,10 @@ The following class methods have changed visibility:
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->makeEditForm()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->preInit()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->processData()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\CreateFolderController->main()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\File\EditFileController->main()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\FileController->initClipboard()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\FileController->main()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->clearCache()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->contentIsNotLockedForEditors()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->getLocalizedPageTitle()` changed from public to protected
@@ -849,12 +865,23 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->viewId` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->viewId_addParams` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->viewUrl` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\CreateFolderController->folderNumber` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\CreateFolderController->number` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\CreateFolderController->returnUrl` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\CreateFolderController->target` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\File\EditFileController->origTarget` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\File\EditFileController->target` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\File\EditFileController->returnUrl` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\File\EditFileController->content` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\File\EditFileController->title` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\File\EditFileController->doc` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\FileUploadController->content` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\FileUploadController->returnUrl` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\FileUploadController->target` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\RenameFileController->returnUrl` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\RenameFileController->target` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\ReplaceFileController->returnUrl` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\File\ReplaceFileController->uid` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->content` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->foldertree` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController->currentSubScript` changed from public to protected

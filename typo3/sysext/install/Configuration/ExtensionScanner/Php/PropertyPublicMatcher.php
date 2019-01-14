@@ -360,21 +360,25 @@ return [
     'TYPO3\CMS\Backend\Controller\File\CreateFolderController->number' => [
         'restFiles' => [
             'Deprecation-84289-UseServerRequestInterfaceInFileCreateFolderController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\CreateFolderController->folderNumber' => [
         'restFiles' => [
             'Deprecation-84289-UseServerRequestInterfaceInFileCreateFolderController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\CreateFolderController->target' => [
         'restFiles' => [
             'Deprecation-84289-UseServerRequestInterfaceInFileCreateFolderController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\CreateFolderController->content' => [
         'restFiles' => [
             'Deprecation-84289-UseServerRequestInterfaceInFileCreateFolderController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\EditFileController->origTarget' => [
