@@ -22,7 +22,6 @@ use TYPO3\CMS\Backend\Tree\View\ContentMovingPagePositionMap;
 use TYPO3\CMS\Backend\Tree\View\PageMovingPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -36,25 +35,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class MoveElementController
 {
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * Properties which have been moved to protected status from public
-     *
-     * @var array
-     */
-    protected $deprecatedPublicProperties = [
-        'sys_language' => 'Using $sys_language of MoveElementController from the outside is discouraged, as this variable is used for internal storage.',
-        'page_id' => 'Using $page_id of MoveElementController from the outside is discouraged, as this variable is used for internal storage.',
-        'table' => 'Using $table of MoveElementController from the outside is discouraged, as this variable is used for internal storage.',
-        'R_URI' => 'Using $R_URI of MoveElementController from the outside is discouraged, as this variable is used for internal storage.',
-        'input_moveUid' => 'Using $input_moveUid of MoveElementController from the outside is discouraged, as this variable is used for internal storage.',
-        'moveUid' => 'Using $moveUid of MoveElementController from the outside is discouraged, as this variable is used for internal storage.',
-        'makeCopy' => 'Using $makeCopy of MoveElementController from the outside is discouraged, as this variable is used for internal storage.',
-        'perms_clause' => 'Using $perms_clause of MoveElementController from the outside is discouraged, as this variable is used for internal storage.',
-        'content' => 'Using $content of MoveElementController from the outside is discouraged, as this variable is used for internal storage.',
-    ];
-
     /**
      * @var int
      */
@@ -112,20 +92,6 @@ class MoveElementController
     protected $moduleTemplate;
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
-
-        // @deprecated since TYPO3 v9, will be obsolete in TYPO3 v10.0 with removal of init()
-        $request = $GLOBALS['TYPO3_REQUEST'];
-        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
-        $this->init($request);
-    }
-
-    /**
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the main() method, it is rather simple for now
      *
@@ -134,24 +100,20 @@ class MoveElementController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
+        $this->init($request);
         $this->renderContent();
-
         return new HtmlResponse($this->content);
     }
 
     /**
      * Constructor, initializing internal variables.
      *
-     * @param ServerRequestInterface|null $request
+     * @param ServerRequestInterface $request
      */
-    public function init(ServerRequestInterface $request = null)
+    protected function init(ServerRequestInterface $request)
     {
-        if ($request === null) {
-            // Method signature in TYPO3 v10.0: protected function init(ServerRequestInterface $request)
-            trigger_error('MoveElementController->init() will be set to protected in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-            $request = $GLOBALS['TYPO3_REQUEST'];
-        }
-
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 
@@ -283,17 +245,6 @@ class MoveElementController
         $this->moduleTemplate->setContent($this->content);
 
         $this->content = $this->moduleTemplate->renderContent();
-    }
-
-    /**
-     * Creating the module output.
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function main()
-    {
-        trigger_error('MoveElementController->main() will be replaced by protected method renderContent() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-        $this->renderContent();
     }
 
     /**

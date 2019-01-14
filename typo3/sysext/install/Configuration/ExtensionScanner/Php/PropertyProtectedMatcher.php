@@ -315,36 +315,43 @@ return [
     'TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->sys_language' => [
         'restFiles' => [
             'Deprecation-84285-ProtectedMethodsAndPropertiesInMoveElementController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->page_id' => [
         'restFiles' => [
             'Deprecation-84285-ProtectedMethodsAndPropertiesInMoveElementController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->R_URI' => [
         'restFiles' => [
             'Deprecation-84285-ProtectedMethodsAndPropertiesInMoveElementController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->input_moveUid' => [
         'restFiles' => [
             'Deprecation-84285-ProtectedMethodsAndPropertiesInMoveElementController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->moveUid' => [
         'restFiles' => [
             'Deprecation-84285-ProtectedMethodsAndPropertiesInMoveElementController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->perms_clause' => [
         'restFiles' => [
             'Deprecation-84285-ProtectedMethodsAndPropertiesInMoveElementController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->makeCopy' => [
         'restFiles' => [
             'Deprecation-84285-ProtectedMethodsAndPropertiesInMoveElementController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->access' => [
@@ -362,26 +369,31 @@ return [
     'TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->sys_language' => [
         'restFiles' => [
             'Deprecation-84307-ProtectedMethodsAndPropertiesInNewContentElementController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->R_URI' => [
         'restFiles' => [
             'Deprecation-84307-ProtectedMethodsAndPropertiesInNewContentElementController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->colPos' => [
         'restFiles' => [
             'Deprecation-84307-ProtectedMethodsAndPropertiesInNewContentElementController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->uid_pid' => [
         'restFiles' => [
             'Deprecation-84307-ProtectedMethodsAndPropertiesInNewContentElementController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->access' => [
         'restFiles' => [
             'Deprecation-84307-ProtectedMethodsAndPropertiesInNewContentElementController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\FileUploadController->title' => [

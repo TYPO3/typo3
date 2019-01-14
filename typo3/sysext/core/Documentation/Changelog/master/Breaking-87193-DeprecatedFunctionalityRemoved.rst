@@ -193,6 +193,13 @@ The following PHP class aliases that have been previously deprecated for v9 have
 
 The following PHP class methods that have been previously deprecated for v9 have been removed:
 
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->main()`
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->main()`
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->removeInvalidElements()`
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->wizard_appendWizards()`
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->wizard_getItem()`
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->wizard_getGroupHeader()`
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->wizardArray()`
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->compileStoreDat()`
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->doProcessData()`
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->getNewIconMode()`
@@ -502,6 +509,7 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->table`
 * :php:`TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->type`
 * :php:`TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->uid`
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->doc`
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->cacheCmd`
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->content`
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->doc`
@@ -630,6 +638,8 @@ The following class methods have changed visibility:
 * :php:`TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->getLabelForTableColumn` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->init()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController->main()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->init()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->init()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->closeDocument()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->compileForm()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->fixWSversioningInEditConf()` changed from public to protected
@@ -786,6 +796,24 @@ The following class methods have changed visibility:
 
 The following class properties have changed visibility:
 
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->content` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->input_moveUid` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->makeCopy` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->moveUid` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->page_id` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->perms_clause` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->R_URI` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->sys_language` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->table` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->access` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->config` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->colPos` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->content` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->id` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->modTSconfig` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->R_URI` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->sys_language` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->uid_pid` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->closeDoc` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->cmd` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->columnsOnly` changed from public to protected
