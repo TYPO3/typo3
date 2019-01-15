@@ -94,9 +94,6 @@ class TcaFlexPrepareTest extends UnitTestCase
                                                             <TCEforms>
                                                                 <label>aFlexFieldLabel</label>
                                                                 <config>
-                                                                    <type>input</type>
-                                                                    <renderType>inputDateTime</renderType>
-                                                                    <max>42</max>
                                                                 </config>
                                                             </TCEforms>
                                                         </aFlexField>
@@ -127,8 +124,7 @@ class TcaFlexPrepareTest extends UnitTestCase
                             'aFlexField' => [
                                 'label' => 'aFlexFieldLabel',
                                 'config' => [
-                                    'type' => 'input',
-                                    'renderType' => 'inputDateTime',
+                                    'type' => 'none',
                                 ],
                             ],
                         ],
@@ -181,9 +177,6 @@ class TcaFlexPrepareTest extends UnitTestCase
                                                                             <TCEforms>
                                                                                 <label>aFlexFieldLabel</label>
                                                                                 <config>
-                                                                                    <type>input</type>
-                                                                                    <renderType>inputDateTime</renderType>
-                                                                                    <max>42</max>
                                                                                 </config>
                                                                             </TCEforms>
                                                                         </aFlexField>
@@ -227,8 +220,7 @@ class TcaFlexPrepareTest extends UnitTestCase
                                             'aFlexField' => [
                                                 'label' => 'aFlexFieldLabel',
                                                 'config' => [
-                                                    'type' => 'input',
-                                                    'renderType' => 'inputDateTime',
+                                                    'type' => 'none',
                                                 ],
                                             ],
                                         ],

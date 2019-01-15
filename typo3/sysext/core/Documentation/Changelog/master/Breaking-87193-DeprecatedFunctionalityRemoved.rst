@@ -1292,6 +1292,7 @@ The following features have been removed:
   `$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['my_eID'] = 'EXT:benni/Scripts/download.php'` will not work anymore.
   Instead, they must contain a target (callable, class/method, function).
 * TCA auto migration from core v6 to core v7 compatible TCA
+* TCA auto migration from core v7 to core v8 compatible TCA
 * TCA :php:`type='group'` with :php:`internal_type='file'` and :php:`internal_type='file_reference`
 * Cache creation using :php:`\TYPO3\CMS\Cache\CacheManger` during :php:`ext_localconf.php` loading
 * All install tool upgrade wizards upgrading from v7 to v8 have been removed
