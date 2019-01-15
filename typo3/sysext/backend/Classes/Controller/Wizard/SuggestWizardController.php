@@ -60,6 +60,14 @@ class SuggestWizardController
             // Normal columns field
             $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
             $fieldNameInPageTsConfig = $fieldName;
+
+            // With possible columnsOverrides
+            $row = BackendUtility::getRecord($tableName, $uid);
+            $recordType = BackendUtility::getTCAtypeValue($tableName, $row);
+            $columnsOverridesConfigOfField = $GLOBALS['TCA'][$tableName]['types'][$recordType]['columnsOverrides'][$fieldName]['config'] ?? null;
+            if ($columnsOverridesConfigOfField) {
+                ArrayUtility::mergeRecursiveWithOverrule($fieldConfig, $columnsOverridesConfigOfField);
+            }
         } else {
             // A flex flex form field
             $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
