@@ -18,10 +18,7 @@ namespace TYPO3\CMS\Install\Updates;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Updates\RowUpdater\ImageCropUpdater;
-use TYPO3\CMS\Install\Updates\RowUpdater\L10nModeUpdater;
 use TYPO3\CMS\Install\Updates\RowUpdater\RowUpdaterInterface;
-use TYPO3\CMS\Install\Updates\RowUpdater\RteLinkSyntaxUpdater;
 
 /**
  * This is a generic updater to migrate content of TCA rows.
@@ -47,9 +44,6 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
      * @var array Single classes that may update rows
      */
     protected $rowUpdater = [
-        L10nModeUpdater::class,
-        ImageCropUpdater::class,
-        RteLinkSyntaxUpdater::class,
     ];
 
     /**

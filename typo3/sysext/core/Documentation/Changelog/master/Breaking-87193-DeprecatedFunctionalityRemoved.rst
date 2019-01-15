@@ -1294,6 +1294,7 @@ The following features have been removed:
 * TCA auto migration from core v6 to core v7 compatible TCA
 * TCA :php:`type='group'` with :php:`internal_type='file'` and :php:`internal_type='file_reference`
 * Cache creation using :php:`\TYPO3\CMS\Cache\CacheManger` during :php:`ext_localconf.php` loading
+* All install tool upgrade wizards upgrading from v7 to v8 have been removed
 
 
 The following database tables have been removed:
