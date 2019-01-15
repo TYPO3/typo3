@@ -217,7 +217,7 @@ class ClassSchemaTest extends UnitTestCase
     {
         $this->resetSingletonInstances = true;
         $this->expectException(InvalidTypeHintException::class);
-        $this->expectExceptionMessage('Missing type information for parameter "$fooParam" in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAnnotationWithoutParamTypeHint->methodWithValidateAnnotationsAction(): Either use an @param annotation or use a type hint.');
+        $this->expectExceptionMessage('Missing type information for parameter "$fooParam" in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAnnotationWithoutParamTypeHint->methodWithValidateAnnotationsAction(): Use a type hint.');
         $this->expectExceptionCode(1515075192);
 
         new ClassSchema(DummyControllerWithValidateAnnotationWithoutParamTypeHint::class);

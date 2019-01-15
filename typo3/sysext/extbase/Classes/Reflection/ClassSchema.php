@@ -406,6 +406,7 @@ class ClassSchema
                     }
                 }
 
+                $typeDetectedViaDocBlock = false;
                 if ($docComment !== '' && $this->methods[$methodName]['params'][$parameterName]['type'] === null) {
                     /*
                      * We create (redundant) instances here in this loop due to the fact that
@@ -416,8 +417,7 @@ class ClassSchema
                      * Also, if we analyze all method doc blocks, we will trigger numerous errors
                      * due to non PSR-5 compatible tags in the core and in user land code.
                      *
-                     * Fetching the data type via doc blocks will also be deprecated and removed
-                     * in the near future.
+                     * Fetching the data type via doc blocks is deprecated and will be removed in the near future.
                      */
                     $params = self::$docBlockFactory->create($docComment)
                         ->getTagsByName('param');
@@ -426,6 +426,7 @@ class ClassSchema
                         /** @var Param $param */
                         $param = $params[$parameterPosition];
                         $this->methods[$methodName]['params'][$parameterName]['type'] = ltrim((string)$param->getType(), '\\');
+                        $typeDetectedViaDocBlock = true;
                     }
                 }
 
@@ -433,6 +434,14 @@ class ClassSchema
                 if ($reflectionType instanceof \ReflectionNamedType && !$reflectionType->isBuiltin()
                     && ($reflectionMethod->isConstructor() || $this->hasInjectMethodName($reflectionMethod))
                 ) {
+                    if ($typeDetectedViaDocBlock) {
+                        $parameterType = $this->methods[$methodName]['params'][$parameterName]['type'];
+                        $errorMessage = <<<MESSAGE
+The type ($parameterType) of parameter \$$parameterName of method $this->className::$methodName() is defined via php DocBlock, which is deprecated and will be removed in TYPO3 12.0. Use a proper parameter type hint instead:
+[private|protected|public] function $methodName($parameterType \$$parameterName)
+MESSAGE;
+                        trigger_error($errorMessage, E_USER_DEPRECATED);
+                    }
                     $this->methods[$methodName]['params'][$parameterName]['dependency'] = $reflectionType->getName();
                 }
 
@@ -440,9 +449,18 @@ class ClassSchema
                 if (isset($argumentValidators[$parameterName])) {
                     if ($this->methods[$methodName]['params'][$parameterName]['type'] === null) {
                         throw new InvalidTypeHintException(
-                            'Missing type information for parameter "$' . $parameterName . '" in ' . $this->className . '->' . $methodName . '(): Either use an @param annotation or use a type hint.',
+                            'Missing type information for parameter "$' . $parameterName . '" in ' . $this->className . '->' . $methodName . '(): Use a type hint.',
                             1515075192
                         );
+                    }
+                    if ($typeDetectedViaDocBlock) {
+                        $parameterType = $this->methods[$methodName]['params'][$parameterName]['type'];
+                        $errorMessage = <<<MESSAGE
+The type ($parameterType) of parameter \$$parameterName of method $this->className::$methodName() is defined via php DocBlock, which is deprecated and will be removed in TYPO3 12.0. Use a proper parameter type hint instead:
+[private|protected|public] function $methodName($parameterType \$$parameterName)
+MESSAGE;
+
+                        trigger_error($errorMessage, E_USER_DEPRECATED);
                     }
 
                     $this->methods[$methodName]['params'][$parameterName]['validators'] = $argumentValidators[$parameterName];
