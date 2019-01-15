@@ -4,7 +4,6 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'The Task Center is the framework for a host of other extensions, see below.',
     'category' => 'module',
     'state' => 'stable',
-    'uploadfolder' => 0,
     'createDirs' => '',
     'clearCacheOnLoad' => 0,
     'author' => 'TYPO3 Core Team',

@@ -5,7 +5,6 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'misc',
     'version' => '10.0.0',
     'state' => 'stable',
-    'uploadfolder' => 0,
     'createDirs' => '',
     'clearCacheOnLoad' => 0,
     'author' => 'TYPO3 Core Team',

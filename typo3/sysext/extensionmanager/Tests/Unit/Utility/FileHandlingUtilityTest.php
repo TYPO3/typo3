@@ -458,22 +458,6 @@ class FileHandlingUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function uploadFolderIsNotCreatedIfNotRequested()
-    {
-        $fileHandlerMock = $this->getPreparedFileHandlingMockForDirectoryCreationTests();
-        $fileHandlerMock->expects($this->never())
-            ->method('createNestedDirectory');
-        $fileHandlerMock->ensureConfiguredDirectoriesExist(
-            [
-                'key' => 'foo_bar',
-                'uploadfolder' => 0,
-            ]
-        );
-    }
-
-    /**
-     * @test
-     */
     public function additionalFoldersAreNotCreatedIfNotRequested()
     {
         $fileHandlerMock = $this->getPreparedFileHandlingMockForDirectoryCreationTests();
@@ -483,23 +467,6 @@ class FileHandlingUtilityTest extends UnitTestCase
             [
                 'key' => 'foo_bar',
                 'createDirs' => '',
-            ]
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function configuredUploadFolderIsCreatedIfRequested()
-    {
-        $fileHandlerMock = $this->getPreparedFileHandlingMockForDirectoryCreationTests();
-        $fileHandlerMock->expects($this->once())
-            ->method('createNestedDirectory')
-            ->with('uploads/tx_foobar/');
-        $fileHandlerMock->ensureConfiguredDirectoriesExist(
-            [
-                'key' => 'foo_bar',
-                'uploadfolder' => 1,
             ]
         );
     }
@@ -533,7 +500,7 @@ class FileHandlingUtilityTest extends UnitTestCase
     public function configuredDirectoriesAreNotCreatedIfTheyAlreadyExist()
     {
         $fileHandlerMock = $this->getPreparedFileHandlingMockForDirectoryCreationTests();
-        $fileHandlerMock->expects($this->exactly(3))
+        $fileHandlerMock->expects($this->exactly(2))
             ->method('directoryExists')
             ->will($this->returnValue(true));
         $fileHandlerMock->expects($this->never())
@@ -541,7 +508,6 @@ class FileHandlingUtilityTest extends UnitTestCase
         $fileHandlerMock->ensureConfiguredDirectoriesExist(
             [
                 'key' => 'foo_bar',
-                'uploadfolder' => 1,
                 'createDirs' => 'foo/bar, baz/foo',
             ]
         );

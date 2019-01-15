@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Database;
 use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -815,7 +814,6 @@ class QueryView
                         }
                         break;
                     case 'group':
-                        $fields['type'] = 'files';
                         if ($fields['internal_type'] === 'db') {
                             $fields['type'] = 'relation';
                         }
@@ -871,7 +869,6 @@ class QueryView
             case 'boolean':
                 $out = $fieldValue ? 'True' : 'False';
                 break;
-            case 'files':
             default:
                 $out = htmlspecialchars($fieldValue);
         }
@@ -938,25 +935,6 @@ class QueryView
     {
         $fieldSetup = $conf;
         $out = '';
-        if ($fieldSetup['type'] === 'files') {
-            $d = dir(Environment::getPublicPath() . '/' . $fieldSetup['uploadfolder']);
-            while (false !== ($entry = $d->read())) {
-                if ($entry === '.' || $entry === '..') {
-                    continue;
-                }
-                $fileArray[] = $entry;
-            }
-            $d->close();
-            natcasesort($fileArray);
-            foreach ($fileArray as $fileName) {
-                if (GeneralUtility::inList($fieldValue, $fileName) || $fieldValue == $fileName) {
-                    if ($out !== '') {
-                        $out .= $splitString;
-                    }
-                    $out .= htmlspecialchars($fileName);
-                }
-            }
-        }
         if ($fieldSetup['type'] === 'multiple') {
             foreach ($fieldSetup['items'] as $key => $val) {
                 if (strpos($val[0], 'LLL:') === 0) {

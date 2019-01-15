@@ -259,30 +259,13 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
     protected function getAbsolutePathsToConfiguredDirectories(array $extension)
     {
         $requestedDirectories = [];
-        $requestUploadFolder = isset($extension['uploadfolder']) ? (bool)$extension['uploadfolder'] : false;
-        if ($requestUploadFolder) {
-            $requestedDirectories[] = $this->getAbsolutePath($this->getPathToUploadFolder($extension));
-        }
-
         $requestCreateDirectories = empty($extension['createDirs']) ? false : (string)$extension['createDirs'];
         if ($requestCreateDirectories) {
             foreach (GeneralUtility::trimExplode(',', $extension['createDirs']) as $directoryToCreate) {
                 $requestedDirectories[] = $this->getAbsolutePath($directoryToCreate);
             }
         }
-
         return $requestedDirectories;
-    }
-
-    /**
-     * Upload folders always reside in “uploads/tx_[extKey-with-no-underscore]”
-     *
-     * @param array $extension
-     * @return string
-     */
-    protected function getPathToUploadFolder($extension)
-    {
-        return 'uploads/tx_' . str_replace('_', '', $extension['key']) . '/';
     }
 
     /**

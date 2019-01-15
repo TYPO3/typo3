@@ -4,7 +4,6 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'Records with messages which can be placed on any page and contain instructions or other information related to a page or section.',
     'category' => 'be',
     'state' => 'stable',
-    'uploadfolder' => 0,
     'createDirs' => '',
     'clearCacheOnLoad' => 0,
     'author' => 'TYPO3 Core Team',

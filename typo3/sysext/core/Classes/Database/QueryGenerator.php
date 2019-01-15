@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Database;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -58,7 +57,7 @@ class QueryGenerator
             '41_' => 'binary AND does not equal',
             '42_' => 'binary OR equals',
             '43_' => 'binary OR does not equal',
-            // Type = multiple, relation, files , offset = 64
+            // Type = multiple, relation, offset = 64
             '64_' => 'equals',
             '65_' => 'does not equal',
             '66_' => 'contains',
@@ -117,7 +116,7 @@ class QueryGenerator
         '41' => '(#FIELD# & #VALUE#)!=#VALUE#',
         '42' => '(#FIELD# | #VALUE#)=#VALUE#',
         '43' => '(#FIELD# | #VALUE#)!=#VALUE#',
-        // Type = multiple, relation, files , offset = 64
+        // Type = multiple, relation, offset = 64
         '64' => '#FIELD# = \'#VALUE#\'',
         '65' => '#FIELD# != \'#VALUE#\'',
         '66' => '#FIELD# LIKE \'%#VALUE#%\' AND #FIELD# LIKE \'%#VALUE1#%\'',
@@ -157,7 +156,6 @@ class QueryGenerator
         'number' => 1,
         'multiple' => 2,
         'relation' => 2,
-        'files' => 2,
         'date' => 3,
         'time' => 3,
         'boolean' => 4,
@@ -334,7 +332,6 @@ class QueryGenerator
                             }
                             break;
                         case 'group':
-                            $this->fields[$fieldName]['type'] = 'files';
                             if ($this->fields[$fieldName]['internal_type'] === 'db') {
                                 $this->fields[$fieldName]['type'] = 'relation';
                             }
@@ -688,21 +685,6 @@ class QueryGenerator
                     }
                     $lineHTML[] = '</div>';
                     break;
-                case 'files':
-                    $lineHTML[] = '<div class="form-inline">';
-                    $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
-                    if ($conf['comparison'] === 68 || $conf['comparison'] === 69) {
-                        $lineHTML[] = '<select class="form-control" name="' . $fieldPrefix . '[inputValue]' . '[]" multiple="multiple">';
-                    } else {
-                        $lineHTML[] = '<select class="form-control t3js-submit-change" name="' . $fieldPrefix . '[inputValue]' . '">';
-                    }
-                    $lineHTML[] = '<option value=""></option>' . $this->makeOptionList($fieldName, $conf, $this->table);
-                    $lineHTML[] = '</select>';
-                    if ($conf['comparison'] === 66 || $conf['comparison'] === 67) {
-                        $lineHTML[] = ' + <input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $fieldPrefix . '[inputValue1]' . '">';
-                    }
-                    $lineHTML[] = '</div>';
-                    break;
                 case 'boolean':
                     $lineHTML[] = '<div class="form-inline">';
                     $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
@@ -783,35 +765,6 @@ class QueryGenerator
         $out = [];
         $fieldSetup = $this->fields[$fieldName];
         $languageService = $this->getLanguageService();
-        if ($fieldSetup['type'] === 'files') {
-            if ($conf['comparison'] === 66 || $conf['comparison'] === 67) {
-                $fileExtArray = explode(',', $fieldSetup['allowed']);
-                natcasesort($fileExtArray);
-                foreach ($fileExtArray as $fileExt) {
-                    if (GeneralUtility::inList($conf['inputValue'], $fileExt)) {
-                        $out[] = '<option value="' . htmlspecialchars($fileExt) . '" selected>.' . htmlspecialchars($fileExt) . '</option>';
-                    } else {
-                        $out[] = '<option value="' . htmlspecialchars($fileExt) . '">.' . htmlspecialchars($fileExt) . '</option>';
-                    }
-                }
-            }
-            $d = dir(Environment::getPublicPath() . '/' . $fieldSetup['uploadfolder']);
-            while (false !== ($entry = $d->read())) {
-                if ($entry === '.' || $entry === '..') {
-                    continue;
-                }
-                $fileArray[] = $entry;
-            }
-            $d->close();
-            natcasesort($fileArray);
-            foreach ($fileArray as $fileName) {
-                if (GeneralUtility::inList($conf['inputValue'], $fileName)) {
-                    $out[] = '<option value="' . htmlspecialchars($fileName) . '" selected>' . htmlspecialchars($fileName) . '</option>';
-                } else {
-                    $out[] = '<option value="' . htmlspecialchars($fileName) . '">' . htmlspecialchars($fileName) . '</option>';
-                }
-            }
-        }
         if ($fieldSetup['type'] === 'multiple') {
             foreach ($fieldSetup['items'] as $key => $val) {
                 if (strpos($val[0], 'LLL:') === 0) {

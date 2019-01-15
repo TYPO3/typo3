@@ -4,7 +4,6 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'Displays backend log, both per page and system wide. Available as the module Tools>Log (system wide overview) and Web>Info/Log (page relative overview).',
     'category' => 'module',
     'state' => 'stable',
-    'uploadfolder' => 0,
     'createDirs' => '',
     'clearCacheOnLoad' => 0,
     'author' => 'TYPO3 Core Team',

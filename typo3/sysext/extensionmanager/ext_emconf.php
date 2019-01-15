@@ -4,7 +4,6 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'TYPO3 Extension Manager',
     'category' => 'module',
     'state' => 'stable',
-    'uploadfolder' => 0,
     'createDirs' => '',
     'clearCacheOnLoad' => 0,
     'author' => 'TYPO3 Core Team',
