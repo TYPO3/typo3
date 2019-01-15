@@ -103,7 +103,10 @@ Example form definition
            validators:
              -
                identifier: NotEmpty
-
+         -
+           identifier: hidden
+           label: 'Hidden Field'
+           type: Hidden
      -
        identifier: summarypage
        label: 'Summary page'
