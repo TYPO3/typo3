@@ -31,10 +31,19 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
     protected $flexFormService;
 
     /**
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+     * @param \TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService
+     * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
      * @param \TYPO3\CMS\Core\Service\FlexFormService $flexFormService
      */
-    public function injectFlexFormService(\TYPO3\CMS\Core\Service\FlexFormService $flexFormService)
-    {
+    public function __construct(
+        \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager,
+        \TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService,
+        \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService,
+        \TYPO3\CMS\Core\Service\FlexFormService $flexFormService
+    ) {
+        parent::__construct($objectManager, $typoScriptService, $environmentService);
+
         $this->flexFormService = $flexFormService;
     }
 

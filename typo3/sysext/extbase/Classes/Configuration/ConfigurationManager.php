@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Extbase\Configuration;
 
 /**
  * A configuration manager following the strategy pattern (GoF315). It hides the concrete
- * implementation of the configuration manager and provides an unified acccess point.
+ * implementation of the configuration manager and provides an unified access point.
  *
  * Use the shutdown() method to drop the concrete implementation.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
@@ -40,25 +40,15 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
      * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
      */
-    public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService)
-    {
+    public function __construct(
+        \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager,
+        \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+    ) {
+        $this->objectManager = $objectManager;
         $this->environmentService = $environmentService;
-    }
 
-    /**
-     * Initializes the object
-     */
-    public function initializeObject()
-    {
         $this->initializeConcreteConfigurationManager();
     }
 

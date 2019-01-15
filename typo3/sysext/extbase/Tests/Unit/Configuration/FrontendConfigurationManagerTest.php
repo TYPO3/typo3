@@ -54,7 +54,13 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $this->mockContentObject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['getTreeList'])
             ->getMock();
-        $this->frontendConfigurationManager = $this->getAccessibleMock(FrontendConfigurationManager::class, ['dummy']);
+        $this->frontendConfigurationManager = $this->getAccessibleMock(
+            FrontendConfigurationManager::class,
+            ['dummy'],
+            [],
+            '',
+            false
+        );
         $this->frontendConfigurationManager->_set('contentObject', $this->mockContentObject);
         $this->mockTypoScriptService = $this->getAccessibleMock(TypoScriptService::class);
         $this->frontendConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
@@ -372,11 +378,17 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             ]
         ];
         /** @var FrontendConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface */
-        $frontendConfigurationManager = $this->getAccessibleMock(FrontendConfigurationManager::class, [
-            'overrideStoragePidIfStartingPointIsSet',
-            'overrideConfigurationFromPlugin',
-            'overrideConfigurationFromFlexForm'
-        ]);
+        $frontendConfigurationManager = $this->getAccessibleMock(
+            FrontendConfigurationManager::class,
+            [
+                'overrideStoragePidIfStartingPointIsSet',
+                'overrideConfigurationFromPlugin',
+                'overrideConfigurationFromFlexForm'
+            ],
+            [],
+            '',
+            false
+        );
         $frontendConfigurationManager->expects($this->at(0))->method('overrideStoragePidIfStartingPointIsSet')->with($frameworkConfiguration)->will($this->returnValue(['overridden' => 'storagePid']));
         $frontendConfigurationManager->expects($this->at(1))->method('overrideConfigurationFromPlugin')->with(['overridden' => 'storagePid'])->will($this->returnValue(['overridden' => 'pluginConfiguration']));
         $frontendConfigurationManager->expects($this->at(2))->method('overrideConfigurationFromFlexForm')->with(['overridden' => 'pluginConfiguration'])->will($this->returnValue(['overridden' => 'flexFormConfiguration']));
@@ -396,13 +408,19 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $storagePid = '3,5,9';
         $recursive = 99;
         /** @var $abstractConfigurationManager FrontendConfigurationManager */
-        $abstractConfigurationManager = $this->getAccessibleMock(FrontendConfigurationManager::class, [
-            'overrideSwitchableControllerActions',
-            'getContextSpecificFrameworkConfiguration',
-            'getTypoScriptSetup',
-            'getPluginConfiguration',
-            'getSwitchableControllerActions'
-        ]);
+        $abstractConfigurationManager = $this->getAccessibleMock(
+            FrontendConfigurationManager::class,
+            [
+                'overrideSwitchableControllerActions',
+                'getContextSpecificFrameworkConfiguration',
+                'getTypoScriptSetup',
+                'getPluginConfiguration',
+                'getSwitchableControllerActions'
+            ],
+            [],
+            '',
+            false
+        );
         /** @var $cObjectMock ContentObjectRenderer */
         $cObjectMock = $this->createMock(ContentObjectRenderer::class);
         $cObjectMock->expects($this->any())
@@ -423,13 +441,19 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $storagePid = '-3,5,9';
         $recursive = 99;
         /** @var $abstractConfigurationManager FrontendConfigurationManager */
-        $abstractConfigurationManager = $this->getAccessibleMock(FrontendConfigurationManager::class, [
-            'overrideSwitchableControllerActions',
-            'getContextSpecificFrameworkConfiguration',
-            'getTypoScriptSetup',
-            'getPluginConfiguration',
-            'getSwitchableControllerActions'
-        ]);
+        $abstractConfigurationManager = $this->getAccessibleMock(
+            FrontendConfigurationManager::class,
+            [
+                'overrideSwitchableControllerActions',
+                'getContextSpecificFrameworkConfiguration',
+                'getTypoScriptSetup',
+                'getPluginConfiguration',
+                'getSwitchableControllerActions'
+            ],
+            [],
+            '',
+            false
+        );
         /** @var $cObjectMock ContentObjectRenderer */
         $cObjectMock = $this->createMock(ContentObjectRenderer::class);
         $cObjectMock->expects($this->any())
@@ -450,13 +474,19 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $storagePid = '1,2,3';
 
         /** @var $abstractConfigurationManager FrontendConfigurationManager */
-        $abstractConfigurationManager = $this->getAccessibleMock(FrontendConfigurationManager::class, [
-            'overrideSwitchableControllerActions',
-            'getContextSpecificFrameworkConfiguration',
-            'getTypoScriptSetup',
-            'getPluginConfiguration',
-            'getSwitchableControllerActions'
-        ]);
+        $abstractConfigurationManager = $this->getAccessibleMock(
+            FrontendConfigurationManager::class,
+            [
+                'overrideSwitchableControllerActions',
+                'getContextSpecificFrameworkConfiguration',
+                'getTypoScriptSetup',
+                'getPluginConfiguration',
+                'getSwitchableControllerActions'
+            ],
+            [],
+            '',
+            false
+        );
         /** @var $cObjectMock ContentObjectRenderer */
         $cObjectMock = $this->createMock(ContentObjectRenderer::class);
         $cObjectMock->expects($this->never())->method('getTreeList');
@@ -475,13 +505,19 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $storagePid = '1,2,3';
         $recursive = 0;
 
-        $abstractConfigurationManager = $this->getAccessibleMock(FrontendConfigurationManager::class, [
-            'overrideSwitchableControllerActions',
-            'getContextSpecificFrameworkConfiguration',
-            'getTypoScriptSetup',
-            'getPluginConfiguration',
-            'getSwitchableControllerActions'
-        ]);
+        $abstractConfigurationManager = $this->getAccessibleMock(
+            FrontendConfigurationManager::class,
+            [
+                'overrideSwitchableControllerActions',
+                'getContextSpecificFrameworkConfiguration',
+                'getTypoScriptSetup',
+                'getPluginConfiguration',
+                'getSwitchableControllerActions'
+            ],
+            [],
+            '',
+            false
+        );
 
         /** @var $cObjectMock ContentObjectRenderer */
         $cObjectMock = $this->createMock(ContentObjectRenderer::class);
@@ -648,7 +684,10 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         /** @var $frontendConfigurationManager FrontendConfigurationManager */
         $frontendConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
-            ['getTypoScriptSetup']
+            ['getTypoScriptSetup'],
+            [],
+            '',
+            false
         );
         $frontendConfigurationManager->_set('contentObject', $this->mockContentObject);
         $frontendConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);

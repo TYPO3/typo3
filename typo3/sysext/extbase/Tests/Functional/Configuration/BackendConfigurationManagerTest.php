@@ -31,7 +31,7 @@ class BackendConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Funct
      */
     public function getCurrentPageIdReturnsPidFromFirstRootTemplateIfIdIsNotSetAndNoRootPageWasFound()
     {
-        $backendConfigurationManager = $this->getAccessibleMock(BackendConfigurationManager::class, ['getTypoScriptSetup']);
+        $backendConfigurationManager = $this->getAccessibleMock(BackendConfigurationManager::class, ['getTypoScriptSetup'], [], '', false);
         $mockTypoScriptService = $this->getMockBuilder(TypoScriptService::class)->getMock();
         $backendConfigurationManager->_set('typoScriptService', $mockTypoScriptService);
 
@@ -56,7 +56,7 @@ class BackendConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Funct
      */
     public function getCurrentPageIdReturnsUidFromFirstRootPageIfIdIsNotSet()
     {
-        $backendConfigurationManager = $this->getAccessibleMock(BackendConfigurationManager::class, ['getTypoScriptSetup']);
+        $backendConfigurationManager = $this->getAccessibleMock(BackendConfigurationManager::class, ['getTypoScriptSetup'], [], '', false);
         $mockTypoScriptService = $this->getMockBuilder(TypoScriptService::class)->getMock();
         $backendConfigurationManager->_set('typoScriptService', $mockTypoScriptService);
 
@@ -80,7 +80,7 @@ class BackendConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Funct
      */
     public function getCurrentPageIdReturnsDefaultStoragePidIfIdIsNotSetNoRootTemplateAndRootPageWasFound()
     {
-        $backendConfigurationManager = $this->getAccessibleMock(BackendConfigurationManager::class, ['getTypoScriptSetup']);
+        $backendConfigurationManager = $this->getAccessibleMock(BackendConfigurationManager::class, ['getTypoScriptSetup'], [], '', false);
         $mockTypoScriptService = $this->getMockBuilder(TypoScriptService::class)->getMock();
         $backendConfigurationManager->_set('typoScriptService', $mockTypoScriptService);
 

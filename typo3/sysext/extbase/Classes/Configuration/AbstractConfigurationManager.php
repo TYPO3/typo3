@@ -75,25 +75,16 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
      * @param \TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService
-     */
-    public function injectTypoScriptService(\TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService)
-    {
-        $this->typoScriptService = $typoScriptService;
-    }
-
-    /**
      * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
      */
-    public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService)
-    {
+    public function __construct(
+        \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager,
+        \TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService,
+        \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+    ) {
+        $this->objectManager = $objectManager;
+        $this->typoScriptService = $typoScriptService;
         $this->environmentService = $environmentService;
     }
 

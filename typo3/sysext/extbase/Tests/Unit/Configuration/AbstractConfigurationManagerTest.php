@@ -128,7 +128,10 @@ class AbstractConfigurationManagerTest extends UnitTestCase
                 'getPluginConfiguration',
                 'getSwitchableControllerActions',
                 'getRecursiveStoragePids'
-            ]
+            ],
+            [],
+            '',
+            false
         );
         $this->mockTypoScriptService = $this->getAccessibleMock(TypoScriptService::class);
         $this->abstractConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
@@ -399,7 +402,10 @@ class AbstractConfigurationManagerTest extends UnitTestCase
                 'getPluginConfiguration',
                 'getSwitchableControllerActions',
                 'getRecursiveStoragePids'
-            ]
+            ],
+            [],
+            '',
+            false
         );
         $abstractConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
         $abstractConfigurationManager->setConfiguration(['switchableControllerActions' => ['overriddenSwitchableControllerActions']]);
@@ -428,7 +434,10 @@ class AbstractConfigurationManagerTest extends UnitTestCase
                 'getPluginConfiguration',
                 'getSwitchableControllerActions',
                 'getRecursiveStoragePids'
-            ]
+            ],
+            [],
+            '',
+            false
         );
         $this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->will($this->returnValue($configuration));
         $abstractConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
@@ -454,7 +463,10 @@ class AbstractConfigurationManagerTest extends UnitTestCase
                 'getPluginConfiguration',
                 'getSwitchableControllerActions',
                 'getRecursiveStoragePids'
-            ]
+            ],
+            [],
+            '',
+            false
         );
         $this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->will($this->returnValue($configuration));
         $abstractConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);

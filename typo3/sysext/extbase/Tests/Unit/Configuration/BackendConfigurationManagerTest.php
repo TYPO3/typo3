@@ -38,7 +38,13 @@ class BackendConfigurationManagerTest extends UnitTestCase
      */
     protected function setUp()
     {
-        $this->backendConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class, ['getTypoScriptSetup']);
+        $this->backendConfigurationManager = $this->getAccessibleMock(
+            \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
+            ['getTypoScriptSetup'],
+            [],
+            '',
+            false
+        );
         $this->mockTypoScriptService = $this->getAccessibleMock(\TYPO3\CMS\Core\TypoScript\TypoScriptService::class);
         $this->backendConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
     }
@@ -307,7 +313,13 @@ class BackendConfigurationManagerTest extends UnitTestCase
         $beUserAuthentication->getPagePermsClause(1)->willReturn('1=1');
         $GLOBALS['BE_USER'] = $beUserAuthentication->reveal();
 
-        $abstractConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class, ['overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions']);
+        $abstractConfigurationManager = $this->getAccessibleMock(
+            \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
+            ['overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'],
+            [],
+            '',
+            false
+        );
         $queryGenerator = $this->createMock(\TYPO3\CMS\Core\Database\QueryGenerator::class);
         $queryGenerator->expects($this->any())
             ->method('getTreeList')
@@ -332,7 +344,13 @@ class BackendConfigurationManagerTest extends UnitTestCase
         $beUserAuthentication->getPagePermsClause(1)->willReturn('1=1');
         $GLOBALS['BE_USER'] = $beUserAuthentication->reveal();
 
-        $abstractConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class, ['overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions', 'getQueryGenerator']);
+        $abstractConfigurationManager = $this->getAccessibleMock(
+            \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
+            ['overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions', 'getQueryGenerator'],
+            [],
+            '',
+            false
+        );
         $queryGenerator = $this->createMock(\TYPO3\CMS\Core\Database\QueryGenerator::class);
         $queryGenerator->expects($this->any())
             ->method('getTreeList')
@@ -351,7 +369,13 @@ class BackendConfigurationManagerTest extends UnitTestCase
     {
         $storagePid = '1,2,3';
 
-        $abstractConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class, ['overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions']);
+        $abstractConfigurationManager = $this->getAccessibleMock(
+            \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
+            ['overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'],
+            [],
+            '',
+            false
+        );
 
         $expectedResult = '1,2,3';
         $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid);
@@ -366,7 +390,13 @@ class BackendConfigurationManagerTest extends UnitTestCase
         $storagePid = '1,2,3';
         $recursive = 0;
 
-        $abstractConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class, ['overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions']);
+        $abstractConfigurationManager = $this->getAccessibleMock(
+            \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
+            ['overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'],
+            [],
+            '',
+            false
+        );
 
         $expectedResult = '1,2,3';
         $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid, $recursive);
