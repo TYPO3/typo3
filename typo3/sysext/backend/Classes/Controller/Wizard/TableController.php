@@ -35,14 +35,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class TableController extends AbstractWizardController
 {
-
-    /**
-     * Content accumulation for the module.
-     *
-     * @var string
-     */
-    protected $content;
-
     /**
      * If TRUE, <input> fields are shown instead of textareas.
      *
@@ -116,18 +108,6 @@ class TableController extends AbstractWizardController
     protected $moduleTemplate;
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf');
-
-        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
-        $this->init($GLOBALS['TYPO3_REQUEST']);
-    }
-
-    /**
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the main() method, it is rather simple for now
      *
@@ -136,13 +116,35 @@ class TableController extends AbstractWizardController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $response = $this->renderContent($request);
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf');
+        $this->init($request);
 
-        if (empty($response)) {
-            $response = new HtmlResponse($this->moduleTemplate->renderContent());
+        $normalizedParams = $request->getAttribute('normalizedParams');
+        $requestUri = $normalizedParams->getRequestUri();
+        list($rUri) = explode('#', $requestUri);
+        $content = '<form action="' . htmlspecialchars($rUri) . '" method="post" id="TableController" name="wizardForm">';
+        if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
+            $tableWizard = $this->renderTableWizard($request);
+
+            if ($tableWizard instanceof RedirectResponse) {
+                return $tableWizard;
+            }
+
+            $content .= '<h2>' . htmlspecialchars($this->getLanguageService()->getLL('table_title')) . '</h2>'
+                . '<div>' . $tableWizard . '</div>';
+        } else {
+            $content .= '<h2>' . htmlspecialchars($this->getLanguageService()->getLL('table_title')) . '</h2>'
+                . '<div><span class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('table_noData')) . '</span></div>';
         }
+        $content .= '</form>';
 
-        return $response;
+        // Setting up the buttons and markers for docHeader
+        $this->getButtons();
+        // Build the <body> for the module
+        $this->moduleTemplate->setContent($content);
+
+        return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
@@ -164,40 +166,6 @@ class TableController extends AbstractWizardController
         $this->inputStyle = isset($this->TABLECFG['textFields']) ? (bool)$this->TABLECFG['textFields'] : true;
         $this->tableParsing_delimiter = '|';
         $this->tableParsing_quote = '';
-    }
-
-    /**
-     * Main function, rendering the table wizard
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface|null
-     */
-    protected function renderContent(ServerRequestInterface $request): ?ResponseInterface
-    {
-        $normalizedParams = $request->getAttribute('normalizedParams');
-        $requestUri = $normalizedParams->getRequestUri();
-        list($rUri) = explode('#', $requestUri);
-        $this->content .= '<form action="' . htmlspecialchars($rUri) . '" method="post" id="TableController" name="wizardForm">';
-        if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
-            $tableWizard = $this->renderTableWizard($request);
-
-            if ($tableWizard instanceof RedirectResponse) {
-                return $tableWizard;
-            }
-
-            $this->content .= '<h2>' . htmlspecialchars($this->getLanguageService()->getLL('table_title')) . '</h2>'
-                . '<div>' . $tableWizard . '</div>';
-        } else {
-            $this->content .= '<h2>' . htmlspecialchars($this->getLanguageService()->getLL('table_title')) . '</h2>'
-                . '<div><span class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('table_noData')) . '</span></div>';
-        }
-        $this->content .= '</form>';
-        // Setting up the buttons and markers for docHeader
-        $this->getButtons();
-        // Build the <body> for the module
-        $this->moduleTemplate->setContent($this->content);
-
-        return null;
     }
 
     /**

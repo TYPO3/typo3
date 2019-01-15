@@ -206,6 +206,7 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->openInNewWindowLink()`
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->setDocument()`
 * :php:`TYPO3\CMS\Backend\Controller\EditDocumentController->shortCutLink()`
+* :php:`TYPO3\CMS\Backend\Controller\EditFileController->getButtons()`
 * :php:`TYPO3\CMS\Backend\Controller\File\FileController->finish()`
 * :php:`TYPO3\CMS\Backend\Controller\File\FileUploadController->main()`
 * :php:`TYPO3\CMS\Backend\Controller\File\FileUploadController->renderUploadForm()`
@@ -223,6 +224,11 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Backend\Controller\NewRecordController->regularNew()`
 * :php:`TYPO3\CMS\Backend\Controller\NewRecordController->showNewRecLink()`
 * :php:`TYPO3\CMS\Backend\Controller\NewRecordController->sortNewRecordsByConfig()`
+* :php:`TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->main()`
+* :php:`TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->initClipboard()`
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\AddController->main()`
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\EditController->main()`
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\ListController->main()`
 * :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->cfgArray2CfgString()`
 * :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->cfgString2CfgArray()`
 * :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->changeFunc()`
@@ -531,6 +537,11 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Backend\Controller\File\ReplaceFileController->content`
 * :php:`TYPO3\CMS\Backend\Controller\File\ReplaceFileController->doc`
 * :php:`TYPO3\CMS\Backend\Controller\File\ReplaceFileController->title`
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\AddController->content`
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\ListController->id`
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\ListController->P`
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\ListController->pid`
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\ListController->table`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extAdmEnabled`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->adminPanel`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->frontendEdit`
@@ -681,6 +692,7 @@ The following class methods have changed visibility:
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->menuConfig()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->pageIsNotLockedForEditors()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->renderContent()` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->init()` changed from public to protected
 * :php:`TYPO3\CMS\Beuser\Controller\BackendUserController->initializeView()` changed from public to protected
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\BlowfishPasswordHash->base64Encode()` changed from public to protected
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\BlowfishPasswordHash->isValidSalt()` changed from public to protected
@@ -933,6 +945,22 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->search_field` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->search_levels` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->showLimit` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->cacheCmd` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->CB` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->cmd` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->data` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->flags` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->mirror` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->redirect` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->tce` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\AddController->id` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\AddController->P` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\AddController->pid` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\AddController->processDataFlag` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\AddController->returnEditConf` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\AddController->table` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\EditController->doClose` changed from public to protected
+* :php:`TYPO3\CMS\Backend\Controller\Wizard\EditController->P` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->content` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->inputStyle` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\Wizard\TableController->xmlStorage` changed from public to protected

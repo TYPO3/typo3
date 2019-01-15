@@ -441,16 +441,19 @@ return [
     'TYPO3\CMS\Backend\Controller\Wizard\AddController->processDataFlag' => [
         'restFiles' => [
             'Deprecation-84321-ProtectedMethodsAndPropertiesInAddController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\Wizard\AddController->P' => [
         'restFiles' => [
             'Deprecation-84321-ProtectedMethodsAndPropertiesInAddController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\Wizard\AddController->returnEditConf' => [
         'restFiles' => [
             'Deprecation-84321-ProtectedMethodsAndPropertiesInAddController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\RenameFileController->title' => [
@@ -564,26 +567,31 @@ return [
     'TYPO3\CMS\Backend\Controller\Wizard\EditController->doClose' => [
         'restFiles' => [
             'Deprecation-84327-DeprecatedPublicMethodsAndPropertiesInWizardEditController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->flags' => [
         'restFiles' => [
             'Deprecation-84374-ProtectedMethodsAndPropertiesInSimpleDataHandlerController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->mirror' => [
         'restFiles' => [
             'Deprecation-84374-ProtectedMethodsAndPropertiesInSimpleDataHandlerController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->cacheCmd' => [
         'restFiles' => [
             'Deprecation-84374-ProtectedMethodsAndPropertiesInSimpleDataHandlerController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->CB' => [
         'restFiles' => [
             'Deprecation-84374-ProtectedMethodsAndPropertiesInSimpleDataHandlerController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\Wizard\TableController->inputStyle' => [

@@ -21,12 +21,10 @@ use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -36,30 +34,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class AddController extends AbstractWizardController
 {
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * Properties which have been moved to protected status from public
-     *
-     * @var array
-     */
-    protected $deprecatedPublicProperties = [
-        'content' => 'Using $content of class AddController from the outside is discouraged, as this variable is only used for internal storage.',
-        'processDataFlag' => 'Using $processDataFlag of class AddController from the outside is discouraged, as this variable is only used for internal storage.',
-        'pid' => 'Using $pid of class AddController from the outside is discouraged, as this variable is only used for internal storage.',
-        'table' => 'Using $table of class AddController from the outside is discouraged, as this variable is only used for internal storage.',
-        'id' => 'Using $id of class AddController from the outside is discouraged, as this variable is only used for internal storage.',
-        'P' => 'Using $P of class AddController from the outside is discouraged, as this variable is only used for internal storage.',
-        'returnEditConf' => 'Using $returnEditConf of class AddController from the outside is discouraged, as this variable is only used for internal storage.',
-    ];
-    /**
-     * Content accumulation for the module.
-     *
-     * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, unused
-     */
-    protected $content;
-
     /**
      * If set, the DataHandler class is loaded and used to add the returning ID to the parent record.
      *
@@ -103,16 +77,6 @@ class AddController extends AbstractWizardController
     protected $returnEditConf;
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf');
-        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
-        $this->init($GLOBALS['TYPO3_REQUEST']);
-    }
-
-    /**
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the main() method, it is rather simple for now
      *
@@ -121,95 +85,9 @@ class AddController extends AbstractWizardController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->processRequest($request);
-    }
+        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf');
+        $this->init($request);
 
-    /**
-     * Main function
-     * Will issue a location-header, redirecting either BACK or to a new FormEngine instance...
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function main()
-    {
-        trigger_error('AddController->main() will be replaced by protected method processRequest() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-
-        $response = $this->processRequest($GLOBALS['TYPO3_REQUEST']);
-        HttpUtility::redirect($response->getHeaders()['location'][0]);
-    }
-
-    /**
-     * Initialization of the class.
-     * @param ServerRequestInterface $request
-     */
-    protected function init(ServerRequestInterface $request): void
-    {
-        $parsedBody = $request->getParsedBody();
-        $queryParams = $request->getQueryParams();
-        // Init GPvars:
-        $this->P = $parsedBody['P'] ?? $queryParams['P'] ?? [];
-        $this->returnEditConf = $parsedBody['returnEditConf'] ?? $queryParams['returnEditConf'] ?? null;
-        // Get this record
-        $record = BackendUtility::getRecord($this->P['table'], $this->P['uid']);
-        // Set table:
-        $this->table = $this->P['params']['table'];
-        // Get TSconfig for it.
-        $TSconfig = BackendUtility::getTCEFORM_TSconfig(
-            $this->P['table'],
-            is_array($record) ? $record : ['pid' => $this->P['pid']]
-        );
-        // Set [params][pid]
-        if (strpos($this->P['params']['pid'], '###') === 0 && substr($this->P['params']['pid'], -3) === '###') {
-            $keyword = substr($this->P['params']['pid'], 3, -3);
-            if (strpos($keyword, 'PAGE_TSCONFIG_') === 0) {
-                $this->pid = (int)$TSconfig[$this->P['field']][$keyword];
-            } else {
-                $this->pid = (int)$TSconfig['_' . $keyword];
-            }
-        } else {
-            $this->pid = (int)$this->P['params']['pid'];
-        }
-        // Return if new record as parent (not possibly/allowed)
-        if ($this->pid === '') {
-            // HTTP Redirect is performed by processRequest()
-            return;
-        }
-        // Else proceed:
-        // If a new id has returned from a newly created record...
-        if ($this->returnEditConf) {
-            $editConfiguration = json_decode($this->returnEditConf, true);
-            if (is_array($editConfiguration[$this->table]) && MathUtility::canBeInterpretedAsInteger($this->P['uid'])) {
-                // Getting id and cmd from returning editConf array.
-                reset($editConfiguration[$this->table]);
-                $this->id = (int)key($editConfiguration[$this->table]);
-                $cmd = current($editConfiguration[$this->table]);
-                // ... and if everything seems OK we will register some classes for inclusion and instruct the object
-                // to perform processing later.
-                if ($this->P['params']['setValue']
-                    && $cmd === 'edit'
-                    && $this->id
-                    && $this->P['table']
-                    && $this->P['field'] && $this->P['uid']
-                ) {
-                    $liveRecord = BackendUtility::getLiveVersionOfRecord($this->table, $this->id, 'uid');
-                    if ($liveRecord) {
-                        $this->id = $liveRecord['uid'];
-                    }
-                    $this->processDataFlag = 1;
-                }
-            }
-        }
-    }
-
-    /**
-     * Main function
-     * Will issue a location-header, redirecting either BACK or to a new FormEngine instance...
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     */
-    protected function processRequest(ServerRequestInterface $request): ResponseInterface
-    {
         // Return if new record as parent (not possibly/allowed)
         if ($this->pid === '') {
             return new RedirectResponse(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
@@ -338,5 +216,68 @@ class AddController extends AbstractWizardController
         ]);
 
         return new RedirectResponse($redirectUrl);
+    }
+
+    /**
+     * Initialization of the class.
+     * @param ServerRequestInterface $request
+     */
+    protected function init(ServerRequestInterface $request): void
+    {
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+        // Init GPvars:
+        $this->P = $parsedBody['P'] ?? $queryParams['P'] ?? [];
+        $this->returnEditConf = $parsedBody['returnEditConf'] ?? $queryParams['returnEditConf'] ?? null;
+        // Get this record
+        $record = BackendUtility::getRecord($this->P['table'], $this->P['uid']);
+        // Set table:
+        $this->table = $this->P['params']['table'];
+        // Get TSconfig for it.
+        $TSconfig = BackendUtility::getTCEFORM_TSconfig(
+            $this->P['table'],
+            is_array($record) ? $record : ['pid' => $this->P['pid']]
+        );
+        // Set [params][pid]
+        if (strpos($this->P['params']['pid'], '###') === 0 && substr($this->P['params']['pid'], -3) === '###') {
+            $keyword = substr($this->P['params']['pid'], 3, -3);
+            if (strpos($keyword, 'PAGE_TSCONFIG_') === 0) {
+                $this->pid = (int)$TSconfig[$this->P['field']][$keyword];
+            } else {
+                $this->pid = (int)$TSconfig['_' . $keyword];
+            }
+        } else {
+            $this->pid = (int)$this->P['params']['pid'];
+        }
+        // Return if new record as parent (not possibly/allowed)
+        if ($this->pid === '') {
+            // HTTP Redirect is performed by processRequest()
+            return;
+        }
+        // Else proceed:
+        // If a new id has returned from a newly created record...
+        if ($this->returnEditConf) {
+            $editConfiguration = json_decode($this->returnEditConf, true);
+            if (is_array($editConfiguration[$this->table]) && MathUtility::canBeInterpretedAsInteger($this->P['uid'])) {
+                // Getting id and cmd from returning editConf array.
+                reset($editConfiguration[$this->table]);
+                $this->id = (int)key($editConfiguration[$this->table]);
+                $cmd = current($editConfiguration[$this->table]);
+                // ... and if everything seems OK we will register some classes for inclusion and instruct the object
+                // to perform processing later.
+                if ($this->P['params']['setValue']
+                    && $cmd === 'edit'
+                    && $this->id
+                    && $this->P['table']
+                    && $this->P['field'] && $this->P['uid']
+                ) {
+                    $liveRecord = BackendUtility::getLiveVersionOfRecord($this->table, $this->id, 'uid');
+                    if ($liveRecord) {
+                        $this->id = $liveRecord['uid'];
+                    }
+                    $this->processDataFlag = 1;
+                }
+            }
+        }
     }
 }

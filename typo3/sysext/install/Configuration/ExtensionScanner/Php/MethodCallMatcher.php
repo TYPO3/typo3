@@ -2266,6 +2266,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-84374-ProtectedMethodsAndPropertiesInSimpleDataHandlerController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\Wizard\TableController->tableWizard' => [

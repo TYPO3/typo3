@@ -17,13 +17,11 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -32,18 +30,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class EditController extends AbstractWizardController
 {
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * Properties which have been moved to protected status from public
-     *
-     * @var array
-     */
-    protected $deprecatedPublicProperties = [
-        'P' => 'Using $P of class EditController from the outside is discouraged, as this variable is only used for internal storage.',
-        'doClose' => 'Using $doClose of class EditController from the outside is discouraged, as this variable is only used for internal storage.',
-    ];
-
     /**
      * Wizard parameters, coming from FormEngine linking to the wizard.
      *
@@ -76,33 +62,6 @@ class EditController extends AbstractWizardController
     protected $closeWindow = '<script language="javascript" type="text/javascript">close();</script>';
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf');
-
-        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
-        $this->init($GLOBALS['TYPO3_REQUEST']);
-    }
-
-    /**
-     * Initialization of the script
-     *
-     * @param ServerRequestInterface $request
-     */
-    protected function init(ServerRequestInterface $request)
-    {
-        $parsedBody = $request->getParsedBody();
-        $queryParams = $request->getQueryParams();
-
-        $this->P = $parsedBody['P'] ?? $queryParams['P'] ?? [];
-
-        // Used for the return URL to FormEngine so that we can close the window.
-        $this->doClose = $parsedBody['doClose'] ?? $queryParams['doClose'] ?? 0;
-    }
-
-    /**
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the main() method, it is rather simple for now
      *
@@ -111,30 +70,16 @@ class EditController extends AbstractWizardController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $content = $this->processRequest($request);
-        return $content;
-    }
+        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf');
 
-    /**
-     * Main function
-     * Makes a header-location redirect to an edit form IF POSSIBLE from the passed data - otherwise the window will
-     * just close.
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     * @return string
-     */
-    public function main()
-    {
-        trigger_error('EditController->main() will be set to protected in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-        $request = $GLOBALS['TYPO3_REQUEST'];
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
 
-        $response = $this->processRequest($request);
+        $this->P = $parsedBody['P'] ?? $queryParams['P'] ?? [];
+        // Used for the return URL to FormEngine so that we can close the window.
+        $this->doClose = $parsedBody['doClose'] ?? $queryParams['doClose'] ?? 0;
 
-        if ($response instanceof RedirectResponse) {
-            HttpUtility::redirect($response->getHeaders()['location'][0]);
-        } else {
-            return $response->getBody()->getContents();
-        }
+        return $this->processRequest();
     }
 
     /**
@@ -142,10 +87,9 @@ class EditController extends AbstractWizardController
      * Makes a header-location redirect to an edit form IF POSSIBLE from the passed data - otherwise the window will
      * just close.
      *
-     * @param  ServerRequestInterface $request
      * @return ResponseInterface
      */
-    protected function processRequest(ServerRequestInterface $request): ResponseInterface
+    protected function processRequest(): ResponseInterface
     {
         if ($this->doClose) {
             return new HtmlResponse($this->closeWindow);

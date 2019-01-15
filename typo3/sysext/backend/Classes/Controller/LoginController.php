@@ -96,12 +96,48 @@ class LoginController implements LoggerAwareInterface
     protected $view;
 
     /**
-     * Initialize the login box. Will also react on a &L=OUT flag and exit.
+     * Injects the request and response objects for the current request or subrequest
+     * As this controller goes only through the main() method, it is rather simple for now
+     *
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the finished response with the content
      */
-    public function __construct()
+    public function formAction(ServerRequestInterface $request): ResponseInterface
     {
-        // @deprecated since TYPO3 v9, will be obsolete in TYPO3 v10.0
-        $request = $GLOBALS['TYPO3_REQUEST'];
+        $this->init($request);
+        return new HtmlResponse($this->createLoginLogoutForm($request));
+    }
+
+    /**
+     * Calls the main function but with loginRefresh enabled at any time
+     *
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the finished response with the content
+     */
+    public function refreshAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $this->init($request);
+        $this->loginRefresh = true;
+        return new HtmlResponse($this->createLoginLogoutForm($request));
+    }
+
+    /**
+     * This can be called by single login providers, they receive an instance of $this
+     *
+     * @return string
+     */
+    public function getLoginProviderIdentifier()
+    {
+        return $this->loginProviderIdentifier;
+    }
+
+    /**
+     * Initialize the login box. Will also react on a &L=OUT flag and exit.
+     *
+     * @param ServerRequestInterface $request the current request
+     */
+    protected function init(ServerRequestInterface $request): void
+    {
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
         $this->validateAndSortLoginProviders();
@@ -145,30 +181,6 @@ class LoginController implements LoggerAwareInterface
         }
 
         $this->view = $this->getFluidTemplateObject();
-    }
-
-    /**
-     * Injects the request and response objects for the current request or subrequest
-     * As this controller goes only through the main() method, it is rather simple for now
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the finished response with the content
-     */
-    public function formAction(ServerRequestInterface $request): ResponseInterface
-    {
-        return new HtmlResponse($this->createLoginLogoutForm($request));
-    }
-
-    /**
-     * Calls the main function but with loginRefresh enabled at any time
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the finished response with the content
-     */
-    public function refreshAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->loginRefresh = true;
-        return new HtmlResponse($this->createLoginLogoutForm($request));
     }
 
     /**
@@ -546,14 +558,6 @@ class LoginController implements LoggerAwareInterface
         $cookieSecure = (bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieSecure'] && $isHttps;
         setcookie('be_lastLoginProvider', (string)$loginProvider, $GLOBALS['EXEC_TIME'] + 7776000, '', '', $cookieSecure, true); // 90 days
         return (string)$loginProvider;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLoginProviderIdentifier()
-    {
-        return $this->loginProviderIdentifier;
     }
 
     /**

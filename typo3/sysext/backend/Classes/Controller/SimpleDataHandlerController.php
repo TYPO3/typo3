@@ -20,7 +20,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -40,24 +39,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class SimpleDataHandlerController
 {
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * Properties which have been moved to protected status from public
-     *
-     * @var array
-     */
-    protected $deprecatedPublicProperties = [
-        'flags' => 'Using $flags of class SimpleDataHandlerController from the outside is discouraged, as this variable is only used for internal storage.',
-        'data' => 'Using $data of class SimpleDataHandlerController from the outside is discouraged, as this variable is only used for internal storage.',
-        'cmd' => 'Using $cmd of class SimpleDataHandlerController from the outside is discouraged, as this variable is only used for internal storage.',
-        'mirror' => 'Using $mirror of class SimpleDataHandlerController from the outside is discouraged, as this variable is only used for internal storage.',
-        'cacheCmd' => 'Using $cacheCmd of class SimpleDataHandlerController from the outside is discouraged, as this variable is only used for internal storage.',
-        'redirect' => 'Using $redirect of class SimpleDataHandlerController from the outside is discouraged, as this variable is only used for internal storage.',
-        'CB' => 'Using $CB of class SimpleDataHandlerController from the outside is discouraged, as this variable is only used for internal storage.',
-        'tce' => 'Using $tce of class SimpleDataHandlerController from the outside is discouraged, as this variable is only used for internal storage.',
-    ];
-
     /**
      * Array. Accepts options to be set in TCE object. Currently it supports "reverseOrder" (bool).
      *
@@ -116,18 +97,6 @@ class SimpleDataHandlerController
     protected $tce;
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        // @deprecated since TYPO3 v9, will be obsolete in TYPO3 v10.0 with removal of init()
-        $request = $GLOBALS['TYPO3_REQUEST'];
-        $GLOBALS['SOBE'] = $this;
-        // @deprecated since TYPO3 v9, will be moved out of __construct() in TYPO3 v10.0
-        $this->init($request);
-    }
-
-    /**
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the processRequest() method, it just redirects to the given URL afterwards.
      *
@@ -136,6 +105,9 @@ class SimpleDataHandlerController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $GLOBALS['SOBE'] = $this;
+        $this->init($request);
+
         $this->initializeClipboard();
         $this->processRequest();
 
@@ -155,6 +127,9 @@ class SimpleDataHandlerController
      */
     public function processAjaxRequest(ServerRequestInterface $request): ResponseInterface
     {
+        $GLOBALS['SOBE'] = $this;
+        $this->init($request);
+
         // do the regular / main logic
         $this->initializeClipboard();
         $this->processRequest();
@@ -192,14 +167,8 @@ class SimpleDataHandlerController
      *
      * @param ServerRequestInterface $request
      */
-    public function init(ServerRequestInterface $request = null): void
+    protected function init(ServerRequestInterface $request): void
     {
-        if ($request === null) {
-            // Method signature in TYPO3 v10.0: protected function init(ServerRequestInterface $request)
-            trigger_error('SimpleDataHandlerController->init() will be set to protected in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-            $request = $GLOBALS['TYPO3_REQUEST'];
-        }
-
         $beUser = $this->getBackendUser();
 
         $parsedBody = $request->getParsedBody();
@@ -236,28 +205,6 @@ class SimpleDataHandlerController
         if ($this->flags['reverseOrder']) {
             $this->tce->reverseOrder = 1;
         }
-    }
-
-    /**
-     * Clipboard pasting and deleting.
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function initClipboard()
-    {
-        trigger_error('SimpleDataHandlerController->initClipboard() will be replaced by protected method initializeClipboard() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-        $this->initializeClipboard();
-    }
-
-    /**
-     * Executing the posted actions ...
-     *
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function main()
-    {
-        trigger_error('SimpleDataHandlerController->main() will be replaced by protected method processRequest() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-        $this->processRequest();
     }
 
     /**

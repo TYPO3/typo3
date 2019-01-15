@@ -275,17 +275,6 @@ class EditFileController
     }
 
     /**
-     * Builds the buttons for the docheader and returns them as an
-     *
-     * @deprecated since TYPO3 v9, will be set protected in TYPO3 v10.0
-     */
-    public function getButtons()
-    {
-        trigger_error('EditFileController->getButtons() will be replaced by protected method getButtonsInternal() in TYPO3 v10.0. Do not call from other extension.', E_USER_DEPRECATED);
-        $this->getButtonsInternal();
-    }
-
-    /**
      * Builds the buttons for the docheader
      */
     protected function getButtonsInternal(): void
