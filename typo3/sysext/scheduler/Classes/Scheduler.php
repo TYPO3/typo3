@@ -336,7 +336,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
         if (empty($row)) {
             if (empty($uid)) {
                 // No uid was passed and no overdue task was found
-                throw new \OutOfBoundsException('No tasks available for execution', 1247827244);
+                throw new \OutOfBoundsException('No (more) tasks available for execution', 1247827244);
             }
             // Although a uid was passed, no task with given was found
             throw new \OutOfBoundsException('No task with id ' . $uid . ' found', 1422044826);
