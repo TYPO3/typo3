@@ -19,7 +19,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -35,16 +34,6 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
  */
 class ReportController
 {
-    use PublicMethodDeprecationTrait;
-
-    /**
-     * @var array
-     */
-    private $deprecatedPublicMethods = [
-        'indexAction' => 'Using ReportController::indexAction() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-        'detailAction' => 'Using ReportController::detailAction() is deprecated and will not be possible anymore in TYPO3 v10.0.',
-    ];
-
     /**
      * ModuleTemplate object
      *

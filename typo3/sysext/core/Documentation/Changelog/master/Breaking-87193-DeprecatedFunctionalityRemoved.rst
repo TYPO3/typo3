@@ -443,6 +443,7 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck->getFileFields()`
 * :php:`TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck->testFileRefs()`
 * :php:`TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck->whereIsFileReferenced()`
+* :php:`TYPO3\CMS\Recordlist\Controller\ElementBrowserController->main()`
 * :php:`TYPO3\CMS\Rsaauth\RsaEncryptionEncode[r->getRsaPublicKeyAjaxHandler()`
 * :php:`TYPO3\CMS\Setup\Controller\SetupModuleController->getFormProtection()`
 * :php:`TYPO3\CMS\Setup\Controller\SetupModuleController->simulateUser()`
@@ -680,6 +681,7 @@ The following class methods have changed visibility:
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->menuConfig()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->pageIsNotLockedForEditors()` changed from public to protected
 * :php:`TYPO3\CMS\Backend\Controller\PageLayoutController->renderContent()` changed from public to protected
+* :php:`TYPO3\CMS\Beuser\Controller\BackendUserController->initializeView()` changed from public to protected
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\BlowfishPasswordHash->base64Encode()` changed from public to protected
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\BlowfishPasswordHash->isValidSalt()` changed from public to protected
 * :php:`TYPO3\CMS\Core\Crypto\PasswordHashing\Md5PasswordHash->base64Encode()` changed from public to protected
@@ -767,11 +769,18 @@ The following class methods have changed visibility:
 * :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->renderL10nTable()` changed from public to protected
 * :php:`TYPO3\CMS\Info\Controller\TranslationStatusController->modMenu()` changed from public to protected
 * :php:`TYPO3\CMS\Linkvalidator\Report\LinkValidatorReport->extObjContent()` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController->getDisplayedLinkHandlerId()` changed from public to protected
+* :php:`TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController->renderLinkAttributeFields()` changed from public to protected
 * :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->init()` changed from public to protected
 * :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->menuConfig()` changed from public to protected
 * :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->clearCache()` changed from public to protected
 * :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->main()` changed from public to protected
 * :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->getModuleTemplate()` changed from public to protected
+* :php:`TYPO3\CMS\Reports\Controller\ReportController->detailAction()` changed from public to protected
+* :php:`TYPO3\CMS\Reports\Controller\ReportController->indexAction()` changed from public to protected
+* :php:`TYPO3\CMS\RteCKEditor\Controller\BrowseLinksController->renderLinkAttributeFields()` changed from public to protected
+* :php:`TYPO3\CMS\RteCKEditor\Controller\BrowseLinksController->getPageConfigLabel()` changed from public to protected
+* :php:`TYPO3\CMS\RteCKEditor\Controller\BrowseLinksController->getDisplayedLinkHandlerId()` changed from public to protected
 * :php:`TYPO3\CMS\Scheduler\Controller\SchedulerModuleController->addMessage()` changed from public to protected
 * :php:`TYPO3\CMS\Taskcenter\Controller\TaskModuleController->menuConfig()` changed from public to protected
 * :php:`TYPO3\CMS\Taskcenter\Controller\TaskModuleController->mergeExternalItems()` changed from public to protected

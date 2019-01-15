@@ -3489,6 +3489,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-86193-ProtectMethodsInAbstractLinkBrowserController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController->getDisplayedLinkHandlerId' => [
@@ -3496,6 +3497,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-86193-ProtectMethodsInAbstractLinkBrowserController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\RteCKEditor\Controller\BrowseLinksController->renderLinkAttributeFields' => [
@@ -3503,6 +3505,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-86193-ProtectMethodsInAbstractLinkBrowserController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\RteCKEditor\Controller\BrowseLinksController->getPageConfigLabel' => [
@@ -3510,6 +3513,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-86193-ProtectMethodsInAbstractLinkBrowserController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\RteCKEditor\Controller\BrowseLinksController->getDisplayedLinkHandlerId' => [
@@ -3517,6 +3521,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-86193-ProtectMethodsInAbstractLinkBrowserController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Impexp\Controller\ImportExportController->addRecordsForPid' => [
