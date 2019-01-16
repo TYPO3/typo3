@@ -480,24 +480,6 @@ class ModuleTemplate
      *******************************************/
 
     /**
-     * Includes a javascript library that exists in the core /typo3/ directory
-     *
-     * @param string $lib Library name. Call it with the full path like
-     * "sysext/core/Resources/Public/JavaScript/QueryGenerator.js" to load it
-     *
-     * @internal
-     * @return self
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0, use PageRenderer directly.
-     * @see \TYPO3\CMS\Core\Page\PageRenderer::addJsFile
-     */
-    public function loadJavascriptLib($lib): self
-    {
-        trigger_error('ModuleTemplate->loadJavascriptLib() should not be used any longer, as this method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        $this->pageRenderer->addJsFile($lib);
-        return $this;
-    }
-
-    /**
      * Returns a linked shortcut-icon which will call the shortcut frame and set a
      * shortcut there back to the calling page/module
      *
@@ -604,47 +586,6 @@ class ModuleTemplate
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * Returns an image-tag with an 18x16 icon of the following types:
-     *
-     * $type:
-     * -1:»   OK icon (Check-mark)
-     * 1:»   Notice (Speach-bubble)
-     * 2:»   Warning (Yellow triangle)
-     * 3:»   Fatal error (Red stop sign)
-     *
-     * @param int $type See description
-     *
-     * @return string HTML image tag (if applicable)
-     * @internal
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0
-     */
-    public function icons($type)
-    {
-        trigger_error('ModuleTemplate->icons() should not be used any longer, as this will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        $icon = '';
-        switch ($type) {
-            case self::STATUS_ICON_ERROR:
-                $icon = 'status-dialog-error';
-                break;
-            case self::STATUS_ICON_WARNING:
-                $icon = 'status-dialog-warning';
-                break;
-            case self::STATUS_ICON_NOTIFICATION:
-                $icon = 'status-dialog-notification';
-                break;
-            case self::STATUS_ICON_OK:
-                $icon = 'status-dialog-ok';
-                break;
-            default:
-                // Do nothing
-        }
-        if ($icon != '') {
-            return $this->iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render();
-        }
-        return '';
     }
 
     /**

@@ -2900,6 +2900,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85701-MethodsInModuleTemplate.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\ModuleTemplate->icons' => [
@@ -2907,6 +2908,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-85701-MethodsInModuleTemplate.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\DocumentTemplate->addStyleSheet' => [
