@@ -719,7 +719,13 @@ The following class methods have changed visibility:
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->processIncludes()` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->substituteConstants()` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->versionOL()` changed from public to protected
-* :php:`TYPO3\CMS\Beuser\Controller\BackendUserController->initializeView()` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->error()` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->nextDivider()` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->parseSub()` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->regHighLight()` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->rollParseSub()` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->setVal()` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->syntaxHighlight_print()` changed from public to protected
 * :php:`TYPO3\CMS\Filelist\Controller\FileListController->menuConfig()` changed from public to protected
 * :php:`TYPO3\CMS\Filelist\Controller\FileListController->initializeView()` changed from public to protected
 * :php:`TYPO3\CMS\Filelist\Controller\FileListController->initializeIndexAction()` changed from public to protected
@@ -998,6 +1004,21 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->sectionsMatch` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->simulationHiddenOrTime` changed from public to protected
 * :php:`TYPO3\CMS\Core\TypoScript\TemplateService->sitetitle` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->commentSet` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->highLightBlockStyles` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->highLightBlockStyles_basecolor` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->highLightData` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->highLightData_bracelevel` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->highLightStyles` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->inBrace` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->lastComment` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->lastConditionTrue` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->multiLineEnabled` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->multiLineObject` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->multiLineValue` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->raw` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->rawP` changed from public to protected
+* :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->syntaxHighLight` changed from public to protected
 * :php:`TYPO3\CMS\Filelist\Controller\FileListController->MOD_MENU` changed from public to protected
 * :php:`TYPO3\CMS\Filelist\Controller\FileListController->MOD_SETTINGS` changed from public to protected
 * :php:`TYPO3\CMS\Filelist\Controller\FileListController->doc` changed from public to protected
@@ -1299,6 +1320,7 @@ The following features have been removed:
 * All install tool upgrade wizards upgrading from v7 to v8 have been removed
 * The array key :php:`uploadfolder` in extensions :php:`ext_emconf.php` files is obsolete and ignored.
 * Standalone install tool entry point :file:`typo3/install/index.php` has been dropped, use :file:`typo3/install.php` instead
+* INCLUDE_TYPOSCRIPT statements in typoscript using a `.txt` ending for a file that ends with `.typoscript` does not work any longer
 
 
 The following database tables have been removed:

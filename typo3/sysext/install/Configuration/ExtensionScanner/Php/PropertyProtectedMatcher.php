@@ -1153,77 +1153,92 @@ return [
     ],
     'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->raw' => [
         'restFiles' => [
-            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->rawP' => [
         'restFiles' => [
-            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->lastComment' => [
         'restFiles' => [
-            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->commentSet' => [
         'restFiles' => [
-            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->multiLineEnabled' => [
         'restFiles' => [
-            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->multiLineObject' => [
         'restFiles' => [
-            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->multiLineValue' => [
         'restFiles' => [
-            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->inBrace' => [
         'restFiles' => [
-            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->lastConditionTrue' => [
         'restFiles' => [
-            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->syntaxHighLight' => [
         'restFiles' => [
-            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->highLightData' => [
         'restFiles' => [
-            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->highLightData_bracelevel' => [
         'restFiles' => [
-            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->highLightStyles' => [
         'restFiles' => [
-            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->highLightBlockStyles' => [
         'restFiles' => [
-            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->highLightBlockStyles_basecolor' => [
         'restFiles' => [
-            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
+            'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];
