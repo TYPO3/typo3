@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Backend\Tree\View;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
@@ -35,18 +34,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PagePositionMap
 {
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * Properties which have been moved to protected status from public
-     *
-     * @var array
-     */
-    protected $deprecatedPublicProperties = [
-        'getModConfigCache' => 'Using $getModConfigCache of class PagePositionMap is discouraged. This property will be removed in TYPO3 v10.0.',
-        'modConfigStr' => 'Using $$modConfigStr of class PagePositionMap is discouraged. This property will be removed in TYPO3 v10.0.',
-    ];
-
     // EXTERNAL, static:
     /**
      * @var string
@@ -89,12 +76,6 @@ class PagePositionMap
      */
     public $moveUid = '';
 
-    // Caching arrays:
-    /**
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    protected $getModConfigCache = [];
-
     /**
      * @var array
      */
@@ -110,11 +91,6 @@ class PagePositionMap
      * @var string
      */
     public $l_insertNewRecordHere = 'insertNewRecordHere';
-
-    /**
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    protected $modConfigStr = 'mod.web_list.newPageWiz';
 
     /**
      * Page tree implementation class name
@@ -346,24 +322,6 @@ class PagePositionMap
             $this->checkNewPageCache[$pid] = $this->getBackendUser()->isAdmin() || $this->getBackendUser()->doesUserHaveAccess($pidInfo, 8);
         }
         return $this->checkNewPageCache[$pid];
-    }
-
-    /**
-     * Returns module configuration for a pid.
-     *
-     * @param int $pid Page id for which to get the module configuration.
-     * @return array The properties of the module configuration for the page id.
-     * @see onClickEvent()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    public function getModConfig($pid)
-    {
-        trigger_error('PagePositionMap->getModConfig() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        if (!isset($this->getModConfigCache[$pid])) {
-            // Acquiring TSconfig for this PID:
-            $this->getModConfigCache[$pid]['properties'] = BackendUtility::getPagesTSconfig($pid)['mod.']['web_list.']['newPageWiz.'] ?? [];
-        }
-        return $this->getModConfigCache[$pid]['properties'];
     }
 
     /*************************************

@@ -674,12 +674,14 @@ return [
     ],
     'TYPO3\CMS\Backend\Tree\View\PagePositionMap->getModConfigCache' => [
         'restFiles' => [
-            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
+            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Tree\View\PagePositionMap->modConfigStr' => [
         'restFiles' => [
-            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst'
+            'Deprecation-84984-ProtectedUserTSconfigPropertiesInBackendUserAuthentication.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Charset\CharsetConverter->noCharByteVal' => [

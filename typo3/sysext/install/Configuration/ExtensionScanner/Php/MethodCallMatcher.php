@@ -2538,6 +2538,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-84993-DeprecateSomeTSconfigRelatedMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\core\DataHandling\DataHandler->getTCEMAIN_TSconfig' => [
