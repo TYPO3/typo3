@@ -15,6 +15,12 @@ namespace TYPO3\CMS\Extbase\Reflection;
  */
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use phpDocumentor\Reflection\DocBlock\Tags\Param;
+use phpDocumentor\Reflection\DocBlockFactory;
+use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
+use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
+use Symfony\Component\PropertyInfo\Type;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -32,6 +38,7 @@ use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchMethodException;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Method;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Property;
+use TYPO3\CMS\Extbase\Reflection\DocBlock\Tags\Null_;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException;
@@ -107,17 +114,22 @@ class ClassSchema
     /**
      * @var array
      */
-    private $tags;
-
-    /**
-     * @var array
-     */
     private $injectProperties = [];
 
     /**
      * @var array
      */
     private $injectMethods = [];
+
+    /**
+     * @var PropertyInfoExtractor
+     */
+    private static $propertyInfoExtractor;
+
+    /**
+     * @var
+     */
+    private static $docBlockFactory;
 
     /**
      * Constructs this class schema
@@ -148,9 +160,39 @@ class ClassSchema
             $this->modelType = static::MODELTYPE_VALUEOBJECT;
         }
 
-        $docCommentParser = new DocCommentParser(true);
-        $docCommentParser->parseDocComment($reflectionClass->getDocComment());
-        $this->tags = $docCommentParser->getTagsValues();
+        if (self::$propertyInfoExtractor === null) {
+            $docBlockFactory = DocBlockFactory::createInstance();
+            $docBlockFactory->registerTagHandler('var', DocBlock\Tags\Var_::class);
+
+            $phpDocExtractor = new PhpDocExtractor($docBlockFactory);
+            $reflectionExtractor = new ReflectionExtractor();
+
+            self::$propertyInfoExtractor = new PropertyInfoExtractor(
+                [],
+                [$phpDocExtractor, $reflectionExtractor]
+            );
+        }
+
+        if (self::$docBlockFactory === null) {
+            self::$docBlockFactory = DocBlockFactory::createInstance();
+            self::$docBlockFactory->registerTagHandler('author', Null_::class);
+            self::$docBlockFactory->registerTagHandler('covers', Null_::class);
+            self::$docBlockFactory->registerTagHandler('deprecated', Null_::class);
+            self::$docBlockFactory->registerTagHandler('link', Null_::class);
+            self::$docBlockFactory->registerTagHandler('method', Null_::class);
+            self::$docBlockFactory->registerTagHandler('property-read', Null_::class);
+            self::$docBlockFactory->registerTagHandler('property', Null_::class);
+            self::$docBlockFactory->registerTagHandler('property-write', Null_::class);
+            self::$docBlockFactory->registerTagHandler('return', Null_::class);
+            self::$docBlockFactory->registerTagHandler('see', Null_::class);
+            self::$docBlockFactory->registerTagHandler('since', Null_::class);
+            self::$docBlockFactory->registerTagHandler('source', Null_::class);
+            self::$docBlockFactory->registerTagHandler('throw', Null_::class);
+            self::$docBlockFactory->registerTagHandler('throws', Null_::class);
+            self::$docBlockFactory->registerTagHandler('uses', Null_::class);
+            self::$docBlockFactory->registerTagHandler('var', Null_::class);
+            self::$docBlockFactory->registerTagHandler('version', Null_::class);
+        }
 
         $this->reflectProperties($reflectionClass);
         $this->reflectMethods($reflectionClass);
@@ -181,12 +223,6 @@ class ClassSchema
                 'tags'         => [],
                 'validators'   => []
             ];
-
-            $docCommentParser = new DocCommentParser(true);
-            $docCommentParser->parseDocComment($reflectionProperty->getDocComment());
-            foreach ($docCommentParser->getTagsValues() as $tag => $values) {
-                $this->properties[$propertyName]['tags'][strtolower($tag)] = $values;
-            }
 
             $this->properties[$propertyName]['annotations']['inject'] = false;
             $this->properties[$propertyName]['annotations']['lazy'] = false;
@@ -224,37 +260,51 @@ class ClassSchema
                 $this->properties[$propertyName]['annotations']['transient'] = true;
             }
 
-            if ($propertyName !== 'settings'
-                && ($annotationReader->getPropertyAnnotation($reflectionProperty, Inject::class) instanceof Inject)
-            ) {
-                try {
-                    $varValue = ltrim($docCommentParser->getTagValues('var')[0], '\\');
-                    $this->properties[$propertyName]['annotations']['inject'] = true;
-                    $this->properties[$propertyName]['annotations']['type'] = $varValue;
-                    $this->properties[$propertyName]['annotations']['dependency'] = $varValue;
+            $isInjectProperty = $propertyName !== 'settings'
+                && ($annotationReader->getPropertyAnnotation($reflectionProperty, Inject::class) instanceof Inject);
 
-                    $this->injectProperties[] = $propertyName;
-                } catch (\Exception $e) {
-                }
+            $isPossibleCollectionProperty = $annotationReader->getPropertyAnnotation($reflectionProperty, Transient::class) === null
+                && $this->isModel();
+
+            $types = [];
+            $typesCount = 0;
+            if ($isInjectProperty || $isPossibleCollectionProperty) {
+                /** @var Type[] $types */
+                $types = (array)self::$propertyInfoExtractor->getTypes($this->className, $propertyName);
+                $typesCount = count($types);
             }
 
-            if ($docCommentParser->isTaggedWith('var') && $this->properties[$propertyName]['annotations']['transient'] === false) {
-                if (($annotation = $annotationReader->getPropertyAnnotation($reflectionProperty, Cascade::class)) instanceof Cascade) {
-                    /** @var Cascade $annotation */
-                    $this->properties[$propertyName]['annotations']['cascade'] = $annotation->value;
-                }
+            if ($typesCount > 0
+                && ($annotation = $annotationReader->getPropertyAnnotation($reflectionProperty, Cascade::class)) instanceof Cascade
+            ) {
+                /** @var Cascade $annotation */
+                $this->properties[$propertyName]['annotations']['cascade'] = $annotation->value;
+            }
 
-                try {
-                    $type = TypeHandlingUtility::parseType(implode(' ', $docCommentParser->getTagValues('var')));
-                } catch (\Exception $e) {
-                    $type = [
-                        'type' => null,
-                        'elementType' => null
-                    ];
-                }
+            if ($isInjectProperty && ($type = $types[0]) instanceof Type) {
+                $this->properties[$propertyName]['annotations']['inject'] = true;
+                $this->properties[$propertyName]['annotations']['type'] = $type->getClassName();
+                $this->properties[$propertyName]['annotations']['dependency'] = $type->getClassName();
 
-                $this->properties[$propertyName]['type'] = $type['type'] ? ltrim($type['type'], '\\') : null;
-                $this->properties[$propertyName]['elementType'] = $type['elementType'] ? ltrim($type['elementType'], '\\') : null;
+                $this->injectProperties[] = $propertyName;
+            }
+
+            if ($isPossibleCollectionProperty) {
+                if ($typesCount === 1) {
+                    $this->properties[$propertyName]['type'] = $types[0]->getClassName() ?? $types[0]->getBuiltinType();
+                } elseif ($typesCount === 2) {
+                    [$type, $elementType] = $types;
+                    $actualType = $type->getClassName() ?? $type->getBuiltinType();
+
+                    if (TypeHandlingUtility::isCollectionType($actualType)
+                        && $elementType->getBuiltinType() === 'array'
+                        && $elementType->getCollectionValueType() instanceof Type
+                        && $elementType->getCollectionValueType()->getClassName() !== null
+                    ) {
+                        $this->properties[$propertyName]['type'] = ltrim($actualType, '\\');
+                        $this->properties[$propertyName]['elementType'] = ltrim($elementType->getCollectionValueType()->getClassName(), '\\');
+                    }
+                }
             }
         }
     }
@@ -280,9 +330,6 @@ class ClassSchema
             $this->methods[$methodName]['annotations']  = [];
             $this->methods[$methodName]['isAction']     = StringUtility::endsWith($methodName, 'Action');
 
-            $docCommentParser = new DocCommentParser(true);
-            $docCommentParser->parseDocComment($reflectionMethod->getDocComment());
-
             $argumentValidators = [];
 
             $annotations = $annotationReader->getMethodAnnotations($reflectionMethod);
@@ -307,19 +354,14 @@ class ClassSchema
                 }
             }
 
-            foreach ($docCommentParser->getTagsValues() as $tag => $values) {
-                $this->methods[$methodName]['tags'][$tag] = array_map(function ($value) {
-                    return ltrim($value, '$');
-                }, $values);
-            }
-
             foreach ($annotations as $annotation) {
                 if ($annotation instanceof IgnoreValidation) {
                     $this->methods[$methodName]['tags']['ignorevalidation'][] = $annotation->argumentName;
                 }
             }
 
-            $this->methods[$methodName]['description'] = $docCommentParser->getDescription();
+            $docComment = $reflectionMethod->getDocComment();
+            $docComment = is_string($docComment) ? $docComment : '';
 
             foreach ($reflectionMethod->getParameters() as $parameterPosition => $reflectionParameter) {
                 /* @var \ReflectionParameter $reflectionParameter */
@@ -356,21 +398,28 @@ class ClassSchema
                 if (($parameterClass = $reflectionParameter->getClass()) instanceof \ReflectionClass) {
                     $this->methods[$methodName]['params'][$parameterName]['class'] = $parameterClass->getName();
                     $this->methods[$methodName]['params'][$parameterName]['type'] = ltrim($parameterClass->getName(), '\\');
-                } else {
-                    $methodTagsAndValues = $this->methods[$methodName]['tags'];
-                    if (isset($methodTagsAndValues['param'][$parameterPosition])) {
-                        $explodedParameters = explode(' ', $methodTagsAndValues['param'][$parameterPosition]);
-                        if (count($explodedParameters) >= 2) {
-                            if (TypeHandlingUtility::isSimpleType($explodedParameters[0])) {
-                                // ensure that short names of simple types are resolved correctly to the long form
-                                // this is important for all kinds of type checks later on
-                                $typeInfo = TypeHandlingUtility::parseType($explodedParameters[0]);
+                }
 
-                                $this->methods[$methodName]['params'][$parameterName]['type'] = ltrim($typeInfo['type'], '\\');
-                            } else {
-                                $this->methods[$methodName]['params'][$parameterName]['type'] = ltrim($explodedParameters[0], '\\');
-                            }
-                        }
+                if ($docComment !== '' && $this->methods[$methodName]['params'][$parameterName]['type'] === null) {
+                    /*
+                     * We create (redundant) instances here in this loop due to the fact that
+                     * we do not want to analyse all doc blocks of all available methods. We
+                     * use this technique only if we couldn't grasp all necessary data via
+                     * reflection.
+                     *
+                     * Also, if we analyze all method doc blocks, we will trigger numerous errors
+                     * due to non PSR-5 compatible tags in the core and in user land code.
+                     *
+                     * Fetching the data type via doc blocks will also be deprecated and removed
+                     * in the near future.
+                     */
+                    $params = self::$docBlockFactory->create($docComment)
+                        ->getTagsByName('param');
+
+                    if (isset($params[$parameterPosition])) {
+                        /** @var Param $param */
+                        $param = $params[$parameterPosition];
+                        $this->methods[$methodName]['params'][$parameterName]['type'] = ltrim($param->getType(), '\\');
                     }
                 }
 
@@ -580,14 +629,6 @@ class ClassSchema
     public function hasMethod(string $methodName): bool
     {
         return isset($this->methods[$methodName]);
-    }
-
-    /**
-     * @return array
-     */
-    public function getTags(): array
-    {
-        return $this->tags;
     }
 
     /**

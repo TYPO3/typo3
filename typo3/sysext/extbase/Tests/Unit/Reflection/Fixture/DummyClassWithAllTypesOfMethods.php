@@ -80,4 +80,11 @@ class DummyClassWithAllTypesOfMethods
     public static function methodWithTypeHintedParam(string $param)
     {
     }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMethods $param
+     */
+    public function methodWithDocBlockTypeHintOnly($param)
+    {
+    }
 }

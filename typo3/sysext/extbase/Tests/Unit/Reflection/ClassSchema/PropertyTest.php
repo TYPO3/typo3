@@ -126,6 +126,18 @@ class PropertyTest extends UnitTestCase
     /**
      * @test
      */
+    public function classSchemaDetectsTypeAndElementTypeWithoutFQCN(): void
+    {
+        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
+            ->getProperty('propertyWithObjectStorageAnnotationWithoutFQCN');
+
+        static::assertSame(ObjectStorage::class, $property->getType());
+        static::assertSame(DummyClassWithAllTypesOfProperties::class, $property->getElementType());
+    }
+
+    /**
+     * @test
+     */
     public function classSchemaDetectsValidateAnnotationsModelProperties(): void
     {
         $this->resetSingletonInstances = true;

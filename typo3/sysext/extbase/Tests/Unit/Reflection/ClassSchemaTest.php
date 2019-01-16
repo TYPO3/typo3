@@ -64,7 +64,8 @@ class ClassSchemaTest extends UnitTestCase
                 'propertyWithTransientAnnotation',
                 'propertyWithCascadeAnnotation',
                 'propertyWithCascadeAnnotationWithoutVarAnnotation',
-                'propertyWithObjectStorageAnnotation'
+                'propertyWithObjectStorageAnnotation',
+                'propertyWithObjectStorageAnnotationWithoutFQCN',
             ],
             array_keys((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->getProperties())
         );
@@ -99,7 +100,8 @@ class ClassSchemaTest extends UnitTestCase
                 'methodWithMandatoryParam',
                 'methodWithNullableParam',
                 'methodWithDefaultValueParam',
-                'methodWithTypeHintedParam'
+                'methodWithTypeHintedParam',
+                'methodWithDocBlockTypeHintOnly',
             ],
             array_keys((new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class))->getMethods())
         );
@@ -118,13 +120,13 @@ class ClassSchemaTest extends UnitTestCase
         static::assertSame(Fixture\DummyClassWithInjectDoctrineAnnotation::class, $injectProperties['propertyWithFullQualifiedClassName']);
 
         static::assertArrayHasKey('propertyWithRelativeClassName', $injectProperties);
-        static::assertSame('DummyClassWithInjectDoctrineAnnotation', $injectProperties['propertyWithRelativeClassName']);
+        static::assertSame(Fixture\DummyClassWithInjectDoctrineAnnotation::class, $injectProperties['propertyWithRelativeClassName']);
 
         static::assertArrayHasKey('propertyWithImportedClassName', $injectProperties);
-        static::assertSame('ClassSchemaTest', $injectProperties['propertyWithImportedClassName']);
+        static::assertSame(self::class, $injectProperties['propertyWithImportedClassName']);
 
         static::assertArrayHasKey('propertyWithImportedAndAliasedClassName', $injectProperties);
-        static::assertSame('AliasedClassSchemaTest', $injectProperties['propertyWithImportedAndAliasedClassName']);
+        static::assertSame(self::class, $injectProperties['propertyWithImportedAndAliasedClassName']);
     }
 
     /**
@@ -203,23 +205,6 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function testClassSchemaGetTags()
-    {
-        $tags = (new ClassSchema(Fixture\DummyClassWithTags::class))->getTags();
-        static::assertArrayHasKey('see', $tags);
-
-        // test ignored tags
-        static::assertArrayNotHasKey('package', $tags);
-        static::assertArrayNotHasKey('subpackage', $tags);
-        static::assertArrayNotHasKey('license', $tags);
-        static::assertArrayNotHasKey('copyright', $tags);
-        static::assertArrayNotHasKey('author', $tags);
-        static::assertArrayNotHasKey('version', $tags);
-    }
-
-    /**
-     * @test
-     */
     public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAnnotationsForParamWithoutTypeHint()
     {
         $this->resetSingletonInstances = true;
@@ -241,5 +226,52 @@ class ClassSchemaTest extends UnitTestCase
         $this->expectExceptionCode(1515073585);
 
         new ClassSchema(Fixture\DummyControllerWithValidateAnnotationWithoutParam::class);
+    }
+
+    /**
+     * @test
+     */
+    public function classSchemaDetectsMethodParameterTypeViaReflection(): void
+    {
+        $class = new class {
+            public function foo(string $foo)
+            {
+            }
+
+            public function bar(ClassSchema $foo)
+            {
+            }
+        };
+
+        $classSchema = new ClassSchema(get_class($class));
+        static::assertSame('string', $classSchema->getMethod('foo')->getParameter('foo')->getType());
+        static::assertSame(ClassSchema::class, $classSchema->getMethod('bar')->getParameter('foo')->getType());
+    }
+
+    /**
+     * @test
+     */
+    public function classSchemaPrefersMethodParameterTypeDetectionViaReflection(): void
+    {
+        $class = new class {
+            /**
+             * @param ClassSchema $foo
+             */
+            public function foo(string $foo)
+            {
+            }
+        };
+
+        $classSchema = new ClassSchema(get_class($class));
+        static::assertSame('string', $classSchema->getMethod('foo')->getParameter('foo')->getType());
+    }
+
+    /**
+     * @test
+     */
+    public function classSchemaDetectsMethodParameterTypeDetectionViaDocBlocksIfNoTypeHintIsGiven(): void
+    {
+        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
+        static::assertSame(Fixture\DummyClassWithAllTypesOfMethods::class, $classSchema->getMethod('methodWithDocBlockTypeHintOnly')->getParameter('param')->getType());
     }
 }

@@ -248,12 +248,14 @@ class DataMapper
             $propertyValue = null;
             if (isset($row[$columnName])) {
                 switch ($propertyType) {
+                    case 'int':
                     case 'integer':
                         $propertyValue = (int)$row[$columnName];
                         break;
                     case 'float':
                         $propertyValue = (double)$row[$columnName];
                         break;
+                    case 'bool':
                     case 'boolean':
                         $propertyValue = (bool)$row[$columnName];
                         break;
