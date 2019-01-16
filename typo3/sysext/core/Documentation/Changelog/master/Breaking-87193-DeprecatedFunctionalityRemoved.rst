@@ -1297,7 +1297,8 @@ The following features have been removed:
 * TCA :php:`type='group'` with :php:`internal_type='file'` and :php:`internal_type='file_reference`
 * Cache creation using :php:`\TYPO3\CMS\Cache\CacheManger` during :php:`ext_localconf.php` loading
 * All install tool upgrade wizards upgrading from v7 to v8 have been removed
-* The array key :php:`uploadfolder` in extensions :php:`ext_emconf.php` files is obsolete and ignored
+* The array key :php:`uploadfolder` in extensions :php:`ext_emconf.php` files is obsolete and ignored.
+* Standalone install tool entry point :file:`typo3/install/index.php` has been dropped, use :file:`typo3/install.php` instead
 
 
 The following database tables have been removed:
