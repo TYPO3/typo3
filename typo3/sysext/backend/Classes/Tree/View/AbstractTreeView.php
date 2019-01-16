@@ -192,15 +192,6 @@ abstract class AbstractTreeView
      */
     public $setRecs = 0;
 
-    /**
-     * Sets the associative array key which identifies a new sublevel if arrays are used for trees.
-     * This value has formerly been "subLevel" and "--sublevel--"
-     *
-     * @var string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public $subLevelID = '_SUB_LEVEL';
-
     // *********
     // Internal
     // *********
@@ -236,22 +227,6 @@ abstract class AbstractTreeView
      */
     public $specUIDmap = [];
 
-    /**
-     * For arrays, holds the input data array
-     *
-     * @var bool
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public $data = false;
-
-    /**
-     * For arrays, holds an index with references to the data array.
-     *
-     * @var bool
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public $dataLookup = false;
-
     // For both types
     // Tree is accumulated in this variable
     /**
@@ -276,12 +251,6 @@ abstract class AbstractTreeView
      * @var array
      */
     public $recs = [];
-
-    /**
-     * @var bool
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-     */
-    private $setDataFromArrayDeprecationThrown = false;
 
     /**
      * Constructor
@@ -335,11 +304,6 @@ abstract class AbstractTreeView
         }
         // Sets the tree name which is used to identify the tree, used for JavaScript and other things
         $this->treeName = str_replace('_', '', $this->treeName ?: $this->table);
-
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove with $this->data and friends.
-        // Setting this to FALSE disables the use of array-trees by default
-        $this->data = false;
-        $this->dataLookup = false;
     }
 
     /**
@@ -846,12 +810,6 @@ abstract class AbstractTreeView
      */
     public function getCount($uid)
     {
-        if (is_array($this->data)) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove the "if" along with $this->data and friends.
-            trigger_error('Handling array data in AbstractTreeView will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-            $res = $this->getDataInit($uid);
-            return $this->getDataCount($res);
-        }
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
         $queryBuilder->getRestrictions()
                 ->removeAll()
@@ -893,10 +851,6 @@ abstract class AbstractTreeView
      */
     public function getRecord($uid)
     {
-        if (is_array($this->data)) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove "if" with $this->data and friends.
-            return $this->dataLookup[$uid];
-        }
         return BackendUtility::getRecordWSOL($this->table, $uid);
     }
 
@@ -912,15 +866,6 @@ abstract class AbstractTreeView
      */
     public function getDataInit($parentId)
     {
-        if (is_array($this->data)) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove "if" with $this->data and friends.
-            if (!is_array($this->dataLookup[$parentId][$this->subLevelID])) {
-                $parentId = -1;
-            } else {
-                reset($this->dataLookup[$parentId][$this->subLevelID]);
-            }
-            return $parentId;
-        }
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
         $queryBuilder->getRestrictions()
                 ->removeAll()
@@ -955,10 +900,6 @@ abstract class AbstractTreeView
      */
     public function getDataCount(&$res)
     {
-        if (is_array($this->data)) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove "if" with $this->data and friends.
-            return count($this->dataLookup[$res][$this->subLevelID]);
-        }
         return $res->rowCount();
     }
 
@@ -973,17 +914,6 @@ abstract class AbstractTreeView
      */
     public function getDataNext(&$res)
     {
-        if (is_array($this->data)) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove the "if" along with $this->data and friends.
-            if ($res < 0) {
-                $row = false;
-            } else {
-                $key = key($this->dataLookup[$res][$this->subLevelID]);
-                next($this->dataLookup[$res][$this->subLevelID]);
-                $row = $this->dataLookup[$res][$this->subLevelID][$key];
-            }
-            return $row;
-        }
         while ($row = $res->fetch()) {
             BackendUtility::workspaceOL($this->table, $row, $this->BE_USER->workspace, true);
             if (is_array($row)) {
@@ -1001,62 +931,7 @@ abstract class AbstractTreeView
      */
     public function getDataFree(&$res)
     {
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove "if" with $this->data and friends. Keep $res->closeCursor().
-        if (!is_array($this->data)) {
-            $res->closeCursor();
-        }
-    }
-
-    /**
-     * Used to initialize class with an array to browse.
-     * The array inputted will be traversed and an internal index for lookup is created.
-     * The keys of the input array are perceived as "uid"s of records which means that keys GLOBALLY must be unique like uids are.
-     * "uid" and "pid" "fakefields" are also set in each record.
-     * All other fields are optional.
-     *
-     * @param array $dataArr The input array, see examples below in this script.
-     * @param bool $traverse Internal, for recursion.
-     * @param int $pid Internal, for recursion.
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function setDataFromArray(&$dataArr, $traverse = false, $pid = 0)
-    {
-        if (!$this->setDataFromArrayDeprecationThrown) {
-            // Throw deprecation only once for this recursive method
-            $this->setDataFromArrayDeprecationThrown = true;
-            trigger_error('AbstractTreeView->setDataFromArray() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        }
-
-        if (!$traverse) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-            $this->data = &$dataArr;
-            $this->dataLookup = [];
-            // Add root
-            $this->dataLookup[0][$this->subLevelID] = &$dataArr;
-        }
-        foreach ($dataArr as $uid => $val) {
-            $dataArr[$uid]['uid'] = $uid;
-            $dataArr[$uid]['pid'] = $pid;
-            // Gives quick access to id's
-            $this->dataLookup[$uid] = &$dataArr[$uid];
-            if (is_array($val[$this->subLevelID])) {
-                $this->setDataFromArray($dataArr[$uid][$this->subLevelID], true, $uid);
-            }
-        }
-    }
-
-    /**
-     * Sets the internal data arrays
-     *
-     * @param array $treeArr Content for $this->data
-     * @param array $treeLookupArr Content for $this->dataLookup
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public function setDataFromTreeArray(&$treeArr, &$treeLookupArr)
-    {
-        trigger_error('AbstractTreeView->setDataFromTreeArray() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        $this->data = &$treeArr;
-        $this->dataLookup = &$treeLookupArr;
+        $res->closeCursor();
     }
 
     /**

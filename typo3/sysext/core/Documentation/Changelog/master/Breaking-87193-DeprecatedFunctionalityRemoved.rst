@@ -251,6 +251,8 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Backend\Template\ModuleTemplate->icons()`
 * :php:`TYPO3\CMS\Backend\Template\ModuleTemplate->loadJavascriptLib()`
 * :php:`TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView->ext_isLinkable()`
+* :php:`TYPO3\CMS\Backend\Tree\View\AbstractTreeView->setDataFromArray()`
+* :php:`TYPO3\CMS\Backend\Tree\View\AbstractTreeView->setDataFromTreeArray()`
 * :php:`TYPO3\CMS\Backend\Tree\View\PagePositionMap->getModConfig()`
 * :php:`TYPO3\CMS\Core\Authentication\AbstractAuthenticationService->compareUident()`
 * :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->compareUident()`
@@ -551,6 +553,9 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->frontendEdit`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extAdminConfig`
 * :php:`TYPO3\CMS\Backend\Template\DocumentTemplate->hasDocheader`
+* :php:`TYPO3\CMS\Backend\Tree\View\AbstractTreeView->data`
+* :php:`TYPO3\CMS\Backend\Tree\View\AbstractTreeView->dataLookup`
+* :php:`TYPO3\CMS\Backend\Tree\View\AbstractTreeView->subLevelID`
 * :php:`TYPO3\CMS\Backend\Tree\View\PagePositionMap->getModConfigCache`
 * :php:`TYPO3\CMS\Backend\Tree\View\PagePositionMap->modConfigStr`
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTS_dontGetCached`

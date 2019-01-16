@@ -1860,6 +1860,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-83904-ArrayHandlingInAbstractTreeView.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Tree\View\AbstractTreeView->setDataFromTreeArray' => [
@@ -1867,6 +1868,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-83904-ArrayHandlingInAbstractTreeView.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Filelist\FileFacade->getIcon' => [

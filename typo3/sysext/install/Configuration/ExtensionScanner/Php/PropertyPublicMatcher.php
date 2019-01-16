@@ -350,11 +350,13 @@ return [
     'TYPO3\CMS\Backend\Tree\View\AbstractTreeView->dataLookup' => [
         'restFiles' => [
             'Deprecation-83904-ArrayHandlingInAbstractTreeView.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Tree\View\AbstractTreeView->subLevelID' => [
         'restFiles' => [
             'Deprecation-83904-ArrayHandlingInAbstractTreeView.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\CreateFolderController->number' => [
