@@ -36,13 +36,13 @@ The default behaviour of a slug is as follows:
 
 The following options apply to the new TCA type::
 
-	'type' => 'slug',
 	'config' => [
+		'type' => 'slug',
 		'generatorOptions' => [
 			'fields' => ['title', 'nav_title'],
 			'fieldSeparator' => '/',
 			'prefixParentPageSlug' => true
-		]
+		],
 		'fallbackCharacter' => '-',
 		'eval' => 'uniqueInSite'
 	]
