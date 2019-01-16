@@ -1095,9 +1095,15 @@ class DatabaseRecordList
         }
         // If any records was selected, render the list:
         if ($dbCount) {
+            $tableIdentifier = $table;
             // Use a custom table title for translated pages
             if ($table == 'pages' && $this->showOnlyTranslatedRecords) {
+                // pages records in list module are split into two own sections, one for pages with
+                // sys_language_uid = 0 "Page" and an own section for sys_language_uid > 0 "Page Translation".
+                // This if sets the different title for the page translation case and a unique table identifier
+                // which is used in DOM as id.
                 $tableTitle = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:pageTranslation'));
+                $tableIdentifier = 'pages_translated';
             } else {
                 $tableTitle = htmlspecialchars($lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']));
                 if ($tableTitle === '') {
@@ -1126,7 +1132,7 @@ class DatabaseRecordList
                         ? htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.expandTable'))
                         : htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.collapseTable'));
                     $icon = '<span class="collapseIcon">' . $this->iconFactory->getIcon(($tableCollapsed ? 'actions-view-list-expand' : 'actions-view-list-collapse'), Icon::SIZE_SMALL)->render() . '</span>';
-                    $collapseIcon = '<a href="' . $href . '" title="' . $title . '" class="pull-right t3js-toggle-recordlist" data-table="' . htmlspecialchars($table) . '" data-toggle="collapse" data-target="#recordlist-' . htmlspecialchars($table) . '">' . $icon . '</a>';
+                    $collapseIcon = '<a href="' . $href . '" title="' . $title . '" class="pull-right t3js-toggle-recordlist" data-table="' . htmlspecialchars($tableIdentifier) . '" data-toggle="collapse" data-target="#recordlist-' . htmlspecialchars($tableIdentifier) . '">' . $icon . '</a>';
                 }
                 $tableHeader .= $theData[$titleCol] . $collapseIcon;
             }
@@ -1247,7 +1253,7 @@ class DatabaseRecordList
                         $hasMore = $this->totalItems > $this->itemsLimitSingleTable;
                         $colspan = $this->showIcon ? count($this->fieldArray) + 1 : count($this->fieldArray);
                         $rowOutput .= '<tr><td colspan="' . $colspan . '">
-								<a href="' . htmlspecialchars($this->listURL() . '&table=' . rawurlencode($table)) . '" class="btn btn-default">'
+								<a href="' . htmlspecialchars($this->listURL() . '&table=' . rawurlencode($tableIdentifier)) . '" class="btn btn-default">'
                             . '<span class="t3-icon fa fa-chevron-down"></span> <i>[1 - ' . $countOnFirstPage . ($hasMore ? '+' : '') . ']</i></a>
 								</td></tr>';
                     }
@@ -1267,15 +1273,15 @@ class DatabaseRecordList
 
 
 			<!--
-				DB listing of elements:	"' . htmlspecialchars($table) . '"
+				DB listing of elements:	"' . htmlspecialchars($tableIdentifier) . '"
 			-->
 				<div class="panel panel-space panel-default recordlist">
 					<div class="panel-heading">
 					' . $tableHeader . '
 					</div>
-					<div class="' . $collapseClass . '" data-state="' . $dataState . '" id="recordlist-' . htmlspecialchars($table) . '">
+					<div class="' . $collapseClass . '" data-state="' . $dataState . '" id="recordlist-' . htmlspecialchars($tableIdentifier) . '">
 						<div class="table-fit">
-							<table data-table="' . htmlspecialchars($table) . '" class="table table-striped table-hover' . ($listOnlyInSingleTableMode ? ' typo3-dblist-overview' : '') . '">
+							<table data-table="' . htmlspecialchars($tableIdentifier) . '" class="table table-striped table-hover' . ($listOnlyInSingleTableMode ? ' typo3-dblist-overview' : '') . '">
 								' . $out . '
 							</table>
 						</div>
