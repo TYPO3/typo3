@@ -131,7 +131,6 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
      */
     protected function setDefaultsFromDefaultValues(array $result)
     {
-        $result = $this->setDefaultValuesFromGetPost($result);
         $tableName = $result['tableName'];
         $defaultValues = $result['defaultValues'] ?? [];
         if (isset($defaultValues[$tableName]) && is_array($defaultValues[$tableName])) {
@@ -141,30 +140,6 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
                 }
             }
         }
-        return $result;
-    }
-
-    /**
-     * @param array $result
-     * @return array
-     * @deprecated since TYPO3 v9 will be removed in TYPO3 v10.0 - see $result['defaultValues']
-     */
-    protected function setDefaultValuesFromGetPost(array $result)
-    {
-        if (!empty($result['defaultValues'])) {
-            return $result;
-        }
-
-        $defaultValues = GeneralUtility::_GP('defVals');
-        if (!empty($defaultValues)) {
-            trigger_error(
-                'Default values for new database rows should be set from controller context. Applying default values'
-                . ' via GET/POST parameters is deprecated since 9.2 and will be removed in version 10',
-                E_USER_DEPRECATED
-            );
-            $result['defaultValues'] = $defaultValues;
-        }
-
         return $result;
     }
 
