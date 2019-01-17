@@ -148,30 +148,6 @@ CREATE TABLE tx_styleguide_elements_group (
 );
 
 
-CREATE TABLE tx_styleguide_elements_rsainput (
-	rsainput_1 text,
-	rsainput_2 text,
-	rsainput_inline_1 text,
-	rsainput_flex_1 text
-);
-
-
-CREATE TABLE tx_styleguide_elements_rsainput_flex_1_inline_1_child (
-	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text,
-
-	rsainput_1 text
-);
-
-
-CREATE TABLE tx_styleguide_elements_rsainput_inline_1_child (
-	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text,
-
-	rsainput_1 text
-);
-
-
 CREATE TABLE tx_styleguide_elements_rte (
 	rte_1 text,
 	rte_2 text,
