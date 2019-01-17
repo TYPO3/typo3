@@ -39,7 +39,6 @@ class BackendCoreEnvironment extends BackendEnvironment
             'filelist',
             'extensionmanager',
             'setup',
-            'rsaauth',
             'backend',
             'about',
             'belog',

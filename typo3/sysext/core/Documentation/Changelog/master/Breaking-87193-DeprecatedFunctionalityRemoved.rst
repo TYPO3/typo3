@@ -1351,6 +1351,7 @@ The following features have been removed:
 * Frontend, Backend and standalone install tool users who did not log in for multiple core versions and still use a :php:`M$`
   prefixed password can not log in anymore. Auto converting those user passwords during first login has been dropped, those
   users need their password being manually recovered or reset.
+* Extension :php:`rsaauth` has been dropped from core
 
 
 The following database tables have been removed:

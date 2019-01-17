@@ -80,10 +80,6 @@
                 "../typo3/sysext/recycler/Resources/Public/JavaScript/*",
                 "../typo3/sysext/recycler/Resources/Private/TypeScript/*"
             ],
-            "TYPO3/CMS/Rsaauth/*": [
-                "../typo3/sysext/rsaauth/Resources/Public/JavaScript/*",
-                "../typo3/sysext/rsaauth/Resources/Private/TypeScript/*"
-            ],
             "TYPO3/CMS/RteCkeditor/*": [
                 "../typo3/sysext/rte_ckeditor/Resources/Public/JavaScript/*",
                 "../typo3/sysext/rte_ckeditor/Resources/Private/TypeScript/*"

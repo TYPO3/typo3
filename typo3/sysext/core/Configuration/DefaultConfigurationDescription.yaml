@@ -307,7 +307,7 @@ BE:
             description: 'Set the name for the cookie used for the back-end user session'
         loginSecurityLevel:
             type: text
-            description: 'Keywords that determines the security level of login to the backend. "normal" means the password from the login form is sent in clear-text, "rsa" uses RSA password encryption (only if the rsaauth extension is installed).'
+            description: 'Keywords that determines the security level of login to the backend. "normal" means the password from the login form is sent in clear-text. The client/server communication should be secured with HTTPS.'
         showRefreshLoginPopup:
             type: bool
             description: 'If set, the Ajax relogin will show a real popup window for relogin after the count down. Some auth services need this as they add custom validation to the login form. If it''s not set, the Ajax relogin will show an inline relogin window.'
@@ -421,7 +421,7 @@ FE:
             description: 'If activated, Frontend Users are locked to (a part of) their public IP (<code>$_SERVER[''REMOTE_ADDR'']</code>) for their session. Enhances security but may throw off users that may change IP during their session (in which case you can lower it to 2 or 3). The integer indicates how many parts of the IP address to include in the check for session (next to the user agent)..'
         loginSecurityLevel:
             type: text
-            description: 'See description for <a href="#BE-loginSecurityLevel">[BE][loginSecurityLevel]</a>. Default state for frontend is "normal". Alternative authentication services can implement higher levels if preferred. For example, "rsa" level uses RSA password encryption (only if the rsaauth extension is installed).'
+            description: 'See description for <a href="#BE-loginSecurityLevel">[BE][loginSecurityLevel]</a>. Default state for frontend is "normal". The client/server communication should be secured with HTTPS.'
         lifetime:
             type: int
             description: 'If >0 and the option permalogin is >=0, the cookie of FE users will have a lifetime of the number of seconds this value indicates. Otherwise it will be a session cookie (deleted when browser is shut down). Setting this value to 604800 will result in automatic login of FE users during a whole week, 86400 will keep the FE users logged in for a day.'

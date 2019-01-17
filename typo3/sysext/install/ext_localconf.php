@@ -38,6 +38,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['argon2iPassw
     = \TYPO3\CMS\Install\Updates\Argon2iPasswordHashes::class;
 
 // v9->v10 wizards below this line
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['rsaauthExtension']
+    = \TYPO3\CMS\Install\Updates\RsaauthExtractionUpdate::class;
 
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 $icons = [

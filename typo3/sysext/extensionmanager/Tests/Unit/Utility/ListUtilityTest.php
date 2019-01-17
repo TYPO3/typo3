@@ -49,7 +49,6 @@ class ListUtilityTest extends UnitTestCase
                     'lang' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
                     'news' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
                     'saltedpasswords' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
-                    'rsaauth' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
                 ]));
         $this->inject($this->subject, 'packageManager', $packageManagerMock);
     }
@@ -65,13 +64,11 @@ class ListUtilityTest extends UnitTestCase
                     'lang' => [],
                     'news' => [],
                     'saltedpasswords' => [],
-                    'rsaauth' => []
                 ],
                 [
                     'lang' => ['installed' => true],
                     'news' => ['installed' => true],
                     'saltedpasswords' => ['installed' => true],
-                    'rsaauth' => ['installed' => true]
                 ]
             ],
             'different extension lists' => [
@@ -79,13 +76,11 @@ class ListUtilityTest extends UnitTestCase
                     'lang' => [],
                     'news' => [],
                     'saltedpasswords' => [],
-                    'rsaauth' => []
                 ],
                 [
                     'lang' => ['installed' => true],
                     'news' => ['installed' => true],
                     'saltedpasswords' => ['installed' => true],
-                    'rsaauth' => ['installed' => true]
                 ]
             ],
             'different extension lists - set2' => [
@@ -93,14 +88,12 @@ class ListUtilityTest extends UnitTestCase
                     'lang' => [],
                     'news' => [],
                     'saltedpasswords' => [],
-                    'rsaauth' => [],
                     'em' => []
                 ],
                 [
                     'lang' => ['installed' => true],
                     'news' => ['installed' => true],
                     'saltedpasswords' => ['installed' => true],
-                    'rsaauth' => ['installed' => true],
                     'em' => []
                 ]
             ],
@@ -110,7 +103,6 @@ class ListUtilityTest extends UnitTestCase
                     'fluid' => [],
                     'news' => [],
                     'saltedpasswords' => [],
-                    'rsaauth' => [],
                     'em' => []
                 ],
                 [
@@ -118,7 +110,6 @@ class ListUtilityTest extends UnitTestCase
                     'fluid' => [],
                     'news' => ['installed' => true],
                     'saltedpasswords' => ['installed' => true],
-                    'rsaauth' => ['installed' => true],
                     'em' => []
                 ]
             ]
@@ -147,7 +138,6 @@ class ListUtilityTest extends UnitTestCase
                     'lang' => ['property1' => 'oldvalue'],
                     'news' => [],
                     'saltedpasswords' => [],
-                    'rsaauth' => []
                 ],
                 [
                     'property1' => 'property value1'
@@ -156,7 +146,6 @@ class ListUtilityTest extends UnitTestCase
                     'lang' => ['property1' => 'oldvalue'],
                     'news' => ['property1' => 'property value1'],
                     'saltedpasswords' => ['property1' => 'property value1'],
-                    'rsaauth' => ['property1' => 'property value1']
                 ]
             ]
         ];

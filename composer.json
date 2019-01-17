@@ -68,7 +68,7 @@
 		"fiunchinho/phpunit-randomizer": "^4.0",
 		"friendsofphp/php-cs-fixer": "^2.12.2",
 		"typo3/cms-styleguide": "~10.0.2",
-		"typo3/testing-framework": "~5.0.3"
+		"typo3/testing-framework": "~5.0.4"
 	},
 	"suggest": {
 		"ext-gd": "GDlib/Freetype is required for building images with text (GIFBUILDER) and can also be used to scale images",
@@ -142,7 +142,6 @@
 		"typo3/cms-recycler": "self.version",
 		"typo3/cms-redirects": "self.version",
 		"typo3/cms-reports": "self.version",
-		"typo3/cms-rsaauth": "self.version",
 		"typo3/cms-rte-ckeditor": "self.version",
 		"typo3/cms-scheduler": "self.version",
 		"typo3/cms-seo": "self.version",
@@ -183,7 +182,6 @@
 			"TYPO3\\CMS\\Recycler\\": "typo3/sysext/recycler/Classes/",
 			"TYPO3\\CMS\\Redirects\\": "typo3/sysext/redirects/Classes/",
 			"TYPO3\\CMS\\Reports\\": "typo3/sysext/reports/Classes/",
-			"TYPO3\\CMS\\Rsaauth\\": "typo3/sysext/rsaauth/Classes/",
 			"TYPO3\\CMS\\RteCKEditor\\": "typo3/sysext/rte_ckeditor/Classes/",
 			"TYPO3\\CMS\\Scheduler\\": "typo3/sysext/scheduler/Classes/",
 			"TYPO3\\CMS\\Seo\\": "typo3/sysext/seo/Classes/",
@@ -227,7 +225,6 @@
 			"TYPO3\\CMS\\Redirects\\Tests\\": "typo3/sysext/redirects/Tests/",
 			"TYPO3\\CMS\\Recordlist\\Tests\\": "typo3/sysext/recordlist/Tests/",
 			"TYPO3\\CMS\\Reports\\Tests\\": "typo3/sysext/reports/Tests/",
-			"TYPO3\\CMS\\Rsaauth\\Tests\\": "typo3/sysext/rsaauth/Tests/",
 			"TYPO3\\CMS\\Scheduler\\Tests\\": "typo3/sysext/scheduler/Tests/",
 			"TYPO3\\CMS\\Seo\\Tests\\": "typo3/sysext/seo/Tests/",
 			"TYPO3\\CMS\\Setup\\Tests\\": "typo3/sysext/setup/Tests/",

@@ -1,2 +1,0 @@
-# cat=basic/enable; type=string; label=LLL:EXT:rsaauth/Resources/Private/Language/locallang_em.xlf:rsaauth.config.temporaryDirectory
-temporaryDirectory =
