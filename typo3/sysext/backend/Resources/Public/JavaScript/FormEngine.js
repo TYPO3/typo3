@@ -192,7 +192,7 @@ define(['jquery',
       // The incoming value consists of the table name, an underscore and the uid
       // or just the uid
       // For a single selection field we need only the uid, so we extract it
-      var pattern = /_(\\d+)$/
+      var pattern = /_(\d+)$/
         , result = value.toString().match(pattern);
 
       if (result != null) {
