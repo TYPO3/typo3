@@ -42,7 +42,7 @@ class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
             ->setMethods(['setTagName'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
+        $mockTagBuilder->expects($this->atLeastOnce())->method('setTagName')->with('input');
         $this->viewHelper->setTagBuilder($mockTagBuilder);
         $this->viewHelper->initializeArgumentsAndRender();
     }
