@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Authentication;
 
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
@@ -113,8 +112,6 @@ class AuthenticationService extends AbstractAuthenticationService
         $configuredDomainLock = $user['lockToDomain'];
         $userDatabaseTable = $this->db_user['table'];
 
-        $isSaltedPassword = false;
-        $isValidPassword = false;
         $isReHashNeeded = false;
         $isDomainLockMet = false;
 
@@ -125,67 +122,6 @@ class AuthenticationService extends AbstractAuthenticationService
         try {
             $hashInstance = $saltFactory->get($passwordHashInDatabase, TYPO3_MODE);
         } catch (InvalidPasswordHashException $invalidPasswordHashException) {
-            // This can be refactored if the 'else' part below is gone in TYPO3 v10.0: Log and return 100 here
-            $hashInstance = null;
-        }
-        // An instance of the currently configured salted password mechanism
-        // Don't catch InvalidPasswordHashException here: Only install tool should handle those configuration failures
-        $defaultHashInstance = $saltFactory->getDefaultHashInstance(TYPO3_MODE);
-
-        if ($hashInstance instanceof PasswordHashInterface) {
-            // We found a hash class that can handle this type of hash
-            $isSaltedPassword = true;
-            $isValidPassword = $hashInstance->checkPassword($submittedPassword, $passwordHashInDatabase);
-            if ($isValidPassword) {
-                if ($hashInstance->isHashUpdateNeeded($passwordHashInDatabase)
-                    || $defaultHashInstance != $hashInstance
-                ) {
-                    // Lax object comparison intended: Rehash if old and new salt objects are not
-                    // instances of the same class.
-                    $isReHashNeeded = true;
-                }
-                if (empty($configuredDomainLock)) {
-                    // No domain restriction set for user in db. This is ok.
-                    $isDomainLockMet = true;
-                } elseif (!strcasecmp($configuredDomainLock, $queriedDomain)) {
-                    // Domain restriction set and it matches given host. Ok.
-                    $isDomainLockMet = true;
-                }
-            }
-        } elseif (substr($user['password'], 0, 2) === 'M$') {
-            // @todo @deprecated: The entire else should be removed in TYPO3 v10.0 as dedicated breaking patch
-            // If the stored db password starts with M$, it may be a md5 password that has been
-            // upgraded to a salted md5 using the old salted passwords scheduler task.
-            // See if a salt instance is returned if we cut off the M, so Md5PasswordHash kicks in
-            try {
-                $hashInstance = $saltFactory->get(substr($passwordHashInDatabase, 1), TYPO3_MODE);
-                $isSaltedPassword = true;
-                $isValidPassword = $hashInstance->checkPassword(md5($submittedPassword), substr($passwordHashInDatabase, 1));
-                if ($isValidPassword) {
-                    // Upgrade this password to a sane mechanism now
-                    $isReHashNeeded = true;
-                    if (empty($configuredDomainLock)) {
-                        // No domain restriction set for user in db. This is ok.
-                        $isDomainLockMet = true;
-                    } elseif (!strcasecmp($configuredDomainLock, $queriedDomain)) {
-                        // Domain restriction set and it matches given host. Ok.
-                        $isDomainLockMet = true;
-                    }
-                }
-            } catch (InvalidPasswordHashException $e) {
-                // Still no instance found: $isSaltedPasswords is NOT set to true, logging and return done below
-            }
-        } else {
-            // @todo: Simplify if elseif part is gone
-            // Still no valid hash instance could be found. Probably the stored hash used a mechanism
-            // that is not available on current system. We throw the previous exception again to be
-            // handled on a higher level.
-            if ($invalidPasswordHashException !== null) {
-                throw $invalidPasswordHashException;
-            }
-        }
-
-        if (!$isSaltedPassword) {
             // Could not find a responsible hash algorithm for given password. This is unusual since other
             // authentication services would usually be called before this one with higher priority. We thus log
             // the failed login but still return '100' to proceed with other services that may follow.
@@ -195,6 +131,29 @@ class AuthenticationService extends AbstractAuthenticationService
             $this->logger->info(sprintf($message, $submittedUsername));
             // Not responsible, check other services
             return 100;
+        }
+
+        // An instance of the currently configured salted password mechanism
+        // Don't catch InvalidPasswordHashException here: Only install tool should handle those configuration failures
+        $defaultHashInstance = $saltFactory->getDefaultHashInstance(TYPO3_MODE);
+
+        // We found a hash class that can handle this type of hash
+        $isValidPassword = $hashInstance->checkPassword($submittedPassword, $passwordHashInDatabase);
+        if ($isValidPassword) {
+            if ($hashInstance->isHashUpdateNeeded($passwordHashInDatabase)
+                || $defaultHashInstance != $hashInstance
+            ) {
+                // Lax object comparison intended: Rehash if old and new salt objects are not
+                // instances of the same class.
+                $isReHashNeeded = true;
+            }
+            if (empty($configuredDomainLock)) {
+                // No domain restriction set for user in db. This is ok.
+                $isDomainLockMet = true;
+            } elseif (!strcasecmp($configuredDomainLock, $queriedDomain)) {
+                // Domain restriction set and it matches given host. Ok.
+                $isDomainLockMet = true;
+            }
         }
 
         if (!$isValidPassword) {

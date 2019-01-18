@@ -1347,6 +1347,9 @@ The following features have been removed:
 * These variables are no longer declared in :file:`ext_tables.php` and :file:`ext_localconf.php` files: :php:`$_EXTKEY`, :php:`$_EXTCONF`,
   :php:`T3_SERVICES`, :php:`T3_VAR`, :php:`TYPO3_CONF_VARS`, :php:`TBE_MODULES`, :php:`TBE_MODULES_EXT`, :php:`TCA`,
   :php:`PAGES_TYPES`, :php:`TBE_STYLES`
+* Frontend, Backend and standalone install tool users who did not log in for multiple core versions and still use a :php:`M$`
+  prefixed password can not log in anymore. Auto converting those user passwords during first login has been dropped, those
+  users need their password being manually recovered or reset.
 
 
 The following database tables have been removed:

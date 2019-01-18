@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Install\Authentication;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Mail\MailMessage;
@@ -53,30 +52,10 @@ class AuthenticationService
         if ($password !== null && $password !== '') {
             $installToolPassword = $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'];
             $hashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
-            try {
-                $hashInstance = $hashFactory->get($installToolPassword, 'BE');
-                $validPassword = $hashInstance->checkPassword($password, $installToolPassword);
-            } catch (InvalidPasswordHashException $invalidPasswordHashException) {
-                // Given hash in global configuration is not a valid salted password
-                if (md5($password) === $installToolPassword) {
-                    // Update configured install tool hash if it is still "MD5" and password matches
-                    // @todo: This should be removed in TYPO3 v10.0 with a dedicated breaking patch
-                    // @todo: Additionally, this code should check required hash updates and update the hash if needed
-                    $hashInstance = $hashFactory->getDefaultHashInstance('BE');
-                    $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
-                    $configurationManager->setLocalConfigurationValueByPath(
-                        'BE/installToolPassword',
-                        $hashInstance->getHashedPassword($password)
-                    );
-                    $validPassword = true;
-                } else {
-                    // Still no valid hash instance could be found. Probably the stored hash used a mechanism
-                    // that is not available on current system. We throw the previous exception again to be
-                    // handled on a higher level. The install tool will render an according exception message
-                    // that links to the wiki.
-                    throw $invalidPasswordHashException;
-                }
-            }
+            // Throws an InvalidPasswordHashException if no hash mechanism for the stored password is found
+            $hashInstance = $hashFactory->get($installToolPassword, 'BE');
+            // @todo: This code should check required hash updates and update the hash if needed
+            $validPassword = $hashInstance->checkPassword($password, $installToolPassword);
         }
         if ($validPassword) {
             $this->sessionService->setAuthorized();

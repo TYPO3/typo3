@@ -210,18 +210,6 @@ class DataHandlerTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkValueInputEvalWithSaltedPasswordKeepsExistingHashForMd5HashedHash(): void
-    {
-        // Note the involved salted passwords are NOT mocked since the factory is static
-        $subject = new DataHandler();
-        $inputValue = 'M$1$GNu9HdMt$RwkPb28pce4nXZfnplVZY/';
-        $result = $subject->checkValue_input_Eval($inputValue, ['saltedPassword'], '', 'be_users');
-        $this->assertSame($inputValue, $result['value']);
-    }
-
-    /**
-     * @test
-     */
     public function checkValueInputEvalWithSaltedPasswordReturnsHashForSaltedPassword(): void
     {
         // Note the involved salted passwords are NOT mocked since the factory is static

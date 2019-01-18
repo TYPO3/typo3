@@ -2607,18 +2607,10 @@ class DataHandler implements LoggerAwareInterface
                     // The strategy is to see if a salt instance can be created from the incoming value. If so,
                     // no new password was submitted and we keep the value. If no salting instance can be created,
                     // incoming value must be a new plain text value that needs to be hashed.
-                    $hashMethod = substr($value, 0, 2);
-                    // The old scheduler task turned existing non-salted passwords into salted hashes by taking the simple md5
-                    // and using that as 'password' and make a salted md5 from given hash. Those where then prefixed with 'M'.
-                    // PasswordHashFactory->get($value) only recognizes these salts if we cut off the M again.
-                    // @todo @deprecated: $isDeprecatedSaltedHash should be removed in TYPO3 v10.0 as dedicated breaking patch, similar
-                    // @todo to authUser() of AuthenticationService::class
-                    $isDeprecatedSaltedHash = $hashMethod === 'M$';
-                    $tempValue = $isDeprecatedSaltedHash ? substr($value, 1) : $value;
                     $hashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
                     $mode = $table === 'fe_users' ? 'FE' : 'BE';
                     try {
-                        $hashFactory->get($tempValue, $mode);
+                        $hashFactory->get($value, $mode);
                     } catch (InvalidPasswordHashException $e) {
                         // We got no salted password instance, incoming value must be a new plaintext password
                         // Get an instance of the current configured salted password strategy and hash the value

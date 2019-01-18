@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -139,9 +138,7 @@ class AuthenticationServiceTest extends UnitTestCase
             'password' => 'aPlainTextPassword',
             'lockToDomain' => ''
         ];
-        $this->expectException(InvalidPasswordHashException::class);
-        $this->expectExceptionCode(1533818591);
-        $subject->authUser($dbUser);
+        $this->assertEquals(100, $subject->authUser($dbUser));
     }
 
     /**
