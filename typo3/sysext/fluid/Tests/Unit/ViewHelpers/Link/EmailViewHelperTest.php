@@ -54,7 +54,7 @@ class EmailViewHelperTest extends ViewHelperBaseTestcase
         $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(['setTagName', 'addAttribute', 'setContent'])
             ->getMock();
-        $mockTagBuilder->expects($this->once())->method('setTagName')->with('a');
+        $mockTagBuilder->expects($this->atLeastOnce())->method('setTagName')->with('a');
         $mockTagBuilder->expects($this->once())->method('addAttribute')->with('href', 'mailto:some@email.tld');
         $mockTagBuilder->expects($this->once())->method('setContent')->with('some content');
         $this->viewHelper->setTagBuilder($mockTagBuilder);

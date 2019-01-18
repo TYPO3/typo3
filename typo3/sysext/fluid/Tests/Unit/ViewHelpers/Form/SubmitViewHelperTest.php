@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
@@ -38,13 +39,17 @@ class SubmitViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
      */
     public function renderCorrectlySetsTagNameAndDefaultAttributes()
     {
-        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(['setTagName', 'addAttribute'])
-            ->getMock();
-        $mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
-        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'submit');
+        $tagBuilder = $this->prophesize(TagBuilder::class);
+        $tagBuilder->render()->shouldBeCalled();
+        // @todo remove condition once typo3fluid/fluid version 2.6.0 will be the minimum version
+        if (class_exists(\TYPO3Fluid\Fluid\ViewHelpers\InlineViewHelper::class)) {
+            $tagBuilder->reset()->shouldBeCalled();
+        }
+        $tagBuilder->addAttribute('type', 'submit')->shouldBeCalled();
+        $tagBuilder->addAttribute('value', null)->shouldBeCalled();
+        $tagBuilder->setTagName('input')->shouldBeCalled();
 
-        $this->viewHelper->setTagBuilder($mockTagBuilder);
+        $this->viewHelper->setTagBuilder($tagBuilder->reveal());
 
         $this->viewHelper->initializeArgumentsAndRender();
     }

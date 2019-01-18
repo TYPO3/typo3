@@ -41,7 +41,7 @@ class UploadViewHelperTest extends ViewHelperBaseTestcase
     public function renderCorrectlySetsTagName()
     {
         $this->tagBuilder = $this->createMock(\TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder::class);
-        $this->tagBuilder->expects($this->once())->method('setTagName')->with('input');
+        $this->tagBuilder->expects($this->atLeastOnce())->method('setTagName')->with('input');
         $this->viewHelper->setTagBuilder($this->tagBuilder);
         $this->viewHelper->initializeArgumentsAndRender();
     }

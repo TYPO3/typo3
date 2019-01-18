@@ -43,7 +43,7 @@ class TextareaViewHelperTest extends FormFieldViewHelperBaseTestcase
             ->setMethods(['setTagName'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockTagBuilder->expects($this->once())->method('setTagName')->with('textarea');
+        $mockTagBuilder->expects($this->atLeastOnce())->method('setTagName')->with('textarea');
         $this->viewHelper->setTagBuilder($mockTagBuilder);
 
         $this->viewHelper->initializeArgumentsAndRender();

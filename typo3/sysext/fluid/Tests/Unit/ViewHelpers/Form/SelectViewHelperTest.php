@@ -46,7 +46,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
      */
     public function selectCorrectlySetsTagName()
     {
-        $this->tagBuilder->expects($this->once())->method('setTagName')->with('select');
+        $this->tagBuilder->expects($this->atLeastOnce())->method('setTagName')->with('select');
 
         $this->arguments['options'] = [];
         $this->injectDependenciesIntoViewHelper($this->viewHelper);

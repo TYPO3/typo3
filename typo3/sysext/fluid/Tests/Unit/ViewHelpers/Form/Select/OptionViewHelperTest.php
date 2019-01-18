@@ -49,7 +49,7 @@ class OptionViewHelperTest extends ViewHelperBaseTestcase
     public function optionTagNameIsSet(): void
     {
         $tagBuilder = $this->createMock(TagBuilder::class);
-        $tagBuilder->expects($this->once())->method('setTagName')->with('option');
+        $tagBuilder->expects($this->atLeastOnce())->method('setTagName')->with('option');
         $this->viewHelper->setTagBuilder($tagBuilder);
         $this->viewHelper->initializeArgumentsAndRender();
     }
