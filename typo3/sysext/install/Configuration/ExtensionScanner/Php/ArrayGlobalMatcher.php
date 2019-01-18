@@ -26,4 +26,9 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TBE_TEMPLATE\']' => [
+        'restFiles' => [
+            'Breaking-87567-GlobalVariableTBE_TEMPLATERemoved.rst',
+        ],
+    ],
 ];

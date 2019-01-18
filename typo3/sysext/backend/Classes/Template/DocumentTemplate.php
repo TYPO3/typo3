@@ -172,28 +172,6 @@ function jumpToUrl(URL) {
     ];
 
     /**
-     * JavaScript files loaded for every page in the Backend
-     *
-     * @var array
-     */
-    protected $jsFiles = [];
-
-    /**
-     * JavaScript files loaded for every page in the Backend, but explicitly excluded from concatenation (useful for libraries etc.)
-     *
-     * @var array
-     */
-    protected $jsFilesNoConcatenation = [];
-
-    /**
-     * Indicates if a <div>-output section is open
-     *
-     * @var int
-     * @internal will be removed in TYPO3 v9
-     */
-    public $sectionFlag = 0;
-
-    /**
      * (Default) Class for wrapping <DIV>-tag of page. Is set in class extensions.
      *
      * @var string
@@ -244,7 +222,6 @@ function jumpToUrl(URL) {
      */
     public function __construct()
     {
-        // Initializes the page rendering object:
         $this->initPageRenderer();
 
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
@@ -288,31 +265,13 @@ function jumpToUrl(URL) {
      */
     protected function initPageRenderer()
     {
-        if ($this->pageRenderer !== null) {
-            return;
-        }
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $this->pageRenderer->setLanguage($GLOBALS['LANG']->lang);
         $this->pageRenderer->enableConcatenateCss();
         $this->pageRenderer->enableConcatenateJavascript();
         $this->pageRenderer->enableCompressCss();
         $this->pageRenderer->enableCompressJavascript();
-        // Add all JavaScript files defined in $this->jsFiles to the PageRenderer
-        foreach ($this->jsFilesNoConcatenation as $file) {
-            $this->pageRenderer->addJsFile(
-                $file,
-                'text/javascript',
-                true,
-                false,
-                '',
-                true
-            );
-        }
-        // Add all JavaScript files defined in $this->jsFiles to the PageRenderer
-        foreach ($this->jsFiles as $file) {
-            $this->pageRenderer->addJsFile($file);
-        }
-        if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] === 1) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
             $this->pageRenderer->enableDebugMode();
         }
     }
@@ -457,7 +416,6 @@ function jumpToUrl(URL) {
 
         $headerStart = '<!DOCTYPE html>';
         $this->pageRenderer->setXmlPrologAndDocType($headerStart);
-        $this->pageRenderer->setHeadTag('<head>' . LF . '<!-- TYPO3 Script ID: ' . htmlspecialchars($this->scriptID) . ' -->');
         header('Content-Type:text/html;charset=utf-8');
         $this->pageRenderer->setCharSet('utf-8');
         $this->pageRenderer->setMetaTag('name', 'generator', $this->generator());

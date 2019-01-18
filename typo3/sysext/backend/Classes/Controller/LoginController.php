@@ -96,6 +96,11 @@ class LoginController implements LoggerAwareInterface
     protected $view;
 
     /**
+     * @var DocumentTemplate
+     */
+    protected $documentTemplate;
+
+    /**
      * Injects the request and response objects for the current request or subrequest
      * As this controller goes only through the main() method, it is rather simple for now
      *
@@ -138,6 +143,7 @@ class LoginController implements LoggerAwareInterface
      */
     protected function init(ServerRequestInterface $request): void
     {
+        $this->documentTemplate = GeneralUtility::makeInstance(DocumentTemplate::class);
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
         $this->validateAndSortLoginProviders();
@@ -211,7 +217,7 @@ class LoginController implements LoggerAwareInterface
                     '" can\'t be resolved. Please check if the file exists and the extension is activated.'
                 );
             }
-            $this->getDocumentTemplate()->inDocStylesArray[] = '
+            $this->documentTemplate->inDocStylesArray[] = '
 				.typo3-login-carousel-control.right,
 				.typo3-login-carousel-control.left,
 				.panel-login { border: 0; }
@@ -227,7 +233,7 @@ class LoginController implements LoggerAwareInterface
 
         // Add additional css to use the highlight color in the login screen
         if (!empty($extConf['loginHighlightColor'])) {
-            $this->getDocumentTemplate()->inDocStylesArray[] = '
+            $this->documentTemplate->inDocStylesArray[] = '
 				.btn-login.disabled, .btn-login[disabled], fieldset[disabled] .btn-login,
 				.btn-login.disabled:hover, .btn-login[disabled]:hover, fieldset[disabled] .btn-login:hover,
 				.btn-login.disabled:focus, .btn-login[disabled]:focus, fieldset[disabled] .btn-login:focus,
@@ -257,7 +263,7 @@ class LoginController implements LoggerAwareInterface
             } else {
                 $logo = 'EXT:backend/Resources/Public/Images/typo3_orange.svg';
             }
-            $this->getDocumentTemplate()->inDocStylesArray[] = '
+            $this->documentTemplate->inDocStylesArray[] = '
 				.typo3-login-logo .typo3-login-image { max-width: 150px; height:100%;}
 			';
         }
@@ -289,9 +295,9 @@ class LoginController implements LoggerAwareInterface
         $loginProvider = GeneralUtility::makeInstance($this->loginProviders[$this->loginProviderIdentifier]['provider']);
         $loginProvider->render($this->view, $pageRenderer, $this);
 
-        $content = $this->getDocumentTemplate()->startPage('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
+        $content = $this->documentTemplate->startPage('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
         $content .= $this->view->render();
-        $content .= $this->getDocumentTemplate()->endPage();
+        $content .= $this->documentTemplate->endPage();
 
         return $content;
     }
@@ -361,7 +367,7 @@ class LoginController implements LoggerAwareInterface
         if ($this->loginRefresh) {
             $formProtection->setSessionTokenFromRegistry();
             $formProtection->persistSessionToken();
-            $this->getDocumentTemplate()->JScode .= GeneralUtility::wrapJS('
+            $this->documentTemplate->JScode .= GeneralUtility::wrapJS('
 				if (window.opener && window.opener.TYPO3 && window.opener.TYPO3.LoginRefresh) {
 					window.opener.TYPO3.LoginRefresh.startTask();
 					window.close();
@@ -576,15 +582,5 @@ class LoginController implements LoggerAwareInterface
     protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * Returns an instance of DocumentTemplate
-     *
-     * @return DocumentTemplate
-     */
-    protected function getDocumentTemplate(): DocumentTemplate
-    {
-        return $GLOBALS['TBE_TEMPLATE'];
     }
 }

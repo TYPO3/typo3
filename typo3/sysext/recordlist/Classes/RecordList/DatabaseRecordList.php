@@ -730,7 +730,7 @@ class DatabaseRecordList
                 . $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render() . '</a>';
             // Shortcut
             if ($backendUser->mayMakeShortcut()) {
-                $buttons['shortcut'] = $this->getDocumentTemplate()->makeShortcutIcon(
+                $buttons['shortcut'] = GeneralUtility::makeInstance(DocumentTemplate::class)->makeShortcutIcon(
                     'id, M, imagemode, pointer, table, search_field, search_levels, showLimit, sortField, sortRev',
                     implode(',', array_keys($this->MOD_MENU)),
                     'web_list'
@@ -2872,14 +2872,6 @@ class DatabaseRecordList
     protected function getModule()
     {
         return $GLOBALS['SOBE'];
-    }
-
-    /**
-     * @return DocumentTemplate
-     */
-    protected function getDocumentTemplate()
-    {
-        return $GLOBALS['TBE_TEMPLATE'];
     }
 
     /**

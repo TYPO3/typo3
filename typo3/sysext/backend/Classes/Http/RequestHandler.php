@@ -19,8 +19,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -45,6 +45,10 @@ class RequestHandler implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        // This is currently placed here, as DocumentTemplate does some magic with
+        // PageRenderer (= which is a singleton) to populate Backend Styles from TBE_STYLES
+        // which should be built only if necessary, but currently done all over the place.
+        GeneralUtility::makeInstance(DocumentTemplate::class);
         try {
             // Check if the router has the available route and dispatch.
             $dispatcher = GeneralUtility::makeInstance(RouteDispatcher::class);

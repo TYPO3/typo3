@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Page;
 
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -2395,7 +2396,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             } else {
                 $cssOptions = [];
                 if (TYPO3_MODE === 'BE') {
-                    $cssOptions = ['baseDirectories' => $GLOBALS['TBE_TEMPLATE']->getSkinStylesheetDirectories()];
+                    $cssOptions = ['baseDirectories' => GeneralUtility::makeInstance(DocumentTemplate::class)->getSkinStylesheetDirectories()];
                 }
                 $this->cssLibs = $this->getCompressor()->concatenateCssFiles($this->cssLibs, $cssOptions);
                 $this->cssFiles = $this->getCompressor()->concatenateCssFiles($this->cssFiles, $cssOptions);

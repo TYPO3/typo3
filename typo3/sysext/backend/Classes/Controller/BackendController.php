@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -259,7 +260,7 @@ class BackendController
         // Set document title:
         $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [TYPO3 CMS ' . TYPO3_version . ']' : 'TYPO3 CMS ' . TYPO3_version;
         // Renders the module page
-        $this->content = $this->getDocumentTemplate()->render($title, $view->render());
+        $this->content = GeneralUtility::makeInstance(DocumentTemplate::class)->render($title, $view->render());
         $hookConfiguration = ['content' => &$this->content];
         $this->executeHook('renderPostProcess', $hookConfiguration);
     }
@@ -610,15 +611,5 @@ class BackendController
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * Returns an instance of DocumentTemplate
-     *
-     * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
-     */
-    protected function getDocumentTemplate()
-    {
-        return $GLOBALS['TBE_TEMPLATE'];
     }
 }

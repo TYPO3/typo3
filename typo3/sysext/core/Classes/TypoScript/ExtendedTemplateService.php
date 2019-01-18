@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\TypoScript;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -1586,13 +1585,5 @@ class ExtendedTemplateService extends TemplateService
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * @return DocumentTemplate
-     */
-    protected function getDocumentTemplate()
-    {
-        return $GLOBALS['TBE_TEMPLATE'];
     }
 }

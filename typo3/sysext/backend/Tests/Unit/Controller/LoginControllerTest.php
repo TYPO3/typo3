@@ -218,8 +218,6 @@ class LoginControllerTest extends UnitTestCase
         $authenticationProphecy->writeUC()->willReturn();
         $this->prophesizeFormProtection();
         $GLOBALS['BE_USER'] = $authenticationProphecy->reveal();
-        $documentTemplateProphecy = $this->prophesize(DocumentTemplate::class);
-        $GLOBALS['TBE_TEMPLATE'] = $documentTemplateProphecy->reveal();
 
         $this->loginControllerMock = $this->getAccessibleMock(
             LoginController::class,
@@ -232,10 +230,11 @@ class LoginControllerTest extends UnitTestCase
         $GLOBALS['BE_USER']->user['uid'] = 1;
         $this->loginControllerMock->method('isLoginInProgress')->willReturn(false);
         $this->loginControllerMock->_set('loginRefresh', true);
+        $this->loginControllerMock->_set('documentTemplate', $this->prophesize(DocumentTemplate::class)->reveal());
 
         $this->loginControllerMock->_call('checkRedirect', $this->prophesize(ServerRequest::class)->reveal());
 
-        self::assertContains('window.opener.TYPO3.LoginRefresh.startTask();', $documentTemplateProphecy->JScode);
+        self::assertContains('window.opener.TYPO3.LoginRefresh.startTask();', $this->loginControllerMock->_get('documentTemplate')->JScode);
     }
 
     /**
@@ -255,8 +254,6 @@ class LoginControllerTest extends UnitTestCase
         $authenticationProphecy->writeUC()->willReturn();
         $GLOBALS['BE_USER'] = $authenticationProphecy->reveal();
         $this->prophesizeFormProtection();
-        $documentTemplateProphecy = $this->prophesize(DocumentTemplate::class);
-        $GLOBALS['TBE_TEMPLATE'] = $documentTemplateProphecy->reveal();
 
         $this->loginControllerMock = $this->getAccessibleMock(
             LoginController::class,
@@ -269,10 +266,11 @@ class LoginControllerTest extends UnitTestCase
         $GLOBALS['BE_USER']->user['uid'] = 1;
         $this->loginControllerMock->method('isLoginInProgress')->willReturn(true);
         $this->loginControllerMock->_set('loginRefresh', true);
+        $this->loginControllerMock->_set('documentTemplate', $this->prophesize(DocumentTemplate::class)->reveal());
 
         $this->loginControllerMock->_call('checkRedirect', $this->prophesize(ServerRequest::class)->reveal());
 
-        self::assertContains('window.opener.TYPO3.LoginRefresh.startTask();', $documentTemplateProphecy->JScode);
+        self::assertContains('window.opener.TYPO3.LoginRefresh.startTask();', $this->loginControllerMock->_get('documentTemplate')->JScode);
     }
 
     /**
