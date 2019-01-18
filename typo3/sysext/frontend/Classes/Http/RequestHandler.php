@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -64,41 +63,6 @@ class RequestHandler implements RequestHandlerInterface
     protected $timeTracker;
 
     /**
-     * Puts parameters that have been added or removed from the global _GET or _POST arrays
-     * into the given request (however, the PSR-7 request information takes precedence).
-     *
-     * @param ServerRequestInterface $request
-     * @return ServerRequestInterface
-     */
-    protected function addModifiedGlobalsToIncomingRequest(ServerRequestInterface $request): ServerRequestInterface
-    {
-        $originalGetParameters = $request->getAttribute('_originalGetParameters', null);
-        if ($originalGetParameters !== null && !empty($_GET) && $_GET !== $originalGetParameters) {
-            // Find out what has been changed.
-            $modifiedGetParameters = ArrayUtility::arrayDiffAssocRecursive($_GET ?? [], $originalGetParameters);
-            if (!empty($modifiedGetParameters)) {
-                $queryParams = array_replace_recursive($modifiedGetParameters, $request->getQueryParams());
-                $request = $request->withQueryParams($queryParams);
-                $GLOBALS['TYPO3_REQUEST'] = $request;
-                $this->timeTracker->setTSlogMessage('GET parameters have been modified during Request building in a hook.');
-            }
-        }
-        // do same for $_POST if the request is a POST request
-        $originalPostParameters = $request->getAttribute('_originalPostParameters', null);
-        if ($request->getMethod() === 'POST' && $originalPostParameters !== null && !empty($_POST) && $_POST !== $originalPostParameters) {
-            // Find out what has been changed
-            $modifiedPostParameters = ArrayUtility::arrayDiffAssocRecursive($_POST ?? [], $originalPostParameters);
-            if (!empty($modifiedPostParameters)) {
-                $parsedBody = array_replace_recursive($modifiedPostParameters, $request->getParsedBody());
-                $request = $request->withParsedBody($parsedBody);
-                $GLOBALS['TYPO3_REQUEST'] = $request;
-                $this->timeTracker->setTSlogMessage('POST parameters have been modified during Request building in a hook.');
-            }
-        }
-        return $request;
-    }
-
-    /**
      * Sets the global GET and POST to the values, so if people access $_GET and $_POST
      * Within hooks starting NOW (e.g. cObject), they get the "enriched" data from query params.
      *
@@ -121,7 +85,9 @@ class RequestHandler implements RequestHandlerInterface
                 $GLOBALS['HTTP_POST_VARS'] = $_POST;
             }
         }
+        $GLOBALS['TYPO3_REQUEST'] = $request;
     }
+
     /**
      * Handles a frontend request, after finishing running middlewares
      *
@@ -135,8 +101,6 @@ class RequestHandler implements RequestHandlerInterface
         /** @var TypoScriptFrontendController $controller */
         $controller = $GLOBALS['TSFE'];
 
-        // safety net, will be removed in TYPO3 v10.0. Aligns $_GET/$_POST to the incoming request.
-        $request = $this->addModifiedGlobalsToIncomingRequest($request);
         $this->resetGlobalsToCurrentRequest($request);
 
         // Generate page

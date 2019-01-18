@@ -32,9 +32,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  * Creates an instance of TypoScriptFrontendController and makes this globally available
  * via $GLOBALS['TSFE'].
  *
- * For now, GeneralUtility::_GP() is used in favor of $request->getQueryParams() due to
- * hooks who could have $_GET/$_POST modified before.
- *
  * @internal this middleware might get removed in TYPO3 v10.0.
  */
 class TypoScriptFrontendInitialization implements MiddlewareInterface, LoggerAwareInterface
@@ -54,14 +51,14 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface, LoggerAwa
         $GLOBALS['TSFE'] = GeneralUtility::makeInstance(
             TypoScriptFrontendController::class,
             null,
-            GeneralUtility::_GP('id'),
-            GeneralUtility::_GP('type'),
+            $request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0,
+            $request->getParsedBody()['type'] ?? $request->getQueryParams()['type'] ?? 0,
             null,
-            GeneralUtility::_GP('cHash'),
+            $request->getParsedBody()['cHash'] ?? $request->getQueryParams()['cHash'] ?? '',
             null,
-            GeneralUtility::_GP('MP')
+            $request->getParsedBody()['MP'] ?? $request->getQueryParams()['MP'] ?? ''
         );
-        if (GeneralUtility::_GP('no_cache')) {
+        if ($request->getParsedBody()['no_cache'] ?? $request->getQueryParams()['no_cache'] ?? false) {
             $GLOBALS['TSFE']->set_no_cache('&no_cache=1 has been supplied, so caching is disabled! URL: "' . (string)$request->getUri() . '"');
         }
 

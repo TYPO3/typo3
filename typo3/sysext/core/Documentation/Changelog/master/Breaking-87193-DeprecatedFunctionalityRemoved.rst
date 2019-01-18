@@ -1431,6 +1431,7 @@ The following features have been removed:
 * EXT:form: renderingOptions._isHiddenFormElement and renderingOptions._isReadOnlyFormElement are dropped
 * :php:`$TBE_MODULES`: configuring a module via a custom "configureModuleFunction" is dropped
 * CLI Command alias "lang:language:update" is dropped in favor of "language:update"
+* Accessing or modifying $_GET/$_POST parameters during any PSR-15 middleware will not reflect any change during the actual Request processing anymore as it is overridden by the incoming PSR-7 request object, but overriden again when the RequestHandler is accessed
 
 The following database tables have been removed:
 

@@ -132,12 +132,11 @@ class PageResolver implements MiddlewareInterface
             $queryParams = array_replace_recursive($request->getQueryParams(), $pageArguments->getArguments());
             $request = $request->withQueryParams($queryParams);
             $this->controller->setPageArguments($pageArguments);
-
-            // At this point, we later get further route modifiers
-            // for bw-compat we update $GLOBALS[TYPO3_REQUEST] to be used later in TSFE.
-            $GLOBALS['TYPO3_REQUEST'] = $request;
         }
 
+        // as long as TSFE throws errors with the global object, this needs to be set, but
+        // should be removed later-on
+        $GLOBALS['TYPO3_REQUEST'] = $request;
         $this->controller->determineId();
 
         // No access? Then remove user & Re-evaluate the page-id

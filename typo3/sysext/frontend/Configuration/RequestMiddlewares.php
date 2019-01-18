@@ -23,17 +23,10 @@ return [
             ]
         ],
         /** internal: do not use or reference this middleware in your own code, as this will be possibly be removed */
-        'typo3/cms-frontend/preprocessing' => [
-            'target' => \TYPO3\CMS\Frontend\Middleware\PreprocessRequestHook::class,
-            'after' => [
-                'typo3/cms-core/normalized-params-attribute',
-            ]
-        ],
-        /** internal: do not use or reference this middleware in your own code, as this will be possibly be removed */
         'typo3/cms-frontend/eid' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\EidHandler::class,
             'after' => [
-                'typo3/cms-frontend/preprocessing'
+                'typo3/cms-core/normalized-params-attribute',
             ]
         ],
         'typo3/cms-frontend/maintenance-mode' => [

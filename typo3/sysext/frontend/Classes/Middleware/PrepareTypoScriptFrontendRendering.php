@@ -60,6 +60,9 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, PsrRequestHandlerInterface $handler): ResponseInterface
     {
+        // as long as TSFE throws errors with the global object, this needs to be set, but
+        // should be removed later-on once TypoScript Condition Matcher is built with the current request object.
+        $GLOBALS['TYPO3_REQUEST'] = $request;
         // Get from cache
         $this->timeTracker->push('Get Page from cache');
         // Locks may be acquired here
@@ -84,7 +87,6 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
                 ArrayUtility::mergeRecursiveWithOverrule($modifiedGetVars, $request->getQueryParams());
             }
             $request = $request->withQueryParams($modifiedGetVars);
-            $GLOBALS['TYPO3_REQUEST'] = $request;
         }
 
         // Setting language and locale
@@ -94,13 +96,12 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
         $this->timeTracker->pull();
 
         // Convert POST data to utf-8 for internal processing if metaCharset is different
-        if ($this->controller->metaCharset !== 'utf-8' && is_array($_POST) && !empty($_POST)) {
-            $this->convertCharsetRecursivelyToUtf8($_POST, $this->controller->metaCharset);
-            $GLOBALS['HTTP_POST_VARS'] = $_POST;
+        if ($this->controller->metaCharset !== 'utf-8' && $request->getMethod() === 'POST') {
             $parsedBody = $request->getParsedBody();
-            $this->convertCharsetRecursivelyToUtf8($parsedBody, $this->controller->metaCharset);
-            $request = $request->withParsedBody($parsedBody);
-            $GLOBALS['TYPO3_REQUEST'] = $request;
+            if (is_array($parsedBody) && !empty($parsedBody)) {
+                $this->convertCharsetRecursivelyToUtf8($parsedBody, $this->controller->metaCharset);
+                $request = $request->withParsedBody($parsedBody);
+            }
         }
         return $handler->handle($request);
     }

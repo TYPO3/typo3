@@ -54,7 +54,6 @@ class SiteResolver implements MiddlewareInterface
             }
             $site = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId($pageId, $rootLine);
             $request = $request->withAttribute('site', $site);
-            $GLOBALS['TYPO3_REQUEST'] = $request;
         }
         return $handler->handle($request);
     }

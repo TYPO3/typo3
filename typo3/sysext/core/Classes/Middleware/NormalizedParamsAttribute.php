@@ -49,12 +49,6 @@ class NormalizedParamsAttribute implements MiddlewareInterface
                 Environment::getPublicPath()
             )
         );
-
-        // Set $request as global variable. This is needed in a transition phase until core code has been
-        // refactored to have ServerRequest object available where it is needed. This global will be
-        // deprecated then and removed.
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-
         return $handler->handle($request);
     }
 }

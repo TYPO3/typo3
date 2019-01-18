@@ -19,6 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -36,6 +37,32 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class RequestHandler implements RequestHandlerInterface
 {
     /**
+     * Sets the global GET and POST to the values, so if people access $_GET and $_POST
+     * Within hooks starting NOW (e.g. cObject), they get the "enriched" data from query params.
+     *
+     * This needs to be run after the request object has been enriched with modified GET/POST variables.
+     *
+     * @param ServerRequestInterface $request
+     * @internal this safety net will be removed in TYPO3 v10.0.
+     */
+    protected function resetGlobalsToCurrentRequest(ServerRequestInterface $request)
+    {
+        if ($request->getQueryParams() !== $_GET) {
+            $queryParams = $request->getQueryParams();
+            $_GET = $queryParams;
+            $GLOBALS['HTTP_GET_VARS'] = $_GET;
+        }
+        if ($request->getMethod() === 'POST') {
+            $parsedBody = $request->getParsedBody();
+            if (is_array($parsedBody) && $parsedBody !== $_POST) {
+                $_POST = $parsedBody;
+                $GLOBALS['HTTP_POST_VARS'] = $_POST;
+            }
+        }
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+    }
+
+    /**
      * Handles a backend request, after finishing running middlewares
      * Dispatch the request to the appropriate controller through the
      * Backend Dispatcher which resolves the routing
@@ -49,14 +76,17 @@ class RequestHandler implements RequestHandlerInterface
         // PageRenderer (= which is a singleton) to populate Backend Styles from TBE_STYLES
         // which should be built only if necessary, but currently done all over the place.
         GeneralUtility::makeInstance(DocumentTemplate::class);
+        // safety net to have the fully-added request object globally available as long as
+        // there are Core classes that need the Request object but do not get it handed in
+        $this->resetGlobalsToCurrentRequest($request);
         try {
             // Check if the router has the available route and dispatch.
             $dispatcher = GeneralUtility::makeInstance(RouteDispatcher::class);
             return $dispatcher->dispatch($request);
         } catch (InvalidRequestTokenException $e) {
             // When token was invalid redirect to login
-            $url = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir;
-            return new RedirectResponse($url);
+            $loginPage = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('login');
+            return new RedirectResponse((string)$loginPage);
         }
     }
 }

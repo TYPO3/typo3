@@ -99,8 +99,6 @@ class FrontendUserAuthenticator implements MiddlewareInterface
             $cookieParams = $request->getCookieParams();
             $cookieParams[$cookieName] = $sessionId;
             $request = $request->withCookieParams($cookieParams);
-            // @deprecated: we override the current request because it was enriched by cookie information here.
-            $GLOBALS['TYPO3_REQUEST'] = $request;
             $frontendUser->forceSetCookie = true;
             $frontendUser->dontSetCookie = false;
         }
