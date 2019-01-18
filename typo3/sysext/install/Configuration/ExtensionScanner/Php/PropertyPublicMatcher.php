@@ -499,12 +499,14 @@ return [
     ],
     'TYPO3\CMS\Backend\View\PageLayoutView->languageIconTitles' => [
         'restFiles' => [
-            'Deprecation-85164-LanguageRelatedMethods.rst'
+            'Deprecation-85164-LanguageRelatedMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\View\PageLayoutView->translateTools' => [
         'restFiles' => [
-            'Deprecation-85164-LanguageRelatedMethods.rst'
+            'Deprecation-85164-LanguageRelatedMethods.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\DataHandling\DataHandler->updateModeL10NdiffData' => [

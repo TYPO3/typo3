@@ -55,36 +55,13 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $fileReference Input is a file-reference (see \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName). That file is expected to be a supported locallang file format
      * @param string $languageKey Language key
-     * @param string $charset Character set (option); not in use anymore
-     * @param int $errorMode Error mode (when file could not be found): not in use anymore
+     * @param null $_ unused
+     * @param null $__ unused
      * @param bool $isLocalizationOverride TRUE if $fileReference is a localization override
      * @return array|bool
      */
-    public function getParsedData($fileReference, $languageKey, $charset = '', $errorMode = null, $isLocalizationOverride = false)
+    public function getParsedData($fileReference, $languageKey, $_ = null, $__ = null, $isLocalizationOverride = false)
     {
-        // @deprecated since TYPO3 v9, will be removed with TYPO3 v10.0
-        // this is a fallback to convert references to old 'lang' locallang files to the new location
-        if (strpos($fileReference, 'EXT:lang/Resources/Private/Language/') === 0) {
-            $mapping = [
-                'lang/Resources/Private/Language/locallang_alt_intro.xlf' => 'about/Resources/Private/Language/Modules/locallang_alt_intro.xlf',
-                'lang/Resources/Private/Language/locallang_alt_doc.xlf' => 'backend/Resources/Private/Language/locallang_alt_doc.xlf',
-                'lang/Resources/Private/Language/locallang_login.xlf' => 'backend/Resources/Private/Language/locallang_login.xlf',
-                'lang/Resources/Private/Language/locallang_common.xlf' => 'core/Resources/Private/Language/locallang_common.xlf',
-                'lang/Resources/Private/Language/locallang_core.xlf' => 'core/Resources/Private/Language/locallang_core.xlf',
-                'lang/Resources/Private/Language/locallang_general.xlf' => 'core/Resources/Private/Language/locallang_general.xlf',
-                'lang/Resources/Private/Language/locallang_misc.xlf' => 'core/Resources/Private/Language/locallang_misc.xlf',
-                'lang/Resources/Private/Language/locallang_mod_web_list.xlf' => 'core/Resources/Private/Language/locallang_mod_web_list.xlf',
-                'lang/Resources/Private/Language/locallang_tca.xlf' => 'core/Resources/Private/Language/locallang_tca.xlf',
-                'lang/Resources/Private/Language/locallang_tsfe.xlf' => 'core/Resources/Private/Language/locallang_tsfe.xlf',
-                'lang/Resources/Private/Language/locallang_wizards.xlf' => 'core/Resources/Private/Language/locallang_wizards.xlf',
-                'lang/Resources/Private/Language/locallang_browse_links.xlf' => 'recordlist/Resources/Private/Language/locallang_browse_links.xlf',
-                'lang/Resources/Private/Language/locallang_tcemain.xlf' => 'workspaces/Resources/Private/Language/locallang_tcemain.xlf',
-            ];
-            $filePath = substr($fileReference, 4);
-            trigger_error('There is a reference to "' . $fileReference . '", which has been moved to "EXT:' . $mapping[$filePath] . '". This fallback will be removed with TYPO3 v10.0.', E_USER_DEPRECATED);
-            $fileReference = 'EXT:' . $mapping[$filePath];
-        }
-
         $hash = md5($fileReference . $languageKey);
 
         // Check if the default language is processed before processing other language

@@ -1580,8 +1580,7 @@ tt_content.' . $key . $suffix . ' {
             }
         }
 
-        // TCA migration
-        // @deprecated since TYPO3 CMS 7. Not removed in TYPO3 CMS 8 though. This call will stay for now to allow further TCA migrations in 8.
+        // Call the TcaMigration and log any deprecations.
         $tcaMigration = GeneralUtility::makeInstance(TcaMigration::class);
         $GLOBALS['TCA'] = $tcaMigration->migrate($GLOBALS['TCA']);
         $messages = $tcaMigration->getMessages();

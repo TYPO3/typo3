@@ -24,8 +24,6 @@ final class PageAccessFailureReasons
     // Page resolving issues
     public const NO_PAGES_FOUND = 'page.database.empty';
     public const PAGE_NOT_FOUND = 'page';
-    /** @deprecated  */
-    public const PAGE_ALIAS_NOT_FOUND = 'page.alias';
     public const ROOTLINE_BROKEN = 'page.rootline';
 
     // Page configuration issues
@@ -60,7 +58,6 @@ final class PageAccessFailureReasons
     protected $messages = [
         self::NO_PAGES_FOUND => 'No page on rootlevel found',
         self::PAGE_NOT_FOUND => 'The requested page does not exist',
-        self::PAGE_ALIAS_NOT_FOUND => 'The requested page alias does not exist',
 
         self::RENDERING_INSTRUCTIONS_NOT_FOUND => 'No TypoScript template found',
         self::RENDERING_INSTRUCTIONS_NOT_CONFIGURED => 'The page is not configured',

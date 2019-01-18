@@ -185,47 +185,6 @@ class TranslationConfigurationProvider
     }
 
     /**
-     * Returns the table in which translations for input table is found.
-     *
-     * @param string $table The table name
-     * @return string
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 as foreign translation table is not supported anymore
-     */
-    public function getTranslationTable($table)
-    {
-        trigger_error('TranslationConfigurationProvider->getTranslationTable() will be removed in TYPO3 v10.0, as the translation table is always the same as the original table.', E_USER_DEPRECATED);
-        return BackendUtility::isTableLocalizable($table) ? $table : '';
-    }
-
-    /**
-     * Returns TRUE, if the input table has localization enabled and done so with records from the same table
-     *
-     * @param string $table The table name
-     * @return bool
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 as foreign translation table is not supported anymore
-     */
-    public function isTranslationInOwnTable($table)
-    {
-        trigger_error('TranslationConfigurationProvider->isTranslationInOwnTable() will be removed in TYPO3 v10.0, as the translation table is always the same as the original table.', E_USER_DEPRECATED);
-        return $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
-    }
-
-    /**
-     * Returns foreign translation table, if any.
-     * Since TYPO3 v9, even "pages" translations are stored in the same table, having this method return always
-     * empty, as with other tables as well.
-     *
-     * @param string $table The table name
-     * @return string Translation foreign table
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 as foreign translation table is not supported anymore
-     */
-    public function foreignTranslationTable($table)
-    {
-        trigger_error('TranslationConfigurationProvider->foreignTranslationTable() will be removed in TYPO3 v10.0, as the translation table is always the same as the original table.', E_USER_DEPRECATED);
-        return '';
-    }
-
-    /**
      * @param array $modSharedTSconfig
      * @return string
      */

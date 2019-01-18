@@ -126,31 +126,6 @@ class UriBuilder implements SingletonInterface
     }
 
     /**
-     * Generate a URI for a backend module, does not check if a module is available though
-     *
-     * @param string $moduleName The name of the module
-     * @param array $parameters An array of parameters
-     * @param string $referenceType The type of reference to be generated (one of the constants)
-     *
-     * @return Uri The generated Uri
-     * @deprecated since TYPO3 v9.3, will be removed in TYPO3 v10.0. Use buildUriFromRoute() instead.
-     */
-    public function buildUriFromModule($moduleName, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
-    {
-        trigger_error('UriBuilder->buildUriFromModule() will be removed in TYPO3 v10.0, use buildUriFromRoute() instead.', E_USER_DEPRECATED);
-        $cacheIdentifier = 'module' . $moduleName . serialize($parameters) . $referenceType;
-        if (isset($this->generated[$cacheIdentifier])) {
-            return $this->generated[$cacheIdentifier];
-        }
-        $parameters = [
-            'route' => $moduleName,
-            'token' => FormProtectionFactory::get('backend')->generateToken('route', $moduleName)
-        ] + $parameters;
-        $this->generated[$cacheIdentifier] = $this->buildUri($parameters, $referenceType);
-        return $this->generated[$cacheIdentifier];
-    }
-
-    /**
      * Internal method building a Uri object, merging the GET parameters array into a flat queryString
      *
      * @param array $parameters An array of GET parameters

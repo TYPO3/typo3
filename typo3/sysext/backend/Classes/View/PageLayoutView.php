@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Backend\View;
 use Doctrine\DBAL\Driver\Statement;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Backend\Controller\PageLayoutController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -51,7 +50,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 
 /**
  * Child class for the Web > Page module
@@ -484,14 +482,6 @@ class PageLayoutView implements LoggerAwareInterface
     public $counter = 0;
 
     /**
-     * Contains sys language icons and titles
-     *
-     * @var array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Use site languages instead.
-     */
-    public $languageIconTitles = [];
-
-    /**
      * Contains site languages for this page ID
      *
      * @var SiteLanguage[]
@@ -519,12 +509,6 @@ class PageLayoutView implements LoggerAwareInterface
      * @var int
      */
     public $fixedL = 30;
-
-    /**
-     * @var TranslationConfigurationProvider
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    public $translateTools;
 
     /**
      * Keys are fieldnames and values are td-parameters to add in addElement(), please use $addElement_tdCSSClass for CSS-classes;
@@ -642,8 +626,6 @@ class PageLayoutView implements LoggerAwareInterface
             $this->fixedL = $GLOBALS['BE_USER']->uc['titleLen'];
         }
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove this instance along with the property.
-        $this->translateTools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
         $this->determineScriptUrl();
         $this->localizationController = GeneralUtility::makeInstance(LocalizationController::class);
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
@@ -3405,23 +3387,6 @@ class PageLayoutView implements LoggerAwareInterface
             );
         }
 
-        $hookName = DatabaseRecordList::class;
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'] ?? [] as $className) {
-            // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, the modifyQuery hook should be used instead.
-            trigger_error('The hook ($GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][' . $hookName . '][\'buildQueryParameters\']) will be removed in TYPO3 v10.0, the modifyQuery hook should be used instead.', E_USER_DEPRECATED);
-            $hookObject = GeneralUtility::makeInstance($className);
-            if (method_exists($hookObject, 'buildQueryParametersPostProcess')) {
-                $hookObject->buildQueryParametersPostProcess(
-                    $parameters,
-                    $table,
-                    $pageId,
-                    $additionalConstraints,
-                    $fieldList,
-                    $this,
-                    $queryBuilder
-                );
-            }
-        }
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][PageLayoutView::class]['modifyQuery'] ?? [] as $className) {
             $hookObject = GeneralUtility::makeInstance($className);
             if (method_exists($hookObject, 'modifyQuery')) {
@@ -3434,37 +3399,6 @@ class PageLayoutView implements LoggerAwareInterface
                     $queryBuilder
                 );
             }
-        }
-
-        // array_unique / array_filter used to eliminate empty and duplicate constraints
-        // the array keys are eliminated by this as well to facilitate argument unpacking
-        // when used with the querybuilder.
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-        if (!empty($parameters['where'])) {
-            $parameters['where'] = array_unique(array_filter(array_values($parameters['where'])));
-        }
-        if (!empty($parameters['where'])) {
-            $this->logDeprecation('where');
-            $queryBuilder->where(...$parameters['where']);
-        }
-        if (!empty($parameters['orderBy'])) {
-            $this->logDeprecation('orderBy');
-            foreach ($parameters['orderBy'] as $fieldNameAndSorting) {
-                list($fieldName, $sorting) = $fieldNameAndSorting;
-                $queryBuilder->addOrderBy($fieldName, $sorting);
-            }
-        }
-        if (!empty($parameters['firstResult'])) {
-            $this->logDeprecation('firstResult');
-            $queryBuilder->setFirstResult((int)$parameters['firstResult']);
-        }
-        if (!empty($parameters['maxResults']) && $parameters['maxResults'] !== $this->iLimit) {
-            $this->logDeprecation('maxResults');
-            $queryBuilder->setMaxResults((int)$parameters['maxResults']);
-        }
-        if (!empty($parameters['groupBy'])) {
-            $this->logDeprecation('groupBy');
-            $queryBuilder->groupBy($parameters['groupBy']);
         }
 
         return $queryBuilder;
@@ -4080,20 +4014,6 @@ class PageLayoutView implements LoggerAwareInterface
     }
 
     /**
-     * Method used to log deprecated usage of old buildQueryParametersPostProcess hook arguments
-     *
-     * @param string $index
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
-     */
-    protected function logDeprecation(string $index)
-    {
-        trigger_error(
-            '[index: ' . $index . '] $parameters in "buildQueryParameters"-Hook will be removed in TYPO3 v10.0, use $queryBuilder instead',
-            E_USER_DEPRECATED
-        );
-    }
-
-    /**
      * Sets the script url depending on being a module or script request
      */
     protected function determineScriptUrl()
@@ -4347,40 +4267,6 @@ class PageLayoutView implements LoggerAwareInterface
         while ($row = $result->fetch()) {
             $this->pageOverlays[$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']]] = $row;
         }
-        // @deprecated $this->languageIconTitles can be removed in TYPO3 v10.0.
-        foreach ($this->siteLanguages as $language) {
-            $this->languageIconTitles[$language->getLanguageId()] = [
-                'title' => $language->getTitle(),
-                'flagIcon' => $language->getFlagIdentifier()
-            ];
-        }
-    }
-
-    /**
-     * Return the icon for the language
-     *
-     * @param int $sys_language_uid Sys language uid
-     * @param bool $addAsAdditionalText If set to true, only the flag is returned
-     * @return string Language icon
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0. Use Site Languages instead.
-     */
-    public function languageFlag($sys_language_uid, $addAsAdditionalText = true)
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        $out = '';
-        $title = htmlspecialchars($this->languageIconTitles[$sys_language_uid]['title']);
-        if ($this->languageIconTitles[$sys_language_uid]['flagIcon']) {
-            $out .= '<span title="' . $title . '">' . $this->iconFactory->getIcon(
-                    $this->languageIconTitles[$sys_language_uid]['flagIcon'],
-                    Icon::SIZE_SMALL
-                )->render() . '</span>';
-            if (!$addAsAdditionalText) {
-                return $out;
-            }
-            $out .= '&nbsp;';
-        }
-        $out .= $title;
-        return $out;
     }
 
     /**

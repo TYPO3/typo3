@@ -194,6 +194,9 @@ The following PHP class aliases that have been previously deprecated for v9 have
 
 The following PHP class methods that have been previously deprecated for v9 have been removed:
 
+* :php:`TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider->foreignTranslationTable()`
+* :php:`TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider->getTranslationTable()`
+* :php:`TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider->isTranslationInOwnTable()`
 * :php:`TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->main()`
 * :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->main()`
 * :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->removeInvalidElements()`
@@ -246,6 +249,7 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extPageReadAccess()`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extGetTreeList()`
 * :php:`TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extGetLL()`
+* :php:`TYPO3\CMS\Backend\Routing\UriBuilder->buildUriFromModule()`
 * :php:`TYPO3\CMS\Backend\Template\DocumentTemplate->addStyleSheet()`
 * :php:`TYPO3\CMS\Backend\Template\DocumentTemplate->formWidth()`
 * :php:`TYPO3\CMS\Backend\Template\DocumentTemplate->xUaCompatible()`
@@ -255,6 +259,7 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Backend\Tree\View\AbstractTreeView->setDataFromArray()`
 * :php:`TYPO3\CMS\Backend\Tree\View\AbstractTreeView->setDataFromTreeArray()`
 * :php:`TYPO3\CMS\Backend\Tree\View\PagePositionMap->getModConfig()`
+* :php:`TYPO3\CMS\Backend\View\PageLayoutView->languageFlag()`
 * :php:`TYPO3\CMS\Core\Authentication\AbstractAuthenticationService->compareUident()`
 * :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->compareUident()`
 * :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->fetchUserRecord()`
@@ -563,6 +568,8 @@ The following public class properties have been dropped:
 * :php:`TYPO3\CMS\Backend\Tree\View\AbstractTreeView->subLevelID`
 * :php:`TYPO3\CMS\Backend\Tree\View\PagePositionMap->getModConfigCache`
 * :php:`TYPO3\CMS\Backend\Tree\View\PagePositionMap->modConfigStr`
+* :php:`TYPO3\CMS\Backend\View\PageLayoutView->languageIconTitles`
+* :php:`TYPO3\CMS\Backend\View\PageLayoutView->translateTools`
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTS_dontGetCached`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->synonyms`
 * :php:`TYPO3\CMS\Core\DataHandling\DataHandler->alternativeFileName`
@@ -1267,6 +1274,7 @@ The following class constants have been dropped:
 * :php:`TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING`
 * :php:`TYPO3\CMS\Extbase\Validation\ValidatorResolver::PATTERN_MATCH_VALIDATORS`
 * :php:`TYPO3\CMS\Extbase\Validation\ValidatorResolver::PATTERN_MATCH_VALIDATOROPTIONS`
+* :php:`TYPO3\CMS\Frontend\Page\PageAccessFailureReasons::PAGE_ALIAS_NOT_FOUND`
 
 
 The following constants have been set to protected:
@@ -1352,6 +1360,7 @@ The following features have been removed:
   prefixed password can not log in anymore. Auto converting those user passwords during first login has been dropped, those
   users need their password being manually recovered or reset.
 * Extension :php:`rsaauth` has been dropped from core
+* Translation :php:`locallang` references :php:`EXT:lang` to removed extension "lang" do not work any longer
 
 
 The following database tables have been removed:
