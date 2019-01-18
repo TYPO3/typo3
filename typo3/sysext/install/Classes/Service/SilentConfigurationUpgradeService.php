@@ -136,6 +136,8 @@ class SilentConfigurationUpgradeService
         'SYS/isInitialDatabaseImportDone',
         // #84810
         'BE/explicitConfirmationOfTranslation',
+        // #87482
+        'EXT/extConf'
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)
@@ -996,16 +998,8 @@ class SilentConfigurationUpgradeService
         } catch (MissingArrayPathException $e) {
             $extensionConfiguration = [];
         }
-        try {
-            // The silent upgrade may be executed before LayoutController synchronized old serialized extConf
-            // settings to EXTENSIONS if upgrading from v8 to v9.
-            $extConfConfiguration = (string)$confManager->getLocalConfigurationValueByPath('EXT/extConf/saltedpasswords');
-            $configsToRemove[] = 'EXT/extConf/saltedpasswords';
-        } catch (MissingArrayPathException $e) {
-            $extConfConfiguration = [];
-        }
         // Migration already done
-        if (empty($extensionConfiguration) && empty($extConfConfiguration)) {
+        if (empty($extensionConfiguration)) {
             return;
         }
         // Upgrade to best available hash method. This is only done once since that code will no longer be reached

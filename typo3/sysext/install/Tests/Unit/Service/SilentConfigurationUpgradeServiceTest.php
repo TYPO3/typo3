@@ -864,8 +864,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         $configurationManagerException = new MissingArrayPathException('Path does not exist in array', 1533989414);
         $configurationManagerProphecy->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords')
             ->shouldBeCalled()->willThrow($configurationManagerException);
-        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXT/extConf/saltedpasswords')
-            ->shouldBeCalled()->willThrow($configurationManagerException);
         $configurationManagerProphecy->setLocalConfigurationValuesByPathValuePairs(Argument::cetera())
             ->shouldNotBeCalled();
         $silentConfigurationUpgradeService = $this->getAccessibleMock(
@@ -884,8 +882,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
         $configurationManagerProphecy->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords')
             ->shouldBeCalled()->willReturn([]);
-        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXT/extConf/saltedpasswords')
-            ->shouldBeCalled()->willReturn('');
         $configurationManagerProphecy->setLocalConfigurationValuesByPathValuePairs(Argument::cetera())
             ->shouldNotBeCalled();
         $silentConfigurationUpgradeService = $this->getAccessibleMock(
@@ -905,8 +901,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         $configurationManagerException = new MissingArrayPathException('Path does not exist in array', 1533989428);
         $configurationManagerProphecy->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords')
             ->shouldBeCalled()->willReturn(['thereIs' => 'something']);
-        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXT/extConf/saltedpasswords')
-            ->shouldBeCalled()->willThrow($configurationManagerException);
         $argonBeProphecy = $this->prophesize(Argon2iPasswordHash::class);
         $argonBeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
         GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonBeProphecy->reveal());
@@ -928,42 +922,11 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function migrateSaltedPasswordsSettingsRemovesExtConfAndSetsNothingElseIfArgon2iIsAvailable()
-    {
-        $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
-        $configurationManagerException = new MissingArrayPathException('Path does not exist in array', 1533989434);
-        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords')
-            ->shouldBeCalled()->willThrow($configurationManagerException);
-        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXT/extConf/saltedpasswords')
-            ->shouldBeCalled()->willReturn('someConfiguration');
-        $argonBeProphecy = $this->prophesize(Argon2iPasswordHash::class);
-        $argonBeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
-        GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonBeProphecy->reveal());
-        $argonFeProphecy = $this->prophesize(Argon2iPasswordHash::class);
-        $argonFeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
-        GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonFeProphecy->reveal());
-        $configurationManagerProphecy->removeLocalConfigurationKeysByPath(['EXT/extConf/saltedpasswords'])
-            ->shouldBeCalled();
-        $silentConfigurationUpgradeService = $this->getAccessibleMock(
-            SilentConfigurationUpgradeService::class,
-            ['dummy'],
-            [$configurationManagerProphecy->reveal()]
-        );
-        $this->expectException(ConfigurationChangedException::class);
-        $this->expectExceptionCode(1379024938);
-        $silentConfigurationUpgradeService->_call('migrateSaltedPasswordsSettings');
-    }
-
-    /**
-     * @test
-     */
     public function migrateSaltedPasswordsSetsSpecificHashMethodIfArgon2iIsNotAvailable()
     {
         $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
         $configurationManagerProphecy->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords')
             ->shouldBeCalled()->willReturn(['thereIs' => 'something']);
-        $configurationManagerProphecy->getLocalConfigurationValueByPath('EXT/extConf/saltedpasswords')
-            ->shouldBeCalled()->willReturn('someConfiguration');
         $argonBeProphecy = $this->prophesize(Argon2iPasswordHash::class);
         $argonBeProphecy->isAvailable()->shouldBeCalled()->willReturn(false);
         GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonBeProphecy->reveal());
@@ -980,7 +943,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             'BE/passwordHashing/className' => BcryptPasswordHash::class,
             'FE/passwordHashing/className' => BcryptPasswordHash::class,
         ])->shouldBeCalled();
-        $configurationManagerProphecy->removeLocalConfigurationKeysByPath(['EXTENSIONS/saltedpasswords', 'EXT/extConf/saltedpasswords'])
+        $configurationManagerProphecy->removeLocalConfigurationKeysByPath(['EXTENSIONS/saltedpasswords'])
             ->shouldBeCalled();
         $silentConfigurationUpgradeService = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,

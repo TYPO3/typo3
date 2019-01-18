@@ -1279,6 +1279,7 @@ The following constants have been set to protected:
 
 The following global options are ignored:
 
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']`
 

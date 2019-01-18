@@ -74,7 +74,6 @@ class ConfigurationManager
      * @var array
      */
     protected $whiteListedLocalConfigurationPaths = [
-        'EXT/extConf',
         'EXTCONF',
         'DB',
         'SYS/caching/cacheConfigurations',

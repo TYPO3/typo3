@@ -213,17 +213,6 @@ class ExtensionConfiguration
             $configurationManager->setLocalConfigurationValueByPath('EXTENSIONS/' . $extension, $value);
             $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extension] = $value;
         }
-
-        // After TYPO3_CONF_VARS['EXTENSIONS'] has been written, update legacy layer TYPO3_CONF_VARS['EXTENSIONS']['extConf']
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 with removal of old serialized 'extConf' layer
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'])) {
-            $extConfArray = [];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'] as $extensionName => $extensionConfig) {
-                $extConfArray[$extensionName] = serialize($this->addDotsToArrayKeysRecursiveForLegacyExtConf($extensionConfig));
-            }
-            $configurationManager->setLocalConfigurationValueByPath('EXT/extConf', $extConfArray);
-            $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'] = $extConfArray;
-        }
     }
 
     /**
@@ -239,15 +228,6 @@ class ExtensionConfiguration
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         $configurationManager->setLocalConfigurationValueByPath('EXTENSIONS', $configuration);
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'] = $configuration;
-
-        // After TYPO3_CONF_VARS['EXTENSIONS'] has been written, update legacy layer TYPO3_CONF_VARS['EXTENSIONS']['extConf']
-        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 with removal of old serialized 'extConf' layer
-        $extConfArray = [];
-        foreach ($configuration as $extensionName => $extensionConfig) {
-            $extConfArray[$extensionName] = serialize($this->addDotsToArrayKeysRecursiveForLegacyExtConf($extensionConfig));
-        }
-        $configurationManager->setLocalConfigurationValueByPath('EXT/extConf', $extConfArray);
-        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'] = $extConfArray;
     }
 
     /**
@@ -304,45 +284,6 @@ class ExtensionConfiguration
         if ($extConfTemplateConfiguration != $currentLocalConfiguration) {
             $this->set($extensionKey, '', $extConfTemplateConfiguration);
         }
-    }
-
-    /**
-     * The old EXT/extConf layer had '.' (dots) at the end of all nested array keys. This is created here
-     * to keep EXT/extConf format compatible with old not yet adapted extensions.
-     * But extensions may rely on ending dots if using legacy unserialize() on their extensions, too.
-     *
-     * A EXTENSIONS array like:
-     * TYPO3_CONF_VARS['EXTENSIONS']['someExtension'] => [
-     *      'someKey' => [
-     *          'someSubKey' => [
-     *              'someSubSubKey' => 'someValue',
-     *          ],
-     *      ],
-     * ]
-     * becomes (serialized) in old EXT/extConf (mind the dots and end of array keys for sub arrays):
-     * TYPO3_CONF_VARS['EXTENSIONS']['someExtension'] => [
-     *      'someKey.' => [
-     *          'someSubKey.' => [
-     *              'someSubSubKey' => 'someValue',
-     *          ],
-     *      ],
-     * ]
-     *
-     * @param array $extensionConfig
-     * @return array
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0 with removal of old serialized 'extConf' layer
-     */
-    private function addDotsToArrayKeysRecursiveForLegacyExtConf(array $extensionConfig): array
-    {
-        $newArray = [];
-        foreach ($extensionConfig as $key => $value) {
-            if (is_array($value)) {
-                $newArray[$key . '.'] = $this->addDotsToArrayKeysRecursiveForLegacyExtConf($value);
-            } else {
-                $newArray[$key] = $value;
-            }
-        }
-        return $newArray;
     }
 
     /**
