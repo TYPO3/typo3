@@ -1209,7 +1209,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function loadExtLocalconfRequiresCacheFileIfExistsAndCachingIsAllowed()
     {
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -1333,7 +1333,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         file_put_contents($extLocalconfLocation, "<?php\n\n" . $uniqueStringInLocalconf . "\n\n?>");
         ExtensionManagementUtility::setPackageManager($packageManager);
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -1350,7 +1350,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
         ExtensionManagementUtility::setPackageManager($packageManager);
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -1366,7 +1366,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function createExtLocalconfCacheEntryWritesCacheEntryWithNoTags()
     {
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockCache->expects($this->once())->method('set')->with($this->anything(), $this->anything(), $this->equalTo([]));
@@ -1414,7 +1414,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function loadBaseTcaRequiresCacheFileIfExistsAndCachingIsAllowed()
     {
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -1439,7 +1439,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $tableConfiguration = '<?php return array(\'foo\' => \'' . $uniqueStringInTableConfiguration . '\'); ?>';
         file_put_contents($packagePath . 'Configuration/TCA/' . $uniqueTableName . '.php', $tableConfiguration);
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -1460,7 +1460,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function loadBaseTcaWritesCacheEntryWithNoTags()
     {
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -1516,7 +1516,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function loadExtTablesRequiresCacheFileIfExistsAndCachingIsAllowed()
     {
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -1550,7 +1550,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         file_put_contents($extTablesLocation, "<?php\n\n$uniqueStringInTables\n\n?>");
         ExtensionManagementUtility::setPackageManager($packageManager);
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -1573,7 +1573,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
         ExtensionManagementUtility::setPackageManager($packageManager);
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -1595,7 +1595,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function createExtTablesCacheEntryWritesCacheEntryWithNoTags()
     {
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 

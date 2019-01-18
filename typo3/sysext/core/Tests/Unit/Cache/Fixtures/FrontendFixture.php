@@ -48,10 +48,6 @@ class FrontendFixture implements FrontendInterface
     {
     }
 
-    public function getByTag($tag)
-    {
-    }
-
     public function has($entryIdentifier)
     {
     }

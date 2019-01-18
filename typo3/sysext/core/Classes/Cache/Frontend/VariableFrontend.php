@@ -83,30 +83,4 @@ class VariableFrontend extends AbstractFrontend
         }
         return $this->backend instanceof TransientBackendInterface ? $rawResult : unserialize($rawResult);
     }
-
-    /**
-     * Finds and returns all cache entries which are tagged by the specified tag.
-     *
-     * @param string $tag The tag to search for
-     *
-     * @return array An array with the content of all matching entries. An empty array if no entries matched
-     * @throws \InvalidArgumentException if the tag is not valid
-     * @deprecated since TYPO3 v9, Avoid using this method since it is not compliant to PSR-6
-     */
-    public function getByTag($tag)
-    {
-        trigger_error('VariableFrontend->getByTag() will be removed in TYPO3 v10.0. Avoid using this method since it is not compliant to PSR-6.', E_USER_DEPRECATED);
-        if (!$this->isValidTag($tag)) {
-            throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233058312);
-        }
-        $entries = [];
-        $identifiers = $this->backend->findIdentifiersByTag($tag);
-        foreach ($identifiers as $identifier) {
-            $rawResult = $this->backend->get($identifier);
-            if ($rawResult !== false) {
-                $entries[] = $this->backend instanceof TransientBackendInterface ? $rawResult : unserialize($rawResult);
-            }
-        }
-        return $entries;
-    }
 }

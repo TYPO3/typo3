@@ -32,7 +32,7 @@ class AbstractFrontendTest extends UnitTestCase
             ->getMock();
         foreach (['x', 'someValue', '123fivesixseveneight', 'some&', 'ab_cd%', rawurlencode('resource://some/äöü$&% sadf'), str_repeat('x', 250)] as $identifier) {
             $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
-                ->setMethods(['__construct', 'get', 'set', 'has', 'remove', 'getByTag', 'flush', 'flushByTag', 'collectGarbage'])
+                ->setMethods(['__construct', 'get', 'set', 'has', 'remove', 'flush', 'flushByTag', 'collectGarbage'])
                 ->setConstructorArgs([$identifier, $mockBackend])
                 ->getMock();
         }
@@ -50,7 +50,7 @@ class AbstractFrontendTest extends UnitTestCase
         foreach (['', 'abc def', 'foo!', 'bar:', 'some/', 'bla*', 'one+', 'äöü', str_repeat('x', 251), 'x$', '\\a', 'b#'] as $identifier) {
             try {
                 $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
-                    ->setMethods(['__construct', 'get', 'set', 'has', 'remove', 'getByTag', 'flush', 'flushByTag', 'collectGarbage'])
+                    ->setMethods(['__construct', 'get', 'set', 'has', 'remove', 'flush', 'flushByTag', 'collectGarbage'])
                     ->setConstructorArgs([$identifier, $mockBackend])
                     ->getMock();
                 $this->fail('Identifier "' . $identifier . '" was not rejected.');
@@ -71,7 +71,7 @@ class AbstractFrontendTest extends UnitTestCase
             ->getMock();
         $backend->expects($this->once())->method('flush');
         $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
-            ->setMethods(['__construct', 'get', 'set', 'has', 'remove', 'getByTag'])
+            ->setMethods(['__construct', 'get', 'set', 'has', 'remove'])
             ->setConstructorArgs([$identifier, $backend])
             ->getMock();
         $cache->flush();
@@ -89,7 +89,7 @@ class AbstractFrontendTest extends UnitTestCase
         $backend = $this->createMock(\TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface::class);
         $backend->expects($this->never())->method('flushByTag');
         $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
-            ->setMethods(['__construct', 'get', 'set', 'has', 'remove', 'getByTag'])
+            ->setMethods(['__construct', 'get', 'set', 'has', 'remove'])
             ->setConstructorArgs([$identifier, $backend])
             ->getMock();
         $cache->flushByTag('SomeInvalid\\Tag');
@@ -108,7 +108,7 @@ class AbstractFrontendTest extends UnitTestCase
             ->getMock();
         $backend->expects($this->once())->method('flushByTag')->with($tag);
         $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
-            ->setMethods(['__construct', 'get', 'set', 'has', 'remove', 'getByTag'])
+            ->setMethods(['__construct', 'get', 'set', 'has', 'remove'])
             ->setConstructorArgs([$identifier, $backend])
             ->getMock();
         $cache->flushByTag($tag);
@@ -127,7 +127,7 @@ class AbstractFrontendTest extends UnitTestCase
             ->getMock();
         $backend->expects($this->once())->method('flushByTags')->with([$tag]);
         $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
-            ->setMethods(['__construct', 'get', 'set', 'has', 'remove', 'getByTag'])
+            ->setMethods(['__construct', 'get', 'set', 'has', 'remove'])
             ->setConstructorArgs([$identifier, $backend])
             ->getMock();
         $cache->flushByTags([$tag]);
@@ -145,7 +145,7 @@ class AbstractFrontendTest extends UnitTestCase
             ->getMock();
         $backend->expects($this->once())->method('collectGarbage');
         $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
-            ->setMethods(['__construct', 'get', 'set', 'has', 'remove', 'getByTag'])
+            ->setMethods(['__construct', 'get', 'set', 'has', 'remove'])
             ->setConstructorArgs([$identifier, $backend])
             ->getMock();
         $cache->collectGarbage();
@@ -159,7 +159,7 @@ class AbstractFrontendTest extends UnitTestCase
         $identifier = 'someCacheIdentifier';
         $backend = $this->createMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class);
         $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
-            ->setMethods(['__construct', 'get', 'set', 'has', 'remove', 'getByTag'])
+            ->setMethods(['__construct', 'get', 'set', 'has', 'remove'])
             ->setConstructorArgs([$identifier, $backend])
             ->getMock();
         foreach (['', 'abc def', 'foo!', 'bar:', 'some/', 'bla*', 'one+', 'äöü', str_repeat('x', 251), 'x$', '\\a', 'b#'] as $entryIdentifier) {
@@ -175,7 +175,7 @@ class AbstractFrontendTest extends UnitTestCase
         $identifier = 'someCacheIdentifier';
         $backend = $this->createMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class);
         $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
-            ->setMethods(['__construct', 'get', 'set', 'has', 'remove', 'getByTag'])
+            ->setMethods(['__construct', 'get', 'set', 'has', 'remove'])
             ->setConstructorArgs([$identifier, $backend])
             ->getMock();
         foreach (['_', 'abcdef', 'foo', 'bar123', '3some', '_bl_a', 'some&', 'one%TWO', str_repeat('x', 250)] as $entryIdentifier) {
@@ -191,7 +191,7 @@ class AbstractFrontendTest extends UnitTestCase
         $identifier = 'someCacheIdentifier';
         $backend = $this->createMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class);
         $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
-            ->setMethods(['__construct', 'get', 'set', 'has', 'remove', 'getByTag'])
+            ->setMethods(['__construct', 'get', 'set', 'has', 'remove'])
             ->setConstructorArgs([$identifier, $backend])
             ->getMock();
         foreach (['', 'abc def', 'foo!', 'bar:', 'some/', 'bla*', 'one+', 'äöü', str_repeat('x', 251), 'x$', '\\a', 'b#'] as $tag) {
@@ -207,7 +207,7 @@ class AbstractFrontendTest extends UnitTestCase
         $identifier = 'someCacheIdentifier';
         $backend = $this->createMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class);
         $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
-            ->setMethods(['__construct', 'get', 'set', 'has', 'remove', 'getByTag'])
+            ->setMethods(['__construct', 'get', 'set', 'has', 'remove'])
             ->setConstructorArgs([$identifier, $backend])
             ->getMock();
         foreach (['abcdef', 'foo-bar', 'foo_baar', 'bar123', '3some', 'file%Thing', 'some&', '%x%', str_repeat('x', 250)] as $tag) {

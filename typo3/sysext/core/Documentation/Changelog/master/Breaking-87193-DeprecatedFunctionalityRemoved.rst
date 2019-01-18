@@ -263,6 +263,8 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->getTSConfigVal()`
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->isPSet()`
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->simplelog()`
+* :php:`TYPO3\CMS\Core\Cache\PhpFrontend->getByTag()`
+* :php:`TYPO3\CMS\Core\Cache\VariableFrontend->getByTag()`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->convArray()`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->convCaseFirst()`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->crop()`
