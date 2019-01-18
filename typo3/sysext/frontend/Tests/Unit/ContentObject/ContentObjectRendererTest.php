@@ -51,7 +51,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectStdWrapHookInterface;
 use TYPO3\CMS\Frontend\ContentObject\EditPanelContentObject;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
-use TYPO3\CMS\Frontend\ContentObject\FileContentObject;
 use TYPO3\CMS\Frontend\ContentObject\FilesContentObject;
 use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
 use TYPO3\CMS\Frontend\ContentObject\HierarchicalMenuContentObject;
@@ -108,7 +107,6 @@ class ContentObjectRendererTest extends UnitTestCase
         'COA_INT' => ContentObjectArrayInternalContentObject::class,
         'USER' => UserContentObject::class,
         'USER_INT' => UserInternalContentObject::class,
-        'FILE' => FileContentObject::class,
         'FILES' => FilesContentObject::class,
         'IMAGE' => ImageContentObject::class,
         'IMG_RESOURCE' => ImageResourceContentObject::class,

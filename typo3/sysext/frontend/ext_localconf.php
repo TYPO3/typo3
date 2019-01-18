@@ -16,7 +16,6 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] = array_merge($GLOBALS['TYPO
     'COA_INT'          => \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayInternalContentObject::class,
     'USER'             => \TYPO3\CMS\Frontend\ContentObject\UserContentObject::class,
     'USER_INT'         => \TYPO3\CMS\Frontend\ContentObject\UserInternalContentObject::class,
-    'FILE'             => \TYPO3\CMS\Frontend\ContentObject\FileContentObject::class,
     'FILES'            => \TYPO3\CMS\Frontend\ContentObject\FilesContentObject::class,
     'IMAGE'            => \TYPO3\CMS\Frontend\ContentObject\ImageContentObject::class,
     'IMG_RESOURCE'     => \TYPO3\CMS\Frontend\ContentObject\ImageResourceContentObject::class,

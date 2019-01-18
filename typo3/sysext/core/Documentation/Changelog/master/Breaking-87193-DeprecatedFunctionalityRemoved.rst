@@ -59,6 +59,7 @@ The following PHP classes that have been previously deprecated for v9 have been 
 * :php:`TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase`
 * :php:`TYPO3\CMS\Extbase\Validation\Validator\RawValidator`
 * :php:`TYPO3\CMS\Extensionmanager\Command\ExtensionCommandController`
+* :php:`TYPO3\CMS\Frontend\ContentObject\FileContentObject`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\ImageMenuContentObject`
 * :php:`TYPO3\CMS\Frontend\Http\EidRequestHandler`
@@ -1192,6 +1193,7 @@ The following TypoScript options have been dropped:
 * `config.tx_extbase.objects`
 * `config.USERNAME_substToken`
 * `config.USERUID_substToken`
+* `FILE`
 * `page.javascriptLibs`
 * `page.javascriptLibs.jQuery`
 * `plugin.tx_%plugin%.objects`
