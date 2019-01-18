@@ -198,6 +198,16 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider->foreignTranslationTable()`
 * :php:`TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider->getTranslationTable()`
 * :php:`TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider->isTranslationInOwnTable()`
+* :php:`TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->evaluateCondition($string)`
+* :php:`TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->getVariable($var)`
+* :php:`TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->getGroupList()`
+* :php:`TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->getPage()`
+* :php:`TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->isNewPageWithPageId($pageId)`
+* :php:`TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->determineRootline()`
+* :php:`TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->getUserId()`
+* :php:`TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->isUserLoggedIn()`
+* :php:`TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->isAdminUser()`
+* :php:`TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->getBackendUserAuthentication()`
 * :php:`TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->main()`
 * :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->main()`
 * :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->removeInvalidElements()`
@@ -278,6 +288,23 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->parse_charset()`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->utf8_char2byte_pos()`
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->utf8_to_entities()`
+* :php:`TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher->strictSyntaxEnabled()`
+* :php:`TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher->normalizeExpression($expression)`
+* :php:`TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher->evaluateConditionCommon($key, $value)`
+* :php:`TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher->evaluateCustomDefinedCondition($condition)`
+* :php:`TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher->parseUserFuncArguments($arguments)`
+* :php:`TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher->getVariableCommon(array $vars)`
+* :php:`TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher->compareNumber($test, $leftValue)`
+* :php:`TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher->searchStringWildcard($haystack, $needle)`
+* :php:`TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher->getGlobal($var, $source = null)`
+* :php:`TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher->evaluateCondition($string)`
+* :php:`TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher->getVariable($name)`
+* :php:`TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher->getGroupList()`
+* :php:`TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher->determinePageId()`
+* :php:`TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher->getPage()`
+* :php:`TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher->determineRootline()`
+* :php:`TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher->getUserId()`
+* :php:`TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher->isUserLoggedIn()`
 * :php:`TYPO3\CMS\Core\Core\Bootstrap->__construct()`
 * :php:`TYPO3\CMS\Core\Core\Bootstrap->configure()`
 * :php:`TYPO3\CMS\Core\Core\Bootstrap->createApplicationContext()`
@@ -383,6 +410,18 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Extensionmanager\Utility\InstallUtility->updateDbWithExtTablesSql()`
 * :php:`TYPO3\CMS\Fluid\Core\Widget\Bootstrap->configureObjectManager()`
 * :php:`TYPO3\CMS\Filelist\FileFacade->getIcon()`
+* :php:`TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->evaluateCondition($string)`
+* :php:`TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->getVariable($var)`
+* :php:`TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->getSessionVariable(string $var)`
+* :php:`TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->getGroupList()`
+* :php:`TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->determinePageId()`
+* :php:`TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->getPage()`
+* :php:`TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->determineRootline()`
+* :php:`TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->getUserId()`
+* :php:`TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->isUserLoggedIn()`
+* :php:`TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->getTypoScriptFrontendController()`
+* :php:`TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->getCurrentSiteLanguage()`
+* :php:`TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->getCurrentSite()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->addParams()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->calcIntExplode()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->currentPageUrl()`
@@ -1221,6 +1260,29 @@ The following TypoScript options have been dropped:
 * `IMGMENU`
 * `IMGMENUITEMS`
 
+The following TypoScript conditions have been dropped:
+
+* `language`
+* `IP`
+* `hostname`
+* `applicationContext`
+* `hour`
+* `minute`
+* `month`
+* `year`
+* `dayofweek`
+* `dayofmonth`
+* `dayofyear`
+* `usergroup`
+* `loginUser`
+* `page`
+* `treeLevel`
+* `PIDinRootline`
+* `PIDupinRootline`
+* `compatVersion`
+* `globalVar`
+* `globalString`
+* `userFunc`
 
 The following constants have been dropped:
 
@@ -1337,6 +1399,7 @@ The following features are now always enabled:
 * Extbase's :php:`consistentTranslationOverlayHandling` - Translations in Extbase are now always consistent
 * :php:`simplifiedControllerActionDispatching` - Backend controller actions do not receive a prepared response object anymore
 * :php:`unifiedPageTranslationHandling` - Page Translations are not within `pages_language_overlay` anymore
+* TypoScript condition strict syntax - The feature toggle :php:`TypoScript.strictSyntax` has been dropped
 
 
 The following features have been removed:

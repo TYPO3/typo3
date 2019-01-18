@@ -6,15 +6,15 @@ page.10 {
     vendorName = TYPO3Fluid
 }
 
-[globalVar = GP:pluginConfig = extensionKey]
+[request.getQueryParams()['pluginConfig'] == 'extensionKey' || request.getParsedBody()['pluginConfig'] == 'extensionKey']
     plugin.tx_fluidtest.view < lib.viewConfig
 [end]
 
-[globalVar = GP:pluginConfig = pluginName]
+[request.getQueryParams()['pluginConfig'] == 'pluginName' || request.getParsedBody()['pluginConfig'] == 'pluginName']
     plugin.tx_fluidtest_pi.view < lib.viewConfig
 [end]
 
-[globalVar = GP:pluginConfig = incomplete]
+[request.getQueryParams()['pluginConfig'] == 'incomplete' || request.getParsedBody()['pluginConfig'] == 'incomplete']
     plugin.tx_fluidtest_pi.view < lib.viewConfig
     plugin.tx_fluidtest_pi.view.partialRootPaths >
     plugin.tx_fluidtest_pi.view.layoutRootPaths >

@@ -39,7 +39,7 @@ lib.viewConfig {
     }
 }
 
-[globalVar = GP:override = overrideAll]
+[request.getQueryParams()['override'] == 'overrideAll' || request.getParsedBody()['override'] == 'overrideAll']
     lib.viewConfig {
         templateRootPaths {
             10 = EXT:fluid_test/Resources/Private/Override/Templates/
@@ -55,7 +55,7 @@ lib.viewConfig {
     }
 [end]
 
-[globalVar = GP:override = templateOverride]
+[request.getQueryParams()['override'] == 'templateOverride' || request.getParsedBody()['override'] == 'templateOverride']
     lib.viewConfig {
         templateRootPaths {
             15 = EXT:fluid_test/Resources/Private/TemplateOverride/Templates/
@@ -64,7 +64,7 @@ lib.viewConfig {
     }
 [end]
 
-[globalVar = GP:override = templateOverrideManual]
+[request.getQueryParams()['override'] == 'templateOverrideManual' || request.getParsedBody()['override'] == 'templateOverrideManual']
     lib.viewConfig {
         templateRootPaths {
             10 = EXT:fluid_test/Resources/Private/Override/Templates/
@@ -73,7 +73,7 @@ lib.viewConfig {
     }
 [end]
 
-[globalVar = GP:override = partialOverride]
+[request.getQueryParams()['override'] == 'partialOverride' || request.getParsedBody()['override'] == 'partialOverride']
     lib.viewConfig {
         partialRootPaths {
             15 = EXT:fluid_test/Resources/Private/PartialOverride/Partials/
@@ -82,7 +82,7 @@ lib.viewConfig {
     }
 [end]
 
-[globalVar = GP:override = partialOverrideManual]
+[request.getQueryParams()['override'] == 'partialOverrideManual' || request.getParsedBody()['override'] == 'partialOverrideManual']
     lib.viewConfig {
         partialRootPaths {
             10 = EXT:fluid_test/Resources/Private/Override/Partials/
@@ -91,7 +91,7 @@ lib.viewConfig {
     }
 [end]
 
-[globalVar = GP:override = layoutOverride]
+[request.getQueryParams()['override'] == 'layoutOverride' || request.getParsedBody()['override'] == 'layoutOverride']
     lib.viewConfig {
         layoutRootPaths {
             15 = EXT:fluid_test/Resources/Private/LayoutOverride/Layouts/
@@ -100,7 +100,7 @@ lib.viewConfig {
     }
 [end]
 
-[globalVar = GP:override = layoutOverrideManual]
+[request.getQueryParams()['override'] == 'layoutOverrideManual' || request.getParsedBody()['override'] == 'layoutOverrideManual']
     lib.viewConfig {
         layoutRootPaths {
             10 = EXT:fluid_test/Resources/Private/Override/Layouts/
@@ -109,7 +109,7 @@ lib.viewConfig {
     }
 [end]
 
-<INCLUDE_TYPOSCRIPT: source="FILE: ./FluidTemplateContentObject.ts" condition="[globalVar = GP:mode = fluidTemplate]">
-<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbasePlugin.ts" condition="[globalVar = GP:mode = plugin]">
-<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbaseController.ts" condition="[globalVar = GP:mode = controller]">
-<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbaseTwoPlugins.ts" condition="[globalVar = GP:mode = 2plugins]">
+<INCLUDE_TYPOSCRIPT: source="FILE: ./FluidTemplateContentObject.ts" condition="[request.getQueryParams()['mode'] == 'fluidTemplate' || request.getParsedBody()['mode'] == 'fluidTemplate']">
+<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbasePlugin.ts" condition="[request.getQueryParams()['mode'] == 'plugin' || request.getParsedBody()['mode'] == 'plugin']">
+<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbaseController.ts" condition="[request.getQueryParams()['mode'] == 'controller' || request.getParsedBody()['mode'] == 'controller']">
+<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbaseTwoPlugins.ts" condition="[request.getQueryParams()['mode'] == '2plugins' || request.getParsedBody()['mode'] == '2plugins']">

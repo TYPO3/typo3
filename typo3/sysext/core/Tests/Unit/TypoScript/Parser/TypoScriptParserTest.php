@@ -431,12 +431,12 @@ class TypoScriptParserTest extends UnitTestCase
             'TS code before not matching include' => [
                 '
                 foo = bar
-                <INCLUDE_TYPOSCRIPT: source="FILE:dev.ts" condition="applicationContext = /^NotMatched/">
+                <INCLUDE_TYPOSCRIPT: source="FILE:dev.ts" condition="applicationContext matches \"/^NotMatched/\"">
                 '
             ],
             'TS code after not matching include' => [
                 '
-                <INCLUDE_TYPOSCRIPT: source="FILE:dev.ts" condition="applicationContext = /^NotMatched/">
+                <INCLUDE_TYPOSCRIPT: source="FILE:dev.ts" condition="applicationContext matches \"/^NotMatched/\"">
                 foo = bar
                 '
             ],
@@ -458,7 +458,9 @@ class TypoScriptParserTest extends UnitTestCase
         $cacheProphecy->set(Argument::cetera())->willReturn(false);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
 
-        GeneralUtility::addInstance(ConditionMatcher::class, $this->prophesize(ConditionMatcher::class)->reveal());
+        $p = $this->prophesize(ConditionMatcher::class);
+        $p->match(Argument::cetera())->willReturn(false);
+        GeneralUtility::addInstance(ConditionMatcher::class, $p->reveal());
 
         $resolvedIncludeLines = TypoScriptParser::checkIncludeLines($typoScript);
         $this->assertContains('foo = bar', $resolvedIncludeLines);

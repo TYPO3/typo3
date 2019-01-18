@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatching;
+namespace TYPO3\CMS\Frontend\Tests\Functional\Configuration\TypoScript\ConditionMatching;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,85 +16,35 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatchi
  */
 
 use Prophecy\Argument;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Log\Logger;
-use TYPO3\CMS\Core\Package\PackageInterface;
-use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
- * Test case
+ * Functional test for the ConditionMatcher of EXT:frontend
  */
-class ConditionMatcherTest extends UnitTestCase
+class ConditionMatcherTest extends FunctionalTestCase
 {
     /**
-     * @var ConditionMatcher
+     * Sets up this test case.
      */
-    protected $subject;
-
-    /**
-     * @var string
-     */
-    protected $testGlobalNamespace;
-
-    /**
-     * @var bool Reset singletons
-     */
-    protected $resetSingletonInstances = true;
-
     protected function setUp(): void
     {
+        parent::setUp();
+
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheFrontendProphecy->has(Argument::any())->willReturn(false);
-        $cacheFrontendProphecy->set(Argument::any(), Argument::any())->willReturn(null);
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheManagerProphecy->getCache('cache_core')->willReturn($cacheFrontendProphecy->reveal());
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
 
-        $packageManagerProphecy = $this->prophesize(PackageManager::class);
-        $corePackageProphecy = $this->prophesize(PackageInterface::class);
-        $corePackageProphecy->getPackagePath()->willReturn(__DIR__ . '/../../../../../../../sysext/core/');
-        $packageManagerProphecy->getActivePackages()->willReturn([
-            $corePackageProphecy->reveal()
-        ]);
-        GeneralUtility::setSingletonInstance(PackageManager::class, $packageManagerProphecy->reveal());
-
-        $this->testGlobalNamespace = $this->getUniqueId('TEST');
-        $GLOBALS[$this->testGlobalNamespace] = [];
-        $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->page = [];
-        $GLOBALS['TSFE']->tmpl = new \stdClass();
-        $GLOBALS['TSFE']->tmpl->rootLine = [
-            2 => ['uid' => 121, 'pid' => 111],
-            1 => ['uid' => 111, 'pid' => 101],
-            0 => ['uid' => 101, 'pid' => 0]
-        ];
-
-        $frontedUserAuthentication = $this->getMockBuilder(FrontendUserAuthentication::class)
-            ->setMethods(['dummy'])
-            ->getMock();
-
-        $frontedUserAuthentication->user['uid'] = 13;
-        $frontedUserAuthentication->groupData['uid'] = [14];
-        $GLOBALS['TSFE']->fe_user = $frontedUserAuthentication;
-        $this->getFreshConditionMatcher();
-    }
-
-    protected function getFreshConditionMatcher()
-    {
-        $this->subject = new ConditionMatcher(new Context([
-            'frontend.user' => new UserAspect($GLOBALS['TSFE']->fe_user)
-        ]));
-        $this->subject->setLogger($this->prophesize(Logger::class)->reveal());
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->setupFrontendController(3);
     }
 
     /**
@@ -104,11 +54,8 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function usergroupConditionMatchesSingleGroupId(): void
     {
-        $subject = new ConditionMatcher(new Context([
-            'frontend.user' => new UserAspect(new FrontendUserAuthentication(), [13, 14, 15])
-        ]));
-        $loggerProphecy = $this->prophesize(Logger::class);
-        $subject->setLogger($loggerProphecy->reveal());
+        $this->setupFrontendUserContext([13]);
+        $subject = $this->getConditionMatcher();
         $this->assertTrue($subject->match('[usergroup(13)]'));
         $this->assertTrue($subject->match('[usergroup("13")]'));
         $this->assertTrue($subject->match('[usergroup(\'13\')]'));
@@ -121,11 +68,8 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function usergroupConditionMatchesMultipleUserGroupId(): void
     {
-        $subject = new ConditionMatcher(new Context([
-            'frontend.user' => new UserAspect(new FrontendUserAuthentication(), [13, 14, 15])
-        ]));
-        $loggerProphecy = $this->prophesize(Logger::class);
-        $subject->setLogger($loggerProphecy->reveal());
+        $this->setupFrontendUserContext([13, 14, 15]);
+        $subject = $this->getConditionMatcher();
         $this->assertFalse($subject->match('[usergroup(999,15,14,13)]'));
         $this->assertTrue($subject->match('[usergroup("999,15,14,13")]'));
         $this->assertTrue($subject->match('[usergroup(\'999,15,14,13\')]'));
@@ -138,11 +82,8 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function usergroupConditionDoesNotMatchDefaulUserGroupIds(): void
     {
-        $subject = new ConditionMatcher(new Context([
-            'frontend.user' => new UserAspect(new FrontendUserAuthentication(), [0, -1])
-        ]));
-        $loggerProphecy = $this->prophesize(Logger::class);
-        $subject->setLogger($loggerProphecy->reveal());
+        $this->setupFrontendUserContext([0, -1]);
+        $subject = $this->getConditionMatcher();
         $this->assertFalse($subject->match('[usergroup("0,-1")]'));
         $this->assertFalse($subject->match('[usergroup(\'0,-1\')]'));
     }
@@ -154,9 +95,10 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function loginUserConditionMatchesAnyLoggedInUser(): void
     {
-        $this->getFreshConditionMatcher();
-        $this->assertTrue($this->subject->match('[loginUser("*")]'));
-        $this->assertTrue($this->subject->match('[loginUser(\'*\')]'));
+        $this->setupFrontendUserContext([13]);
+        $subject = $this->getConditionMatcher();
+        $this->assertTrue($subject->match('[loginUser("*")]'));
+        $this->assertTrue($subject->match('[loginUser(\'*\')]'));
     }
 
     /**
@@ -166,10 +108,11 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function loginUserConditionMatchesSingleLoggedInUser(): void
     {
-        $this->getFreshConditionMatcher();
-        $this->assertTrue($this->subject->match('[loginUser(13)]'));
-        $this->assertTrue($this->subject->match('[loginUser("13")]'));
-        $this->assertTrue($this->subject->match('[loginUser(\'13\')]'));
+        $this->setupFrontendUserContext([13, 14, 15]);
+        $subject = $this->getConditionMatcher();
+        $this->assertTrue($subject->match('[loginUser(13)]'));
+        $this->assertTrue($subject->match('[loginUser("13")]'));
+        $this->assertTrue($subject->match('[loginUser(\'13\')]'));
     }
 
     /**
@@ -179,9 +122,10 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function loginUserConditionMatchesMultipleLoggedInUsers(): void
     {
-        $this->getFreshConditionMatcher();
-        $this->assertTrue($this->subject->match('[loginUser("999,13")]'));
-        $this->assertTrue($this->subject->match('[loginUser(\'999,13\')]'));
+        $this->setupFrontendUserContext([13, 14, 15]);
+        $subject = $this->getConditionMatcher();
+        $this->assertTrue($subject->match('[loginUser("999,13")]'));
+        $this->assertTrue($subject->match('[loginUser(\'999,13\')]'));
     }
 
     /**
@@ -191,13 +135,8 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function loginUserConditionDoesNotMatchIfNotUserIsLoggedId(): void
     {
-        $user = new FrontendUserAuthentication();
-        $user->user['uid'] = 13;
-        $subject = new ConditionMatcher(new Context([
-            'frontend.user' => new UserAspect($user)
-        ]));
-        $loggerProphecy = $this->prophesize(Logger::class);
-        $subject->setLogger($loggerProphecy->reveal());
+        $this->setupFrontendUserContext();
+        $subject = $this->getConditionMatcher();
         $this->assertFalse($subject->match('[loginUser("*")]'));
         $this->assertTrue($subject->match('[loginUser("*") == false]'));
         $this->assertFalse($subject->match('[loginUser("13")]'));
@@ -212,12 +151,8 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function loginUserConditionMatchIfUserIsNotLoggedIn(): void
     {
-        $user = new FrontendUserAuthentication();
-        $subject = new ConditionMatcher(new Context([
-            'frontend.user' => new UserAspect($user)
-        ]));
-        $loggerProphecy = $this->prophesize(Logger::class);
-        $subject->setLogger($loggerProphecy->reveal());
+        $this->setupFrontendUserContext();
+        $subject = $this->getConditionMatcher();
         $this->assertTrue($subject->match('[loginUser(\'*\') == false]'));
         $this->assertTrue($subject->match('[loginUser("*") == false]'));
     }
@@ -229,7 +164,7 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function treeLevelConditionMatchesSingleValue(): void
     {
-        $this->assertTrue($this->subject->match('[tree.level == 2]'));
+        $this->assertTrue($this->getConditionMatcher()->match('[tree.level == 2]'));
     }
 
     /**
@@ -239,7 +174,7 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function treeLevelConditionMatchesMultipleValues(): void
     {
-        $this->assertTrue($this->subject->match('[tree.level in [999,998,2]]'));
+        $this->assertTrue($this->getConditionMatcher()->match('[tree.level in [999,998,2]]'));
     }
 
     /**
@@ -249,7 +184,7 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function treeLevelConditionDoesNotMatchFaultyValue(): void
     {
-        $this->assertFalse($this->subject->match('[tree.level == 999]'));
+        $this->assertFalse($this->getConditionMatcher()->match('[tree.level == 999]'));
     }
 
     /**
@@ -259,11 +194,10 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function PIDupinRootlineConditionMatchesSinglePageIdInRootline(): void
     {
-        $GLOBALS['TSFE']->id = 121;
-        $this->getFreshConditionMatcher();
-        $this->assertTrue($this->subject->match('[111 in tree.rootLineIds]'));
-        $this->assertTrue($this->subject->match('["111" in tree.rootLineIds]'));
-        $this->assertTrue($this->subject->match('[\'111\' in tree.rootLineIds]'));
+        $subject = $this->getConditionMatcher();
+        $this->assertTrue($subject->match('[2 in tree.rootLineIds]'));
+        $this->assertTrue($subject->match('["2" in tree.rootLineIds]'));
+        $this->assertTrue($subject->match('[\'2\' in tree.rootLineIds]'));
     }
 
     /**
@@ -273,9 +207,7 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function PIDupinRootlineConditionDoesNotMatchPageIdNotInRootline(): void
     {
-        $GLOBALS['TSFE']->id = 121;
-        $this->getFreshConditionMatcher();
-        $this->assertFalse($this->subject->match('[999 in tree.rootLineIds]'));
+        $this->assertFalse($this->getConditionMatcher()->match('[999 in tree.rootLineIds]'));
     }
 
     /**
@@ -285,9 +217,7 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function PIDinRootlineConditionMatchesSinglePageIdInRootline(): void
     {
-        $GLOBALS['TSFE']->id = 121;
-        $this->getFreshConditionMatcher();
-        $this->assertTrue($this->subject->match('[111 in tree.rootLineIds]'));
+        $this->setupFrontendController(3);
     }
 
     /**
@@ -297,9 +227,7 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function PIDinRootlineConditionMatchesLastPageIdInRootline(): void
     {
-        $GLOBALS['TSFE']->id = 121;
-        $this->getFreshConditionMatcher();
-        $this->assertTrue($this->subject->match('[121 in tree.rootLineIds]'));
+        $this->assertTrue($this->getConditionMatcher()->match('[3 in tree.rootLineIds]'));
     }
 
     /**
@@ -309,8 +237,7 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function PIDinRootlineConditionDoesNotMatchPageIdNotInRootline(): void
     {
-        $GLOBALS['TSFE']->id = 121;
-        $this->assertFalse($this->subject->match('[999 in tree.rootLineIds]'));
+        $this->assertFalse($this->getConditionMatcher()->match('[999 in tree.rootLineIds]'));
     }
 
     /**
@@ -321,9 +248,10 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function compatVersionConditionMatchesOlderRelease(): void
     {
-        $this->assertTrue($this->subject->match('[compatVersion(7.0)]'));
-        $this->assertTrue($this->subject->match('[compatVersion("7.0")]'));
-        $this->assertTrue($this->subject->match('[compatVersion(\'7.0\')]'));
+        $subject = $this->getConditionMatcher();
+        $this->assertTrue($subject->match('[compatVersion(7.0)]'));
+        $this->assertTrue($subject->match('[compatVersion("7.0")]'));
+        $this->assertTrue($subject->match('[compatVersion(\'7.0\')]'));
     }
 
     /**
@@ -334,7 +262,7 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function compatVersionConditionMatchesSameRelease(): void
     {
-        $this->assertTrue($this->subject->match('[compatVersion(' . TYPO3_branch . ')]'));
+        $this->assertTrue($this->getConditionMatcher()->match('[compatVersion(' . TYPO3_branch . ')]'));
     }
 
     /**
@@ -345,9 +273,10 @@ class ConditionMatcherTest extends UnitTestCase
      */
     public function compatVersionConditionDoesNotMatchNewerRelease(): void
     {
-        $this->assertFalse($this->subject->match('[compatVersion(15.0)]'));
-        $this->assertFalse($this->subject->match('[compatVersion("15.0")]'));
-        $this->assertFalse($this->subject->match('[compatVersion(\'15.0\')]'));
+        $subject = $this->getConditionMatcher();
+        $this->assertFalse($subject->match('[compatVersion(15.0)]'));
+        $this->assertFalse($subject->match('[compatVersion("15.0")]'));
+        $this->assertFalse($subject->match('[compatVersion(\'15.0\')]'));
     }
 
     /**
@@ -361,9 +290,9 @@ class ConditionMatcherTest extends UnitTestCase
         $GLOBALS['TSFE']->testSimpleObject = new \stdClass();
         $GLOBALS['TSFE']->testSimpleObject->testSimpleVariable = 'testValue';
 
-        $this->getFreshConditionMatcher();
-        $this->assertTrue($this->subject->match('[getTSFE().id == 1234567]'));
-        $this->assertTrue($this->subject->match('[getTSFE().testSimpleObject.testSimpleVariable == "testValue"]'));
+        $subject = $this->getConditionMatcher();
+        $this->assertTrue($subject->match('[getTSFE().id == 1234567]'));
+        $this->assertTrue($subject->match('[getTSFE().testSimpleObject.testSimpleVariable == "testValue"]'));
     }
 
     /**
@@ -377,8 +306,7 @@ class ConditionMatcherTest extends UnitTestCase
         $prophecy->getSessionData(Argument::exact('foo'))->willReturn(['bar' => 1234567]);
         $GLOBALS['TSFE']->fe_user = $prophecy->reveal();
 
-        $this->getFreshConditionMatcher();
-        $this->assertTrue($this->subject->match('[session("foo|bar") == 1234567]'));
+        $this->assertTrue($this->getConditionMatcher()->match('[session("foo|bar") == 1234567]'));
     }
 
     /**
@@ -390,8 +318,7 @@ class ConditionMatcherTest extends UnitTestCase
     {
         $testKey = $this->getUniqueId('test');
         putenv($testKey . '=testValue');
-        $this->getFreshConditionMatcher();
-        $this->assertTrue($this->subject->match('[getenv("' . $testKey . '") == "testValue"]'));
+        $this->assertTrue($this->getConditionMatcher()->match('[getenv("' . $testKey . '") == "testValue"]'));
     }
 
     /**
@@ -416,9 +343,9 @@ class ConditionMatcherTest extends UnitTestCase
             ]
         ]);
         $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('language', $site->getLanguageById(0));
-        $this->getFreshConditionMatcher();
-        $this->assertTrue($this->subject->match('[siteLanguage("locale") == "en_US.UTF-8"]'));
-        $this->assertTrue($this->subject->match('[siteLanguage("locale") in ["de_DE", "en_US.UTF-8"]]'));
+        $subject = $this->getConditionMatcher();
+        $this->assertTrue($subject->match('[siteLanguage("locale") == "en_US.UTF-8"]'));
+        $this->assertTrue($subject->match('[siteLanguage("locale") in ["de_DE", "en_US.UTF-8"]]'));
     }
 
     /**
@@ -443,9 +370,9 @@ class ConditionMatcherTest extends UnitTestCase
             ]
         ]);
         $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('language', $site->getLanguageById(0));
-        $this->getFreshConditionMatcher();
-        $this->assertFalse($this->subject->match('[siteLanguage("locale") == "en_UK.UTF-8"]'));
-        $this->assertFalse($this->subject->match('[siteLanguage("locale") == "de_DE" && siteLanguage("title") == "UK"]'));
+        $subject = $this->getConditionMatcher();
+        $this->assertFalse($subject->match('[siteLanguage("locale") == "en_UK.UTF-8"]'));
+        $this->assertFalse($subject->match('[siteLanguage("locale") == "de_DE" && siteLanguage("title") == "UK"]'));
     }
 
     /**
@@ -457,10 +384,10 @@ class ConditionMatcherTest extends UnitTestCase
     {
         $site = new Site('angelo', 13, ['languages' => [], 'base' => 'https://typo3.org/']);
         $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('site', $site);
-        $this->getFreshConditionMatcher();
-        $this->assertTrue($this->subject->match('[site("identifier") == "angelo"]'));
-        $this->assertTrue($this->subject->match('[site("rootPageId") == 13]'));
-        $this->assertTrue($this->subject->match('[site("base") == "https://typo3.org/"]'));
+        $subject = $this->getConditionMatcher();
+        $this->assertTrue($subject->match('[site("identifier") == "angelo"]'));
+        $this->assertTrue($subject->match('[site("rootPageId") == 13]'));
+        $this->assertTrue($subject->match('[site("base") == "https://typo3.org/"]'));
     }
 
     /**
@@ -485,8 +412,51 @@ class ConditionMatcherTest extends UnitTestCase
             ]
         ]);
         $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('site', $site);
-        $this->getFreshConditionMatcher();
-        $this->assertFalse($this->subject->match('[site("identifier") == "berta"]'));
-        $this->assertFalse($this->subject->match('[site("rootPageId") == 14 && site("rootPageId") == 23]'));
+        $subject = $this->getConditionMatcher();
+        $this->assertFalse($subject->match('[site("identifier") == "berta"]'));
+        $this->assertFalse($subject->match('[site("rootPageId") == 14 && site("rootPageId") == 23]'));
+    }
+
+    /**
+     * @return ConditionMatcher
+     */
+    protected function getConditionMatcher(): ConditionMatcher
+    {
+        $conditionMatcher = new ConditionMatcher();
+        $conditionMatcher->setLogger($this->prophesize(Logger::class)->reveal());
+
+        return $conditionMatcher;
+    }
+
+    /**
+     * @param array $groups
+     */
+    protected function setupFrontendUserContext(array $groups = []): void
+    {
+        $frontendUser = new FrontendUserAuthentication();
+        $frontendUser->user['uid'] = 13;
+        $frontendUser->groupData['uid'] = $groups;
+
+        GeneralUtility::makeInstance(Context::class)->setAspect('frontend.user', new UserAspect($frontendUser, $groups));
+    }
+
+    /**
+     * @param int $pageId
+     */
+    protected function setupFrontendController(int $pageId): void
+    {
+        $GLOBALS['TSFE'] = GeneralUtility::makeInstance(
+            TypoScriptFrontendController::class,
+            null,
+            $pageId,
+            0
+        );
+        $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
+        $GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance(TemplateService::class);
+        $GLOBALS['TSFE']->tmpl->rootLine = [
+            2 => ['uid' => 3, 'pid' => 2],
+            1 => ['uid' => 2, 'pid' => 1],
+            0 => ['uid' => 1, 'pid' => 0]
+        ];
     }
 }

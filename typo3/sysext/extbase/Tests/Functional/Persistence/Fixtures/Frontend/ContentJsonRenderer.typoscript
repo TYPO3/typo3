@@ -34,12 +34,12 @@ page {
 	stdWrap.postUserFunc = TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Renderer->renderSections
 }
 
-[globalVar = GP:L = 1]
+[request.getQueryParams()['L'] == 1 || request.getParsedBody()['L'] == 1]
 	config.sys_language_uid = 1
 [end]
-[globalVar = GP:L = 2]
+[request.getQueryParams()['L'] == 2 || request.getParsedBody()['L'] == 2]
 	config.sys_language_uid = 2
 [end]
-[globalVar = GP:L = 3]
+[request.getQueryParams()['L'] == 3 || request.getParsedBody()['L'] == 3]
 	config.sys_language_uid = 3
 [end]

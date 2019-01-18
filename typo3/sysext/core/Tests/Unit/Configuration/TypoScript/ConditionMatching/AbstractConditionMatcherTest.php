@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration\TypoScript\ConditionMatching;
  */
 
 use Prophecy\Argument;
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -24,7 +25,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -48,11 +48,6 @@ class AbstractConditionMatcherTest extends UnitTestCase
     /**
      * @var \ReflectionMethod
      */
-    protected $evaluateConditionCommonMethod;
-
-    /**
-     * @var \ReflectionMethod
-     */
     protected $evaluateExpressionMethod;
 
     /**
@@ -67,8 +62,10 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
         $cacheFrontendProphecy->has(Argument::any())->willReturn(false);
         $cacheFrontendProphecy->set(Argument::any(), Argument::any())->willReturn(null);
+        $cacheFrontendProphecy->get('backendUtilityBeGetRootLine')->willReturn([]);
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheManagerProphecy->getCache('cache_core')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheFrontendProphecy->reveal());
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
 
         $packageManagerProphecy = $this->prophesize(PackageManager::class);
@@ -86,13 +83,10 @@ class AbstractConditionMatcherTest extends UnitTestCase
     protected function initConditionMatcher()
     {
         // test the abstract methods via the backend condition matcher
-        $this->conditionMatcher = $this->getAccessibleMock(ConditionMatcher::class, ['determineRootline']);
-        $this->evaluateConditionCommonMethod = new \ReflectionMethod(AbstractConditionMatcher::class, 'evaluateConditionCommon');
-        $this->evaluateConditionCommonMethod->setAccessible(true);
         $this->evaluateExpressionMethod = new \ReflectionMethod(AbstractConditionMatcher::class, 'evaluateExpression');
         $this->evaluateExpressionMethod->setAccessible(true);
-        $loggerProphecy = $this->prophesize(Logger::class);
-        $this->conditionMatcher->setLogger($loggerProphecy->reveal());
+        $this->conditionMatcher = new ConditionMatcher();
+        $this->conditionMatcher->setLogger(new NullLogger());
     }
 
     /**
@@ -102,38 +96,6 @@ class AbstractConditionMatcherTest extends UnitTestCase
     {
         Fixtures\GeneralUtilityFixture::setApplicationContext($this->backupApplicationContext);
         parent::tearDown();
-    }
-
-    /**
-     * @return array
-     */
-    public function datesConditionDataProvider(): array
-    {
-        return [
-            '[dayofmonth = 17]' => ['dayofmonth', 17, true],
-            '[dayofweek = 3]' => ['dayofweek', 3, true],
-            '[dayofyear = 16]' => ['dayofyear', 16, true],
-            '[hour = 11]' => ['hour', 11, true],
-            '[minute = 4]' => ['minute', 4, true],
-            '[month = 1]' => ['month', 1, true],
-            '[year = 1945]' => ['year', 1945, true],
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider datesConditionDataProvider
-     * @param string $expressionMethod
-     * @param int $expressionValue
-     * @param bool $expected
-     */
-    public function checkConditionMatcherForDates(string $expressionMethod, int $expressionValue, bool $expected): void
-    {
-        $GLOBALS['SIM_EXEC_TIME'] = mktime(11, 4, 0, 1, 17, 1945);
-        $this->assertSame($expected, $this->evaluateConditionCommonMethod->invokeArgs(
-            $this->conditionMatcher,
-            [$expressionMethod, $expressionValue]
-        ));
     }
 
     /**
@@ -212,34 +174,6 @@ class AbstractConditionMatcherTest extends UnitTestCase
     }
 
     /**
-     * @return array
-     */
-    public function hostnameDataProvider(): array
-    {
-        return [
-            '[hostname = localhost]' => ['hostname', 'localhost', true],
-            '[hostname = localhost, foo.local]' => ['hostname', 'localhost, foo.local', true],
-            '[hostname = bar.local, foo.local]' => ['hostname', 'bar.local, foo.local', false],
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider hostnameDataProvider
-     * @param string $expressionMethod
-     * @param string $expressionValue
-     * @param bool $expected
-     */
-    public function checkConditionMatcherForHostname(string $expressionMethod, string $expressionValue, bool $expected): void
-    {
-        $GLOBALS['_SERVER']['REMOTE_ADDR'] = '127.0.0.1';
-        $this->assertSame($expected, $this->evaluateConditionCommonMethod->invokeArgs(
-            $this->conditionMatcher,
-            [$expressionMethod, $expressionValue]
-        ));
-    }
-
-    /**
      * Data provider with matching applicationContext conditions.
      *
      * @return array
@@ -265,9 +199,6 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $applicationContext = new ApplicationContext('Production/Staging/Server2');
         Fixtures\GeneralUtilityFixture::setApplicationContext($applicationContext);
 
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs($this->conditionMatcher, ['applicationContext', $matchingContextCondition])
-        );
         // Test expression language
         $this->assertTrue(
             $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['like("' . $applicationContext . '", "' . preg_quote($matchingContextCondition, '/') . '")'])
@@ -301,9 +232,6 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $applicationContext = new ApplicationContext('Production/Staging/Server2');
         Fixtures\GeneralUtilityFixture::setApplicationContext($applicationContext);
 
-        $this->assertFalse(
-            $this->evaluateConditionCommonMethod->invokeArgs($this->conditionMatcher, ['applicationContext', $notMatchingApplicationContextCondition])
-        );
         // Test expression language
         $this->assertFalse(
             $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['like("' . $applicationContext . '", "' . preg_quote($notMatchingApplicationContextCondition, '/') . '")'])
@@ -380,370 +308,6 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    /**
-     * @test
-     */
-    public function testUserFuncIsCalled(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testFunction']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithSingleArgument(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testFunctionWithSingleArgument(x)']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithIntegerZeroArgument(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testFunctionWithSingleArgument(0)']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithWhitespaceArgument(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testFunctionWithNoArgument( )']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithMultipleArguments(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testFunctionWithThreeArguments(1,2,3)']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithMultipleDifferentArgumentsNullBoolString(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testFunctionWithThreeArguments(0,true,"foo")']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithMultipleDifferentArgumentsNullStringBool(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testFunctionWithThreeArguments(0,"foo",true)']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithMultipleDifferentArgumentsStringBoolNull(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testFunctionWithThreeArguments("foo",true,0)']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithMultipleDifferentArgumentsStringNullBool(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testFunctionWithThreeArguments("foo",0,true)']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithMultipleDifferentArgumentsBoolNullString(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testFunctionWithThreeArguments(true,0,"foo")']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithMultipleDifferentArgumentsBoolStringNull(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testFunctionWithThreeArguments(true,"foo",0)']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithMultipleDifferentArgumentsNullBoolStringSingleQuotes(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', "user_testFunctionWithThreeArguments(0,true,'foo')"]
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithMultipleDifferentArgumentsNullStringBoolSingleQuotes(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', "user_testFunctionWithThreeArguments(0,'foo',true)"]
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithMultipleDifferentArgumentsStringBoolNullSingleQuotes(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', "user_testFunctionWithThreeArguments('foo',true,0)"]
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithMultipleDifferentArgumentsStringNullBoolSingleQuotes(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', "user_testFunctionWithThreeArguments('foo',0,true)"]
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithMultipleDifferentArgumentsBoolNullStringSingleQuotes(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', "user_testFunctionWithThreeArguments(true,0,'foo')"]
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithMultipleDifferentArgumentsBoolStringNullSingleQuotes(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', "user_testFunctionWithThreeArguments(true,'foo',0)"]
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithMultipleSingleQuotedArguments(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', "user_testFunctionWithThreeArguments('foo','bar', 'baz')"]
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithMultipleSoubleQuotedArguments(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testFunctionWithThreeArguments("foo","bar","baz")']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncReturnsFalse(): void
-    {
-        $this->assertFalse(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testFunctionFalse']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithMultipleArgumentsAndQuotes(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testFunctionWithThreeArguments(1,2,"3,4,5,6")']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithMultipleArgumentsAndQuotesAndSpaces(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testFunctionWithThreeArguments ( 1 , 2, "3, 4, 5, 6" )']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithMultipleArgumentsAndQuotesAndSpacesStripped(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testFunctionWithThreeArgumentsSpaces ( 1 , 2, "3, 4, 5, 6" )']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithSpacesInQuotes(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testFunctionWithSpaces(" 3, 4, 5, 6 ")']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithMultipleArgumentsAndQuotesAndSpacesStrippedAndEscapes(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testFunctionWithThreeArgumentsSpaces ( 1 , 2, "3, \"4, 5\", 6" )']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithQuoteMissing(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testFunctionWithQuoteMissing ("value \")']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithQuotesInside(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'user_testQuotes("1 \" 2")']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function testUserFuncWithClassMethodCall(): void
-    {
-        $this->assertTrue(
-            $this->evaluateConditionCommonMethod->invokeArgs(
-                $this->conditionMatcher,
-                ['userFunc', 'ConditionMatcherUserFunctions::isTrue(1)']
-            )
-        );
-    }
-
     public function expressionDataProvider(): array
     {
         return [
@@ -785,16 +349,5 @@ class AbstractConditionMatcherTest extends UnitTestCase
             '[request.getParsedBody()[\'tx_news_pi1\'][\'news\'] > 0 || request.getQueryParams()[\'tx_news_pi1\'][\'news\'] > 0]' => ['[request.getParsedBody()[\'tx_news_pi1\'][\'news\'] > 0 || request.getQueryParams()[\'tx_news_pi1\'][\'news\'] > 0]', '[request.getParsedBody()[\'tx_news_pi1\'][\'news\'] > 0 || request.getQueryParams()[\'tx_news_pi1\'][\'news\'] > 0]'],
             '[request.getQueryParams()[\'tx_news_pi1\'][\'news\'] > 0]' => ['[request.getQueryParams()[\'tx_news_pi1\'][\'news\'] > 0]', '[request.getQueryParams()[\'tx_news_pi1\'][\'news\'] > 0]'],
         ];
-    }
-
-    /**
-     * @test
-     * @dataProvider expressionDataProvider
-     * @param string $expression
-     * @param string $expectedResult
-     */
-    public function normalizeExpressionWorksAsExpected(string $expression, string $expectedResult): void
-    {
-        $this->assertSame($expectedResult, $this->conditionMatcher->_call('normalizeExpression', $expression));
     }
 }

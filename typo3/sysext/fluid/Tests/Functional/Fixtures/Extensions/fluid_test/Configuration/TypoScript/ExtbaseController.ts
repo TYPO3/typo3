@@ -7,10 +7,10 @@ page.10 {
     view < lib.viewConfig
 }
 
-[globalVar = GP:widgetConfig = new]
+[request.getQueryParams()['widgetConfig'] == 'new' || request.getParsedBody()['widgetConfig'] == 'new']
     page.10.view.widget.TYPO3\CMS\Fluid\ViewHelpers\Widget\PaginateViewHelper.templateRootPath >
 [end]
 
-[globalVar = GP:widgetConfig = old]
+[request.getQueryParams()['widgetConfig'] == 'old' || request.getParsedBody()['widgetConfig'] == 'old']
     page.10.view.widget.TYPO3\CMS\Fluid\ViewHelpers\Widget\PaginateViewHelper.templateRootPaths >
 [end]

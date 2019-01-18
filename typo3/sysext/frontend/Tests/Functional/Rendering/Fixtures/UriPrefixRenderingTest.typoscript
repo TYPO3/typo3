@@ -30,25 +30,25 @@ page {
   }
 }
 
-[globalString = GP:testAbsRefPrefix = auto]
+[request.getQueryParams()['testAbsRefPrefix'] == 'auto' || request.getParsedBody()['testAbsRefPrefix'] == 'auto']
   config.absRefPrefix = auto
-[globalString = GP:testAbsRefPrefix = absolute-with-host]
+[request.getQueryParams()['testAbsRefPrefix'] == 'absolute-with-host' || request.getParsedBody()['testAbsRefPrefix'] == 'absolute-with-host']
   config.absRefPrefix = http://localhost/
-[globalString = GP:testAbsRefPrefix = absolute-without-host]
+[request.getQueryParams()['testAbsRefPrefix'] == 'absolute-without-host' || request.getParsedBody()['testAbsRefPrefix'] == 'absolute-without-host']
   config.absRefPrefix = /
 [end]
 
-[globalString = GP:testCompressor = concatenate]
+[request.getQueryParams()['testCompressor'] == 'concatenate' || request.getParsedBody()['testCompressor'] == 'concatenate']
   config {
     concatenateCss = 1
     concatenateJs = 1
   }
-[globalString = GP:testCompressor = compress]
+[request.getQueryParams()['testCompressor'] == 'compress' || request.getParsedBody()['testCompressor'] == 'compress']
   config {
     compressCss = 1
     compressJs = 1
   }
-[globalString = GP:testCompressor = concatenate-and-compress]
+[request.getQueryParams()['testCompressor'] == 'concatenate-and-compress' || request.getParsedBody()['testCompressor'] == 'concatenate-and-compress']
   config {
     concatenateCss = 1
     concatenateJs = 1

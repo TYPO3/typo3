@@ -36,6 +36,6 @@ page {
 	stdWrap.postUserFunc = TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Renderer->renderSections
 }
 
-[globalVar = GP:L = 1]
+[request.getQueryParams()['L'] == 1 || request.getParsedBody()['L'] == 1]
 	config.sys_language_uid = 1
 [end]
