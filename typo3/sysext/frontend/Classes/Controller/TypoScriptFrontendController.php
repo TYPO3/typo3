@@ -2853,8 +2853,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function INTincScript()
     {
-        // Deprecated stuff:
-        // @deprecated: annotation added TYPO3 4.6
         $this->additionalHeaderData = (isset($this->config['INTincScript_ext']['additionalHeaderData']) && is_array($this->config['INTincScript_ext']['additionalHeaderData']))
             ? $this->config['INTincScript_ext']['additionalHeaderData']
             : [];
