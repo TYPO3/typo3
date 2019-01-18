@@ -65,25 +65,6 @@ class Route extends SymfonyRoute
     }
 
     /**
-     * @param array $arguments
-     * @deprecated Probably not required
-     */
-    public function addArguments(array $arguments)
-    {
-        $mergedArguments = $this->getArguments();
-        foreach ($arguments as $key => $argument) {
-            if (isset($mergedArguments[$key])) {
-                throw new \OverflowException(
-                    sprintf('Cannot override argument %s', $key),
-                    1538326790
-                );
-            }
-            $mergedArguments[$key] = $argument;
-        }
-        $this->setOption('_arguments', $mergedArguments);
-    }
-
-    /**
      * @return EnhancerInterface|null
      */
     public function getEnhancer(): ?EnhancerInterface
