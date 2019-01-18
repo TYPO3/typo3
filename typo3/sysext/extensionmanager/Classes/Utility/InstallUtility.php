@@ -356,75 +356,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Gets the content of the ext_tables.sql and ext_tables_static+adt.sql files
-     * Additionally adds the table definitions for the cache tables
-     *
-     * @param array $extension
-     * @deprecated since TYPO3 v9, will be removed with TYPO3v10
-     */
-    public function processDatabaseUpdates(array $extension)
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        $extTablesSqlFile = Environment::getPublicPath() . '/' . $extension['siteRelPath'] . 'ext_tables.sql';
-        $extTablesSqlContent = '';
-        if (file_exists($extTablesSqlFile)) {
-            $extTablesSqlContent .= file_get_contents($extTablesSqlFile);
-        }
-        if ($extTablesSqlContent !== '') {
-            try {
-                $this->updateDbWithExtTablesSql($extTablesSqlContent);
-            } catch (\TYPO3\CMS\Core\Database\Schema\Exception\StatementException $e) {
-                throw new ExtensionManagerException(
-                    $e->getMessage(),
-                    1476340371
-                );
-            }
-        }
-
-        $this->importStaticSqlFile($extension['siteRelPath']);
-        $this->importT3DFile($extension['siteRelPath']);
-    }
-
-    /**
-     * Emits a signal to manipulate the tables definitions
-     *
-     * @param string $extensionKey
-     * @throws ExtensionManagerException
-     * @return mixed
-     * @deprecated since TYPO3 v9, will be removed with TYPO3v10
-     * @see \TYPO3\CMS\Core\Database\Schema\SqlReader::emitTablesDefinitionIsBeingBuiltSignal
-     */
-    protected function emitTablesDefinitionIsBeingBuiltSignal($extensionKey)
-    {
-        $signalReturn = $this->signalSlotDispatcher->dispatch(__CLASS__, 'tablesDefinitionIsBeingBuilt', [[], $extensionKey]);
-        // This is important to support old associated returns
-        $signalReturn = array_values($signalReturn);
-        $sqlString = $signalReturn[0];
-        if (!is_array($sqlString)) {
-            throw new ExtensionManagerException(
-                sprintf(
-                    'The signal %s of class %s returned a value of type %s, but array was expected.',
-                    'tablesDefinitionIsBeingBuilt',
-                    __CLASS__,
-                    gettype($sqlString)
-                ),
-                1382360258
-            );
-        }
-        if (!empty($sqlString)) {
-            trigger_error(
-                sprintf(
-                    'The signal %s of class %s is deprecated and will be removed in TYPO3 v10.0.',
-                    'tablesDefinitionIsBeingBuilt',
-                    __CLASS__
-                ),
-                E_USER_DEPRECATED
-            );
-        }
-        return $sqlString;
-    }
-
-    /**
      * Reload Cache files and Typo3LoadedExtensions
      */
     public function reloadCaches()
@@ -455,9 +386,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
         $schemaMigrator = GeneralUtility::makeInstance(SchemaMigrator::class);
         $sqlStatements = [];
         $sqlStatements[] = $sqlReader->getTablesDefinitionString();
-        foreach ($extensionKeys as $extensionKey) {
-            $sqlStatements += $this->emitTablesDefinitionIsBeingBuiltSignal($extensionKey);
-        }
         $sqlStatements = $sqlReader->getCreateTableStatementArray(implode(LF . LF, array_filter($sqlStatements)));
         $updateStatements = $schemaMigrator->getUpdateSuggestions($sqlStatements);
 
@@ -485,23 +413,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     {
         $extensionConfiguration = $this->objectManager->get(ExtensionConfiguration::class);
         $extensionConfiguration->synchronizeExtConfTemplateWithLocalConfiguration($extensionKey);
-    }
-
-    /**
-     * Update database / process db updates from ext_tables
-     *
-     * @param string $rawDefinitions The raw SQL statements from ext_tables.sql
-     * @deprecated since TYPO3 v9, will be removed with TYPO3v10
-     */
-    public function updateDbWithExtTablesSql($rawDefinitions)
-    {
-        trigger_error('This method will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
-        $statements = $sqlReader->getCreateTableStatementArray($rawDefinitions);
-        if (count($statements) !== 0) {
-            $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
-            $schemaMigrationService->install($statements);
-        }
     }
 
     /**

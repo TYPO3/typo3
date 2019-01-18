@@ -372,7 +372,9 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Extbase\Core\Bootstrap->configureObjectManager()`
 * :php:`TYPO3\CMS\Extbase\Mvc\Controller\Argument->getValidationResults()`
 * :php:`TYPO3\CMS\Extbase\Mvc\Controller\Arguments->getValidationResults()`
-* :php:`TYPO3\CMS\Extbase\Service\EnvironmentService->isEnvironmentInCliMode`
+* :php:`TYPO3\CMS\Extbase\Service\EnvironmentService->isEnvironmentInCliMode()`
+* :php:`TYPO3\CMS\Extensionmanager\Utility\InstallUtility->processDatabaseUpdates()`
+* :php:`TYPO3\CMS\Extensionmanager\Utility\InstallUtility->updateDbWithExtTablesSql()`
 * :php:`TYPO3\CMS\Fluid\Core\Widget\Bootstrap->configureObjectManager()`
 * :php:`TYPO3\CMS\Filelist\FileFacade->getIcon()`
 * :php:`TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->addParams()`
@@ -1313,6 +1315,11 @@ The following hooks don't pass the class reference anymore:
 
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawHeaderHook']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawFooterHook']`
+
+
+The following signals have been removed:
+* :php:`TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService` signal `hasInstalledExtensions`
+* :php:`TYPO3\CMS\Extensionmanager\Utility\InstallUtility` signal `tablesDefinitionIsBeingBuilt`
 
 
 The following feature is now always enabled:

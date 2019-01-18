@@ -364,7 +364,6 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
         $resolvedDependencies = [];
         $this->installUtility->install(...array_keys($installQueue));
         foreach ($installQueue as $extensionKey => $_) {
-            $this->emitHasInstalledExtensionSignal($extensionKey);
             if (!isset($resolvedDependencies['installed']) || !is_array($resolvedDependencies['installed'])) {
                 $resolvedDependencies['installed'] = [];
             }
@@ -431,15 +430,6 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
     protected function emitWillInstallExtensionsSignal(array $installQueue)
     {
         $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'willInstallExtensions', [$installQueue]);
-    }
-
-    /**
-     * @param string $extensionKey
-     * @deprecated since TYPO3 v9, will be removed with TYPO3v10
-     */
-    protected function emitHasInstalledExtensionSignal($extensionKey)
-    {
-        $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'hasInstalledExtensions', [$extensionKey]);
     }
 
     /**
