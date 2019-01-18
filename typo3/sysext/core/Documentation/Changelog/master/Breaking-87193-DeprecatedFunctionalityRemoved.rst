@@ -1202,6 +1202,8 @@ The following TypoScript options have been dropped:
 * `stdWrap.addParams`
 * `stdWrap.filelink`
 * `stdWrap.filelist`
+* `SVG.noscript`
+* `SVG.value`
 * `TMENU.beforeImg`
 * `TMENU.afterImg`
 * `GMENU`
