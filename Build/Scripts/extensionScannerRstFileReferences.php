@@ -30,11 +30,16 @@ call_user_func(function () {
         ->in(__DIR__ . '/../../typo3/sysext/install/Configuration/ExtensionScanner/Php');
 
     $invalidRestFiles = [];
+    $validRestFiles = [];
     foreach ($matcherConfigurationFiles as $matcherConfigurationFile) {
         /** @var SplFileInfo $matcherConfigurationFile */
         $matcherConfigurations = require $matcherConfigurationFile->getPathname();
         foreach ($matcherConfigurations as $matcherConfiguration) {
             foreach ($matcherConfiguration['restFiles'] as $restFile) {
+                if (in_array($restFile, $validRestFiles, true)) {
+                    // Local cache as guard to not check same file over and over again
+                    continue;
+                }
                 $restFinder = new \Symfony\Component\Finder\Finder();
                 $restFileLocation = $restFinder->files()
                     ->in(__DIR__ . '/../../typo3/sysext/core/Documentation/Changelog')
@@ -44,6 +49,8 @@ call_user_func(function () {
                         'configurationFile' => $matcherConfigurationFile->getPathname(),
                         'invalidFile' => $restFile,
                     ];
+                } else {
+                    $validRestFiles[] = $restFile;
                 }
             }
         }
