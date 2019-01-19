@@ -40,7 +40,7 @@ Migration
 A migration is often relatively simple: Extensions that extend :php:`BaseScriptClass`
 should verify which methods and properties are actually used from the parent class. The
 most simple solution is to just copy those over to the own class and remove the
-inheritance. It is good practice to at least change their visibility from to :php:`public`
+inheritance. It is good practice to at least change their visibility from :php:`public`
 to :php:`protected` at the same time if possible.
 
 Extensions that extend :php:`AbstractFunctionModule` should do the same. The main `info`
