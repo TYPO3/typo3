@@ -206,7 +206,7 @@ the most core functions.
 Please read .. _the introduction: https://docs.typo3.org/typo3cms/extensions/core/Changelog/9.4/Feature-85828-MoveSymfonyExpressionLanguageHandlingIntoEXTcore.html first.
 
 Add new methods by implementing own providers which implement the :php:`ExpressionFunctionProviderInterface` and
-register the provider for the key `typoscript` in your own :file:`Configuration\ExpressionLanguage.php` file:
+register the provider for the key `typoscript` in your own :file:`Configuration/ExpressionLanguage.php` file:
 
 .. code-block:: php
 
