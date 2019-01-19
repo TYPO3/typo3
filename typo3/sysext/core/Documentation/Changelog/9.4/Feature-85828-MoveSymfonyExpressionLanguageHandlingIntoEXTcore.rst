@@ -39,7 +39,7 @@ An example with the DefaultProvider:
 
 An example with a custom Provider:
 
-First you have to configure a provider, create a file in your extension with the path and name :file:`EXT:my_ext\Configuration\ExpressionLanguage.php`:
+First you have to configure a provider, create a file in your extension with the path and name :file:`EXT:my_ext/Configuration/ExpressionLanguage.php`:
 
 .. code-block:: php
 
