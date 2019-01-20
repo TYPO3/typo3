@@ -353,10 +353,6 @@ module.exports = function (grunt) {
             src: '<%= paths.t3icons %>module/module-setup.svg'
           },
           {
-            dest: '<%= paths.sysext %>taskcenter/Resources/Public/Icons/module-taskcenter.svg',
-            src: '<%= paths.t3icons %>module/module-taskcenter.svg'
-          },
-          {
             dest: '<%= paths.sysext %>tstemplate/Resources/Public/Icons/module-tstemplate.svg',
             src: '<%= paths.t3icons %>module/module-tstemplate.svg'
           },

@@ -88,17 +88,9 @@
                 "../typo3/sysext/scheduler/Resources/Public/JavaScript/*",
                 "../typo3/sysext/scheduler/Resources/Private/TypeScript/*"
             ],
-            "TYPO3/CMS/SysAction/*": [
-                "../typo3/sysext/sys_action/Resources/Public/JavaScript/*",
-                "../typo3/sysext/sys_action/Resources/Private/TypeScript/*"
-            ],
             "TYPO3/CMS/T3editor/*": [
                 "../typo3/sysext/t3editor/Resources/Public/JavaScript/*",
                 "../typo3/sysext/t3editor/Resources/Private/TypeScript/*"
-            ],
-            "TYPO3/CMS/Taskcenter/*": [
-                "../typo3/sysext/taskcenter/Resources/Public/JavaScript/*",
-                "../typo3/sysext/taskcenter/Resources/Private/TypeScript/*"
             ],
             "TYPO3/CMS/Tstemplate/*": [
                 "../typo3/sysext/tstemplate/Resources/Public/JavaScript/*",

@@ -1,8 +1,0 @@
-<f:render partial="Description" arguments="{title: '{f:translate(key: \'{LLPrefix}mlang_tabs_tab\')}', description: '{f:translate(key: \'{LLPrefixMod}mlang_labels_tabdescr\')}'}" />
-<f:format.raw>
-    <f:translate key="{LLPrefixTask}taskcenter-about"/>
-</f:format.raw>
-<f:if condition="{admin}">
-    <br /><br />
-    <f:render partial="Description" arguments="{title: '{f:translate(key: \'{LLPrefixTask}taskcenter-adminheader\')}', description: '{f:translate(key: \'{LLPrefixTask}taskcenter-admin\')}'}" />
-</f:if>

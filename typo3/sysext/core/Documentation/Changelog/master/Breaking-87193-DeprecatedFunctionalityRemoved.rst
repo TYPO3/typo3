@@ -1361,6 +1361,7 @@ The following features have been removed:
   users need their password being manually recovered or reset.
 * Extension :php:`rsaauth` has been dropped from core
 * Extension :php:`feedit` has been dropped from core
+* The extension :php:`taskcenter` and its add-on extension :php:`sys_action` have been dropped from core
 * Translation :php:`locallang` references :php:`EXT:lang` to removed extension "lang" do not work any longer
 
 

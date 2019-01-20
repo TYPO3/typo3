@@ -216,8 +216,7 @@ To save a preset, simply enter a title in the title box and press "Save". This w
 To delete old presets, simply select it and press "Delete".
 
 The checkbox "Public" can be set if you want to share your preset with other users of the system. Otherwise they are personal to you.
-
-In the Taskcenter you can see a list of your presets and jump directly to them.</source>
+</source>
 			</trans-unit>
 			<trans-unit id="_presets.image" xml:space="preserve">
 				<source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc1.png,
@@ -225,8 +224,7 @@ EXT:impexp/Resources/Public/Images/cshimages/impexp_misc2.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="presets.image_descr" xml:space="preserve">
-				<source>The preset selector in the export interface.
-Presets from the task center.</source>
+				<source>The preset selector in the export interface.</source>
 			</trans-unit>
 			<trans-unit id="metadata.alttitle">
 				<source>Meta data setting</source>
@@ -370,39 +368,6 @@ Before importing make sure you change any editable soft references that are show
 			</trans-unit>
 			<trans-unit id="upload.details">
 				<source>Notice that there are usually limits set by the server (PHP) to the size of uploaded files. If hit, upload fails and an error message is shown.</source>
-			</trans-unit>
-			<trans-unit id="task.title">
-				<source>Preset title</source>
-			</trans-unit>
-			<trans-unit id="task.icon">
-				<source>Icon</source>
-			</trans-unit>
-			<trans-unit id="task.public">
-				<source>Public</source>
-			</trans-unit>
-			<trans-unit id="task.owner">
-				<source>Owner</source>
-			</trans-unit>
-			<trans-unit id="task.page">
-				<source>Page</source>
-			</trans-unit>
-			<trans-unit id="task.path">
-				<source>Path</source>
-			</trans-unit>
-			<trans-unit id="task.meta">
-				<source>Meta data</source>
-			</trans-unit>
-			<trans-unit id="task.own">
-				<source>Own</source>
-			</trans-unit>
-			<trans-unit id="notes">
-				<source>Notes</source>
-			</trans-unit>
-			<trans-unit id="single-record">
-				<source>Single record</source>
-			</trans-unit>
-			<trans-unit id="no-presets">
-				<source>No presets found!</source>
 			</trans-unit>
 		</body>
 	</file>
