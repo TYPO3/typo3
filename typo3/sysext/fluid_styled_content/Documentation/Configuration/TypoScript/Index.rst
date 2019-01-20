@@ -82,10 +82,6 @@ definitions only declare the following:
 
 - Assigning the Fluid template file for each type of content element separately.
 
-- The configuration of the edit panel and the edit buttons for frontend editing. You
-  need to activate the extension "Frontend Editing (feedit)" in the Extension Manager to
-  see this in action.
-
 In the folder :file:`Helper` there are files which are included by the file
 :file:`setup.typoscript` as mentioned above. These are:
 

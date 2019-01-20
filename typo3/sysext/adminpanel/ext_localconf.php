@@ -11,10 +11,6 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] = [
         'module' => \TYPO3\CMS\Adminpanel\Modules\CacheModule::class,
         'after' => ['preview'],
     ],
-    'edit' => [
-        'module' => \TYPO3\CMS\Adminpanel\Modules\EditModule::class,
-        'after' => ['cache'],
-    ],
     'tsdebug' => [
         'module' => \TYPO3\CMS\Adminpanel\Modules\TsDebugModule::class,
         'after' => ['edit'],

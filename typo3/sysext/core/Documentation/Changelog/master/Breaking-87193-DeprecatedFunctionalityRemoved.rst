@@ -1360,6 +1360,7 @@ The following features have been removed:
   prefixed password can not log in anymore. Auto converting those user passwords during first login has been dropped, those
   users need their password being manually recovered or reset.
 * Extension :php:`rsaauth` has been dropped from core
+* Extension :php:`feedit` has been dropped from core
 * Translation :php:`locallang` references :php:`EXT:lang` to removed extension "lang" do not work any longer
 
 
