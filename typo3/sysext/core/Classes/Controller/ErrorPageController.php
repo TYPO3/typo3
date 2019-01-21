@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Core\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContext;
@@ -51,7 +51,7 @@ class ErrorPageController
         $context->setControllerName('ErrorPage');
         $context->setTemplatePaths(new TemplatePaths([
             'templateRootPaths' => [
-                ExtensionManagementUtility::extPath('core', 'Resources/Private/Templates/ErrorPage/')
+                Environment::getFrameworkBasePath() . '/core/Resources/Private/Templates/ErrorPage/'
             ]
         ]));
         $this->view->setRenderingContext($context);
@@ -86,8 +86,8 @@ class ErrorPageController
         $this->view->assign('title', $title);
         $this->view->assign('errorCodeUrlPrefix', TYPO3_URL_EXCEPTION);
         $this->view->assign('errorCode', $errorCode);
-        $this->view->assign('logo', PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath('backend', 'Resources/Public/Images/typo3_orange.svg')));
-        $this->view->assign('cssFile', PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath('core', 'Resources/Public/Css/errorpage.css')));
+        $this->view->assign('logo', PathUtility::getAbsoluteWebPath(Environment::getFrameworkBasePath() . '/backend/Resources/Public/Images/typo3_orange.svg'));
+        $this->view->assign('cssFile', PathUtility::getAbsoluteWebPath(Environment::getFrameworkBasePath() . '/core/Resources/Public/Css/errorpage.css'));
         $this->view->assign('copyrightYear', TYPO3_copyright_year);
         return $this->view->render('Error');
     }
