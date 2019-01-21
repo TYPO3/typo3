@@ -137,20 +137,6 @@ class ModuleLoader
      */
     public function checkMod($name)
     {
-        // Check for own way of configuring module
-        if (is_array($GLOBALS['TBE_MODULES']['_configuration'][$name]['configureModuleFunction'] ?? false)) {
-            trigger_error('Registering a module using "configureModuleFunction" will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-            $obj = $GLOBALS['TBE_MODULES']['_configuration'][$name]['configureModuleFunction'];
-            if (is_callable($obj)) {
-                $MCONF = call_user_func($obj, $name);
-                if ($this->checkModAccess($name, $MCONF) !== true) {
-                    return false;
-                }
-                $this->addLabelsForModule($name, $MCONF['labels']);
-                return $MCONF;
-            }
-        }
-
         // merge configuration and labels into one array
         $setupInformation = $this->getModuleSetupInformation($name);
 

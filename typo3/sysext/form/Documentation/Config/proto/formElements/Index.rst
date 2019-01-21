@@ -77,8 +77,6 @@ Properties
                [...]
              Fieldset:
                [...]
-             GridContainer:
-               [...]
              GridRow:
                [...]
              Text:
@@ -775,7 +773,6 @@ Concrete configurations
     formElementTypes/Fieldset
     formElementTypes/FileUpload
     formElementTypes/Form
-    formElementTypes/GridContainer
     formElementTypes/GridRow
     formElementTypes/Hidden
     formElementTypes/Honeypot

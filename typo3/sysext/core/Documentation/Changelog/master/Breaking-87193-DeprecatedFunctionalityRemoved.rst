@@ -59,6 +59,7 @@ The following PHP classes that have been previously deprecated for v9 have been 
 * :php:`TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase`
 * :php:`TYPO3\CMS\Extbase\Validation\Validator\RawValidator`
 * :php:`TYPO3\CMS\Extensionmanager\Command\ExtensionCommandController`
+* :php:`TYPO3\CMS\Form\Domain\Model\FormElements\GridContainer`
 * :php:`TYPO3\CMS\Frontend\ContentObject\FileContentObject`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject`
 * :php:`TYPO3\CMS\Frontend\ContentObject\Menu\ImageMenuContentObject`
@@ -1331,7 +1332,7 @@ The following signals have been removed:
 * :php:`TYPO3\CMS\Extensionmanager\Utility\InstallUtility` signal `tablesDefinitionIsBeingBuilt`
 
 
-The following feature is now always enabled:
+The following features are now always enabled:
 
 * Extbase's :php:`consistentTranslationOverlayHandling` - Translations in Extbase are now always consistent
 * :php:`simplifiedControllerActionDispatching` - Backend controller actions do not receive a prepared response object anymore
@@ -1363,7 +1364,10 @@ The following features have been removed:
 * Extension :php:`feedit` has been dropped from core
 * The extension :php:`taskcenter` and its add-on extension :php:`sys_action` have been dropped from core
 * Translation :php:`locallang` references :php:`EXT:lang` to removed extension "lang" do not work any longer
-
+* EXT:form: type GridContainer
+* EXT:form: renderingOptions._isHiddenFormElement and renderingOptions._isReadOnlyFormElement are dropped
+* :php:`$TBE_MODULES`: configuring a module via a custom "configureModuleFunction" is dropped
+* CLI Command alias "lang:language:update" is dropped in favor of "language:update"
 
 The following database tables have been removed:
 

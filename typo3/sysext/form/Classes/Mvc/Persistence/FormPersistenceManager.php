@@ -125,8 +125,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     /**
      * Load the array formDefinition identified by $persistenceIdentifier, and return it.
      * Only files with the extension .yaml or .form.yaml are loaded.
-     * Form definition file names which not ends with ".form.yaml" has been
-     * deprecated in TYPO3 v9 and will not be supported in TYPO3 v10.0.
      *
      * @param string $persistenceIdentifier
      * @return array
@@ -279,11 +277,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         $forms = [];
 
         foreach ($this->retrieveYamlFilesFromStorageFolders() as $file) {
-            /** @var Folder $folder */
-            $folder = $file->getParentFolder();
-            // TODO: deprecated since TYPO3 v9, will be removed in TYPO3 v10.0
-            $formReadOnly = $folder->getCombinedIdentifier() === '1:/user_upload/';
-
             $form = $this->loadMetaData($file);
 
             if (!$this->looksLikeAFormDefinition($form)) {
@@ -296,7 +289,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                     'identifier' => $form['identifier'],
                     'name' => $form['label'] ?? $form['identifier'],
                     'persistenceIdentifier' => $persistenceIdentifier,
-                    'readOnly' => $formReadOnly,
+                    'readOnly' => false,
                     'removable' => true,
                     'location' => 'storage',
                     'duplicateIdentifier' => false,
@@ -304,19 +297,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                     'fileUid' => $form['fileUid'],
                 ];
                 $identifiers[$form['identifier']]++;
-            } else {
-                $forms[] = [
-                    'identifier' => $form['identifier'],
-                    'name' => $form['label'] ?? $form['identifier'],
-                    'persistenceIdentifier' => $persistenceIdentifier,
-                    'readOnly' => true,
-                    'removable' => false,
-                    'location' => 'storage',
-                    'duplicateIdentifier' => false,
-                    'invalid' => false,
-                    'deprecatedFileExtension' => true,
-                    'fileUid' => $form['fileUid'],
-                ];
             }
         }
 
@@ -337,19 +317,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                         'fileUid' => $form['fileUid'],
                     ];
                     $identifiers[$form['identifier']]++;
-                } else {
-                    $forms[] = [
-                        'identifier' => $form['identifier'],
-                        'name' => $form['label'] ?? $form['identifier'],
-                        'persistenceIdentifier' => $fullPath,
-                        'readOnly' => true,
-                        'removable' => false,
-                        'location' => 'extension',
-                        'duplicateIdentifier' => false,
-                        'invalid' => false,
-                        'deprecatedFileExtension' => true,
-                        'fileUid' => $form['fileUid'],
-                    ];
                 }
             }
         }
@@ -735,14 +702,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             $this->looksLikeAFormDefinition($formDefinition)
             && !$this->hasValidFileExtension($persistenceIdentifier)
         ) {
-            if (strpos($persistenceIdentifier, 'EXT:') === 0) {
-                trigger_error(
-                    'Form definition file name ("' . $persistenceIdentifier . '") which does not end with ".form.yaml" will not be supported in TYPO3 v10.0.',
-                    E_USER_DEPRECATED
-                );
-            } elseif (strpos($persistenceIdentifier, 'EXT:') !== 0) {
-                throw new PersistenceManagerException(sprintf('Form definition "%s" does not end with ".form.yaml".', $persistenceIdentifier), 1531160649);
-            }
+            throw new PersistenceManagerException(sprintf('Form definition "%s" does not end with ".form.yaml".', $persistenceIdentifier), 1531160649);
         }
     }
 

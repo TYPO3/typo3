@@ -57,7 +57,6 @@ TYPO3:
               FormElement-Page: 'Stage/Page'
               FormElement-SummaryPage: 'Stage/SummaryPage'
               FormElement-Fieldset: 'Stage/Fieldset'
-              FormElement-GridContainer: 'Stage/Fieldset'
               FormElement-GridRow: 'Stage/Fieldset'
               FormElement-Text: 'Stage/SimpleTemplate'
               FormElement-Password: 'Stage/SimpleTemplate'
@@ -343,18 +342,6 @@ TYPO3:
                 editors:
                   200:
                     label: 'formEditor.elements.Fieldset.editor.label.label'
-                  230: null
-                  800: null
-
-            GridContainer:
-              formEditor:
-                label: 'formEditor.elements.GridContainer.label'
-                _isCompositeFormElement: true
-                _isGridContainerFormElement: true
-                iconIdentifier: 'form-gridcontainer'
-                editors:
-                  200:
-                    label: 'formEditor.elements.GridContainer.editor.label.label'
                   230: null
                   800: null
 

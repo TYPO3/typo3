@@ -45,18 +45,9 @@
 												</span>
 											</f:else>
 											<f:else>
-												<f:if condition="{form.deprecatedFileExtension}">
-													<f:then>
-														<span title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.deprecated_file_extension')} {form.identifier}" data-toggle="tooltip" data-placement="top">
-															<core:icon identifier="overlay-missing" />
-														</span>
-													</f:then>
-													<f:else>
-														<span title="id={form.identifier}" data-toggle="tooltip" data-placement="right">
-															<core:icon identifier="content-form" />
-														</span>
-													</f:else>
-												</f:if>
+												<span title="id={form.identifier}" data-toggle="tooltip" data-placement="right">
+													<core:icon identifier="content-form" />
+												</span>
 											</f:else>
 										</f:if>
 									</td>

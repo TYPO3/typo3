@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Form\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Form\Domain\Model\FormElements\GridContainerInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -57,14 +56,9 @@ class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelper
         $formElement = $arguments['element'];
 
         $gridRowElement = $formElement->getParentRenderable();
-        $gridContainerElement = $gridRowElement->getParentRenderable();
-        $gridRowEChildElements = $gridRowElement->getElements();
+        $gridRowChildElements = $gridRowElement->getElements();
 
-        if ($gridContainerElement instanceof GridContainerInterface) {
-            $gridViewPortConfiguration = $gridContainerElement->getProperties()['gridColumnClassAutoConfiguration'];
-        } else {
-            $gridViewPortConfiguration = $gridRowElement->getProperties()['gridColumnClassAutoConfiguration'];
-        }
+        $gridViewPortConfiguration = $gridRowElement->getProperties()['gridColumnClassAutoConfiguration'];
 
         if (empty($gridViewPortConfiguration)) {
             return '';
@@ -73,7 +67,7 @@ class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelper
 
         $columnsToCalculate = [];
         $usedColumns = [];
-        foreach ($gridRowEChildElements as $childElement) {
+        foreach ($gridRowChildElements as $childElement) {
             if (empty($childElement->getProperties()['gridColumnClassAutoConfiguration'])) {
                 foreach ($gridViewPortConfiguration['viewPorts'] as $viewPortName => $configuration) {
                     $columnsToCalculate[$viewPortName]['elements']++;

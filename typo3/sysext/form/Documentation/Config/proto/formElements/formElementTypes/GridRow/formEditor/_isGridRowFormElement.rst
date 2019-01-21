@@ -2,7 +2,7 @@ formEditor._isGridRowFormElement
 --------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.GridContainer.formEditor._isGridRowFormElement
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.GridRow.formEditor._isGridRowFormElement
 
 :aspect:`Data type`
       bool
@@ -18,7 +18,7 @@ formEditor._isGridRowFormElement
          :linenos:
          :emphasize-lines: 3
 
-         GridContainer:
+         GridRow:
            formEditor:
              _isGridRowFormElement: true
 

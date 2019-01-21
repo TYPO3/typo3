@@ -56,12 +56,6 @@ class TranslateElementErrorViewHelper extends AbstractViewHelper
         $element = $arguments['element'];
         $error = $arguments['error'];
 
-        if ($error instanceof Error) {
-            $code = $error->getCode();
-            $errorArguments = $error->getArguments();
-            $defaultValue = $error->__toString();
-        }
-
         /** @var FormRuntime $formRuntime */
         $formRuntime = $renderingContext
             ->getViewHelperVariableContainer()
@@ -69,9 +63,9 @@ class TranslateElementErrorViewHelper extends AbstractViewHelper
 
         return TranslationService::getInstance()->translateFormElementError(
             $element,
-            $code,
-            $errorArguments,
-            $defaultValue,
+            $error->getCode(),
+            $error->getArguments(),
+            $error->__toString(),
             $formRuntime
         );
     }

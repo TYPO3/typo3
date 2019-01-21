@@ -108,17 +108,12 @@ class DataStructureIdentifierHook
                 $formIsAccessible = false;
                 foreach ($formPersistenceManager->listForms() as $form) {
                     $invalidFormDefinition = $form['invalid'] ?? false;
-                    $hasDeprecatedFileExtension = $form['deprecatedFileExtension'] ?? false;
-
-                    if ($form['location'] === 'storage' && $hasDeprecatedFileExtension) {
-                        continue;
-                    }
 
                     if ($form['persistenceIdentifier'] === $identifier['ext-form-persistenceIdentifier']) {
                         $formIsAccessible = true;
                     }
 
-                    if ($invalidFormDefinition || $hasDeprecatedFileExtension) {
+                    if ($invalidFormDefinition) {
                         $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
                             $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
                             $form['persistenceIdentifier'],

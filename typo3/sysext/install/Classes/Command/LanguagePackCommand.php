@@ -35,7 +35,6 @@ class LanguagePackCommand extends Command
      */
     protected function configure()
     {
-        $this->setAliases(['lang:language:update']);
         $this->setDescription('Update the language files of all activated extensions')
             ->addArgument(
                 'locales',
@@ -55,12 +54,6 @@ class LanguagePackCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (substr_count($input->getArgument('command'), ':') === 2) {
-            $message = 'bin/typo3 lang:language:update is deprecated, use bin/typo3 language:update instead';
-            $output->writeln('<error>' . $message . '</error>');
-            trigger_error($message, E_USER_DEPRECATED);
-        }
-
         $languagePackService = GeneralUtility::makeInstance(LanguagePackService::class);
 
         try {

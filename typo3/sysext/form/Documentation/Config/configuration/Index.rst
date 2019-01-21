@@ -523,66 +523,6 @@ Full default configuration
               elementErrorClassAttribute: error
             renderingOptions:
               _isCompositeFormElement: true
-          GridContainer:
-            formEditor:
-              editors:
-                100:
-                  identifier: header
-                  templateName: Inspector-FormElementHeaderEditor
-                200:
-                  identifier: label
-                  templateName: Inspector-TextEditor
-                  label: formEditor.elements.GridContainer.editor.label.label
-                  propertyPath: label
-                700:
-                  identifier: gridColumnViewPortConfiguration
-                  templateName: Inspector-GridColumnViewPortConfigurationEditor
-                  label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
-                  configurationOptions:
-                    viewPorts:
-                      10:
-                        viewPortIdentifier: xs
-                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
-                      20:
-                        viewPortIdentifier: sm
-                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
-                      30:
-                        viewPortIdentifier: md
-                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
-                      40:
-                        viewPortIdentifier: lg
-                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
-                    numbersOfColumnsToUse:
-                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
-                      propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
-                      fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
-                9999:
-                  identifier: removeButton
-                  templateName: Inspector-RemoveElementEditor
-              predefinedDefaults: {  }
-              label: formEditor.elements.GridContainer.label
-              _isCompositeFormElement: true
-              _isGridContainerFormElement: true
-              iconIdentifier: t3-form-icon-gridcontainer
-            implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GridContainer
-            properties:
-              containerClassAttribute: input
-              elementClassAttribute: container
-              elementErrorClassAttribute: error
-              gridColumnClassAutoConfiguration:
-                gridSize: 12
-                viewPorts:
-                  xs:
-                    classPattern: 'col-xs-{@numbersOfColumnsToUse}'
-                  sm:
-                    classPattern: 'col-sm-{@numbersOfColumnsToUse}'
-                  md:
-                    classPattern: 'col-md-{@numbersOfColumnsToUse}'
-                  lg:
-                    classPattern: 'col-lg-{@numbersOfColumnsToUse}'
-            renderingOptions:
-              _isCompositeFormElement: true
-              _isGridContainerFormElement: true
           GridRow:
             formEditor:
               editors:
@@ -3856,7 +3796,6 @@ Full default configuration
             FormElement-Page: Stage/Page
             FormElement-SummaryPage: Stage/SummaryPage
             FormElement-Fieldset: Stage/Fieldset
-            FormElement-GridContainer: Stage/Fieldset
             FormElement-GridRow: Stage/Fieldset
             FormElement-Text: Stage/SimpleTemplate
             FormElement-Password: Stage/SimpleTemplate

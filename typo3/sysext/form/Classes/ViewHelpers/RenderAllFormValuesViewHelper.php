@@ -92,17 +92,6 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
                 continue;
             }
 
-            if (
-                (isset($renderingOptions['_isHiddenFormElement']) && (bool)$renderingOptions['_isHiddenFormElement'] === true)
-                || (isset($renderingOptions['_isReadOnlyFormElement']) && (bool)$renderingOptions['_isReadOnlyFormElement'] === true)
-            ) {
-                trigger_error(
-                    'Using the properties "renderingOptions._isHiddenFormElement" and "renderingOptions._isReadOnlyFormElement" will be removed in TYPO3 v10.0. Use variants instead.',
-                    E_USER_DEPRECATED
-                );
-                continue;
-            }
-
             $value = $formRuntime[$element->getIdentifier()];
 
             $formValue = [

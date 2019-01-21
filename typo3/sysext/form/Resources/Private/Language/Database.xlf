@@ -203,9 +203,6 @@
             <trans-unit id="formManager.duplicate_identifier" xml:space="preserve">
                 <source>Duplicate identifier!</source>
             </trans-unit>
-            <trans-unit id="formManager.deprecated_file_extension" xml:space="preserve">
-                <source>Unsupported file extension!</source>
-            </trans-unit>
 
             <trans-unit id="formManager.selectablePrototypesConfiguration.standard.label" xml:space="preserve">
                 <source>Standard</source>
@@ -817,13 +814,6 @@
             </trans-unit>
             <trans-unit id="formEditor.elements.Fieldset.editor.label.label" xml:space="preserve">
                 <source>Fieldset name</source>
-            </trans-unit>
-
-            <trans-unit id="formEditor.elements.GridContainer.label" xml:space="preserve">
-                <source>Grid: Container</source>
-            </trans-unit>
-            <trans-unit id="formEditor.elements.GridContainer.editor.label.label" xml:space="preserve">
-                <source>Container name (not visible within Frontend)</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.GridRow.label" xml:space="preserve">

@@ -346,10 +346,7 @@ class InlineControlContainer extends AbstractContainer
             $html .= '<div id="' . $nameObject . '_customControls">';
             foreach ($config['customControls'] as $customControlConfig) {
                 if (!isset($customControlConfig['userFunc'])) {
-                    trigger_error('Support for customControl without a userFunc key will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
-                    $customControlConfig = [
-                        'userFunc' => $customControlConfig
-                    ];
+                    throw new \RuntimeException('Support for customControl without a userFunc key in TCA type inline is not supported.', 1548052629);
                 }
                 $parameters = [
                     'table' => $table,

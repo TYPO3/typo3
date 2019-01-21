@@ -4,7 +4,6 @@ TYPO3:
       persistenceManager:
         allowedFileMounts:
           10: 1:/form_definitions/
-          20: 1:/user_upload/
         allowSaveToExtensionPaths: false
         allowDeleteFromExtensionPaths: false
         #allowedExtensionPaths:
@@ -74,28 +73,6 @@ TYPO3:
               implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\Section'
               renderingOptions:
                 _isCompositeFormElement: true
-
-            GridContainer:
-              __inheritances:
-                10: 'TYPO3.CMS.Form.mixins.formElementMixins.FormElementMixin'
-              implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\GridContainer'
-              renderingOptions:
-                _isCompositeFormElement: true
-                _isGridContainerFormElement: true
-              properties:
-                elementClassAttribute: 'container'
-                # overrules 'GridRow.properties.gridColumnClassAutoConfiguration'
-                gridColumnClassAutoConfiguration:
-                  gridSize: 12
-                  viewPorts:
-                    xs:
-                      classPattern: 'col-xs-{@numbersOfColumnsToUse}'
-                    sm:
-                      classPattern: 'col-sm-{@numbersOfColumnsToUse}'
-                    md:
-                      classPattern: 'col-md-{@numbersOfColumnsToUse}'
-                    lg:
-                      classPattern: 'col-lg-{@numbersOfColumnsToUse}'
 
             GridRow:
               __inheritances:

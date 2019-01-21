@@ -452,7 +452,6 @@ formEditorPartials
              FormElement-Page: Stage/Page
              FormElement-SummaryPage: Stage/SummaryPage
              FormElement-Fieldset: Stage/Fieldset
-             FormElement-GridContainer: Stage/Fieldset
              FormElement-GridRow: Stage/Fieldset
              FormElement-Text: Stage/SimpleTemplate
              FormElement-Password: Stage/SimpleTemplate
@@ -648,7 +647,6 @@ formElementGroups
       - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Checkbox.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.checkbox.formeditor.group>`
       - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.SummaryPage.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.summarypage.formeditor.group>`
       - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.ImageUpload.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.imageupload.formeditor.group>`
-      - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.GridContainer.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.gridcontainer.formeditor.group>`
       - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Hidden.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.hidden.formeditor.group>`
       - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.StaticText.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.statictext.formeditor.group>`
       - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.RadioButton.formEditor.group"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.radiobutton.formeditor.group>`

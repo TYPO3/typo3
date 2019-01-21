@@ -336,24 +336,6 @@ define(['jquery',
             return false;
           }
 
-          if (
-            formElementTypeDefinition['_isGridContainerFormElement']
-            && (
-              getFormEditorApp().findEnclosingGridContainerFormElement(targetFormElementIdentifierPath)
-              || getFormEditorApp().findEnclosingGridRowFormElement(targetFormElementIdentifierPath)
-            )
-          ) {
-            return false;
-          }
-
-          if (
-            !formElementTypeDefinition['_isGridContainerFormElement']
-            && !formElementTypeDefinition['_isGridRowFormElement']
-            && targetFormElementTypeDefinition['_isGridContainerFormElement']
-          ) {
-            return false;
-          }
-
           return true;
         },
         stop: function(e, o) {
