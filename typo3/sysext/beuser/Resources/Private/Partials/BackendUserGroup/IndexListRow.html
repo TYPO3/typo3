@@ -31,10 +31,10 @@
 			</be:link.editRecord>
 			<f:if condition="{backendUserGroup.hidden}">
 				<f:then>
-					<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_groups][{backendUserGroup.uid}][hidden]=0', redirectUrl: redirectUrl)}" title="{f:translate(key:'visibility.unhide')}"><core:icon identifier="actions-edit-unhide" /></a>
+					<a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[be_groups][{backendUserGroup.uid}][hidden]=0', currentUrlParameterName:'redirect')}" title="{f:translate(key:'visibility.unhide')}"><core:icon identifier="actions-edit-unhide" /></a>
 				</f:then>
 				<f:else>
-					<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_groups][{backendUserGroup.uid}][hidden]=1', redirectUrl: redirectUrl)}" title="{f:translate(key:'visibility.hide')}"><core:icon identifier="actions-edit-hide" /></a>
+					<a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[be_groups][{backendUserGroup.uid}][hidden]=1', currentUrlParameterName:'redirect')}" title="{f:translate(key:'visibility.hide')}"><core:icon identifier="actions-edit-hide" /></a>
 				</f:else>
 			</f:if>
 		</div>
