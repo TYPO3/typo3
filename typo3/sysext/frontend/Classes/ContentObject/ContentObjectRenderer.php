@@ -4697,10 +4697,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
                         $site = $request ? $request->getAttribute('site') : null;
                         if ($site instanceof Site) {
-                            try {
-                                $retVal = ArrayUtility::getValueByPath($site->getConfiguration(), $key, '.');
-                            } catch (MissingArrayPathException $exception) {
-                                $this->logger->warning(sprintf('getData() with "%s" failed', $key), ['exception' => $exception]);
+                            if ($key === 'identifier') {
+                                $retVal = $site->getIdentifier();
+                            } else {
+                                try {
+                                    $retVal = ArrayUtility::getValueByPath($site->getConfiguration(), $key, '.');
+                                } catch (MissingArrayPathException $exception) {
+                                    $this->logger->warning(sprintf('getData() with "%s" failed', $key), ['exception' => $exception]);
+                                }
                             }
                         }
                         break;
