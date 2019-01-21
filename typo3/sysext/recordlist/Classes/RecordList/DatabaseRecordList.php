@@ -1591,6 +1591,9 @@ class DatabaseRecordList
      */
     public function renderListHeader($table, $currentIdList)
     {
+        $tsConfig = BackendUtility::getPagesTSconfig($this->id);
+        $tsConfigOfTable = is_array($tsConfig['TCEFORM.'][$table . '.']) ? $tsConfig['TCEFORM.'][$table . '.'] : null;
+
         $lang = $this->getLanguageService();
         // Init:
         $theData = [];
@@ -1756,8 +1759,22 @@ class DatabaseRecordList
                     // at the end
                     $sortLabel = BackendUtility::getItemLabel($table, $fCol);
                     if ($sortLabel !== null) {
-                        $sortLabel = htmlspecialchars($lang->sL($sortLabel));
-                        $sortLabel = rtrim(trim($sortLabel), ':');
+                        $sortLabel = rtrim(trim($lang->sL($sortLabel)), ':');
+
+                        // Field label
+                        $fieldTSConfig = [];
+                        if (isset($tsConfigOfTable[$fCol . '.'])
+                            && is_array($tsConfigOfTable[$fCol . '.'])
+                        ) {
+                            $fieldTSConfig = $tsConfigOfTable[$fCol . '.'];
+                        }
+                        if (!empty($fieldTSConfig['label'])) {
+                            $sortLabel = $lang->sL($fieldTSConfig['label']);
+                        }
+                        if (!empty($fieldTSConfig['label.'][$lang->lang])) {
+                            $sortLabel = $lang->sL($fieldTSConfig['label.'][$lang->lang]);
+                        }
+                        $sortLabel = htmlspecialchars($sortLabel);
                     } else {
                         // No TCA field, only output the $fCol variable with square brackets []
                         $sortLabel = htmlspecialchars($fCol);
@@ -2536,14 +2553,28 @@ class DatabaseRecordList
                 $checkAllChecked = false;
                 $checked = '';
             }
+
             // Field label
-            $fieldLabel = is_array($GLOBALS['TCA'][$table]['columns'][$fieldName])
-                ? rtrim($lang->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label']), ':')
-                : '';
+            $fieldTSConfig = [];
+            $fieldLabel = '';
+            if (isset($tsConfigOfTable[$fieldName . '.'])
+                && is_array($tsConfigOfTable[$fieldName . '.'])
+            ) {
+                $fieldTSConfig = $tsConfigOfTable[$fieldName . '.'];
+            }
+            if (!empty($fieldTSConfig['label'])) {
+                $fieldLabel = $fieldTSConfig['label'];
+            }
+            if (!empty($fieldTSConfig['label.'][$lang->lang])) {
+                $fieldLabel = $fieldTSConfig['label.'][$lang->lang];
+            }
+
+            $fieldLabel = $fieldLabel ?: BackendUtility::getItemLabel($table, $fieldName);
+
             $checkboxes[] = '<tr><td class="col-checkbox"><input type="checkbox" id="check-' . $fieldName . '" name="displayFields['
                 . $table . '][]" value="' . $fieldName . '" ' . $checked
                 . ($fieldName === $this->fieldArray[0] ? ' disabled="disabled"' : '') . '></td><td class="col-title">'
-                . '<label class="label-block" for="check-' . $fieldName . '">' . htmlspecialchars($fieldLabel) . ' <span class="text-muted text-monospace">[' . htmlspecialchars($fieldName) . ']</span></label></td></tr>';
+                . '<label class="label-block" for="check-' . $fieldName . '">' . htmlspecialchars($lang->sL($fieldLabel)) . ' <span class="text-muted text-monospace">[' . htmlspecialchars($fieldName) . ']</span></label></td></tr>';
         }
         // Table with the field selector::
         $content = $formElements[0] . '
