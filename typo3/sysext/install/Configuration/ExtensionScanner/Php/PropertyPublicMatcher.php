@@ -519,4 +519,14 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\ActionController->namespacesViewObjectNamePattern' => [
+        'restFiles' => [
+            'Breaking-87511-RemoveNamespacesViewObjectNamePatternProperty.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\ActionController->viewFormatToObjectNameMap' => [
+        'restFiles' => [
+            'Breaking-87511-RemoveViewFormatToObjectNameMapProperty.rst',
+        ],
+    ],
 ];

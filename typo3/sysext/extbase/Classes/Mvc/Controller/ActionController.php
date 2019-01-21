@@ -47,22 +47,6 @@ class ActionController extends AbstractController
     protected $view;
 
     /**
-     * @var string
-     */
-    protected $namespacesViewObjectNamePattern = '@vendor\@extension\View\@controller\@action@format';
-
-    /**
-     * A list of formats and object names of the views which should render them.
-     *
-     * Example:
-     *
-     * array('html' => 'Tx_MyExtension_View_MyHtmlView', 'json' => 'F3...
-     *
-     * @var array
-     */
-    protected $viewFormatToObjectNameMap = [];
-
-    /**
      * The default view object to use if none of the resolved views can render
      * a response for the current request.
      *
@@ -347,16 +331,7 @@ class ActionController extends AbstractController
      */
     protected function resolveView()
     {
-        $viewObjectName = $this->resolveViewObjectName();
-        if ($viewObjectName !== false) {
-            /** @var ViewInterface $view */
-            $view = $this->objectManager->get($viewObjectName);
-            $this->setViewConfiguration($view);
-            if ($view->canRender($this->controllerContext) === false) {
-                unset($view);
-            }
-        }
-        if (!isset($view) && $this->defaultViewObjectName != '') {
+        if ($this->defaultViewObjectName != '') {
             /** @var ViewInterface $view */
             $view = $this->objectManager->get($this->defaultViewObjectName);
             $this->setViewConfiguration($view);
@@ -445,44 +420,6 @@ class ActionController extends AbstractController
         }
 
         return $values;
-    }
-
-    /**
-     * Determines the fully qualified view object name.
-     *
-     * @return mixed The fully qualified view object name or FALSE if no matching view could be found.
-     */
-    protected function resolveViewObjectName()
-    {
-        $vendorName = $this->request->getControllerVendorName();
-        if ($vendorName === null) {
-            return false;
-        }
-
-        $possibleViewName = str_replace(
-            [
-                '@vendor',
-                '@extension',
-                '@controller',
-                '@action'
-            ],
-            [
-                $vendorName,
-                $this->request->getControllerExtensionName(),
-                $this->request->getControllerName(),
-                ucfirst($this->request->getControllerActionName())
-            ],
-            $this->namespacesViewObjectNamePattern
-        );
-        $format = $this->request->getFormat();
-        $viewObjectName = str_replace('@format', ucfirst($format), $possibleViewName);
-        if (class_exists($viewObjectName) === false) {
-            $viewObjectName = str_replace('@format', '', $possibleViewName);
-        }
-        if (isset($this->viewFormatToObjectNameMap[$format]) && class_exists($viewObjectName) === false) {
-            $viewObjectName = $this->viewFormatToObjectNameMap[$format];
-        }
-        return class_exists($viewObjectName) ? $viewObjectName : false;
     }
 
     /**

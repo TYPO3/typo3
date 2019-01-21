@@ -19,17 +19,14 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
-use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use TYPO3Fluid\Fluid\View\AbstractTemplateView;
 use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
@@ -63,67 +60,6 @@ class ActionControllerTest extends UnitTestCase
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService
      */
     protected $mockMvcPropertyMappingConfigurationService;
-
-    /**
-     * @test
-     */
-    public function resolveViewUsesFluidTemplateViewIfTemplateIsAvailable()
-    {
-        $mockControllerContext = $this->createMock(ControllerContext::class);
-        $mockFluidTemplateView = $this->createMock(ViewInterface::class);
-        $mockFluidTemplateView->expects($this->once())->method('setControllerContext')->with($mockControllerContext);
-        $mockFluidTemplateView->expects($this->once())->method('canRender')->with($mockControllerContext)->will($this->returnValue(true));
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $mockObjectManager->expects($this->at(0))->method('get')->with(TemplateView::class)->will($this->returnValue($mockFluidTemplateView));
-        $mockController = $this->getAccessibleMock(ActionController::class, ['buildControllerContext', 'resolveViewObjectName', 'setViewConfiguration'], [], '', false);
-        $mockController->expects($this->once())->method('resolveViewObjectName')->will($this->returnValue(false));
-        $mockController->_set('objectManager', $mockObjectManager);
-        $mockController->_set('controllerContext', $mockControllerContext);
-        $this->assertSame($mockFluidTemplateView, $mockController->_call('resolveView'));
-    }
-
-    /**
-     * @test
-     */
-    public function resolveViewObjectNameUsesViewObjectNamePatternToResolveViewObjectName()
-    {
-        $mockRequest = $this->createMock(Request::class);
-        $mockRequest->expects($this->once())->method('getControllerVendorName')->will($this->returnValue('MyVendor'));
-        $mockRequest->expects($this->once())->method('getControllerExtensionName')->will($this->returnValue('MyPackage'));
-        $mockRequest->expects($this->once())->method('getControllerName')->will($this->returnValue('MyController'));
-        $mockRequest->expects($this->once())->method('getControllerActionName')->will($this->returnValue('MyAction'));
-        $mockRequest->expects($this->atLeastOnce())->method('getFormat')->will($this->returnValue('MyFormat'));
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $mockController = $this->getAccessibleMock(ActionController::class, ['dummy'], [], '', false);
-        $mockController->_set('request', $mockRequest);
-        $mockController->_set('objectManager', $mockObjectManager);
-        $mockController->_set('namespacesViewObjectNamePattern', 'RandomViewObject@vendor\@extension\View\@controller\@action@format');
-        $mockController->_call('resolveViewObjectName');
-    }
-
-    /**
-     * @test
-     */
-    public function resolveViewObjectNameUsesNamespacedViewObjectNamePatternForExtensionsWithVendor()
-    {
-        eval('namespace MyVendor\MyPackage\View\MyController; class MyActionMyFormat {}');
-
-        $mockRequest = $this->createMock(Request::class);
-        $mockRequest->expects($this->once())->method('getControllerExtensionName')->will($this->returnValue('MyPackage'));
-        $mockRequest->expects($this->once())->method('getControllerName')->will($this->returnValue('MyController'));
-        $mockRequest->expects($this->once())->method('getControllerActionName')->will($this->returnValue('MyAction'));
-        $mockRequest->expects($this->once())->method('getControllerVendorName')->will($this->returnValue('MyVendor'));
-        $mockRequest->expects($this->atLeastOnce())->method('getFormat')->will($this->returnValue('MyFormat'));
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $mockController = $this->getAccessibleMock(ActionController::class, ['dummy'], [], '', false);
-        $mockController->_set('request', $mockRequest);
-        $mockController->_set('objectManager', $mockObjectManager);
-
-        $this->assertEquals(
-            'MyVendor\MyPackage\View\MyController\MyActionMyFormat',
-            $mockController->_call('resolveViewObjectName')
-        );
-    }
 
     /**
      * @test
