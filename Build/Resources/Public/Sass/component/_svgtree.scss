@@ -33,6 +33,7 @@ $svgColors: (
     text-align: center;
     background: rgba(0, 0, 0, 0.3);
     z-index: 3000;
+    user-select: none;
 
     & > * {
         position: absolute;
