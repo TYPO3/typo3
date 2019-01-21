@@ -487,9 +487,9 @@ abstract class AbstractTask implements LoggerAwareInterface
      * Removes given execution from list
      *
      * @param int $executionID Id of the execution to remove.
-     * @param \Exception $failure An exception to signal a failed execution
+     * @param \Throwable $failure An exception to signal a failed execution
      */
-    public function unmarkExecution($executionID, \Exception $failure = null)
+    public function unmarkExecution($executionID, \Throwable $failure = null)
     {
         // Get the executions for the task
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -514,7 +514,7 @@ abstract class AbstractTask implements LoggerAwareInterface
             } else {
                 $runningExecutionsSerialized = '';
             }
-            if ($failure instanceof \Exception) {
+            if ($failure instanceof \Throwable) {
                 // Log failed execution
                 $logMessage = 'Task failed to execute successfully. Class: ' . static::class
                     . ', UID: ' . $this->taskUid . ', Code: ' . $failure->getCode() . ', ' . $failure->getMessage();

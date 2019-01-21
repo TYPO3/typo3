@@ -149,8 +149,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
      *
      * @param Task\AbstractTask $task The task to execute
      * @return bool Whether the task was saved successfully to the database or not
-     * @throws FailedExecutionException
-     * @throws \Exception
+     * @throws \Throwable
      */
     public function executeTask(Task\AbstractTask $task)
     {
@@ -181,7 +180,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
                 if (!$successfullyExecuted) {
                     throw new FailedExecutionException('Task failed to execute successfully. Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid(), 1250596541);
                 }
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 // Store exception, so that it can be saved to database
                 $failure = $e;
             }
@@ -191,7 +190,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
             $this->logger->info('Task executed. Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid());
             // Now that the result of the task execution has been handled,
             // throw the exception again, if any
-            if ($failure instanceof \Exception) {
+            if ($failure instanceof \Throwable) {
                 throw $failure;
             }
         }
