@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -65,10 +65,10 @@ class RequireJsController
     {
         $name = $request->getQueryParams()['name'] ?? null;
         if (empty($name) || !is_string($name)) {
-            return new JsonResponse(null, 404);
+            return $this->createJsonResponse(null, 404);
         }
         $configuration = $this->findConfiguration($name);
-        return new JsonResponse($configuration, !empty($configuration) ? 200 : 404);
+        return $this->createJsonResponse($configuration, !empty($configuration) ? 200 : 404);
     }
 
     /**
@@ -105,5 +105,25 @@ class RequireJsController
         }
 
         return $relevantConfiguration;
+    }
+
+    /**
+     * @param array|null $configuration
+     * @param int $statusCode
+     * @return Response
+     */
+    protected function createJsonResponse($configuration, int $statusCode): Response
+    {
+        $response = (new Response())
+            ->withStatus($statusCode)
+            ->withHeader('Content-Type', 'application/json; charset=utf-8');
+
+        if (!empty($configuration)) {
+            $options = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES;
+            $response->getBody()->write(json_encode($configuration ?: null, $options));
+            $response->getBody()->rewind();
+        }
+
+        return $response;
     }
 }
