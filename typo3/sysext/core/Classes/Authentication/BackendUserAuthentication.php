@@ -781,11 +781,15 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '" was not found in testing record!';
                 return false;
             }
-        } elseif (
-            $table === 'pages' && $checkFullLanguageAccess &&
-            !$this->checkFullLanguagesAccess($table, $idOrRow)
-        ) {
-            return false;
+        } elseif ($table === 'pages') {
+            if (!$this->checkLanguageAccess(0)) {
+                $this->errorMsg = 'ERROR: Language was not allowed.';
+                return false;
+            }
+            if ($checkFullLanguageAccess && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
+                $this->errorMsg = 'ERROR: Related/affected language was not allowed.';
+                return false;
+            }
         }
         // Checking authMode fields:
         if (is_array($GLOBALS['TCA'][$table]['columns'])) {
