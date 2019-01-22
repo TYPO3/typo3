@@ -76,13 +76,11 @@ define([
                 if (element.disable) {
                   name = '[DISABLED] ' + name;
                 }
-                var selected = '';
+                var $option = $('<option>', {'value': element.uid}).text(name);
                 if (element.isSystemMaintainer) {
-                  selected = 'selected="selected"';
+                  $option.attr('selected', 'selected');
                 }
-                modalContent.find(self.selectorChosenField).append(
-                  '<option value="' + element.uid + '" ' + selected + '>' + name + '</option>'
-                );
+                modalContent.find(self.selectorChosenField).append($option);
               });
             }
             var config = {

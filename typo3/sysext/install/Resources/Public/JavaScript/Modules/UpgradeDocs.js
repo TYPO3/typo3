@@ -174,7 +174,7 @@ define([
       });
       this.chosenField.prop('disabled', false);
       $.each(tagArray, function(i, tag) {
-        self.chosenField.append('<option>' + tag + '</option>');
+        self.chosenField.append($('<option>').text(tag));
       });
       this.chosenField.trigger('chosen:updated');
     },
