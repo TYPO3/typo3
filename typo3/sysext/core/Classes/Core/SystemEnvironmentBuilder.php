@@ -133,9 +133,9 @@ class SystemEnvironmentBuilder
         defined('CRLF') ?: define('CRLF', CR . LF);
 
         // Security related constant: Default value of fileDenyPattern
-        define('FILE_DENY_PATTERN_DEFAULT', '\\.(php[3-7]?|phpsh|phtml|pht)(\\..*)?$|^\\.htaccess$');
+        define('FILE_DENY_PATTERN_DEFAULT', '\\.(php[3-7]?|phpsh|phtml|pht|phar|shtml|cgi|pl)(\\..*)?$|^\\.htaccess$');
         // Security related constant: List of file extensions that should be registered as php script file extensions
-        define('PHP_EXTENSIONS_DEFAULT', 'php,php3,php4,php5,php6,php7,phpsh,inc,phtml,pht');
+        define('PHP_EXTENSIONS_DEFAULT', 'php,php3,php4,php5,php6,php7,phpsh,inc,phtml,pht,phar');
 
         // Relative path from document root to typo3/ directory, hardcoded to "typo3/"
         if (!defined('TYPO3_mainDir')) {
