@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Install\Http;
+namespace TYPO3\CMS\Install\Middleware;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,7 +17,8 @@ namespace TYPO3\CMS\Install\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface as PsrRequestHandlerInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
@@ -25,7 +26,6 @@ use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Package\PackageInterface;
@@ -44,11 +44,11 @@ use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\CMS\Install\Service\SessionService;
 
 /**
- * Default request handler for all requests inside the TYPO3 Install Tool, which does a simple hardcoded
+ * Default middleware for all requests inside the TYPO3 Install Tool, which does a simple hardcoded
  * dispatching to a controller based on the get/post variable.
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterface
+class Maintenance implements MiddlewareInterface
 {
     /**
      * @var ConfigurationManager
@@ -80,21 +80,15 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
      * Handles an Install Tool request for normal operations
      *
      * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
-    public function handleRequest(ServerRequestInterface $request): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        return $this->handle($request);
-    }
+        if (!$this->canHandleRequest($request)) {
+            return $handler->handle($request);
+        }
 
-    /**
-     * Handles an Install Tool request for normal operations
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     */
-    public function handle(ServerRequestInterface $request): ResponseInterface
-    {
         $controllerName = $request->getQueryParams()['install']['controller'] ?? 'layout';
         $actionName = $request->getParsedBody()['install']['action'] ?? $request->getQueryParams()['install']['action'] ?? 'init';
         $action = $actionName . 'Action';
@@ -216,7 +210,7 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
      * @param ServerRequestInterface $request
      * @return bool Returns always TRUE
      */
-    public function canHandleRequest(ServerRequestInterface $request): bool
+    protected function canHandleRequest(ServerRequestInterface $request): bool
     {
         $basicIntegrity = $this->checkIfEssentialConfigurationExists()
             && !empty($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'])
@@ -225,16 +219,6 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
             return false;
         }
         return true;
-    }
-
-    /**
-     * Returns the priority - how eager the handler is to actually handle the request.
-     *
-     * @return int The priority of the request handler.
-     */
-    public function getPriority(): int
-    {
-        return 50;
     }
 
     /**

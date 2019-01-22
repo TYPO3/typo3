@@ -17,10 +17,9 @@ namespace TYPO3\CMS\Backend\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface as PsrRequestHandlerInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -34,19 +33,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *   - route
  *   - token
  */
-class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterface
+class RequestHandler implements RequestHandlerInterface
 {
-    /**
-     * Handles any backend request
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     */
-    public function handleRequest(ServerRequestInterface $request): ResponseInterface
-    {
-        return $this->handle($request);
-    }
-
     /**
      * Handles a backend request, after finishing running middlewares
      * Dispatch the request to the appropriate controller through the
@@ -66,27 +54,5 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
             $url = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir;
             return new RedirectResponse($url);
         }
-    }
-
-    /**
-     * This request handler can handle any backend request.
-     *
-     * @param ServerRequestInterface $request
-     * @return bool If the request is BE request TRUE otherwise FALSE
-     */
-    public function canHandleRequest(ServerRequestInterface $request): bool
-    {
-        return (bool)(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE);
-    }
-
-    /**
-     * Returns the priority - how eager the handler is to actually handle the
-     * request.
-     *
-     * @return int The priority of the request handler.
-     */
-    public function getPriority(): int
-    {
-        return 50;
     }
 }

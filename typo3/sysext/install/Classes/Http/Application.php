@@ -16,14 +16,18 @@ namespace TYPO3\CMS\Install\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Http\AbstractApplication;
-use TYPO3\CMS\Core\Http\RequestHandlerInterface;
+use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Middleware\Installer;
+use TYPO3\CMS\Install\Middleware\Maintenance;
 
 /**
  * Entry point for the TYPO3 Install Tool
@@ -32,25 +36,36 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class Application extends AbstractApplication
 {
     /**
-     * All available request handlers that can handle an install tool request
-     * @var array
+     * @var string
      */
-    protected $availableRequestHandlers = [];
+    protected $requestHandler = NotFoundRequestHandler::class;
 
     /**
-     * Construct Application
-     *
-     * @param RequestHandlerInterface $requestHandler
-     * @param RequestHandlerInterface $installerRequestHandler
+     * @var ConfigurationManager
      */
-    public function __construct(
-        RequestHandlerInterface $requestHandler,
-        RequestHandlerInterface $installerRequestHandler
-    ) {
-        $this->availableRequestHandlers = [
-            $requestHandler,
-            $installerRequestHandler
-        ];
+    protected $configurationManager;
+
+    /**
+     * @param ConfigurationManager $configurationManager
+     */
+    public function __construct(ConfigurationManager $configurationManager)
+    {
+        $this->configurationManager = $configurationManager;
+    }
+
+    /**
+     * @param RequestHandlerInterface $requestHandler
+     * @return MiddlewareDispatcher
+     */
+    protected function createMiddlewareDispatcher(RequestHandlerInterface $requestHandler): MiddlewareDispatcher
+    {
+        $dispatcher = new MiddlewareDispatcher($requestHandler);
+
+        // Stack of middlewares, executed LIFO
+        $dispatcher->lazy(Installer::class);
+        $dispatcher->add(GeneralUtility::makeInstance(Maintenance::class, $this->configurationManager));
+
+        return $dispatcher;
     }
 
     /**
@@ -60,12 +75,7 @@ class Application extends AbstractApplication
     protected function handle(ServerRequestInterface $request): ResponseInterface
     {
         $this->initializeContext();
-        foreach ($this->availableRequestHandlers as $handler) {
-            if ($handler->canHandleRequest($request)) {
-                return $handler->handle($request);
-            }
-        }
-        throw new \TYPO3\CMS\Core\Exception('No suitable request handler found.', 1518448686);
+        return parent::handle($request);
     }
 
     /**

@@ -187,13 +187,8 @@ class Bootstrap
                 switch ($id) {
                 case \TYPO3\CMS\Frontend\Http\Application::class:
                 case \TYPO3\CMS\Backend\Http\Application::class:
-                    $entry = new $id($this->get(ConfigurationManager::class));
-                    break;
                 case \TYPO3\CMS\Install\Http\Application::class:
-                    $entry = new $id(
-                        GeneralUtility::makeInstance(\TYPO3\CMS\Install\Http\RequestHandler::class, $this->get(ConfigurationManager::class)),
-                        GeneralUtility::makeInstance(\TYPO3\CMS\Install\Http\InstallerRequestHandler::class)
-                    );
+                    $entry = new $id($this->get(ConfigurationManager::class));
                     break;
                 case \TYPO3\CMS\Core\Console\CommandApplication::class:
                     $entry = new $id;

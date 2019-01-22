@@ -1239,4 +1239,9 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Http\RequestHandlerInterface' => [
+        'restFiles' => [
+            'Important-87516-RemoveCoreHTTPRequestHandlerInterface.rst',
+        ],
+    ],
 ];

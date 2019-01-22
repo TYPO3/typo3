@@ -18,10 +18,9 @@ namespace TYPO3\CMS\Frontend\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface as PsrRequestHandlerInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\NullResponse;
-use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -56,24 +55,13 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
  *
  * Then the right HTTP response headers are compiled together and sent as well.
  */
-class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterface
+class RequestHandler implements RequestHandlerInterface
 {
     /**
      * Instance of the timetracker
      * @var TimeTracker
      */
     protected $timeTracker;
-
-    /**
-     * Handles a frontend request
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     */
-    public function handleRequest(ServerRequestInterface $request): ResponseInterface
-    {
-        return $this->handle($request);
-    }
 
     /**
      * Puts parameters that have been added or removed from the global _GET or _POST arrays
@@ -1106,27 +1094,5 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
             $htmlTag = $cObj->stdWrap($htmlTag, $configuration['htmlTag_stdWrap.']);
         }
         return $htmlTag;
-    }
-
-    /**
-     * This request handler can handle any frontend request.
-     *
-     * @param ServerRequestInterface $request
-     * @return bool If the request is not an eID request, TRUE otherwise FALSE
-     */
-    public function canHandleRequest(ServerRequestInterface $request): bool
-    {
-        return true;
-    }
-
-    /**
-     * Returns the priority - how eager the handler is to actually handle the
-     * request.
-     *
-     * @return int The priority of the request handler.
-     */
-    public function getPriority(): int
-    {
-        return 50;
     }
 }
