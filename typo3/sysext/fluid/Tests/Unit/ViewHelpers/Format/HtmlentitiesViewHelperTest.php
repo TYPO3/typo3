@@ -91,7 +91,7 @@ class HtmlentitiesViewHelperTest extends ViewHelperBaseTestcase
     /**
      * @test
      */
-    public function renderDecodesSimpleString()
+    public function renderEncodesSimpleString()
     {
         $source = 'Some special characters: &©"\'';
         $this->setArgumentsUnderTest(
@@ -100,7 +100,7 @@ class HtmlentitiesViewHelperTest extends ViewHelperBaseTestcase
                 'value' => $source
             ]
         );
-        $expectedResult = 'Some special characters: &amp;&copy;&quot;\'';
+        $expectedResult = 'Some special characters: &amp;&copy;&quot;&#039;';
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -136,7 +136,7 @@ class HtmlentitiesViewHelperTest extends ViewHelperBaseTestcase
                 'encoding' => 'ISO-8859-1',
             ]
         );
-        $expectedResult = 'Some special characters: &amp;&copy;&quot;\'';
+        $expectedResult = 'Some special characters: &amp;&copy;&quot;&#039;';
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -193,5 +193,46 @@ class HtmlentitiesViewHelperTest extends ViewHelperBaseTestcase
         );
         $actualResult = $this->viewHelper->render();
         $this->assertSame($source, $actualResult);
+    }
+
+    /**
+     * Ensures that obejcts are handled properly:
+     * + class not having __toString() method as given
+     * + class having __toString() method gets encoded
+     *
+     * @param object $source
+     * @param mixed $expectation
+     * @test
+     * @dataProvider renderEscapesObjectIfPossibleDataProvider
+     */
+    public function renderEscapesObjectIfPossible($source, $expectation)
+    {
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => $source
+            ]
+        );
+        $actualResult = $this->viewHelper->render();
+        $this->assertSame($expectation, $actualResult);
+    }
+
+    /**
+     * @return array
+     */
+    public function renderEscapesObjectIfPossibleDataProvider(): array
+    {
+        $stdClass = new \stdClass();
+        $toStringClass = new class() {
+            public function __toString(): string
+            {
+                return '<script>alert(\'"&xss"\')</script>';
+            }
+        };
+
+        return [
+            'plain object' => [$stdClass, $stdClass],
+            'object with __toString()' => [$toStringClass, '&lt;script&gt;alert(&#039;&quot;&amp;xss&quot;&#039;)&lt;/script&gt;'],
+        ];
     }
 }

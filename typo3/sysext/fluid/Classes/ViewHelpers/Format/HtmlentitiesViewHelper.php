@@ -84,13 +84,13 @@ class HtmlentitiesViewHelper extends AbstractEncodingViewHelper
         $keepQuotes = $arguments['keepQuotes'];
         $doubleEncode = $arguments['doubleEncode'];
 
-        if (!is_string($value)) {
+        if (!is_string($value) && !(is_object($value) && method_exists($value, '__toString'))) {
             return $value;
         }
         if ($encoding === null) {
             $encoding = self::resolveDefaultEncoding();
         }
-        $flags = $keepQuotes ? ENT_NOQUOTES : ENT_COMPAT;
-        return htmlentities($value, $flags, $encoding, $doubleEncode);
+        $flags = $keepQuotes ? ENT_NOQUOTES : ENT_QUOTES;
+        return htmlentities((string)$value, $flags, $encoding, $doubleEncode);
     }
 }
