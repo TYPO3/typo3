@@ -45,7 +45,8 @@ class BackendUserAuthenticator implements MiddlewareInterface
         '/ajax/logout',
         '/ajax/login/refresh',
         '/ajax/login/timedout',
-        '/ajax/rsa/publickey'
+        '/ajax/rsa/publickey',
+        '/ajax/core/requirejs',
     ];
 
     /**
