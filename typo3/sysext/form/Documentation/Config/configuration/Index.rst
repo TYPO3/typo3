@@ -2402,6 +2402,10 @@ Full default configuration
                   closure: ''
           Confirmation:
             implementationClassName: TYPO3\CMS\Form\Domain\Finishers\ConfirmationFinisher
+            options:
+              templateName: 'Confirmation'
+              templateRootPaths:
+                10: 'EXT:form/Resources/Private/Frontend/Templates/Finishers/Confirmation/'
             formEditor:
               iconIdentifier: t3-form-icon-finisher
               label: formEditor.elements.Form.finisher.Confirmation.editor.header.label

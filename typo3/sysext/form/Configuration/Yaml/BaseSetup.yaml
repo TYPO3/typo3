@@ -245,8 +245,12 @@ TYPO3:
 
             Confirmation:
               implementationClassName: 'TYPO3\CMS\Form\Domain\Finishers\ConfirmationFinisher'
-              #options:
+              options:
                 #message: ''
+                #variables:
+                templateName: 'Confirmation'
+                templateRootPaths:
+                  10: 'EXT:form/Resources/Private/Frontend/Templates/Finishers/Confirmation/'
 
             EmailToSender:
               __inheritances:

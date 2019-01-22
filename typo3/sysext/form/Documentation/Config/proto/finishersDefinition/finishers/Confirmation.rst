@@ -74,6 +74,84 @@ options.message
       The text which is shown if the finisher is invoked.
 
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.variables:
+
+options.variables
+-----------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.variables
+
+:aspect:`Data type`
+      array
+
+:aspect:`Needed by`
+      Frontend
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value`
+      undefined
+
+:aspect:`Description`
+      Variables which should be available within the template.
+
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.templatename:
+
+options.templateName
+--------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.templateName
+
+:aspect:`Data type`
+      string
+
+:aspect:`Needed by`
+      Frontend
+
+:aspect:`Mandatory`
+      Yes
+
+:aspect:`Default value`
+      'Confirmation'
+
+:aspect:`Description`
+      Define a custom template name which should be used.
+
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.templaterootpaths:
+
+options.templateRootPaths
+-------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.templateRootPaths
+
+:aspect:`Data type`
+      array
+
+:aspect:`Needed by`
+      Frontend
+
+:aspect:`Mandatory`
+      Yes
+
+:aspect:`Default value`
+      .. code-block:: yaml
+         :linenos:
+
+         Confirmation:
+           options:
+             templateRootPaths:
+               10: 'EXT:form/Resources/Private/Frontend/Templates/Finishers/Confirmation/'
+
+:aspect:`Description`
+      Used to define several paths for templates, which will be tried in reversed order (the paths are searched from bottom to top).
+
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.translation.translationfile:
 
 options.translation.translationFile
