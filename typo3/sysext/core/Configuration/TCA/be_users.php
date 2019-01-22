@@ -178,7 +178,8 @@ return [
         'disable' => [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.disable',
             'config' => [
-                'type' => 'check'
+                'type' => 'check',
+                'default' => 1
             ]
         ],
         'disableIPlock' => [
@@ -343,7 +344,7 @@ return [
     'types' => [
         '0' => ['showitem' => '
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
-                admin, username, password, avatar, usergroup, realName, email, lang, lastlogin,
+                disable, admin, username, password, avatar, usergroup, realName, email, lang, lastlogin,
             --div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.rights,
                 userMods, allowed_languages,
             --div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.mounts_and_workspaces,
@@ -351,18 +352,18 @@ return [
             --div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.options,
                 lockToDomain, disableIPlock, TSconfig,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
-                disable,--palette--;;timeRestriction,
+                --palette--;;timeRestriction,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
                 description,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
         '],
         '1' => ['showitem' => '
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
-                admin, username, password, avatar, usergroup, realName, email, lang, lastlogin,
+                disable, admin, username, password, avatar, usergroup, realName, email, lang, lastlogin,
             --div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.options,
                 disableIPlock, TSconfig, db_mountpoints, options, file_mountpoints,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
-                disable,--palette--;;timeRestriction,
+                --palette--;;timeRestriction,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
                 description,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
