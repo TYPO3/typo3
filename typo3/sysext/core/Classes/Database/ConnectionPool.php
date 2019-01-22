@@ -145,7 +145,7 @@ class ConnectionPool
 
         // Force consistent handling of binary objects across datbase platforms
         // MySQL returns strings by default, PostgreSQL streams.
-        if (strpos($connectionParams['driver'], 'pdo_') === 0) {
+        if ($connectionParams['driver'] !== 'pdo_mysql' && strpos($connectionParams['driver'], 'pdo_') === 0) {
             $connectionParams['driverOptions'][\PDO::ATTR_STRINGIFY_FETCHES] = true;
         }
 
