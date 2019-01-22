@@ -74,6 +74,133 @@ options.message
       The text which is shown if the finisher is invoked.
 
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.contentelementuid:
+
+options.contentElementUid
+-------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.contentElementUid
+
+:aspect:`Data type`
+      integer
+
+:aspect:`Needed by`
+      Frontend
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value`
+      undefined
+
+:aspect:`Description`
+      The option "contentElementUid" can be used to render a content element.
+      If contentElementUid is set, the option "message" will be ignored.
+
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.typoscriptobjectpath:
+
+options.typoscriptObjectPath
+----------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.typoscriptObjectPath
+
+:aspect:`Data type`
+      string
+
+:aspect:`Needed by`
+      Frontend
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value`
+      'lib.tx_form.contentElementRendering'
+
+:aspect:`Description`
+      The option "typoscriptObjectPath" can be used to render the content element (options.contentElementUid) through a typoscript lib.
+
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.variables:
+
+options.variables
+-----------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.variables
+
+:aspect:`Data type`
+      array
+
+:aspect:`Needed by`
+      Frontend
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value`
+      undefined
+
+:aspect:`Description`
+      Variables which should be available within the template.
+
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.templatename:
+
+options.templateName
+--------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.templateName
+
+:aspect:`Data type`
+      string
+
+:aspect:`Needed by`
+      Frontend
+
+:aspect:`Mandatory`
+      Yes
+
+:aspect:`Default value`
+      'Confirmation'
+
+:aspect:`Description`
+      Define a custom template name which should be used.
+
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.templaterootpaths:
+
+options.templateRootPaths
+-------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.templateRootPaths
+
+:aspect:`Data type`
+      array
+
+:aspect:`Needed by`
+      Frontend
+
+:aspect:`Mandatory`
+      Yes
+
+:aspect:`Default value`
+      .. code-block:: yaml
+         :linenos:
+
+         Confirmation:
+           options:
+             templateRootPaths:
+               10: 'EXT:form/Resources/Private/Frontend/Templates/Finishers/Confirmation/'
+
+:aspect:`Description`
+      Used to define several paths for templates, which will be tried in reversed order (the paths are searched from bottom to top).
+
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.translation.translationfile:
 
 options.translation.translationFile

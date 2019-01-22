@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Form\Domain\Finishers;
 /*
  * This file is part of the TYPO3 CMS project.
  *
- * It originated from the Neos.Form package (www.neos.io)
- *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
  * of the License, or any later version.
@@ -19,15 +17,19 @@ namespace TYPO3\CMS\Form\Domain\Finishers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
+use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
+use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
- * A simple finisher that outputs a given text
+ * A finisher that outputs a given text
  *
  * Options:
  *
  * - message: A hard-coded message to be rendered
+ * - contentElementUid: A content element uid to be rendered
  *
  * Usage:
  * //...
@@ -113,6 +115,45 @@ class ConfirmationFinisher extends AbstractFinisher
             $message = $this->parseOption('message');
         }
 
-        return $message;
+        $standaloneView = $this->initializeStandaloneView(
+            $this->finisherContext->getFormRuntime()
+        );
+
+        $standaloneView->assign('message', $message);
+
+        return $standaloneView->render();
+    }
+
+    /**
+     * @param FormRuntime $formRuntime
+     * @return StandaloneView
+     * @throws FinisherException
+     */
+    protected function initializeStandaloneView(FormRuntime $formRuntime): StandaloneView
+    {
+        $standaloneView = $this->objectManager->get(StandaloneView::class);
+
+        if (!isset($this->options['templateName'])) {
+            throw new FinisherException(
+                'The option "templateName" must be set for the ConfirmationFinisher.',
+                1521573955
+            );
+        }
+
+        $standaloneView->setTemplate($this->options['templateName']);
+        $standaloneView->getTemplatePaths()->fillFromConfigurationArray($this->options);
+
+        if (isset($this->options['variables']) && is_array($this->options['variables'])) {
+            $standaloneView->assignMultiple($this->options['variables']);
+        }
+
+        $standaloneView->assign('form', $formRuntime);
+        $standaloneView->assign('finisherVariableProvider', $this->finisherContext->getFinisherVariableProvider());
+
+        $standaloneView->getRenderingContext()
+            ->getViewHelperVariableContainer()
+            ->addOrUpdate(RenderRenderableViewHelper::class, 'formRuntime', $formRuntime);
+
+        return $standaloneView;
     }
 }
