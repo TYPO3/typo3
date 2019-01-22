@@ -217,13 +217,19 @@ define([
         failed: 0
       };
 
-      var message = '<div class="progress">' +
-        '<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0;">' +
-          '<span class="text-nowrap">0 of ' + this.packsUpdateDetails.toHandle + ' language packs updated</span>' +
-        '</div>' +
-      '</div>';
-
-      $outputContainer.empty().append(message);
+      $outputContainer.empty().append(
+        $('<div>', {'class': 'progress'}).append(
+          $('<div>', {
+            'class': 'progress-bar progress-bar-info',
+            'role': 'progressbar',
+            'aria-valuenow': 0,
+            'aria-valuemin': 0,
+            'aria-valuemax': 100,
+            'style': 'width: 0;'
+          }).append(
+            $('<span>', {'class': 'text-nowrap'}).text('0 of ' + this.packsUpdateDetails.toHandle + ' language packs updated')
+          )
+      ));
       $contentContainer.empty();
 
       isos.forEach(function(iso) {
@@ -328,54 +334,78 @@ define([
       var activateIcon = this.currentModal.find(this.selectorActivateLanguageIcon).html();
       var deactivateIcon = this.currentModal.find(this.selectorDeactivateLanguageIcon).html();
       var updateIcon = this.currentModal.find(this.selectorLanguageUpdateIcon).html();
-      var html = '<h3>Active languages</h3>' +
-        '<table class="table table-striped table-bordered">' +
-        '<thead><tr>' +
-          '<th>' +
-            '<button class="btn btn-default t3js-languagePacks-addLanguage-toggle" type="button">' +
-              '<span> ' + activateIcon + '</span>Add language' +
-            '</button> ' +
-            '<button class="btn btn-default t3js-languagePacks-update" type="button">' +
-              '<span> ' + updateIcon + '</span>Update all' +
-            '</button>' +
-          '</th>' +
-          '<th>Language</th>' +
-          '<th>Locale</th>' +
-          '<th>Dependencies</th>' +
-          '<th>Last update</th>' +
-        '</tr></thead>' +
-        '<tbody>';
+      var $markupContainer = $('<div>');
+
+      var $tbody = $('<tbody>');
       data.languages.forEach(function(language) {
         var active = language.active;
+        var $tr = $('<tr>');
         if (active) {
-          html = html +
-            '<tr>' +
-              '<td>' +
-                '<a class="btn btn-default t3js-languagePacks-deactivateLanguage" data-iso="' + language.iso + '" data-toggle="tooltip" title="Deactivate">' +
-                  deactivateIcon +
-                '</a> ' +
-                '<a class="btn btn-default t3js-languagePacks-update" data-iso="' + language.iso + '" data-toggle="tooltip" title="Download language packs">' +
-                  updateIcon +
-                '</a>' +
-              '</td>';
+          $tbody.append(
+            $tr.append(
+              $('<td>').append(
+                $('<a>', {
+                  'class': 'btn btn-default t3js-languagePacks-deactivateLanguage',
+                  'data-iso': language.iso,
+                  'data-toggle': 'tooltip',
+                  'title': 'Deactivate'
+                }).append(deactivateIcon),
+                $('<a>', {
+                  'class': 'btn btn-default t3js-languagePacks-update',
+                  'data-iso': language.iso,
+                  'data-toggle': 'tooltip',
+                  'title': 'Download language packs'
+                }).append(updateIcon)
+              )
+            )
+          );
         } else {
-          html = html +
-            '<tr class="t3-languagePacks-inactive t3js-languagePacks-inactive" style="display:none">' +
-              '<td>' +
-                '<a class="btn btn-default t3js-languagePacks-activateLanguage" data-iso="' + language.iso + '" data-toggle="tooltip" title="Activate">' +
-                  activateIcon +
-                '</a>' +
-              '</td>';
+          $tbody.append(
+            $tr.addClass('t3-languagePacks-inactive t3js-languagePacks-inactive').css({'display': 'none'}).append(
+              $('<td>').append(
+                $('<a>', {
+                  'class': 'btn btn-default t3js-languagePacks-activateLanguage',
+                  'data-iso': language.iso,
+                  'data-toggle': 'tooltip',
+                  'title': 'Activate'
+                }).append(activateIcon)
+              )
+            )
+          );
         }
-        html = html +
-          '<td>' + language.name +'</td>' +
-          '<td>' + language.iso +'</td>' +
-          '<td>' + language.dependencies.join(', ') +'</td>' +
-          '<td>' + (language.lastUpdate === null ? '' : language.lastUpdate) +'</td>' +
-          '</tr>';
+        $tr.append(
+          $('<td>').text(language.name),
+          $('<td>').text(language.iso),
+          $('<td>').text(language.dependencies.join(', ')),
+          $('<td>').text(language.lastUpdate === null ? '' : language.lastUpdate),
+        );
+        $tbody.append($tr);
       });
-      html = html + '</tbody></table>';
-      return html;
+      $markupContainer.append(
+        $('<h3>').text('Active languages'),
+        $('<table>', {'class': 'table table-striped table-bordered'}).append(
+          $('<thead>').append(
+            $('<tr>').append(
+              $('<th>').append(
+                $('<button>', {'class': 'btn btn-default t3js-languagePacks-addLanguage-toggle', 'type': 'button'}).append(
+                  $('<span>').append(activateIcon),
+                  ' Add language'
+                ),
+                $('<button>', {'class': 'btn btn-default t3js-languagePacks-update', 'type': 'button'}).append(
+                  $('<span>').append(updateIcon),
+                  ' Update all'
+                )
+              ),
+              $('<th>').text('Language'),
+              $('<th>').text('Locale'),
+              $('<th>').text('Dependencies'),
+              $('<th>').text('Last update'),
+            )
+          ),
+          $tbody
+        )
+      );
+      return $markupContainer.html();
     },
 
     extensionMatrixHtml: function(data) {
@@ -385,18 +415,30 @@ define([
       var extensionTitle = '';
       var allPackagesExist = true;
       var rowCount = 0;
-      var html = '<h3>Translation status</h3>' +
-        '<table class="table table-striped table-bordered"><thead><tr>' +
-        '<th>Extension</th>' +
-        '<th>Key</th>';
+      var $markupContainer = $('<div>');
+
+      var $headerRow = $('<tr>');
+      $headerRow.append(
+        $('<th>').text('Extension'),
+        $('<th>').text('Key'),
+      );
       data.activeLanguages.forEach(function(language) {
-        html = html + '<th>' +
-          '<a class="btn btn-default t3js-languagePacks-update" data-iso="' + language + '" data-toggle="tooltip" title="Download and update all language packs">' +
-            '<span>' + updateIcon + '</span> ' + language +
-          '</a>' +
-        '</th>';
+        $headerRow.append(
+          $('<th>').append(
+            $('<a>', {
+              'class': 'btn btn-default t3js-languagePacks-update',
+              'data-iso': language,
+              'data-toggle': 'tooltip',
+              'title': 'Download and update all language packs'
+            }).append(
+              $('<span>').append(updateIcon),
+              ' ' + language
+            )
+          )
+        )
       });
-      html = html + '</tr></thead><tbody>';
+
+      var $tbody = $('<tbody>');
       data.extensions.forEach(function(extension) {
         allPackagesExist = true;
         extension.packs.forEach(function(pack) {
@@ -409,36 +451,56 @@ define([
         }
         rowCount++;
         if (extension.icon !== '') {
-          extensionTitle = '<img style="max-height: 16px; max-width: 16px;" src="../' + extension.icon + '" alt="' + extension.title + '" /> ' +
-            '<span>' + extension.title + '</span>';
+          extensionTitle = $('<span>').append(
+            $('<img>', {
+              'style': 'max-height: 16px; max-width: 16px;',
+              'src': '../' + extension.icon,
+              'alt': extension.title
+            }),
+            $('<span>').text(extension.title)
+          );
         } else {
-          extensionTitle = extension.title;
+          extensionTitle = $('<span>').text(extension.title)
         }
-        html = html + '<tr>' +
-          '<td>' + extensionTitle + '</td>' +
-          '<td>' + extension.key + '</td>';
+        var $tr = $('<tr>');
+        $tr.append(
+          $('<td>').html(extensionTitle),
+          $('<td>').text(extension.key)
+        );
         extension.packs.forEach(function(pack) {
-          html = html + '<td>';
           if (pack.exists !== true) {
             if (pack.lastUpdate !== null) {
               tooltip = 'No language pack available when tried at ' + pack.lastUpdate + '. Click to re-try.';
             } else {
               tooltip = 'Language pack not downloaded. Click to download';
             }
-            html = html +
-              '<a class="btn btn-default t3js-languagePacks-update" data-extension="' + extension.key + '" data-iso="' + pack.iso + '" data-toggle="tooltip" title="' + tooltip + '">' +
-                packMissesIcon +
-              '</a>';
+            $tr.append(
+              $('<td>').append(
+                $('<a>', {
+                  'class': 'btn btn-default t3js-languagePacks-update',
+                  'data-extension': extension.key,
+                  'data-iso': pack.iso,
+                  'data-toggle': 'tooltip',
+                  'title': tooltip
+                }).append(packMissesIcon)
+              )
+            );
           }
-          html = html + '</td>';
         });
-        html = html + '</tr>';
+        $tbody.append($tr);
       });
-      html = html + '</tbody>';
+
+      $markupContainer.append(
+        $('<h3>').text('Translation status'),
+        $('<table>', {'class': 'table table-striped table-bordered'}).append(
+          $('<thead>').append($headerRow),
+          $tbody
+        )
+      );
       if (rowCount === 0) {
         return InfoBox.render(Severity.ok, 'Language packs have been found for every installed extension.', 'To download the latest changes, use the refresh button in the list above.');
       }
-      return html;
+      return $markupContainer.html();
     },
     getNotificationBox: function() {
       return this.currentModal.find(this.selectorNotifications);

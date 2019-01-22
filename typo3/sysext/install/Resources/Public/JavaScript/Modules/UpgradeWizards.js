@@ -21,10 +21,13 @@ define([
     'TYPO3/CMS/Install/ProgressBar',
     'TYPO3/CMS/Install/InfoBox',
     'TYPO3/CMS/Install/Severity',
-    'TYPO3/CMS/Backend/Notification'
+    'TYPO3/CMS/Backend/Notification',
+    'TYPO3/CMS/Core/SecurityUtility'
   ],
-  function ($, Router, FlashMessage, ProgressBar, InfoBox, Severity, Notification) {
+  function ($, Router, FlashMessage, ProgressBar, InfoBox, Severity, Notification, SecurityUtility) {
     'use strict';
+
+    var securityUtility = new SecurityUtility();
 
     return {
       selectorModalBody: '.t3js-modal-body',
@@ -177,17 +180,22 @@ define([
                 var adds = modalContent.find(self.selectorWizardsBlockingAddsTemplate).clone();
                 if (typeof(data.adds.tables) === 'object') {
                   data.adds.tables.forEach(function (element) {
-                    adds.find(self.selectorWizardsBlockingAddsRows).append('Table: ' + element.table + '<br>');
+                    var title = 'Table: ' + securityUtility.encodeHtml(element.table);
+                    adds.find(self.selectorWizardsBlockingAddsRows).append(title, '<br>');
                   });
                 }
                 if (typeof(data.adds.columns) === 'object') {
                   data.adds.columns.forEach(function (element) {
-                    adds.find(self.selectorWizardsBlockingAddsRows).append('Table: ' + element.table + ', Field: ' + element.field + '<br>');
+                    var title = 'Table: ' + securityUtility.encodeHtml(element.table)
+                      + ', Field: ' + securityUtility.encodeHtml(element.field);
+                    adds.find(self.selectorWizardsBlockingAddsRows).append(title, '<br>');
                   });
                 }
                 if (typeof(data.adds.indexes) === 'object') {
                   data.adds.indexes.forEach(function (element) {
-                    adds.find(self.selectorWizardsBlockingAddsRows).append('Table: ' + element.table + ', Index: ' + element.index + '<br>');
+                    var title = 'Table: ' + securityUtility.encodeHtml(element.table)
+                      + ', Index: ' + securityUtility.encodeHtml(element.index);
+                    adds.find(self.selectorWizardsBlockingAddsRows).append(title, '<br>');
                   });
                 }
                 modalContent.find(self.selectorOutputWizardsContainer).append(adds);
