@@ -43,6 +43,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     const JQUERY_NAMESPACE_DEFAULT = 'jQuery';
     const JQUERY_NAMESPACE_DEFAULT_NOCONFLICT = 'defaultNoConflict';
 
+    const REQUIREJS_SCOPE_CONFIG = 'config';
+    const REQUIREJS_SCOPE_RESOLVE = 'resolve';
+
     /**
      * @var bool
      */
@@ -334,10 +337,22 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     protected $addRequireJs = false;
 
     /**
-     * inline configuration for requireJS
+     * Inline configuration for requireJS (internal)
      * @var array
      */
     protected $requireJsConfig = [];
+
+    /**
+     * Module names of internal requireJS 'paths'
+     * @var array
+     */
+    protected $internalRequireJsPathModuleNames = [];
+
+    /**
+     * Inline configuration for requireJS (public)
+     * @var array
+     */
+    protected $publicRequireJsConfig = [];
 
     /**
      * @var bool
@@ -613,6 +628,34 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     public function setExtJsPath($path)
     {
         $this->extJsPath = $path;
+    }
+
+    /**
+     * @param string $scope
+     * @return array
+     */
+    public function getRequireJsConfig(string $scope = null): array
+    {
+        // return basic RequireJS configuration without shim, paths and packages
+        if ($scope === static::REQUIREJS_SCOPE_CONFIG) {
+            return array_replace_recursive(
+                $this->publicRequireJsConfig,
+                $this->filterArrayKeys(
+                    $this->requireJsConfig,
+                    ['shim', 'paths', 'packages'],
+                    false
+                )
+            );
+        }
+        // return RequireJS configuration for resolving only shim, paths and packages
+        if ($scope === static::REQUIREJS_SCOPE_RESOLVE) {
+            return $this->filterArrayKeys(
+                $this->requireJsConfig,
+                ['shim', 'paths', 'packages'],
+                true
+            );
+        }
+        return [];
     }
 
     /*****************************************************/
@@ -1462,7 +1505,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     public function loadRequireJs()
     {
         $this->addRequireJs = true;
-        if (!empty($this->requireJsConfig)) {
+        if (!empty($this->requireJsConfig) && !empty($this->publicRequireJsConfig)) {
             return;
         }
 
@@ -1471,13 +1514,17 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $cacheIdentifier = 'requireJS_' . md5(implode(',', $loadedExtensions) . ($isDevelopment ? ':dev' : '') . GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT'));
         /** @var VariableFrontend $cache */
         $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('assets');
-        $this->requireJsConfig = $cache->get($cacheIdentifier);
+        $requireJsConfig = $cache->get($cacheIdentifier);
 
         // if we did not get a configuration from the cache, compute and store it in the cache
-        if (empty($this->requireJsConfig)) {
-            $this->requireJsConfig = $this->computeRequireJsConfig($isDevelopment, $loadedExtensions);
-            $cache->set($cacheIdentifier, $this->requireJsConfig);
+        if (!isset($requireJsConfig['internal']) || !isset($requireJsConfig['public']) || true) {
+            $requireJsConfig = $this->computeRequireJsConfig($isDevelopment, $loadedExtensions);
+            $cache->set($cacheIdentifier, $requireJsConfig);
         }
+
+        $this->requireJsConfig = $requireJsConfig['internal'];
+        $this->publicRequireJsConfig = $requireJsConfig['public'];
+        $this->internalRequireJsPathModuleNames = $requireJsConfig['internalNames'];
     }
 
     /**
@@ -1491,18 +1538,22 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     protected function computeRequireJsConfig($isDevelopment, array $loadedExtensions)
     {
         // load all paths to map to package names / namespaces
-        $requireJsConfig = [];
+        $requireJsConfig = [
+            'public' => [],
+            'internal' => [],
+            'internalNames' => [],
+        ];
 
         // In order to avoid browser caching of JS files, adding a GET parameter to the files loaded via requireJS
         if ($isDevelopment) {
-            $requireJsConfig['urlArgs'] = 'bust=' . $GLOBALS['EXEC_TIME'];
+            $requireJsConfig['public']['urlArgs'] = 'bust=' . $GLOBALS['EXEC_TIME'];
         } else {
-            $requireJsConfig['urlArgs'] = 'bust=' . GeneralUtility::hmac(TYPO3_version . PATH_site);
+            $requireJsConfig['public']['urlArgs'] = 'bust=' . GeneralUtility::hmac(TYPO3_version . PATH_site);
         }
         $corePath = ExtensionManagementUtility::extPath('core', 'Resources/Public/JavaScript/Contrib/');
         $corePath = PathUtility::getAbsoluteWebPath($corePath);
         // first, load all paths for the namespaces, and configure contrib libs.
-        $requireJsConfig['paths'] = [
+        $requireJsConfig['public']['paths'] = [
             'jquery-ui' => $corePath . 'jquery-ui',
             'datatables' => $corePath . 'jquery.dataTables',
             'matchheight' => $corePath . 'jquery.matchHeight-min',
@@ -1518,16 +1569,31 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             'jquery/autocomplete' => $corePath . 'jquery.autocomplete',
             'd3' => $corePath . 'd3/d3'
         ];
-
+        $requireJsConfig['public']['typo3BaseUrl'] = false;
+        $publicPackageNames = ['core', 'frontend', 'backend'];
         foreach ($loadedExtensions as $packageName) {
-            $fullJsPath = 'EXT:' . $packageName . '/Resources/Public/JavaScript/';
-            $fullJsPath = GeneralUtility::getFileAbsFileName($fullJsPath);
-            $fullJsPath = PathUtility::getAbsoluteWebPath($fullJsPath);
+            $jsPath = 'EXT:' . $packageName . '/Resources/Public/JavaScript/';
+            $absoluteJsPath = GeneralUtility::getFileAbsFileName($jsPath);
+            $fullJsPath = PathUtility::getAbsoluteWebPath($absoluteJsPath);
             $fullJsPath = rtrim($fullJsPath, '/');
-            if ($fullJsPath) {
-                $requireJsConfig['paths']['TYPO3/CMS/' . GeneralUtility::underscoredToUpperCamelCase($packageName)] = $fullJsPath;
+            if (!empty($fullJsPath) && file_exists($absoluteJsPath)) {
+                $type = in_array($packageName, $publicPackageNames, true) ? 'public' : 'internal';
+                $requireJsConfig[$type]['paths']['TYPO3/CMS/' . GeneralUtility::underscoredToUpperCamelCase($packageName)] = $fullJsPath;
             }
         }
+        // sanitize module names in internal 'paths'
+        $internalPathModuleNames = array_keys($requireJsConfig['internal']['paths'] ?? []);
+        $sanitizedInternalPathModuleNames = array_map(
+            function ($moduleName) {
+                // trim spaces and slashes & add ending slash
+                return trim($moduleName, ' /') . '/';
+            },
+            $internalPathModuleNames
+        );
+        $requireJsConfig['internalNames'] = array_combine(
+            $sanitizedInternalPathModuleNames,
+            $internalPathModuleNames
+        );
 
         // check if additional AMD modules need to be loaded if a single AMD module is initialized
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['postInitializationModules'])) {
@@ -1562,6 +1628,72 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
+     * Generates RequireJS loader HTML markup.
+     *
+     * @return string
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     */
+    protected function getRequireJsLoader(): string
+    {
+        $html = '';
+        $backendRequest = TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE;
+        $backendUserLoggedIn = !empty($GLOBALS['BE_USER']->user['uid']);
+
+        // no backend request - basically frontend
+        if (!$backendRequest) {
+            $requireJsConfig = $this->getRequireJsConfig(static::REQUIREJS_SCOPE_CONFIG);
+            $requireJsConfig['typo3BaseUrl'] = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . '?eID=requirejs';
+        // backend request, but no backend user logged in
+        } elseif (!$backendUserLoggedIn) {
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $requireJsConfig = $this->getRequireJsConfig(static::REQUIREJS_SCOPE_CONFIG);
+            $requireJsConfig['typo3BaseUrl'] = (string)$uriBuilder->buildUriFromRoute('ajax_core_requirejs');
+        // backend request, having backend user logged in
+        } else {
+            $requireJsConfig = array_replace_recursive(
+                $this->publicRequireJsConfig,
+                $this->requireJsConfig
+            );
+        }
+
+        // add (probably filtered) RequireJS configuration
+        $html .= GeneralUtility::wrapJS('var require = ' . json_encode($requireJsConfig)) . LF;
+        // directly after that, include the require.js file
+        $html .= '<script src="'
+            . $this->processJsFile($this->requireJsPath . 'require.js')
+            . '" type="text/javascript"></script>' . LF;
+
+        if (!empty($requireJsConfig['typo3BaseUrl'])) {
+            $html .= '<script src="'
+                . $this->processJsFile($this->getAbsoluteWebPath(
+                    GeneralUtility::getFileAbsFileName(
+                        'EXT:core/Resources/Public/JavaScript/requirejs-loader.js'
+                    )
+                ))
+                . '" type="text/javascript"></script>' . LF;
+        }
+
+        return $html;
+    }
+
+    /**
+     * @param array $array
+     * @param string[] $keys
+     * @param bool $keep
+     * @return array
+     */
+    protected function filterArrayKeys(array $array, array $keys, bool $keep = true): array
+    {
+        return array_filter(
+            $array,
+            function (string $key) use ($keys, $keep) {
+                return in_array($key, $keys, true) === $keep;
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+    }
+
+    /**
      * includes an AMD-compatible JS file by resolving the ModuleName, and then requires the file via a requireJS request,
      * additionally allowing to execute JavaScript code afterwards
      *
@@ -1582,7 +1714,13 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $inlineCodeKey = $mainModuleName;
         // make sure requireJS is initialized
         $this->loadRequireJs();
-
+        // move internal module path definition to public module definition
+        // (since loading a module ends up disclosing the existence anyway)
+        $baseModuleName = $this->findRequireJsBaseModuleName($mainModuleName);
+        if ($baseModuleName !== null && isset($this->requireJsConfig['paths'][$baseModuleName])) {
+            $this->publicRequireJsConfig['paths'][$baseModuleName] = $this->requireJsConfig['paths'][$baseModuleName];
+            unset($this->requireJsConfig['paths'][$baseModuleName]);
+        }
         // execute the main module, and load a possible callback function
         $javaScriptCode = 'require(["' . $mainModuleName . '"]';
         if ($callBackFunction !== null) {
@@ -1612,6 +1750,24 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     public function enableExtJsDebug()
     {
         $this->enableExtJsDebug = true;
+    }
+
+    /**
+     * Determines requireJS base module name (if defined).
+     *
+     * @param string $moduleName
+     * @return string|null
+     */
+    protected function findRequireJsBaseModuleName(string $moduleName)
+    {
+        // trim spaces and slashes & add ending slash
+        $sanitizedModuleName = trim($moduleName, ' /') . '/';
+        foreach ($this->internalRequireJsPathModuleNames as $sanitizedBaseModuleName => $baseModuleName) {
+            if (strpos($sanitizedModuleName, $sanitizedBaseModuleName) === 0) {
+                return $baseModuleName;
+            }
+        }
+        return null;
     }
 
     /**
@@ -1984,10 +2140,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
         // Include RequireJS
         if ($this->addRequireJs) {
-            // load the paths of the requireJS configuration
-            $out .= GeneralUtility::wrapJS('var require = ' . json_encode($this->requireJsConfig)) . LF;
-            // directly after that, include the require.js file
-            $out .= '<script src="' . $this->processJsFile($this->requireJsPath . 'require.js') . '" type="text/javascript"></script>' . LF;
+            $out .= $this->getRequireJsLoader();
         }
 
         // Include jQuery Core for each namespace, depending on the version and source
@@ -2023,7 +2176,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         }
         $this->loadJavaScriptLanguageStrings();
         if (TYPO3_MODE === 'BE') {
-            $this->addAjaxUrlsToInlineSettings();
+            $noBackendUserLoggedIn = empty($GLOBALS['BE_USER']->user['uid']);
+            $this->addAjaxUrlsToInlineSettings($noBackendUserLoggedIn);
         }
         $inlineSettings = $this->inlineLanguageLabels ? 'TYPO3.lang = ' . json_encode($this->inlineLanguageLabels) . ';' : '';
         $inlineSettings .= $this->inlineSettings ? 'TYPO3.settings = ' . json_encode($this->inlineSettings) . ';' : '';
@@ -2116,8 +2270,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Make URLs to all backend ajax handlers available as inline setting.
+     *
+     * @param bool $publicRoutesOnly
      */
-    protected function addAjaxUrlsToInlineSettings()
+    protected function addAjaxUrlsToInlineSettings(bool $publicRoutesOnly = false)
     {
         $ajaxUrls = [];
         // Note: this method of adding Ajax URLs is @deprecated as of TYPO3 v8, and will be removed in TYPO3 v9
@@ -2132,6 +2288,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $router = GeneralUtility::makeInstance(Router::class);
         $routes = $router->getRoutes();
         foreach ($routes as $routeIdentifier => $route) {
+            if ($publicRoutesOnly && $route->getOption('access') !== 'public') {
+                continue;
+            }
             if ($route->getOption('ajax')) {
                 $uri = (string)$uriBuilder->buildUriFromRoute($routeIdentifier);
                 // use the shortened value in order to use this in JavaScript
