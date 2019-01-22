@@ -102,20 +102,43 @@ class UrlencodeViewHelperTest extends ViewHelperBaseTestcase
     }
 
     /**
+     * Ensures that obejcts are handled properly:
+     * + class not having __toString() method as given
+     * + class having __toString() method gets rawurlencoded
+     *
+     * @param $source
+     * @param $expectation
      * @test
+     * @dataProvider renderEscapesObjectIfPossibleDataProvider
      */
-    public function renderReturnsUnmodifiedSourceIfItIsNoString()
+    public function renderEscapesObjectIfPossible($source, $expectation)
     {
-        $source = new \stdClass();
-
         $this->setArgumentsUnderTest(
             $this->viewHelper,
             [
                 'value' => $source
             ]
         );
-
         $actualResult = $this->viewHelper->render();
-        $this->assertSame($source, $actualResult);
+        $this->assertSame($expectation, $actualResult);
+    }
+
+    /**
+     * @return array
+     */
+    public function renderEscapesObjectIfPossibleDataProvider(): array
+    {
+        $stdClass = new \stdClass();
+        $toStringClass = new class() {
+            public function __toString(): string
+            {
+                return '<script>alert(\'"xss"\')</script>';
+            }
+        };
+
+        return [
+            'plain object' => [$stdClass, $stdClass],
+            'object with __toString()' => [$toStringClass, '%3Cscript%3Ealert%28%27%22xss%22%27%29%3C%2Fscript%3E'],
+        ];
     }
 }

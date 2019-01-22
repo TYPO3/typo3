@@ -99,9 +99,9 @@ unction');
     ) {
         $value = $renderChildrenClosure();
         $allowedTags = $arguments['allowedTags'];
-        if (!is_string($value)) {
+        if (!is_string($value) && !(is_object($value) && method_exists($value, '__toString'))) {
             return $value;
         }
-        return strip_tags($value, $allowedTags);
+        return strip_tags((string)$value, $allowedTags);
     }
 }
