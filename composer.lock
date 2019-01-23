@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0ccb2f77366c2d29e6984218945f7a69",
+    "content-hash": "78db7fed2b68523704f3ef0d9e7aca38",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -2368,16 +2368,16 @@
         },
         {
             "name": "typo3fluid/fluid",
-            "version": "2.5.4",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/Fluid.git",
-                "reference": "bcd0ff44dd3c4f9d0f37097b0237db6319c2b181"
+                "reference": "e3533d0b80e4020cf0de7a546efaae25866f898b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/bcd0ff44dd3c4f9d0f37097b0237db6319c2b181",
-                "reference": "bcd0ff44dd3c4f9d0f37097b0237db6319c2b181",
+                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/e3533d0b80e4020cf0de7a546efaae25866f898b",
+                "reference": "e3533d0b80e4020cf0de7a546efaae25866f898b",
                 "shasum": ""
             },
             "require": {
@@ -2385,8 +2385,8 @@
             },
             "require-dev": {
                 "mikey179/vfsstream": "^1.6",
+                "php-coveralls/php-coveralls": "^2.1",
                 "phpunit/phpunit": "^4.8",
-                "satooshi/php-coveralls": "^1.0",
                 "squizlabs/php_codesniffer": "^2.7"
             },
             "bin": [
@@ -2403,7 +2403,7 @@
                 "LGPL-3.0-or-later"
             ],
             "description": "The TYPO3 Fluid template rendering engine",
-            "time": "2018-07-09T12:55:32+00:00"
+            "time": "2018-12-07T14:46:13+00:00"
         }
     ],
     "packages-dev": [
