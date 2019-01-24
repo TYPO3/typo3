@@ -2,12 +2,12 @@
 defined('TYPO3_MODE') or die();
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-    'TYPO3.CMS.IndexedSearch',
+    'IndexedSearch',
     'web',
     'isearch',
     '',
     [
-        'Administration' => 'index,pages,externalDocuments,statistic,statisticDetails,deleteIndexedItem,saveStopwordsKeywords,wordDetail',
+        \TYPO3\CMS\IndexedSearch\Controller\AdministrationController::class => 'index,pages,externalDocuments,statistic,statisticDetails,deleteIndexedItem,saveStopwordsKeywords,wordDetail',
     ],
     [
         'access' => 'admin',

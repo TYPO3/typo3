@@ -130,17 +130,25 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $extensionName Name of the target extension, without underscores
      * @param string $pluginName Name of the target plugin
-     * @param string $controllerName Name of the target controller
+     * @param string $controllerClassName Name of the target controller
      * @param string $actionName Name of the action to be called
      * @return bool TRUE if the specified plugin action is cacheable, otherwise FALSE
      */
-    public function isActionCacheable($extensionName, $pluginName, $controllerName, $actionName)
+    public function isActionCacheable($extensionName, $pluginName, $controllerClassName, $actionName)
     {
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
-        if (isset($frameworkConfiguration['controllerConfiguration'][$controllerName]) && is_array($frameworkConfiguration['controllerConfiguration'][$controllerName]) && is_array($frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions']) && in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])) {
-            return false;
+        $frameworkConfiguration = $this->configurationManager->getConfiguration(
+            ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
+            $extensionName,
+            $pluginName
+        );
+
+        $nonCacheableActions = $frameworkConfiguration['controllerConfiguration'][$controllerClassName]['nonCacheableActions'] ?? null;
+
+        if (!is_array($nonCacheableActions)) {
+            return true;
         }
-        return true;
+
+        return !in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerClassName]['nonCacheableActions'], true);
     }
 
     /**

@@ -67,7 +67,7 @@ class FrontendRequestHandler extends AbstractRequestHandler
     public function handleRequest()
     {
         $request = $this->requestBuilder->build();
-        if ($this->extensionService->isActionCacheable(null, null, $request->getControllerName(), $request->getControllerActionName())) {
+        if ($this->extensionService->isActionCacheable(null, null, $request->getControllerObjectName(), $request->getControllerActionName())) {
             $request->setIsCached(true);
         } else {
             $contentObject = $this->configurationManager->getContentObject();

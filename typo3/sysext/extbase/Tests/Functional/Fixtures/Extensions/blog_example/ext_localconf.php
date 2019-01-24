@@ -2,18 +2,18 @@
 defined('TYPO3_MODE') or die();
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'ExtbaseTeam.BlogExample',
+    'BlogExample',
     'Blogs',
     [
-        'Blog' => 'list,testForm,testForward,testForwardTarget,testRelatedObject',
+        \ExtbaseTeam\BlogExample\Controller\BlogController::class => 'list,testForm,testForward,testForwardTarget,testRelatedObject',
     ],
     []
 );
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'ExtbaseTeam.BlogExample',
+    'BlogExample',
     'Content',
     [
-        'Content' => 'list',
+        \ExtbaseTeam\BlogExample\Controller\ContentController::class => 'list',
     ],
     []
 );

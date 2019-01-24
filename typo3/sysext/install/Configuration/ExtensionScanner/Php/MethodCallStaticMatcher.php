@@ -840,4 +840,18 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 5,
+        'restFiles' => [
+            'Deprecation-87550-UseControllerClassesWhenRegisteringPluginsmodules.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 6,
+        'restFiles' => [
+            'Deprecation-87550-UseControllerClassesWhenRegisteringPluginsmodules.rst',
+        ],
+    ],
 ];

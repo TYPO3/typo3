@@ -22,20 +22,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class AbstractControllerTest extends UnitTestCase
 {
     /**
-     * @test
-     */
-    public function constructResolvesExtensionnameFromNamespaced()
-    {
-        $className = $this->getUniqueId('DummyController');
-        eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\' . \TYPO3\CMS\Extbase\Mvc\Controller\AbstractController::class . ' { function getExtensionName() { return $this->extensionName; } }');
-        $classNameNamespaced = __NAMESPACE__ . '\\' . $className;
-        $mockController = new $classNameNamespaced();
-        $expectedResult = 'Extbase';
-        $actualResult = $mockController->getExtensionName();
-        $this->assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
      * @return array
      */
     public function addFlashMessageDataProvider()

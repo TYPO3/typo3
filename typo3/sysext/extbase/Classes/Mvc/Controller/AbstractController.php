@@ -123,6 +123,12 @@ abstract class AbstractController implements ControllerInterface
      */
     public function __construct()
     {
+        // this functionality is actually not needed any more.
+        // the extension name is known during the creation of request objects and if the extension name was
+        // needed, then it were to be fetched by the request object. The controller object shouldn't care about
+        // the extension that uses it.
+        // todo: decide whether to drop this now or along with the property or if to keep that to not break the public api
+
         $className = static::class;
         $classNameParts = explode('\\', $className, 4);
         // Skip vendor and product name for core classes

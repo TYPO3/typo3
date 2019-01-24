@@ -520,7 +520,7 @@ class ActionControllerTest extends UnitTestCase
             $pageRendererMock->expects($this->never())->method('addFooterData');
         }
         $requestMock = $this->getMockBuilder(RequestInterface::class)->getMockForAbstractClass();
-        $subject = new ActionController();
+        $subject = new ActionController('');
         $viewProperty = new \ReflectionProperty($subject, 'view');
         $viewProperty->setAccessible(true);
         $viewProperty->setValue($subject, $viewMock);

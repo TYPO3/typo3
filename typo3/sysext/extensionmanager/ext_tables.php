@@ -2,19 +2,18 @@
 defined('TYPO3_MODE') or die();
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-    'TYPO3.CMS.Extensionmanager',
+    'Extensionmanager',
     'tools',
     'extensionmanager',
     '',
     [
-        'List' => 'index,unresolvedDependencies,ter,showAllVersions,distributions',
-        'Action' => 'toggleExtensionInstallationState,installExtensionWithoutSystemDependencyCheck,removeExtension,downloadExtensionZip,reloadExtensionData',
-        'Configuration' => 'showConfigurationForm,save,saveAndClose',
-        'Download' => 'checkDependencies,installFromTer,installExtensionWithoutSystemDependencyCheck,installDistribution,updateExtension,updateCommentForUpdatableVersions',
-        'UpdateScript' => 'show',
-        'UpdateFromTer' => 'updateExtensionListFromTer',
-        'UploadExtensionFile' => 'form,extract',
-        'Distribution' => 'show'
+        \TYPO3\CMS\Extensionmanager\Controller\ListController::class => 'index,unresolvedDependencies,ter,showAllVersions,distributions',
+        \TYPO3\CMS\Extensionmanager\Controller\ActionController::class => 'toggleExtensionInstallationState,installExtensionWithoutSystemDependencyCheck,removeExtension,downloadExtensionZip,reloadExtensionData',
+        \TYPO3\CMS\Extensionmanager\Controller\DownloadController::class => 'checkDependencies,installFromTer,installExtensionWithoutSystemDependencyCheck,installDistribution,updateExtension,updateCommentForUpdatableVersions',
+        \TYPO3\CMS\Extensionmanager\Controller\UpdateScriptController::class => 'show',
+        \TYPO3\CMS\Extensionmanager\Controller\UpdateFromTerController::class => 'updateExtensionListFromTer',
+        \TYPO3\CMS\Extensionmanager\Controller\UploadExtensionFileController::class => 'form,extract',
+        \TYPO3\CMS\Extensionmanager\Controller\DistributionController::class => 'show'
     ],
     [
         'access' => 'systemMaintainer',

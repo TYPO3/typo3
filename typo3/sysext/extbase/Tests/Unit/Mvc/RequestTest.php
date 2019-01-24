@@ -312,29 +312,10 @@ class RequestTest extends UnitTestCase
      * @param string $controllerObjectName
      * @test
      */
-    public function getControllerObjectNameResolvesControllerObjectNameCorrectly($controllerArguments, $controllerObjectName)
-    {
-        /** @var $request \TYPO3\CMS\Extbase\Mvc\Request */
-        $request = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Request::class, ['dummy']);
-        $request->_set('controllerVendorName', $controllerArguments['vendorName']);
-        $request->_set('controllerExtensionName', $controllerArguments['extensionName']);
-        $request->_set('controllerSubpackageKey', $controllerArguments['subpackageKey']);
-        $request->_set('controllerName', $controllerArguments['controllerName']);
-
-        $this->assertEquals($controllerObjectName, $request->getControllerObjectName());
-    }
-
-    /**
-     * @dataProvider controllerArgumentsAndExpectedObjectName
-     *
-     * @param array $controllerArguments
-     * @param string $controllerObjectName
-     * @test
-     */
     public function setControllerObjectNameResolvesControllerObjectNameArgumentsCorrectly($controllerArguments, $controllerObjectName)
     {
         /** @var $request \TYPO3\CMS\Extbase\Mvc\Request */
-        $request = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Request::class, ['dummy']);
+        $request = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Request::class, ['dummy'], [], '', false);
         $request->setControllerObjectName($controllerObjectName);
 
         $actualControllerArguments = [

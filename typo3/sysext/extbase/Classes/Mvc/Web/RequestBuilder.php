@@ -54,6 +54,13 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
     protected $extensionName;
 
     /**
+     * The class name of the default controller
+     *
+     * @var string
+     */
+    private $defaultControllerClassName;
+
+    /**
      * The default controller name
      *
      * @var string
@@ -90,6 +97,21 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
     protected $environmentService;
 
     /**
+     * @var array
+     */
+    private $controllerAliasToClassMapping = [];
+
+    /**
+     * @var array
+     */
+    private $controllerClassToAliasMapping = [];
+
+    /**
+     * @var array|string[]
+     */
+    private $allowedControllerAliases = [];
+
+    /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
     public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
@@ -123,9 +145,12 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @throws MvcException
+     * @see \TYPO3\CMS\Extbase\Core\Bootstrap::initializeConfiguration
      */
     protected function loadDefaultValues()
     {
+        // todo: See comment in \TYPO3\CMS\Extbase\Core\Bootstrap::initializeConfiguration for further explanation
+        // todo: on why we shouldn't use the configuration manager here.
         $configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         if (empty($configuration['extensionName'])) {
             throw new MvcException('"extensionName" is not properly configured. Request can\'t be dispatched!', 1289843275);
@@ -140,15 +165,21 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
         }
         $this->extensionName = $configuration['extensionName'];
         $this->pluginName = $configuration['pluginName'];
-        $this->defaultControllerName = (string)current(array_keys($configuration['controllerConfiguration']));
+        $defaultControllerConfiguration = reset($configuration['controllerConfiguration']) ?? [];
+        $this->defaultControllerClassName = $defaultControllerConfiguration['className'] ?? null;
+        $this->defaultControllerName = $defaultControllerConfiguration['alias'] ?? null;
         $this->allowedControllerActions = [];
-        foreach ($configuration['controllerConfiguration'] as $controllerName => $controllerActions) {
-            $this->allowedControllerActions[$controllerName] = $controllerActions['actions'] ?? null;
+        foreach ($configuration['controllerConfiguration'] as $controllerClassName => $controllerConfiguration) {
+            $this->allowedControllerActions[$controllerClassName] = $controllerConfiguration['actions'] ?? null;
+            $this->controllerAliasToClassMapping[$controllerConfiguration['alias']] = $controllerConfiguration['className'];
+            $this->controllerClassToAliasMapping[$controllerConfiguration['className']] = $controllerConfiguration['alias'];
+            $this->allowedControllerAliases[] = $controllerConfiguration['alias'];
         }
         if (!empty($configuration['format'])) {
             $this->defaultFormat = $configuration['format'];
         }
     }
+
     /**
      * Builds a web request object from the raw HTTP information and the configuration
      *
@@ -179,16 +210,18 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
             $parameters = array_replace_recursive($parameters, $files[$pluginNamespace]);
         }
 
-        $controllerName = $this->resolveControllerName($parameters);
-        $actionName = $this->resolveActionName($controllerName, $parameters);
+        $controllerClassName = $this->resolveControllerClassName($parameters);
+        $actionName = $this->resolveActionName($controllerClassName, $parameters);
         /** @var \TYPO3\CMS\Extbase\Mvc\Web\Request $request */
         $request = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Request::class);
         if ($this->vendorName !== null) {
+            // Still needed for the fucking viewObjectNamePattern in ActionController
             $request->setControllerVendorName($this->vendorName);
         }
         $request->setPluginName($this->pluginName);
         $request->setControllerExtensionName($this->extensionName);
-        $request->setControllerName($controllerName);
+        $request->setControllerAliasToClassNameMapping($this->controllerAliasToClassMapping);
+        $request->setControllerName($this->controllerClassToAliasMapping[$controllerClassName]);
         $request->setControllerActionName($actionName);
         // @todo Use Environment
         $request->setRequestUri(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
@@ -216,29 +249,29 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
      * @throws \TYPO3\CMS\Core\Error\Http\PageNotFoundException
      * @return string
      */
-    protected function resolveControllerName(array $parameters)
+    protected function resolveControllerClassName(array $parameters)
     {
         if (!isset($parameters['controller']) || $parameters['controller'] === '') {
-            if (empty($this->defaultControllerName)) {
+            if (empty($this->defaultControllerClassName)) {
                 throw new MvcException('The default controller for extension "' . $this->extensionName . '" and plugin "' . $this->pluginName . '" can not be determined. Please check for TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1316104317);
             }
-            return $this->defaultControllerName;
+            return $this->defaultControllerClassName;
         }
-        $allowedControllerNames = array_keys($this->allowedControllerActions);
-        if (!in_array($parameters['controller'], $allowedControllerNames)) {
+        $controllerClassName = $this->controllerAliasToClassMapping[$parameters['controller']] ?? '';
+        if (!in_array($controllerClassName, array_keys($this->allowedControllerActions))) {
             $configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
             if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (bool)$configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
                 throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException('The requested resource was not found', 1313857897);
             }
             if (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (bool)$configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
-                return $this->defaultControllerName;
+                return $this->defaultControllerClassName;
             }
             throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException(
                 'The controller "' . $parameters['controller'] . '" is not allowed by plugin "' . $this->pluginName . '". Please check for TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.',
                 1313855173
             );
         }
-        return filter_var($parameters['controller'], FILTER_SANITIZE_STRING);
+        return filter_var($controllerClassName, FILTER_SANITIZE_STRING);
     }
 
     /**
@@ -246,24 +279,24 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
      * If no action is specified, the defaultActionName will be returned.
      * If that's not available or the specified action is not defined in the current plugin, an exception is thrown.
      *
-     * @param string $controllerName
+     * @param string $controllerClassName
      * @param array $parameters
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException
      * @throws MvcException
      * @throws \TYPO3\CMS\Core\Error\Http\PageNotFoundException
      * @return string
      */
-    protected function resolveActionName($controllerName, array $parameters)
+    protected function resolveActionName($controllerClassName, array $parameters)
     {
-        $defaultActionName = is_array($this->allowedControllerActions[$controllerName]) ? current($this->allowedControllerActions[$controllerName]) : '';
+        $defaultActionName = is_array($this->allowedControllerActions[$controllerClassName]) ? current($this->allowedControllerActions[$controllerClassName]) : '';
         if (!isset($parameters['action']) || $parameters['action'] === '') {
             if ($defaultActionName === '') {
-                throw new MvcException('The default action can not be determined for controller "' . $controllerName . '". Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1295479651);
+                throw new MvcException('The default action can not be determined for controller "' . $controllerClassName . '". Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1295479651);
             }
             return $defaultActionName;
         }
         $actionName = $parameters['action'];
-        $allowedActionNames = $this->allowedControllerActions[$controllerName];
+        $allowedActionNames = $this->allowedControllerActions[$controllerClassName];
         if (!in_array($actionName, $allowedActionNames)) {
             $configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
             if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (bool)$configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
@@ -272,7 +305,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
             if (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (bool)$configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
                 return $defaultActionName;
             }
-            throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException('The action "' . $actionName . '" (controller "' . $controllerName . '") is not allowed by this plugin. Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1313855175);
+            throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException('The action "' . $actionName . '" (controller "' . $controllerClassName . '") is not allowed by this plugin. Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1313855175);
         }
         return filter_var($actionName, FILTER_SANITIZE_STRING);
     }

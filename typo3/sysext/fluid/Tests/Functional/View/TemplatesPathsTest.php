@@ -44,7 +44,9 @@ class TemplatesPathsTest extends FunctionalTestCase
                         'plugins' => [
                             'Pi' => [
                                 'controllers' => [
-                                    'Template' => [
+                                    \TYPO3Fluid\FluidTest\Controller\TemplateController::class => [
+                                        'className' => \TYPO3Fluid\FluidTest\Controller\TemplateController::class,
+                                        'alias' => 'Template',
                                         'actions' => [
                                             'baseTemplate',
                                         ],

@@ -78,10 +78,10 @@ call_user_func(function () {
 
     // Register FE plugin
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-        'TYPO3.CMS.Form',
+        'Form',
         'Formframework',
-        ['FormFrontend' => 'render, perform'],
-        ['FormFrontend' => 'perform'],
+        [\TYPO3\CMS\Form\Controller\FormFrontendController::class => 'render, perform'],
+        [\TYPO3\CMS\Form\Controller\FormFrontendController::class => 'perform'],
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
     );
 

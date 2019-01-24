@@ -3,13 +3,13 @@ defined('TYPO3_MODE') or die();
 
 // Registers the workspaces Backend Module
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-    'TYPO3.CMS.Workspaces',
+    'Workspaces',
     'web',
     'workspaces',
     'before:info',
     [
         // An array holding the controller-action-combinations that are accessible
-        'Review' => 'index,fullIndex,singleIndex'
+        \TYPO3\CMS\Workspaces\Controller\ReviewController::class => 'index,fullIndex,singleIndex'
     ],
     [
         'access' => 'user,group',

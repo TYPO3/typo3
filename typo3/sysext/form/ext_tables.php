@@ -3,13 +3,13 @@ defined('TYPO3_MODE') or die();
 
 // Register the backend module Web->Forms
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-    'TYPO3.CMS.Form',
+    'Form',
     'web',
     'formbuilder',
     '',
     [
-        'FormManager' => 'index, show, create, duplicate, references, delete',
-        'FormEditor' => 'index, saveForm, renderFormPage, renderRenderableOptions',
+        \TYPO3\CMS\Form\Controller\FormManagerController::class => 'index, show, create, duplicate, references, delete',
+        \TYPO3\CMS\Form\Controller\FormEditorController::class => 'index, saveForm, renderFormPage, renderRenderableOptions',
     ],
     [
         'access' => 'user,group',

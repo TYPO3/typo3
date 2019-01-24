@@ -193,6 +193,13 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
                 // This case is kept for compatibility in 7.6 and 6.2, but will be removed in 8
                 $arguments = unserialize(base64_decode($this->hashService->validateAndStripHmac($this->internalArguments['__referrer']['arguments'])));
             }
+            // todo: Creating a referring request object here with a new statement is strange.
+            // todo: As request objects have inject methods and are still meant to be created via object manager,
+            // todo: this creates a partly non functional object. This is ok here as only the arguments matter, but
+            // todo: it should be solved better.
+            // todo: As an alternative, all request objects could be created via RequestBuilder and if there is a
+            // todo: redirect in a controller which is the cause of need for a referring object, said object should be
+            // todo: created before dispatching the new request and not in a getter.
             $referringRequest = new ReferringRequest();
             $referringRequest->setArguments(array_replace_recursive($arguments, $referrerArray));
             return $referringRequest;

@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  */
 
 use TYPO3\CMS\Extbase\Core\Bootstrap;
+use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\FirstController;
+use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\SecondController;
+use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\ThirdController;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -64,7 +67,7 @@ class ExtensionUtilityTest extends UnitTestCase
     public function configurePluginWorksForMinimalisticSetup()
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
-        ExtensionUtility::configurePlugin('MyExtension', 'Pi1', ['Blog' => 'index']);
+        ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [FirstController::class => 'index']);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
         $this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
         $this->assertContains('
@@ -81,7 +84,7 @@ class ExtensionUtilityTest extends UnitTestCase
     public function configurePluginCreatesCorrectDefaultTypoScriptSetup()
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
-        ExtensionUtility::configurePlugin('MyExtension', 'Pi1', ['Blog' => 'index']);
+        ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [FirstController::class => 'index']);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
         $this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
     }
@@ -94,7 +97,7 @@ class ExtensionUtilityTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
-            'FirstController' => 'index'
+            FirstController::class => 'index'
         ]);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
         $this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
@@ -103,7 +106,9 @@ class ExtensionUtilityTest extends UnitTestCase
 	pluginName = Pi1', $staticTypoScript);
         $expectedResult = [
             'controllers' => [
-                'FirstController' => [
+                FirstController::class => [
+                    'className' => FirstController::class,
+                    'alias' => 'First',
                     'actions' => ['index']
                 ]
             ],
@@ -146,9 +151,9 @@ class ExtensionUtilityTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
-            'FirstController' => 'index,show,new, create,delete,edit,update'
+            FirstController::class => 'index,show,new, create,delete,edit,update'
         ], [
-            'FirstController' => 'index,show'
+            FirstController::class => 'index,show'
         ]);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
         $this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
@@ -157,7 +162,9 @@ class ExtensionUtilityTest extends UnitTestCase
 	pluginName = Pi1', $staticTypoScript);
         $expectedResult = [
             'controllers' => [
-                'FirstController' => [
+                FirstController::class => [
+                    'className' => FirstController::class,
+                    'alias' => 'First',
                     'actions' => ['index', 'show', 'new', 'create', 'delete', 'edit', 'update'],
                     'nonCacheableActions' => ['index', 'show']
                 ]
@@ -175,9 +182,9 @@ class ExtensionUtilityTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
-            'FirstController' => 'index,show,new, create,delete,edit,update'
+            FirstController::class => 'index,show,new, create,delete,edit,update'
         ], [
-            'FirstController' => 'new,show'
+            FirstController::class => 'new,show'
         ]);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
         $this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
@@ -186,7 +193,9 @@ class ExtensionUtilityTest extends UnitTestCase
 	pluginName = Pi1', $staticTypoScript);
         $expectedResult = [
             'controllers' => [
-                'FirstController' => [
+                FirstController::class => [
+                    'className' => FirstController::class,
+                    'alias' => 'First',
                     'actions' => ['index', 'show', 'new', 'create', 'delete', 'edit', 'update'],
                     'nonCacheableActions' => ['new', 'show']
                 ]
@@ -204,23 +213,29 @@ class ExtensionUtilityTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
-            'FirstController' => 'index,show,new,create,delete,edit,update',
-            'SecondController' => 'index,show,delete',
-            'ThirdController' => 'create'
+            FirstController::class => 'index,show,new,create,delete,edit,update',
+            SecondController::class => 'index,show,delete',
+            ThirdController::class => 'create'
         ], [
-            'FirstController' => 'new,create,edit,update',
-            'ThirdController' => 'create'
+            FirstController::class => 'new,create,edit,update',
+            ThirdController::class => 'create'
         ]);
         $expectedResult = [
             'controllers' => [
-                'FirstController' => [
+                FirstController::class => [
+                    'className' => FirstController::class,
+                    'alias' => 'First',
                     'actions' => ['index', 'show', 'new', 'create', 'delete', 'edit', 'update'],
                     'nonCacheableActions' => ['new', 'create', 'edit', 'update']
                 ],
-                'SecondController' => [
+                SecondController::class => [
+                    'className' => SecondController::class,
+                    'alias' => 'Second',
                     'actions' => ['index', 'show', 'delete']
                 ],
-                'ThirdController' => [
+                ThirdController::class => [
+                    'className' => ThirdController::class,
+                    'alias' => 'Third',
                     'actions' => ['create'],
                     'nonCacheableActions' => ['create']
                 ]
@@ -238,25 +253,31 @@ class ExtensionUtilityTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
-            'FirstController' => 'index,show,new,create,delete,edit,update',
-            'SecondController' => 'index,show,delete',
-            'ThirdController' => 'create'
+            FirstController::class => 'index,show,new,create,delete,edit,update',
+            SecondController::class => 'index,show,delete',
+            ThirdController::class => 'create'
         ], [
-            'FirstController' => 'index,new,create,edit,update',
-            'SecondController' => 'delete',
-            'ThirdController' => 'create'
+            FirstController::class => 'index,new,create,edit,update',
+            SecondController::class => 'delete',
+            ThirdController::class => 'create'
         ]);
         $expectedResult = [
             'controllers' => [
-                'FirstController' => [
+                FirstController::class => [
+                    'className' => FirstController::class,
+                    'alias' => 'First',
                     'actions' => ['index', 'show', 'new', 'create', 'delete', 'edit', 'update'],
                     'nonCacheableActions' => ['index', 'new', 'create', 'edit', 'update']
                 ],
-                'SecondController' => [
+                SecondController::class => [
+                    'className' => SecondController::class,
+                    'alias' => 'Second',
                     'actions' => ['index', 'show', 'delete'],
                     'nonCacheableActions' => ['delete']
                 ],
-                'ThirdController' => [
+                ThirdController::class => [
+                    'className' => ThirdController::class,
+                    'alias' => 'Third',
                     'actions' => ['create'],
                     'nonCacheableActions' => ['create']
                 ]
@@ -347,5 +368,182 @@ class ExtensionUtilityTest extends UnitTestCase
 
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter($typeConverterClassName);
         $this->assertEquals(1, count($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters']));
+    }
+
+    /**
+     * DataProvider for explodeObjectControllerName
+     *
+     * @return array
+     */
+    public function controllerArgumentsAndExpectedObjectName()
+    {
+        return [
+            'Vendor TYPO3\CMS, extension, controller given' => [
+                [
+                    'vendorName' => 'TYPO3\\CMS',
+                    'extensionName' => 'Ext',
+                    'subpackageKey' => '',
+                    'controllerName' => 'Foo',
+                ],
+                'TYPO3\\CMS\\Ext\\Controller\\FooController',
+            ],
+            'Vendor TYPO3\CMS, extension, subpackage, controlle given' => [
+                [
+                    'vendorName' => 'TYPO3\\CMS',
+                    'extensionName' => 'Fluid',
+                    'subpackageKey' => 'ViewHelpers\\Widget',
+                    'controllerName' => 'Paginate',
+                ],
+                \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController::class,
+            ],
+            'Vendor VENDOR, extension, controller given' => [
+                [
+                    'vendorName' => 'VENDOR',
+                    'extensionName' => 'Ext',
+                    'subpackageKey' => '',
+                    'controllerName' => 'Foo',
+                ],
+                'VENDOR\\Ext\\Controller\\FooController',
+            ],
+            'Vendor VENDOR, extension subpackage, controller given' => [
+                [
+                    'vendorName' => 'VENDOR',
+                    'extensionName' => 'Ext',
+                    'subpackageKey' => 'ViewHelpers\\Widget',
+                    'controllerName' => 'Foo',
+                ],
+                'VENDOR\\Ext\\ViewHelpers\\Widget\\Controller\\FooController',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider controllerArgumentsAndExpectedObjectName
+     *
+     * @param array $controllerArguments
+     * @param string $controllerObjectName
+     * @test
+     */
+    public function getControllerObjectNameResolvesControllerObjectNameCorrectly($controllerArguments, $controllerObjectName)
+    {
+        $this->assertEquals(
+            $controllerObjectName,
+            ExtensionUtility::getControllerClassName(
+                $controllerArguments['vendorName'],
+                $controllerArguments['extensionName'],
+                $controllerArguments['subpackageKey'],
+                $controllerArguments['controllerName']
+            )
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function checkResolveControllerAliasFromControllerClassNameDataProvider()
+    {
+        return [
+            'Class in root namespace without controller suffix' => [
+                '',
+                'Foo',
+            ],
+            'Class in root namespace without controller suffix (2)' => [
+                '',
+                'FooBarBazQuxBlaBlub',
+            ],
+            'Controller in root namespace' => [
+                'Foo',
+                'FooController',
+            ],
+            'Controller in root namespace (lowercase)' => [
+                'foo',
+                'fooController',
+            ],
+            'Controller in namespace' => [
+                'Foo',
+                'TYPO3\\CMS\\Ext\\Controller\\FooController',
+            ],
+            'Controller in arbitrary namespace' => [
+                'Foo',
+                'Foo\\Bar\\baz\\qUx\\FooController',
+            ],
+            'Controller with lowercase suffix' => [
+                '',
+                'Foo\\Bar\\baz\\qUx\\Foocontroller',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider checkResolveControllerAliasFromControllerClassNameDataProvider
+     *
+     * @param string $expectedControllerAlias
+     * @param string $controllerClassName
+     * @test
+     */
+    public function checkResolveControllerAliasFromControllerClassName(string $expectedControllerAlias, string $controllerClassName)
+    {
+        $this->assertEquals(
+            $expectedControllerAlias,
+            ExtensionUtility::resolveControllerAliasFromControllerClassName(
+                $controllerClassName
+            )
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function checkResolveVendorFromExtensionAndControllerClassNameDataProvider()
+    {
+        return [
+            'Class in root namespace' => [
+                '',
+                'IndexedSearch',
+                'Foo',
+            ],
+            'Namespaced class without extension name as namespace part' => [
+                '',
+                'IndexedSearch',
+                'Foo\\Bar\\Baz\\Qux',
+            ],
+            'Namespaced class without vendor part before extension name part' => [
+                '',
+                'IndexedSearch',
+                'IndexedSearch\\Controller\\SearchController',
+            ],
+            'Namespaced class with single vendor part' => [
+                'Foo',
+                'IndexedSearch',
+                'Foo\\IndexedSearch\\Controller\\SearchController',
+            ],
+            'Namespaced class with multiple vendor parts' => [
+                'TYPO\\CMS',
+                'IndexedSearch',
+                'TYPO\\CMS\\IndexedSearch\\Controller\\SearchController',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider checkResolveVendorFromExtensionAndControllerClassNameDataProvider
+     *
+     * @param string $expectedVendor
+     * @param string $extensionName
+     * @param string $controllerClassName
+     * @test
+     */
+    public function checkResolveVendorFromExtensionAndControllerClassName(
+        string $expectedVendor,
+        string $extensionName,
+        string $controllerClassName
+    ) {
+        $this->assertEquals(
+            $expectedVendor,
+            ExtensionUtility::resolveVendorFromExtensionAndControllerClassName(
+                $extensionName,
+                $controllerClassName
+            )
+        );
     }
 }

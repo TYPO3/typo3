@@ -80,13 +80,19 @@ class RequestBuilderTest extends UnitTestCase
             'controller' => 'TheFirstController',
             'action' => 'show',
             'controllerConfiguration' => [
-                'TheFirstController' => [
+                'MyExtension\Controller\TheFirstControllerController' => [
+                    'className' => 'MyExtension\Controller\TheFirstControllerController',
+                    'alias' => 'TheFirstController',
                     'actions' => ['show', 'index', 'new', 'create', 'delete', 'edit', 'update', 'setup', 'test']
                 ],
-                'TheSecondController' => [
+                'MyExtension\Controller\TheSecondControllerController' => [
+                    'className' => 'MyExtension\Controller\TheSecondControllerController',
+                    'alias' => 'TheSecondController',
                     'actions' => ['show', 'index']
                 ],
-                'TheThirdController' => [
+                'MyExtension\Controller\TheThirdControllerController' => [
+                    'className' => 'MyExtension\Controller\TheThirdControllerController',
+                    'alias' => 'TheThirdController',
                     'actions' => ['delete', 'create', 'onlyInThirdController']
                 ]
             ]
@@ -294,7 +300,10 @@ class RequestBuilderTest extends UnitTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1295479651);
-        $this->configuration['controllerConfiguration']['TheFirstController'] = [];
+        $this->configuration['controllerConfiguration']['MyExtension\Controller\TheFirstControllerController'] = [
+            'className' => 'MyExtension\Controller\TheFirstControllerController',
+            'alias' => 'TheFirstController',
+        ];
         $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
@@ -310,6 +319,8 @@ class RequestBuilderTest extends UnitTestCase
         $this->expectExceptionCode(1316104317);
         $this->configuration['controllerConfiguration'] = [
             '' => [
+                'className' => '',
+                'alias' => '',
                 'actions' => ['foo']
             ]
         ];
@@ -349,8 +360,12 @@ class RequestBuilderTest extends UnitTestCase
                 ]
             ]
         ];
-        $this->mockRequest->expects($this->at(8))->method('setArgument')->with('parameter1', 'value1');
-        $this->mockRequest->expects($this->at(9))->method('setArgument')->with(
+
+        // testing at which position something gets called is fishy.
+        // why not make this a functional test and test with an actual requestBuilder instance and check the arguments
+        // later on?
+        $this->mockRequest->expects($this->at(9))->method('setArgument')->with('parameter1', 'value1');
+        $this->mockRequest->expects($this->at(10))->method('setArgument')->with(
             'parameter2',
             ['parameter3' => 'value3', 'parameter4' => 'value4']
         );
@@ -375,7 +390,8 @@ class RequestBuilderTest extends UnitTestCase
                 'format' => 'POST'
             ]
         ];
-        $this->mockRequest->expects($this->at(7))->method('setFormat')->with('POST');
+        // phew! Shitty position tests. Who thought this was a good idea?
+        $this->mockRequest->expects($this->at(8))->method('setFormat')->with('POST');
         $this->requestBuilder->build();
     }
 
@@ -386,7 +402,7 @@ class RequestBuilderTest extends UnitTestCase
     {
         $this->injectDependencies();
         $expectedResult = [
-            'TheFirstController' => [
+            'MyExtension\Controller\TheFirstControllerController' => [
                 'show',
                 'index',
                 'new',
@@ -397,11 +413,11 @@ class RequestBuilderTest extends UnitTestCase
                 'setup',
                 'test'
             ],
-            'TheSecondController' => [
+            'MyExtension\Controller\TheSecondControllerController' => [
                 'show',
                 'index'
             ],
-            'TheThirdController' => [
+            'MyExtension\Controller\TheThirdControllerController' => [
                 'delete',
                 'create',
                 'onlyInThirdController'

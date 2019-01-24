@@ -103,6 +103,12 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
         $contentObject = $this->cObj ?? \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
         $this->configurationManager->setContentObject($contentObject);
         $this->configurationManager->setConfiguration($configuration);
+        // todo: Shouldn't the configuration manager object – which is a singleton – be stateless?
+        // todo: At this point we give the configuration manager a state, while we could directly pass the
+        // todo: configuration (i.e. controllerName, actionName, vendorName and such), directly to the request
+        // todo: handler, which then creates stateful request objects.
+        // todo: Once this has changed, \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder::loadDefaultValues does not need
+        // todo: to fetch this configuration from the configuration manager.
     }
 
     /**
