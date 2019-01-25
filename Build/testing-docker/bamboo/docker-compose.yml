@@ -61,12 +61,17 @@ services:
       - test
     command: >
       /bin/sh -c "
-        echo Waiting for db start...;
-        while ! nc -z mariadb10 3306;
-        do
-          sleep 1;
-        done;
-        echo Connected!;
+        echo Waiting for database start
+        COUNT=0
+        while ! nc -z mariadb10 3306; do
+          if [ "$${COUNT}" -ge "60" ]; then
+            echo Database did not come up
+            exit 1
+          fi
+          let "COUNT++"
+          sleep 1
+        done
+        echo Database is up
       "
 
   start_dependencies_acceptance_install_postgres10:
@@ -79,12 +84,17 @@ services:
       - test
     command: >
       /bin/sh -c "
-        echo Waiting for db start...;
-        while ! nc -z postgres10 5432;
-        do
-          sleep 1;
-        done;
-        echo Connected!;
+        echo Waiting for database start
+        COUNT=0
+        while ! nc -z postgres10 5432; do
+          if [ "$${COUNT}" -ge "60" ]; then
+            echo Database did not come up
+            exit 1
+          fi
+          let "COUNT++"
+          sleep 1
+        done
+        echo Database is up
       "
 
   start_dependencies_acceptance_install_sqlite:
@@ -107,12 +117,17 @@ services:
       - test
     command: >
       /bin/sh -c "
-        echo Waiting for db start...;
-        while ! nc -z mariadb10 3306;
-        do
-          sleep 1;
-        done;
-        echo Connected!;
+        echo Waiting for database start
+        COUNT=0
+        while ! nc -z mariadb10 3306; do
+          if [ "$${COUNT}" -ge "60" ]; then
+            echo Database did not come up
+            exit 1
+          fi
+          let "COUNT++"
+          sleep 1
+        done
+        echo Database is up
       "
 
   start_dependencies_functional_mariadb10:
@@ -125,12 +140,17 @@ services:
       - test
     command: >
       /bin/sh -c "
-        echo Waiting for db start...;
-        while ! nc -z mariadb10 3306;
-        do
-          sleep 1;
-        done;
-        echo Connected!;
+        echo Waiting for database start
+        COUNT=0
+        while ! nc -z mariadb10 3306; do
+          if [ "$${COUNT}" -ge "60" ]; then
+            echo Database did not come up
+            exit 1
+          fi
+          let "COUNT++"
+          sleep 1
+        done
+        echo Database is up
       "
 
   start_dependencies_functional_mssql:
@@ -143,12 +163,17 @@ services:
       - test
     command: >
       /bin/sh -c "
-        echo Waiting for db start...;
-        while ! nc -z mssql2017cu9 1433;
-        do
-          sleep 1;
-        done;
-        echo Connected!;
+        echo Waiting for database start
+        COUNT=0
+        while ! nc -z mssql2017cu9 1433; do
+          if [ "$${COUNT}" -ge "60" ]; then
+            echo Database did not come up
+            exit 1
+          fi
+          let "COUNT++"
+          sleep 1
+        done
+        echo Database is up
       "
 
   start_dependencies_functional_postgres10:
@@ -161,12 +186,17 @@ services:
       - test
     command: >
       /bin/sh -c "
-        echo Waiting for db start...;
-        while ! nc -z postgres10 5432;
-        do
-          sleep 1;
-        done;
-        echo Connected!;
+        echo Waiting for database start
+        COUNT=0
+        while ! nc -z postgres10 5432; do
+          if [ "$${COUNT}" -ge "60" ]; then
+            echo Database did not come up
+            exit 1
+          fi
+          let "COUNT++"
+          sleep 1
+        done
+        echo Database is up
       "
   start_dependencies_functional_sqlite:
     image: alpine:3.8
