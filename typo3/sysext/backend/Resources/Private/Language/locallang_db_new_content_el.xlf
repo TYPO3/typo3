@@ -115,7 +115,7 @@
 				<source>Sitemap</source>
 			</trans-unit>
 			<trans-unit id="menu_sitemap.description">
-				<source>Expanded menu of all pages and subpages for selected pages</source>
+				<source>Expanded menu of all subpages of the current site</source>
 			</trans-unit>
 			<trans-unit id="menu_sitemap_pages.title">
 				<source>Sitemaps of selected pages</source>
