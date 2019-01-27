@@ -19,8 +19,11 @@ namespace TYPO3\CMS\Extbase\Core;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Response as ExtbaseResponse;
+use TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory;
 
 /**
  * Creates a request an dispatches it to the controller which was specified
@@ -30,6 +33,11 @@ use TYPO3\CMS\Extbase\Mvc\Web\Response as ExtbaseResponse;
  */
 class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
 {
+    /**
+     * @var array
+     */
+    public static $persistenceClasses = [];
+
     /**
      * Back reference to the parent content object
      * This has to be public as it is set directly from TYPO3
@@ -75,6 +83,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
         }
         $this->initializeObjectManager();
         $this->initializeConfiguration($configuration);
+        $this->initializePersistenceClassesConfiguration();
         $this->initializePersistence();
     }
 
@@ -108,6 +117,16 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
         // todo: handler, which then creates stateful request objects.
         // todo: Once this has changed, \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder::loadDefaultValues does not need
         // todo: to fetch this configuration from the configuration manager.
+    }
+
+    /**
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     */
+    private function initializePersistenceClassesConfiguration(): void
+    {
+        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
+        GeneralUtility::makeInstance(ClassesConfigurationFactory::class, $cacheManager)
+            ->createClassesConfiguration();
     }
 
     /**

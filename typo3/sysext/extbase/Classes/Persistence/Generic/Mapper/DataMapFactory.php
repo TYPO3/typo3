@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Extbase\Persistence\ClassesConfiguration;
+use TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
 
 /**
@@ -57,6 +59,11 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
     protected $dataMaps = [];
 
     /**
+     * @var ClassesConfiguration
+     */
+    private $classesConfiguration;
+
+    /**
      * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
@@ -66,7 +73,8 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
         \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService,
         \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager,
         \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager,
-        \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
+        \TYPO3\CMS\Core\Cache\CacheManager $cacheManager,
+        ClassesConfigurationFactory $classesConfigurationFactory
     ) {
         $this->reflectionService = $reflectionService;
         $this->configurationManager = $configurationManager;
@@ -74,6 +82,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
         $this->cacheManager = $cacheManager;
 
         $this->dataMapCache = $this->cacheManager->getCache('extbase');
+        $this->classesConfiguration = $classesConfigurationFactory->createClassesConfiguration();
     }
 
     /**
@@ -121,46 +130,28 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
         $recordType = null;
         $subclasses = [];
         $tableName = $this->resolveTableName($className);
-        $columnMapping = [];
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $classSettings = $frameworkConfiguration['persistence']['classes'][$className] ?? null;
-        if ($classSettings !== null) {
-            if (isset($classSettings['subclasses']) && is_array($classSettings['subclasses'])) {
-                $subclasses = $this->resolveSubclassesRecursive($frameworkConfiguration['persistence']['classes'], $classSettings['subclasses']);
-            }
-            if (isset($classSettings['mapping']['recordType']) && $classSettings['mapping']['recordType'] !== '') {
+        $fieldNameToPropertyNameMapping = [];
+        if ($this->classesConfiguration->hasClass($className)) {
+            $classSettings = $this->classesConfiguration->getConfigurationFor($className);
+            $subclasses = $this->classesConfiguration->getSubClasses($className);
+            if (isset($classSettings['recordType']) && $classSettings['recordType'] !== '') {
                 $recordType = $classSettings['mapping']['recordType'];
             }
-            if (isset($classSettings['mapping']['tableName']) && $classSettings['mapping']['tableName'] !== '') {
-                $tableName = $classSettings['mapping']['tableName'];
+            if (isset($classSettings['tableName']) && $classSettings['tableName'] !== '') {
+                $tableName = $classSettings['tableName'];
             }
-            $classHierarchy = array_merge([$className], class_parents($className));
-            foreach ($classHierarchy as $currentClassName) {
-                if (in_array($currentClassName, [\TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class, \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject::class])) {
-                    break;
-                }
-                $currentClassSettings = $frameworkConfiguration['persistence']['classes'][$currentClassName];
-                if ($currentClassSettings !== null) {
-                    if (isset($currentClassSettings['mapping']['columns']) && is_array($currentClassSettings['mapping']['columns'])) {
-                        \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($columnMapping, $currentClassSettings['mapping']['columns'], true, false);
-                    }
-                }
+            foreach ($classSettings['properties'] ?? [] as $propertyName => $propertyDefinition) {
+                $fieldNameToPropertyNameMapping[$propertyDefinition['fieldName']] = $propertyName;
             }
         }
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap $dataMap */
         $dataMap = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class, $className, $tableName, $recordType, $subclasses);
         $dataMap = $this->addMetaDataColumnNames($dataMap, $tableName);
-        // $classPropertyNames = $this->reflectionService->getClassPropertyNames($className);
-        $tcaColumnsDefinition = $this->getColumnsDefinition($tableName);
-        \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($tcaColumnsDefinition, $columnMapping);
-        // @todo Is this is too powerful?
 
-        foreach ($tcaColumnsDefinition as $columnName => $columnDefinition) {
-            if (isset($columnDefinition['mapOnProperty'])) {
-                $propertyName = $columnDefinition['mapOnProperty'];
-            } else {
-                $propertyName = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($columnName);
-            }
+        foreach ($this->getColumnsDefinition($tableName) as $columnName => $columnDefinition) {
+            $propertyName = $fieldNameToPropertyNameMapping[$columnName]
+                ?? \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($columnName);
+
             // @todo: shall we really create column maps for non existing properties?
             // @todo: check why this could happen in the first place. TCA definitions for non existing model properties?
             $columnMap = $this->createColumnMap($columnName, $propertyName);
@@ -197,27 +188,6 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
         $tableName = 'tx_' . strtolower(implode('_', array_slice($classNameParts, $classPartsToSkip)));
 
         return $tableName;
-    }
-
-    /**
-     * Resolves all subclasses for the given set of (sub-)classes.
-     * The whole classes configuration is used to determine all subclasses recursively.
-     *
-     * @param array $classesConfiguration The framework configuration part [persistence][classes].
-     * @param array $subclasses An array of subclasses defined via TypoScript
-     * @return array An numeric array that contains all available subclasses-strings as values.
-     */
-    protected function resolveSubclassesRecursive(array $classesConfiguration, array $subclasses)
-    {
-        $allSubclasses = [];
-        foreach ($subclasses as $subclass) {
-            $allSubclasses[] = $subclass;
-            if (isset($classesConfiguration[$subclass]['subclasses']) && is_array($classesConfiguration[$subclass]['subclasses'])) {
-                $childSubclasses = $this->resolveSubclassesRecursive($classesConfiguration, $classesConfiguration[$subclass]['subclasses']);
-                $allSubclasses = array_merge($allSubclasses, $childSubclasses);
-            }
-        }
-        return $allSubclasses;
     }
 
     /**

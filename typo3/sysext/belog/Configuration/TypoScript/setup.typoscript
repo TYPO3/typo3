@@ -1,27 +1,4 @@
 module.tx_belog {
-	persistence.classes {
-		TYPO3\CMS\Belog\Domain\Model\LogEntry {
-			mapping {
-				tableName = sys_log
-				columns {
-					userid.mapOnProperty = backendUserUid
-					recuid.mapOnProperty = recordUid
-					tablename.mapOnProperty = tableName
-					recpid.mapOnProperty = recordPid
-					details_nr.mapOnProperty = detailsNumber
-					IP.mapOnProperty = ip
-					workspace.mapOnProperty = workspaceUid
-					NEWid.mapOnProperty = newId
-				}
-			}
-		}
-		TYPO3\CMS\Belog\Domain\Model\Workspace {
-			mapping {
-				tableName = sys_workspace
-			}
-		}
-	}
-
 	settings {
 		selectableNumberOfLogEntries {
 			20 = 20

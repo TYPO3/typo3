@@ -1082,6 +1082,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
                 }
             }
             $className = get_class($object);
+            // todo: decide what to do with this option.
             if (isset($frameworkConfiguration['persistence']['classes'][$className]) && !empty($frameworkConfiguration['persistence']['classes'][$className]['newRecordStoragePid'])) {
                 return (int)$frameworkConfiguration['persistence']['classes'][$className]['newRecordStoragePid'];
             }

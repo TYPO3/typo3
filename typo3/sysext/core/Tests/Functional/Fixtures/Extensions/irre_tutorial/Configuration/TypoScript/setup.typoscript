@@ -6,31 +6,6 @@ plugin.tx_irretutorial {
 	}
 	persistence {
 		storagePid.data = page:uid
-		classes {
-			OliverHader\IrreTutorial\Domain\Model\Content {
-				mapping {
-					tableName = tt_content
-					columns {
-						tx_irretutorial_1nff_hotels.mapOnProperty = hotels
-					}
-				}
-			}
-			OliverHader\IrreTutorial\Domain\Model\Hotel {
-				mapping {
-					tableName = tx_irretutorial_1nff_hotel
-				}
-			}
-			OliverHader\IrreTutorial\Domain\Model\Offer {
-				mapping {
-					tableName = tx_irretutorial_1nff_offer
-				}
-			}
-			OliverHader\IrreTutorial\Domain\Model\Price {
-				mapping {
-					tableName = tx_irretutorial_1nff_price
-				}
-			}
-		}
 	}
 }
 
