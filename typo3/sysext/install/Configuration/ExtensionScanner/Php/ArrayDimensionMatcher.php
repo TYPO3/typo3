@@ -79,6 +79,16 @@ return [
             'Important-83768-RemoveReferrerCheck.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'caching\'][\'cacheConfigurations\'][\'extbase_reflection\']' => [
+        'restFiles' => [
+            'Breaking-87558-ConsolidateExtbaseCaches.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'caching\'][\'cacheConfigurations\'][\'extbase_datamapfactory_datamap\']' => [
+        'restFiles' => [
+            'Breaking-87558-ConsolidateExtbaseCaches.rst',
+        ],
+    ],
 
     // Hooks
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_befunc.php\'][\'getFlexFormDSClass\']' => [

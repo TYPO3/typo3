@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extbase\Reflection;
  */
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
@@ -23,8 +24,10 @@ use TYPO3\CMS\Core\SingletonInterface;
  */
 class ReflectionService implements SingletonInterface
 {
-    const CACHE_IDENTIFIER = 'extbase_reflection';
-    const CACHE_ENTRY_IDENTIFIER = 'ClassSchematas';
+    /**
+     * @var string
+     */
+    private static $cacheEntryIdentifier;
 
     /**
      * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
@@ -61,11 +64,12 @@ class ReflectionService implements SingletonInterface
      */
     public function __construct(CacheManager $cacheManager = null)
     {
-        if ($cacheManager instanceof CacheManager && $cacheManager->hasCache(static::CACHE_IDENTIFIER)) {
+        if ($cacheManager instanceof CacheManager && $cacheManager->hasCache('extbase')) {
             $this->cachingEnabled = true;
-            $this->dataCache = $cacheManager->getCache(static::CACHE_IDENTIFIER);
+            $this->dataCache = $cacheManager->getCache('extbase');
 
-            if (($classSchemata = $this->dataCache->get(static::CACHE_ENTRY_IDENTIFIER)) !== false) {
+            static::$cacheEntryIdentifier = 'ClassSchemata_' . sha1(TYPO3_version . Environment::getProjectPath());
+            if (($classSchemata = $this->dataCache->get(static::$cacheEntryIdentifier)) !== false) {
                 $this->classSchemata = $classSchemata;
             }
         }
@@ -74,7 +78,7 @@ class ReflectionService implements SingletonInterface
     public function __destruct()
     {
         if ($this->dataCacheNeedsUpdate && $this->cachingEnabled) {
-            $this->dataCache->set(static::CACHE_ENTRY_IDENTIFIER, $this->classSchemata);
+            $this->dataCache->set(static::$cacheEntryIdentifier, $this->classSchemata);
         }
     }
 

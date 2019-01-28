@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
 
@@ -72,7 +73,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
         $this->objectManager = $objectManager;
         $this->cacheManager = $cacheManager;
 
-        $this->dataMapCache = $this->cacheManager->getCache('extbase_datamapfactory_datamap');
+        $this->dataMapCache = $this->cacheManager->getCache('extbase');
     }
 
     /**
@@ -85,13 +86,16 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function buildDataMap($className)
     {
+        $className = ltrim($className, '\\');
         if (isset($this->dataMaps[$className])) {
             return $this->dataMaps[$className];
         }
-        $dataMap = $this->dataMapCache->get(str_replace('\\', '%', $className));
+        $cacheIdentifierClassName = str_replace('\\', '', $className);
+        $cacheIdentifier = 'DataMap_' . $cacheIdentifierClassName . '_' . sha1(TYPO3_version . Environment::getProjectPath());
+        $dataMap = $this->dataMapCache->get($cacheIdentifier);
         if ($dataMap === false) {
             $dataMap = $this->buildDataMapInternal($className);
-            $this->dataMapCache->set(str_replace('\\', '%', $className), $dataMap);
+            $this->dataMapCache->set($cacheIdentifier, $dataMap);
         }
         $this->dataMaps[$className] = $dataMap;
         return $dataMap;

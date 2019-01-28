@@ -1042,7 +1042,7 @@ class BackendUtilityTest extends UnitTestCase
         $cacheProphecy = $this->prophesize(FrontendInterface::class);
         $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
         $cacheHashProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->hasCache('extbase_reflection')->willReturn(false);
+        $cacheManagerProphecy->hasCache('extbase')->willReturn(false);
         $cacheManagerProphecy->getCache('cache_hash')->willReturn($cacheHashProphecy->reveal());
         $cacheProphecy->has(Argument::cetera())->willReturn(false);
         $cacheProphecy->get(Argument::cetera())->willReturn(false);
