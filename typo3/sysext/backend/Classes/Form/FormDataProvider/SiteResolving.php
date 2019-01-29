@@ -41,7 +41,11 @@ class SiteResolving implements FormDataProviderInterface
         } elseif ($result['defaultLanguagePageRow']['uid'] ?? null) {
             $pageIdDefaultLanguage = (int)$result['defaultLanguagePageRow']['uid'];
         } elseif (array_key_exists('tableName', $result) && $result['tableName'] === 'pages') {
-            $pageIdDefaultLanguage = $result['databaseRow']['t3ver_oid'] ?? $result['databaseRow']['uid'] ?? $result['effectivePid'];
+            if (!empty($result['databaseRow']['t3ver_oid'])) {
+                $pageIdDefaultLanguage = $result['databaseRow']['t3ver_oid'];
+            } else {
+                $pageIdDefaultLanguage = $result['databaseRow']['uid'] ?? $result['effectivePid'];
+            }
         } else {
             $pageIdDefaultLanguage = $result['effectivePid'];
         }
