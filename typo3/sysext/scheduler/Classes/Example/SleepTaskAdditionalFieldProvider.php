@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Scheduler\Example;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
@@ -77,7 +78,7 @@ class SleepTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
     {
         $submittedData['sleepTime'] = (int)$submittedData['sleepTime'];
         if ($submittedData['sleepTime'] < 0) {
-            $this->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidSleepTime'), FlashMessage::ERROR);
+            $this->addMessage($this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidSleepTime'), FlashMessage::ERROR);
             $result = false;
         } else {
             $result = true;
@@ -95,5 +96,13 @@ class SleepTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {
         $task->sleepTime = $submittedData['sleepTime'];
+    }
+
+    /**
+     * @return LanguageService|null
+     */
+    protected function getLanguageService(): ?LanguageService
+    {
+        return $GLOBALS['LANG'] ?? null;
     }
 }

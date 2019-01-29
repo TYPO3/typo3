@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
@@ -251,7 +252,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         if ($basicNode->getId() == 0) {
             $node->setSelected(false);
             $node->setExpanded(true);
-            $node->setLabel($GLOBALS['LANG']->sL($GLOBALS['TCA'][$this->tableName]['ctrl']['title']));
+            $node->setLabel($this->getLanguageService()->sL($GLOBALS['TCA'][$this->tableName]['ctrl']['title']));
         } else {
             $row = BackendUtility::getRecordWSOL($this->tableName, $basicNode->getId(), '*', '', false);
             $node->setLabel(BackendUtility::getRecordTitle($this->tableName, $row) ?: $basicNode->getId());
@@ -538,5 +539,13 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     protected function getObjectManager()
     {
         return GeneralUtility::makeInstance(ObjectManager::class);
+    }
+
+    /**
+     * @return LanguageService|null
+     */
+    protected function getLanguageService(): ?LanguageService
+    {
+        return $GLOBALS['LANG'] ?? null;
     }
 }

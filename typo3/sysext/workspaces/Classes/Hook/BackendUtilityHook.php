@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Workspaces\Hook;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -62,7 +63,7 @@ class BackendUtilityHook
                 $stages = GeneralUtility::makeInstance(StagesService::class);
                 $stageName = $stages->getStageTitle($record['t3ver_stage']);
                 $editingName = $stages->getStageTitle(StagesService::STAGE_EDIT_ID);
-                $message = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:info.elementAlreadyModified');
+                $message = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:info.elementAlreadyModified');
                 $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, sprintf($message, $stageName, $editingName), '', FlashMessage::INFO, true);
                 /** @var FlashMessageService $flashMessageService */
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
@@ -72,5 +73,13 @@ class BackendUtilityHook
             }
         }
         return $params['hasAccess'];
+    }
+
+    /**
+     * @return LanguageService|null
+     */
+    protected function getLanguageService(): ?LanguageService
+    {
+        return $GLOBALS['LANG'] ?? null;
     }
 }

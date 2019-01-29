@@ -86,6 +86,6 @@ class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     public function getAdditionalInformation()
     {
-        return $GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.email') . ': ' . $this->email;
+        return $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.email') . ': ' . $this->email;
     }
 }

@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -290,7 +291,7 @@ class LiveSearch
      */
     protected function getTitleOfCurrentRecordType($tableName)
     {
-        return $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tableName]['ctrl']['title']);
+        return $this->getLanguageService()->sL($GLOBALS['TCA'][$tableName]['ctrl']['title']);
     }
 
     /**
@@ -491,5 +492,13 @@ class LiveSearch
         // add workspace pid - workspace permissions are taken into account by where clause later
         $tree->ids[] = -1;
         return implode(',', $tree->ids);
+    }
+
+    /**
+     * @return LanguageService|null
+     */
+    protected function getLanguageService(): ?LanguageService
+    {
+        return $GLOBALS['LANG'] ?? null;
     }
 }

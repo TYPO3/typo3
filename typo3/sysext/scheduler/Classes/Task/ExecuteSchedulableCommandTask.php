@@ -19,7 +19,6 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Console\UnknownCommandException;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -117,13 +116,5 @@ class ExecuteSchedulableCommandTask extends AbstractTask
             $argumentValue = (int)$argumentValue;
         }
         $this->defaults[$argumentName] = $argumentValue;
-    }
-
-    /**
-     * @return LanguageService
-     */
-    public function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }

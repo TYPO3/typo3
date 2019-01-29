@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\PseudoSiteFinder;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
@@ -153,7 +154,7 @@ class TreeController
             if (!$isAdmin && !in_array($doktype, $allowedDoktypes, true)) {
                 continue;
             }
-            $label = htmlspecialchars($GLOBALS['LANG']->sL($doktypeLabelMap[$doktype]));
+            $label = htmlspecialchars($this->getLanguageService()->sL($doktypeLabelMap[$doktype]));
             $output[] = [
                 'nodeType' => $doktype,
                 'icon' => $GLOBALS['TCA']['pages']['ctrl']['typeicon_classes'][$doktype] ?? '',
@@ -263,7 +264,7 @@ class TreeController
             $visibleText = $page['nav_title'];
         }
         if (trim($visibleText) === '') {
-            $visibleText = htmlspecialchars('[' . $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title') . ']');
+            $visibleText = htmlspecialchars('[' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title') . ']');
         }
         $visibleText = GeneralUtility::fixed_lgd_cs($visibleText, (int)$this->getBackendUser()->uc['titleLen'] ?: 40);
 
@@ -470,5 +471,13 @@ class TreeController
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @return LanguageService|null
+     */
+    protected function getLanguageService(): ?LanguageService
+    {
+        return $GLOBALS['LANG'] ?? null;
     }
 }

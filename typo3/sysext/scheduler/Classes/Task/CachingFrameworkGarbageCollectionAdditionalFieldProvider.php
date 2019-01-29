@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Scheduler\Task;
  */
 
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
@@ -79,11 +80,11 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider extends AbstractA
         if (is_array($submittedData['scheduler_cachingFrameworkGarbageCollection_selectedBackends'])) {
             $invalidBackends = array_diff($submittedData['scheduler_cachingFrameworkGarbageCollection_selectedBackends'], $availableBackends);
             if (!empty($invalidBackends)) {
-                $this->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.selectionOfNonExistingCacheBackends'), FlashMessage::ERROR);
+                $this->addMessage($this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.selectionOfNonExistingCacheBackends'), FlashMessage::ERROR);
                 $validData = false;
             }
         } else {
-            $this->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noCacheBackendSelected'), FlashMessage::ERROR);
+            $this->addMessage($this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noCacheBackendSelected'), FlashMessage::ERROR);
             $validData = false;
         }
         return $validData;
@@ -139,5 +140,13 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider extends AbstractA
             }
         }
         return $backends;
+    }
+
+    /**
+     * @return LanguageService|null
+     */
+    protected function getLanguageService(): ?LanguageService
+    {
+        return $GLOBALS['LANG'] ?? null;
     }
 }

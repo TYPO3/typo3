@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Scheduler\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
@@ -82,7 +83,7 @@ class RecyclerGarbageCollectionAdditionalFieldProvider extends AbstractAdditiona
         // If not, fail validation and issue error message
         if (!is_numeric($submittedData['scheduler_recyclerGarbageCollection_numberOfDays']) || (int)$submittedData['scheduler_recyclerGarbageCollection_numberOfDays'] < 0) {
             $result = false;
-            $this->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidNumberOfDays'), FlashMessage::ERROR);
+            $this->addMessage($this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidNumberOfDays'), FlashMessage::ERROR);
         }
         return $result;
     }
@@ -96,5 +97,13 @@ class RecyclerGarbageCollectionAdditionalFieldProvider extends AbstractAdditiona
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {
         $task->numberOfDays = (int)$submittedData['scheduler_recyclerGarbageCollection_numberOfDays'];
+    }
+
+    /**
+     * @return LanguageService|null
+     */
+    protected function getLanguageService(): ?LanguageService
+    {
+        return $GLOBALS['LANG'] ?? null;
     }
 }

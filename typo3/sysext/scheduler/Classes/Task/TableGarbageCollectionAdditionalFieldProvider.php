@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Scheduler\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
@@ -245,7 +246,7 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
             $validData = true;
         } else {
             // Issue error message
-            $this->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidNumberOfDays'), FlashMessage::ERROR);
+            $this->addMessage($this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidNumberOfDays'), FlashMessage::ERROR);
         }
         return $validData;
     }
@@ -261,5 +262,13 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
         $task->allTables = $submittedData['scheduler_tableGarbageCollection_allTables'] === 'on';
         $task->table = $submittedData['scheduler_tableGarbageCollection_table'];
         $task->numberOfDays = (int)$submittedData['scheduler_tableGarbageCollection_numberOfDays'];
+    }
+
+    /**
+     * @return LanguageService|null
+     */
+    protected function getLanguageService(): ?LanguageService
+    {
+        return $GLOBALS['LANG'] ?? null;
     }
 }

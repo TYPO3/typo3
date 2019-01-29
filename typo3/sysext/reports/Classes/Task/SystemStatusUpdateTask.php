@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Reports\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -135,13 +134,5 @@ class SystemStatusUpdateTask extends AbstractTask
     public function setNotificationAll(bool $notificationAll)
     {
         $this->notificationAll = $notificationAll;
-    }
-
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
     }
 }

@@ -122,9 +122,9 @@ class TableGarbageCollectionTask extends AbstractTask
     public function getAdditionalInformation()
     {
         if ($this->allTables) {
-            $message = $GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.additionalInformationAllTables');
+            $message = $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.additionalInformationAllTables');
         } else {
-            $message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.additionalInformationTable'), $this->table);
+            $message = sprintf($this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.additionalInformationTable'), $this->table);
         }
         return $message;
     }

@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -266,7 +267,7 @@ function jumpToUrl(URL) {
     protected function initPageRenderer()
     {
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $this->pageRenderer->setLanguage($GLOBALS['LANG']->lang);
+        $this->pageRenderer->setLanguage($this->getLanguageService()->lang);
         $this->pageRenderer->enableConcatenateCss();
         $this->pageRenderer->enableConcatenateJavascript();
         $this->pageRenderer->enableCompressCss();
@@ -305,7 +306,7 @@ function jumpToUrl(URL) {
         } else {
             $motherModule = '\'\'';
         }
-        $confirmationText = GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark'));
+        $confirmationText = GeneralUtility::quoteJSvalue($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark'));
 
         $shortcutUrl = $pathInfo['path'] . '?' . $storeUrl;
         $shortcutRepository = GeneralUtility::makeInstance(ShortcutRepository::class);
@@ -320,7 +321,7 @@ function jumpToUrl(URL) {
             ', ' . $url . ', ' . $confirmationText . ', ' . $motherModule . ', this);return false;';
 
         return '<a href="#" class="' . htmlspecialchars($classes) . '" onclick="' . htmlspecialchars($onClick) . '" title="' .
-        htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark')) . '">' .
+        htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark')) . '">' .
         $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() . '</a>';
     }
 
@@ -800,7 +801,7 @@ function jumpToUrl(URL) {
             $title = '';
         }
         // Setting the path of the page
-        $pagePath = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path')) . ': <span class="typo3-docheader-pagePath">';
+        $pagePath = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path')) . ': <span class="typo3-docheader-pagePath">';
         // crop the title to title limit (or 50, if not defined)
         $cropLength = empty($GLOBALS['BE_USER']->uc['titleLen']) ? 50 : $GLOBALS['BE_USER']->uc['titleLen'];
         $croppedTitle = GeneralUtility::fixed_lgd_cs($title, -$cropLength);
@@ -895,5 +896,13 @@ function jumpToUrl(URL) {
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'] ?? null;
+    }
+
+    /**
+     * @return LanguageService|null
+     */
+    protected function getLanguageService(): ?LanguageService
+    {
+        return $GLOBALS['LANG'] ?? null;
     }
 }

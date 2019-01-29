@@ -138,6 +138,6 @@ class IpAnonymizationTask extends AbstractTask
      */
     public function getAdditionalInformation()
     {
-        return sprintf($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.ipAnonymization.additionalInformationTable'), $this->table, $this->numberOfDays);
+        return sprintf($this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.ipAnonymization.additionalInformationTable'), $this->table, $this->numberOfDays);
     }
 }

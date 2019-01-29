@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Database\QueryView;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -111,7 +112,7 @@ class WorkspaceService implements SingletonInterface
         $title = false;
         switch ($wsId) {
             case self::LIVE_WORKSPACE_ID:
-                $title = $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:shortcut_onlineWS');
+                $title = static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:shortcut_onlineWS');
                 break;
             default:
                 $labelField = $GLOBALS['TCA']['sys_workspace']['ctrl']['label'];
@@ -917,5 +918,13 @@ class WorkspaceService implements SingletonInterface
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         return $queryBuilder;
+    }
+
+    /**
+     * @return LanguageService|null
+     */
+    protected static function getLanguageService(): ?LanguageService
+    {
+        return $GLOBALS['LANG'] ?? null;
     }
 }

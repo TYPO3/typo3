@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -252,9 +253,9 @@ class StagesService implements SingletonInterface
                 'label' => $stageRecord->getTitle(),
             ];
             if (!$stageRecord->isExecuteStage()) {
-                $stage['title'] = $GLOBALS['LANG']->sL($this->pathToLocallang . ':actionSendToStage') . ' "' . $stageRecord->getTitle() . '"';
+                $stage['title'] = $this->getLanguageService()->sL($this->pathToLocallang . ':actionSendToStage') . ' "' . $stageRecord->getTitle() . '"';
             } else {
-                $stage['title'] = $GLOBALS['LANG']->sL($this->pathToLocallang . ':publish_execute_action_option');
+                $stage['title'] = $this->getLanguageService()->sL($this->pathToLocallang . ':publish_execute_action_option');
             }
             $stagesArray[] = $stage;
         }
@@ -271,18 +272,18 @@ class StagesService implements SingletonInterface
     {
         switch ($ver_stage) {
             case self::STAGE_PUBLISH_EXECUTE_ID:
-                $stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_publish');
+                $stageTitle = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_publish');
                 break;
             case self::STAGE_PUBLISH_ID:
-                $stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stage_ready_to_publish');
+                $stageTitle = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stage_ready_to_publish');
                 break;
             case self::STAGE_EDIT_ID:
-                $stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_editing');
+                $stageTitle = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_editing');
                 break;
             default:
                 $stageTitle = $this->getPropertyOfCurrentWorkspaceStage($ver_stage, 'title');
                 if ($stageTitle == null) {
-                    $stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.getStageTitle.stageNotFound');
+                    $stageTitle = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.getStageTitle.stageNotFound');
                 }
         }
         return $stageTitle;
@@ -310,7 +311,7 @@ class StagesService implements SingletonInterface
     {
         if (!MathUtility::canBeInterpretedAsInteger($stageId)) {
             throw new \InvalidArgumentException(
-                $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'),
+                $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'),
                 1291109987
             );
         }
@@ -330,8 +331,8 @@ class StagesService implements SingletonInterface
         if ($nextStage === false) {
             $nextStage[] = [
                 'uid' => self::STAGE_EDIT_ID,
-                'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':actionSendToStage') . ' "'
-                    . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_editing') . '"'
+                'title' => $this->getLanguageService()->sL($this->pathToLocallang . ':actionSendToStage') . ' "'
+                    . $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_editing') . '"'
             ];
         }
         return $nextStage;
@@ -377,7 +378,7 @@ class StagesService implements SingletonInterface
     {
         if (!MathUtility::canBeInterpretedAsInteger($stageId)) {
             throw new \InvalidArgumentException(
-                $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'),
+                $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'),
                 1476048351
             );
         }
@@ -651,7 +652,7 @@ class StagesService implements SingletonInterface
         $result = null;
         if (!MathUtility::canBeInterpretedAsInteger($stageId)) {
             throw new \InvalidArgumentException(
-                $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'),
+                $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'),
                 1476048371
             );
         }
@@ -787,5 +788,13 @@ class StagesService implements SingletonInterface
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @return LanguageService|null
+     */
+    protected function getLanguageService(): ?LanguageService
+    {
+        return $GLOBALS['LANG'] ?? null;
     }
 }

@@ -163,12 +163,4 @@ class CleanerTask extends AbstractTask
     {
         return $this->tcaTables;
     }
-
-    /**
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
-    }
 }

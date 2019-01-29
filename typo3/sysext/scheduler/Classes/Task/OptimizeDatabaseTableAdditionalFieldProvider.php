@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Scheduler\Task;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
@@ -92,14 +93,14 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
             );
             if (!empty($invalidTables)) {
                 $this->addMessage(
-                    $GLOBALS['LANG']->sL($this->languageFile . ':msg.selectionOfNonExistingDatabaseTables'),
+                    $this->getLanguageService()->sL($this->languageFile . ':msg.selectionOfNonExistingDatabaseTables'),
                     FlashMessage::ERROR
                 );
                 $validData = false;
             }
         } else {
             $this->addMessage(
-                $GLOBALS['LANG']->sL($this->languageFile . ':msg.noDatabaseTablesSelected'),
+                $this->getLanguageService()->sL($this->languageFile . ':msg.noDatabaseTablesSelected'),
                 FlashMessage::ERROR
             );
             $validData = false;
@@ -227,5 +228,13 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
         $tables = $queryBuilder->execute()->fetchAll();
 
         return array_column($tables, 'Table');
+    }
+
+    /**
+     * @return LanguageService|null
+     */
+    protected function getLanguageService(): ?LanguageService
+    {
+        return $GLOBALS['LANG'] ?? null;
     }
 }

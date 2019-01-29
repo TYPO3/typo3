@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Linkvalidator\Task;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
@@ -610,13 +609,5 @@ class ValidatorTask extends AbstractTask
             '--countInARun',
             $this->countInARun
         ];
-    }
-
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
     }
 }

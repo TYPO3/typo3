@@ -19,6 +19,7 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Execution;
@@ -174,7 +175,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      */
     public function getTaskTitle()
     {
-        return $GLOBALS['LANG']->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][static::class]['title']);
+        return $this->getLanguageService()->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][static::class]['title']);
     }
 
     /**
@@ -184,7 +185,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      */
     public function getTaskDescription()
     {
-        return $GLOBALS['LANG']->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][static::class]['description']);
+        return $this->getLanguageService()->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][static::class]['description']);
     }
 
     /**
@@ -620,5 +621,13 @@ abstract class AbstractTask implements LoggerAwareInterface
     protected function logException(\Exception $e)
     {
         $this->logger->error('A Task Exception was captured: ' . $e->getMessage() . ' (' . $e->getCode() . ')', ['exception' => $e]);
+    }
+
+    /**
+     * @return LanguageService|null
+     */
+    protected function getLanguageService(): ?LanguageService
+    {
+        return $GLOBALS['LANG'] ?? null;
     }
 }

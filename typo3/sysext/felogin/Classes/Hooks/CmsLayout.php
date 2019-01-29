@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Felogin\Hooks;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Localization\LanguageService;
+
 /**
  * Hook to display verbose information about the felogin plugin
  * @internal this is a TYPO3 hook implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
@@ -33,7 +35,15 @@ class CmsLayout implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInt
     {
         if ($row['CType'] === 'login') {
             $drawItem = false;
-            $itemContent .= $parentObject->linkEditContent('<strong>' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_login_title')) . '</strong>', $row);
+            $itemContent .= $parentObject->linkEditContent('<strong>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_login_title')) . '</strong>', $row);
         }
+    }
+
+    /**
+     * @return LanguageService|null
+     */
+    protected function getLanguageService(): ?LanguageService
+    {
+        return $GLOBALS['LANG'] ?? null;
     }
 }

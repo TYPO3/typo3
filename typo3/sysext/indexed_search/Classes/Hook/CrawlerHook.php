@@ -15,6 +15,7 @@ namespace TYPO3\CMS\IndexedSearch\Hook;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -57,8 +58,7 @@ class CrawlerHook
     {
         // To make sure the backend charset is available:
         if (!is_object($GLOBALS['LANG'])) {
-            $GLOBALS['LANG'] = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
-            $GLOBALS['LANG']->init($GLOBALS['BE_USER']->uc['lang']);
+            Bootstrap::initializeLanguageObject();
         }
     }
 

@@ -293,7 +293,7 @@ class ModuleTemplate
         // Yes, hardcoded on purpose
         $this->pageRenderer->setXmlPrologAndDocType('<!DOCTYPE html>');
         $this->pageRenderer->setCharSet('utf-8');
-        $this->pageRenderer->setLanguage($GLOBALS['LANG']->lang);
+        $this->pageRenderer->setLanguage($this->getLanguageService()->lang);
         $this->pageRenderer->setMetaTag('name', 'viewport', 'width=device-width, initial-scale=1');
     }
 

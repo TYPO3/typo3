@@ -73,7 +73,7 @@ class PageInformationController
         $dblist->script = (string)$uriBuilder->buildUriFromRoute('web_info');
         $dblist->showIcon = 0;
         $dblist->setLMargin = 0;
-        $dblist->agePrefixes = $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears');
+        $dblist->agePrefixes = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears');
         $dblist->pI_showUser = true;
 
         if (isset($this->fieldConfiguration[$this->pObj->MOD_SETTINGS['pages']])) {
@@ -115,12 +115,12 @@ class PageInformationController
         $menu = [
             'pages' => [],
             'depth' => [
-                0 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0'),
-                1 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1'),
-                2 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),
-                3 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3'),
-                4 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
-                999 => $GLOBALS['LANG']->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi')
+                0 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0'),
+                1 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1'),
+                2 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),
+                3 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3'),
+                4 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
+                999 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi')
             ]
         ];
 
@@ -184,7 +184,7 @@ class PageInformationController
             }
             $key = trim($key, '.');
             $this->fieldConfiguration[$key] = [
-                'label' => $item['label'] ? $GLOBALS['LANG']->sL($item['label']) : $key,
+                'label' => $item['label'] ? $this->getLanguageService()->sL($item['label']) : $key,
                 'fields' => $fields
             ];
         }
@@ -199,10 +199,10 @@ class PageInformationController
     }
 
     /**
-     * @return LanguageService
+     * @return LanguageService|null
      */
-    protected function getLanguageService(): LanguageService
+    protected function getLanguageService(): ?LanguageService
     {
-        return $GLOBALS['LANG'];
+        return $GLOBALS['LANG'] ?? null;
     }
 }
