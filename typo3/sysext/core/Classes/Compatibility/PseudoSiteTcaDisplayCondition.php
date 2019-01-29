@@ -58,7 +58,7 @@ class PseudoSiteTcaDisplayCondition
 
         // uid is set if we're editing an existing page
         // This resolves to 0 if the page is 'new'
-        $defaultLanguagePageId = (int)($parameters['record']['t3ver_oid'] ?? $parameters['record']['uid']);
+        $defaultLanguagePageId = (int)($parameters['record']['t3ver_oid'] ?: $parameters['record']['uid']);
         if (is_array($parameters['record']['l10n_parent'])) {
             // But if the page is a localized page, we take the l10n_parent as uid for the sitematcher
             // This is 0 if the page in a default language page
