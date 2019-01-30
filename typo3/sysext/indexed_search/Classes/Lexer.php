@@ -68,8 +68,6 @@ class Lexer
             $wordString = mb_strtolower($wordString, 'utf-8');
         }
         // Now, splitting words:
-        $len = 0;
-        $start = 0;
         $pos = 0;
         $words = [];
         $this->debugString = '';

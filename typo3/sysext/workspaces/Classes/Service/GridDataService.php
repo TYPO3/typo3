@@ -232,7 +232,7 @@ class GridDataService implements LoggerAwareInterface
         }
         // Suggested slot method:
         // methodName(\TYPO3\CMS\Workspaces\Service\GridDataService $gridData, array $dataArray, array $versions)
-        list($this->dataArray, $versions) = $this->emitSignal(self::SIGNAL_GenerateDataArray_PostProcesss, $this->dataArray, $versions);
+        list($this->dataArray) = $this->emitSignal(self::SIGNAL_GenerateDataArray_PostProcesss, $this->dataArray, $versions);
         $this->sortDataArray();
         $this->resolveDataArrayDependencies();
     }

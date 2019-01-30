@@ -72,7 +72,7 @@ class InternalLinktype extends AbstractLinktype
         unset($this->errorParams);
         // Only check pages records. Content elements will also be checked
         // as we extract the anchor in the next step.
-        [$table, $uid] = explode(':', $softRefEntry['substr']['recordRef']);
+        [$table] = explode(':', $softRefEntry['substr']['recordRef']);
         if (!in_array($table, ['pages', 'tt_content'], true)) {
             return true;
         }

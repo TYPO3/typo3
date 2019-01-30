@@ -89,7 +89,6 @@ class SoftReferenceIndex
      */
     public function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath = '')
     {
-        $retVal = false;
         $this->tokenID_basePrefix = $table . ':' . $uid . ':' . $field . ':' . $structurePath . ':' . $spKey;
         switch ($spKey) {
             case 'notify':

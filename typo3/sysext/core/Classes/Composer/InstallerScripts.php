@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Composer;
  */
 
 use Composer\Script\Event;
-use Composer\Util\Filesystem;
 use TYPO3\CMS\Composer\Plugin\Core\InstallerScripts\EntryPoint;
 use TYPO3\CMS\Composer\Plugin\Core\InstallerScriptsRegistration;
 use TYPO3\CMS\Composer\Plugin\Core\ScriptDispatcher;
@@ -52,7 +51,6 @@ class InstallerScripts implements InstallerScriptsRegistration
                 {
                     parent::run($event);
 
-                    $filesystem = new Filesystem();
                     $composer = $event->getComposer();
                     $pluginConfig = \TYPO3\CMS\Composer\Plugin\Config::load($composer);
 

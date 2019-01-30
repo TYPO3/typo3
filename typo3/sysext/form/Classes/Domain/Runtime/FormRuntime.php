@@ -229,7 +229,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     {
         if (!$this->formState->isFormSubmitted()) {
             $this->currentPage = $this->formDefinition->getPageByIndex(0);
-            $renderingOptions = $this->currentPage->getRenderingOptions();
 
             if (!$this->currentPage->isEnabled()) {
                 throw new FormException('Disabling the first page is not allowed', 1527186844);
@@ -267,7 +266,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             $this->currentPage = null;
         } else {
             $this->currentPage = $this->formDefinition->getPageByIndex($currentPageIndex);
-            $renderingOptions = $this->currentPage->getRenderingOptions();
 
             if (!$this->currentPage->isEnabled()) {
                 if ($currentPageIndex === 0) {

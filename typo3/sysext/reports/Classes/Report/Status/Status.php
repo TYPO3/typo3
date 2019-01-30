@@ -216,7 +216,6 @@ class Status implements RequestAwareReportInterface
         // @todo extract into getLabel() method
         $secondaryStatuses = [];
         foreach ($statusCollection as $statusProviderId => $collection) {
-            $label = '';
             if (strpos($statusProviderId, 'LLL:') === 0) {
                 // Label provided by extension
                 $label = $this->getLanguageService()->sL($statusProviderId);

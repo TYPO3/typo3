@@ -391,7 +391,6 @@ class GeneralUtility
     public static function normalizeIPv6($address)
     {
         $normalizedAddress = '';
-        $stageOneAddress = '';
         // According to RFC lowercase-representation is recommended
         $address = strtolower($address);
         // Normalized representation has 39 characters (0000:0000:0000:0000:0000:0000:0000:0000)

@@ -1307,7 +1307,6 @@ class FileList
     {
         $cells = [];
         $fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
-        $md5 = GeneralUtility::shortMD5($fullIdentifier);
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 

@@ -156,7 +156,7 @@ class MathUtility
                 }
             }
         }
-        $number = $Msign === '-' ? ($number -= $buffer) : ($number += $buffer);
+        $number = $Msign === '-' ? ($number - $buffer) : ($number + $buffer);
         return $err ? 'ERROR: ' . $err : $number;
     }
 

@@ -883,7 +883,6 @@ class EnvironmentController extends AbstractController
         $inputFile = $imageBasePath . 'TestInput/Test.' . $inputFormat;
         $imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('read') . '-' . $inputFormat;
         $imResult = $imageProcessor->imageMagickConvert($inputFile, 'jpg', '300', '', '', '', [], true);
-        $result = [];
         if ($imResult !== null) {
             $result = [
                 'fileExists' => file_exists($imResult[3]),
