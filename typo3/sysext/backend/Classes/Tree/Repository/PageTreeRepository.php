@@ -90,14 +90,24 @@ class PageTreeRepository
     protected $fullPageTree = [];
 
     /**
+     * @var array
+     */
+    protected $additionalQueryRestrictions = [];
+
+    /**
      * @param int $workspaceId the workspace ID to be checked for.
      * @param array $additionalFieldsToQuery an array with more fields that should be accessed.
+     * @param array $additionalQueryRestrictions an array with more restrictions to add
      */
-    public function __construct(int $workspaceId = 0, array $additionalFieldsToQuery = [])
+    public function __construct(int $workspaceId = 0, array $additionalFieldsToQuery = [], array $additionalQueryRestrictions = [])
     {
         $this->currentWorkspace = $workspaceId;
         if (!empty($additionalFieldsToQuery)) {
             $this->fields = array_merge($this->fields, $additionalFieldsToQuery);
+        }
+
+        if (!empty($additionalQueryRestrictions)) {
+            $this->additionalQueryRestrictions = $additionalQueryRestrictions;
         }
     }
 
@@ -159,6 +169,12 @@ class PageTreeRepository
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->currentWorkspace));
+
+        if (!empty($this->additionalQueryRestrictions)) {
+            foreach ($this->additionalQueryRestrictions as $additionalQueryRestriction) {
+                $queryBuilder->getRestrictions()->add($additionalQueryRestriction);
+            }
+        }
 
         $pageRecords = $queryBuilder
             ->select(...$this->fields)
