@@ -171,7 +171,7 @@ CREATE TABLE sys_filemounts (
 # Table structure for table 'sys_file_storage'
 #
 CREATE TABLE sys_file_storage (
-	name varchar(30) DEFAULT '' NOT NULL,
+	name varchar(255) DEFAULT '' NOT NULL,
 	driver tinytext,
 	configuration text,
 	is_default tinyint(4) DEFAULT '0' NOT NULL,

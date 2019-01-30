@@ -25,7 +25,8 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_storage.name',
             'config' => [
                 'type' => 'input',
-                'size' => 30,
+                'size' => 50,
+                'max' => 255,
                 'eval' => 'required'
             ]
         ],
