@@ -1,4 +1,4 @@
-{namespace s = TYPO3\CMS\Scheduler\ViewHelpers}
+<html xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <p class="lead">
 	<f:translate key="msg.infoScreenIntro" />
@@ -22,7 +22,7 @@
 			<f:for each="{registeredClasses}" key="class" as="classInfo">
 				<tr>
 					<td>
-						<a href="{s:moduleLink(controller:'scheduler', action: 'add', arguments: '{class: class}')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:new')}">
+						<a href="{be:moduleLink(route: 'system_txschedulerM1', query: 'SET[function]=scheduler&CMD=add&tx_scheduler[class]={class}')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:new')}">
 							{classInfo.title}
 						</a>
 					</td>
@@ -31,7 +31,7 @@
 					<td>
 						<div class="btn-group" role="group">
 							<span class="btn btn-default">
-								<a href="{s:moduleLink(controller:'scheduler', action: 'add', arguments: '{class: class}')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:new')}">
+								<a href="{be:moduleLink(route: 'system_txschedulerM1', query: 'SET[function]=scheduler&CMD=add&tx_scheduler[class]={class}')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:new')}">
 									<core:icon identifier="actions-add" />
 								</a>
 							</span>
@@ -42,3 +42,4 @@
 		</tbody>
 	</table>
 </div>
+</html>
