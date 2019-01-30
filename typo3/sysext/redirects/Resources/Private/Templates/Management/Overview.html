@@ -92,7 +92,7 @@
 										<f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit{f:if(condition:'{redirect.hitcount} > 1',then:'s')}_text" arguments="{0:redirect.hitcount}"/>
 										<f:if condition="{redirect.hitcount} != 0">
 										<a class="t3js-modal-trigger"
-											 href="{rd:editRecord(command: 'resetcounter', uid: redirect.uid)}"
+										     href="{be:moduleLink(route:'tce_db', query:'data[sys_redirect][{redirect.uid}][hitcount]=0', currentUrlParameterName:'redirect')}"
 											 title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset')}"
 											 data-title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset.confirm.title')}"
 											 data-content="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset.confirm.content')}"
@@ -124,14 +124,14 @@
 								</be:link.editRecord>
 								<f:if condition="{redirect.disabled} == 1">
 									<f:then>
-										<a class="btn btn-default" href="{rd:editRecord(command: 'unhide', uid: redirect.uid)}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:unHide')}"><core:icon identifier="actions-edit-unhide" /></a>
+										<a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[sys_redirect][{redirect.uid}][disabled]=0', currentUrlParameterName:'redirect')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:unHide')}"><core:icon identifier="actions-edit-unhide" /></a>
 									</f:then>
 									<f:else>
-										<a class="btn btn-default" href="{rd:editRecord(command: 'hide', uid: redirect.uid)}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:hide')}"><core:icon identifier="actions-edit-hide" /></a>
+										<a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[sys_redirect][{redirect.uid}][disabled]=1', currentUrlParameterName:'redirect')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:hide')}"><core:icon identifier="actions-edit-hide" /></a>
 									</f:else>
 								</f:if>
 								<a class="btn btn-default t3js-modal-trigger"
-									 href="{rd:editRecord(command: 'delete', uid: redirect.uid)}"
+									 href="{be:moduleLink(route:'tce_db', query:'cmd[sys_redirect][{redirect.uid}][delete]=1', currentUrlParameterName:'redirect')}"
 									 title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete')}"
 									 data-severity="warning"
 									 data-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
