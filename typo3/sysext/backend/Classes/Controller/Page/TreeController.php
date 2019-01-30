@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Configuration\BackendUserConfiguration;
 use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Query\Restriction\DocumentTypeExclusionRestriction;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -323,7 +324,18 @@ class TreeController
     protected function getAllEntryPointPageTrees(): array
     {
         $backendUser = $this->getBackendUser();
-        $repository = GeneralUtility::makeInstance(PageTreeRepository::class, (int)$backendUser->workspace);
+
+        $userTsConfig = $this->getBackendUser()->getTSConfig();
+        $excludedDocumentTypes = GeneralUtility::intExplode(',', $userTsConfig['options.']['pageTree.']['excludeDoktypes'] ?? '', true);
+
+        $additionalPageTreeQueryRestrictions = [];
+        if (!empty($excludedDocumentTypes)) {
+            foreach ($excludedDocumentTypes as $excludedDocumentType) {
+                $additionalPageTreeQueryRestrictions[] = new DocumentTypeExclusionRestriction((int)$excludedDocumentType);
+            }
+        }
+
+        $repository = GeneralUtility::makeInstance(PageTreeRepository::class, (int)$backendUser->workspace, [], $additionalPageTreeQueryRestrictions);
 
         $entryPoints = (int)($backendUser->uc['pageTree_temporaryMountPoint'] ?? 0);
         if ($entryPoints > 0) {
