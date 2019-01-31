@@ -26,16 +26,16 @@ class TtContent extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * uid
      *
-     * @var string
+     * @var int|null
      */
-    protected $uid = '';
+    protected $uid;
 
     /**
      * pid
      *
-     * @var string
+     * @var int|null
      */
-    protected $pid = '';
+    protected $pid;
 
     /**
      * @var string
@@ -62,26 +62,6 @@ class TtContent extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->image = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
         $this->categories = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-    }
-
-    /**
-     * Gets the uid
-     *
-     * @return string $uid
-     */
-    public function getUid()
-    {
-        return $this->uid;
-    }
-
-    /**
-     * Gets the pid
-     *
-     * @return string $pid
-     */
-    public function getPid()
-    {
-        return $this->pid;
     }
 
     /**

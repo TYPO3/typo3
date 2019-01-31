@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\DomainObject;
 
 /*
@@ -66,7 +68,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
      *
      * @return int the uid or NULL if none set yet.
      */
-    public function getUid()
+    public function getUid(): ?int
     {
         if ($this->uid !== null) {
             return (int)$this->uid;
@@ -77,23 +79,19 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
     /**
      * Setter for the pid.
      *
-     * @param int|null $pid
+     * @param int $pid
      */
-    public function setPid($pid)
+    public function setPid(int $pid): void
     {
-        if ($pid === null) {
-            $this->pid = null;
-        } else {
-            $this->pid = (int)$pid;
-        }
+        $this->pid = $pid;
     }
 
     /**
      * Getter for the pid.
      *
-     * @return int The pid or NULL if none set yet.
+     * @return int|null The pid or NULL if none set yet.
      */
-    public function getPid()
+    public function getPid(): ?int
     {
         if ($this->pid === null) {
             return null;
@@ -107,8 +105,9 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
      * @param string $propertyName
      * @param mixed $propertyValue
      * @return bool
+     * @internal
      */
-    public function _setProperty($propertyName, $propertyValue)
+    public function _setProperty(string $propertyName, $propertyValue)
     {
         if ($this->_hasProperty($propertyName)) {
             $this->{$propertyName} = $propertyValue;
@@ -122,8 +121,9 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
      *
      * @param string $propertyName
      * @return mixed The propertyValue
+     * @internal
      */
-    public function _getProperty($propertyName)
+    public function _getProperty(string $propertyName)
     {
         return $this->{$propertyName};
     }
@@ -132,8 +132,9 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
      * Returns a hash map of property names and property values. Only for internal use.
      *
      * @return array The properties
+     * @internal
      */
-    public function _getProperties()
+    public function _getProperties(): array
     {
         $properties = get_object_vars($this);
         foreach ($properties as $propertyName => $propertyValue) {
@@ -149,6 +150,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
      *
      * @param string $propertyName
      * @return bool TRUE bool true if the property exists, FALSE if it doesn't exist or NULL in case of an error.
+     * @internal
      */
     public function _hasProperty($propertyName)
     {
@@ -159,8 +161,9 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
      * Returns TRUE if the object is new (the uid was not set, yet). Only for internal use
      *
      * @return bool
+     * @internal
      */
-    public function _isNew()
+    public function _isNew(): bool
     {
         return $this->uid === null;
     }
@@ -229,8 +232,9 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
      *
      * @param string $propertyName The name of the property to be memorized.
      * @return mixed The clean property value or NULL
+     * @internal
      */
-    public function _getCleanProperty($propertyName)
+    public function _getCleanProperty(string $propertyName)
     {
         return $this->_cleanProperties[$propertyName] ?? null;
     }

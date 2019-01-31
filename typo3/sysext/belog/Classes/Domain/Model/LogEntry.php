@@ -140,26 +140,6 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $newId = 0;
 
     /**
-     * Set pid
-     *
-     * @param int $pid
-     */
-    public function setPid($pid)
-    {
-        $this->pid = (int)$pid;
-    }
-
-    /**
-     * Get pid
-     *
-     * @return int
-     */
-    public function getPid()
-    {
-        return $this->pid;
-    }
-
-    /**
      * Set backend user uid
      *
      * @param int $beUserUid
