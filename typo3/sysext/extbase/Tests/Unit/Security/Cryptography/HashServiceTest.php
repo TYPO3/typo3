@@ -64,16 +64,6 @@ class HashServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function generateHmacThrowsExceptionIfNoStringGiven()
-    {
-        $this->expectException(InvalidArgumentForHashGenerationException::class);
-        $this->expectExceptionCode(1255069587);
-        $this->hashService->generateHmac(null);
-    }
-
-    /**
-     * @test
-     */
     public function generatedHmacCanBeValidatedAgain()
     {
         $string = 'asdf';
@@ -94,31 +84,11 @@ class HashServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function appendHmacThrowsExceptionIfNoStringGiven()
-    {
-        $this->expectException(InvalidArgumentForHashGenerationException::class);
-        $this->expectExceptionCode(1255069587);
-        $this->hashService->appendHmac(null);
-    }
-
-    /**
-     * @test
-     */
     public function appendHmacAppendsHmacToGivenString()
     {
         $string = 'This is some arbitrary string ';
         $hashedString = $this->hashService->appendHmac($string);
         $this->assertSame($string, substr($hashedString, 0, -40));
-    }
-
-    /**
-     * @test
-     */
-    public function validateAndStripHmacThrowsExceptionIfNoStringGiven()
-    {
-        $this->expectException(InvalidArgumentForHashGenerationException::class);
-        $this->expectExceptionCode(1320829762);
-        $this->hashService->validateAndStripHmac(null);
     }
 
     /**

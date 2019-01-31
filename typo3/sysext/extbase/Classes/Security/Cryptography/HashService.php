@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Security\Cryptography;
 
 /*
@@ -29,11 +31,8 @@ class HashService implements \TYPO3\CMS\Core\SingletonInterface
      * @return string The hash of the string
      * @throws \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException if something else than a string was given as parameter
      */
-    public function generateHmac($string)
+    public function generateHmac(string $string): string
     {
-        if (!is_string($string)) {
-            throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException('A hash can only be generated for a string, but "' . gettype($string) . '" was given.', 1255069587);
-        }
         $encryptionKey = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
         if (!$encryptionKey) {
             throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException('Encryption Key was empty!', 1255069597);
@@ -49,7 +48,7 @@ class HashService implements \TYPO3\CMS\Core\SingletonInterface
      * @see generateHmac()
      * @todo Mark as API once it is more stable
      */
-    public function appendHmac($string)
+    public function appendHmac(string $string): string
     {
         $hmac = $this->generateHmac($string);
         return $string . $hmac;
@@ -62,7 +61,7 @@ class HashService implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $hmac The hash of the string
      * @return bool TRUE if string and hash fit together, FALSE otherwise.
      */
-    public function validateHmac($string, $hmac)
+    public function validateHmac(string $string, string $hmac): bool
     {
         return hash_equals($this->generateHmac($string), $hmac);
     }
@@ -80,11 +79,8 @@ class HashService implements \TYPO3\CMS\Core\SingletonInterface
      * @throws \TYPO3\CMS\Extbase\Security\Exception\InvalidHashException if the hash did not fit to the data.
      * @todo Mark as API once it is more stable
      */
-    public function validateAndStripHmac($string)
+    public function validateAndStripHmac(string $string): string
     {
-        if (!is_string($string)) {
-            throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException('A hash can only be validated for a string, but "' . gettype($string) . '" was given.', 1320829762);
-        }
         if (strlen($string) < 40) {
             throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException('A hashed string must contain at least 40 characters, the given string was only ' . strlen($string) . ' characters long.', 1320830276);
         }
