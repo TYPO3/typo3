@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Service;
 
 /*
@@ -25,7 +27,7 @@ class EnvironmentService implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @return bool
      */
-    public function isEnvironmentInFrontendMode()
+    public function isEnvironmentInFrontendMode(): bool
     {
         return (defined('TYPO3_MODE') && TYPO3_MODE === 'FE') ?: false;
     }
@@ -35,7 +37,7 @@ class EnvironmentService implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @return bool
      */
-    public function isEnvironmentInBackendMode()
+    public function isEnvironmentInBackendMode(): bool
     {
         return (defined('TYPO3_MODE') && TYPO3_MODE === 'BE') ?: false;
     }
@@ -43,7 +45,7 @@ class EnvironmentService implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @return string
      */
-    public function getServerRequestMethod()
+    public function getServerRequestMethod(): string
     {
         return isset($_SERVER['REQUEST_METHOD']) && is_string($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
     }
