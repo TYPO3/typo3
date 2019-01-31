@@ -14,5 +14,6 @@ and their methods will force parameter types with scalar type hints:
 
 - :php:`\TYPO3\CMS\Extbase\Core\Bootstrap`
 - :php:`\TYPO3\CMS\Extbase\Security\Cryptography\HashService`
+- :php:`\TYPO3\CMS\Extbase\Service\CacheService`
 
 .. index:: Backend, PHP-API, ext:extbase
