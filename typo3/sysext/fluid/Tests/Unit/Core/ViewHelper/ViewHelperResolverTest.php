@@ -34,12 +34,12 @@ class ViewHelperResolverTest extends UnitTestCase
             ->setMethods(['get'])
             ->disableOriginalConstructor()
             ->getMock();
-        $objectManager->expects($this->once())->method('get')->with('x')->willReturn('y');
+        $objectManager->expects($this->once())->method('get')->with('x')->willReturn(new \stdClass());
         $resolver = $this->getMockBuilder(ViewHelperResolver::class)
             ->setMethods(['getObjectManager'])
             ->getMock();
         $resolver->expects($this->once())->method('getObjectManager')->willReturn($objectManager);
-        $this->assertEquals('y', $resolver->createViewHelperInstanceFromClassName('x'));
+        $this->assertInstanceOf(\stdClass::class, $resolver->createViewHelperInstanceFromClassName('x'));
     }
 
     /**

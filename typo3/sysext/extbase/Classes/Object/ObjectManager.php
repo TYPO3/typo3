@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Object;
 
 /*
@@ -78,7 +80,7 @@ class ObjectManager implements ObjectManagerInterface
      * @return bool TRUE if the object has been registered, otherwise FALSE
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function isRegistered($objectName)
+    public function isRegistered(string $objectName): bool
     {
         return class_exists($objectName, true);
     }
@@ -90,7 +92,7 @@ class ObjectManager implements ObjectManagerInterface
      * @param array $constructorArguments
      * @return object The object instance
      */
-    public function get($objectName, ...$constructorArguments)
+    public function get(string $objectName, ...$constructorArguments): object
     {
         if ($objectName === 'DateTime') {
             $instance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($objectName, ...$constructorArguments);
@@ -107,7 +109,7 @@ class ObjectManager implements ObjectManagerInterface
      * @return int One of the Container::SCOPE_ constants
      * @throws \TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException
      */
-    public function getScope($objectName)
+    public function getScope(string $objectName): int
     {
         if (!$this->isRegistered($objectName)) {
             throw new \TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException('Object "' . $objectName . '" is not registered.', 1265367590);
@@ -121,7 +123,7 @@ class ObjectManager implements ObjectManagerInterface
      * @param string $className
      * @return object
      */
-    public function getEmptyObject($className)
+    public function getEmptyObject(string $className): object
     {
         return $this->objectContainer->getEmptyObject($className);
     }
