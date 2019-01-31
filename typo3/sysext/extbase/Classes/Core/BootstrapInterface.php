@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Core;
 
 /*
@@ -28,5 +30,5 @@ interface BootstrapInterface
      * @param array $configuration The TS configuration array
      * @return string $content The processed content
      */
-    public function run($content, $configuration);
+    public function run(string $content, array $configuration): string;
 }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Core;
 
 /*
@@ -61,7 +63,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
      * @throws \RuntimeException
      * @see run()
      */
-    public function initialize($configuration)
+    public function initialize(array $configuration): void
     {
         if (!Environment::isCli()) {
             if (!isset($configuration['vendorName']) || $configuration['vendorName'] === '') {
@@ -84,7 +86,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
      *
      * @see initialize()
      */
-    protected function initializeObjectManager()
+    protected function initializeObjectManager(): void
     {
         $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
     }
@@ -96,7 +98,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
      * @see initialize()
      * @internal
      */
-    public function initializeConfiguration($configuration)
+    public function initializeConfiguration(array $configuration): void
     {
         $this->configurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
         /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject */
@@ -117,7 +119,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
      * @see initialize()
      * @internal
      */
-    public function initializePersistence()
+    public function initializePersistence(): void
     {
         $this->persistenceManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
     }
@@ -130,7 +132,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
      * @param array $configuration The TS configuration array
      * @return string $content The processed content
      */
-    public function run($content, $configuration)
+    public function run(string $content, array $configuration): string
     {
         $this->initialize($configuration);
         return $this->handleRequest();
@@ -139,7 +141,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     /**
      * @return string
      */
-    protected function handleRequest()
+    protected function handleRequest(): string
     {
         /** @var \TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver $requestHandlerResolver */
         $requestHandlerResolver = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver::class);
@@ -219,7 +221,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     /**
      * Resets global singletons for the next plugin
      */
-    protected function resetSingletons()
+    protected function resetSingletons(): void
     {
         $this->persistenceManager->persistAll();
     }
