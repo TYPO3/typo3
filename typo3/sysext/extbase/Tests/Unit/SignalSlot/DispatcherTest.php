@@ -109,7 +109,7 @@ class DispatcherTest extends UnitTestCase
         $mockSlot = function () use (&$arguments) {
             $arguments = func_get_args();
         };
-        $this->signalSlotDispatcher->connect('Foo', 'bar', $mockSlot, null, false);
+        $this->signalSlotDispatcher->connect('Foo', 'bar', $mockSlot, '', false);
         $this->signalSlotDispatcher->dispatch('Foo', 'bar', ['bar', 'quux']);
         $this->assertSame(['bar', 'quux'], $arguments);
     }
@@ -321,7 +321,7 @@ class DispatcherTest extends UnitTestCase
             $arguments = func_get_args();
         };
         $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $this->signalSlotDispatcher->connect('SignalClassName', 'methodName', $mockSlot, null, true);
+        $this->signalSlotDispatcher->connect('SignalClassName', 'methodName', $mockSlot, '', true);
         $this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
         $this->signalSlotDispatcher->_set('isInitialized', true);
         $mockLogger = $this->createMock(Logger::class);

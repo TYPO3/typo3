@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\SignalSlot;
 
 /*
@@ -53,12 +55,12 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Initializes this object.
      *
-     * This methods needs to be used as alternative to inject aspects.
-     * Since this dispatches is used very early when the ObjectManager
+     * This method needs to be used as an alternative to inject aspects.
+     * Since this dispatcher is used very early when the ObjectManager
      * is not fully initialized (especially concerning caching framework),
      * this is the only way.
      */
-    public function initializeObject()
+    public function initializeObject(): void
     {
         if (!$this->isInitialized) {
             $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
@@ -79,7 +81,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      * @param bool $passSignalInformation If set to TRUE, the last argument passed to the slot will be information about the signal (EmitterClassName::signalName)
      * @throws \InvalidArgumentException
      */
-    public function connect($signalClassName, $signalName, $slotClassNameOrObject, $slotMethodName = '', $passSignalInformation = true)
+    public function connect(string $signalClassName, string $signalName, $slotClassNameOrObject, string $slotMethodName = '', bool $passSignalInformation = true): void
     {
         $class = null;
         $object = null;
@@ -116,7 +118,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      * @throws Exception\InvalidSlotException if the slot is not valid
      * @throws Exception\InvalidSlotReturnException if a slot returns invalid arguments (too few or return value is not an array)
      */
-    public function dispatch($signalClassName, $signalName, array $signalArguments = [])
+    public function dispatch(string $signalClassName, string $signalName, array $signalArguments = [])
     {
         $this->initializeObject();
         $this->logger->debug(
@@ -177,7 +179,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $signalName Name of the signal
      * @return array An array of arrays with slot information
      */
-    public function getSlots($signalClassName, $signalName)
+    public function getSlots(string $signalClassName, string $signalName): array
     {
         return $this->slots[$signalClassName][$signalName] ?? [];
     }
