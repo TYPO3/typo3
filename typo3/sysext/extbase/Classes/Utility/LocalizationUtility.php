@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Utility;
 
 /*
@@ -64,9 +66,9 @@ class LocalizationUtility
      * @param string[] $alternativeLanguageKeys The alternative language keys if no translation was found. If null and we are in the frontend, then the language_alt from TypoScript setup will be used
      * @return string|null The value from LOCAL_LANG or null if no translation was found.
      */
-    public static function translate($key, $extensionName = null, $arguments = null, string $languageKey = null, array $alternativeLanguageKeys = null)
+    public static function translate(string $key, ?string $extensionName = null, array $arguments = null, string $languageKey = null, array $alternativeLanguageKeys = null): ?string
     {
-        if ((string)$key === '') {
+        if ($key === '') {
             // Early return guard: returns null if the key was empty, because the key may be a dynamic value
             // (from for example Fluid). Returning null allows null coalescing to a default value when that happens.
             return null;
@@ -139,7 +141,7 @@ class LocalizationUtility
      * @param string[] $alternativeLanguageKeys
      * @param string $extensionName
      */
-    protected static function initializeLocalization(string $languageFilePath, string $languageKey, array $alternativeLanguageKeys, string $extensionName = null)
+    protected static function initializeLocalization(string $languageFilePath, string $languageKey, array $alternativeLanguageKeys, string $extensionName = null): void
     {
         $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
 
@@ -227,7 +229,7 @@ class LocalizationUtility
      * @param string $extensionName
      * @param string $languageFilePath
      */
-    protected static function loadTypoScriptLabels($extensionName, $languageFilePath)
+    protected static function loadTypoScriptLabels(string $extensionName, string $languageFilePath): void
     {
         $configurationManager = static::getConfigurationManager();
         $frameworkConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName);
@@ -269,7 +271,7 @@ class LocalizationUtility
      * @param string $parentKey the name of the parent key in the recursion; is only needed for recursion.
      * @return array flattened array of labels.
      */
-    protected static function flattenTypoScriptLabelArray(array $labelValues, $parentKey = '')
+    protected static function flattenTypoScriptLabelArray(array $labelValues, string $parentKey = ''): array
     {
         $result = [];
         foreach ($labelValues as $key => $labelValue) {
@@ -295,7 +297,7 @@ class LocalizationUtility
      *
      * @return \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      */
-    protected static function getConfigurationManager()
+    protected static function getConfigurationManager(): ConfigurationManagerInterface
     {
         if (static::$configurationManager !== null) {
             return static::$configurationManager;
@@ -323,7 +325,7 @@ class LocalizationUtility
     /**
      * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
      */
-    protected static function getTypoScriptFrontendController()
+    protected static function getTypoScriptFrontendController(): \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
     }
@@ -331,7 +333,7 @@ class LocalizationUtility
     /**
      * @return \TYPO3\CMS\Core\Localization\LanguageService
      */
-    protected static function getLanguageService()
+    protected static function getLanguageService(): \TYPO3\CMS\Core\Localization\LanguageService
     {
         return $GLOBALS['LANG'];
     }

@@ -332,7 +332,7 @@ class LocalizationUtilityTest extends UnitTestCase
         $property = $reflectionClass->getProperty('LOCAL_LANG');
         $property->setAccessible(true);
         $property->setValue($this->LOCAL_LANG);
-        $GLOBALS['LANG'] = $this->LOCAL_LANG;
+        $GLOBALS['LANG'] = new \TYPO3\CMS\Core\Localization\LanguageService();
         $this->assertEquals($expected, LocalizationUtility::translate($key, 'core', $arguments, $languageKey, $altLanguageKeys));
     }
 
@@ -492,7 +492,7 @@ class LocalizationUtilityTest extends UnitTestCase
         $method->setAccessible(true);
         $method->invoke(null, 'core', $this->languageFilePath);
 
-        $GLOBALS['LANG'] = $this->LOCAL_LANG;
+        $GLOBALS['LANG'] = new \TYPO3\CMS\Core\Localization\LanguageService();
 
         $result = LocalizationUtility::translate('key1', 'core', null, 'dk');
         $this->assertNotNull($result);
@@ -534,7 +534,7 @@ class LocalizationUtilityTest extends UnitTestCase
         $method->setAccessible(true);
         $method->invoke(null, 'core', ''); // setting the language file path to an empty string here
 
-        $GLOBALS['LANG'] = $this->LOCAL_LANG;
+        $GLOBALS['LANG'] = new \TYPO3\CMS\Core\Localization\LanguageService();
 
         $result = LocalizationUtility::translate('key1', 'core', null, 'dk');
         $this->assertNotNull($result);
