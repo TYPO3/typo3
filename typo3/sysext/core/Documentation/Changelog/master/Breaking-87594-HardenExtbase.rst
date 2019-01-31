@@ -38,6 +38,12 @@ While hardening Extbase classes, method signatures changed due to an enforced st
 - :php:`\TYPO3\CMS\Extbase\Property\TypeConverterInterface::getSourceChildPropertiesToBeConverted()`
 - :php:`\TYPO3\CMS\Extbase\Property\TypeConverterInterface::getTypeOfChildProperty()`
 - :php:`\TYPO3\CMS\Extbase\Property\TypeConverterInterface::convertFrom()`
+- :php:`\TYPO3\CMS\Extbase\Error\Message::__construct`
+- :php:`\TYPO3\CMS\Extbase\Error\Message::getMessage`
+- :php:`\TYPO3\CMS\Extbase\Error\Message::getCode`
+- :php:`\TYPO3\CMS\Extbase\Error\Message::getArguments`
+- :php:`\TYPO3\CMS\Extbase\Error\Message::getTitle`
+- :php:`\TYPO3\CMS\Extbase\Error\Message::render`
 
 
 Impact

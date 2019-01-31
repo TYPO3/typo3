@@ -52,6 +52,6 @@ class RegularExpressionValidatorTest extends UnitTestCase
             ->getMock();
         $errors = $validator->validate('some subject that will not match')->getErrors();
         // we only test for the error code, after the translation Method for message is mocked anyway
-        $this->assertEquals([new \TYPO3\CMS\Extbase\Validation\Error(null, 1221565130)], $errors);
+        $this->assertEquals([new \TYPO3\CMS\Extbase\Validation\Error('', 1221565130)], $errors);
     }
 }

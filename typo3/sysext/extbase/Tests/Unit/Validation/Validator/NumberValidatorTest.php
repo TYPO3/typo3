@@ -53,7 +53,7 @@ class NumberValidatorTest extends UnitTestCase
     {
         $expectedResult = new \TYPO3\CMS\Extbase\Error\Result();
         // we only test for the error code, after the message translation method is mocked
-        $expectedResult->addError(new \TYPO3\CMS\Extbase\Validation\Error(null, 1221563685));
+        $expectedResult->addError(new \TYPO3\CMS\Extbase\Validation\Error('', 1221563685));
         $this->assertEquals($expectedResult, $this->validator->validate('not a number'));
     }
 }

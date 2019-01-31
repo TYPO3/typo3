@@ -119,7 +119,7 @@ abstract class AbstractValidator implements ValidatorInterface
      */
     protected function addError($message, $code, array $arguments = [], $title = '')
     {
-        $this->result->addError(new \TYPO3\CMS\Extbase\Validation\Error($message, $code, $arguments, $title));
+        $this->result->addError(new \TYPO3\CMS\Extbase\Validation\Error((string)$message, (int)$code, $arguments, (string)$title));
     }
 
     /**
