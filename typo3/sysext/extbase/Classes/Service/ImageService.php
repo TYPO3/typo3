@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Service;
 
 /*
@@ -57,8 +59,13 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $processingInstructions
      * @return ProcessedFile
      */
-    public function applyProcessingInstructions($image, $processingInstructions)
+    public function applyProcessingInstructions($image, array $processingInstructions): ProcessedFile
     {
+        /*
+         * todo: this method should be split to be able to have a proper method signature.
+         * todo: actually, this method only really works with objects of type \TYPO3\CMS\Core\Resource\File, as this
+         * todo: is the only implementation that supports the support method.
+         */
         if (is_callable([$image, 'getOriginalFile'])) {
             // Get the original file from the file reference
             $image = $image->getOriginalFile();
@@ -77,7 +84,7 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
      * @param bool|false $absolute Force absolute URL
      * @return string
      */
-    public function getImageUri(FileInterface $image, $absolute = false)
+    public function getImageUri(FileInterface $image, bool $absolute = false): string
     {
         $imageUrl = $image->getPublicUrl();
         $parsedUrl = parse_url($imageUrl);
@@ -109,13 +116,13 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
      * It should be removed once we do not support string sources for images anymore.
      *
      * @param string $src
-     * @param mixed $image
+     * @param FileInterface|null $image
      * @param bool $treatIdAsReference
-     * @return FileInterface|FileReference
+     * @return FileInterface
      * @throws \UnexpectedValueException
      * @internal
      */
-    public function getImage($src, $image, $treatIdAsReference)
+    public function getImage(string $src, ?FileInterface $image, bool $treatIdAsReference): FileInterface
     {
         if ($image === null) {
             $image = $this->getImageFromSourceString($src, $treatIdAsReference);
@@ -125,8 +132,7 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         if (!($image instanceof File || $image instanceof FileReference)) {
-            $class = is_object($image) ? get_class($image) : 'null';
-            throw new \UnexpectedValueException('Supplied file object type ' . $class . ' for ' . $src . ' must be File or FileReference.', 1382687163);
+            throw new \UnexpectedValueException('Supplied file object type ' . get_class($image) . ' for ' . $src . ' must be File or FileReference.', 1382687163);
         }
 
         return $image;
@@ -139,7 +145,7 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
      * @param bool $treatIdAsReference
      * @return FileInterface|FileReference|\TYPO3\CMS\Core\Resource\Folder
      */
-    protected function getImageFromSourceString($src, $treatIdAsReference)
+    protected function getImageFromSourceString(string $src, bool $treatIdAsReference): object
     {
         if ($this->environmentService->isEnvironmentInBackendMode() && strpos($src, '../') === 0) {
             $src = substr($src, 3);
@@ -168,7 +174,7 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param ProcessedFile $processedImage
      */
-    protected function setCompatibilityValues(ProcessedFile $processedImage)
+    protected function setCompatibilityValues(ProcessedFile $processedImage): void
     {
         if ($this->environmentService->isEnvironmentInFrontendMode()) {
             $GLOBALS['TSFE']->lastImageInfo = $this->getCompatibilityImageResourceValues($processedImage);
@@ -184,7 +190,7 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
      * @param ProcessedFile $processedImage
      * @return array
      */
-    protected function getCompatibilityImageResourceValues(ProcessedFile $processedImage)
+    protected function getCompatibilityImageResourceValues(ProcessedFile $processedImage): array
     {
         return [
             0 => $processedImage->getProperty('width'),

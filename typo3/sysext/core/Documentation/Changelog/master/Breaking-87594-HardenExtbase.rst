@@ -27,6 +27,9 @@ While hardening Extbase classes, method signatures changed due to an enforced st
 - :php:`\TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject::_getProperty`
 - :php:`\TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject::_getProperties`
 - :php:`\TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject::_getCleanProperty`
+- :php:`\TYPO3\CMS\Extbase\Service\ImageService::applyProcessingInstructions`
+- :php:`\TYPO3\CMS\Extbase\Service\ImageService::getImageUri`
+- :php:`\TYPO3\CMS\Extbase\Service\ImageService::getImage`
 
 
 Impact

@@ -95,8 +95,8 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
         $this->registerTagAttribute('longdesc', 'string', 'Specifies the URL to a document that contains a long description of an image', false);
         $this->registerTagAttribute('usemap', 'string', 'Specifies an image as a client-side image-map', false);
 
-        $this->registerArgument('src', 'string', 'a path to a file, a combined FAL identifier or an uid (int). If $treatIdAsReference is set, the integer is considered the uid of the sys_file_reference record. If you already got a FAL object, consider using the $image parameter instead');
-        $this->registerArgument('treatIdAsReference', 'bool', 'given src argument is a sys_file_reference record');
+        $this->registerArgument('src', 'string', 'a path to a file, a combined FAL identifier or an uid (int). If $treatIdAsReference is set, the integer is considered the uid of the sys_file_reference record. If you already got a FAL object, consider using the $image parameter instead', false, '');
+        $this->registerArgument('treatIdAsReference', 'bool', 'given src argument is a sys_file_reference record', false, false);
         $this->registerArgument('image', 'object', 'a FAL object');
         $this->registerArgument('crop', 'string|bool', 'overrule cropping of image (setting to FALSE disables the cropping set in FileReference)');
         $this->registerArgument('cropVariant', 'string', 'select a cropping variant, in case multiple croppings have been specified or stored in FileReference', false, 'default');
@@ -120,7 +120,7 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
-        if (($this->arguments['src'] === null && $this->arguments['image'] === null) || ($this->arguments['src'] !== null && $this->arguments['image'] !== null)) {
+        if (($this->arguments['src'] === '' && $this->arguments['image'] === null) || ($this->arguments['src'] !== '' && $this->arguments['image'] !== null)) {
             throw new Exception('You must either specify a string src or a File object.', 1382284106);
         }
 

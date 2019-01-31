@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
@@ -50,7 +51,7 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
     {
         return [
             [['image' => null]],
-            [['src' => null]],
+            [['src' => '']],
             [['src' => 'something', 'image' => 'something']],
         ];
     }
@@ -142,14 +143,24 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
             ->disableOriginalConstructor()
             ->getMock();
         $originalFile->expects($this->any())->method('getProperties')->willReturn([]);
+
+        $processedFile = $this->getMockBuilder(ProcessedFile::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $processedFile->expects($this->any())->method('getProperty')->willReturnMap([
+            ['width', $arguments['width']],
+            ['height', $arguments['height']],
+        ]);
+
         $this->inject($image, 'originalFile', $originalFile);
         $this->inject($image, 'propertiesOfFileReference', []);
         $imageService = $this->getMockBuilder(ImageService::class)
             ->setMethods(['getImage', 'applyProcessingInstructions', 'getImageUri'])
             ->getMock();
         $imageService->expects($this->once())->method('getImage')->willReturn($image);
-        $imageService->expects($this->once())->method('applyProcessingInstructions')->with($image, $this->anything())->willReturn($image);
-        $imageService->expects($this->once())->method('getImageUri')->with($image)->willReturn('test.png');
+        $imageService->expects($this->once())->method('applyProcessingInstructions')->with($image, $this->anything())->willReturn($processedFile);
+        $imageService->expects($this->once())->method('getImageUri')->with($processedFile)->willReturn('test.png');
 
         $this->inject($this->viewHelper, 'imageService', $imageService);
 
