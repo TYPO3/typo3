@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Object\Container;
 
 /*
@@ -14,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Object\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\Instantiator\InstantiatorInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -39,7 +42,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
     private $alternativeImplementation;
 
     /**
-     * @var \Doctrine\Instantiator\InstantiatorInterface
+     * @var InstantiatorInterface
      */
     protected $instantiator;
 
@@ -65,9 +68,9 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Internal method to create the class instantiator, extracted to be mockable
      *
-     * @return \Doctrine\Instantiator\InstantiatorInterface
+     * @return InstantiatorInterface
      */
-    protected function getInstantiator()
+    protected function getInstantiator(): InstantiatorInterface
     {
         if ($this->instantiator == null) {
             $this->instantiator = new \Doctrine\Instantiator\Instantiator();
@@ -84,7 +87,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      * @return object the built object
      * @internal
      */
-    public function getInstance($className, $givenConstructorArguments = [])
+    public function getInstance(string $className, array $givenConstructorArguments = [])
     {
         $this->prototypeObjectsWhichAreCurrentlyInstanciated = [];
         return $this->getInstanceInternal($className, ...$givenConstructorArguments);
@@ -96,7 +99,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $className
      * @return object
      */
-    public function getEmptyObject($className)
+    public function getEmptyObject(string $className): object
     {
         $className = $this->getImplementationClassName($className);
         $classSchema = $this->getReflectionService()->getClassSchema($className);
@@ -115,7 +118,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      * @throws \TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException
      * @return object the built object
      */
-    protected function getInstanceInternal($className, ...$givenConstructorArguments)
+    protected function getInstanceInternal(string $className, ...$givenConstructorArguments): object
     {
         $className = $this->getImplementationClassName($className);
         if ($className === \TYPO3\CMS\Extbase\Object\Container\Container::class) {
@@ -162,7 +165,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      * @throws \TYPO3\CMS\Extbase\Object\Exception
      * @return object the new instance
      */
-    protected function instanciateObject(ClassSchema $classSchema, ...$givenConstructorArguments)
+    protected function instanciateObject(ClassSchema $classSchema, ...$givenConstructorArguments): object
     {
         $className = $classSchema->getClassName();
         $classIsSingleton = $classSchema->isSingleton();
@@ -183,7 +186,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      * @param object $instance
      * @param ClassSchema $classSchema
      */
-    protected function injectDependencies($instance, ClassSchema $classSchema)
+    protected function injectDependencies(object $instance, ClassSchema $classSchema): void
     {
         if (!$classSchema->hasInjectMethods() && !$classSchema->hasInjectProperties()) {
             return;
@@ -219,7 +222,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param object $instance
      */
-    protected function initializeObject($instance)
+    protected function initializeObject(object $instance): void
     {
         if (method_exists($instance, 'initializeObject') && is_callable([$instance, 'initializeObject'])) {
             $instance->initializeObject();
@@ -233,7 +236,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $className
      * @param string $alternativeClassName
      */
-    public function registerImplementation($className, $alternativeClassName)
+    public function registerImplementation(string $className, string $alternativeClassName): void
     {
         $this->alternativeImplementation[$className] = $alternativeClassName;
     }
@@ -247,7 +250,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      * @throws \InvalidArgumentException
      * @return array
      */
-    private function getConstructorArguments($className, ClassSchema $classSchema, array $givenConstructorArguments)
+    private function getConstructorArguments(string $className, ClassSchema $classSchema, array $givenConstructorArguments): array
     {
         // @todo: drop the $className argument here.
         // @todo: 1) we have that via the $classSchema object
@@ -296,7 +299,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $className Base class name to evaluate
      * @return string Final class name to instantiate with "new [classname]
      */
-    public function getImplementationClassName($className)
+    public function getImplementationClassName(string $className): string
     {
         if (isset($this->alternativeImplementation[$className])) {
             $className = $this->alternativeImplementation[$className];
@@ -312,7 +315,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @return bool
      */
-    public function isSingleton($className)
+    public function isSingleton(string $className): bool
     {
         return $this->getReflectionService()->getClassSchema($className)->isSingleton();
     }
@@ -322,7 +325,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @return bool
      */
-    public function isPrototype($className)
+    public function isPrototype(string $className): bool
     {
         return !$this->isSingleton($className);
     }
@@ -330,7 +333,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @return LoggerInterface
      */
-    protected function getLogger()
+    protected function getLogger(): LoggerInterface
     {
         return GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class);
     }
