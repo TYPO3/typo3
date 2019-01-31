@@ -19,5 +19,6 @@ and their methods will force parameter types with scalar type hints:
 - :php:`\TYPO3\CMS\Extbase\Service\EnvironmentService`
 - :php:`\TYPO3\CMS\Extbase\Object\Container\Container`
 - :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap`
+- :php:`\TYPO3\CMS\Extbase\Service\ExtensionService`
 
 .. index:: Backend, PHP-API, ext:extbase

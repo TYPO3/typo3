@@ -127,6 +127,8 @@ class ExtensionServiceTest extends UnitTestCase
     public function getPluginNamespaceDataProvider()
     {
         return [
+            [null, null, 'tx__'],
+            ['', '', 'tx__'],
             ['SomeExtension', 'SomePlugin', 'tx_someextension_someplugin'],
             ['NonExistingExtension', 'SomePlugin', 'tx_nonexistingextension_someplugin'],
             ['Invalid', '', 'tx_invalid_']
