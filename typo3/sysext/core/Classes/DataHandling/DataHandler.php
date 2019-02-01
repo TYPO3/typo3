@@ -6847,7 +6847,7 @@ class DataHandler implements LoggerAwareInterface
                 }
                 // If the record sorting value < 1 we must resort all the records under this pid
                 if ($row[$sortColumn] < 1) {
-                    $this->increaseSortingOfFollowingRecords($table, (int)$pid, 0);
+                    $this->increaseSortingOfFollowingRecords($table, (int)$pid);
                     // Lowest sorting value after full resorting is $sortIntervals
                     return $this->sortIntervals;
                 }
@@ -6934,7 +6934,7 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * Increases sorting field value of all records with sorting higher than $sortingNumber
+     * Increases sorting field value of all records with sorting higher than $sortingValue
      *
      * Used internally by getSortNumber() to "make space" in sorting values when inserting new record
      *
@@ -6943,7 +6943,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $sortingValue All sorting numbers larger than this number will be shifted
      * @see getSortNumber()
      */
-    protected function increaseSortingOfFollowingRecords(string $table, int $pid, int $sortingValue): void
+    protected function increaseSortingOfFollowingRecords(string $table, int $pid, int $sortingValue = null): void
     {
         $sortBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? '';
         if ($sortBy) {
@@ -6952,8 +6952,10 @@ class DataHandler implements LoggerAwareInterface
             $queryBuilder
                 ->update($table)
                 ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
-                ->andWhere($queryBuilder->expr()->gt($sortBy, $sortingValue))
                 ->set($sortBy, $queryBuilder->quoteIdentifier($sortBy) . ' + ' . $this->sortIntervals . ' + ' . $this->sortIntervals, false);
+            if ($sortingValue !== null) {
+                $queryBuilder->andWhere($queryBuilder->expr()->gt($sortBy, $sortingValue));
+            }
 
             $deleteColumn = $GLOBALS['TCA'][$table]['ctrl']['delete'] ?? '';
             if ($deleteColumn) {
