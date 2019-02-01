@@ -174,6 +174,8 @@ class InlineRecordContainer extends AbstractContainer
             // If this record should be shown collapsed
             $class = $data['isInlineChildExpanded'] ? 'panel-visible' : 'panel-collapsed';
         }
+        $hiddenFieldHtml = implode(LF, $resultArray['additionalHiddenFields'] ?? []);
+
         if ($inlineConfig['renderFieldsOnly']) {
             // Render "body" part only
             $html = $html . $combinationHtml;
@@ -196,7 +198,7 @@ class InlineRecordContainer extends AbstractContainer
 							' . $this->renderForeignRecordHeader($data) . '
 						</div>
 					</div>
-					<div class="panel-collapse" id="' . htmlspecialchars($objectId) . '_fields">' . $html . $combinationHtml . '</div>
+					<div class="panel-collapse" id="' . htmlspecialchars($objectId) . '_fields">' . $html . $hiddenFieldHtml . $combinationHtml . '</div>
 				</div>';
         }
 
