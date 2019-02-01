@@ -861,4 +861,11 @@ return [
             'Deprecation-87332-AvoidRuntimeReflectionCallsInObjectAccess.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::hex2bin' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-87613-DeprecateTYPO3CMSExtbaseUtilityTypeHandlingUtilityhex2bin.rst',
+        ],
+    ],
 ];
