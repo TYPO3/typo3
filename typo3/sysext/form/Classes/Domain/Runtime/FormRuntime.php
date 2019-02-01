@@ -1046,8 +1046,12 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
         $finisherIdentifier = '';
         if ($this->getCurrentFinisher() !== null) {
-            $finisherIdentifier = (new \ReflectionClass($this->getCurrentFinisher()))->getShortName();
-            $finisherIdentifier = preg_replace('/Finisher$/', '', $finisherIdentifier);
+            if (method_exists($this->getCurrentFinisher(), 'getFinisherIdentifier')) {
+                $finisherIdentifier = $this->getCurrentFinisher()->getFinisherIdentifier();
+            } else {
+                $finisherIdentifier = (new \ReflectionClass($this->getCurrentFinisher()))->getShortName();
+                $finisherIdentifier = preg_replace('/Finisher$/', '', $finisherIdentifier);
+            }
         }
 
         return GeneralUtility::makeInstance(
