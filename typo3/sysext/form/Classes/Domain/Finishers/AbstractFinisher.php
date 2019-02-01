@@ -95,6 +95,14 @@ abstract class AbstractFinisher implements FinisherInterface
     }
 
     /**
+     * @return string
+     */
+    public function getFinisherIdentifier(): string
+    {
+        return $this->finisherIdentifier;
+    }
+
+    /**
      * @param array $options configuration options in the format ['option1' => 'value1', 'option2' => 'value2', ...]
      */
     public function setOptions(array $options)
