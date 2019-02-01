@@ -71,7 +71,7 @@ class ImageViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerArgument('src', 'string', 'src');
+        $this->registerArgument('src', 'string', 'src', false, '');
         $this->registerArgument('treatIdAsReference', 'bool', 'given src argument is a sys_file_reference record', false, false);
         $this->registerArgument('image', 'object', 'image');
         $this->registerArgument('crop', 'string|bool', 'overrule cropping of image (setting to FALSE disables the cropping set in FileReference)');
@@ -97,13 +97,13 @@ class ImageViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $src = $arguments['src'];
+        $src = (string)$arguments['src'];
         $image = $arguments['image'];
-        $treatIdAsReference = $arguments['treatIdAsReference'];
+        $treatIdAsReference = (bool)$arguments['treatIdAsReference'];
         $cropString = $arguments['crop'];
         $absolute = $arguments['absolute'];
 
-        if (($src === null && $image === null) || ($src !== null && $image !== null)) {
+        if (($src === '' && $image === null) || ($src !== '' && $image !== null)) {
             throw new Exception('You must either specify a string src or a File object.', 1460976233);
         }
 

@@ -51,6 +51,7 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
     {
         return [
             [['image' => null]],
+            [['src' => null]],
             [['src' => '']],
             [['src' => 'something', 'image' => 'something']],
         ];
