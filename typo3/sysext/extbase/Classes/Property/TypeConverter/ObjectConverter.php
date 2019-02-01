@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchMethodException;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchMethodParameterException;
-use TYPO3\CMS\Extbase\Reflection\ClassSchema\MethodParameter;
 
 /**
  * This converter transforms arrays to simple objects (POPO) by setting properties.
@@ -122,9 +121,9 @@ class ObjectConverter extends AbstractTypeConverter
         $specificTargetType = $this->objectContainer->getImplementationClassName($targetType);
         $classSchema = $this->reflectionService->getClassSchema($specificTargetType);
 
-        if ($classSchema->hasMethod(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::buildSetterMethodName($propertyName))) {
-            $methodParameters = $classSchema->getMethod(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::buildSetterMethodName($propertyName))->getParameters();
-            /** @var MethodParameter $methodParameter */
+        $methodName = 'set' . ucfirst($propertyName);
+        if ($classSchema->hasMethod($methodName)) {
+            $methodParameters = $classSchema->getMethod($methodName)->getParameters() ?? [];
             $methodParameter = current($methodParameters);
             if ($methodParameter->getType() === null) {
                 throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Setter for property "' . $propertyName . '" had no type hint or documentation in target object of type "' . $specificTargetType . '".', 1303379158);

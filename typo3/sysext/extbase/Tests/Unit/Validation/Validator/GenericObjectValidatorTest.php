@@ -58,6 +58,16 @@ class GenericObjectValidatorTest extends UnitTestCase
         $objectWithPrivateProperties = new class() {
             protected $foo = 'foovalue';
             protected $bar = 'barvalue';
+
+            public function getFoo()
+            {
+                return $this->foo;
+            }
+
+            public function getBar()
+            {
+                return $this->bar;
+            }
         };
 
         return [

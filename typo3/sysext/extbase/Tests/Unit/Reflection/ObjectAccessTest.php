@@ -25,6 +25,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class ObjectAccessTest extends UnitTestCase
 {
     /**
+     * @var bool Reset singletons created by subject
+     */
+    protected $resetSingletonInstances = true;
+
+    /**
      * @var DummyClassWithGettersAndSetters
      */
     protected $dummyObject;
@@ -61,35 +66,6 @@ class ObjectAccessTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPropertyReturnsExpectedValueForUnexposedPropertyIfForceDirectAccessIsTrue()
-    {
-        $property = ObjectAccess::getProperty($this->dummyObject, 'unexposedProperty', true);
-        $this->assertEquals($property, 'unexposed', 'A property of a given object was not returned correctly.');
-    }
-
-    /**
-     * @test
-     */
-    public function getPropertyReturnsExpectedValueForUnknownPropertyIfForceDirectAccessIsTrue()
-    {
-        $this->dummyObject->unknownProperty = 'unknown';
-        $property = ObjectAccess::getProperty($this->dummyObject, 'unknownProperty', true);
-        $this->assertEquals($property, 'unknown', 'A property of a given object was not returned correctly.');
-    }
-
-    /**
-     * @test
-     */
-    public function getPropertyThrowsPropertyNotAccessibleExceptionForNotExistingPropertyIfForceDirectAccessIsTrue()
-    {
-        $this->expectException(PropertyNotAccessibleException::class);
-        $this->expectExceptionCode(1302855001);
-        ObjectAccess::getProperty($this->dummyObject, 'notExistingProperty', true);
-    }
-
-    /**
-     * @test
-     */
     public function getPropertyThrowsExceptionIfPropertyDoesNotExist()
     {
         $this->expectException(PropertyNotAccessibleException::class);
@@ -118,47 +94,9 @@ class ObjectAccessTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPropertyThrowsExceptionIfThePropertyNameIsNotAString()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1231178303);
-        ObjectAccess::getProperty($this->dummyObject, new \ArrayObject());
-    }
-
-    /**
-     * @test
-     */
-    public function setPropertyThrowsExceptionIfThePropertyNameIsNotAString()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1231178878);
-        ObjectAccess::setProperty($this->dummyObject, new \ArrayObject(), 42);
-    }
-
-    /**
-     * @test
-     */
     public function setPropertyReturnsFalseIfPropertyIsNotAccessible()
     {
         $this->assertFalse(ObjectAccess::setProperty($this->dummyObject, 'protectedProperty', 42));
-    }
-
-    /**
-     * @test
-     */
-    public function setPropertySetsValueIfPropertyIsNotAccessibleWhenForceDirectAccessIsTrue()
-    {
-        $this->assertTrue(ObjectAccess::setProperty($this->dummyObject, 'unexposedProperty', 'was set anyway', true));
-        $this->assertAttributeEquals('was set anyway', 'unexposedProperty', $this->dummyObject);
-    }
-
-    /**
-     * @test
-     */
-    public function setPropertySetsValueIfPropertyDoesNotExistWhenForceDirectAccessIsTrue()
-    {
-        $this->assertTrue(ObjectAccess::setProperty($this->dummyObject, 'unknownProperty', 'was set anyway', true));
-        $this->assertAttributeEquals('was set anyway', 'unknownProperty', $this->dummyObject);
     }
 
     /**

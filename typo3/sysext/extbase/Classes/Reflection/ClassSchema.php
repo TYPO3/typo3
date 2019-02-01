@@ -560,7 +560,7 @@ class ClassSchema
     }
 
     /**
-     * @return array
+     * @return array|Method[]
      */
     public function getMethods(): array
     {

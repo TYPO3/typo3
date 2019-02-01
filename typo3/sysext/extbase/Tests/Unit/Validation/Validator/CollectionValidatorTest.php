@@ -166,7 +166,6 @@ class CollectionValidatorTest extends UnitTestCase
             'someProperty',
             ['someNotEmptyValue']
         );
-        \TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($lazyObjectStorage, 'isInitialized', false, true);
         // only in this test case we want to mock the isValid method
         $validator = $this->getValidator(['elementType' => $elementType], ['isValid']);
         $validator->expects($this->never())->method('isValid');

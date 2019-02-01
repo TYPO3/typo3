@@ -14,6 +14,7 @@
 	},
 	"require": {
 		"phpdocumentor/reflection-docblock": "^4.3",
+		"symfony/property-access": "^4.2",
 		"symfony/property-info": "^4.2",
 		"typo3/cms-core": "10.0.*@dev",
 		"webmozart/assert": "^1.0"

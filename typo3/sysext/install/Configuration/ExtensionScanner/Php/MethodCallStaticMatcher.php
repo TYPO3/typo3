@@ -854,4 +854,11 @@ return [
             'Deprecation-87550-UseControllerClassesWhenRegisteringPluginsmodules.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Reflection\ObjectAccess::buildSetterMethodName' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-87332-AvoidRuntimeReflectionCallsInObjectAccess.rst',
+        ],
+    ],
 ];
