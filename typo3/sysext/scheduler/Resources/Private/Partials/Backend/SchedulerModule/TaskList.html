@@ -61,7 +61,7 @@
 														{taskRecord.classTitle} ({taskRecord.classExtension})
 														<f:if condition="{taskRecord.progress}">
 															<div class="progress">
-																<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="{taskRecord.progress}" aria-valuemin="0" aria-valuemax="100" style="width: {taskRecord.progress}%;">{f:translate(key:'label.checkAll')}:&nbsp;{taskRecord.progress}%</div>
+																<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="{taskRecord.progress}" aria-valuemin="0" aria-valuemax="100" style="width: {taskRecord.progress}%;">{taskRecord.progress}%</div>
 															</div>
 														</f:if>
 														<f:if condition="{taskRecord.additionalInformation}">
