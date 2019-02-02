@@ -44,7 +44,6 @@ class BackendLogModuleBootstrap
         }
         $options['moduleConfiguration'] = [
             'extensionName' => 'Belog',
-            'vendorName' => 'TYPO3\\CMS',
         ];
         $options['moduleName'] = 'system_BelogLog';
 

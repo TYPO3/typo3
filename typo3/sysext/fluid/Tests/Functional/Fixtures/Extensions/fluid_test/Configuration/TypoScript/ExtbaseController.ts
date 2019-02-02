@@ -3,7 +3,6 @@ page.10 {
     userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
     extensionName = FluidTest
     pluginName = Pi
-    vendorName = TYPO3Fluid
     view < lib.viewConfig
 }
 

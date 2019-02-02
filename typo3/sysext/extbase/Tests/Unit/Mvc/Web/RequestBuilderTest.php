@@ -212,47 +212,6 @@ class RequestBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function buildSetsVendorNameIfConfigured(): void
-    {
-        $this->injectDependencies();
-        $expectedVendor = 'Vendor';
-        $this->configuration['vendorName'] = $expectedVendor;
-        $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
-        $this->requestBuilder->_set('configurationManager', $mockConfigurationManager);
-        $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
-        $this->mockRequest->expects($this->once())->method('setControllerVendorName')->with($expectedVendor);
-        $this->requestBuilder->build();
-    }
-
-    /**
-     * @test
-     */
-    public function buildDoesNotSetVendorNameIfNotConfiguredInSecondRequest(): void
-    {
-        $this->injectDependencies();
-        $expectedVendor = 'Vendor';
-        $this->configuration['vendorName'] = $expectedVendor;
-
-        $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
-        $this->requestBuilder->_set('configurationManager', $mockConfigurationManager);
-        $this->mockRequest->expects($this->once())->method('setControllerVendorName')->with($expectedVendor);
-
-        $this->requestBuilder->build();
-
-        unset($this->configuration['vendorName']);
-        $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
-        $this->requestBuilder->_set('configurationManager', $mockConfigurationManager);
-
-        $this->mockRequest->expects($this->never())->method('setControllerVendorName');
-        $this->requestBuilder->build();
-    }
-
-    /**
-     * @test
-     */
     public function buildThrowsExceptionIfExtensionNameIsNotConfigured(): void
     {
         $this->expectException(Exception::class);

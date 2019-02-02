@@ -34,11 +34,6 @@ class Request implements RequestInterface
     protected $controllerExtensionName;
 
     /**
-     * @var string vendor prefix
-     */
-    protected $controllerVendorName;
-
-    /**
      * Subpackage key of the controller which is supposed to handle this request.
      *
      * @var string
@@ -148,7 +143,6 @@ class Request implements RequestInterface
     public function setControllerObjectName($controllerObjectName)
     {
         $nameParts = ClassNamingUtility::explodeObjectControllerName($controllerObjectName);
-        $this->controllerVendorName = $nameParts['vendorName'] ?? null;
         $this->controllerExtensionName = $nameParts['extensionName'];
         $this->controllerSubpackageKey = $nameParts['subpackageKey'] ?? null;
         $this->controllerName = $nameParts['controllerName'];
@@ -345,31 +339,9 @@ class Request implements RequestInterface
             $this->internalArguments[$argumentName] = $value;
             return;
         }
-        if (!in_array($argumentName, ['@extension', '@subpackage', '@controller', '@action', '@format', '@vendor'], true)) {
+        if (!in_array($argumentName, ['@extension', '@subpackage', '@controller', '@action', '@format'], true)) {
             $this->arguments[$argumentName] = $value;
         }
-    }
-
-    /**
-     * sets the VendorName
-     *
-     * @param string $vendorName
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function setControllerVendorName($vendorName)
-    {
-        $this->controllerVendorName = $vendorName;
-    }
-
-    /**
-     * get the VendorName
-     *
-     * @return string
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function getControllerVendorName()
-    {
-        return $this->controllerVendorName;
     }
 
     /**

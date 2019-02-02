@@ -33,13 +33,6 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
     protected $objectManager;
 
     /**
-     * This is the vendor name of the extension
-     *
-     * @var string
-     */
-    protected $vendorName;
-
-    /**
      * This is a unique key for a plugin (not the extension key!)
      *
      * @var string
@@ -158,11 +151,6 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
         if (empty($configuration['pluginName'])) {
             throw new MvcException('"pluginName" is not properly configured. Request can\'t be dispatched!', 1289843277);
         }
-        if (!empty($configuration['vendorName'])) {
-            $this->vendorName = $configuration['vendorName'];
-        } else {
-            $this->vendorName = null;
-        }
         $this->extensionName = $configuration['extensionName'];
         $this->pluginName = $configuration['pluginName'];
         $defaultControllerConfiguration = reset($configuration['controllerConfiguration']) ?? [];
@@ -214,10 +202,6 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
         $actionName = $this->resolveActionName($controllerClassName, $parameters);
         /** @var \TYPO3\CMS\Extbase\Mvc\Web\Request $request */
         $request = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Request::class);
-        if ($this->vendorName !== null) {
-            // Still needed for the fucking viewObjectNamePattern in ActionController
-            $request->setControllerVendorName($this->vendorName);
-        }
         $request->setPluginName($this->pluginName);
         $request->setControllerExtensionName($this->extensionName);
         $request->setControllerAliasToClassNameMapping($this->controllerAliasToClassMapping);

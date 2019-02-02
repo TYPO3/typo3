@@ -73,7 +73,6 @@ class ControllerArgumentsMappingTest extends \TYPO3\TestingFramework\Core\Functi
         $configurationManager = $objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
         $this->request = $objectManager->get(Request::class);
-        $this->request->setControllerVendorName('ExtbaseTeam\\BlogExample');
         $this->request->setPluginName('Pi1');
         $this->request->setControllerExtensionName(BlogController::class);
         $this->request->setControllerName('Blog');

@@ -45,9 +45,6 @@ class ReferringRequest extends Request
             case '@format':
                 $this->setFormat($value);
                 break;
-            case '@vendor':
-                $this->setControllerVendorName($value);
-                break;
         }
     }
 }

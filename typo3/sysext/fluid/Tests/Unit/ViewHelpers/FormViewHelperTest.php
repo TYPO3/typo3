@@ -253,11 +253,9 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
         $this->request->getControllerExtensionName()->willReturn('extensionName');
         $this->request->getControllerName()->willReturn('controllerName');
         $this->request->getControllerActionName()->willReturn('controllerActionName');
-        $this->request->getControllerVendorName()->willReturn('controllerVendorName');
         $this->request->getArguments()->willReturn([]);
         $hiddenFields = $viewHelper->_call('renderHiddenReferrerFields');
         $expectedResult =  \chr(10) . '<input type="hidden" name="__referrer[@extension]" value="extensionName" />'
-            . \chr(10) . '<input type="hidden" name="__referrer[@vendor]" value="controllerVendorName" />'
             . \chr(10) . '<input type="hidden" name="__referrer[@controller]" value="controllerName" />'
             . \chr(10) . '<input type="hidden" name="__referrer[@action]" value="controllerActionName" />'
             . \chr(10) . '<input type="hidden" name="__referrer[arguments]" value="" />'

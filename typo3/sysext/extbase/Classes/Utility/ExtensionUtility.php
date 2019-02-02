@@ -114,7 +114,7 @@ tt_content.list.20.' . $pluginSignature . ' = USER
 tt_content.list.20.' . $pluginSignature . ' {
 	userFunc = TYPO3\\CMS\\Extbase\\Core\\Bootstrap->run
 	extensionName = ' . $extensionName . '
-	pluginName = ' . $pluginName . (null !== $vendorName ? ("\n\t" . 'vendorName = ' . $vendorName) : '') . '
+	pluginName = ' . $pluginName . '
 }');
                 break;
             case self::PLUGIN_TYPE_CONTENT_ELEMENT:
@@ -126,7 +126,7 @@ tt_content.' . $pluginSignature . ' {
     20 {
         userFunc = TYPO3\\CMS\\Extbase\\Core\\Bootstrap->run
         extensionName = ' . $extensionName . '
-        pluginName = ' . $pluginName . (null !== $vendorName ? ("\n\t\t" . 'vendorName = ' . $vendorName) : '') . '
+        pluginName = ' . $pluginName . '
     }
 }');
                 break;
@@ -255,9 +255,6 @@ tt_content.' . $pluginSignature . ' {
                 'alias' => $controllerAlias,
                 'actions' => \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $actionsList)
             ];
-        }
-        if (null !== $vendorName) {
-            $moduleConfiguration['vendorName'] = $vendorName;
         }
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule($mainModuleName, $subModuleName, $position, null, $moduleConfiguration);
     }

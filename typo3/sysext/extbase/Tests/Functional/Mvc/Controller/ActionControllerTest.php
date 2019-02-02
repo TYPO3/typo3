@@ -51,7 +51,6 @@ class ActionControllerTest extends \TYPO3\TestingFramework\Core\Functional\Funct
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
 
         $this->request = $objectManager->get(Request::class);
-        $this->request->setControllerVendorName('TYPO3\\CMS');
         $this->request->setPluginName('Pi1');
         $this->request->setControllerExtensionName('Extbase\\Tests\\Functional\\Mvc\\Controller\\Fixture');
         $this->request->setControllerName('Test');

@@ -66,9 +66,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     public function initialize(array $configuration): void
     {
         if (!Environment::isCli()) {
-            if (!isset($configuration['vendorName']) || $configuration['vendorName'] === '') {
-                throw new \RuntimeException('Invalid configuration: "vendorName" is not set', 1526629315);
-            }
             if (!isset($configuration['extensionName']) || $configuration['extensionName'] === '') {
                 throw new \RuntimeException('Invalid configuration: "extensionName" is not set', 1290623020);
             }
@@ -107,7 +104,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
         $this->configurationManager->setConfiguration($configuration);
         // todo: Shouldn't the configuration manager object – which is a singleton – be stateless?
         // todo: At this point we give the configuration manager a state, while we could directly pass the
-        // todo: configuration (i.e. controllerName, actionName, vendorName and such), directly to the request
+        // todo: configuration (i.e. controllerName, actionName and such), directly to the request
         // todo: handler, which then creates stateful request objects.
         // todo: Once this has changed, \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder::loadDefaultValues does not need
         // todo: to fetch this configuration from the configuration manager.
@@ -179,9 +176,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
             'extensionName' => $moduleConfiguration['extensionName'],
             'pluginName' => $route->getOption('moduleName')
         ];
-        if (isset($moduleConfiguration['vendorName'])) {
-            $configuration['vendorName'] = $moduleConfiguration['vendorName'];
-        }
 
         $this->initialize($configuration);
 

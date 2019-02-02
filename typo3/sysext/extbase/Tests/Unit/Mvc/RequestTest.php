@@ -147,19 +147,6 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function setArgumentShouldSetVendorIfVendorIsGiven()
-    {
-        $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)
-            ->setMethods(['setFormat', 'setVendor'])
-            ->getMock();
-        $request->expects($this->any())->method('setVendor')->with('VENDOR');
-        $request->setArgument('@vendor', 'VENDOR');
-        $this->assertFalse($request->hasArgument('@vendor'));
-    }
-
-    /**
-     * @test
-     */
     public function internalArgumentsShouldNotBeReturnedAsNormalArgument()
     {
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
@@ -268,7 +255,6 @@ class RequestTest extends UnitTestCase
         return [
             'Vendor TYPO3\CMS, extension, controller given' => [
                 [
-                    'vendorName' => 'TYPO3\\CMS',
                     'extensionName' => 'Ext',
                     'subpackageKey' => '',
                     'controllerName' => 'Foo',
@@ -277,7 +263,6 @@ class RequestTest extends UnitTestCase
             ],
             'Vendor TYPO3\CMS, extension, subpackage, controlle given' => [
                 [
-                    'vendorName' => 'TYPO3\\CMS',
                     'extensionName' => 'Fluid',
                     'subpackageKey' => 'ViewHelpers\\Widget',
                     'controllerName' => 'Paginate',
@@ -286,7 +271,6 @@ class RequestTest extends UnitTestCase
             ],
             'Vendor VENDOR, extension, controller given' => [
                 [
-                    'vendorName' => 'VENDOR',
                     'extensionName' => 'Ext',
                     'subpackageKey' => '',
                     'controllerName' => 'Foo',
@@ -295,7 +279,6 @@ class RequestTest extends UnitTestCase
             ],
             'Vendor VENDOR, extension subpackage, controller given' => [
                 [
-                    'vendorName' => 'VENDOR',
                     'extensionName' => 'Ext',
                     'subpackageKey' => 'ViewHelpers\\Widget',
                     'controllerName' => 'Foo',
@@ -319,7 +302,6 @@ class RequestTest extends UnitTestCase
         $request->setControllerObjectName($controllerObjectName);
 
         $actualControllerArguments = [
-            'vendorName' => $request->_get('controllerVendorName'),
             'extensionName' => $request->_get('controllerExtensionName'),
             'subpackageKey' => $request->_get('controllerSubpackageKey'),
             'controllerName' => $request->_get('controllerName'),

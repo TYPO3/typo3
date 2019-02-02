@@ -8,7 +8,6 @@ page {
 			userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
 			extensionName = IrreTutorial
 			pluginName = Irre
-			vendorName = OliverHader
 		}
 		stdWrap.postUserFunc = TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Renderer->parseValues
 		stdWrap.postUserFunc.as = Extbase
