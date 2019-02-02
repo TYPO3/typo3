@@ -67,6 +67,7 @@
 		"codeception/codeception": "^2.4.5",
 		"fiunchinho/phpunit-randomizer": "^4.0",
 		"friendsofphp/php-cs-fixer": "^2.12.2",
+		"phpspec/prophecy": "^1.7.5",
 		"typo3/cms-styleguide": "~10.0.2",
 		"typo3/testing-framework": "~5.0.4"
 	},
