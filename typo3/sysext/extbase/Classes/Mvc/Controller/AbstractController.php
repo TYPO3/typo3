@@ -40,11 +40,6 @@ abstract class AbstractController implements ControllerInterface
     protected $uriBuilder;
 
     /**
-     * @var string Key of the extension this controller belongs to
-     */
-    protected $extensionName;
-
-    /**
      * Contains the settings of the current extension
      *
      * @var array
@@ -117,27 +112,6 @@ abstract class AbstractController implements ControllerInterface
      * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
-
-    /**
-     * Constructs the controller.
-     */
-    public function __construct()
-    {
-        // this functionality is actually not needed any more.
-        // the extension name is known during the creation of request objects and if the extension name was
-        // needed, then it were to be fetched by the request object. The controller object shouldn't care about
-        // the extension that uses it.
-        // todo: decide whether to drop this now or along with the property or if to keep that to not break the public api
-
-        $className = static::class;
-        $classNameParts = explode('\\', $className, 4);
-        // Skip vendor and product name for core classes
-        if (strpos($className, 'TYPO3\\CMS\\') === 0) {
-            $this->extensionName = $classNameParts[2];
-        } else {
-            $this->extensionName = $classNameParts[1];
-        }
-    }
 
     /**
      * @param ConfigurationManagerInterface $configurationManager
