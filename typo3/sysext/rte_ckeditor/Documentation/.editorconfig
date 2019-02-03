@@ -1,0 +1,23 @@
+# EditorConfig is awesome: http://EditorConfig.org
+#
+# Use as master: https://github.com/TYPO3-Documentation/T3DocTeam/blob/master/.editorconfig
+
+# top-most EditorConfig file
+root = false
+
+[{*.rst,*.rst.txt}]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 3
+
+# MD-Files
+[*.md]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
