@@ -21,6 +21,7 @@ use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\PropertyInfo\Type;
+use TYPO3\CMS\Core\DataStructure\BitSet;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -49,11 +50,19 @@ use TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver;
  */
 class ClassSchema
 {
+    private const BIT_CLASS_IS_ENTITY = 1 << 0;
+    private const BIT_CLASS_IS_VALUE_OBJECT = 1 << 1;
+    private const BIT_CLASS_IS_AGGREGATE_ROOT = 1 << 2;
+    private const BIT_CLASS_IS_CONTROLLER = 1 << 3;
+    private const BIT_CLASS_IS_SINGLETON = 1 << 4;
+    private const BIT_CLASS_HAS_CONSTRUCTOR = 1 << 5;
+    private const BIT_CLASS_HAS_INJECT_METHODS = 1 << 6;
+    private const BIT_CLASS_HAS_INJECT_PROPERTIES = 1 << 7;
+
     /**
-     * Available model types
+     * @var BitSet
      */
-    private const MODELTYPE_ENTITY = 1;
-    private const MODELTYPE_VALUEOBJECT = 2;
+    private $bitSet;
 
     /**
      * @var array
@@ -73,37 +82,11 @@ class ClassSchema
     protected $className;
 
     /**
-     * Model type of the class this schema is referring to
-     *
-     * @var int
-     */
-    protected $modelType = 0;
-
-    /**
-     * Whether a repository exists for the class this schema is referring to
-     *
-     * @var bool
-     */
-    protected $aggregateRoot = false;
-
-    /**
      * Properties of the class which need to be persisted
      *
      * @var array
      */
     protected $properties = [];
-
-    /**
-     * Indicates if the class is a singleton or not.
-     *
-     * @var bool
-     */
-    private $isSingleton;
-
-    /**
-     * @var bool
-     */
-    private $isController;
 
     /**
      * @var array
@@ -134,29 +117,36 @@ class ClassSchema
      * Constructs this class schema
      *
      * @param string $className Name of the class this schema is referring to
-     * @throws \TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException
+     * @throws InvalidTypeHintException
+     * @throws InvalidValidationConfigurationException
      * @throws \ReflectionException
      */
     public function __construct($className)
     {
         $this->className = $className;
+        $this->bitSet = new BitSet();
 
         $reflectionClass = new \ReflectionClass($className);
 
-        $this->isSingleton = $reflectionClass->implementsInterface(SingletonInterface::class);
-        $this->isController = $reflectionClass->implementsInterface(ControllerInterface::class);
+        if ($reflectionClass->implementsInterface(SingletonInterface::class)) {
+            $this->bitSet->set(self::BIT_CLASS_IS_SINGLETON);
+        }
+
+        if ($reflectionClass->implementsInterface(ControllerInterface::class)) {
+            $this->bitSet->set(self::BIT_CLASS_IS_CONTROLLER);
+        }
 
         if ($reflectionClass->isSubclassOf(AbstractEntity::class)) {
-            $this->modelType = static::MODELTYPE_ENTITY;
+            $this->bitSet->set(self::BIT_CLASS_IS_ENTITY);
 
             $possibleRepositoryClassName = ClassNamingUtility::translateModelNameToRepositoryName($className);
             if (class_exists($possibleRepositoryClassName)) {
-                $this->setAggregateRoot(true);
+                $this->bitSet->set(self::BIT_CLASS_IS_AGGREGATE_ROOT);
             }
         }
 
         if ($reflectionClass->isSubclassOf(AbstractValueObject::class)) {
-            $this->modelType = static::MODELTYPE_VALUEOBJECT;
+            $this->bitSet->set(self::BIT_CLASS_IS_VALUE_OBJECT);
         }
 
         if (self::$propertyInfoExtractor === null) {
@@ -199,6 +189,8 @@ class ClassSchema
 
     /**
      * @param \ReflectionClass $reflectionClass
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException
      */
     protected function reflectProperties(\ReflectionClass $reflectionClass)
     {
@@ -295,10 +287,19 @@ class ClassSchema
                 }
             }
         }
+
+        if (count($this->injectProperties) > 0) {
+            $this->bitSet->set(self::BIT_CLASS_HAS_INJECT_PROPERTIES);
+        }
     }
 
     /**
      * @param \ReflectionClass $reflectionClass
+     * @throws InvalidTypeHintException
+     * @throws InvalidValidationConfigurationException
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \ReflectionException
+     * @throws \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException
      */
     protected function reflectMethods(\ReflectionClass $reflectionClass)
     {
@@ -327,7 +328,10 @@ class ClassSchema
                 return $annotation instanceof Validate;
             });
 
-            if ($this->isController && $this->methods[$methodName]['isAction'] && count($validateAnnotations) > 0) {
+            if ($this->methods[$methodName]['isAction']
+                && $this->bitSet->get(self::BIT_CLASS_IS_CONTROLLER)
+                && count($validateAnnotations) > 0
+            ) {
                 foreach ($validateAnnotations as $validateAnnotation) {
                     $validatorName = $validateAnnotation->validator;
                     $validatorObjectName = ValidatorClassNameResolver::resolve($validatorName);
@@ -450,6 +454,14 @@ class ClassSchema
                 $this->injectMethods[] = $methodName;
             }
         }
+
+        if (isset($this->methods['__construct'])) {
+            $this->bitSet->set(self::BIT_CLASS_HAS_CONSTRUCTOR);
+        }
+
+        if (count($this->injectMethods) > 0) {
+            $this->bitSet->set(self::BIT_CLASS_HAS_INJECT_METHODS);
+        }
     }
 
     /**
@@ -488,17 +500,6 @@ class ClassSchema
     }
 
     /**
-     * Marks the class if it is root of an aggregate and therefore accessible
-     * through a repository - or not.
-     *
-     * @param bool $isRoot TRUE if it is the root of an aggregate
-     */
-    public function setAggregateRoot($isRoot)
-    {
-        $this->aggregateRoot = $isRoot;
-    }
-
-    /**
      * Whether the class is an aggregate root and therefore accessible through
      * a repository.
      *
@@ -506,7 +507,7 @@ class ClassSchema
      */
     public function isAggregateRoot(): bool
     {
-        return $this->aggregateRoot;
+        return $this->bitSet->get(self::BIT_CLASS_IS_AGGREGATE_ROOT);
     }
 
     /**
@@ -525,7 +526,7 @@ class ClassSchema
      */
     public function hasConstructor(): bool
     {
-        return isset($this->methods['__construct']);
+        return $this->bitSet->get(self::BIT_CLASS_HAS_CONSTRUCTOR);
     }
 
     /**
@@ -588,7 +589,7 @@ class ClassSchema
      */
     public function isEntity(): bool
     {
-        return $this->modelType === static::MODELTYPE_ENTITY;
+        return $this->bitSet->get(self::BIT_CLASS_IS_ENTITY);
     }
 
     /**
@@ -597,7 +598,7 @@ class ClassSchema
      */
     public function isValueObject(): bool
     {
-        return $this->modelType === static::MODELTYPE_VALUEOBJECT;
+        return $this->bitSet->get(self::BIT_CLASS_IS_VALUE_OBJECT);
     }
 
     /**
@@ -605,7 +606,7 @@ class ClassSchema
      */
     public function isSingleton(): bool
     {
-        return $this->isSingleton;
+        return $this->bitSet->get(self::BIT_CLASS_IS_SINGLETON);
     }
 
     /**
@@ -622,7 +623,7 @@ class ClassSchema
      */
     public function hasInjectProperties(): bool
     {
-        return count($this->injectProperties) > 0;
+        return $this->bitSet->get(self::BIT_CLASS_HAS_INJECT_PROPERTIES);
     }
 
     /**
@@ -630,7 +631,7 @@ class ClassSchema
      */
     public function hasInjectMethods(): bool
     {
-        return count($this->injectMethods) > 0;
+        return $this->bitSet->get(self::BIT_CLASS_HAS_INJECT_METHODS);
     }
 
     /**
