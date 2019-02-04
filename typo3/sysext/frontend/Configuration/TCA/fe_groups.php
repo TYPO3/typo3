@@ -54,7 +54,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'fe_groups',
-                'foreign_table_where' => 'AND NOT(fe_groups.uid = ###THIS_UID###) AND fe_groups.hidden=0 ORDER BY fe_groups.title',
+                'foreign_table_where' => 'AND NOT(fe_groups.uid = ###THIS_UID###) ORDER BY fe_groups.title',
                 'enableMultiSelectFilterTextfield' => true,
                 'size' => 6,
                 'autoSizeMax' => 10,
