@@ -16,12 +16,13 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Annotation\ORM\Transient;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * Fixture class with getters and setters
  */
-class DummyClassWithAllTypesOfProperties
+class DummyClassWithAllTypesOfProperties extends AbstractEntity
 {
     public $publicProperty;
 
