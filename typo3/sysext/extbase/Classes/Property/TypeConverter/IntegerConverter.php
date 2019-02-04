@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
 /*
@@ -20,7 +22,7 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 class IntegerConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter
 {
     /**
-     * @var array<string>
+     * @var string[]
      */
     protected $sourceTypes = ['integer', 'string'];
 
@@ -37,13 +39,13 @@ class IntegerConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstrac
     /**
      * Actually convert from $source to $targetType, in fact a noop here.
      *
-     * @param int|string $source
+     * @param int|string|null $source
      * @param string $targetType
      * @param array $convertedChildProperties
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return int|\TYPO3\CMS\Extbase\Error\Error
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
     {
         if ($source === null || (string)$source === '') {
             return null;

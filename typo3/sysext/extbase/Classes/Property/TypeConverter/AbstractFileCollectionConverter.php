@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
 /*
@@ -39,7 +41,7 @@ abstract class AbstractFileCollectionConverter extends \TYPO3\CMS\Extbase\Proper
     /**
      * @param \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory
      */
-    public function injectFileFactory(\TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory)
+    public function injectFileFactory(\TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory): void
     {
         $this->fileFactory = $fileFactory;
     }
@@ -55,7 +57,7 @@ abstract class AbstractFileCollectionConverter extends \TYPO3\CMS\Extbase\Proper
      * @throws \TYPO3\CMS\Extbase\Property\Exception
      * @return \TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null): \TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection
     {
         $object = $this->getObject($source);
         if (empty($this->expectedObjectType) || !$object instanceof $this->expectedObjectType) {
@@ -71,5 +73,5 @@ abstract class AbstractFileCollectionConverter extends \TYPO3\CMS\Extbase\Proper
      * @param int $source
      * @return \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection
      */
-    abstract protected function getObject($source);
+    abstract protected function getObject($source): \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection;
 }

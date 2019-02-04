@@ -30,6 +30,14 @@ While hardening Extbase classes, method signatures changed due to an enforced st
 - :php:`\TYPO3\CMS\Extbase\Service\ImageService::applyProcessingInstructions`
 - :php:`\TYPO3\CMS\Extbase\Service\ImageService::getImageUri`
 - :php:`\TYPO3\CMS\Extbase\Service\ImageService::getImage`
+- :php:`\TYPO3\CMS\Extbase\Property\TypeConverterInterface::getSupportedSourceTypes()`
+- :php:`\TYPO3\CMS\Extbase\Property\TypeConverterInterface::getSupportedTargetType()`
+- :php:`\TYPO3\CMS\Extbase\Property\TypeConverterInterface::getTargetTypeForSource()`
+- :php:`\TYPO3\CMS\Extbase\Property\TypeConverterInterface::getPriority()`
+- :php:`\TYPO3\CMS\Extbase\Property\TypeConverterInterface::canConvertFrom()`
+- :php:`\TYPO3\CMS\Extbase\Property\TypeConverterInterface::getSourceChildPropertiesToBeConverted()`
+- :php:`\TYPO3\CMS\Extbase\Property\TypeConverterInterface::getTypeOfChildProperty()`
+- :php:`\TYPO3\CMS\Extbase\Property\TypeConverterInterface::convertFrom()`
 
 
 Impact

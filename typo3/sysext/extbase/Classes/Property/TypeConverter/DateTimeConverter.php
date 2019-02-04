@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
 /*
@@ -68,7 +70,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
     const DEFAULT_DATE_FORMAT = \DateTime::W3C;
 
     /**
-     * @var array<string>
+     * @var string[]
      */
     protected $sourceTypes = ['string', 'integer', 'array'];
 
@@ -85,12 +87,12 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
     /**
      * If conversion is possible.
      *
-     * @param string $source
+     * @param string|array|int $source
      * @param string $targetType
      * @return bool
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function canConvertFrom($source, $targetType)
+    public function canConvertFrom($source, string $targetType): bool
     {
         if (!is_callable([$targetType, 'createFromFormat'])) {
             return false;
@@ -111,11 +113,11 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
      * @param string $targetType must be "DateTime"
      * @param array $convertedChildProperties not used currently
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-     * @return \DateTimeInterface|\TYPO3\CMS\Extbase\Error\Error
+     * @return \DateTime|\TYPO3\CMS\Extbase\Error\Error|null
      * @throws \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null): ?object
     {
         $dateFormat = $this->getDefaultDateFormat($configuration);
         if (is_string($source)) {
@@ -170,7 +172,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
      * @param array $source
      * @return bool
      */
-    protected function isDatePartKeysProvided(array $source)
+    protected function isDatePartKeysProvided(array $source): bool
     {
         return isset($source['day']) && ctype_digit($source['day'])
             && isset($source['month']) && ctype_digit($source['month'])
@@ -185,7 +187,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
      * @return string
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
      */
-    protected function getDefaultDateFormat(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    protected function getDefaultDateFormat(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null): string
     {
         if ($configuration === null) {
             return self::DEFAULT_DATE_FORMAT;
@@ -203,11 +205,11 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
     /**
      * Overrides hour, minute & second of the given date with the values in the $source array
      *
-     * @param \DateTimeInterface $date
+     * @param \DateTime $date
      * @param array $source
-     * @return \DateTimeInterface
+     * @return \DateTime
      */
-    protected function overrideTimeIfSpecified(\DateTimeInterface $date, array $source): \DateTimeInterface
+    protected function overrideTimeIfSpecified(\DateTime $date, array $source): \DateTime
     {
         if (!isset($source['hour']) && !isset($source['minute']) && !isset($source['second'])) {
             return $date;

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
 /*
@@ -22,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 class FolderConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileFolderConverter
 {
     /**
-     * @var array<string>
+     * @var string[]
      */
     protected $sourceTypes = ['string'];
 
@@ -40,7 +42,7 @@ class FolderConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstract
      * @param string $source
      * @return \TYPO3\CMS\Core\Resource\Folder
      */
-    protected function getOriginalResource($source)
+    protected function getOriginalResource($source): ?\TYPO3\CMS\Core\Resource\ResourceInterface
     {
         return $this->fileFactory->getFolderObjectFromCombinedIdentifier($source);
     }

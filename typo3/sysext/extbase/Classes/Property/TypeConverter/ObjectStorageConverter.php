@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
 /*
@@ -22,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 class ObjectStorageConverter extends AbstractTypeConverter
 {
     /**
-     * @var array<string>
+     * @var string[]
      */
     protected $sourceTypes = ['string', 'array'];
 
@@ -46,7 +48,7 @@ class ObjectStorageConverter extends AbstractTypeConverter
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null): \TYPO3\CMS\Extbase\Persistence\ObjectStorage
     {
         $objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
         foreach ($convertedChildProperties as $subProperty) {
@@ -61,7 +63,7 @@ class ObjectStorageConverter extends AbstractTypeConverter
      * @param mixed $source
      * @return array
      */
-    public function getSourceChildPropertiesToBeConverted($source)
+    public function getSourceChildPropertiesToBeConverted($source): array
     {
         if (is_array($source)) {
             return $source;
@@ -77,7 +79,7 @@ class ObjectStorageConverter extends AbstractTypeConverter
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return string
      */
-    public function getTypeOfChildProperty($targetType, $propertyName, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration)
+    public function getTypeOfChildProperty($targetType, string $propertyName, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration): string
     {
         $parsedTargetType = \TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::parseType($targetType);
         return $parsedTargetType['elementType'];
