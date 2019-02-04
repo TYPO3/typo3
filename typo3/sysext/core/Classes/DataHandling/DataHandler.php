@@ -3014,10 +3014,12 @@ class DataHandler implements LoggerAwareInterface
                                 $this->moveRecord($table, $id, $value);
                                 break;
                             case 'copy':
+                                $target = $value['target'] ?? $value;
+                                $ignoreLocalization = (bool)($value['ignoreLocalization'] ?? false);
                                 if ($table === 'pages') {
-                                    $this->copyPages($id, $value);
+                                    $this->copyPages($id, $target);
                                 } else {
-                                    $this->copyRecord($table, $id, $value, true);
+                                    $this->copyRecord($table, $id, $target, true, [], '', 0, $ignoreLocalization);
                                 }
                                 $procId = $this->copyMappingArray[$table][$id];
                                 break;
@@ -3208,7 +3210,9 @@ class DataHandler implements LoggerAwareInterface
         if (!$ignoreLocalization && $language == 0) {
             //repointing the new translation records to the parent record we just created
             $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] = $theNewSQLID;
-            $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['translationSource']] = 0;
+            if (isset($GLOBALS['TCA'][$table]['ctrl']['translationSource'])) {
+                $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['translationSource']] = 0;
+            }
             $this->copyL10nOverlayRecords($table, $uid, $destPid, $first, $overrideValues, $excludeFields);
         }
 

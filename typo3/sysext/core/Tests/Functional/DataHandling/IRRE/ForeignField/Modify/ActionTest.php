@@ -506,6 +506,21 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
 
     /**
      * @test
+     * @see DataSet/localizePageTwiceWExclude.csv
+     */
+    public function localizePageTwiceWithLocalizationExclude()
+    {
+        parent::localizePageTwiceWithLocalizationExclude();
+        $this->assertAssertionDataSet('localizePageTwiceWExclude');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Page . ':' . self::VALUE_PageId)->setRecordField(self::FIELD_PageHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #0'));
+    }
+
+    /**
+     * @test
      * @see DataSet/localizePageNAddHotelChildWExclude.csv
      */
     public function localizePageAndAddHotelChildWithLocalizationExclude()

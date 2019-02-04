@@ -499,7 +499,10 @@ class DataMapProcessor
     }
 
     /**
-     * Handle synchronization of inline relations
+     * Handle synchronization of inline relations.
+     * Inline Relational Record Editong ("IRRE") always is modelled as 1:n composite relation - which means that
+     * direct(!) children cannot exist without their parent. Removing a relative parent results in cascaded removal
+     * of all direct(!) children as well.
      *
      * @param DataMapItem $item
      * @param string $fieldName
@@ -519,6 +522,7 @@ class DataMapProcessor
             'source' => $GLOBALS['TCA'][$foreignTableName]['ctrl']['translationSource'] ?? null,
         ];
         $isTranslatable = (!empty($fieldNames['language']) && !empty($fieldNames['parent']));
+        $isLocalized = !empty($item->getLanguage());
 
         $suggestedAncestorIds = $this->resolveSuggestedInlineRelations(
             $item,
@@ -597,7 +601,10 @@ class DataMapProcessor
         foreach ($createAncestorIds as $createAncestorId) {
             // if child table is not aware of localization, just copy
             if ($isLocalizationModeExclude || !$isTranslatable) {
-                $localCommandMap[$foreignTableName][$createAncestorId]['copy'] = -$createAncestorId;
+                $localCommandMap[$foreignTableName][$createAncestorId]['copy'] = [
+                    'target' => -$createAncestorId,
+                    'ignoreLocalization' => true,
+                ];
             } else {
                 // otherwise, trigger the localization process
                 $localCommandMap[$foreignTableName][$createAncestorId]['localize'] = $item->getLanguage();
@@ -624,6 +631,22 @@ class DataMapProcessor
                 $newLocalizationId = $localDataHandler->copyMappingArray_merged[$foreignTableName][$createAncestorId];
                 $newLocalizationId = $localDataHandler->getAutoVersionId($foreignTableName, $newLocalizationId) ?? $newLocalizationId;
                 $desiredIdMap[$createAncestorId] = $newLocalizationId;
+                // apply localization references to l10n_mode=exclude children
+                // (without keeping their reference to their origin, synchronization is not possible)
+                if ($isLocalizationModeExclude && $isTranslatable && $isLocalized) {
+                    $adjustCopiedValues = $this->applyLocalizationReferences(
+                        $foreignTableName,
+                        $createAncestorId,
+                        $item->getLanguage(),
+                        $fieldNames,
+                        []
+                    );
+                    $this->modifyDataMap(
+                        $foreignTableName,
+                        $newLocalizationId,
+                        $adjustCopiedValues
+                    );
+                }
             }
         }
         // populate new child records in data-map
@@ -631,13 +654,26 @@ class DataMapProcessor
             foreach ($populateAncestorIds as $populateAncestorId) {
                 $newLocalizationId = StringUtility::getUniqueId('NEW');
                 $desiredIdMap[$populateAncestorId] = $newLocalizationId;
-                $duplicatedValues = $this->duplicateFromDataMap(
-                    $foreignTableName,
-                    $populateAncestorId,
-                    $item->getLanguage(),
-                    $fieldNames,
-                    !$isLocalizationModeExclude && $isTranslatable
-                );
+                $duplicatedValues = $this->allDataMap[$foreignTableName][$populateAncestorId] ?? [];
+                // applies localization references to given raw data-map item
+                if ($isTranslatable && $isLocalized) {
+                    $duplicatedValues = $this->applyLocalizationReferences(
+                        $foreignTableName,
+                        $populateAncestorId,
+                        $item->getLanguage(),
+                        $fieldNames,
+                        $duplicatedValues
+                    );
+                }
+                // prefixes language title if applicable for the accordant field name in raw data-map item
+                if ($isTranslatable && $isLocalized && !$isLocalizationModeExclude) {
+                    $duplicatedValues = $this->prefixLanguageTitle(
+                        $foreignTableName,
+                        $populateAncestorId,
+                        $item->getLanguage(),
+                        $duplicatedValues
+                    );
+                }
                 $this->modifyDataMap(
                     $foreignTableName,
                     $newLocalizationId,
@@ -938,6 +974,7 @@ class DataMapProcessor
         $originFieldName = ($GLOBALS['TCA'][$tableName]['ctrl']['origUid'] ?? null);
 
         if (!$isTranslatable && $originFieldName === null) {
+            // @todo Possibly throw an error, since pointing to original entity is not possible (via origin/parent)
             return [];
         }
 
@@ -1205,7 +1242,7 @@ class DataMapProcessor
     }
 
     /**
-     * Duplicates an item from data-map and prefixed language title,
+     * Duplicates an item from data-map and prefixes language title,
      * if applicable for the accordant field name.
      *
      * @param string $tableName
@@ -1214,20 +1251,45 @@ class DataMapProcessor
      * @param array $fieldNames
      * @param bool $localize
      * @return array
+     * @deprecated Not used anymore, split into applyLocalizationReferences() and prefixLanguageTitle()
      */
-    protected function duplicateFromDataMap(string $tableName, $fromId, int $language, array $fieldNames, bool $localize)
+    protected function duplicateFromDataMap(string $tableName, $fromId, int $language, array $fieldNames, bool $localize): array
     {
-        $data = $this->allDataMap[$tableName][$fromId];
-        // just return duplicated item if localization cannot be applied
+        $data = $this->allDataMap[$tableName][$fromId] ?? [];
+        // just return if localization cannot be applied
         if (empty($language) || !$localize) {
             return $data;
         }
+        $data = $this->applyLocalizationReferences($tableName, $fromId, $language, $fieldNames, $data);
+        $data = $this->prefixLanguageTitle($tableName, $fromId, $language, $data);
+        return $data;
+    }
 
+    /**
+     * Applies localization references to given raw data-map item.
+     *
+     * @param string $tableName
+     * @param string|int $fromId
+     * @param int $language
+     * @param array $fieldNames
+     * @param array $data
+     * @return array
+     */
+    protected function applyLocalizationReferences(string $tableName, $fromId, int $language, array $fieldNames, array $data): array
+    {
+        // just return if localization cannot be applied
+        if (empty($language)) {
+            return $data;
+        }
+
+        // apply `languageField`, e.g. `sys_language_uid`
         $data[$fieldNames['language']] = $language;
+        // apply `transOrigPointerField`, e.g. `l10n_parent`
         if (empty($data[$fieldNames['parent']])) {
             // @todo Only $id used in TCA type 'select' is resolved in DataHandler's remapStack
             $data[$fieldNames['parent']] = $fromId;
         }
+        // apply `translationSource`, e.g. `l10n_source`
         if (!empty($fieldNames['source'])) {
             // @todo Not sure, whether $id is resolved in DataHandler's remapStack
             $data[$fieldNames['source']] = $fromId;
@@ -1237,6 +1299,20 @@ class DataMapProcessor
             unset($data[$fieldName]);
         }
 
+        return $data;
+    }
+
+    /**
+     * Prefixes language title if applicable for the accordant field name in raw data-map item.
+     *
+     * @param string $tableName
+     * @param $fromId
+     * @param int $language
+     * @param array $data
+     * @return array
+     */
+    protected function prefixLanguageTitle(string $tableName, $fromId, int $language, array $data): array
+    {
         $prefixFieldNames = array_intersect(
             array_keys($data),
             $this->getPrefixLanguageTitleFieldNames($tableName)
