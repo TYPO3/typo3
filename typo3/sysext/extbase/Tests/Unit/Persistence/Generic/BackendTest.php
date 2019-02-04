@@ -31,6 +31,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class BackendTest extends UnitTestCase
 {
+    protected function tearDown(): void
+    {
+        GeneralUtility::purgeInstances();
+        parent::tearDown();
+    }
+
     /**
      * @test
      */
@@ -103,7 +109,7 @@ class BackendTest extends UnitTestCase
         $session->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue($fakeUuid));
 
         /** @var Backend $backend */
-        $backend = $this->getAccessibleMock(Backend::class, ['dummy'], [$configurationManager]);
+        $backend = $this->getAccessibleMock(Backend::class, ['dummy'], [$configurationManager], '', false);
         $backend->_set('session', $session);
 
         $this->assertEquals($backend->getIdentifierByObject($object), $fakeUuid);
@@ -135,7 +141,7 @@ class BackendTest extends UnitTestCase
         $session->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue($fakeUuid));
 
         /** @var Backend $backend */
-        $backend = $this->getAccessibleMock(Backend::class, ['dummy'], [$configurationManager]);
+        $backend = $this->getAccessibleMock(Backend::class, ['dummy'], [$configurationManager], '', false);
         $backend->_set('session', $session);
 
         $this->assertEquals($backend->getIdentifierByObject($proxy), $fakeUuid);

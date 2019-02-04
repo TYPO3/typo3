@@ -96,61 +96,33 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
     protected $signalSlotDispatcher;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Session $session
-     */
-    public function injectSession(\TYPO3\CMS\Extbase\Persistence\Generic\Session $session)
-    {
-        $this->session = $session;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
-     */
-    public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService)
-    {
-        $this->reflectionService = $reflectionService;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory
-     */
-    public function injectQomFactory(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory)
-    {
-        $this->qomFactory = $qomFactory;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface $storageBackend
-     */
-    public function injectStorageBackend(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface $storageBackend)
-    {
-        $this->storageBackend = $storageBackend;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory
-     */
-    public function injectDataMapFactory(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory)
-    {
-        $this->dataMapFactory = $dataMapFactory;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
-     */
-    public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher)
-    {
-        $this->signalSlotDispatcher = $signalSlotDispatcher;
-    }
-
-    /**
      * Constructs the backend
      *
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     * @param Session $session
+     * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
+     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory
+     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface $storageBackend
+     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory
+     * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
      */
-    public function __construct(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
-    {
+    public function __construct(
+        \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager,
+        \TYPO3\CMS\Extbase\Persistence\Generic\Session $session,
+        \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService,
+        \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory,
+        \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface $storageBackend,
+        \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory,
+        \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+    ) {
         $this->configurationManager = $configurationManager;
+        $this->session = $session;
+        $this->reflectionService = $reflectionService;
+        $this->qomFactory = $qomFactory;
+        $this->storageBackend = $storageBackend;
+        $this->dataMapFactory = $dataMapFactory;
+        $this->signalSlotDispatcher = $signalSlotDispatcher;
+
         $this->referenceIndex = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
         $this->referenceIndex->enableRuntimeCache();
         $this->aggregateRootObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
