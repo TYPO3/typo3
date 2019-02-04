@@ -100,7 +100,12 @@ class ClassSchemaTest extends UnitTestCase
                 'propertyWithTransientAnnotation',
                 'propertyWithCascadeAnnotation',
                 'propertyWithCascadeAnnotationWithoutVarAnnotation',
-                'propertyWithObjectStorageAnnotation'
+                'propertyWithObjectStorageAnnotation',
+                'uid',
+                '_localizedUid',
+                '_languageUid',
+                '_versionedUid',
+                'pid',
             ],
             array_keys((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->getProperties())
         );

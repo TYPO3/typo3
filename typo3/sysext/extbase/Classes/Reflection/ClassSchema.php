@@ -57,7 +57,7 @@ class ClassSchema
      *
      * @var int
      */
-    protected $modelType = self::MODELTYPE_ENTITY;
+    protected $modelType = 0;
 
     /**
      * Whether a repository exists for the class this schema is referring to
