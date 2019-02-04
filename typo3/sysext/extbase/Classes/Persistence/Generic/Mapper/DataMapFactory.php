@@ -391,6 +391,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
     {
         $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_ONE);
         $columnMap->setChildTableName($columnConfiguration['foreign_table']);
+        // todo: don't update column map if value(s) isn't/aren't set.
         $columnMap->setChildTableWhereStatement($columnConfiguration['foreign_table_where'] ?? null);
         $columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby'] ?? null);
         $columnMap->setParentKeyFieldName($columnConfiguration['foreign_field'] ?? null);
@@ -413,6 +414,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
     {
         $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
         $columnMap->setChildTableName($columnConfiguration['foreign_table']);
+        // todo: don't update column map if value(s) isn't/aren't set.
         $columnMap->setChildTableWhereStatement($columnConfiguration['foreign_table_where'] ?? null);
         $columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby'] ?? null);
         $columnMap->setParentKeyFieldName($columnConfiguration['foreign_field'] ?? null);
@@ -437,6 +439,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
         if (isset($columnConfiguration['MM'])) {
             $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
             $columnMap->setChildTableName($columnConfiguration['foreign_table']);
+            // todo: don't update column map if value(s) isn't/aren't set.
             $columnMap->setChildTableWhereStatement($columnConfiguration['foreign_table_where'] ?? null);
             $columnMap->setRelationTableName($columnConfiguration['MM']);
             if (isset($columnConfiguration['MM_match_fields']) && is_array($columnConfiguration['MM_match_fields'])) {
@@ -445,6 +448,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
             if (isset($columnConfiguration['MM_insert_fields']) && is_array($columnConfiguration['MM_insert_fields'])) {
                 $columnMap->setRelationTableInsertFields($columnConfiguration['MM_insert_fields']);
             }
+            // todo: don't update column map if value(s) isn't/aren't set.
             $columnMap->setRelationTableWhereStatement($columnConfiguration['MM_table_where'] ?? null);
             if (!empty($columnConfiguration['MM_opposite_field'])) {
                 $columnMap->setParentKeyFieldName('uid_foreign');
