@@ -81,10 +81,16 @@ class RepositoryTest extends UnitTestCase
         $this->mockConfigurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class);
         $this->mockBackend = $this->getAccessibleMock(Backend::class, ['dummy'], [$this->mockConfigurationManager], '', false);
         $this->inject($this->mockBackend, 'session', $this->mockSession);
-        $this->mockPersistenceManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, ['createQueryForType']);
+        $this->mockPersistenceManager = $this->getAccessibleMock(
+            \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class,
+            ['createQueryForType'],
+            [
+                $this->mockQueryFactory,
+                $this->mockBackend,
+                $this->mockSession
+            ]
+        );
         $this->inject($this->mockBackend, 'persistenceManager', $this->mockPersistenceManager);
-        $this->inject($this->mockPersistenceManager, 'persistenceSession', $this->mockSession);
-        $this->inject($this->mockPersistenceManager, 'backend', $this->mockBackend);
         $this->mockPersistenceManager->expects($this->any())->method('createQueryForType')->will($this->returnValue($this->mockQuery));
         $this->mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $this->repository = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Repository::class, ['dummy'], [$this->mockObjectManager]);

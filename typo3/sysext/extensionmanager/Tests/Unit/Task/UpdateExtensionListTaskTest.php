@@ -55,7 +55,7 @@ class UpdateExtensionListTaskTest extends UnitTestCase
                 ->with(Helper::class)
                 ->will($this->returnValue($repositoryHelper));
 
-        $persistenceManagerMock = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)->getMock();
+        $persistenceManagerMock = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)->disableOriginalConstructor()->getMock();
         $objectManagerMock
                 ->expects($this->at(1))
                 ->method('get')
@@ -83,7 +83,7 @@ class UpdateExtensionListTaskTest extends UnitTestCase
             ->with(Helper::class)
             ->will($this->returnValue($repositoryHelper));
 
-        $persistenceManagerMock = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)->getMock();
+        $persistenceManagerMock = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)->disableOriginalConstructor()->getMock();
         $persistenceManagerMock
             ->expects($this->once())
             ->method('persistAll');

@@ -222,6 +222,7 @@ class JsonViewTest extends UnitTestCase
         string $description
     ): void {
         $persistenceManagerMock = $this->getMockBuilder(PersistenceManager::class)
+            ->disableOriginalConstructor()
             ->setMethods(['getIdentifierByObject'])
             ->getMock();
         $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
