@@ -2403,7 +2403,7 @@ class BackendUtility
                     $anchorSection,
                     RouterInterface::ABSOLUTE_URL
                 );
-            } catch (SiteNotFoundException | InvalidRouteArgumentsException $e) {
+            } catch (SiteNotFoundException | \InvalidArgumentException | InvalidRouteArgumentsException $e) {
                 $previewUrl = self::createPreviewUrl($pageUid, $rootLine, $anchorSection, $additionalGetVars, $viewScript);
             }
         }
