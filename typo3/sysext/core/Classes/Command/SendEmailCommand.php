@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Core\Command;
  */
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Mail\Mailer;
@@ -39,9 +39,9 @@ class SendEmailCommand extends Command
     {
         $this
             ->setDescription('Sends emails from the spool')
-            ->addOption('message-limit', null, InputArgument::REQUIRED, 'The maximum number of messages to send.')
-            ->addOption('time-limit', null, InputArgument::REQUIRED, 'The time limit for sending messages (in seconds).')
-            ->addOption('recover-timeout', null, InputArgument::REQUIRED, 'The timeout for recovering messages that have taken too long to send (in seconds).');
+            ->addOption('message-limit', null, InputOption::VALUE_REQUIRED, 'The maximum number of messages to send.')
+            ->addOption('time-limit', null, InputOption::VALUE_REQUIRED, 'The time limit for sending messages (in seconds).')
+            ->addOption('recover-timeout', null, InputOption::VALUE_REQUIRED, 'The timeout for recovering messages that have taken too long to send (in seconds).');
     }
 
     /**
