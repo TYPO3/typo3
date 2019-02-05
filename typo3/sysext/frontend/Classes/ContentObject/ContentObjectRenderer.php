@@ -5017,8 +5017,8 @@ class ContentObjectRenderer
                     // store info in the TSFE template cache (kept for backwards compatibility)
                     if ($processedFileObject->isProcessed() && !isset($tsfe->tmpl->fileCache[$hash])) {
                         $tsfe->tmpl->fileCache[$hash] = [
-                            0 => $processedFileObject->getProperty('width'),
-                            1 => $processedFileObject->getProperty('height'),
+                            0 => (int)$processedFileObject->getProperty('width'),
+                            1 => (int)$processedFileObject->getProperty('height'),
                             2 => $processedFileObject->getExtension(),
                             3 => $processedFileObject->getPublicUrl(),
                             'origFile' => $fileObject->getPublicUrl(),
