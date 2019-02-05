@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Felogin\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
@@ -23,10 +21,10 @@ use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Felogin\Validation\RedirectUrlValidator;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 /**
@@ -34,10 +32,8 @@ use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
  *
  * @internal this is a concrete TYPO3 implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
  */
-class FrontendLoginController extends AbstractPlugin implements LoggerAwareInterface
+class FrontendLoginController extends AbstractPlugin
 {
-    use LoggerAwareTrait;
-
     /**
      * Same as class name
      *
@@ -97,9 +93,6 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
      */
     protected $logintype;
 
-    /** @var SiteFinder */
-    protected $siteFinder;
-
     /**
      * A list of page UIDs, either an integer or a comma-separated list of integers
      *
@@ -115,6 +108,11 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
     public $referer;
 
     /**
+     * @var RedirectUrlValidator
+     */
+    protected $urlValidator;
+
+    /**
      * The main method of the plugin
      *
      * @param string $content The PlugIn content
@@ -124,7 +122,11 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
      */
     public function main($content, $conf)
     {
-        $this->siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        $this->urlValidator = GeneralUtility::makeInstance(
+            RedirectUrlValidator::class,
+            GeneralUtility::makeInstance(SiteFinder::class),
+            (int)$this->frontendController->id
+        );
 
         // Loading TypoScript array into object variable:
         $this->conf = $conf;
@@ -147,16 +149,16 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
         }
         // GPvars:
         $this->logintype = GeneralUtility::_GP('logintype');
-        $this->referer = $this->validateRedirectUrl(GeneralUtility::_GP('referer'));
+
+        if ($this->urlValidator->isValid(GeneralUtility::_GP('referer'))) {
+            $this->referer = GeneralUtility::_GP('referer');
+        } else {
+            $this->referer = '';
+        }
         $this->noRedirect = $this->piVars['noredirect'] || $this->conf['redirectDisable'];
         // If config.typolinkLinkAccessRestrictedPages is set, the var is return_url
-        $returnUrl = GeneralUtility::_GP('return_url');
-        if ($returnUrl) {
-            $this->redirectUrl = $returnUrl;
-        } else {
-            $this->redirectUrl = GeneralUtility::_GP('redirect_url');
-        }
-        $this->redirectUrl = $this->validateRedirectUrl($this->redirectUrl);
+        $this->redirectUrl = GeneralUtility::_GP('return_url') ?: GeneralUtility::_GP('redirect_url');
+        $this->redirectUrl = $this->urlValidator->isValid($this->redirectUrl) ? $this->redirectUrl : '';
         // Get Template
         $templateFile = $this->conf['templateFile'] ?: 'EXT:felogin/Resources/Private/Templates/FrontendLogin.html';
         $template = GeneralUtility::getFileAbsFileName($templateFile);
@@ -1006,88 +1008,5 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
             $marker['###USER###'] = $marker['###FEUSER_USERNAME###'];
         }
         return $marker;
-    }
-
-    /**
-     * Returns a valid and XSS cleaned url for redirect, checked against configuration "allowedRedirectHosts"
-     *
-     * @param string $url
-     * @return string cleaned referer or empty string if not valid
-     */
-    protected function validateRedirectUrl($url)
-    {
-        $url = strval($url);
-        if ($url === '') {
-            return '';
-        }
-        // Validate the URL:
-        if ($this->isRelativeUrl($url) || $this->isInCurrentDomain($url) || $this->isInLocalDomain($url)) {
-            return $url;
-        }
-        // URL is not allowed
-        $this->logger->warning('Url "' . $url . '" for redirect was not accepted!');
-        return '';
-    }
-
-    /**
-     * Determines whether the URL is on the current host and belongs to the
-     * current TYPO3 installation. The scheme part is ignored in the comparison.
-     *
-     * @param string $url URL to be checked
-     * @return bool Whether the URL belongs to the current TYPO3 installation
-     */
-    protected function isInCurrentDomain($url)
-    {
-        $urlWithoutSchema = preg_replace('#^https?://#', '', $url);
-        $siteUrlWithoutSchema = preg_replace('#^https?://#', '', GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
-        return strpos($urlWithoutSchema . '/', GeneralUtility::getIndpEnv('HTTP_HOST') . '/') === 0
-            && strpos($urlWithoutSchema, $siteUrlWithoutSchema) === 0;
-    }
-
-    /**
-     * Determines whether the URL matches a domain
-     * in the sys_domain database table.
-     *
-     * @param string $url Absolute URL which needs to be checked
-     * @return bool Whether the URL is considered to be local
-     */
-    protected function isInLocalDomain($url)
-    {
-        $result = false;
-        if (GeneralUtility::isValidUrl($url)) {
-            $parsedUrl = parse_url($url);
-            if ($parsedUrl['scheme'] === 'http' || $parsedUrl['scheme'] === 'https') {
-                $host = $parsedUrl['host'];
-
-                try {
-                    $site = $this->siteFinder->getSiteByPageId((int)$this->frontendController->id);
-                    return $site->getBase()->getHost() === $host;
-                } catch (SiteNotFoundException $e) {
-                    // nothing found
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Determines whether the URL is relative to the
-     * current TYPO3 installation.
-     *
-     * @param string $url URL which needs to be checked
-     * @return bool Whether the URL is considered to be relative
-     */
-    protected function isRelativeUrl($url)
-    {
-        $url = GeneralUtility::sanitizeLocalUrl($url);
-        if (!empty($url)) {
-            $parsedUrl = @parse_url($url);
-            if ($parsedUrl !== false && !isset($parsedUrl['scheme']) && !isset($parsedUrl['host'])) {
-                // If the relative URL starts with a slash, we need to check if it's within the current site path
-                return $parsedUrl['path'][0] !== '/' || GeneralUtility::isFirstPartOfStr($parsedUrl['path'], GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
-            }
-        }
-        return false;
     }
 }
