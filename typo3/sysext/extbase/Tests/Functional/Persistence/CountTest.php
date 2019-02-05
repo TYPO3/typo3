@@ -15,11 +15,15 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use ExtbaseTeam\BlogExample\Domain\Model\Blog;
 use ExtbaseTeam\BlogExample\Domain\Repository\PersonRepository;
 use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\Query;
+use TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class CountTest extends FunctionalTestCase
@@ -242,5 +246,64 @@ class CountTest extends FunctionalTestCase
             )
         );
         self::assertSame(4, $query->count());
+    }
+
+    /**
+     * @test
+     */
+    public function queryWithCustomStatementWithGroupByStatementReturnsCountOfGroupedRecords(): void
+    {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+
+        $queryBuilder = $connection->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder
+            ->select('deleted')
+            ->from('tx_blogexample_domain_model_blog')
+            ->groupBy('deleted')
+        ;
+
+        $queryFactory = $this->objectManager->get(QueryFactory::class);
+
+        /** @var Query $query */
+        $query = $queryFactory->create(Blog::class);
+        $query->statement($queryBuilder);
+        $query->getQuerySettings()->setIncludeDeleted(true);
+        $query->getQuerySettings()->setIgnoreEnableFields(true);
+        $queryResult = $query->execute();
+
+        self::assertSame(2, $queryResult->count());
+    }
+
+    /**
+     * @test
+     *
+     * @group not-postgres
+     * @group not-sqlite
+     */
+    public function queryWithCustomStatementWithMultipleGroupByStatementsReturnsCountOfGroupedRecords(): void
+    {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+
+        $queryBuilder = $connection->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder
+            ->select('hidden', 'deleted')
+            ->from('tx_blogexample_domain_model_blog')
+            ->groupBy('hidden', 'deleted')
+        ;
+
+        $queryFactory = $this->objectManager->get(QueryFactory::class);
+
+        /** @var Query $query */
+        $query = $queryFactory->create(Blog::class);
+        $query->statement($queryBuilder);
+        $query->getQuerySettings()->setIncludeDeleted(true);
+        $query->getQuerySettings()->setIgnoreEnableFields(true);
+        $queryResult = $query->execute();
+
+        self::assertSame(3, $queryResult->count());
     }
 }

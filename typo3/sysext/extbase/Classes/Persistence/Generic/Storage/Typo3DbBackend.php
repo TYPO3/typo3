@@ -459,10 +459,27 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             if ($queryParser->isDistinctQuerySuggested()) {
                 $source = $queryBuilder->getQueryPart('from')[0];
                 // Tablename is already quoted for the DBMS, we need to treat table and field names separately
-                $tableName = $source['alias'] ?: $source['table'];
-                $fieldName = $queryBuilder->quoteIdentifier('uid');
+                $distinctColumns = [
+                    sprintf(
+                        '%s.%s',
+                        $source['alias'] ?: $source['table'],
+                        $queryBuilder->quoteIdentifier('uid')
+                    )
+                ];
+
+                // Override $distinctColumns, if groupBy is set
+                $groupByStatements = $queryBuilder->getQueryPart('groupBy');
+                if (is_array($groupByStatements) && count($groupByStatements) > 0) {
+                    $distinctColumns = $groupByStatements;
+                }
+
                 $queryBuilder->resetQueryPart('groupBy')
-                    ->selectLiteral(sprintf('COUNT(DISTINCT %s.%s)', $tableName, $fieldName));
+                    ->selectLiteral(
+                        sprintf(
+                            'COUNT(DISTINCT %s)',
+                            implode(',', $distinctColumns)
+                        )
+                    );
             } else {
                 $queryBuilder->count('*');
             }

@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Storage;
 
 use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Database\Connection;
@@ -35,6 +36,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Qom\NotInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\Selector;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -50,6 +52,58 @@ class Typo3DbQueryParserTest extends UnitTestCase
     {
         GeneralUtility::purgeInstances();
         parent::tearDown();
+    }
+
+    /**
+     * @test
+     */
+    public function convertQueryToDoctrineQueryBuilderReturnsDoctrineQueryBuilder(): void
+    {
+        $subject = new Typo3DbQueryParser();
+
+        /** @var Connection|ObjectProphecy $connectionProphecy */
+        $connectionProphecy = $this->prophesize(Connection::class);
+        $expectedQueryBuilder = new QueryBuilder($connectionProphecy->reveal());
+
+        /** @var Statement|ObjectProphecy $statementProphecy */
+        $statementProphecy = $this->prophesize(Statement::class);
+        $statementProphecy->getStatement()->willReturn($expectedQueryBuilder);
+        $queryProphecy = $this->prophesize(QueryInterface::class);
+        $queryProphecy->getStatement()->willReturn($statementProphecy->reveal());
+
+        // because of clone we have to use assertEquals
+        self::assertEquals(
+            $expectedQueryBuilder,
+            $subject->convertQueryToDoctrineQueryBuilder($queryProphecy->reveal())
+        );
+        self::assertFalse(
+            $subject->isDistinctQuerySuggested()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function convertQueryToDoctrineQueryBuilderWithGroupByInQueryBuilderWillSetSuggestDistinctQueryToTrue(): void
+    {
+        $subject = new Typo3DbQueryParser();
+
+        /** @var Connection|ObjectProphecy $connectionProphecy */
+        $connectionProphecy = $this->prophesize(Connection::class);
+        $expectedQueryBuilder = new QueryBuilder($connectionProphecy->reveal());
+        $expectedQueryBuilder->add('groupBy', 'test_column');
+
+        /** @var Statement|ObjectProphecy $statementProphecy */
+        $statementProphecy = $this->prophesize(Statement::class);
+        $statementProphecy->getStatement()->willReturn($expectedQueryBuilder);
+        $queryProphecy = $this->prophesize(QueryInterface::class);
+        $queryProphecy->getStatement()->willReturn($statementProphecy->reveal());
+
+        $subject->convertQueryToDoctrineQueryBuilder($queryProphecy->reveal());
+
+        self::assertTrue(
+            $subject->isDistinctQuerySuggested()
+        );
     }
 
     /**
