@@ -4731,8 +4731,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $processedFileObject = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
                     if ($processedFileObject->isProcessed()) {
                         $imageResource = [
-                            0 => $processedFileObject->getProperty('width'),
-                            1 => $processedFileObject->getProperty('height'),
+                            0 => (int)$processedFileObject->getProperty('width'),
+                            1 => (int)$processedFileObject->getProperty('height'),
                             2 => $processedFileObject->getExtension(),
                             3 => $processedFileObject->getPublicUrl(),
                             'origFile' => $fileObject->getPublicUrl(),
