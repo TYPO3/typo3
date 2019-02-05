@@ -204,8 +204,15 @@ class GifBuilder extends GraphicalFunctions
                                     // Use normal path from fileInfo if it is a non-FAL file (even non-FAL files have originalFile set, but only non-FAL files have origFile set)
                                     $this->setup[$theKey . '.']['file'] = $fileInfo[3];
                                 }
-                                $this->setup[$theKey . '.']['BBOX'] = $fileInfo;
-                                $this->objBB[$theKey] = $fileInfo;
+
+                                // only pass necessary parts of fileInfo further down, to not incorporate facts as
+                                // CropScaleMask runs in this request, that may not occur in subsequent calls and change
+                                // the md5 of the generated file name
+                                $essentialFileInfo = $fileInfo;
+                                unset($essentialFileInfo['originalFile'], $essentialFileInfo['processedFile']);
+
+                                $this->setup[$theKey . '.']['BBOX'] = $essentialFileInfo;
+                                $this->objBB[$theKey] = $essentialFileInfo;
                                 if ($conf['mask']) {
                                     $maskInfo = $this->getResource($conf['mask'], $conf['mask.']);
                                     if ($maskInfo) {
