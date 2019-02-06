@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3Fluid\Fluid\View\ViewInterface;
@@ -300,7 +301,7 @@ class SiteConfigurationController
                         break;
 
                     case 'select':
-                        $newSysSiteData[$fieldName] = (int)$fieldValue;
+                        $newSysSiteData[$fieldName] = MathUtility::canBeInterpretedAsInteger($fieldValue) ? (int)$fieldValue : $fieldValue;
                         break;
 
                     default:
