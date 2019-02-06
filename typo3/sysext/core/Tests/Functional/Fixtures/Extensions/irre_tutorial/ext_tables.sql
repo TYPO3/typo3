@@ -6,7 +6,8 @@
 # Table structure for table 'pages'
 #
 CREATE TABLE pages (
-    tx_irretutorial_hotels int(11) DEFAULT '0' NOT NULL
+    tx_irretutorial_hotels int(11) DEFAULT '0' NOT NULL,
+    tx_irretutorial_1ncsv_hotels text
 );
 
 
@@ -14,7 +15,8 @@ CREATE TABLE pages (
 # Table structure for table 'pages_language_overlay'
 #
 CREATE TABLE pages_language_overlay (
-    tx_irretutorial_hotels int(11) DEFAULT '0' NOT NULL
+    tx_irretutorial_hotels int(11) DEFAULT '0' NOT NULL,
+    tx_irretutorial_1ncsv_hotels text
 );
 
 
