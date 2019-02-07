@@ -116,7 +116,8 @@ class ExtbasePluginEnhancer extends PluginEnhancer
         ) {
             $this->applyControllerActionValues(
                 $this->configuration['defaultController'],
-                $originalParameters[$this->namespace]
+                $originalParameters[$this->namespace],
+                true
             );
         }
 
@@ -165,7 +166,8 @@ class ExtbasePluginEnhancer extends PluginEnhancer
         }
         $this->applyControllerActionValues(
             $internals['_controller'],
-            $parameters[$this->namespace]
+            $parameters[$this->namespace],
+            false
         );
         return $parameters;
     }
@@ -195,7 +197,6 @@ class ExtbasePluginEnhancer extends PluginEnhancer
         }
         return true;
     }
-
     /**
      * Check if action and controller are not empty.
      *
@@ -211,15 +212,25 @@ class ExtbasePluginEnhancer extends PluginEnhancer
      * Add controller and action parameters so they can be used later-on.
      *
      * @param string $controllerActionValue
-     * @param array $target
+     * @param array $target Reference to target array to be modified
+     * @param bool $tryUpdate Try updating action value - but only if controller value matches
      */
-    protected function applyControllerActionValues(string $controllerActionValue, array &$target)
+    protected function applyControllerActionValues(string $controllerActionValue, array &$target, bool $tryUpdate = false)
     {
         if (strpos($controllerActionValue, '::') === false) {
             return;
         }
         list($controllerName, $actionName) = explode('::', $controllerActionValue, 2);
-        $target['controller'] = $controllerName;
-        $target['action'] = $actionName;
+        // use default action name if controller matches
+        if ($tryUpdate && empty($target['action']) && $controllerName === ($target['controller'] ?? null)) {
+            $target['action'] = $actionName;
+        // use default controller name if action is defined (implies: non-default-controllers must be given)
+        } elseif ($tryUpdate && empty($target['controller']) && !empty($target['action'])) {
+            $target['controller'] = $controllerName;
+        // fallback and override
+        } else {
+            $target['controller'] = $controllerName;
+            $target['action'] = $actionName;
+        }
     }
 }
