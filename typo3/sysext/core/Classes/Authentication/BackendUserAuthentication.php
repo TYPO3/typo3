@@ -1298,7 +1298,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $this->userTS_text = implode(LF . '[GLOBAL]' . LF, $this->TSdataArray);
             // Parsing the user TSconfig (or getting from cache)
             $hash = md5('userTS:' . $this->userTS_text);
-            $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
+            $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
             $parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
             $parseObj->parse($this->userTS_text);
             $this->userTS = $parseObj->setup;
@@ -1555,7 +1555,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function getFileMountRecords()
     {
-        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
         $fileMountRecordCache = $runtimeCache->get('backendUserAuthenticationFileMountRecords') ?: [];
 
         if (!empty($fileMountRecordCache)) {

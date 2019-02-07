@@ -74,7 +74,7 @@ class SiteMatcher implements SingletonInterface
     {
         /** Ensure root line caches are flushed */
         RootlineUtility::purgeCaches();
-        GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_rootline')->flush();
+        GeneralUtility::makeInstance(CacheManager::class)->getCache('rootline')->flush();
     }
 
     /**

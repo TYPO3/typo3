@@ -39,7 +39,7 @@ class VariableFrontendTest extends \TYPO3\TestingFramework\Core\Functional\Funct
         return [
             [
                 $arrayToSerialize,
-                'cache_pages',
+                'pages',
                 $arrayToSerialize,
             ]
         ];

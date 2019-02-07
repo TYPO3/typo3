@@ -708,7 +708,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function initCaches()
     {
-        $this->pageCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_pages');
+        $this->pageCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('pages');
     }
 
     /**
@@ -3254,7 +3254,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $TSdataArray = TypoScriptParser::checkIncludeLines_array($TSdataArray);
             $userTS = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
             $identifier = md5('pageTS:' . $userTS);
-            $contentHashCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
+            $contentHashCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
             $this->pagesTSconfig = $contentHashCache->get($identifier);
             if (!is_array($this->pagesTSconfig)) {
                 $parseObj = GeneralUtility::makeInstance(TypoScriptParser::class);
@@ -3363,7 +3363,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function get_cache_timeout()
     {
         /** @var \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend $runtimeCache */
-        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
         $cachedCacheLifetimeIdentifier = 'core-tslib_fe-get_cache_timeout';
         $cachedCacheLifetime = $runtimeCache->get($cachedCacheLifetimeIdentifier);
         if ($cachedCacheLifetime === false) {

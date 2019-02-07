@@ -4372,7 +4372,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
+        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
         $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
         $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
@@ -4434,7 +4434,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
+        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
         $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
         $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
@@ -4500,7 +4500,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
+        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
         $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
         $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
@@ -4556,7 +4556,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
+        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
         $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
         $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
@@ -4583,7 +4583,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
+        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
         $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
         $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
@@ -4683,7 +4683,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());
+        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
         $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
         $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());

@@ -86,7 +86,7 @@ class Bootstrap
         $disableCaching = $failsafe ? true : false;
 
         $logManager = new LogManager($requestId);
-        $coreCache = static::createCache('cache_core', $disableCaching);
+        $coreCache = static::createCache('core', $disableCaching);
         $packageManager = static::createPackageManager(
             $failsafe ? FailsafePackageManager::class : PackageManager::class,
             $coreCache
@@ -317,7 +317,7 @@ class Bootstrap
     public static function loadTypo3LoadedExtAndExtLocalconf($allowCaching = true, FrontendInterface $coreCache = null)
     {
         if ($allowCaching) {
-            $coreCache = $coreCache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core');
+            $coreCache = $coreCache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
         }
         ExtensionManagementUtility::loadExtLocalconf($allowCaching, $coreCache);
     }
@@ -543,7 +543,7 @@ class Bootstrap
     public static function loadBaseTca(bool $allowCaching = true, FrontendInterface $coreCache = null)
     {
         if ($allowCaching) {
-            $coreCache = $coreCache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core');
+            $coreCache = $coreCache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
         }
         ExtensionManagementUtility::loadBaseTca($allowCaching, $coreCache);
     }
@@ -608,7 +608,7 @@ class Bootstrap
         $cacheIdentifier = 'BackendRoutesFromPackages_' . sha1(TYPO3_version . Environment::getProjectPath() . 'BackendRoutesFromPackages');
 
         /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $codeCache */
-        $codeCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core');
+        $codeCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('core');
         $routesFromPackages = [];
         if ($codeCache->has($cacheIdentifier)) {
             // substr is necessary, because the php frontend wraps php code around the cache value

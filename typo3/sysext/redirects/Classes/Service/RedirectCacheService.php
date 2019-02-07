@@ -42,7 +42,7 @@ class RedirectCacheService
     public function __construct(CacheManager $cacheManager = null)
     {
         $cacheManager = $cacheManager ?? GeneralUtility::makeInstance(CacheManager::class);
-        $this->cache = $cacheManager->getCache('cache_pages');
+        $this->cache = $cacheManager->getCache('pages');
     }
 
     /**

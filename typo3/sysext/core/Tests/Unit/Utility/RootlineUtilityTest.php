@@ -48,7 +48,7 @@ class RootlineUtilityTest extends UnitTestCase
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('cache_rootline')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheManagerProphecy->getCache('rootline')->willReturn($cacheFrontendProphecy->reveal());
 
         $this->subject = $this->getAccessibleMock(
             RootlineUtility::class,

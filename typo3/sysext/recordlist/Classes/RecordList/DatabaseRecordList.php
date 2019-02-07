@@ -3947,7 +3947,7 @@ class DatabaseRecordList
      */
     protected function getSearchableWebmounts($id, $depth, $perms_clause)
     {
-        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
         $hash = 'webmounts_list' . md5($id . '-' . $depth . '-' . $perms_clause);
         if ($runtimeCache->has($hash)) {
             $idList = $runtimeCache->get($hash);

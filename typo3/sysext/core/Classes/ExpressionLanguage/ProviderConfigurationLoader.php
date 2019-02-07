@@ -26,7 +26,7 @@ class ProviderConfigurationLoader
             PackageManager::class,
             GeneralUtility::makeInstance(DependencyOrderingService::class)
         );
-        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core');
+        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
 
         if ($cache->has($this->cacheIdentifier)) {
             /** @noinspection PhpUndefinedMethodInspection the method require() will be added to the interface in TYPO3 v10.0 */

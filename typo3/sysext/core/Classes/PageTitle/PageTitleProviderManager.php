@@ -108,7 +108,7 @@ class PageTitleProviderManager implements SingletonInterface
     protected function initCaches(): void
     {
         try {
-            $this->pageCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_pages');
+            $this->pageCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('pages');
         } catch (NoSuchCacheException $e) {
             // Intended fall-through
         }

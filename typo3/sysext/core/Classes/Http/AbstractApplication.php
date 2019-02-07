@@ -45,7 +45,7 @@ abstract class AbstractApplication implements ApplicationInterface
         $resolver = new MiddlewareStackResolver(
             GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class),
             GeneralUtility::makeInstance(\TYPO3\CMS\Core\Service\DependencyOrderingService::class),
-            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core')
+            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('core')
         );
         $middlewares = $resolver->resolve($this->middlewareStack);
 

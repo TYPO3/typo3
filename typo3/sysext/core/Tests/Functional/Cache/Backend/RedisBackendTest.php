@@ -57,7 +57,7 @@ class RedisBackendTest extends FunctionalTestCase
         $backendOptions['port'] = is_string($env) ? (int)$env : 6379;
 
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         $subject = new RedisBackend('Testing', $backendOptions);
         $subject->setCache($frontendProphecy->reveal());

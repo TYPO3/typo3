@@ -156,7 +156,7 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
         }
 
         if (isset($options['validators'])) {
-            $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+            $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
             $configurationHashes = $runtimeCache->get('formAbstractRenderableConfigurationHashes') ?: [];
 
             if ($resetValidators) {

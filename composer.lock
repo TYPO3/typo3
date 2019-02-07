@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d2fb17662a3d483385e72f9cd8937b60",
+    "content-hash": "870e3918ae3d5aa74326217313e58454",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -5301,21 +5301,21 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "5.0.7",
+            "version": "5.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "f6be4a637106eb90cb58491d67b92e50e1b6c8dc"
+                "reference": "bf7a5b7f1bc481ec791716a7fa33e3ed94215bdc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/f6be4a637106eb90cb58491d67b92e50e1b6c8dc",
-                "reference": "f6be4a637106eb90cb58491d67b92e50e1b6c8dc",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/bf7a5b7f1bc481ec791716a7fa33e3ed94215bdc",
+                "reference": "bf7a5b7f1bc481ec791716a7fa33e3ed94215bdc",
                 "shasum": ""
             },
             "require": {
                 "mikey179/vfsstream": "~1.6.0",
-                "phpunit/phpunit": "^7.5.6",
+                "phpunit/phpunit": "^7.5.6 || ^8",
                 "typo3/cms-backend": "10.*.*@dev",
                 "typo3/cms-core": "10.*.*@dev",
                 "typo3/cms-extbase": "10.*.*@dev",
@@ -5325,7 +5325,7 @@
                 "typo3fluid/fluid": "^2.5"
             },
             "suggest": {
-                "codeception/codeception": "^2.4",
+                "codeception/codeception": "^3",
                 "typo3/cms-styleguide": "^9.0"
             },
             "type": "library",
@@ -5357,7 +5357,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2019-03-23T16:23:15+00:00"
+            "time": "2019-05-16T08:49:46+00:00"
         }
     ],
     "aliases": [],

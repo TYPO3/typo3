@@ -1425,7 +1425,7 @@ tt_content.' . $key . $suffix . ' {
     public static function loadExtLocalconf($allowCaching = true, FrontendInterface $codeCache = null)
     {
         if ($allowCaching) {
-            $codeCache = $codeCache ?? self::getCacheManager()->getCache('cache_core');
+            $codeCache = $codeCache ?? self::getCacheManager()->getCache('core');
             $cacheIdentifier = self::getExtLocalconfCacheIdentifier();
             if ($codeCache->has($cacheIdentifier)) {
                 $codeCache->require($cacheIdentifier);
@@ -1513,7 +1513,7 @@ tt_content.' . $key . $suffix . ' {
     public static function loadBaseTca($allowCaching = true, FrontendInterface $codeCache = null)
     {
         if ($allowCaching) {
-            $codeCache = $codeCache ?? self::getCacheManager()->getCache('cache_core');
+            $codeCache = $codeCache ?? self::getCacheManager()->getCache('core');
             $cacheIdentifier = static::getBaseTcaCacheIdentifier();
             $cacheData = $codeCache->require($cacheIdentifier);
             if ($cacheData) {
@@ -1658,7 +1658,7 @@ tt_content.' . $key . $suffix . ' {
             self::$extTablesWasReadFromCacheOnce = true;
             $cacheIdentifier = self::getExtTablesCacheIdentifier();
             /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $codeCache */
-            $codeCache = self::getCacheManager()->getCache('cache_core');
+            $codeCache = self::getCacheManager()->getCache('core');
             if ($codeCache->has($cacheIdentifier)) {
                 $codeCache->require($cacheIdentifier);
             } else {
@@ -1714,7 +1714,7 @@ tt_content.' . $key . $suffix . ' {
         $phpCodeToCache = implode(LF, $phpCodeToCache);
         // Remove all start and ending php tags from content
         $phpCodeToCache = preg_replace('/<\\?php|\\?>/is', '', $phpCodeToCache);
-        self::getCacheManager()->getCache('cache_core')->set(self::getExtTablesCacheIdentifier(), $phpCodeToCache);
+        self::getCacheManager()->getCache('core')->set(self::getExtTablesCacheIdentifier(), $phpCodeToCache);
     }
 
     /**

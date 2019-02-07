@@ -96,7 +96,7 @@ class FormEngineUtility
      */
     public static function getTSconfigForTableRow($table, $row, $field = '')
     {
-        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
         $cache = $runtimeCache->get('formEngineUtilityTsConfigForTableRow') ?: [];
         $cacheIdentifier = $table . ':' . $row['uid'];
         if (!isset($cache[$cacheIdentifier])) {

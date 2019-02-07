@@ -1536,7 +1536,7 @@ class GeneralUtility
      */
     public static function xml2array($string, $NSprefix = '', $reportDocTag = false)
     {
-        $runtimeCache = static::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        $runtimeCache = static::makeInstance(CacheManager::class)->getCache('runtime');
         $firstLevelCache = $runtimeCache->get('generalUtilityXml2Array') ?: [];
         $identifier = md5($string . $NSprefix . ($reportDocTag ? '1' : '0'));
         // Look up in first level cache

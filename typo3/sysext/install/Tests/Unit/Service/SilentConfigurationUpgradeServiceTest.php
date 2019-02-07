@@ -954,4 +954,104 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         $this->expectExceptionCode(1379024938);
         $silentConfigurationUpgradeService->_call('migrateSaltedPasswordsSettings');
     }
+
+    /**
+     * @test
+     */
+    public function migrateCachingFrameworkCachesMigratesData()
+    {
+        $oldCacheConfigurations = [
+            'cache_rootline' => [
+                'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+                'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
+                'options' => [
+                    'defaultLifetime' => 2592000,
+                ],
+                'groups' => ['pages']
+            ],
+            'fluid_template' => [
+                'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
+                'frontend' => \TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache::class,
+                'groups' => ['system'],
+            ],
+        ];
+        $newCacheConfigurations = [
+            'rootline' => [
+                'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+                'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
+                'options' => [
+                    'defaultLifetime' => 2592000,
+                ],
+                'groups' => ['pages']
+            ],
+            'fluid_template' => [
+                'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
+                'frontend' => \TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache::class,
+                'groups' => ['system'],
+            ],
+        ];
+        /** @var ConfigurationManager|ObjectProphecy $configurationManager */
+        $configurationManager = $this->prophesize(ConfigurationManager::class);
+        $configurationManager->getLocalConfigurationValueByPath('SYS/caching/cacheConfigurations')
+            ->shouldBeCalled()
+            ->willReturn($oldCacheConfigurations);
+
+        $configurationManager->setLocalConfigurationValueByPath('SYS/caching/cacheConfigurations', $newCacheConfigurations)->shouldBeCalled();
+
+        $this->expectException(ConfigurationChangedException::class);
+        $this->expectExceptionCode(1379024938);
+
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
+            SilentConfigurationUpgradeService::class,
+            ['dummy'],
+            [],
+            '',
+            false
+        );
+
+        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $configurationManager->reveal());
+        $silentConfigurationUpgradeServiceInstance->_call('migrateCachingFrameworkCaches');
+    }
+
+    /**
+     * @test
+     */
+    public function migrateCachingFrameworkCachesDoesNotMigrateWithoutPrefix()
+    {
+        $oldCacheConfigurations = [
+            'rootline' => [
+                'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+                'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
+                'options' => [
+                    'defaultLifetime' => 2592000,
+                ],
+                'groups' => ['pages']
+            ],
+            'fluid_template' => [
+                'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
+                'frontend' => \TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache::class,
+                'groups' => ['system'],
+            ],
+        ];
+        /** @var ConfigurationManager|ObjectProphecy $configurationManager */
+        $configurationManager = $this->prophesize(ConfigurationManager::class);
+        $configurationManager->getLocalConfigurationValueByPath('SYS/caching/cacheConfigurations')
+            ->shouldBeCalled()
+            ->willReturn($oldCacheConfigurations);
+
+        $configurationManager->setLocalConfigurationValueByPath(Argument::cetera())->shouldNotBeCalled();
+
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
+            SilentConfigurationUpgradeService::class,
+            ['dummy'],
+            [],
+            '',
+            false
+        );
+
+        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $configurationManager->reveal());
+        $silentConfigurationUpgradeServiceInstance->_call('migrateCachingFrameworkCaches');
+    }
 }

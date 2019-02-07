@@ -63,7 +63,7 @@ class DataHandlerTest extends UnitTestCase
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheFrontendProphecy->reveal());
         $this->backEndUser = $this->createMock(BackendUserAuthentication::class);
         $this->subject = $this->getAccessibleMock(DataHandler::class, ['dummy']);
         $this->subject->start([], '', $this->backEndUser);

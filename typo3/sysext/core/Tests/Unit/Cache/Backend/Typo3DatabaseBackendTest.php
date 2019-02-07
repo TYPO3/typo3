@@ -36,12 +36,12 @@ class Typo3DatabaseBackendTest extends UnitTestCase
     public function setCacheCalculatesCacheTableName()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_test');
+        $frontendProphecy->getIdentifier()->willReturn('test');
 
         $subject = new Typo3DatabaseBackend('Testing');
         $subject->setCache($frontendProphecy->reveal());
 
-        $this->assertEquals('cf_cache_test', $subject->getCacheTable());
+        $this->assertEquals('cache_test', $subject->getCacheTable());
     }
 
     /**
@@ -50,12 +50,12 @@ class Typo3DatabaseBackendTest extends UnitTestCase
     public function setCacheCalculatesTagsTableName()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_test');
+        $frontendProphecy->getIdentifier()->willReturn('test');
 
         $subject = new Typo3DatabaseBackend('Testing');
         $subject->setCache($frontendProphecy->reveal());
 
-        $this->assertEquals('cf_cache_test_tags', $subject->getTagsTable());
+        $this->assertEquals('cache_test_tags', $subject->getTagsTable());
     }
 
     /**
@@ -75,7 +75,7 @@ class Typo3DatabaseBackendTest extends UnitTestCase
     public function setThrowsExceptionIfDataIsNotAString()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_test');
+        $frontendProphecy->getIdentifier()->willReturn('test');
 
         $subject = new Typo3DatabaseBackend('Testing');
         $subject->setCache($frontendProphecy->reveal());
@@ -158,14 +158,14 @@ class Typo3DatabaseBackendTest extends UnitTestCase
     public function flushRemovesAllCacheEntries()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_test');
+        $frontendProphecy->getIdentifier()->willReturn('test');
 
         $subject = new Typo3DatabaseBackend('Testing');
         $subject->setCache($frontendProphecy->reveal());
 
         $connectionProphet = $this->prophesize(Connection::class);
-        $connectionProphet->truncate('cf_cache_test')->shouldBeCalled()->willReturn(0);
-        $connectionProphet->truncate('cf_cache_test_tags')->shouldBeCalled()->willReturn(0);
+        $connectionProphet->truncate('cache_test')->shouldBeCalled()->willReturn(0);
+        $connectionProphet->truncate('cache_test_tags')->shouldBeCalled()->willReturn(0);
 
         $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
         $connectionPoolProphet->getConnectionForTable(Argument::cetera())->willReturn($connectionProphet->reveal());
@@ -180,14 +180,14 @@ class Typo3DatabaseBackendTest extends UnitTestCase
     public function flushByTagCallsDeleteOnConnection()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_test');
+        $frontendProphecy->getIdentifier()->willReturn('test');
 
         $subject = new Typo3DatabaseBackend('Testing');
         $subject->setCache($frontendProphecy->reveal());
 
         $connectionProphet = $this->prophesize(Connection::class);
-        $connectionProphet->delete('cf_cache_test')->shouldBeCalled()->willReturn(0);
-        $connectionProphet->delete('cf_cache_test_tags')->shouldBeCalled()->willReturn(0);
+        $connectionProphet->delete('cache_test')->shouldBeCalled()->willReturn(0);
+        $connectionProphet->delete('cache_test_tags')->shouldBeCalled()->willReturn(0);
 
         $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
         $connectionPoolProphet->getConnectionForTable(Argument::cetera())->willReturn($connectionProphet->reveal());
@@ -202,14 +202,14 @@ class Typo3DatabaseBackendTest extends UnitTestCase
     public function flushByTagsCallsDeleteOnConnection()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_test');
+        $frontendProphecy->getIdentifier()->willReturn('test');
 
         $subject = new Typo3DatabaseBackend('Testing');
         $subject->setCache($frontendProphecy->reveal());
 
         $connectionProphet = $this->prophesize(Connection::class);
-        $connectionProphet->delete('cf_cache_test')->shouldBeCalled()->willReturn(0);
-        $connectionProphet->delete('cf_cache_test_tags')->shouldBeCalled()->willReturn(0);
+        $connectionProphet->delete('cache_test')->shouldBeCalled()->willReturn(0);
+        $connectionProphet->delete('cache_test_tags')->shouldBeCalled()->willReturn(0);
 
         $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
         $connectionPoolProphet->getConnectionForTable(Argument::cetera())->willReturn($connectionProphet->reveal());

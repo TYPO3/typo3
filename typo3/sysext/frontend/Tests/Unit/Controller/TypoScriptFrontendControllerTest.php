@@ -490,7 +490,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
 
         $nullCacheBackend = new NullBackend('');
         $cacheManager = $this->prophesize(CacheManager::class);
-        $cacheManager->getCache('cache_pages')->willReturn($nullCacheBackend);
+        $cacheManager->getCache('pages')->willReturn($nullCacheBackend);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
 
         $subject = new TypoScriptFrontendController(null, 1, 0);

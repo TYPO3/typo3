@@ -370,7 +370,7 @@ class TemplateService
      */
     public function getCurrentPageData()
     {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_pagesection')->get((int)$this->getTypoScriptFrontendController()->id . '_' . GeneralUtility::md5int($this->getTypoScriptFrontendController()->MP));
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('pagesection')->get((int)$this->getTypoScriptFrontendController()->id . '_' . GeneralUtility::md5int($this->getTypoScriptFrontendController()->MP));
     }
 
     /**
@@ -503,7 +503,7 @@ class TemplateService
                 // Only save the data if we're not simulating by hidden/starttime/endtime
                 $mpvarHash = GeneralUtility::md5int($this->getTypoScriptFrontendController()->MP);
                 /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $pageSectionCache */
-                $pageSectionCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_pagesection');
+                $pageSectionCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('pagesection');
                 $pageSectionCache->set((int)$this->getTypoScriptFrontendController()->id . '_' . $mpvarHash, $cc, [
                     'pageId_' . (int)$this->getTypoScriptFrontendController()->id,
                     'mpvarHash_' . $mpvarHash
@@ -1371,11 +1371,11 @@ class TemplateService
      */
     protected function getCacheEntry($identifier)
     {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash')->get($identifier);
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('hash')->get($identifier);
     }
 
     /**
-     * Stores $data in the 'cache_hash' cache with the hash key $identifier
+     * Stores $data in the 'hash' cache with the hash key $identifier
      *
      * @param string $identifier 32 bit hash string (eg. a md5 hash of a serialized array identifying the data being stored)
      * @param mixed $data The data to store
@@ -1383,6 +1383,6 @@ class TemplateService
      */
     protected function setCacheEntry($identifier, $data, $tag)
     {
-        GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash')->set($identifier, $data, ['ident_' . $tag], 0);
+        GeneralUtility::makeInstance(CacheManager::class)->getCache('hash')->set($identifier, $data, ['ident_' . $tag], 0);
     }
 }

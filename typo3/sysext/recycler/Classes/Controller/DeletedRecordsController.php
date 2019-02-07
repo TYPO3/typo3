@@ -208,6 +208,6 @@ class DeletedRecordsController
      */
     protected function getMemoryCache()
     {
-        return $this->getCacheManager()->getCache('cache_runtime');
+        return $this->getCacheManager()->getCache('runtime');
     }
 }

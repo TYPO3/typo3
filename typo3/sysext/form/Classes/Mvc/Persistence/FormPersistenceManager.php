@@ -119,7 +119,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         $this->formSettings = GeneralUtility::makeInstance(ObjectManager::class)
             ->get(ConfigurationManagerInterface::class)
             ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
-        $this->runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        $this->runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
     }
 
     /**

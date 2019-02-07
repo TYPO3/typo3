@@ -157,7 +157,7 @@ class ReferenceIndex implements LoggerAwareInterface
      */
     public function __construct()
     {
-        $this->runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        $this->runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
     }
 
     /**

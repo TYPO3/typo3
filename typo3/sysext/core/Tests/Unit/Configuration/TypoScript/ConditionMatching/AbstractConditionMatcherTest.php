@@ -65,8 +65,8 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $cacheFrontendProphecy->set(Argument::any(), Argument::any())->willReturn(null);
         $cacheFrontendProphecy->get('backendUtilityBeGetRootLine')->willReturn([]);
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheManagerProphecy->getCache('cache_core')->willReturn($cacheFrontendProphecy->reveal());
-        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheManagerProphecy->getCache('core')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheFrontendProphecy->reveal());
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
 
         $packageManagerProphecy = $this->prophesize(PackageManager::class);

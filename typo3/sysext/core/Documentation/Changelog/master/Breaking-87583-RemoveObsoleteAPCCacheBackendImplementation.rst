@@ -33,11 +33,11 @@ configuration.
 
 Example before:
 
-:php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_rootline']['backend'] = \TYPO3\CMS\Core\Cache\Backend\ApcBackend::class;`
+:php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['rootline']['backend'] = \TYPO3\CMS\Core\Cache\Backend\ApcBackend::class;`
 
 Example after:
 
-:php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_rootline']['backend'] = \TYPO3\CMS\Core\Cache\Backend\ApcuBackend::class;`
+:php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['rootline']['backend'] = \TYPO3\CMS\Core\Cache\Backend\ApcuBackend::class;`
 
 
 .. index:: Backend, PHP-API, ext:core, NotScanned

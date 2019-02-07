@@ -2146,7 +2146,7 @@ abstract class AbstractMenuContentObject
      */
     protected function getCache()
     {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
     }
 
     /**
@@ -2154,7 +2154,7 @@ abstract class AbstractMenuContentObject
      */
     protected function getRuntimeCache()
     {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
     }
 
     /**

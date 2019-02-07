@@ -172,6 +172,7 @@ class SilentConfigurationUpgradeService
         $this->migrateExceptionErrors();
         $this->migrateDisplayErrorsSetting();
         $this->migrateSaltedPasswordsSettings();
+        $this->migrateCachingFrameworkCaches();
 
         // Should run at the end to prevent obsolete settings are removed before migration
         $this->removeObsoleteLocalConfigurationSettings();
@@ -1038,5 +1039,33 @@ class SilentConfigurationUpgradeService
         }
         $confManager->removeLocalConfigurationKeysByPath($configsToRemove);
         $this->throwConfigurationChangedException();
+    }
+
+    /**
+     * Renames all SYS[caching][cache] configuration names to names without the prefix "cache_".
+     * see #88366
+     */
+    protected function migrateCachingFrameworkCaches()
+    {
+        $confManager = $this->configurationManager;
+        try {
+            $cacheConfigurations = (array)$confManager->getLocalConfigurationValueByPath('SYS/caching/cacheConfigurations');
+            $newConfig = [];
+            $hasBeenModified = false;
+            foreach ($cacheConfigurations as $identifier => $cacheConfiguration) {
+                if (strpos($identifier, 'cache_') === 0) {
+                    $identifier = substr($identifier, 6);
+                    $hasBeenModified = true;
+                }
+                $newConfig[$identifier] = $cacheConfiguration;
+            }
+
+            if ($hasBeenModified) {
+                $confManager->setLocalConfigurationValueByPath('SYS/caching/cacheConfigurations', $newConfig);
+                $this->throwConfigurationChangedException();
+            }
+        } catch (MissingArrayPathException $e) {
+            // no change inside the LocalConfiguration.php found, so nothing needs to be modified
+        }
     }
 }

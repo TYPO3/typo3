@@ -42,7 +42,7 @@ class ResolverTest extends UnitTestCase
         $cacheFrontendProphecy->has(Argument::any())->willReturn(false);
         $cacheFrontendProphecy->set(Argument::any(), Argument::any())->willReturn(null);
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheManagerProphecy->getCache('cache_core')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheManagerProphecy->getCache('core')->willReturn($cacheFrontendProphecy->reveal());
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
 
         $packageManagerProphecy = $this->prophesize(PackageManager::class);

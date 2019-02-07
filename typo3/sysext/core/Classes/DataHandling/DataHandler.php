@@ -7980,7 +7980,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * The following cache_* are intentionally not cleared by 'all'
      *
-     * - cache_imagesizes:	Clearing this table would cause a lot of unneeded
+     * - imagesizes:	Clearing this table would cause a lot of unneeded
      * Imagemagick calls because the size informations have
      * to be fetched again after clearing.
      * - all caches inside the cache manager that are inside the group "system"
@@ -8344,7 +8344,7 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function getRuntimeCache()
     {
-        return $this->getCacheManager()->getCache('cache_runtime');
+        return $this->getCacheManager()->getCache('runtime');
     }
 
     /**

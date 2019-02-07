@@ -484,7 +484,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      */
     protected function initializeMountPointMap(string $defaultMountPoints = null, string $mapRootPointList = null): array
     {
-        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
         $mountPointMap = $runtimeCache->get('pageLinkBuilderMountPointMap') ?: [];
         if (!empty($mountPointMap) || (empty($mapRootPointList) && empty($defaultMountPoints))) {
             return $mountPointMap;

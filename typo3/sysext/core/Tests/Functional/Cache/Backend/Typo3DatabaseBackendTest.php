@@ -31,7 +31,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function getReturnsPreviouslySetEntry()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend('Testing');
         $subject->setCache($frontendProphecy->reveal());
@@ -46,7 +46,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function getReturnsPreviouslySetEntryWithNewContentIfSetWasCalledMultipleTimes()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend('Testing');
         $subject->setCache($frontendProphecy->reveal());
@@ -62,18 +62,18 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function setInsertsDataWithTagsIntoCacheTable()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend('Testing');
         $subject->setCache($frontendProphecy->reveal());
 
         $subject->set('myIdentifier', 'myData', ['aTag', 'anotherTag']);
 
-        $cacheTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages');
-        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages_tags');
-        $this->assertSame(1, $cacheTableConnection->count('*', 'cf_cache_pages', ['identifier' => 'myIdentifier']));
-        $this->assertSame(1, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'myIdentifier', 'tag' => 'aTag']));
-        $this->assertSame(1, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'myIdentifier', 'tag' => 'anotherTag']));
+        $cacheTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages');
+        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages_tags');
+        $this->assertSame(1, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'myIdentifier']));
+        $this->assertSame(1, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'myIdentifier', 'tag' => 'aTag']));
+        $this->assertSame(1, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'myIdentifier', 'tag' => 'anotherTag']));
     }
 
     /**
@@ -82,7 +82,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function setStoresCompressedContent()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         // Have backend with compression enabled
         $subject = new Typo3DatabaseBackend('Testing', ['compression' => true]);
@@ -91,10 +91,10 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
         $subject->set('myIdentifier', 'myCachedContent');
 
         $row = (new ConnectionPool())
-            ->getConnectionForTable('cf_cache_pages')
+            ->getConnectionForTable('cache_pages')
             ->select(
                 ['content'],
-                'cf_cache_pages',
+                'cache_pages',
                 ['identifier' => 'myIdentifier']
             )
             ->fetch();
@@ -109,7 +109,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function getReturnsFalseIfNoCacheEntryExists()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend('Testing');
         $subject->setCache($frontendProphecy->reveal());
@@ -123,11 +123,11 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function getReturnsFalseForExpiredCacheEntry()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         // Push an expired row into db
-        (new ConnectionPool())->getConnectionForTable('cf_cache_pages')->insert(
-            'cf_cache_pages',
+        (new ConnectionPool())->getConnectionForTable('cache_pages')->insert(
+            'cache_pages',
             [
                 'identifier' => 'myIdentifier',
                 'expires' => $GLOBALS['EXEC_TIME'] - 60,
@@ -150,11 +150,11 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function getReturnsNotExpiredCacheEntry()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         // Push a row into db
-        (new ConnectionPool())->getConnectionForTable('cf_cache_pages')->insert(
-            'cf_cache_pages',
+        (new ConnectionPool())->getConnectionForTable('cache_pages')->insert(
+            'cache_pages',
             [
                 'identifier' => 'myIdentifier',
                 'expires' => $GLOBALS['EXEC_TIME'] + 60,
@@ -177,11 +177,11 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function getReturnsUnzipsNotExpiredCacheEntry()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         // Push a compressed row into db
-        (new ConnectionPool())->getConnectionForTable('cf_cache_pages')->insert(
-            'cf_cache_pages',
+        (new ConnectionPool())->getConnectionForTable('cache_pages')->insert(
+            'cache_pages',
             [
                 'identifier' => 'myIdentifier',
                 'expires' => $GLOBALS['EXEC_TIME'] + 60,
@@ -206,11 +206,11 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function getReturnsEmptyStringUnzipped()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         // Push a compressed row into db
-        (new ConnectionPool())->getConnectionForTable('cf_cache_pages')->insert(
-            'cf_cache_pages',
+        (new ConnectionPool())->getConnectionForTable('cache_pages')->insert(
+            'cache_pages',
             [
                 'identifier' => 'myIdentifier',
                 'expires' => $GLOBALS['EXEC_TIME'] + 60,
@@ -235,7 +235,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function hasReturnsFalseIfNoCacheEntryExists()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend('Testing');
         $subject->setCache($frontendProphecy->reveal());
@@ -249,11 +249,11 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function hasReturnsFalseForExpiredCacheEntry()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         // Push an expired row into db
-        (new ConnectionPool())->getConnectionForTable('cf_cache_pages')->insert(
-            'cf_cache_pages',
+        (new ConnectionPool())->getConnectionForTable('cache_pages')->insert(
+            'cache_pages',
             [
                 'identifier' => 'myIdentifier',
                 'expires' => $GLOBALS['EXEC_TIME'] - 60,
@@ -276,11 +276,11 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function hasReturnsNotExpiredCacheEntry()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         // Push a row into db
-        (new ConnectionPool())->getConnectionForTable('cf_cache_pages')->insert(
-            'cf_cache_pages',
+        (new ConnectionPool())->getConnectionForTable('cache_pages')->insert(
+            'cache_pages',
             [
                 'identifier' => 'myIdentifier',
                 'expires' => $GLOBALS['EXEC_TIME'] + 60,
@@ -303,7 +303,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function removeReturnsFalseIfNoEntryHasBeenRemoved()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend('Testing');
         $subject->setCache($frontendProphecy->reveal());
@@ -317,11 +317,11 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function removeReturnsTrueIfAnEntryHasBeenRemoved()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         // Push a row into db
-        (new ConnectionPool())->getConnectionForTable('cf_cache_pages')->insert(
-            'cf_cache_pages',
+        (new ConnectionPool())->getConnectionForTable('cache_pages')->insert(
+            'cache_pages',
             [
                 'identifier' => 'myIdentifier',
                 'expires' => $GLOBALS['EXEC_TIME'] + 60,
@@ -344,12 +344,12 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function removeRemovesCorrectEntriesFromDatabase()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         // Add one cache row to remove and another one that shouldn't be removed
-        $cacheTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages');
+        $cacheTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages');
         $cacheTableConnection->bulkInsert(
-            'cf_cache_pages',
+            'cache_pages',
             [
                 ['myIdentifier', $GLOBALS['EXEC_TIME'] + 60, 'myCachedContent'],
                 ['otherIdentifier', $GLOBALS['EXEC_TIME'] + 60, 'otherCachedContent'],
@@ -363,9 +363,9 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
         $subject->setCache($frontendProphecy->reveal());
 
         // Add a couple of tags
-        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages_tags');
+        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages_tags');
         $tagsTableConnection->bulkInsert(
-            'cf_cache_pages_tags',
+            'cache_pages_tags',
             [
                 ['myIdentifier', 'aTag'],
                 ['myIdentifier', 'otherTag'],
@@ -378,12 +378,12 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
         $subject->remove('myIdentifier');
 
         // cache row with removed identifier has been removed, other one exists
-        $this->assertSame(0, $cacheTableConnection->count('*', 'cf_cache_pages', ['identifier' => 'myIdentifier']));
-        $this->assertSame(1, $cacheTableConnection->count('*', 'cf_cache_pages', ['identifier' => 'otherIdentifier']));
+        $this->assertSame(0, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'myIdentifier']));
+        $this->assertSame(1, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'otherIdentifier']));
 
         // tags of myIdentifier should have been removed, others exist
-        $this->assertSame(0, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'myIdentifier']));
-        $this->assertSame(2, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'otherIdentifier']));
+        $this->assertSame(0, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'myIdentifier']));
+        $this->assertSame(2, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'otherIdentifier']));
     }
 
     /**
@@ -436,14 +436,14 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
         $subject = $this->getSubjectObject(true);
         $subject->flushByTag('tagB');
 
-        $cacheTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages');
-        $this->assertSame(0, $cacheTableConnection->count('*', 'cf_cache_pages', ['identifier' => 'idA']));
-        $this->assertSame(0, $cacheTableConnection->count('*', 'cf_cache_pages', ['identifier' => 'idB']));
-        $this->assertSame(1, $cacheTableConnection->count('*', 'cf_cache_pages', ['identifier' => 'idC']));
-        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages_tags');
-        $this->assertSame(0, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idA']));
-        $this->assertSame(0, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idB']));
-        $this->assertSame(2, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idC']));
+        $cacheTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages');
+        $this->assertSame(0, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'idA']));
+        $this->assertSame(0, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'idB']));
+        $this->assertSame(1, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'idC']));
+        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages_tags');
+        $this->assertSame(0, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idA']));
+        $this->assertSame(0, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idB']));
+        $this->assertSame(2, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idC']));
     }
 
     /**
@@ -458,14 +458,14 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
         $subject = $this->getSubjectObject(true);
         $subject->flushByTags(['tagC', 'tagD']);
 
-        $cacheTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages');
-        $this->assertSame(1, $cacheTableConnection->count('*', 'cf_cache_pages', ['identifier' => 'idA']));
-        $this->assertSame(0, $cacheTableConnection->count('*', 'cf_cache_pages', ['identifier' => 'idB']));
-        $this->assertSame(0, $cacheTableConnection->count('*', 'cf_cache_pages', ['identifier' => 'idC']));
-        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages_tags');
-        $this->assertSame(2, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idA']));
-        $this->assertSame(0, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idB']));
-        $this->assertSame(0, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idC']));
+        $cacheTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages');
+        $this->assertSame(1, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'idA']));
+        $this->assertSame(0, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'idB']));
+        $this->assertSame(0, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'idC']));
+        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages_tags');
+        $this->assertSame(2, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idA']));
+        $this->assertSame(0, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idB']));
+        $this->assertSame(0, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idC']));
     }
 
     /**
@@ -494,14 +494,14 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
         $subject = $this->getSubjectObject(true, false);
         $subject->flushByTag('tagB');
 
-        $cacheTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages');
-        $this->assertSame(0, $cacheTableConnection->count('*', 'cf_cache_pages', ['identifier' => 'idA']));
-        $this->assertSame(0, $cacheTableConnection->count('*', 'cf_cache_pages', ['identifier' => 'idB']));
-        $this->assertSame(1, $cacheTableConnection->count('*', 'cf_cache_pages', ['identifier' => 'idC']));
-        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages_tags');
-        $this->assertSame(0, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idA']));
-        $this->assertSame(0, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idB']));
-        $this->assertSame(2, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idC']));
+        $cacheTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages');
+        $this->assertSame(0, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'idA']));
+        $this->assertSame(0, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'idB']));
+        $this->assertSame(1, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'idC']));
+        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages_tags');
+        $this->assertSame(0, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idA']));
+        $this->assertSame(0, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idB']));
+        $this->assertSame(2, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idC']));
     }
 
     /**
@@ -512,14 +512,14 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
         $subject = $this->getSubjectObject(true, false);
         $subject->flushByTags(['tagC', 'tagD']);
 
-        $cacheTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages');
-        $this->assertSame(1, $cacheTableConnection->count('*', 'cf_cache_pages', ['identifier' => 'idA']));
-        $this->assertSame(0, $cacheTableConnection->count('*', 'cf_cache_pages', ['identifier' => 'idB']));
-        $this->assertSame(0, $cacheTableConnection->count('*', 'cf_cache_pages', ['identifier' => 'idC']));
-        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages_tags');
-        $this->assertSame(2, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idA']));
-        $this->assertSame(0, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idB']));
-        $this->assertSame(0, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idC']));
+        $cacheTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages');
+        $this->assertSame(1, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'idA']));
+        $this->assertSame(0, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'idB']));
+        $this->assertSame(0, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'idC']));
+        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages_tags');
+        $this->assertSame(2, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idA']));
+        $this->assertSame(0, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idB']));
+        $this->assertSame(0, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idC']));
     }
 
     /**
@@ -545,7 +545,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function collectGarbageRemovesCacheEntryWithExpiredLifetimeWithMysql()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
@@ -563,9 +563,9 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
 
         $subject->collectGarbage();
 
-        $cacheTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages');
-        $this->assertSame(0, $cacheTableConnection->count('*', 'cf_cache_pages', ['identifier' => 'idA']));
-        $this->assertSame(1, $cacheTableConnection->count('*', 'cf_cache_pages', ['identifier' => 'idB']));
+        $cacheTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages');
+        $this->assertSame(0, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'idA']));
+        $this->assertSame(1, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'idB']));
     }
 
     /**
@@ -578,7 +578,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function collectGarbageRemovesTagEntriesForCacheEntriesWithExpiredLifetimeWithMysql()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
@@ -596,9 +596,9 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
 
         $subject->collectGarbage();
 
-        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages_tags');
-        $this->assertSame(0, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idA']));
-        $this->assertSame(2, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idB']));
+        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages_tags');
+        $this->assertSame(0, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idA']));
+        $this->assertSame(2, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idB']));
     }
 
     /**
@@ -611,7 +611,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function collectGarbageRemovesOrphanedTagEntriesFromTagsTableWithMysql()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
@@ -625,18 +625,18 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
         $subject->set('idA', 'dataA', ['tagA', 'tagB'], 60);
         $subject->set('idB', 'dataB', ['tagB', 'tagC'], 240);
 
-        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages_tags');
+        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages_tags');
 
         // Push two orphaned tag row into db - tags that have no related cache record anymore for whatever reason
         $tagsTableConnection->insert(
-            'cf_cache_pages_tags',
+            'cache_pages_tags',
             [
                 'identifier' => 'idC',
                 'tag' => 'tagC'
             ]
         );
         $tagsTableConnection->insert(
-            'cf_cache_pages_tags',
+            'cache_pages_tags',
             [
                 'identifier' => 'idC',
                 'tag' => 'tagD'
@@ -647,9 +647,9 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
 
         $subject->collectGarbage();
 
-        $this->assertSame(0, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idA']));
-        $this->assertSame(2, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idB']));
-        $this->assertSame(0, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idC']));
+        $this->assertSame(0, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idA']));
+        $this->assertSame(2, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idB']));
+        $this->assertSame(0, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idC']));
     }
 
     /**
@@ -658,7 +658,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function collectGarbageWorksWithEmptyTableWithNonMysql()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
@@ -677,7 +677,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function collectGarbageRemovesCacheEntryWithExpiredLifetimeWithNonMysql()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
@@ -695,9 +695,9 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
 
         $subject->collectGarbage();
 
-        $cacheTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages');
-        $this->assertSame(0, $cacheTableConnection->count('*', 'cf_cache_pages', ['identifier' => 'idA']));
-        $this->assertSame(1, $cacheTableConnection->count('*', 'cf_cache_pages', ['identifier' => 'idB']));
+        $cacheTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages');
+        $this->assertSame(0, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'idA']));
+        $this->assertSame(1, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'idB']));
     }
 
     /**
@@ -706,7 +706,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function collectGarbageRemovesTagEntriesForCacheEntriesWithExpiredLifetimeWithNonMysql()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
@@ -724,9 +724,9 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
 
         $subject->collectGarbage();
 
-        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages_tags');
-        $this->assertSame(0, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idA']));
-        $this->assertSame(2, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idB']));
+        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages_tags');
+        $this->assertSame(0, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idA']));
+        $this->assertSame(2, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idB']));
     }
 
     /**
@@ -735,7 +735,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function collectGarbageRemovesOrphanedTagEntriesFromTagsTableWithNonMysql()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
@@ -749,18 +749,18 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
         $subject->set('idA', 'dataA', ['tagA', 'tagB'], 60);
         $subject->set('idB', 'dataB', ['tagB', 'tagC'], 240);
 
-        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages_tags');
+        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages_tags');
 
         // Push two orphaned tag row into db - tags that have no related cache record anymore for whatever reason
         $tagsTableConnection->insert(
-            'cf_cache_pages_tags',
+            'cache_pages_tags',
             [
                 'identifier' => 'idC',
                 'tag' => 'tagC'
             ]
         );
         $tagsTableConnection->insert(
-            'cf_cache_pages_tags',
+            'cache_pages_tags',
             [
                 'identifier' => 'idC',
                 'tag' => 'tagD'
@@ -771,9 +771,9 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
 
         $subject->collectGarbage();
 
-        $this->assertSame(0, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idA']));
-        $this->assertSame(2, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idB']));
-        $this->assertSame(0, $tagsTableConnection->count('*', 'cf_cache_pages_tags', ['identifier' => 'idC']));
+        $this->assertSame(0, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idA']));
+        $this->assertSame(2, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idB']));
+        $this->assertSame(0, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idC']));
     }
 
     /**
@@ -782,7 +782,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     public function flushLeavesCacheAndTagsTableEmpty()
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend('Testing');
         $subject->setCache($frontendProphecy->reveal());
@@ -791,10 +791,10 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
 
         $subject->flush();
 
-        $cacheTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages');
-        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cf_cache_pages_tags');
-        $this->assertSame(0, $cacheTableConnection->count('*', 'cf_cache_pages', []));
-        $this->assertSame(0, $tagsTableConnection->count('*', 'cf_cache_pages_tags', []));
+        $cacheTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages');
+        $tagsTableConnection = (new ConnectionPool())->getConnectionForTable('cache_pages_tags');
+        $this->assertSame(0, $cacheTableConnection->count('*', 'cache_pages', []));
+        $this->assertSame(0, $tagsTableConnection->count('*', 'cache_pages_tags', []));
     }
 
     /**
@@ -806,7 +806,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     protected function getSubjectObject($returnMockObject = false, $isConnectionMysql = true)
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
-        $frontendProphecy->getIdentifier()->willReturn('cache_pages');
+        $frontendProphecy->getIdentifier()->willReturn('pages');
 
         if (!$returnMockObject) {
             $subject = new Typo3DatabaseBackend('Testing');

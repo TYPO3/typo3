@@ -201,7 +201,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheProphecy = $this->prophesize(CacheFrontendInterface::class);
-        $cacheManagerProphecy->getCache('cache_imagesizes')->willReturn($cacheProphecy->reveal());
+        $cacheManagerProphecy->getCache('imagesizes')->willReturn($cacheProphecy->reveal());
         $cacheProphecy->get(Argument::cetera())->willReturn(false);
         $cacheProphecy->set(Argument::cetera(), null)->willReturn(false);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());

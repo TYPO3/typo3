@@ -130,7 +130,7 @@ return [
             'cacheConfigurations' => [
                 // The cache_core cache is is for core php code only and must
                 // not be abused by third party extensions.
-                'cache_core' => [
+                'core' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
                     'options' => [
@@ -138,13 +138,13 @@ return [
                     ],
                     'groups' => ['system']
                 ],
-                'cache_hash' => [
+                'hash' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
                     'options' => [],
                     'groups' => ['pages']
                 ],
-                'cache_pages' => [
+                'pages' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
                     'options' => [
@@ -152,7 +152,7 @@ return [
                     ],
                     'groups' => ['pages']
                 ],
-                'cache_pagesection' => [
+                'pagesection' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
                     'options' => [
@@ -161,13 +161,13 @@ return [
                     ],
                     'groups' => ['pages']
                 ],
-                'cache_runtime' => [
+                'runtime' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend::class,
                     'options' => [],
                     'groups' => []
                 ],
-                'cache_rootline' => [
+                'rootline' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
                     'options' => [
@@ -175,7 +175,7 @@ return [
                     ],
                     'groups' => ['pages']
                 ],
-                'cache_imagesizes' => [
+                'imagesizes' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
                     'options' => [

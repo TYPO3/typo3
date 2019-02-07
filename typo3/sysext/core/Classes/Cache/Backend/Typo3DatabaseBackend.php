@@ -64,8 +64,8 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
     public function setCache(FrontendInterface $cache)
     {
         parent::setCache($cache);
-        $this->cacheTable = 'cf_' . $this->cacheIdentifier;
-        $this->tagsTable = 'cf_' . $this->cacheIdentifier . '_tags';
+        $this->cacheTable = 'cache_' . $this->cacheIdentifier;
+        $this->tagsTable = 'cache_' . $this->cacheIdentifier . '_tags';
         $this->maximumLifetime = self::FAKED_UNLIMITED_EXPIRE - $GLOBALS['EXEC_TIME'];
     }
 

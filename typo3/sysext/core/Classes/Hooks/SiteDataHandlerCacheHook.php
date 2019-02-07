@@ -76,6 +76,6 @@ class SiteDataHandlerCacheHook
      */
     protected function getCache(): FrontendInterface
     {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core');
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
     }
 }

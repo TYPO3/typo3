@@ -224,7 +224,7 @@ class ConfigurationController
                 MiddlewareStackResolver::class,
                 GeneralUtility::makeInstance(PackageManager::class),
                 GeneralUtility::makeInstance(DependencyOrderingService::class),
-                GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core')
+                GeneralUtility::makeInstance(CacheManager::class)->getCache('core')
             );
             $renderArray = [];
             foreach (['frontend', 'backend'] as $stackName) {

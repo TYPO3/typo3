@@ -510,7 +510,7 @@ class MarkerBasedTemplateService
      */
     protected function getCache()
     {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
     }
 
     /**
@@ -520,6 +520,6 @@ class MarkerBasedTemplateService
      */
     protected function getRuntimeCache()
     {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
     }
 }

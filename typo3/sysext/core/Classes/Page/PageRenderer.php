@@ -1674,7 +1674,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $metaTags = [];
         $metaTagManagers = $this->metaTagRegistry->getAllManagers();
         try {
-            $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_pages');
+            $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('pages');
         } catch (NoSuchCacheException $e) {
             $cache = null;
         }

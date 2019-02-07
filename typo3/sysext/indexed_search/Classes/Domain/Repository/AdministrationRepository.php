@@ -737,7 +737,7 @@ class AdministrationRepository
 
                 if (!empty($idList)) {
                     /** @var FrontendInterface $pageCache */
-                    $pageCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_pages');
+                    $pageCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('pages');
                     foreach ($idList as $pageId) {
                         $pageCache->flushByTag('pageId_' . $pageId);
                     }
