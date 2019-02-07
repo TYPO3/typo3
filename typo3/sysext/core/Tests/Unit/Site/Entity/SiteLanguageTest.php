@@ -29,15 +29,18 @@ class SiteLanguageTest extends UnitTestCase
     {
         $configuration = [
             'navigationTitle' => 'NavTitle',
-            'customValue' => 'a custom value'
+            'customValue' => 'a custom value',
+            'fallbacks' => '1,2',
         ];
         $subject = new SiteLanguage(1, 'de', new Uri('/'), $configuration);
         $expected = [
+            'navigationTitle' => 'NavTitle',
+            'customValue' => 'a custom value',
+            'fallbacks' => '1,2',
             'languageId' => 1,
             'locale' => 'de',
             'base' => '/',
             'title' => 'Default',
-            'navigationTitle' => 'NavTitle',
             'twoLetterIsoCode' => 'en',
             'hreflang' => 'en-US',
             'direction' => '',
@@ -45,9 +48,11 @@ class SiteLanguageTest extends UnitTestCase
             'flagIdentifier' => '',
             'fallbackType' => 'strict',
             'enabled' => true,
-            'fallbackLanguageIds' => [],
-            'customValue' => 'a custom value'
+            'fallbackLanguageIds' => [
+                1,
+                2
+            ],
         ];
-        $this->assertEquals($expected, $subject->toArray());
+        $this->assertSame($expected, $subject->toArray());
     }
 }
