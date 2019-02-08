@@ -14,7 +14,7 @@
 import {SeverityEnum} from './Enum/Severity';
 import * as $ from 'jquery';
 import Icons = require('./Icons');
-import Wizard = require('TYPO3/CMS/Backend/Wizard');
+import Wizard = require('./Wizard');
 
 type LanguageRecord = {
   uid: number;
@@ -255,7 +255,7 @@ class Localization {
                   } else {
                     Wizard.lockNextStep();
                   }
-                }).on('change', '.t3js-localization-toggle-column', (toggleEvt): void => {
+                }).on('change', '.t3js-localization-toggle-column', (toggleEvt: JQueryEventObject): void => {
                   const $me = $(toggleEvt.currentTarget);
                   const $children = $me.closest('fieldset').find('.t3js-localization-toggle-record');
 

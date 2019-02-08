@@ -21,6 +21,7 @@ declare namespace TYPO3 {
   export let Storage: any;
   export let Tooltip: any;
   export let Utility: any;
+  export let Wizard: any;
   export const lang: { [key: string]: string };
   export const settings: any;
   export const configuration: any;
