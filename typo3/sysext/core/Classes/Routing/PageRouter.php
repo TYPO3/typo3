@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
@@ -114,9 +114,35 @@ class PageRouter implements RouterInterface
     public function matchRequest(ServerRequestInterface $request, RouteResultInterface $previousResult = null): RouteResultInterface
     {
         $urlPath = $previousResult->getTail();
+        $prefixedUrlPath = '/' . trim($urlPath, '/');
         $slugCandidates = $this->getCandidateSlugsFromRoutePath($urlPath ?: '/');
+        $pageCandidates = [];
         $language = $previousResult->getLanguage();
-        $pageCandidates = $this->getPagesFromDatabaseForCandidates($slugCandidates, $language->getLanguageId());
+        $languages = [$language->getLanguageId()];
+        if ($language->getFallbackType() === 'fallback') {
+            $languages = array_merge($languages, $language->getFallbackLanguageIds());
+        }
+        // Iterate all defined languages in their configured order to get matching page candidates somewhere in the language fallback chain
+        foreach ($languages as $languageId) {
+            $pageCandidatesFromSlugsAndLanguage = $this->getPagesFromDatabaseForCandidates($slugCandidates, $languageId);
+            // Determine whether fetched page candidates qualify for the request. The incoming URL is checked against all
+            // pages found for the current URL and language.
+            foreach ($pageCandidatesFromSlugsAndLanguage as $candidate) {
+                $slugCandidate = '/' . trim($candidate['slug'], '/');
+                if ($slugCandidate === '/' || strpos($prefixedUrlPath, $slugCandidate) === 0) {
+                    // The slug is a subpart of the requested URL, so it's a possible candidate
+                    if ($prefixedUrlPath === $slugCandidate) {
+                        // The requested URL matches exactly the found slug. We can't find a better match,
+                        // so use that page candidate and stop any further querying.
+                        $pageCandidates = [$candidate];
+                        break 2;
+                    }
+
+                    $pageCandidates[] = $candidate;
+                }
+            }
+        }
+
         // Stop if there are no candidates
         if (empty($pageCandidates)) {
             throw new RouteNotFoundException('No page candidates found for path "' . $urlPath . '"', 1538389999);
@@ -152,7 +178,7 @@ class PageRouter implements RouterInterface
 
         $matcher = new PageUriMatcher($fullCollection);
         try {
-            $result = $matcher->match('/' . trim($urlPath, '/'));
+            $result = $matcher->match($prefixedUrlPath);
             /** @var Route $matchedRoute */
             $matchedRoute = $fullCollection->get($result['_route']);
             return $this->buildPageArguments($matchedRoute, $result, $request->getQueryParams());
@@ -195,7 +221,7 @@ class PageRouter implements RouterInterface
         }
 
         $context = clone GeneralUtility::makeInstance(Context::class);
-        $context->setAspect('language', new LanguageAspect($language->getLanguageId()));
+        $context->setAspect('language', LanguageAspectFactory::createFromSiteLanguage($language));
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
         $page = $pageRepository->getPage($pageId, true);
         $pagePath = ltrim($page['slug'] ?? '', '/');

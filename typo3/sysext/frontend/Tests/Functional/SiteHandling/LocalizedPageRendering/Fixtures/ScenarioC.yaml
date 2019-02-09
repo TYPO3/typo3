@@ -1,0 +1,47 @@
+__variables:
+  - &pageStandard 0
+  - &contentText 'text'
+  - &idAcmeRootPage 1000
+
+entitySettings:
+  '*':
+    nodeColumnName: 'pid'
+    columnNames: {id: 'uid', language: 'sys_language_uid'}
+    defaultValues: {pid: 0}
+  page:
+    isNode: true
+    tableName: 'pages'
+    parentColumnName: 'pid'
+    languageColumnNames: ['l10n_parent', 'l10n_source']
+    columnNames: {type: 'doktype', root: 'is_siteroot', mount: 'mount_pid', visitorGroups: 'fe_group'}
+    defaultValues: {hidden: 0, doktype: *pageStandard, l18n_cfg: 2}
+    valueInstructions:
+      shortcut:
+        first: {shortcut: 0, shortcut_mode: 1}
+  content:
+    tableName: 'tt_content'
+    languageColumnNames: ['l18n_parent', 'l10n_source']
+    columnNames: {title: 'header', type: 'CType', column: 'colPos'}
+    defaultValues: {hidden: 0, type: *contentText, column: 0}
+  language:
+    tableName: 'sys_language'
+    columnNames: {code: 'language_isocode'}
+  typoscript:
+    tableName: 'sys_template'
+    valueInstructions:
+      type:
+        site: {root: 1, clear: 1}
+
+entities:
+  language:
+    - self: {id: 1, title: 'German', code: 'de'}
+    - self: {id: 2, title: 'Swiss German', code: 'de'}
+  page:
+    - self: {id: *idAcmeRootPage, title: 'EN: Root', root: true, slug: '/'}
+      children:
+        - self: {id: 1100, title: 'EN: Welcome', slug: '/hello'}
+          languageVariants:
+            - self: {id: 1101, title: 'DE: Willkommen', language: 1, slug: '/willkommen'}
+        - self: {id: 1200, title: 'EN: About us', root: true, slug: '/about-us'}
+          languageVariants:
+            - self: {id: 1202, title: 'DE-CH: Über uns', language: 2, slug: '/ueber-uns'}

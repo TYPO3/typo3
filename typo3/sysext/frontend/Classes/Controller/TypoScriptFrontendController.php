@@ -2789,9 +2789,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         // Default is that everything defaults to the default language...
                         $languageId = ($languageContentId = 0);
                 }
-            } else {
-                // Setting sys_language if an overlay record was found (which it is only if a language is used)
-                $this->page = $this->sys_page->getPageOverlay($this->page, $languageAspect->getId());
             }
 
             // Define the language aspect again now
@@ -2802,6 +2799,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $languageAspect->getOverlayType(),
                 $languageAspect->getFallbackChain()
             );
+
+            // Setting sys_language if an overlay record was found (which it is only if a language is used)
+            // We'll do this every time since the language aspect might have changed now
+            // Doing this ensures that page properties like the page title are returned in the correct language
+            $this->page = $this->sys_page->getPageOverlay($this->page, $languageAspect->getContentId());
         }
 
         // Set the language aspect

@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -729,12 +730,8 @@ abstract class AbstractMenuContentObject
 
         if ($specialValue === 'auto') {
             $site = $this->getCurrentSite();
-            $languageItems = [];
             $languages = $site->getLanguages();
-
-            foreach ($languages as $languageUid => $language) {
-                $languageItems[] = $languageUid;
-            }
+            $languageItems = array_keys($languages);
         } else {
             $languageItems = GeneralUtility::intExplode(',', $specialValue);
         }
@@ -1355,35 +1352,20 @@ abstract class AbstractMenuContentObject
             && !GeneralUtility::inList($this->doktypeExcludeList, $data['doktype']) // Page may not be 'not_in_menu' or 'Backend User Section'
             && !in_array($data['uid'], $banUidArray, false) // not in banned uid's
         ) {
-            // Checks if the default language version can be shown:
-            // Block page is set, if l18n_cfg allows plus: 1) Either default language or 2) another language but NO overlay record set for page!
-            $languageId = $this->getCurrentLanguageAspect()->getId();
-            $blockPage = GeneralUtility::hideIfDefaultLanguage($data['l18n_cfg']) && (!$languageId || $languageId && !$data['_PAGES_OVERLAY']);
-            if (!$blockPage) {
-                // Checking if a page should be shown in the menu depending on whether a translation exists:
-                $tok = true;
-                // There is an alternative language active AND the current page requires a translation:
-                if ($languageId && GeneralUtility::hideIfNotTranslated($data['l18n_cfg'])) {
-                    if (!$data['_PAGES_OVERLAY']) {
-                        $tok = false;
-                    }
-                }
-                // Continue if token is TRUE:
-                if ($tok) {
-                    // Checking if "&L" should be modified so links to non-accessible pages will not happen.
-                    if ($this->conf['protectLvar']) {
-                        if ($languageId && ($this->conf['protectLvar'] === 'all' || GeneralUtility::hideIfNotTranslated($data['l18n_cfg']))) {
-                            $tsfe = $this->getTypoScriptFrontendController();
-                            $olRec = $tsfe->sys_page->getPageOverlay($data['uid'], $languageId);
-                            if (empty($olRec)) {
-                                // If no page translation record then page can NOT be accessed in
-                                // the language pointed to by "&L" and therefore we protect the link by setting "&L=0"
-                                $data['_ADD_GETVARS'] .= '&L=0';
-                            }
+            // Checking if a page should be shown in the menu depending on whether a translation exists or if the default language is disabled
+            if ($this->sys_page->isPageSuitableForLanguage($data, $this->getCurrentLanguageAspect())) {
+                // Checking if "&L" should be modified so links to non-accessible pages will not happen.
+                if ($this->getCurrentLanguageAspect()->getId() > 0 && $this->conf['protectLvar']) {
+                    if ($this->conf['protectLvar'] === 'all' || GeneralUtility::hideIfNotTranslated($data['l18n_cfg'])) {
+                        $olRec = $this->sys_page->getPageOverlay($data['uid'], $this->getCurrentLanguageAspect()->getId());
+                        if (empty($olRec)) {
+                            // If no page translation record then page can NOT be accessed in
+                            // the language pointed to by "&L" and therefore we protect the link by setting "&L=0"
+                            $data['_ADD_GETVARS'] .= '&L=0';
                         }
                     }
-                    return true;
                 }
+                return true;
             }
         }
         return false;
@@ -1745,6 +1727,7 @@ abstract class AbstractMenuContentObject
             // Only setting url, not target
             $LD['totalURL'] = $this->parent_cObj->typoLink_URL([
                 'parameter' => $shortcut['uid'],
+                'language' => 'current',
                 'additionalParams' => $addParams . $this->I['val']['additionalParams'] . $menuItem['_ADD_GETVARS'],
                 'linkAccessRestrictedPages' => !empty($this->mconf['showAccessRestrictedPages'])
             ]);
@@ -2221,6 +2204,13 @@ abstract class AbstractMenuContentObject
         }
         if ($addParams) {
             $conf['additionalParams'] = $addParams;
+        }
+
+        // Ensure that the typolink gets an info which language was actually requested. The $page record could be the record
+        // from page translation language=1 as fallback but page translation language=2 was requested. Search for
+        // "_PAGES_OVERLAY_REQUESTEDLANGUAGE" for more details
+        if ($page['_PAGES_OVERLAY_REQUESTEDLANGUAGE'] ?? 0) {
+            $conf['language'] = $page['_PAGES_OVERLAY_REQUESTEDLANGUAGE'];
         }
         if ($no_cache) {
             $conf['no_cache'] = true;
