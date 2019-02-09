@@ -45,13 +45,13 @@ class LocalizationFactoryTest extends UnitTestCase
     public function getParsedDataHandlesLocallangXMLOverride()
     {
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
         $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
         $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
         $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
 
-        $subject = new LocalizationFactory();
+        $store = new LanguageStore();
+        $subject = new LocalizationFactory($store, $cacheManagerProphecy->reveal());
 
         $unique = 'locallangXMLOverrideTest' . substr(StringUtility::getUniqueId(), 0, 10);
         $xml = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
@@ -72,8 +72,6 @@ class LocalizationFactoryTest extends UnitTestCase
         // Set override file
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:core/Resources/Private/Language/locallang_core.xlf'][$unique] = $file;
 
-        /** @var $store LanguageStore */
-        $store = GeneralUtility::makeInstance(LanguageStore::class);
         $store->flushData('EXT:core/Resources/Private/Language/locallang_core.xlf');
 
         // Get override value

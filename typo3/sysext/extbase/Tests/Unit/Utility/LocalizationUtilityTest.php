@@ -17,7 +17,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageStore;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -343,7 +347,12 @@ class LocalizationUtilityTest extends UnitTestCase
         $property = $reflectionClass->getProperty('LOCAL_LANG');
         $property->setAccessible(true);
         $property->setValue($this->LOCAL_LANG);
-        $GLOBALS['LANG'] = new LanguageService();
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
+        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
+        $GLOBALS['LANG'] = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()));
         self::assertEquals($expected, LocalizationUtility::translate($key, 'core', $arguments, $languageKey, $altLanguageKeys));
     }
 
@@ -503,7 +512,12 @@ class LocalizationUtilityTest extends UnitTestCase
         $method->setAccessible(true);
         $method->invoke(null, 'core', $this->languageFilePath);
 
-        $GLOBALS['LANG'] = new LanguageService();
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
+        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
+        $GLOBALS['LANG'] = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()));
 
         $result = LocalizationUtility::translate('key1', 'core', null, 'dk');
         self::assertNotNull($result);
@@ -545,7 +559,12 @@ class LocalizationUtilityTest extends UnitTestCase
         $method->setAccessible(true);
         $method->invoke(null, 'core', ''); // setting the language file path to an empty string here
 
-        $GLOBALS['LANG'] = new LanguageService();
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
+        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
+        $GLOBALS['LANG'] = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()));
 
         $result = LocalizationUtility::translate('key1', 'core', null, 'dk');
         self::assertNotNull($result);

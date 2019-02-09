@@ -23,8 +23,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Middleware\PageArgumentValidator;
 use TYPO3\CMS\Frontend\Middleware\PageResolver;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
@@ -104,6 +106,10 @@ class PageArgumentValidatorTest extends UnitTestCase
         $request = $request->withAttribute('routing', $pageArguments);
 
         $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
+        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
+        $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+
         $response = $subject->process($request, $this->responseOutputHandler);
         self::assertEquals(404, $response->getStatusCode());
     }
@@ -117,6 +123,9 @@ class PageArgumentValidatorTest extends UnitTestCase
         $request = new ServerRequest($incomingUrl, 'GET');
 
         $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
+        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
+        $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
         $response = $subject->process($request, $this->responseOutputHandler);
         self::assertEquals(404, $response->getStatusCode());
     }
@@ -151,6 +160,9 @@ class PageArgumentValidatorTest extends UnitTestCase
         $request = $request->withAttribute('routing', $pageArguments);
 
         $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
+        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
+        $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
         $response = $subject->process($request, $this->responseOutputHandler);
         self::assertEquals(404, $response->getStatusCode());
     }

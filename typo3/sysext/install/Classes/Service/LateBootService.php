@@ -114,6 +114,12 @@ class LateBootService
     /**
      * Bootstrap a non-failsafe container and load ext_localconf
      *
+     * Use by actions like the database analyzer and the upgrade wizards which
+     * need additional bootstrap actions performed.
+     *
+     * Those actions can potentially fatal if some old extension is loaded that triggers
+     * a fatal in ext_localconf or ext_tables code! Use only if really needed.
+     *
      * @param bool $resetContainer
      * @return ContainerInterface
      */
@@ -140,5 +146,10 @@ class LateBootService
         }
 
         return $container;
+    }
+
+    public function resetGlobalContainer(): void
+    {
+        $this->makeCurrent(null, []);
     }
 }

@@ -38,7 +38,7 @@ use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
 class CoreUpdateService
 {
     /**
-     * @var \TYPO3\CMS\Install\Service\CoreVersionService
+     * @var CoreVersionService
      */
     protected $coreVersionService;
 
@@ -68,12 +68,9 @@ class CoreUpdateService
      */
     protected $downloadBaseUri;
 
-    /**
-     * @param CoreVersionService $coreVersionService
-     */
-    public function __construct(CoreVersionService $coreVersionService = null)
+    public function __construct(CoreVersionService $coreVersionService)
     {
-        $this->coreVersionService = $coreVersionService ?: GeneralUtility::makeInstance(CoreVersionService::class);
+        $this->coreVersionService = $coreVersionService;
         $this->setDownloadTargetPath(Environment::getVarPath() . '/transient/');
         $this->symlinkToCoreFiles = $this->discoverCurrentCoreSymlink();
         $this->downloadBaseUri = 'https://get.typo3.org';

@@ -32,7 +32,7 @@ class QueryGeneratorTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->setUpBackendUserFromFixture(1);
-        $GLOBALS['LANG'] = new LanguageService();
+        $GLOBALS['LANG'] = LanguageService::create('default');
     }
 
     /**

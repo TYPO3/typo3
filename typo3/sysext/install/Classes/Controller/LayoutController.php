@@ -38,6 +38,17 @@ use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 class LayoutController extends AbstractController
 {
     /**
+     * @var SilentConfigurationUpgradeService
+     */
+    private $silentConfigurationUpgradeService;
+
+    public function __construct(
+        SilentConfigurationUpgradeService $silentConfigurationUpgradeService
+    ) {
+        $this->silentConfigurationUpgradeService = $silentConfigurationUpgradeService;
+    }
+
+    /**
      * The init action renders an HTML response with HTML view having <head> section
      * containing resources to main .js routing.
      *
@@ -90,10 +101,9 @@ class LayoutController extends AbstractController
      */
     public function executeSilentConfigurationUpdateAction(): ResponseInterface
     {
-        $silentUpdate = new SilentConfigurationUpgradeService();
         $success = true;
         try {
-            $silentUpdate->execute();
+            $this->silentConfigurationUpgradeService->execute();
         } catch (ConfigurationChangedException $e) {
             $success = false;
         }

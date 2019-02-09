@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Service;
 
 use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -28,24 +27,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class CoreVersionService
 {
     /**
-     * @var \TYPO3\CMS\Core\Registry
-     */
-    protected $registry;
-
-    /**
      * Base URI for TYPO3 Version REST api
      *
      * @var string
      */
     protected $apiBaseUrl = 'https://get.typo3.org/v1/api/';
-
-    /**
-     * Initialize update URI
-     */
-    public function __construct()
-    {
-        $this->registry = GeneralUtility::makeInstance(Registry::class);
-    }
 
     /**
      * Development git checkout versions always end with '-dev'. They are

@@ -33,6 +33,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class LocallangXmlParserTest extends UnitTestCase
 {
     /**
+     * @var ObjectProphecy|CacheManager
+     */
+    protected $cacheManagerProphecy;
+
+    /**
      * Prepares the environment before running a test.
      */
     protected function setUp(): void
@@ -41,10 +46,9 @@ class LocallangXmlParserTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = 'xml';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['parser']['xml'] = \TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser::class;
 
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $this->cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
+        $this->cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
         $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
         $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
 
@@ -122,7 +126,7 @@ class LocallangXmlParserTest extends UnitTestCase
     public function canOverrideLlxml()
     {
         /** @var $factory LocalizationFactory */
-        $factory = new LocalizationFactory();
+        $factory = new LocalizationFactory(new LanguageStore(), $this->cacheManagerProphecy->reveal());
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][self::getFixtureFilePath('locallang.xml')][] = self::getFixtureFilePath('locallang_override.xml');
         $LOCAL_LANG = array_merge(
@@ -183,7 +187,7 @@ class LocallangXmlParserTest extends UnitTestCase
     public function canTranslateNumericKeys($key, $expectedResult)
     {
         /** @var $factory LocalizationFactory */
-        $factory = new LocalizationFactory();
+        $factory = new LocalizationFactory(new LanguageStore(), $this->cacheManagerProphecy->reveal());
 
         $LOCAL_LANG = $factory->getParsedData(self::getFixtureFilePath('locallangNumericKeys.xml'), 'fr');
 

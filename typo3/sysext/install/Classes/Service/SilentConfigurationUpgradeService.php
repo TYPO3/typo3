@@ -43,7 +43,7 @@ use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 class SilentConfigurationUpgradeService
 {
     /**
-     * @var \TYPO3\CMS\Core\Configuration\ConfigurationManager
+     * @var ConfigurationManager
      */
     protected $configurationManager;
 
@@ -157,9 +157,9 @@ class SilentConfigurationUpgradeService
         'SYS/systemLogLevel',
     ];
 
-    public function __construct(ConfigurationManager $configurationManager = null)
+    public function __construct(ConfigurationManager $configurationManager)
     {
-        $this->configurationManager = $configurationManager ?: GeneralUtility::makeInstance(ConfigurationManager::class);
+        $this->configurationManager = $configurationManager;
     }
 
     /**

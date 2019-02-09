@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Middleware;
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -36,6 +37,16 @@ use TYPO3\CMS\Install\Service\SessionService;
 class Installer implements MiddlewareInterface
 {
     /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
+    /**
      * Handles an Install Tool request when nothing is there
      *
      * @param ServerRequestInterface $request
@@ -49,7 +60,8 @@ class Installer implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        $controller = new InstallerController();
+        // Lazy load InstallerController, to instantiate the class and the dependencies only if we handle an install request.
+        $controller = $this->container->get(InstallerController::class);
         $actionName = $request->getParsedBody()['install']['action'] ?? $request->getQueryParams()['install']['action'] ?? 'init';
         $action = $actionName . 'Action';
 

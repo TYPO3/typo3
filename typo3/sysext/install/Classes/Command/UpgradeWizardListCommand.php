@@ -38,6 +38,11 @@ use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 class UpgradeWizardListCommand extends Command
 {
     /**
+     * @var LateBootService
+     */
+    private $lateBootService;
+
+    /**
      * @var UpgradeWizardsService
      */
     private $upgradeWizardsService;
@@ -52,12 +57,22 @@ class UpgradeWizardListCommand extends Command
      */
     private $input;
 
+    public function __construct(
+        string $name,
+        LateBootService $lateBootService,
+        UpgradeWizardsService $upgradeWizardsService
+    ) {
+        $this->lateBootService = $lateBootService;
+        $this->upgradeWizardsService = $upgradeWizardsService;
+        parent::__construct($name);
+    }
+
     /**
      * Bootstrap running of upgradeWizards
      */
     protected function bootstrap(): void
     {
-        GeneralUtility::makeInstance(LateBootService::class)->loadExtLocalconfDatabaseAndExtTables();
+        $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
         Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class);
         Bootstrap::initializeBackendAuthentication();
     }
@@ -88,7 +103,6 @@ class UpgradeWizardListCommand extends Command
         $this->output = new SymfonyStyle($input, $output);
         $this->input = $input;
         $this->bootstrap();
-        $this->upgradeWizardsService = new UpgradeWizardsService();
 
         $result = 0;
         $wizards = [];

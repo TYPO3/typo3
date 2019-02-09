@@ -69,12 +69,12 @@ class LanguagePackService implements LoggerAwareInterface
     ];
     private const LANGUAGE_PACK_URL = 'https://localize.typo3.org/xliff/';
 
-    public function __construct(EventDispatcherInterface $eventDispatcher = null, RequestFactory $requestFactory = null)
+    public function __construct(EventDispatcherInterface $eventDispatcher, RequestFactory $requestFactory)
     {
-        $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
+        $this->eventDispatcher = $eventDispatcher;
         $this->locales = GeneralUtility::makeInstance(Locales::class);
         $this->registry = GeneralUtility::makeInstance(Registry::class);
-        $this->requestFactory = $requestFactory ?? GeneralUtility::makeInstance(RequestFactory::class);
+        $this->requestFactory = $requestFactory;
     }
 
     /**

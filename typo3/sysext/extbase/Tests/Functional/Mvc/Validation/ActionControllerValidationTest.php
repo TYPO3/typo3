@@ -67,7 +67,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
      */
     public function forwardedActionValidatesPreviouslyIgnoredArgument(array $blogPostArgument, array $trustedProperties, array $expectedErrorCodes)
     {
-        $GLOBALS['LANG'] = new LanguageService();
+        $GLOBALS['LANG'] = GeneralUtility::getContainer()->get(LanguageService::class);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
 
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
@@ -115,7 +115,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
      */
     public function validationResultsAreProvidedForTheSameObjectInDifferentArguments()
     {
-        $GLOBALS['LANG'] = new LanguageService();
+        $GLOBALS['LANG'] = GeneralUtility::getContainer()->get(LanguageService::class);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
 
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');

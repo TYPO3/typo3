@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -46,6 +46,31 @@ use TYPO3\CMS\Install\Service\LocalConfigurationValueService;
  */
 class SettingsController extends AbstractController
 {
+    /**
+     * @var PackageManager
+     */
+    private $packageManager;
+
+    /**
+     * @var ExtensionConfigurationService
+     */
+    private $extensionConfigurationService;
+
+    /**
+     * @var LanguageServiceFactory
+     */
+    private $languageServiceFactory;
+
+    public function __construct(
+        PackageManager $packageManager,
+        ExtensionConfigurationService $extensionConfigurationService,
+        LanguageServiceFactory $languageServiceFactory
+    ) {
+        $this->packageManager = $packageManager;
+        $this->extensionConfigurationService = $extensionConfigurationService;
+        $this->languageServiceFactory = $languageServiceFactory;
+    }
+
     /**
      * Main "show the cards" view
      *
@@ -379,15 +404,14 @@ class SettingsController extends AbstractController
     public function extensionConfigurationGetContentAction(ServerRequestInterface $request): ResponseInterface
     {
         // Extension configuration needs initialized $GLOBALS['LANG']
-        $GLOBALS['LANG'] = LanguageService::create('default');
-        $extensionConfigurationService = new ExtensionConfigurationService();
+        $GLOBALS['LANG'] = $this->languageServiceFactory->create('default');
         $extensionsWithConfigurations = [];
-        $activePackages = GeneralUtility::makeInstance(PackageManager::class)->getActivePackages();
+        $activePackages = $this->packageManager->getActivePackages();
         foreach ($activePackages as $extensionKey => $activePackage) {
             if (@file_exists($activePackage->getPackagePath() . 'ext_conf_template.txt')) {
                 $extensionsWithConfigurations[$extensionKey] = [
                     'packageInfo' => $activePackage,
-                    'configuration' => $extensionConfigurationService->getConfigurationPreparedForView($extensionKey),
+                    'configuration' => $this->extensionConfigurationService->getConfigurationPreparedForView($extensionKey),
                 ];
             }
         }

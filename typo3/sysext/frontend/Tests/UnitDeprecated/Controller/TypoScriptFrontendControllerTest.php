@@ -21,8 +21,10 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -127,6 +129,9 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $this->subject->_set('pageArguments', new PageArguments(1, '0', ['tx_test' => 1], ['tx_test' => 1], $remainingArguments));
 
         if ($expected) {
+            $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
+            $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
+            GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
             static::expectException(ImmediateResponseException::class);
         }
         $this->subject->reqCHash();

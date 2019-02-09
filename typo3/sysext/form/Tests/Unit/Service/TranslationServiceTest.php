@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageStore;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
@@ -102,10 +103,11 @@ class TranslationServiceTest extends UnitTestCase
             'getLanguageService'
         ], [], '', false);
 
+        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()));
         $this->mockTranslationService
             ->expects(self::any())
             ->method('getLanguageService')
-            ->willReturn(GeneralUtility::makeInstance(LanguageService::class));
+            ->willReturn($languageService);
 
         $this->mockTranslationService
             ->expects(self::any())

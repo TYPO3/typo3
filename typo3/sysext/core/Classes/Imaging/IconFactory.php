@@ -68,10 +68,10 @@ class IconFactory
      * @param EventDispatcherInterface $eventDispatcher
      * @param IconRegistry $iconRegistry
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher = null, IconRegistry $iconRegistry = null)
+    public function __construct(EventDispatcherInterface $eventDispatcher, IconRegistry $iconRegistry)
     {
-        $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
-        $this->iconRegistry = $iconRegistry ?? GeneralUtility::makeInstance(IconRegistry::class);
+        $this->eventDispatcher = $eventDispatcher;
+        $this->iconRegistry = $iconRegistry;
         $this->recordStatusMapping = $GLOBALS['TYPO3_CONF_VARS']['SYS']['IconFactory']['recordStatusMapping'];
         $this->overlayPriorities = $GLOBALS['TYPO3_CONF_VARS']['SYS']['IconFactory']['overlayPriorities'];
     }

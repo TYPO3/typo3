@@ -42,6 +42,11 @@ use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 class UpgradeWizardRunCommand extends Command
 {
     /**
+     * @var LateBootService
+     */
+    private $lateBootService;
+
+    /**
      * @var UpgradeWizardsService
      */
     private $upgradeWizardsService;
@@ -56,16 +61,25 @@ class UpgradeWizardRunCommand extends Command
      */
     private $input;
 
+    public function __construct(
+        string $name,
+        LateBootService $lateBootService,
+        UpgradeWizardsService $upgradeWizardsService
+    ) {
+        $this->lateBootService = $lateBootService;
+        $this->upgradeWizardsService = $upgradeWizardsService;
+        parent::__construct($name);
+    }
+
     /**
      * Bootstrap running of upgrade wizard,
      * ensure database is utf-8
      */
     protected function bootstrap(): void
     {
-        GeneralUtility::makeInstance(LateBootService::class)->loadExtLocalconfDatabaseAndExtTables();
+        $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
         Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class);
         Bootstrap::initializeBackendAuthentication();
-        $this->upgradeWizardsService = new UpgradeWizardsService();
         $this->upgradeWizardsService->isDatabaseCharsetUtf8() ?: $this->upgradeWizardsService->setDatabaseCharsetUtf8();
     }
 

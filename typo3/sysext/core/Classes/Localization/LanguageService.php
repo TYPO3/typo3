@@ -105,10 +105,22 @@ class LanguageService
     protected $labels = [];
 
     /**
-     * LanguageService constructor.
+     * @var Locales
      */
-    public function __construct()
+    protected $locales;
+
+    /**
+     * @var LocalizationFactory
+     */
+    protected $localizationFactory;
+
+    /**
+     * @internal use one of the factory methods instead
+     */
+    public function __construct(Locales $locales, LocalizationFactory $localizationFactory)
     {
+        $this->locales = $locales;
+        $this->localizationFactory = $localizationFactory;
         $this->debugKey = (bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['languageDebug'];
     }
 
@@ -124,13 +136,12 @@ class LanguageService
     public function init($languageKey)
     {
         // Find the requested language in this list based on the $languageKey
-        $locales = GeneralUtility::makeInstance(Locales::class);
         // Language is found. Configure it:
-        if (in_array($languageKey, $locales->getLocales(), true)) {
+        if (in_array($languageKey, $this->locales->getLocales(), true)) {
             // The current language key
             $this->lang = $languageKey;
             $this->languageDependencies[] = $languageKey;
-            foreach ($locales->getLocaleDependencies($languageKey) as $language) {
+            foreach ($this->locales->getLocaleDependencies($languageKey) as $language) {
                 $this->languageDependencies[] = $language;
             }
         }
@@ -371,9 +382,6 @@ class LanguageService
             return $this->languageFileCache[$fileRef . $this->lang];
         }
 
-        /** @var LocalizationFactory $languageFactory */
-        $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
-
         if ($this->lang !== 'default') {
             $languages = array_reverse($this->languageDependencies);
         } else {
@@ -381,7 +389,7 @@ class LanguageService
         }
         $localLanguage = [];
         foreach ($languages as $language) {
-            $tempLL = $languageFactory->getParsedData($fileRef, $language);
+            $tempLL = $this->localizationFactory->getParsedData($fileRef, $language);
             $localLanguage['default'] = $tempLL['default'];
             if (!isset($localLanguage[$this->lang])) {
                 $localLanguage[$this->lang] = $localLanguage['default'];
@@ -435,9 +443,7 @@ class LanguageService
      */
     public static function create(string $locale): self
     {
-        $obj = GeneralUtility::makeInstance(LanguageService::class);
-        $obj->init($locale);
-        return $obj;
+        return GeneralUtility::makeInstance(LanguageServiceFactory::class)->create($locale);
     }
 
     public static function createFromUserPreferences(?AbstractUserAuthentication $user): self

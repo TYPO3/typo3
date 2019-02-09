@@ -56,9 +56,6 @@ services:
     arguments:
       $configPath: "%env(TYPO3:configPath)%/sites"
 
-  TYPO3\CMS\Core\Package\FailsafePackageManager:
-    autoconfigure: false
-
   TYPO3\CMS\Core\Package\UnitTestPackageManager:
     autoconfigure: false
 
@@ -320,6 +317,15 @@ services:
         identifier: 'category-registry'
         method: 'addCategoryDatabaseSchema'
         event: TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent
+
+  # @internal
+  # @todo: deprecate makeInstance(LanguageService::class)
+  # This service entry is provided for legacy code that instantiates LanguageService
+  # using GeneralUtility::makeInstance instead of the factory methods which itself
+  # use LanguageServiceFactory (for install tool compatibility).
+  TYPO3\CMS\Core\Localization\LanguageService:
+    shared: false
+    public: true
 
   TYPO3\CMS\Core\Page\AssetRenderer:
     public: true

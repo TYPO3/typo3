@@ -40,6 +40,7 @@ class ExtendedFileUtilityTest extends UnitTestCase
     {
         parent::setUp();
         $GLOBALS['LANG'] = $this->getMockBuilder(LanguageService::class)
+            ->disableOriginalConstructor()
             ->setMethods(['sL'])
             ->getMock();
     }

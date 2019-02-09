@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
 
+use Prophecy\Argument;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -26,6 +27,11 @@ use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\LanguageStore;
+use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\Routing\PageArguments;
@@ -141,6 +147,16 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      */
     public function localizationReturnsUnchangedStringIfNotLocallangLabel()
     {
+        $nullCacheBackend = new NullBackend('');
+        $cacheManager = $this->prophesize(CacheManager::class);
+        $cacheManager->getCache('l10n')->willReturn($nullCacheBackend);
+        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManager->reveal()));
+        $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
+        $languageServiceFactoryProphecy->create(Argument::any())->will(function ($args) use ($languageService) {
+            $languageService->init($args[0]);
+            return $languageService;
+        });
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
         $string = StringUtility::getUniqueId();
         $site = $this->createSiteWithDefaultLanguage([
             'locale' => 'fr',
@@ -531,12 +547,20 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $nullCacheBackend = new NullBackend('');
         $cacheManager = $this->prophesize(CacheManager::class);
         $cacheManager->getCache('pages')->willReturn($nullCacheBackend);
+        $cacheManager->getCache('l10n')->willReturn($nullCacheBackend);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://www.example.com/');
         $site = $this->createSiteWithDefaultLanguage([
             'locale' => 'fr',
             'typo3Language' => 'fr-test',
         ]);
+        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManager->reveal()));
+        $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
+        $languageServiceFactoryProphecy->create(Argument::any())->will(function ($args) use ($languageService) {
+            $languageService->init($args[0]);
+            return $languageService;
+        });
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
         // Constructor calling initPageRenderer()
         new TypoScriptFrontendController(
             new Context(),
@@ -556,12 +580,20 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $nullCacheBackend = new NullBackend('');
         $cacheManager = $this->prophesize(CacheManager::class);
         $cacheManager->getCache('pages')->willReturn($nullCacheBackend);
+        $cacheManager->getCache('l10n')->willReturn($nullCacheBackend);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://www.example.com/');
         $site = $this->createSiteWithDefaultLanguage([
             'locale' => 'fr',
             'typo3Language' => 'fr',
         ]);
+        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManager->reveal()));
+        $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
+        $languageServiceFactoryProphecy->create(Argument::any())->will(function ($args) use ($languageService) {
+            $languageService->init($args[0]);
+            return $languageService;
+        });
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
         // Constructor calling setOutputLanguage()
         $subject = $this->getAccessibleMock(
             TypoScriptFrontendController::class,

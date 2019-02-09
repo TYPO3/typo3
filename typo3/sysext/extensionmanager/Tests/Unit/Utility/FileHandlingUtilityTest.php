@@ -149,7 +149,7 @@ class FileHandlingUtilityTest extends UnitTestCase
         $this->expectException(ExtensionManagerException::class);
         $this->expectExceptionCode(1337280417);
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['removeDirectory', 'addDirectory']);
-        $languageServiceMock = $this->getMockBuilder(LanguageService::class)->getMock();
+        $languageServiceMock = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
         $fileHandlerMock->_set('languageService', $languageServiceMock);
         $fileHandlerMock->_call('makeAndClearExtensionDir', 'testing123', 'fakepath');
     }
