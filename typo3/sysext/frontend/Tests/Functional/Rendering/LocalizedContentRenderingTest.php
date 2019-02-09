@@ -721,7 +721,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                         'image' => [],
                     ],
                 ],
-                'pageTitle' => 'Default language Page', //TODO: change it to "[DK]Page" once #81657 is fixed
+                'pageTitle' => '[DK]Page',
                 'sys_language_uid' => 2,
                 'sys_language_content' => 1,
                 'sys_language_mode' => 'content_fallback',
@@ -823,7 +823,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                         'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
                     ],
                 ],
-                'pageTitle' => 'Default language Page', //TODO: change it to "[DK]Page" once #81657 is fixed
+                'pageTitle' => '[DK]Page',
                 'sys_language_uid' => 2,
                 'sys_language_content' => 1,
                 'sys_language_mode' => 'content_fallback',
@@ -922,7 +922,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                         'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
                     ],
                 ],
-                'pageTitle' => 'Default language Page', //TODO: change it to "[DK]Page" once #81657 is fixed
+                'pageTitle' => '[DK]Page',
                 'sys_language_uid' => 2,
                 'sys_language_content' => 1,
                 'sys_language_mode' => 'content_fallback',
