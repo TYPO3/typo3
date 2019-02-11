@@ -3328,8 +3328,8 @@ class DataHandler implements LoggerAwareInterface
                         ->from($table)
                         ->where(
                             $queryBuilder->expr()->eq(
-                            'pid',
-                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                                'pid',
+                                $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                         )
                         );
                     if ($isTableWorkspaceEnabled && (int)$this->BE_USER->workspace === 0) {
@@ -6064,7 +6064,7 @@ class DataHandler implements LoggerAwareInterface
     {
         $cacheId = md5('doesRecordExist_pageLookUp' . '_' . $id . '_' . $perms . '_' . implode(
             '_',
-                $columns
+            $columns
         ) . '_' . (string)$this->admin);
 
         // If result is cached, return it

@@ -35,7 +35,7 @@ class TaskcenterExtractionUpdate extends AbstractDownloadExtensionUpdate
     public function __construct()
     {
         $this->extension = new ExtensionModel(
-          'taskcenter',
+            'taskcenter',
             'Deprecated taskcenter extension',
             '10.0.0',
             'friendsoftypo3/taskcenter',

@@ -807,14 +807,14 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     if ($strLen > $postPreLgd) {
                         $output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', GeneralUtility::fixed_lgd_cs(
                             $parts[$k],
-                                $postPreLgd - $postPreLgd_offset
+                            $postPreLgd - $postPreLgd_offset
                         )) . $divider;
                     }
                 } else {
                     if ($strLen > $postPreLgd * 2) {
                         $output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', GeneralUtility::fixed_lgd_cs(
                             $parts[$k],
-                                $postPreLgd - $postPreLgd_offset
+                            $postPreLgd - $postPreLgd_offset
                         )) . $divider . preg_replace('/^[^[:space:]]+[[:space:]]/', '', GeneralUtility::fixed_lgd_cs($parts[$k], -($postPreLgd - $postPreLgd_offset)));
                     }
                 }

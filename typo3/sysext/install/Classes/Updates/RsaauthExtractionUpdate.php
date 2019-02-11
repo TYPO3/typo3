@@ -35,7 +35,7 @@ class RsaauthExtractionUpdate extends AbstractDownloadExtensionUpdate
     public function __construct()
     {
         $this->extension = new ExtensionModel(
-          'rsaauth',
+            'rsaauth',
             'Deprecated rsaauth extension',
             '10.0.0',
             'friendsoftypo3/rsaauth',

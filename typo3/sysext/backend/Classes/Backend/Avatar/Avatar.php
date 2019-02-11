@@ -148,7 +148,7 @@ class Avatar
             }
             if (!is_string($configuration['provider']) || empty($configuration['provider']) || !class_exists($configuration['provider']) || !is_subclass_of(
                 $configuration['provider'],
-                    AvatarProviderInterface::class
+                AvatarProviderInterface::class
             )) {
                 throw new \RuntimeException(
                     'The avatar provider "' . $identifier . '" defines an invalid provider. Ensure the class exists and implements the "' . AvatarProviderInterface::class . '".',

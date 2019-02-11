@@ -79,7 +79,7 @@ class Lexer
                     $this->debugString .= '<span style="color:red">' . htmlspecialchars(substr(
                         $wordString,
                         $pos,
-                            $start - $pos
+                        $start - $pos
                     )) . '</span>' . htmlspecialchars(substr($wordString, $start, $len));
                 }
                 $pos = $start + $len;

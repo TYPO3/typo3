@@ -689,7 +689,7 @@ class GeneralUtility
             }
             $hmac = call_user_func($hashAlgorithm, ($key ^ $opad) . pack('H*', call_user_func(
                 $hashAlgorithm,
-                    ($key ^ $ipad) . $input
+                ($key ^ $ipad) . $input
             )));
         }
         return $hmac;
@@ -3005,7 +3005,7 @@ class GeneralUtility
             // is relative. Prepended with the public web folder
             $filename = Environment::getPublicPath() . '/' . $filename;
         } elseif (!(
-                  static::isFirstPartOfStr($filename, Environment::getProjectPath())
+            static::isFirstPartOfStr($filename, Environment::getProjectPath())
                   || static::isFirstPartOfStr($filename, Environment::getPublicPath())
                 )) {
             // absolute, but set to blank if not allowed

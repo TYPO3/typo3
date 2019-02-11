@@ -6334,9 +6334,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $knownAliases[$tableReference] = true;
 
             $fromClauses[$tableReference] = $tableSql . $this->getQueryArrayJoinHelper(
-                    $tableReference,
-                    $queryBuilder->getQueryPart('join'),
-                    $knownAliases
+                $tableReference,
+                $queryBuilder->getQueryPart('join'),
+                $knownAliases
                 );
         }
 

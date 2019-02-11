@@ -29,8 +29,8 @@ class IntegerValidator extends AbstractValidator
         if (filter_var($value, FILTER_VALIDATE_INT) === false) {
             $this->addError(
                 $this->translateErrorMessage(
-                'validator.integer.notvalid',
-                'extbase'
+                    'validator.integer.notvalid',
+                    'extbase'
                 ),
                 1221560494
             );

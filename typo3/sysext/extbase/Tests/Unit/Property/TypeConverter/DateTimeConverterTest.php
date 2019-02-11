@@ -278,9 +278,9 @@ class DateTimeConverterTest extends UnitTestCase
         $source = ['day' => '13', 'month' => '10', 'year' => '2010'];
         $mappingConfiguration = new \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration();
         $mappingConfiguration->setTypeConverterOption(
-                \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::class,
-                \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
-                'Y-m-d'
+            \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::class,
+            \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
+            'Y-m-d'
         );
 
         $date = $this->converter->convertFrom($source, 'DateTime', [], $mappingConfiguration);

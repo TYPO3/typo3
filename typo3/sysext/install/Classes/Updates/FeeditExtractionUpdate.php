@@ -35,7 +35,7 @@ class FeeditExtractionUpdate extends AbstractDownloadExtensionUpdate
     public function __construct()
     {
         $this->extension = new ExtensionModel(
-          'feedit',
+            'feedit',
             'Deprecated feedit extension',
             '10.0.0',
             'friendsoftypo3/feedit',

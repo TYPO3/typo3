@@ -1240,7 +1240,7 @@ class QueryGenerator
                 case 'newlevel':
                     $qs .= LF . $pad . trim($conf['operator']) . ' (' . $this->getQuery(
                         $queryConfig[$key]['nl'],
-                            $pad . '   '
+                        $pad . '   '
                     ) . LF . $pad . ')';
                     break;
                 case 'userdef':

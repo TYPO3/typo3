@@ -104,7 +104,7 @@ class ObjectConverterTest extends UnitTestCase
         $classSchemaMock = $this->createMock(ClassSchema::class);
         $classSchemaMock->expects($this->any())->method('getMethod')->with('__construct')->willReturn(new ClassSchema\Method(
             '__construct',
-                [
+            [
                 'params' => [
                     'thePropertyName' => [
                         'type' => 'TheTypeOfSubObject',
