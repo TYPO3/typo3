@@ -117,11 +117,11 @@ class ConnectionMigrator
             );
         }
         return array_merge_recursive(
-                ['change' => [], 'change_table' => [], 'drop' => [], 'drop_table' => [], 'tables_count' => []],
-                $this->getUnusedFieldUpdateSuggestions($schemaDiff),
-                $this->getUnusedTableUpdateSuggestions($schemaDiff),
-                $this->getDropTableUpdateSuggestions($schemaDiff),
-                $this->getDropFieldUpdateSuggestions($schemaDiff)
+            ['change' => [], 'change_table' => [], 'drop' => [], 'drop_table' => [], 'tables_count' => []],
+            $this->getUnusedFieldUpdateSuggestions($schemaDiff),
+            $this->getUnusedTableUpdateSuggestions($schemaDiff),
+            $this->getDropTableUpdateSuggestions($schemaDiff),
+            $this->getDropFieldUpdateSuggestions($schemaDiff)
             );
     }
 

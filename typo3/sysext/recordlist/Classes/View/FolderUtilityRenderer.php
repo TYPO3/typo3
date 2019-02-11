@@ -87,10 +87,10 @@ class FolderUtilityRenderer
 
         // Make footer of upload form, including the submit button:
         $redirectValue = $this->parameterProvider->getScriptUrl() . HttpUtility::buildQueryString(
-                $this->parameterProvider->getUrlParameters(
+            $this->parameterProvider->getUrlParameters(
                     ['identifier' => $folderObject->getCombinedIdentifier()]
                 ),
-                '&'
+            '&'
             );
         $markup[] = '<input type="hidden" name="data[newfolder][' . $a . '][redirect]" value="' . htmlspecialchars($redirectValue) . '" />';
 
@@ -151,8 +151,8 @@ class FolderUtilityRenderer
             $markup[] = '<input type="hidden" name="data[upload][' . $a . '][data]" value="' . $a . '" />';
         }
         $redirectValue = $this->parameterProvider->getScriptUrl() . HttpUtility::buildQueryString(
-                $this->parameterProvider->getUrlParameters(['identifier' => $combinedIdentifier]),
-                '&'
+            $this->parameterProvider->getUrlParameters(['identifier' => $combinedIdentifier]),
+            '&'
             );
         $markup[] = '<input type="hidden" name="data[upload][1][redirect]" value="' . htmlspecialchars($redirectValue) . '" />';
 

@@ -347,16 +347,16 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
                     if (strlen($postData['password1']) < $minLength) {
                         $markerArray['###STATUS_MESSAGE###'] = sprintf(
                             $this->getDisplayText(
-                            'change_password_tooshort_message',
-                            $this->conf['changePasswordTooShortMessage_stdWrap.']
+                                'change_password_tooshort_message',
+                                $this->conf['changePasswordTooShortMessage_stdWrap.']
                         ),
                             $minLength
                         );
                     } elseif ($postData['password1'] != $postData['password2']) {
                         $markerArray['###STATUS_MESSAGE###'] = sprintf(
                             $this->getDisplayText(
-                            'change_password_notequal_message',
-                            $this->conf['changePasswordNotEqualMessage_stdWrap.']
+                                'change_password_notequal_message',
+                                $this->conf['changePasswordNotEqualMessage_stdWrap.']
                         ),
                             $minLength
                         );

@@ -5,7 +5,7 @@ defined('TYPO3_MODE') or die();
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
     'tt_content',
-     [
+    [
          'tx_testdatahandler_select' => [
             'exclude' => true,
             'label' => 'DataHandler Test Select',

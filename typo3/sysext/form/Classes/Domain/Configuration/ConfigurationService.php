@@ -373,63 +373,54 @@ class ConfigurationService implements SingletonInterface
                     '^formElementsDefinition\.(.*)\.formEditor\.editors\.([\d]+)\.(propertyPath|.*\.propertyPath)$',
                     GeneralUtility::makeInstance(PropertyPathsExtractor::class, $extractorDto)
                 ),
-
                 GeneralUtility::makeInstance(
                     ArrayProcessing::class,
                     'formElementAdditionalElementPropertyPaths',
                     '^formElementsDefinition\.(.*)\.formEditor\.editors\.([\d]+)\.additionalElementPropertyPaths\.([\d]+)',
                     GeneralUtility::makeInstance(AdditionalElementPropertyPathsExtractor::class, $extractorDto)
                 ),
-
                 GeneralUtility::makeInstance(
                     ArrayProcessing::class,
                     'formElementRelativeMultiValueProperties',
                     '^formElementsDefinition\.(.*)\.formEditor\.editors\.([\d]+)\.templateName$',
                     GeneralUtility::makeInstance(MultiValuePropertiesExtractor::class, $extractorDto)
                 ),
-
                 GeneralUtility::makeInstance(
                     ArrayProcessing::class,
                     'formElementPredefinedDefaults',
                     '^formElementsDefinition\.(.*)\.formEditor\.predefinedDefaults\.(.+)$',
                     GeneralUtility::makeInstance(PredefinedDefaultsExtractor::class, $extractorDto)
                 ),
-
                 GeneralUtility::makeInstance(
                     ArrayProcessing::class,
                     'formElementCreatable',
                     '^formElementsDefinition\.(.*)\.formEditor.group$',
                     GeneralUtility::makeInstance(IsCreatableFormElementExtractor::class, $extractorDto)
                 ),
-
                 GeneralUtility::makeInstance(
                     ArrayProcessing::class,
                     'propertyCollectionCreatable',
                     '^formElementsDefinition\.(.*)\.formEditor\.editors\.([\d]+)\.templateName$',
                     GeneralUtility::makeInstance(IsCreatablePropertyCollectionElementExtractor::class, $extractorDto)
                 ),
-
                 GeneralUtility::makeInstance(
                     ArrayProcessing::class,
                     'propertyCollectionPropertyPaths',
                     '^formElementsDefinition\.(.*)\.formEditor\.propertyCollections\.(finishers|validators)\.([\d]+)\.editors\.([\d]+)\.(propertyPath|.*\.propertyPath)$',
                     GeneralUtility::makeInstance(CollectionPropertyPathsExtractor::class, $extractorDto)
                 ),
-
                 GeneralUtility::makeInstance(
                     ArrayProcessing::class,
                     'propertyCollectionAdditionalElementPropertyPaths',
                     '^formElementsDefinition\.(.*)\.formEditor\.propertyCollections\.(finishers|validators)\.([\d]+)\.editors\.([\d]+)\.additionalElementPropertyPaths\.([\d]+)',
                     GeneralUtility::makeInstance(AdditionalElementPropertyPathsExtractor::class, $extractorDto)
                 ),
-
                 GeneralUtility::makeInstance(
                     ArrayProcessing::class,
                     'propertyCollectionRelativeMultiValueProperties',
                     '^formElementsDefinition\.(.*)\.formEditor\.propertyCollections\.(finishers|validators)\.([\d]+)\.editors\.([\d]+)\.templateName$',
                     GeneralUtility::makeInstance(CollectionMultiValuePropertiesExtractor::class, $extractorDto)
                 ),
-
                 GeneralUtility::makeInstance(
                     ArrayProcessing::class,
                     'propertyCollectionPredefinedDefaults',

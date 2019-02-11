@@ -28,7 +28,7 @@ class NumberValidator extends AbstractValidator
     {
         if (!is_numeric($value)) {
             $this->addError(
-            $this->translateErrorMessage(
+                $this->translateErrorMessage(
                 'validator.number.notvalid',
                 'extbase'
             ),

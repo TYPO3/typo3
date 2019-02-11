@@ -37,7 +37,7 @@ class RedirectExtractionUpdate extends AbstractDownloadExtensionUpdate
     public function __construct()
     {
         $this->extension = new ExtensionModel(
-          'rdct',
+            'rdct',
             'Redirects based on &RDCT parameter',
             '1.0.0',
             'friendsoftypo3/rdct',

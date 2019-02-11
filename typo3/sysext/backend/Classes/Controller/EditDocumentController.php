@@ -1832,8 +1832,8 @@ class EditDocumentController
                 ])
                 ->setHref('#')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                   'actions-edit-delete',
-                   Icon::SIZE_SMALL
+                    'actions-edit-delete',
+                    Icon::SIZE_SMALL
                 ))
                 ->setShowLabelText(true)
                 ->setTitle($this->getLanguageService()->getLL('deleteItem'));
@@ -2559,10 +2559,10 @@ class EditDocumentController
                     // The input record was online and an offline version must be found or made:
                     // Look for version of this workspace:
                     $versionRec = BackendUtility::getWorkspaceVersionOfRecord(
-                            $this->getBackendUser()->workspace,
-                            $table,
-                            $reqRecord['uid'],
-                            'uid,pid,t3ver_oid'
+                        $this->getBackendUser()->workspace,
+                        $table,
+                        $reqRecord['uid'],
+                        'uid,pid,t3ver_oid'
                         );
                     return is_array($versionRec) ? $versionRec : $reqRecord;
                 }

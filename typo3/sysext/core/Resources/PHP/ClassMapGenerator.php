@@ -98,7 +98,7 @@ class ClassMapGenerator
                     $map[$class] = $filePath;
                 } elseif ($io && $map[$class] !== $filePath && !preg_match(
                     '{/(test|fixture|example|stub)s?/}i',
-                        str_replace('\\', '/', $map[$class] . ' ' . $filePath)
+                    str_replace('\\', '/', $map[$class] . ' ' . $filePath)
                 )) {
                     $io->writeError(
                         '<warning>Warning: Ambiguous class resolution, "' . $class . '"' .

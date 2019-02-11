@@ -1923,7 +1923,7 @@ class DatabaseRecordList
         }
         $rangeIndicator = '<li><span>' . sprintf(
             $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:rangeIndicator'),
-                $this->firstElementNumber + 1,
+            $this->firstElementNumber + 1,
             $lastElementNumber
         ) . '</span></li>';
 
@@ -2154,8 +2154,8 @@ class DatabaseRecordList
                         ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'),
                         $this->getReferenceCount($table, $row['uid'])
                     ) . BackendUtility::translationCount(
-                            $table,
-                            $row['uid'],
+                        $table,
+                        $row['uid'],
                         ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
                     );
                 }
@@ -2315,7 +2315,7 @@ class DatabaseRecordList
                         $table,
                         $row['uid'],
                         1,
-                            $isSel === 'copy',
+                        $isSel === 'copy',
                         ['returnUrl' => '']
                     )) . ');')
                     . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy')) . '">'
@@ -2338,7 +2338,7 @@ class DatabaseRecordList
                             $table,
                             $row['uid'],
                             0,
-                                    $isSel === 'cut',
+                            $isSel === 'cut',
                             ['returnUrl' => '']
                         )) . ');')
                         . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut')) . '">'
@@ -2353,7 +2353,7 @@ class DatabaseRecordList
                             $table,
                             $row['uid'],
                             0,
-                                    $isSel === 'cut',
+                            $isSel === 'cut',
                             ['returnUrl' => '']
                         )) . ');')
                         . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut')) . '">'
@@ -3186,11 +3186,11 @@ class DatabaseRecordList
 
         foreach ($searchLevelItems as $kv => $label) {
             $opt[] = '<option value="' . $kv . '"' . ($kv === $this->searchLevels ? ' selected="selected"' : '') . '>' . htmlspecialchars(
-                    $label
+                $label
                 ) . '</option>';
         }
         $lMenu = '<select class="form-control" name="search_levels" title="' . htmlspecialchars(
-                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search_levels')
+            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search_levels')
             ) . '" id="search_levels">' . implode('', $opt) . '</select>';
         // Table with the search box:
         $content = '<div class="db_list-searchbox-form db_list-searchbox-toolbar module-docheader-bar module-docheader-bar-search t3js-module-docheader-bar t3js-module-docheader-bar-search" id="db_list-searchbox-toolbar" style="display: ' . ($this->searchString == '' ? 'none' : 'block') . ';">
@@ -3201,7 +3201,7 @@ class DatabaseRecordList
                             <div class="row">
                                 <div class="col-sm-6 col-xs-12">
                                     <label for="search_field">' . htmlspecialchars(
-                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString')
+            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString')
             ) . '</label>
 									<input class="form-control" type="search" placeholder="' . htmlspecialchars(
                 $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')
@@ -3653,11 +3653,11 @@ class DatabaseRecordList
     {
         if ($this->table !== $table) {
             return '<a href="' . htmlspecialchars(
-                    $this->listURL('', $table, 'firstElementNumber')
+                $this->listURL('', $table, 'firstElementNumber')
                 ) . '">' . $code . '</a>';
         }
         return '<a href="' . htmlspecialchars(
-                $this->listURL('', '', 'sortField,sortRev,table,firstElementNumber')
+            $this->listURL('', '', 'sortField,sortRev,table,firstElementNumber')
             ) . '">' . $code . '</a>';
     }
 
@@ -3677,17 +3677,17 @@ class DatabaseRecordList
         // If the title is blank, make a "no title" label:
         if ((string)$code === '') {
             $code = '<i>[' . htmlspecialchars(
-                    $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title')
+                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title')
                 ) . ']</i> - '
                 . htmlspecialchars(BackendUtility::getRecordTitle($table, $row));
         } else {
             $code = htmlspecialchars($code, ENT_QUOTES, 'UTF-8', false);
             if ($code != htmlspecialchars($origCode)) {
                 $code = '<span title="' . htmlspecialchars(
-                        $origCode,
-                        ENT_QUOTES,
-                        'UTF-8',
-                        false
+                    $origCode,
+                    ENT_QUOTES,
+                    'UTF-8',
+                    false
                     ) . '">' . $code . '</span>';
             } else {
                 $code = '<span title="' . $code . '">' . $code . '</span>';
@@ -3708,7 +3708,7 @@ class DatabaseRecordList
                 if ($permsEdit) {
                     $params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
                     $code = '<a href="#" onclick="' . htmlspecialchars(
-                            BackendUtility::editOnClick($params, '', -1)
+                        BackendUtility::editOnClick($params, '', -1)
                         ) . '" title="' . htmlspecialchars($lang->getLL('edit')) . '">' . $code . '</a>';
                 }
                 break;
@@ -3717,21 +3717,21 @@ class DatabaseRecordList
                 if ($table === 'pages' || $table === 'tt_content') {
                     $onClick = $this->getOnClickForRow($table, $row);
                     $code = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars(
-                            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')
+                        $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')
                         ) . '">' . $code . '</a>';
                 }
                 break;
             case 'info':
                 // "Info": (All records)
                 $code = '<a href="#" onclick="' . htmlspecialchars(
-                        'top.TYPO3.InfoWindow.showItem(' . GeneralUtility::quoteJSvalue($table) . ', ' . (int)$row['uid'] . '); return false;'
+                    'top.TYPO3.InfoWindow.showItem(' . GeneralUtility::quoteJSvalue($table) . ', ' . (int)$row['uid'] . '); return false;'
                     ) . '" title="' . htmlspecialchars($lang->getLL('showInfo')) . '">' . $code . '</a>';
                 break;
             default:
                 // Output the label now:
                 if ($table === 'pages') {
                     $code = '<a href="' . htmlspecialchars(
-                            $this->listURL($uid, '', 'firstElementNumber')
+                        $this->listURL($uid, '', 'firstElementNumber')
                         ) . '" onclick="setHighlight(' . (int)$uid . ')">' . $code . '</a>';
                 } else {
                     $code = $this->linkUrlMail($code, $origCode);
@@ -3845,7 +3845,7 @@ class DatabaseRecordList
         $fieldListArr = [];
         // Check table:
         if (is_array($GLOBALS['TCA'][$table]) && isset($GLOBALS['TCA'][$table]['columns']) && is_array(
-                $GLOBALS['TCA'][$table]['columns']
+            $GLOBALS['TCA'][$table]['columns']
             )) {
             if (isset($GLOBALS['TCA'][$table]['columns']) && is_array($GLOBALS['TCA'][$table]['columns'])) {
                 // Traverse configured columns and add them to field array, if available for user.
@@ -3882,7 +3882,7 @@ class DatabaseRecordList
                         $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
                     }
                     if (ExtensionManagementUtility::isLoaded(
-                            'workspaces'
+                        'workspaces'
                         ) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
                         $fieldListArr[] = 't3ver_id';
                         $fieldListArr[] = 't3ver_state';
@@ -4281,15 +4281,15 @@ class DatabaseRecordList
             case 'fwd':
                 $href = $this->listURL() . '&pointer=' . ($pointer - $this->iLimit) . $tParam;
                 $content = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
-                        'actions-move-up',
-                        Icon::SIZE_SMALL
+                    'actions-move-up',
+                    Icon::SIZE_SMALL
                     )->render() . '</a> <i>[' . (max(0, $pointer - $this->iLimit) + 1) . ' - ' . $pointer . ']</i>';
                 break;
             case 'rwd':
                 $href = $this->listURL() . '&pointer=' . $pointer . $tParam;
                 $content = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
-                        'actions-move-down',
-                        Icon::SIZE_SMALL
+                    'actions-move-down',
+                    Icon::SIZE_SMALL
                     )->render() . '</a> <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i>';
                 break;
         }
@@ -4384,8 +4384,8 @@ class DatabaseRecordList
         $title = htmlspecialchars($this->languageIconTitles[$sys_language_uid]['title']);
         if ($this->languageIconTitles[$sys_language_uid]['flagIcon']) {
             $out .= '<span title="' . $title . '">' . $this->iconFactory->getIcon(
-                    $this->languageIconTitles[$sys_language_uid]['flagIcon'],
-                    Icon::SIZE_SMALL
+                $this->languageIconTitles[$sys_language_uid]['flagIcon'],
+                Icon::SIZE_SMALL
                 )->render() . '</span>';
             if (!$addAsAdditionalText) {
                 return $out;
@@ -4446,11 +4446,11 @@ class DatabaseRecordList
             $htmlCode = '<a href="#"';
             if ($launchViewParameter !== '') {
                 $htmlCode .= ' onclick="' . htmlspecialchars(
-                        'top.TYPO3.InfoWindow.showItem(' . $launchViewParameter . '); return false;'
+                    'top.TYPO3.InfoWindow.showItem(' . $launchViewParameter . '); return false;'
                     ) . '"';
             }
             $htmlCode .= ' title="' . htmlspecialchars(
-                    $this->getLanguageService()->sL(
+                $this->getLanguageService()->sL(
                         'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references'
                     ) . ' (' . $references . ')'
                 ) . '">';

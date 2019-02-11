@@ -1192,9 +1192,9 @@ class IndexSearchRepository
             }
 
             return (bool)$connection->count(
-                    'phash',
-                    'index_grlist',
-                    [
+                'phash',
+                'index_grlist',
+                [
                         'phash' => (int)$row['phash'],
                         'gr_list' => $this->frontendUserGroupList
                     ]

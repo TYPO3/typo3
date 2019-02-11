@@ -162,10 +162,10 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
         if ($this->debugMode) {
             /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(
-                        \TYPO3\CMS\Core\Messaging\FlashMessage::class,
-                        $message,
-                        $errorLevels[$errorLevel],
-                        $flashMessageSeverity
+                \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+                $message,
+                $errorLevels[$errorLevel],
+                $flashMessageSeverity
                     );
             /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);

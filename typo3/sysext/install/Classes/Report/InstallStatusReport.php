@@ -118,7 +118,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
                         case 0:
                             $message .= sprintf(
                                 $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryShouldBeWritable'),
-                                    $path
+                                $path
                             ) . '<br />';
                             if ($severity < Status::WARNING) {
                                 $value = $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_recommendedWritableDirectory');
@@ -129,7 +129,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
                             $value = $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_requiredWritableDirectory');
                             $message .= sprintf(
                                 $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryMustBeWritable'),
-                                    $path
+                                $path
                             ) . '<br />';
                             $severity = Status::ERROR;
                             break;

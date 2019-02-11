@@ -400,9 +400,9 @@ class Typo3DbQueryParser
                 }
 
                 return $this->queryBuilder->expr()->comparison(
-                        $this->queryBuilder->quoteIdentifier($tableName . '.uid'),
-                        'IN',
-                        '(' . $queryBuilderForSubselect->getSQL() . ')'
+                    $this->queryBuilder->quoteIdentifier($tableName . '.uid'),
+                    'IN',
+                    '(' . $queryBuilderForSubselect->getSQL() . ')'
                     );
             }
             if ($typeOfRelation === ColumnMap::RELATION_HAS_MANY) {
@@ -424,13 +424,13 @@ class Typo3DbQueryParser
 
                     // Add it to the main query
                     return $this->queryBuilder->expr()->eq(
-                            $tableName . '.uid',
-                            '(' . $queryBuilderForSubselect->getSQL() . ')'
+                        $tableName . '.uid',
+                        '(' . $queryBuilderForSubselect->getSQL() . ')'
                         );
                 }
                 return $this->queryBuilder->expr()->inSet(
-                            $tableName . '.' . $columnName,
-                            $this->queryBuilder->quote($value)
+                    $tableName . '.' . $columnName,
+                    $this->queryBuilder->quote($value)
                         );
             }
             throw new RepositoryException('Unsupported or non-existing property name "' . $propertyName . '" used in relation matching.', 1327065745);
@@ -852,8 +852,8 @@ class Typo3DbQueryParser
                                 )
                             );
                     return $this->queryBuilder->expr()->orX(
-                            $this->queryBuilder->expr()->in($tableAlias . '.' . $languageField, [(int)$querySettings->getLanguageUid(), -1]),
-                            $this->queryBuilder->expr()->andX(
+                        $this->queryBuilder->expr()->in($tableAlias . '.' . $languageField, [(int)$querySettings->getLanguageUid(), -1]),
+                        $this->queryBuilder->expr()->andX(
                                 $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, 0),
                                 $this->queryBuilder->expr()->notIn(
                                     $tableAlias . '.uid',
@@ -864,8 +864,8 @@ class Typo3DbQueryParser
                         );
                 }
                 return $this->queryBuilder->expr()->in(
-                        $tableAlias . '.' . $languageField,
-                        [(int)$querySettings->getLanguageUid(), -1]
+                    $tableAlias . '.' . $languageField,
+                    [(int)$querySettings->getLanguageUid(), -1]
                     );
             }
         }

@@ -296,8 +296,8 @@ class FlexFormTools
                 $queryStatement = $queryBuilder->from($tableName)
                     ->where(
                         $queryBuilder->expr()->eq(
-                        'uid',
-                        $queryBuilder->createNamedParameter($row[$parentFieldName], \PDO::PARAM_INT)
+                            'uid',
+                            $queryBuilder->createNamedParameter($row[$parentFieldName], \PDO::PARAM_INT)
                     )
                     )
                     ->execute();

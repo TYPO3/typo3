@@ -282,7 +282,7 @@ class FileListController extends ActionController
 
         if ($this->folderObject && !$this->folderObject->getStorage()->checkFolderActionPermission(
             'read',
-                $this->folderObject
+            $this->folderObject
         )
         ) {
             $this->folderObject = null;
@@ -673,7 +673,7 @@ class FileListController extends ActionController
         // Upload button (only if upload to this directory is allowed)
         if ($this->folderObject && $this->folderObject->getStorage()->checkUserActionPermission(
             'add',
-                'File'
+            'File'
         ) && $this->folderObject->checkActionPermission('write')
         ) {
             $uploadButton = $buttonBar->makeLinkButton()
@@ -694,7 +694,7 @@ class FileListController extends ActionController
         if ($this->folderObject && $this->folderObject->checkActionPermission('write')
             && ($this->folderObject->getStorage()->checkUserActionPermission(
                 'add',
-                    'File'
+                'File'
             ) || $this->folderObject->checkActionPermission('add'))
         ) {
             $newButton = $buttonBar->makeLinkButton()
@@ -720,7 +720,7 @@ class FileListController extends ActionController
                     $clipBoardElement = $resourceFactory->retrieveFileOrFolderObject($element);
                     if ($clipBoardElement instanceof Folder && $clipBoardElement->getStorage()->isWithinFolder(
                         $clipBoardElement,
-                            $this->folderObject
+                        $this->folderObject
                     )
                     ) {
                         $addPasteButton = false;

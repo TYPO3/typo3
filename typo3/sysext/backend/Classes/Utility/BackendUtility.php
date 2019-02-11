@@ -108,8 +108,8 @@ class BackendUtility
             ->getQueryBuilderForTable($table)
             ->expr();
         return ' AND ' . $expressionBuilder->eq(
-                ($tableAlias ?: $table) . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete'],
-                0
+            ($tableAlias ?: $table) . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete'],
+            0
             );
     }
 

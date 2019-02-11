@@ -311,8 +311,8 @@ class SlugHelper
         $newValue = $slug;
         $counter = 0;
         while (!$this->isUniqueInSite(
-                $newValue,
-                $state
+            $newValue,
+            $state
             ) && $counter++ < 100
         ) {
             $newValue = $this->sanitize($rawValue . '-' . $counter);
@@ -337,8 +337,8 @@ class SlugHelper
         $newValue = $slug;
         $counter = 0;
         while (!$this->isUniqueInPid(
-                $newValue,
-                $state
+            $newValue,
+            $state
             ) && $counter++ < 100
         ) {
             $newValue = $this->sanitize($rawValue . '-' . $counter);

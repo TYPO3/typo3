@@ -152,7 +152,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $modifiedContentId = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $modifiedHotelId = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Hotel, 4);
         $this->actionService->clearWorkspaceRecords(
-                [
+            [
                     self::TABLE_Content => [$modifiedContentId],
                     self::TABLE_Hotel => [$modifiedHotelId],
                 ]

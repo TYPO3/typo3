@@ -197,7 +197,7 @@ class DoubleMetaPhoneUtility
                     // e.g. 'czerny'
                     if ($this->StringAt($this->original, $this->current, 2, ['CZ']) && !$this->StringAt(
                         $this->original,
-                            $this->current - 2,
+                        $this->current - 2,
                         4,
                         ['WICZ']
                     )) {
@@ -218,7 +218,7 @@ class DoubleMetaPhoneUtility
                         // 'bellocchio' but not 'bacchus'
                         if ($this->StringAt($this->original, $this->current + 2, 1, ['I', 'E', 'H']) && !$this->StringAt(
                             $this->original,
-                                $this->current + 2,
+                            $this->current + 2,
                             2,
                             ['HU']
                         )) {
@@ -266,7 +266,7 @@ class DoubleMetaPhoneUtility
                     } else {
                         if ($this->StringAt($this->original, $this->current + 1, 1, ['C', 'K', 'Q']) && !$this->StringAt(
                             $this->original,
-                                $this->current + 1,
+                            $this->current + 1,
                             2,
                             ['CE', 'CI']
                         )) {
@@ -395,7 +395,7 @@ class DoubleMetaPhoneUtility
                     // -ger-, -gy-
                     if (($this->StringAt($this->original, $this->current + 1, 2, ['ER']) || substr($this->original, $this->current + 1, 1) === 'Y') && !$this->StringAt($this->original, 0, 6, ['DANGER', 'RANGER', 'MANGER']) && !$this->StringAt(
                         $this->original,
-                            $this->current - 1,
+                        $this->current - 1,
                         1,
                         ['E', 'I']
                     ) && !$this->StringAt($this->original, $this->current - 1, 3, ['RGY', 'OGY'])) {
@@ -470,7 +470,7 @@ class DoubleMetaPhoneUtility
                             } else {
                                 if (!$this->StringAt($this->original, $this->current + 1, 1, ['L', 'T', 'K', 'S', 'N', 'M', 'B', 'Z']) && !$this->StringAt(
                                     $this->original,
-                                        $this->current - 1,
+                                    $this->current - 1,
                                     1,
                                     ['S', 'K', 'L']
                                 )) {
@@ -564,7 +564,7 @@ class DoubleMetaPhoneUtility
                     // french e.g. 'rogier', but exclude 'hochmeier'
                     if ($this->current == $this->last && !$this->SlavoGermanic($this->original) && $this->StringAt($this->original, $this->current - 2, 2, ['IE']) && !$this->StringAt(
                         $this->original,
-                            $this->current - 4,
+                        $this->current - 4,
                         2,
                         ['ME', 'MA']
                     )) {
