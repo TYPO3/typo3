@@ -3705,7 +3705,7 @@ class PageLayoutView implements LoggerAwareInterface
                 if ($table === 'pages' || $table === 'tt_content') {
                     $code = '<a href="#" onclick="' . htmlspecialchars(
                         BackendUtility::viewOnClick(
-                                ($table === 'tt_content' ? $this->id . '#' . $row['uid'] : $row['uid'])
+                            ($table === 'tt_content' ? $this->id . '#' . $row['uid'] : $row['uid'])
                             )
                         ) . '" title="' . htmlspecialchars(
                             $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')
@@ -4435,7 +4435,7 @@ class PageLayoutView implements LoggerAwareInterface
             }
             $htmlCode .= ' title="' . htmlspecialchars(
                 $this->getLanguageService()->sL(
-                        'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references'
+                    'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references'
                     ) . ' (' . $references . ')'
                 ) . '">';
             $htmlCode .= $references;

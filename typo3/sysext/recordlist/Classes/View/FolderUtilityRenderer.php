@@ -88,7 +88,7 @@ class FolderUtilityRenderer
         // Make footer of upload form, including the submit button:
         $redirectValue = $this->parameterProvider->getScriptUrl() . HttpUtility::buildQueryString(
             $this->parameterProvider->getUrlParameters(
-                    ['identifier' => $folderObject->getCombinedIdentifier()]
+                ['identifier' => $folderObject->getCombinedIdentifier()]
                 ),
             '&'
             );

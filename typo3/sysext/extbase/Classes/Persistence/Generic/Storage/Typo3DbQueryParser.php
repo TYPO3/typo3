@@ -854,10 +854,10 @@ class Typo3DbQueryParser
                     return $this->queryBuilder->expr()->orX(
                         $this->queryBuilder->expr()->in($tableAlias . '.' . $languageField, [(int)$querySettings->getLanguageUid(), -1]),
                         $this->queryBuilder->expr()->andX(
-                                $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, 0),
-                                $this->queryBuilder->expr()->notIn(
-                                    $tableAlias . '.uid',
-                                    $queryBuilderForSubselect->getSQL()
+                            $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, 0),
+                            $this->queryBuilder->expr()->notIn(
+                                $tableAlias . '.uid',
+                                $queryBuilderForSubselect->getSQL()
 
                                 )
                             )

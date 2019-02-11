@@ -1559,7 +1559,7 @@ class FileList
             }
             $htmlCode .= ' title="' . htmlspecialchars(
                 $this->getLanguageService()->sL(
-                        'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references'
+                    'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references'
                     ) . ' (' . $references . ')'
                 ) . '">';
             $htmlCode .= $references;
