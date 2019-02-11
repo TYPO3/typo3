@@ -304,6 +304,10 @@ class SiteConfigurationController
                         $newSysSiteData[$fieldName] = MathUtility::canBeInterpretedAsInteger($fieldValue) ? (int)$fieldValue : $fieldValue;
                         break;
 
+                    case 'check':
+                        $newSysSiteData[$fieldName] = (bool)$fieldValue;
+                        break;
+
                     default:
                         throw new \RuntimeException('TCA type "' . $type . '" is not implemented in site handling', 1521032781);
                 }
