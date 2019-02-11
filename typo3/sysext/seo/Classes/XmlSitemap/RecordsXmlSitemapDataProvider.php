@@ -99,7 +99,7 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         foreach ($rows as $row) {
             $this->items[] = [
                 'data' => $row,
-                'lastMod' => $row[$lastModifiedField]
+                'lastMod' => (int)$row[$lastModifiedField]
             ];
         }
     }
