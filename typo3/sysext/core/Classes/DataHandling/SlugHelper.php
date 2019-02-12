@@ -246,9 +246,15 @@ class SlugHelper
      */
     public function isUniqueInSite(string $slug, RecordState $state): bool
     {
-        $pageId = (int)$state->resolveNodeAggregateIdentifier();
+        $pageId = $state->resolveNodeAggregateIdentifier();
         $recordId = $state->getSubject()->getIdentifier();
         $languageId = $state->getContext()->getLanguageId();
+
+        if (!MathUtility::canBeInterpretedAsInteger($pageId)) {
+            // If this is a new page, we use the parent page to resolve the site
+            $pageId = $state->getNode()->getIdentifier();
+        }
+        $pageId = (int)$pageId;
 
         if ($pageId < 0) {
             $pageId = $this->resolveLivePageId($recordId);
