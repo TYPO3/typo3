@@ -4978,7 +4978,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $tsfe = $this->getTypoScriptFrontendController();
 
         $linkParameter = trim(
-            (isset($conf['parameter.']) ?? '')
+            (isset($conf['parameter.']))
             ? $this->stdWrap($conf['parameter'] ?? '', $conf['parameter.'])
             : ($conf['parameter'] ?? '')
         );
