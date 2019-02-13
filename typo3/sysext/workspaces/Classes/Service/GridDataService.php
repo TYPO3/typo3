@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
 use TYPO3\CMS\Workspaces\Event\AfterCompiledCacheableDataForWorkspaceEvent;
 use TYPO3\CMS\Workspaces\Event\AfterDataGeneratedForWorkspaceEvent;
@@ -175,12 +176,13 @@ class GridDataService implements LoggerAwareInterface
                     $origRecord = (array)BackendUtility::getRecord($table, $record['t3ver_oid']);
                     $versionRecord = (array)BackendUtility::getRecord($table, $record['uid']);
                     $combinedRecord = CombinedRecord::createFromArrays($table, $origRecord, $versionRecord);
+                    $hasDiff = $this->versionIsModified($combinedRecord);
                     $this->getIntegrityService()->checkElement($combinedRecord);
 
                     if ($hiddenField !== null) {
-                        $recordState = $this->workspaceState($versionRecord['t3ver_state'], $origRecord[$hiddenField], $versionRecord[$hiddenField]);
+                        $recordState = $this->workspaceState($versionRecord['t3ver_state'], $origRecord[$hiddenField], $versionRecord[$hiddenField], $hasDiff);
                     } else {
-                        $recordState = $this->workspaceState($versionRecord['t3ver_state']);
+                        $recordState = $this->workspaceState($versionRecord['t3ver_state'], $hasDiff);
                     }
 
                     $isDeletedPage = $table === 'pages' && $recordState === 'deleted';
@@ -237,6 +239,7 @@ class GridDataService implements LoggerAwareInterface
                     $versionArray['allowedAction_edit'] = $isRecordTypeAllowedToModify && !$isDeletedPage;
                     $versionArray['allowedAction_editVersionedPage'] = $isRecordTypeAllowedToModify && !$isDeletedPage;
                     $versionArray['state_Workspace'] = $recordState;
+                    $versionArray['hasChanges'] = ($recordState === 'unchanged') ? false: true;
 
                     $versionArray = array_merge(
                         $versionArray,
@@ -272,6 +275,20 @@ class GridDataService implements LoggerAwareInterface
         $this->dataArray = $event->getData();
         $this->sortDataArray();
         $this->resolveDataArrayDependencies();
+    }
+
+    protected function versionIsModified(CombinedRecord $combinedRecord): bool
+    {
+        $remoteServer = GeneralUtility::makeInstance(RemoteServer::class);
+
+        $params = new \StdClass();
+        $params->stage = $combinedRecord->getVersionRecord()->getRow()['t3ver_stage'];
+        $params->t3ver_oid = $combinedRecord->getLiveRecord()->getUid();
+        $params->table = $combinedRecord->getLiveRecord()->getTable();
+        $params->uid = $combinedRecord->getVersionRecord()->getUid();
+
+        $result = $remoteServer->getRowDetails($params);
+        return !empty($result['data'][0]['diff']);
     }
 
     /**
@@ -566,12 +583,14 @@ class GridDataService implements LoggerAwareInterface
     /**
      * Gets the state of a given state value.
      *
-     * @param int $stateId stateId of offline record
-     * @param bool $hiddenOnline hidden status of online record
+     * @param int $stateId        stateId of offline record
+     * @param bool $hiddenOnline  hidden status of online record
      * @param bool $hiddenOffline hidden status of offline record
+     * @param bool $hasDiff    whether the version has any changes
+     *
      * @return string
      */
-    protected function workspaceState($stateId, $hiddenOnline = false, $hiddenOffline = false)
+    protected function workspaceState($stateId, $hiddenOnline = false, $hiddenOffline = false, $hasDiff = true)
     {
         $hiddenState = null;
         if ($hiddenOnline == 0 && $hiddenOffline == 1) {
@@ -590,8 +609,13 @@ class GridDataService implements LoggerAwareInterface
                 $state = 'moved';
                 break;
             default:
-                $state = ($hiddenState ?: 'modified');
+                if (!$hasDiff) {
+                    $state =  'unchanged';
+                } else {
+                    $state = ($hiddenState ?: 'modified');
+                }
         }
+
         return $state;
     }
 

@@ -579,12 +579,11 @@ class Backend extends Workspaces {
         ).attr('title', TYPO3.lang['tooltip.expand'])
           .attr('data-target', '[data-collection="' + item.Workspaces_CollectionCurrent + '"]')
           .attr('data-toggle', 'collapse'),
-        $('<button />', {
-          class: 'btn btn-default',
-          'data-action': 'changes',
-          'data-toggle': 'tooltip',
-          title: TYPO3.lang['tooltip.showChanges'],
-        }).append(this.getPreRenderedIcon('actions-document-info')),
+        this.getAction(
+          item.hasChanges,
+          'changes',
+          'actions-document-info')
+          .attr('title', TYPO3.lang['tooltip.showChanges']),
         this.getAction(
           item.allowedAction_swap && item.Workspaces_CollectionParent === '',
           'swap',
