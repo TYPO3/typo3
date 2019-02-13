@@ -24,8 +24,7 @@
 							<core:iconForRecord table="{openDocument.table}" row="{openDocument.record}"/>
 						</div>
 						<div class="dropdown-table-column dropdown-table-title">
-							<a class="dropdown-table-title-ellipsis" href="#" onclick="{openDocument.onClickCode}"
-								 target="contentIframe">
+							<a class="dropdown-table-title-ellipsis t3js-open-doc" data-pid="{openDocument.pid}" href="{openDocument.uri}">
 								{openDocument.label}
 							</a>
 						</div>
@@ -52,8 +51,7 @@
 							<core:iconForRecord table="{recentDocument.table}" row="{recentDocument.record}"/>
 						</div>
 						<div class="dropdown-table-column dropdown-table-title">
-							<a class="dropdown-table-title-ellipsis" href="#" onclick="{recentDocument.onClickCode}"
-								 target="contentIframe">
+							<a class="dropdown-table-title-ellipsis t3js-open-doc" data-pid="{recentDocument.pid}" href="{recentDocument.uri}" >
 								{recentDocument.label}
 							</a>
 						</div>

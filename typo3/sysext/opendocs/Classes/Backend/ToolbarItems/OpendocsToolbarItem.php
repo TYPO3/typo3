@@ -185,7 +185,8 @@ class OpendocsToolbarItem implements ToolbarItemInterface
             $pid = (int)$document[3]['uid'];
         }
 
-        $result['onClickCode'] = 'jump(' . GeneralUtility::quoteJSvalue($uri) . ', \'web_list\', \'web\', ' . $pid . '); TYPO3.OpendocsMenu.toggleMenu(); return false;';
+        $result['pid'] = $pid;
+        $result['uri'] = $uri;
         $result['md5sum'] = $identifier;
 
         return $result;
