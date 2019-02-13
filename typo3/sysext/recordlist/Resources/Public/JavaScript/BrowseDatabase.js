@@ -10,37 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-/**
- * Module: TYPO3/CMS/Recordlist/BrowseDatabase
- * Database record selection
- * @exports TYPO3/CMS/Recordlist/BrowseDatabase
- */
-define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser'], function($, ElementBrowser) {
-  'use strict';
-
-  $(function() {
-    $('[data-close]').on('click', function(event) {
-      event.preventDefault();
-      var data = $(this).parents('span').data();
-
-      ElementBrowser.insertElement(
-        data.table,
-        data.uid,
-        'db',
-        data.title,
-        '',
-        '',
-        data.icon,
-        '',
-        $(this).data('close')
-      );
-    });
-
-    // adjust searchbox layout
-    var searchbox = document.getElementById('db_list-searchbox-toolbar');
-    searchbox.style.display = 'block';
-    searchbox.style.position = 'relative';
-  });
-
-});
+define(["require","exports","jquery","./ElementBrowser"],function(e,t,n,r){"use strict";return new function(){n(function(){n("[data-close]").on("click",function(e){e.preventDefault();var t=n(e.currentTarget).parents("span").data();r.insertElement(t.table,t.uid,"db",t.title,"","",t.icon,"",1===parseInt(n(e.currentTarget).data("close"),10))})});var e=document.getElementById("db_list-searchbox-toolbar");e.style.display="block",e.style.position="relative"}});

@@ -109,6 +109,10 @@ declare module 'TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min' {
   export = imagesloaded;
 }
 
+
+declare module 'TYPO3/CMS/Recordlist/LinkBrowser';
+declare module 'TYPO3/CMS/Backend/LegacyTree';
+
 declare module 'cm/lib/codemirror';
 declare module 'moment';
 

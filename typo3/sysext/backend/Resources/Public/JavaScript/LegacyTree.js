@@ -113,6 +113,15 @@ define(['jquery'], function($) {
     highlightClass: 'active',
     pageID: 0,
 
+    noop: function() {
+      //  yes, this function is nearly useless, but wait...
+      // ... It happened at a time when people still wrote event handlers
+      // in the markup. Times to which onclick="..." were normal.
+      // For such legacies is this method, because modern TypeScript can not
+      // know that and removes components that seemingly are not needed.
+      // For such cases, this method can be called simply and the world is alright again.
+    },
+
     // reloads a part of the page tree (useful when "expand" / "collapse")
     load: function(params, isExpand, obj, scopeData, scopeHash) {
       var $obj = $(obj);

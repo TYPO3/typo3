@@ -10,36 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-/**
- * Module: TYPO3/CMS/Recordlist/TelephoneLinkHandler
- * Telephone link interaction
- */
-define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
-  'use strict';
-
-  /**
-   *
-   * @type {{}}
-   * @exports TYPO3/CMS/Recordlist/TelephoneLinkHandler
-   */
-  var TelephoneLinkHandler = {};
-
-  $(function() {
-    $('#ltelephoneform').on('submit', function(event) {
-      event.preventDefault();
-
-      var value = $(this).find('[name="ltelephone"]').val();
-      if (value === 'tel:') {
-        return;
-      }
-      if (value.indexOf('tel:') === 0) {
-        value = value.substr(4);
-      }
-
-      LinkBrowser.finalizeFunction('tel:' + value);
-    });
-  });
-
-  return TelephoneLinkHandler;
-});
+define(["require","exports","jquery","./LinkBrowser"],function(e,n,t,r){"use strict";return new function(){t(function(){t("#ltelephoneform").on("submit",function(e){e.preventDefault();var n=t(e.currentTarget).find('[name="ltelephone"]').val();"tel:"!==n&&(0===n.indexOf("tel:")&&(n=n.substr(4)),r.finalizeFunction("tel:"+n))})})}});

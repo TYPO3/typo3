@@ -10,39 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-/**
- * Module: TYPO3/CMS/Recordlist/UrlLinkHandler
- * URL link interaction
- */
-define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
-  'use strict';
-
-  /**
-   *
-   * @type {{}}
-   * @exports TYPO3/CMS/Recordlist/UrlLinkHandler
-   */
-  var UrlLinkHandler = {};
-
-  /**
-   *
-   * @param {Event} event
-   */
-  UrlLinkHandler.link = function(event) {
-    event.preventDefault();
-
-    var value = $(this).find('[name="lurl"]').val();
-    if (value === "") {
-       return;
-    }
-
-    LinkBrowser.finalizeFunction(value);
-  };
-
-  $(function() {
-    $('#lurlform').on('submit', UrlLinkHandler.link);
-  });
-
-  return UrlLinkHandler;
-});
+define(["require","exports","jquery","./LinkBrowser"],function(n,r,e,i){"use strict";return new function(){var n=this;this.link=function(n){n.preventDefault();var r=e(n.currentTarget).find('[name="lurl"]').val();""!==r&&i.finalizeFunction(r)},e(function(){e("#lurlform").on("submit",n.link)})}});

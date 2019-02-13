@@ -10,46 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-/**
- * Module: TYPO3/CMS/Recordlist/FileLinkHandler
- * File link interaction
- */
-define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/LegacyTree'], function($, LinkBrowser, Tree) {
-  'use strict';
-
-  /**
-   *
-   * @type {{currentLink: string}}
-   * @exports TYPO3/CMS/Recordlist/FileLinkHandler
-   */
-  var FileLinkHandler = {
-    currentLink: ''
-  };
-
-  /**
-   *
-   * @param {Event} event
-   */
-  FileLinkHandler.linkFile = function(event) {
-    event.preventDefault();
-    LinkBrowser.finalizeFunction($(this).attr('href'));
-  };
-
-  /**
-   *
-   * @param {Event} event
-   */
-  FileLinkHandler.linkCurrent = function(event) {
-    event.preventDefault();
-    LinkBrowser.finalizeFunction(FileLinkHandler.currentLink);
-  };
-
-  $(function() {
-    FileLinkHandler.currentLink = $('body').data('currentLink');
-    $('a.t3js-fileLink').on('click', FileLinkHandler.linkFile);
-    $('input.t3js-linkCurrent').on('click', FileLinkHandler.linkCurrent);
-  });
-
-  return FileLinkHandler;
-});
+define(["require","exports","jquery","./LinkBrowser","TYPO3/CMS/Backend/LegacyTree"],function(n,e,i,t,r){"use strict";return new function(){var n=this;this.currentLink="",this.linkFile=function(n){n.preventDefault(),t.finalizeFunction(i(n.currentTarget).attr("href"))},this.linkCurrent=function(e){e.preventDefault(),t.finalizeFunction(n.currentLink)},r.noop(),i(function(){n.currentLink=i("body").data("currentLink"),i("a.t3js-fileLink").on("click",n.linkFile),i("input.t3js-linkCurrent").on("click",n.linkCurrent)})}});

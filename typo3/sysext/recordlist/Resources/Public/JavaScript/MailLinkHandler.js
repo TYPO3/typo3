@@ -10,37 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-/**
- * Module: TYPO3/CMS/Recordlist/MailLinkHandler
- * Mail link interaction
- */
-define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
-  'use strict';
-
-  /**
-   *
-   * @type {{}}
-   * @exports TYPO3/CMS/Recordlist/MailLinkHandler
-   */
-  var MailLinkHandler = {};
-
-  $(function() {
-    $('#lmailform').on('submit', function(event) {
-      event.preventDefault();
-
-      var value = $(this).find('[name="lemail"]').val();
-      if (value === 'mailto:') {
-        return;
-      }
-
-      while (value.substr(0, 7) === 'mailto:') {
-        value = value.substr(7);
-      }
-
-      LinkBrowser.finalizeFunction('mailto:' + value);
-    });
-  });
-
-  return MailLinkHandler;
-});
+define(["require","exports","jquery","./LinkBrowser"],function(n,i,t,e){"use strict";return new function(){t(function(){t("#lmailform").on("submit",function(n){n.preventDefault();var i=t(n.currentTarget).find('[name="lemail"]').val();if("mailto:"!==i){for(;"mailto:"===i.substr(0,7);)i=i.substr(7);e.finalizeFunction("mailto:"+i)}})})}});
