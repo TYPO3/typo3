@@ -10,27 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-/**
- * Module: TYPO3/CMS/Tstemplate/TypoScriptObjectBrowser
- * JavaScript for TypoScript Object Browser
- * @exports TYPO3/CMS/Tstemplate/TypoScriptObjectBrowser
- */
-define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable'], function($) {
-
-  var $searchFields = $('input[name="search_field"]');
-  var searchResultShown = ('' !== $searchFields.first().val());
-
-  // make search field clearable
-  $searchFields.clearable({
-    onClear: function() {
-      if (searchResultShown) {
-        $(this).closest('form').submit();
-      }
-    }
-  });
-
-  if (self.location.hash) {
-    window.scrollTo(window.pageXOffset, window.pageYOffset - 40);
-  }
-});
+define(["require","exports","jquery","TYPO3/CMS/Backend/jquery.clearable"],function(e,s,r){"use strict";return new function(){var e=this;this.$searchFields=r('input[name="search_field"]'),this.searchResultShown=""!==this.$searchFields.first().val(),this.$searchFields.clearable({onClear:function(s){e.searchResultShown&&r(s.currentTarget).closest("form").submit()}}),self.location.hash&&window.scrollTo(window.pageXOffset,window.pageYOffset-40)}});
