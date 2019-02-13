@@ -10,21 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-/**
- * Module: TYPO3/CMS/Scheduler/PageBrowser
- * Javascript for adding links for calling the page browser pop up
- */
-define(['jquery'], function($) {
-  'use strict';
-
-  $(document).on('click', '.t3js-pageBrowser', function() {
-    var $this = $(this),
-      browserWin = "",
-      pageUrl = $this.data('url');
-
-    browserWin = window.open(pageUrl, "Typo3WinBrowser", "height=650,width=800,status=0,menubar=0,resizable=1,scrollbars=1");
-    browserWin.focus();
-  });
-
-});
+define(["require","exports","jquery"],function(e,r,n){"use strict";return new function(){n(document).on("click",".t3js-pageBrowser",function(e){var r=n(e.currentTarget).data("url");window.open(r,"Typo3WinBrowser","height=650,width=800,status=0,menubar=0,resizable=1,scrollbars=1").focus()})}});
