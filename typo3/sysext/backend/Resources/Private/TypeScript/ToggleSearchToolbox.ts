@@ -46,7 +46,7 @@ class ToggleSearchToolbox {
         if (searchResultShown) {
           $(this).closest('form').submit();
         }
-      }
+      },
     });
   }
 }

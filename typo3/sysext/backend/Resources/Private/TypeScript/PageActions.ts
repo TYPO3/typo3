@@ -19,7 +19,7 @@ import NewContentElement = require('./Wizard/NewContentElement');
 enum IdentifierEnum {
   pageTitle = '.t3js-title-inlineedit',
   hiddenElements = '.t3js-hidden-record',
-  newButton = '.t3js-toggle-new-content-element-wizard'
+  newButton = '.t3js-toggle-new-content-element-wizard',
 }
 
 /**
@@ -146,7 +146,7 @@ class PageActions {
       '</span>' +
       '</div>' +
       '</div>' +
-      '</form>'
+      '</form>',
       ),
       $inputField = $inputFieldWrap.find('input');
 

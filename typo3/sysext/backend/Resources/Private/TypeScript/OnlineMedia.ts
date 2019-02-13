@@ -58,7 +58,7 @@ class OnlineMedia {
       {
         url: url,
         targetFolder: target,
-        allowed: allowed
+        allowed: allowed,
       },
       (data: Response): void => {
         if (data.file) {
@@ -72,14 +72,14 @@ class OnlineMedia {
               text: TYPO3.lang['button.ok'] || 'OK',
               btnClass: 'btn-' + Severity.getCssClass(Severity.error),
               name: 'ok',
-              active: true
-            }]
+              active: true,
+            }],
           ).on('confirm.button.ok', (): void => {
             $confirm.modal('hide');
           });
         }
         NProgress.done();
-      }
+      },
     );
   }
 
@@ -103,7 +103,7 @@ class OnlineMedia {
             .attr('placeholder', placeholder),
           $('<div>')
             .attr('class', 'help-block')
-            .html(this.securityUtility.encodeHtml(allowedHelpText, false) + '<br>' + allowedExtMarkup.join(' '))
+            .html(this.securityUtility.encodeHtml(allowedHelpText, false) + '<br>' + allowedExtMarkup.join(' ')),
         ]);
     const $modal = Modal.show(
       $currentTarget.attr('title'),
@@ -119,8 +119,8 @@ class OnlineMedia {
             $modal.modal('hide');
             this.addOnlineMedia($currentTarget, url);
           }
-        }
-      }]
+        },
+      }],
     );
 
     $modal.on('shown.bs.modal', (e: JQueryEventObject): void => {

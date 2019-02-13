@@ -24,7 +24,7 @@ class EditPopup {
     $((): void => {
       this.controlElement = <HTMLAnchorElement>document.querySelector(controlElementId);
       this.assignedFormField = <HTMLSelectElement>document.querySelector(
-        'select[data-formengine-input-name="' + this.controlElement.dataset.element + '"]'
+        'select[data-formengine-input-name="' + this.controlElement.dataset.element + '"]',
       );
 
       if (this.assignedFormField.options.selectedIndex === -1) {

@@ -21,7 +21,7 @@ class Topbar {
     registerEvent: (callback: (eventHandler: JQueryEventObject) => any): void => {
       $(callback);
       $(Topbar.topbarSelector).on('t3-topbar-update', callback);
-    }
+    },
   };
 
   public static refresh(): void {

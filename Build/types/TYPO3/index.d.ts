@@ -41,7 +41,7 @@ declare namespace TYPO3 {
           label: string,
           title: string,
           exclusiveValues?: string,
-          $optionEl?: JQuery
+          $optionEl?: JQuery,
         ): void;
         public reinitialize(): void;
       }
@@ -84,7 +84,7 @@ interface Window {
   $: any;
   startInModule: Array<string>;
   inline: {
-    delayedImportElement: (objectId: number, table: string, uid: number, type: string) => void
+    delayedImportElement: (objectId: number, table: string, uid: number, type: string) => void,
   };
   rawurlencode: Function;
   list_frame: Window;

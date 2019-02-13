@@ -92,7 +92,7 @@ class ViewPage {
   private addToQueue(storageIdentifier: string, data: any): void {
     const item = {
       storageIdentifier: storageIdentifier,
-      data: data
+      data: data,
     };
     this.queue.push(item);
     if (this.queue.length >= 1) {
@@ -120,7 +120,7 @@ class ViewPage {
     this.$resizableContainer.css({
       width: width,
       height: height,
-      left: 0
+      left: 0,
     });
   }
 
@@ -128,7 +128,7 @@ class ViewPage {
     let data = {
       width: ViewPage.getCurrentWidth(),
       height: ViewPage.getCurrentHeight(),
-      label: ViewPage.getCurrentLabel()
+      label: ViewPage.getCurrentLabel(),
     };
     this.addToQueue(this.storagePrefix + 'current', data);
   }
@@ -136,7 +136,7 @@ class ViewPage {
   private persistCustomPreset(): void {
     let data = {
       width: ViewPage.getCurrentWidth(),
-      height: ViewPage.getCurrentHeight()
+      height: ViewPage.getCurrentHeight(),
     };
     $(Selectors.customSelector).data('width', data.width);
     $(Selectors.customSelector).data('height', data.height);
@@ -188,7 +188,7 @@ class ViewPage {
 
     // Initialize the jQuery UI Resizable plugin
     this.$resizableContainer.resizable({
-      handles: 'w, sw, s, se, e'
+      handles: 'w, sw, s, se, e',
     });
 
     this.$resizableContainer.on('resizestart', (evt: JQueryEventObject): void => {
@@ -208,7 +208,7 @@ class ViewPage {
       $(Selectors.inputWidthSelector).val(ui.size.width);
       $(Selectors.inputHeightSelector).val(ui.size.height);
       this.$resizableContainer.css({
-        left: 0
+        left: 0,
       });
       ViewPage.setLabel(this.defaultLabel);
     });

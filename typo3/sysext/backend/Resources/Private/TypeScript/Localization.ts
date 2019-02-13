@@ -75,7 +75,7 @@ class Localization {
               + '<div class="col-sm-9">'
               + '<p class="t3js-helptext t3js-helptext-translate text-muted">' + TYPO3.lang['localize.educate.translate'] + '</p>'
               + '</div>'
-              + '</div>'
+              + '</div>',
             );
           }
 
@@ -91,7 +91,7 @@ class Localization {
               + '<div class="col-sm-9">'
               + '<p class="t3js-helptext t3js-helptext-copy text-muted">' + TYPO3.lang['localize.educate.copy'] + '</p>'
               + '</div>'
-              + '</div>'
+              + '</div>',
             );
           }
 
@@ -102,7 +102,7 @@ class Localization {
               .replace('{0}', $triggerButton.data('page'))
               .replace('{1}', $triggerButton.data('languageName')),
             slideStep1,
-            SeverityEnum.info
+            SeverityEnum.info,
           );
           Wizard.addSlide(
             'localize-choose-language',
@@ -115,7 +115,7 @@ class Localization {
 
                 this.loadAvailableLanguages(
                   parseInt($triggerButton.data('pageId'), 10),
-                  parseInt($triggerButton.data('languageId'), 10)
+                  parseInt($triggerButton.data('languageId'), 10),
                 ).done((result: Array<LanguageRecord>): void => {
                   if (result.length === 1) {
                     // We only have one result, auto select the record and continue
@@ -147,17 +147,17 @@ class Localization {
                               name: 'language',
                               id: 'language' + languageObject.uid,
                               value: languageObject.uid,
-                              style: 'display: none;'
-                            }
-                          )
-                        )
-                      )
+                              style: 'display: none;',
+                            },
+                          ),
+                        ),
+                      ),
                     );
                   }
                   $slide.empty().append($languageButtons);
                 });
               });
-            }
+            },
           );
           Wizard.addSlide(
             'localize-summary',
@@ -169,7 +169,7 @@ class Localization {
               });
               this.getSummary(
                 parseInt($triggerButton.data('pageId'), 10),
-                parseInt($triggerButton.data('languageId'), 10)
+                parseInt($triggerButton.data('languageId'), 10),
               ).done((result: SummaryRecord): void => {
                 $slide.empty();
                 this.records = [];
@@ -199,31 +199,31 @@ class Localization {
                               id: 'record-uid-' + record.uid,
                               checked: 'checked',
                               'data-uid': record.uid,
-                              'aria-label': label
-                            })
+                              'aria-label': label,
+                            }),
                           ),
                           $('<label />', {
                             'class': 'form-control',
-                            for: 'record-uid-' + record.uid
-                          }).text(label).prepend(record.icon)
-                        )
-                      )
+                            for: 'record-uid-' + record.uid,
+                          }).text(label).prepend(record.icon),
+                        ),
+                      ),
                     );
                   });
 
                   $slide.append(
                     $('<fieldset />', {
-                      'class': 'localization-fieldset'
+                      'class': 'localization-fieldset',
                     }).append(
                       $('<label />').text(column).prepend(
                         $('<input />', {
                           'class': 't3js-localization-toggle-column',
                           type: 'checkbox',
-                          checked: 'checked'
-                        })
+                          checked: 'checked',
+                        }),
                       ),
-                      $row
-                    )
+                      $row,
+                    ),
                   );
                 });
 
@@ -263,14 +263,14 @@ class Localization {
                   $children.trigger('change');
                 });
               });
-            }
+            },
           );
 
           Wizard.addFinalProcessingSlide((): void => {
             this.localizeRecords(
               parseInt($triggerButton.data('pageId'), 10),
               parseInt($triggerButton.data('languageId'), 10),
-              this.records
+              this.records,
             ).done((): void => {
               Wizard.dismiss();
               document.location.reload();
@@ -308,8 +308,8 @@ class Localization {
       url: TYPO3.settings.ajaxUrls.page_languages,
       data: {
         pageId: pageId,
-        languageId: languageId
-      }
+        languageId: languageId,
+      },
     });
   }
 
@@ -326,8 +326,8 @@ class Localization {
       data: {
         pageId: pageId,
         destLanguageId: languageId,
-        languageId: this.sourceLanguage
-      }
+        languageId: this.sourceLanguage,
+      },
     });
   }
 
@@ -347,8 +347,8 @@ class Localization {
         srcLanguageId: this.sourceLanguage,
         destLanguageId: languageId,
         action: this.localizationMode,
-        uidList: uidList
-      }
+        uidList: uidList,
+      },
     });
   }
 }

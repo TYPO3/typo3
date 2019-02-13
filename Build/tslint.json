@@ -17,6 +17,7 @@
 		"forin": true,
 		"indent": [
 			true,
+			"spaces",
 			2
 		],
 		"interface-name": false,
@@ -28,9 +29,20 @@
 		],
 		"member-ordering": [
 			true,
-			"public-before-private",
-			"static-before-instance",
-			"variables-before-functions"
+			{
+				"order": [
+					"public-static-field",
+					"public-instance-field",
+					"private-static-field",
+					"private-instance-field",
+					"public-constructor",
+					"protected-constructor",
+					"private-constructor",
+					"public-instance-method",
+					"protected-instance-method",
+					"private-instance-method"
+				]
+			}
 		],
 		"no-any": false,
 		"no-arg": true,
@@ -52,10 +64,12 @@
 		"no-require-imports": false,
 		"no-string-literal": true,
 		"no-switch-case-fall-through": true,
-		"trailing-comma": {
-			"singleline": "never",
-			"multiline": "always"
-		},
+		"trailing-comma": [
+			true, {
+				"multiline": "always",
+				"singleline": "never"
+			}
+		],
 		"no-trailing-whitespace": true,
 		"no-unused-expression": true,
 		"no-var-keyword": true,

@@ -105,7 +105,7 @@ class Paste {
           btnClass: 'btn-default',
           trigger: (): void => {
             Modal.currentModal.trigger('modal-dismiss');
-          }
+          },
         },
         {
           text: TYPO3.lang['paste.modal.button.pastecopy'] || 'Copy',
@@ -113,8 +113,8 @@ class Paste {
           trigger: (): void => {
             Modal.currentModal.trigger('modal-dismiss');
             me.execute($element);
-          }
-        }
+          },
+        },
       ];
     } else {
       content = TYPO3.lang['paste.modal.paste'] || 'Do you want to move the record to this position?';
@@ -125,7 +125,7 @@ class Paste {
           btnClass: 'btn-default',
           trigger: (): void => {
             Modal.currentModal.trigger('modal-dismiss');
-          }
+          },
         },
         {
           text: TYPO3.lang['paste.modal.button.paste'] || 'Move',
@@ -133,8 +133,8 @@ class Paste {
           trigger: (): void => {
             Modal.currentModal.trigger('modal-dismiss');
             me.execute($element);
-          }
-        }
+          },
+        },
       ];
     }
     if (url !== null) {
@@ -167,9 +167,9 @@ class Paste {
         paste: 'tt_content|' + targetPid,
         update: {
           colPos: colPos,
-          sys_language_uid: language
-        }
-      }
+          sys_language_uid: language,
+        },
+      },
     };
 
     DataHandler.process(parameters).done((result: ResponseInterface): void => {

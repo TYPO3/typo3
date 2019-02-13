@@ -78,7 +78,7 @@ class ContextHelp {
       if (typeof description !== 'undefined' && description !== '') {
         Popover.setOptions($me, {
           title: $me.data('title'),
-          content: description
+          content: description,
         });
       } else if ($me.attr('data-loaded') === 'false' && $me.data('table')) {
         this.loadHelp($me);
@@ -127,7 +127,7 @@ class ContextHelp {
         '&table=' + $trigger.data('table') +
         '&field=' + $trigger.data('field'),
         'ContextHelpWindow',
-        'height=400,width=600,status=0,menubar=0,scrollbars=1'
+        'height=400,width=600,status=0,menubar=0,scrollbars=1',
       );
       cshWindow.focus();
       Popover.hide($trigger);
@@ -152,14 +152,14 @@ class ContextHelp {
         params: {
           action: 'getContextHelp',
           table: table,
-          field: field
-        }
+          field: field,
+        },
       }).done((data: HelpData): void => {
         const title = data.title || '';
         const content = data.content || '<p></p>';
         Popover.setOptions($trigger, {
           title: title,
-          content: content
+          content: content,
         });
         $trigger
           .attr('data-loaded', 'true')

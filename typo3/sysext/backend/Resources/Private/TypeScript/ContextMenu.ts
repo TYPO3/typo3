@@ -110,7 +110,7 @@ class ContextMenu {
         $me.data('uid'),
         $me.data('context'),
         $me.data('iteminfo'),
-        $me.data('parameters')
+        $me.data('parameters'),
       );
     });
 
@@ -225,18 +225,18 @@ class ContextMenu {
     let y = this.mousePos.Y;
     const dimsWindow = {
       width: $(window).width() - 20, // saving margin for scrollbars
-      height: $(window).height()
+      height: $(window).height(),
     };
 
     // dimensions for the context menu
     const dims = {
       width: $obj.width(),
-      height: $obj.height()
+      height: $obj.height(),
     };
 
     const relative = {
       X: this.mousePos.X - $(document).scrollLeft(),
-      Y: this.mousePos.Y - $(document).scrollTop()
+      Y: this.mousePos.Y - $(document).scrollTop(),
     };
 
     // adjusting the Y position of the layer to fit it into the window frame
@@ -336,7 +336,7 @@ class ContextMenu {
           $(obj).hide();
         }
       },
-      500
+      500,
     );
   }
 

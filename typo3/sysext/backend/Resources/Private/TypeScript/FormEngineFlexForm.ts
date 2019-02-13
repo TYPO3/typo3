@@ -51,7 +51,7 @@ class FlexFormElement {
     flexFormToggleAllSectionsSelector: '.t3js-form-field-toggle-flexsection',
     sectionDeletedClass: 't3js-flex-section-deleted',
     allowRestructure: false, // whether the form can be modified
-    flexformId: false
+    flexformId: false,
   };
 
   private $el: JQuery;
@@ -153,7 +153,7 @@ class FlexFormElement {
       stop: () => {
         this.setActionStatus();
         $(document).trigger('flexform:sorting-changed');
-      }
+      },
     });
   }
 
@@ -252,7 +252,7 @@ $(function(): void {
         dataStructureIdentifier: me.data('datastructureidentifier'),
         flexFormSheetName: me.data('flexformsheetname'),
         flexFormFieldName: me.data('flexformfieldname'),
-        flexFormContainerName: me.data('flexformcontainername')
+        flexFormContainerName: me.data('flexformcontainername'),
       },
       success: function(response: any): void {
         me.closest('.t3-form-field-container').find('.t3-flex-container').append(response.html);
@@ -275,7 +275,7 @@ $(function(): void {
         FormEngine.reinitialize();
         FormEngine.Validation.initializeInputFields();
         FormEngine.Validation.validate();
-      }
+      },
     });
   });
 

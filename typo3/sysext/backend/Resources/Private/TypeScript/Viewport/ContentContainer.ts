@@ -30,7 +30,7 @@ class ContentContainer extends AbstractContainer {
    */
   public beforeSetUrl(interactionRequest: InteractionRequest): JQueryDeferred<TriggerRequest> {
     return this.consumerScope.invoke(
-      new TriggerRequest('typo3.beforeSetUrl', interactionRequest)
+      new TriggerRequest('typo3.beforeSetUrl', interactionRequest),
     );
   }
 
@@ -49,7 +49,7 @@ class ContentContainer extends AbstractContainer {
       return deferred;
     }
     deferred = this.consumerScope.invoke(
-      new TriggerRequest('typo3.setUrl', interactionRequest)
+      new TriggerRequest('typo3.setUrl', interactionRequest),
     );
     deferred.then((): void => {
       Loader.start();
@@ -84,7 +84,7 @@ class ContentContainer extends AbstractContainer {
       return deferred;
     }
     deferred = this.consumerScope.invoke(
-      new TriggerRequest('typo3.refresh', interactionRequest)
+      new TriggerRequest('typo3.refresh', interactionRequest),
     );
     deferred.then((): void => {
       iFrame.contentWindow.location.reload(forceGet);

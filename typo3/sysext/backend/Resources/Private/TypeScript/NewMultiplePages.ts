@@ -17,7 +17,7 @@ enum Identifiers {
   containerSelector = '.t3js-newmultiplepages-container',
   addMoreFieldsButtonSelector = '.t3js-newmultiplepages-createnewfields',
   doktypeSelector = '.t3js-newmultiplepages-select-doktype',
-  templateRow = '.t3js-newmultiplepages-newlinetemplate'
+  templateRow = '.t3js-newmultiplepages-newlinetemplate',
 }
 
 /**

@@ -69,7 +69,7 @@ class OpendocsMenu {
         $(Selectors.containerSelector).find(Selectors.menuContainerSelector).html(data);
         OpendocsMenu.updateNumberOfDocs();
         $(Selectors.toolbarIconSelector, Selectors.containerSelector).replaceWith($existingIcon);
-      }
+      },
     });
   }
 
@@ -100,14 +100,14 @@ class OpendocsMenu {
       type: 'post',
       cache: false,
       data: {
-        md5sum: md5sum
+        md5sum: md5sum,
       },
       success: (data: string): void => {
         $(Selectors.menuContainerSelector, Selectors.containerSelector).html(data);
         OpendocsMenu.updateNumberOfDocs();
         // Re-open the menu after closing a document
         $(Selectors.containerSelector).toggleClass('open');
-      }
+      },
     });
   }
 

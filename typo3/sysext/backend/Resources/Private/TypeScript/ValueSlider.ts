@@ -52,7 +52,7 @@ class ValueSlider {
     const $sliders = $(this.selector);
     if ($sliders.length > 0) {
       $sliders.slider({
-        formatter: this.renderTooltipValue
+        formatter: this.renderTooltipValue,
       });
       $sliders.on('change', ValueSlider.updateValue);
     }

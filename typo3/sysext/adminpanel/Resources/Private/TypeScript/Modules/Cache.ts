@@ -24,6 +24,6 @@ namespace TYPO3 {
   window.addEventListener(
     'load',
     () => new TYPO3.Cache(),
-    false
+    false,
   );
 })();

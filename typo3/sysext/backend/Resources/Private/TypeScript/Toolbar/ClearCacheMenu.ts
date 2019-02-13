@@ -19,7 +19,7 @@ import Viewport = require('../Viewport');
 enum Identifiers {
   containerSelector = '#typo3-cms-backend-backend-toolbaritems-clearcachetoolbaritem',
   menuItemSelector = 'a.toolbar-cache-flush-action',
-  toolbarIconSelector = '.toolbar-item-icon .t3js-icon'
+  toolbarIconSelector = '.toolbar-item-icon .t3js-icon',
 }
 
 /**
@@ -72,10 +72,10 @@ class ClearCacheMenu {
         if (status !== 'success' || jqXHRObject.responseText !== '') {
           Notification.error(
             'An error occurred',
-            'An error occurred while clearing the cache. It is likely not all caches were cleared as expected.'
+            'An error occurred while clearing the cache. It is likely not all caches were cleared as expected.',
           );
         }
-      }
+      },
     });
   }
 }

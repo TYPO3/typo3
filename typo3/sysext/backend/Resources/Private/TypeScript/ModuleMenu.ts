@@ -118,8 +118,8 @@ class ModuleMenu {
     PersistentStorage.set(
       'BackendComponents.States.typo3-module-menu',
       {
-        collapsed: collapse
-      }
+        collapsed: collapse,
+      },
     );
 
     Viewport.doLayout();
@@ -138,7 +138,7 @@ class ModuleMenu {
       navigationComponentId: $subModuleElement.data('navigationcomponentid'),
       navigationFrameScript: $subModuleElement.data('navigationframescript'),
       navigationFrameScriptParam: $subModuleElement.data('navigationframescriptparameters'),
-      link: $subModuleElement.find('a').data('link')
+      link: $subModuleElement.find('a').data('link'),
     };
   }
 
@@ -191,7 +191,7 @@ class ModuleMenu {
     return this.loadModuleComponents(
       moduleData,
       params,
-      new ClientRequest('typo3.showModule', event)
+      new ClientRequest('typo3.showModule', event),
     );
   }
 
@@ -204,14 +204,14 @@ class ModuleMenu {
     if (top.startInModule && top.startInModule[0] && $('#' + top.startInModule[0]).length > 0) {
       deferred = this.showModule(
         top.startInModule[0],
-        top.startInModule[1]
+        top.startInModule[1],
       );
     } else {
       // fetch first module
       const $firstModule = $('.t3js-mainmodule:first');
       if ($firstModule.attr('id')) {
         deferred = this.showModule(
-          $firstModule.attr('id')
+          $firstModule.attr('id'),
         );
       }
       // else case: the main module has no entries, this is probably a backend
@@ -276,12 +276,12 @@ class ModuleMenu {
     $(document).on('click', '.t3js-topbar-button-modulemenu', (evt: JQueryEventObject): void => {
         evt.preventDefault();
         ModuleMenu.toggleMenu();
-      }
+      },
     );
     $(document).on('click', '.t3js-scaffold-content-overlay', (evt: JQueryEventObject): void => {
         evt.preventDefault();
         ModuleMenu.toggleMenu(true);
-      }
+      },
     );
     $(document).on('click', '.t3js-topbar-button-navigationcomponent', (evt: JQueryEventObject): void => {
       evt.preventDefault();
@@ -300,7 +300,7 @@ class ModuleMenu {
   private loadModuleComponents(
     moduleData: Module,
     params: string,
-    interactionRequest: InteractionRequest
+    interactionRequest: InteractionRequest,
   ): JQueryDeferred<TriggerRequest> {
     const moduleName = moduleData.name;
 
@@ -319,8 +319,8 @@ class ModuleMenu {
               moduleData.navigationFrameScriptParam,
               new TriggerRequest(
                 'typo3.loadModuleComponents',
-                interactionRequest
-              )
+                interactionRequest,
+              ),
             );
           } else {
             Viewport.NavigationContainer.hide();
@@ -334,8 +334,8 @@ class ModuleMenu {
             params,
             new TriggerRequest(
               'typo3.loadModuleComponents',
-              interactionRequest
-            )
+              interactionRequest,
+            ),
           );
 
           // compatibility
@@ -344,8 +344,8 @@ class ModuleMenu {
 
           Viewport.doLayout();
         },
-        this
-      )
+        this,
+      ),
     );
 
     return deferred;
@@ -372,7 +372,7 @@ class ModuleMenu {
         .append($('<div />', {
           'class': 'scaffold-content-navigation-component',
           'data-component': navigationComponentId,
-          id: 'navigationComponent-' + componentCssName
+          id: 'navigationComponent-' + componentCssName,
         }));
     }
 
@@ -394,7 +394,7 @@ class ModuleMenu {
     const currentUrl = Viewport.NavigationContainer.getUrl();
     const deferred = Viewport.NavigationContainer.setUrl(
       url,
-      new TriggerRequest('typo3.openInNavFrame', interactionRequest)
+      new TriggerRequest('typo3.openInNavFrame', interactionRequest),
     );
     if (currentUrl !== navUrl) {
       // if deferred is already resolved, execute directly
@@ -420,14 +420,14 @@ class ModuleMenu {
     if (top.nextLoadModuleUrl) {
       deferred = Viewport.ContentContainer.setUrl(
         top.nextLoadModuleUrl,
-        new TriggerRequest('typo3.openInContentFrame', interactionRequest)
+        new TriggerRequest('typo3.openInContentFrame', interactionRequest),
       );
       top.nextLoadModuleUrl = '';
     } else {
       const urlToLoad = url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : '');
       deferred = Viewport.ContentContainer.setUrl(
         urlToLoad,
-        new TriggerRequest('typo3.openInContentFrame', interactionRequest)
+        new TriggerRequest('typo3.openInContentFrame', interactionRequest),
       );
     }
 
@@ -437,7 +437,7 @@ class ModuleMenu {
 
 if (!top.TYPO3.ModuleMenu) {
   top.TYPO3.ModuleMenu = {
-    App: new ModuleMenu()
+    App: new ModuleMenu(),
   };
 }
 const moduleMenuApp = top.TYPO3.ModuleMenu;

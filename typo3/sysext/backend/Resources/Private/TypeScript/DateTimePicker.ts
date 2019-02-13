@@ -132,8 +132,8 @@ class DateTimePicker {
         previous: 'fa fa-chevron-left',
         next: 'fa fa-chevron-right',
         today: 'fa fa-calendar-o',
-        clear: 'fa fa-trash'
-      }
+        clear: 'fa fa-trash',
+      },
     };
 
     // set options based on type

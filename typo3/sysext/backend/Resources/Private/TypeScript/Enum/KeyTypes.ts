@@ -13,5 +13,5 @@
 
 export enum KeyTypesEnum {
   ENTER = 13,
-  ESCAPE = 27
+  ESCAPE = 27,
 }

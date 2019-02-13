@@ -32,7 +32,7 @@ class TypoScriptObjectBrowser {
         if (this.searchResultShown) {
           $(evt.currentTarget).closest('form').submit();
         }
-      }
+      },
     });
 
     if (self.location.hash) {

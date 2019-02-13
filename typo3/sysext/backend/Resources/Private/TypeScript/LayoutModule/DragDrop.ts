@@ -65,7 +65,7 @@ class DragDrop {
       },
       stop: (evt: JQueryEventObject, ui: DroppableEventUIParam): void => {
         DragDrop.onDragStop($(evt.target));
-      }
+      },
     });
 
     $(DragDrop.dropZoneIdentifier).droppable({
@@ -80,7 +80,7 @@ class DragDrop {
       },
       drop: (evt: JQueryEventObject, ui: DroppableEventUIParam): void => {
         DragDrop.onDrop($(ui.draggable), $(evt.target), evt);
-      }
+      },
     });
   }
 
@@ -205,16 +205,16 @@ class DragDrop {
             target: targetPid,
             update: {
               colPos: colPos,
-              sys_language_uid: language
-            }
-          }
+              sys_language_uid: language,
+            },
+          },
         };
         // TODO Make sure we actually have a JQuery object here, not only cast it
         DragDrop.ajaxAction($droppableElement, <JQuery>$draggableElement, parameters, copyAction);
       } else {
         parameters.data.tt_content[contentElementUid] = {
           colPos: colPos,
-          sys_language_uid: language
+          sys_language_uid: language,
         };
         parameters.cmd.tt_content[contentElementUid] = {move: targetPid};
         // fire the request, and show a message if it has failed

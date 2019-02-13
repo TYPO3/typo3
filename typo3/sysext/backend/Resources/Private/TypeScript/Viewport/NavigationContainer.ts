@@ -52,7 +52,7 @@ class NavigationContainer extends AbstractContainer {
       Icons.sizes.small,
       'overlay-readonly',
       null,
-      Icons.markupIdentifiers.inline
+      Icons.markupIdentifiers.inline,
     ).done((icon: string): void => {
       $(TopbarIdentifiersEnum.buttonNavigationComponent).html(icon);
     });
@@ -80,7 +80,7 @@ class NavigationContainer extends AbstractContainer {
    */
   public setUrl(urlToLoad: string, interactionRequest: InteractionRequest): JQueryDeferred<TriggerRequest> {
     const deferred = this.consumerScope.invoke(
-      new TriggerRequest('typo3.setUrl', interactionRequest)
+      new TriggerRequest('typo3.setUrl', interactionRequest),
     );
     deferred.then((): void => {
       $(ScaffoldIdentifierEnum.scaffold).addClass('scaffold-content-navigation-expanded');

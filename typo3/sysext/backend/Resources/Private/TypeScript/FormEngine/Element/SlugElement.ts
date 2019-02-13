@@ -44,7 +44,7 @@ enum Selectors {
 enum ProposalModes {
   AUTO = 'auto',
   RECREATE = 'recreate',
-  MANUAL = 'manual'
+  MANUAL = 'manual',
 }
 
 /**
@@ -160,7 +160,7 @@ class SlugElement {
         language: this.options.language,
         fieldName: this.options.fieldName,
         command: this.options.command,
-        signature: this.options.signature
+        signature: this.options.signature,
       },
       (response: Response): void => {
         if (response.hasConflicts) {
@@ -181,7 +181,7 @@ class SlugElement {
           this.$hiddenField.val(response.proposal);
         }
       },
-      'json'
+      'json',
     );
   }
 

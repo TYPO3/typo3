@@ -15,7 +15,7 @@ namespace TYPO3 {
     zoomTarget: '[data-typo3-zoom-target]',
     zoomClose: '[data-typo3-zoom-close]',
     currentContentRole: '[data-typo3-role=typo3-adminPanel-content]',
-    contentPaneRole: '[data-typo3-role=typo3-adminPanel-content-pane]'
+    contentPaneRole: '[data-typo3-role=typo3-adminPanel-content-pane]',
   };
 
   export const AdminPanelClasses = {
@@ -26,7 +26,7 @@ namespace TYPO3 {
     activeTab: 'typo3-adminPanel-content-header-item-active',
     activePane: 'typo3-adminPanel-content-panes-item-active',
     noScroll: 'typo3-adminPanel-noscroll',
-    zoomShow: 'typo3-adminPanel-zoom-show'
+    zoomShow: 'typo3-adminPanel-zoom-show',
   };
 
   export class AdminPanel {
@@ -43,16 +43,16 @@ namespace TYPO3 {
         (moduleTrigger: HTMLElement) => {
           const moduleParent = moduleTrigger.closest(AdminPanelSelectors.moduleParentClass);
           return new AdminPanelModule(this, moduleParent, moduleTrigger);
-        }
+        },
       );
       this.popups = this.querySelectorAll(AdminPanelSelectors.popupTriggerRole).map(
-        (popupTrigger: HTMLElement) => new AdminPanelPopup(this, popupTrigger)
+        (popupTrigger: HTMLElement) => new AdminPanelPopup(this, popupTrigger),
       );
       this.panels = this.querySelectorAll(AdminPanelSelectors.panelTriggerRole).map(
         (panelTrigger: HTMLElement) => {
           const panelParent = panelTrigger.closest(AdminPanelSelectors.panelParentClass);
           return new AdminPanelPanel(panelParent, panelTrigger);
-        }
+        },
       );
       this.contentSettings = this.querySelectorAll(AdminPanelSelectors.contentSettingsTriggerRole).map(
       (contentSettingTrigger: HTMLElement) => {
@@ -60,7 +60,7 @@ namespace TYPO3 {
             .closest(AdminPanelSelectors.contentParentClass)
             .querySelector(AdminPanelSelectors.contentSettingsParentClass);
           return new AdminPanelContentSetting(contentSettingElement, contentSettingTrigger);
-        }
+        },
       );
       this.trigger = document.querySelector(AdminPanelSelectors.triggerRole) as HTMLElement;
 
@@ -356,6 +356,6 @@ namespace TYPO3 {
   window.addEventListener(
     'load',
     () => new TYPO3.AdminPanel(),
-    false
+    false,
   );
 })();

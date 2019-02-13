@@ -18,17 +18,17 @@ enum Sizes {
   small = 'small',
   default = 'default',
   large = 'large',
-  overlay = 'overlay'
+  overlay = 'overlay',
 }
 
 enum States {
   default = 'default',
-  disabled = 'disabled'
+  disabled = 'disabled',
 }
 
 enum MarkupIdentifiers {
   default = 'default',
-  inline = 'inline'
+  inline = 'inline',
 }
 
 interface PromiseCache {
@@ -99,7 +99,7 @@ class Icons {
         url: TYPO3.settings.ajaxUrls.icons_cache,
         success: (response: string): string => {
           return response;
-        }
+        },
       }));
     }
 
@@ -119,14 +119,14 @@ class Icons {
         url: TYPO3.settings.ajaxUrls.icons,
         dataType: 'html',
         data: {
-          icon: JSON.stringify(icon)
+          icon: JSON.stringify(icon),
         },
         success: (markup: string) => {
           if (markup.indexOf('t3js-icon') !== -1 && markup.indexOf('<span class="icon-markup">') !== -1) {
             ClientStorage.set('icon_' + cacheIdentifier, markup);
           }
           return markup;
-        }
+        },
       }));
     }
     return this.getFromPromiseCache(cacheIdentifier);

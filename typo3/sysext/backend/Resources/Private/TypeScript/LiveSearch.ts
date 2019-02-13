@@ -22,7 +22,7 @@ enum Identifiers {
   toolbarItem = '.t3js-toolbar-item-search',
   dropdownToggle = '.t3js-toolbar-search-dropdowntoggle',
   searchFieldSelector = '.t3js-topbar-navigation-search-field',
-  formSelector = '.t3js-topbar-navigation-search'
+  formSelector = '.t3js-topbar-navigation-search',
 }
 
 interface ResultItem {
@@ -60,7 +60,7 @@ class LiveSearch {
           if ($(Identifiers.toolbarItem).hasClass('open')) {
             $(Identifiers.dropdownToggle).dropdown('toggle');
           }
-        }
+        },
       });
     });
   }
@@ -91,7 +91,7 @@ class LiveSearch {
         return {
           suggestions: $.map(response, (dataItem: ResultItem): Suggestion => {
             return {value: dataItem.title, data: dataItem};
-          })
+          }),
         };
       },
       formatGroup: (suggestion: Suggestion, category: string, i: number): string => {
@@ -127,7 +127,7 @@ class LiveSearch {
             Icons.sizes.small,
             '',
             Icons.states.default,
-            Icons.markupIdentifiers.inline
+            Icons.markupIdentifiers.inline,
           ).done((markup: string): void => {
             $toolbarItem.find('.icon-apps-toolbar-menu-search').replaceWith(markup);
           });
@@ -147,7 +147,7 @@ class LiveSearch {
             Icons.sizes.small,
             '',
             Icons.states.default,
-            Icons.markupIdentifiers.inline
+            Icons.markupIdentifiers.inline,
           ).done((markup: string): void => {
             $toolbarItem.find('.icon-spinner-circle-light').replaceWith(markup);
           });
@@ -168,7 +168,7 @@ class LiveSearch {
         if ($(Identifiers.toolbarItem).hasClass('open')) {
           $(Identifiers.dropdownToggle).dropdown('toggle');
         }
-      }
+      },
     });
   }
 

@@ -136,7 +136,7 @@ class Notification {
       '<p class="alert-message text-pre-wrap"></p>' +
       '</div>' +
       '</div>' +
-      '</div>'
+      '</div>',
     );
     $box.find('.alert-title').text(title);
     $box.find('.alert-message').text(message);

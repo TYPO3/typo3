@@ -158,7 +158,7 @@ class Scheduler {
 
     $('table.taskGroup-table').DataTable({
       'paging': false,
-      'searching': false
+      'searching': false,
     });
   }
 
