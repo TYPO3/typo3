@@ -20,12 +20,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\PageSettingsProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
-class CacheModule extends AbstractModule implements PageSettingsProviderInterface, InitializableInterface
+class CacheModule extends AbstractModule implements PageSettingsProviderInterface, InitializableInterface, ResourceProviderInterface
 {
     /**
      * @return string
@@ -107,5 +108,17 @@ class CacheModule extends AbstractModule implements PageSettingsProviderInterfac
     public function getJavaScriptFiles(): array
     {
         return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Cache.js'];
+    }
+
+    /**
+     * Returns a string array with css files that will be rendered after the module
+     *
+     * Example: return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Edit.css'];
+     *
+     * @return array
+     */
+    public function getCssFiles(): array
+    {
+        return [];
     }
 }
