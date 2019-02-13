@@ -144,7 +144,16 @@ class RemoteServer
         $stagePosition = $this->stagesService->getPositionOfCurrentStage($parameter->stage);
         $fieldsOfRecords = array_keys($liveRecord);
         foreach ($fieldsOfRecords as $fieldName) {
-            if (empty($GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config'])) {
+            if (
+                empty($GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config'])
+            ) {
+                continue;
+            }
+            // Disable internal fields
+            if (($GLOBALS['TCA'][$parameter->table]['ctrl']['transOrigDiffSourceField'] ?? '') === $fieldName) {
+                continue;
+            }
+            if (($GLOBALS['TCA'][$parameter->table]['ctrl']['origUid'] ?? '') === $fieldName) {
                 continue;
             }
             // Get the field's label. If not available, use the field name

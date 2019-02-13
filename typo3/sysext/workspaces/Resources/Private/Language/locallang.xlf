@@ -9,6 +9,9 @@
 			<trans-unit id="legend.edited" resname="legend.edited">
 				<source>edited</source>
 			</trans-unit>
+			<trans-unit id="legend.unchanged"  resname="legend.unchanged">
+				<source>unchanged</source>
+			</trans-unit>
 			<trans-unit id="legend.moved" resname="legend.moved">
 				<source>moved</source>
 			</trans-unit>
