@@ -80,18 +80,18 @@ class DebugConsole {
             'aria-controls': tabIdentifier,
             'data-toggle': 'tab',
             href: '#' + tabIdentifier,
-            role: 'tab'
+            role: 'tab',
           }).text(group + ' ').append(
-            $('<span />', {'class': 'badge'})
-          )
+            $('<span />', {'class': 'badge'}),
+          ),
         ).on('shown.bs.tab', (e: Event) => {
           $(e.currentTarget).find('.badge').text('');
         });
       $debugTabs.append($tab);
       $tabContent.append(
         $('<div />', {role: 'tabpanel', 'class': 'tab-pane', id: tabIdentifier}).append(
-          $('<div />', {'class': 't3js-messages messages'})
-        )
+          $('<div />', {'class': 't3js-messages messages'}),
+        ),
       );
     }
 
@@ -121,33 +121,33 @@ class DebugConsole {
       $('<div />', {id: 'typo3-debug-console'}).append(
         $('<div />', {'class': 't3js-topbar topbar'}).append(
           $('<p />', {'class': 'pull-left'}).text(' TYPO3 Debug Console').prepend(
-            $('<span />', {'class': 'fa fa-terminal topbar-icon'})
+            $('<span />', {'class': 'fa fa-terminal topbar-icon'}),
           ).append(
-            $('<span />', {'class': 'badge'})
+            $('<span />', {'class': 'badge'}),
           ),
-          $('<div />', {'class': 't3js-buttons btn-group pull-right'})
+          $('<div />', {'class': 't3js-buttons btn-group pull-right'}),
         ),
         $('<div />').append(
           $('<div />', {role: 'tabpanel'}).append(
-            $('<ul />', {'class': 'nav nav-tabs t3js-debuggroups', role: 'tablist'})
+            $('<ul />', {'class': 'nav nav-tabs t3js-debuggroups', role: 'tablist'}),
           ),
-          $('<div />', {'class': 'tab-content t3js-debugcontent'})
-        )
+          $('<div />', {'class': 'tab-content t3js-debugcontent'}),
+        ),
       );
 
     this.addButton(
       $('<button />', {
         'class': 'btn btn-default btn-sm ' + (this.settings.autoscroll ? 'active' : ''),
-        title: TYPO3.lang['debuggerconsole.autoscroll']
+        title: TYPO3.lang['debuggerconsole.autoscroll'],
       }).append($('<span />', {'class': 't3-icon fa fa-magnet'})),
       (): void => {
         $(this).button('toggle');
         this.settings.autoscroll = !this.settings.autoscroll;
-      }
+      },
     ).addButton(
       $('<button />', {
         'class': 'btn btn-default btn-sm',
-        title: TYPO3.lang['debuggerconsole.toggle.collapse']
+        title: TYPO3.lang['debuggerconsole.toggle.collapse'],
       }).append($('<span />', {'class': 't3-icon fa fa-chevron-down'})),
       (e: Event): void => {
         let $button = $(e.currentTarget);
@@ -162,14 +162,14 @@ class DebugConsole {
           $button.attr('title', TYPO3.lang['debuggerconsole.toggle.expand']);
           $icon.toggleClass('fa-chevron-down', false).toggleClass('fa-chevron-up', true);
         }
-      }
+      },
     ).addButton(
       $('<button />', {
         'class': 'btn btn-default btn-sm',
         title: TYPO3.lang['debuggerconsole.clear']}).append($('<span />', {class: 't3-icon fa fa-undo'})),
       (): void => {
         this.flush();
-      }
+      },
     ).addButton(
       $('<button />', {
         'class': 'btn btn-default btn-sm',
@@ -177,7 +177,7 @@ class DebugConsole {
       (): void => {
         this.destroy();
         this.createDom();
-      }
+      },
     );
   }
 

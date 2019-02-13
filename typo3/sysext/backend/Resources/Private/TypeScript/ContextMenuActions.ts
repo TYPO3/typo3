@@ -46,7 +46,7 @@ class ContextMenuActions {
       top.TYPO3.settings.FormEngine.moduleUrl
         + '&edit[' + table + '][' + uid + ']=edit'
         + overrideVals
-        + '&returnUrl=' + ContextMenuActions.getReturnUrl()
+        + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
@@ -86,7 +86,7 @@ class ContextMenuActions {
    */
   public static newPageWizard(table: string, uid: number): void {
     Viewport.ContentContainer.setUrl(
-      top.TYPO3.settings.NewRecord.moduleUrl + '&id=' + uid + '&pagesOnly=1&returnUrl=' + ContextMenuActions.getReturnUrl()
+      top.TYPO3.settings.NewRecord.moduleUrl + '&id=' + uid + '&pagesOnly=1&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
@@ -104,7 +104,7 @@ class ContextMenuActions {
         type: Modal.types.ajax,
         size: Modal.sizes.medium,
         content: $wizardUrl,
-        severity: SeverityEnum.notice
+        severity: SeverityEnum.notice,
       });
     }
   }
@@ -115,7 +115,7 @@ class ContextMenuActions {
    */
   public static newRecord(table: string, uid: number): void {
     Viewport.ContentContainer.setUrl(
-      top.TYPO3.settings.FormEngine.moduleUrl + '&edit[' + table + '][-' + uid + ']=new&returnUrl=' + ContextMenuActions.getReturnUrl()
+      top.TYPO3.settings.FormEngine.moduleUrl + '&edit[' + table + '][-' + uid + ']=new&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
@@ -125,7 +125,7 @@ class ContextMenuActions {
    */
   public static openHistoryPopUp(table: string, uid: number): void {
     Viewport.ContentContainer.setUrl(
-      top.TYPO3.settings.RecordHistory.moduleUrl + '&element=' + table + ':' + uid + '&returnUrl=' + ContextMenuActions.getReturnUrl()
+      top.TYPO3.settings.RecordHistory.moduleUrl + '&element=' + table + ':' + uid + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
@@ -168,7 +168,7 @@ class ContextMenuActions {
     Viewport.ContentContainer.setUrl(
       top.TYPO3.settings.RecordCommit.moduleUrl
       + '&data[' + table + '][' + uid + '][hidden]=1'
-      + '&redirect=' + ContextMenuActions.getReturnUrl()
+      + '&redirect=' + ContextMenuActions.getReturnUrl(),
     ).done((): void => {
       Viewport.NavigationContainer.PageTree.refreshTree();
     });
@@ -182,7 +182,7 @@ class ContextMenuActions {
     Viewport.ContentContainer.setUrl(
       top.TYPO3.settings.RecordCommit.moduleUrl
       + '&data[' + table + '][' + uid + '][hidden]=0'
-      + '&redirect=' + ContextMenuActions.getReturnUrl()
+      + '&redirect=' + ContextMenuActions.getReturnUrl(),
     ).done((): void => {
       Viewport.NavigationContainer.PageTree.refreshTree();
     });
@@ -202,13 +202,13 @@ class ContextMenuActions {
           text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
           active: true,
           btnClass: 'btn-default',
-          name: 'cancel'
+          name: 'cancel',
         },
         {
           text: $(this).data('button-ok-text') || TYPO3.lang['button.delete'] || 'Delete',
           btnClass: 'btn-warning',
-          name: 'delete'
-        }
+          name: 'delete',
+        },
       ]);
 
     $modal.on('button.clicked', (e: JQueryEventObject): void => {
@@ -216,7 +216,7 @@ class ContextMenuActions {
         Viewport.ContentContainer.setUrl(
           top.TYPO3.settings.RecordCommit.moduleUrl
           + '&redirect=' + ContextMenuActions.getReturnUrl()
-          + '&cmd[' + table + '][' + uid + '][delete]=1'
+          + '&cmd[' + table + '][' + uid + '][delete]=1',
         ).done((): void => {
           if (table === 'pages' && Viewport.NavigationContainer.PageTree) {
             if (uid === top.fsMod.recentIds.web) {
@@ -318,7 +318,7 @@ class ContextMenuActions {
         + '&redirect=' + ContextMenuActions.getReturnUrl();
 
       Viewport.ContentContainer.setUrl(
-        top.TYPO3.settings.RecordCommit.moduleUrl + url
+        top.TYPO3.settings.RecordCommit.moduleUrl + url,
       ).done((): void => {
         if (table === 'pages' && Viewport.NavigationContainer.PageTree) {
           Viewport.NavigationContainer.PageTree.refreshTree();
@@ -337,13 +337,13 @@ class ContextMenuActions {
           text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
           active: true,
           btnClass: 'btn-default',
-          name: 'cancel'
+          name: 'cancel',
         },
         {
           text: $(this).data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
           btnClass: 'btn-warning',
-          name: 'ok'
-        }
+          name: 'ok',
+        },
       ]);
 
     $modal.on('button.clicked', (e: JQueryEventObject): void => {

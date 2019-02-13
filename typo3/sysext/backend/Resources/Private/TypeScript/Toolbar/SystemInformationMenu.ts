@@ -21,7 +21,7 @@ enum Identifiers {
   toolbarIconSelector = '.toolbar-item-icon .t3js-icon',
   menuContainerSelector = '.dropdown-menu',
   moduleLinks = '.t3js-systeminformation-module',
-  counter = '.t3js-systeminformation-counter'
+  counter = '.t3js-systeminformation-counter',
 }
 
 /**
@@ -81,12 +81,12 @@ class SystemInformationMenu {
       },
       complete: (): void => {
         $(Identifiers.toolbarIconSelector, Identifiers.containerSelector).replaceWith($existingIcon);
-      }
+      },
     }).done((): void => {
       // reload error data every five minutes
       this.timer = setTimeout(
         this.updateMenu,
-        1000 * 300
+        1000 * 300,
       );
     });
   }

@@ -37,9 +37,9 @@ class DocumentHeader {
       moduleNavigationBar: '.t3js-module-docheader-bar-navigation',
       moduleButtonBar: '.t3js-module-docheader-bar-buttons',
       moduleSearchBar: '.t3js-module-docheader-bar-search',
-      moduleBody: '.t3js-module-body'
+      moduleBody: '.t3js-module-body',
 
-    }
+    },
   };
 
   constructor() {

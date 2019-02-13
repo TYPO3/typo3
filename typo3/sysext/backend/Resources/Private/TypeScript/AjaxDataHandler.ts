@@ -23,7 +23,7 @@ import Viewport = require('./Viewport');
 enum Identifiers {
   hide = '.t3js-record-hide',
   delete = '.t3js-record-delete',
-  icon = '.t3js-icon'
+  icon = '.t3js-icon',
 }
 
 /**
@@ -95,13 +95,13 @@ class AjaxDataHandler {
           text: $anchorElement.data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
           active: true,
           btnClass: 'btn-default',
-          name: 'cancel'
+          name: 'cancel',
         },
         {
           text: $anchorElement.data('button-ok-text') || TYPO3.lang['button.delete'] || 'Delete',
           btnClass: 'btn-warning',
-          name: 'delete'
-        }
+          name: 'delete',
+        },
       ]);
       $modal.on('button.clicked', (e: JQueryEventObject): void => {
         if (e.target.getAttribute('name') === 'cancel') {

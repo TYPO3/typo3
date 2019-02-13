@@ -26,7 +26,7 @@ enum Identifiers {
   body = '.t3js-modal-body',
   footer = '.t3js-modal-footer',
   iframe = '.t3js-modal-iframe',
-  iconPlaceholder = '.t3js-modal-icon-placeholder'
+  iconPlaceholder = '.t3js-modal-icon-placeholder',
 }
 
 enum Sizes {
@@ -34,19 +34,19 @@ enum Sizes {
   default = 'default',
   medium = 'medium',
   large = 'large',
-  full = 'full'
+  full = 'full',
 }
 
 enum Styles {
   default = 'default',
   light = 'light',
-  dark = 'dark'
+  dark = 'dark',
 }
 
 enum Types {
   default = 'default',
   ajax = 'ajax',
-  iframe = 'iframe'
+  iframe = 'iframe',
 }
 
 interface Button {
@@ -100,7 +100,7 @@ class Modal {
     '<div class="t3js-modal-footer modal-footer"></div>' +
     '</div>' +
     '</div>' +
-    '</div>'
+    '</div>',
   );
 
   private defaultConfiguration: Configuration = {
@@ -114,7 +114,7 @@ class Modal {
     additionalCssClasses: [],
     callback: $.noop(),
     ajaxCallback: $.noop(),
-    ajaxTarget: null
+    ajaxTarget: null,
   };
 
   private readonly securityUtility: SecurityUtility;
@@ -159,13 +159,13 @@ class Modal {
           text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
           active: true,
           btnClass: 'btn-default',
-          name: 'cancel'
+          name: 'cancel',
         },
         {
           text: $(this).data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
           btnClass: 'btn-' + Severity.getCssClass(severity),
-          name: 'ok'
-        }
+          name: 'ok',
+        },
       );
     }
 
@@ -183,7 +183,7 @@ class Modal {
             $(e.currentTarget).trigger('confirm.button.ok');
           }
         });
-      }
+      },
     });
   }
 
@@ -204,7 +204,7 @@ class Modal {
                  buttons: Array<Object>,
                  url: string,
                  callback?: Function,
-                 target?: string
+                 target?: string,
   ): JQuery {
     return this.advanced({
       type: Types.ajax,
@@ -212,7 +212,7 @@ class Modal {
       severity,
       buttons,
       ajaxCallback: callback,
-      ajaxTarget: target
+      ajaxTarget: target,
     });
   }
 
@@ -237,7 +237,7 @@ class Modal {
       content,
       severity,
       buttons,
-      additionalCssClasses
+      additionalCssClasses,
     });
   }
 
@@ -310,7 +310,7 @@ class Modal {
             btnClass: 'btn-default',
             trigger: (): void => {
               this.currentModal.trigger('modal-dismiss');
-            }
+            },
           },
           {
             text: $element.data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
@@ -318,8 +318,8 @@ class Modal {
             trigger: (): void => {
               this.currentModal.trigger('modal-dismiss');
               evt.target.ownerDocument.location.href = $element.data('href') || $element.attr('href');
-            }
-          }
+            },
+          },
         ],
       });
     });
@@ -361,7 +361,7 @@ class Modal {
             }
             this.currentModal.trigger('modal-loaded');
           },
-          'html'
+          'html',
         );
       });
     } else if (configuration.type === 'iframe') {
@@ -369,18 +369,18 @@ class Modal {
         $('<iframe />', {
           src: configuration.content,
           'name': 'modal_frame',
-          'class': 'modal-iframe t3js-modal-iframe'
-        })
+          'class': 'modal-iframe t3js-modal-iframe',
+        }),
       );
       currentModal.find(Identifiers.iframe).on('load', (): void => {
         currentModal.find(Identifiers.title).text(
-          (<HTMLIFrameElement>currentModal.find(Identifiers.iframe).get(0)).contentDocument.title
+          (<HTMLIFrameElement>currentModal.find(Identifiers.iframe).get(0)).contentDocument.title,
         );
       });
     } else {
       if (typeof configuration.content === 'string') {
         configuration.content = $('<p />').html(
-          this.securityUtility.encodeHtml(configuration.content)
+          this.securityUtility.encodeHtml(configuration.content),
         );
       }
       currentModal.find(Identifiers.body).append(configuration.content);

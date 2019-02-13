@@ -32,7 +32,7 @@ class InfoWindow {
       content: top.TYPO3.settings.ShowItem.moduleUrl
         + '&table=' + encodeURIComponent(table)
         + '&uid=' + (typeof uid === 'number' ? uid : encodeURIComponent(uid)),
-      severity: SeverityEnum.notice
+      severity: SeverityEnum.notice,
     });
   }
 }

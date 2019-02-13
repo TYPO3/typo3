@@ -20,5 +20,5 @@ export enum ScaffoldIdentifierEnum {
   contentModuleIframe = '.t3js-scaffold-content-module-iframe',
   contentNavigation = '.t3js-scaffold-content-navigation',
   contentNavigationDataComponent = '.t3js-scaffold-content-navigation [data-component]',
-  contentNavigationIframe = '.t3js-scaffold-content-navigation-iframe'
+  contentNavigationIframe = '.t3js-scaffold-content-navigation-iframe',
 }

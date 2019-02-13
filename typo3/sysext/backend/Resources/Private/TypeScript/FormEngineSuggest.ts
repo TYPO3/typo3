@@ -67,7 +67,7 @@ class FormEngineSuggest {
       flexFormSheetName,
       flexFormFieldName,
       flexFormContainerName,
-      flexFormContainerFieldName
+      flexFormContainerFieldName,
     };
 
     function insertValue(element: HTMLElement): void {
@@ -103,7 +103,7 @@ class FormEngineSuggest {
         return {
           suggestions: response.map((dataItem: SuggestEntry): {value: string, data: SuggestEntry} => {
             return {value: dataItem.text, data: dataItem};
-          })
+          }),
         };
       },
       // Rendering of each item
@@ -114,7 +114,7 @@ class FormEngineSuggest {
             '</a></div>').attr({
             'data-label': suggestion.data.label,
             'data-table': suggestion.data.table,
-            'data-uid': suggestion.data.uid
+            'data-uid': suggestion.data.uid,
           })).html();
       },
       onSearchComplete: function(): void {
@@ -130,7 +130,7 @@ class FormEngineSuggest {
       },
       onSelect: function(): void {
         insertValue(<HTMLElement>(containerElement.querySelector('.autocomplete-selected a')));
-      }
+      },
     });
   }
 }

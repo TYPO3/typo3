@@ -50,7 +50,7 @@ class SplitButtons {
       'button[name^="_translation_save"]',
       'a[data-name^="_translation_save"]',
       'button[name="CMD"][value^="_translation_save"]',
-      'a[data-name="CMD"][data-value^="_translation_save"]'
+      'a[data-name="CMD"][data-value^="_translation_save"]',
     ].join(',');
 
     $('.t3js-module-docheader').on('click', elements, (e: JQueryEventObject): boolean => {

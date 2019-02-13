@@ -16,5 +16,5 @@ export enum SeverityEnum {
   info = -1,
   ok = 0,
   warning = 1,
-  error = 2
+  error = 2,
 }

@@ -12,5 +12,5 @@
  */
 
 export enum TopbarIdentifiersEnum {
-  buttonNavigationComponent = '.t3js-topbar-button-navigationcomponent'
+  buttonNavigationComponent = '.t3js-topbar-button-navigationcomponent',
 }

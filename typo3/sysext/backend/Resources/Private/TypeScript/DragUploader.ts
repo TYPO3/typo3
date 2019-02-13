@@ -32,7 +32,7 @@ enum Action {
   OVERRIDE = 'replace',
   RENAME = 'rename',
   SKIP = 'cancel',
-  USE_EXISTING = 'useExisting'
+  USE_EXISTING = 'useExisting',
 }
 
 /**
@@ -126,7 +126,7 @@ class DragUploaderPlugin {
     this.browserCapabilities = {
       fileReader: typeof FileReader !== 'undefined',
       DnD: 'draggable' in document.createElement('span'),
-      Progress: 'upload' in new XMLHttpRequest
+      Progress: 'upload' in new XMLHttpRequest,
     };
 
 
@@ -157,7 +157,7 @@ class DragUploaderPlugin {
       TYPO3.lang['file_upload.dropzonehint.message'] +
       '</p>' +
       '</div>' +
-      '</div>'
+      '</div>',
     ).click(() => {
       this.fileInput.click();
     });
@@ -257,7 +257,7 @@ class DragUploaderPlugin {
         url: TYPO3.settings.ajaxUrls.file_exists,
         data: {
           fileName: file.name,
-          fileTarget: this.target
+          fileTarget: this.target,
         },
         cache: false,
         success: (response: any) => {
@@ -266,14 +266,14 @@ class DragUploaderPlugin {
             this.askForOverride.push({
               original: response,
               uploaded: file,
-              action: this.irreObjectUid ? Action.USE_EXISTING : Action.SKIP
+              action: this.irreObjectUid ? Action.USE_EXISTING : Action.SKIP,
             });
             NProgress.inc(this.percentagePerFile);
           } else {
             // Unused var _ is necessary as "no-unused-expression" is active
             const _ = new FileQueueItem(this, file, Action.SKIP);
           }
-        }
+        },
       });
     });
 
@@ -320,7 +320,7 @@ class DragUploaderPlugin {
             $.each(data, (index: number, flashMessage: { title: string, message: string, severity: number }) => {
               Notification.showMessage(flashMessage.title, flashMessage.message, flashMessage.severity);
             });
-          }
+          },
         });
       }
     }
@@ -342,10 +342,10 @@ class DragUploaderPlugin {
             $('<th/>'),
             $('<th/>').text(TYPO3.lang['file_upload.header.originalFile']),
             $('<th/>').text(TYPO3.lang['file_upload.header.uploadedFile']),
-            $('<th/>').text(TYPO3.lang['file_upload.header.action'])
-          )
-        )
-      )
+            $('<th/>').text(TYPO3.lang['file_upload.header.action']),
+          ),
+        ),
+      ),
     );
 
     for (let i = 0; i < amountOfItems; ++i) {
@@ -354,24 +354,24 @@ class DragUploaderPlugin {
           (this.askForOverride[i].original.thumbUrl !== ''
               ? $('<img />', {src: this.askForOverride[i].original.thumbUrl, height: 40})
               : $(this.askForOverride[i].original.icon)
-          )
+          ),
         ),
         $('<td />').html(
           this.askForOverride[i].original.name + ' (' + (DragUploader.fileSizeAsString(this.askForOverride[i].original.size)) + ')' +
-          '<br>' + moment(this.askForOverride[i].original.mtime, 'x').format('YYYY-MM-DD HH:mm')
+          '<br>' + moment(this.askForOverride[i].original.mtime, 'x').format('YYYY-MM-DD HH:mm'),
         ),
         $('<td />').html(
           this.askForOverride[i].uploaded.name + ' (' + (DragUploader.fileSizeAsString(this.askForOverride[i].uploaded.size)) + ')' +
-          '<br>' + moment(this.askForOverride[i].uploaded.lastModifiedDate, 'X').format('YYYY-MM-DD HH:mm')
+          '<br>' + moment(this.askForOverride[i].uploaded.lastModifiedDate, 'X').format('YYYY-MM-DD HH:mm'),
         ),
         $('<td />').append(
           $('<select />', {class: 'form-control t3js-actions', 'data-override': i}).append(
             (this.irreObjectUid ? $('<option/>').val(Action.USE_EXISTING).text(TYPO3.lang['file_upload.actions.use_existing']) : ''),
             $('<option />').val(Action.SKIP).text(TYPO3.lang['file_upload.actions.skip']),
             $('<option />').val(Action.RENAME).text(TYPO3.lang['file_upload.actions.rename']),
-            $('<option />').val(Action.OVERRIDE).text(TYPO3.lang['file_upload.actions.override'])
-          )
-        )
+            $('<option />').val(Action.OVERRIDE).text(TYPO3.lang['file_upload.actions.override']),
+          ),
+        ),
       );
       $modalContent.find('table').append('<tbody />').append($record);
     }
@@ -383,15 +383,15 @@ class DragUploaderPlugin {
           text: $(this).data('button-close-text') || TYPO3.lang['file_upload.button.cancel'] || 'Cancel',
           active: true,
           btnClass: 'btn-default',
-          name: 'cancel'
+          name: 'cancel',
         },
         {
           text: $(this).data('button-ok-text') || TYPO3.lang['file_upload.button.continue'] || 'Continue with selected actions',
           btnClass: 'btn-warning',
-          name: 'continue'
-        }
+          name: 'continue',
+        },
       ],
-      ['modal-inner-scroll']
+      ['modal-inner-scroll'],
     );
     $modal.find('.modal-dialog').addClass('modal-lg');
 
@@ -403,9 +403,9 @@ class DragUploaderPlugin {
           (this.irreObjectUid ? $('<option/>').val(Action.USE_EXISTING).text(TYPO3.lang['file_upload.actions.all.use_existing']) : ''),
           $('<option/>').val(Action.SKIP).text(TYPO3.lang['file_upload.actions.all.skip']),
           $('<option/>').val(Action.RENAME).text(TYPO3.lang['file_upload.actions.all.rename']),
-          $('<option/>').val(Action.OVERRIDE).text(TYPO3.lang['file_upload.actions.all.override'])
-        )
-      )
+          $('<option/>').val(Action.OVERRIDE).text(TYPO3.lang['file_upload.actions.all.override']),
+        ),
+      ),
     );
 
     const uploader = this;
@@ -437,7 +437,7 @@ class DragUploaderPlugin {
           if (fileInfo.action === Action.USE_EXISTING) {
             DragUploader.addFileToIrre(
               uploader.irreObjectUid,
-              fileInfo.original
+              fileInfo.original,
             );
           } else if (fileInfo.action !== Action.SKIP) {
             // Unused var _ is necessary as "no-unused-expression" is active
@@ -507,7 +507,7 @@ class FileQueueItem {
 
     } else if (!this.checkAllowedExtensions()) {
       this.updateMessage(TYPO3.lang['file_upload.fileExtensionExpected']
-        .replace(/\{0\}/g, this.dragUploader.filesExtensionsAllowed)
+        .replace(/\{0\}/g, this.dragUploader.filesExtensionsAllowed),
       );
       this.$row.addClass('error');
     } else {
@@ -528,7 +528,7 @@ class FileQueueItem {
         cache: false,
         type: 'POST',
         success: (data: { upload?: UploadedFile[] }) => this.uploadSuccess(data),
-        error: (response: XMLHttpRequest) => this.uploadError(response)
+        error: (response: XMLHttpRequest) => this.uploadError(response),
       });
 
       s.xhr = () => {
@@ -608,14 +608,14 @@ class FileQueueItem {
           .html(
             '<a href="#" class="t3js-contextmenutrigger" data-uid="'
             + data.upload[0].id + '" data-table="sys_file">'
-            + data.upload[0].icon + '&nbsp;</span></a>'
+            + data.upload[0].icon + '&nbsp;</span></a>',
           );
       }
 
       if (this.dragUploader.irreObjectUid) {
         DragUploader.addFileToIrre(
           this.dragUploader.irreObjectUid,
-          data.upload[0]
+          data.upload[0],
         );
         setTimeout(
           () => {
@@ -672,10 +672,10 @@ class FileQueueItem {
 }
 
 class DragUploader {
+  public fileListColumnCount: number;
+  public filesExtensionsAllowed: string;
+  public fileDenyPattern: string;
   private static options: DragUploaderOptions;
-  fileListColumnCount: number;
-  filesExtensionsAllowed: string;
-  fileDenyPattern: string;
 
   public static fileSizeAsString(size: number): string {
     const sizeKB: number = size / 1024;
@@ -698,7 +698,7 @@ class DragUploader {
       irre_object,
       'sys_file',
       file.uid,
-      'file'
+      'file',
     );
   }
 
@@ -719,7 +719,7 @@ class DragUploader {
             data[options]();
           }
         });
-      }
+      },
     });
 
     $(() => {
@@ -755,7 +755,7 @@ export const initialize = function (): void {
     $.each(
       TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/DragUploader'], (pos, moduleName) => {
         require([moduleName]);
-      }
+      },
     );
   }
 };

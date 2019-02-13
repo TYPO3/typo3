@@ -30,7 +30,7 @@ enum Identifiers {
   shortcutFormGroupSelector = 'select[name="shortcut-group"]',
   shortcutFormSaveSelector = '.shortcut-form-save',
   shortcutFormCancelSelector = '.shortcut-form-cancel',
-  shortcutFormSelector = '.shortcut-form'
+  shortcutFormSelector = '.shortcut-form',
 }
 
 /**
@@ -60,7 +60,7 @@ class ShortcutMenu {
     confirmationText: string,
     motherModule: string,
     shortcutButton: JQuery,
-    displayName: string
+    displayName: string,
   ): void {
     if (typeof confirmationText !== 'undefined') {
       Modal.confirm(TYPO3.lang['bookmark.create'], confirmationText).on('confirm.button.ok', (e: JQueryEventObject): void => {
@@ -78,9 +78,9 @@ class ShortcutMenu {
             module: moduleName,
             url: url,
             motherModName: motherModule,
-            displayName: displayName
+            displayName: displayName,
           },
-          cache: false
+          cache: false,
         }).done((): void => {
           this.refreshMenu();
           $(Identifiers.toolbarIconSelector, Identifiers.containerSelector).replaceWith($existingIcon);
@@ -139,10 +139,10 @@ class ShortcutMenu {
         $.ajax({
           url: TYPO3.settings.ajaxUrls.shortcut_remove,
           data: {
-            shortcutId: $shortcutRecord.data('shortcutid')
+            shortcutId: $shortcutRecord.data('shortcutid'),
           },
           type: 'post',
-          cache: false
+          cache: false,
         }).done((): void => {
           // a reload is used in order to restore the original behaviour
           // e.g. remove groups that are now empty because the last one in the group
@@ -167,9 +167,9 @@ class ShortcutMenu {
       url: TYPO3.settings.ajaxUrls.shortcut_editform,
       data: {
         shortcutId: $shortcutRecord.data('shortcutid'),
-        shortcutGroup: $shortcutRecord.data('shortcutgroup')
+        shortcutGroup: $shortcutRecord.data('shortcutgroup'),
       },
-      cache: false
+      cache: false,
     }).done((data: string): void => {
       $(Identifiers.containerSelector).find(Identifiers.toolbarMenuSelector).html(data);
     });
@@ -186,10 +186,10 @@ class ShortcutMenu {
       data: {
         shortcutId: $shortcutForm.data('shortcutid'),
         shortcutTitle: $shortcutForm.find(Identifiers.shortcutFormTitleSelector).val(),
-        shortcutGroup: $shortcutForm.find(Identifiers.shortcutFormGroupSelector).val()
+        shortcutGroup: $shortcutForm.find(Identifiers.shortcutFormGroupSelector).val(),
       },
       type: 'post',
-      cache: false
+      cache: false,
     }).done((): void => {
       Notification.success(TYPO3.lang['bookmark.savedTitle'], TYPO3.lang['bookmark.savedMessage']);
       this.refreshMenu();
@@ -203,7 +203,7 @@ class ShortcutMenu {
     $.ajax({
       url: TYPO3.settings.ajaxUrls.shortcut_list,
       type: 'get',
-      cache: false
+      cache: false,
     }).done((data: string): void => {
       $(Identifiers.toolbarMenuSelector, Identifiers.containerSelector).html(data);
     });

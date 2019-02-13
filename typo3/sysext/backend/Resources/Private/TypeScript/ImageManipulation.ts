@@ -210,7 +210,7 @@ class ImageManipulation {
         (): void => {
           this.init();
         },
-        100
+        100,
       );
     });
   }
@@ -264,7 +264,7 @@ class ImageManipulation {
         callback: (currentModal: JQuery): void => {
           $.post({
             url: imageUri,
-            data: payload
+            data: payload,
           }).done((response: string): void => {
             initCropperModal();
             currentModal.find('.t3js-modal-body').append(response).addClass('cropper');
