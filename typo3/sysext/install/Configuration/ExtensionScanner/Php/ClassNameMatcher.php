@@ -1336,5 +1336,10 @@ return [
         'restFiles' => [
             'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
         ],
+    ],
+    'TYPO3\CMS\Core\Resource\ResourceFactoryInterface' => [
+        'restFiles' => [
+            'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
+        ],
     ]
 ];

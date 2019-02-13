@@ -13,14 +13,6 @@ $signalSlotDispatcher->connect(
     'scanAvailablePackages'
 );
 
-// FAL security checks for backend users
-$signalSlotDispatcher->connect(
-    \TYPO3\CMS\Core\Resource\ResourceFactory::class,
-    \TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostProcessStorage,
-    \TYPO3\CMS\Core\Resource\Security\StoragePermissionsAspect::class,
-    'addUserPermissionsToStorage'
-);
-
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \TYPO3\CMS\Core\Resource\Security\FileMetadataPermissionsAspect::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \TYPO3\CMS\Core\Hooks\BackendUserGroupIntegrityCheck::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \TYPO3\CMS\Core\Hooks\BackendUserPasswordCheck::class;
@@ -30,27 +22,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['chec
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \TYPO3\CMS\Core\Hooks\DestroySessionHook::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \TYPO3\CMS\Core\Hooks\PagesTsConfigGuard::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][\TYPO3\CMS\Core\Hooks\CreateSiteConfiguration::class] = \TYPO3\CMS\Core\Hooks\CreateSiteConfiguration::class;
-
-$signalSlotDispatcher->connect(
-    \TYPO3\CMS\Core\Resource\ResourceStorage::class,
-    \TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileDelete,
-    \TYPO3\CMS\Core\Resource\Processing\FileDeletionAspect::class,
-    'removeFromRepository'
-);
-
-$signalSlotDispatcher->connect(
-    \TYPO3\CMS\Core\Resource\ResourceStorage::class,
-    \TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileAdd,
-    \TYPO3\CMS\Core\Resource\Processing\FileDeletionAspect::class,
-    'cleanupProcessedFilesPostFileAdd'
-);
-
-$signalSlotDispatcher->connect(
-    \TYPO3\CMS\Core\Resource\ResourceStorage::class,
-    \TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileReplace,
-    \TYPO3\CMS\Core\Resource\Processing\FileDeletionAspect::class,
-    'cleanupProcessedFilesPostFileReplace'
-);
 
 if (!\TYPO3\CMS\Core\Core\Environment::isComposerMode()) {
     $signalSlotDispatcher->connect(
@@ -66,12 +37,6 @@ if (!\TYPO3\CMS\Core\Core\Environment::isComposerMode()) {
         'dumpClassLoadingInformation'
     );
 }
-$signalSlotDispatcher->connect(
-    TYPO3\CMS\Core\Resource\ResourceStorage::class,
-    \TYPO3\CMS\Core\Resource\Service\FileProcessingService::SIGNAL_PreFileProcess,
-    \TYPO3\CMS\Core\Resource\OnlineMedia\Processing\PreviewProcessing::class,
-    'processFile'
-);
 
 $signalSlotDispatcher->connect(
     'TYPO3\\CMS\\Install\\Service\\SqlExpectedSchemaService',

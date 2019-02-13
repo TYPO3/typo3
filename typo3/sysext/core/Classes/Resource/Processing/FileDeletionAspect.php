@@ -15,50 +15,40 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  */
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFileDeletedEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFileReplacedEvent;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
+use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class FileDeletionAspect
+ * The aspect cleans up database records, processed files and file references
  *
  * We do not have AOP in TYPO3 for now, thus the aspect which
- * deals with deleted files is a slot which reacts on a signal
- * on file deletion.
+ * deals with deleted files is a list of PSR-14 event listeners which react on file deletion.
  *
- * The aspect cleans up database records, processed files and filereferences
+ * @internal this is a list of Event Listeners, and not part of TYPO3 Core API.
  */
-class FileDeletionAspect
+final class FileDeletionAspect
 {
-    /**
-     * Return a file index repository
-     *
-     * @return \TYPO3\CMS\Core\Resource\Index\FileIndexRepository
-     */
-    protected function getFileIndexRepository()
+    public function cleanupProcessedFilesPostFileAdd(AfterFileAddedEvent $event): void
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class);
+        $this->cleanupProcessedFiles($event->getFile());
     }
 
-    /**
-     * Return a metadata repository
-     *
-     * @return \TYPO3\CMS\Core\Resource\Index\MetaDataRepository
-     */
-    protected function getMetaDataRepository()
+    public function cleanupProcessedFilesPostFileReplace(AfterFileReplacedEvent $event): void
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class);
+        $this->cleanupProcessedFiles($event->getFile());
     }
 
-    /**
-     * Return a processed file repository
-     *
-     * @return \TYPO3\CMS\Core\Resource\ProcessedFileRepository
-     */
-    protected function getProcessedFileRepository()
+    public function removeFromRepositoryAfterFileDeleted(AfterFileDeletedEvent $event): void
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ProcessedFileRepository::class);
+        $this->removeFromRepository($event->getFile());
     }
 
     /**
@@ -66,7 +56,7 @@ class FileDeletionAspect
      *
      * @param FileInterface $fileObject
      */
-    public function removeFromRepository(FileInterface $fileObject)
+    private function removeFromRepository(FileInterface $fileObject)
     {
         // remove file from repository
         if ($fileObject instanceof File) {
@@ -96,33 +86,11 @@ class FileDeletionAspect
     }
 
     /**
-     * Remove all processed files on SIGNAL_PostFileAdd
-     *
-     * @param FileInterface $file
-     * @param string $targetFolder
-     */
-    public function cleanupProcessedFilesPostFileAdd(FileInterface $file, $targetFolder)
-    {
-        $this->cleanupProcessedFiles($file);
-    }
-
-    /**
-     * Remove all processed files on SIGNAL_PostFileReplace
-     *
-     * @param FileInterface $file
-     * @param string $localFilePath
-     */
-    public function cleanupProcessedFilesPostFileReplace(FileInterface $file, $localFilePath)
-    {
-        $this->cleanupProcessedFiles($file);
-    }
-
-    /**
      * Remove all category references of the deleted file.
      *
      * @param File $fileObject
      */
-    protected function cleanupCategoryReferences(File $fileObject)
+    private function cleanupCategoryReferences(File $fileObject)
     {
         // Retrieve the file metadata uid which is different from the file uid.
         $metadataProperties = $fileObject->getMetaData()->get();
@@ -143,7 +111,7 @@ class FileDeletionAspect
      *
      * @param FileInterface $fileObject
      */
-    protected function cleanupProcessedFiles(FileInterface $fileObject)
+    private function cleanupProcessedFiles(FileInterface $fileObject)
     {
         // only delete processed files of File objects
         if (!$fileObject instanceof File) {
@@ -157,5 +125,20 @@ class FileDeletionAspect
             }
             $this->removeFromRepository($processedFile);
         }
+    }
+
+    private function getFileIndexRepository(): FileIndexRepository
+    {
+        return GeneralUtility::makeInstance(FileIndexRepository::class);
+    }
+
+    private function getMetaDataRepository(): MetaDataRepository
+    {
+        return GeneralUtility::makeInstance(MetaDataRepository::class);
+    }
+
+    private function getProcessedFileRepository(): ProcessedFileRepository
+    {
+        return GeneralUtility::makeInstance(ProcessedFileRepository::class);
     }
 }

@@ -19,33 +19,144 @@ namespace TYPO3\CMS\Core\Resource;
  */
 interface ResourceStorageInterface
 {
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_SanitizeFileName = 'sanitizeFileName';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PreFileAdd = 'preFileAdd';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PostFileAdd = 'postFileAdd';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PreFileCreate = 'preFileCreate';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PostFileCreate = 'postFileCreate';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PreFileCopy = 'preFileCopy';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PostFileCopy = 'postFileCopy';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PreFileMove = 'preFileMove';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PostFileMove = 'postFileMove';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PreFileDelete = 'preFileDelete';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PostFileDelete = 'postFileDelete';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PreFileRename = 'preFileRename';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PostFileRename = 'postFileRename';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PreFileReplace = 'preFileReplace';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PostFileReplace = 'postFileReplace';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PreFileSetContents = 'preFileSetContents';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PostFileSetContents = 'postFileSetContents';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PreFolderAdd = 'preFolderAdd';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PostFolderAdd = 'postFolderAdd';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PreFolderCopy = 'preFolderCopy';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PostFolderCopy = 'postFolderCopy';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PreFolderMove = 'preFolderMove';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PostFolderMove = 'postFolderMove';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PreFolderDelete = 'preFolderDelete';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PostFolderDelete = 'postFolderDelete';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PreFolderRename = 'preFolderRename';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PostFolderRename = 'postFolderRename';
+
+    /**
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
+     */
     const SIGNAL_PreGeneratePublicUrl = 'preGeneratePublicUrl';
 
     /**

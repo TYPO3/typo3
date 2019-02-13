@@ -15,34 +15,25 @@ namespace TYPO3\CMS\Core\Resource\Security;
  */
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Resource\Event\AfterResourceStorageInitializationEvent;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 
 /**
- * Class StoragePermissionsAspect
- *
- * We do not have AOP in TYPO3 for now, thus the aspect which
- * deals with resource security is a slot which reacts on a signal
- * on storage object creation.
- *
  * The aspect injects user permissions and mount points into the storage
  * based on user or group configuration.
+ *
+ * We do not have AOP in TYPO3 for now, thus the aspect which
+ * deals with resource security is a EventListener which reacts on storage object creation.
+ *
+ * @internal this is an Event Listener, and not part of TYPO3 Core API.
  */
-class StoragePermissionsAspect
+final class StoragePermissionsAspect
 {
     /**
      * @var BackendUserAuthentication
      */
     protected $backendUserAuthentication;
-
-    /**
-     * @var array
-     */
-    protected $defaultStorageZeroPermissions = [
-        'readFolder' => true,
-        'readFile' => true
-    ];
 
     /**
      * @param BackendUserAuthentication|null $backendUserAuthentication
@@ -53,13 +44,12 @@ class StoragePermissionsAspect
     }
 
     /**
-     * The slot for the signal in ResourceFactory where storage objects are created
-     *
-     * @param ResourceFactory $resourceFactory
-     * @param ResourceStorage $storage
+     * The event listener for the event where storage objects are created
+     * @param AfterResourceStorageInitializationEvent $event
      */
-    public function addUserPermissionsToStorage(ResourceFactory $resourceFactory, ResourceStorage $storage)
+    public function addUserPermissionsToStorage(AfterResourceStorageInitializationEvent $event): void
     {
+        $storage = $event->getStorage();
         if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) && !$this->backendUserAuthentication->isAdmin()) {
             $storage->setEvaluatePermissions(true);
             if ($storage->getUid() > 0) {
@@ -76,7 +66,7 @@ class StoragePermissionsAspect
      *
      * @param ResourceStorage $storage
      */
-    protected function addFileMountsToStorage(ResourceStorage $storage)
+    private function addFileMountsToStorage(ResourceStorage $storage)
     {
         foreach ($this->backendUserAuthentication->getFileMountRecords() as $fileMountRow) {
             if ((int)$fileMountRow['base'] === (int)$storage->getUid()) {

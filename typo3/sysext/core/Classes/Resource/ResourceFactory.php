@@ -14,16 +14,18 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Resource\Event\AfterResourceStorageInitializationEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeResourceStorageInitializationEvent;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * Factory class for FAL objects
@@ -69,18 +71,16 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
     protected $localDriverStorageCache;
 
     /**
-     * @var Dispatcher
+     * @var EventDispatcherInterface
      */
-    protected $signalSlotDispatcher;
+    protected $eventDispatcher;
 
     /**
-     * Inject signal slot dispatcher
-     *
-     * @param Dispatcher $signalSlotDispatcher an instance of the signal slot dispatcher
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(Dispatcher $signalSlotDispatcher = null)
+    public function __construct(EventDispatcherInterface $eventDispatcher)
     {
-        $this->signalSlotDispatcher = $signalSlotDispatcher ?: GeneralUtility::makeInstance(Dispatcher::class);
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -146,7 +146,11 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
         if (empty($this->storageInstances[$uid])) {
             $storageConfiguration = null;
             $storageObject = null;
-            list($_, $uid, $recordData, $fileIdentifier) = $this->emitPreProcessStorageSignal($uid, $recordData, $fileIdentifier);
+            /** @var BeforeResourceStorageInitializationEvent $event */
+            $event = $this->eventDispatcher->dispatch(new BeforeResourceStorageInitializationEvent($uid, $recordData, $fileIdentifier));
+            $recordData = $event->getRecord();
+            $uid = $event->getStorageUid();
+            $fileIdentifier = $event->getFileIdentifier();
             // If the built-in storage with UID=0 is requested:
             if ($uid === 0) {
                 $recordData = [
@@ -177,33 +181,12 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
             if (!$storageObject instanceof ResourceStorage) {
                 $storageObject = $this->createStorageObject($recordData, $storageConfiguration);
             }
-            $this->emitPostProcessStorageSignal($storageObject);
+            $storageObject = $this->eventDispatcher
+                ->dispatch(new AfterResourceStorageInitializationEvent($storageObject))
+                ->getStorage();
             $this->storageInstances[$uid] = $storageObject;
         }
         return $this->storageInstances[$uid];
-    }
-
-    /**
-     * Emits a signal before a resource storage was initialized
-     *
-     * @param int $uid
-     * @param array $recordData
-     * @param string $fileIdentifier
-     * @return mixed
-     */
-    protected function emitPreProcessStorageSignal($uid, $recordData, $fileIdentifier)
-    {
-        return $this->signalSlotDispatcher->dispatch(\TYPO3\CMS\Core\Resource\ResourceFactory::class, self::SIGNAL_PreProcessStorage, [$this, $uid, $recordData, $fileIdentifier]);
-    }
-
-    /**
-     * Emits a signal after a resource storage was initialized
-     *
-     * @param ResourceStorage $storageObject
-     */
-    protected function emitPostProcessStorageSignal(ResourceStorage $storageObject)
-    {
-        $this->signalSlotDispatcher->dispatch(self::class, self::SIGNAL_PostProcessStorage, [$this, $storageObject]);
     }
 
     /**
@@ -343,7 +326,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
         }
         $driverType = $storageRecord['driver'];
         $driverObject = $this->getDriverObject($driverType, $storageConfiguration);
-        return GeneralUtility::makeInstance(ResourceStorage::class, $driverObject, $storageRecord);
+        return GeneralUtility::makeInstance(ResourceStorage::class, $driverObject, $storageRecord, $this->eventDispatcher);
     }
 
     /**

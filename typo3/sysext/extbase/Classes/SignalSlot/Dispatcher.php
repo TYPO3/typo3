@@ -17,6 +17,53 @@ namespace TYPO3\CMS\Extbase\SignalSlot;
  */
 
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFileAddedToIndexEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFileContentsSetEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFileCopiedEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFileCreatedEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFileDeletedEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFileMarkedAsMissingEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataCreatedEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataDeletedEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataUpdatedEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFileMovedEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFileProcessingEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFileRemovedFromIndexEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFileRenamedEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFileReplacedEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFileUpdatedInIndexEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFolderAddedEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFolderCopiedEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFolderDeletedEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFolderMovedEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFolderRenamedEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterResourceStorageInitializationEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFileAddedEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFileContentsSetEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFileCopiedEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFileCreatedEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFileDeletedEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFileMovedEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFileProcessingEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFileRenamedEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFileReplacedEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFolderAddedEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFolderCopiedEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFolderDeletedEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFolderMovedEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFolderRenamedEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeResourceStorageInitializationEvent;
+use TYPO3\CMS\Core\Resource\Event\EnrichFileMetaDataEvent;
+use TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent;
+use TYPO3\CMS\Core\Resource\Event\SanitizeFileNameEvent;
+use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
+use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceFactoryInterface;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Resource\ResourceStorageInterface;
+use TYPO3\CMS\Core\Resource\Service\FileProcessingService;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
@@ -44,6 +91,59 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      * @var LoggerInterface
      */
     protected $logger;
+
+    protected $deprecatedSlots = [
+        FileIndexRepository::class => [
+            'recordUpdated' => AfterFileUpdatedInIndexEvent::class,
+            'recordCreated' => AfterFileAddedToIndexEvent::class,
+            'recordDeleted' => AfterFileRemovedFromIndexEvent::class,
+            'recordMarkedAsMissing' => AfterFileMarkedAsMissingEvent::class
+        ],
+        MetaDataRepository::class => [
+            'recordPostRetrieval' => EnrichFileMetaDataEvent::class,
+            'recordUpdated' => AfterFileMetaDataUpdatedEvent::class,
+            'recordCreated' => AfterFileMetaDataCreatedEvent::class,
+            'recordDeleted' => AfterFileMetaDataDeletedEvent::class
+        ],
+        ResourceFactory::class => [
+            ResourceFactoryInterface::SIGNAL_PreProcessStorage => BeforeResourceStorageInitializationEvent::class,
+            ResourceFactoryInterface::SIGNAL_PostProcessStorage => AfterResourceStorageInitializationEvent::class,
+        ],
+        ResourceStorage::class => [
+            ResourceStorageInterface::SIGNAL_SanitizeFileName => SanitizeFileNameEvent::class,
+            ResourceStorageInterface::SIGNAL_PreFileAdd => BeforeFileAddedEvent::class,
+            ResourceStorageInterface::SIGNAL_PostFileAdd => AfterFileAddedEvent::class,
+            ResourceStorageInterface::SIGNAL_PreFileCopy => BeforeFileCopiedEvent::class,
+            ResourceStorageInterface::SIGNAL_PostFileCopy => AfterFileCopiedEvent::class,
+            ResourceStorageInterface::SIGNAL_PreFileMove => BeforeFileMovedEvent::class,
+            ResourceStorageInterface::SIGNAL_PostFileMove => AfterFileMovedEvent::class,
+            ResourceStorageInterface::SIGNAL_PreFileRename => BeforeFileRenamedEvent::class,
+            ResourceStorageInterface::SIGNAL_PostFileRename => AfterFileRenamedEvent::class,
+            ResourceStorageInterface::SIGNAL_PreFileReplace => BeforeFileReplacedEvent::class,
+            ResourceStorageInterface::SIGNAL_PostFileReplace => AfterFileReplacedEvent::class,
+            ResourceStorageInterface::SIGNAL_PreFileCreate => BeforeFileCreatedEvent::class,
+            ResourceStorageInterface::SIGNAL_PostFileCreate => AfterFileCreatedEvent::class,
+            ResourceStorageInterface::SIGNAL_PreFileDelete => BeforeFileDeletedEvent::class,
+            ResourceStorageInterface::SIGNAL_PostFileDelete => AfterFileDeletedEvent::class,
+            ResourceStorageInterface::SIGNAL_PreFileSetContents => BeforeFileContentsSetEvent::class,
+            ResourceStorageInterface::SIGNAL_PostFileSetContents => AfterFileContentsSetEvent::class,
+            ResourceStorageInterface::SIGNAL_PreFolderAdd => BeforeFolderAddedEvent::class,
+            ResourceStorageInterface::SIGNAL_PostFolderAdd => AfterFolderAddedEvent::class,
+            ResourceStorageInterface::SIGNAL_PreFolderCopy => BeforeFolderCopiedEvent::class,
+            ResourceStorageInterface::SIGNAL_PostFolderCopy => AfterFolderCopiedEvent::class,
+            ResourceStorageInterface::SIGNAL_PreFolderMove => BeforeFolderMovedEvent::class,
+            ResourceStorageInterface::SIGNAL_PostFolderMove => AfterFolderMovedEvent::class,
+            ResourceStorageInterface::SIGNAL_PreFolderRename => BeforeFolderRenamedEvent::class,
+            ResourceStorageInterface::SIGNAL_PostFolderRename => AfterFolderRenamedEvent::class,
+            ResourceStorageInterface::SIGNAL_PreFolderDelete => BeforeFolderDeletedEvent::class,
+            ResourceStorageInterface::SIGNAL_PostFolderDelete => AfterFolderDeletedEvent::class,
+            ResourceStorageInterface::SIGNAL_PreGeneratePublicUrl => GeneratePublicUrlForResourceEvent::class,
+        ],
+        FileProcessingService::class => [
+            FileProcessingService::SIGNAL_PreFileProcess => BeforeFileProcessingEvent::class,
+            FileProcessingService::SIGNAL_PostFileProcess => AfterFileProcessingEvent::class,
+        ],
+    ];
 
     /**
      * @param ObjectManagerInterface $objectManager
@@ -163,5 +263,33 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
     public function getSlots(string $signalClassName, string $signalName): array
     {
         return $this->slots[$signalClassName][$signalName] ?? [];
+    }
+
+    /**
+     * This method is called by TYPO3\CMS\Extbase\Middleware\SignalSlotDeprecator to collect and report
+     * the deprecated slots only once per request.
+     *
+     * @internal
+     */
+    public function reportDeprecatedSignalSlots(): void
+    {
+        $messages = [];
+        foreach ($this->slots as $signalClassName => $signals) {
+            if (isset($this->deprecatedSlots[$signalClassName])) {
+                foreach (array_keys($signals) as $signalName) {
+                    $eventClass = $this->deprecatedSlots[$signalClassName][$signalName] ?? null;
+                    if ($eventClass !== null) {
+                        $messages[] = 'The signal "' . $signalName . '" in "' . $signalClassName . '" is deprecated and will stop working in TYPO3 11.0. Use the PSR-14 event: "' . $eventClass . '"';
+                    }
+                }
+            }
+        }
+        if (count($messages)) {
+            trigger_error(
+                'The following deprecated signals are connected:' . LF .
+                implode(LF, $messages),
+                E_USER_DEPRECATED
+            );
+        }
     }
 }

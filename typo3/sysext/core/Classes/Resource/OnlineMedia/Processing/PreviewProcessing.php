@@ -17,12 +17,11 @@ namespace TYPO3\CMS\Core\Resource\OnlineMedia\Processing;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Imaging\ImageMagickFile;
-use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
+use TYPO3\CMS\Core\Resource\Event\BeforeFileProcessingEvent;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
-use TYPO3\CMS\Core\Resource\Service\FileProcessingService;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -31,14 +30,16 @@ use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 
 /**
  * Preview of Online Media item Processing
+ *
+ * @internal this is a Event Listener, and not part of TYPO3 Core API.
  */
-class PreviewProcessing
+final class PreviewProcessing
 {
     /**
      * @param ProcessedFile $processedFile
      * @return bool
      */
-    protected function needsReprocessing($processedFile)
+    private function needsReprocessing($processedFile)
     {
         return $processedFile->isNew()
             || (!$processedFile->usesOriginalFile() && !$processedFile->exists())
@@ -46,18 +47,16 @@ class PreviewProcessing
     }
 
     /**
-     * Process file
      * Create static image preview for Online Media item when possible
      *
-     * @param FileProcessingService $fileProcessingService
-     * @param DriverInterface $driver
-     * @param ProcessedFile $processedFile
-     * @param File $file
-     * @param string $taskType
-     * @param array $configuration
+     * @param BeforeFileProcessingEvent $event
      */
-    public function processFile(FileProcessingService $fileProcessingService, DriverInterface $driver, ProcessedFile $processedFile, File $file, $taskType, array $configuration)
+    public function processFile(BeforeFileProcessingEvent $event): void
     {
+        /** @var File $file */
+        $file = $event->getFile();
+        $processedFile = $event->getProcessedFile();
+        $taskType = $event->getTaskType();
         if ($taskType !== ProcessedFile::CONTEXT_IMAGEPREVIEW && $taskType !== ProcessedFile::CONTEXT_IMAGECROPSCALEMASK) {
             return;
         }
@@ -112,7 +111,7 @@ class PreviewProcessing
      * @param string $prefix
      * @return string
      */
-    protected function getTargetFileName(ProcessedFile $processedFile, $prefix = 'preview_')
+    private function getTargetFileName(ProcessedFile $processedFile, $prefix = 'preview_')
     {
         return $prefix . $processedFile->getTask()->getConfigurationChecksum() . '_' . $processedFile->getOriginalFile()->getNameWithoutExtension() . '.jpg';
     }
@@ -122,7 +121,7 @@ class PreviewProcessing
      * @param string $temporaryFileName
      * @param array $configuration
      */
-    protected function resizeImage($originalFileName, $temporaryFileName, $configuration)
+    private function resizeImage($originalFileName, $temporaryFileName, $configuration)
     {
         // Create the temporary file
         if (empty($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'])) {
@@ -156,7 +155,7 @@ class PreviewProcessing
      * @param string $temporaryFileName
      * @param array $configuration
      */
-    protected function cropScaleImage($originalFileName, $temporaryFileName, $configuration)
+    private function cropScaleImage($originalFileName, $temporaryFileName, $configuration)
     {
         if (file_exists($originalFileName)) {
             $gifBuilder = GeneralUtility::makeInstance(GifBuilder::class);
@@ -199,7 +198,7 @@ class PreviewProcessing
      * @param GifBuilder $gifBuilder
      * @return array
      */
-    protected function getConfigurationForImageCropScaleMask(array $configuration, GifBuilder $gifBuilder)
+    private function getConfigurationForImageCropScaleMask(array $configuration, GifBuilder $gifBuilder)
     {
         if (!empty($configuration['useSample'])) {
             $gifBuilder->scalecmd = '-sample';
@@ -223,10 +222,7 @@ class PreviewProcessing
         return $options;
     }
 
-    /**
-     * @return GraphicalFunctions
-     */
-    protected function getGraphicalFunctionsObject(): GraphicalFunctions
+    private function getGraphicalFunctionsObject(): GraphicalFunctions
     {
         return GeneralUtility::makeInstance(GraphicalFunctions::class);
     }

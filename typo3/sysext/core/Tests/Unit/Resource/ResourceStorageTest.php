@@ -17,8 +17,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  */
 
 use Prophecy\Argument;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
@@ -50,6 +52,11 @@ class ResourceStorageTest extends BaseTestCase
     protected $subject;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
      * Set up
      */
     protected function setUp(): void
@@ -67,6 +74,9 @@ class ResourceStorageTest extends BaseTestCase
         $cacheProphecy->get(Argument::cetera())->willReturn(false);
         $cacheProphecy->set(Argument::cetera())->willReturn(false);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $eventDispatcher = $this->prophesize(EventDispatcher::class);
+        $eventDispatcher->dispatch(Argument::cetera())->willReturnArgument(0);
+        $this->eventDispatcher = $eventDispatcher->reveal();
     }
 
     /**
@@ -113,7 +123,7 @@ class ResourceStorageTest extends BaseTestCase
 
         $this->subject = $this->getMockBuilder(ResourceStorage::class)
             ->setMethods(array_unique($mockedMethods))
-            ->setConstructorArgs([$driverObject, $storageRecord])
+            ->setConstructorArgs([$driverObject, $storageRecord, $this->eventDispatcher])
             ->getMock();
         $this->subject->expects(self::any())->method('getResourceFactoryInstance')->willReturn($resourceFactory);
         $this->subject->expects(self::any())->method('getIndexer')->willReturn($this->createMock(Indexer::class));
@@ -306,7 +316,7 @@ class ResourceStorageTest extends BaseTestCase
         /** @var $subject ResourceStorage|\PHPUnit\Framework\MockObject\MockObject */
         $subject = $this->getMockBuilder(ResourceStorage::class)
             ->setMethods(['isOnline', 'getResourceFactoryInstance'])
-            ->setConstructorArgs([$driver, ['configuration' => []]])
+            ->setConstructorArgs([$driver, ['configuration' => []], $this->eventDispatcher])
             ->getMock();
         $subject->expects(self::once())->method('isOnline')->willReturn(false);
         $subject->expects(self::any())->method('getResourceFactoryInstance')->willReturn($mockedResourceFactory);
@@ -365,7 +375,7 @@ class ResourceStorageTest extends BaseTestCase
         /** @var $subject ResourceStorage|\PHPUnit\Framework\MockObject\MockObject */
         $subject = $this->getMockBuilder(ResourceStorage::class)
             ->setMethods(['isWritable', 'isBrowsable', 'checkUserActionPermission', 'getResourceFactoryInstance'])
-            ->setConstructorArgs([$mockedDriver, []])
+            ->setConstructorArgs([$mockedDriver, [], $this->eventDispatcher])
             ->getMock();
         $subject->expects(self::any())->method('isWritable')->willReturn(true);
         $subject->expects(self::any())->method('isBrowsable')->willReturn(true);
@@ -552,7 +562,7 @@ class ResourceStorageTest extends BaseTestCase
         $driverObject = $this->getMockForAbstractClass(AbstractDriver::class, [], '', false);
         $this->subject = $this->getMockBuilder(ResourceStorage::class)
             ->setMethods(['getFileIndexRepository', 'checkFileActionPermission'])
-            ->setConstructorArgs([$driverObject, []])
+            ->setConstructorArgs([$driverObject, [], $this->eventDispatcher])
             ->getMock();
         $this->subject->expects(self::any())->method('checkFileActionPermission')->willReturn(true);
         $fileInfo = [
@@ -643,7 +653,7 @@ class ResourceStorageTest extends BaseTestCase
         /** @var $subject ResourceStorage */
         $subject = $this->getMockBuilder(ResourceStorage::class)
             ->setMethods(['assureFileMovePermissions'])
-            ->setConstructorArgs([$mockedDriver, ['configuration' => $configuration]])
+            ->setConstructorArgs([$mockedDriver, ['configuration' => $configuration], $this->eventDispatcher])
             ->getMock();
         $subject->moveFile($sourceFile, $targetFolder, 'file.ext');
     }
@@ -795,7 +805,7 @@ class ResourceStorageTest extends BaseTestCase
     {
         $mockedDriver = $this->createDriverMock([], $this->subject);
         $mockedDriver->expects(self::once())->method('renameFile')->willReturn('bar');
-        $this->prepareSubject([], true, $mockedDriver, null, [], ['emitPreFileRenameSignal', 'emitPostFileRenameSignal']);
+        $this->prepareSubject([], true, $mockedDriver, null);
         /** @var File $file */
         $file = new File(['identifier' => 'foo', 'name' => 'foo'], $this->subject);
         $result = $this->subject->renameFile($file, 'bar');
@@ -826,7 +836,7 @@ class ResourceStorageTest extends BaseTestCase
             $mockedDriver,
             $resourceFactory,
             [],
-            ['emitPreFileRenameSignal', 'emitPostFileRenameSignal', 'getUniqueName']
+            ['getUniqueName']
         );
         $resourceFactory->expects(self::once())->method('createFolderObject')->willReturn(new Folder($this->subject, '', ''));
         /** @var File $file */
@@ -848,7 +858,7 @@ class ResourceStorageTest extends BaseTestCase
             'foo',
             1489593099
         )));
-        $this->prepareSubject([], true, $mockedDriver, null, [], ['emitPreFileRenameSignal', 'emitPostFileRenameSignal']);
+        $this->prepareSubject([], true, $mockedDriver);
         /** @var File $file */
         $file = new File(['identifier' => 'foo', 'name' => 'foo'], $this->subject);
         $this->expectException(ExistingTargetFileNameException::class);
@@ -868,8 +878,6 @@ class ResourceStorageTest extends BaseTestCase
         $mockedDriver->expects(self::any())->method('sanitizeFileName')->willReturn('bar');
         $resourceFactory = $this->prophesize(ResourceFactory::class);
         $this->prepareSubject([], true, $mockedDriver, $resourceFactory->reveal(), [], [
-            'emitPreFileRenameSignal',
-            'emitPostFileRenameSignal',
             'replaceFile',
             'getPublicUrl',
         ]);

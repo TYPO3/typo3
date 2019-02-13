@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 */
 
 use Prophecy\Argument;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Exception\InvalidUidException;
@@ -25,7 +26,6 @@ use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Resource\MetaDataAspect;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher as SignalSlotDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -44,6 +44,10 @@ class MetaDataAspectTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        $eventDispatcher->dispatch(Argument::cetera())->willReturnArgument(0);
+        $metaDataRepository = new MetaDataRepository($eventDispatcher->reveal());
+        GeneralUtility::setSingletonInstance(MetaDataRepository::class, $metaDataRepository);
         $this->storageMock = $this->createMock(ResourceStorage::class);
         $this->storageMock->expects(self::any())->method('getUid')->willReturn(12);
     }
@@ -151,15 +155,16 @@ class MetaDataAspectTest extends UnitTestCase
         $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
         $connectionPoolProphecy->getConnectionForTable(Argument::cetera())->willReturn($connectionProphecy->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
-        $dispatcherProphecy = $this->prophesize(SignalSlotDispatcher::class);
 
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        $eventDispatcher->dispatch(Argument::cetera())->willReturnArgument(0);
         $metaDataRepositoryMock = $this->getMockBuilder(MetaDataRepository::class)
-            ->setMethods(['findByFileUid', 'getTableFields', 'update', 'getSignalSlotDispatcher'])
+            ->setMethods(['findByFileUid', 'getTableFields', 'update'])
+            ->setConstructorArgs([$eventDispatcher->reveal()])
             ->getMock();
         $metaDataRepositoryMock->expects(self::any())->method('findByFileUid')->willReturn([]);
         $metaDataRepositoryMock->expects(self::any())->method('getTableFields')->willReturn(['title' => 'sometype']);
         $metaDataRepositoryMock->expects(self::never())->method('update');
-        $metaDataRepositoryMock->expects(self::any())->method('getSignalSlotDispatcher')->willReturn($dispatcherProphecy->reveal());
         GeneralUtility::setSingletonInstance(MetaDataRepository::class, $metaDataRepositoryMock);
 
         $file->getMetaData()->add($metaData)->save();
@@ -190,6 +195,7 @@ class MetaDataAspectTest extends UnitTestCase
 
         $metaDataRepositoryMock = $this->getMockBuilder(MetaDataRepository::class)
             ->setMethods(['loadFromRepository', 'createMetaDataRecord', 'update'])
+            ->disableOriginalConstructor()
             ->getMock();
 
         $metaDataRepositoryMock->expects(self::any())->method('createMetaDataRecord')->willReturn($metaData);

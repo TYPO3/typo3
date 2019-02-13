@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Core\Resource;
 
 /**
  * An interface containing constants for the resource factory
+ *
+ * @deprecated This interface will be removed in TYPO3 v11 as it bears no use anymore due to PSR-14 events.
  */
 interface ResourceFactoryInterface
 {

@@ -39,6 +39,201 @@ services:
           identifier: 'legacy-slot',
           event: TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent }
 
+  TYPO3\CMS\Core\Compatibility\SlotReplacement:
+    tags:
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onFileIndexRepositoryRecordCreated',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFileAddedToIndexEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onFileIndexRepositoryRecordDeleted',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFileRemovedFromIndexEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onFileIndexRepositoryRecordMarkedAsMissing',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFileMarkedAsMissingEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onFileIndexRepositoryRecordUpdated',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFileUpdatedInIndexEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onFileProcessingServiceEmitPostFileProcessSignal',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFileProcessingEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onFileProcessingServiceEmitPreFileProcessSignal',
+          event: TYPO3\CMS\Core\Resource\Event\BeforeFileProcessingEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onMetaDataRepositoryRecordCreated',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataCreatedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onMetaDataRepositoryRecordDeleted',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataDeletedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onMetaDataRepositoryRecordPostRetrieval',
+          event: TYPO3\CMS\Core\Resource\Event\EnrichFileMetaDataEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onMetaDataRepositoryRecordUpdated',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataUpdatedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceFactoryPostProcessStorage',
+          event: TYPO3\CMS\Core\Resource\Event\AfterResourceStorageInitializationEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceFactoryPreProcessStorage',
+          event: TYPO3\CMS\Core\Resource\Event\BeforeResourceStorageInitializationEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPostFileAddSignal',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPostFileCopySignal',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFileCopiedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPostFileCreateSignal',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFileCreatedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPostFileDeleteSignal',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFileDeletedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPostFileMoveSignal',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFileMovedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPostFileRenameSignal',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFileRenamedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPostFileReplaceSignal',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFileReplacedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPostFileSetContentsSignal',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFileContentsSetEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPostFolderAddSignal',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFolderAddedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPostFolderCopySignal',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFolderCopiedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPostFolderDeleteSignal',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFolderDeletedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPostFolderMoveSignal',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFolderMovedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPostFolderRenameSignal',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFolderRenamedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPreFileAddSignal',
+          event: TYPO3\CMS\Core\Resource\Event\BeforeFileAddedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPreFileCopySignal',
+          event: TYPO3\CMS\Core\Resource\Event\BeforeFileCopiedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPreFileCreateSignal',
+          event: TYPO3\CMS\Core\Resource\Event\BeforeFileCreatedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPreFileDeleteSignal',
+          event: TYPO3\CMS\Core\Resource\Event\BeforeFileDeletedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPreFileMoveSignal',
+          event: TYPO3\CMS\Core\Resource\Event\BeforeFileMovedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPreFileRenameSignal',
+          event: TYPO3\CMS\Core\Resource\Event\BeforeFileRenamedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPreFileReplaceSignal',
+          event: TYPO3\CMS\Core\Resource\Event\BeforeFileReplacedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPreFileSetContentsSignal',
+          event: TYPO3\CMS\Core\Resource\Event\BeforeFileContentsSetEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPreFolderAddSignal',
+          event: TYPO3\CMS\Core\Resource\Event\BeforeFolderAddedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPreFolderCopySignal',
+          event: TYPO3\CMS\Core\Resource\Event\BeforeFolderCopiedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPreFolderDeleteSignal',
+          event: TYPO3\CMS\Core\Resource\Event\BeforeFolderDeletedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPreFolderMoveSignal',
+          event: TYPO3\CMS\Core\Resource\Event\BeforeFolderMovedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPreFolderRenameSignal',
+          event: TYPO3\CMS\Core\Resource\Event\BeforeFolderRenamedEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitPreGeneratePublicUrlSignal',
+          event: TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent }
+      - { name: event.listener,
+          identifier: 'legacy-slot',
+          method: 'onResourceStorageEmitSanitizeFileNameSignal',
+          event: TYPO3\CMS\Core\Resource\Event\SanitizeFileNameEvent }
+
+  # FAL security checks for backend users
+  TYPO3\CMS\Core\Resource\Security\StoragePermissionsAspect:
+    tags:
+      - { name: event.listener,
+          identifier: 'backend-user-permissions',
+          method: 'addUserPermissionsToStorage',
+          event: TYPO3\CMS\Core\Resource\Event\AfterResourceStorageInitializationEvent }
+
+  TYPO3\CMS\Core\Resource\OnlineMedia\Processing\PreviewProcessing:
+    tags:
+      - { name: event.listener,
+          identifier: 'processing',
+          method: 'processFile',
+          event: TYPO3\CMS\Core\Resource\Event\BeforeFileProcessingEvent }
+
+  # clean up files
+  TYPO3\CMS\Core\Resource\Processing\FileDeletionAspect:
+    tags:
+      - { name: event.listener,
+          identifier: 'delete-processed-files-after-add',
+          method: 'cleanupProcessedFilesPostFileAdd',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent }
+      - { name: event.listener,
+          identifier: 'delete-processed-files-after-replace',
+          method: 'cleanupProcessedFilesPostFileReplace',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFileReplacedEvent }
+      - { name: event.listener,
+          identifier: 'delete-processed-files-after-delete',
+          method: 'removeFromRepositoryAfterFileDeleted',
+          event: TYPO3\CMS\Core\Resource\Event\AfterFileDeletedEvent }
+
+
   # Core caches, cache.core and cache.assets are injected as early
   # entries in TYPO3\CMS\Core\Core\Bootstrap and therefore omitted here
   cache.hash:
