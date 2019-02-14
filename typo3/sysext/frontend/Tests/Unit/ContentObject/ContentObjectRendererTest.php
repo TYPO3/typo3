@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\ApplicationContext;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\Logger;
@@ -6301,7 +6302,7 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * Check if stdWrap_lang works properly.
+     * Check if stdWrap_lang works properly with TypoScript.
      *
      * @param string $expected The expected value.
      * @param string $input The input value.
@@ -6310,11 +6311,36 @@ class ContentObjectRendererTest extends UnitTestCase
      * @test
      * @dataProvider stdWrap_langDataProvider
      */
-    public function stdWrap_lang(string $expected, string $input, array $conf, string $language): void
+    public function stdWrap_langViaTSFE(string $expected, string $input, array $conf, string $language): void
     {
         if ($language) {
             $this->frontendControllerMock
                 ->config['config']['language'] = $language;
+        }
+        $this->assertSame(
+            $expected,
+            $this->subject->stdWrap_lang($input, $conf)
+        );
+    }
+
+    /**
+     * Check if stdWrap_lang works properly with site handling.
+     *
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @param array $conf Properties: lang.xy.
+     * @param string $language For $TSFE->config[config][language].
+     * @test
+     * @dataProvider stdWrap_langDataProvider
+     */
+    public function stdWrap_langViaSiteLanguage(string $expected, string $input, array $conf, string $language): void
+    {
+        if ($language) {
+            $request = new ServerRequest();
+            $GLOBALS['TYPO3_REQUEST'] = $request->withAttribute(
+                'language',
+                new SiteLanguage(2, 'en_UK', new Uri(), ['typo3Language' => $language])
+            );
         }
         $this->assertSame(
             $expected,

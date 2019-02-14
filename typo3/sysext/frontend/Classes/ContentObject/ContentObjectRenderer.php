@@ -1752,14 +1752,16 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_lang($content = '', $conf = [])
     {
-        $tsfe = $this->getTypoScriptFrontendController();
-        if (
-            isset($conf['lang.'])
-            && isset($tsfe->config['config']['language'])
-            && $tsfe->config['config']['language']
-            && isset($conf['lang.'][$tsfe->config['config']['language']])
-        ) {
-            $content = $conf['lang.'][$tsfe->config['config']['language']];
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        $siteLanguage = $request ? $request->getAttribute('language') : null;
+        if ($siteLanguage instanceof SiteLanguage) {
+            $currentLanguageCode = $siteLanguage->getTypo3Language();
+        } else {
+            $tsfe = $this->getTypoScriptFrontendController();
+            $currentLanguageCode = $tsfe->config['config']['language'] ?? null;
+        }
+        if ($currentLanguageCode && isset($conf['lang.'][$currentLanguageCode])) {
+            $content = $conf['lang.'][$currentLanguageCode];
         }
         return $content;
     }
