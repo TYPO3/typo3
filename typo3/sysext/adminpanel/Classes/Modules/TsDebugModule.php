@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Adminpanel\Modules;
  */
 
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractModule;
-use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ShortInfoProviderInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -25,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Admin Panel TypoScript Debug Module
  */
-class TsDebugModule extends AbstractModule implements ShortInfoProviderInterface, ResourceProviderInterface
+class TsDebugModule extends AbstractModule implements ShortInfoProviderInterface
 {
     /**
      * @inheritdoc
@@ -76,21 +75,5 @@ class TsDebugModule extends AbstractModule implements ShortInfoProviderInterface
     protected function getTimeTracker(): TimeTracker
     {
         return GeneralUtility::makeInstance(TimeTracker::class);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getJavaScriptFiles(): array
-    {
-        return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/TsDebug.js'];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getCssFiles(): array
-    {
-        return [];
     }
 }
