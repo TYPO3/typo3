@@ -22,8 +22,8 @@ declare namespace TYPO3 {
   export let Tooltip: any;
   export let Utility: any;
   export let Wizard: any;
+  export let settings: any;
   export const lang: { [key: string]: string };
-  export const settings: any;
   export const configuration: any;
   export namespace CMS {
     export namespace Backend {
@@ -92,6 +92,7 @@ interface Window {
     delayedImportElement: (objectId: number, table: string, uid: number, type: string) => void,
   };
   rawurlencode: Function;
+  require: Function;
   list_frame: Window;
   jump: Function;
   currentSubScript: string;
@@ -129,6 +130,8 @@ interface JQueryTypedEvent<T extends Event> extends JQueryEventObject {
  */
 interface JQuery {
   clearable(options?: any): JQuery;
+
+  chosen(options?: any): JQuery;
 
   datetimepicker(options?: any): JQuery;
 

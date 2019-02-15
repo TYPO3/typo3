@@ -10,4 +10,19 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","./Router"],function(e,i,n,t){"use strict";return new function(){n(function(){t.initialize()})}});
+
+import * as $ from 'jquery';
+import Router = require('./Router');
+
+/**
+ * Walk through the installation process of TYPO3
+ */
+class Install {
+  constructor() {
+    $((): void => {
+      Router.initialize();
+    });
+  }
+}
+
+export = new Install();

@@ -1,0 +1,13 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+define(["require","exports","jquery","../Router","TYPO3/CMS/Backend/Notification"],function(t,e,r,a,s){"use strict";return new(function(){function t(){this.selectorModalBody=".t3js-modal-body",this.selectorModuleContent=".t3js-module-content",this.selectorClearTrigger=".t3js-clearTables-clear",this.selectorStatsTrigger=".t3js-clearTables-stats",this.selectorOutputContainer=".t3js-clearTables-output",this.selectorStatContainer=".t3js-clearTables-stat-container",this.selectorStatTemplate=".t3js-clearTables-stat-template",this.selectorStatDescription=".t3js-clearTables-stat-description",this.selectorStatRows=".t3js-clearTables-stat-rows",this.selectorStatName=".t3js-clearTables-stat-name",this.currentModal={}}return t.prototype.initialize=function(t){var e=this;this.currentModal=t,this.getStats(),t.on("click",this.selectorStatsTrigger,function(t){t.preventDefault(),r(e.selectorOutputContainer).empty(),e.getStats()}),t.on("click",this.selectorClearTrigger,function(t){var a=r(t.target).closest(e.selectorClearTrigger).data("table");t.preventDefault(),e.clear(a)})},t.prototype.getStats=function(){var t=this,e=this.currentModal.find(this.selectorModalBody);r.ajax({url:a.getUrl("clearTablesStats"),cache:!1,success:function(r){!0===r.success?(e.empty().append(r.html),Array.isArray(r.stats)&&r.stats.length>0&&r.stats.forEach(function(r){if(r.rowCount>0){var a=e.find(t.selectorStatTemplate).clone();a.find(t.selectorStatDescription).text(r.description),a.find(t.selectorStatName).text(r.name),a.find(t.selectorStatRows).text(r.rowCount),a.find(t.selectorClearTrigger).attr("data-table",r.name),e.find(t.selectorStatContainer).append(a.html())}})):s.error("Something went wrong")},error:function(t){a.handleAjaxError(t,e)}})},t.prototype.clear=function(t){var e=this,o=this.currentModal.find(this.selectorModalBody),n=this.currentModal.find(this.selectorModuleContent).data("clear-tables-clear-token");r.ajax({url:a.getUrl(),method:"POST",context:this,data:{install:{action:"clearTablesClear",token:n,table:t}},cache:!1,success:function(t){!0===t.success&&Array.isArray(t.status)?t.status.forEach(function(t){s.success(t.message)}):s.error("Something went wrong"),e.getStats()},error:function(t){a.handleAjaxError(t,o)}})},t}())});

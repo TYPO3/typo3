@@ -10,4 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","./Router"],function(e,i,n,t){"use strict";return new function(){n(function(){t.initialize()})}});
+
+export interface InlineModuleInterface {
+  initialize($trigger: JQuery): void;
+}

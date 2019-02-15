@@ -1,0 +1,13 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+define(["require","exports","jquery","../Router","TYPO3/CMS/Backend/Notification"],function(t,e,r,o,s){"use strict";return new(function(){function t(){this.selectorModalBody=".t3js-modal-body",this.selectorModuleContent=".t3js-module-content",this.selectorDeleteTrigger=".t3js-clearTypo3temp-delete",this.selectorOutputContainer=".t3js-clearTypo3temp-output",this.selectorStatContainer=".t3js-clearTypo3temp-stat-container",this.selectorStatsTrigger=".t3js-clearTypo3temp-stats",this.selectorStatTemplate=".t3js-clearTypo3temp-stat-template",this.selectorStatNumberOfFiles=".t3js-clearTypo3temp-stat-numberOfFiles",this.selectorStatDirectory=".t3js-clearTypo3temp-stat-directory"}return t.prototype.initialize=function(t){var e=this;this.currentModal=t,this.getStats(),t.on("click",this.selectorStatsTrigger,function(t){t.preventDefault(),r(e.selectorOutputContainer).empty(),e.getStats()}),t.on("click",this.selectorDeleteTrigger,function(t){var o=r(t.currentTarget).data("folder"),s=r(t.currentTarget).data("storage-uid");t.preventDefault(),e.delete(o,s)})},t.prototype.getStats=function(){var t=this,e=this.currentModal.find(this.selectorModalBody);r.ajax({url:o.getUrl("clearTypo3tempFilesStats"),cache:!1,success:function(r){!0===r.success?(e.empty().append(r.html),Array.isArray(r.stats)&&r.stats.length>0&&r.stats.forEach(function(r){if(r.numberOfFiles>0){var o=e.find(t.selectorStatTemplate).clone();o.find(t.selectorStatNumberOfFiles).text(r.numberOfFiles),o.find(t.selectorStatDirectory).text(r.directory),o.find(t.selectorDeleteTrigger).attr("data-folder",r.directory),o.find(t.selectorDeleteTrigger).attr("data-storage-uid",r.storageUid),e.find(t.selectorStatContainer).append(o.html())}})):s.error("Something went wrong")},error:function(t){o.handleAjaxError(t,e)}})},t.prototype.delete=function(t,e){var a=this,i=this.currentModal.find(this.selectorModalBody),n=this.currentModal.find(this.selectorModuleContent).data("clear-typo3temp-delete-token");r.ajax({method:"POST",url:o.getUrl(),context:this,data:{install:{action:"clearTypo3tempFiles",token:n,folder:t,storageUid:e}},cache:!1,success:function(t){!0===t.success&&Array.isArray(t.status)?(t.status.forEach(function(t){s.success(t.message)}),a.getStats()):s.error("Something went wrong")},error:function(t){o.handleAjaxError(t,i)}})},t}())});

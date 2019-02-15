@@ -18,8 +18,10 @@ namespace TYPO3\CMS\Install\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 
@@ -41,10 +43,14 @@ class LayoutController extends AbstractController
      */
     public function initAction(ServerRequestInterface $request): ResponseInterface
     {
+        $bust = $GLOBALS['EXEC_TIME'];
+        if (!GeneralUtility::getApplicationContext()->isDevelopment()) {
+            $bust = GeneralUtility::hmac(TYPO3_version . Environment::getProjectPath());
+        }
         $view = $this->initializeStandaloneView($request, 'Layout/Init.html');
         $view->assignMultiple([
             // time is used as cache bust for js and css resources
-            'time' => time(),
+            'bust' => $bust,
             'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
         ]);
         return new HtmlResponse(

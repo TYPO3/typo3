@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","./Router"],function(e,i,n,t){"use strict";return new function(){n(function(){t.initialize()})}});
+define(["require","exports"],function(e,r){"use strict";Object.defineProperty(r,"__esModule",{value:!0})});

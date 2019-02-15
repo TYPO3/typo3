@@ -1,0 +1,13 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+define(["require","exports","jquery","../Router","TYPO3/CMS/Backend/Notification","bootstrap"],function(t,e,s,r,n){"use strict";return new(function(){function e(){this.selectorModalBody=".t3js-modal-body",this.selectorModuleContent=".t3js-module-content",this.selectorWriteTrigger=".t3js-systemMaintainer-write",this.selectorChosenContainer=".t3js-systemMaintainer-chosen",this.selectorChosenField=".t3js-systemMaintainer-chosen-select"}return e.prototype.initialize=function(e){var s=this;this.currentModal=e,window.location!==window.parent.location?top.require(["TYPO3/CMS/Install/chosen.jquery.min"],function(){s.getList()}):t(["TYPO3/CMS/Install/chosen.jquery.min"],function(){s.getList()}),e.on("click",this.selectorWriteTrigger,function(t){t.preventDefault(),s.write()})},e.prototype.getList=function(){var t=this,e=this.currentModal.find(this.selectorModalBody);s.ajax({url:r.getUrl("systemMaintainerGetList"),cache:!1,success:function(r){if(!0===r.success){Array.isArray(r.status)&&r.status.forEach(function(t){n.success(t.title,t.message)}),e.html(r.html),Array.isArray(r.users)&&r.users.forEach(function(r){var n=r.username;r.disable&&(n="[DISABLED] "+n);var i=s("<option>",{value:r.uid}).text(n);r.isSystemMaintainer&&i.attr("selected","selected"),e.find(t.selectorChosenField).append(i)});var i={".t3js-systemMaintainer-chosen-select":{width:"100%",placeholder_text_multiple:"users"}};for(var o in i)i.hasOwnProperty(o)&&e.find(o).chosen(i[o]);e.find(t.selectorChosenContainer).show(),e.find(t.selectorChosenField).trigger("chosen:updated")}},error:function(t){r.handleAjaxError(t,e)}})},e.prototype.write=function(){var t=this.currentModal.find(this.selectorModalBody),e=this.currentModal.find(this.selectorModuleContent).data("system-maintainer-write-token"),i=this.currentModal.find(this.selectorChosenField).val();s.ajax({method:"POST",url:r.getUrl(),data:{install:{users:i,token:e,action:"systemMaintainerWrite"}},success:function(t){!0===t.success?Array.isArray(t.status)&&t.status.forEach(function(t){n.success(t.title,t.message)}):n.error("Something went wrong")},error:function(e){r.handleAjaxError(e,t)}})},e}())});
