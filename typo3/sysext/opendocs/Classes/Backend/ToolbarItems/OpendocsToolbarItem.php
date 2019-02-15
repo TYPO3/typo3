@@ -67,7 +67,6 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     public function getItem()
     {
         $view = $this->getFluidTemplateObject('ToolbarItem.html');
-        $view->assign('numDocs', count($this->documentService->getOpenDocuments()));
 
         return $view->render();
     }
