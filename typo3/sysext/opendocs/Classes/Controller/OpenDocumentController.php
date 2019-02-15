@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Opendocs\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Opendocs\Backend\ToolbarItems\OpendocsToolbarItem;
@@ -37,7 +36,7 @@ class OpenDocumentController
     protected $documents;
 
     /**
-     * @var SystemInformationToolbarItem
+     * @var OpendocsToolbarItem
      */
     protected $toolbarItem;
 
