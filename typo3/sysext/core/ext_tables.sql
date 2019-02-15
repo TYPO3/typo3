@@ -418,7 +418,8 @@ CREATE TABLE sys_log (
 	KEY recuidIdx (recuid),
 	KEY user_auth (type,action,tstamp),
 	KEY request (request_id),
-	KEY combined_1 (tstamp, type, userid)
+	KEY combined_1 (tstamp, type, userid),
+	KEY errorcount (tstamp,error)
 ) ENGINE=InnoDB;
 
 #
