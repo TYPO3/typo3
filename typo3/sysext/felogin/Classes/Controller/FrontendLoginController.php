@@ -368,11 +368,14 @@ class FrontendLoginController extends AbstractPlugin
                         $newPass = $hashInstance->getHashedPassword($postData['password1']);
 
                         // Call a hook for further password processing
+                        $hookPasswordValid = true;
                         if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed']) {
                             $_params = [
                                 'user' => $user,
                                 'newPassword' => $newPass,
-                                'newPasswordUnencrypted' => $postData['password1']
+                                'newPasswordUnencrypted' => $postData['password1'],
+                                'passwordValid' => true,
+                                'passwordInvalidMessage' => '',
                             ];
                             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed'] as $_funcRef) {
                                 if ($_funcRef) {
@@ -380,34 +383,42 @@ class FrontendLoginController extends AbstractPlugin
                                 }
                             }
                             $newPass = $_params['newPassword'];
+                            $hookPasswordValid = $_params['passwordValid'];
+
+                            if (!$hookPasswordValid) {
+                                $markerArray['###STATUS_MESSAGE###'] = $_params['passwordInvalidMessage'];
+                            }
                         }
 
-                        // Save new password and clear DB-hash
-                        $userTable = $this->frontendController->fe_user->user_table;
-                        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($userTable);
-                        $queryBuilder->getRestrictions()->removeAll();
-                        $queryBuilder->update($userTable)
-                            ->set('password', $newPass)
-                            ->set('felogin_forgotHash', '')
-                            ->set('tstamp', (int)$GLOBALS['EXEC_TIME'])
-                            ->where(
-                                $queryBuilder->expr()->eq(
-                                    'uid',
-                                    $queryBuilder->createNamedParameter($user['uid'], \PDO::PARAM_INT)
+                        // Change Password only if Hook returns valid
+                        if ($hookPasswordValid) {
+                            // Save new password and clear DB-hash
+                            $userTable = $this->frontendController->fe_user->user_table;
+                            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($userTable);
+                            $queryBuilder->getRestrictions()->removeAll();
+                            $queryBuilder->update($userTable)
+                                ->set('password', $newPass)
+                                ->set('felogin_forgotHash', '')
+                                ->set('tstamp', (int)$GLOBALS['EXEC_TIME'])
+                                ->where(
+                                    $queryBuilder->expr()->eq(
+                                        'uid',
+                                        $queryBuilder->createNamedParameter($user['uid'], \PDO::PARAM_INT)
+                                    )
                                 )
-                            )
-                            ->execute();
+                                ->execute();
 
-                        $markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText(
-                            'change_password_done_message',
-                            $this->conf['changePasswordDoneMessage_stdWrap.']
-                        );
-                        $done = true;
-                        $subpartArray['###CHANGEPASSWORD_FORM###'] = '';
-                        $markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink(
-                            htmlspecialchars($this->pi_getLL('ll_forgot_header_backToLogin')),
-                            [$this->prefixId . '[redirectReferrer]' => 'off']
-                        );
+                            $markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText(
+                                'change_password_done_message',
+                                $this->conf['changePasswordDoneMessage_stdWrap.']
+                            );
+                            $done = true;
+                            $subpartArray['###CHANGEPASSWORD_FORM###'] = '';
+                            $markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink(
+                                htmlspecialchars($this->pi_getLL('ll_forgot_header_backToLogin')),
+                                [$this->prefixId . '[redirectReferrer]' => 'off']
+                            );
+                        }
                     }
                 }
                 if (!$done) {
