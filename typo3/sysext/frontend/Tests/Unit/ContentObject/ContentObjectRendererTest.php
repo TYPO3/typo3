@@ -3064,6 +3064,9 @@ class ContentObjectRendererTest extends UnitTestCase
         $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
 
+        $resourceFactory = $this->prophesize(ResourceFactory::class);
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory->reveal());
+
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
 
         $this->assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
@@ -3215,6 +3218,9 @@ class ContentObjectRendererTest extends UnitTestCase
                 'parseFunc.' => $this->getLibParseFunc(),
             ],
         ];
+        $resourceFactory = $this->prophesize(ResourceFactory::class);
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory->reveal());
+
         $typoScriptFrontendControllerMockObject = $this->createMock(TypoScriptFrontendController::class);
         $typoScriptFrontendControllerMockObject->config = [
             'config' => [],

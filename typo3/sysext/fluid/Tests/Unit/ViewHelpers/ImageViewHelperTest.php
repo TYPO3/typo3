@@ -156,9 +156,7 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
 
         $this->inject($image, 'originalFile', $originalFile);
         $this->inject($image, 'propertiesOfFileReference', []);
-        $imageService = $this->getMockBuilder(ImageService::class)
-            ->setMethods(['getImage', 'applyProcessingInstructions', 'getImageUri'])
-            ->getMock();
+        $imageService = $this->createMock(ImageService::class);
         $imageService->expects($this->once())->method('getImage')->willReturn($image);
         $imageService->expects($this->once())->method('applyProcessingInstructions')->with($image, $this->anything())->willReturn($processedFile);
         $imageService->expects($this->once())->method('getImageUri')->with($processedFile)->willReturn('test.png');

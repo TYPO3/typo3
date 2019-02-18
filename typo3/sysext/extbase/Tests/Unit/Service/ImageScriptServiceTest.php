@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -48,7 +49,8 @@ class ImageScriptServiceTest extends UnitTestCase
     protected function setUp(): void
     {
         $this->environmentService = $this->createMock(EnvironmentService::class);
-        $this->subject = new ImageService($this->environmentService);
+        $resourceFactory = $this->createMock(ResourceFactory::class);
+        $this->subject = new ImageService($this->environmentService, $resourceFactory);
         $_SERVER['HTTP_HOST'] = 'foo.bar';
     }
 
