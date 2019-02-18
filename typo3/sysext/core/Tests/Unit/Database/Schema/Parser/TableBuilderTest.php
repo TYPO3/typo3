@@ -25,6 +25,7 @@ use Doctrine\DBAL\Types\TextType;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -49,8 +50,9 @@ class TableBuilderTest extends UnitTestCase
     {
         parent::setUp();
         $sqlFile = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'Fixtures', 'tablebuilder.sql']));
+        $signalSlotDispatcherProphecy = $this->prophesize(Dispatcher::class);
         $packageManagerProphecy = $this->prophesize(PackageManager::class);
-        $sqlReader = new SqlReader(null, $packageManagerProphecy->reveal());
+        $sqlReader = new SqlReader($signalSlotDispatcherProphecy->reveal(), $packageManagerProphecy->reveal());
         $statements = $sqlReader->getCreateTableStatementArray($sqlFile);
 
         $parser = new Parser($statements[0]);
