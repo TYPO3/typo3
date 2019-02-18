@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Extbase\Service;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
@@ -246,9 +245,8 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
     {
         // Default behaviour
         $settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName);
-        if (isset($settings['view']['formatToPageTypeMapping']) && is_array($settings['view']['formatToPageTypeMapping'])) {
-            ArrayUtility::mergeRecursiveWithOverrule($formatToPageTypeMapping, $settings['view']['formatToPageTypeMapping']);
-        }
+        $formatToPageTypeMapping = $settings['view']['formatToPageTypeMapping'] ?? [];
+        $formatToPageTypeMapping = is_array($formatToPageTypeMapping) ? $formatToPageTypeMapping : [];
         return $formatToPageTypeMapping[$format] ?? 0;
     }
 }
