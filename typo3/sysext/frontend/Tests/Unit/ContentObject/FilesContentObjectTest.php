@@ -241,7 +241,7 @@ class FilesContentObjectTest extends UnitTestCase
             $fileReferenceMap[] = [$i, $fileReference];
         }
 
-        $fileRepository = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\FileRepository::class)->getMock();
+        $fileRepository = $this->createMock(\TYPO3\CMS\Core\Resource\FileRepository::class);
         $fileRepository->expects($this->any())
             ->method('findFileReferenceByUid')
             ->will($this->returnValueMap($fileReferenceMap));
