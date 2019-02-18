@@ -365,6 +365,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
         $targetPageId = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $page['uid']);
         $queryParameters['_language'] = $siteLanguageOfTargetPage;
+
+        if ($conf['no_cache']) {
+            $queryParameters['no_cache'] = 1;
+        }
+
         try {
             $uri = $siteOfTargetPage->getRouter()->generateUri(
                 $targetPageId,
