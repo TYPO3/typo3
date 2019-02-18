@@ -519,7 +519,7 @@ class ActionControllerTest extends UnitTestCase
      */
     public function rendersAndAssignsAssetsFromViewIntoPageRenderer($viewMock, $expectedHeader, $expectedFooter)
     {
-        $this->mockObjectManager = $this->getMockBuilder(ObjectManager::class)->setMethods(['get'])->getMock();
+        $this->mockObjectManager = $this->createMock(ObjectManager::class);
         $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->setMethods(['addHeaderData', 'addFooterData'])->getMock();
         if (!$viewMock instanceof FluidTemplateView) {
             $this->mockObjectManager->expects($this->never())->method('get');

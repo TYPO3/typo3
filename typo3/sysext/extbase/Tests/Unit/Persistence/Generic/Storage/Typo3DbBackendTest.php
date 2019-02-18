@@ -118,7 +118,7 @@ class Typo3DbBackendTest extends UnitTestCase
             '',
             false
         );
-        $mockObjectManager = $this->getAccessibleMock(ObjectManager::class, ['get']);
+        $mockObjectManager = $this->createMock(ObjectManager::class);
         $mockObjectManager->expects($this->any())
             ->method('get')
             ->with(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class)

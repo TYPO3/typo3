@@ -48,7 +48,7 @@ class UpdateExtensionListTaskTest extends UnitTestCase
                 ->expects($this->once())
                 ->method('updateExtList');
 
-        $objectManagerMock = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\ObjectManager::class)->getMock();
+        $objectManagerMock = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $objectManagerMock
                 ->expects($this->at(0))
                 ->method('get')
@@ -76,7 +76,7 @@ class UpdateExtensionListTaskTest extends UnitTestCase
     public function executeCallsPersistAllOnPersistenceManager()
     {
         $repositoryHelper = $this->createMock(Helper::class);
-        $objectManagerMock = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\ObjectManager::class)->getMock();
+        $objectManagerMock = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $objectManagerMock
             ->expects($this->at(0))
             ->method('get')
