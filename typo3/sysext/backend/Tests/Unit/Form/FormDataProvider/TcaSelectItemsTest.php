@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -1685,6 +1686,10 @@ class TcaSelectItemsTest extends UnitTestCase
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
+        $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
+        $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
+        GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
+
         list($queryBuilderProphet, $connectionPoolProphet) = $this->mockDatabaseConnection();
 
         /** @var Statement|ObjectProphecy $statementProphet */
@@ -1774,6 +1779,10 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+
+        $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
+        $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
+        GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
 
         /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
@@ -1924,6 +1933,10 @@ class TcaSelectItemsTest extends UnitTestCase
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
+        $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
+        $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
+        GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
+
         /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
@@ -2022,6 +2035,10 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+
+        $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
+        $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
+        GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
 
         /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
@@ -2866,6 +2883,10 @@ class TcaSelectItemsTest extends UnitTestCase
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
+        $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
+        $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
+        GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
+
         /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
@@ -2926,6 +2947,10 @@ class TcaSelectItemsTest extends UnitTestCase
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
+        $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
+        $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
+        GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
+
         /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
@@ -2983,6 +3008,10 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+
+        $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
+        $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
+        GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
 
         /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
@@ -3444,6 +3473,10 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+
+        $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
+        $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
+        GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
 
         /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
