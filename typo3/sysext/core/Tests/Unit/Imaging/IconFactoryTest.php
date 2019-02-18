@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher as SignalSlotDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -88,6 +90,10 @@ class IconFactoryTest extends UnitTestCase
     protected function setUp()
     {
         $this->iconRegistryMock = $this->prophesize(IconRegistry::class);
+        $signalSlotDispatcherMock = $this->prophesize(SignalSlotDispatcher::class);
+        $signalSlotDispatcherMock->dispatch(Argument::any(), Argument::any(), Argument::type('array'))->willReturnArgument(2);
+        GeneralUtility::setSingletonInstance(SignalSlotDispatcher::class, $signalSlotDispatcherMock->reveal());
+
         $this->subject = new IconFactory($this->iconRegistryMock->reveal());
 
         $this->iconRegistryMock->isRegistered('tcarecords--default')->willReturn(false);

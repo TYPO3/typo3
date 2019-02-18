@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher as SignalSlotDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -1049,6 +1050,10 @@ class BackendUtilityTest extends UnitTestCase
         $cacheProphecy->set(Argument::cetera())->willReturn(false);
         $cacheProphecy->get('backendUtilityBeGetRootLine')->willReturn(['13--1' => []]);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $signalSlotDispatcherProphecy = $this->prophesize(SignalSlotDispatcher::class);
+        $signalSlotDispatcherProphecy->dispatch(Argument::any(), Argument::any(), Argument::type('array'))->willReturnArgument(2);
+        GeneralUtility::setSingletonInstance(SignalSlotDispatcher::class, $signalSlotDispatcherProphecy->reveal());
+
         $result = BackendUtility::getPagesTSconfig($pageId);
         $this->assertEquals($expected, $result);
     }

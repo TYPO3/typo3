@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * Accessible proxy with protected methods made public
@@ -26,6 +27,11 @@ class ExtensionManagementUtilityAccessibleProxy extends ExtensionManagementUtili
     public static function setCacheManager(CacheManager $cacheManager = null)
     {
         static::$cacheManager = $cacheManager;
+    }
+
+    public static function setSignalSlotDispatcher(Dispatcher $dispatcher = null)
+    {
+        static::$signalSlotDispatcher = $dispatcher;
     }
 
     public static function getPackageManager()

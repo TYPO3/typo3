@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Resource\MetaDataAspect;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher as SignalSlotDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -149,13 +150,15 @@ class MetaDataAspectTest extends UnitTestCase
         $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
         $connectionPoolProphecy->getConnectionForTable(Argument::cetera())->willReturn($connectionProphecy->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+        $dispatcherProphecy = $this->prophesize(SignalSlotDispatcher::class);
 
         $metaDataRepositoryMock = $this->getMockBuilder(MetaDataRepository::class)
-            ->setMethods(['findByFileUid', 'getTableFields', 'update'])
+            ->setMethods(['findByFileUid', 'getTableFields', 'update', 'getSignalSlotDispatcher'])
             ->getMock();
         $metaDataRepositoryMock->expects($this->any())->method('findByFileUid')->willReturn([]);
         $metaDataRepositoryMock->expects($this->any())->method('getTableFields')->willReturn(['title' => 'sometype']);
         $metaDataRepositoryMock->expects($this->never())->method('update');
+        $metaDataRepositoryMock->expects($this->any())->method('getSignalSlotDispatcher')->willReturn($dispatcherProphecy->reveal());
         GeneralUtility::setSingletonInstance(MetaDataRepository::class, $metaDataRepositoryMock);
 
         $file->getMetaData()->add($metaData)->save();

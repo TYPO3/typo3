@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher as SignalSlotDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -56,6 +57,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     {
         ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backUpPackageManager);
         ExtensionManagementUtilityAccessibleProxy::setCacheManager(null);
+        ExtensionManagementUtilityAccessibleProxy::setSignalSlotDispatcher(null);
         parent::tearDown();
     }
 
@@ -1451,6 +1453,11 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
         $mockCache->expects($this->once())->method('require')->will($this->returnValue(false));
         $mockCache->expects($this->once())->method('set')->with($this->anything(), $this->stringContains($uniqueStringInTableConfiguration), $this->anything());
+
+        $mockSignalSlotDispatcher = $this->createMock(SignalSlotDispatcher::class);
+        $mockSignalSlotDispatcher->expects($this->once())->method('dispatch')->with($this->anything(), $this->anything(), $this->isType('array'))->will($this->returnArgument(2));
+        ExtensionManagementUtilityAccessibleProxy::setSignalSlotDispatcher($mockSignalSlotDispatcher);
+
         ExtensionManagementUtility::loadBaseTca(true);
     }
 
