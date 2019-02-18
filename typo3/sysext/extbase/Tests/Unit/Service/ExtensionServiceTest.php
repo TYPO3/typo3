@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Exception;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -401,5 +403,45 @@ class ExtensionServiceTest extends UnitTestCase
         $expectedResult = 'someAction';
         $actualResult = $this->extensionService->getDefaultActionNameByPluginAndController('SomeOtherExtensionName', 'SecondPlugin', 'SecondControllerName');
         $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
+     * @test
+     */
+    public function getTargetPageTypeByFormatReturnsZeroIfNoMappingIsSet(): void
+    {
+        $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
+        $configurationManagerProphecy->getConfiguration(
+            ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
+            'extension'
+        )->willReturn([]);
+        $this->extensionService->injectConfigurationManager($configurationManagerProphecy->reveal());
+
+        $result = $this->extensionService->getTargetPageTypeByFormat('extension', 'json');
+
+        $this->assertSame(0, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getTargetPageTypeByFormatReturnsMappedPageTypeFromConfiguration(): void
+    {
+        $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
+        $configurationManagerProphecy->getConfiguration(
+            ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
+            'extension'
+        )->willReturn([
+            'view' => [
+                'formatToPageTypeMapping' => [
+                    'json' => 111
+                ]
+            ]
+        ]);
+        $this->extensionService->injectConfigurationManager($configurationManagerProphecy->reveal());
+
+        $result = $this->extensionService->getTargetPageTypeByFormat('extension', 'json');
+
+        $this->assertSame(111, $result);
     }
 }
