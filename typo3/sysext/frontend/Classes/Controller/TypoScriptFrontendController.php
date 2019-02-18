@@ -61,7 +61,6 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
@@ -2795,7 +2794,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
         }
 
-        $titleProvider = GeneralUtility::makeInstance(ObjectManager::class)->get(PageTitleProviderManager::class);
+        $titleProvider = GeneralUtility::makeInstance(PageTitleProviderManager::class);
         $pageTitle = $titleProvider->getTitle();
 
         $titleTagContent = $this->printTitle(
