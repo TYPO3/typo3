@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Domain\Configuration;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators\ValidationDto;
@@ -275,7 +276,9 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         $formDefinitionValidationService = $this->getAccessibleMock(FormDefinitionValidationService::class, ['getConfigurationService']);
         $formDefinitionValidationService->expects($this->any())->method('getConfigurationService')->willReturn($configurationService);
         GeneralUtility::setSingletonInstance(FormDefinitionValidationService::class, $formDefinitionValidationService);
-        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationService);
+        $objectManager = $this->createMock(ObjectManager::class);
+        $objectManager->expects($this->once())->method('get')->with(ConfigurationService::class)->willReturn($configurationService);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager);
 
         $returnedExceptionCode = -1;
         try {
@@ -329,7 +332,9 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         $formDefinitionValidationService = $this->getAccessibleMock(FormDefinitionValidationService::class, ['getConfigurationService']);
         $formDefinitionValidationService->expects($this->any())->method('getConfigurationService')->willReturn($configurationService);
         GeneralUtility::setSingletonInstance(FormDefinitionValidationService::class, $formDefinitionValidationService);
-        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationService);
+        $objectManager = $this->createMock(ObjectManager::class);
+        $objectManager->expects($this->once())->method('get')->with(ConfigurationService::class)->willReturn($configurationService);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager);
 
         $returnedExceptionCode = -1;
         try {

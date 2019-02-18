@@ -40,7 +40,7 @@ class ExtensionModelUtilityTest extends UnitTestCase
         ]);
         /** @var $dependencyUtility \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility */
         $dependencyUtility = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class, ['dummy']);
-        $objectManagerMock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class, ['get']);
+        $objectManagerMock = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $dependencyModelMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency::class, ['dummy']);
         $objectManagerMock->expects($this->any())->method('get')->will($this->returnValue($dependencyModelMock));
         $dependencyUtility->_set('objectManager', $objectManagerMock);
@@ -62,7 +62,7 @@ class ExtensionModelUtilityTest extends UnitTestCase
         ]);
         /** @var $dependencyUtility \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility */
         $dependencyUtility = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class, ['dummy']);
-        $objectManagerMock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class, ['get']);
+        $objectManagerMock = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $dependencyModelMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency::class, ['setIdentifier']);
         $objectManagerMock->expects($this->any())->method('get')->will($this->returnValue($dependencyModelMock));
         $dependencyUtility->_set('objectManager', $objectManagerMock);
@@ -136,7 +136,7 @@ class ExtensionModelUtilityTest extends UnitTestCase
         $serializedDependencies = serialize($dependencies);
         /** @var $dependencyUtility \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility */
         $dependencyUtility = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class, ['dummy']);
-        $objectManagerMock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class, ['get']);
+        $objectManagerMock = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $dependencyModelMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency::class, ['setHighestVersion', 'setLowestVersion']);
         $objectManagerMock->expects($this->any())->method('get')->will($this->returnValue($dependencyModelMock));
         $dependencyUtility->_set('objectManager', $objectManagerMock);
