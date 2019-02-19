@@ -51,21 +51,6 @@ class BackendController
     /**
      * @var array
      */
-    protected $cssFiles = [];
-
-    /**
-     * @var string
-     */
-    protected $js = '';
-
-    /**
-     * @var array
-     */
-    protected $jsFiles = [];
-
-    /**
-     * @var array
-     */
     protected $toolbarItems = [];
 
     /**
@@ -84,12 +69,12 @@ class BackendController
     protected $partialPath = 'EXT:backend/Resources/Private/Partials/';
 
     /**
-     * @var \TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository
+     * @var BackendModuleRepository
      */
     protected $backendModuleRepository;
 
     /**
-     * @var \TYPO3\CMS\Backend\Module\ModuleLoader Object for loading backend modules
+     * @var ModuleLoader Object for loading backend modules
      */
     protected $moduleLoader;
 
@@ -120,11 +105,9 @@ class BackendController
         $this->moduleLoader->load($GLOBALS['TBE_MODULES']);
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         // Add default BE javascript
-        $this->jsFiles = [
-            'md5' => 'EXT:backend/Resources/Public/JavaScript/md5.js',
-            'evalfield' => 'EXT:backend/Resources/Public/JavaScript/jsfunc.evalfield.js',
-            'backend' => 'EXT:backend/Resources/Public/JavaScript/backend.js',
-        ];
+        $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/md5.js');
+        $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
+        $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/backend.js');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LoginRefresh', 'function(LoginRefresh) {
 			LoginRefresh.setIntervalTime(' . MathUtility::forceIntegerInRange((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'] - 60, 60) . ');
 			LoginRefresh.setLoginFramesetUrl(' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('login_frameset')) . ');
@@ -173,8 +156,6 @@ class BackendController
         $this->pageRenderer->addInlineSetting('RecordCommit', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('tce_db'));
         $this->pageRenderer->addInlineSetting('WebLayout', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('web_layout'));
 
-        $this->css = '';
-
         $this->initializeToolbarItems();
         $this->executeHook('constructPostProcess');
     }
@@ -214,21 +195,11 @@ class BackendController
     }
 
     /**
-     * Injects the request object for the current request or subrequest
-     * As this controller goes only through the render() method, it is rather simple for now
+     * Main function generating the BE scaffolding
      *
      * @return ResponseInterface the response with the content
      */
     public function mainAction(): ResponseInterface
-    {
-        $this->render();
-        return new HtmlResponse($this->content);
-    }
-
-    /**
-     * Main function generating the BE scaffolding
-     */
-    protected function render()
     {
         $this->executeHook('renderPreProcess');
 
@@ -238,24 +209,10 @@ class BackendController
         $view->assign('moduleMenu', $this->generateModuleMenu());
         $view->assign('topbar', $this->renderTopbar());
 
-        /******************************************************
-         * Now put the complete backend document together
-         ******************************************************/
-        foreach ($this->cssFiles as $cssFileName => $cssFile) {
-            $this->pageRenderer->addCssFile($cssFile);
-            // Load additional css files to overwrite existing core styles
-            if (!empty($GLOBALS['TBE_STYLES']['stylesheets'][$cssFileName])) {
-                $this->pageRenderer->addCssFile($GLOBALS['TBE_STYLES']['stylesheets'][$cssFileName]);
-            }
-        }
         if (!empty($this->css)) {
             $this->pageRenderer->addCssInlineBlock('BackendInlineCSS', $this->css);
         }
-        foreach ($this->jsFiles as $jsFile) {
-            $this->pageRenderer->addJsFile($jsFile);
-        }
         $this->generateJavascript();
-        $this->pageRenderer->addJsInlineCode('BackendInlineJavascript', $this->js, false);
 
         // Set document title:
         $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [TYPO3 CMS ' . TYPO3_version . ']' : 'TYPO3 CMS ' . TYPO3_version;
@@ -263,6 +220,7 @@ class BackendController
         $this->content = GeneralUtility::makeInstance(DocumentTemplate::class)->render($title, $view->render());
         $hookConfiguration = ['content' => &$this->content];
         $this->executeHook('renderPostProcess', $hookConfiguration);
+        return new HtmlResponse($this->content);
     }
 
     /**
@@ -395,34 +353,38 @@ class BackendController
             'inWorkspace' => $beUser->workspace !== 0,
             'showRefreshLoginPopup' => (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] ?? false)
         ];
-        $this->js .= '
-	TYPO3.configuration = ' . json_encode($t3Configuration) . ';
-	/**
-	 * Frameset Module object
-	 *
-	 * Used in main modules with a frameset for submodules to keep the ID between modules
-	 * Typically that is set by something like this in a Web>* sub module:
-	 *		if (top.fsMod) top.fsMod.recentIds["web"] = "\'.(int)$this->id.\'";
-	 * 		if (top.fsMod) top.fsMod.recentIds["file"] = "...(file reference/string)...";
-	 */
-	var fsMod = {
-		recentIds: [],					// used by frameset modules to track the most recent used id for list frame.
-		navFrameHighlightedID: [],		// used by navigation frames to track which row id was highlighted last time
-		currentBank: "0"
-	};
 
-	top.goToModule = function(modName, cMR_flag, addGetVars) {
-		TYPO3.ModuleMenu.App.showModule(modName, addGetVars);
-	}
-	' . $this->setStartupModule();
-        // Check editing of page:
-        $this->handlePageEditing();
+        $this->pageRenderer->addJsInlineCode(
+            'BackendConfiguration',
+            '
+        TYPO3.configuration = ' . json_encode($t3Configuration) . ';
+        /**
+         * Frameset Module object
+         *
+         * Used in main modules with a frameset for submodules to keep the ID between modules
+         * Typically that is set by something like this in a Web>* sub module:
+         *		if (top.fsMod) top.fsMod.recentIds["web"] = "\'.(int)$this->id.\'";
+         * 		if (top.fsMod) top.fsMod.recentIds["file"] = "...(file reference/string)...";
+         */
+        var fsMod = {
+            recentIds: [],					// used by frameset modules to track the most recent used id for list frame.
+            navFrameHighlightedID: [],		// used by navigation frames to track which row id was highlighted last time
+            currentBank: "0"
+        };
+    
+        top.goToModule = function(modName, cMR_flag, addGetVars) {
+            TYPO3.ModuleMenu.App.showModule(modName, addGetVars);
+        }
+        ' . $this->setStartupModule()
+          . $this->handlePageEditing(),
+            false
+        );
     }
 
     /**
      * Checking if the "&edit" variable was sent so we can open it for editing the page.
      */
-    protected function handlePageEditing()
+    protected function handlePageEditing(): string
     {
         $beUser = $this->getBackendUser();
         $userTsConfig = $this->getBackendUser()->getTSConfig();
@@ -437,19 +399,19 @@ class BackendController
             }
             // If the page was accessible, then let the user edit it.
             if (is_array($editRecord) && $beUser->isInWebMount($editRecord['uid'])) {
-                // Setting JS code to open editing:
-                $this->js .= '
-		// Load page to edit:
-	window.setTimeout("top.loadEditId(' . (int)$editRecord['uid'] . ');", 500);
-			';
                 // Checking page edit parameter:
                 if (!($userTsConfig['options.']['bookmark_onEditId_dontSetPageTree'] ?? false)) {
                     $bookmarkKeepExpanded = (bool)($userTsConfig['options.']['bookmark_onEditId_keepExistingExpanded'] ?? false);
                     // Expanding page tree:
                     BackendUtility::openPageTree((int)$editRecord['pid'], !$bookmarkKeepExpanded);
                 }
-            } else {
-                $this->js .= '
+                // Setting JS code to open editing:
+                return '
+		// Load page to edit:
+	window.setTimeout("top.loadEditId(' . (int)$editRecord['uid'] . ');", 500);
+			';
+            }
+            return '
             // Warning about page editing:
             require(["TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Backend/Severity"], function(Modal, Severity) {
                 Modal.show("", ' . GeneralUtility::quoteJSvalue(sprintf($this->getLanguageService()->getLL('noEditPage'), $editId)) . ', Severity.notice, [{
@@ -462,8 +424,8 @@ class BackendController
                     }
                 }])
             });';
-            }
         }
+        return '';
     }
 
     /**
