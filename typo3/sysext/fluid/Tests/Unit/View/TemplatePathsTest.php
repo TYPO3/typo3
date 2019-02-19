@@ -95,10 +95,11 @@ class TemplatePathsTest extends UnitTestCase
     public function pathSetterMethodSortsPathsByKeyDescending($method, array $paths, array $expected)
     {
         $setter = 'set' . ucfirst($method);
+        $getter = 'get' . ucfirst($method);
         $subject = $this->getMockBuilder(TemplatePaths::class)->setMethods(['sanitizePath'])->getMock();
         $subject->expects($this->any())->method('sanitizePath')->willReturnArgument(0);
         $subject->$setter($paths);
-        $this->assertAttributeSame($expected, $method, $subject);
+        $this->assertEquals($expected, $subject->$getter());
     }
 
     /**

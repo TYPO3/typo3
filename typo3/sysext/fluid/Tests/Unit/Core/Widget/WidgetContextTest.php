@@ -58,8 +58,9 @@ class WidgetContextTest extends UnitTestCase
     public function setterMethodSetsPropertyValue($name, $value)
     {
         $method = 'set' . ucfirst($name);
+        $getter = 'get' . ucfirst($name);
         call_user_func_array([$this->widgetContext, $method], [$value]);
-        $this->assertAttributeEquals($value, $name, $this->widgetContext);
+        $this->assertEquals($value, $this->widgetContext->$getter());
     }
 
     /**

@@ -28,4 +28,9 @@ class WriterFixture extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter
     {
         $this->records[] = $record;
     }
+
+    public function getRecords(): array
+    {
+        return $this->records;
+    }
 }

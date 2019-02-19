@@ -91,7 +91,7 @@ class FileWriterTest extends UnitTestCase
         vfsStream::newFile($this->logFileName)->at(vfsStreamWrapper::getRoot());
         $writer = GeneralUtility::makeInstance(FileWriter::class);
         $writer->setLogFile($this->getDefaultFileName());
-        $this->assertAttributeEquals($this->getDefaultFileName(), 'logFile', $writer);
+        $this->assertEquals($this->getDefaultFileName(), $writer->getLogFile());
     }
 
     /**
@@ -102,7 +102,7 @@ class FileWriterTest extends UnitTestCase
         $writer = GeneralUtility::makeInstance(FileWriter::class);
         $tempFile = rtrim(sys_get_temp_dir(), '/\\') . '/typo3.log';
         $writer->setLogFile($tempFile);
-        $this->assertAttributeEquals($tempFile, 'logFile', $writer);
+        $this->assertEquals($tempFile, $writer->getLogFile());
     }
 
     /**

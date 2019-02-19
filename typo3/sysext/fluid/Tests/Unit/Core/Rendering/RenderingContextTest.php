@@ -109,7 +109,7 @@ class RenderingContextTest extends UnitTestCase
         $controllerContext->expects($this->atLeastOnce())->method('getRequest')->willReturn($request);
         $subject->setControllerContext($controllerContext);
         $subject->setControllerAction($input);
-        $this->assertAttributeSame($expected, 'controllerAction', $subject);
+        $this->assertEquals($expected, $subject->getControllerAction());
     }
 
     /**

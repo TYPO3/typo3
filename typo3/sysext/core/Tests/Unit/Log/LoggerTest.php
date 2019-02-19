@@ -45,7 +45,7 @@ class LoggerTest extends UnitTestCase
         $logger->addWriter(LogLevel::ERROR, $writer);
         // warning < error, thus must not be logged
         $logger->log(LogLevel::WARNING, 'test message');
-        $this->assertAttributeEmpty('records', $writer);
+        $this->assertEmpty($writer->getRecords());
     }
 
     /**
@@ -127,7 +127,7 @@ class LoggerTest extends UnitTestCase
         $logger->addWriter(LogLevel::NOTICE, $writer);
         // notice == notice, thus must be logged
         $logger->log(LogLevel::NOTICE, 'test message');
-        $this->assertAttributeNotEmpty('records', $writer);
+        $this->assertNotEmpty($writer->getRecords());
     }
 
     /**
@@ -158,7 +158,7 @@ class LoggerTest extends UnitTestCase
         $writer = new Fixtures\WriterFixture();
         $logger->addWriter(LogLevel::DEBUG, $writer);
         call_user_func([$logger, $shorthandMethod], 'test message');
-        $this->assertAttributeNotEmpty('records', $writer);
+        $this->assertNotEmpty($writer->getRecords());
     }
 
     /**
@@ -171,7 +171,7 @@ class LoggerTest extends UnitTestCase
         $logger->addWriter(LogLevel::NOTICE, $writer);
         // warning > notice, thus must be logged
         $logger->log(LogLevel::WARNING, 'test message');
-        $this->assertAttributeNotEmpty('records', $writer);
+        $this->assertNotEmpty($writer->getRecords());
     }
 
     /**

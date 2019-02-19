@@ -15,10 +15,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Mail\Mailer;
+use TYPO3\CMS\Core\Mail\TransportFactory;
 use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeTransportFixture;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -54,9 +57,14 @@ class MailerTest extends UnitTestCase
     {
         $settings = ['transport' => 'mbox', 'transport_mbox_file' => '/path/to/file'];
         $GLOBALS['TYPO3_CONF_VARS']['MAIL'] = ['transport' => 'sendmail', 'transport_sendmail_command' => 'sendmail'];
+
+        $transportFactory = $this->prophesize(TransportFactory::class);
+        $transportFactory->get(Argument::any())->willReturn($this->prophesize(\Swift_Transport::class));
+        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory->reveal());
         $this->subject->injectMailSettings($settings);
         $this->subject->__construct();
-        $this->assertAttributeSame($settings, 'mailSettings', $this->subject);
+
+        $transportFactory->get($settings)->shouldHaveBeenCalled();
     }
 
     /**
@@ -66,7 +74,13 @@ class MailerTest extends UnitTestCase
     {
         $settings = ($GLOBALS['TYPO3_CONF_VARS']['MAIL'] = ['transport' => 'sendmail', 'transport_sendmail_command' => 'sendmail']);
         $this->subject->__construct();
-        $this->assertAttributeSame($settings, 'mailSettings', $this->subject);
+        $transportFactory = $this->prophesize(TransportFactory::class);
+        $transportFactory->get(Argument::any())->willReturn($this->prophesize(\Swift_Transport::class));
+        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory->reveal());
+        $this->subject->injectMailSettings($settings);
+        $this->subject->__construct();
+
+        $transportFactory->get($settings)->shouldHaveBeenCalled();
     }
 
     /**

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
  */
 
 use PHPUnit\Framework\MockObject\MockObject;
+use Prophecy\Argument;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
@@ -192,14 +193,24 @@ class PersistenceManagerTest extends UnitTestCase
     public function addActuallyAddsAnObjectToTheInternalObjectsArray(): void
     {
         $someObject = new \stdClass();
+        $backend = $this->prophesize(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
         $persistenceManager = new PersistenceManager(
             $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface::class),
-            $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class),
+            $backend->reveal(),
             $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Session::class)
         );
         $persistenceManager->add($someObject);
 
-        $this->assertAttributeContains($someObject, 'addedObjects', $persistenceManager);
+        $expectedAddedObjects = new ObjectStorage();
+        $expectedAddedObjects->attach($someObject);
+
+        // this is the actual assertion
+        $backend->setAggregateRootObjects($expectedAddedObjects)->shouldBeCalled();
+
+        $backend->setChangedEntities(Argument::any())->shouldBeCalled();
+        $backend->setDeletedEntities(Argument::any())->shouldBeCalled();
+        $backend->commit()->shouldBeCalled();
+        $persistenceManager->persistAll();
     }
 
     /**
@@ -211,9 +222,10 @@ class PersistenceManagerTest extends UnitTestCase
         $object2 = new \stdClass();
         $object3 = new \stdClass();
 
+        $backend = $this->prophesize(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
         $persistenceManager = new PersistenceManager(
             $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface::class),
-            $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class),
+            $backend->reveal(),
             $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Session::class)
         );
         $persistenceManager->add($object1);
@@ -222,9 +234,20 @@ class PersistenceManagerTest extends UnitTestCase
 
         $persistenceManager->remove($object2);
 
-        $this->assertAttributeContains($object1, 'addedObjects', $persistenceManager);
-        $this->assertAttributeNotContains($object2, 'addedObjects', $persistenceManager);
-        $this->assertAttributeContains($object3, 'addedObjects', $persistenceManager);
+        $expectedAddedObjects = new ObjectStorage();
+        $expectedAddedObjects->attach($object1);
+        $expectedAddedObjects->attach($object2);
+        $expectedAddedObjects->attach($object3);
+        $expectedAddedObjects->detach($object2);
+
+        // this is the actual assertion
+        $backend->setAggregateRootObjects($expectedAddedObjects)->shouldBeCalled();
+
+        $backend->setChangedEntities(Argument::any())->shouldBeCalled();
+        $backend->setDeletedEntities(Argument::any())->shouldBeCalled();
+        $backend->commit()->shouldBeCalled();
+
+        $persistenceManager->persistAll();
     }
 
     /**
@@ -236,9 +259,10 @@ class PersistenceManagerTest extends UnitTestCase
         $object2 = new \ArrayObject(['val' => '2']);
         $object3 = new \ArrayObject(['val' => '3']);
 
+        $backend = $this->prophesize(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
         $persistenceManager = new PersistenceManager(
             $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface::class),
-            $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class),
+            $backend->reveal(),
             $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Session::class)
         );
         $persistenceManager->add($object1);
@@ -250,9 +274,20 @@ class PersistenceManagerTest extends UnitTestCase
 
         $persistenceManager->remove($object2);
 
-        $this->assertAttributeContains($object1, 'addedObjects', $persistenceManager);
-        $this->assertAttributeNotContains($object2, 'addedObjects', $persistenceManager);
-        $this->assertAttributeContains($object3, 'addedObjects', $persistenceManager);
+        // replay the actual sequence of actions, that makes the objectStorages comparable
+        $expectedAddedObjects = new ObjectStorage();
+        $expectedAddedObjects->attach($object1);
+        $expectedAddedObjects->attach($object2);
+        $expectedAddedObjects->attach($object3);
+        $expectedAddedObjects->detach($object2);
+
+        // this is the actual assertion
+        $backend->setAggregateRootObjects($expectedAddedObjects)->shouldBeCalled();
+
+        $backend->setChangedEntities(Argument::any())->shouldBeCalled();
+        $backend->setDeletedEntities(Argument::any())->shouldBeCalled();
+        $backend->commit()->shouldBeCalled();
+        $persistenceManager->persistAll();
     }
 
     /**
@@ -264,14 +299,24 @@ class PersistenceManagerTest extends UnitTestCase
     public function removeRetainsObjectForObjectsNotInCurrentSession(): void
     {
         $object = new \ArrayObject(['val' => '1']);
+        $backend = $this->prophesize(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
         $persistenceManager = new PersistenceManager(
             $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface::class),
-            $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class),
+            $backend->reveal(),
             $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Session::class)
         );
         $persistenceManager->remove($object);
 
-        $this->assertAttributeContains($object, 'removedObjects', $persistenceManager);
+        $expectedDeletedObjects = new ObjectStorage();
+        $expectedDeletedObjects->attach($object);
+        $backend->setAggregateRootObjects(Argument::any())->shouldBeCalled();
+        $backend->setChangedEntities(Argument::any())->shouldBeCalled();
+
+        // this is the actual assertion
+        $backend->setDeletedEntities($expectedDeletedObjects)->shouldBeCalled();
+
+        $backend->commit()->shouldBeCalled();
+        $persistenceManager->persistAll();
     }
 
     /**

@@ -146,10 +146,10 @@ class DataMapperTest extends UnitTestCase
         );
         $dataMapper->_call('thawProperties', $object, $row);
 
-        $this->assertAttributeEquals('firstValue', 'firstProperty', $object);
-        $this->assertAttributeEquals(1234, 'secondProperty', $object);
-        $this->assertAttributeEquals(1.234, 'thirdProperty', $object);
-        $this->assertAttributeEquals(false, 'fourthProperty', $object);
+        $this->assertEquals('firstValue', $object->firstProperty);
+        $this->assertEquals(1234, $object->secondProperty);
+        $this->assertEquals(1.234, $object->thirdProperty);
+        $this->assertEquals(false, $object->fourthProperty);
     }
 
     /**

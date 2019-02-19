@@ -74,22 +74,4 @@ class ObjectAccessTest extends UnitTestCase
         $this->expectExceptionCode(1302855001);
         ObjectAccess::getProperty($this->dummyObject, 'notExistingProperty', true);
     }
-
-    /**
-     * @test
-     */
-    public function setPropertySetsValueIfPropertyIsNotAccessibleWhenForceDirectAccessIsTrue()
-    {
-        $this->assertTrue(ObjectAccess::setProperty($this->dummyObject, 'unexposedProperty', 'was set anyway', true));
-        $this->assertAttributeEquals('was set anyway', 'unexposedProperty', $this->dummyObject);
-    }
-
-    /**
-     * @test
-     */
-    public function setPropertySetsValueIfPropertyDoesNotExistWhenForceDirectAccessIsTrue()
-    {
-        $this->assertTrue(ObjectAccess::setProperty($this->dummyObject, 'unknownProperty', 'was set anyway', true));
-        $this->assertAttributeEquals('was set anyway', 'unknownProperty', $this->dummyObject);
-    }
 }

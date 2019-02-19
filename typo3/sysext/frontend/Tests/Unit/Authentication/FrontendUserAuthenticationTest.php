@@ -172,7 +172,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $subject->start();
         $subject->setSessionData('foo', 'bar');
         $subject->removeSessionData();
-        $this->assertAttributeEmpty('sessionData', $subject);
+        $this->assertNull($subject->getSessionData('someKey'));
     }
 
     /**
@@ -235,7 +235,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $this->assertEmpty($subject->getSessionData($uniqueSessionId));
         $this->assertEmpty($subject->user);
         $subject->setSessionData('foo', 'bar');
-        $this->assertAttributeNotEmpty('sessionData', $subject);
+        $this->assertNotNull('sessionData', $subject->getSessionData('foo'));
 
         // Suppress "headers already sent" errors - phpunit does that internally already
         $prev = error_reporting(0);
@@ -315,7 +315,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $subject->gc_probability = -1;
         $subject->start();
 
-        $this->assertAttributeNotEmpty('user', $subject);
+        $this->assertNotNull($subject->user);
         $this->assertEquals('existingUserName', $subject->user['username']);
     }
 
@@ -533,12 +533,12 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $this->assertEmpty($this->subject->_get('sessionData'));
         $this->assertEmpty($this->subject->user);
         $this->subject->setSessionData('foo', 'bar');
-        $this->assertAttributeNotEmpty('sessionData', $this->subject);
+        $this->assertNotNull($this->subject->getSessionData('foo'));
         $this->subject->storeSessionData();
 
         // Should delete session after setting to null
         $this->subject->setSessionData('foo', null);
-        $this->assertAttributeEmpty('sessionData', $this->subject);
+        $this->assertNull($this->subject->getSessionData('foo'));
         $sessionBackend->expects($this->once())->method('remove')->with('newSessionId');
         $sessionBackend->expects($this->never())->method('update');
 
