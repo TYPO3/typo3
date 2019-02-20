@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1582063376" source-language="en" datatype="plaintext" original="EXT:seo/Resources/Private/Language/locallang_webinfo.xlf" date="2020-02-18T22:02:42Z" product-name="cms">
+		<header/>
+		<body>
+			<trans-unit id="seo" resname="seo">
+				<source>SEO</source>
+			</trans-unit>
+			<trans-unit id="social_media" resname="social_media">
+				<source>Social Media</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

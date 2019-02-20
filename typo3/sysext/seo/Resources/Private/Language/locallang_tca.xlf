@@ -44,13 +44,13 @@
 				<source>Twitter Cards</source>
 			</trans-unit>
 			<trans-unit id="pages.twitter_title" resname="pages.twitter_title">
-				<source>Title</source>
+				<source>Twitter Title</source>
 			</trans-unit>
 			<trans-unit id="pages.twitter_description" resname="pages.twitter_description">
-				<source>Description</source>
+				<source>Twitter Description</source>
 			</trans-unit>
 			<trans-unit id="pages.twitter_image" resname="pages.twitter_image">
-				<source>Image</source>
+				<source>Twitter Image</source>
 			</trans-unit>
 			<trans-unit id="pages.twitter_card" resname="pages.twitter_card">
 				<source>Type of card to show</source>
