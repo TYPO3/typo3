@@ -95,7 +95,7 @@ class LanguageSortingUpdate implements UpgradeWizardInterface
             )
             ->orderBy('title')
             ->execute();
-        $sortCounter = 128;
+        $sortCounter = 10;
         while ($languageRecord = $statement->fetch()) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('sys_language');
@@ -108,7 +108,7 @@ class LanguageSortingUpdate implements UpgradeWizardInterface
                 )
                 ->set('sorting', $sortCounter)
                 ->execute();
-            $sortCounter *= 2;
+            $sortCounter += 5;
         }
         return true;
     }
