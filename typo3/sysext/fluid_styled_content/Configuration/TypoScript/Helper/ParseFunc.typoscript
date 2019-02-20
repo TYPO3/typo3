@@ -11,15 +11,6 @@ lib.parseFunc {
         }
     }
     tags {
-        link = TEXT
-        link {
-            current = 1
-            typolink {
-                parameter.data = parameters : allParams
-                extTarget = {$styles.content.links.extTarget}
-            }
-            parseFunc.constants = 1
-        }
         a = TEXT
         a {
             current = 1
