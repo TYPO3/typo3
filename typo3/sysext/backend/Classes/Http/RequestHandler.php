@@ -20,7 +20,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -72,10 +71,6 @@ class RequestHandler implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        // This is currently placed here, as DocumentTemplate does some magic with
-        // PageRenderer (= which is a singleton) to populate Backend Styles from TBE_STYLES
-        // which should be built only if necessary, but currently done all over the place.
-        GeneralUtility::makeInstance(DocumentTemplate::class);
         // safety net to have the fully-added request object globally available as long as
         // there are Core classes that need the Request object but do not get it handed in
         $this->resetGlobalsToCurrentRequest($request);

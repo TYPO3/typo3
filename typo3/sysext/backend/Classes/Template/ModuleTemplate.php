@@ -283,6 +283,31 @@ class ModuleTemplate
         if (!empty($GLOBALS['TBE_STYLES']['stylesheet2'])) {
             $this->pageRenderer->addCssFile($GLOBALS['TBE_STYLES']['stylesheet2']);
         }
+        // Add all *.css files of the directory $path to the stylesheets
+        foreach ($this->getRegisteredStylesheetFolders() as $folder) {
+            // Read all files in directory and sort them alphabetically
+            $cssFiles = GeneralUtility::getFilesInDir($folder, 'css', true);
+            foreach ($cssFiles as $cssFile) {
+                $this->pageRenderer->addCssFile($cssFile);
+            }
+        }
+    }
+
+    /**
+     * Returns an array of all stylesheet directories registered via $TBE_STYLES['skins']
+     */
+    protected function getRegisteredStylesheetFolders(): array
+    {
+        $stylesheetDirectories = [];
+        foreach ($GLOBALS['TBE_STYLES']['skins'] ?? [] as $skin) {
+            foreach ($skin['stylesheetDirectories'] ?? [] as $stylesheetDir) {
+                $directory = GeneralUtility::getFileAbsFileName($stylesheetDir);
+                if (!empty($directory)) {
+                    $stylesheetDirectories[] = $directory;
+                }
+            }
+        }
+        return $stylesheetDirectories;
     }
 
     /**
@@ -295,6 +320,13 @@ class ModuleTemplate
         $this->pageRenderer->setCharSet('utf-8');
         $this->pageRenderer->setLanguage($this->getLanguageService()->lang);
         $this->pageRenderer->setMetaTag('name', 'viewport', 'width=device-width, initial-scale=1');
+        $this->pageRenderer->enableConcatenateCss();
+        $this->pageRenderer->enableConcatenateJavascript();
+        $this->pageRenderer->enableCompressCss();
+        $this->pageRenderer->enableCompressJavascript();
+        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
+            $this->pageRenderer->enableDebugMode();
+        }
     }
 
     /**
