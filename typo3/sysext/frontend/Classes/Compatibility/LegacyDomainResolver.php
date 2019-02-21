@@ -75,7 +75,6 @@ class LegacyDomainResolver implements SingletonInterface
             $this->groupedDomainsPerPage = json_decode($data, true);
         } else {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_domain');
-            $queryBuilder->getRestrictions()->removeAll();
             $statement = $queryBuilder
                 ->select('*')
                 ->from('sys_domain')
