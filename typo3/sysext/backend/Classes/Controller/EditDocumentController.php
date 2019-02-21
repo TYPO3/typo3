@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -1865,16 +1864,16 @@ class EditDocumentController extends AbstractModule
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                 ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
 
-            if (!$this->getBackendUser()->isAdmin()) {
-                $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(HiddenRestriction::class));
-            }
-
             // Add join with pages_languages_overlay table to only show active languages
             $queryBuilder->from('pages_language_overlay', 'o')
                 ->where(
                     $queryBuilder->expr()->eq('o.sys_language_uid', $queryBuilder->quoteIdentifier('s.uid')),
                     $queryBuilder->expr()->eq('o.pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
                 );
+
+            if (!$this->getBackendUser()->isAdmin()) {
+                $queryBuilder->andWhere($queryBuilder->expr()->eq('s.hidden', 0));
+            }
         }
 
         $result = $queryBuilder->execute();
