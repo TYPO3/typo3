@@ -15,13 +15,16 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use Prophecy\Prophecy\MethodProphecy;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Controller\LoginController;
 use TYPO3\CMS\Backend\LoginProvider\UsernamePasswordLoginProvider;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -198,7 +201,11 @@ class LoginControllerTest extends UnitTestCase
         $this->loginControllerMock->_set('loginRefresh', false);
 
         $this->loginControllerMock->expects($this->once())->method('redirectToUrl');
-        $this->loginControllerMock->_call('checkRedirect', $this->prophesize(ServerRequest::class)->reveal());
+        $this->loginControllerMock->_call(
+            'checkRedirect',
+            $this->prophesize(ServerRequest::class)->reveal(),
+            $this->prophesize(PageRenderer::class)->reveal()
+        );
     }
 
     /**
@@ -230,11 +237,18 @@ class LoginControllerTest extends UnitTestCase
         $GLOBALS['BE_USER']->user['uid'] = 1;
         $this->loginControllerMock->method('isLoginInProgress')->willReturn(false);
         $this->loginControllerMock->_set('loginRefresh', true);
-        $this->loginControllerMock->_set('documentTemplate', $this->prophesize(DocumentTemplate::class)->reveal());
+        /** @var ObjectProphecy|PageRenderer $pageRendererProphecy */
+        $pageRendererProphecy = $this->prophesize(PageRenderer::class);
+        /** @var MethodProphecy $inlineCodeProphecy */
+        $inlineCodeProphecy = $pageRendererProphecy->addJsInlineCode('loginRefresh', Argument::cetera());
 
-        $this->loginControllerMock->_call('checkRedirect', $this->prophesize(ServerRequest::class)->reveal());
+        $this->loginControllerMock->_call(
+            'checkRedirect',
+            $this->prophesize(ServerRequest::class)->reveal(),
+            $pageRendererProphecy->reveal()
+        );
 
-        self::assertContains('window.opener.TYPO3.LoginRefresh.startTask();', $this->loginControllerMock->_get('documentTemplate')->JScode);
+        $inlineCodeProphecy->shouldHaveBeenCalledTimes(1);
     }
 
     /**
@@ -266,11 +280,18 @@ class LoginControllerTest extends UnitTestCase
         $GLOBALS['BE_USER']->user['uid'] = 1;
         $this->loginControllerMock->method('isLoginInProgress')->willReturn(true);
         $this->loginControllerMock->_set('loginRefresh', true);
-        $this->loginControllerMock->_set('documentTemplate', $this->prophesize(DocumentTemplate::class)->reveal());
+        /** @var ObjectProphecy|PageRenderer $pageRendererProphecy */
+        $pageRendererProphecy = $this->prophesize(PageRenderer::class);
+        /** @var MethodProphecy $inlineCodeProphecy */
+        $inlineCodeProphecy = $pageRendererProphecy->addJsInlineCode('loginRefresh', Argument::cetera());
 
-        $this->loginControllerMock->_call('checkRedirect', $this->prophesize(ServerRequest::class)->reveal());
+        $this->loginControllerMock->_call(
+            'checkRedirect',
+            $this->prophesize(ServerRequest::class)->reveal(),
+            $pageRendererProphecy->reveal()
+        );
 
-        self::assertContains('window.opener.TYPO3.LoginRefresh.startTask();', $this->loginControllerMock->_get('documentTemplate')->JScode);
+        $inlineCodeProphecy->shouldHaveBeenCalledTimes(1);
     }
 
     /**
@@ -290,7 +311,11 @@ class LoginControllerTest extends UnitTestCase
         $GLOBALS['BE_USER']->user['uid'] = null;
 
         $this->loginControllerMock->expects($this->never())->method('redirectToUrl');
-        $this->loginControllerMock->_call('checkRedirect', $this->prophesize(ServerRequest::class)->reveal());
+        $this->loginControllerMock->_call(
+            'checkRedirect',
+            $this->prophesize(ServerRequest::class)->reveal(),
+            $this->prophesize(PageRenderer::class)->reveal()
+        );
     }
 
     /**

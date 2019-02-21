@@ -203,7 +203,7 @@ class LoginController implements LoggerAwareInterface
 
         // Checking, if we should make a redirect.
         // Might set JavaScript in the header to close window.
-        $this->checkRedirect($request);
+        $this->checkRedirect($request, $pageRenderer);
 
         // Extension Configuration
         $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('backend');
@@ -217,13 +217,13 @@ class LoginController implements LoggerAwareInterface
                     '" can\'t be resolved. Please check if the file exists and the extension is activated.'
                 );
             }
-            $this->documentTemplate->inDocStylesArray[] = '
+            $pageRenderer->addCssInlineBlock('loginBackgroundImage', '
 				.typo3-login-carousel-control.right,
 				.typo3-login-carousel-control.left,
 				.panel-login { border: 0; }
 				.typo3-login { background-image: url("' . $backgroundImage . '"); }
 				.typo3-login-footnote { background-color: #000000; color: #ffffff; opacity: 0.5; }
-			';
+			');
         }
 
         // Login Footnote
@@ -233,7 +233,7 @@ class LoginController implements LoggerAwareInterface
 
         // Add additional css to use the highlight color in the login screen
         if (!empty($extConf['loginHighlightColor'])) {
-            $this->documentTemplate->inDocStylesArray[] = '
+            $pageRenderer->addCssInlineBlock('loginHighlightColor', '
 				.btn-login.disabled, .btn-login[disabled], fieldset[disabled] .btn-login,
 				.btn-login.disabled:hover, .btn-login[disabled]:hover, fieldset[disabled] .btn-login:hover,
 				.btn-login.disabled:focus, .btn-login[disabled]:focus, fieldset[disabled] .btn-login:focus,
@@ -244,7 +244,7 @@ class LoginController implements LoggerAwareInterface
 				.btn-login:active:hover, .btn-login:active:focus,
 				.btn-login { background-color: ' . $extConf['loginHighlightColor'] . '; }
 				.panel-login .panel-body { border-color: ' . $extConf['loginHighlightColor'] . '; }
-			';
+			');
         }
 
         // Logo
@@ -263,9 +263,9 @@ class LoginController implements LoggerAwareInterface
             } else {
                 $logo = 'EXT:backend/Resources/Public/Images/typo3_orange.svg';
             }
-            $this->documentTemplate->inDocStylesArray[] = '
+            $pageRenderer->addCssInlineBlock('loginLogo', '
 				.typo3-login-logo .typo3-login-image { max-width: 150px; height:100%;}
-			';
+			');
         }
         $logo = $this->getUriForFileName($logo);
 
@@ -308,11 +308,12 @@ class LoginController implements LoggerAwareInterface
      * Do a redirect if a user is logged in
      *
      * @param ServerRequestInterface $request
+     * @param PageRenderer $pageRenderer
      * @throws \RuntimeException
      * @throws \UnexpectedValueException
      * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
-    protected function checkRedirect(ServerRequestInterface $request): void
+    protected function checkRedirect(ServerRequestInterface $request, PageRenderer $pageRenderer): void
     {
         $backendUser = $this->getBackendUserAuthentication();
         if (empty($backendUser->user['uid'])) {
@@ -367,7 +368,7 @@ class LoginController implements LoggerAwareInterface
         if ($this->loginRefresh) {
             $formProtection->setSessionTokenFromRegistry();
             $formProtection->persistSessionToken();
-            $this->documentTemplate->JScode .= GeneralUtility::wrapJS('
+            $pageRenderer->addJsInlineCode('loginRefresh', '
 				if (window.opener && window.opener.TYPO3 && window.opener.TYPO3.LoginRefresh) {
 					window.opener.TYPO3.LoginRefresh.startTask();
 					window.close();
