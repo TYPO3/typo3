@@ -123,7 +123,7 @@ EOF;
         /* For backwards compatibility the HMAC is transported within the md5 param */
         $hmacParameter = $this->request->getQueryParams()['md5'] ?? null;
         $hmac = GeneralUtility::hmac(implode('|', [$fileUid, $parametersEncoded]));
-        if (!hash_equals($hmac, $hmacParameter)) {
+        if (!is_string($hmacParameter) || !hash_equals($hmac, $hmacParameter)) {
             throw new \InvalidArgumentException('hash does not match', 1476048456);
         }
 
