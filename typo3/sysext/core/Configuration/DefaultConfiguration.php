@@ -80,7 +80,6 @@ return [
         'encryptionKey' => '',
         'cookieDomain' => '',
         'cookieSecure' => 0,
-        'recursiveDomainSearch' => false,
         'trustedHostsPattern' => 'SERVER_NAME',
         'devIPmask' => '127.0.0.1,::1',
         'ddmmyy' => 'd-m-y',

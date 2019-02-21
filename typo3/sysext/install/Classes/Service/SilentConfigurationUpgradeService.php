@@ -137,7 +137,9 @@ class SilentConfigurationUpgradeService
         // #84810
         'BE/explicitConfirmationOfTranslation',
         // #87482
-        'EXT/extConf'
+        'EXT/extConf',
+        // #87767
+        'SYS/recursiveDomainSearch',
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)

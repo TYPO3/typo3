@@ -150,29 +150,11 @@ class SiteMatcher implements SingletonInterface
         $collection = $this->getRouteCollectionForVisibleSysDomains();
         $context = new RequestContext('/', $request->getMethod(), $request->getUri()->getHost());
         $matcher = new UrlMatcher($collection, $context);
-        if ((bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['recursiveDomainSearch']) {
-            $host = explode('.', $request->getUri()->getHost());
-            while (count($host)) {
-                $context->setHost(implode('.', $host));
-                try {
-                    $result = $matcher->match($request->getUri()->getPath());
-                    return new SiteRouteResult(
-                        $request->getUri(),
-                        $result['site'],
-                        $result['language'],
-                        $result['tail']
-                    );
-                } catch (NoConfigurationException | ResourceNotFoundException $e) {
-                    array_shift($host);
-                }
-            }
-        } else {
-            try {
-                $result = $matcher->match($request->getUri()->getPath());
-                return new SiteRouteResult($request->getUri(), $result['site'], $result['language'], $result['tail']);
-            } catch (NoConfigurationException | ResourceNotFoundException $e) {
-                // No domain record found
-            }
+        try {
+            $result = $matcher->match($request->getUri()->getPath());
+            return new SiteRouteResult($request->getUri(), $result['site'], $result['language'], $result['tail']);
+        } catch (NoConfigurationException | ResourceNotFoundException $e) {
+            // No domain record found
         }
         // No domain record found, try resolving "pseudo-site" again
         if ($site == null) {
