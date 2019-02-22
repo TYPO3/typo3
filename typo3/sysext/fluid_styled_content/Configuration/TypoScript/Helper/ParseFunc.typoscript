@@ -73,7 +73,10 @@ lib.parseFunc_RTE {
                 # Recursive call to self but without wrapping non-wrapped cell content
                 default.stdWrap {
                     parseFunc = < lib.parseFunc_RTE
-                    parseFunc.nonTypoTagStdWrap.encapsLines.nonWrappedTag =
+                    parseFunc.nonTypoTagStdWrap.encapsLines {
+                        nonWrappedTag =
+                        innerStdWrap_all.ifBlank =
+                    }
                 }
                 addChr10BetweenParagraphs = 1
             }
