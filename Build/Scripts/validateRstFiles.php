@@ -58,7 +58,7 @@ class validateRstFiles
 
     public function validate()
     {
-        printf('Searching for rst snippets in' . $this->baseDir . chr(10));
+        printf('Searching for rst snippets in ' . $this->baseDir . chr(10));
 
         $count = 0;
         $finder = $this->findFiles();
@@ -70,7 +70,7 @@ class validateRstFiles
             $a = explode(chr(10), trim($fileContent));
             $lastLine = array_pop($a);
             $this->validateLastLine($lastLine);
-            $this->validateLastLineForFilename($filename, $lastLine);
+            $this->validateLastLineByFilename($filename, $lastLine);
 
             if ($this->isError) {
                 $shortPath = substr($filename, strlen($this->baseDir));
@@ -181,27 +181,27 @@ class validateRstFiles
         }
     }
 
-    protected function validateLastLineForFilename(string $path, string $lastLine)
+    protected function validateLastLineByFilename(string $path, string $lastLine)
     {
         $checkFor = [
             [
                 'type' => 'index',
-                'regexNotFilename' => '#
-                    Changelog[\\\\/]8\\.[0-9]+[\\\\/]|
-                    Changelog[\\\\/]8\\.7\\.x[\\\\/]|
-                    Changelog[\\\\/]7\\.[0-9]+[\\\\/]|
-                    Changelog[\\\\/]7\\.6\\.x[\\\\/]|
-                    Changelog[\\\\/](?:master|[0-9]+\\.[0-9]+)[\\\\/]Feature-|
-                    Changelog[\\\\/](?:master|[0-9]+\\.[0-9]+)[\\\\/]Important-
-                    #x',
+                'regexIgnoreFilename' => '#'
+                    . 'Changelog[\\\\/]'         // Ignore all Changelog files
+                    . '(?:'                      // which are either
+                    . '.+[\\\\/](?:Feature|Important)' // from any version but of type "Feature" or "Important"
+                    . '|'                        // or
+                    . '[78]'                     // from 7.x and 8.x (as there was no extension scanner back then)
+                    . ')'
+                    . '#',
                 'regex' => '#^\.\. index:: .*(?:FullyScanned|PartiallyScanned|NotScanned).*#',
                 'title' => 'missing FullyScanned / PartiallyScanned / NotScanned tag',
-                'message' => 'insert \'.. index:: <at least one valid keyword and either FullyScanned, PartiallyScanned or NotScanned>\' at last line of the file. See Build/Scripts/validateRstFiles.php for allowed keywords',
+                'message' => 'insert \'.. index:: <at least one valid keyword and either FullyScanned, PartiallyScanned or NotScanned>\' at the last line of the file. See Build/Scripts/validateRstFiles.php for allowed keywords',
             ],
         ];
 
         foreach ($checkFor as $values) {
-            if (preg_match($values['regexNotFilename'], $path) === 1) {
+            if (preg_match($values['regexIgnoreFilename'], $path) === 1) {
                 continue;
             }
             if (preg_match($values['regex'], $lastLine) !== 1) {
