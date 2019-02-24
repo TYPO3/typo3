@@ -120,6 +120,16 @@ class SlugHelperTest extends UnitTestCase
                 'special-chars-«-∑-€-®-†-Ω-¨-ø-π-å-‚-∂-ƒ-©-ª-º-∆-@-¥-≈-ç-√-∫-~-µ-∞-…-–',
                 'special-chars-eur-r-o-oe-p-aa-f-c-a-o-yen-c-u'
             ],
+            'ensure colon and other http related parts are disallowed' => [
+                [],
+                'https://example.com:80/my/page/slug/',
+                'https//examplecom80/my/page/slug/'
+            ],
+            'non-ASCII characters are kept' => [
+                [],
+                'bla-arg应---用-ascii',
+                'bla-arg应-用-ascii'
+            ],
         ];
     }
 
@@ -279,6 +289,16 @@ class SlugHelperTest extends UnitTestCase
                 [],
                 'special-chars-«-∑-€-®-†-Ω-¨-ø-π-å-‚-∂-ƒ-©-ª-º-∆-@-¥-≈-ç-√-∫-~-µ-∞-…-–',
                 '/special-chars-eur-r-o-oe-p-aa-f-c-a-o-yen-c-u'
+            ],
+            'ensure colon and other http related parts are disallowed' => [
+                [],
+                'https://example.com:80/my/page/slug/',
+                '/https//examplecom80/my/page/slug/'
+            ],
+            'chinese' => [
+                [],
+                '应用',
+                '/应用'
             ],
         ];
     }
