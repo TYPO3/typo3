@@ -77,7 +77,7 @@ class FrontendLoginController extends AbstractPlugin
      *
      * @var string
      */
-    protected $redirectUrl;
+    protected $redirectUrl = '';
 
     /**
      * Flag for disable the redirect
@@ -150,14 +150,14 @@ class FrontendLoginController extends AbstractPlugin
         // GPvars:
         $this->logintype = GeneralUtility::_GP('logintype');
 
-        if ($this->urlValidator->isValid(GeneralUtility::_GP('referer'))) {
+        if ($this->urlValidator->isValid((string)GeneralUtility::_GP('referer'))) {
             $this->referer = GeneralUtility::_GP('referer');
         } else {
             $this->referer = '';
         }
         $this->noRedirect = $this->piVars['noredirect'] || $this->conf['redirectDisable'];
         // If config.typolinkLinkAccessRestrictedPages is set, the var is return_url
-        $this->redirectUrl = GeneralUtility::_GP('return_url') ?: GeneralUtility::_GP('redirect_url');
+        $this->redirectUrl = GeneralUtility::_GP('return_url') ?: (string)GeneralUtility::_GP('redirect_url');
         $this->redirectUrl = $this->urlValidator->isValid($this->redirectUrl) ? $this->redirectUrl : '';
         // Get Template
         $templateFile = $this->conf['templateFile'] ?: 'EXT:felogin/Resources/Private/Templates/FrontendLogin.html';
