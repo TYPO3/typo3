@@ -43,4 +43,4 @@ Instead of fetching reflection data via :php:`TYPO3\CMS\Extbase\Reflection\Refle
 directly be fetched from a :php:`TYPO3\CMS\Extbase\Reflection\ClassSchema` instance. An instance can be created by calling
 :php:`TYPO3\CMS\Extbase\Reflection\ReflectionService::getClassSchema()`.
 
-.. index:: FullyScanned, PHP-API, ext:extbase
+.. index:: PHP-API, ext:extbase, FullyScanned

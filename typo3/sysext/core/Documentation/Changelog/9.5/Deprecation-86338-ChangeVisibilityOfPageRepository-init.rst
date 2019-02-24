@@ -29,4 +29,4 @@ Migration
 
 Remove the call to the :php:`PageRepository::init()` function. The constructor is taking care of calling the method.
 
-.. index:: NotScanned, ext:frontend
+.. index:: ext:frontend, NotScanned

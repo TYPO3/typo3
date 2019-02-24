@@ -33,4 +33,4 @@ Migration
 
 Use a 3rd party API like https://github.com/piwik/device-detector
 
-.. index:: FullyScanned, PHP-API
+.. index:: PHP-API, FullyScanned

@@ -37,4 +37,4 @@ Migration
 Use either methods from :php:`BackendUserAuthentication` directly, or - if in context of Admin Panel or
 Frontend Editing - use the API methods within these modules directly, if necessary.
 
-.. index:: FullyScanned, PHP-API, Frontend, Backend
+.. index:: PHP-API, Frontend, Backend, FullyScanned

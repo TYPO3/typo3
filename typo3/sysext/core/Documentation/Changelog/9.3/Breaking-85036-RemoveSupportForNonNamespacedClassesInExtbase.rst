@@ -36,4 +36,4 @@ Migration
 
 Use namespaced class names for Extbase.
 
-.. index:: NotScanned, ext:extbase
+.. index:: ext:extbase, NotScanned

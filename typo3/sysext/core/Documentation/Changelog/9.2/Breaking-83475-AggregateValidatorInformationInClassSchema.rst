@@ -54,4 +54,4 @@ inside a model validator, that is automatically registered and loaded if defined
 When using that feature with regular objects, you need to write custom validators and call the desired property
 validators in there.
 
-.. index:: NotScanned
+.. index:: ext:extbase, PHP-API, NotScanned

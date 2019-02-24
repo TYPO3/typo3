@@ -33,4 +33,4 @@ Ensure that the system extension `lowlevel` is installed, and the caller code us
 
 For TYPO3 v9, the old class is kept in place and will be removed in TYPO3 v10.
 
-.. index:: FullyScanned, ext:lowlevel
+.. index:: ext:lowlevel, FullyScanned

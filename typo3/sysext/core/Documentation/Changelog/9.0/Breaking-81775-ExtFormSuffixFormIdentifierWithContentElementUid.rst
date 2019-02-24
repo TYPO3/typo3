@@ -37,4 +37,4 @@ Affected Installations
 
 All instances, that render forms through the "form" content element.
 
-.. index:: NotScanned, Frontend, ext:form
+.. index:: Frontend, ext:form, NotScanned
