@@ -41,4 +41,4 @@ Migration
 
 There is none.
 
-.. index:: PartiallyScanned, PHP-API, ext:extbase
+.. index:: PHP-API, ext:extbase, PartiallyScanned

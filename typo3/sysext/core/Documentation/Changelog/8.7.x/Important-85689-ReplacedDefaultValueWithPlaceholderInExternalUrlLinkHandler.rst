@@ -15,4 +15,4 @@ to duplicate HTTP protocols, for example: `http://https://typo3.org/`
 
 A placeholder is now used instead of a default value. Editors can paste links directly and do not have to remove a default value first.
 
-.. index:: NotScanned
+.. index:: PHP-API, Backend

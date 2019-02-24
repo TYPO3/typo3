@@ -37,4 +37,4 @@ Migration
 
 Just remove the annotation from the affected controllers.
 
-.. index:: NotScanned, ext:extbase
+.. index:: ext:extbase, NotScanned

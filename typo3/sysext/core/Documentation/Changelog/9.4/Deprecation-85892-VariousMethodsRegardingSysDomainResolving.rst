@@ -41,4 +41,4 @@ Migration
 Migrate to either the new Routing API (finalized for 9 LTS) or implement the functionality in your own, or use the :php:`LegacyDomainResolver` class,
 but since the concept of sys_domain handling will be removed in TYPO3 v10, consider use of the Site handling functionality instead.
 
-.. index:: FullyScanned, Frontend, Backend
+.. index:: Frontend, Backend, FullyScanned

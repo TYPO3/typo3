@@ -31,4 +31,4 @@ Migration
 Check your functional tests fixtures and set the expected sorting value for deleted records equal to
 the starting value.
 
-.. index:: NotScanned
+.. index:: PHP-API, Database

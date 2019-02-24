@@ -53,4 +53,4 @@ Model / Repositories and ORM, or if native database queries will suit your task 
 If anything related to DataHandler and Backend permission handling is necessary, you should run
 :php:`Bootstrap::initializeBackendAuthentication();`.
 
-.. index:: FullyScanned, ext:scheduler
+.. index:: ext:scheduler, FullyScanned

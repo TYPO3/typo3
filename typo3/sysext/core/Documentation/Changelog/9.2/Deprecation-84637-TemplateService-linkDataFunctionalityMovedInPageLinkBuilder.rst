@@ -40,4 +40,4 @@ Migration
 Access the corresponding new methods within :php:`PageLinkBuilder` instead of the TemplateService-related
 methods, or use the existing hook to modify parameters for a URL.
 
-.. index:: FullyScanned
+.. index:: PHP-API, FullyScanned

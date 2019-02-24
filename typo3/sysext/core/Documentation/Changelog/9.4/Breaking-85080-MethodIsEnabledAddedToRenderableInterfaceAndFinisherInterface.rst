@@ -31,4 +31,4 @@ Migration
 Third party code implementing these interfaces must be updated to implement the :php:`isEnabled()` method, preferably
 by extending :php:`AbstractRenderable` (or one of its subclasses) or :php:`AbstractFinisher`.
 
-.. index:: NotScanned, ext:form
+.. index:: ext:form, NotScanned

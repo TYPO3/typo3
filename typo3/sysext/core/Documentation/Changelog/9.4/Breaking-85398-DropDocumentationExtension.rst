@@ -51,4 +51,4 @@ they existed before.
 
 .. _docs: https://docs.typo3.org
 
-.. index:: NotScanned
+.. index:: ext:documentation, NotScanned

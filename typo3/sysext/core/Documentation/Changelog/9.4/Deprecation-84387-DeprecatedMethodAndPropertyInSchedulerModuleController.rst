@@ -35,4 +35,4 @@ Instead of calling the method :php:`SchedulerModuleController::addMessage()`, in
 you can now extend :php:`TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider` which provides a method :php:`addMessage()`
 with the same API like before.
 
-.. index:: FullyScanned, Backend, PHP-API
+.. index:: Backend, PHP-API, FullyScanned
