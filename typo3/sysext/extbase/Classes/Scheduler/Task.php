@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Scheduler;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Cli\CommandManager;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -74,9 +75,12 @@ class Task extends AbstractTask
     public function __sleep()
     {
         $properties = get_object_vars($this);
-        unset($properties['commandManager']);
-        unset($properties['objectManager']);
-        unset($properties['taskExecutor']);
+        unset(
+            $properties['commandManager'],
+            $properties['objectManager'],
+            $properties['taskExecutor'],
+            $properties['logger']
+        );
         return array_keys($properties);
     }
 
@@ -85,6 +89,7 @@ class Task extends AbstractTask
      */
     public function __wakeup()
     {
+        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $this->commandManager = $this->objectManager->get(CommandManager::class);
         $this->taskExecutor = $this->objectManager->get(TaskExecutor::class);
