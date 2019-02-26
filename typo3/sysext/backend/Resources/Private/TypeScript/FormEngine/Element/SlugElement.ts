@@ -65,6 +65,7 @@ class SlugElement {
   private $readOnlyField: JQuery = null;
   private $inputField: JQuery = null;
   private $hiddenField: JQuery = null;
+  private xhr: JQueryXHR = null;
   private readonly fieldsToListenOn: { [key: string]: string } = {};
 
   constructor(selector: string, options: FieldOptions) {
@@ -148,7 +149,10 @@ class SlugElement {
     } else {
       input.manual = this.$inputField.val();
     }
-    $.post(
+    if (this.xhr !== null && this.xhr.readyState !== 4) {
+      this.xhr.abort();
+    }
+    this.xhr = $.post(
       TYPO3.settings.ajaxUrls.record_slug_suggest,
       {
         values: input,
