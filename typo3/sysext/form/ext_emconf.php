@@ -16,6 +16,9 @@ $EM_CONF[$_EXTKEY] = [
             'typo3' => '9.5.6',
         ],
         'conflicts' => [],
-        'suggests' => [],
+        'suggests' => [
+            'filelist' => '9.5.6',
+            'impexp' => '9.5.6',
+        ],
     ],
 ];
