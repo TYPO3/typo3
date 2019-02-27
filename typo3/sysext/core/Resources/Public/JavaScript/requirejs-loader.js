@@ -115,7 +115,7 @@
    * @param {Object} url the URL to the module.
    */
   req.load = function(context, name, url) {
-    if (inPath(context.config, name)) {
+    if (inPath(context.config, name) || url.charAt(0) === '/') {
       return originalLoad.call(req, context, name, url);
     }
 

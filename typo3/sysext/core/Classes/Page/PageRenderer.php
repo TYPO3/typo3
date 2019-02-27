@@ -1456,11 +1456,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
         if (!empty($requireJsConfig['typo3BaseUrl'])) {
             $html .= '<script src="'
-                . $this->processJsFile($this->getAbsoluteWebPath(
-                    GeneralUtility::getFileAbsFileName(
-                        'EXT:core/Resources/Public/JavaScript/requirejs-loader.js'
-                    )
-                ))
+                . $this->processJsFile(
+                    'EXT:core/Resources/Public/JavaScript/requirejs-loader.js'
+                )
                 . '" type="text/javascript"></script>' . LF;
         }
 
