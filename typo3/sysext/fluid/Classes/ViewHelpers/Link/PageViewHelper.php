@@ -114,6 +114,7 @@ class PageViewHelper extends AbstractTagBasedViewHelper
         if ((string)$uri !== '') {
             $this->tag->addAttribute('href', $uri);
             $this->tag->setContent($this->renderChildren());
+            $this->tag->forceClosingTag(true);
             $result = $this->tag->render();
         } else {
             $result = $this->renderChildren();
