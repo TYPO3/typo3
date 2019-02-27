@@ -1454,7 +1454,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $requireJsConfig = $cache->get($cacheIdentifier);
 
         // if we did not get a configuration from the cache, compute and store it in the cache
-        if (!isset($requireJsConfig['internal']) || !isset($requireJsConfig['public']) || true) {
+        if (!isset($requireJsConfig['internal']) || !isset($requireJsConfig['public'])) {
             $requireJsConfig = $this->computeRequireJsConfig($isDevelopment, $loadedExtensions);
             $cache->set($cacheIdentifier, $requireJsConfig);
         }
