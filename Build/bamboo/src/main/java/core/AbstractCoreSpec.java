@@ -1317,11 +1317,11 @@ abstract public class AbstractCoreSpec {
                     this.getTaskStopDanglingContainers(),
                     composerTask,
                     new ScriptTask()
-                        .description("Run phpunit-randomizer")
+                        .description("Run phpunit random order")
                         .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                         .inlineBody(
                             this.getScriptTaskBashInlineBody() +
-                            "function phpunitRandomizer() {\n" +
+                            "function phpunit() {\n" +
                             "    docker run \\\n" +
                             "        -u ${HOST_UID} \\\n" +
                             "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
@@ -1330,10 +1330,10 @@ abstract public class AbstractCoreSpec {
                             "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
                             "        --rm \\\n" +
                             "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
-                            "        bin/bash -c \"cd ${PWD}; php -n -c /etc/php/cli-no-xdebug/php.ini bin/phpunit-randomizer $*\"\n" +
+                            "        bin/bash -c \"cd ${PWD}; php -n -c /etc/php/cli-no-xdebug/php.ini bin/phpunit $*\"\n" +
                             "}\n" +
                             "\n" +
-                            "phpunitRandomizer --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "UnitTests.xml --order rand"
+                            "phpunit --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "UnitTests.xml --order-by=random"
                         )
                 )
                 .finalTasks(
