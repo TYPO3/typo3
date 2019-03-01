@@ -163,8 +163,8 @@ public class NightlySpec extends AbstractCoreSpec {
         jobsComposerMaxStage.add(this.getJobUnitDeprecatedPhp(1, "PHP73", this.getTaskComposerUpdateMax("PHP73")));
 
         // Disabled for now since young phpunit with built-in randomizer collides with this one. Needs investigation.
-        //jobsComposerMaxStage.addAll(this.getJobUnitPhpRandom(1, this.numberOfUnitRandomOrderJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
-        //jobsComposerMaxStage.addAll(this.getJobUnitPhpRandom(1, this.numberOfUnitRandomOrderJobs, "PHP73", this.getTaskComposerUpdateMax("PHP73")));
+        jobsComposerMaxStage.addAll(this.getJobUnitPhpRandom(1, this.numberOfUnitRandomOrderJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72")));
+        jobsComposerMaxStage.addAll(this.getJobUnitPhpRandom(1, this.numberOfUnitRandomOrderJobs, "PHP73", this.getTaskComposerUpdateMax("PHP73")));
 
         Stage stageComposerMaxStage = new Stage("Composer update max")
             .jobs(jobsComposerMaxStage.toArray(new Job[jobsComposerMaxStage.size()]));

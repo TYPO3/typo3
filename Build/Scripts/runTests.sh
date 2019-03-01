@@ -174,7 +174,7 @@ PHP_XDEBUG_ON=0
 PHP_XDEBUG_PORT=9000
 EXTRA_TEST_OPTIONS=""
 SCRIPT_VERBOSE=0
-PHPUNIT_RANDOM="--order rand"
+PHPUNIT_RANDOM=""
 CGLCHECK_DRY_RUN=""
 
 # Option parsing
@@ -204,7 +204,7 @@ while getopts ":s:d:p:e:xy:o:nhuv" OPT; do
             PHP_XDEBUG_PORT=${OPTARG}
             ;;
         o)
-            PHPUNIT_RANDOM="--order :${OPTARG}"
+            PHPUNIT_RANDOM="--random-order-seed=${OPTARG}"
             ;;
         n)
             CGLCHECK_DRY_RUN="-n"
