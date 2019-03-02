@@ -684,7 +684,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                 continue;
             }
 
-            $value = trim($value, ' \'"');
+            $value = trim($value, " '\"\r");
             $metaData[$key] = $value;
         }
 
