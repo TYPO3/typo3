@@ -6,6 +6,10 @@
             <url>
                 <loc>{item.loc}</loc>
                 <lastmod>{item.lastMod -> f:format.date(format: 'c')}</lastmod>
+                <f:if condition="{item.changefreq}">
+                    <changefreq>{item.changefreq}</changefreq>
+                </f:if>
+                <priority>{item.priority}</priority>
             </url>
         </f:if>
     </f:for>

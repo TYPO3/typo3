@@ -66,7 +66,9 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
 
                 $this->items[] = [
                     'uid' => $page['uid'],
-                    'lastMod' => (int)$lastMod
+                    'lastMod' => (int)$lastMod,
+                    'changefreq' => $page['sitemap_changefreq'],
+                    'priority' => (float)$page['sitemap_priority'],
                 ];
             }
         }

@@ -61,6 +61,39 @@
 			<trans-unit id="pages.tabs.socialmedia">
 				<source>Social media</source>
 			</trans-unit>
+			<trans-unit id="pages.palettes.sitemap">
+				<source>Sitemap</source>
+			</trans-unit>
+			<trans-unit id="pages.sitemap_changefreq">
+				<source>Change frequency</source>
+			</trans-unit>
+			<trans-unit id="pages.sitemap_changefreq.none">
+				<source>None</source>
+			</trans-unit>
+			<trans-unit id="pages.sitemap_changefreq.always">
+				<source>Always</source>
+			</trans-unit>
+			<trans-unit id="pages.sitemap_changefreq.hourly">
+				<source>Hourly</source>
+			</trans-unit>
+			<trans-unit id="pages.sitemap_changefreq.daily">
+				<source>Daily</source>
+			</trans-unit>
+			<trans-unit id="pages.sitemap_changefreq.weekly">
+				<source>Weekly</source>
+			</trans-unit>
+			<trans-unit id="pages.sitemap_changefreq.monthly">
+				<source>Monthly</source>
+			</trans-unit>
+			<trans-unit id="pages.sitemap_changefreq.yearly">
+				<source>Yearly</source>
+			</trans-unit>
+			<trans-unit id="pages.sitemap_changefreq.never">
+				<source>Never</source>
+			</trans-unit>
+			<trans-unit id="pages.sitemap_priority">
+				<source>Priority</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

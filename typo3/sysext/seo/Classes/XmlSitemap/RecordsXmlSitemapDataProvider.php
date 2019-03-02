@@ -58,6 +58,9 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         $lastModifiedField = $this->config['lastModifiedField'] ?? 'tstamp';
         $sortField = $this->config['sortField'] ?? 'sorting';
 
+        $changeFreqField = $this->config['changeFreqField'] ?? '';
+        $priorityField = $this->config['priorityField'] ?? '';
+
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->config['table']);
 
@@ -97,10 +100,15 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
             ->fetchAll();
 
         foreach ($rows as $row) {
-            $this->items[] = [
+            $item = [
                 'data' => $row,
                 'lastMod' => (int)$row[$lastModifiedField]
             ];
+            if (!empty($changeFreqField)) {
+                $item['changefreq'] = $row[$changeFreqField];
+            }
+            $item['priority'] = !empty($priorityField) ? $row[$priorityField] : 0.5;
+            $this->items[] = $item;
         }
     }
 

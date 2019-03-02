@@ -98,8 +98,10 @@
                         <table id="sitemap" cellpadding="3" width="100%">
                             <thead>
                                 <tr>
-                                    <th width="80%">URL</th>
+                                    <th width="40%">URL</th>
                                     <th title="Last Modification Time" width="20%">Last Mod.</th>
+                                    <th title="Change frequency" width="20%">Change freq.</th>
+                                    <th title="Priority" width="20%">Priority</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -117,6 +119,12 @@
                                         </td>
                                         <td>
                                             <xsl:value-of select="concat(substring(sitemap:lastmod,0,11),concat(' ', substring(sitemap:lastmod,12,5)),concat(' ', substring(sitemap:lastmod,20,6)))"/>
+                                        </td>
+                                        <td>
+                                            <xsl:value-of select="sitemap:changefreq"/>
+                                        </td>
+                                        <td>
+                                            <xsl:value-of select="sitemap:priority"/>
                                         </td>
                                     </tr>
                                 </xsl:for-each>

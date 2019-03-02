@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+	<tt_content>
+		<uid>1</uid>
+		<pid>22</pid>
+		<tstamp>1553439588</tstamp>
+		<crdate>1553439588</crdate>
+		<deleted>0</deleted>
+		<hidden>0</hidden>
+		<starttime>0</starttime>
+		<endtime>0</endtime>
+		<sorting>256</sorting>
+		<header>Content example</header>
+		<rowDescription>hourly</rowDescription>
+		<bodytext>0.7</bodytext>
+	</tt_content>
+</data>

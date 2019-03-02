@@ -46,6 +46,10 @@ $tca = [
             'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.palettes.canonical',
             'showitem' => 'canonical_link',
         ],
+        'sitemap' => [
+            'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.palettes.sitemap',
+            'showitem' => 'sitemap_changefreq, sitemap_priority',
+        ],
         'opengraph' => [
             'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.palettes.opengraph',
             'showitem' => 'og_title, --linebreak--, og_description, --linebreak--, og_image',
@@ -98,6 +102,45 @@ $tca = [
                         'invertStateDisplay' => true
                     ]
                 ]
+            ]
+        ],
+        'sitemap_changefreq' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    ['LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.none', ''],
+                    ['LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.always', 'always'],
+                    ['LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.hourly', 'hourly'],
+                    ['LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.daily', 'daily'],
+                    ['LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.weekly', 'weekly'],
+                    ['LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.monthly', 'monthly'],
+                    ['LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.yearly', 'yearly'],
+                    ['LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.never', 'never'],
+                ],
+            ]
+        ],
+        'sitemap_priority' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_priority',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    ['0.0', '0.0'],
+                    ['0.1', '0.1'],
+                    ['0.2', '0.2'],
+                    ['0.3', '0.3'],
+                    ['0.4', '0.4'],
+                    ['0.5', '0.5'],
+                    ['0.6', '0.6'],
+                    ['0.7', '0.7'],
+                    ['0.8', '0.8'],
+                    ['0.9', '0.9'],
+                    ['1.0', '1.0'],
+                ],
             ]
         ],
         'canonical_link' => [
@@ -237,6 +280,7 @@ $GLOBALS['TCA']['pages'] = array_replace_recursive($GLOBALS['TCA']['pages'], $tc
         --palette--;;seo,
         --palette--;;robots,
         --palette--;;canonical,
+        --palette--;;sitemap,
     --div--;LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.tabs.socialmedia,
         --palette--;;opengraph,
         --palette--;;twittercards',
