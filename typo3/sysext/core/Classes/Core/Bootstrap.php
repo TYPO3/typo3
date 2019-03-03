@@ -810,7 +810,7 @@ class Bootstrap
             $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['password'] ?? ''
         );
         $databaseConnection->setConnectionCharset(
-            $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['charset'] ?? ''
+            $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['charset'] ?? 'utf8'
         );
 
         $databaseHost = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['host'] ?? '';
