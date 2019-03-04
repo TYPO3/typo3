@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c03d7fefb4e3d18718685e0eb061416f",
+    "content-hash": "70ccde06a73939f7721da2ee6da511be",
     "packages": [
         {
             "name": "algo26-matthias/idna-convert",
@@ -2387,19 +2387,21 @@
         },
         {
             "name": "typo3/phar-stream-wrapper",
-            "version": "v3.0.1",
+            "version": "v3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/phar-stream-wrapper.git",
-                "reference": "b3cbcfd2e4de5943bf05ec975d42d0e8d85c0009"
+                "reference": "19edc4e0ca5174764e3c946431b8b00326304944"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/phar-stream-wrapper/zipball/b3cbcfd2e4de5943bf05ec975d42d0e8d85c0009",
-                "reference": "b3cbcfd2e4de5943bf05ec975d42d0e8d85c0009",
+                "url": "https://api.github.com/repos/TYPO3/phar-stream-wrapper/zipball/19edc4e0ca5174764e3c946431b8b00326304944",
+                "reference": "19edc4e0ca5174764e3c946431b8b00326304944",
                 "shasum": ""
             },
             "require": {
+                "ext-fileinfo": "*",
+                "ext-json": "*",
                 "php": "^7.0"
             },
             "require-dev": {
@@ -2423,7 +2425,7 @@
                 "security",
                 "stream-wrapper"
             ],
-            "time": "2018-10-18T08:50:44+00:00"
+            "time": "2019-03-01T23:18:27+00:00"
         },
         {
             "name": "typo3fluid/fluid",
