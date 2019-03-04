@@ -100,7 +100,7 @@ class ContextMenu {
       const $me = $(e.currentTarget);
       // if there is an other "inline" onclick setting, context menu is not triggered
       // usually this is the case for the foldertree
-      if ($(e.currentTarget).prop('onclick') && event.type === 'click') {
+      if ($me.prop('onclick') && e.type === 'click') {
         return;
       }
 
