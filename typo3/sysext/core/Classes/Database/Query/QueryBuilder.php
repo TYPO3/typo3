@@ -26,6 +26,7 @@ use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
+use TYPO3\CMS\Core\Database\Query\Restriction\LimitToTablesRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -109,6 +110,16 @@ class QueryBuilder
             }
         }
         $this->restrictionContainer = $restrictionContainer;
+    }
+
+    /**
+     * Limits ALL currently active restrictions of the restriction container to the table aliases given
+     *
+     * @param array $tableAliases
+     */
+    public function limitRestrictionsToTables(array $tableAliases): void
+    {
+        $this->restrictionContainer = GeneralUtility::makeInstance(LimitToTablesRestrictionContainer::class)->addForTables($this->restrictionContainer, $tableAliases);
     }
 
     /**

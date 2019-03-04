@@ -1446,4 +1446,105 @@ class QueryBuilderTest extends UnitTestCase
         $this->connection->quoteIdentifier('aField')->shouldHaveBeenCalled();
         self::assertSame($expectation, $result);
     }
+
+    /**
+     * @test
+     */
+    public function limitRestrictionsToTablesLimitsRestrictionsInTheContainerToTheGivenTables(): void
+    {
+        $GLOBALS['TCA']['tt_content']['ctrl'] = $GLOBALS['TCA']['pages']['ctrl'] = [
+            'delete' => 'deleted',
+            'enablecolumns' => [
+                'disabled' => 'hidden',
+            ],
+        ];
+
+        $this->connection->quoteIdentifier(Argument::cetera())
+            ->willReturnArgument(0);
+        $this->connection->quoteIdentifiers(Argument::cetera())
+            ->willReturnArgument(0);
+
+        $connectionBuilder = GeneralUtility::makeInstance(
+            \Doctrine\DBAL\Query\QueryBuilder::class,
+            $this->connection->reveal()
+        );
+
+        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection->reveal());
+        $this->connection->getExpressionBuilder()->willReturn($expressionBuilder);
+
+        $subject = new QueryBuilder(
+            $this->connection->reveal(),
+            null,
+            $connectionBuilder
+        );
+        $subject->limitRestrictionsToTables(['pages']);
+
+        $subject->select('*')
+            ->from('pages')
+            ->leftJoin(
+                'pages',
+                'tt_content',
+                'content',
+                'pages.uid = content.pid'
+            )
+            ->where($expressionBuilder->eq('uid', 1));
+
+        $this->connection->executeQuery(
+            'SELECT * FROM pages LEFT JOIN tt_content content ON pages.uid = content.pid WHERE (uid = 1) AND ((pages.deleted = 0) AND (pages.hidden = 0))',
+            Argument::cetera()
+        )->shouldBeCalled();
+
+        $subject->execute();
+    }
+
+    /**
+     * @test
+     */
+    public function restrictionsCanStillBeRemovedAfterTheyHaveBeenLimitedToTables(): void
+    {
+        $GLOBALS['TCA']['tt_content']['ctrl'] = $GLOBALS['TCA']['pages']['ctrl'] = [
+            'delete' => 'deleted',
+            'enablecolumns' => [
+                'disabled' => 'hidden',
+            ],
+        ];
+
+        $this->connection->quoteIdentifier(Argument::cetera())
+            ->willReturnArgument(0);
+        $this->connection->quoteIdentifiers(Argument::cetera())
+            ->willReturnArgument(0);
+
+        $connectionBuilder = GeneralUtility::makeInstance(
+            \Doctrine\DBAL\Query\QueryBuilder::class,
+            $this->connection->reveal()
+        );
+
+        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection->reveal());
+        $this->connection->getExpressionBuilder()->willReturn($expressionBuilder);
+
+        $subject = new QueryBuilder(
+            $this->connection->reveal(),
+            null,
+            $connectionBuilder
+        );
+        $subject->limitRestrictionsToTables(['pages']);
+        $subject->getRestrictions()->removeByType(DeletedRestriction::class);
+
+        $subject->select('*')
+            ->from('pages')
+            ->leftJoin(
+                'pages',
+                'tt_content',
+                'content',
+                'pages.uid = content.pid'
+            )
+            ->where($expressionBuilder->eq('uid', 1));
+
+        $this->connection->executeQuery(
+            'SELECT * FROM pages LEFT JOIN tt_content content ON pages.uid = content.pid WHERE (uid = 1) AND (pages.hidden = 0)',
+            Argument::cetera()
+        )->shouldBeCalled();
+
+        $subject->execute();
+    }
 }
