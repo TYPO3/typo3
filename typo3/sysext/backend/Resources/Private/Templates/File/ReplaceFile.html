@@ -18,9 +18,11 @@
     </div>
 
     <script>
+      require(['jquery'], function($) {
         $('#file_replace').change(function() {
-            $('#fakefile').val($(this).val());
+          $('#fakefile').val($(this).val());
         });
+      });
     </script>
 
     <input type="hidden" name="overwriteExistingFiles" value="replace" />
