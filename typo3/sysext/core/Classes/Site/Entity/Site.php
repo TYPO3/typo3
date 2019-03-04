@@ -96,15 +96,14 @@ class Site implements SiteInterface
             ]
         ];
         $baseUrl = $configuration['base'] ?? '';
-        if (isset($configuration['baseVariants']) && is_array($configuration['baseVariants'])) {
+        if (is_array($configuration['baseVariants'] ?? false)) {
             $expressionLanguageResolver = GeneralUtility::makeInstance(
                 Resolver::class,
                 'site',
                 []
             );
             foreach ($configuration['baseVariants'] as $baseVariant) {
-                $result = $expressionLanguageResolver->evaluate($baseVariant['condition']);
-                if ($result) {
+                if ($expressionLanguageResolver->evaluate($baseVariant['condition'])) {
                     $baseUrl = $baseVariant['base'];
                     break;
                 }
@@ -116,7 +115,21 @@ class Site implements SiteInterface
             $languageUid = (int)$languageConfiguration['languageId'];
             // site language has defined its own base, this is the case most of the time.
             if (!empty($languageConfiguration['base'])) {
-                $base = new Uri($this->sanitizeBaseUrl($languageConfiguration['base']));
+                $base = $languageConfiguration['base'];
+                if (is_array($languageConfiguration['baseVariants'] ?? false)) {
+                    $expressionLanguageResolver = $expressionLanguageResolver ?? GeneralUtility::makeInstance(
+                        Resolver::class,
+                        'site',
+                        []
+                    );
+                    foreach ($languageConfiguration['baseVariants'] as $baseVariant) {
+                        if ($expressionLanguageResolver->evaluate($baseVariant['condition'])) {
+                            $base = $baseVariant['base'];
+                            break;
+                        }
+                    }
+                }
+                $base = new Uri($this->sanitizeBaseUrl($base));
                 // no host given by the language-specific base, so lets prefix the main site base
                 if ($base->getScheme() === null && $base->getHost() === '') {
                     $base = rtrim((string)$this->base, '/') . '/' . ltrim((string)$base, '/');
