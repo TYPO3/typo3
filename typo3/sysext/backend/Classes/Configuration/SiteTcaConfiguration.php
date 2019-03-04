@@ -45,26 +45,35 @@ class SiteTcaConfiguration
         $GLOBALS['SiteConfiguration'] = [];
         $activePackages = GeneralUtility::makeInstance(PackageManager::class)->getActivePackages();
         // First load "full table" files from Configuration/SiteConfiguration
-        $finder = new Finder();
+        $finder = (new Finder())->files()->depth(0)->name('*.php');
+        $hasDirectoryEntries = false;
         foreach ($activePackages as $package) {
             try {
-                $finder->files()->depth(0)->name('*.php')->in($package->getPackagePath() . 'Configuration/SiteConfiguration');
+                $finder->in($package->getPackagePath() . 'Configuration/SiteConfiguration');
             } catch (\InvalidArgumentException $e) {
                 // No such directory in this package
                 continue;
             }
+            $hasDirectoryEntries = true;
+        }
+        if ($hasDirectoryEntries) {
             foreach ($finder as $fileInfo) {
                 $GLOBALS['SiteConfiguration'][substr($fileInfo->getBasename(), 0, -4)] = require $fileInfo->getPathname();
             }
         }
         // Execute override files from Configuration/SiteConfiguration/Overrides
+        $finder = (new Finder())->files()->depth(0)->name('*.php');
+        $hasDirectoryEntries = false;
         foreach ($activePackages as $package) {
             try {
-                $finder->files()->depth(0)->name('*.php')->in($package->getPackagePath() . 'Configuration/SiteConfiguration/Overrides');
+                $finder->in($package->getPackagePath() . 'Configuration/SiteConfiguration/Overrides');
             } catch (\InvalidArgumentException $e) {
                 // No such directory in this package
                 continue;
             }
+            $hasDirectoryEntries = true;
+        }
+        if ($hasDirectoryEntries) {
             foreach ($finder as $fileInfo) {
                 require $fileInfo->getPathname();
             }
