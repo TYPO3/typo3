@@ -263,16 +263,9 @@ class ClassSchema
             $isInjectProperty = $propertyName !== 'settings'
                 && ($annotationReader->getPropertyAnnotation($reflectionProperty, Inject::class) instanceof Inject);
 
-            $isPossibleCollectionProperty = $annotationReader->getPropertyAnnotation($reflectionProperty, Transient::class) === null
-                && $this->isModel();
-
-            $types = [];
-            $typesCount = 0;
-            if ($isInjectProperty || $isPossibleCollectionProperty) {
-                /** @var Type[] $types */
-                $types = (array)self::$propertyInfoExtractor->getTypes($this->className, $propertyName);
-                $typesCount = count($types);
-            }
+            /** @var Type[] $types */
+            $types = (array)self::$propertyInfoExtractor->getTypes($this->className, $propertyName);
+            $typesCount = count($types);
 
             if ($typesCount > 0
                 && ($annotation = $annotationReader->getPropertyAnnotation($reflectionProperty, Cascade::class)) instanceof Cascade
@@ -289,21 +282,19 @@ class ClassSchema
                 $this->injectProperties[] = $propertyName;
             }
 
-            if ($isPossibleCollectionProperty) {
-                if ($typesCount === 1) {
-                    $this->properties[$propertyName]['type'] = $types[0]->getClassName() ?? $types[0]->getBuiltinType();
-                } elseif ($typesCount === 2) {
-                    [$type, $elementType] = $types;
-                    $actualType = $type->getClassName() ?? $type->getBuiltinType();
+            if ($typesCount === 1) {
+                $this->properties[$propertyName]['type'] = $types[0]->getClassName() ?? $types[0]->getBuiltinType();
+            } elseif ($typesCount === 2) {
+                [$type, $elementType] = $types;
+                $actualType = $type->getClassName() ?? $type->getBuiltinType();
 
-                    if (TypeHandlingUtility::isCollectionType($actualType)
-                        && $elementType->getBuiltinType() === 'array'
-                        && $elementType->getCollectionValueType() instanceof Type
-                        && $elementType->getCollectionValueType()->getClassName() !== null
-                    ) {
-                        $this->properties[$propertyName]['type'] = ltrim($actualType, '\\');
-                        $this->properties[$propertyName]['elementType'] = ltrim($elementType->getCollectionValueType()->getClassName(), '\\');
-                    }
+                if (TypeHandlingUtility::isCollectionType($actualType)
+                    && $elementType->getBuiltinType() === 'array'
+                    && $elementType->getCollectionValueType() instanceof Type
+                    && $elementType->getCollectionValueType()->getClassName() !== null
+                ) {
+                    $this->properties[$propertyName]['type'] = ltrim($actualType, '\\');
+                    $this->properties[$propertyName]['elementType'] = ltrim($elementType->getCollectionValueType()->getClassName(), '\\');
                 }
             }
         }
