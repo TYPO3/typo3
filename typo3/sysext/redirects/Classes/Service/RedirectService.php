@@ -79,8 +79,11 @@ class RedirectService implements LoggerAwareInterface
             if (!empty($allRedirects[$domainName]['regexp'])) {
                 $allRegexps = array_keys($allRedirects[$domainName]['regexp']);
                 foreach ($allRegexps as $regexp) {
-                    if (preg_match($regexp, $path)) {
+                    $matchResult = @preg_match($regexp, $path);
+                    if ($matchResult) {
                         $possibleRedirects += $allRedirects[$domainName]['regexp'][$regexp];
+                    } elseif ($matchResult === false) {
+                        $this->logger->warning('Invalid regex in redirect', ['regex' => $regexp]);
                     }
                 }
             }

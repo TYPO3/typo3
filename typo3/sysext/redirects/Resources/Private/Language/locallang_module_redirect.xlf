@@ -65,7 +65,7 @@
 				<source>Source Path</source>
 			</trans-unit>
 			<trans-unit id="source_path.placeholder">
-				<source>/my-path/</source>
+				<source>/my-path/ or #^/my-path/$# (when regex enabled)</source>
 			</trans-unit>
 			<trans-unit id="destination">
 				<source>Destination</source>
