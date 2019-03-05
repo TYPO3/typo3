@@ -73,6 +73,6 @@ class FluidPageErrorHandler implements PageErrorHandlerInterface
             'message' => $message,
             'reasons' => $reasons
         ]);
-        return new HtmlResponse($this->view->render());
+        return new HtmlResponse($this->view->render(), $this->statusCode);
     }
 }
