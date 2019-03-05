@@ -50,8 +50,7 @@ class ErrorController
         }
         $errorHandler = $this->getErrorHandlerFromSite($request, 500);
         if ($errorHandler instanceof PageErrorHandlerInterface) {
-            $response = $errorHandler->handlePageError($request, $message, $reasons);
-            return $response->withStatus(500, $message);
+            return $errorHandler->handlePageError($request, $message, $reasons);
         }
         return $this->handlePageError(
             $GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling'],
@@ -75,8 +74,7 @@ class ErrorController
     {
         $errorHandler = $this->getErrorHandlerFromSite($request, 404);
         if ($errorHandler instanceof PageErrorHandlerInterface) {
-            $response = $errorHandler->handlePageError($request, $message, $reasons);
-            return $response->withStatus(404, $message);
+            return $errorHandler->handlePageError($request, $message, $reasons);
         }
         if (!$GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling']) {
             throw new PageNotFoundException($message, 1518472189);
@@ -102,8 +100,7 @@ class ErrorController
     {
         $errorHandler = $this->getErrorHandlerFromSite($request, 403);
         if ($errorHandler instanceof PageErrorHandlerInterface) {
-            $response = $errorHandler->handlePageError($request, $message, $reasons);
-            return $response->withStatus(403, $message);
+            return $errorHandler->handlePageError($request, $message, $reasons);
         }
         return $this->handlePageError(
             $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling'],
