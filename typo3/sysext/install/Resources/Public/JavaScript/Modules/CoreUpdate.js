@@ -87,7 +87,9 @@ define([
 
       currentModal.on('click', '.t3js-coreUpdate-init', function(e) {
         e.preventDefault();
-        var action = $(e.target).data('action');
+        // Don't use jQuery's data() function, as the DOM is re-rendered and any set data attribute gets lost.
+        // See showActionButton()
+        var action = $(e.target).attr('data-action');
         currentModal.find(self.selectorOutput).empty();
         self[action]();
       });
@@ -250,7 +252,7 @@ define([
       }
       var domButton = this.buttonTemplate;
       if (action) {
-        domButton.data('action', action);
+        domButton.attr('data-action', action);
       }
       if (title) {
         domButton.text(title);
