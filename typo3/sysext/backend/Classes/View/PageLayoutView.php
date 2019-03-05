@@ -859,6 +859,7 @@ class PageLayoutView implements LoggerAwareInterface
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/DragDrop');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/Paste');
+        $pageActionsCallback = '';
         if ($this->isPageEditable()) {
             $languageOverlayId = 0;
             $pageLocalizationRecord = BackendUtility::getRecordLocalization('pages', $this->id, (int)$this->tt_contentConfig['sys_language_uid']);
@@ -868,11 +869,12 @@ class PageLayoutView implements LoggerAwareInterface
             if (!empty($pageLocalizationRecord['uid'])) {
                 $languageOverlayId = $pageLocalizationRecord['uid'];
             }
-            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', 'function(PageActions) {
+            $pageActionsCallback = 'function(PageActions) {
                 PageActions.setPageId(' . (int)$this->id . ');
                 PageActions.setLanguageOverlayId(' . $languageOverlayId . ');
-            }');
+            }';
         }
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', $pageActionsCallback);
         // Get labels for CTypes and tt_content element fields in general:
         $this->CType_labels = [];
         foreach ($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] as $val) {
