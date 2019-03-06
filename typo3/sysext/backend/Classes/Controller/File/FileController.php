@@ -124,7 +124,9 @@ class FileController
         if ($request->getParsedBody()['edit'] ?? '') {
             /** @var File $file */
             $file = $this->fileData['newfile'][0];
-            $this->redirect = $this->getFileEditRedirect($file) ?? $this->redirect;
+            if ($file !== null) {
+                $this->redirect = $this->getFileEditRedirect($file) ?? $this->redirect;
+            }
         }
         if ($this->redirect) {
             return new RedirectResponse(
