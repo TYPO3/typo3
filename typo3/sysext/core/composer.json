@@ -24,7 +24,7 @@
 		"doctrine/lexer": "^1.0",
 		"guzzlehttp/guzzle": "^6.3.0",
 		"helhum/typo3-composer-setup": "^0.5",
-		"mso/idna-convert": "^1.1.0",
+		"algo26-matthias/idna-convert": "^1.1.0",
 		"psr/http-message": "~1.0",
 		"psr/log": "~1.0.0",
 		"swiftmailer/swiftmailer": "~5.4.5",
