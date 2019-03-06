@@ -3976,17 +3976,32 @@ class GeneralUtilityTest extends UnitTestCase
             'Nul character in file with .php' => ['image.php' . "\0", '.gif'],
             'Nul character and UTF-8 in file' => ['Ссылка' . "\0", '.gif'],
             'Nul character and Latin-1 in file' => ['ÉÐØ' . "\0", '.gif'],
-            'Regular .php file' => ['file' , '.php'],
             'Lower umlaut .php file' => ['üWithFile', '.php'],
             'Upper umlaut .php file' => ['fileWithÜ', '.php'],
             'invalid UTF-8-sequence' => ["\xc0" . 'file', '.php'],
             'Could be overlong NUL in some UTF-8 implementations, invalid in RFC3629' => ["\xc0\x80" . 'file', '.php'],
-            'Regular .php5 file' => ['file', '.php5'],
+            'Regular .php file' => ['file' , '.php'],
             'Regular .php3 file' => ['file', '.php3'],
+            'Regular .php5 file' => ['file', '.php5'],
+            'Regular .php7 file' => ['file', '.php7'],
             'Regular .phpsh file' => ['file', '.phpsh'],
             'Regular .phtml file' => ['file', '.phtml'],
             'Regular .pht file' => ['file', '.pht'],
-            'PHP file in the middle' => ['file', '.php.txt'],
+            'Regular .phar file' => ['file', '.phar'],
+            'Regular .shtml file' => ['file', '.shtml'],
+            'Regular .cgi file' => ['file', '.cgi'],
+            'Regular .pl file' => ['file', '.pl'],
+            'Wrapped .php file ' => ['file', '.php.txt'],
+            'Wrapped .php3 file' => ['file', '.php3.txt'],
+            'Wrapped .php5 file' => ['file', '.php5.txt'],
+            'Wrapped .php7 file' => ['file', '.php7.txt'],
+            'Wrapped .phpsh file' => ['file', '.phpsh.txt'],
+            'Wrapped .phtml file' => ['file', '.phtml.txt'],
+            'Wrapped .pht file' => ['file', '.pht.txt'],
+            'Wrapped .phar file' => ['file', '.phar.txt'],
+            'Wrapped .shtml file' => ['file', '.shtml.txt'],
+            'Wrapped .cgi file' => ['file', '.cgi.txt'],
+            // allowed "Wrapped .pl file" in order to allow language specific files containing ".pl."
             '.htaccess file' => ['', '.htaccess'],
         ];
 
@@ -4039,7 +4054,8 @@ class GeneralUtilityTest extends UnitTestCase
             'UTF-8 .gif file' => ['Ссылка.gif'],
             'Lower umlaut .jpg file' => ['üWithFile.jpg'],
             'Upper umlaut .png file' => ['fileWithÜ.png'],
-            'Latin-1 .gif file' => ['ÉÐØ.gif']
+            'Latin-1 .gif file' => ['ÉÐØ.gif'],
+            'Wrapped .pl file' => ['file.pl.txt'],
         ];
     }
 
