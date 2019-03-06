@@ -118,7 +118,7 @@ class CropVariantCollection
         foreach ($this->cropVariants as $id => $cropVariant) {
             $cropVariantsAsArray[$id] = array_filter($cropVariant->asArray(), $filterNonPersistentKeys, ARRAY_FILTER_USE_KEY);
         }
-        return json_encode($cropVariantsAsArray);
+        return json_encode($cropVariantsAsArray) ?: '[]';
     }
 
     /**

@@ -111,4 +111,13 @@ class CropVariantCollectionTest extends UnitTestCase
     {
         $this->assertTrue(CropVariantCollection::create('')->getCropArea()->isEmpty());
     }
+
+    /**
+     * @test
+     */
+    public function castToStringReturnsJsonArrayOnEmptyInput(): void
+    {
+        $variants = new CropVariantCollection([]);
+        $this->assertSame('[]', (string)$variants);
+    }
 }
