@@ -228,16 +228,18 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     {
         $parentFolderIdentifier = $this->canonicalizeAndCheckFolderIdentifier($parentFolderIdentifier);
         $newFolderName = trim($newFolderName, '/');
-        if ($recursive == false) {
+        if ($recursive === false) {
             $newFolderName = $this->sanitizeFileName($newFolderName);
-            $newIdentifier = $parentFolderIdentifier . $newFolderName . '/';
+            $newIdentifier = $this->canonicalizeAndCheckFolderIdentifier($parentFolderIdentifier . $newFolderName . '/');
             GeneralUtility::mkdir($this->getAbsolutePath($newIdentifier));
         } else {
             $parts = GeneralUtility::trimExplode('/', $newFolderName);
             $parts = array_map([$this, 'sanitizeFileName'], $parts);
             $newFolderName = implode('/', $parts);
-            $newIdentifier = $parentFolderIdentifier . $newFolderName . '/';
-            GeneralUtility::mkdir_deep($this->getAbsolutePath($parentFolderIdentifier) . '/' . $newFolderName);
+            $newIdentifier = $this->canonicalizeAndCheckFolderIdentifier(
+                $parentFolderIdentifier . $newFolderName . '/'
+            );
+            GeneralUtility::mkdir_deep($this->getAbsolutePath($newIdentifier));
         }
         return $newIdentifier;
     }
