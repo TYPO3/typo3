@@ -148,7 +148,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
 
             $connection->insert($tableName, $fieldValues, $types);
         } catch (DBALException $e) {
-            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230766);
+            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230766, $e);
         }
 
         $uid = 0;
@@ -194,7 +194,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
 
             $connection->update($tableName, $fieldValues, ['uid' => $uid], $types);
         } catch (DBALException $e) {
-            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230767);
+            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230767, $e);
         }
 
         if (!$isRelation) {
@@ -240,7 +240,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         try {
             $this->connectionPool->getConnectionForTable($tableName)->update($tableName, $fieldValues, $where);
         } catch (DBALException $e) {
-            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230768);
+            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230768, $e);
         }
 
         // always returns true
@@ -261,7 +261,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         try {
             $this->connectionPool->getConnectionForTable($tableName)->delete($tableName, $where);
         } catch (DBALException $e) {
-            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230769);
+            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230769, $e);
         }
 
         if (!$isRelation && isset($where['uid'])) {
@@ -300,7 +300,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
 
             $result = $queryBuilder->execute()->fetchColumn(0);
         } catch (DBALException $e) {
-            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230770);
+            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230770, $e);
         }
         return $result;
     }
@@ -330,7 +330,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
 
             $row = $queryBuilder->execute()->fetch();
         } catch (DBALException $e) {
-            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230771);
+            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230771, $e);
         }
         return $row ?: false;
     }
@@ -372,7 +372,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             try {
                 $rows = $queryBuilder->execute()->fetchAll();
             } catch (DBALException $e) {
-                throw new SqlErrorException($e->getPrevious()->getMessage(), 1472074485);
+                throw new SqlErrorException($e->getPrevious()->getMessage(), 1472074485, $e);
             }
         }
 
@@ -403,14 +403,14 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             try {
                 $result = $realStatement->execute();
             } catch (DBALException $e) {
-                throw new SqlErrorException($e->getPrevious()->getMessage(), 1472064721);
+                throw new SqlErrorException($e->getPrevious()->getMessage(), 1472064721, $e);
             }
             $rows = $result->fetchAll();
         } elseif ($realStatement instanceof \Doctrine\DBAL\Statement) {
             try {
                 $realStatement->execute($parameters);
             } catch (DBALException $e) {
-                throw new SqlErrorException($e->getPrevious()->getMessage(), 1481281404);
+                throw new SqlErrorException($e->getPrevious()->getMessage(), 1481281404, $e);
             }
             $rows = $realStatement->fetchAll();
         } else {
@@ -421,7 +421,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 $connection = $this->connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
                 $statement = $connection->executeQuery($realStatement, $parameters);
             } catch (DBALException $e) {
-                throw new SqlErrorException($e->getPrevious()->getMessage(), 1472064775);
+                throw new SqlErrorException($e->getPrevious()->getMessage(), 1472064775, $e);
             }
 
             $rows = $statement->fetchAll();
@@ -470,7 +470,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             try {
                 $count = $queryBuilder->execute()->fetchColumn(0);
             } catch (DBALException $e) {
-                throw new SqlErrorException($e->getPrevious()->getMessage(), 1472074379);
+                throw new SqlErrorException($e->getPrevious()->getMessage(), 1472074379, $e);
             }
             if ($query->getOffset()) {
                 $count -= $query->getOffset();
@@ -526,7 +526,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             }
             return false;
         } catch (DBALException $e) {
-            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470231748);
+            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470231748, $e);
         }
     }
 
