@@ -71,11 +71,6 @@ class SiteBaseRedirectResolver implements MiddlewareInterface
                 $uri = $requestedUri->withPath(rtrim($requestedUri->getPath(), '/'));
                 return new RedirectResponse($uri, 307);
             }
-            // Request was "/fr-FR" but the site is actually called "/fr-FR/", let's do a redirect
-            if ($tail === '' && $language->getBase()->getPath() !== $requestedUri->getPath()) {
-                $uri = $requestedUri->withPath($requestedUri->getPath() . '/');
-                return new RedirectResponse($uri, 307);
-            }
         }
         return $handler->handle($request);
     }

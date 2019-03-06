@@ -109,13 +109,6 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
                 null,
                 ''
             ],
-            'redirect to first language adding a slash' => [
-                'https://twenty.one/en',
-                'https://twenty.one/en/',
-                $site1,
-                $site1->getLanguageById(0),
-                ''
-            ],
             'redirect to second language removing a slash' => [
                 'https://twenty.one/fr/',
                 'https://twenty.one/fr',
