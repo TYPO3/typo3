@@ -129,7 +129,6 @@ return [
             ]
         ],
         'width' => [
-            'exclude' => true,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:file.width',
@@ -143,7 +142,6 @@ return [
             ],
         ],
         'height' => [
-            'exclude' => true,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:file.height',
