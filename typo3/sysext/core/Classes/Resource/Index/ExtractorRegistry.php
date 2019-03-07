@@ -98,10 +98,9 @@ class ExtractorRegistry implements SingletonInterface
 
         $filteredExtractors = [];
         foreach ($allExtractors as $priority => $extractorObject) {
-            if (empty($extractorObject->getDriverRestrictions())) {
-                $filteredExtractors[$priority] = $extractorObject;
-            } elseif (in_array($driverType, $extractorObject->getDriverRestrictions())) {
-                $filteredExtractors[$priority] = $extractorObject;
+            if (empty($extractorObject->getDriverRestrictions()) ||
+                in_array($driverType, $extractorObject->getDriverRestrictions(), true)) {
+                $filteredExtractors[$extractorObject->getPriority()][] = $extractorObject;
             }
         }
         return $filteredExtractors;

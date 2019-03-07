@@ -39,8 +39,11 @@ class ExtractorService
         $newMetaData = [];
         // Loop through available extractors and fetch metadata for the given file.
         foreach ($this->getExtractionServices($fileObject->getStorage()->getDriverType()) as $service) {
-            if ($this->isFileTypeSupportedByExtractor($fileObject, $service) && $service->canProcess($fileObject)) {
-                $newMetaData[$service->getPriority()] = $service->extractMetaData($fileObject, $newMetaData);
+            foreach ($service ?? [] as $extractorService) {
+                if ($this->isFileTypeSupportedByExtractor($fileObject, $extractorService) &&
+                    $extractorService->canProcess($fileObject)) {
+                    $newMetaData[$extractorService->getPriority()] = $extractorService->extractMetaData($fileObject, $newMetaData);
+                }
             }
         }
         // Sort metadata by priority so that merging happens in order of precedence.
