@@ -474,6 +474,9 @@
 			<trans-unit id="filelink_sorting.modification_date">
 					<source>by file modification date</source>
 			</trans-unit>
+			<trans-unit id="filelink_sorting.title">
+					<source>by file metadata title</source>
+			</trans-unit>
 			<trans-unit id="filelink_sorting_direction">
 				<source>Sorting direction</source>
 			</trans-unit>
