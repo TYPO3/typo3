@@ -640,11 +640,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             if ($p === 'root') {
                 $rootPage = $this->getTypoScriptFrontendController()->tmpl->rootLine[0];
                 $p = $rootPage['uid'];
-                if ($p['_MOUNT_OL'] && $p['_MP_PARAM']) {
-                    $initMParray[] = $p['_MP_PARAM'];
+                if ($rootPage['_MOUNT_OL'] && $rootPage['_MP_PARAM']) {
+                    $initMParray[] = $rootPage['_MP_PARAM'];
                 }
             }
-            $this->populateMountPointMapForPageRecursively($mountPointMap, $p, $initMParray);
+            $this->populateMountPointMapForPageRecursively($mountPointMap, (int)$p, $initMParray);
         }
         $runtimeCache->set('pageLinkBuilderMountPointMap', $mountPointMap);
         return $mountPointMap;
@@ -708,13 +708,13 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 )->execute();
             while ($row = $queryResult->fetch()) {
                 // Find mount point if any:
-                $next_id = $row['uid'];
+                $next_id = (int)$row['uid'];
                 $next_MP_array = $MP_array;
                 $mount_info = $this->getTypoScriptFrontendController()->sys_page->getMountPointInfo($next_id, $row);
                 // Overlay mode:
                 if (is_array($mount_info) && $mount_info['overlay']) {
                     $next_MP_array[] = $mount_info['MPvar'];
-                    $next_id = $mount_info['mount_pid'];
+                    $next_id = (int)$mount_info['mount_pid'];
                 }
                 if (!isset($mountPointMap[$next_id])) {
                     // Set mapping information for this level:
@@ -722,7 +722,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                     // Normal mode:
                     if (is_array($mount_info) && !$mount_info['overlay']) {
                         $next_MP_array[] = $mount_info['MPvar'];
-                        $next_id = $mount_info['mount_pid'];
+                        $next_id = (int)$mount_info['mount_pid'];
                     }
                     // Register recursive call
                     // (have to do it this way since ALL of the current level should be registered BEFORE the sublevel at any time)
