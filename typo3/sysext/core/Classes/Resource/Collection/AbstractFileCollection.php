@@ -143,7 +143,7 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
     public function getItems()
     {
         $itemArray = [];
-        /** @var File $item */
+        /** @var FileInterface $item */
         foreach ($this->storage as $item) {
             $itemArray[] = $item;
         }
