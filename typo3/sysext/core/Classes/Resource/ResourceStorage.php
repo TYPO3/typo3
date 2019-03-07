@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Resource\Driver\StreamableDriverInterface;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
+use TYPO3\CMS\Core\Resource\Exception\InvalidHashException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidTargetFolderException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
@@ -1275,6 +1276,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param FileInterface $fileObject
      * @param string $hash
+     * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidHashException
      * @return string
      */
     public function hashFile(FileInterface $fileObject, $hash)
@@ -1287,12 +1289,16 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param string $fileIdentifier
      * @param string $hash
-     *
+     * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidHashException
      * @return string
      */
     public function hashFileByIdentifier($fileIdentifier, $hash)
     {
-        return $this->driver->hash($fileIdentifier, $hash);
+        $hash = $this->driver->hash($fileIdentifier, $hash);
+        if (!is_string($hash) || $hash === '') {
+            throw new InvalidHashException('Hash has to be non-empty string.', 1551950301);
+        }
+        return $hash;
     }
 
     /**
