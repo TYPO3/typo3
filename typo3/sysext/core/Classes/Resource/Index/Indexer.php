@@ -14,8 +14,11 @@ namespace TYPO3\CMS\Core\Resource\Index;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
+use TYPO3\CMS\Core\Resource\Exception\InvalidHashException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
@@ -24,10 +27,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * The New FAL Indexer
+ * The FAL Indexer
  */
-class Indexer
+class Indexer implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var array
      */
@@ -244,34 +249,43 @@ class Indexer
     protected function processChangedAndNewFiles()
     {
         foreach ($this->filesToUpdate as $identifier => $data) {
-            if ($data == null) {
-                // search for files with same content hash in indexed storage
-                $fileHash = $this->storage->hashFileByIdentifier($identifier, 'sha1');
-                $files = $this->getFileIndexRepository()->findByContentHash($fileHash);
-                $fileObject = null;
-                if (!empty($files)) {
-                    foreach ($files as $fileIndexEntry) {
-                        // check if file is missing then we assume it's moved/renamed
-                        if (!$this->storage->hasFile($fileIndexEntry['identifier'])) {
-                            $fileObject = $this->getResourceFactory()->getFileObject($fileIndexEntry['uid'], $fileIndexEntry);
-                            $fileObject->updateProperties([
-                                'identifier' => $identifier
-                            ]);
-                            $this->updateIndexEntry($fileObject);
-                            $this->identifiedFileUids[] = $fileObject->getUid();
-                            break;
+            try {
+                if ($data === null) {
+                    // search for files with same content hash in indexed storage
+                    $fileHash = $this->storage->hashFileByIdentifier($identifier, 'sha1');
+                    $files = $this->getFileIndexRepository()->findByContentHash($fileHash);
+                    $fileObject = null;
+                    if (!empty($files)) {
+                        foreach ($files as $fileIndexEntry) {
+                            // check if file is missing then we assume it's moved/renamed
+                            if (!$this->storage->hasFile($fileIndexEntry['identifier'])) {
+                                $fileObject = $this->getResourceFactory()->getFileObject(
+                                    $fileIndexEntry['uid'],
+                                    $fileIndexEntry
+                                );
+                                $fileObject->updateProperties(
+                                    [
+                                        'identifier' => $identifier,
+                                    ]
+                                );
+                                $this->updateIndexEntry($fileObject);
+                                $this->identifiedFileUids[] = $fileObject->getUid();
+                                break;
+                            }
                         }
                     }
+                    // create new index when no missing file with same content hash is found
+                    if ($fileObject === null) {
+                        $fileObject = $this->createIndexEntry($identifier);
+                        $this->identifiedFileUids[] = $fileObject->getUid();
+                    }
+                } else {
+                    // update existing file
+                    $fileObject = $this->getResourceFactory()->getFileObject($data['uid'], $data);
+                    $this->updateIndexEntry($fileObject);
                 }
-                // create new index when no missing file with same content hash is found
-                if ($fileObject === null) {
-                    $fileObject = $this->createIndexEntry($identifier);
-                    $this->identifiedFileUids[] = $fileObject->getUid();
-                }
-            } else {
-                // update existing file
-                $fileObject = $this->getResourceFactory()->getFileObject($data['uid'], $data);
-                $this->updateIndexEntry($fileObject);
+            } catch (InvalidHashException $e) {
+                $this->logger->error('Unable to create hash for file ' . $identifier);
             }
         }
     }
@@ -309,8 +323,9 @@ class Indexer
      *
      * @param string $identifier
      * @return array
+     * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidHashException
      */
-    protected function gatherFileInformationArray($identifier)
+    protected function gatherFileInformationArray($identifier): array
     {
         $fileInfo = $this->storage->getFileInfoByIdentifier($identifier);
         $fileInfo = $this->transformFromDriverFileInfoArrayToFileObjectFormat($fileInfo);
