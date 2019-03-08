@@ -69,6 +69,8 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function createValidator($validatorType, array $validatorOptions = [])
     {
+        // todo: ValidatorResolver should not take care of creating validator instances.
+        // todo: Instead, a factory should be used.
         try {
             /**
              * @todo remove throwing Exceptions in resolveValidatorObjectName
@@ -143,13 +145,17 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
             $objectValidator = $this->objectManager->get(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class, []);
             foreach ($classSchema->getProperties() as $property) {
                 if ($property->getType() === null) {
-                    // todo: maybe we should be more graceful here and simply continue the loop.
-                    // todo: what good does it do to stop the whole execution at this point?
+                    // todo: The type is only necessary here for further analyzations whether it's a simple type or
+                    // todo: a collection. If this is evaluated in the ClassSchema, this whole code part is not needed
+                    // todo: any longer and can be removed.
                     throw new \InvalidArgumentException(sprintf('There is no @var annotation for property "%s" in class "%s".', $property->getName(), $targetClassName), 1363778104);
                 }
 
                 $propertyTargetClassName = $property->getType();
                 // note: the outer simpleType check reduces lookups to the class loader
+
+                // todo: whether the property holds a simple type or not and whether it holds a collection is known in
+                // todo: in the ClassSchema. The information could be made available and not evaluted here again.
                 if (!TypeHandlingUtility::isSimpleType($propertyTargetClassName)) {
                     if (TypeHandlingUtility::isCollectionType($propertyTargetClassName)) {
                         $collectionValidator = $this->createValidator(
@@ -161,6 +167,31 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
                         );
                         $objectValidator->addPropertyValidator($property->getName(), $collectionValidator);
                     } elseif (class_exists($propertyTargetClassName) && !TypeHandlingUtility::isCoreType($propertyTargetClassName) && $this->objectManager->isRegistered($propertyTargetClassName) && $this->objectManager->getScope($propertyTargetClassName) === \TYPO3\CMS\Extbase\Object\Container\Container::SCOPE_PROTOTYPE) {
+                        /*
+                         * class_exists($propertyTargetClassName) checks, if the type of the property is an object
+                         * instead of a simple type. Like DateTime or another model.
+                         *
+                         * !TypeHandlingUtility::isCoreType($propertyTargetClassName) checks if the type of the property
+                         * is not a core type, which are Enums and File objects for example.
+                         * todo: check why these types should not be validated
+                         *
+                         * $this->objectManager->isRegistered($propertyTargetClassName) checks if the type is a class
+                         * which can be loaded.
+                         * todo: this could be dropped as it's the same check as the first one.
+                         *
+                         * $this->objectManager->getScope($propertyTargetClassName) ===
+                         * \TYPO3\CMS\Extbase\Object\Container\Container::SCOPE_PROTOTYPE checks, if the type of the
+                         * property is a prototype, meaning that it's a class which does not implement the
+                         * SingletonInterface
+                         * todo: check why Singletons shouldn't be validated.
+                         */
+
+                        /*
+                         * (Alexander Schnitzler) By looking at this code I assume that this is the path for 1:1
+                         * relations in models. Still, the question remains why it excludes core types and singletons.
+                         * It makes sense on a theoretical level but I don't see a technical issue allowing these as
+                         * well.
+                         */
                         $validatorForProperty = $this->getBaseValidatorConjunction($propertyTargetClassName);
                         if ($validatorForProperty !== null && $validatorForProperty->count() > 0) {
                             $objectValidator->addPropertyValidator($property->getName(), $validatorForProperty);
@@ -207,7 +238,12 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function addCustomValidators($targetClassName, ConjunctionValidator &$conjunctionValidator)
     {
-        // @todo: get rid of ClassNamingUtility usage once we dropped underscored class name support
+        // todo: this method should be renamed to addDomainValidator as this method neither adds custom validators,
+        // todo: nor does it add multiple validators. If there is a Validator that fits the class naming scheme
+        // todo: defined in ClassNamingUtility::translateModelNameToValidatorName, a single validator is added.
+
+        // todo: magically adding validators based on a directory structure is questionable. It should be discussed
+        // todo: if this functionality should be removed (breaking) in TYPO3 10.0.
         $possibleValidatorClassName = ClassNamingUtility::translateModelNameToValidatorName($targetClassName);
 
         $customValidator = $this->createValidator($possibleValidatorClassName);
@@ -230,6 +266,8 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function resolveValidatorObjectName($validatorName)
     {
+        // todo: this functionality should be extracted into a separate class. It should be a final class with
+        // todo: static public functions, completely covered by unit tests.
         if (strpos($validatorName, ':') !== false) {
             // Found shorthand validator, either extbase or foreign extension
             // NotEmpty or Acme.MyPck.Ext:MyValidator

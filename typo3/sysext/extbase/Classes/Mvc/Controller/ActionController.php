@@ -238,10 +238,19 @@ class ActionController extends AbstractController
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
         foreach ($this->arguments as $argument) {
             $classSchemaMethodParameter = $classSchemaMethod->getParameter($argument->getName());
+            /*
+             * At this point validation is skipped if there is an IgnoreValidation annotation.
+             *
+             * todo: IgnoreValidation annotations could be evaluated in the ClassSchema and result in
+             * todo: no validators being applied to the method parameter.
+             */
             if ($classSchemaMethodParameter->ignoreValidation()) {
                 continue;
             }
 
+            // todo: It's quite odd that an instance of ConjunctionValidator is created directly here.
+            // todo: \TYPO3\CMS\Extbase\Validation\ValidatorResolver::getBaseValidatorConjunction could/should be used
+            // todo: here, to benefit of the built in 1st level cache of the ValidatorResolver.
             $validator = $this->objectManager->get(ConjunctionValidator::class);
 
             foreach ($classSchemaMethodParameter->getValidators() as $validatorDefinition) {
@@ -256,6 +265,12 @@ class ActionController extends AbstractController
                 );
             }
 
+            /*
+             * At this point, a validator based on the argument's type is added. If the argument is of type float,
+             * an instance of \TYPO3\CMS\Extbase\Validation\Validator\FloatValidator is applied.
+             *
+             * todo: this should be removed (breaking) in TYPO3 10.0. as the use of validators should be verbose
+             */
             $baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
             if ($baseValidatorConjunction->count() > 0) {
                 $validator->addValidator($baseValidatorConjunction);
