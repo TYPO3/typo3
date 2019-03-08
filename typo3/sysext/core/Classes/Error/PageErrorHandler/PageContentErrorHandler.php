@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -107,10 +108,14 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
         if (!$site instanceof Site) {
             $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$urlParams['pageuid']);
         }
+        $language = $request->getAttribute('language', null);
+        if (!$language instanceof SiteLanguage || !$language->isEnabled()) {
+            $language = $site->getDefaultLanguage();
+        }
         // Build Url
         return (string)$site->getRouter()->generateUri(
             (int)$urlParams['pageuid'],
-            ['_language' => $request->getAttribute('language', null)]
+            ['_language' => $language]
         );
     }
 }
