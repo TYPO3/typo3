@@ -43,6 +43,16 @@ return [
                 'typo3/cms-frontend/maintenance-mode'
             ]
         ],
+        'typo3/cms-frontend/preview-simulator' => [
+            'target' => \TYPO3\CMS\Frontend\Middleware\PreviewSimulator::class,
+            'after' => [
+                'typo3/cms-frontend/backend-user-authentication',
+                'typo3/cms-frontend/authentication',
+            ],
+            'before' => [
+                'typo3/cms-frontend/tsfe'
+            ]
+        ],
         'typo3/cms-frontend/site' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\SiteResolver::class,
             'after' => [

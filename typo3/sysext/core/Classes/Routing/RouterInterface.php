@@ -51,7 +51,6 @@ interface RouterInterface
      * @param string $fragment the section/fragment www.example.com/page/#fragment, WITHOUT the hash
      * @param string $type see the constants above.
      * @return UriInterface
-     * @throws InvalidRouteArgumentsException
      */
     public function generateUri($route, array $parameters = [], string $fragment = '', string $type = self::ABSOLUTE_URL): UriInterface;
 }

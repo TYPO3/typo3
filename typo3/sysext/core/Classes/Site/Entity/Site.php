@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Site\Entity;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Error\PageErrorHandler\FluidPageErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\InvalidPageErrorHandlerException;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageContentErrorHandler;
@@ -363,11 +364,12 @@ class Site implements SiteInterface
     /**
      * Returns the applicable router for this site. This might be configurable in the future.
      *
+     * @param  $context
      * @return RouterInterface
      */
-    public function getRouter(): RouterInterface
+    public function getRouter(Context $context = null): RouterInterface
     {
-        return GeneralUtility::makeInstance(PageRouter::class, $this);
+        return GeneralUtility::makeInstance(PageRouter::class, $this, $context);
     }
 
     /**

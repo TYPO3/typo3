@@ -24,6 +24,8 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
 use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
 use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -2398,7 +2400,9 @@ class BackendUtility
         } else {
             $permissionClause = $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW);
             $pageInfo = self::readPageAccess($pageUid, $permissionClause);
-            $additionalGetVars .= self::ADMCMD_previewCmds($pageInfo);
+            // prepare custom context for link generation (to allow for example time based previews)
+            $context = clone GeneralUtility::makeInstance(Context::class);
+            $additionalGetVars .= self::ADMCMD_previewCmds($pageInfo, $context);
 
             // Build the URL with a site as prefix, if configured
             $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
@@ -2417,7 +2421,7 @@ class BackendUtility
                 unset($additionalQueryParams['L']);
             }
             try {
-                $previewUrl = (string)$site->getRouter()->generateUri(
+                $previewUrl = (string)$site->getRouter($context)->generateUri(
                     $pageUid,
                     $additionalQueryParams,
                     $anchorSection,
@@ -3841,10 +3845,11 @@ class BackendUtility
      * Creates ADMCMD parameters for the "viewpage" extension / frontend
      *
      * @param array $pageInfo Page record
+     * @param \TYPO3\CMS\Core\Context\Context $context
      * @return string Query-parameters
      * @internal
      */
-    public static function ADMCMD_previewCmds($pageInfo)
+    public static function ADMCMD_previewCmds($pageInfo, Context $context)
     {
         $simUser = '';
         $simTime = '';
@@ -3868,11 +3873,24 @@ class BackendUtility
                 $simUser = '&ADMCMD_simUser=' . $activeFeGroupRow['uid'];
             }
         }
-        if ($pageInfo['starttime'] > $GLOBALS['EXEC_TIME']) {
-            $simTime = '&ADMCMD_simTime=' . $pageInfo['starttime'];
+        $startTime = (int)$pageInfo['starttime'];
+        $endTime = (int)$pageInfo['endtime'];
+        if ($startTime > $GLOBALS['EXEC_TIME']) {
+            // simulate access time to ensure PageRepository will find the page and in turn PageRouter will generate
+            // an URL for it
+            $dateAspect = GeneralUtility::makeInstance(DateTimeAspect::class, new \DateTimeImmutable('@' . $startTime));
+            $context->setAspect('date', $dateAspect);
+            $simTime = '&ADMCMD_simTime=' . $startTime;
         }
-        if ($pageInfo['endtime'] < $GLOBALS['EXEC_TIME'] && $pageInfo['endtime'] != 0) {
-            $simTime = '&ADMCMD_simTime=' . ($pageInfo['endtime'] - 1);
+        if ($endTime < $GLOBALS['EXEC_TIME'] && $endTime !== 0) {
+            // Set access time to page's endtime subtracted one second to ensure PageRepository will find the page and
+            // in turn PageRouter will generate an URL for it
+            $dateAspect = GeneralUtility::makeInstance(
+                DateTimeAspect::class,
+                new \DateTimeImmutable('@' . ($endTime - 1))
+            );
+            $context->setAspect('date', $dateAspect);
+            $simTime = '&ADMCMD_simTime=' . ($endTime - 1);
         }
         return $simUser . $simTime;
     }

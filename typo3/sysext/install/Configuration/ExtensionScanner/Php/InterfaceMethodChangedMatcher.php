@@ -13,5 +13,5 @@ return [
         'restFiles' => [
             'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst'
         ],
-    ]
+    ],
 ];

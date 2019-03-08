@@ -180,7 +180,7 @@ namespace TYPO3 {
       const request = new XMLHttpRequest();
       request.open('POST', this.adminPanel.dataset.typo3AjaxUrl);
       request.send(formData);
-      request.onload = () => location.reload();
+      request.onload = () => location.assign(this.getCleanReloadUrl());
     }
 
     private toggleAdminPanelState(): void {
@@ -188,6 +188,24 @@ namespace TYPO3 {
       request.open('GET', this.trigger.dataset.typo3AjaxUrl);
       request.send();
       request.onload = () => location.reload();
+    }
+
+    /**
+     * When previewing access/time restricted packs from the backend, "ADMCMD_" parameters are attached to the URL
+     * - their settings will be saved in the admin panel. To make sure that the user is able to change those settings
+     * via the Admin Panel User Interface the $_GET parameters are removed from the URL after saving and the page is
+     * reloaded
+     */
+    private getCleanReloadUrl(): string {
+      let urlParams: string[] = [];
+      location.search.substr(1).split('&').forEach((item: string): void => {
+        if (item && !item.includes('ADMCMD_')) {
+          urlParams.push(item);
+        }
+      });
+
+      const queryString = urlParams ? '?' + urlParams.join('&') : '';
+      return location.origin + location.pathname + queryString;
     }
 
     private addBackdropListener(): void {

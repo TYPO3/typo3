@@ -4,19 +4,22 @@ namespace TYPO3 {
     private readonly timeField: HTMLInputElement = null;
     private readonly targetField: HTMLInputElement = null;
 
+    /**
+     * Initialize date and time fields of preview
+     *
+     * PHP / backend side always uses UTC timestamps (for generating time based previews and access time checks)
+     * Date and Time fields are HTML5 input fields, combined they update the "targetfield" always containing a PHP
+     * compatible (seconds-based) timestamp
+     */
     constructor() {
       this.dateField = <HTMLInputElement>document.getElementById('preview_simulateDate-date-hr');
       this.timeField = <HTMLInputElement>document.getElementById('preview_simulateDate-time-hr');
       this.targetField = <HTMLInputElement>document.getElementById(this.dateField.dataset.target);
 
       if (this.targetField.value) {
-        const cd = new Date(this.targetField.value);
-        this.dateField.value =
-          cd.getFullYear() + '-' + ((cd.getMonth() + 1) < 10 ? '0' : '')
-          + (cd.getMonth() + 1) + '-' + (cd.getDate() < 10 ? '0' : '') + cd.getDate();
-        this.timeField.value =
-          (cd.getHours() < 10 ? '0' : '') + cd.getHours() + ':'
-          + (cd.getMinutes() < 10 ? '0' : '') + cd.getMinutes();
+        const initialDate = new Date(parseInt(this.targetField.value, 10) * 1000);
+        this.dateField.valueAsDate = initialDate;
+        this.timeField.valueAsDate = initialDate;
       }
 
       this.dateField.addEventListener('change', this.updateDateField);
@@ -40,7 +43,7 @@ namespace TYPO3 {
         const stringDate = dateVal + ' ' + timeVal;
         const date = new Date(stringDate);
 
-        this.targetField.value = date.toISOString();
+        this.targetField.value = (date.valueOf() / 1000).toString();
       }
     }
   }
