@@ -3504,7 +3504,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->releaseLock('pagesection');
 
         // Setting cache_timeout_default. May be overridden by PHP include scripts.
-        $this->cacheTimeOutDefault = (int)$this->config['config']['cache_period'];
+        $this->cacheTimeOutDefault = (int)($this->config['config']['cache_period'] ?? 0);
         // Page is generated
         $this->no_cacheBeforePageGen = $this->no_cache;
     }
@@ -4593,7 +4593,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 // No cache period set at all, so we take one day (60*60*24 seconds = 86400 seconds):
                 $cacheTimeout = 86400;
             }
-            if ($this->config['config']['cache_clearAtMidnight']) {
+            if (!empty($this->config['config']['cache_clearAtMidnight'])) {
                 $timeOutTime = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
                 $midnightTime = mktime(0, 0, 0, date('m', $timeOutTime), date('d', $timeOutTime), date('Y', $timeOutTime));
                 // If the midnight time of the expire-day is greater than the current time,
