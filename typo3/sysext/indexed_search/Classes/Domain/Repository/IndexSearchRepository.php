@@ -1024,7 +1024,8 @@ class IndexSearchRepository
                 'IP.externalUrl',
                 'IP.recordUid',
                 'IP.freeIndexUid',
-                'IP.freeIndexSetId'
+                'IP.freeIndexSetId',
+                'IP.static_page_arguments'
             );
 
         // Setting up methods of filtering results
