@@ -23,7 +23,6 @@ use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\PropertyInfo\Type;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Annotation\Inject;
@@ -42,7 +41,7 @@ use TYPO3\CMS\Extbase\Reflection\DocBlock\Tags\Null_;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException;
-use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
+use TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver;
 
 /**
  * A class schema
@@ -239,10 +238,8 @@ class ClassSchema
             });
 
             if (count($validateAnnotations) > 0) {
-                $validatorResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
-
                 foreach ($validateAnnotations as $validateAnnotation) {
-                    $validatorObjectName = $validatorResolver->resolveValidatorObjectName($validateAnnotation->validator);
+                    $validatorObjectName = ValidatorClassNameResolver::resolve($validateAnnotation->validator);
 
                     $this->properties[$propertyName]['validators'][] = [
                         'name' => $validateAnnotation->validator,
@@ -331,11 +328,9 @@ class ClassSchema
             });
 
             if ($this->isController && $this->methods[$methodName]['isAction'] && count($validateAnnotations) > 0) {
-                $validatorResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
-
                 foreach ($validateAnnotations as $validateAnnotation) {
                     $validatorName = $validateAnnotation->validator;
-                    $validatorObjectName = $validatorResolver->resolveValidatorObjectName($validatorName);
+                    $validatorObjectName = ValidatorClassNameResolver::resolve($validatorName);
 
                     $argumentValidators[$validateAnnotation->param][] = [
                         'name' => $validatorName,

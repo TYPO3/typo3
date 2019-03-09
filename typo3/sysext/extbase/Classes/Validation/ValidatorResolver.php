@@ -75,7 +75,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
             /**
              * @todo remove throwing Exceptions in resolveValidatorObjectName
              */
-            $validatorObjectName = $this->resolveValidatorObjectName($validatorType);
+            $validatorObjectName = ValidatorClassNameResolver::resolve($validatorType);
 
             $validator = $this->objectManager->get($validatorObjectName, $validatorOptions);
 
@@ -252,96 +252,5 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         // @todo: find polytype validator for class
-    }
-
-    /**
-     * Returns an object of an appropriate validator for the given class. If no validator is available
-     * FALSE is returned
-     *
-     * @param string $validatorName Either the fully qualified class name of the validator or the short name of a built-in validator
-     *
-     * @throws Exception\NoSuchValidatorException
-     * @return string Name of the validator object
-     * @internal
-     */
-    public function resolveValidatorObjectName($validatorName)
-    {
-        // todo: this functionality should be extracted into a separate class. It should be a final class with
-        // todo: static public functions, completely covered by unit tests.
-        if (strpos($validatorName, ':') !== false) {
-            // Found shorthand validator, either extbase or foreign extension
-            // NotEmpty or Acme.MyPck.Ext:MyValidator
-            list($extensionName, $extensionValidatorName) = explode(':', $validatorName);
-
-            if ($validatorName !== $extensionName && $extensionValidatorName !== '') {
-                // Shorthand custom
-                if (strpos($extensionName, '.') !== false) {
-                    $extensionNameParts = explode('.', $extensionName);
-                    $extensionName = array_pop($extensionNameParts);
-                    $vendorName = implode('\\', $extensionNameParts);
-                    $possibleClassName = $vendorName . '\\' . $extensionName . '\\Validation\\Validator\\' . $extensionValidatorName;
-                }
-            } else {
-                // Shorthand built in
-                $possibleClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\' . $this->getValidatorType($validatorName);
-            }
-        } elseif (strpbrk($validatorName, '\\') === false) {
-            // Shorthand built in
-            $possibleClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\' . $this->getValidatorType($validatorName);
-        } else {
-            // Full qualified
-            // Example: \Acme\Ext\Validation\Validator\FooValidator
-            $possibleClassName = $validatorName;
-            if (!empty($possibleClassName) && $possibleClassName[0] === '\\') {
-                $possibleClassName = substr($possibleClassName, 1);
-            }
-        }
-
-        if (substr($possibleClassName, - strlen('Validator')) !== 'Validator') {
-            $possibleClassName .= 'Validator';
-        }
-
-        if (class_exists($possibleClassName)) {
-            $possibleClassNameInterfaces = class_implements($possibleClassName);
-            if (!in_array(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class, $possibleClassNameInterfaces)) {
-                // The guessed validatorname is a valid class name, but does not implement the ValidatorInterface
-                throw new NoSuchValidatorException('Validator class ' . $validatorName . ' must implement \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface', 1365776838);
-            }
-            $resolvedValidatorName = $possibleClassName;
-        } else {
-            throw new NoSuchValidatorException('Validator class ' . $validatorName . ' does not exist', 1365799920);
-        }
-
-        return $resolvedValidatorName;
-    }
-
-    /**
-     * Used to map PHP types to validator types.
-     *
-     * @param string $type Data type to unify
-     * @return string unified data type
-     */
-    protected function getValidatorType($type)
-    {
-        switch ($type) {
-            case 'int':
-                $type = 'Integer';
-                break;
-            case 'bool':
-                $type = 'Boolean';
-                break;
-            case 'double':
-                $type = 'Float';
-                break;
-            case 'numeric':
-                $type = 'Number';
-                break;
-            case 'mixed':
-                $type = 'Raw';
-                break;
-            default:
-                $type = ucfirst($type);
-        }
-        return $type;
     }
 }

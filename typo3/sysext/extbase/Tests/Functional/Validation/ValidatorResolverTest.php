@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Validation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
-use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 use TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator;
@@ -46,101 +45,6 @@ class ValidatorResolverTest extends \TYPO3\TestingFramework\Core\Functional\Func
         );
         $this->validatorResolver->injectObjectManager(GeneralUtility::makeInstance(ObjectManager::class));
         $this->validatorResolver->injectReflectionService(GeneralUtility::makeInstance(ReflectionService::class));
-    }
-
-    /**
-     * @return array
-     */
-    public function namespacedShorthandValidatorNamesDataProvider(): array
-    {
-        return [
-            'TYPO3.CMS.Extbase:NotEmpty' => [
-                'TYPO3.CMS.Extbase:NotEmpty',
-                NotEmptyValidator::class
-            ],
-            'TYPO3.CMS.Extbase.Tests.Functional.Validation.Fixture:Custom' => [
-                'TYPO3.CMS.Extbase.Tests.Functional.Validation.Fixture:Custom',
-                Fixture\Validation\Validator\CustomValidator::class
-            ]
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider namespacedShorthandValidatorNamesDataProvider
-     *
-     * @param string $validatorName
-     * @param string $expectedClassName
-     */
-    public function resolveValidatorObjectNameWithShortHandNotationReturnsValidatorNameIfClassExists(string $validatorName, string $expectedClassName)
-    {
-        static::assertEquals(
-            $expectedClassName,
-            $this->validatorResolver->_call('resolveValidatorObjectName', $validatorName)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function resolveValidatorObjectNameWithShortHandNotationThrowsExceptionIfClassDoesNotExist()
-    {
-        $this->expectException(NoSuchValidatorException::class);
-        $this->expectExceptionCode(1365799920);
-
-        $validatorName = 'TYPO3.CMS.Extbase.Tests.Functional.Validation.Fixture:NonExistentValidator';
-        $this->validatorResolver->_call('resolveValidatorObjectName', $validatorName);
-    }
-
-    /**
-     * @test
-     */
-    public function resolveValidatorObjectNameWithShortHandNotationReturnsValidatorNameIfClassExistsButDoesNotImplementValidatorInterface()
-    {
-        $this->expectException(NoSuchValidatorException::class);
-        $this->expectExceptionCode(1365776838);
-
-        $validatorName = 'TYPO3.CMS.Extbase.Tests.Functional.Validation.Fixture:CustomValidatorThatDoesNotImplementValidatorInterface';
-        $this->validatorResolver->_call('resolveValidatorObjectName', $validatorName);
-    }
-
-    /**
-     * @test
-     */
-    public function resolveValidatorObjectNameReturnsValidatorNameForFullQualifiedValidatorName()
-    {
-        $validatorName = Fixture\Validation\Validator\CustomValidator::class;
-        $className = Fixture\Validation\Validator\CustomValidator::class;
-
-        static::assertEquals(
-            $className,
-            $this->validatorResolver->_call('resolveValidatorObjectName', $validatorName)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function resolveValidatorObjectNameReturnsValidatorNameForFullQualifiedValidatorNameWithLeadingBackslash()
-    {
-        $validatorName = '\\' . Fixture\Validation\Validator\CustomValidator::class;
-        $className = Fixture\Validation\Validator\CustomValidator::class;
-
-        static::assertEquals(
-            $className,
-            $this->validatorResolver->_call('resolveValidatorObjectName', $validatorName)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function resolveValidatorObjectNameThrowsNoSuchValidatorExceptionIfClassDoesNotExist()
-    {
-        $className = $this->getUniqueId('Foo\\Bar');
-        $this->expectException(NoSuchValidatorException::class);
-        $this->expectExceptionCode(1365799920);
-        $this->validatorResolver->_call('resolveValidatorObjectName', $className);
     }
 
     /**
