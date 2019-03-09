@@ -276,7 +276,8 @@ class SiteRequestTest extends AbstractTestCase
             // 'https://website.local/',
             'https://website.us/',
             'https://website.fr/',
-            'https://website.ca/',
+            // Explicitly testing umlaut domains
+            'https://wäbsite.ca/',
             // @todo Implicit strict mode handling when calling non-existent site
             // 'https://website.other/',
         ];
@@ -317,7 +318,7 @@ class SiteRequestTest extends AbstractTestCase
             [
                 $this->buildDefaultLanguageConfiguration('EN', 'https://website.us/'),
                 $this->buildLanguageConfiguration('FR', 'https://website.fr/', ['EN']),
-                $this->buildLanguageConfiguration('FR-CA', 'https://website.ca/', ['FR', 'EN']),
+                $this->buildLanguageConfiguration('FR-CA', 'https://wäbsite.ca/', ['FR', 'EN']),
             ]
         );
 
