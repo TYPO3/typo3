@@ -46,7 +46,7 @@ class FormProtectionFactory
     /**
      * created instances of form protections using the type as array key
      *
-     * @var array<AbstracFormtProtection>
+     * @var array<AbstractFormProtection>
      */
     protected static $instances = [];
 

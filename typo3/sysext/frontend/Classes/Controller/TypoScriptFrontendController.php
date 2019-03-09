@@ -872,7 +872,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * visibility settings like
      * - $fePreview
      * - Visibility Aspect: includeHiddenPages
-     * - Visibility Aspect: includeHiddenPontent
+     * - Visibility Aspect: includeHiddenContent
      * - $simUserGroup
      * should be applied to the current object.
      *
