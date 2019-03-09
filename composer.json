@@ -54,6 +54,7 @@
 		"symfony/expression-language": "^4.1",
 		"symfony/finder": "^4.1",
 		"symfony/polyfill-intl-icu": "^1.6",
+		"symfony/polyfill-intl-idn": "^1.10",
 		"symfony/polyfill-mbstring": "^1.2",
 		"symfony/routing": "^4.1",
 		"symfony/yaml": "^4.1",
