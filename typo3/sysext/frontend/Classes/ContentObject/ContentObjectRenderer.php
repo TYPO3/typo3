@@ -6587,8 +6587,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
             return $languageQuery;
         }
-        // No overlays = only fetch records given for the requested language
-        return $expressionBuilder->eq($languageField, $languageAspect->getContentId());
+        // No overlays = only fetch records given for the requested language and "all languages"
+        return $expressionBuilder->in($languageField, [$languageAspect->getContentId(), -1]);
     }
 
     /**
