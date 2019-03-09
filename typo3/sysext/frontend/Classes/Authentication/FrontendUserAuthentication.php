@@ -613,9 +613,9 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
             || $this->user['is_online'] >= $GLOBALS['EXEC_TIME'] - 60) {
             return;
         }
-        $dbConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('fe_users');
+        $dbConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->user_table);
         $dbConnection->update(
-            'fe_users',
+            $this->user_table,
             ['is_online' => $GLOBALS['EXEC_TIME']],
             ['uid' => (int)$this->user['uid']]
         );

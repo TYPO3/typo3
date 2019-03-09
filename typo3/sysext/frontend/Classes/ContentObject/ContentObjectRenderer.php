@@ -347,9 +347,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public $checkPid_cache = [];
 
     /**
-     * @var string
+     * @var string|int
      */
-    public $checkPid_badDoktypeList = '255';
+    public $checkPid_badDoktypeList = PageRepository::DOKTYPE_RECYCLER;
 
     /**
      * This will be set by typoLink() to the url of the most recent link created.

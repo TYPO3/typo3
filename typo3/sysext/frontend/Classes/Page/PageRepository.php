@@ -1055,7 +1055,7 @@ class PageRepository implements LoggerAwareInterface
                     ),
                     $queryBuilder->expr()->neq(
                         'doktype',
-                        $queryBuilder->createNamedParameter(255, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(self::DOKTYPE_RECYCLER, \PDO::PARAM_INT)
                     )
                 )
                 ->execute()
@@ -1087,7 +1087,7 @@ class PageRepository implements LoggerAwareInterface
                     ),
                     $queryBuilder->expr()->neq(
                         'doktype',
-                        $queryBuilder->createNamedParameter(255, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(self::DOKTYPE_RECYCLER, \PDO::PARAM_INT)
                     )
                 )
                 ->execute()
