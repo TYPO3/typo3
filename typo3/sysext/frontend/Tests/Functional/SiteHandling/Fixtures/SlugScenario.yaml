@@ -56,7 +56,7 @@ entities:
             - self: {id: 1101, title: 'FR: Welcome', language: 1, slug: '/bienvenue', subtitle: 'salut-et-bienvenue'}
             - self: {id: 1102, title: 'FR-CA: Welcome', language: 2, slug: '/bienvenue', subtitle: 'salut-et-bienvenue'}
           versionVariants:
-            - version: {title: 'EN: Welcome to ACME Inc', workspace: 1, slug: '/welcome'}
+            - version: {title: 'EN: Welcome to ACME Inc', workspace: 1, slug: '/welcome-modified'}
           entities:
             content:
               - self: {title: 'EN: Content Element #1', type: *contentText}

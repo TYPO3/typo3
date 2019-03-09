@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -179,7 +180,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
         // Check if the target page has a site configuration
         try {
-            $siteOfTargetPage = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId((int)$page['uid']);
+            $siteOfTargetPage = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$page['uid']);
             $currentSite = $this->getCurrentSite();
         } catch (SiteNotFoundException $e) {
             // Usually happens in tests, as Pseudo Sites should be available everywhere.
@@ -188,7 +189,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         }
 
         // Link to a page that has a site configuration
-        if ($siteOfTargetPage instanceof Site) {
+        if ($siteOfTargetPage !== null) {
             $siteLanguageOfTargetPage = $this->getSiteLanguageOfTargetPage($siteOfTargetPage, (string)($conf['language'] ?? 'current'));
             $languageAspect = LanguageAspectFactory::createFromSiteLanguage($siteLanguageOfTargetPage);
 

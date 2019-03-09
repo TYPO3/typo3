@@ -326,13 +326,15 @@ class PageRouter implements RouterInterface
      */
     protected function getPagesFromDatabaseForCandidates(array $slugCandidates, int $languageId): array
     {
+        $context = GeneralUtility::makeInstance(Context::class);
+        $searchLiveRecordsOnly = $context->getPropertyFromAspect('workspace', 'isLive');
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
         $queryBuilder
             ->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(FrontendWorkspaceRestriction::class));
+            ->add(GeneralUtility::makeInstance(FrontendWorkspaceRestriction::class, null, null, $searchLiveRecordsOnly));
 
         $statement = $queryBuilder
             ->select('uid', 'l10n_parent', 'pid', 'slug')
@@ -356,7 +358,9 @@ class PageRouter implements RouterInterface
 
         $pages = [];
         $siteMatcher = GeneralUtility::makeInstance(SiteMatcher::class);
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
         while ($row = $statement->fetch()) {
+            $pageRepository->fixVersioningPid('pages', $row);
             $pageIdInDefaultLanguage = (int)($languageId > 0 ? $row['l10n_parent'] : $row['uid']);
             try {
                 if ($siteMatcher->matchByPageId($pageIdInDefaultLanguage)->getRootPageId() === $this->site->getRootPageId()) {
