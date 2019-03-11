@@ -40,6 +40,7 @@ class Status implements RequestAwareReportInterface
     public function __construct()
     {
         $this->getLanguageService()->includeLLFile('EXT:reports/Resources/Private/Language/locallang_reports.xlf');
+        $this->getStatusProviders();
     }
 
     /**
@@ -50,8 +51,6 @@ class Status implements RequestAwareReportInterface
      */
     public function getReport(ServerRequestInterface $request = null)
     {
-        $this->getStatusProviders();
-
         $content = '';
         $status = $this->getSystemStatus($request);
         $highestSeverity = $this->getHighestSeverity($status);
