@@ -73,7 +73,7 @@ return [
         'is_public' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_storage.is_public',
             'config' => [
-                'default' => true,
+                'default' => 1,
                 'type' => 'user',
                 'renderType' => 'userSysFileStorageIsPublic',
             ]
