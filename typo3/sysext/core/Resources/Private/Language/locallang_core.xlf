@@ -118,6 +118,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels._LOCALIZATION_">
 				<source>Localization</source>
 			</trans-unit>
+			<trans-unit id="labels._REF_">
+				<source>Ref</source>
+			</trans-unit>
 			<trans-unit id="labels.setFields">
 				<source>Set fields</source>
 			</trans-unit>

@@ -48,20 +48,11 @@
 			<trans-unit id="c_rw">
 				<source>RW</source>
 			</trans-unit>
-			<trans-unit id="c__REF_">
-				<source>Ref</source>
-			</trans-unit>
 			<trans-unit id="files">
 				<source>files</source>
 			</trans-unit>
 			<trans-unit id="temp">
 				<source>Temporary files</source>
-			</trans-unit>
-			<trans-unit id="role_folder_temporary">
-				<source>Temporary files</source>
-			</trans-unit>
-			<trans-unit id="role_folder_recycler">
-				<source>Recycler</source>
 			</trans-unit>
 			<trans-unit id="read">
 				<source>R</source>
@@ -80,30 +71,6 @@
 			</trans-unit>
 			<trans-unit id="write">
 				<source>W</source>
-			</trans-unit>
-			<trans-unit id="paramError">
-				<source>Parameter Error</source>
-			</trans-unit>
-			<trans-unit id="targetNoDir">
-				<source>Target was not a directory!</source>
-			</trans-unit>
-			<trans-unit id="localDriverFlexform_basePath">
-				<source>Base path</source>
-			</trans-unit>
-			<trans-unit id="localDriverFlexform_basePath_placeholder">
-				<source>Add storage path here. For example: myPath/folder/</source>
-			</trans-unit>
-			<trans-unit id="localDriverFlexform_pathType">
-				<source>Path type</source>
-			</trans-unit>
-			<trans-unit id="localDriverFlexform_pathType_relative">
-				<source>relative</source>
-			</trans-unit>
-			<trans-unit id="localDriverFlexform_pathType_absolute">
-				<source>absolute</source>
-			</trans-unit>
-			<trans-unit id="localDriverFlexform_caseSensitive">
-				<source>Uses case sensitive identifiers</source>
 			</trans-unit>
 			<trans-unit id="storageNotBrowsableTitle">
 				<source>Access denied.</source>
@@ -131,6 +98,12 @@
 			</trans-unit>
 			<trans-unit id="editMetadataForLanguage">
 				<source>Edit metadata of this file for %s</source>
+			</trans-unit>
+			<trans-unit id="paramError">
+				<source>Parameter Error</source>
+			</trans-unit>
+			<trans-unit id="targetNoDir">
+				<source>Target was not a directory!</source>
 			</trans-unit>
 		</body>
 	</file>

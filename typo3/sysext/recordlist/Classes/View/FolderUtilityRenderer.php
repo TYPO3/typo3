@@ -249,7 +249,7 @@ class FolderUtilityRenderer
         $markup[] = '       <span class="input-group-btn">';
         $markup[] = '           <button class="btn btn-default" type="submit">'
             . htmlspecialchars(
-                $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:search')
+                $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:search')
             )
             . '</button>';
         $markup[] = '       </span>';

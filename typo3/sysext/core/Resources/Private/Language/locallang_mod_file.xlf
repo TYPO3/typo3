@@ -12,6 +12,30 @@
 			<trans-unit id="sys_file_storage.isOffline">
 				<source>offline</source>
 			</trans-unit>
+			<trans-unit id="sys_file_storage.localDriverFlexform_basePath">
+				<source>Base path</source>
+			</trans-unit>
+			<trans-unit id="sys_file_storage.localDriverFlexform_basePath_placeholder">
+				<source>Add storage path here. For example: myPath/folder/</source>
+			</trans-unit>
+			<trans-unit id="sys_file_storage.localDriverFlexform_pathType">
+				<source>Path type</source>
+			</trans-unit>
+			<trans-unit id="sys_file_storage.localDriverFlexform_pathType_relative">
+				<source>relative</source>
+			</trans-unit>
+			<trans-unit id="sys_file_storage.localDriverFlexform_pathType_absolute">
+				<source>absolute</source>
+			</trans-unit>
+			<trans-unit id="sys_file_storage.localDriverFlexform_caseSensitive">
+				<source>Uses case sensitive identifiers</source>
+			</trans-unit>
+			<trans-unit id="role_folder_temporary">
+				<source>Temporary files</source>
+			</trans-unit>
+			<trans-unit id="role_folder_recycler">
+				<source>Recycler</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
