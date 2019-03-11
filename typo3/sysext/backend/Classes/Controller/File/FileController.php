@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Controller\File;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -92,6 +93,7 @@ class FileController
      *
      * @param ServerRequestInterface $request the current request
      * @return ResponseInterface the response with the content
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -256,7 +258,12 @@ class FileController
             $urlParameters['returnUrl'] = $this->redirect;
         }
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        return (string)$uriBuilder->buildUriFromRoute('file_edit', $urlParameters);
+        try {
+            return (string)$uriBuilder->buildUriFromRoute('file_edit', $urlParameters);
+        } catch (RouteNotFoundException $exception) {
+            // no route for editing files available
+            return '';
+        }
     }
 
     /**

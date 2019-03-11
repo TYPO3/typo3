@@ -67,7 +67,7 @@ return [
     // Register link wizard
     'wizard_link' => [
         'path' => '/wizard/link/browse',
-        'target' => \TYPO3\CMS\Backend\Controller\LinkBrowserController::class . '::mainAction'
+        'target' => Controller\LinkBrowserController::class . '::mainAction'
     ],
 
     /** File- and folder-related routes */
@@ -76,36 +76,6 @@ return [
     'file_navframe' => [
         'path' => '/folder/tree',
         'target' => Controller\FileSystemNavigationFrameController::class . '::mainAction'
-    ],
-
-    // Editing the contents of a file
-    'file_edit' => [
-        'path' => '/file/editcontent',
-        'target' => Controller\File\EditFileController::class . '::mainAction'
-    ],
-
-    // Create a new folder
-    'file_newfolder' => [
-        'path' => '/file/new',
-        'target' => Controller\File\CreateFolderController::class . '::mainAction'
-    ],
-
-    // Rename a file
-    'file_rename' => [
-        'path' => '/file/rename',
-        'target' => Controller\File\RenameFileController::class . '::mainAction'
-    ],
-
-    // Replace a file with a different one
-    'file_replace' => [
-        'path' => '/file/replace',
-        'target' => Controller\File\ReplaceFileController::class . '::mainAction'
-    ],
-
-    // Upload new files
-    'file_upload' => [
-        'path' => '/file/upload',
-        'target' => Controller\File\FileUploadController::class . '::mainAction'
     ],
 
     // Add new online media

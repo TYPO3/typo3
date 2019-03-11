@@ -1,13 +1,13 @@
 <div>
-    <h1><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.pagetitle" /></h1>
+    <h1><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_newfolder.php.pagetitle" /></h1>
     <f:if condition="{moduleUrlTceFile}">
-        <h3><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.newfolders" /></h3>
+        <h3><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_newfolder.php.newfolders" /></h3>
         <div>
             <form role="form" action="{moduleUrlTceFile}" method="post" name="editform">
                 <div class="form-group">
                     <div class="form-section">
                         <div class="form-group">
-                            <label for="number-of-new-folders"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.number_of_folders" /></label> {cshFileNewFolder -> f:format.raw()}
+                            <label for="number-of-new-folders"><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_newfolder.php.number_of_folders" /></label> {cshFileNewFolder -> f:format.raw()}
                             <div class="form-control-wrap">
                                 <div class="input-group">
                                     <select class="form-control form-control-adapt" name="number" id="number-of-new-folders" onchange="reload(this.options[this.selectedIndex].value);">';
@@ -22,7 +22,7 @@
                     <f:for each="{folders}" as="folder">
                         <div class="form-section">
                             <div class="form-group">
-                                <label for="folder_new_{folder.this}"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.label_newfolder" /> {folder.next}:</label>
+                                <label for="folder_new_{folder.this}"><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_newfolder.php.label_newfolder" /> {folder.next}:</label>
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control" id="folder_new_{folder.this}" name="data[newfolder][{folder.this}][data]" onchange="changed=true;" />
                                     <input type="hidden" name="data[newfolder][{folder.this}][target]" value="{target}" />
@@ -32,7 +32,7 @@
                     </f:for>
                 </div>
                 <div class="form-group">
-                    <input class="btn btn-default" type="submit" value="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.submit')}" />
+                    <input class="btn btn-default" type="submit" value="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_newfolder.php.submit')}" />
                     <input type="hidden" name="data[newfolder][0][redirect]" value="{returnUrl}" />
                 </div>
             </form>
@@ -70,12 +70,12 @@
         </f:if>
         <f:if condition="{txtFileExtList -> f:count()} > 0">
             <form action="{moduleUrlTceFile}" method="post" name="editform3">
-                <h3><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.newfile" /></h3>
+                <h3><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_newfolder.php.newfile" /></h3>
                 <div>
                     <div class="form-group">
                         <div class="form-section">
                             <div class="form-group">
-                                <label for="newfile"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.label_newfile" /></label> {cshFileNewFile -> f:format.raw()}
+                                <label for="newfile"><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_newfolder.php.label_newfile" /></label> {cshFileNewFile -> f:format.raw()}
                                 <div class="form-control-wrap">
                                     <input class="form-control" type="text" id="newfile" name="data[newfile][0][data]" onchange="changed=true;" />
                                     <input type="hidden" name="data[newfile][0][target]" value="{target}" />
@@ -90,7 +90,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-default" name="edit" type="submit" value="1"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_newfolder.php.newfile_submit" /></button>
+                        <button class="btn btn-default" name="edit" type="submit" value="1"><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_newfolder.php.newfile_submit" /></button>
                         <input type="hidden" name="data[newfile][0][redirect]" value="{returnUrl}" />
                     </div>
                 </div>

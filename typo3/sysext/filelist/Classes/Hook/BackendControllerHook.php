@@ -39,6 +39,5 @@ class BackendControllerHook
         $pageRenderer->addInlineSetting('FileEdit', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('file_edit'));
         $pageRenderer->addInlineSetting('FileUpload', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('file_upload'));
         $pageRenderer->addInlineSetting('FileCreate', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('file_newfolder'));
-        $pageRenderer->addInlineSetting('FileCommit', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('tce_file'));
     }
 }

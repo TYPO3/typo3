@@ -11,14 +11,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {SeverityEnum} from './Enum/Severity';
+import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 import * as $ from 'jquery';
-import Modal = require('./Modal');
+import Modal = require('TYPO3/CMS/Backend/Modal');
 
 /**
- * Module: TYPO3/CMS/Backend/RenameFile
+ * Module: TYPO3/CMS/Filelist/RenameFile
  * Modal to pick the required conflict strategy for colliding filenames
- * @exports TYPO3/CMS/Backend/RenameFile
+ * @exports TYPO3/CMS/Filelist/RenameFile
  */
 class RenameFile {
 

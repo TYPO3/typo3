@@ -1244,4 +1244,29 @@ return [
             'Important-87516-RemoveCoreHTTPRequestHandlerInterface.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\File\CreateFolderController' => [
+        'restFiles' => [
+            'Deprecation-87882-FileRelatedControllersMovedToEXTfilelist.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\File\EditFileController' => [
+        'restFiles' => [
+            'Deprecation-87882-FileRelatedControllersMovedToEXTfilelist.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\File\FileUploadController' => [
+        'restFiles' => [
+            'Deprecation-87882-FileRelatedControllersMovedToEXTfilelist.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\File\RenameFileController' => [
+        'restFiles' => [
+            'Deprecation-87882-FileRelatedControllersMovedToEXTfilelist.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\File\ReplaceFileController' => [
+        'restFiles' => [
+            'Deprecation-87882-FileRelatedControllersMovedToEXTfilelist.rst'
+        ],
+    ],
 ];

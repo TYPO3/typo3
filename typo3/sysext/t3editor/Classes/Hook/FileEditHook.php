@@ -15,9 +15,9 @@ namespace TYPO3\CMS\T3editor\Hook;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Controller\File\EditFileController;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Filelist\Controller\File\EditFileController;
 use TYPO3\CMS\T3editor\Exception\InvalidModeException;
 use TYPO3\CMS\T3editor\Registry\ModeRegistry;
 use TYPO3\CMS\T3editor\T3editor;

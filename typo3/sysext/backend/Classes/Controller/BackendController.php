@@ -154,6 +154,7 @@ class BackendController
         $this->pageRenderer->addInlineSetting('NewRecord', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('db_new'));
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_edit'));
         $this->pageRenderer->addInlineSetting('RecordCommit', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('tce_db'));
+        $this->pageRenderer->addInlineSetting('FileCommit', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('tce_file'));
         $this->pageRenderer->addInlineSetting('WebLayout', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('web_layout'));
 
         $this->initializeToolbarItems();

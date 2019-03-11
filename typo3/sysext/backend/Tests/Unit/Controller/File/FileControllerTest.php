@@ -123,7 +123,7 @@ class FileControllerTest extends UnitTestCase
      */
     public function processAjaxRequestDeleteProcessActuallyDoesNotChangeFileData()
     {
-        $subject = $this->getAccessibleMock(FileController::class, ['init', 'main']);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, ['init', 'main']);
 
         $fileData = ['delete' => [true]];
         $subject->_set('fileProcessor', $this->mockFileProcessor);
@@ -140,7 +140,7 @@ class FileControllerTest extends UnitTestCase
      */
     public function processAjaxRequestEditFileProcessActuallyDoesNotChangeFileData()
     {
-        $subject = $this->getAccessibleMock(FileController::class, ['init', 'main']);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, ['init', 'main']);
 
         $fileData = ['editfile' => [true]];
         $subject->_set('fileProcessor', $this->mockFileProcessor);
@@ -157,7 +157,7 @@ class FileControllerTest extends UnitTestCase
      */
     public function processAjaxRequestReturnsStatus200IfNoErrorOccures()
     {
-        $subject = $this->getAccessibleMock(FileController::class, ['init', 'main']);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, ['init', 'main']);
 
         $fileData = ['editfile' => [true]];
         $subject->_set('fileProcessor', $this->mockFileProcessor);
