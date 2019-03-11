@@ -163,8 +163,6 @@ class LoginController implements LoggerAwareInterface
         $queryParams = $request->getQueryParams();
         $this->validateAndSortLoginProviders();
 
-        // We need a PHP session session for most login levels
-        session_start();
         $this->redirectUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['redirect_url'] ?? $queryParams['redirect_url'] ?? null);
         $this->loginProviderIdentifier = $this->detectLoginProvider($request);
 
@@ -351,11 +349,7 @@ class LoginController implements LoggerAwareInterface
          */
         if (!isset($_COOKIE[BackendUserAuthentication::getCookieName()])) {
             if ($this->submitValue === 'setCookie') {
-                /*
-                 * we tried it a second time but still no cookie
-                 * 26/4 2005: This does not work anymore, because the saving of challenge values
-                 * in $_SESSION means the system will act as if the password was wrong.
-                 */
+                // we tried it a second time but still no cookie
                 throw new \RuntimeException('Login-error: Yeah, that\'s a classic. No cookies, no TYPO3. ' .
                     'Please accept cookies from TYPO3 - otherwise you\'ll not be able to use the system.', 1294586846);
             }
