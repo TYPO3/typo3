@@ -232,7 +232,7 @@ class Check implements CheckInterface
                     . $recommendedMemoryLimit . 'MB.'
                     . ' A slim TYPO3 instance without many extensions will probably work, but you should monitor your'
                     . ' system for "allowed memory size of X bytes exhausted" messages, especially if using the backend.'
-                    . ' To be on the safe side,' . ' we recommend a minimum PHP memory limit of '
+                    . ' To be on the safe side, we recommend a minimum PHP memory limit of '
                     . $recommendedMemoryLimit . 'MB:' . LF
                     . 'memory_limit=' . $recommendedMemoryLimit . 'M',
                 'PHP Memory limit below ' . $recommendedMemoryLimit . 'MB',

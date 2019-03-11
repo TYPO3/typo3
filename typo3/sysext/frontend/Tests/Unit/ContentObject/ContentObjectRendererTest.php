@@ -633,7 +633,7 @@ class ContentObjectRendererTest extends UnitTestCase
             . chr(229) . 'rh' . chr(248) . 'j</a> implemented</strong> the '
             . 'original version of the crop function.';
         $textWithEntities = 'Kasper Sk&aring;rh&oslash;j implemented the; '
-            . 'original ' . 'version of the crop function.';
+            . 'original version of the crop function.';
         $textWithLinebreaks = "Lorem ipsum dolor sit amet,\n"
             . "consetetur sadipscing elitr,\n"
             . 'sed diam nonumy eirmod tempor invidunt ut labore e'
@@ -8198,7 +8198,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     '&lt;' . $comment . '&gt;',
                     $indent1
                 ),
-                '1|' . '<' . $comment . '>',
+                '1|<' . $comment . '>',
                 '<' . $content . '>'
             ],
         ];

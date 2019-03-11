@@ -102,7 +102,7 @@ class IpAnonymizationAdditionalFieldProvider extends AbstractAdditionalFieldProv
             $taskInfo[$fieldId] = $task->numberOfDays ?? 180;
         }
         $fieldName = 'tx_scheduler[' . $fieldId . ']';
-        $fieldHtml = '<input class="form-control" type="text" ' . 'name="' . $fieldName . '" ' . 'id="' . $fieldId . '" ' . 'value="' . (int)$taskInfo[$fieldId] . '" ' . 'size="4">';
+        $fieldHtml = '<input class="form-control" type="text" name="' . $fieldName . '" id="' . $fieldId . '" value="' . (int)$taskInfo[$fieldId] . '" size="4">';
         $fieldConfiguration = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.ipAnonymization.numberOfDays',
@@ -136,7 +136,7 @@ class IpAnonymizationAdditionalFieldProvider extends AbstractAdditionalFieldProv
                 . '</option>';
         }
 
-        $fieldHtml = '<select class="form-control" name="' . $fieldName . '" ' . 'id="' . $fieldId . '">' . $fieldHtml . '</select>';
+        $fieldHtml = '<select class="form-control" name="' . $fieldName . '" id="' . $fieldId . '">' . $fieldHtml . '</select>';
 
         $fieldConfiguration = [
             'code' => $fieldHtml,

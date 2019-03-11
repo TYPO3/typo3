@@ -186,7 +186,7 @@ class FormProtectionFactory
     protected static function createInstance($className, ...$constructorArguments)
     {
         if (!class_exists($className)) {
-            throw new \InvalidArgumentException('$className must be the name of an existing class, but ' . 'actually was "' . $className . '".', 1285352962);
+            throw new \InvalidArgumentException('$className must be the name of an existing class, but actually was "' . $className . '".', 1285352962);
         }
         $instance = GeneralUtility::makeInstance($className, ...$constructorArguments);
         if (!$instance instanceof AbstractFormProtection) {

@@ -2491,7 +2491,7 @@ This is a dump of the failures:
     private function emailAtLogin()
     {
         // Send notify-mail
-        $subject = 'At "' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '"' . ' from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR');
+        $subject = 'At "' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '" from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR');
         $msg = sprintf(
             'User "%s" logged in from %s at "%s" (%s)',
             $this->user['username'],

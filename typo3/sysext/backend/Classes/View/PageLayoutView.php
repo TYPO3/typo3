@@ -966,7 +966,7 @@ class PageLayoutView implements LoggerAwareInterface
                 if ($this->getBackendUser()->checkLanguageAccess($lP) && $columnId !== 'unused') {
                     $content[$columnId] .= '
                     <div class="t3-page-ce t3js-page-ce" data-page="' . (int)$id . '" id="' . StringUtility::getUniqueId() . '">
-                        <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $columnId . '-' . 'page-' . $id . '-' . StringUtility::getUniqueId() . '">'
+                        <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $columnId . '-page-' . $id . '-' . StringUtility::getUniqueId() . '">'
                             . $link
                             . '</div>
                         <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
@@ -1024,7 +1024,7 @@ class PageLayoutView implements LoggerAwareInterface
                                 . $row['uid'] . '" data-table="tt_content" data-uid="' . $row['uid'] . '"' . $displayNone . '>' . $singleElementHTML . '</div>';
 
                             $singleElementHTML .= '<div class="t3-page-ce" data-colpos="' . $columnId . '">';
-                            $singleElementHTML .= '<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $columnId . '-' . 'page-' . $id .
+                            $singleElementHTML .= '<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $columnId . '-page-' . $id .
                                 '-' . StringUtility::getUniqueId() . '">';
                             // Add icon "new content element below"
                             if (!$disableMoveAndNewButtons
@@ -1412,7 +1412,7 @@ class PageLayoutView implements LoggerAwareInterface
                         }
                         $out .= '
                         <tr>
-							<td valign="top" class="t3-grid-cell">' . implode('</td>' . '
+							<td valign="top" class="t3-grid-cell">' . implode('</td>
 							<td valign="top" class="t3-grid-cell">', $cCont) . '</td>
 						</tr>';
                     }
@@ -1472,7 +1472,7 @@ class PageLayoutView implements LoggerAwareInterface
         $localizedTableTitle = htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title']));
         $out .= '<tr><th class="col-icon"></th>'
             . '<th colspan="' . (count($theData) - 2) . '"><span class="c-table">'
-            . $localizedTableTitle . '</span> (' . $dbCount . ')</td>' . '<td class="col-icon"></td>'
+            . $localizedTableTitle . '</span> (' . $dbCount . ')</td><td class="col-icon"></td>'
             . '</tr>';
         // Column's titles
         if ($this->doEdit) {
@@ -1587,7 +1587,7 @@ class PageLayoutView implements LoggerAwareInterface
                     if ($GLOBALS['TCA'][$table]['columns'][$fName2]) {
                         $out[$fieldName] .= '<strong>' . htmlspecialchars($this->getLanguageService()->sL(
                             $GLOBALS['TCA'][$table]['columns'][$fName2]['label']
-                        )) . '</strong>' . '&nbsp;&nbsp;' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(
+                        )) . '</strong>&nbsp;&nbsp;' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(
                             BackendUtility::getProcessedValue($table, $fName2, $row[$fName2], 0, 0, 0, $row['uid']),
                             25
                         )) . '<br />';

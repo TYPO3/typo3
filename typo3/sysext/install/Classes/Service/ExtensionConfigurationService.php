@@ -280,9 +280,9 @@ class ExtensionConfigurationService
                                     $editableComments[$const]['subcat'] = $this->subCategories[$catSplit[1]][1]
                                         . '/' . $catSplit[1] . '/' . $orderIdentifier . 'z';
                                 } elseif (isset($catSplit[2])) {
-                                    $editableComments[$const]['subcat'] = 'x' . '/' . trim($catSplit[2]) . 'z';
+                                    $editableComments[$const]['subcat'] = 'x/' . trim($catSplit[2]) . 'z';
                                 } else {
-                                    $editableComments[$const]['subcat'] = 'x' . '/' . $counter . 'z';
+                                    $editableComments[$const]['subcat'] = 'x/' . $counter . 'z';
                                 }
                                 break;
                             case 'label':

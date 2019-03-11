@@ -149,7 +149,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p><br /></p>' . CRLF . '<hr />',
             ],
             'Preserved div followed by hr' => [
-                '<div>Some text</div>' . '<hr />',
+                '<div>Some text</div><hr />',
                 '<div><p>Some text</p></div>' . CRLF . '<hr />',
             ],
             'Preserved div followed by linebreak and hr' => [
@@ -217,7 +217,7 @@ class RteHtmlParserTest extends UnitTestCase
                 CRLF,
             ],
             'Double spacing paragraph' => [
-                '<p>&nbsp;</p>' . '<p>&nbsp;</p>',
+                '<p>&nbsp;</p><p>&nbsp;</p>',
                 CRLF . CRLF,
             ],
             'Plain text' => [
@@ -233,7 +233,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p>paragraph</p>',
             ],
             'Paragraph followed by paragraph' => [
-                '<p>paragraph1</p>' . '<p>paragraph2</p>',
+                '<p>paragraph1</p><p>paragraph2</p>',
                 '<p>paragraph1</p>' . CRLF . '<p>paragraph2</p>',
             ],
             'Paragraph followed by paragraph, linebreak-separated' => [
@@ -249,7 +249,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p>paragraph</p>',
             ],
             'Paragraph followed by spacing paragraph' => [
-                '<p>paragraph</p>' . '<p>&nbsp;</p>',
+                '<p>paragraph</p><p>&nbsp;</p>',
                 '<p>paragraph</p>' . CRLF . CRLF,
             ],
             'Paragraph followed by spacing paragraph, linebreak-separated' => [
@@ -257,7 +257,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p>paragraph</p>' . CRLF . CRLF,
             ],
             'Paragraph followed by double spacing paragraph' => [
-                '<p>paragraph</p>' . '<p>&nbsp;</p>' . '<p>&nbsp;</p>',
+                '<p>paragraph</p><p>&nbsp;</p><p>&nbsp;</p>',
                 '<p>paragraph</p>' . CRLF . CRLF . CRLF,
             ],
             'Paragraph followed by double spacing paragraph, linebreak-separated' => [
@@ -265,7 +265,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p>paragraph</p>' . CRLF . CRLF . CRLF,
             ],
             'Paragraph followed by spacing paragraph and by paragraph' => [
-                '<p>paragraph1</p>' . '<p>&nbsp;</p>' . '<p>paragraph2</p>',
+                '<p>paragraph1</p><p>&nbsp;</p><p>paragraph2</p>',
                 '<p>paragraph1</p>' . CRLF . CRLF . '<p>paragraph2</p>',
             ],
             'Paragraph followed by spacing paragraph and by paragraph, linebreak-separated' => [
@@ -273,7 +273,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p>paragraph1</p>' . CRLF . CRLF . '<p>paragraph2</p>',
             ],
             'Paragraph followed by double spacing paragraph and by paragraph' => [
-                '<p>paragraph1</p>' . '<p>&nbsp;</p>' . '<p>&nbsp;</p>' . '<p>paragraph2</p>',
+                '<p>paragraph1</p><p>&nbsp;</p><p>&nbsp;</p><p>paragraph2</p>',
                 '<p>paragraph1</p>' . CRLF . CRLF . CRLF . '<p>paragraph2</p>',
             ],
             'Paragraph followed by double spacing paragraph and by paragraph, linebreak-separated' => [
@@ -281,7 +281,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p>paragraph1</p>' . CRLF . CRLF . CRLF . '<p>paragraph2</p>',
             ],
             'Paragraph followed by block' => [
-                '<p>paragraph</p>' . '<h1>block</h1>',
+                '<p>paragraph</p><h1>block</h1>',
                 '<p>paragraph</p>' . CRLF . '<h1>block</h1>',
             ],
             'Paragraph followed by block, linebreak-separated' => [
@@ -289,7 +289,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p>paragraph</p>' . CRLF . '<h1>block</h1>',
             ],
             'Paragraph followed by spacing paragraph and block' => [
-                '<p>paragraph</p>' . '<p>&nbsp;</p>' . '<h1>block</h1>',
+                '<p>paragraph</p><p>&nbsp;</p><h1>block</h1>',
                 '<p>paragraph</p>' . CRLF . CRLF . '<h1>block</h1>',
             ],
             'Paragraph followed by spacing paragraph and block, linebreak-separated' => [
@@ -297,7 +297,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p>paragraph</p>' . CRLF . CRLF . '<h1>block</h1>',
             ],
             'Paragraph followed by double spacing paragraph and block' => [
-                '<p>paragraph</p>' . '<p>&nbsp;</p>' . '<p>&nbsp;</p>' . '<h1>block</h1>',
+                '<p>paragraph</p><p>&nbsp;</p><p>&nbsp;</p><h1>block</h1>',
                 '<p>paragraph</p>' . CRLF . CRLF . CRLF . '<h1>block</h1>',
             ],
             'Paragraph followed by double spacing paragraph and block, linebreak-separated' => [
@@ -305,7 +305,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p>paragraph</p>' . CRLF . CRLF . CRLF . '<h1>block</h1>',
             ],
             'Block followed by block' => [
-                '<h1>block1</h1>' . '<h1>block2</h1>',
+                '<h1>block1</h1><h1>block2</h1>',
                 '<h1>block1</h1>' . CRLF . '<h1>block2</h1>',
             ],
             'Block followed by block, linebreak-separated' => [
@@ -313,7 +313,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<h1>block1</h1>' . CRLF . '<h1>block2</h1>',
             ],
             'Block followed by empty paragraph and block' => [
-                '<h1>block1</h1>' . '<p></p>' . '<h1>block2</h1>',
+                '<h1>block1</h1><p></p><h1>block2</h1>',
                 '<h1>block1</h1>' . CRLF . CRLF . '<h1>block2</h1>',
             ],
             'Block followed by empty paragraph aand block, linebreak-separated' => [
@@ -321,7 +321,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<h1>block1</h1>' . CRLF . CRLF . '<h1>block2</h1>',
             ],
             'Block followed by spacing paragraph' => [
-                '<h1>block1</h1>' . '<p>&nbsp;</p>',
+                '<h1>block1</h1><p>&nbsp;</p>',
                 '<h1>block1</h1>' . CRLF . CRLF,
             ],
             'Block followed by spacing paragraph, linebreak-separated' => [
@@ -329,7 +329,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<h1>block1</h1>' . CRLF . CRLF,
             ],
             'Block followed by spacing paragraph and block' => [
-                '<h1>block1</h1>' . '<p>&nbsp;</p>' . '<h1>block2</h1>',
+                '<h1>block1</h1><p>&nbsp;</p><h1>block2</h1>',
                 '<h1>block1</h1>' . CRLF . CRLF . '<h1>block2</h1>',
             ],
             'Block followed by spacing paragraph and block, linebreak-separated' => [
@@ -337,7 +337,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<h1>block1</h1>' . CRLF . CRLF . '<h1>block2</h1>',
             ],
             'Block followed by double spacing paragraph and by block' => [
-                '<h1>block1</h1>' . '<p>&nbsp;</p>' . '<p>&nbsp;</p>' . '<h1>block2</h1>',
+                '<h1>block1</h1><p>&nbsp;</p><p>&nbsp;</p><h1>block2</h1>',
                 '<h1>block1</h1>' . CRLF . CRLF . CRLF . '<h1>block2</h1>',
             ],
             'Block followed by double spacing paragraph and by block, linebreak-separated' => [
@@ -345,7 +345,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<h1>block1</h1>' . CRLF . CRLF . CRLF . '<h1>block2</h1>',
             ],
             'Block followed by paragraph and block' => [
-                '<h1>block1</h1>' . '<p>paragraph</p>' . '<h1>block2</h1>',
+                '<h1>block1</h1><p>paragraph</p><h1>block2</h1>',
                 '<h1>block1</h1>' . CRLF . '<p>paragraph</p>' . CRLF . '<h1>block2</h1>',
             ],
             'Block followed by paragraph and block, linebreak-separated' => [
@@ -353,7 +353,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<h1>block1</h1>' . CRLF . '<p>paragraph</p>' . CRLF . '<h1>block2</h1>',
             ],
             'Block followed by paragraph, spacing paragraph and block' => [
-                '<h1>block1</h1>' . '<p>paragraph</p>' . '<p>&nbsp;</p>' . '<h1>block2</h1>',
+                '<h1>block1</h1><p>paragraph</p><p>&nbsp;</p><h1>block2</h1>',
                 '<h1>block1</h1>' . CRLF . '<p>paragraph</p>' . CRLF . CRLF . '<h1>block2</h1>',
             ],
             'Block followed by paragraph, spacing paragraph and block, linebreak-separated' => [
@@ -425,7 +425,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p>paragraph1</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<p>paragraph2</p>',
             ],
             'Paragraph followed by block' => [
-                'paragraph' . '<h1>block</h1>',
+                'paragraph<h1>block</h1>',
                 '<p>paragraph</p>' . CRLF . '<h1>block</h1>',
             ],
             'Paragraph followed by linebreak and block' => [
@@ -441,7 +441,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p>paragraph</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<h1>block</h1>',
             ],
             'Block followed by block' => [
-                '<h1>block1</h1>' . '<h1>block2</h1>',
+                '<h1>block1</h1><h1>block2</h1>',
                 '<h1>block1</h1>' . CRLF . '<h1>block2</h1>',
             ],
             'Block followed by single linebreak and block' => [
@@ -505,7 +505,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p>plain text </p>',
             ],
             'Plain text followed by paragraph' => [
-                'plain text' . '<p>paragraph</p>',
+                'plain text<p>paragraph</p>',
                 '<p>plain text</p>' . CRLF . '<p>paragraph</p>',
             ],
             'Spacing paragraph' => [
@@ -533,7 +533,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p>paragraph</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<p>&nbsp;</p>',
             ],
             'Paragraph followed by paragraph' => [
-                '<p>paragraph1</p>' . '<p>paragraph2</p>',
+                '<p>paragraph1</p><p>paragraph2</p>',
                 '<p>paragraph1</p>' . CRLF . '<p>paragraph2</p>',
             ],
             'Paragraph followed by paragraph, linebreak-separated' => [
@@ -541,7 +541,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p>paragraph1</p>' . CRLF . '<p>paragraph2</p>',
             ],
             'Paragraph followed by spacing paragraph and by paragraph' => [
-                '<p>paragraph1</p>' . '<p>&nbsp;</p>' . '<p>paragraph2</p>',
+                '<p>paragraph1</p><p>&nbsp;</p><p>paragraph2</p>',
                 '<p>paragraph1</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<p>paragraph2</p>',
             ],
             'Paragraph followed by spacing paragraph and by paragraph, linebreak-separated' => [
@@ -549,7 +549,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p>paragraph1</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<p>paragraph2</p>',
             ],
             'Paragraph followed by double spacing paragraph and by paragraph' => [
-                '<p>paragraph1</p>' . '<p>&nbsp;</p>' . '<p>&nbsp;</p>' . '<p>paragraph2</p>',
+                '<p>paragraph1</p><p>&nbsp;</p><p>&nbsp;</p><p>paragraph2</p>',
                 '<p>paragraph1</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<p>paragraph2</p>',
             ],
             'Paragraph followed by double spacing paragraph and by paragraph, linebreak-separated' => [
@@ -557,7 +557,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p>paragraph1</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<p>paragraph2</p>',
             ],
             'Paragraph followed by block' => [
-                '<p>paragraph</p>' . '<h1>block</h1>',
+                '<p>paragraph</p><h1>block</h1>',
                 '<p>paragraph</p>' . CRLF . '<h1>block</h1>',
             ],
             'Paragraph followed by block, linebreak-separated' => [
@@ -565,7 +565,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p>paragraph</p>' . CRLF . '<h1>block</h1>',
             ],
             'Paragraph followed by spacing paragraph and by block' => [
-                '<p>paragraph</p>' . '<p>&nbsp;</p>' . '<h1>block</h1>',
+                '<p>paragraph</p><p>&nbsp;</p><h1>block</h1>',
                 '<p>paragraph</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<h1>block</h1>',
             ],
             'Paragraph followed by spacing paragraph and by block, linebreak-separated' => [
@@ -573,7 +573,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p>paragraph</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<h1>block</h1>',
             ],
             'Paragraph followed by double spacing paragraph and by block' => [
-                '<p>paragraph</p>' . '<p>&nbsp;</p>' . '<p>&nbsp;</p>' . '<h1>block</h1>',
+                '<p>paragraph</p><p>&nbsp;</p><p>&nbsp;</p><h1>block</h1>',
                 '<p>paragraph</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<h1>block</h1>',
             ],
             'Paragraph followed by double spacing paragraph and by block, linebreak-separated' => [
@@ -581,7 +581,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<p>paragraph</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<h1>block</h1>',
             ],
             'Block followed by block' => [
-                '<h1>block1</h1>' . '<h1>block2</h1>',
+                '<h1>block1</h1><h1>block2</h1>',
                 '<h1>block1</h1>' . CRLF . '<h1>block2</h1>',
             ],
             'Block followed by block, linebreak-separated' => [
@@ -589,7 +589,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<h1>block1</h1>' . CRLF . '<h1>block2</h1>',
             ],
             'Block followed by empty paragraph and by block' => [
-                '<h1>block1</h1>' . '<p></p>' . '<h1>block2</h1>',
+                '<h1>block1</h1><p></p><h1>block2</h1>',
                 '<h1>block1</h1>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<h1>block2</h1>',
             ],
             'Block followed by empty paragraph and by block, linebreak-separated' => [
@@ -597,7 +597,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<h1>block1</h1>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<h1>block2</h1>',
             ],
             'Block followed by spacing paragraph and by block' => [
-                '<h1>block1</h1>' . '<p>&nbsp;</p>' . '<h1>block2</h1>',
+                '<h1>block1</h1><p>&nbsp;</p><h1>block2</h1>',
                 '<h1>block1</h1>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<h1>block2</h1>',
             ],
             'Block followed by spacing paragraph and by block, linebreak-separated' => [
@@ -605,7 +605,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<h1>block1</h1>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<h1>block2</h1>',
             ],
             'Block followed by double spacing paragraph and by block' => [
-                '<h1>block1</h1>' . '<p>&nbsp;</p>' . '<p>&nbsp;</p>' . '<h1>block2</h1>',
+                '<h1>block1</h1><p>&nbsp;</p><p>&nbsp;</p><h1>block2</h1>',
                 '<h1>block1</h1>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<h1>block2</h1>',
             ],
             'Block followed by double spacing paragraph and by block, linebreak-separated' => [

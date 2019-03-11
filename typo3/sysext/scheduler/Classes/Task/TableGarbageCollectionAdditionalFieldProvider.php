@@ -82,7 +82,7 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
 
         $fieldName = 'tx_scheduler[scheduler_tableGarbageCollection_allTables]';
         $fieldId = 'task_tableGarbageCollection_allTables';
-        $fieldHtml = '<div class="checkbox"><label><input type="checkbox" ' . $checked . ' name="' . $fieldName . '" ' . 'id="' . $fieldId . '"></label></div>';
+        $fieldHtml = '<div class="checkbox"><label><input type="checkbox" ' . $checked . ' name="' . $fieldName . '" id="' . $fieldId . '"></label></div>';
         $fieldConfiguration = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.allTables',
@@ -127,7 +127,7 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
         $fieldId = 'task_tableGarbageCollection_table';
         $fieldHtml = [];
         // Add table drop down html
-        $fieldHtml[] = '<select class="form-control" name="' . $fieldName . '" ' . $disabled . ' id="' . $fieldId . '">' . implode(LF, $options) . '</select>';
+        $fieldHtml[] = '<select class="form-control" name="' . $fieldName . '"' . $disabled . ' id="' . $fieldId . '">' . implode(LF, $options) . '</select>';
         // Add js array for default 'number of days' values
         $fieldHtml[] = '<script type="text/javascript">/*<![CDATA[*/<!--';
         $fieldHtml[] = 'var defaultNumberOfDays = ' . json_encode($this->defaultNumberOfDays) . ';';
@@ -171,7 +171,7 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
         }
         $fieldName = 'tx_scheduler[scheduler_tableGarbageCollection_numberOfDays]';
         $fieldId = 'task_tableGarbageCollection_numberOfDays';
-        $fieldHtml = '<input class="form-control" type="text" ' . 'name="' . $fieldName . '" ' . 'id="' . $fieldId . '" ' . $disabled . 'value="' . (int)$taskInfo['scheduler_tableGarbageCollection_numberOfDays'] . '" ' . 'size="4">';
+        $fieldHtml = '<input class="form-control" type="text" name="' . $fieldName . '" id="' . $fieldId . '"' . $disabled . ' value="' . (int)$taskInfo['scheduler_tableGarbageCollection_numberOfDays'] . '" size="4">';
         $fieldConfiguration = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.numberOfDays',

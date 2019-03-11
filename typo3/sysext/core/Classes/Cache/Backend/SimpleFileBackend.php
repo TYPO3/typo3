@@ -94,7 +94,7 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
         $this->cacheDirectory = $finalCacheDirectory;
         $this->cacheEntryFileExtension = $cache instanceof PhpFrontend ? '.php' : '';
         if (strlen($this->cacheDirectory) + 23 > PHP_MAXPATHLEN) {
-            throw new Exception('The length of the temporary cache file path "' . $this->cacheDirectory . '" exceeds the ' . 'maximum path length of ' . (PHP_MAXPATHLEN - 23) . '. Please consider ' . 'setting the temporaryDirectoryBase option to a shorter path.', 1248710426);
+            throw new Exception('The length of the temporary cache file path "' . $this->cacheDirectory . '" exceeds the maximum path length of ' . (PHP_MAXPATHLEN - 23) . '. Please consider setting the temporaryDirectoryBase option to a shorter path.', 1248710426);
         }
     }
 

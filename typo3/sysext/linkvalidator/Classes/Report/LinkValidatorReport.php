@@ -718,7 +718,7 @@ class LinkValidatorReport
                         $hookSectionMarker['option'] = '<input type="checkbox"' . $additionalAttr
                             . ' id="' . $prefix . '_SET_' . $type
                             . '" name="' . $prefix . '_SET[' . $type . ']" value="1"'
-                            . ' ' . $checked . '/>' . '<label for="'
+                            . ' ' . $checked . '/><label for="'
                             . $prefix . '_SET_' . $type . '">&nbsp;' . htmlspecialchars($translation) . '</label>';
 
                         $hookSectionContent .= $this->templateService->substituteMarkerArray(

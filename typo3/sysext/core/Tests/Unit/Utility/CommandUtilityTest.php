@@ -64,11 +64,11 @@ class CommandUtilityTest extends UnitTestCase
                 $defaultExpected
             ],
             'separated by char(10)' => [
-                'perl=/usr/bin/perl' . '\'.chr(10).\'' . 'unzip=/usr/local/bin/unzip',
+                'perl=/usr/bin/perl\'.chr(10).\'unzip=/usr/local/bin/unzip',
                 $defaultExpected
             ],
             'separated by LF as string' => [
-                'perl=/usr/bin/perl' . '\' . LF . \'' . 'unzip=/usr/local/bin/unzip',
+                'perl=/usr/bin/perl\' . LF . \'unzip=/usr/local/bin/unzip',
                 $defaultExpected
             ]
         ];

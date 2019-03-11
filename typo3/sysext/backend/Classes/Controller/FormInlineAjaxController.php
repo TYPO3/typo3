@@ -719,7 +719,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         // Substitute FlexForm addition and make parsing a bit easier
         $domObjectId = str_replace('---', ':', $domObjectId);
         // The starting pattern of an object identifier (e.g. "data-<firstPidValue>-<anything>)
-        $pattern = '/^data' . '-' . '(.+?)' . '-' . '(.+)$/';
+        $pattern = '/^data-(.+?)-(.+)$/';
         if (preg_match($pattern, $domObjectId, $match)) {
             return $match[1];
         }

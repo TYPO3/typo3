@@ -2142,7 +2142,7 @@ class DatabaseRecordList
                     $deleteAction = $this->spaceIcon;
                 } else {
                     $title = BackendUtility::getRecordTitle($table, $row);
-                    $warningText = $this->getLanguageService()->getLL($actionName . 'Warning') . ' "' . $title . '" ' . '[' . $table . ':' . $row['uid'] . ']' . $refCountMsg;
+                    $warningText = $this->getLanguageService()->getLL($actionName . 'Warning') . ' "' . $title . '" [' . $table . ':' . $row['uid'] . ']' . $refCountMsg;
 
                     $params = 'cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
                     $icon = $this->iconFactory->getIcon('actions-edit-' . $actionName, Icon::SIZE_SMALL)->render();

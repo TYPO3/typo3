@@ -62,7 +62,7 @@ class SystemStatusUpdateTaskNotificationEmailField extends AbstractAdditionalFie
         // build html for additional email field
         $fieldName = $this->getFullFieldName('notificationEmail');
         $fieldId = 'task_' . $fieldName;
-        $fieldHtml = '<textarea class="form-control" ' . 'rows="5" cols="50" name="tx_scheduler[' . $fieldName . ']" ' . 'id="' . $fieldId . '" ' . '>' . htmlspecialchars($taskInfo[$fieldName]) . '</textarea>';
+        $fieldHtml = '<textarea class="form-control" rows="5" cols="50" name="tx_scheduler[' . $fieldName . ']" id="' . $fieldId . '" >' . htmlspecialchars($taskInfo[$fieldName]) . '</textarea>';
 
         $additionalFields = [];
         $additionalFields[$fieldId] = [

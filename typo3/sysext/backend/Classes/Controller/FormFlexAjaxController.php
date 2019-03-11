@@ -96,7 +96,7 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
         $formData['flexFormContainerIdentifier'] = $flexFormContainerIdentifier;
         $formData['flexFormContainerElementCollapsed'] = false;
 
-        $formData['flexFormFormPrefix'] = '[data][' . $flexFormSheetName . '][lDEF]' . '[' . $flexFormFieldName . ']' . '[el]';
+        $formData['flexFormFormPrefix'] = '[data][' . $flexFormSheetName . '][lDEF][' . $flexFormFieldName . '][el]';
 
         // Set initialized data of that section container from compiler to the array part used
         // by flexFormElementContainer which prepares parameterArray. Important for initialized

@@ -195,7 +195,7 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
         $viewHelper->expects($this->once())->method('renderAdditionalIdentityFields')->will($this->returnValue('additionalIdentityFields'));
         $viewHelper->expects($this->once())->method('renderHiddenReferrerFields')->will($this->returnValue('hiddenReferrerFields'));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('formContent'));
-        $expectedResult =  \chr(10) . '<div>' . 'hiddenIdentityFieldadditionalIdentityFieldshiddenReferrerFields' . \chr(10) . '</div>' . \chr(10) . 'formContent';
+        $expectedResult =  \chr(10) . '<div>hiddenIdentityFieldadditionalIdentityFieldshiddenReferrerFields' . \chr(10) . '</div>' . \chr(10) . 'formContent';
         $this->tagBuilder->expects($this->once())->method('setContent')->with($expectedResult);
         $viewHelper->_set('tag', $this->tagBuilder);
         $viewHelper->render();
@@ -217,7 +217,7 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
         $viewHelper->expects($this->once())->method('renderAdditionalIdentityFields')->will($this->returnValue('additionalIdentityFields'));
         $viewHelper->expects($this->once())->method('renderHiddenReferrerFields')->will($this->returnValue('hiddenReferrerFields'));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('formContent'));
-        $expectedResult =  \chr(10) . '<div class="hidden">' . 'hiddenIdentityFieldadditionalIdentityFieldshiddenReferrerFields' . \chr(10) . '</div>' . \chr(10) . 'formContent';
+        $expectedResult =  \chr(10) . '<div class="hidden">hiddenIdentityFieldadditionalIdentityFieldshiddenReferrerFields' . \chr(10) . '</div>' . \chr(10) . 'formContent';
         $this->tagBuilder->expects($this->once())->method('setContent')->with($expectedResult);
         $viewHelper->setArguments(['hiddenFieldClassName' => 'hidden']);
         $viewHelper->_set('tag', $this->tagBuilder);

@@ -228,7 +228,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                             // Transform empty paragraphs into spacing paragraphs
                             $value = str_replace('<p></p>', '<p>&nbsp;</p>', $value);
                             // Double any trailing spacing paragraph so that it does not get removed by divideIntoLines()
-                            $value = preg_replace('/<p>&nbsp;<\/p>$/', '<p>&nbsp;</p>' . '<p>&nbsp;</p>', $value);
+                            $value = preg_replace('/<p>&nbsp;<\/p>$/', '<p>&nbsp;</p><p>&nbsp;</p>', $value);
                             $value = $this->TS_transform_db($value);
                             break;
                         default:

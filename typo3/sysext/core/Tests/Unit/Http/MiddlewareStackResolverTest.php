@@ -34,9 +34,9 @@ class MiddlewareStackResolverTest extends UnitTestCase
     public function resolveReturnsMiddlewareStack()
     {
         $package1 = $this->prophesize(Package::class);
-        $package1->getPackagePath()->willReturn(__DIR__ . '/' . 'Fixtures/Package1/');
+        $package1->getPackagePath()->willReturn(__DIR__ . '/Fixtures/Package1/');
         $package2 = $this->prophesize(Package::class);
-        $package2->getPackagePath()->willReturn(__DIR__ . '/' . 'Fixtures/Package2/');
+        $package2->getPackagePath()->willReturn(__DIR__ . '/Fixtures/Package2/');
         $packageManagerProphecy = $this->prophesize(PackageManager::class);
         $packageManagerProphecy->getActivePackages()->willReturn([$package1->reveal(), $package2->reveal()]);
         $dependencyOrderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
@@ -86,9 +86,9 @@ class MiddlewareStackResolverTest extends UnitTestCase
     public function resolveAllowsDisablingAMiddleware()
     {
         $package1 = $this->prophesize(Package::class);
-        $package1->getPackagePath()->willReturn(__DIR__ . '/' . 'Fixtures/Package1/');
+        $package1->getPackagePath()->willReturn(__DIR__ . '/Fixtures/Package1/');
         $package2 = $this->prophesize(Package::class);
-        $package2->getPackagePath()->willReturn(__DIR__ . '/' . 'Fixtures/Package2Disables1/');
+        $package2->getPackagePath()->willReturn(__DIR__ . '/Fixtures/Package2Disables1/');
         $packageManagerProphecy = $this->prophesize(PackageManager::class);
         $packageManagerProphecy->getActivePackages()->willReturn([$package1->reveal(), $package2->reveal()]);
         $dependencyOrderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
@@ -115,9 +115,9 @@ class MiddlewareStackResolverTest extends UnitTestCase
     public function resolveAllowsReplacingAMiddleware()
     {
         $package1 = $this->prophesize(Package::class);
-        $package1->getPackagePath()->willReturn(__DIR__ . '/' . 'Fixtures/Package1/');
+        $package1->getPackagePath()->willReturn(__DIR__ . '/Fixtures/Package1/');
         $package2 = $this->prophesize(Package::class);
-        $package2->getPackagePath()->willReturn(__DIR__ . '/' . 'Fixtures/Package2Replaces1/');
+        $package2->getPackagePath()->willReturn(__DIR__ . '/Fixtures/Package2Replaces1/');
         $packageManagerProphecy = $this->prophesize(PackageManager::class);
         $packageManagerProphecy->getActivePackages()->willReturn([$package1->reveal(), $package2->reveal()]);
         $dependencyOrderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);

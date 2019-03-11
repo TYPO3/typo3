@@ -314,7 +314,7 @@ class InlineRecordContainer extends AbstractContainer
 
         $altText = BackendUtility::getRecordIconAltText($rec, $foreignTable);
 
-        $iconImg = '<span title="' . $altText . '" id="' . htmlspecialchars($objectId) . '_icon' . '">' . $this->iconFactory->getIconForRecord($foreignTable, $rec, Icon::SIZE_SMALL)->render() . '</span>';
+        $iconImg = '<span title="' . $altText . '" id="' . htmlspecialchars($objectId) . '_icon">' . $this->iconFactory->getIconForRecord($foreignTable, $rec, Icon::SIZE_SMALL)->render() . '</span>';
         $label = '<span id="' . $objectId . '_label">' . $recordTitle . '</span>';
         $ctrl = $this->renderForeignRecordHeaderControl($data);
         $thumbnail = false;
@@ -552,14 +552,14 @@ class InlineRecordContainer extends AbstractContainer
                     $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:unHide' . ($isPagesTable ? 'Page' : '')));
                     $cells['hide'] = '
                         <a class="btn btn-default hiddenHandle ' . $className . '" href="#" onclick="
-                            ' . htmlspecialchars($onClick) . '"' . 'title="' . $title . '">
+                            ' . htmlspecialchars($onClick) . '" title="' . $title . '">
                             ' . $this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL)->render() . '
                         </a>';
                 } else {
                     $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:hide' . ($isPagesTable ? 'Page' : '')));
                     $cells['hide'] = '
                         <a class="btn btn-default hiddenHandle ' . $className . '" href="#" onclick="
-                            ' . htmlspecialchars($onClick) . '"' . 'title="' . $title . '">
+                            ' . htmlspecialchars($onClick) . '" title="' . $title . '">
                             ' . $this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL)->render() . '
                         </a>';
                 }
@@ -584,7 +584,7 @@ class InlineRecordContainer extends AbstractContainer
         if ($lockInfo = BackendUtility::isRecordLocked($foreignTable, $rec['uid'])) {
             $cells['locked'] = '
 				<a class="btn btn-default" href="#" data-toggle="tooltip" data-title="' . htmlspecialchars($lockInfo['msg']) . '">
-					' . '<span title="' . htmlspecialchars($lockInfo['msg']) . '">' . $this->iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render() . '</span>' . '
+					<span title="' . htmlspecialchars($lockInfo['msg']) . '">' . $this->iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render() . '</span>
 				</a>';
         }
         // Hook: Post-processing of single controls for specific child records:

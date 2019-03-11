@@ -60,7 +60,7 @@ class FlexFormSectionContainer extends AbstractContainer
             $options = $this->data;
             $options['flexFormRowData'] = $existingContainerData['el'];
             $options['flexFormDataStructureArray'] = $containerDataStructure;
-            $options['flexFormFormPrefix'] = $this->data['flexFormFormPrefix'] . '[' . $flexFormFieldName . ']' . '[el]';
+            $options['flexFormFormPrefix'] = $this->data['flexFormFormPrefix'] . '[' . $flexFormFieldName . '][el]';
             $options['flexFormContainerName'] = $existingSectionContainerDataStructureType;
             $options['flexFormContainerIdentifier'] = $flexFormContainerIdentifier;
             $options['flexFormContainerElementCollapsed'] = (bool)$flexFormRowData[$flexFormContainerIdentifier]['_TOGGLE'];

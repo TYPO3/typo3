@@ -363,7 +363,7 @@ class InlineControlContainer extends AbstractContainer
         }
         // Add Drag&Drop functions for sorting to FormEngine::$additionalJS_post
         if (count($sortableRecordUids) > 1 && $config['appearance']['useSortable']) {
-            $resultArray['additionalJavaScriptPost'][] = 'inline.createDragAndDropSorting("' . $nameObject . '_records' . '");';
+            $resultArray['additionalJavaScriptPost'][] = 'inline.createDragAndDropSorting("' . $nameObject . '_records");';
         }
         $resultArray['requireJsModules'] = array_merge($resultArray['requireJsModules'], $this->requireJsModules);
 

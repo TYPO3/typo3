@@ -161,7 +161,7 @@ class ConfigurationStatus implements StatusProviderInterface
         if (!empty($failedConnections)) {
             $value = $this->getLanguageService()->getLL('status_connectionFailed');
             $severity = ReportStatus::WARNING;
-            $message = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.memcache_not_usable') . '<br /><br />' . '<ul><li>' . implode('</li><li>', $failedConnections) . '</li></ul>';
+            $message = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.memcache_not_usable') . '<br /><br /><ul><li>' . implode('</li><li>', $failedConnections) . '</li></ul>';
         }
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_memcachedConfiguration'), $value, $message, $severity);
     }

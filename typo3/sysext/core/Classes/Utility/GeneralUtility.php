@@ -3586,7 +3586,7 @@ class GeneralUtility
     {
         self::checkInstanceClassName($className, $instance);
         if ($instance instanceof SingletonInterface) {
-            throw new \InvalidArgumentException('$instance must not be an instance of TYPO3\\CMS\\Core\\SingletonInterface. ' . 'For setting singletons, please use setSingletonInstance.', 1288969325);
+            throw new \InvalidArgumentException('$instance must not be an instance of TYPO3\\CMS\\Core\\SingletonInterface. For setting singletons, please use setSingletonInstance.', 1288969325);
         }
         if (!isset(self::$nonSingletonInstances[$className])) {
             self::$nonSingletonInstances[$className] = [];

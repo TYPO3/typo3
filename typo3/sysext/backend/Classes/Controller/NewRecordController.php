@@ -607,7 +607,7 @@ class NewRecordController
                                             include $extEmConfFile;
                                             $thisTitle = $EM_CONF[$_EXTKEY]['title'];
                                         }
-                                        $iconFile[$_EXTKEY] = '<img src="' . PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::getExtensionIcon($extPath, true)) . '" ' . 'width="16" height="16" ' . 'alt="' . $thisTitle . '" />';
+                                        $iconFile[$_EXTKEY] = '<img src="' . PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::getExtensionIcon($extPath, true)) . '" width="16" height="16" alt="' . $thisTitle . '" />';
                                     }
                                 }
                                 if (empty($thisTitle)) {

@@ -425,7 +425,7 @@ class ArrayUtility
             } elseif (is_int($value) || is_float($value)) {
                 $lines .= $value . ',' . LF;
             } elseif ($value === null) {
-                $lines .= 'null' . ',' . LF;
+                $lines .= 'null,' . LF;
             } elseif (is_bool($value)) {
                 $lines .= $value ? 'true' : 'false';
                 $lines .= ',' . LF;
@@ -433,7 +433,7 @@ class ArrayUtility
                 // Quote \ to \\
                 // Quote ' to \'
                 $stringContent = str_replace(['\\', '\''], ['\\\\', '\\\''], $value);
-                $lines .= '\'' . $stringContent . '\'' . ',' . LF;
+                $lines .= '\'' . $stringContent . '\',' . LF;
             } else {
                 throw new \RuntimeException('Objects are not supported', 1342294987);
             }

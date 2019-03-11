@@ -117,7 +117,7 @@ class TerUtility
             if (function_exists('gzuncompress')) {
                 $parts[2] = gzuncompress($parts[2]);
             } else {
-                throw new ExtensionManagerException('Decoding Error: No decompressor available for compressed content. gzcompress()/gzuncompress() ' . 'functions are not available!', 1344761814);
+                throw new ExtensionManagerException('Decoding Error: No decompressor available for compressed content. gzcompress()/gzuncompress() functions are not available!', 1344761814);
             }
         }
         if (md5($parts[2]) === $parts[0]) {
@@ -126,7 +126,7 @@ class TerUtility
                 throw new ExtensionManagerException('Error: Content could not be unserialized to an array. Strange (since MD5 hashes match!)', 1344761938);
             }
         } else {
-            throw new ExtensionManagerException('Error: MD5 mismatch. Maybe the extension file was downloaded and saved as a text file by the ' . 'browser and thereby corrupted!? (Always select "All" filetype when saving extensions)', 1344761991);
+            throw new ExtensionManagerException('Error: MD5 mismatch. Maybe the extension file was downloaded and saved as a text file by the browser and thereby corrupted!? (Always select "All" filetype when saving extensions)', 1344761991);
         }
         return $output;
     }

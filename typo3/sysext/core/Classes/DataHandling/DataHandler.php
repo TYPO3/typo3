@@ -5943,7 +5943,7 @@ class DataHandler implements LoggerAwareInterface
         $res = false;
 
         if ($GLOBALS['TCA'][$table] && (int)$id > 0) {
-            $cacheId = 'checkRecordUpdateAccess' . '_' . $table . '_' . $id;
+            $cacheId = 'checkRecordUpdateAccess_' . $table . '_' . $id;
 
             // If information is cached, return it
             $cachedValue = $this->runtimeCache->get($cacheId);
@@ -6069,7 +6069,7 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function doesRecordExist_pageLookUp($id, $perms, $columns = ['uid'])
     {
-        $cacheId = md5('doesRecordExist_pageLookUp' . '_' . $id . '_' . $perms . '_' . implode(
+        $cacheId = md5('doesRecordExist_pageLookUp_' . $id . '_' . $perms . '_' . implode(
             '_',
             $columns
         ) . '_' . (string)$this->admin);

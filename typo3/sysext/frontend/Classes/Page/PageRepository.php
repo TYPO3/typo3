@@ -1309,7 +1309,7 @@ class PageRepository implements LoggerAwareInterface
                 }
             }
         } else {
-            throw new \InvalidArgumentException('There is no entry in the $TCA array for the table "' . $table . '". This means that the function enableFields() is ' . 'called with an invalid table name as argument.', 1283790586);
+            throw new \InvalidArgumentException('There is no entry in the $TCA array for the table "' . $table . '". This means that the function enableFields() is called with an invalid table name as argument.', 1283790586);
         }
 
         return empty($constraints) ? '' : ' AND ' . $expressionBuilder->andX(...$constraints);
