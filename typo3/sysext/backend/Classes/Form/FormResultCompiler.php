@@ -258,8 +258,6 @@ class FormResultCompiler
         $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? ['MM-DD-YYYY', 'HH:mm MM-DD-YYYY'] : ['DD-MM-YYYY', 'HH:mm DD-MM-YYYY']);
         $pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
 
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');
-
         $pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf', 'file_upload');
         if (!empty($this->additionalInlineLanguageLabelFiles)) {
             foreach ($this->additionalInlineLanguageLabelFiles as $additionalInlineLanguageLabelFile) {
