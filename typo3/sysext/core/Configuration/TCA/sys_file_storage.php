@@ -58,7 +58,7 @@ return [
         'is_public' => [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_storage.is_public',
             'config' => [
-                'default' => true,
+                'default' => 1,
                 'type' => 'user',
                 'userFunc' => \TYPO3\CMS\Core\Resource\Service\UserStorageCapabilityService::class . '->renderIsPublic',
             ]
