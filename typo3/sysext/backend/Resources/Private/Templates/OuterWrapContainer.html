@@ -11,7 +11,7 @@
 	</f:be.infobox>
 </f:if>
 
-<div class="typo3-TCEforms">
+<div class="typo3-TCEforms{f:if(condition:isNewRecord, then:' has-change')}">
 	<f:format.raw>{fieldInformationHtml}</f:format.raw>
 	<f:format.raw>{fieldWizardHtml}</f:format.raw>
 	<f:format.raw>{childHtml}</f:format.raw>
