@@ -3410,7 +3410,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $conf TypoScript properties for "split
      * @return string Compiled result
      * @internal
-     * @see stdWrap(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::procesItemStates()
+     * @see stdWrap(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::processItemStates()
      */
     public function splitObj($value, $conf)
     {

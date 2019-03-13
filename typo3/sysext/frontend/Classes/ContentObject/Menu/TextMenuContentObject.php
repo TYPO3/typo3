@@ -23,23 +23,23 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class TextMenuContentObject extends AbstractMenuContentObject
 {
     /**
-     * Calls procesItemStates() so that the common configuration for the menu items are resolved into individual configuration per item.
+     * Calls processItemStates() so that the common configuration for the menu items are resolved into individual configuration per item.
      * Sets the result for the new "normal state" in $this->result
      *
-     * @see AbstractMenuContentObject::procesItemStates()
+     * @see AbstractMenuContentObject::processItemStates()
      */
     public function generate()
     {
-        $NOconf = [];
+        $itemConfiguration = [];
         $splitCount = count($this->menuArr);
         if ($splitCount) {
-            list($NOconf) = $this->procesItemStates($splitCount);
+            $itemConfiguration = $this->processItemStates($splitCount);
         }
         if (!empty($this->mconf['debugItemConf'])) {
-            echo '<h3>$NOconf:</h3>';
-            debug($NOconf);
+            echo '<h3>$itemConfiguration:</h3>';
+            debug($itemConfiguration);
         }
-        $this->result = $NOconf;
+        $this->result = $itemConfiguration;
     }
 
     /**
@@ -209,10 +209,9 @@ class TextMenuContentObject extends AbstractMenuContentObject
      */
     protected function extProc_finish()
     {
-        // stdWrap:
         if (is_array($this->mconf['stdWrap.'])) {
             $this->WMresult = $this->WMcObj->stdWrap($this->WMresult, $this->mconf['stdWrap.']);
         }
-        return $this->WMcObj->wrap($this->WMresult, $this->mconf['wrap']) . $this->WMextraScript;
+        return $this->WMcObj->wrap($this->WMresult, $this->mconf['wrap']);
     }
 }

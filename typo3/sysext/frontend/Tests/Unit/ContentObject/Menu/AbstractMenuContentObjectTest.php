@@ -379,9 +379,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 ['uid' => 1],
                 '',
                 0,
-                '',
-                '',
-                '',
                 ''
             ],
             'standard parameter with access protected setting' => [
@@ -397,9 +394,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 ['uid' => 10],
                 '',
                 0,
-                '',
-                '',
-                '',
                 ''
             ],
             'standard parameter with access protected setting "NONE" casts to boolean linkAccessRestrictedPages (delegates resolving to typoLink method internals)' => [
@@ -415,9 +409,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 ['uid' => 10],
                 '',
                 0,
-                '',
-                '',
-                '',
                 ''
             ],
             'standard parameter with access protected setting (int)67 casts to boolean linkAccessRestrictedPages (delegates resolving to typoLink method internals)' => [
@@ -433,9 +424,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 ['uid' => 10],
                 '',
                 0,
-                '',
-                '',
-                '',
                 ''
             ],
             'standard parameter with target' => [
@@ -452,9 +440,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 ['uid' => 1],
                 '_blank',
                 0,
-                '',
-                '',
-                '',
                 ''
             ],
             'parameter with typeOverride=10' => [
@@ -468,9 +453,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 ],
                 true,
                 ['uid' => 10],
-                '',
-                0,
-                '',
                 '',
                 '',
                 10
@@ -488,11 +470,8 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 true,
                 ['uid' => 10],
                 '_self',
-                0,
                 '',
-                '',
-                '',
-                10
+                '10'
             ],
             'parameter with invalid value in typeOverride=foobar ignores typeOverride' => [
                 [
@@ -507,32 +486,26 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 true,
                 ['uid' => 20],
                 '_self',
-                0,
                 '',
-                '',
-                '',
-                'foobar'
+                'foobar',
+                20
             ],
             'standard parameter with section name' => [
                 [
                     'parameter' => 10,
                     'target' => '_blank',
                     'linkAccessRestrictedPages' => false,
-                    'no_cache' => true,
                     'section' => 'section-name'
                 ],
                 [
                     'showAccessRestrictedPages' => false
                 ],
-                true,
+                false,
                 [
                     'uid' => 10,
                     'sectionIndex_uid' => 'section-name'
                 ],
                 '_blank',
-                1,
-                '',
-                '',
                 '',
                 ''
             ],
@@ -540,46 +513,39 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 [
                     'parameter' => 10,
                     'linkAccessRestrictedPages' => false,
-                    'no_cache' => true,
                     'section' => 'section-name',
                     'additionalParams' => '&test=foobar'
                 ],
                 [
                     'showAccessRestrictedPages' => false
                 ],
-                true,
+                false,
                 [
                     'uid' => 10,
                     'sectionIndex_uid' => 'section-name'
                 ],
                 '',
-                1,
-                '',
-                '',
                 '&test=foobar',
-                ''
+                '',
             ],
             'overridden page array uid value gets used as parameter' => [
                 [
                     'parameter' => 99,
                     'linkAccessRestrictedPages' => false,
-                    'no_cache' => true,
                     'section' => 'section-name'
                 ],
                 [
                     'showAccessRestrictedPages' => false
                 ],
-                true,
+                false,
                 [
                     'uid' => 10,
                     'sectionIndex_uid' => 'section-name'
                 ],
                 '',
-                1,
                 '',
-                ['uid' => 99],
                 '',
-                ''
+                99
             ],
         ];
     }
@@ -592,13 +558,11 @@ class AbstractMenuContentObjectTest extends UnitTestCase
      * @param bool $useCacheHash
      * @param array $page
      * @param mixed $oTarget
-     * @param int $no_cache
-     * @param string $script
-     * @param string $overrideArray
      * @param string $addParams
      * @param string $typeOverride
+     * @param int $overrideId
      */
-    public function menuTypoLinkCreatesExpectedTypoLinkConfiguration(array $expected, array $mconf, $useCacheHash, array $page, $oTarget, $no_cache, $script, $overrideArray = '', $addParams = '', $typeOverride = '')
+    public function menuTypoLinkCreatesExpectedTypoLinkConfiguration(array $expected, array $mconf, $useCacheHash, array $page, $oTarget, $addParams = '', $typeOverride = '', int $overrideId = null)
     {
         $cObject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['typoLink'])
@@ -607,6 +571,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $this->subject->_set('parent_cObj', $cObject);
         $this->subject->_set('mconf', $mconf);
         $this->subject->_set('useCacheHash', $useCacheHash);
-        $this->subject->_call('menuTypoLink', $page, $oTarget, $no_cache, $script, $overrideArray, $addParams, $typeOverride);
+        $this->subject->_call('menuTypoLink', $page, $oTarget, $addParams, $typeOverride, $overrideId);
     }
 }
