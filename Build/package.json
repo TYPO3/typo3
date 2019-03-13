@@ -28,7 +28,7 @@
     "bootstrap-sass": "^3.4.0",
     "bootstrap-slider": "^9.7.3",
     "chosen-js": "^1.7.0",
-    "ckeditor": "^4.11.1",
+    "ckeditor": "^4.11.3",
     "ckeditor-wordcount-plugin": "^1.17.2",
     "codemirror": "^5.40.0",
     "cropper": "^2.3.4",
