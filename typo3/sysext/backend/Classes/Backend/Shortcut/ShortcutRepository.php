@@ -735,7 +735,7 @@ class ShortcutRepository
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // parse the returnUrl and replace the module token of it
-        if (isset($parameters['returnUrl'])) {
+        if (!empty($parameters['returnUrl'])) {
             $parsedReturnUrl = parse_url($parameters['returnUrl']);
             $returnUrlParameters = [];
             parse_str($parsedReturnUrl['query'], $returnUrlParameters);
