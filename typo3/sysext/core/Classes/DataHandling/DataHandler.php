@@ -2600,7 +2600,7 @@ class DataHandler implements LoggerAwareInterface
                     break;
                 case 'domainname':
                     if (!preg_match('/^[a-z0-9.\\-]*$/i', $value)) {
-                        $value = GeneralUtility::idnaEncode($value);
+                        $value = (string)idn_to_ascii($value, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
                     }
                     break;
                 case 'email':

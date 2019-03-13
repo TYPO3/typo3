@@ -257,7 +257,7 @@ class MailMessage extends \Swift_Message
         if (!is_string($email)) {
             return $email;
         }
-        // Split on the last "@" since adresses like "foo@bar"@example.org are valid
+        // Split on the last "@" since addresses like "foo@bar"@example.org are valid
         $atPosition = strrpos($email, '@');
         if (!$atPosition || $atPosition + 1 === strlen($email)) {
             // Return if no @ found or it is placed at the very beginning or end of the email
@@ -265,7 +265,7 @@ class MailMessage extends \Swift_Message
         }
         $domain = substr($email, $atPosition + 1);
         $local = substr($email, 0, $atPosition);
-        $domain = \TYPO3\CMS\Core\Utility\GeneralUtility::idnaEncode($domain);
+        $domain = (string)idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
 
         return $local . '@' . $domain;
     }

@@ -81,20 +81,6 @@ class GeneralUtility
     protected static $applicationContext;
 
     /**
-     * IDNA string cache
-     *
-     * @var array<string>
-     */
-    protected static $idnaStringCache = [];
-
-    /**
-     * IDNA converter
-     *
-     * @var \Mso\IdnaConvert\IdnaConvert
-     */
-    protected static $idnaConverter;
-
-    /**
      * A list of supported CGI server APIs
      * NOTICE: This is a duplicate of the SAME array in SystemEnvironmentBuilder
      * @var array
@@ -856,9 +842,7 @@ class GeneralUtility
      *
      * http://tools.ietf.org/html/rfc3696
      * International characters are allowed in email. So the whole address needs
-     * to be converted to punicode before passing it to filter_var(). We convert
-     * the user- and domain part separately to increase the chance of hitting an
-     * entry in self::$idnaStringCache.
+     * to be converted to punicode before passing it to filter_var().
      *
      * Also the @ sign may appear multiple times in an address. If not used as
      * a boundary marker between the user- and domain part, it must be escaped
@@ -883,9 +867,8 @@ class GeneralUtility
         $domain = substr($email, $atPosition + 1);
         $user = substr($email, 0, $atPosition);
         if (!preg_match('/^[a-z0-9.\\-]*$/i', $domain)) {
-            try {
-                $domain = self::idnaEncode($domain);
-            } catch (\InvalidArgumentException $exception) {
+            $domain = idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+            if ($domain === false) {
                 return false;
             }
         }
@@ -897,17 +880,26 @@ class GeneralUtility
      *
      * @param string $value
      * @return string An ASCII encoded (punicode) string
+     * @deprecated since TYPO3 v10.0, will be removed in TYPO3 v11.0, use PHP's native idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46) function directly.
      */
     public static function idnaEncode($value)
     {
-        if (isset(self::$idnaStringCache[$value])) {
-            return self::$idnaStringCache[$value];
+        trigger_error(__CLASS__ . ':' . __METHOD__ . ' will be removed in TYPO3 v11.0. Use PHPs native "idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46)" function directly instead.', E_USER_DEPRECATED);
+        // Early return in case input is not a string or empty
+        if (!is_string($value) || empty($value)) {
+            return (string)$value;
         }
-        if (!self::$idnaConverter) {
-            self::$idnaConverter = new \Mso\IdnaConvert\IdnaConvert(['idn_version' => 2008]);
+        // Split on the last "@" since addresses like "foo@bar"@example.org are valid where the only focus
+        // is an email address
+        $atPosition = strrpos($value, '@');
+        if ($atPosition !== false) {
+            $domain = substr($value, $atPosition + 1);
+            $local = substr($value, 0, $atPosition);
+            $domain = (string)idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+            // Return if no @ found or it is placed at the very beginning or end of the email
+            return $local . '@' . $domain;
         }
-        self::$idnaStringCache[$value] = self::$idnaConverter->encode($value);
-        return self::$idnaStringCache[$value];
+        return (string)idn_to_ascii($value, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
     }
 
     /**
@@ -990,11 +982,11 @@ class GeneralUtility
             return false;
         }
         if (isset($parsedUrl['host']) && !preg_match('/^[a-z0-9.\\-]*$/i', $parsedUrl['host'])) {
-            try {
-                $parsedUrl['host'] = self::idnaEncode($parsedUrl['host']);
-            } catch (\InvalidArgumentException $exception) {
+            $host = idn_to_ascii($parsedUrl['host'], IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+            if ($host === false) {
                 return false;
             }
+            $parsedUrl['host'] = $host;
         }
         return filter_var(HttpUtility::buildUrl($parsedUrl), FILTER_VALIDATE_URL) !== false;
     }
@@ -3638,7 +3630,6 @@ class GeneralUtility
     public static function flushInternalRuntimeCaches()
     {
         self::$indpEnvCache = [];
-        self::$idnaStringCache = [];
     }
 
     /**

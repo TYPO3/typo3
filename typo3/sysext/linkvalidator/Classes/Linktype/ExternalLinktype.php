@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  */
 
 use GuzzleHttp\Cookie\CookieJar;
-use Mso\IdnaConvert\IdnaConvert;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -208,14 +207,6 @@ class ExternalLinktype extends AbstractLinktype
      */
     protected function preprocessUrl(string $url): string
     {
-        try {
-            return (new IdnaConvert())->encode($url);
-        } catch (\Exception $e) {
-            // in case of any error, return empty url.
-            $this->errorParams['errorType'] = 'exception';
-            $this->errorParams['exception'] = $e->getMessage();
-            $this->errorParams['message'] = $this->getErrorMessage($this->errorParams);
-            return '';
-        }
+        return (string)idn_to_ascii($url, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
     }
 }

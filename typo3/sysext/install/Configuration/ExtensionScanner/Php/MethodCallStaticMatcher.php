@@ -868,4 +868,11 @@ return [
             'Deprecation-87613-DeprecateTYPO3CMSExtbaseUtilityTypeHandlingUtilityhex2bin.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::idnaEncode' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-87894-GeneralUtilityidnaEncode.rst',
+        ],
+    ],
 ];
