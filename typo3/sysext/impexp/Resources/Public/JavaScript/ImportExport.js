@@ -10,35 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-/**
- * Module: TYPO3/CMS/Impexp/ImportExport
- * JavaScript to handle confirm windows in the Import/Export module
- * @exports TYPO3/CMS/Impexp/ImportExport
- */
-define(['jquery', 'TYPO3/CMS/Backend/Modal'], function($, Modal) {
-  'use strict';
-
-  $(function() {
-    $(document).on('click', '.t3js-confirm-trigger', function() {
-      var $button = $(this);
-      Modal.confirm($button.data('title'), $button.data('message'))
-        .on('confirm.button.ok', function() {
-          $('#t3js-submit-field')
-            .attr('name', $button.attr('name'))
-            .closest('form').submit();
-          Modal.currentModal.trigger('modal-dismiss');
-        })
-        .on('confirm.button.cancel', function() {
-          Modal.currentModal.trigger('modal-dismiss');
-        });
-    });
-
-    $('.t3js-impexp-toggledisabled').on('click', function() {
-      var $checkboxes = $('table.t3js-impexp-preview tr[data-active="hidden"] input.t3js-exclude-checkbox');
-      if ($checkboxes.length) {
-        $checkboxes.prop('checked', !$checkboxes.get(0).checked);
-      }
-    });
-  });
-});
+define(["require","exports","jquery","TYPO3/CMS/Backend/Modal"],function(t,e,n,i){"use strict";return new function(){n(function(){n(document).on("click",".t3js-confirm-trigger",function(t){var e=n(t.currentTarget);i.confirm(e.data("title"),e.data("message")).on("confirm.button.ok",function(){n("#t3js-submit-field").attr("name",e.attr("name")).closest("form").submit(),i.currentModal.trigger("modal-dismiss")}).on("confirm.button.cancel",function(){i.currentModal.trigger("modal-dismiss")})}),n(".t3js-impexp-toggledisabled").on("click",function(){var t=n('table.t3js-impexp-preview tr[data-active="hidden"] input.t3js-exclude-checkbox');if(t.length){var e=t.get(0);t.prop("checked",!e.checked)}})})}});
