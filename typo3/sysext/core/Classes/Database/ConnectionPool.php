@@ -237,11 +237,9 @@ class ConnectionPool
     }
 
     /**
-     * Reset internal list of connections. This is an internal method (for now)
-     * currently used in functional tests only to close connections and start
+     * Reset internal list of connections.
+     * Currently primarily used in functional tests to close connections and start
      * new ones in between single tests.
-     *
-     * @internal May be changed or removed any point in time
      */
     public function resetConnections(): void
     {
