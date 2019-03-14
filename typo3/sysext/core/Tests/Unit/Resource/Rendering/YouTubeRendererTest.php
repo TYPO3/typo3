@@ -93,8 +93,8 @@ class YouTubeRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;loop=1&amp;playlist=7331&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 2, 'loop' => 1])
+            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;loop=1&amp;playlist=7331&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 1, 'loop' => 1])
         );
     }
 
@@ -107,8 +107,8 @@ class YouTubeRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 2, 'autoplay' => 1])
+            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
+            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 1, 'autoplay' => 1])
         );
     }
 
@@ -126,8 +126,8 @@ class YouTubeRendererTest extends UnitTestCase
         $fileReferenceMock->expects($this->any())->method('getOriginalFile')->willReturn($fileResourceMock);
 
         $this->assertSame(
-            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
-            $this->subject->render($fileReferenceMock, '300m', '200', ['controls' => 2])
+            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
+            $this->subject->render($fileReferenceMock, '300m', '200', ['controls' => 1])
         );
     }
 
@@ -140,7 +140,7 @@ class YouTubeRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
+            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'autoplay' => 1])
         );
     }
@@ -148,68 +148,68 @@ class YouTubeRendererTest extends UnitTestCase
     public function renderOutputWithControlsDataProvider()
     {
         return [
-            'no options given' => [
-                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            'no options given, visible player controls (default)' => [
+                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
                 []
             ],
             'with option controls = foo as invalid string' => [
-                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
                 ['controls' => 'foo']
             ],
             'with option controls = true as string' => [
-                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
                 ['controls' => 'true']
             ],
             'with option controls = false as string' => [
-                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
                 ['controls' => 'false']
             ],
             'with option controls = true as boolean' => [
-                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
                 ['controls' => true]
             ],
-            'with option controls = false as boolean' => [
-                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            'with option controls = false as boolean, hide player controls' => [
+                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
                 ['controls' => false]
             ],
             'with option controls = 0 as string' => [
-                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
                 ['controls' => '0']
             ],
             'with option controls = 1 as string' => [
-                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
                 ['controls' => '1']
             ],
             'with option controls = 2 as string' => [
-                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
                 ['controls' => '2']
             ],
             'with option controls = 3 as string' => [
-                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
                 ['controls' => '3']
             ],
             'with option controls = negative number as string' => [
-                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
                 ['controls' => '-42']
             ],
             'with option controls = 0 as int' => [
-                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
                 ['controls' => 0]
             ],
             'with option controls = 1 as int' => [
-                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
                 ['controls' => 1]
             ],
             'with option controls = 2 as int' => [
-                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-                ['controls' => 2]
+                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+                ['controls' => 1]
             ],
             'with option controls = 3 as int' => [
-                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
                 ['controls' => 3]
             ],
             'with option controls = negative number as int' => [
-                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+                '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
                 ['controls' => -42]
             ],
         ];
@@ -239,8 +239,8 @@ class YouTubeRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;rel=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 2, 'relatedVideos' => 0])
+            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;rel=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 1, 'relatedVideos' => 0])
         );
     }
 
@@ -253,7 +253,7 @@ class YouTubeRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen foo="bar" custom-play="preload" sanitizetest="&lt;&gt;&quot;&apos;test" width="300" height="200" allow="fullscreen"></iframe>',
+            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen foo="bar" custom-play="preload" sanitizetest="&lt;&gt;&quot;&apos;test" width="300" height="200" allow="fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'additionalAttributes' => ['foo' => 'bar', 'custom-play' => 'preload', '<"\'>sanitize^&test' => '<>"\'test']])
         );
     }
@@ -267,7 +267,7 @@ class YouTubeRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen data-player-handler="youTube" data-custom-playerId="player-123" width="300" height="200" allow="fullscreen"></iframe>',
+            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen data-player-handler="youTube" data-custom-playerId="player-123" width="300" height="200" allow="fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'data' => ['player-handler' => 'youTube', 'custom-playerId' => 'player-123']])
         );
     }
@@ -281,7 +281,7 @@ class YouTubeRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen foo="bar" custom-play="preload" data-player-handler="youTube" data-custom-playerId="player-123" width="300" height="200" allow="fullscreen"></iframe>',
+            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen foo="bar" custom-play="preload" data-player-handler="youTube" data-custom-playerId="player-123" width="300" height="200" allow="fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'data' => ['player-handler' => 'youTube', 'custom-playerId' => 'player-123'], 'additionalAttributes' => ['foo' => 'bar', 'custom-play' => 'preload']])
         );
     }
@@ -295,7 +295,7 @@ class YouTubeRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'no-cookie' => 0])
         );
     }
@@ -309,8 +309,8 @@ class YouTubeRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=2&amp;modestbranding=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 2, 'modestbranding' => 1])
+            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;modestbranding=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 1, 'modestbranding' => 1])
         );
     }
 
@@ -323,7 +323,7 @@ class YouTubeRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="foo; bar"></iframe>',
+            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="foo; bar"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'allow' => 'foo; bar'])
         );
     }
@@ -337,7 +337,7 @@ class YouTubeRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="foo; bar"></iframe>',
+            '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="foo; bar"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'autoplay' => 1, 'allow' => 'foo; bar'])
         );
     }
@@ -358,7 +358,7 @@ class YouTubeRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
-            '<iframe src="https://www.youtube-nocookie.com/embed/7331%3Cscript%3Edanger%3C%2Fscript%3E%27%22random%22quotes%3B?autohide=1&amp;controls=2&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            '<iframe src="https://www.youtube-nocookie.com/embed/7331%3Cscript%3Edanger%3C%2Fscript%3E%27%22random%22quotes%3B?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
             $subject->render($fileResourceMock, '300m', '200')
         );
     }

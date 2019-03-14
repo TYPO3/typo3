@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperInterface;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * YouTube renderer class
@@ -116,8 +115,8 @@ class YouTubeRenderer implements FileRendererInterface
             }
         }
 
-        $options['controls'] = $options['controls'] ?? 2;
-        $options['controls'] = MathUtility::canBeInterpretedAsInteger($options['controls']) ? MathUtility::forceIntegerInRange($options['controls'], 0, 2) : 2;
+        $showPlayerControls = 1;
+        $options['controls'] = (int)!empty($options['controls'] ?? $showPlayerControls);
 
         if (!isset($options['allow'])) {
             $options['allow'] = 'fullscreen';
@@ -154,7 +153,6 @@ class YouTubeRenderer implements FileRendererInterface
         if (!isset($options['enablejsapi']) || !empty($options['enablejsapi'])) {
             $urlParams[] = 'enablejsapi=1&origin=' . rawurlencode(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'));
         }
-        $urlParams[] = 'showinfo=' . (int)!empty($options['showinfo']);
 
         $youTubeUrl = sprintf(
             'https://www.youtube%s.com/embed/%s?%s',
