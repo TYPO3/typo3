@@ -12,7 +12,7 @@ Configuration Overview
 ======================
 
 The main principles of configuring a Rich Text Editor in TYPO3
-apply to editing with any Rich Text Editor (`rte_ckeditor`, `rtehtmlarea`, ...).
+apply to editing with any Rich Text Editor (`rte_ckeditor`, ...).
 
 Some of the functionality (for example the RTE transformations) is
 embedded in the TYPO3 core and not specific to `rte_ckeditor`.
@@ -324,6 +324,10 @@ You can check if this TypoScript snippet is loaded by using
 to see if :typoscript:`lib.parseFunc_RTE` is filled.
 
 .. todo: [SCREENSHOT of TSOB having lib.parseFunc_RTE open]
+
+.. important::
+   If you add your opening and closing tags on an own line, the rendered output
+   includes empty paragraphs at beginning and end.
 
 .. tip::
    In some cases it is an advantage to use the fluid inline notation to output the contents

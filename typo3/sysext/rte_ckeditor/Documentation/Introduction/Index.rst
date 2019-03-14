@@ -38,9 +38,11 @@ CKEditor was officially integrated as the default rich text editor in TYPO3 v8 L
 within an extension called `rte_ckeditor`.
 
 Before TYPO3 v8, a custom fork of “HtmlArea”, another open-source WYSIWYG editor
-was shipped with TYPO3 Core in a separate extension `rtehtmlarea`. The latter
-extension is still fully functional, but must be installed separately
-when updating from previous TYPO3 versions.
+was shipped with TYPO3 Core in a separate extension `rtehtmlarea`. "HtmlArea"
+isn't supported anymore since TYPO3 v9 LTS. You have to migrate to `rte_ckeditor`
+when upgrading from previous TYPO3 versions (=< v8).
+
+It's highly recommended to use CKEditor as the editor in TYPO3 v8 LTS instances.
 
 .. _features:
 
@@ -62,4 +64,6 @@ Some examples of features:
 * Toolbar customization
 * Link functionality: integration with TYPO3 link wizard
 * Softhypen: plugin for adding :kbd:`ctrl` + :kbd:`-` support to insert a conditional word break
+* Wordcount: plugin that counts and shows the chars/words/paragraphs in
+  the footer of the editor. It also supports limiting the max. amount of chars/words.
 

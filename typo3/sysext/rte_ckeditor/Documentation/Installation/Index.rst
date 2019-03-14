@@ -7,12 +7,6 @@
 Installation
 ============
 
-TYPO3 v8
-========
-
-To enable `rte_ckeditor` on an existing installation
-in TYPO3 v8, disable `rtehtmlarea` and enable `rte_ckeditor`.
-
 TYPO3 v9 and higher
 ===================
 
