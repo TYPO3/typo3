@@ -16,7 +16,7 @@ import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 
 enum Identifier {
   toggleAll = '.t3js-toggle-checkboxes',
-  singleItem = '.t3js-checkbox'
+  singleItem = '.t3js-checkbox',
 }
 
 class SelectCheckBoxElement {

@@ -127,7 +127,7 @@ export abstract class AbstractSortableSelectItems {
       } else if (target.classList.contains('t3js-btn-removeoption')) {
         AbstractSortableSelectItems.removeOption(
           fieldElement,
-          <HTMLSelectElement>FormEngine.getFieldElement(relatedFieldName, '_avail').get(0)
+          <HTMLSelectElement>FormEngine.getFieldElement(relatedFieldName, '_avail').get(0),
         );
       }
 

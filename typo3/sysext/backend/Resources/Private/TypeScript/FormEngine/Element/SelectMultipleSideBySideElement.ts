@@ -47,7 +47,7 @@ class SelectMultipleSideBySideElement extends AbstractSortableSelectItems {
               optionElement.textContent,
               optionElement.getAttribute('title'),
               exclusiveValues,
-              $(optionElement)
+              $(optionElement),
             );
           });
         }

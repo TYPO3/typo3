@@ -16,7 +16,7 @@ import * as $ from 'jquery';
 enum Selectors {
   fieldContainerSelector = '.t3js-formengine-field-group',
   filterTextFieldSelector = '.t3js-formengine-multiselect-filter-textfield',
-  filterSelectFieldSelector = '.t3js-formengine-multiselect-filter-dropdown'
+  filterSelectFieldSelector = '.t3js-formengine-multiselect-filter-dropdown',
 }
 
 /**

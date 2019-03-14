@@ -16,7 +16,7 @@ import * as $ from 'jquery';
 enum Selectors {
   toggleSelector = '.t3js-form-field-inputlink-explanation-toggle',
   inputFieldSelector = '.t3js-form-field-inputlink-input',
-  explanationSelector = '.t3js-form-field-inputlink-explanation'
+  explanationSelector = '.t3js-form-field-inputlink-explanation',
 }
 
 class InputLinkElement {

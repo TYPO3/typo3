@@ -14,7 +14,7 @@
 import * as $ from 'jquery';
 
 enum States {
-  CUSTOM = 'custom'
+  CUSTOM = 'custom',
 }
 
 class LocalizationStateSelector {
@@ -62,7 +62,7 @@ class LocalizationStateSelector {
 
         $input.val($me.attr('data-original-language-value')).trigger('change');
         $input.data('last-l10n-state', $me.val());
-      }
+      },
     );
   }
 }
