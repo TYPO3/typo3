@@ -125,7 +125,8 @@ How do I add Custom Plugins?
 
 See `EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yml
 <https://github.com/TYPO3/TYPO3.CMS/blob/9.5/typo3/sysext/rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml>`__
-for a list of plugins, that are already integrated in `rte_ckeditor`.
+for a list of plugins, that are already integrated in `rte_ckeditor`. Besides this, the wordcount plugin was added as
+npm package. You can find it within :file:`typo3/sysext/rte_ckeditor/Resources/Public/JavaScript/Contrib/plugins/wordcount/`.
 
 Additionally, a large number of `plugins <https://ckeditor.com/cke4/addons/plugins/all>`__
 are available and can be freely used.
