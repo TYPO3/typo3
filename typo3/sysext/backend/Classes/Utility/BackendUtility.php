@@ -377,7 +377,7 @@ class BackendUtility
         $beGetRootLineCache = $runtimeCache->get('backendUtilityBeGetRootLine') ?: [];
         $output = [];
         $pid = $uid;
-        $ident = $pid . '-' . $clause . '-' . $workspaceOL . ($additionalFields ? '-' . implode(',', $additionalFields) : '');
+        $ident = $pid . '-' . $clause . '-' . $workspaceOL . ($additionalFields ? '-' . md5(implode(',', $additionalFields)) : '');
         if (is_array($beGetRootLineCache[$ident] ?? false)) {
             $output = $beGetRootLineCache[$ident];
         } else {
@@ -450,7 +450,7 @@ class BackendUtility
     {
         $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
         $pageForRootlineCache = $runtimeCache->get('backendUtilityPageForRootLine') ?: [];
-        $ident = $uid . '-' . $clause . '-' . $workspaceOL;
+        $ident = $uid . '-' . $clause . '-' . $workspaceOL . ($additionalFields ? '-' . md5(implode(',', $additionalFields)) : '');
         if (is_array($pageForRootlineCache[$ident] ?? false)) {
             $row = $pageForRootlineCache[$ident];
         } else {
