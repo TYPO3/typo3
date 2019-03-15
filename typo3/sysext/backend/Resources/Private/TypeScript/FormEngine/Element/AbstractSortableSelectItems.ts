@@ -85,8 +85,10 @@ export abstract class AbstractSortableSelectItems {
   private static removeOption(fieldElement: HTMLSelectElement, availableFieldElement: HTMLSelectElement): void {
     Array.from(fieldElement.querySelectorAll(':checked')).forEach((option: HTMLOptionElement): void => {
       const originalOption = <HTMLOptionElement>availableFieldElement.querySelector('option[value="' + option.value + '"]');
-      originalOption.classList.remove('hidden');
-      originalOption.disabled = false;
+      if (originalOption !== null) {
+        originalOption.classList.remove('hidden');
+        originalOption.disabled = false;
+      }
 
       fieldElement.removeChild(option);
     });
