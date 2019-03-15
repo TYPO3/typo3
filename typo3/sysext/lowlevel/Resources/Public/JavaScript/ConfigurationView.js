@@ -10,28 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-/**
- * Module: TYPO3/CMS/Lowlevel/ConfigurationView
- * JavaScript for Configuration View
- * @exports TYPO3/CMS/Lowlevel/ConfigurationView
- */
-define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable'], function($) {
-
-  var $searchFields = $('input[name="searchString"]');
-  var searchResultShown = ('' !== $searchFields.first().val());
-
-  // make search field clearable
-  $searchFields.clearable({
-    onClear: function() {
-      if (searchResultShown) {
-        $(this).closest('form').submit();
-      }
-    }
-  });
-
-  if (self.location.hash) {
-    // scroll page down, so the just opened subtree is visible after reload and not hidden by doc header
-    $("html, body").scrollTop((document.documentElement.scrollTop || document.body.scrollTop) - 80);
-  }
-});
+define(["require","exports","jquery","TYPO3/CMS/Backend/jquery.clearable"],function(e,s,r){"use strict";return new function(){var e=this;this.$searchFields=r('input[name="searchString"]'),this.searchResultShown=""!==this.$searchFields.first().val(),this.$searchFields.clearable({onClear:function(){e.searchResultShown&&r(e.$searchFields).closest("form").submit()}}),self.location.hash&&r("html, body").scrollTop((document.documentElement.scrollTop||document.body.scrollTop)-80)}});
