@@ -1,0 +1,113 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+import * as $ from 'jquery';
+import LinkBrowser = require('TYPO3/CMS/Recordlist/LinkBrowser');
+import 'ckeditor';
+import Modal = require('TYPO3/CMS/Backend/Modal');
+
+/**
+ * Module: TYPO3/CMS/RteCkeditor/RteLinkBrowser
+ * LinkBrowser communication with parent window
+ */
+class RteLinkBrowser {
+  protected plugin: any = null;
+  protected CKEditor: CKEDITOR.editor = null;
+  protected siteUrl: string = '';
+
+  /**
+   * @param {String} editorId Id of CKEditor
+   */
+  public initialize(editorId: string): void {
+    let editor: CKEDITOR.editor = Modal.currentModal.data('ckeditor');
+    if (typeof editor !== 'undefined') {
+      this.CKEditor = editor;
+    } else {
+      let callerWindow;
+      if (typeof top.TYPO3.Backend !== 'undefined' && typeof top.TYPO3.Backend.ContentContainer.get() !== 'undefined') {
+        callerWindow = top.TYPO3.Backend.ContentContainer.get();
+      } else {
+        callerWindow = window.parent;
+      }
+
+      $.each(callerWindow.CKEDITOR.instances, (name: number, instance: any): void => {
+        if (instance.id === editorId) {
+          this.CKEditor = instance;
+        }
+      });
+    }
+
+    // siteUrl etc are added as data attributes to the body tag
+    $.extend(RteLinkBrowser, $('body').data());
+
+    $('.t3js-class-selector').on('change', (): void => {
+      if ($('option:selected', this).data('linkTitle')) {
+        $('.t3js-linkTitle').val($('option:selected', this).data('linkTitle'));
+      }
+    });
+
+    $('.t3js-removeCurrentLink').on('click', (event: JQueryEventObject): void => {
+      event.preventDefault();
+      this.CKEditor.execCommand('unlink');
+      Modal.dismiss();
+    });
+  }
+
+  /**
+   * Store the final link
+   *
+   * @param {String} link The select element or anything else which identifies the link (e.g. "page:<pageUid>" or "file:<uid>")
+   */
+  public finalizeFunction(link: string): void {
+    const linkElement = this.CKEditor.document.createElement('a');
+    const attributes = LinkBrowser.getLinkAttributeValues();
+    const params = attributes.params ? attributes.params : '';
+
+    if (attributes.target) {
+      linkElement.setAttribute('target', attributes.target);
+    }
+    if (attributes.class) {
+      linkElement.setAttribute('class', attributes.class);
+    }
+    if (attributes.title) {
+      linkElement.setAttribute('title', attributes.title);
+    }
+    delete attributes.title;
+    delete attributes.class;
+    delete attributes.target;
+    delete attributes.params;
+
+    $.each(attributes, (attrName: string, attrValue: string): void => {
+      linkElement.setAttribute(attrName, attrValue);
+    });
+
+    linkElement.setAttribute('href', link + params);
+
+    const selection = this.CKEditor.getSelection();
+    if (selection && selection.getSelectedText() === '') {
+      selection.selectElement(selection.getStartElement());
+    }
+    if (selection && selection.getSelectedText()) {
+      linkElement.setText(selection.getSelectedText());
+    } else {
+      linkElement.setText(linkElement.getAttribute('href'));
+    }
+    this.CKEditor.insertElement(linkElement);
+
+    Modal.dismiss();
+  }
+}
+
+let rteLinkBrowser = new RteLinkBrowser();
+export = rteLinkBrowser;
+LinkBrowser.finalizeFunction = (link: string): void => { rteLinkBrowser.finalizeFunction(link); };

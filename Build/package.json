@@ -16,7 +16,7 @@
     "@types/bootstrap": "^3.3.34",
     "@types/chosen-js": "^1.8.1",
     "@types/chrome": "^0.0.69",
-    "@types/ckeditor": "4.9.1",
+    "@types/ckeditor": "^4.9.8",
     "@types/datatables.net": "^1.10.17",
     "@types/imagesloaded": "^4.1.1",
     "@types/jasmine": "^2.5.53",

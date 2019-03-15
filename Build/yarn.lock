@@ -30,10 +30,10 @@
   dependencies:
     "@types/filesystem" "*"
 
-"@types/ckeditor@4.9.1":
-  version "4.9.1"
-  resolved "https://registry.yarnpkg.com/@types/ckeditor/-/ckeditor-4.9.1.tgz#d8e81fb840c3f248772ab90efd508b6061cbd138"
-  integrity sha512-32BCMWLSSSkBKXf57cN/1Xv7VKXNOKXW5YPo3D2igCaevDAiiVtuMwPOFzOeO+5/CkGd4zt/Rf9RXl1J/vUsRA==
+"@types/ckeditor@^4.9.8":
+  version "4.9.8"
+  resolved "https://registry.yarnpkg.com/@types/ckeditor/-/ckeditor-4.9.8.tgz#2585bfea409c0d9e970d04611fb22726c6a6d219"
+  integrity sha512-UM2t8mRul1vT/Al3c1L5elal925YstzcBQHLHk+hVvEoFOUkQKokePnGgD1L7K9n4h3hoPDDwc5jEKeUU3UxMw==
 
 "@types/datatables.net@^1.10.17":
   version "1.10.17"
