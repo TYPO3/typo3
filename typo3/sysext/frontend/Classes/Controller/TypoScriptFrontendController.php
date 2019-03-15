@@ -2242,7 +2242,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * This is used to cache pages with more parameters than just id and type.
      *
      * @see reqCHash()
-     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. This validation is done in the PageParameterValidator PSR-15 middleware.
+     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0. This validation is done in the PageArgumentValidator PSR-15 middleware.
      */
     public function makeCacheHash()
     {
