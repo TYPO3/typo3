@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import * as $ from 'jquery';
 import {SeverityEnum} from './Enum/Severity';
 import Severity = require('./Severity');
 
@@ -29,7 +30,7 @@ class Notification {
    * @param {string} message
    * @param {number} duration
    */
-  public static notice(title: string, message: string, duration: number): void {
+  public static notice(title: string, message?: string, duration?: number): void {
     Notification.showMessage(title, message, SeverityEnum.notice, duration);
   }
 
@@ -40,7 +41,7 @@ class Notification {
    * @param {string} message
    * @param {number} duration
    */
-  public static info(title: string, message: string, duration: number): void {
+  public static info(title: string, message?: string, duration?: number): void {
     Notification.showMessage(title, message, SeverityEnum.info, duration);
   }
 
@@ -51,7 +52,7 @@ class Notification {
    * @param {string} message
    * @param {number} duration
    */
-  public static success(title: string, message: string, duration: number): void {
+  public static success(title: string, message?: string, duration?: number): void {
     Notification.showMessage(title, message, SeverityEnum.ok, duration);
   }
 
@@ -62,7 +63,7 @@ class Notification {
    * @param {string} message
    * @param {number} duration
    */
-  public static warning(title: string, message: string, duration: number): void {
+  public static warning(title: string, message?: string, duration?: number): void {
     Notification.showMessage(title, message, SeverityEnum.warning, duration);
   }
 
@@ -73,7 +74,7 @@ class Notification {
    * @param {string} message
    * @param {number} duration
    */
-  public static error(title: string, message: string, duration: number = 0): void {
+  public static error(title: string, message?: string, duration: number = 0): void {
     Notification.showMessage(title, message, SeverityEnum.error, duration);
   }
 
@@ -84,8 +85,8 @@ class Notification {
    * @param {number} duration
    */
   public static showMessage(title: string,
-                            message: string,
-                            severity: SeverityEnum,
+                            message?: string,
+                            severity: SeverityEnum = SeverityEnum.info,
                             duration: number | string = this.duration): void {
     const className = Severity.getCssClass(severity);
     let icon = '';
@@ -116,26 +117,26 @@ class Notification {
       );
 
     if (this.messageContainer === null) {
-      this.messageContainer = $('<div id="alert-container"></div>').appendTo('body');
+      this.messageContainer = $('<div>', {'id': 'alert-container'}).appendTo('body');
     }
     const $box = $(
       '<div class="alert alert-' + className + ' alert-dismissible fade" role="alert">' +
-      '<button type="button" class="close" data-dismiss="alert">' +
-      '<span aria-hidden="true"><i class="fa fa-times-circle"></i></span>' +
-      '<span class="sr-only">Close</span>' +
-      '</button>' +
-      '<div class="media">' +
-      '<div class="media-left">' +
-      '<span class="fa-stack fa-lg">' +
-      '<i class="fa fa-circle fa-stack-2x"></i>' +
-      '<i class="fa fa-' + icon + ' fa-stack-1x"></i>' +
-      '</span>' +
-      '</div>' +
-      '<div class="media-body">' +
-      '<h4 class="alert-title"></h4>' +
-      '<p class="alert-message text-pre-wrap"></p>' +
-      '</div>' +
-      '</div>' +
+        '<button type="button" class="close" data-dismiss="alert">' +
+          '<span aria-hidden="true"><i class="fa fa-times-circle"></i></span>' +
+          '<span class="sr-only">Close</span>' +
+        '</button>' +
+        '<div class="media">' +
+          '<div class="media-left">' +
+            '<span class="fa-stack fa-lg">' +
+              '<i class="fa fa-circle fa-stack-2x"></i>' +
+              '<i class="fa fa-' + icon + ' fa-stack-1x"></i>' +
+            '</span>' +
+          '</div>' +
+          '<div class="media-body">' +
+            '<h4 class="alert-title"></h4>' +
+            '<p class="alert-message text-pre-wrap"></p>' +
+          '</div>' +
+        '</div>' +
       '</div>',
     );
     $box.find('.alert-title').text(title);
