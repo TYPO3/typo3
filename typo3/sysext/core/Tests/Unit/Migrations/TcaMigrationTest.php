@@ -175,4 +175,42 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         $this->assertEquals($expected, $subject->migrate($input));
     }
+
+    /**
+     * @test
+     */
+    public function ctrlSetToDefaultOnCopyIsRemoved()
+    {
+        $input = [
+            'aTable' => [
+                'ctrl' => [
+                    'title' => 'aField',
+                    'setToDefaultOnCopy' => 'aField,anotherField',
+                ],
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'none',
+                        ],
+                    ],
+                ]
+            ]
+        ];
+        $expected = [
+            'aTable' => [
+                'ctrl' => [
+                    'title' => 'aField',
+                ],
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'none',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $subject = new TcaMigration();
+        $this->assertEquals($expected, $subject->migrate($input));
+    }
 }

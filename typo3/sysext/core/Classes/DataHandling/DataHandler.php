@@ -3149,8 +3149,6 @@ class DataHandler implements LoggerAwareInterface
         $theNewID = StringUtility::getUniqueId('NEW');
         $enableField = isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']) ? $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] : '';
         $headerField = $GLOBALS['TCA'][$table]['ctrl']['label'];
-        // Getting default data:
-        $defaultData = $this->newFieldArray($table);
         // Getting "copy-after" fields if applicable:
         $copyAfterFields = $destPid < 0 ? $this->fixCopyAfterDuplFields($table, $uid, abs($destPid), 0) : [];
         // Page TSconfig related:
@@ -3159,7 +3157,6 @@ class DataHandler implements LoggerAwareInterface
         $TSConfig = BackendUtility::getPagesTSconfig($tscPID)['TCEMAIN.'] ?? [];
         $tE = $this->getTableEntries($table, $TSConfig);
         // Traverse ALL fields of the selected record:
-        $setDefaultOnCopyArray = array_flip(GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['setToDefaultOnCopy']));
         foreach ($row as $field => $value) {
             if (!in_array($field, $nonFields, true)) {
                 // Get TCA configuration for the field:
@@ -3176,8 +3173,6 @@ class DataHandler implements LoggerAwareInterface
                 } elseif (array_key_exists($field, $copyAfterFields)) {
                     // Copy-after value if available:
                     $value = $copyAfterFields[$field];
-                } elseif ($GLOBALS['TCA'][$table]['ctrl']['setToDefaultOnCopy'] && isset($setDefaultOnCopyArray[$field])) {
-                    $value = $defaultData[$field];
                 } else {
                     // Hide at copy may override:
                     if ($first && $field == $enableField && $GLOBALS['TCA'][$table]['ctrl']['hideAtCopy'] && !$this->neverHideAtCopy && !$tE['disableHideAtCopy']) {

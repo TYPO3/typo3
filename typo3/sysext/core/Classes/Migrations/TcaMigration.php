@@ -50,6 +50,7 @@ class TcaMigration
         $tca = $this->migrateLocalizeChildrenAtParentLocalization($tca);
         $tca = $this->migratePagesLanguageOverlayRemoval($tca);
         $tca = $this->removeSelIconFieldPath($tca);
+        $tca = $this->removeSetToDefaultOnCopy($tca);
 
         return $tca;
     }
@@ -183,6 +184,25 @@ class TcaMigration
                     . '[ctrl][selicon_field_path] which should be removed from TCA, '
                     . 'as it is not in use anymore.';
                 unset($configuration['ctrl']['selicon_field_path']);
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * Removes $TCA[$mytable][ctrl][setToDefaultOnCopy]
+     *
+     * @param array $tca
+     * @return array the modified TCA structure
+     */
+    protected function removeSetToDefaultOnCopy(array $tca): array
+    {
+        foreach ($tca as $table => &$configuration) {
+            if (isset($configuration['ctrl']['setToDefaultOnCopy'])) {
+                $this->messages[] = 'The TCA table \'' . $table . '\' defines '
+                    . '[ctrl][setToDefaultOnCopy] which should be removed from TCA, '
+                    . 'as it is not in use anymore.';
+                unset($configuration['ctrl']['setToDefaultOnCopy']);
             }
         }
         return $tca;
