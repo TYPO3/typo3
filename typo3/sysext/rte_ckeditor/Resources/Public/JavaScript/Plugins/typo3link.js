@@ -36,7 +36,7 @@
       // Override doubleclick opening default link dialog
       editor.on('doubleclick', function(evt) {
         var element = CKEDITOR.plugins.link.getSelectedLink(editor) || evt.data.element;
-        if (!element.isReadOnly() && element.is('a') && element.getAttribute('href')) {
+        if (!element.isReadOnly() && element.is('a')) {
           evt.stop();
           openLinkBrowser(editor, element);
         }
