@@ -49,6 +49,7 @@ class TcaMigration
         $tca = $this->migrateColumnsConfig($tca);
         $tca = $this->migrateLocalizeChildrenAtParentLocalization($tca);
         $tca = $this->migratePagesLanguageOverlayRemoval($tca);
+        $tca = $this->removeSelIconFieldPath($tca);
 
         return $tca;
     }
@@ -164,6 +165,25 @@ class TcaMigration
                 . ' not used anymore and has been removed automatically in'
                 . ' order to avoid negative side-effects.';
             unset($tca['pages_language_overlay']);
+        }
+        return $tca;
+    }
+
+    /**
+     * Removes $TCA[$mytable][ctrl][selicon_field_path]
+     *
+     * @param array $tca
+     * @return array the modified TCA structure
+     */
+    protected function removeSelIconFieldPath(array $tca): array
+    {
+        foreach ($tca as $table => &$configuration) {
+            if (isset($configuration['ctrl']['selicon_field_path'])) {
+                $this->messages[] = 'The TCA table \'' . $table . '\' defines '
+                    . '[ctrl][selicon_field_path] which should be removed from TCA, '
+                    . 'as it is not in use anymore.';
+                unset($configuration['ctrl']['selicon_field_path']);
+            }
         }
         return $tca;
     }

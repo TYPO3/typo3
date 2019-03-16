@@ -481,7 +481,6 @@ abstract class AbstractItemProvider
             $labelPrefix = $languageService->sL($labelPrefix);
         }
 
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
 
         while ($foreignRow = $queryResult->fetch()) {
@@ -506,19 +505,6 @@ abstract class AbstractItemProvider
                     if (is_array($references) && !empty($references)) {
                         $icon = reset($references);
                         $icon = $icon->getPublicUrl();
-                    }
-                } else {
-                    $iconPath = '';
-                    if (!empty($GLOBALS['TCA'][$foreignTable]['ctrl']['selicon_field_path'])) {
-                        $iconPath = $GLOBALS['TCA'][$foreignTable]['ctrl']['selicon_field_path'];
-                    }
-                    if ($iconFieldName && $iconPath && $foreignRow[$iconFieldName]) {
-                        // Prepare the row icon if available
-                        $iParts = GeneralUtility::trimExplode(',', $foreignRow[$iconFieldName], true);
-                        $icon = $iconPath . '/' . trim($iParts[0]);
-                    } else {
-                        // Else, determine icon based on record type, or a generic fallback
-                        $icon = $iconFactory->mapRecordTypeToIconIdentifier($foreignTable, $foreignRow);
                     }
                 }
                 // Add the item

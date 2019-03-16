@@ -120,7 +120,6 @@ class TcaSelectTreeItemsTest extends UnitTestCase
 
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
         $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
@@ -190,7 +189,6 @@ class TcaSelectTreeItemsTest extends UnitTestCase
         $GLOBALS['TCA']['foreignTable'] = [];
 
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
         $fileRepositoryProphecy = $this->prophesize(FileRepository::class);

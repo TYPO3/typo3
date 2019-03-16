@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\RelationHandler;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -1683,9 +1682,6 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $GLOBALS['TCA']['fTable'] = [];
 
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
-
         $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
         GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
@@ -1776,9 +1772,6 @@ class TcaSelectItemsTest extends UnitTestCase
         ];
 
         $GLOBALS['TCA']['fTable'] = [];
-
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
         $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
@@ -1930,9 +1923,6 @@ class TcaSelectItemsTest extends UnitTestCase
             'columns' => [],
         ];
 
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
-
         $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
         GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
@@ -2026,15 +2016,11 @@ class TcaSelectItemsTest extends UnitTestCase
             'ctrl' => [
                 'label' => 'icon',
                 'selicon_field' => 'icon',
-                'selicon_field_path' => 'uploads/media',
             ],
             'columns' =>[
                 'icon' => [],
             ],
         ];
-
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
         $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
@@ -2075,7 +2061,7 @@ class TcaSelectItemsTest extends UnitTestCase
             0 => [
                 0 => 'foo.jpg',
                 1 => 1,
-                2 => 'uploads/media/foo.jpg', // combination of selicon_field_path and the row value of field 'icon'
+                2 => null,
                 3 => null,
             ],
         ];
@@ -2880,9 +2866,6 @@ class TcaSelectItemsTest extends UnitTestCase
     {
         $GLOBALS['TCA']['foreignTable'] = [];
 
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
-
         $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
         GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
@@ -2944,9 +2927,6 @@ class TcaSelectItemsTest extends UnitTestCase
     {
         $GLOBALS['TCA']['foreignTable'] = [];
 
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
-
         $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
         GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
@@ -3005,9 +2985,6 @@ class TcaSelectItemsTest extends UnitTestCase
     public function processSelectFieldValueRemovesInvalidDynamicValues()
     {
         $GLOBALS['TCA']['foreignTable'] = [];
-
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
         $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
@@ -3470,9 +3447,6 @@ class TcaSelectItemsTest extends UnitTestCase
         $fieldConfig = $input['processedTca']['columns']['aField']['config'];
 
         $GLOBALS['TCA'][$foreignTable] = [];
-
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
         $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();

@@ -137,4 +137,42 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         $this->assertEquals($expected, $subject->migrate($input));
     }
+
+    /**
+     * @test
+     */
+    public function ctrlSelIconFieldPathIsRemoved()
+    {
+        $input = [
+            'aTable' => [
+                'ctrl' => [
+                    'selicon_field' => 'aField',
+                    'selicon_field_path' => 'my/folder'
+                ],
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'none',
+                        ],
+                    ],
+                ]
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'ctrl' => [
+                    'selicon_field' => 'aField'
+                ],
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'none',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $subject = new TcaMigration();
+        $this->assertEquals($expected, $subject->migrate($input));
+    }
 }
