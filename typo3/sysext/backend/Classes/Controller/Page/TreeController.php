@@ -355,14 +355,17 @@ class TreeController
         $userTsConfig = $this->getBackendUser()->getTSConfig();
         $excludedDocumentTypes = GeneralUtility::intExplode(',', $userTsConfig['options.']['pageTree.']['excludeDoktypes'] ?? '', true);
 
-        $additionalPageTreeQueryRestrictions = [];
+        $additionalQueryRestrictions = [];
         if (!empty($excludedDocumentTypes)) {
-            foreach ($excludedDocumentTypes as $excludedDocumentType) {
-                $additionalPageTreeQueryRestrictions[] = new DocumentTypeExclusionRestriction((int)$excludedDocumentType);
-            }
+            $additionalQueryRestrictions[] = $this->retrieveDocumentTypeExclusionRestriction($excludedDocumentTypes);
         }
 
-        $repository = GeneralUtility::makeInstance(PageTreeRepository::class, (int)$backendUser->workspace, [], $additionalPageTreeQueryRestrictions);
+        $repository = GeneralUtility::makeInstance(
+            PageTreeRepository::class,
+            (int)$backendUser->workspace,
+            [],
+            $additionalQueryRestrictions
+        );
 
         $entryPoints = (int)($backendUser->uc['pageTree_temporaryMountPoint'] ?? 0);
         if ($entryPoints > 0) {
@@ -411,6 +414,19 @@ class TreeController
         }
 
         return $entryPoints;
+    }
+
+    /**
+     * @param int[] $excludedDocumentTypes
+     * @return DocumentTypeExclusionRestriction|null
+     */
+    protected function retrieveDocumentTypeExclusionRestriction(array $excludedDocumentTypes): ?DocumentTypeExclusionRestriction
+    {
+        if (empty($excludedDocumentTypes)) {
+            return null;
+        }
+
+        return GeneralUtility::makeInstance(DocumentTypeExclusionRestriction::class, $excludedDocumentTypes);
     }
 
     /**
