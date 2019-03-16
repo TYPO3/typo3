@@ -60,7 +60,6 @@ class ReferenceIndex implements LoggerAwareInterface
      */
     protected static $excludedTables = [
         'sys_log' => true,
-        'sys_history' => true,
         'tx_extensionmanager_domain_model_extension' => true
     ];
 

@@ -334,6 +334,8 @@ CREATE TABLE sys_collection_entries (
 # Table structure for table 'sys_history'
 #
 CREATE TABLE sys_history (
+	uid int(11) unsigned NOT NULL auto_increment,
+	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	actiontype tinyint(3) DEFAULT '0' NOT NULL,
 	usertype varchar(2) DEFAULT 'BE' NOT NULL,
 	userid int(11) unsigned,
@@ -343,6 +345,7 @@ CREATE TABLE sys_history (
 	history_data mediumtext,
 	workspace int(11) DEFAULT '0',
 
+	PRIMARY KEY (uid),
 	KEY recordident_1 (tablename(100),recuid),
 	KEY recordident_2 (tablename(100),tstamp)
 ) ENGINE=InnoDB;

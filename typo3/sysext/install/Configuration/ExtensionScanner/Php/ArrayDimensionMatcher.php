@@ -246,4 +246,9 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TCA\'][\'sys_history\']' => [
+        'restFiles' => [
+            'Breaking-87936-TCAForSysHistoryRemoved.rst',
+        ],
+    ],
 ];
