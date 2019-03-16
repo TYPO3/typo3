@@ -24,16 +24,20 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 class DocumentTypeExclusionRestriction implements QueryRestrictionInterface
 {
     /**
-     * @var int
+     * @var int[]
      */
-    protected $doktype;
+    protected $doktypes;
 
     /**
-     * @param int $doktype
+     * @param int[]|int $doktype
      */
-    public function __construct(int $doktype)
+    public function __construct($doktype)
     {
-        $this->doktype = (int)$doktype;
+        if (is_array($doktype)) {
+            $this->doktypes = $doktype;
+        } else {
+            $this->doktypes = [$doktype];
+        }
     }
 
     /**
@@ -52,7 +56,7 @@ class DocumentTypeExclusionRestriction implements QueryRestrictionInterface
                 continue;
             }
 
-            $constraints[] = $expressionBuilder->neq($tableAlias . '.doktype', $this->doktype);
+            $constraints[] = $expressionBuilder->notIn($tableAlias . '.doktype', $this->doktypes);
         }
 
         return $expressionBuilder->andX(...$constraints);
