@@ -58,6 +58,8 @@ class TcaMigration
         $tca = $this->removeExcludeFieldForTransOrigPointerField($tca);
         $tca = $this->removeShowRecordFieldListField($tca);
         $tca = $this->removeWorkspacePlaceholderShadowColumnsConfiguration($tca);
+        $tca = $this->migrateLanguageFieldToTcaTypeLanguage($tca);
+        $tca = $this->migrateSpecialLanguagesToTcaTypeLanguage($tca);
 
         return $tca;
     }
@@ -255,23 +257,27 @@ class TcaMigration
      */
     protected function sanitizeControlSectionIntegrity(array $tca): array
     {
-        $controlSectionNames = [
-            'origUid',
-            'languageField',
-            'transOrigPointerField',
-            'translationSource'
+        $defaultControlSectionColumnConfig = [
+            'type' => 'passthrough',
+            'default' => 0,
         ];
+        $controlSectionNames = [
+            'origUid' => $defaultControlSectionColumnConfig,
+            'languageField' => [
+                'type' => 'language'
+            ],
+            'transOrigPointerField' => $defaultControlSectionColumnConfig,
+            'translationSource' => $defaultControlSectionColumnConfig,
+        ];
+
         foreach ($tca as $tableName => &$configuration) {
-            foreach ($controlSectionNames as $controlSectionName) {
+            foreach ($controlSectionNames as $controlSectionName => $controlSectionColumnConfig) {
                 $columnName = $configuration['ctrl'][$controlSectionName] ?? null;
                 if (empty($columnName) || !empty($configuration['columns'][$columnName])) {
                     continue;
                 }
                 $configuration['columns'][$columnName] = [
-                    'config' => [
-                        'type' => 'passthrough',
-                        'default' => 0,
-                    ],
+                    'config' => $controlSectionColumnConfig
                 ];
             }
         }
@@ -348,6 +354,63 @@ class TcaMigration
                 unset($configuration['ctrl']['shadowColumnsForMovePlaceholders']);
             }
         }
+        return $tca;
+    }
+
+    /**
+     * Replaces $TCA[$mytable][columns][$TCA[$mytable][ctrl][languageField]][config] with
+     * $TCA[$mytable][columns][$TCA[$mytable][ctrl][languageField]][config][type] = 'language'
+     *
+     * @param array $tca
+     * @return array
+     */
+    protected function migrateLanguageFieldToTcaTypeLanguage(array $tca): array
+    {
+        foreach ($tca as $table => &$configuration) {
+            if (isset($configuration['ctrl']['languageField'], $configuration['columns'][$configuration['ctrl']['languageField']])
+                && ($configuration['columns'][$configuration['ctrl']['languageField']]['config']['type'] ?? '') !== 'language'
+            ) {
+                $this->messages[] = 'The TCA field \'' . $configuration['ctrl']['languageField'] . '\' '
+                    . 'of table \'' . $table . '\' is defined as the \'languageField\' and should '
+                    . 'therefore use the TCA type \'language\' instead of TCA type \'select\' with '
+                    . '\'foreign_table=sys_language\' or \'special=languages\'.';
+                $configuration['columns'][$configuration['ctrl']['languageField']]['config'] = [
+                    'type' => 'language'
+                ];
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * Replaces $TCA[$mytable][columns][field][config][special] = 'languages' with
+     * $TCA[$mytable][columns][field][config][type] = 'language'
+     *
+     * @param array $tca
+     * @return array
+     */
+    protected function migrateSpecialLanguagesToTcaTypeLanguage(array $tca): array
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'select'
+                    || (string)($fieldConfig['config']['special'] ?? '') !== 'languages'
+                ) {
+                    continue;
+                }
+                $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' is '
+                    . 'defined as type \'select\' with the \'special=languages\' option. This is not '
+                    . 'evaluated anymore and should be replaced by the TCA type \'language\'.';
+                $fieldConfig['config'] = [
+                    'type' => 'language'
+                ];
+            }
+        }
+
         return $tca;
     }
 }

@@ -174,7 +174,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
-                'special' => 'languages',
+                'itemsProcFunc' => \TYPO3\CMS\Core\Localization\TcaSystemLanguageCollector::class . '->populateAvailableSiteLanguages',
             ]
         ],
         'custom_options' => [

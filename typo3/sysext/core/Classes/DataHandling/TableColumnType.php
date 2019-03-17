@@ -34,6 +34,7 @@ final class TableColumnType extends Enumeration
     const SELECT = 'SELECT';
     const GROUP = 'GROUP';
     const NONE = 'NONE';
+    const LANGUAGE = 'LANGUAGE';
     const PASSTHROUGH = 'PASSTHROUGH';
     const USER = 'USER';
     const FLEX = 'FLEX';

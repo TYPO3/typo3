@@ -297,16 +297,7 @@ return [
         'sys_language_uid' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'foreign_table' => 'sys_language',
-                'items' => [], // no default language here, as the pages table is always the default language
-                'default' => 0,
-                'fieldWizard' => [
-                    'selectIcons' => [
-                        'disabled' => false,
-                    ],
-                ],
+                'type' => 'language'
             ]
         ],
         'l10n_diffsource' => [

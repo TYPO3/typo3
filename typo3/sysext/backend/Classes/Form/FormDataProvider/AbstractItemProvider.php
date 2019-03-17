@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -276,48 +275,6 @@ abstract class AbstractItemProvider
                         }
                     }
                 }
-                break;
-            case $special === 'languages':
-                $allLanguages = [];
-                if (($result['effectivePid'] ?? 0) === 0) {
-                    // This provides a list of all languages available for ALL sites
-                    // Due to the nature of the "sys_language_uid" field having no meaning currently,
-                    // We preserve the language ID and make a list of all languages
-                    $sites = $this->getAllSites();
-                    foreach ($sites as $site) {
-                        foreach ($site->getAllLanguages() as $language) {
-                            $languageId = $language->getLanguageId();
-                            if (isset($allLanguages[$languageId])) {
-                                // Language already provided by another site, just add the label separately
-                                $allLanguages[$languageId][0] .= ', ' . $language->getTitle() . ' [Site: ' . $site->getIdentifier() . ']';
-                            } else {
-                                $allLanguages[$languageId] = [
-                                    0 => $language->getTitle() . ' [Site: ' . $site->getIdentifier() . ']',
-                                    1 => $languageId,
-                                    2 => $language->getFlagIdentifier()
-                                ];
-                            }
-                        }
-                    }
-                    ksort($allLanguages);
-                }
-                if (!empty($allLanguages)) {
-                    foreach ($allLanguages as $item) {
-                        $items[] = $item;
-                    }
-                } else {
-                    // Happens for non-pid=0 records (e.g. "tt_content"), or when no site was configured
-                    foreach ($result['systemLanguageRows'] as $language) {
-                        if ($language['uid'] !== -1) {
-                            $items[] = [
-                                0 => $language['title'],
-                                1 => $language['uid'],
-                                2 => $language['flagIconIdentifier']
-                            ];
-                        }
-                    }
-                }
-
                 break;
             case $special === 'custom':
                 $customOptions = $GLOBALS['TYPO3_CONF_VARS']['BE']['customPermOptions'];
@@ -1405,11 +1362,6 @@ abstract class AbstractItemProvider
             $uid = $row['t3ver_oid'];
         }
         return $uid;
-    }
-
-    protected function getAllSites(): array
-    {
-        return GeneralUtility::makeInstance(SiteFinder::class)->getAllSites();
     }
 
     /**

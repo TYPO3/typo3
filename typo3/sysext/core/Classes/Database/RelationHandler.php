@@ -406,12 +406,7 @@ class RelationHandler
                         ? strrev(trim($parts[1] ?? ''))
                         : ($secondTable && $theID < 0 ? $secondTable : $this->firstTable);
                     // If the ID is not blank and the table name is among the names in the inputted tableList
-                    if (
-                        (string)$theID != ''
-                        // allow the default language '0' for the special languages configuration
-                        && ($theID || ($configuration['special'] ?? null) === 'languages')
-                        && $theTable && isset($this->tableArray[$theTable])
-                    ) {
+                    if ((string)$theID != '' && $theID && $theTable && isset($this->tableArray[$theTable])) {
                         // Get ID as the right value:
                         $theID = $secondTable ? abs((int)$theID) : (int)$theID;
                         // Register ID/table name in internal arrays:

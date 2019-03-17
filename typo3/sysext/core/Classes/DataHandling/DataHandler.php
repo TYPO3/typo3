@@ -1540,6 +1540,9 @@ class DataHandler implements LoggerAwareInterface
             case 'slug':
                 $res = $this->checkValueForSlug((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $field, $additionalData['incomingFieldArray'] ?? []);
                 break;
+            case 'language':
+                $res = $this->checkValueForLanguage((int)$value, $table, $field);
+                break;
             case 'check':
                 $res = $this->checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field);
                 break;
@@ -1802,6 +1805,34 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
+     * Evaluate "language" type value.
+     *
+     * Checks whether the user is allowed to add such a value as language
+     *
+     * @param int $value The value to set.
+     * @param string $table Table name
+     * @param string $field Field name
+     * @return array $res The result array. The processed value (if any!) is set in the "value" key.
+     */
+    protected function checkValueForLanguage(int $value, string $table, string $field): array
+    {
+        // If given table is localizable and the given field is the defined
+        // languageField, check if the selected language is allowed for the user.
+        // Note: Usually this method should never be reached, in case the language value is
+        // not valid, since recordEditAccessInternals checks for proper permission beforehand.
+        if (BackendUtility::isTableLocalizable($table)
+            && ($GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '') === $field
+            && !$this->BE_USER->checkLanguageAccess($value)
+        ) {
+            return [];
+        }
+
+        // @todo Should we also check if the language is allowed for the current site - if record has site context?
+
+        return ['value' => $value];
+    }
+
+    /**
      * Evaluates 'check' type values.
      *
      * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
@@ -1974,9 +2005,8 @@ class DataHandler implements LoggerAwareInterface
         }
         // For select types which has a foreign table attached:
         $unsetResult = false;
-        if (
-            $tcaFieldConf['type'] === 'group' && $tcaFieldConf['internal_type'] === 'db'
-            || $tcaFieldConf['type'] === 'select' && (($tcaFieldConf['foreign_table'] ?? false) || isset($tcaFieldConf['special']) && $tcaFieldConf['special'] === 'languages')
+        if (($tcaFieldConf['type'] === 'group' && $tcaFieldConf['internal_type'] === 'db')
+            || ($tcaFieldConf['type'] === 'select' && ($tcaFieldConf['foreign_table'] ?? false))
         ) {
             // check, if there is a NEW... id in the value, that should be substituted later
             if (strpos($value, 'NEW') !== false) {
@@ -2661,13 +2691,7 @@ class DataHandler implements LoggerAwareInterface
      */
     public function checkValue_group_select_processDBdata($valueArray, $tcaFieldConf, $id, $status, $type, $currentTable, $currentField)
     {
-        if ($type === 'group') {
-            $tables = $tcaFieldConf['allowed'];
-        } elseif (!empty($tcaFieldConf['special']) && $tcaFieldConf['special'] === 'languages') {
-            $tables = 'sys_language';
-        } else {
-            $tables = $tcaFieldConf['foreign_table'];
-        }
+        $tables = $type === 'group' ? $tcaFieldConf['allowed'] : $tcaFieldConf['foreign_table'];
         $prep = $type === 'group' ? ($tcaFieldConf['prepend_tname'] ?? '') : '';
         $newRelations = implode(',', $valueArray);
         /** @var RelationHandler $dbAnalysis */

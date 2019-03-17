@@ -464,8 +464,6 @@ class DataMapProcessor
     {
         $specialTableName = null;
         $configuration = $GLOBALS['TCA'][$item->getTableName()]['columns'][$fieldName];
-        $isSpecialLanguageField = ($configuration['config']['special'] ?? null) === 'languages';
-
         $fromId = $fromRecord['uid'];
         if ($this->isSetInDataMap($item->getTableName(), $fromId, $fieldName)) {
             $fromValue = $this->allDataMap[$item->getTableName()][$fromId][$fieldName];
@@ -478,7 +476,6 @@ class DataMapProcessor
         if (
             empty($configuration['config']['MM'])
             || $this->isSetInDataMap($item->getTableName(), $fromId, $fieldName)
-            || $isSpecialLanguageField
         ) {
             $this->modifyDataMap(
                 $item->getTableName(),
@@ -486,10 +483,6 @@ class DataMapProcessor
                 [$fieldName => $fromValue]
             );
             return;
-        }
-        // resolve the language special table name
-        if ($isSpecialLanguageField) {
-            $specialTableName = 'sys_language';
         }
         // fetch MM relations from storage
         $type = $configuration['config']['type'];
@@ -1466,16 +1459,16 @@ class DataMapProcessor
 
         $configuration = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
 
-        return
-            $configuration['type'] === 'group'
+        return (
+                $configuration['type'] === 'group'
                 && ($configuration['internal_type'] ?? null) === 'db'
                 && !empty($configuration['allowed'])
-            || $configuration['type'] === 'select'
-                && (
-                    !empty($configuration['foreign_table'])
-                        && !empty($GLOBALS['TCA'][$configuration['foreign_table']])
-                    || ($configuration['special'] ?? null) === 'languages'
-                )
+            )
+            || (
+                $configuration['type'] === 'select'
+                && !empty($configuration['foreign_table'])
+                && !empty($GLOBALS['TCA'][$configuration['foreign_table']])
+            )
             || $this->isInlineRelationField($tableName, $fieldName)
         ;
     }

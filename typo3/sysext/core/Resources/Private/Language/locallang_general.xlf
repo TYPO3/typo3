@@ -171,6 +171,12 @@
 			<trans-unit id="LGL.l18n_parent" resname="LGL.l18n_parent">
 				<source>Transl.Orig</source>
 			</trans-unit>
+			<trans-unit id="LGL.siteLanguages" resname="LGL.siteLanguages">
+				<source>Site languages</source>
+			</trans-unit>
+			<trans-unit id="LGL.specialLanguages" resname="LGL.specialLanguages">
+				<source>Special languages</source>
+			</trans-unit>
 			<trans-unit id="LGL.allLanguages" resname="LGL.allLanguages">
 				<source>[All]</source>
 			</trans-unit>

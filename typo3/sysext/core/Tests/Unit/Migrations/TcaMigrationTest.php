@@ -279,7 +279,7 @@ class TcaMigrationTest extends UnitTestCase
                             'bField' => [
                                 'label' => 'bField',
                                 'config' => [
-                                    'type' => 'none',
+                                    'type' => 'language',
                                 ],
                             ],
                             'cField' => [
@@ -343,7 +343,7 @@ class TcaMigrationTest extends UnitTestCase
                             'bField' => [
                                 'label' => 'bField',
                                 'config' => [
-                                    'type' => 'none',
+                                    'type' => 'language',
                                 ],
                             ],
                             'cField' => [
@@ -393,8 +393,7 @@ class TcaMigrationTest extends UnitTestCase
                             ],
                             'bField' => [
                                 'config' => [
-                                    'type' => 'passthrough',
-                                    'default' => 0,
+                                    'type' => 'language',
                                 ],
                             ],
                             'cField' => [
@@ -664,6 +663,148 @@ class TcaMigrationTest extends UnitTestCase
                 ]
             ],
         ];
+        $subject = new TcaMigration();
+        self::assertEquals($expected, $subject->migrate($input));
+    }
+
+    /**
+     * @test
+     */
+    public function languageFieldsAreMigratedToTcaTypeLanguage(): void
+    {
+        $input = [
+            'aTable' => [
+                'ctrl' => [
+                    'title' => 'aTable',
+                    'languageField' => 'aLanguageField',
+                ],
+                'columns' => [
+                    'aLanguageField' => [
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'special' => 'languages',
+                            'items' => [
+                                [
+                                    'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
+                                    -1,
+                                    'flags-multiple'
+                                ],
+                            ],
+                            'default' => 0,
+                        ]
+                    ]
+                ]
+            ],
+            'bTable' => [
+                'ctrl' => [
+                    'title' => 'bTable',
+                    'languageField' => 'bLanguageField',
+                ],
+                'columns' => [
+                    'bLanguageField' => [
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'foreign_table' => 'sys_language',
+                            'items' => [
+                                ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
+                                ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0]
+                            ],
+                            'default' => 0
+                        ]
+                    ]
+                ]
+            ],
+            'cTable' => [
+                'ctrl' => [
+                    'title' => 'cTable',
+                ],
+                'columns' => [
+                    'cLanguageField' => [
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'special' => 'languages',
+                            'fieldWizard' => [
+                                'selectIcons' => [
+                                    'disabled' => false,
+                                ],
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'dTable' => [
+                'ctrl' => [
+                    'title' => 'dTable'
+                ],
+                'columns' => [
+                    'dLanguageField' => [
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'foreign_table' => 'sys_language',
+                            'items' => [
+                                ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
+                                ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0]
+                            ],
+                            'default' => 0
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $expected = [
+            'aTable' => [
+                'ctrl' => [
+                    'title' => 'aTable',
+                    'languageField' => 'aLanguageField',
+                ],
+                'columns' => [
+                    'aLanguageField' => [
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
+                        'config' => [
+                            'type' => 'language',
+                        ]
+                    ]
+                ]
+            ],
+            'bTable' => [
+                'ctrl' => [
+                    'title' => 'bTable',
+                    'languageField' => 'bLanguageField',
+                ],
+                'columns' => [
+                    'bLanguageField' => [
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
+                        'config' => [
+                            'type' => 'language',
+                        ]
+                    ]
+                ]
+            ],
+            'cTable' => [
+                'ctrl' => [
+                    'title' => 'cTable',
+                ],
+                'columns' => [
+                    'cLanguageField' => [
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
+                        'config' => [
+                            'type' => 'language',
+                        ]
+                    ]
+                ]
+            ],
+            'dTable' => $input['dTable']
+        ];
+
         $subject = new TcaMigration();
         self::assertEquals($expected, $subject->migrate($input));
     }

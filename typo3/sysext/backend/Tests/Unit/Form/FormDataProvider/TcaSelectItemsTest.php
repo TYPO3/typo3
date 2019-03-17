@@ -39,8 +39,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -1105,59 +1103,6 @@ class TcaSelectItemsTest extends UnitTestCase
                 0 => '[denyMe] cItemTitle',
                 1 => 'fooTable:aField:cItemValue:DENY',
                 2 => 'status-status-permission-denied',
-                3 => null,
-                4 => null,
-            ],
-        ];
-
-        $result = (new TcaSelectItems())->addData($input);
-
-        self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
-    }
-
-    /**
-     * @test
-     */
-    public function addDataAddsLanguagesWithSpecialLanguages(): void
-    {
-        $input = [
-            'tableName' => 'aTable',
-            'databaseRow' => [],
-            'processedTca' => [
-                'columns' => [
-                    'aField' => [
-                        'config' => [
-                            'type' => 'select',
-                            'renderType' => 'selectSingle',
-                            'special' => 'languages',
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $siteFinder = $this->prophesize(SiteFinder::class);
-        $siteFinder->getAllSites()->willReturn([
-            new Site('test', 13, [
-                'base' => '/',
-                'languages' => [
-                    [
-                        'title' => 'French',
-                        'languageId' => 13,
-                        'base' => '/fr/',
-                        'locale' => 'fr_FR',
-                        'flag' => 'aFlag.gif'
-                    ]
-                ]
-            ])
-        ]);
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinder->reveal());
-
-        $expectedItems = [
-            0 => [
-                0 => 'French [Site: test]',
-                1 => 13,
-                2 => 'flags-aFlag.gif',
                 3 => null,
                 4 => null,
             ],

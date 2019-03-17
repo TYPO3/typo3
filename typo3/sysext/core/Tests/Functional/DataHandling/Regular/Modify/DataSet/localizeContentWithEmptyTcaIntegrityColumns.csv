@@ -25,4 +25,3 @@
 "sys_refindex",,,,,,,,,,,,,
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",
 ,"583b9974d1df1d9efb695cdabfe53a73","pages",91,"l10n_parent",,,,0,0,"pages",89,,
-,"8d96507cabb44e003ba3015a13265f03","pages",91,"sys_language_uid",,,,0,0,"sys_language",1,,

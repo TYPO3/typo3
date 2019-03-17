@@ -120,10 +120,6 @@
 					<title>typo3_image2.jpg</title>
 					<relationLevel>2</relationLevel>
 					<relations index="rels" type="array">
-						<element index="sys_language:1" type="array">
-							<id>1</id>
-							<table>sys_language</table>
-						</element>
 						<element index="sys_file_metadata:1" type="array">
 							<id>1</id>
 							<table>sys_file_metadata</table>
@@ -411,15 +407,6 @@
 				<field index="alternative">Foto von Programmcode</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="sys_language_uid" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>1</id>
-							<table>sys_language</table>
-						</element>
-					</relations>
-				</field>
 				<field index="l10n_parent" type="array">
 					<type>db</type>
 					<relations index="itemArray" type="array">

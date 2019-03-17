@@ -95,6 +95,7 @@ class NodeFactory
         'fileInfo' => Element\FileInfoElement::class,
         'mfaInfo' => Element\MfaInfoElement::class,
         'slug' => Element\InputSlugElement::class,
+        'language' => Element\SelectSingleElement::class,
         'passthrough' => Element\PassThroughElement::class,
 
         // Default classes to enrich single elements

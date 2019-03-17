@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Controller\FormInlineAjaxController;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -27,6 +28,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class FormInlineAjaxControllerTest extends FunctionalTestCase
 {
+    use SiteBasedTestTrait;
+
     /**
      * @var FormInlineAjaxController
      */
@@ -40,6 +43,14 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
     ];
 
     /**
+     * @var array
+     */
+    protected const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+        'DK' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'dk_DA.UTF8'],
+    ];
+
+    /**
      * Sets up this test case.
      */
     protected function setUp(): void
@@ -47,11 +58,19 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
         parent::setUp();
 
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_language.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Fixtures/tx_irretutorial_1ncsv_hotel.xml');
 
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
+
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1, 'http://localhost/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+                $this->buildLanguageConfiguration('DK', '/dk/'),
+            ]
+        );
 
         $this->subject = new FormInlineAjaxController();
     }
