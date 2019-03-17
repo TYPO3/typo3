@@ -281,7 +281,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             );
             $url = $this->contentObjectRenderer->getTypoLink_URL($thePage['uid'] . ($pageType ? ',' . $pageType : ''), $addParams, $target);
             $url = $this->forceAbsoluteUrl($url, $conf);
-            $this->contentObjectRenderer->lastTypoLinkLD['totalUrl'] = $url;
         }
 
         // Setting title if blank value to link
