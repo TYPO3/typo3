@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Reflection;
 
 /*
@@ -121,7 +123,7 @@ class ClassSchema
      * @throws InvalidValidationConfigurationException
      * @throws \ReflectionException
      */
-    public function __construct($className)
+    public function __construct(string $className)
     {
         $this->className = $className;
         $this->bitSet = new BitSet();
@@ -192,7 +194,7 @@ class ClassSchema
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException
      */
-    protected function reflectProperties(\ReflectionClass $reflectionClass)
+    protected function reflectProperties(\ReflectionClass $reflectionClass): void
     {
         $annotationReader = new AnnotationReader();
 
@@ -301,7 +303,7 @@ class ClassSchema
      * @throws \ReflectionException
      * @throws \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException
      */
-    protected function reflectMethods(\ReflectionClass $reflectionClass)
+    protected function reflectMethods(\ReflectionClass $reflectionClass): void
     {
         $annotationReader = new AnnotationReader();
 
@@ -409,7 +411,7 @@ class ClassSchema
                     if (isset($params[$parameterPosition])) {
                         /** @var Param $param */
                         $param = $params[$parameterPosition];
-                        $this->methods[$methodName]['params'][$parameterName]['type'] = ltrim($param->getType(), '\\');
+                        $this->methods[$methodName]['params'][$parameterName]['type'] = ltrim((string)$param->getType(), '\\');
                     }
                 }
 
@@ -516,7 +518,7 @@ class ClassSchema
      * @param string $propertyName Name of the property
      * @return bool
      */
-    public function hasProperty($propertyName): bool
+    public function hasProperty(string $propertyName): bool
     {
         return array_key_exists($propertyName, $this->properties);
     }
