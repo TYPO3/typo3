@@ -5421,6 +5421,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
             );
             try {
                 list($this->lastTypoLinkUrl, $linkText, $target) = $linkBuilder->build($linkDetails, $linkText, $target, $conf);
+                $this->lastTypoLinkTarget = htmlspecialchars($target);
+                $this->lastTypoLinkLD['target'] = htmlspecialchars($target);
+                $this->lastTypoLinkLD['totalUrl'] = $this->lastTypoLinkUrl;
             } catch (UnableToLinkException $e) {
                 $this->logger->debug(sprintf('Unable to link "%s": %s', $e->getLinkText(), $e->getMessage()), ['exception' => $e]);
 
@@ -5429,6 +5432,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
         } elseif (isset($linkDetails['url'])) {
             $this->lastTypoLinkUrl = $linkDetails['url'];
+            $this->lastTypoLinkTarget = htmlspecialchars($target);
+            $this->lastTypoLinkLD['target'] = htmlspecialchars($target);
+            $this->lastTypoLinkLD['totalUrl'] = $this->lastTypoLinkUrl;
         } else {
             return $linkText;
         }
