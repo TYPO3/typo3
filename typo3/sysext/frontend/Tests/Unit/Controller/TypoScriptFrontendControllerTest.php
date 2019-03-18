@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Http\Uri;
@@ -551,5 +552,82 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $languageService = $subject->_get('languageService');
         // since PageRenderer is a singleton, this can be queried via the makeInstance call
         self::assertEquals('fr', $languageService->lang);
+    }
+
+    public function requireCacheHashValidateRelevantParametersDataProvider(): array
+    {
+        return [
+            'no extra params' => [
+                [],
+                false,
+            ],
+            'with required param' => [
+                [
+                    'abc' => 1,
+                ],
+                true,
+            ],
+            'with required params' => [
+                [
+                    'abc' => 1,
+                    'abcd' => 1,
+                ],
+                true,
+            ],
+            'with not required param' => [
+                [
+                    'fbclid' => 1,
+                ],
+                false,
+            ],
+            'with not required params' => [
+                [
+                    'fbclid' => 1,
+                    'gclid' => 1,
+                    'foo' => [
+                        'bar' => 1,
+                    ],
+                ],
+                false,
+            ],
+            'with combined params' => [
+                [
+                    'abc' => 1,
+                    'fbclid' => 1,
+                ],
+                true,
+            ],
+            'with multiple combined params' => [
+                [
+                    'abc' => 1,
+                    'fbclid' => 1,
+                    'abcd' => 1,
+                    'gclid' => 1
+                ],
+                true,
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider requireCacheHashValidateRelevantParametersDataProvider
+     * @param array $remainingArguments
+     * @param bool $expected
+     */
+    public function requireCacheHashValidateRelevantParameters(array $remainingArguments, bool $expected): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError'] = true;
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'] = ['gclid', 'fbclid', 'foo[bar]'];
+
+        $this->subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
+        $this->subject->_set('pageArguments', new PageArguments(1, '0', ['tx_test' => 1], ['tx_test' => 1], $remainingArguments));
+
+        if ($expected) {
+            static::expectException(ImmediateResponseException::class);
+        }
+        $this->subject->reqCHash();
     }
 }

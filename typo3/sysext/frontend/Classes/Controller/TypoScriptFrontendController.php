@@ -1733,6 +1733,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if (!empty($this->pageArguments->getArguments()['cHash']) || empty($this->pageArguments->getDynamicArguments())) {
             return;
         }
+        $queryParams = $this->pageArguments->getDynamicArguments();
+        $queryParams['id'] = $this->pageArguments->getPageId();
+        $argumentsThatWouldRequireCacheHash = GeneralUtility::makeInstance(CacheHashCalculator::class)
+                ->getRelevantParameters(HttpUtility::buildQueryString($queryParams));
+        if (empty($argumentsThatWouldRequireCacheHash)) {
+            return;
+        }
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError']) {
             $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                 $GLOBALS['TYPO3_REQUEST'],
