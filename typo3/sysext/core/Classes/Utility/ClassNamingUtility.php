@@ -39,23 +39,6 @@ class ClassNamingUtility
     }
 
     /**
-     * Translates a model name to an appropriate validator name
-     * e.g. Tx_Extbase_Domain_Model_Foo to Tx_Extbase_Domain_Validator_FooValidator
-     * or \TYPO3\CMS\Extbase\Domain\Model\Foo to \TYPO3\CMS\Extbase\Domain\Validator\FooValidator
-     *
-     * @param string $modelName Name of the model to translate
-     * @return string Name of the repository
-     */
-    public static function translateModelNameToValidatorName($modelName)
-    {
-        return str_replace(
-            '\\Domain\\Model\\',
-            '\\Domain\\Validator\\',
-            $modelName
-        ) . 'Validator';
-    }
-
-    /**
      * Translates a repository name to an appropriate model name
      * e.g. Tx_Extbase_Domain_Repository_FooRepository to Tx_Extbase_Domain_Model_Foo
      * or \TYPO3\CMS\Extbase\Domain\Repository\FooRepository to \TYPO3\CMS\Extbase\Domain\Model\Foo

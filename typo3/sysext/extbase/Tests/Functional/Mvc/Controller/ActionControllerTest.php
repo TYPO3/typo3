@@ -22,7 +22,6 @@ use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
-use TYPO3\CMS\Extbase\Validation\Validator\StringValidator;
 
 /**
  * Test case
@@ -65,51 +64,6 @@ class ActionControllerTest extends \TYPO3\TestingFramework\Core\Functional\Funct
     /**
      * @test
      */
-    public function modelValidatorsAreProperlyResolved()
-    {
-        // Setup
-        $this->request->setControllerActionName('foo');
-        $this->request->setArgument('fooParam', []);
-
-        // Test run
-        $this->controller->processRequest($this->request, $this->response);
-
-        // Open arguments property
-        $reflectionClass = new \ReflectionClass($this->controller);
-        $argumentsProperty = $reflectionClass->getProperty('arguments');
-        $argumentsProperty->setAccessible(true);
-
-        // Assertions
-
-        /** @var Arguments $arguments */
-        $arguments = $argumentsProperty->getValue($this->controller);
-        $argument = $arguments->getArgument('fooParam');
-
-        /** @var ConjunctionValidator $validator */
-        $conjunctionValidator = $argument->getValidator();
-        static::assertInstanceOf(ConjunctionValidator::class, $conjunctionValidator);
-
-        /** @var \SplObjectStorage $validators */
-        $validators = $conjunctionValidator->getValidators();
-        static::assertInstanceOf(\SplObjectStorage::class, $validators);
-
-        $validators->rewind();
-
-        /** @var ConjunctionValidator $subConjunctionValidator */
-        $subConjunctionValidator = $validators->current();
-        static::assertInstanceOf(ConjunctionValidator::class, $subConjunctionValidator);
-
-        /** @var \SplObjectStorage $subValidators */
-        $subValidators = $subConjunctionValidator->getValidators();
-        static::assertInstanceOf(\SplObjectStorage::class, $subValidators);
-
-        $subValidators->rewind();
-        static::assertInstanceOf(Fixture\Domain\Validator\ModelValidator::class, $subValidators->current());
-    }
-
-    /**
-     * @test
-     */
     public function customValidatorsAreProperlyResolved()
     {
         // Setup
@@ -140,19 +94,6 @@ class ActionControllerTest extends \TYPO3\TestingFramework\Core\Functional\Funct
 
         $validators->rewind();
         static::assertInstanceOf(Fixture\Validation\Validator\CustomValidator::class, $validators->current());
-
-        $validators->next();
-
-        /** @var ConjunctionValidator $subConjunctionValidator */
-        $subConjunctionValidator = $validators->current();
-        static::assertInstanceOf(ConjunctionValidator::class, $subConjunctionValidator);
-
-        /** @var \SplObjectStorage $subValidators */
-        $subValidators = $subConjunctionValidator->getValidators();
-        static::assertInstanceOf(\SplObjectStorage::class, $subValidators);
-
-        $subValidators->rewind();
-        static::assertInstanceOf(StringValidator::class, $subValidators->current());
     }
 
     /**

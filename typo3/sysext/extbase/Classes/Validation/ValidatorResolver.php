@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Extbase\Validation;
  */
 
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
@@ -219,38 +218,5 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
                 $conjunctionValidator->addValidator($objectValidator);
             }
         }
-
-        $this->addCustomValidators($targetClassName, $conjunctionValidator);
-    }
-
-    /**
-     * This adds custom validators to the passed $conjunctionValidator.
-     *
-     * A custom validator is found if it follows the naming convention "Replace '\Model\' by '\Validator\' and
-     * append 'Validator'". If found, it will be added to the $conjunctionValidator.
-     *
-     * In addition canValidate() will be called on all implementations of the ObjectValidatorInterface to find
-     * all validators that could validate the target. The one with the highest priority will be added as well.
-     * If multiple validators have the same priority, which one will be added is not deterministic.
-     *
-     * @param string $targetClassName
-     * @param ConjunctionValidator $conjunctionValidator
-     */
-    protected function addCustomValidators($targetClassName, ConjunctionValidator &$conjunctionValidator)
-    {
-        // todo: this method should be renamed to addDomainValidator as this method neither adds custom validators,
-        // todo: nor does it add multiple validators. If there is a Validator that fits the class naming scheme
-        // todo: defined in ClassNamingUtility::translateModelNameToValidatorName, a single validator is added.
-
-        // todo: magically adding validators based on a directory structure is questionable. It should be discussed
-        // todo: if this functionality should be removed (breaking) in TYPO3 10.0.
-        $possibleValidatorClassName = ClassNamingUtility::translateModelNameToValidatorName($targetClassName);
-
-        $customValidator = $this->createValidator($possibleValidatorClassName);
-        if ($customValidator !== null) {
-            $conjunctionValidator->addValidator($customValidator);
-        }
-
-        // @todo: find polytype validator for class
     }
 }

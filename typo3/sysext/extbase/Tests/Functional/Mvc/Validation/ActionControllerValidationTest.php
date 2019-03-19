@@ -50,11 +50,6 @@ class ActionControllerValidationTest extends FunctionalTestCase
                 ['blogPost[__identity]', 'blogPost[title]'],
                 [1428504122]
             ],
-            'existing blog post custom validator' => [
-                ['__identity' => 1, 'title' => '77'],
-                ['blogPost[__identity]', 'blogPost[title]'],
-                [1428504122, 1480872650]
-            ],
         ];
     }
 
@@ -163,7 +158,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $errors = $request->getOriginalRequestMappingResults()->getFlattenedErrors();
         $this->assertCount(1, $errors['blog.title']);
         $this->assertCount(1, $errors['blog.description']);
-        $this->assertCount(2, $errors['blogPost.title']);
+        $this->assertCount(1, $errors['blogPost.title']);
 
         $this->assertEquals('testFormAction', $response->getContent());
     }

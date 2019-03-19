@@ -27,7 +27,6 @@ class ClassNamingUtilityTest extends UnitTestCase
     /**
      * DataProvider for translateModelNameToRepositoryName
      * and translateRepositoryNameToModelName
-     * and translateModelNameToValidatorName
      *
      * @return array
      */
@@ -37,37 +36,30 @@ class ClassNamingUtilityTest extends UnitTestCase
             [
                 'VENDOR\\EXT\\Domain\\Repository\\BlogRepository',
                 'VENDOR\\EXT\\Domain\\Model\\Blog',
-                'VENDOR\\EXT\\Domain\\Validator\\BlogValidator'
             ],
             [
                 'VENDOR\\EXT\\Domain\\Repository\\_PageRepository',
                 'VENDOR\\EXT\\Domain\\Model\\_Page',
-                'VENDOR\\EXT\\Domain\\Validator\\_PageValidator'
             ],
             [
                 'VENDOR\\Repository\\Domain\\Repository\\SomeModelRepository',
                 'VENDOR\\Repository\\Domain\\Model\\SomeModel',
-                'VENDOR\\Repository\\Domain\\Validator\\SomeModelValidator'
             ],
             [
                 'VENDOR\\EXT\\Domain\\Repository\\RepositoryRepository',
                 'VENDOR\\EXT\\Domain\\Model\\Repository',
-                'VENDOR\\EXT\\Domain\\Validator\\RepositoryValidator'
             ],
             [
                 'VENDOR\\Repository\\Domain\\Repository\\RepositoryRepository',
                 'VENDOR\\Repository\\Domain\\Model\\Repository',
-                'VENDOR\\Repository\\Domain\\Validator\\RepositoryValidator'
             ],
             [
                 'VENDOR\\ModelCollection\\Domain\\Repository\\ModelRepository',
                 'VENDOR\\ModelCollection\\Domain\\Model\\Model',
-                'VENDOR\\ModelCollection\\Domain\\Validator\\ModelValidator'
             ],
             [
                 'VENDOR\\Model\\Domain\\Repository\\ModelRepository',
                 'VENDOR\\Model\\Domain\\Model\\Model',
-                'VENDOR\\Model\\Domain\\Validator\\ModelValidator'
             ],
         ];
     }
@@ -76,10 +68,9 @@ class ClassNamingUtilityTest extends UnitTestCase
      * @dataProvider repositoryAndModelClassNames
      * @param string $expectedRepositoryName
      * @param string $modelName
-     * @param string $dummyValidatorName not needed here - just a dummy to be able to cleanly use the same dataprovider
      * @test
      */
-    public function translateModelNameToRepositoryName($expectedRepositoryName, $modelName, $dummyValidatorName)
+    public function translateModelNameToRepositoryName($expectedRepositoryName, $modelName)
     {
         $translatedRepositoryName = ClassNamingUtility::translateModelNameToRepositoryName($modelName);
         $this->assertSame($expectedRepositoryName, $translatedRepositoryName);
@@ -89,26 +80,12 @@ class ClassNamingUtilityTest extends UnitTestCase
      * @dataProvider repositoryAndModelClassNames
      * @param string $repositoryName
      * @param string $expectedModelName
-     * @param string $dummyValidatorName not needed here - just a dummy to be able to use the same dataprovider
      * @test
      */
-    public function translateRepositoryNameToModelName($repositoryName, $expectedModelName, $dummyValidatorName)
+    public function translateRepositoryNameToModelName($repositoryName, $expectedModelName)
     {
         $translatedModelName = ClassNamingUtility::translateRepositoryNameToModelName($repositoryName);
         $this->assertSame($expectedModelName, $translatedModelName);
-    }
-
-    /**
-     * @dataProvider repositoryAndModelClassNames
-     * @param string $repositoryName
-     * @param string $modelName
-     * @param string $expectedValidatorName
-     * @test
-     */
-    public function translateModelNameToValidatorName($repositoryName, $modelName, $expectedValidatorName)
-    {
-        $translatedModelName = ClassNamingUtility::translateModelNameToValidatorName($modelName);
-        $this->assertSame($expectedValidatorName, $translatedModelName);
     }
 
     /**

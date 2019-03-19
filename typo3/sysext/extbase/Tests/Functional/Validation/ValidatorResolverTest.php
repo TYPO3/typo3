@@ -135,9 +135,5 @@ class ValidatorResolverTest extends \TYPO3\TestingFramework\Core\Functional\Func
             $baseValidatorConjunctions[\TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Domain\Model\AnotherModel::class],
             $propertyValidator
         );
-
-        $baseValidators->next();
-        $validator = $baseValidators->current();
-        static::assertInstanceOf(Fixture\Domain\Validator\ModelValidator::class, $validator);
     }
 }

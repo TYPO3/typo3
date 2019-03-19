@@ -903,4 +903,11 @@ return [
             'Deprecation-88554-DeprecatedMethodsInVersionNumberUtility.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Utility\ClassNamingUtility::translateModelNameToValidatorName' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-87957-DoNotMagicallyRegisterValidators.rst',
+        ],
+    ],
 ];

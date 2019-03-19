@@ -265,12 +265,6 @@ class ActionController extends AbstractController
                 );
             }
 
-            /*
-             * At this point, a validator based on the argument's type is added. If the argument is of type float,
-             * an instance of \TYPO3\CMS\Extbase\Validation\Validator\FloatValidator is applied.
-             *
-             * todo: this should be removed (breaking) in TYPO3 10.0. as the use of validators should be verbose
-             */
             $baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
             if ($baseValidatorConjunction->count() > 0) {
                 $validator->addValidator($baseValidatorConjunction);
