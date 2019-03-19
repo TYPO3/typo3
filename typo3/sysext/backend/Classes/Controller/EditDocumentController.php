@@ -847,14 +847,7 @@ class EditDocumentController
         // language handling
         $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '';
         if ($languageField && !empty($recordArray[$languageField])) {
-            $l18nPointer = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '';
-            if ($l18nPointer && !empty($recordArray[$l18nPointer])
-                && isset($previewConfiguration['useDefaultLanguageRecord'])
-                && !$previewConfiguration['useDefaultLanguageRecord']
-            ) {
-                // use parent record
-                $recordId = $recordArray[$l18nPointer];
-            }
+            $recordId = $this->resolvePreviewRecordId($table, $recordArray, $previewConfiguration);
             $language = $recordArray[$languageField];
             if ($language > 0) {
                 $linkParameters['L'] = $language;
@@ -888,6 +881,30 @@ class EditDocumentController
         }
 
         return HttpUtility::buildQueryString($linkParameters, '&');
+    }
+
+    /**
+     * @param string $table
+     * @param array $recordArray
+     * @param array $previewConfiguration
+     *
+     * @return int
+     */
+    protected function resolvePreviewRecordId(string $table, array $recordArray, array $previewConfiguration): int
+    {
+        $l10nPointer = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '';
+        if ($l10nPointer
+            && !empty($recordArray[$l10nPointer])
+            && (
+                // not set -> default to true
+                !isset($previewConfiguration['useDefaultLanguageRecord'])
+                // or set -> use value
+                || $previewConfiguration['useDefaultLanguageRecord']
+            )
+        ) {
+            return $recordArray[$l10nPointer];
+        }
+        return $recordArray['uid'];
     }
 
     /**
