@@ -2390,8 +2390,8 @@ class GraphicalFunctions
                 $h = $info[1];
             }
         }
-        // If scaling should be performed
-        if ($w || $h) {
+        // If scaling should be performed. Check that input "info" array will not cause division-by-zero
+        if (($w || $h) && $info[0] && $info[1]) {
             if ($w && !$h) {
                 $info[1] = ceil($info[1] * ($w / $info[0]));
                 $info[0] = $w;
