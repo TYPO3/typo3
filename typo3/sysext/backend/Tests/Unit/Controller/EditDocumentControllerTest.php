@@ -33,7 +33,7 @@ class EditDocumentControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function parseAdditionalGetParametersCreatesCorrectParameterArray()
+    public function parseAdditionalGetParametersCreatesCorrectParameterArray(): void
     {
         $typoScript = [
             'tx_myext.' => [
@@ -128,5 +128,72 @@ class EditDocumentControllerTest extends UnitTestCase
                 ]
             ],
         ];
+    }
+
+    public function resolvePreviewRecordIdDataProvider(): array
+    {
+        return [
+            'default useDefaultLanguageRecord' => [
+                1,
+                [],
+            ],
+            'explicit useDefaultLanguageRecord' => [
+                1,
+                ['useDefaultLanguageRecord' => '1'],
+            ],
+            'useDefaultLanguageRecord = 0' => [
+                2,
+                ['useDefaultLanguageRecord' => '0'],
+            ]
+        ];
+    }
+
+    /**
+     * @param int $expected
+     * @param array $previewConfiguration
+     * @test
+     * @dataProvider resolvePreviewRecordIdDataProvider
+     */
+    public function resolvePreviewRecordIdReturnsExpectedUid(int $expected, array $previewConfiguration): void
+    {
+        $recordArray = ['uid' => 2, 'l10n_parent' => 1];
+        $table = 'pages';
+        $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] = 'l10n_parent';
+
+        $mock = $this->getAccessibleMock(EditDocumentController::class, ['dummy'], [], '', false);
+        $result = $mock->_call('resolvePreviewRecordId', $table, $recordArray, $previewConfiguration);
+        self::assertSame($expected, $result);
+    }
+
+    public function resolvePreviewRecordIdForNonTranslatableTableDataProvider(): array
+    {
+        return [
+            'default useDefaultLanguageRecord' => [
+                2,
+                [],
+            ],
+            'explicit useDefaultLanguageRecord' => [
+                2,
+                ['useDefaultLanguageRecord' => '1'],
+            ],
+            'useDefaultLanguageRecord = 0' => [
+                2,
+                ['useDefaultLanguageRecord' => '0'],
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider resolvePreviewRecordIdForNonTranslatableTableDataProvider
+     */
+    public function resolvePreviewRecordIdReturnsExpectedUidForNonTranslatableTable(int $expected, array $previewConfiguration): void
+    {
+        $recordArray = ['uid' => 2];
+        $table = 'dummy_table';
+
+        $mock = $this->getAccessibleMock(EditDocumentController::class, ['dummy'], [], '', false);
+        $result = $mock->_call('resolvePreviewRecordId', $table, $recordArray, $previewConfiguration);
+        self::assertSame($expected, $result);
     }
 }
