@@ -95,6 +95,20 @@ class GraphicalFunctionsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
                     1 => (float)136
                 ],
             ],
+            'No PHP warning for zero in input dimensions when scaling' => [
+                [0, 0],
+                '50',
+                '',
+                [],
+                [
+                    'crs' => false,
+                    'origW' => 50,
+                    'origH' => 0,
+                    'max' => 0,
+                    0 => 0,
+                    1 => 0
+                ],
+            ],
         ];
     }
 
