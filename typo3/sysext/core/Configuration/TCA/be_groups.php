@@ -42,7 +42,6 @@ return [
                 'internal_type' => 'db',
                 'allowed' => 'pages',
                 'size' => 3,
-                'maxitems' => 100,
                 'autoSizeMax' => 10,
             ]
         ],
@@ -55,7 +54,6 @@ return [
                 'foreign_table' => 'sys_filemounts',
                 'foreign_table_where' => ' AND sys_filemounts.pid=0 ORDER BY sys_filemounts.title',
                 'size' => 3,
-                'maxitems' => 100,
                 'autoSizeMax' => 10,
                 'fieldControl' => [
                     'editPopup' => [
@@ -145,7 +143,6 @@ return [
                 'special' => 'tables',
                 'size' => 5,
                 'autoSizeMax' => 50,
-                'maxitems' => 100,
             ]
         ],
         'tables_select' => [
@@ -156,7 +153,6 @@ return [
                 'special' => 'tables',
                 'size' => 5,
                 'autoSizeMax' => 50,
-                'maxitems' => 100,
             ]
         ],
         'non_exclude_fields' => [
@@ -227,7 +223,6 @@ return [
                 'special' => 'modListGroup',
                 'size' => 5,
                 'autoSizeMax' => 50,
-                'maxitems' => 100,
             ]
         ],
         'description' => [
@@ -259,7 +254,6 @@ return [
                 'foreign_table_where' => 'AND NOT(be_groups.uid = ###THIS_UID###) ORDER BY be_groups.title',
                 'size' => 5,
                 'autoSizeMax' => 50,
-                'maxitems' => 20,
             ]
         ],
         'category_perms' => [
