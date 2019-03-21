@@ -32,6 +32,7 @@ tt_content.menu_section {
                     pidInList.field = uid
                     as = content
                     where = sectionIndex = 1
+                    orderBy = sorting
                     dataProcessing {
                         10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
                         10 {

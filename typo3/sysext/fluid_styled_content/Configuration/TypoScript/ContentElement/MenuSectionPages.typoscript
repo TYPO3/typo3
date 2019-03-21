@@ -20,6 +20,7 @@ tt_content.menu_section_pages {
                 20 {
                     table = tt_content
                     pidInList.field = uid
+                    orderBy = sorting
                     as = content
                     dataProcessing {
                         10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
