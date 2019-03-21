@@ -34,8 +34,8 @@ class UpdateExtensionListTaskTest extends UnitTestCase
      */
     public function updateExtensionListTaskIsInstanceOfAbstractTask()
     {
-        $taskMock = $this->getMockBuilder(UpdateExtensionListTask::class)->getMock();
-        $this->assertInstanceOf(AbstractTask::class, $taskMock);
+        $taskMock = $this->getMockBuilder(UpdateExtensionListTask::class)->disableOriginalConstructor()->getMock();
+        self::assertInstanceOf(AbstractTask::class, $taskMock);
     }
 
     /**
