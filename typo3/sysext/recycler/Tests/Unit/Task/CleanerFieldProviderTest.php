@@ -158,7 +158,9 @@ class CleanerFieldProviderTest extends UnitTestCase
             'RecyclerCleanerTCA' => ['pages']
         ];
 
-        $taskMock = $this->getMockBuilder(CleanerTask::class)->getMock();
+        $taskMock = $this->getMockBuilder(CleanerTask::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $taskMock->expects(self::once())
             ->method('setTcaTables')
