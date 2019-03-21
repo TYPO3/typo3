@@ -766,17 +766,27 @@ class QueryGenerator
         $fieldSetup = $this->fields[$fieldName];
         $languageService = $this->getLanguageService();
         if ($fieldSetup['type'] === 'multiple') {
+            $optGroupOpen = false;
             foreach ($fieldSetup['items'] as $key => $val) {
                 if (strpos($val[0], 'LLL:') === 0) {
                     $value = $languageService->sL($val[0]);
                 } else {
                     $value = $val[0];
                 }
-                if (GeneralUtility::inList($conf['inputValue'], $val[1])) {
+                if ($val[1] === '--div--') {
+                    if ($optGroupOpen) {
+                        $out[] = '</optgroup>';
+                    }
+                    $optGroupOpen = true;
+                    $out[] = '<optgroup label="' . htmlspecialchars($value) . '">';
+                } elseif (GeneralUtility::inList($conf['inputValue'], $val[1])) {
                     $out[] = '<option value="' . htmlspecialchars($val[1]) . '" selected>' . htmlspecialchars($value) . '</option>';
                 } else {
                     $out[] = '<option value="' . htmlspecialchars($val[1]) . '">' . htmlspecialchars($value) . '</option>';
                 }
+            }
+            if ($optGroupOpen) {
+                $out[] = '</optgroup>';
             }
         }
         if ($fieldSetup['type'] === 'binary') {
