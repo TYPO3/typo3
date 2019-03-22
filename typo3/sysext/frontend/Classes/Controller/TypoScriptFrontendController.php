@@ -366,6 +366,7 @@ class TypoScriptFrontendController
      * This flag indicates if temporary content went into the cache during
      * page-generation.
      * @var mixed
+     * @internal unused
      */
     public $tempContent = false;
 
@@ -2213,9 +2214,6 @@ class TypoScriptFrontendController
     {
         if (!$this->cHash) {
             if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError']) {
-                if ($this->tempContent) {
-                    $this->clearPageCacheContent();
-                }
                 $this->pageNotFoundAndExit('Request parameters could not be validated (&cHash empty)');
             } else {
                 $this->disableCache();
@@ -2271,9 +2269,8 @@ class TypoScriptFrontendController
                 // we have the content, nice that some other process did the work for us already
                 $this->releaseLock('pagesection');
             }
-            // We keep the lock set, because we are the ones generating the page now
-                // and filling the cache.
-                // This indicates that we have to release the lock in the Registry later in releaseLocks()
+            // We keep the lock set, because we are the ones generating the page now and filling the cache.
+            // This indicates that we have to release the lock later in releaseLocks()
         }
 
         if (is_array($pageSectionCacheContent)) {
@@ -2308,9 +2305,8 @@ class TypoScriptFrontendController
                         // we have the content, nice that some other process did the work for us
                         $this->releaseLock('pages');
                     }
-                    // We keep the lock set, because we are the ones generating the page now
-                        // and filling the cache.
-                        // This indicates that we have to release the lock in the Registry later in releaseLocks()
+                    // We keep the lock set, because we are the ones generating the page now and filling the cache.
+                    // This indicates that we have to release the lock later in releaseLocks()
                 }
                 if (is_array($row)) {
                     // we have data from cache
@@ -2326,8 +2322,6 @@ class TypoScriptFrontendController
                     $this->config = $row['cache_data'];
                     // Getting the content
                     $this->content = $row['content'];
-                    // Flag for temp content
-                    $this->tempContent = $row['temp_content'];
                     // Setting flag, so we know, that some cached content has been loaded
                     $this->cacheContentFlag = true;
                     $this->cacheExpires = $row['expires'];
@@ -2478,6 +2472,9 @@ class TypoScriptFrontendController
             // Start parsing the TS template. Might return cached version.
             $this->tmpl->start($this->rootLine);
             $timeTracker->pull();
+            // At this point we have a valid pagesection_cache (generated in $this->tmpl->start()),
+            // so let all other processes proceed now. (They are blocked at the pagessection_lock in getFromCache())
+            $this->releaseLock('pagesection');
             if ($this->tmpl->loaded) {
                 $timeTracker->push('Setting the config-array', '');
                 // toplevel - objArrayName
@@ -2968,61 +2965,6 @@ class TypoScriptFrontendController
     }
 
     /**
-     * Temp cache content
-     * The temporary cache will expire after a few seconds (typ. 30) or will be cleared by the rendered page, which will also clear and rewrite the cache.
-     */
-    public function tempPageCacheContent()
-    {
-        $this->tempContent = false;
-        if (!$this->no_cache) {
-            $seconds = 30;
-            $title = htmlspecialchars($this->tmpl->printTitle($this->page['title']));
-            $request_uri = htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI'));
-            $stdMsg = '
-		<strong>Page is being generated.</strong><br />
-		If this message does not disappear within ' . $seconds . ' seconds, please reload.';
-            $message = $this->config['config']['message_page_is_being_generated'];
-            if ((string)$message !== '') {
-                $message = str_replace('###TITLE###', $title, $message);
-                $message = str_replace('###REQUEST_URI###', $request_uri, $message);
-            } else {
-                $message = $stdMsg;
-            }
-            $temp_content = '<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title>' . $title . '</title>
-		<meta http-equiv="refresh" content="10" />
-	</head>
-	<body style="background-color:white; font-family:Verdana,Arial,Helvetica,sans-serif; color:#cccccc; text-align:center;">' . $message . '
-	</body>
-</html>';
-            // Fix 'nice errors' feature in modern browsers
-            $padSuffix = '<!--pad-->';
-            // prevent any trims
-            $padSize = 768 - strlen($padSuffix) - strlen($temp_content);
-            if ($padSize > 0) {
-                $temp_content = str_pad($temp_content, $padSize, LF) . $padSuffix;
-            }
-            if (!$this->headerNoCache() && ($cachedRow = $this->getFromCache_queryRow())) {
-                // We are here because between checking for cached content earlier and now some other HTTP-process managed to store something in cache AND it was not due to a shift-reload by-pass.
-                // This is either the "Page is being generated" screen or it can be the final result.
-                // In any case we should not begin another rendering process also, so we silently disable caching and render the page ourselves and that's it.
-                // Actually $cachedRow contains content that we could show instead of rendering. Maybe we should do that to gain more performance but then we should set all the stuff done in $this->getFromCache()... For now we stick to this...
-                $this->set_no_cache('Another process wrote into the cache since the beginning of the render process', true);
-
-            // Since the new Locking API this should never be the case
-            } else {
-                $this->tempContent = true;
-                // This flag shows that temporary content is put in the cache
-                $this->setPageCacheContent($temp_content, $this->config, $GLOBALS['EXEC_TIME'] + $seconds);
-            }
-        }
-    }
-
-    /**
      * Set cache content to $this->content
      */
     public function realPageCacheContent()
@@ -3030,7 +2972,6 @@ class TypoScriptFrontendController
         // seconds until a cached page is too old
         $cacheTimeout = $this->get_cache_timeout();
         $timeOutTime = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
-        $this->tempContent = false;
         $usePageCache = true;
         // Hook for deciding whether page cache should be written to the cache backend or not
         // NOTE: as hooks are called in a loop, the last hook will have the final word (however each
@@ -3060,7 +3001,7 @@ class TypoScriptFrontendController
      * @param string $content The content to store in the HTML field of the cache table
      * @param mixed $data The additional cache_data array, fx. $this->config
      * @param int $expirationTstamp Expiration timestamp
-     * @see realPageCacheContent(), tempPageCacheContent()
+     * @see realPageCacheContent()
      */
     public function setPageCacheContent($content, $data, $expirationTstamp)
     {
@@ -3068,7 +3009,6 @@ class TypoScriptFrontendController
             'identifier' => $this->newHash,
             'page_id' => $this->id,
             'content' => $content,
-            'temp_content' => $this->tempContent,
             'cache_data' => $data,
             'expires' => $expirationTstamp,
             'tstamp' => $GLOBALS['EXEC_TIME'],
@@ -3180,17 +3120,6 @@ class TypoScriptFrontendController
         // Same codeline as in getFromCache(). But $this->all has been changed by
         // \TYPO3\CMS\Core\TypoScript\TemplateService::start() in the meantime, so this must be called again!
         $this->newHash = $this->getHash();
-
-        // If the pages_lock is set, we are in charge of generating the page.
-        if (is_object($this->locks['pages']['accessLock'])) {
-            // Here we put some temporary stuff in the cache in order to let the first hit generate the page.
-            // The temporary cache will expire after a few seconds (typ. 30) or will be cleared by the rendered page,
-            // which will also clear and rewrite the cache.
-            $this->tempPageCacheContent();
-        }
-        // At this point we have a valid pagesection_cache and also some temporary page_cache content,
-        // so let all other processes proceed now. (They are blocked at the pagessection_lock in getFromCache())
-        $this->releaseLock('pagesection');
 
         // Setting cache_timeout_default. May be overridden by PHP include scripts.
         $this->cacheTimeOutDefault = (int)$this->config['config']['cache_period'];
@@ -3426,10 +3355,6 @@ class TypoScriptFrontendController
         // Storing for cache:
         if (!$this->no_cache) {
             $this->realPageCacheContent();
-        } elseif ($this->tempContent) {
-            // If there happens to be temporary content in the cache and the cache was not cleared due to new content, put it in... ($this->no_cache=0)
-            $this->clearPageCacheContent();
-            $this->tempContent = false;
         }
         // Sets sys-last-change:
         $this->setSysLastChanged();
@@ -3655,10 +3580,6 @@ class TypoScriptFrontendController
                     ((int)$options['httpResponseCode'] ?: null)
                 );
             }
-        }
-        // Send appropriate status code in case of temporary content
-        if ($this->tempContent) {
-            $this->addTempContentHttpHeaders();
         }
         // Make substitution of eg. username/uid in content only if cache-headers for client/proxy caching is NOT sent!
         if (!$this->isClientCachable) {
@@ -4836,6 +4757,31 @@ class TypoScriptFrontendController
 
     /**
      * Acquire a page specific lock
+     *
+     *
+     * The schematics here is:
+     * - First acquire an access lock. This is using the type of the requested lock as key.
+     *   Since the number of types is rather limited we can use the type as key as it will only
+     *   eat up a limited number of lock resources on the system (files, semaphores)
+     * - Second, we acquire the actual lock (named page lock). We can be sure we are the only process at this
+     *   very moment, hence we either get the lock for the given key or we get an error as we request a non-blocking mode.
+     *
+     * Interleaving two locks is extremely important, because the actual page lock uses a hash value as key (see callers
+     * of this function). If we would simply employ a normal blocking lock, we would get a potentially unlimited
+     * (number of pages at least) number of different locks. Depending on the available locking methods on the system
+     * we might run out of available resources. (e.g. maximum limit of semaphores is a system setting and applies
+     * to the whole system)
+     * We therefore must make sure that page locks are destroyed again if they are not used anymore, such that
+     * we never use more locking resources than parallel requests to different pages (hashes).
+     * In order to ensure this, we need to guarantee that no other process is waiting on a page lock when
+     * the process currently having the lock on the page lock is about to release the lock again.
+     * This can only be achieved by using a non-blocking mode, such that a process is never put into wait state
+     * by the kernel, but only checks the availability of the lock. The access lock is our guard to be sure
+     * that no two processes are at the same time releasing/destroying a page lock, whilst the other one tries to
+     * get a lock for this page lock.
+     * The only drawback of this implementation is that we basically have to poll the availability of the page lock.
+     *
+     * Note that the access lock resources are NEVER deleted/destroyed, otherwise the whole thing would be broken.
      *
      * @param string $type
      * @param string $key

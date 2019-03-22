@@ -573,14 +573,6 @@ Used by "filelist" in stdWrap]]></description>
 			<description><![CDATA[This lets you specify an alternative "mainScript" which is the document that TYPO3 expects to be the default doc. This is used in form-tags and other places where TYPO3 needs to refer directly to the main-script of the application]]></description>
 			<default><![CDATA[index.php]]></default>
 		</property>
-		<property name="message_page_is_being_generated" type="string">
-			<description><![CDATA[Alternative HTML message that appears if a page is being generated.
-Normally when a page is being generated a temporary copy is stored in the cache-table with an expire-time of 30 seconds.
-
-It is possible to use some keywords that are replaced with the corresponding values. Possible keywords are: ###TITLE###, ###REQUEST_URI###]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="message_preview" type="string">
 			<description><![CDATA[Alternative message in HTML that appears when the preview function is active!]]></description>
 			<default><![CDATA[

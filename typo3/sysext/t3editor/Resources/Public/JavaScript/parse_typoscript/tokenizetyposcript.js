@@ -580,7 +580,6 @@ var typoscriptWords = {
   'menuName': 'reserved',
   'menuOffset': 'reserved',
   'menuWidth': 'reserved',
-  'message_page_is_being_generated': 'reserved',
   'message_preview': 'reserved',
   'META': 'keyword',
   'meta': 'reserved',
