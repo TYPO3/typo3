@@ -569,7 +569,6 @@
         'menuName': kw('menuName'),
         'menuOffset': kw('menuOffset'),
         'menuWidth': kw('menuWidth'),
-        'message_page_is_being_generated': kw('message_page_is_being_generated'),
         'message_preview': kw('message_preview'),
         'META': kw('META'),
         'meta': kw('meta'),

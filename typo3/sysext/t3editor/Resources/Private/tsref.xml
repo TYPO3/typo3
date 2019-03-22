@@ -541,14 +541,6 @@ locale_all = da_DK]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="message_page_is_being_generated" type="string">
-			<description><![CDATA[Alternative HTML message that appears if a page is being generated.
-Normally when a page is being generated a temporary copy is stored in the cache-table with an expire-time of 30 seconds.
-
-It is possible to use some keywords that are replaced with the corresponding values. Possible keywords are: ###TITLE###, ###REQUEST_URI###]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="message_preview" type="string">
 			<description><![CDATA[Alternative message in HTML that appears when the preview function is active!]]></description>
 			<default><![CDATA[
