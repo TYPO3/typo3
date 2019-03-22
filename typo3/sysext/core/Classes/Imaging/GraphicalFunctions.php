@@ -2448,7 +2448,7 @@ class GraphicalFunctions
      * Call the identify command
      *
      * @param string $imagefile The relative to public web path image filepath
-     * @return array|null Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the filename.
+     * @return array|null Returns an array where [0]/[1] is w/h, [2] is extension, [3] is the filename and [4] the real image type identified by ImageMagick.
      */
     public function imageMagickIdentify($imagefile)
     {
@@ -2456,34 +2456,34 @@ class GraphicalFunctions
             return null;
         }
 
-        $frame = $this->addFrameSelection ? 0 : null;
-        $cmd = CommandUtility::imageMagickCommand(
-            'identify',
-            ImageMagickFile::fromFilePath($imagefile, $frame)
-        );
-        $returnVal = [];
-        CommandUtility::exec($cmd, $returnVal);
-        $splitstring = array_pop($returnVal);
-        $this->IM_commands[] = ['identify', $cmd, $splitstring];
-        if ($splitstring) {
-            preg_match('/([^\\.]*)$/', $imagefile, $reg);
-            $splitinfo = explode(' ', $splitstring);
-            $dim = false;
-            foreach ($splitinfo as $key => $val) {
-                $temp = '';
-                if ($val) {
-                    $temp = explode('x', $val);
-                }
-                if ((int)$temp[0] && (int)$temp[1]) {
-                    $dim = $temp;
-                    break;
-                }
-            }
-            if (!empty($dim[0]) && !empty($dim[1])) {
-                return [$dim[0], $dim[1], strtolower($reg[0]), $imagefile];
+        $result = $this->executeIdentifyCommandForImageFile($imagefile);
+        if ($result) {
+            [$width, $height, $fileExtension, $fileType] = explode(' ', $result);
+            if ((int)$width && (int)$height) {
+                return [$width, $height, strtolower($fileExtension), $imagefile, strtolower($fileType)];
             }
         }
         return null;
+    }
+
+    /**
+     * Internal function to execute an IM command fetching information on an image
+     *
+     * @param string $imageFile the absolute path to the image
+     * @return string|null the raw result of the identify command.
+     */
+    protected function executeIdentifyCommandForImageFile(string $imageFile): ?string
+    {
+        $frame = $this->addFrameSelection ? 0 : null;
+        $cmd = CommandUtility::imageMagickCommand(
+            'identify',
+            '-format "%w %h %e %m" ' . ImageMagickFile::fromFilePath($imageFile, $frame)
+        );
+        $returnVal = [];
+        CommandUtility::exec($cmd, $returnVal);
+        $result = array_pop($returnVal);
+        $this->IM_commands[] = ['identify', $cmd, $result];
+        return $result;
     }
 
     /**

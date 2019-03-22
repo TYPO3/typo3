@@ -19,6 +19,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class GraphicalFunctionsTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
+
     /**
      * Dataprovider for getScaleForImage
      *
@@ -105,8 +107,49 @@ class GraphicalFunctionsTest extends UnitTestCase
      */
     public function getScaleForImage($info, $width, $height, $options, $expected)
     {
-        $this->resetSingletonInstances = true;
         $result = (new GraphicalFunctions())->getImageScale($info, $width, $height, $options);
+        $this->assertEquals($result, $expected);
+    }
+
+    /**
+     * @test
+     */
+    public function imageMagickIdentifyReturnsFormattedValues()
+    {
+        $file = 'myImageFile.png';
+        $expected = [
+            '123',
+            '234',
+            'png',
+            'myImageFile.png',
+            'png'
+        ];
+
+        $subject = $this->getAccessibleMock(GraphicalFunctions::class, ['executeIdentifyCommandForImageFile'], [], '', false);
+        $subject->_set('processorEnabled', true);
+        $subject->expects($this->once())->method('executeIdentifyCommandForImageFile')->with($file)->willReturn('123 234 png PNG');
+        $result = $subject->imageMagickIdentify($file);
+        $this->assertEquals($result, $expected);
+    }
+
+    /**
+     * @test
+     */
+    public function imageMagickIdentifyReturnsFormattedValuesWithOffset()
+    {
+        $file = 'myImageFile.png';
+        $expected = [
+            '200+0+0',
+            '400+0+0',
+            'png',
+            'myImageFile.png',
+            'png'
+        ];
+
+        $subject = $this->getAccessibleMock(GraphicalFunctions::class, ['executeIdentifyCommandForImageFile'], [], '', false);
+        $subject->_set('processorEnabled', true);
+        $subject->expects($this->once())->method('executeIdentifyCommandForImageFile')->with($file)->willReturn('200+0+0 400+0+0 png PNG');
+        $result = $subject->imageMagickIdentify($file);
         $this->assertEquals($result, $expected);
     }
 }
