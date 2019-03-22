@@ -76,30 +76,6 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionWithMultipleConditionsCombinedWithAndHavingOnlyOneSubCondition()
-    {
-        $input = [
-            'databaseRow' => [],
-            'processedTca' => [
-                'columns' => [
-                    'field_1' => [
-                        'displayCond' => [
-                            'AND' => [
-                                'condition1',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1481464101);
-        (new EvaluateDisplayConditions())->addData($input);
-    }
-
-    /**
-     * @test
-     */
     public function addDataThrowsExceptionIfConditionIsNotStringOrArray()
     {
         $input = [
@@ -3807,6 +3783,17 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                 ],
                 false,
             ],
+            'Single condition with AND compares to TRUE if the one is OK' => [
+                [
+                    'AND' => [
+                        'FIELD:testField:>:9',
+                    ],
+                ],
+                [
+                    'testField' => 10,
+                ],
+                true,
+            ],
             'Multiple conditions with AND compare to TRUE if all are OK' => [
                 [
                     'AND' => [
@@ -3830,6 +3817,17 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                     'testField' => 99,
                 ],
                 false,
+            ],
+            'Single condition with OR compares to TRUE if the one is OK' => [
+                [
+                    'OR' => [
+                        'FIELD:testField:>:9',
+                    ],
+                ],
+                [
+                    'testField' => 10,
+                ],
+                true,
             ],
             'Multiple conditions with OR compare to TRUE if one is OK' => [
                 [
