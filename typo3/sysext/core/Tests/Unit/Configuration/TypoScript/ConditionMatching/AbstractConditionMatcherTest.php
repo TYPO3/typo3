@@ -102,6 +102,59 @@ class AbstractConditionMatcherTest extends UnitTestCase
     /**
      * @return array
      */
+    public function requestFunctionDataProvider(): array
+    {
+        return [
+            // GET tests
+            // getQueryParams()
+            'request.getQueryParams()[\'foo\'] > 0' => ['request.getQueryParams()[\'foo\'] > 0', true],
+            'request.getQueryParams()[\'foo\'][\'bar\'] > 0' => ['request.getQueryParams()[\'foo\'][\'bar\'] > 0', false],
+            'request.getQueryParams()[\'bar\'][\'foo\'] > 0' => ['request.getQueryParams()[\'bar\'][\'foo\'] > 0', false],
+            'request.getQueryParams()[\'foo\'] == 0' => ['request.getQueryParams()[\'foo\'] == 0', false],
+            'request.getQueryParams()[\'foo\'][\'bar\'] == 0' => ['request.getQueryParams()[\'foo\'][\'bar\'] == 0', false],
+            // POST tests
+            // getParsedBody()
+            'request.getParsedBody()[\'foo\'] > 0' => ['request.getParsedBody()[\'foo\'] > 0', true],
+            'request.getParsedBody()[\'foo\'][\'bar\'] > 0' => ['request.getParsedBody()[\'foo\'][\'bar\'] > 0', false],
+            'request.getParsedBody()[\'bar\'][\'foo\'] > 0' => ['request.getParsedBody()[\'bar\'][\'foo\'] > 0', false],
+            'request.getParsedBody()[\'foo\'] == 0' => ['request.getParsedBody()[\'foo\'] == 0', false],
+            'request.getParsedBody()[\'foo\'][\'bar\'] == 0' => ['request.getParsedBody()[\'foo\'][\'bar\'] == 0', false],
+            // HEADERS tests
+            // getHeaders()
+            'request.getHeaders()[\'foo\'] == [\'1\']' => ['request.getHeaders()[\'foo\'] == [\'1\']', true],
+            'request.getHeaders()[\'foo\'] == [\'0\']' => ['request.getHeaders()[\'foo\'] == [\'0\']', false],
+            'request.getHeaders()[\'foo\'] == [\'bar\']' => ['request.getHeaders()[\'foo\'] == [\'bar\']', false],
+            // COOKIES tests
+            // getCookieParams()
+            'request.getCookieParams()[\'foo\'] > 0' => ['request.getCookieParams()[\'foo\'] > 0', true],
+            'request.getCookieParams()[\'foo\'] > 1' => ['request.getCookieParams()[\'foo\'] > 1', false],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider requestFunctionDataProvider
+     * @param string $expression
+     * @param bool $expected
+     */
+    public function checkConditionMatcherForRequestFunction(string $expression, bool $expected): void
+    {
+        $request = (new ServerRequest())
+            ->withParsedBody(['foo' => 1])
+            ->withQueryParams(['foo' => 1])
+            ->withCookieParams(['foo' => 1])
+            ->withHeader('foo', '1');
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->initConditionMatcher();
+        $this->assertSame(
+            $expected,
+            $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, [$expression])
+        );
+    }
+
+    /**
+     * @return array
+     */
     public function datesFunctionDataProvider(): array
     {
         return [
@@ -307,48 +360,5 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->initConditionMatcher();
         $result = $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['ip("devIP")']);
         $this->assertSame($expectedResult, $result);
-    }
-
-    public function expressionDataProvider(): array
-    {
-        return [
-            // Default variants
-            '[]' => ['[]', '[]'],
-            '[foo]' => ['[foo]', '[foo]'],
-            '[foo] && [bar]' => ['[foo] && [bar]', '[foo]&&[bar]'],
-            '[foo] AND [bar]' => ['[foo] AND [bar]', '[foo]&&[bar]'],
-            '[foo] and [bar]' => ['[foo] and [bar]', '[foo]&&[bar]'],
-            '[foo] [bar]' => ['[foo] [bar]', '[foo]||[bar]'],
-            '[foo] || [bar]' => ['[foo] || [bar]', '[foo]||[bar]'],
-            '[foo] OR [bar]' => ['[foo] OR [bar]', '[foo]||[bar]'],
-            '[foo] or [bar]' => ['[foo] or [bar]', '[foo]||[bar]'],
-            '[foo] && [bar]&&[baz]' => ['[foo] && [bar]&&[baz]', '[foo]&&[bar]&&[baz]'],
-            '[foo] AND [bar]AND[baz]' => ['[foo] AND [bar]AND[baz]', '[foo]&&[bar]&&[baz]'],
-            '[foo] and [bar]and[baz]' => ['[foo] and [bar]and[baz]', '[foo]&&[bar]&&[baz]'],
-            '[foo] || [bar]||[baz]' => ['[foo] || [bar]||[baz]', '[foo]||[bar]||[baz]'],
-            '[foo] OR [bar]OR[baz]' => ['[foo] OR [bar]OR[baz]', '[foo]||[bar]||[baz]'],
-            '[foo] or [bar]or[baz]' => ['[foo] or [bar]or[baz]', '[foo]||[bar]||[baz]'],
-            '[foo] && [bar]||[baz]' => ['[foo] && [bar]||[baz]', '[foo]&&[bar]||[baz]'],
-            '[foo] AND [bar]OR[baz]' => ['[foo] AND [bar]OR[baz]', '[foo]&&[bar]||[baz]'],
-            '[foo] and [bar]or[baz]' => ['[foo] and [bar]or[baz]', '[foo]&&[bar]||[baz]'],
-            '[foo] || [bar]OR[baz]' => ['[foo] || [bar]OR[baz]', '[foo]||[bar]||[baz]'],
-            '[foo] || [bar]or[baz]' => ['[foo] || [bar]or[baz]', '[foo]||[bar]||[baz]'],
-            '[foo] OR [bar]AND[baz]' => ['[foo] OR [bar]AND[baz]', '[foo]||[bar]&&[baz]'],
-            '[foo] or [bar]and[baz]' => ['[foo] or [bar]and[baz]', '[foo]||[bar]&&[baz]'],
-
-            // Special variants
-            '[foo && bar && baz]' => ['[foo && bar && baz]', '[foo && bar && baz]'],
-            '[foo and bar and baz]' => ['[foo and bar and baz]', '[foo and bar and baz]'],
-            '[foo AND bar AND baz]' => ['[foo AND bar AND baz]', '[foo AND bar AND baz]'],
-            '[foo || bar || baz]' => ['[foo || bar || baz]', '[foo || bar || baz]'],
-            '[foo or bar or baz]' => ['[foo or bar or baz]', '[foo or bar or baz]'],
-            '[foo OR bar OR baz]' => ['[foo OR bar OR baz]', '[foo OR bar OR baz]'],
-            '[request.getParsedBody()[\'type\'] > 0]' => ['[request.getParsedBody()[\'type\'] > 0]', '[request.getParsedBody()[\'type\'] > 0]'],
-            '[request.getParsedBody()[\'type\'] > 0 || request.getQueryParams()[\'type\'] > 0]' => ['[request.getParsedBody()[\'type\'] > 0 || request.getQueryParams()[\'type\'] > 0]', '[request.getParsedBody()[\'type\'] > 0 || request.getQueryParams()[\'type\'] > 0]'],
-            '[request.getParsedBody()[\'type\'] > 0 or request.getQueryParams()[\'type\'] == 1]' => ['[request.getParsedBody()[\'type\'] > 0 or request.getQueryParams()[\'type\'] == 1]', '[request.getParsedBody()[\'type\'] > 0 or request.getQueryParams()[\'type\'] == 1]'],
-            '[ (request.getParsedBody()[\'type\'] > 0) || (request.getQueryParams()[\'type\'] > 0) ]' => ['[ (request.getParsedBody()[\'type\'] > 0) || (request.getQueryParams()[\'type\'] > 0) ]', '[ (request.getParsedBody()[\'type\'] > 0) || (request.getQueryParams()[\'type\'] > 0) ]'],
-            '[request.getParsedBody()[\'tx_news_pi1\'][\'news\'] > 0 || request.getQueryParams()[\'tx_news_pi1\'][\'news\'] > 0]' => ['[request.getParsedBody()[\'tx_news_pi1\'][\'news\'] > 0 || request.getQueryParams()[\'tx_news_pi1\'][\'news\'] > 0]', '[request.getParsedBody()[\'tx_news_pi1\'][\'news\'] > 0 || request.getQueryParams()[\'tx_news_pi1\'][\'news\'] > 0]'],
-            '[request.getQueryParams()[\'tx_news_pi1\'][\'news\'] > 0]' => ['[request.getQueryParams()[\'tx_news_pi1\'][\'news\'] > 0]', '[request.getQueryParams()[\'tx_news_pi1\'][\'news\'] > 0]'],
-        ];
     }
 }
