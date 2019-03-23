@@ -193,9 +193,9 @@ define(['d3', 'TYPO3/CMS/Backend/SvgTree', 'TYPO3/CMS/Backend/FormEngine'],
     SelectTree.prototype.saveCheckboxes = function() {
       if (typeof this.settings.input !== 'undefined') {
         var selectedNodes = this.getSelectedNodes();
-        this.settings.input.val(selectedNodes.map(function(d) {
+        this.settings.input.value = selectedNodes.map(function(d) {
           return d.identifier;
-        }));
+        });
       }
     };
 

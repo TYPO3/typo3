@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Render data as a tree.
  *
@@ -78,7 +80,7 @@ class SelectTreeElement extends AbstractFormElement
 
         // Field configuration from TCA:
         $config = $parameterArray['fieldConf']['config'];
-        $readOnly = !empty($config['readOnly']) ? 'true' : 'false';
+        $readOnly = !empty($config['readOnly']) ? 1 : 0;
         $exclusiveKeys = !empty($config['exclusiveKeys']) ? $config['exclusiveKeys'] : '';
         $exclusiveKeys = $exclusiveKeys . ',';
         $appearance = !empty($config['treeConfig']['appearance']) ? $config['treeConfig']['appearance'] : [];
@@ -91,6 +93,7 @@ class SelectTreeElement extends AbstractFormElement
         }
         $heightInPx = $height * $this->itemHeight;
         $treeWrapperId = 'tree_' . $formElementId;
+        $fieldId = 'tree_record_' . $formElementId;
 
         $fieldName = $this->data['fieldName'];
 
@@ -140,7 +143,7 @@ class SelectTreeElement extends AbstractFormElement
         $html[] =       '<div class="form-wizards-wrap">';
         $html[] =           '<div class="form-wizards-element">';
         $html[] =               '<div class="typo3-tceforms-tree">';
-        $html[] =                   '<input class="treeRecord" type="hidden"';
+        $html[] =                   '<input class="treeRecord" type="hidden" id="' . htmlspecialchars($fieldId) . '"';
         $html[] =                       ' data-formengine-validation-rules="' . htmlspecialchars($this->getValidationDataAsJsonString($config)) . '"';
         $html[] =                       ' data-relatedfieldname="' . htmlspecialchars($parameterArray['itemFormElName']) . '"';
         $html[] =                       ' data-tablename="' . htmlspecialchars($this->data['tableName']) . '"';
@@ -165,7 +168,6 @@ class SelectTreeElement extends AbstractFormElement
         $html[] =                   '/>';
         $html[] =               '</div>';
         $html[] =               '<div id="' . $treeWrapperId . '" class="svg-tree-wrapper" style="height: ' . $heightInPx . 'px;"></div>';
-        $html[] =               '<script type="text/javascript">var ' . $treeWrapperId . ' = ' . $this->getTreeOnChangeJs() . '</script>';
         $html[] =           '</div>';
         if ($readOnly === 'false' && !empty($fieldWizardHtml)) {
             $html[] =       '<div class="form-wizards-items-bottom">';
@@ -182,8 +184,14 @@ class SelectTreeElement extends AbstractFormElement
         if ($showHeader) {
             $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf';
         }
-        $resultArray['requireJsModules']['selectTreeElement'] = [
-            'TYPO3/CMS/Backend/FormEngine/Element/SelectTreeElement' => 'function (SelectTreeElement) { SelectTreeElement.initialize(); }'
+        $resultArray['requireJsModules']['selectTreeElement'] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectTreeElement' => '
+            function(SelectTreeElement) {
+                require([\'jquery\'], function($) {
+                    $(function() {
+                        new SelectTreeElement(' . GeneralUtility::quoteJSvalue($treeWrapperId) . ', ' . GeneralUtility::quoteJSvalue($fieldId) . ', ' . $this->getTreeOnChangeJs() . ');
+                    });
+                });
+            }'
         ];
 
         return $resultArray;

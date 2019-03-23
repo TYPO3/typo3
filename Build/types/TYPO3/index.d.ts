@@ -16,7 +16,6 @@ declare namespace TYPO3 {
   export let Modal: any;
   export let OpendocsMenu: any;
   export let Permissions: any;
-  export let Popover: any;
   export let Severity: any;
   export let ShortcutMenu: any;
   export let Storage: any;
@@ -33,6 +32,16 @@ declare namespace TYPO3 {
         public markFieldAsChanged($field: JQuery): void;
         public initializeInputFields(): void;
         public validate(): void;
+      }
+
+      export namespace FormEngine {
+        export namespace Element {
+          export class SelectTree {
+            public dispatch: {[key: string]: Function};
+            public constructor();
+            public initialize(selector: HTMLElement|JQuery, settings: {[key: string]: any}): boolean;
+          }
+        }
       }
 
       export class FormEngine {
@@ -78,6 +87,10 @@ declare module 'TYPO3/CMS/Backend/FormEngineValidation' {
 
 declare module 'TYPO3/CMS/Backend/FormEngine' {
   export = new TYPO3.CMS.Backend.FormEngine();
+}
+
+declare module 'TYPO3/CMS/Backend/FormEngine/Element/SelectTree' {
+  export = TYPO3.CMS.Backend.FormEngine.Element.SelectTree;
 }
 
 declare module 'TYPO3/CMS/Backend/Wizard' {
