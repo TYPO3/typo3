@@ -343,6 +343,9 @@ class SetupModuleController
                 if (top && top.TYPO3.ModuleMenu.App) {
                     top.TYPO3.ModuleMenu.App.refreshMenu();
                 }
+                if (top && top.TYPO3.Backend.Topbar) {
+                    top.TYPO3.Backend.Topbar.refresh();
+                }
             ');
         }
         if ($this->pagetreeNeedsRefresh) {
