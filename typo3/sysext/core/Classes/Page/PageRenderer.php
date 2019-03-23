@@ -241,11 +241,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $extOnReadyCode = [];
-
-    /**
-     * @var array
-     */
     protected $cssInline = [];
 
     /**
@@ -389,7 +384,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $this->inlineComments = [];
         $this->headerData = [];
         $this->footerData = [];
-        $this->extOnReadyCode = [];
     }
 
     /*****************************************************/

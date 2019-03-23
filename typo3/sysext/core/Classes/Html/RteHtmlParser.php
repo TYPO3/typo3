@@ -963,35 +963,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     }
 
     /**
-     * Converting <A>-tags to absolute URLs (+ setting rtekeep attribute)
-     *
-     * @param string $value Content input
-     * @return string Content output
-     */
-    protected function TS_AtagToAbs($value)
-    {
-        $blockSplit = $this->splitIntoBlock('A', $value);
-        foreach ($blockSplit as $k => $v) {
-            // Block
-            if ($k % 2) {
-                list($attribArray) = $this->get_tag_attributes($this->getFirstTag($v), true);
-                // Checking if there is a scheme, and if not, prepend the current url.
-                // ONLY do this if href has content - the <a> tag COULD be an anchor and if so, it should be preserved...
-                if ($attribArray['href'] !== '') {
-                    $uP = parse_url(strtolower($attribArray['href']));
-                    if (!$uP['scheme']) {
-                        $attribArray['href'] = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $attribArray['href'];
-                    }
-                }
-                $bTag = '<a ' . GeneralUtility::implodeAttributes($attribArray, true) . '>';
-                $eTag = '</a>';
-                $blockSplit[$k] = $bTag . $this->TS_AtagToAbs($this->removeFirstAndLastTag($blockSplit[$k])) . $eTag;
-            }
-        }
-        return implode('', $blockSplit);
-    }
-
-    /**
      * Apply plain image settings to the dimensions of the image
      *
      * @param array $imageInfo: info array of the image
