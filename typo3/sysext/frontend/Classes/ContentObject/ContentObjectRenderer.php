@@ -5026,7 +5026,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $title = $resolvedLinkParameters['title'];
 
         if (!$linkParameter) {
-            return $linkText;
+            return $this->resolveAnchorLink($linkText, $conf);
         }
 
         // Detecting kind of link and resolve all necessary parameters
@@ -7149,5 +7149,26 @@ class ContentObjectRenderer implements LoggerAwareInterface
     protected function getTypoScriptFrontendController()
     {
         return $this->typoScriptFrontendController ?: $GLOBALS['TSFE'];
+    }
+
+    /**
+     * Support anchors without href value
+     * Changes ContentObjectRenderer::typolink to render a tag without href,
+     * if id or name attribute is present.
+     *
+     * @param string $linkText
+     * @param array $conf Typolink configuration decoded as array
+     * @return string Full a-Tag or just the linktext if id or name are not set.
+     */
+    protected function resolveAnchorLink(string $linkText, array $conf): string
+    {
+        $anchorTag = '<a ' . $this->getATagParams($conf) . '>';
+        $aTagParams = GeneralUtility::get_tag_attributes($anchorTag);
+        // If it looks like a anchor tag, render it anyway
+        if (isset($aTagParams['id']) || isset($aTagParams['name'])) {
+            return $anchorTag . $linkText . '</a>';
+        }
+        // Otherwise just return the link text
+        return $linkText;
     }
 }
