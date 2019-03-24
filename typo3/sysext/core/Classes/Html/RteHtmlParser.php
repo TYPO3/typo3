@@ -578,6 +578,11 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         foreach ($blockSplit as $k => $v) {
             if ($k % 2) {
                 list($tagAttributes) = $this->get_tag_attributes($this->getFirstTag($v), true);
+
+                // Anchors would not have an href attribute
+                if (!isset($tagAttributes['href'])) {
+                    continue;
+                }
                 $linkService = GeneralUtility::makeInstance(LinkService::class);
                 $linkInformation = $linkService->resolve($tagAttributes['href'] ?? '');
 

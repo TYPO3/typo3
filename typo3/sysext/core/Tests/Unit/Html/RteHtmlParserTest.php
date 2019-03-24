@@ -625,4 +625,82 @@ class RteHtmlParserTest extends UnitTestCase
         $thisConfig = ['proc.' => $this->procOptions];
         $this->assertEquals($expectedResult, $subject->RTE_transform($subject->RTE_transform($content, [], 'db', $thisConfig), [], 'rte', $thisConfig));
     }
+
+    /**
+     * Data provider for anchorCorrectlyTransformedOnWayToDatabase
+     */
+    public static function anchorCorrectlyTransformedOnWayToDatabaseProvider()
+    {
+        return [
+            [
+                '<p><a name="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>',
+                '<p><a name="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>'
+            ],
+            [
+                '<p><a id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>',
+                '<p><a id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>'
+            ],
+            [
+                '<p><a name="some_anchor" id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>',
+                '<p><a name="some_anchor" id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>'
+            ],
+            [
+                '<p><a id="some_anchor">Some text inside the anchor</a></p>',
+                '<p><a id="some_anchor">Some text inside the anchor</a></p>'
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider anchorCorrectlyTransformedOnWayToDatabaseProvider
+     * @param $content
+     * @param $expectedResult
+     */
+    public function anchorCorrectlyTransformedOnWayToDatabase($content, $expectedResult)
+    {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $subject = new RteHtmlParser($eventDispatcher);
+        $thisConfig = ['proc.' => $this->procOptions];
+        self::assertEquals($expectedResult, $subject->RTE_transform($content, [], 'db', $thisConfig));
+    }
+
+    /**
+     * Data provider for anchorCorrectlyTransformedOnWayToDatabaseAndBackToRTE
+     */
+    public static function anchorCorrectlyTransformedOnWayToDatabaseAndBackToRTEProvider()
+    {
+        return [
+            [
+                '<p><a name="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>',
+                '<p><a name="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>'
+            ],
+            [
+                '<p><a id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>',
+                '<p><a id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>'
+            ],
+            [
+                '<p><a name="some_anchor" id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>',
+                '<p><a name="some_anchor" id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>'
+            ],
+            [
+                '<p><a id="some_anchor">Some text inside the anchor</a></p>',
+                '<p><a id="some_anchor">Some text inside the anchor</a></p>'
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider anchorCorrectlyTransformedOnWayToDatabaseAndBackToRTEProvider
+     * @param $content
+     * @param $expectedResult
+     */
+    public function anchorCorrectlyTransformedOnWayToDatabaseAndBackToRTE($content, $expectedResult)
+    {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $subject = new RteHtmlParser($eventDispatcher);
+        $thisConfig = ['proc.' => $this->procOptions];
+        self::assertEquals($expectedResult, $subject->RTE_transform($subject->RTE_transform($content, [], 'db', $thisConfig), [], 'rte', $thisConfig));
+    }
 }
