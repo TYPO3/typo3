@@ -1284,8 +1284,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function determineIdIsHiddenPage()
     {
-        $field = MathUtility::canBeInterpretedAsInteger($this->id) ? 'uid' : 'alias';
-
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
         $queryBuilder
@@ -1293,16 +1291,29 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-        $page = $queryBuilder
+        $queryBuilder
             ->select('uid', 'hidden', 'starttime', 'endtime')
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($this->id)),
                 $queryBuilder->expr()->gte('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
-            ->setMaxResults(1)
-            ->execute()
-            ->fetch();
+            ->setMaxResults(1);
+
+        // $this->id always points to the ID of the default language page, so we check
+        // currentSiteLanguage to determine if we need to fetch a translation
+        if ($this->getCurrentSiteLanguage() instanceof SiteLanguage && $this->getCurrentSiteLanguage()->getLanguageId() > 0) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($this->getCurrentSiteLanguage()->getLanguageId(), \PDO::PARAM_INT))
+            );
+        } else {
+            $field = MathUtility::canBeInterpretedAsInteger($this->id) ? 'uid' : 'alias';
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($this->id))
+            );
+        }
+
+        $page = $queryBuilder->execute()->fetch();
 
         if ($this->whichWorkspace() > 0) {
             // Fetch overlay of page if in workspace and check if it is hidden
