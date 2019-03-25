@@ -182,7 +182,7 @@ class LiveSearch {
       $searchField.val('').trigger('change');
     });
     if ($searchField.length) {
-      const $autocompleteContainer = $('.' + $searchField.autocomplete().options.containerClass);
+      const $autocompleteContainer = $('.' + Identifiers.toolbarItem.substr(1, Identifiers.toolbarItem.length));
       $autocompleteContainer.on('click.autocomplete', '.dropdown-list-link', (evt: JQueryEventObject): void => {
         evt.preventDefault();
 

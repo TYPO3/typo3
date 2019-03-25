@@ -16,6 +16,13 @@
   dependencies:
     "@types/jquery" "*"
 
+"@types/chosen-js@^1.8.1":
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/@types/chosen-js/-/chosen-js-1.8.1.tgz#4be61fe71e499317ad93251678899eb85d56dea9"
+  integrity sha512-K078GYGgiCdNmp25YlamkwP77L7MRqvH90mTpwL6DnHsen9snpvgzOqrH5kxKaDvxnHBAV1YKFRPLMbaYGoP3Q==
+  dependencies:
+    "@types/jquery" "*"
+
 "@types/chrome@^0.0.69":
   version "0.0.69"
   resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.69.tgz#1d45bb79dd712b05704e4411f9eff3f270e19651"
@@ -27,6 +34,13 @@
   version "4.9.1"
   resolved "https://registry.yarnpkg.com/@types/ckeditor/-/ckeditor-4.9.1.tgz#d8e81fb840c3f248772ab90efd508b6061cbd138"
   integrity sha512-32BCMWLSSSkBKXf57cN/1Xv7VKXNOKXW5YPo3D2igCaevDAiiVtuMwPOFzOeO+5/CkGd4zt/Rf9RXl1J/vUsRA==
+
+"@types/datatables.net@^1.10.17":
+  version "1.10.17"
+  resolved "https://registry.yarnpkg.com/@types/datatables.net/-/datatables.net-1.10.17.tgz#41343c8c9d7c0844f5c2400a6e11eca51250a82f"
+  integrity sha512-vyZkkzmRYIgE7Xu0bb4Icozn1/+P15g/3LxWCyIl8Xe8rw/1SMGoQozwt11qIzUVJwUQagFo6iBrMQjAp5GKuA==
+  dependencies:
+    "@types/jquery" "*"
 
 "@types/filesystem@*":
   version "0.0.28"

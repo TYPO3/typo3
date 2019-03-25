@@ -2,10 +2,10 @@
     "compilerOptions": {
         "target": "es5",
         "lib": [
-            "DOM",
-            "ES5",
-            "ScriptHost",
-            "ES6"
+            "dom",
+            "es5",
+            "scripthost",
+            "es6"
         ],
         "module": "amd",
         "sourceMap": false,
@@ -17,92 +17,91 @@
         "noImplicitThis": true,
         "noImplicitReturns": true,
         "pretty": true,
-        "baseUrl": ".",
-        "rootDir": "../",
+        "baseUrl": "Sources/TypeScript",
         "paths": {
             "TYPO3/CMS/Adminpanel/*": [
                 "../typo3/sysext/adminpanel/Resources/Public/JavaScript/*",
-                "../typo3/sysext/adminpanel/Resources/Private/TypeScript/*"
+                "adminpanel/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/Backend/*": [
                 "../typo3/sysext/backend/Resources/Public/JavaScript/*",
-                "../typo3/sysext/backend/Resources/Private/TypeScript/*"
+                "backend/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/Beuser/*": [
                 "../typo3/sysext/beuser/Resources/Public/JavaScript/*",
-                "../typo3/sysext/beuser/Resources/Private/TypeScript/*"
+                "beuser/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/Core/*": [
                 "../typo3/sysext/core/Resources/Public/JavaScript/*",
-                "../typo3/sysext/core/Resources/Private/TypeScript/*"
+                "core/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/Extensionmanager/*": [
                 "../typo3/sysext/extensionmanager/Resources/Public/JavaScript/*",
-                "../typo3/sysext/extensionmanager/Resources/Private/TypeScript/*"
+                "extensionmanager/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/Filelist/*": [
                 "../typo3/sysext/filelist/Resources/Public/JavaScript/*",
-                "../typo3/sysext/filelist/Resources/Private/TypeScript/*"
+                "filelist/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/Form/*": [
                 "../typo3/sysext/form/Resources/Public/JavaScript/*",
-                "../typo3/sysext/form/Resources/Private/TypeScript/*"
+                "form/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/Impexp/*": [
                 "../typo3/sysext/impexp/Resources/Public/JavaScript/*",
-                "../typo3/sysext/impexp/Resources/Private/TypeScript/*"
+                "impexp/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/Info/*": [
                 "../typo3/sysext/info/Resources/Public/JavaScript/*",
-                "../typo3/sysext/info/Resources/Private/TypeScript/*"
+                "info/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/Install/*": [
                 "../typo3/sysext/install/Resources/Public/JavaScript/*",
-                "../typo3/sysext/install/Resources/Private/TypeScript/*"
+                "install/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/Linkvalidator/*": [
                 "../typo3/sysext/linkvalidator/Resources/Public/JavaScript/*",
-                "../typo3/sysext/linkvalidator/Resources/Private/TypeScript/*"
+                "linkvalidator/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/Lowlevel/*": [
                 "../typo3/sysext/lowlevel/Resources/Public/JavaScript/*",
-                "../typo3/sysext/lowlevel/Resources/Private/TypeScript/*"
+                "lowlevel/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/Opendocs/*": [
                 "../typo3/sysext/opendocs/Resources/Public/JavaScript/*",
-                "../typo3/sysext/opendocs/Resources/Private/TypeScript/*"
+                "opendocs/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/Recordlist/*": [
                 "../typo3/sysext/recordlist/Resources/Public/JavaScript/*",
-                "../typo3/sysext/recordlist/Resources/Private/TypeScript/*"
+                "recordlist/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/Recycler/*": [
                 "../typo3/sysext/recycler/Resources/Public/JavaScript/*",
-                "../typo3/sysext/recycler/Resources/Private/TypeScript/*"
+                "recycler/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/RteCkeditor/*": [
                 "../typo3/sysext/rte_ckeditor/Resources/Public/JavaScript/*",
-                "../typo3/sysext/rte_ckeditor/Resources/Private/TypeScript/*"
+                "rte_ckeditor/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/Scheduler/*": [
                 "../typo3/sysext/scheduler/Resources/Public/JavaScript/*",
-                "../typo3/sysext/scheduler/Resources/Private/TypeScript/*"
+                "scheduler/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/T3editor/*": [
                 "../typo3/sysext/t3editor/Resources/Public/JavaScript/*",
-                "../typo3/sysext/t3editor/Resources/Private/TypeScript/*"
+                "t3editor/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/Tstemplate/*": [
                 "../typo3/sysext/tstemplate/Resources/Public/JavaScript/*",
-                "../typo3/sysext/tstemplate/Resources/Private/TypeScript/*"
+                "tstemplate/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/Viewpage/*": [
                 "../typo3/sysext/viewpage/Resources/Public/JavaScript/*",
-                "../typo3/sysext/viewpage/Resources/Private/TypeScript/*"
+                "viewpage/Resources/Public/TypeScript/*"
             ],
             "TYPO3/CMS/Workspaces/*": [
                 "../typo3/sysext/workspaces/Resources/Public/JavaScript/*",
-                "../typo3/sysext/workspaces/Resources/Private/TypeScript/*"
+                "workspaces/Resources/Public/TypeScript/*"
             ]
         },
         "outDir": "./JavaScript/",
@@ -110,9 +109,5 @@
             "node_modules/@types",
             "types"
         ]
-    },
-    "include": [
-        "../typo3/sysext/*/Resources/Private/TypeScript/**/*.ts",
-        "../typo3/sysext/*/Tests/TypeScript/**/*.ts"
-    ]
+    }
 }

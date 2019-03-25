@@ -131,8 +131,6 @@ interface JQueryTypedEvent<T extends Event> extends JQueryEventObject {
 interface JQuery {
   clearable(options?: any): JQuery;
 
-  chosen(options?: any): JQuery;
-
   datetimepicker(options?: any): JQuery;
 
   dragUploader(options?: any): JQuery;
@@ -144,7 +142,4 @@ interface JQuery {
 
   // To be able to use jquery/autocomplete-slider we have to override the definition of jquerui
   autocomplete(options?: { [key: string]: any }): any;
-
-  DataTable(options?: any): JQuery;
 }
-

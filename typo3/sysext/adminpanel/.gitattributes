@@ -1,3 +1,2 @@
 /.gitattributes export-ignore
-/Resources/Private/TypeScript/ export-ignore
 /Tests/ export-ignore

@@ -46,9 +46,10 @@ module.exports = function (grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     paths: {
-      resources: 'Resources/',
+      sources: 'Sources/',
       root: '../',
-      sass: '<%= paths.resources %>Public/Sass/',
+      sass: '<%= paths.sources %>Sass/',
+      typescript: '<%= paths.sources %>/TypeScript/',
       sysext: '<%= paths.root %>typo3/sysext/',
       form: '<%= paths.sysext %>form/Resources/',
       frontend: '<%= paths.sysext %>frontend/Resources/',
@@ -199,8 +200,7 @@ module.exports = function (grunt) {
       },
       files: {
         src: [
-          '<%= paths.sysext %>*/Tests/TypeScript/**/*.ts',
-          '<%= paths.sysext %>*/Resources/Private/TypeScript/**/*.ts',
+          '<%= paths.typescript %>/**/*.ts',
           './types/**/*.ts'
         ]
       }
@@ -225,12 +225,12 @@ module.exports = function (grunt) {
       ts_files: {
         files: [{
           expand: true,
-          cwd: '<%= paths.root %>Build/JavaScript/typo3/sysext/',
+          cwd: '<%= paths.root %>Build/JavaScript/',
           src: ['**/*.js', '**/*.js.map'],
           dest: '<%= paths.sysext %>',
           rename: function (dest, src) {
-            var srccleaned = src.replace('Resources/Private/TypeScript', 'Resources/Public/JavaScript');
-            srccleaned = srccleaned.replace('Tests/TypeScript', 'Tests/JavaScript');
+            var srccleaned = src.replace('Resources/Public/TypeScript', 'Resources/Public/JavaScript');
+            srccleaned = srccleaned.replace('Tests/', 'Tests/JavaScript/');
             var destination = dest + srccleaned;
 
             // Apply uglify configuration for regular files only
@@ -645,25 +645,6 @@ module.exports = function (grunt) {
   });
 
   /**
-   * grunt tsdev task
-   *
-   * call "$ grunt tsdev"
-   *
-   * this task copies and modifies the TypeScript configuration for a developer system
-   * most TypeScript tooling expects tsconfig.json to be in a domineering/root-level position
-   */
-  grunt.task.registerTask('tsdev', function () {
-    var content = grunt.file.read("tsconfig.json");
-    content = content.replace(/..\/typo3\//g, 'typo3/');
-    content = content.replace('"rootDir": "../",', '"rootDir": "./",');
-    content = content.replace('./JavaScript', './Build/JavaScript');
-    content = content.replace('"node_modules/@types"', '"Build/node_modules/@types"');
-    content = content.replace('"types"', '"Build/types"');
-    grunt.file.write('../tsconfig.json', content);
-    grunt.file.copy('./tslint.json', '../tslint.json');
-  });
-
-  /**
    * grunt tsconfig task
    *
    * call "$ grunt tsconfig"
@@ -673,15 +654,15 @@ module.exports = function (grunt) {
   grunt.task.registerTask('tsconfig', function () {
     var config = grunt.file.readJSON("tsconfig.json");
     config.compilerOptions.paths = {};
-    grunt.file.expand('../typo3/sysext/*/Resources/Public/JavaScript').forEach(function (dir) {
-      var extname = '_' + dir.match(/sysext\/(.*?)\//)[1],
-        extname = extname.replace(/_./g, function (match) {
-          return match.charAt(1).toUpperCase();
-        });
-      var namespace = 'TYPO3/CMS/' + extname + '/*',
-        path = dir + "/*",
-        typescriptPath = path.replace('Public/JavaScript', 'Private/TypeScript');
-      config.compilerOptions.paths[namespace] = [path, typescriptPath];
+    var sysext = grunt.config.get('paths.sysext');
+    grunt.file.expand(sysext + '*/Resources/Public/JavaScript').forEach(function (dir) {
+      var extname = ('_' + dir.match(/sysext\/(.*?)\//)[1]).replace(/_./g, function (match) {
+        return match.charAt(1).toUpperCase();
+      });
+      var namespace = 'TYPO3/CMS/' + extname + '/*';
+      var path = dir + "/*";
+      var extensionTypeScriptPath = path.replace('Public/JavaScript', 'Public/TypeScript').replace(sysext, '');
+      config.compilerOptions.paths[namespace] = [path, extensionTypeScriptPath];
     });
 
     grunt.file.write('tsconfig.json', JSON.stringify(config, null, 4));
