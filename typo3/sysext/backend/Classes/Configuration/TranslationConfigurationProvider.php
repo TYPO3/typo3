@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Backend\Configuration;
 
 /*
@@ -15,10 +16,13 @@ namespace TYPO3\CMS\Backend\Configuration;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -46,46 +50,62 @@ class TranslationConfigurationProvider
      */
     public function getSystemLanguages($pageId = 0)
     {
-        // default language and "all languages" are always present
-        $modSharedTSconfig = BackendUtility::getPagesTSconfig($pageId)['mod.']['SHARED.'] ?? [];
-        $languages = [
-            // 0: default language
-            0 => [
-                'uid' => 0,
-                'title' => $this->getDefaultLanguageLabel($modSharedTSconfig),
-                'ISOcode' => 'DEF',
-                'flagIcon' => $this->getDefaultLanguageFlag($modSharedTSconfig),
-            ],
-            // -1: all languages
-            -1 => [
-                'uid' => -1,
-                'title' => $this->getLanguageService()->getLL('multipleLanguages'),
-                'ISOcode' => 'DEF',
-                'flagIcon' => 'flags-multiple',
-            ],
-        ];
+        try {
+            $siteMatcher = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId((int)$pageId);
+            $siteLanguages = $siteMatcher->getAvailableLanguages($this->getBackendUserAuthentication(), true);
 
-        // add the additional languages from database records
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
-        $languageRecords = $queryBuilder
-            ->select('*')
-            ->from('sys_language')
-            ->orderBy('sorting')
-            ->execute()
-            ->fetchAll();
-        foreach ($languageRecords as $languageRecord) {
-            $languages[$languageRecord['uid']] = $languageRecord;
-            // @todo: this should probably resolve language_isocode too and throw a deprecation if not filled
-            if ($languageRecord['static_lang_isocode'] && ExtensionManagementUtility::isLoaded('static_info_tables')) {
-                $staticLangRow = BackendUtility::getRecord('static_languages', $languageRecord['static_lang_isocode'], 'lg_iso_2');
-                if ($staticLangRow['lg_iso_2']) {
-                    $languages[$languageRecord['uid']]['ISOcode'] = $staticLangRow['lg_iso_2'];
+            $languages = [];
+            foreach ($siteLanguages as $id => $siteLanguage) {
+                $languages[$id] = [
+                    'uid' => $id,
+                    'title' => $siteLanguage->getTitle(),
+                    'ISOcode' => $siteLanguage->getTwoLetterIsoCode(),
+                    'flagIcon' => $siteLanguage->getFlagIdentifier(),
+                ];
+            }
+        } catch (SiteNotFoundException $e) {
+            // default language and "all languages" are always present
+            $modSharedTSconfig = BackendUtility::getPagesTSconfig($pageId)['mod.']['SHARED.'] ?? [];
+            $languages = [
+                // 0: default language
+                0 => [
+                    'uid' => 0,
+                    'title' => $this->getDefaultLanguageLabel($modSharedTSconfig),
+                    'ISOcode' => 'DEF',
+                    'flagIcon' => $this->getDefaultLanguageFlag($modSharedTSconfig),
+                ],
+                // -1: all languages
+                -1 => [
+                    'uid' => -1,
+                    'title' => $this->getLanguageService()->getLL('multipleLanguages'),
+                    'ISOcode' => 'DEF',
+                    'flagIcon' => 'flags-multiple',
+                ],
+            ];
+
+            // add the additional languages from database records
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+            $languageRecords = $queryBuilder
+                ->select('*')
+                ->from('sys_language')
+                ->orderBy('sorting')
+                ->execute()
+                ->fetchAll();
+            foreach ($languageRecords as $languageRecord) {
+                $languages[$languageRecord['uid']] = $languageRecord;
+                // @todo: this should probably resolve language_isocode too and throw a deprecation if not filled
+                if ($languageRecord['static_lang_isocode'] && ExtensionManagementUtility::isLoaded('static_info_tables')) {
+                    $staticLangRow = BackendUtility::getRecord('static_languages', $languageRecord['static_lang_isocode'], 'lg_iso_2');
+                    if ($staticLangRow['lg_iso_2']) {
+                        $languages[$languageRecord['uid']]['ISOcode'] = $staticLangRow['lg_iso_2'];
+                    }
+                }
+                if ($languageRecord['flag'] !== '') {
+                    $languages[$languageRecord['uid']]['flagIcon'] = 'flags-' . $languageRecord['flag'];
                 }
             }
-            if ($languageRecord['flag'] !== '') {
-                $languages[$languageRecord['uid']]['flagIcon'] = 'flags-' . $languageRecord['flag'];
-            }
         }
+
         return $languages;
     }
 
@@ -210,5 +230,10 @@ class TranslationConfigurationProvider
             $defaultLanguageLabel = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage');
         }
         return $defaultLanguageLabel;
+    }
+
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }
