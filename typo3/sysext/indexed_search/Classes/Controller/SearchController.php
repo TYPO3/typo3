@@ -1101,23 +1101,23 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected function getAllAvailableLanguageOptions()
     {
         $allOptions = [
-            '-1' => LocalizationUtility::translate('languageUids.-1', 'IndexedSearch'),
-            '0' => LocalizationUtility::translate('languageUids.0', 'IndexedSearch')
+            '-1' => LocalizationUtility::translate('languageUids.-1', 'IndexedSearch')
         ];
         $blindSettings = $this->settings['blind'];
         if (!$blindSettings['languageUid']) {
-            // Add search languages
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('sys_language');
-            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
-            $result = $queryBuilder
-                ->select('uid', 'title')
-                ->from('sys_language')
-                ->execute();
+            try {
+                $site = GeneralUtility::makeInstance(SiteFinder::class)
+                    ->getSiteByPageId($GLOBALS['TSFE']->id);
 
-            while ($lang = $result->fetch()) {
-                $allOptions[$lang['uid']] = $lang['title'];
+                $languages = $site->getLanguages();
+                foreach ($languages as $language) {
+                    $allOptions[$language->getLanguageId()] = $language->getNavigationTitle() ?? $language->getTitle();
+                }
+            } catch (SiteNotFoundException $e) {
+                // No Site or pseudo site found, no options
+                $allOptions = [];
             }
+
             // disable single entries by TypoScript
             $allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['languageUid']);
         } else {
