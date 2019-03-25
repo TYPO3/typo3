@@ -584,23 +584,32 @@ class SlugLinkGeneratorTest extends AbstractTestCase
      */
     public function linkIsGeneratedForPageVersionDataProvider(): array
     {
-        // -> most probably since pid=-1 is not correctly resolved
         $instructions = [
-            // acme.com -> acme.com (same site)
-            ['https://acme.us/', 1100, 1100, false, '/welcome'],
-            ['https://acme.us/', 1100, 1100, true, '/index.php?id=acme-first'], // @todo Alias not removed, yet
-            // ['https://acme.us/', 1100, 1950, false, '/?id=1950'], // @todo Not generated for new-placeholder
-            ['https://acme.us/', 1100, 1950, true, '/index.php?id={targetPageId}'],
-            // blog.acme.com -> acme.com (different site)
-            ['https://blog.acme.com/', 2100, 1100, false, 'https://acme.us/welcome'],
-            ['https://blog.acme.com/', 2100, 1100, true, '/index.php?id=acme-first'], // @todo Alias not removed, yet, domain missing
-            // ['https://blog.acme.com/', 2100, 1950, false, '/?id=1950'], // @todo Not generated for new-placeholder
-            ['https://blog.acme.com/', 2100, 1950, true, '/index.php?id={targetPageId}'], // @todo Domain missing
+            // acme.com -> acme.com (same site): link to changed page
+            ['https://acme.us/', 1100, 1100, false, 1, '/welcome'],
+            ['https://acme.us/', 1100, 1100, true, 1, '/welcome'],
+            ['https://acme.us/', 1100, 1100, false, 0, '/welcome'],
+            ['https://acme.us/', 1100, 1100, true, 0, '/index.php?id=acme-first'], // @todo this is wrong, link should be empty
+            // acme.com -> acme.com (same site): link to new page
+            ['https://acme.us/', 1100, 1950, false, 1, '/bye'],
+            ['https://acme.us/', 1100, 1950, true, 1, '/bye'],
+            ['https://acme.us/', 1100, 1950, false, 0, ''],
+            ['https://acme.us/', 1100, 1950, true, 0, '/index.php?id={targetPageId}'], // @todo this is wrong, link should be empty
+            // blog.acme.com -> acme.com (different site): link to changed page
+            ['https://blog.acme.com/', 2100, 1100, false, 1, 'https://acme.us/welcome'],
+            ['https://blog.acme.com/', 2100, 1100, true, 1, 'https://acme.us/welcome'],
+            ['https://blog.acme.com/', 2100, 1100, false, 0, 'https://acme.us/welcome'],
+            ['https://blog.acme.com/', 2100, 1100, true, 0, '/index.php?id=acme-first'], // @todo this is wrong, link should be empty
+            // blog.acme.com -> acme.com (different site): link to new page
+            ['https://blog.acme.com/', 2100, 1950, false, 1, 'https://acme.us/bye'],
+            ['https://blog.acme.com/', 2100, 1950, true, 1, 'https://acme.us/bye'],
+            ['https://blog.acme.com/', 2100, 1950, false, 0, ''],
+            ['https://blog.acme.com/', 2100, 1950, true, 0, '/index.php?id={targetPageId}'], // @todo this is wrong, link should be empty
         ];
 
         return $this->keysFromTemplate(
             $instructions,
-            '%2$d->%3$d (resolve:%4$d)'
+            '%2$d->%3$d (resolve:%4$d, be_user:%5$d)'
         );
     }
 
@@ -609,12 +618,13 @@ class SlugLinkGeneratorTest extends AbstractTestCase
      * @param int $sourcePageId
      * @param int $targetPageId
      * @param bool $resolveVersion
+     * @param int $backendUserId
      * @param string $expectation
      *
      * @test
      * @dataProvider linkIsGeneratedForPageVersionDataProvider
      */
-    public function linkIsGeneratedForPageVersion(string $hostPrefix, int $sourcePageId, int $targetPageId, bool $resolveVersion, string $expectation)
+    public function linkIsGeneratedForPageVersion(string $hostPrefix, int $sourcePageId, int $targetPageId, bool $resolveVersion, int $backendUserId, string $expectation)
     {
         $workspaceId = 1;
         if ($resolveVersion) {
@@ -635,7 +645,8 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                     ])
                 ]),
             $this->internalRequestContext
-                ->withWorkspaceId($workspaceId)
+                ->withWorkspaceId($backendUserId !== 0 ? $workspaceId : 0)
+                ->withBackendUserId($backendUserId)
         );
 
         $expectation = str_replace(
