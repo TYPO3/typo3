@@ -175,7 +175,7 @@ class CacheHashCalculator implements SingletonInterface
     protected function isAdminPanelParameter($key)
     {
         return $key === 'ADMCMD_noBeUser' || $key === 'ADMCMD_view' || $key === 'ADMCMD_editIcons'
-            || $key === 'ADMCMD_simUser' || $key === 'ADMCMD_simTime'
+            || $key === 'ADMCMD_simUser' || $key === 'ADMCMD_simTime' || $key === 'ADMCMD_prev'
             || stripos($key, 'TSFE_ADMIN_PANEL') !== false && preg_match('/TSFE_ADMIN_PANEL\\[.*?\\]/', $key);
     }
 
