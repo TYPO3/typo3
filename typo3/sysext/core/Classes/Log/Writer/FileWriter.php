@@ -271,23 +271,4 @@ class FileWriter extends AbstractWriter
         }
         return Environment::getVarPath() . sprintf($this->defaultLogFileTemplate, $namePart);
     }
-
-    /**
-     * Allow serialization of logger - reinitialize log file on unserializing
-     */
-    public function __wakeup()
-    {
-        self::$logFileHandlesCount[$this->logFile]++;
-        $this->setLogFile($this->logFile ?: $this->getDefaultLogFileName());
-    }
-
-    /**
-     * Property 'logFile' should be kept
-     *
-     * @return array
-     */
-    public function __sleep(): array
-    {
-        return ['logFile'];
-    }
 }
