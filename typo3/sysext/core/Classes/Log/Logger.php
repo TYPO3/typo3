@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Log;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Logger to log events and data for different components.
  */
@@ -67,6 +69,28 @@ class Logger implements \Psr\Log\LoggerInterface
     {
         $this->name = $name;
         $this->requestId = $requestId;
+    }
+
+    /**
+     * Re-initialize instance with creating a new instance with up to date information
+     */
+    public function __wakeup()
+    {
+        $newLogger = GeneralUtility::makeInstance(LogManager::class)->getLogger($this->name);
+        $this->requestId = $newLogger->requestId;
+        $this->minimumLogLevel = $newLogger->minimumLogLevel;
+        $this->writers = $newLogger->writers;
+        $this->processors = $newLogger->processors;
+    }
+
+    /**
+     * Remove everything except the name, to be able to restore it on wakeup
+     *
+     * @return array
+     */
+    public function __sleep(): array
+    {
+        return ['name'];
     }
 
     /**
