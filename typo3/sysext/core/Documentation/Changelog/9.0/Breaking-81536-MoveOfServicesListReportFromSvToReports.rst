@@ -1,8 +1,10 @@
 .. include:: ../../Includes.txt
 
-==========================================================
-Breaking: #81536 - MoveOfServicesListReportFromSvToReports
-==========================================================
+.. _changelog-MoveOfServicesListReportFromSvToReports:
+
+=============================================================
+Breaking: #81536 - Move ServicesListReport From Sv to Reports
+=============================================================
 
 See :issue:`81536`
 
@@ -40,5 +42,16 @@ Use the new namespace :php:`TYPO3\CMS\Reports\Report\ServicesListReport` and the
 - :file:`EXT:reports/Resources/Private/Language/serviceReport.xlf`
 - :file:`EXT:reports/Resources/Private/Templates/ServicesListReport.html`
 - :file:`EXT:reports/Resources/Public/Images/service-reports.png`
+
+Related
+=======
+
+- :ref:`changelog-Breaking-81735-GetRidOfSysextsv`
+
+More Information
+================
+
+- :ref:`t3coreapi:services-developer-service-api` in "TYPO3 Explained"
+
 
 .. index:: Backend, PartiallyScanned, ext:sv, ext:reports
