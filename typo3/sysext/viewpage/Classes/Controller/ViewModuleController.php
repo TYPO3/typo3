@@ -21,9 +21,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -353,48 +351,27 @@ class ViewModuleController
      */
     protected function getPreviewLanguages(int $pageId): array
     {
-        $localizationParentField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
-        $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'];
+        $languages = [];
         $modSharedTSconfig = BackendUtility::getPagesTSconfig($pageId)['mod.']['SHARED.'] ?? [];
         if ($modSharedTSconfig['view.']['disableLanguageSelector'] === '1') {
-            return [];
-        }
-        $languages = [
-            0 => isset($modSharedTSconfig['defaultLanguageLabel'])
-                    ? $modSharedTSconfig['defaultLanguageLabel'] . ' (' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage') . ')'
-                    : $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage')
-        ];
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-        if (!$this->getBackendUser()->isAdmin()) {
-            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(HiddenRestriction::class));
+            return $languages;
         }
 
-        $result = $queryBuilder->select('sys_language.uid', 'sys_language.title')
-            ->from('sys_language')
-            ->join(
-                'sys_language',
-                'pages',
-                'o',
-                $queryBuilder->expr()->eq('o.' . $languageField, $queryBuilder->quoteIdentifier('sys_language.uid'))
-            )
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'o.' . $localizationParentField,
-                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
-                )
-            )
-            ->groupBy('sys_language.uid', 'sys_language.title', 'sys_language.sorting')
-            ->orderBy('sys_language.sorting')
-            ->execute();
+        try {
+            $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+            $site = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId($pageId);
+            $siteLanguages = $site->getAvailableLanguages($this->getBackendUser(), false, $pageId);
 
-        while ($row = $result->fetch()) {
-            if ($this->getBackendUser()->checkLanguageAccess($row['uid'])) {
-                $languages[$row['uid']] = $row['title'];
+            foreach ($siteLanguages as $siteLanguage) {
+                $languageAspectToTest = LanguageAspectFactory::createFromSiteLanguage($siteLanguage);
+                $page = $pageRepository->getPageOverlay($pageRepository->getPage($pageId), $siteLanguage->getLanguageId());
+
+                if ($pageRepository->isPageSuitableForLanguage($page, $languageAspectToTest)) {
+                    $languages[$siteLanguage->getLanguageId()] = $siteLanguage->getTitle();
+                }
             }
+        } catch (SiteNotFoundException $e) {
+            // do nothing
         }
         return $languages;
     }
