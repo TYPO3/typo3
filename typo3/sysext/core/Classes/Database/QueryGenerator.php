@@ -679,7 +679,12 @@ class QueryGenerator
                         if (is_array($conf['inputValue'])) {
                             $conf['inputValue'] = implode(',', $conf['inputValue']);
                         }
-                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $fieldPrefix . '[inputValue]' . '">';
+                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $fieldPrefix . '[inputValue]">';
+                    } elseif ($conf['comparison'] === 64) {
+                        if (is_array($conf['inputValue'])) {
+                            $conf['inputValue'] = $conf['inputValue'][0];
+                        }
+                        $lineHTML[] = '<select class="form-control t3js-submit-change" name="' . $fieldPrefix . '[inputValue]">';
                     } else {
                         $lineHTML[] = '<select class="form-control t3js-submit-change" name="' . $fieldPrefix . '[inputValue]' . '">';
                     }
@@ -1288,7 +1293,7 @@ class QueryGenerator
         $first = 1;
         foreach ($queryConfig as $key => $conf) {
             // Convert ISO-8601 timestamp (string) into unix timestamp (int)
-            if (strtotime($conf['inputValue'])) {
+            if (!is_array($conf['inputValue']) && strtotime($conf['inputValue'])) {
                 $conf['inputValue'] = strtotime($conf['inputValue']);
                 if ($conf['inputValue1'] && strtotime($conf['inputValue1'])) {
                     $conf['inputValue1'] = strtotime($conf['inputValue1']);
@@ -1382,7 +1387,7 @@ class QueryGenerator
             } else {
                 $inputVal = 0;
             }
-        } elseif (strtotime($conf['inputValue' . $suffix])) {
+        } elseif (!is_array($conf['inputValue' . $suffix]) && strtotime($conf['inputValue' . $suffix])) {
             $inputVal = $conf['inputValue' . $suffix];
         } else {
             $inputVal = (float)$conf['inputValue' . $suffix];
