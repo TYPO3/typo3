@@ -11,7 +11,7 @@ Description
 ===========
 
 In the past it was possible to override the "New Content Element Wizard" via custom scripts
-when using page TSConfig via `mod.web_list.newContentWiz.overrideWithExtension = myextension` to define an extension,
+when using page TSconfig via `mod.web_list.newContentWiz.overrideWithExtension = myextension` to define an extension,
 which then needed a file placed under `mod1/db_new_content_el.php`. The script was then called with certain parameters instead
 of the wizard.
 
@@ -30,7 +30,7 @@ Example:
 Impact
 ======
 
-Using the old TSConfig option `mod.web_list.newContentWiz.overrideWithExtension` has no effect anymore and
+Using the old TSconfig option `mod.web_list.newContentWiz.overrideWithExtension` has no effect anymore and
 will fallback to the regular new content element wizard provided by the TYPO3 Core.
 
 
@@ -43,8 +43,8 @@ Any installation using this option with extensions providing custom New Content 
 Migration
 =========
 
-The extension providing the script must be changed to register a route or module and set the TSConfig option to the route identifier,
-instead of a raw PHP script. Any usages in TSConfig need to be adapted to use the new TSConfig option.
+The extension providing the script must be changed to register a route or module and set the TSconfig option to the route identifier,
+instead of a raw PHP script. Any usages in TSconfig need to be adapted to use the new TSconfig option.
 
 
 .. index:: TSConfig, PHP-API, Backend

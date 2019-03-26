@@ -94,7 +94,7 @@ class LinkAnalyzer
     protected $pageWithAnchor = '';
 
     /**
-     * The currently active TSConfig. Will be passed to the init function.
+     * The currently active TSconfig. Will be passed to the init function.
      *
      * @var array
      */
@@ -117,7 +117,7 @@ class LinkAnalyzer
      *
      * @param array  $searchField List of fields in which to search for links
      * @param string $pidList     List of comma separated page uids in which to search for links
-     * @param array  $tsConfig    The currently active TSConfig.
+     * @param array  $tsConfig    The currently active TSconfig.
      */
     public function init(array $searchField, $pidList, $tsConfig)
     {
@@ -317,7 +317,7 @@ class LinkAnalyzer
     }
 
     /**
-     * Returns the TSConfig that was passed to the init() method.
+     * Returns the TSconfig that was passed to the init() method.
      *
      * This can be used by link checkers that get a reference of this
      * object passed to the checkLink() method.

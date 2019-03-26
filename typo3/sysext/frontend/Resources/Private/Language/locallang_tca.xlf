@@ -403,7 +403,7 @@
 				<source>Page</source>
 			</trans-unit>
 			<trans-unit id="pages.TSconfig_formlabel">
-				<source>Page TSConfig</source>
+				<source>Page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="pages.backend_layout_formlabel">
 				<source>Backend Layout (this page only)</source>
@@ -418,7 +418,7 @@
 				<source>Default</source>
 			</trans-unit>
 			<trans-unit id="pages.tsconfig_includes">
-				<source>Include Page TSConfig (from extensions)</source>
+				<source>Include Page TSconfig (from extensions)</source>
 			</trans-unit>
 			<trans-unit id="tt_content">
 				<source>Page Content</source>

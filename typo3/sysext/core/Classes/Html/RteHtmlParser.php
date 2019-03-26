@@ -62,7 +62,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     protected $elRef = '';
 
     /**
-     * Current Page TSConfig
+     * Current Page TSconfig
      *
      * @var array
      */

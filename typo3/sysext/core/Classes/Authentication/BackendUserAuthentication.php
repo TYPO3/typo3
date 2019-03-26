@@ -263,7 +263,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     /**
      * User Config Default values:
      * The array may contain other fields for configuration.
-     * For this, see "setup" extension and "TSConfig" document (User TSconfig, "setup.[xxx]....")
+     * For this, see "setup" extension and "TSconfig" document (User TSconfig, "setup.[xxx]....")
      * Reserved keys for other storage of session data:
      * moduleData
      * moduleSessionID

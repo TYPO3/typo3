@@ -647,7 +647,7 @@ class DataHandler implements LoggerAwareInterface
             $this->deleteTree = 1;
         }
 
-        // Get default values from user TSConfig
+        // Get default values from user TSconfig
         $tcaDefaultOverride = $this->BE_USER->getTSConfig()['TCAdefaults.'] ?? null;
         if (is_array($tcaDefaultOverride)) {
             $this->setDefaultsFromUserTS($tcaDefaultOverride);
