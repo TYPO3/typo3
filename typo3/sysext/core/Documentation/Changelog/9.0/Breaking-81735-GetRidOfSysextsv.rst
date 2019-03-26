@@ -1,5 +1,7 @@
 .. include:: ../../Includes.txt
 
+.. _changelog-Breaking-81735-GetRidOfSysextsv:
+
 =======================================
 Breaking: #81735 - Get rid of sysext:sv
 =======================================
@@ -30,5 +32,15 @@ Migration
 =========
 
 Use the new namespaces as mentioned above.
+
+Related
+=======
+
+- :ref:`changelog-MoveOfServicesListReportFromSvToReports`
+
+More Information
+================
+
+- :ref:`t3coreapi:services-developer-service-api` in "TYPO3 Explained"
 
 .. index:: Backend, PHP-API, FullyScanned, ext:sv

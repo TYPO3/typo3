@@ -169,12 +169,14 @@ return [
     ],
     'TYPO3\CMS\Sv\AbstractAuthenticationService' => [
         'restFiles' => [
+            'Breaking-81735-GetRidOfSysextsv.rst',
             'Breaking-81536-MoveOfServicesListReportFromSvToReports.rst',
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Sv\AuthenticationService' => [
         'restFiles' => [
+            'Breaking-81735-GetRidOfSysextsv.rst',
             'Breaking-81536-MoveOfServicesListReportFromSvToReports.rst',
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
