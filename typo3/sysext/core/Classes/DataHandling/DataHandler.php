@@ -1260,7 +1260,7 @@ class DataHandler implements LoggerAwareInterface
                             $newVersion_placeholderFieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
                             $newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['label']] = $this->getPlaceholderTitleForTableLabel($table);
                             // Saving placeholder as 'original'
-                            $this->insertDB($table, $id, $newVersion_placeholderFieldArray, false, $incomingFieldArray['uid'] ?? 0);
+                            $this->insertDB($table, $id, $newVersion_placeholderFieldArray, false, (int)($incomingFieldArray['uid'] ?? 0));
                             // For the actual new offline version, set versioning values to point to placeholder:
                             $fieldArray['pid'] = -1;
                             $fieldArray['t3ver_oid'] = $this->substNEWwithIDs[$id];
@@ -1278,7 +1278,7 @@ class DataHandler implements LoggerAwareInterface
                                 $this->autoVersionIdMap[$table][$this->substNEWwithIDs[$id]] = $phShadowId;
                             }
                         } else {
-                            $this->insertDB($table, $id, $fieldArray, false, $incomingFieldArray['uid']);
+                            $this->insertDB($table, $id, $fieldArray, false, (int)($incomingFieldArray['uid'] ?? 0));
                         }
                     } else {
                         if ($table === 'pages') {
