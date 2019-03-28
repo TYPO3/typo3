@@ -73,7 +73,7 @@ class HrefLangGenerator
             $languageMenu = GeneralUtility::makeInstance(LanguageMenuProcessor::class);
             $languages = $languageMenu->process($this->cObj, [], [], []);
             foreach ($languages['languagemenu'] as $language) {
-                if ($language['available'] === 1) {
+                if ($language['available'] === 1 && !empty($language['link'])) {
                     $href = $this->getAbsoluteUrl($language['link']);
                     $hreflangs[] =
                         '<link rel="alternate" hreflang="' . htmlspecialchars($language['hreflang']) . '" href="' . htmlspecialchars($href) . '"/>';
@@ -85,7 +85,7 @@ class HrefLangGenerator
                 $hreflangs[] =
                     '<link rel="alternate" hreflang="x-default" href="' . htmlspecialchars($href) . '"/>' . LF;
 
-                $GLOBALS['TSFE']->additionalHeaderData[] = implode(LF, $hreflangs);
+                $this->getTypoScriptFrontendController()->additionalHeaderData[] = implode(LF, $hreflangs);
             }
         }
 
