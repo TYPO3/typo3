@@ -7,6 +7,7 @@
 declare namespace TYPO3 {
   export let Backend: any;
   export let DebugConsole: any;
+  export let ExtensionManager: any;
   export let Icons: any;
   export let InfoWindow: any;
   export let LoginRefresh: any;
@@ -129,6 +130,12 @@ interface JQueryTypedEvent<T extends Event> extends JQueryEventObject {
  * Required to make jQuery plugins "available" in TypeScript
  */
 interface JQuery {
+  dataTableExt: any;
+
+  search(term?: string): JQuery;
+
+  draw(): JQuery;
+
   clearable(options?: any): JQuery;
 
   datetimepicker(options?: any): JQuery;
