@@ -2828,6 +2828,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $titleProvider = GeneralUtility::makeInstance(PageTitleProviderManager::class);
         $pageTitle = $titleProvider->getTitle();
 
+        if ($pageTitle !== '') {
+            $this->indexedDocTitle = $pageTitle;
+        }
+
         $titleTagContent = $this->printTitle(
             $pageTitle,
             (bool)($this->config['config']['noPageTitle'] ?? false),

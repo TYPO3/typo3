@@ -15,9 +15,13 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\Backend\NullBackend;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -469,5 +473,27 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $subject->_call('initializeSearchWordData', ['stop', 'word']);
         $this->assertEquals('[[:space:]]stop[[:space:]]|[[:space:]]word[[:space:]]', $subject->sWordRegEx);
         $this->assertEquals(['stop', 'word'], $subject->sWordList);
+    }
+
+    /**
+     * @test
+     * @see https://forge.typo3.org/issues/88041
+     */
+    public function indexedSearchHookUsesPageTitleApi(): void
+    {
+        $pageTitle = 'This is a test page title coming from PageTitleProviderManager';
+
+        $pageTitleProvider = $this->prophesize(PageTitleProviderManager::class);
+        $pageTitleProvider->getTitle()->willReturn($pageTitle);
+        GeneralUtility::setSingletonInstance(PageTitleProviderManager::class, $pageTitleProvider->reveal());
+
+        $nullCacheBackend = new NullBackend('');
+        $cacheManager = $this->prophesize(CacheManager::class);
+        $cacheManager->getCache('cache_pages')->willReturn($nullCacheBackend);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
+
+        $subject = new TypoScriptFrontendController(null, 1, 0);
+        $subject->generatePageTitle();
+        $this->assertSame($pageTitle, $subject->indexedDocTitle);
     }
 }
