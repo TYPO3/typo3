@@ -37,7 +37,7 @@ Usage:
 	}
 
 .. hint::
-	Integrity hashes may be generated using https://srihash.org/.
+	Integrity hashes may be generated using https://www.srihash.org/.
 
 
 .. index:: JavaScript, TypoScript, Frontend
