@@ -450,7 +450,8 @@ class GalleryProcessor implements DataProcessorInterface
         } else {
             $maxMediaWidth = (int)($galleryWidthMinusBorderAndSpacing / $this->galleryData['count']['columns']);
             foreach ($this->fileObjects as $key => $fileObject) {
-                $mediaWidth = min($maxMediaWidth, $this->getCroppedDimensionalProperty($fileObject, 'width'));
+                $croppedWidth = $this->getCroppedDimensionalProperty($fileObject, 'width');
+                $mediaWidth = $croppedWidth > 0 ? min($maxMediaWidth, $croppedWidth) : $maxMediaWidth;
                 $mediaHeight = floor(
                     $this->getCroppedDimensionalProperty($fileObject, 'height') * ($mediaWidth / max($this->getCroppedDimensionalProperty($fileObject, 'width'), 1))
                 );
