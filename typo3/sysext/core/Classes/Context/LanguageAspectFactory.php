@@ -103,15 +103,32 @@ class LanguageAspectFactory
     {
         $languageId = $language->getLanguageId();
         $fallbackType = $language->getFallbackType();
-        if ($fallbackType === 'fallback') {
-            $fallbackOrder = $language->getFallbackLanguageIds();
-            $fallbackOrder[] = 'pageNotFound';
-        } elseif ($fallbackType === 'strict') {
-            $fallbackOrder = [];
-        } else {
-            $fallbackOrder = [0];
+        $fallbackOrder = $language->getFallbackLanguageIds();
+        $fallbackOrder[] = 'pageNotFound';
+        switch ($fallbackType) {
+            // Fall back to other language, if the page does not exist in the requested language
+            // But always fetch only records of this specific (available) language
+            case 'free':
+                $overlayType = LanguageAspect::OVERLAYS_OFF;
+                break;
+
+            // Fall back to other language, if the page does not exist in the requested language
+            // Do overlays, and keep the ones that are not translated
+            case 'fallback':
+                $overlayType = LanguageAspect::OVERLAYS_MIXED;
+                break;
+
+            // Same as "fallback" but remove the records that are not translated
+            case 'strict':
+                $overlayType = LanguageAspect::OVERLAYS_ON_WITH_FLOATING;
+                break;
+
+            // Ignore, fallback to default language
+            default:
+                $fallbackOrder = [0];
+                $overlayType = LanguageAspect::OVERLAYS_OFF;
         }
 
-        return GeneralUtility::makeInstance(LanguageAspect::class, $languageId, $languageId, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, $fallbackOrder);
+        return GeneralUtility::makeInstance(LanguageAspect::class, $languageId, $languageId, $overlayType, $fallbackOrder);
     }
 }
