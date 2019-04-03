@@ -55,7 +55,7 @@ TYPO3 comes with the following enhancers out of the box:
 
 Custom enhancers can be registered by adding an entry to an extensions :file:`ext_localconf.php`.
 
-:php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['CustomPlugin'] = \MyVendor\MyPackage\Routing\CustomEnhancer::class;`
+:php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['enhancers']['CustomPlugin'] = \MyVendor\MyPackage\Routing\CustomEnhancer::class;`
 
 Within a configuration, an enhancer always evaluates the following properties:
 
