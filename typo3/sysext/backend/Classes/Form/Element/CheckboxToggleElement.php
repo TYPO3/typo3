@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Generation of TCEform elements of the type "check"
@@ -180,7 +181,8 @@ class CheckboxToggleElement extends AbstractFormElement
             $numberOfItems,
             implode('', $additionalInformation['fieldChangeFunc'])
         );
-        $checkboxId = $additionalInformation['itemFormElID'] . '_' . $itemCounter;
+        $uniqueId = StringUtility::getUniqueId('_');
+        $checkboxId = $additionalInformation['itemFormElID'] . '_' . $itemCounter . $uniqueId;
         return '
             <div class="checkbox checkbox-type-toggle' . ($invert ? ' checkbox-invert' : '') . ($inline ? ' checkbox-inline' : '') . (!$disabled ? '' : ' disabled') . '">
                 <input type="checkbox"
