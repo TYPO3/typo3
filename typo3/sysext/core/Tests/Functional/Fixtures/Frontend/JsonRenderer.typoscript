@@ -267,6 +267,13 @@ page {
 				sys_language_content.data = context:language:contentId
 				sys_language_contentOL.data = context:language:legacyOverlayType
 			}
+			languageInfo.children {
+				id.data = context:language:id
+				contentId.data = context:language:contentId
+				fallbackType.data = sitelanguage:fallbackType
+				fallbackChain.data = context:language:fallbackChain
+				overlayType.data = context:language:overlayType
+			}
 		}
 		stdWrap.postUserFunc.as = Scope
 	}
