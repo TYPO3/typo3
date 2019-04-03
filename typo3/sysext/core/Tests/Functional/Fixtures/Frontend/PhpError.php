@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures;
+namespace TYPO3\CMS\Core\Tests\Functional\Fixtures\Frontend;
 
 /*
  * This file is part of the TYPO3 CMS project.

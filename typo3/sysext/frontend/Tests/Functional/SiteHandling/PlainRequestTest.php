@@ -427,7 +427,7 @@ class PlainRequestTest extends AbstractTestCase
                 ->withMergedGlobalSettings([
                     'TYPO3_CONF_VARS' => [
                         'FE' => [
-                            'pageNotFound_handling' => 'READFILE:typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/PageError.txt',
+                            'pageNotFound_handling' => 'READFILE:typo3/sysext/core/Tests/Functional/Fixtures/Frontend/PageError.txt',
                         ]
                     ]
                 ])
@@ -507,7 +507,7 @@ class PlainRequestTest extends AbstractTestCase
             $this->internalRequestContext->withMergedGlobalSettings([
                 'TYPO3_CONF_VARS' => [
                     'FE' => [
-                        'pageNotFound_handling' => 'READFILE:typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/PageError.txt',
+                        'pageNotFound_handling' => 'READFILE:typo3/sysext/core/Tests/Functional/Fixtures/Frontend/PageError.txt',
                     ]
                 ]
             ])
