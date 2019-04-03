@@ -119,7 +119,7 @@ class PageRouter implements RouterInterface
         $pageCandidates = [];
         $language = $previousResult->getLanguage();
         $languages = [$language->getLanguageId()];
-        if ($language->getFallbackType() === 'fallback') {
+        if (!empty($language->getFallbackLanguageIds())) {
             $languages = array_merge($languages, $language->getFallbackLanguageIds());
         }
         // Iterate all defined languages in their configured order to get matching page candidates somewhere in the language fallback chain
