@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Composer;
  */
 
 use Composer\Script\Event;
-use Composer\Util\Filesystem;
-use TYPO3\CMS\Composer\Plugin\Core\InstallerScripts\EntryPoint;
 use TYPO3\CMS\Composer\Plugin\Core\InstallerScriptsRegistration;
 use TYPO3\CMS\Composer\Plugin\Core\ScriptDispatcher;
 
@@ -36,33 +34,6 @@ class InstallerScripts implements InstallerScriptsRegistration
         $source = dirname(__DIR__, 2) . '/Resources/Private/Php/cli.php';
         $target = 'typo3/sysext/core/bin/typo3';
 
-        $scriptDispatcher->addInstallerScript(
-            // @todo: Add support to `typo3/cms-composer-installers` to create executable entry points
-            new class($source, $target) extends EntryPoint {
-                /** @var string */
-                private $target;
-
-                public function __construct(string $source, string $target)
-                {
-                    parent::__construct($source, $target);
-                    $this->target = $target;
-                }
-
-                public function run(Event $event): bool
-                {
-                    parent::run($event);
-
-                    $filesystem = new Filesystem();
-                    $composer = $event->getComposer();
-                    $pluginConfig = \TYPO3\CMS\Composer\Plugin\Config::load($composer);
-
-                    $targetFile = $pluginConfig->get('web-dir') . '/' . $this->target;
-
-                    @chmod($targetFile, 0755);
-
-                    return true;
-                }
-            }
-        );
+        $scriptDispatcher->addInstallerScript(new CliEntryPoint($source, $target));
     }
 }
