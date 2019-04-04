@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 
@@ -54,6 +55,11 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface, LoggerAwa
      */
     public function handle(\Exception $exception, AbstractContentObject $contentObject = null, $contentObjectConfiguration = [])
     {
+        // ImmediateResponseException should work similar to exit / die and must therefore not be handled by this ExceptionHandler.
+        if ($exception instanceof ImmediateResponseException) {
+            throw $exception;
+        }
+
         if (!empty($this->configuration['ignoreCodes.'])) {
             if (in_array($exception->getCode(), array_map('intval', $this->configuration['ignoreCodes.']), true)) {
                 throw $exception;
