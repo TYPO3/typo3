@@ -2149,8 +2149,6 @@ class PageLayoutView implements LoggerAwareInterface
         // Make header:
 
         if ($row['header']) {
-            $infoArr = [];
-            $this->getProcessedValue('tt_content', 'header_position,header_layout,header_link', $row, $infoArr);
             $hiddenHeaderNote = '';
             // If header layout is set to 'hidden', display an accordant note:
             if ($row['header_layout'] == 100) {
@@ -2163,7 +2161,6 @@ class PageLayoutView implements LoggerAwareInterface
                 . $hiddenHeaderNote . '</strong><br />';
         }
         // Make content:
-        $infoArr = [];
         $drawItem = true;
         // Hook: Render an own preview of a record
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'] ?? [] as $className) {
@@ -2272,7 +2269,7 @@ class PageLayoutView implements LoggerAwareInterface
                     break;
                 case 'list':
                     $hookOut = '';
-                    $_params = ['pObj' => &$this, 'row' => $row, 'infoArr' => $infoArr];
+                    $_params = ['pObj' => &$this, 'row' => $row, 'infoArr' => []];
                     foreach (
                         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$row['list_type']] ??
                         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'] ??
