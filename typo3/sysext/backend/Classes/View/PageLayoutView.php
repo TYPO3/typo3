@@ -4446,7 +4446,7 @@ class PageLayoutView implements LoggerAwareInterface
      */
     protected function getLocalizedPageTitle(): string
     {
-        if ($this->tt_contentConfig['sys_language_uid'] ?? 0 > 0) {
+        if (($this->tt_contentConfig['sys_language_uid'] ?? 0) > 0) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()
