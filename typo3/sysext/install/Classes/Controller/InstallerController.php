@@ -116,7 +116,7 @@ class InstallerController
     public function checkEnvironmentAndFoldersAction(): ResponseInterface
     {
         return new JsonResponse([
-            'success' => @is_file(Environment::getLegacyConfigPath() . '/LocalConfiguration.php'),
+            'success' => @is_file(GeneralUtility::makeInstance(ConfigurationManager::class)->getLocalConfigurationFileLocation()),
         ]);
     }
 
