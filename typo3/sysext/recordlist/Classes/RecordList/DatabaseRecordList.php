@@ -1217,7 +1217,7 @@ class DatabaseRecordList
                         // If no search happened it means that the selected
                         // records are either default or All language and here we will not select translations
                         // which point to the main record:
-                        if ($l10nEnabled && $this->searchString === '') {
+                        if ($l10nEnabled && $this->searchString === '' && !($this->hideTranslations === '*' || GeneralUtility::inList($this->hideTranslations, $table))) {
                             // For each available translation, render the record:
                             if (is_array($this->translations)) {
                                 foreach ($this->translations as $lRow) {
