@@ -212,6 +212,10 @@ HTML;
                 top: 0;
             }
 
+            .panel-collapse .exception-page {
+                height: 100%;
+            }
+
             .exception-page a {
                 color: #ff8700;
                 text-decoration: underline;
@@ -291,6 +295,10 @@ HTML;
                 max-width: 1140px;
                 margin: 0 auto;
                 padding: 0 30px;
+            }
+
+            .panel-collapse .exception-page .container {
+                width: 100%;
             }
 
             .exception-page .exception-illustration {
