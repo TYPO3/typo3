@@ -55,6 +55,10 @@ interface UploadedFile {
   type: string;
 }
 
+interface InternalFile extends File {
+  lastModified: any;
+}
+
 interface DragUploaderOptions {
   /**
    * CSS selector for the element where generated messages are inserted. (required)
@@ -79,7 +83,7 @@ class DragUploaderPlugin {
   /**
    * Array of files which are asked for being overridden
    */
-  private askForOverride: Array<{ original: UploadedFile, uploaded: File, action: Action }> = [];
+  private askForOverride: Array<{ original: UploadedFile, uploaded: InternalFile, action: Action }> = [];
 
   private percentagePerFile: number = 1;
 
@@ -347,7 +351,6 @@ class DragUploaderPlugin {
         ),
       ),
     );
-
     for (let i = 0; i < amountOfItems; ++i) {
       const $record = $('<tr />').append(
         $('<td />').append(
@@ -358,11 +361,16 @@ class DragUploaderPlugin {
         ),
         $('<td />').html(
           this.askForOverride[i].original.name + ' (' + (DragUploader.fileSizeAsString(this.askForOverride[i].original.size)) + ')' +
-          '<br>' + moment(this.askForOverride[i].original.mtime, 'x').format('YYYY-MM-DD HH:mm'),
+          '<br>' + moment.unix(this.askForOverride[i].original.mtime).format('YYYY-MM-DD HH:mm'),
         ),
         $('<td />').html(
           this.askForOverride[i].uploaded.name + ' (' + (DragUploader.fileSizeAsString(this.askForOverride[i].uploaded.size)) + ')' +
-          '<br>' + moment(this.askForOverride[i].uploaded.lastModifiedDate, 'X').format('YYYY-MM-DD HH:mm'),
+          '<br>' +
+          moment(
+            this.askForOverride[i].uploaded.lastModified
+              ? this.askForOverride[i].uploaded.lastModified
+              : this.askForOverride[i].uploaded.lastModifiedDate,
+          ).format('YYYY-MM-DD HH:mm'),
         ),
         $('<td />').append(
           $('<select />', {class: 'form-control t3js-actions', 'data-override': i}).append(
@@ -463,11 +471,11 @@ class FileQueueItem {
   private $progressPercentage: JQuery;
   private $progressMessage: JQuery;
   private dragUploader: DragUploaderPlugin;
-  private file: File;
+  private file: InternalFile;
   private override: Action;
   private upload: XMLHttpRequest;
 
-  constructor(dragUploader: DragUploaderPlugin, file: File, override: Action) {
+  constructor(dragUploader: DragUploaderPlugin, file: InternalFile, override: Action) {
     this.dragUploader = dragUploader;
     this.file = file;
     this.override = override;
