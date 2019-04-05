@@ -201,16 +201,13 @@ HTML;
                 background-color: #eaeaea;
                 color: #212121;
                 font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-                font-size: 1rem;
                 font-weight: 400;
                 height: 100vh;
                 line-height: 1.5;
                 overflow-x: hidden;
                 overflow-y: scroll;
-                position: absolute;
                 text-align: left;
                 top: 0;
-                width: 100vw;
             }
 
             .exception-page a {
@@ -354,6 +351,10 @@ HTML;
                 color: #721c24;
                 background-color: #f8d7da;
                 padding: 1.5rem;
+            }
+
+            .exception-page .trace-file-path {
+                word-break: break-all;
             }
 
             .exception-page .trace-message {
