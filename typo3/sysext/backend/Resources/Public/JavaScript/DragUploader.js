@@ -318,7 +318,6 @@ define(['jquery',
           )
         )
       );
-
       for (var i = 0; i < amountOfItems; ++i) {
         var $record = $('<tr />').append(
           $('<td />').append(
@@ -329,11 +328,16 @@ define(['jquery',
           ),
           $('<td />').html(
             askForOverride[i].original.name + ' (' + (DragUploader.fileSizeAsString(askForOverride[i].original.size)) + ')' +
-            '<br>' + moment(askForOverride[i].original.mtime, 'x').format('YYYY-MM-DD HH:mm')
+            '<br>' + moment.unix(askForOverride[i].original.mtime).format('YYYY-MM-DD HH:mm')
           ),
           $('<td />').html(
             askForOverride[i].uploaded.name + ' (' + (DragUploader.fileSizeAsString(askForOverride[i].uploaded.size)) + ')' +
-            '<br>' + moment(askForOverride[i].uploaded.lastModified, 'X').format('YYYY-MM-DD HH:mm')
+            '<br>' +
+            moment(
+              askForOverride[i].uploaded.lastModified
+                ? askForOverride[i].uploaded.lastModified
+                : askForOverride[i].uploaded.lastModifiedDate,
+            ).format('YYYY-MM-DD HH:mm')
           ),
           $('<td />').append(
             $('<select />', {class: 'form-control t3js-actions', 'data-override': i}).append(
