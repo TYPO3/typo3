@@ -91,6 +91,9 @@ class DebugExceptionHandler extends AbstractExceptionHandler
 							font-size: 12px;
 							margin: 10px;
 							padding: 0;
+                            right: 10px;
+                            overflow: scroll;
+                            max-height: calc(100% - 24px);
 						">
 						<div style="width: 100%; background-color: #515151; color: white; padding: 2px; margin: 0 0 6px 0;">Uncaught TYPO3 Exception</div>
 						<div style="width: 100%; padding: 2px; margin: 0 0 6px 0;">
