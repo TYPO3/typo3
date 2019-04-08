@@ -161,7 +161,7 @@ class SelectTreeElement extends AbstractFormElement
         $html[] =                       ' data-tree-show-toolbar="' . $showHeader . '"';
         $html[] =                       ' name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"';
         $html[] =                       ' id="treeinput' . $formElementId . '"';
-        $html[] =                       ' value=""';
+        $html[] =                       ' value="' . htmlspecialchars(implode(',', $parameterArray['itemFormElValue'])) . '"';
         $html[] =                   '/>';
         $html[] =               '</div>';
         $html[] =               '<div id="' . $treeWrapperId . '" class="svg-tree-wrapper" style="height: ' . $heightInPx . 'px;"></div>';
