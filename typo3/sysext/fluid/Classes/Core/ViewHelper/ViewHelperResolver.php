@@ -62,6 +62,9 @@ class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperRes
             $configuration = $this->getBackendUser()->uc['TSFE_adminConfig'];
             if (isset($configuration['preview_showFluidDebug']) && $configuration['preview_showFluidDebug']) {
                 $this->namespaces['f'][] = 'TYPO3\\CMS\\Fluid\\ViewHelpers\\Debug';
+                // forcibly unset fluid caching as it does not care about the tsfe based caching settings
+                unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['fluid_template']['frontend']);
+                $GLOBALS['TSFE']->set_no_cache('Cache is disabled if fluid debugging is enabled', true);
             }
         }
     }
