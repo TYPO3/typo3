@@ -71,7 +71,7 @@ The Simple Enhancer works with various route arguments to map them to a argument
 
 `index.php?id=13&category=241&tag=Benni`
 results in
-`https://www.example.com/path-to/my-page/241/Benni`
+`https://www.example.com/path-to/my-page/show-by-category/241/Benni`
 
 The configuration looks like this::
 
@@ -84,8 +84,8 @@ The configuration looks like this::
        defaults:
          tag: ''
        requirements:
-         category_id: '[0-9]{1..3}'
-         tag: '^[a-zA-Z0-9].*$'
+         category_id: '[0-9]{1,3}'
+         tag: '[a-zA-Z0-9].*'
        _arguments:
          category_id: 'category'
 
