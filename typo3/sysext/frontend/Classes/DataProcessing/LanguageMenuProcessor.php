@@ -312,7 +312,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
      */
     protected function prepareConfiguration(): void
     {
-        $this->menuConfig += $this->processorConfiguration;
+        $this->menuConfig = array_merge($this->menuConfig, $this->processorConfiguration);
 
         // Process languages
         if (empty($this->menuConfig['languages']) && empty($this->menuConfig['languages.'])) {
