@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 /*
@@ -255,9 +257,9 @@ class PathUtilityTest extends UnitTestCase
     /**
      * Data provider for getCanonicalPathCorrectlyCleansPath
      *
-     * @return array
+     * @return string[][]
      */
-    public function getCanonicalPathCorrectlyCleansPathDataProvider()
+    public function getCanonicalPathCorrectlyCleansPathDataProvider(): array
     {
         return [
             'removes single-dot-elements' => [
@@ -348,10 +350,12 @@ class PathUtilityTest extends UnitTestCase
     }
 
     /**
+     * @param string $inputName
+     * @param string $expectedResult
      * @test
      * @dataProvider getCanonicalPathCorrectlyCleansPathDataProvider
      */
-    public function getCanonicalPathCorrectlyCleansPath($inputName, $expectedResult)
+    public function getCanonicalPathCorrectlyCleansPath(string $inputName, string $expectedResult): void
     {
         // Ensure Environment runs as Windows test
         Environment::initialize(
@@ -365,7 +369,7 @@ class PathUtilityTest extends UnitTestCase
             Environment::getCurrentScript(),
             'WINDOWS'
         );
-        $this->assertEquals(
+        $this->assertSame(
             $expectedResult,
             PathUtility::getCanonicalPath($inputName)
         );
@@ -374,9 +378,9 @@ class PathUtilityTest extends UnitTestCase
     /**
      * Data provider for dirnameDuringBootstrapCorrectlyFetchesParent
      *
-     * @return array
+     * @return string[][]
      */
-    public function dirnameDuringBootstrapCorrectlyFetchesParentDataProvider()
+    public function dirnameDuringBootstrapCorrectlyFetchesParentDataProvider(): array
     {
         return [
             'relative path' => [
@@ -399,12 +403,14 @@ class PathUtilityTest extends UnitTestCase
     }
 
     /**
+     * @param string $inputPath
+     * @param string $expectedResult
      * @test
      * @dataProvider dirnameDuringBootstrapCorrectlyFetchesParentDataProvider
      */
-    public function dirnameDuringBootstrapCorrectlyFetchesParent($inputPath, $expectedResult)
+    public function dirnameDuringBootstrapCorrectlyFetchesParent(string $inputPath, string $expectedResult): void
     {
-        $this->assertEquals(
+        $this->assertSame(
             $expectedResult,
             PathUtility::dirnameDuringBootstrap($inputPath)
         );
@@ -438,14 +444,94 @@ class PathUtilityTest extends UnitTestCase
     }
 
     /**
+     * @param string $inputPath
+     * @param string $expectedResult
      * @test
      * @dataProvider basenameDuringBootstrapCorrectlyFetchesBasenameDataProvider
      */
-    public function basenameDuringBootstrapCorrectlyFetchesBasename($inputPath, $expectedResult)
+    public function basenameDuringBootstrapCorrectlyFetchesBasename(string $inputPath, string $expectedResult): void
     {
-        $this->assertEquals(
+        $this->assertSame(
             $expectedResult,
             PathUtility::basenameDuringBootstrap($inputPath)
         );
+    }
+
+    /**
+     * Data provider for isAbsolutePathRespectsAllOperatingSystems
+     *
+     * @return array[]
+     */
+    public function isAbsolutePathRespectsAllOperatingSystemsPathDataProvider(): array
+    {
+        return [
+            'starting slash' => [
+                '/path',
+                false,
+                true
+            ],
+            'starting slash on windows' => [
+                '/path',
+                true,
+                true
+            ],
+            'no match' => [
+                'path',
+                false,
+                false
+            ],
+            'no match on windows' => [
+                'path',
+                true,
+                false
+            ],
+            'path starts with C:/' => [
+                'C:/folder',
+                false,
+                false
+            ],
+            'path starts with C:/ on windows' => [
+                'C:/folder',
+                true,
+                true
+            ],
+            'path starts with C:\\' => [
+                'C:\\folder',
+                false,
+                false
+            ],
+            'path starts with C:\\ on windows' => [
+                'C:\\folder',
+                true,
+                true
+            ],
+        ];
+    }
+
+    /**
+     * @param string $inputPath
+     * @param bool $isWindows
+     * @param bool $expectedResult
+     * @test
+     * @dataProvider isAbsolutePathRespectsAllOperatingSystemsPathDataProvider
+     */
+    public function isAbsolutePathRespectsAllOperatingSystems(string $inputPath, bool $isWindows, bool $expectedResult): void
+    {
+        if ($isWindows) {
+            // Ensure Environment runs as Windows test
+            Environment::initialize(
+                Environment::getContext(),
+                true,
+                false,
+                Environment::getProjectPath(),
+                Environment::getPublicPath(),
+                Environment::getVarPath(),
+                Environment::getConfigPath(),
+                Environment::getCurrentScript(),
+                'WINDOWS'
+            );
+        }
+
+        $this->assertSame($expectedResult, PathUtility::isAbsolutePath($inputPath));
     }
 }
