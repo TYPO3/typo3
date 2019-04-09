@@ -617,4 +617,41 @@ class SlugHelperTest extends UnitTestCase
             ], 13)
         );
     }
+
+    /**
+     * @test
+     */
+    public function generateSlugWithHookModifiers()
+    {
+        $options = [];
+        $options['fallbackCharacter'] = '-';
+        $options['generatorOptions'] = [
+            'fields' => ['title'],
+            'postModifiers' => [
+                0 => function ($parameters, $subject) {
+                    $slug = $parameters['slug'];
+                    if ($parameters['pid'] == 13) {
+                        $slug = 'prepend' . $slug;
+                    }
+                    return $slug;
+                }
+            ]
+        ];
+        $subject = new SlugHelper(
+            'pages',
+            'slug',
+            $options
+        );
+        $expected = '/prepend/products';
+        static::assertEquals(
+            $expected,
+            $subject->generate([
+                'title' => 'Products',
+                'nav_title' => 'Best products',
+                'subtitle' => 'Product subtitle',
+                'seo_title' => 'SEO product title',
+                'uid' => 23
+            ], 13)
+        );
+    }
 }

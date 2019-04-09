@@ -212,6 +212,20 @@ class SlugHelper
             $slug = $prefix . $slug;
         }
 
+        // Hook for alternative ways of filling/modifying the slug data
+        foreach ($this->configuration['generatorOptions']['postModifiers'] ?? [] as $funcName) {
+            $hookParameters = [
+                'slug' => $slug,
+                'workspaceId' => $this->workspaceId,
+                'configuration' => $this->configuration,
+                'record' => $recordData,
+                'pid' => $pid,
+                'prefix' => $prefix,
+                'tableName' => $this->tableName,
+                'fieldName' => $this->fieldName,
+            ];
+            $slug = GeneralUtility::callUserFunction($funcName, $hookParameters, $this);
+        }
         return $this->sanitize($slug);
     }
 
