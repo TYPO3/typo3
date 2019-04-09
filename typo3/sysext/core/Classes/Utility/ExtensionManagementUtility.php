@@ -813,8 +813,15 @@ class ExtensionManagementUtility
         // Also register the module as regular route
         $routeName = $moduleConfiguration['id'] ?? $fullModuleSignature;
         // Build Route objects from the data
-        $path = $moduleConfiguration['path'] ?? str_replace('_', '/', $fullModuleSignature);
-        $path = '/' . trim($path, '/') . '/';
+        if (!empty($moduleConfiguration['path'])) {
+            $path = $moduleConfiguration['path'];
+            $path = '/' . ltrim($path, '/');
+        } else {
+            $path = str_replace('_', '/', $fullModuleSignature);
+            $path = trim($path, '/');
+            $legacyPath = '/' . $path . '/';
+            $path = '/module/' . $path;
+        }
 
         $options = [
             'module' => true,
@@ -827,6 +834,11 @@ class ExtensionManagementUtility
 
         $router = GeneralUtility::makeInstance(Router::class);
         $router->addRoute($routeName, GeneralUtility::makeInstance(Route::class, $path, $options));
+        // bridge to allow to access old name like "/web/ts/" instead of "/module/web/ts/"
+        // @deprecated since TYPO3 v10.0, will be removed in TYPO3 v11.0.
+        if (!empty($legacyPath)) {
+            $router->addRoute('_legacyroutetomodule_' . $routeName, GeneralUtility::makeInstance(Route::class, $legacyPath, $options));
+        }
     }
 
     /**
