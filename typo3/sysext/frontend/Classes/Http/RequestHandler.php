@@ -428,7 +428,8 @@ class RequestHandler implements RequestHandlerInterface
                                 // To fix MSIE 6 that cannot handle these as relative paths (according to Ben v Ende)
                                 $ss = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/' . $ss;
                             }
-                            $pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($cssFileConfig['media']) . ';', empty($cssFileConfig['disableCompression']), (bool)$cssFileConfig['forceOnTop']);
+                            $cssMedia = !empty($cssFileConfig['media']) ? ' ' . htmlspecialchars($cssFileConfig['media']) : '';
+                            $pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '")' . $cssMedia . ';', empty($cssFileConfig['disableCompression']), (bool)$cssFileConfig['forceOnTop']);
                         } else {
                             $pageRenderer->addCssFile(
                                 $ss,
@@ -470,7 +471,8 @@ class RequestHandler implements RequestHandlerInterface
                                 // To fix MSIE 6 that cannot handle these as relative paths (according to Ben v Ende)
                                 $ss = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/' . $ss;
                             }
-                            $pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($cssFileConfig['media']) . ';', empty($cssFileConfig['disableCompression']), (bool)$cssFileConfig['forceOnTop']);
+                            $cssMedia = !empty($cssFileConfig['media']) ? ' ' . htmlspecialchars($cssFileConfig['media']) : '';
+                            $pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '")' . $cssMedia . ';', empty($cssFileConfig['disableCompression']), (bool)$cssFileConfig['forceOnTop']);
                         } else {
                             $pageRenderer->addCssLibrary(
                                 $ss,
