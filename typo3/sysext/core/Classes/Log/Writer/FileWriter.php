@@ -154,7 +154,7 @@ class FileWriter extends AbstractWriter
             if (isset($recordData['exception']) && $recordData['exception'] instanceof \Exception) {
                 $recordData['exception'] = (string)$recordData['exception'];
             }
-            $data = '- ' . json_encode($recordData);
+            $data = '- ' . json_encode($recordData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         }
 
         $message = sprintf(
