@@ -38,6 +38,8 @@ class DateViewHelperTest extends ViewHelperBaseTestcase
      */
     protected $viewHelper;
 
+    protected $resetSingletonInstances = true;
+
     protected function setUp()
     {
         parent::setUp();
