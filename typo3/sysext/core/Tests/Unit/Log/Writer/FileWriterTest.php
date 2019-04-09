@@ -154,6 +154,28 @@ class FileWriterTest extends UnitTestCase
 
     /**
      * @test
+     */
+    public function logsToFileWithUnescapedCharacters(): void
+    {
+        $this->setUpVfsStream();
+
+        $recordWithData = GeneralUtility::makeInstance(
+            LogRecord::class,
+            $this->getUniqueId('test.core.log.fileWriter.recordWithData.'),
+            \TYPO3\CMS\Core\Log\LogLevel::INFO,
+            'test record with unicode and slash in data to encode',
+            ['foo' => ['bar' => 'I paid 0.00€ for open source projects/code']]
+        );
+
+        $expectedResult = '{"foo":{"bar":"I paid 0.00€ for open source projects/code"}}';
+
+        $this->createWriter('encoded-data')->writeLog($recordWithData);
+        $logFileContents = trim(file_get_contents($this->getDefaultFileName('encoded-data')));
+        $this->assertContains($expectedResult, $logFileContents);
+    }
+
+    /**
+     * @test
      * @param LogRecord $record Record Test Data
      * @param string $expectedResult Needle
      * @dataProvider logsToFileDataProvider
