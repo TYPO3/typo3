@@ -14,7 +14,7 @@ filemount, which is then utilized for storing and reading forms.
 The backend user will only see form definitions that are stored in
 filemounts where the user has at least read access. The ``form editor`` and
 the ``form plugin`` respect those access rights. In this way, you are able
-to implement ACLs. If you have configure more than one filemount and the
+to implement ACLs. If you have configured more than one filemount and the
 backend user is able to access those, the ``form manager`` will allow the
 user to choose the preferred storage in which the form will be saved.
 
