@@ -69,9 +69,8 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface, LoggerAwa
         try {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
             $connection->connect();
-        } catch (ConnectionException $exception) {
-            // Cannot connect to current database
-            $message = 'Cannot connect to the configured database "' . $connection->getDatabase() . '"';
+        } catch (ConnectionException | \RuntimeException $exception) {
+            $message = 'Cannot connect to the configured database';
             $this->logger->emergency($message, ['exception' => $exception]);
             try {
                 return GeneralUtility::makeInstance(ErrorController::class)->unavailableAction($request, $message);
