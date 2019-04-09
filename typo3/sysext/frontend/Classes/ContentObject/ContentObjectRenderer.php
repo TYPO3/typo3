@@ -7041,7 +7041,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $languageQuery = $expressionBuilder->orX(
                     $languageQuery,
                     $expressionBuilder->andX(
-                        $expressionBuilder->eq($localizationParentField, 0),
+                        $expressionBuilder->eq($table . '.' . $localizationParentField, 0),
                         $expressionBuilder->eq($languageField, $languageAspect->getContentId())
                     )
                 );
