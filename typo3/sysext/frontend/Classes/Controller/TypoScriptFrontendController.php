@@ -3634,6 +3634,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * The cache lifetime of all pages takes starttime and endtime of news records of page 14 into account:
      * config.cache.all = tt_news:14
      *
+     * The cache.lifetime of the current page allows to take records (e.g. fe_users) into account:
+     * config.cache.all = fe_users:current
+     *
      * The cache lifetime of page 42 takes starttime and endtime of news records of page 15 and addresses of page 16 into account:
      * config.cache.42 = tt_news:15,tt_address:16
      *
@@ -3644,10 +3647,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         $result = ['tt_content:' . $this->id];
         if (isset($this->config['config']['cache.'][$this->id])) {
-            $result = array_merge($result, GeneralUtility::trimExplode(',', $this->config['config']['cache.'][$this->id]));
+            $result = array_merge($result, GeneralUtility::trimExplode(',', str_replace(':current', ':' . $this->id, $this->config['config']['cache.'][$this->id])));
         }
         if (isset($this->config['config']['cache.']['all'])) {
-            $result = array_merge($result, GeneralUtility::trimExplode(',', $this->config['config']['cache.']['all']));
+            $result = array_merge($result, GeneralUtility::trimExplode(',', str_replace(':current', ':' . $this->id, $this->config['config']['cache.']['all'])));
         }
         return array_unique($result);
     }
