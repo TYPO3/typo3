@@ -24,9 +24,11 @@ $GLOBALS['TYPO3\_CONF\_VARS']['EXTCONF']['felogin']['postProcContent']
 $GLOBALS['TYPO3\_CONF\_VARS']['EXTCONF']['felogin']['login\_confirmed']
   Hook for general actions after login has been confirmed
 
+$GLOBALS['TYPO3\_CONF\_VARS']['EXTCONF']['felogin']['login\_error']
+  Hook for general actions on login error
+
 $GLOBALS['TYPO3\_CONF\_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs']
-  This Hook is used by kb\_md5fepw extension to set hidden
-  fields and onsubmit-scripts
+  This hook can be used to set hidden fields and onsubmit-scripts
 
 $GLOBALS['TYPO3\_CONF\_VARS']['EXTCONF']['felogin']['logout\_confirmed']
   Hook for general actions after logout has been confirmed
@@ -34,3 +36,5 @@ $GLOBALS['TYPO3\_CONF\_VARS']['EXTCONF']['felogin']['logout\_confirmed']
 $GLOBALS['TYPO3\_CONF\_VARS']['EXTCONF']['felogin']['forgotPasswordMail ']
   Hook to change the contents of the forgot password mail
 
+$GLOBALS['TYPO3\_CONF\_VARS']['EXTCONF']['felogin']['password\_changed']
+  Receives an array containing the user and the newPassword.
