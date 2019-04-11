@@ -7,7 +7,7 @@
 				</TCEforms>
 				<type>array</type>
 				<el>
-					<showForgotPassword>
+					<settings.showForgotPassword>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.show_forgot_password</label>
 							<config>
@@ -20,8 +20,8 @@
 								</items>
 							</config>
 						</TCEforms>
-					</showForgotPassword>
-					<showPermaLogin>
+					</settings.showForgotPassword>
+					<settings.showPermaLogin>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.show_permalogin</label>
 							<config>
@@ -35,8 +35,8 @@
 								</items>
 							</config>
 						</TCEforms>
-					</showPermaLogin>
-					<showLogoutFormAfterLogin>
+					</settings.showPermaLogin>
+					<settings.showLogoutFormAfterLogin>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.show_logoutFormAfterLogin</label>
 							<config>
@@ -50,8 +50,8 @@
 								</items>
 							</config>
 						</TCEforms>
-					</showLogoutFormAfterLogin>
-					<pages>
+					</settings.showLogoutFormAfterLogin>
+					<settings.pages>
 						<TCEforms>
 							<exclude>1</exclude>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.user_storage</label>
@@ -64,9 +64,9 @@
 								<minitems>0</minitems>
 							</config>
 						</TCEforms>
-					</pages>
+					</settings.pages>
 
-					<recursive>
+					<settings.recursive>
 						<TCEforms>
 							<label>LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.recursive</label>
 							<config>
@@ -103,7 +103,7 @@
 								<size>1</size>
 							</config>
 						</TCEforms>
-					</recursive>
+					</settings.recursive>
 				</el>
 			</ROOT>
 		</sDEF>
@@ -114,7 +114,7 @@
 				</TCEforms>
 				<type>array</type>
 				<el>
-					<redirectMode>
+					<settings.redirectMode>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode</label>
 							<config>
@@ -160,8 +160,8 @@
 								<maxitems>8</maxitems>
 							</config>
 						</TCEforms>
-					</redirectMode>
-					<redirectFirstMethod>
+					</settings.redirectMode>
+					<settings.redirectFirstMethod>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectFirstMethod</label>
 							<config>
@@ -174,8 +174,8 @@
 								</items>
 							</config>
 						</TCEforms>
-					</redirectFirstMethod>
-					<redirectPageLogin>
+					</settings.redirectFirstMethod>
+					<settings.redirectPageLogin>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectPageLogin</label>
 							<config>
@@ -187,8 +187,8 @@
 								<minitems>0</minitems>
 							</config>
 						</TCEforms>
-					</redirectPageLogin>
-					<redirectPageLoginError>
+					</settings.redirectPageLogin>
+					<settings.redirectPageLoginError>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectPageLoginError</label>
 							<config>
@@ -200,8 +200,8 @@
 								<minitems>0</minitems>
 							</config>
 						</TCEforms>
-					</redirectPageLoginError>
-					<redirectPageLogout>
+					</settings.redirectPageLoginError>
+					<settings.redirectPageLogout>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectPageLogout</label>
 							<config>
@@ -213,8 +213,8 @@
 								<minitems>0</minitems>
 							</config>
 						</TCEforms>
-					</redirectPageLogout>
-					<redirectDisable>
+					</settings.redirectPageLogout>
+					<settings.redirectDisable>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectDisable</label>
 							<config>
@@ -227,7 +227,7 @@
 								</items>
 							</config>
 						</TCEforms>
-					</redirectDisable>
+					</settings.redirectDisable>
 				</el>
 			</ROOT>
 		</s_redirect>
@@ -238,7 +238,7 @@
 				</TCEforms>
 				<type>array</type>
 				<el>
-					<welcome_header>
+					<settings.welcome_header>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.welcome_header</label>
 							<config>
@@ -246,8 +246,8 @@
 								<size>30</size>
 							</config>
 						</TCEforms>
-					</welcome_header>
-					<welcome_message>
+					</settings.welcome_header>
+					<settings.welcome_message>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.welcome_message</label>
 							<config>
@@ -256,8 +256,8 @@
 								<rows>5</rows>
 							</config>
 						</TCEforms>
-					</welcome_message>
-					<success_header>
+					</settings.welcome_message>
+					<settings.success_header>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.success_header</label>
 							<config>
@@ -265,8 +265,8 @@
 								<size>30</size>
 							</config>
 						</TCEforms>
-					</success_header>
-					<success_message>
+					</settings.success_header>
+					<settings.success_message>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.success_message</label>
 							<config>
@@ -275,8 +275,8 @@
 								<rows>5</rows>
 							</config>
 						</TCEforms>
-					</success_message>
-					<error_header>
+					</settings.success_message>
+					<settings.error_header>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.error_header</label>
 							<config>
@@ -284,8 +284,8 @@
 								<size>30</size>
 							</config>
 						</TCEforms>
-					</error_header>
-					<error_message>
+					</settings.error_header>
+					<settings.error_message>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.error_message</label>
 							<config>
@@ -294,8 +294,8 @@
 								<rows>5</rows>
 							</config>
 						</TCEforms>
-					</error_message>
-					<status_header>
+					</settings.error_message>
+					<settings.status_header>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.status_header</label>
 							<config>
@@ -303,8 +303,8 @@
 								<size>30</size>
 							</config>
 						</TCEforms>
-					</status_header>
-					<status_message>
+					</settings.status_header>
+					<settings.status_message>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.status_message</label>
 							<config>
@@ -313,8 +313,8 @@
 								<rows>5</rows>
 							</config>
 						</TCEforms>
-					</status_message>
-					<logout_header>
+					</settings.status_message>
+					<settings.logout_header>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.logout_header</label>
 							<config>
@@ -322,8 +322,8 @@
 								<size>30</size>
 							</config>
 						</TCEforms>
-					</logout_header>
-					<logout_message>
+					</settings.logout_header>
+					<settings.logout_message>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.logout_message</label>
 							<config>
@@ -332,8 +332,8 @@
 								<rows>5</rows>
 							</config>
 						</TCEforms>
-					</logout_message>
-					<forgot_header>
+					</settings.logout_message>
+					<settings.forgot_header>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.forgot_header</label>
 							<config>
@@ -341,8 +341,8 @@
 								<size>30</size>
 							</config>
 						</TCEforms>
-					</forgot_header>
-					<forgot_reset_message>
+					</settings.forgot_header>
+					<settings.forgot_reset_message>
 						<TCEforms>
 							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.forgot_message</label>
 							<config>
@@ -351,7 +351,7 @@
 								<rows>5</rows>
 							</config>
 						</TCEforms>
-					</forgot_reset_message>
+					</settings.forgot_reset_message>
 				</el>
 			</ROOT>
 		</s_messages>

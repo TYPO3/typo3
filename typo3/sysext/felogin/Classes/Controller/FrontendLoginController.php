@@ -910,7 +910,7 @@ class FrontendLoginController extends AbstractPlugin
      */
     protected function flexFormValue($var, $sheet)
     {
-        return $this->pi_getFFvalue($this->cObj->data['pi_flexform'], $var, $sheet);
+        return $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'settings.' . $var, $sheet);
     }
 
     /**
