@@ -42,27 +42,27 @@ class LoginController extends ActionController
     /**
      * user overview for logged in users
      *
-     * @param bool $loginMessage
+     * @param bool $showLoginMessage
      */
-    public function overviewAction(bool $loginMessage = false): void
+    public function overviewAction(bool $showLoginMessage = false): void
     {
-        if ($this->isUserLoggedIn() === false) {
+        if (!$this->isUserLoggedIn()) {
             $this->forward('login');
         }
 
         $this->view->assignMultiple(
             [
-                'user'         => $GLOBALS['TSFE']->fe_user->user ?? [],
-                'loginMessage' => $loginMessage
+                'user'             => $GLOBALS['TSFE']->fe_user->user ?? [],
+                'showLoginMessage' => $showLoginMessage
             ]
         );
     }
 
     protected function getStoragePid(): string
     {
-        return $this->configurationManager->getConfiguration(
+        return (string)($this->configurationManager->getConfiguration(
                 ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
-            )['persistence']['storagePid'] ?? '';
+            )['persistence']['storagePid'] ?? '');
     }
 
     /**
@@ -88,8 +88,8 @@ class LoginController extends ActionController
     protected function handleLogin(bool $userLoggedIn, string $loginType): void
     {
         $loginInProgress = $loginType === LoginType::LOGIN;
-        if ($userLoggedIn === true) {
-            $this->forward('overview', null, null, ['loginMessage' => $loginInProgress]);
+        if ($userLoggedIn) {
+            $this->forward('overview', null, null, ['showLoginMessage' => $loginInProgress]);
         }
 
         if ($loginInProgress) {
