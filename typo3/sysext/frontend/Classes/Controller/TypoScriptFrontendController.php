@@ -1129,10 +1129,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Exceptions may be thrown for DOKTYPE_SPACER and not loadable page records
      * or root lines.
      *
-     * If $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling'] is set,
-     * instead of throwing an exception it's handled by a page unavailable
-     * handler.
-     *
      * May set or update this properties:
      *
      * @see TypoScriptFrontendController::$id

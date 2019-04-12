@@ -1363,6 +1363,11 @@ The following constants have been set to protected:
 The following global options are ignored:
 
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling_statheader']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling_accessdeniedheader']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling_statheader']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['recursiveDomainSearch']`

@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Rendering;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
@@ -676,10 +675,6 @@ class LocalizedSiteContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional
             ]
         );
 
-        if ($statusCode === 404) {
-            $this->expectExceptionCode(1518472189);
-            $this->expectException(PageNotFoundException::class);
-        }
         $response = $this->executeFrontendRequest(
             new InternalRequest('https://website.local/de/?id=' . static::VALUE_PageId)
         );
@@ -723,6 +718,7 @@ class LocalizedSiteContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional
             $this->assertEquals($fallbackChain, $responseStructure->getScopePath('languageInfo/fallbackChain'), 'fallbackChain does not match');
             $this->assertEquals($overlayMode, $responseStructure->getScopePath('languageInfo/overlayType'), 'language overlayType does not match');
         }
+        $this->assertEquals($statusCode, $response->getStatusCode());
     }
 
     public function contentOnPartiallyTranslatedPageDataProvider(): array

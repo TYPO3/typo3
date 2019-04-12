@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Regular\Modify;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
+
 /**
  * Functional test for the DataHandler
  */
@@ -321,8 +324,11 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
         parent::deletePage();
         $this->assertAssertionDataSet('deletePage');
 
-        $response = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId, false);
-        $this->assertStringContainsString('PageNotFoundException', $response->getError());
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        $this->assertEquals(404, $response->getStatusCode());
     }
 
     /**
@@ -334,8 +340,11 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
         parent::deleteContentAndPage();
         $this->assertAssertionDataSet('deleteContentAndPage');
 
-        $response = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId, false);
-        $this->assertStringContainsString('PageNotFoundException', $response->getError());
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        $this->assertEquals(404, $response->getStatusCode());
     }
 
     /**

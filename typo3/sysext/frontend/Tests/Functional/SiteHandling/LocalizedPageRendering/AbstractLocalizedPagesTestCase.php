@@ -106,17 +106,17 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
 
     /**
      * @param string $url
-     * @param string $exception
+     * @param int $exception
      */
-    protected function assertException(string $url, string $exception): void
+    protected function assertResponseStatusCode(string $url, int $statusCode): void
     {
         $this->setUpFrontendRootPage(
             1000,
             ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']
         );
 
-        $this->expectException($exception);
-        $this->executeFrontendRequest(new InternalRequest($url), $this->internalRequestContext);
+        $response = $this->executeFrontendRequest(new InternalRequest($url), $this->internalRequestContext);
+        static::assertSame(404, $response->getStatusCode());
     }
 
     /**

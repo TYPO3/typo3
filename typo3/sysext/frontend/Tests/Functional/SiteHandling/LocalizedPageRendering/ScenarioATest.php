@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\LocalizedPageRenderin
  *   Calling home page in DE-CH renders page in DE as defined in the fallback chain
  *
  *   Calling "headquarter" page in EN renders page in EN
- *   Calling "headquarter" page in DE throws a PageNotFoundException because no fallback chain is configured
+ *   Calling "headquarter" page in DE returns a 404 response because no fallback chain is configured
  *   Calling "headquarter" page in DE-CH renders page in EN
  */
 class ScenarioATest extends AbstractLocalizedPagesTestCase

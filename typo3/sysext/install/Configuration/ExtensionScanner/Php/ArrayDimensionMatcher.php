@@ -251,6 +251,36 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'pageNotFound_handling\']' => [
+        'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+            'Breaking-88376-RemovedObsoletePageNotFound_handlingSettings.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'pageNotFound_handling_statheader\']' => [
+        'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+            'Breaking-88376-RemovedObsoletePageNotFound_handlingSettings.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'pageNotFound_handling_accessdeniedheader\']' => [
+        'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+            'Breaking-88376-RemovedObsoletePageNotFound_handlingSettings.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'pageUnavailable_handling\']' => [
+        'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+            'Breaking-88376-RemovedObsoletePageNotFound_handlingSettings.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'pageUnavailable_handling_statheader\']' => [
+        'restFiles' => [
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+            'Breaking-88376-RemovedObsoletePageNotFound_handlingSettings.rst',
+        ],
+    ],
     '$GLOBALS[\'TCA\'][\'sys_history\']' => [
         'restFiles' => [
             'Breaking-87936-TCAForSysHistoryRemoved.rst',

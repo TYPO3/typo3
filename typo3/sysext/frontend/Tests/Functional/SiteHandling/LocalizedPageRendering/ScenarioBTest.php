@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\LocalizedPageRenderin
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
-
 /**
  * Scenario prerequisites:
  *   Site configuration has localizations
@@ -31,11 +29,11 @@ use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
  *
  * Scenario expectations:
  *   Calling home page in EN renders page in EN
- *   Calling home page in DE throws a PageNotFoundException because no fallback chain is configured
+ *   Calling home page in DE returns a 404 response because no fallback chain is configured
  *   Calling home page in DE-CH renders page in EN as defined in the fallback chain
  *
  *   Calling "headquarter" page in EN renders page in EN
- *   Calling "headquarter" page in DE throws a PageNotFoundException because no fallback chain is configured
+ *   Calling "headquarter" page in DE returns a 404 response because no fallback chain is configured
  *   Calling "headquarter" page in DE-CH renders page in EN
  */
 class ScenarioBTest extends AbstractLocalizedPagesTestCase
@@ -110,21 +108,19 @@ class ScenarioBTest extends AbstractLocalizedPagesTestCase
         return [
             'home page in DE where page translation does not exist and has no fallback configured' => [
                 'url' => 'https://acme.com/de/hello',
-                'exception' => PageNotFoundException::class,
             ],
         ];
     }
 
     /**
      * @param string $url
-     * @param string $exception
      *
      * @test
      * @dataProvider pageNotFoundDataProvider
      */
-    public function requestsThrowException(string $url, string $exception): void
+    public function pageNotFound(string $url): void
     {
-        $this->assertException($url, $exception);
+        $this->assertResponseStatusCode($url, 404);
     }
 
     /**

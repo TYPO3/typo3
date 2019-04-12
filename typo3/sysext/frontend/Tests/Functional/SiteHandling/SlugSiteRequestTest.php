@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
  */
 
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -236,24 +235,8 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
 
         $uri = 'https://website.other/any/invalid/slug';
-        $response = $this->executeFrontendRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext->withMergedGlobalSettings([
-                'TYPO3_CONF_VARS' => [
-                    'FE' => [
-                        'pageNotFound_handling' => 'READFILE:typo3/sysext/core/Tests/Functional/Fixtures/Frontend/PageError.txt',
-                    ]
-                ]
-            ])
-        );
-        static::assertSame(
-            404,
-            $response->getStatusCode()
-        );
-        static::assertThat(
-            (string)$response->getBody(),
-            static::stringContains('No site configuration found')
-        );
+        $response = $this->executeFrontendRequest(new InternalRequest($uri));
+        static::assertSame(404, $response->getStatusCode());
     }
 
     /**
@@ -719,52 +702,18 @@ class SlugSiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
      */
-    public function pageRequestThrowsExceptionWithInvalidCacheHashWithoutHavingErrorHandling(string $uri)
+    public function pageRequestNotFoundInvalidCacheHashWithoutHavingErrorHandling(string $uri)
     {
         $this->writeSiteConfiguration(
             'website-local',
             $this->buildSiteConfiguration(1000, 'https://website.local/')
         );
 
-        $this->expectExceptionCode(1518472189);
-        $this->expectException(PageNotFoundException::class);
-
-        $this->executeFrontendRequest(
+        $response = $this->executeFrontendRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
-    }
-
-    /**
-     * @param string $uri
-     *
-     * @test
-     * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
-     */
-    public function pageRequestSendsNotFoundResponseWithInvalidCacheHash(string $uri)
-    {
-        $response = $this->executeFrontendRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext->withMergedGlobalSettings([
-                'TYPO3_CONF_VARS' => [
-                    'FE' => [
-                        'pageNotFound_handling' => 'READFILE:typo3/sysext/core/Tests/Functional/Fixtures/Frontend/PageError.txt',
-                    ]
-                ]
-            ])
-        );
-
-        static::assertSame(
-            404,
-            $response->getStatusCode()
-        );
-        static::assertThat(
-            (string)$response->getBody(),
-            static::logicalOr(
-                static::stringContains('reason: Request parameters could not be validated (&amp;cHash empty)'),
-                static::stringContains('reason: Request parameters could not be validated (&amp;cHash comparison failed)')
-            )
-        );
+        static::assertSame(404, $response->getStatusCode());
     }
 
     /**

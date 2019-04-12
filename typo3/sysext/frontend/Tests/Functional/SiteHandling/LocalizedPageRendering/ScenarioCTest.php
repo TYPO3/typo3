@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\LocalizedPageRenderin
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
-
 /**
  * Scenario prerequisites:
  *   Site configuration has localizations
@@ -33,10 +31,10 @@ use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
  * Scenario expectations:
  *   Calling home page in EN renders page in EN
  *   Calling home page in DE renders page in DE
- *   Calling home page in DE-CH throws a PageNotFoundException because fallback chain is not processed due to l18n_cfg=2
+ *   Calling home page in DE-CH returns a 404 response because fallback chain is not processed due to l18n_cfg=2
  *
  *   Calling "about" page in EN renders page in EN
- *   Calling "about" page in DE throws a PageNotFoundException because fallback chain is not processed due to l18n_cfg=2
+ *   Calling "about" page in DE returns a 404 response because fallback chain is not processed due to l18n_cfg=2
  *   Calling "about" page in DE-CH renders page in DE
  */
 class ScenarioCTest extends AbstractLocalizedPagesTestCase
@@ -111,25 +109,22 @@ class ScenarioCTest extends AbstractLocalizedPagesTestCase
         return [
             'home page in DE-CH where page translation does not exist and is trapped by l18n_cfg' => [
                 'url' => 'https://acme.com/de-ch/wllkommen',
-                'exception' => PageNotFoundException::class,
             ],
             'about page in DE where page translation does not exist and is trapped by l18n_cfg' => [
                 'url' => 'https://acme.com/de/ueber-uns',
-                'exception' => PageNotFoundException::class,
             ],
         ];
     }
 
     /**
      * @param string $url
-     * @param string $exception
      *
      * @test
      * @dataProvider pageNotFoundDataProvider
      */
-    public function requestsThrowException(string $url, string $exception): void
+    public function pageNotFound(string $url): void
     {
-        $this->assertException($url, $exception);
+        $this->assertResponseStatusCode($url, 404);
     }
 
     /**

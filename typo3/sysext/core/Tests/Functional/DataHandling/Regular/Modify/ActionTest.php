@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\Modify;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
+
 /**
  * Functional test for the DataHandler
  */
@@ -484,8 +486,8 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
         parent::deletePage();
         $this->assertAssertionDataSet('deletePage');
 
-        $response = $this->getFrontendResponse(self::VALUE_PageId, 0, 0, 0, false);
-        $this->assertStringContainsString('PageNotFoundException', $response->getError());
+        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $this->assertEquals(404, $response->getStatusCode());
     }
 
     /**

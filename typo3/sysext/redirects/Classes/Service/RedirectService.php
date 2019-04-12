@@ -271,8 +271,6 @@ class RedirectService implements LoggerAwareInterface
      */
     protected function bootFrontendController(?SiteInterface $site, array $queryParams): TypoScriptFrontendController
     {
-        // disable page errors
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling'] = false;
         $controller = GeneralUtility::makeInstance(
             TypoScriptFrontendController::class,
             null,

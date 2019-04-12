@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
  */
 
 use ExtbaseTeam\BlogExample\Domain\Repository\TtContentRepository;
-use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -495,11 +494,6 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
                 $this->buildErrorHandlingConfiguration('Fluid', [404])
             ]
         );
-
-        if ($statusCode === 404) {
-            $this->expectExceptionCode(1518472189);
-            $this->expectException(PageNotFoundException::class);
-        }
 
         $response = $this->executeFrontendRequest(
             new InternalRequest('https://website.local/de/?id=' . static::VALUE_PageId)

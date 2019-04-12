@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\LocalizedPageRenderin
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
-
 /**
  * Scenario prerequisites:
  *   Site configuration has localizations
@@ -32,14 +30,14 @@ use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
  *   "Products" page is localized into DE and has l18n_cfg=1 set
  *
  * Scenario expectations:
- *   Calling home page in EN throws a PageNotFoundException due to l18n_cfg=1
- *   Calling home page in DE throws a PageNotFoundException
- *   Calling home page in DE-CH throws a PageNotFoundException because EN is used as fallback but is not processed due to l18n_cfg=1
+ *   Calling home page in EN returns a 404 response due to l18n_cfg=1
+ *   Calling home page in DE returns a 404 response
+ *   Calling home page in DE-CH returns a 404 response because EN is used as fallback but is not processed due to l18n_cfg=1
  *
- *   Calling "about" page in EN throws a PageNotFoundException due to l18n_cfg=1
+ *   Calling "about" page in EN returns a 404 response due to l18n_cfg=1
  *   Calling "about" page in DE renders page in DE
  *   Calling "about" page in DE-CH renders page in DE
- *   Calling "about" page in DE with EN slug throws a PageNotFoundException
+ *   Calling "about" page in DE with EN slug returns a 404 response
  *   Calling "about" page in DE-CH with EN slug renders page in DE
  */
 class ScenarioETest extends AbstractLocalizedPagesTestCase
@@ -108,37 +106,31 @@ class ScenarioETest extends AbstractLocalizedPagesTestCase
         return [
             'home page in EN' => [
                 'url' => 'https://acme.com/en/hello',
-                'exception' => PageNotFoundException::class,
             ],
             'home page in DE where page translation does not exist' => [
                 'url' => 'https://acme.com/de/hello',
-                'exception' => PageNotFoundException::class,
             ],
             'home page in DE-CH where page translation does not exist and is trapped by l18n_cfg' => [
                 'url' => 'https://acme.com/de-ch/hello',
-                'exception' => PageNotFoundException::class,
             ],
             'about page in EN' => [
                 'url' => 'https://acme.com/en/about-us',
-                'exception' => PageNotFoundException::class,
             ],
             'about page in DE with EN slug' => [
                 'url' => 'https://acme.com/de/about-us',
-                'exception' => PageNotFoundException::class,
             ],
         ];
     }
 
     /**
      * @param string $url
-     * @param string $exception
      *
      * @test
      * @dataProvider pageNotFoundDataProvider
      */
-    public function requestsThrowException(string $url, string $exception): void
+    public function pageNotFound(string $url): void
     {
-        $this->assertException($url, $exception);
+        $this->assertResponseStatusCode($url, 404);
     }
 
     /**

@@ -140,6 +140,12 @@ class SilentConfigurationUpgradeService
         'EXT/extConf',
         // #87767
         'SYS/recursiveDomainSearch',
+        // #88376
+        'FE/pageNotFound_handling',
+        'FE/pageNotFound_handling_statheader',
+        'FE/pageNotFound_handling_accessdeniedheader',
+        'FE/pageUnavailable_handling',
+        'FE/pageUnavailable_handling_statheader',
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)
