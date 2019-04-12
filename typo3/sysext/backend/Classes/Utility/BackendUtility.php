@@ -1208,9 +1208,6 @@ class BackendUtility
             $out = htmlspecialchars($parts[0]);
             return $includeAttrib ? 'title="' . $out . '"' : $out;
         }
-        if ($row['pid'] < 0) {
-            $parts[] = 'v#1.' . $row['t3ver_id'];
-        }
         switch (VersionState::cast($row['t3ver_state'])) {
             case new VersionState(VersionState::NEW_PLACEHOLDER):
                 $parts[] = 'PLH WSID#' . $row['t3ver_wsid'];
@@ -1324,9 +1321,6 @@ class BackendUtility
             $ctrl = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'];
             // Uid is added
             $out .= 'id=' . $row['uid'];
-            if (static::isTableWorkspaceEnabled($table) && $row['pid'] < 0) {
-                $out .= ' - v#1.' . $row['t3ver_id'];
-            }
             if (static::isTableWorkspaceEnabled($table)) {
                 switch (VersionState::cast($row['t3ver_state'])) {
                     case new VersionState(VersionState::NEW_PLACEHOLDER):
@@ -2101,7 +2095,6 @@ class BackendUtility
             }
         }
         if (static::isTableWorkspaceEnabled($table)) {
-            $fields[] = $prefix . 't3ver_id';
             $fields[] = $prefix . 't3ver_state';
             $fields[] = $prefix . 't3ver_wsid';
             $fields[] = $prefix . 't3ver_count';
@@ -3405,7 +3398,7 @@ class BackendUtility
      *
      *******************************************/
     /**
-     * Select all versions of a record, ordered by version id (DESC)
+     * Select all versions of a record, ordered by latest created version (uid DESC)
      *
      * @param string $table Table name to select from
      * @param int $uid Record uid for which to find versions.
@@ -3454,7 +3447,7 @@ class BackendUtility
                     $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
                 )
-                ->orderBy('t3ver_id', 'DESC');
+                ->orderBy('uid', 'DESC');
 
             if (!$includeDeletedRecords) {
                 $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));

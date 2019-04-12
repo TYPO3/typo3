@@ -75,7 +75,6 @@ class IconFactoryTest extends UnitTestCase
         'endtime' => '0',
         'fe_group' => '',
         'CType' => 'text',
-        't3ver_id' => '0',
         't3ver_state' => '0',
         't3ver_wsid' => '0',
         'sys_language_uid' => '0',

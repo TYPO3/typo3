@@ -55,7 +55,6 @@ class PageTreeRepository
         'extendToSubpages',
         'content_from_pid',
         't3ver_oid',
-        't3ver_id',
         't3ver_wsid',
         't3ver_state',
         't3ver_stage',

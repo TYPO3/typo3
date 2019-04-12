@@ -77,7 +77,6 @@
         <title>Workspace Root</title>
         <deleted>0</deleted>
         <t3ver_oid>0</t3ver_oid>
-        <t3ver_id>0</t3ver_id>
         <t3ver_wsid>987654321</t3ver_wsid>
         <t3ver_state>1</t3ver_state>
         <perms_everybody>15</perms_everybody>
@@ -88,7 +87,6 @@
         <title>Workspace Root</title>
         <deleted>0</deleted>
         <t3ver_oid>11</t3ver_oid>
-        <t3ver_id>1</t3ver_id>
         <t3ver_wsid>987654321</t3ver_wsid>
         <t3ver_state>-1</t3ver_state>
         <perms_everybody>15</perms_everybody>

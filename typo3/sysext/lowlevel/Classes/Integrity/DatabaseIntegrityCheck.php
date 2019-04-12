@@ -128,7 +128,7 @@ class DatabaseIntegrityCheck
             ->from('pages')
             ->orderBy('sorting');
         if ($versions) {
-            $queryBuilder->addSelect('t3ver_wsid', 't3ver_id', 't3ver_count');
+            $queryBuilder->addSelect('t3ver_wsid', 't3ver_count');
             $queryBuilder->where(
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($theID, \PDO::PARAM_INT))

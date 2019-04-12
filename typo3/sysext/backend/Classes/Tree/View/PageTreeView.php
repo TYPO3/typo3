@@ -33,7 +33,6 @@ class PageTreeView extends AbstractTreeView
         'nav_title',
         'mount_pid',
         'php_tree_stop',
-        't3ver_id',
         't3ver_state',
         'hidden',
         'starttime',

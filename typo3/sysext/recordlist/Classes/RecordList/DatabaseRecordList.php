@@ -998,7 +998,6 @@ class DatabaseRecordList
             }
         }
         if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
-            $selectFields[] = 't3ver_id';
             $selectFields[] = 't3ver_state';
             $selectFields[] = 't3ver_wsid';
         }
@@ -3804,7 +3803,6 @@ class DatabaseRecordList
                     if (ExtensionManagementUtility::isLoaded(
                         'workspaces'
                         ) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
-                        $fieldListArr[] = 't3ver_id';
                         $fieldListArr[] = 't3ver_state';
                         $fieldListArr[] = 't3ver_wsid';
                     }

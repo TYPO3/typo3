@@ -1119,7 +1119,6 @@ class DataHandler implements LoggerAwareInterface
                             // For the actual new offline version, set versioning values to point to placeholder:
                             $fieldArray['pid'] = -1;
                             $fieldArray['t3ver_oid'] = $this->substNEWwithIDs[$id];
-                            $fieldArray['t3ver_id'] = 1;
                             // Setting placeholder state value for version (so it can know it is currently a new version...)
                             $fieldArray['t3ver_state'] = (string)new VersionState(VersionState::NEW_PLACEHOLDER_VERSION);
                             $fieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
@@ -1384,7 +1383,6 @@ class DataHandler implements LoggerAwareInterface
                     }
                     break;
                 case 't3ver_oid':
-                case 't3ver_id':
                 case 't3ver_wsid':
                 case 't3ver_state':
                 case 't3ver_count':
@@ -3142,7 +3140,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         $data = [];
-        $nonFields = array_unique(GeneralUtility::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_id,t3ver_state,t3ver_count,t3ver_stage,t3ver_tstamp,' . $excludeFields, true));
+        $nonFields = array_unique(GeneralUtility::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_count,t3ver_stage,t3ver_tstamp,' . $excludeFields, true));
         BackendUtility::workspaceOL($table, $row, -99, false);
         $row = BackendUtility::purgeComputedPropertiesFromRecord($row);
 
@@ -3461,7 +3459,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // Set up fields which should not be processed. They are still written - just passed through no-questions-asked!
-        $nonFields = ['uid', 'pid', 't3ver_id', 't3ver_oid', 't3ver_wsid', 't3ver_state', 't3ver_count', 't3ver_stage', 't3ver_tstamp', 'perms_userid', 'perms_groupid', 'perms_user', 'perms_group', 'perms_everybody'];
+        $nonFields = ['uid', 'pid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 't3ver_count', 't3ver_stage', 't3ver_tstamp', 'perms_userid', 'perms_groupid', 'perms_user', 'perms_group', 'perms_everybody'];
 
         // Merge in override array.
         $row = array_merge($row, $overrideArray);
@@ -5175,26 +5173,8 @@ class DataHandler implements LoggerAwareInterface
             return null;
         }
 
-        // Look for next version number:
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-        $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
-        $highestVerNumber = $queryBuilder
-            ->select('t3ver_id')
-            ->from($table)
-            ->where($queryBuilder->expr()->orX(
-                $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
-                ),
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
-            ))
-            ->orderBy('t3ver_id', 'DESC')
-            ->setMaxResults(1)
-            ->execute()
-            ->fetchColumn();
         // Set up the values to override when making a raw-copy:
         $overrideArray = [
-            't3ver_id' => $highestVerNumber + 1,
             't3ver_oid' => $id,
             't3ver_wsid' => $this->BE_USER->workspace,
             't3ver_state' => (string)($delete ? new VersionState(VersionState::DELETE_PLACEHOLDER) : new VersionState(VersionState::DEFAULT_STATE)),

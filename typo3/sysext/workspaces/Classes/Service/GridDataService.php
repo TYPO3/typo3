@@ -163,7 +163,6 @@ class GridDataService implements LoggerAwareInterface
                     $versionArray['table'] = $table;
                     $versionArray['id'] = $table . ':' . $record['uid'];
                     $versionArray['uid'] = $record['uid'];
-                    $versionArray['workspace'] = $versionRecord['t3ver_id'];
                     $versionArray = array_merge($versionArray, $defaultGridColumns);
                     $versionArray['label_Workspace'] = htmlspecialchars(BackendUtility::getRecordTitle($table, $versionRecord));
                     $versionArray['label_Live'] = htmlspecialchars(BackendUtility::getRecordTitle($table, $origRecord));
