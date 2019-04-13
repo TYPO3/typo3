@@ -803,10 +803,15 @@ abstract class AbstractMenuContentObject
         // 'auto', 'manual', 'tstamp'
         $mode = $this->conf['special.']['mode'];
         // Get id's
+        $beginAtLevel = MathUtility::forceIntegerInRange($this->conf['special.']['beginAtLevel'], 0, 100);
         $id_list_arr = [];
         foreach ($items as $id) {
-            $bA = MathUtility::forceIntegerInRange($this->conf['special.']['beginAtLevel'], 0, 100);
-            $id_list_arr[] = $this->parent_cObj->getTreeList(-1 * $id, $depth - 1 + $bA, $bA - 1);
+            // Exclude the current ID if beginAtLevel is > 0
+            if ($beginAtLevel > 0) {
+                $id_list_arr[] = $this->parent_cObj->getTreeList($id, $depth - 1 + $beginAtLevel, $beginAtLevel - 1);
+            } else {
+                $id_list_arr[] = $this->parent_cObj->getTreeList(-1 * $id, $depth - 1 + $beginAtLevel, $beginAtLevel - 1);
+            }
         }
         $id_list = implode(',', $id_list_arr);
         // Get sortField (mode)
