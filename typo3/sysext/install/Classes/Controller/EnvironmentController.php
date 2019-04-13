@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
 use TYPO3\CMS\Install\FolderStructure\DefaultPermissionsCheck;
@@ -525,7 +526,8 @@ class EnvironmentController extends AbstractController
         $imageProcessor = $this->initializeImageProcessor();
         $inputFile = $imageBasePath . 'TestInput/Transparent.gif';
         $imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('scale-jpg');
-        $imResult = $imageProcessor->imageMagickConvert($inputFile, 'jpg', '300', '', '-opaque white -background white -flatten', '', [], true);
+        $jpegQuality = MathUtility::forceIntegerInRange($GLOBALS['TYPO3_CONF_VARS']['GFX']['jpg_quality'], 10, 100, 85);
+        $imResult = $imageProcessor->imageMagickConvert($inputFile, 'jpg', '300', '', '-quality ' . $jpegQuality . ' -opaque white -background white -flatten', '', [], true);
         if ($imResult !== null && file_exists($imResult[3])) {
             $result = [
                 'fileExists' => true,
