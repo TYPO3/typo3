@@ -2481,7 +2481,9 @@ class GraphicalFunctions
         // +matte = no alpha layer in output
         $this->imageMagickExec($mask, $theMask, '-colorspace GRAY +matte');
 
-        $parameters = '-compose over +matte '
+        $parameters = '-compose over'
+            . ' -quality ' . $this->jpegQuality
+            . ' +matte '
             . CommandUtility::escapeShellArgument($input) . ' '
             . CommandUtility::escapeShellArgument($overlay) . ' '
             . CommandUtility::escapeShellArgument($theMask) . ' '
