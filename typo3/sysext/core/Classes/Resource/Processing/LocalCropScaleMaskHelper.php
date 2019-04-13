@@ -325,7 +325,7 @@ class LocalCropScaleMaskHelper
                 $configuration['stripProfile']
                 && $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_stripColorProfileCommand'] !== ''
             ) {
-                $parameters = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_stripProfileCommand'] . $parameters;
+                $parameters = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_stripColorProfileCommand'] . $parameters;
             } else {
                 $parameters .= '###SkipStripProfile###';
             }
