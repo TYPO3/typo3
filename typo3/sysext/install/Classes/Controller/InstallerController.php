@@ -566,7 +566,7 @@ class InstallerController
             }
         } else {
             return new JsonResponse([
-                'sucess' => true,
+                'success' => false,
                 'status' => [
                     new FlashMessage(
                         'You must select a database.',
