@@ -44,9 +44,10 @@ class UserContentObject extends AbstractContentObject
             $content = $this->cObj->cObjGetSingle('USER_INT', $conf);
         } else {
             $content .= $tempContent;
-        }
-        if (isset($conf['stdWrap.'])) {
-            $content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+            // Only executed when the element is not converted to USER_INT
+            if (isset($conf['stdWrap.'])) {
+                $content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+            }
         }
         $this->cObj->setUserObjectType(false);
         return $content;
