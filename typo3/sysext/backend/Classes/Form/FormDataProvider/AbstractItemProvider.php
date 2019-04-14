@@ -1313,6 +1313,7 @@ abstract class AbstractItemProvider
                     $result['tableName'],
                     $fieldConfig['config']
                 );
+                $relationHandler->processDeletePlaceholder();
                 $newDatabaseValueArray = array_merge($newDatabaseValueArray, $relationHandler->getValueArray());
             } else {
                 // Non MM relation
@@ -1325,6 +1326,7 @@ abstract class AbstractItemProvider
                     $result['tableName'],
                     $fieldConfig['config']
                 );
+                $relationHandler->processDeletePlaceholder();
                 $databaseIds = array_merge($newDatabaseValueArray, $relationHandler->getValueArray());
                 // remove all items from the current DB values if not available as relation or static value anymore
                 $newDatabaseValueArray = array_values(array_intersect($currentDatabaseValueArray, $databaseIds));

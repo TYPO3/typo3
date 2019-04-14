@@ -3703,6 +3703,7 @@ class TcaSelectItemsTest extends UnitTestCase
         ];
 
         $relationHandlerProphecy->start('', 'foreignTable', 'aTable_foreignTable_mm', 42, 'aTable', $fieldConfig)->shouldBeCalled();
+        $relationHandlerProphecy->processDeletePlaceholder()->shouldBeCalled();
         $relationHandlerProphecy->getValueArray()->shouldBeCalled()->willReturn($relationHandlerUids);
 
         $expected = $input;
@@ -3762,6 +3763,7 @@ class TcaSelectItemsTest extends UnitTestCase
         ];
 
         $relationHandlerProphecy->start('22,23,24,25', 'foreignTable', '', 42, 'aTable', $fieldConfig)->shouldBeCalled();
+        $relationHandlerProphecy->processDeletePlaceholder()->shouldBeCalled();
         $relationHandlerProphecy->getValueArray()->shouldBeCalled()->willReturn($relationHandlerUids);
 
         $expected = $input;
@@ -3791,6 +3793,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $relationHandlerProphecy = $this->prophesize(RelationHandler::class);
         GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphecy->reveal());
         $relationHandlerProphecy->start(Argument::cetera())->shouldBeCalled();
+        $relationHandlerProphecy->processDeletePlaceholder()->shouldBeCalled();
         $relationHandlerProphecy->getValueArray(Argument::cetera())->shouldBeCalled()->willReturn([1]);
 
         $input = [
@@ -4261,6 +4264,7 @@ class TcaSelectItemsTest extends UnitTestCase
         GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphecy->reveal());
 
         $relationHandlerProphecy->start($field, $foreignTable, $mmTable, $uid, $tableName, $fieldConfig)->shouldBeCalled();
+        $relationHandlerProphecy->processDeletePlaceholder()->shouldBeCalled();
         $relationHandlerProphecy->getValueArray()->shouldBeCalled()->willReturn($relationHandlerUids);
 
         $expected = $input;
