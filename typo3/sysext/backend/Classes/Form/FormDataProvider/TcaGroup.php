@@ -86,6 +86,7 @@ class TcaGroup implements FormDataProviderInterface
                     $fieldConfig['config'] ?? []
                 );
                 $relationHandler->getFromDB();
+                $relationHandler->processDeletePlaceholder();
                 $relations = $relationHandler->getResolvedItemArray();
                 foreach ($relations as $relation) {
                     $tableName = $relation['table'];

@@ -167,6 +167,7 @@ class TcaGroupTest extends UnitTestCase
         GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphecy->reveal());
         $relationHandlerProphecy->start('1,2', 'aForeignTable', 'mmTableName', 42, 'aTable', $aFieldConfig)->shouldBeCalled();
         $relationHandlerProphecy->getFromDB()->shouldBeCalled();
+        $relationHandlerProphecy->processDeletePlaceholder()->shouldBeCalled();
         $relationHandlerProphecy->getResolvedItemArray()->shouldBeCalled()->willReturn([
             [
                 'table' => 'aForeignTable',
