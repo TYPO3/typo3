@@ -52,6 +52,7 @@ class Bootstrap
         $ajaxWidgetContextHolder = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder::class);
         $widgetIdentifier = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('fluid-widget-id');
         $widgetContext = $ajaxWidgetContextHolder->get($widgetIdentifier);
+        $configuration['vendorName'] = $widgetContext->getParentVendorName();
         $configuration['extensionName'] = $widgetContext->getParentExtensionName();
         $configuration['pluginName'] = $widgetContext->getParentPluginName();
         $extbaseBootstrap = $this->objectManager->get(\TYPO3\CMS\Extbase\Core\Bootstrap::class);

@@ -81,6 +81,11 @@ class WidgetContext
     /**
      * @var string
      */
+    protected $parentVendorName;
+
+    /**
+     * @var string
+     */
     protected $parentExtensionName;
 
     /**
@@ -163,6 +168,26 @@ class WidgetContext
     public function getParentExtensionName()
     {
         return $this->parentExtensionName;
+    }
+
+    /**
+     * Sets the Vendor name of the plugin that contains the widget
+     *
+     * @param string $parentVendorName
+     */
+    public function setParentVendorName($parentVendorName)
+    {
+        $this->parentVendorName = $parentVendorName;
+    }
+
+    /**
+     * Returns the Vendor name of the plugin that contains the widget
+     *
+     * @return string
+     */
+    public function getParentVendorName()
+    {
+        return $this->parentVendorName;
     }
 
     /**
@@ -268,6 +293,6 @@ class WidgetContext
      */
     public function __sleep()
     {
-        return ['widgetIdentifier', 'ajaxWidgetIdentifier', 'widgetConfiguration', 'controllerObjectName', 'parentPluginNamespace', 'parentExtensionName', 'parentPluginName', 'widgetViewHelperClassName'];
+        return ['widgetIdentifier', 'ajaxWidgetIdentifier', 'widgetConfiguration', 'controllerObjectName', 'parentPluginNamespace', 'parentVendorName', 'parentExtensionName', 'parentPluginName', 'widgetViewHelperClassName'];
     }
 }

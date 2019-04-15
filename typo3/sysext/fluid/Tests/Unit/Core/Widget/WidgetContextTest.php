@@ -131,7 +131,8 @@ class WidgetContextTest extends UnitTestCase
         $this->assertEquals(
             [
                 'widgetIdentifier', 'ajaxWidgetIdentifier', 'widgetConfiguration', 'controllerObjectName',
-                'parentPluginNamespace', 'parentExtensionName', 'parentPluginName', 'widgetViewHelperClassName'
+                'parentPluginNamespace', 'parentVendorName', 'parentExtensionName', 'parentPluginName',
+                'widgetViewHelperClassName'
             ],
             $this->widgetContext->__sleep()
         );
