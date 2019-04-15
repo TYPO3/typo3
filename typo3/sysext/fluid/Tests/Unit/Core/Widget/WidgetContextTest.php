@@ -130,7 +130,8 @@ class WidgetContextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->assertEquals(
             [
                 'widgetIdentifier', 'ajaxWidgetIdentifier', 'widgetConfiguration', 'controllerObjectName',
-                'parentPluginNamespace', 'parentExtensionName', 'parentPluginName', 'widgetViewHelperClassName'
+                'parentPluginNamespace', 'parentVendorName', 'parentExtensionName', 'parentPluginName',
+                'widgetViewHelperClassName'
             ],
             $this->widgetContext->__sleep()
         );
