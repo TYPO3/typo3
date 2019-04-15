@@ -195,6 +195,7 @@ class ReviewController extends ActionController
             $showButton = $buttonBar->makeLinkButton()
                 ->setHref('#')
                 ->setClasses('t3js-preview-link')
+                ->setShowLabelText(true)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:tooltip.generatePagePreview'))
                 ->setIcon($iconFactory->getIcon('module-workspaces-action-preview-link', Icon::SIZE_SMALL));
             $buttonBar->addButton($showButton);

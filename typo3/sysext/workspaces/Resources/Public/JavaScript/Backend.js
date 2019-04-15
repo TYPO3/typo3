@@ -513,11 +513,7 @@ define([
           'data-toggle': 'tooltip',
           title: TYPO3.lang['tooltip.openPage']
         }).append(Backend.getPreRenderedIcon('actions-version-page-open')),
-        Backend.getAction(item.allowedAction_delete, 'remove', 'actions-version-document-remove').attr('title', TYPO3.lang['tooltip.discardVersion']),
-        $('<label />', {class: 'btn btn-default btn-checkbox'}).append(
-          $('<input />', {type: 'checkbox'}),
-          $('<span />', {class: 't3-icon fa'})
-        )
+        Backend.getAction(item.allowedAction_delete, 'remove', 'actions-version-document-remove').attr('title', TYPO3.lang['tooltip.discardVersion'])
       );
 
       if (item.integrity.messages !== '') {
@@ -533,10 +529,15 @@ define([
         Backend.latestPath = item.path_Workspace;
         Backend.elements.$tableBody.append(
           $('<tr />').append(
+            $('<th />'),
             $('<th />', {colspan: 6}).text(Backend.latestPath)
           )
         );
       }
+      var $checkbox = $('<label />', {class: 'btn btn-default btn-checkbox'}).append(
+        $('<input />', {type: 'checkbox'}),
+        $('<span />', {class: 't3-icon fa'})
+      );
 
       var rowConfiguration = {
         'data-uid': item.uid,
@@ -556,6 +557,7 @@ define([
 
       Backend.elements.$tableBody.append(
         $('<tr />', rowConfiguration).append(
+          $('<td />').html($checkbox),
           $('<td />', {
             class: 't3js-title-workspace',
             style: item.Workspaces_CollectionLevel > 0 ? 'padding-left: ' + Backend.indentationPadding * item.Workspaces_CollectionLevel + 'px' : ''
@@ -771,12 +773,14 @@ define([
         }
       });
 
-      Modal.show(
-        TYPO3.lang['window.recordInformation'].replace('{0}', $.trim($tr.find('.t3js-title-live').text())),
-        $content,
-        Severity.info,
-        modalButtons
-      );
+      Modal.advanced({
+        type: Modal.default,
+        title: TYPO3.lang['window.recordInformation'].replace('{0}', $.trim($tr.find('.t3js-title-live').text())),
+        content: $content,
+        severity: Severity.info,
+        buttons: modalButtons,
+        size: 'medium'
+      });
     });
   };
 
