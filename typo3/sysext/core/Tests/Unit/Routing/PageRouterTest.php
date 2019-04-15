@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Routing;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Routing\PageRouter;
+use TYPO3\CMS\Core\Routing\RouteNotFoundException;
 use TYPO3\CMS\Core\Routing\SiteRouteResult;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -29,6 +30,19 @@ class PageRouterTest extends UnitTestCase
      * @var bool
      */
     protected $resetSingletonInstances = true;
+
+    /**
+     * @test
+     */
+    public function matchRequestThrowsExceptionIfNoPreviousResultGiven()
+    {
+        $this->expectException(RouteNotFoundException::class);
+        $this->expectExceptionCode(1555303496);
+        $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom';
+        $request = new ServerRequest($incomingUrl, 'GET');
+        $subject = new PageRouter(new Site('lotus-flower', 13, []));
+        $subject->matchRequest($request, null);
+    }
 
     /**
      * @test
