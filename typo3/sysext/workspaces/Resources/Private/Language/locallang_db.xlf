@@ -3,8 +3,8 @@
 	<file t3:id="1415815019" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="workspaces">
 		<header/>
 		<body>
-			<trans-unit id="sys_filemounts.tabs.staging">
-				<source>Staging</source>
+			<trans-unit id="sys_workspace">
+				<source>Workspace</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.custom_stages">
 				<source>Custom stages</source>
@@ -27,26 +27,20 @@
 			<trans-unit id="tabs.notification_settings">
 				<source>Notification settings</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.edit_notification_defaults">
-				<source>Edit stage: default notification mail recipients</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.edit_allow_notificaton_settings">
-				<source>Allow notification settings during stage change back to edit stage</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.publish_notification_defaults">
-				<source>Ready to publish stage: default notification mail recipients</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.publish_allow_notificaton_settings">
-				<source>Allow notification settings during stage change to ready to publish</source>
-			</trans-unit>
 			<trans-unit id="tabs.general">
 				<source>General</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.execute_notification_defaults">
-				<source>Publishing execute stage: default notification mail recipients</source>
+			<trans-unit id="tabs.internal_stages">
+				<source>Internal Stages</source>
+			</trans-unit>
+			<trans-unit id="tabs.custom_stages">
+				<source>Custom Stages</source>
+			</trans-unit>
+			<trans-unit id="tabs.publish_access">
+				<source>Publishing / Access</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace_stage.notification_defaults">
-				<source>Default notification mail recipients</source>
+				<source>Default notification recipients</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace_stage.allow_notificaton_settings">
 				<source>Allow notification settings during stage change</source>
@@ -61,28 +55,88 @@
 				<source>Stage "publishing execute"</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.settingsDialog">
-				<source>Settings dialog</source>
+				<source>Notification dialog settings</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.settingsDialog.showDialog">
-				<source>show dialog</source>
+				<source>Show Dialog</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.settingsDialog.changeablePreselection">
-				<source>changeable preselection</source>
+				<source>Allow to change pre-selection of recipients</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.preselection">
-				<source>Preselection</source>
+				<source>Pre-select recipients</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.preselection.owners">
-				<source>owners</source>
+				<source>Owners</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.preselection.members">
-				<source>members</source>
+				<source>Members</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.preselection.editors">
-				<source>editors</source>
+				<source>Editors</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.preselection.responsiblePersons">
-				<source>responsible persons</source>
+				<source>Responsible Persons</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.adminusers">
+				<source>Owners</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.members">
+				<source>Members</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.reviewers">
+				<source>Reviewers</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.publish_time">
+				<source>Auto-publish changes on (requires scheduler task)</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.unpublish_time">
+				<source>Un-Publish changes on (requires scheduler task)</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.freeze">
+				<source>Freeze Editing</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.live_edit">
+				<source>Allow "live" editing of records from tables without versioning</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.swap_modes">
+				<source>Swap modes</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.swap_modes.0">
+				<source>Enable Swap-Into-Workspace</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.swap_modes.1">
+				<source>Swap-Into-Workspace on Auto-publish</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.swap_modes.2">
+				<source>Disable Swap-Into-Workspace</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.publish_access">
+				<source>Publish access</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.publish_access.1">
+				<source>Publish only content in publish stage</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.publish_access.2">
+				<source>Restrict publishing to workspace owners</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.stagechg_notification">
+				<source>Notification settings during state change</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.stagechg_notification.0">
+				<source>Disable notifications</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.stagechg_notification.1">
+				<source>Notify users of next stage only</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.stagechg_notification.10">
+				<source>Notify all users on any change</source>
+			</trans-unit>
+			<trans-unit id="tabs.users">
+				<source>Users</source>
+			</trans-unit>
+			<trans-unit id="tabs.mountpoints">
+				<source>Mountpoints</source>
 			</trans-unit>
 		</body>
 	</file>
