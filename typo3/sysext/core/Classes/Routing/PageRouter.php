@@ -113,6 +113,9 @@ class PageRouter implements RouterInterface
      */
     public function matchRequest(ServerRequestInterface $request, RouteResultInterface $previousResult = null): RouteResultInterface
     {
+        if (!($previousResult instanceof RouteResultInterface)) {
+            throw new RouteNotFoundException('No previous result given. Cannot find a page for an empty route part', 1555303496);
+        }
         $urlPath = $previousResult->getTail();
         $prefixedUrlPath = '/' . trim($urlPath, '/');
         $slugCandidates = $this->getCandidateSlugsFromRoutePath($urlPath ?: '/');
