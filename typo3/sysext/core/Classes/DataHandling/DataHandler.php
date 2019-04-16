@@ -934,14 +934,8 @@ class DataHandler implements LoggerAwareInterface
                                 $this->newlog('recordEditAccessInternals() check failed. [' . $this->BE_USER->errorMsg . ']', 1);
                             } elseif (!$this->bypassWorkspaceRestrictions) {
                                 // Workspace related processing:
-                                // If LIVE records cannot be created in the current PID due to workspace restrictions, prepare creation of placeholder-record
-                                if ($res = $this->BE_USER->workspaceAllowLiveRecordsInPID($theRealPid, $table)) {
-                                    if ($res < 0) {
-                                        $recordAccess = false;
-                                        $this->newlog('Stage for versioning root point and users access level did not allow for editing', 1);
-                                    }
-                                } else {
-                                    // So, if no live records were allowed, we have to create a new version of this record:
+                                // If LIVE records cannot be created due to workspace restrictions, prepare creation of placeholder-record
+                                if (!$this->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
                                     if (BackendUtility::isTableWorkspaceEnabled($table)) {
                                         $createNewVersion = true;
                                     } else {
@@ -988,9 +982,9 @@ class DataHandler implements LoggerAwareInterface
                             $recordAccess = false;
                             // Versioning is required and it must be offline version!
                             // Check if there already is a workspace version
-                            $WSversion = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid,t3ver_oid');
-                            if ($WSversion) {
-                                $id = $WSversion['uid'];
+                            $workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid,t3ver_oid');
+                            if ($workspaceVersion) {
+                                $id = $workspaceVersion['uid'];
                                 $recordAccess = true;
                             } elseif ($this->BE_USER->workspaceAllowAutoCreation($table, $id, $theRealPid)) {
                                 // new version of a record created in a workspace - so always refresh pagetree to indicate there is a change in the workspace
@@ -1003,7 +997,7 @@ class DataHandler implements LoggerAwareInterface
                                 $cmd = [];
                                 $cmd[$table][$id]['version'] = [
                                     'action' => 'new',
-                                    // Default is to create a version of the individual records... element versioning that is.
+                                    // Default is to create a version of the individual records
                                     'label' => 'Auto-created for WS #' . $this->BE_USER->workspace
                                 ];
                                 $tce->start([], $cmd, $this->BE_USER);
@@ -1112,7 +1106,7 @@ class DataHandler implements LoggerAwareInterface
 
                             // Setting placeholder state value for temporary record
                             $newVersion_placeholderFieldArray['t3ver_state'] = (string)new VersionState(VersionState::NEW_PLACEHOLDER);
-                            // Setting workspace - only so display of place holders can filter out those from other workspaces.
+                            // Setting workspace - only so display of placeholders can filter out those from other workspaces.
                             $newVersion_placeholderFieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
                             $newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['label']] = $this->getPlaceholderTitleForTableLabel($table);
                             // Saving placeholder as 'original'
@@ -5149,7 +5143,7 @@ class DataHandler implements LoggerAwareInterface
         if ($this->isElementToBeDeleted($table, $id)) {
             return null;
         }
-        if (!$GLOBALS['TCA'][$table] || !BackendUtility::isTableWorkspaceEnabled($table) || $id <= 0) {
+        if (!BackendUtility::isTableWorkspaceEnabled($table) || $id <= 0) {
             $this->newlog('Versioning is not supported for this table "' . $table . '" / ' . $id, 1);
             return null;
         }

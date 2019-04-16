@@ -236,13 +236,9 @@ class DataHandlerHook
             } else {
                 $dataHandler->newlog('Versioning not enabled for record with an online ID (t3ver_oid) given', 2);
             }
-        } elseif ($res = $dataHandler->BE_USER->workspaceAllowLiveRecordsInPID($record['pid'], $table)) {
-            // Look, if record is "online" or in a versionized branch, then delete directly.
-            if ($res > 0) {
-                $dataHandler->deleteEl($table, $id);
-            } else {
-                $dataHandler->newlog('Stage of root point did not allow for deletion', 1);
-            }
+        } elseif ($dataHandler->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
+            // Look, if record is "online" then delete directly.
+            $dataHandler->deleteEl($table, $id);
         } elseif ($recordVersionState->equals(VersionState::MOVE_PLACEHOLDER)) {
             // Placeholders for moving operations are deletable directly.
             // Get record which its a placeholder for and reset the t3ver_state of that:
@@ -318,6 +314,7 @@ class DataHandlerHook
         if ($dataHandler->BE_USER->workspace === 0) {
             return;
         }
+        $tableSupportsVersioning = BackendUtility::isTableWorkspaceEnabled($table);
         if ($destPid < 0) {
             // Fetch move placeholder, since it might point to a new page in the current workspace
             $movePlaceHolder = BackendUtility::getMovePlaceholder($table, abs($destPid), 'uid,pid');
@@ -331,7 +328,7 @@ class DataHandlerHook
         $workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($dataHandler->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
         // Handle move-placeholders if the current record is not one already
         if (
-            BackendUtility::isTableWorkspaceEnabled($table)
+            $tableSupportsVersioning
             && !$moveRecVersionState->equals(VersionState::MOVE_PLACEHOLDER)
         ) {
             // Create version of record first, if it does not exist
@@ -352,32 +349,27 @@ class DataHandlerHook
         $workspaceAccessBlocked = [];
         // Element was in "New/Deleted/Moved" so it can be moved...
         $recIsNewVersion = $moveRecVersionState->indicatesPlaceholder();
-        $destRes = $dataHandler->BE_USER->workspaceAllowLiveRecordsInPID($resolvedPid, $table);
-        $canMoveRecord = ($recIsNewVersion || BackendUtility::isTableWorkspaceEnabled($table));
+        $recordMustNotBeVersionized = $dataHandler->BE_USER->workspaceAllowsLiveEditingInTable($table);
+        $canMoveRecord = $recIsNewVersion || $tableSupportsVersioning;
         // Workspace source check:
         if (!$recIsNewVersion) {
             $errorCode = $dataHandler->BE_USER->workspaceCannotEditRecord($table, $workspaceVersion['uid'] ?: $uid);
             if ($errorCode) {
                 $workspaceAccessBlocked['src1'] = 'Record could not be edited in workspace: ' . $errorCode . ' ';
-            } elseif (!$canMoveRecord && $dataHandler->BE_USER->workspaceAllowLiveRecordsInPID($moveRec['pid'], $table) <= 0) {
+            } elseif (!$canMoveRecord && !$recordMustNotBeVersionized) {
                 $workspaceAccessBlocked['src2'] = 'Could not remove record from table "' . $table . '" from its page "' . $moveRec['pid'] . '" ';
             }
         }
         // Workspace destination check:
-        // All records can be inserted if $destRes is greater than zero.
-        // Only new versions can be inserted if $destRes is FALSE.
-        // NO RECORDS can be inserted if $destRes is negative which indicates a stage
-        //  not allowed for use. If "versioningWS" is version 2, moving can take place of versions.
-        // since TYPO3 CMS 7, version2 is the default and the only option
-        if (!($destRes > 0 || $canMoveRecord && !$destRes)) {
+        // All records can be inserted if $recordMustNotBeVersionized is true.
+        // Only new versions can be inserted if $recordMustNotBeVersionized is FALSE.
+        if (!($recordMustNotBeVersionized || $canMoveRecord && !$recordMustNotBeVersionized)) {
             $workspaceAccessBlocked['dest1'] = 'Could not insert record from table "' . $table . '" in destination PID "' . $resolvedPid . '" ';
-        } elseif ($destRes == 1 && $workspaceVersion['uid']) {
-            $workspaceAccessBlocked['dest2'] = 'Could not insert other versions in destination PID ';
         }
+
         if (empty($workspaceAccessBlocked)) {
             // If the move operation is done on a versioned record, which is
-            // NOT new/deleted placeholder and versioningWS is in version 2, then...
-            // since TYPO3 CMS 7, version2 is the default and the only option
+            // NOT new/deleted placeholder, then also create a move placeholder
             if ($workspaceVersion['uid'] && !$recIsNewVersion && BackendUtility::isTableWorkspaceEnabled($table)) {
                 $this->moveRecord_wsPlaceholders($table, (int)$uid, (int)$destPid, (int)$workspaceVersion['uid'], $dataHandler);
             } else {

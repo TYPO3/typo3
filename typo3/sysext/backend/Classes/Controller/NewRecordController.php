@@ -480,7 +480,7 @@ class NewRecordController
         if ($displayNewPagesIntoLink
             && $this->isTableAllowedOnPage('pages', $this->pageinfo)
             && $this->getBackendUserAuthentication()->check('tables_modify', 'pages')
-            && $this->getBackendUserAuthentication()->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ?: $this->id), 'pages')
+            && $this->getBackendUserAuthentication()->workspaceCanCreateNewRecord('pages')
         ) {
             // Create link to new page inside:
             $recordIcon = $this->moduleTemplate->getIconFactory()->getIconForRecord($table, [], Icon::SIZE_SMALL)->render();
@@ -494,7 +494,7 @@ class NewRecordController
         if ($displayNewPagesAfterLink
             && $this->isTableAllowedOnPage('pages', $this->pidInfo)
             && $this->getBackendUserAuthentication()->check('tables_modify', 'pages')
-            && $this->getBackendUserAuthentication()->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')
+            && $this->getBackendUserAuthentication()->workspaceCanCreateNewRecord('pages')
         ) {
             $newPageLinks[] = $this->renderLink(
                 $pageIcon . htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.after')) . ')',
@@ -536,7 +536,7 @@ class NewRecordController
                         && $this->isTableAllowedOnPage($table, $this->pageinfo)
                         && $this->getBackendUserAuthentication()->check('tables_modify', $table)
                         && ($rootLevelConfiguration === -1 || ($this->id xor $rootLevelConfiguration))
-                        && $this->getBackendUserAuthentication()->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ? $this->pageinfo['_ORIG_uid'] : $this->id), $table)
+                        && $this->getBackendUserAuthentication()->workspaceCanCreateNewRecord($table)
                     ) {
                         $newRecordIcon = $this->moduleTemplate->getIconFactory()->getIconForRecord($table, [], Icon::SIZE_SMALL)->render();
                         $rowContent = '';
