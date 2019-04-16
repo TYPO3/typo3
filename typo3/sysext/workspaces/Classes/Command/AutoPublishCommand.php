@@ -62,15 +62,11 @@ class AutoPublishCommand extends Command
         $affectedWorkspaces = 0;
         while ($workspaceRecord = $statement->fetch()) {
             // First, clear start/end time so it doesn't get selected once again
-            $fieldArray = (int)$workspaceRecord['publish_time'] !== 0
-                ? ['publish_time' => 0]
-                : ['unpublish_time' => 0];
-
             GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('sys_workspace')
                 ->update(
                     'sys_workspace',
-                    $fieldArray,
+                    ['publish_time' => 0],
                     ['uid' => (int)$workspaceRecord['uid']]
                 );
 
@@ -106,38 +102,20 @@ class AutoPublishCommand extends Command
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         return $queryBuilder
-            ->select('uid', 'swap_modes', 'publish_time', 'unpublish_time')
+            ->select('uid', 'swap_modes', 'publish_time')
             ->from('sys_workspace')
             ->where(
                 $queryBuilder->expr()->eq(
                     'pid',
                     $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 ),
-                $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->neq(
-                            'publish_time',
-                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                        ),
-                        $queryBuilder->expr()->lte(
-                            'publish_time',
-                            $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
-                        )
-                    ),
-                    $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->eq(
-                            'publish_time',
-                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                        ),
-                        $queryBuilder->expr()->neq(
-                            'unpublish_time',
-                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                        ),
-                        $queryBuilder->expr()->lte(
-                            'unpublish_time',
-                            $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
-                        )
-                    )
+                $queryBuilder->expr()->neq(
+                    'publish_time',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->lte(
+                    'publish_time',
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
                 )
             )
             ->execute();

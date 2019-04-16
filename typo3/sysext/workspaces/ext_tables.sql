@@ -20,7 +20,6 @@ CREATE TABLE sys_workspace (
 	db_mountpoints varchar(255) DEFAULT '' NOT NULL,
 	file_mountpoints varchar(255) DEFAULT '' NOT NULL,
 	publish_time int(11) DEFAULT '0' NOT NULL,
-	unpublish_time int(11) DEFAULT '0' NOT NULL,
 	freeze tinyint(3) DEFAULT '0' NOT NULL,
 	live_edit tinyint(3) DEFAULT '0' NOT NULL,
 	vtypes tinyint(3) DEFAULT '0' NOT NULL,

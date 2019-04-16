@@ -87,18 +87,6 @@ return [
                 'default' => 0,
             ]
         ],
-        'unpublish_time' => [
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.unpublish_time',
-            'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime,int',
-                'default' => 0,
-                'range' => [
-                    'upper' => mktime(0, 0, 0, 1, 1, 2038)
-                ]
-            ],
-        ],
         'freeze' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.freeze',
             'config' => [
