@@ -4,7 +4,6 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'Classes for the frontend of TYPO3.',
     'category' => 'fe',
     'state' => 'stable',
-    'createDirs' => '',
     'clearCacheOnLoad' => 1,
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',

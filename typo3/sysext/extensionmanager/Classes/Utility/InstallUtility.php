@@ -186,7 +186,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     public function processExtensionSetup($extensionKey)
     {
         $extension = $this->enrichExtensionWithDetails($extensionKey, false);
-        $this->ensureConfiguredDirectoriesExist($extension);
         $this->importInitialFiles($extension['siteRelPath'] ?? '', $extensionKey);
         $this->importStaticSqlFile($extension['siteRelPath']);
         $this->importT3DFile($extension['siteRelPath']);
@@ -343,16 +342,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
             return $availableExtensions[$extensionKey];
         }
         throw new ExtensionManagerException('Extension ' . $extensionKey . ' is not available', 1342864081);
-    }
-
-    /**
-     * Creates directories as requested in ext_emconf.php
-     *
-     * @param array $extension
-     */
-    protected function ensureConfiguredDirectoriesExist(array $extension)
-    {
-        $this->fileHandlingUtility->ensureConfiguredDirectoriesExist($extension);
     }
 
     /**

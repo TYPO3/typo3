@@ -72,7 +72,6 @@ class InstallUtilityTest extends UnitTestCase
                 'saveDefaultConfiguration',
                 'getExtensionArray',
                 'enrichExtensionWithDetails',
-                'ensureConfiguredDirectoriesExist',
                 'importInitialFiles',
                 'emitAfterExtensionInstallSignal',
             ],
@@ -174,18 +173,6 @@ class InstallUtilityTest extends UnitTestCase
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
         $cacheManagerMock->expects($this->once())->method('flushCaches');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
-        $this->installMock->install($this->extensionKey);
-    }
-
-    /**
-     * @test
-     */
-    public function installationOfAnExtensionWillCallEnsureThatDirectoriesExist()
-    {
-        $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
-        $cacheManagerMock->expects($this->once())->method('flushCachesInGroup');
-        $this->installMock->_set('cacheManager', $cacheManagerMock);
-        $this->installMock->expects($this->once())->method('ensureConfiguredDirectoriesExist');
         $this->installMock->install($this->extensionKey);
     }
 

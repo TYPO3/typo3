@@ -5,7 +5,6 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'example',
     'version' => '10.0.0',
     'state' => 'beta',
-    'createDirs' => '',
     'clearCacheOnLoad' => 0,
     'author' => 'Christian Kuhn',
     'author_email' => 'lolli@schwarzbu.ch',

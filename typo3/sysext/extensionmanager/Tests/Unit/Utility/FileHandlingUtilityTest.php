@@ -456,64 +456,6 @@ class FileHandlingUtilityTest extends UnitTestCase
     }
 
     /**
-     * @test
-     */
-    public function additionalFoldersAreNotCreatedIfNotRequested()
-    {
-        $fileHandlerMock = $this->getPreparedFileHandlingMockForDirectoryCreationTests();
-        $fileHandlerMock->expects($this->never())
-            ->method('createNestedDirectory');
-        $fileHandlerMock->ensureConfiguredDirectoriesExist(
-            [
-                'key' => 'foo_bar',
-                'createDirs' => '',
-            ]
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function configuredAdditionalDirectoriesAreCreatedIfRequested()
-    {
-        $fileHandlerMock = $this->getPreparedFileHandlingMockForDirectoryCreationTests();
-        $fileHandlerMock->expects($this->exactly(2))
-            ->method('createNestedDirectory')
-            ->will(
-                $this->returnCallback(function ($path) {
-                    if (!\in_array($path, ['foo/bar', 'baz/foo'])) {
-                        throw new \Exception('Path "' . $path . '" is not expected to be created', 1476108500);
-                    }
-                })
-            );
-        $fileHandlerMock->ensureConfiguredDirectoriesExist(
-            [
-                'key' => 'foo_bar',
-                'createDirs' => 'foo/bar, baz/foo',
-            ]
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function configuredDirectoriesAreNotCreatedIfTheyAlreadyExist()
-    {
-        $fileHandlerMock = $this->getPreparedFileHandlingMockForDirectoryCreationTests();
-        $fileHandlerMock->expects($this->exactly(2))
-            ->method('directoryExists')
-            ->will($this->returnValue(true));
-        $fileHandlerMock->expects($this->never())
-            ->method('createNestedDirectory');
-        $fileHandlerMock->ensureConfiguredDirectoriesExist(
-            [
-                'key' => 'foo_bar',
-                'createDirs' => 'foo/bar, baz/foo',
-            ]
-        );
-    }
-
-    /**
      * Warning: This test asserts multiple things at once to keep the setup short.
      *
      * @test

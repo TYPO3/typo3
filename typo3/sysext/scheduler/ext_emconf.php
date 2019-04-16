@@ -5,7 +5,6 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'misc',
     'version' => '10.0.0',
     'state' => 'stable',
-    'createDirs' => '',
     'clearCacheOnLoad' => 0,
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',

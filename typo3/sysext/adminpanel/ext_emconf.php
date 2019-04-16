@@ -4,7 +4,6 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'The TYPO3 admin panel provides a panel with additional functionality in the frontend (Debugging, Caching, Preview...)',
     'category' => 'fe',
     'state' => 'stable',
-    'createDirs' => '',
     'clearCacheOnLoad' => 1,
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',

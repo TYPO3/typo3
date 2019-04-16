@@ -7,7 +7,6 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => '',
     'author_email' => '',
     'state' => 'stable',
-    'createDirs' => '',
     'clearCacheOnLoad' => 1,
     'version' => '10.0.0',
     'constraints' => [

@@ -226,49 +226,6 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Creates directories configured in ext_emconf.php if not already present
-     *
-     * @param array $extension
-     */
-    public function ensureConfiguredDirectoriesExist(array $extension)
-    {
-        foreach ($this->getAbsolutePathsToConfiguredDirectories($extension) as $directory) {
-            if (!$this->directoryExists($directory)) {
-                $this->createNestedDirectory($directory);
-            }
-        }
-    }
-
-    /**
-     * Wrapper method for directory existence check
-     *
-     * @param string $directory
-     * @return bool
-     */
-    protected function directoryExists($directory)
-    {
-        return is_dir($directory);
-    }
-
-    /**
-     * Checks configuration and returns an array of absolute paths that should be created
-     *
-     * @param array $extension
-     * @return array
-     */
-    protected function getAbsolutePathsToConfiguredDirectories(array $extension)
-    {
-        $requestedDirectories = [];
-        $requestCreateDirectories = empty($extension['createDirs']) ? false : (string)$extension['createDirs'];
-        if ($requestCreateDirectories) {
-            foreach (GeneralUtility::trimExplode(',', $extension['createDirs']) as $directoryToCreate) {
-                $requestedDirectories[] = $this->getAbsolutePath($directoryToCreate);
-            }
-        }
-        return $requestedDirectories;
-    }
-
-    /**
      * Remove specified directory
      *
      * @param string $extDirPath
