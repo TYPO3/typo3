@@ -76,7 +76,7 @@ class RecordStateFactory
         );
         return $target
             ->withLanguageLink($this->resolveLanguageLink($aspectFieldValues))
-            ->withVersionLink($this->resolveLanguageLink($aspectFieldValues));
+            ->withVersionLink($this->resolveVersionLink($aspectFieldValues));
     }
 
     /**
@@ -135,6 +135,21 @@ class RecordStateFactory
             return $languageSourceLink ?? $languageParentLink ?? null;
         }
         return $languageSourceLink->withAncestor($languageParentLink);
+    }
+
+    /**
+     * @param array $aspectFieldNames
+     * @return EntityPointerLink|null
+     */
+    protected function resolveVersionLink(array $aspectFieldNames): ?EntityPointerLink
+    {
+        if (!empty($aspectFieldNames['versionParent'])) {
+            return GeneralUtility::makeInstance(
+                EntityPointerLink::class,
+                $this->createEntityPointer($aspectFieldNames['versionParent'])
+            );
+        }
+        return null;
     }
 
     /**
