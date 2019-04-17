@@ -476,25 +476,36 @@ class GridDataService implements LoggerAwareInterface
     protected function isFilterTextInVisibleColumns($filterText, array $versionArray)
     {
         if (is_array($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'])) {
-            foreach ($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'] as $column => $value) {
-                if (isset($value['hidden']) && isset($column) && isset($versionArray[$column])) {
-                    if ($value['hidden'] == 0) {
-                        switch ($column) {
-                            case 'workspace_Tstamp':
-                                if (stripos($versionArray['workspace_Formated_Tstamp'], $filterText) !== false) {
-                                    return true;
-                                }
-                                break;
-                            case 'change':
-                                if (stripos(strval($versionArray[$column]), str_replace('%', '', $filterText)) !== false) {
-                                    return true;
-                                }
-                                break;
-                            default:
-                                if (stripos(strval($versionArray[$column]), $filterText) !== false) {
-                                    return true;
-                                }
-                        }
+            $visibleColumns = $GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'];
+        } else {
+            $visibleColumns = [
+                'workspace_Formated_Tstamp' => ['hidden' => 0],
+                'change' => ['hidden' => 0],
+                'path_Workspace' => ['hidden' => 0],
+                'path_Live' => ['hidden' => 0],
+                'label_Live' => ['hidden' => 0],
+                'label_Stage' => ['hidden' => 0],
+                'label_Workspace' => ['hidden' => 0],
+            ];
+        }
+        foreach ($visibleColumns as $column => $value) {
+            if (isset($value['hidden']) && isset($column) && isset($versionArray[$column])) {
+                if ($value['hidden'] == 0) {
+                    switch ($column) {
+                        case 'workspace_Tstamp':
+                            if (stripos($versionArray['workspace_Formated_Tstamp'], $filterText) !== false) {
+                                return true;
+                            }
+                            break;
+                        case 'change':
+                            if (stripos(strval($versionArray[$column]), str_replace('%', '', $filterText)) !== false) {
+                                return true;
+                            }
+                            break;
+                        default:
+                            if (stripos(strval($versionArray[$column]), $filterText) !== false) {
+                                return true;
+                            }
                     }
                 }
             }
