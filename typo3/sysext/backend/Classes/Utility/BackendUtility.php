@@ -568,7 +568,7 @@ class BackendUtility
         if ($clause !== '' && strpos($clause, 'AND') !== 0) {
             $clause = 'AND ' . $clause;
         }
-        $data = self::BEgetRootLine($uid, $clause);
+        $data = self::BEgetRootLine($uid, $clause, true);
         foreach ($data as $record) {
             if ($record['uid'] === 0) {
                 continue;
