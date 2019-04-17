@@ -62,6 +62,8 @@ class T3editor {
         require(addons, (): void => {
           const cm = CodeMirror.fromTextArea($textarea.get(0), {
             extraKeys: {
+              'Ctrl-F': 'findPersistent',
+              'Cmd-F': 'findPersistent',
               'Ctrl-Alt-F': (codemirror: any): void => {
                 codemirror.setOption('fullScreen', !codemirror.getOption('fullScreen'));
               },
