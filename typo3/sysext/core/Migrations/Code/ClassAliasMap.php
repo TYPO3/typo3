@@ -21,6 +21,6 @@ return [
     'TYPO3\\CMS\\Saltedpasswords\\Salt\\SaltInterface' => \TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface::class,
     'TYPO3\\CMS\\Saltedpasswords\\Salt\\Pbkdf2Salt' => \TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash::class,
     'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt' => \TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash::class,
-    'TYPO3\\CMS\\Saltedpasswords\\SaltedPasswordsService' => \TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordService::class,
+    'TYPO3\\CMS\\Saltedpasswords\\SaltedPasswordService' => \TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordService::class,
     'TYPO3\\CMS\\Saltedpasswords\\Utility\\SaltedPasswordsUtility' => \TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordsUtility::class,
 ];

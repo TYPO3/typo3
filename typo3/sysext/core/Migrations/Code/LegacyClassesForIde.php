@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Sv {
 }
 
 namespace TYPO3\CMS\Saltedpasswords {
-    class SaltedPasswordsService extends \TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordService
+    class SaltedPasswordService extends \TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordService
     {
     }
 }

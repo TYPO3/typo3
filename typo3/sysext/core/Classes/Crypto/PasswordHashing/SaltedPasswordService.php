@@ -99,7 +99,7 @@ class SaltedPasswordService extends AbstractAuthenticationService
         $validPasswd = false;
         $password = $loginData['uident_text'];
         // Determine method used for given salted hashed password
-        // This calls deprecated getSaltingInstance(). This is "ok" since this SaltedPasswordsService in itself is deprecated.
+        // This calls deprecated getSaltingInstance(). This is "ok" since this SaltedPasswordService in itself is deprecated.
         $this->objInstanceSaltedPW = PasswordHashFactory::getSaltingInstance($user['password']);
         // Existing record is in format of Salted Hash password
         if (is_object($this->objInstanceSaltedPW)) {
@@ -114,7 +114,7 @@ class SaltedPasswordService extends AbstractAuthenticationService
             // Test for wrong salted hashing method (only if current method is not related to default method)
             if ($validPasswd && get_class($this->objInstanceSaltedPW) !== $defaultHashingClassName && !is_subclass_of($this->objInstanceSaltedPW, $defaultHashingClassName)) {
                 // Instantiate default method class
-                // This calls deprecated getSaltingInstance(). This is "ok" since this SaltedPasswordsService in itself is deprecated.
+                // This calls deprecated getSaltingInstance(). This is "ok" since this SaltedPasswordService in itself is deprecated.
                 $this->objInstanceSaltedPW = PasswordHashFactory::getSaltingInstance(null);
                 $this->updatePassword((int)$user['uid'], ['password' => $this->objInstanceSaltedPW->getHashedPassword($password)]);
             }
@@ -126,7 +126,7 @@ class SaltedPasswordService extends AbstractAuthenticationService
             $hashingMethod = substr($user['password'], 0, 2);
             if ($hashingMethod === 'M$') {
                 // Instantiate default method class
-                // This calls deprecated getSaltingInstance(). This is "ok" since this SaltedPasswordsService in itself is deprecated.
+                // This calls deprecated getSaltingInstance(). This is "ok" since this SaltedPasswordService in itself is deprecated.
                 $this->objInstanceSaltedPW = PasswordHashFactory::getSaltingInstance(substr($user['password'], 1));
                 // md5 passwords that have been upgraded to salted passwords using old scheduler task
                 // @todo: The entire 'else' should be dropped in TYPO3 v10.0, admins had to upgrade users to salted passwords with v8 latest since the
@@ -141,7 +141,7 @@ class SaltedPasswordService extends AbstractAuthenticationService
             // Upgrade to a sane salt mechanism if password was correct
             if ($validPasswd) {
                 // Instantiate default method class
-                // This calls deprecated getSaltingInstance(). This is "ok" since this SaltedPasswordsService in itself is deprecated.
+                // This calls deprecated getSaltingInstance(). This is "ok" since this SaltedPasswordService in itself is deprecated.
                 $this->objInstanceSaltedPW = PasswordHashFactory::getSaltingInstance(null);
                 $this->updatePassword((int)$user['uid'], ['password' => $this->objInstanceSaltedPW->getHashedPassword($password)]);
             }

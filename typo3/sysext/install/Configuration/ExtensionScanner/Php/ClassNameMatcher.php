@@ -807,7 +807,7 @@ return [
             'Deprecation-85833-ExtensionSaltedpasswordsMergedIntoCoreExtension.rst',
         ],
     ],
-    'TYPO3\CMS\Saltedpasswords\SaltedPasswordsService' => [
+    'TYPO3\CMS\Saltedpasswords\SaltedPasswordService' => [
         'restFiles' => [
             'Deprecation-85833-ExtensionSaltedpasswordsMergedIntoCoreExtension.rst',
         ],
