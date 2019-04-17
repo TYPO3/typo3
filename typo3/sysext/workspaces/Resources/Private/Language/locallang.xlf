@@ -219,6 +219,12 @@
 			<trans-unit id="window.sendToNextStageWindow.itemsWillBeSentTo">
 				<source>The selected element(s) will be sent to</source>
 			</trans-unit>
+			<trans-unit id="window.sendToNextStageWindow.selectAll">
+				<source>Select all</source>
+			</trans-unit>
+			<trans-unit id="window.sendToNextStageWindow.deselectAll">
+				<source>Uncheck all</source>
+			</trans-unit>
 			<trans-unit id="window.sendToNextStageWindow.sendMailTo">
 				<source>Send mail to</source>
 			</trans-unit>
