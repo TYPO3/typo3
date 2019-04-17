@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Routing\Aspect\AspectFactory;
 use TYPO3\CMS\Core\Routing\Aspect\MappableProcessor;
@@ -117,6 +118,17 @@ class PageRouter implements RouterInterface
             throw new RouteNotFoundException('No previous result given. Cannot find a page for an empty route part', 1555303496);
         }
         $urlPath = $previousResult->getTail();
+        // Remove the script name (e.g. index.php), if given
+        if (!empty($urlPath)) {
+            $normalizedParams = $request->getAttribute('normalizedParams');
+            if ($normalizedParams instanceof NormalizedParams) {
+                $scriptName = ltrim($normalizedParams->getScriptName(), '/');
+                if (strpos($urlPath, $scriptName) !== false) {
+                    $urlPath = str_replace($scriptName, '', $urlPath);
+                }
+            }
+        }
+
         $prefixedUrlPath = '/' . trim($urlPath, '/');
         $slugCandidates = $this->getCandidateSlugsFromRoutePath($urlPath ?: '/');
         $pageCandidates = [];
