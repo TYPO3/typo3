@@ -176,6 +176,7 @@ class RecordState
      * Example:
      * + pages: uid: 10, pid: 5, sys_language_uid: 0, l10n_parent: 0  -> returns 10
      * + pages: uid: 11, pid: 5, sys_language_uid: 1, l10n_parent: 10 -> returns 10
+     * + pages in version, return online page ID
      * + other: uid: 12, pid: 10 -> returns 10
      *
      * @return string
@@ -187,6 +188,9 @@ class RecordState
             && $this->languageLink !== null
         ) {
             return $this->languageLink->getHead()->getSubject()->getIdentifier();
+        }
+        if ($this->subject->isNode() && $this->versionLink) {
+            return $this->versionLink->getHead()->getSubject()->getIdentifier();
         }
         if ($this->subject->isNode()) {
             return $this->subject->getIdentifier();
