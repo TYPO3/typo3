@@ -1427,20 +1427,22 @@ class EditDocumentController
         ) {
             $this->registerSaveButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 2);
             $this->registerViewButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 3);
-            $this->registerNewButtonToButtonBar(
-                $buttonBar,
-                ButtonBar::BUTTON_POSITION_LEFT,
-                4,
-                $sysLanguageUid,
-                $l18nParent
-            );
-            $this->registerDuplicationButtonToButtonBar(
-                $buttonBar,
-                ButtonBar::BUTTON_POSITION_LEFT,
-                5,
-                $sysLanguageUid,
-                $l18nParent
-            );
+            if ($this->firstEl['cmd'] !== 'new') {
+                $this->registerNewButtonToButtonBar(
+                    $buttonBar,
+                    ButtonBar::BUTTON_POSITION_LEFT,
+                    4,
+                    $sysLanguageUid,
+                    $l18nParent
+                );
+                $this->registerDuplicationButtonToButtonBar(
+                    $buttonBar,
+                    ButtonBar::BUTTON_POSITION_LEFT,
+                    5,
+                    $sysLanguageUid,
+                    $l18nParent
+                );
+            }
             $this->registerDeleteButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 6);
             $this->registerColumnsOnlyButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 7);
             $this->registerHistoryButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 1);
