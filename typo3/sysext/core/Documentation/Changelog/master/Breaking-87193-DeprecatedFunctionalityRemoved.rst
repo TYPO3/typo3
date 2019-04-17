@@ -173,7 +173,7 @@ The following PHP class aliases that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Saltedpasswords\Salt\SaltInterface`
 * :php:`TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt`
 * :php:`TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt`
-* :php:`TYPO3\CMS\Saltedpasswords\SaltedPasswordsService`
+* :php:`TYPO3\CMS\Saltedpasswords\SaltedPasswordService`
 * :php:`TYPO3\CMS\Saltedpasswords\Utility\ExensionManagerConfigurationUtility`
 * :php:`TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility`
 * :php:`TYPO3\CMS\Sv\AbstractAuthenticationService`

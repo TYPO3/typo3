@@ -885,7 +885,7 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
-    'TYPO3\CMS\Saltedpasswords\SaltedPasswordsService' => [
+    'TYPO3\CMS\Saltedpasswords\SaltedPasswordService' => [
         'restFiles' => [
             'Deprecation-85833-ExtensionSaltedpasswordsMergedIntoCoreExtension.rst',
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
