@@ -337,10 +337,9 @@ class BackendLogController extends ActionController
                 $startTime = mktime(0, 0, 0) - 31 * 3600 * 24;
                 break;
             case self::TIMEFRAME_CUSTOM:
-                $startTime = $constraint->getStartTimestamp();
-                if ($constraint->getEndTimestamp() > $constraint->getStartTimestamp()) {
-                    $endTime = $constraint->getEndTimestamp();
-                } else {
+                $startTime = $constraint->getManualDateStart() ? $constraint->getManualDateStart()->getTimestamp() : 0;
+                $endTime = $constraint->getManualDateStop() ? $constraint->getManualDateStop()->getTimestamp() : 0;
+                if ($endTime <= $startTime) {
                     $endTime = $GLOBALS['EXEC_TIME'];
                 }
                 break;
