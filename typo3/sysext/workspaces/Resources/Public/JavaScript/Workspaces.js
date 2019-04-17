@@ -39,6 +39,13 @@ define([
       $form.append(
         $('<label />', {class: 'control-label'}).text(TYPO3.lang['window.sendToNextStageWindow.itemsWillBeSentTo'])
       );
+      $form.append(
+        $('<div />', {class: 'form-group'}).append(
+          $('<a href="#" class="btn btn-default btn-xs t3js-workspace-recipients-selectall" />').text(TYPO3.lang['window.sendToNextStageWindow.selectAll']),
+          '&nbsp;',
+          $('<a href="#" class="btn btn-default btn-xs t3js-workspace-recipients-deselectall" />').text(TYPO3.lang['window.sendToNextStageWindow.deselectAll'])
+        )
+      );
 
       for (var i = 0; i < result.sendMailTo.length; ++i) {
         var recipient = result.sendMailTo[i];
@@ -49,6 +56,7 @@ define([
               $('<input />', {
                 type: 'checkbox',
                 name: 'recipients',
+                class: 't3js-workspace-recipient',
                 id: recipient.name,
                 value: recipient.value
               }).prop('checked', recipient.checked).prop('disabled', recipient.disabled)

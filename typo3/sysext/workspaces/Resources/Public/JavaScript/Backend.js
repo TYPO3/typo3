@@ -175,6 +175,13 @@ define([
 
       $me.html(Backend.getPreRenderedIcon(iconIdentifier));
     });
+    $(window.top.document).on('click', '.t3js-workspace-recipients-selectall', function(e) {
+      e.preventDefault();
+      $('.t3js-workspace-recipient', window.top.document).not(':disabled').prop('checked', true);
+    }).on('click', '.t3js-workspace-recipients-deselectall', function(e) {
+      e.preventDefault();
+      $('.t3js-workspace-recipient', window.top.document).not(':disabled').prop('checked', false);
+    });
 
     Backend.elements.$searchForm.on('submit', function(e) {
       e.preventDefault();
