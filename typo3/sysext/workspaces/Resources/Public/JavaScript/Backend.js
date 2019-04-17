@@ -69,11 +69,15 @@ define([
   };
 
   Backend.initialize = function() {
+    var persistedDepth = Persistent.get('Workspaces.Module.depth');
     Backend.getElements();
     Backend.registerEvents();
 
-    if (Persistent.get('Workspaces.Module.depth') > 0) {
-      Backend.elements.$depthSelector.val(Persistent.get('Workspaces.Module.depth'));
+    if (persistedDepth > 0) {
+      Backend.elements.$depthSelector.val(persistedDepth);
+      Backend.settings.depth = persistedDepth;
+    } else {
+      Backend.settings.depth = TYPO3.settings.Workspaces.depth;
     }
 
     Backend.loadWorkspaceComponents();
@@ -217,8 +221,9 @@ define([
 
     // Listen for depth changes
     Backend.elements.$depthSelector.on('change', function(e) {
-      var $me = $(this);
-      Persistent.set('Workspaces.Module.depth', $me.val());
+      var depth = $(this).val();
+      Persistent.set('Workspaces.Module.depth', depth);
+      Backend.settings.depth = depth;
       Backend.getWorkspaceInfos();
     });
 
