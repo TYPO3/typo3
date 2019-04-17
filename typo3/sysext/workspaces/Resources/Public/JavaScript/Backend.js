@@ -22,9 +22,10 @@ define([
   'TYPO3/CMS/Backend/Severity',
   'TYPO3/CMS/Backend/Modal',
   'TYPO3/CMS/Backend/Wizard',
+  'TYPO3/CMS/Backend/Storage/Persistent',
   'nprogress',
   'TYPO3/CMS/Backend/jquery.clearable'
-], function($, Workspaces, Tooltip, Severity, Modal, Wizard, NProgress) {
+], function($, Workspaces, Tooltip, Severity, Modal, Wizard, Persistent, NProgress) {
   'use strict';
 
   var Backend = {
@@ -46,7 +47,6 @@ define([
       pagination: '#workspace-pagination'
     },
     settings: {
-      depth: TYPO3.settings.Workspaces.depth,
       dir: 'ASC',
       id: TYPO3.settings.Workspaces.id,
       language: TYPO3.settings.Workspaces.language,
@@ -72,8 +72,8 @@ define([
     Backend.getElements();
     Backend.registerEvents();
 
-    if (TYPO3.settings.Workspaces.depth > 0) {
-      Backend.elements.$depthSelector.val(TYPO3.settings.Workspaces.depth);
+    if (Persistent.get('Workspaces.Module.depth') > 0) {
+      Backend.elements.$depthSelector.val(Persistent.get('Workspaces.Module.depth'));
     }
 
     Backend.loadWorkspaceComponents();
@@ -211,8 +211,7 @@ define([
     // Listen for depth changes
     Backend.elements.$depthSelector.on('change', function(e) {
       var $me = $(this);
-      Backend.settings.depth = $me.val();
-
+      Persistent.set('Workspaces.Module.depth', $me.val());
       Backend.getWorkspaceInfos();
     });
 
