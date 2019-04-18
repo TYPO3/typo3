@@ -92,6 +92,8 @@ class TcaMigration
         $tca = $this->migrateLocalizeChildrenAtParentLocalization($tca);
         $tca = $this->migratePagesLanguageOverlayRemoval($tca);
         $tca = $this->deprecateTypeGroupInternalTypeFile($tca);
+        $tca = $this->sanitizeControlSectionIntegrity($tca);
+
         return $tca;
     }
 
@@ -2601,6 +2603,43 @@ class TcaMigration
                         . ' from TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'] is deprecated. It will continue'
                         . ' to work is TYPO3 v9, but the functionality will be removed in TYPO3 v10.0. Switch to inline FAL instead.';
                 }
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * Ensures that system internal columns that are required for data integrity
+     * (e.g. localize or copy a record) are available in case they have been defined
+     * in $GLOBALS['TCA'][<table-name>]['ctrl'].
+     *
+     * The list of references to usages below is not necessarily complete.
+     *
+     * @param array $tca
+     * @return array
+     *
+     * @see \TYPO3\CMS\Core\DataHandling\DataHandler::fillInFieldArray()
+     */
+    protected function sanitizeControlSectionIntegrity(array $tca): array
+    {
+        $controlSectionNames = [
+            'origUid',
+            'languageField',
+            'transOrigPointerField',
+            'translationSource'
+        ];
+        foreach ($tca as $tableName => &$configuration) {
+            foreach ($controlSectionNames as $controlSectionName) {
+                $columnName = $configuration['ctrl'][$controlSectionName] ?? null;
+                if (empty($columnName) || !empty($configuration['columns'][$columnName])) {
+                    continue;
+                }
+                $configuration['columns'][$columnName] = [
+                    'config' => [
+                        'type' => 'passthrough',
+                        'default' => 0,
+                    ],
+                ];
             }
         }
         return $tca;
