@@ -170,6 +170,28 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
     }
 
+    /**
+     * @see DataSet/localizeContentRecord.csv
+     * @see \TYPO3\CMS\Core\Migrations\TcaMigration::sanitizeControlSectionIntegrity()
+     */
+    public function localizeContentWithEmptyTcaIntegrityColumns()
+    {
+        $integrityFieldNames = [
+            'origin' => $GLOBALS['TCA'][self::TABLE_Content]['ctrl']['origUid'] ?? null,
+            'language' => $GLOBALS['TCA'][self::TABLE_Content]['ctrl']['languageField'] ?? null,
+            'languageParent' => $GLOBALS['TCA'][self::TABLE_Content]['ctrl']['transOrigPointerField'] ?? null,
+            'languageSource' => $GLOBALS['TCA'][self::TABLE_Content]['ctrl']['translationSource'] ?? null,
+        ];
+        // explicitly unset integrity columns in TCA
+        foreach ($integrityFieldNames as $integrityFieldName) {
+            unset($GLOBALS['TCA'][self::TABLE_Content]['columns'][$integrityFieldName]);
+        }
+        // explicitly call TcaMigration (which was executed already earlier in functional testing bootstrap)
+        $GLOBALS['TCA'] = (new \TYPO3\CMS\Core\Migrations\TcaMigration())->migrate($GLOBALS['TCA']);
+        // perform actions to be tested
+        self::localizeContent();
+    }
+
     public function localizeContentWithLanguageSynchronization()
     {
         $GLOBALS['TCA']['tt_content']['columns']['header']['config']['behaviour']['allowLanguageSynchronization'] = true;

@@ -51,6 +51,7 @@ class TcaMigration
         $tca = $this->migratePagesLanguageOverlayRemoval($tca);
         $tca = $this->removeSelIconFieldPath($tca);
         $tca = $this->removeSetToDefaultOnCopy($tca);
+        $tca = $this->sanitizeControlSectionIntegrity($tca);
 
         return $tca;
     }
@@ -203,6 +204,43 @@ class TcaMigration
                     . '[ctrl][setToDefaultOnCopy] which should be removed from TCA, '
                     . 'as it is not in use anymore.';
                 unset($configuration['ctrl']['setToDefaultOnCopy']);
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * Ensures that system internal columns that are required for data integrity
+     * (e.g. localize or copy a record) are available in case they have been defined
+     * in $GLOBALS['TCA'][<table-name>]['ctrl'].
+     *
+     * The list of references to usages below is not necessarily complete.
+     *
+     * @param array $tca
+     * @return array
+     *
+     * @see \TYPO3\CMS\Core\DataHandling\DataHandler::fillInFieldArray()
+     */
+    protected function sanitizeControlSectionIntegrity(array $tca): array
+    {
+        $controlSectionNames = [
+            'origUid',
+            'languageField',
+            'transOrigPointerField',
+            'translationSource'
+        ];
+        foreach ($tca as $tableName => &$configuration) {
+            foreach ($controlSectionNames as $controlSectionName) {
+                $columnName = $configuration['ctrl'][$controlSectionName] ?? null;
+                if (empty($columnName) || !empty($configuration['columns'][$columnName])) {
+                    continue;
+                }
+                $configuration['columns'][$columnName] = [
+                    'config' => [
+                        'type' => 'passthrough',
+                        'default' => 0,
+                    ],
+                ];
             }
         }
         return $tca;

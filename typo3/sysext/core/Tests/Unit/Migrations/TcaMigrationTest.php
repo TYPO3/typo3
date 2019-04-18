@@ -213,4 +213,217 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         $this->assertEquals($expected, $subject->migrate($input));
     }
+
+    /**
+     * @return array
+     */
+    public function ctrlIntegrityColumnsAreAvailableDataProvider(): array
+    {
+        return [
+            'filled columns' => [
+                // tca
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'origUid' => 'aField',
+                            'languageField' => 'bField',
+                            'transOrigPointerField' => 'cField',
+                            'translationSource' => 'dField',
+                        ],
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'aField',
+                                'config' => [
+                                    'type' => 'none',
+                                ],
+                            ],
+                            'bField' => [
+                                'label' => 'bField',
+                                'config' => [
+                                    'type' => 'none',
+                                ],
+                            ],
+                            'cField' => [
+                                'label' => 'cField',
+                                'config' => [
+                                    'type' => 'none',
+                                ],
+                            ],
+                            'dField' => [
+                                'label' => 'dField',
+                                'config' => [
+                                    'type' => 'none',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                // expectation
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'origUid' => 'aField',
+                            'languageField' => 'bField',
+                            'transOrigPointerField' => 'cField',
+                            'translationSource' => 'dField',
+                        ],
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'aField',
+                                'config' => [
+                                    'type' => 'none',
+                                ],
+                            ],
+                            'bField' => [
+                                'label' => 'bField',
+                                'config' => [
+                                    'type' => 'none',
+                                ],
+                            ],
+                            'cField' => [
+                                'label' => 'cField',
+                                'config' => [
+                                    'type' => 'none',
+                                ],
+                            ],
+                            'dField' => [
+                                'label' => 'dField',
+                                'config' => [
+                                    'type' => 'none',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'mixed columns' => [
+                // tca
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'origUid' => 'aField',
+                            'languageField' => 'bField',
+                            'transOrigPointerField' => 'cField',
+                            'translationSource' => 'dField',
+                        ],
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'aField',
+                                'config' => [
+                                    'type' => 'none',
+                                ],
+                            ],
+                            'bField' => [
+                                'label' => 'bField',
+                                'config' => [
+                                    'type' => 'none',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                // expectation
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'origUid' => 'aField',
+                            'languageField' => 'bField',
+                            'transOrigPointerField' => 'cField',
+                            'translationSource' => 'dField',
+                        ],
+                        'columns' => [
+                            'aField' => [
+                                'label' => 'aField',
+                                'config' => [
+                                    'type' => 'none',
+                                ],
+                            ],
+                            'bField' => [
+                                'label' => 'bField',
+                                'config' => [
+                                    'type' => 'none',
+                                ],
+                            ],
+                            'cField' => [
+                                'config' => [
+                                    'type' => 'passthrough',
+                                    'default' => 0,
+                                ],
+                            ],
+                            'dField' => [
+                                'config' => [
+                                    'type' => 'passthrough',
+                                    'default' => 0,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'empty columns' => [
+                // tca
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'origUid' => 'aField',
+                            'languageField' => 'bField',
+                            'transOrigPointerField' => 'cField',
+                            'translationSource' => 'dField',
+                        ],
+                        'columns' => [],
+                    ],
+                ],
+                // expectation
+                [
+                    'aTable' => [
+                        'ctrl' => [
+                            'origUid' => 'aField',
+                            'languageField' => 'bField',
+                            'transOrigPointerField' => 'cField',
+                            'translationSource' => 'dField',
+                        ],
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'passthrough',
+                                    'default' => 0,
+                                ],
+                            ],
+                            'bField' => [
+                                'config' => [
+                                    'type' => 'passthrough',
+                                    'default' => 0,
+                                ],
+                            ],
+                            'cField' => [
+                                'config' => [
+                                    'type' => 'passthrough',
+                                    'default' => 0,
+                                ],
+                            ],
+                            'dField' => [
+                                'config' => [
+                                    'type' => 'passthrough',
+                                    'default' => 0,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param array $tca
+     * @param array $expectation
+     *
+     * @test
+     * @dataProvider ctrlIntegrityColumnsAreAvailableDataProvider
+     */
+    public function ctrlIntegrityColumnsAreAvailable(array $tca, array $expectation)
+    {
+        $subject = new TcaMigration();
+        self::assertSame($expectation, $subject->migrate($tca));
+    }
 }
