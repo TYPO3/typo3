@@ -69,11 +69,12 @@ define([
   };
 
   Backend.initialize = function() {
-    var persistedDepth = Persistent.get('Workspaces.Module.depth');
+    var persistedDepth;
     Backend.getElements();
     Backend.registerEvents();
 
-    if (persistedDepth > 0) {
+    if (Persistent.isset('Workspaces.Module.depth')) {
+      persistedDepth = Persistent.get('Workspaces.Module.depth');
       Backend.elements.$depthSelector.val(persistedDepth);
       Backend.settings.depth = persistedDepth;
     } else {
