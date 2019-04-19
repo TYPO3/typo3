@@ -16,30 +16,16 @@ namespace TYPO3\CMS\Core\PageTitle;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * This class will take care of the different providers and returns the title with the highest priority
  */
 class PageTitleProviderManager implements SingletonInterface
 {
-    /**
-     * @var FrontendInterface
-     */
-    protected $pageCache;
-
-    public function __construct()
-    {
-        $this->initCaches();
-    }
-
     /**
      * @return string
      * @throws \TYPO3\CMS\Core\Cache\Exception
@@ -56,36 +42,16 @@ class PageTitleProviderManager implements SingletonInterface
             ->orderByDependencies($titleProviders);
 
         foreach ($orderedTitleProviders as $provider => $configuration) {
-            $cacheIdentifier =  $this->getTypoScriptFrontendController()->newHash . '-titleTag-' . $provider;
-            if ($this->pageCache instanceof FrontendInterface &&
-                $pageTitle = $this->pageCache->get($cacheIdentifier)
-            ) {
-                break;
-            }
             if (class_exists($configuration['provider']) && is_subclass_of($configuration['provider'], PageTitleProviderInterface::class)) {
                 /** @var PageTitleProviderInterface $titleProviderObject */
                 $titleProviderObject = GeneralUtility::makeInstance($configuration['provider']);
                 if ($pageTitle = $titleProviderObject->getTitle()) {
-                    $this->pageCache->set(
-                        $cacheIdentifier,
-                        $pageTitle,
-                        ['pageId_' . $this->getTypoScriptFrontendController()->page['uid']],
-                        $this->getTypoScriptFrontendController()->get_cache_timeout()
-                    );
                     break;
                 }
             }
         }
 
         return $pageTitle;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-     */
-    private function getTypoScriptFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
     }
 
     /**
@@ -96,22 +62,10 @@ class PageTitleProviderManager implements SingletonInterface
     {
         $typoscriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $config = $typoscriptService->convertTypoScriptArrayToPlainArray(
-            $this->getTypoScriptFrontendController()->config['config'] ?? []
+            $GLOBALS['TSFE']->config['config'] ?? []
         );
 
         return $config['pageTitleProviders'] ?? [];
-    }
-
-    /**
-     * Initializes the caching system.
-     */
-    protected function initCaches(): void
-    {
-        try {
-            $this->pageCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('pages');
-        } catch (NoSuchCacheException $e) {
-            // Intended fall-through
-        }
     }
 
     /**

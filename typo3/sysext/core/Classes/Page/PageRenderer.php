@@ -18,7 +18,6 @@ use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
@@ -169,13 +168,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @var array
      */
     protected $metaTags = [];
-
-    /**
-     * META Tags added via the API
-     *
-     * @var array
-     */
-    protected $metaTagsByAPI = [];
 
     /**
      * @var array
@@ -356,6 +348,15 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
         $this->metaTagRegistry = GeneralUtility::makeInstance(MetaTagManagerRegistry::class);
         $this->setMetaTag('name', 'generator', 'TYPO3 CMS');
+    }
+
+    /**
+     * Set restored meta tag managers as singletons
+     * so that uncached plugins can use them to add or remove meta tags
+     */
+    public function __wakeup()
+    {
+        GeneralUtility::setSingletonInstance(get_class($this->metaTagRegistry), $this->metaTagRegistry);
     }
 
     /**
@@ -918,7 +919,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 1496402460
             );
         }
-
         $manager = $this->metaTagRegistry->getManagerForProperty($name);
         $manager->addProperty($name, $content, $subProperties, $replace, $type);
     }
@@ -1674,33 +1674,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     {
         $metaTags = [];
         $metaTagManagers = $this->metaTagRegistry->getAllManagers();
-        try {
-            $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('pages');
-        } catch (NoSuchCacheException $e) {
-            $cache = null;
-        }
 
         foreach ($metaTagManagers as $manager => $managerObject) {
-            $cacheIdentifier =  $this->getTypoScriptFrontendController()->newHash . '-metatag-' . $manager;
-
-            $existingCacheEntry = false;
-            if ($cache instanceof FrontendInterface && $properties = $cache->get($cacheIdentifier)) {
-                $existingCacheEntry = true;
-            } else {
-                $properties = $managerObject->renderAllProperties();
-            }
-
+            $properties = $managerObject->renderAllProperties();
             if (!empty($properties)) {
                 $metaTags[] = $properties;
-
-                if ($cache instanceof FrontendInterface && !$existingCacheEntry && ($this->getTypoScriptFrontendController()->page['uid'] ?? false)) {
-                    $cache->set(
-                        $cacheIdentifier,
-                        $properties,
-                        ['pageId_' . $this->getTypoScriptFrontendController()->page['uid']],
-                        $this->getTypoScriptFrontendController()->get_cache_timeout()
-                    );
-                }
             }
         }
         return $metaTags;

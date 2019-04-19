@@ -1,0 +1,12 @@
+config.pageTitleProviders {
+  testMetaProvider {
+    provider = TYPO3\CMS\TestMeta\PageTitle\CustomPageTitleProvider
+    before = record
+    after = altPageTitle
+  }
+}
+
+page = PAGE
+page.5 = TEXT
+page.5.value = MetaData-Test
+page.5.stdWrap.wrap = <h1>|</h1>
