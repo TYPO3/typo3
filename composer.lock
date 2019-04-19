@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3f3417eaa361954f59b85303b27ac3f9",
+    "content-hash": "12a1e619f4da424ce28206232c756c1d",
     "packages": [
         {
             "name": "algo26-matthias/idna-convert",
@@ -1612,7 +1612,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",

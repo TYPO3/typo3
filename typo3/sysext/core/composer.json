@@ -65,7 +65,8 @@
 	},
 	"conflict": {
 		"symfony/finder": "2.7.44 || 2.8.37 || 3.4.7 || 4.0.7",
-		"typo3/cms": "*"
+		"typo3/cms": "*",
+        "symfony/routing": "4.2.7"
 	},
 	"replace": {
 		"core": "*",
