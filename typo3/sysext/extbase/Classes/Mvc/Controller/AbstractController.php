@@ -335,6 +335,14 @@ abstract class AbstractController implements ControllerInterface
             $this->response->setStatus($statusCode);
             $this->response->setHeader('Location', (string)$uri);
         }
+        // Avoid caching the plugin when we issue a redirect response
+        // This means that even when an action is configured as cachable
+        // we avoid the plugin to be cached, but keep the page cache untouched
+        $contentObject = $this->configurationManager->getContentObject();
+        if ($contentObject->getUserObjectType() === \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::OBJECTTYPE_USER) {
+            $contentObject->convertToUserIntObject();
+        }
+
         throw new StopActionException('redirectToUri', 1476045828);
     }
 
