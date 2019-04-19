@@ -171,11 +171,6 @@ class RequestHandler implements RequestHandlerInterface
 
         if ($isOutputting) {
             $response->getBody()->write($controller->content);
-            // if any code set a response code that is not 200 clear the cache's content
-            // if we fail to do so we would deliver cache content with a wrong header, which causes big mess.
-            if (http_response_code() !== 200 || $response->getStatusCode() !== 200) {
-                $controller->clearPageCacheContent();
-            }
         }
 
         return $isOutputting ? $response : new NullResponse();
