@@ -16,13 +16,11 @@ namespace TYPO3\CMS\Core\MetaTag;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\SingletonInterface;
-
 /**
  * Handles typical meta tags (non-grouped). Use AbstractMetaTagManager
  * to create you own MetaTags, this class is final by design
  */
-final class GenericMetaTagManager implements MetaTagManagerInterface, SingletonInterface
+final class GenericMetaTagManager implements MetaTagManagerInterface
 {
     /**
      * The separator to define subproperties like og:image:width

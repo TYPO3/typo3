@@ -16,9 +16,7 @@ namespace TYPO3\CMS\Core\MetaTag;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\SingletonInterface;
-
-abstract class AbstractMetaTagManager implements MetaTagManagerInterface, SingletonInterface
+abstract class AbstractMetaTagManager implements MetaTagManagerInterface
 {
     /**
      * The default attribute that defines the name of the property

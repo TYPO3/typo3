@@ -26,6 +26,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class MetaTagManagerRegistry implements SingletonInterface
 {
     protected $registry = [];
+    private $instances = [];
+    private $managers;
 
     public function __construct()
     {
@@ -53,6 +55,7 @@ class MetaTagManagerRegistry implements SingletonInterface
             'before' => $before,
             'after' => $after
         ];
+        $this->managers = null;
     }
 
     /**
@@ -81,18 +84,24 @@ class MetaTagManagerRegistry implements SingletonInterface
      */
     public function getAllManagers(): array
     {
+        if ($this->managers !== null) {
+            return $this->managers;
+        }
+
         $orderedManagers = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies(
             $this->registry
         );
 
-        $managers = [];
+        $this->managers = [];
         foreach ($orderedManagers as $manager => $managerConfiguration) {
-            if (class_exists($managerConfiguration['module'])) {
-                $managers[$manager] = GeneralUtility::makeInstance($managerConfiguration['module']);
+            $module = $managerConfiguration['module'];
+            if (class_exists($module)) {
+                $this->instances[$module] = $this->instances[$module] ?? GeneralUtility::makeInstance($module);
+                $this->managers[$manager] = $this->instances[$module];
             }
         }
 
-        return $managers;
+        return $this->managers;
     }
 
     /**
@@ -100,6 +109,7 @@ class MetaTagManagerRegistry implements SingletonInterface
      */
     public function removeAllManagers()
     {
-        unset($this->registry);
+        $this->registry = [];
+        $this->managers = null;
     }
 }

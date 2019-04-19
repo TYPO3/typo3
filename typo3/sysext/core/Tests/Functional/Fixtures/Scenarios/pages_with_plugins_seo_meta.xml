@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <pages>
+        <uid>1</uid>
+        <pid>0</pid>
+        <title>Rootpage for Tests</title>
+        <deleted>0</deleted>
+    </pages>
+    <pages>
+        <uid>2</uid>
+        <pid>1</pid>
+        <title>Page with USER Plugins</title>
+        <deleted>0</deleted>
+    </pages>
+    <pages>
+        <uid>3</uid>
+        <pid>1</pid>
+        <title>Page with USER_INT Plugins</title>
+        <deleted>0</deleted>
+    </pages>
+    <pages>
+        <uid>4</uid>
+        <pid>1</pid>
+        <title>Page with USER_INT and USER Plugins</title>
+        <deleted>0</deleted>
+    </pages>
+    <pages>
+        <uid>5</uid>
+        <pid>1</pid>
+        <title>Page with USER and USER_INT Plugins</title>
+        <deleted>0</deleted>
+    </pages>
+</dataset>
