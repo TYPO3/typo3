@@ -7,55 +7,55 @@
 <f:layout name="Default" />
 
 <f:section name="Buttons">
-	<be:moduleLayout.button.linkButton
-		icon="actions-add"
-		title="{f:translate(id: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral')}"
-		link="{be:uri.newRecord(table: 'be_users')}"
-	/>
+    <be:moduleLayout.button.linkButton
+        icon="actions-add"
+        title="{f:translate(id: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral')}"
+        link="{be:uri.newRecord(table: 'be_users')}"
+    />
 </f:section>
 
 <f:section name="Content">
-	<h1><f:translate key="backendUserListing" /></h1>
-	<f:comment>
-		Listing of users on compare list
-	</f:comment>
-	<f:if condition="{compareUserList}">
-		<h3>{f:translate(key: 'section.compare', default: 'Compare')}</h3>
-		<div class="table-fit">
-			<table id="typo3-backend-user-list-compare" class="table table-hover">
-				<tbody>
-					<f:for each="{compareUserList}" as="compareUser">
-						<tr>
-							<td>
-								<a href="#" class="t3js-contextmenutrigger" data-table="be_users" data-uid="{compareUser.uid}" title="id={compareUser.uid}">
-									<be:avatar backendUser="{compareUser.uid}" showIcon="TRUE" />
-								</a>
-							</td>
-							<td class="col-title">
-								{compareUser.userName}
-							</td>
-							<td>
-								<f:link.action action="removeFromCompareList" arguments="{uid: compareUser.uid}" class="pull-right btn btn-default">
-									<core:icon identifier="actions-remove" />
-								</f:link.action>
-							</td>
-						</tr>
-					</f:for>
-				</tbody>
-			</table>
-		</div>
-		<f:form action="compare">
-			<f:form.submit value="{f:translate(key: 'compareUserList', default: 'Compare user list')}" class="btn btn-default" />
-		</f:form>
-		<hr>
-	</f:if>
+    <h1><f:translate key="backendUserListing" /></h1>
+    <f:comment>
+        Listing of users on compare list
+    </f:comment>
+    <f:if condition="{compareUserList}">
+        <h3>{f:translate(key: 'section.compare', default: 'Compare')}</h3>
+        <div class="table-fit">
+            <table id="typo3-backend-user-list-compare" class="table table-hover">
+                <tbody>
+                    <f:for each="{compareUserList}" as="compareUser">
+                        <tr>
+                            <td>
+                                <a href="#" class="t3js-contextmenutrigger" data-table="be_users" data-uid="{compareUser.uid}" title="id={compareUser.uid}">
+                                    <be:avatar backendUser="{compareUser.uid}" showIcon="TRUE" />
+                                </a>
+                            </td>
+                            <td class="col-title">
+                                {compareUser.userName}
+                            </td>
+                            <td>
+                                <f:link.action action="removeFromCompareList" arguments="{uid: compareUser.uid}" class="pull-right btn btn-default">
+                                    <core:icon identifier="actions-remove" />
+                                </f:link.action>
+                            </td>
+                        </tr>
+                    </f:for>
+                </tbody>
+            </table>
+        </div>
+        <f:form action="compare">
+            <f:form.submit value="{f:translate(key: 'compareUserList', default: 'Compare user list')}" class="btn btn-default" />
+        </f:form>
+        <hr>
+    </f:if>
 
-	<f:comment>
-		Filter section
-	</f:comment>
-	<f:render partial="Filters/BackendUser/Index" arguments="{demand: demand, backendUserGroups: backendUserGroups}" />
+    <f:comment>
+        Filter section
+    </f:comment>
+    <f:render partial="Filters/BackendUser/Index" arguments="{demand: demand, backendUserGroups: backendUserGroups}" />
 
-	<f:render partial="BackendUser/PaginatedListWidget" arguments="{_all}" />
+    <f:render partial="BackendUser/PaginatedListWidget" arguments="{_all}" />
 
 </f:section>
 

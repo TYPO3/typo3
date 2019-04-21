@@ -1,107 +1,107 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <p>
-	This module scans extensions for usage of deprecated and removed TYPO3 API calls.
-	The module can be a great help for extension developers and site maintainers when
-	upgrading to new core versions. However, the detection approach - based on static
-	code analysis - is limited by concept: false positives/negatives are impossible to avoid.
-	Further details can be found at
-	<a style="text-decoration: underline;" target="_blank" rel="noopener" href="https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/ExtensionScanner/Index.html">
-		the official docs.
-	</a>
+    This module scans extensions for usage of deprecated and removed TYPO3 API calls.
+    The module can be a great help for extension developers and site maintainers when
+    upgrading to new core versions. However, the detection approach - based on static
+    code analysis - is limited by concept: false positives/negatives are impossible to avoid.
+    Further details can be found at
+    <a style="text-decoration: underline;" target="_blank" rel="noopener" href="https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/ExtensionScanner/Index.html">
+        the official docs.
+    </a>
 </p>
 
 <div style="display: none">
-	<div id="t3js-extensionScanner-file-hit-template">
-		<div class="panel panel-flat t3js-extensionScanner-hit-panel risk-medium">
-			<div class="panel-heading">
-				<h3 class="panel-title">
-					<a href="#collapse" class="collapsed t3js-extensionScanner-hit-file-panel-head" data-toggle="collapse">
-						<span class="caret"></span>
-						<span class="pull-right badges"></span>
-						<span class="t3js-extensionScanner-hit-filename file">aFile</span>
-						<span class="t3js-extensionScanner-hit-message message">aMessage</span>
-					</a>
-				</h3>
-			</div>
-			<div id="collapse" class="panel-collapse collapse t3js-extensionScanner-hit-file-panel-body">
-				<div class="panel-body">
-					<pre><strong class="t3js-extensionScanner-hit-file-line"></strong><span class="t3js-extensionScanner-hit-file-lineContent"></span></pre>
-					<div class="panel-group-flat t3js-extensionScanner-hit-file-rest-container"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div id="t3js-extensionScanner-file-hit-rest-template">
-		<div class="panel panel-flat t3js-extensionScanner-hit-rest-panel risk-medium">
-			<div class="panel-heading">
-				<h3 class="panel-title">
-					<a href="#collapse-rest"
-						class="collapsed t3js-extensionScanner-hit-rest-panel-head"
-						data-toggle="collapse"
-					>
-						<span class="badge pull-right">aBadge</span>
-						<span class="caret"></span>
-						<strong class="t3js-extensionScanner-hit-rest-headline">restFileHeadline</strong>
-					</a>
-				</h3>
-			</div>
-			<div id="collapse-rest" class="panel-collapse collapse t3js-extensionScanner-hit-rest-panel-body">
-				<pre class="t3js-extensionScanner-hit-rest-body">restFileContent</pre>
-			</div>
-		</div>
-	</div>
+    <div id="t3js-extensionScanner-file-hit-template">
+        <div class="panel panel-flat t3js-extensionScanner-hit-panel risk-medium">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <a href="#collapse" class="collapsed t3js-extensionScanner-hit-file-panel-head" data-toggle="collapse">
+                        <span class="caret"></span>
+                        <span class="pull-right badges"></span>
+                        <span class="t3js-extensionScanner-hit-filename file">aFile</span>
+                        <span class="t3js-extensionScanner-hit-message message">aMessage</span>
+                    </a>
+                </h3>
+            </div>
+            <div id="collapse" class="panel-collapse collapse t3js-extensionScanner-hit-file-panel-body">
+                <div class="panel-body">
+                    <pre><strong class="t3js-extensionScanner-hit-file-line"></strong><span class="t3js-extensionScanner-hit-file-lineContent"></span></pre>
+                    <div class="panel-group-flat t3js-extensionScanner-hit-file-rest-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="t3js-extensionScanner-file-hit-rest-template">
+        <div class="panel panel-flat t3js-extensionScanner-hit-rest-panel risk-medium">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <a href="#collapse-rest"
+                        class="collapsed t3js-extensionScanner-hit-rest-panel-head"
+                        data-toggle="collapse"
+                    >
+                        <span class="badge pull-right">aBadge</span>
+                        <span class="caret"></span>
+                        <strong class="t3js-extensionScanner-hit-rest-headline">restFileHeadline</strong>
+                    </a>
+                </h3>
+            </div>
+            <div id="collapse-rest" class="panel-collapse collapse t3js-extensionScanner-hit-rest-panel-body">
+                <pre class="t3js-extensionScanner-hit-rest-body">restFileContent</pre>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div
-	class="t3js-module-content"
-	data-extension-scanner-files-token="{extensionScannerFilesToken}"
-	data-extension-scanner-scan-file-token="{extensionScannerScanFileToken}"
-	data-extension-scanner-mark-fully-scanned-rest-files-token="{extensionScannerMarkFullyScannedRestFilesToken}"
+    class="t3js-module-content"
+    data-extension-scanner-files-token="{extensionScannerFilesToken}"
+    data-extension-scanner-scan-file-token="{extensionScannerScanFileToken}"
+    data-extension-scanner-mark-fully-scanned-rest-files-token="{extensionScannerMarkFullyScannedRestFilesToken}"
 >
-	<div class="progress t3js-extensionScanner-progress-all-extension">
-		<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0;">
-			<span class="text-nowrap"></span>
-		</div>
-	</div>
+    <div class="progress t3js-extensionScanner-progress-all-extension">
+        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0;">
+            <span class="text-nowrap"></span>
+        </div>
+    </div>
 
-	<button class="btn btn-default t3js-extensionScanner-scan-all" type="submit">
-		Scan all
-	</button>
+    <button class="btn btn-default t3js-extensionScanner-scan-all" type="submit">
+        Scan all
+    </button>
 
-	<h2>Extensions</h2>
+    <h2>Extensions</h2>
 
-	<div class="panel-group panel-group-flat panel-group-scanner-extensions">
-		<f:for each="{extensionScannerExtensionList}" as="extensionInTypo3conf" iteration="iterator">
-			<div
-				class="panel panel-default panel-flat t3js-extensionScanner-extension t3js-extensionScanner-extension-{extensionInTypo3conf.filename}"
-				data-extension="{extensionInTypo3conf.filename}">
-				<div class="panel-progress">
-					<div class="panel-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0;"><span class="sr-only"></span></div>
-				</div>
-				<div class="panel-heading">
-					<h2 class="panel-title">
-						<a href="#extension-{iterator.index}" class="collapsed" data-toggle="collapse">
-							<span class="caret"></span>
-							Extension: <strong>{extensionInTypo3conf.filename}</strong>
-							<span class="pull-right t3js-extensionScanner-number-of-files"></span>
-						</a>
-					</h2>
-				</div>
-				<div class="panel-collapse collapse" id="extension-{iterator.index}">
-					<div class="panel-body hide t3js-extensionScanner-extension-body"></div>
-					<div class="panel-footer">
-						<div>Effective lines of code: <span class="t3js-extensionScanner-extension-body-loc">0</span></div>
-						<div>Files ignored by scanner: <span class="t3js-extensionScanner-extension-body-ignored-files">0</span></div>
-						<div>Code lines ignored by scanner: <span class="t3js-extensionScanner-extension-body-ignored-lines">0</span></div>
-						<button class="btn btn-default t3js-extensionScanner-scan-single" type="submit">
-							Scanning…
-						</button>
-					</div>
-				</div>
-			</div>
-		</f:for>
-	</div>
+    <div class="panel-group panel-group-flat panel-group-scanner-extensions">
+        <f:for each="{extensionScannerExtensionList}" as="extensionInTypo3conf" iteration="iterator">
+            <div
+                class="panel panel-default panel-flat t3js-extensionScanner-extension t3js-extensionScanner-extension-{extensionInTypo3conf.filename}"
+                data-extension="{extensionInTypo3conf.filename}">
+                <div class="panel-progress">
+                    <div class="panel-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0;"><span class="sr-only"></span></div>
+                </div>
+                <div class="panel-heading">
+                    <h2 class="panel-title">
+                        <a href="#extension-{iterator.index}" class="collapsed" data-toggle="collapse">
+                            <span class="caret"></span>
+                            Extension: <strong>{extensionInTypo3conf.filename}</strong>
+                            <span class="pull-right t3js-extensionScanner-number-of-files"></span>
+                        </a>
+                    </h2>
+                </div>
+                <div class="panel-collapse collapse" id="extension-{iterator.index}">
+                    <div class="panel-body hide t3js-extensionScanner-extension-body"></div>
+                    <div class="panel-footer">
+                        <div>Effective lines of code: <span class="t3js-extensionScanner-extension-body-loc">0</span></div>
+                        <div>Files ignored by scanner: <span class="t3js-extensionScanner-extension-body-ignored-files">0</span></div>
+                        <div>Code lines ignored by scanner: <span class="t3js-extensionScanner-extension-body-ignored-lines">0</span></div>
+                        <button class="btn btn-default t3js-extensionScanner-scan-single" type="submit">
+                            Scanning…
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </f:for>
+    </div>
 </div>
 
 </html>

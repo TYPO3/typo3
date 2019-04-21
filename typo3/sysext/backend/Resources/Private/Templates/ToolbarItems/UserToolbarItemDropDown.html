@@ -1,63 +1,63 @@
 <html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers" data-namespace-typo3-fluid="true">
 <h3 class="dropdown-headline">
-	{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.user')}
+    {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.user')}
 </h3>
 <hr>
 <f:if condition="{modules}">
-	<div class="dropdown-table">
-		<f:for each="{modules}" as="module">
-			<div class="dropdown-table-row"
-					 id="{module.name -> f:format.htmlspecialchars()}"
-					 data-modulename="{module.name -> f:format.htmlspecialchars()}"
-					 data-navigationcomponentid="{module.navigationComponentId -> f:format.htmlspecialchars()}"
-					 data-navigationframescript="{module.navigationFrameScript -> f:format.htmlspecialchars()}"
-					 data-navigationframescriptparameters="{module.navigationFrameScriptParameters -> f:format.htmlspecialchars()}"
-			>
-				<div class="dropdown-table-column dropdown-table-icon">{module.icon -> f:format.raw()}</div>
-				<div class="dropdown-table-column dropdown-table-title">
-					<a href="#" data-link="{module.link}" title="{module.description}">
-						{module.title}
-					</a>
-				</div>
-			</div>
-		</f:for>
-	</div>
-	<hr>
+    <div class="dropdown-table">
+        <f:for each="{modules}" as="module">
+            <div class="dropdown-table-row"
+                    id="{module.name -> f:format.htmlspecialchars()}"
+                    data-modulename="{module.name -> f:format.htmlspecialchars()}"
+                    data-navigationcomponentid="{module.navigationComponentId -> f:format.htmlspecialchars()}"
+                    data-navigationframescript="{module.navigationFrameScript -> f:format.htmlspecialchars()}"
+                    data-navigationframescriptparameters="{module.navigationFrameScriptParameters -> f:format.htmlspecialchars()}"
+            >
+                <div class="dropdown-table-column dropdown-table-icon">{module.icon -> f:format.raw()}</div>
+                <div class="dropdown-table-column dropdown-table-title">
+                    <a href="#" data-link="{module.link}" title="{module.description}">
+                        {module.title}
+                    </a>
+                </div>
+            </div>
+        </f:for>
+    </div>
+    <hr>
 </f:if>
 <f:if condition="{f:count(subject: recentUsers)} > 0">
-	<h3 class="dropdown-headline"><f:translate key="usermodule.su.list" /></h3>
-	<div class="dropdown-table">
-		<f:for each="{recentUsers}" as="user">
-			<div class="dropdown-table-row">
-				<div class="dropdown-table-column dropdown-table-icon">
-					<be:avatar backendUser="{user.uid}" size="32" />
-				</div>
-				<div class="dropdown-table-column dropdown-table-title">
-					<a href="{user.switchUserLink}" title="{f:translate(key: 'usermodule.su.tooltip', arguments: {0: user.username})}">
-						<f:if condition="{user.realName}">
-							<f:then>
-								{user.realName}
-							</f:then>
-							<f:else>
-								{user.username}
-							</f:else>
-						</f:if>
-					</a>
-				</div>
-			</div>
-		</f:for>
-	</div>
-	<hr>
+    <h3 class="dropdown-headline"><f:translate key="usermodule.su.list" /></h3>
+    <div class="dropdown-table">
+        <f:for each="{recentUsers}" as="user">
+            <div class="dropdown-table-row">
+                <div class="dropdown-table-column dropdown-table-icon">
+                    <be:avatar backendUser="{user.uid}" size="32" />
+                </div>
+                <div class="dropdown-table-column dropdown-table-title">
+                    <a href="{user.switchUserLink}" title="{f:translate(key: 'usermodule.su.tooltip', arguments: {0: user.username})}">
+                        <f:if condition="{user.realName}">
+                            <f:then>
+                                {user.realName}
+                            </f:then>
+                            <f:else>
+                                {user.username}
+                            </f:else>
+                        </f:if>
+                    </a>
+                </div>
+            </div>
+        </f:for>
+    </div>
+    <hr>
 </f:if>
 <a href="{logoutUrl}" class="btn btn-danger pull-left" target="_top">
-	<core:icon identifier="actions-logout" size="small" alternativeMarkupIdentifier="inline"/>
-	<f:if condition="{switchUserMode}">
-		<f:then>
-			{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.exit') -> f:format.raw()}
-		</f:then>
-		<f:else>
-			{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.logout') -> f:format.raw()}
-		</f:else>
-	</f:if>
+    <core:icon identifier="actions-logout" size="small" alternativeMarkupIdentifier="inline"/>
+    <f:if condition="{switchUserMode}">
+        <f:then>
+            {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.exit') -> f:format.raw()}
+        </f:then>
+        <f:else>
+            {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.logout') -> f:format.raw()}
+        </f:else>
+    </f:if>
 </a>
 </html>

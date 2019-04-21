@@ -1,47 +1,47 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-	  xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
-	  xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
-	  xmlns:bu="http://typo3.org/ns/TYPO3/CMS/Beuser/ViewHelpers">
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:bu="http://typo3.org/ns/TYPO3/CMS/Beuser/ViewHelpers">
 
 <f:section name="list_row">
 <tr>
-	<td class="col-icon">
-		<a href="#" class="t3js-contextmenutrigger" data-table="be_groups" data-uid="{backendUserGroup.uid}" title="{f:if(condition: '{backendUserGroup.description}', then: '{backendUserGroup.description} ')}(id={backendUserGroup.uid})">
-			<bu:spriteIconForRecord table="be_groups" object="{backendUserGroup}" />
-		</a>
-	</td>
-	<td class="col-title">
-		<be:link.editRecord table="be_groups" uid="{backendUserGroup.uid}" title="edit">
-			<b>{backendUserGroup.title}</b><br />
-			{backendUser.realName}
-		</be:link.editRecord>
-	</td>
-	<td>
-		<f:for each="{backendUserGroup.subgroups}" as="subgroup" iteration="subGroupIterator">
-			<be:link.editRecord table="be_groups" uid="{subgroup.uid}" title="edit">
-				{subgroup.title}
-			</be:link.editRecord>
-			<f:if condition="{subGroupIterator.isLast}"><f:else>, </f:else></f:if>
-		</f:for>
-	</td>
-	<td class="col-control">
-		<div class="btn-group" role="group">
-			<be:link.editRecord class="btn btn-default" table="be_groups" uid="{backendUserGroup.uid}" title="edit">
-				<core:icon identifier="actions-open" />
-			</be:link.editRecord>
-			<f:if condition="{backendUserGroup.hidden}">
-				<f:then>
-					<a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[be_groups][{backendUserGroup.uid}][hidden]=0', currentUrlParameterName:'redirect')}" title="{f:translate(key:'visibility.unhide')}"><core:icon identifier="actions-edit-unhide" /></a>
-				</f:then>
-				<f:else>
-					<a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[be_groups][{backendUserGroup.uid}][hidden]=1', currentUrlParameterName:'redirect')}" title="{f:translate(key:'visibility.hide')}"><core:icon identifier="actions-edit-hide" /></a>
-				</f:else>
-			</f:if>
-		</div>
-		<div class="btn-group" role="group">
-			<a class="btn btn-default" href="#" onclick="top.TYPO3.InfoWindow.showItem('be_groups', '{backendUserGroup.uid}'); return false;"><core:icon identifier="actions-document-info" /></a>
-		</div>
-	</td>
+    <td class="col-icon">
+        <a href="#" class="t3js-contextmenutrigger" data-table="be_groups" data-uid="{backendUserGroup.uid}" title="{f:if(condition: '{backendUserGroup.description}', then: '{backendUserGroup.description} ')}(id={backendUserGroup.uid})">
+            <bu:spriteIconForRecord table="be_groups" object="{backendUserGroup}" />
+        </a>
+    </td>
+    <td class="col-title">
+        <be:link.editRecord table="be_groups" uid="{backendUserGroup.uid}" title="edit">
+            <b>{backendUserGroup.title}</b><br />
+            {backendUser.realName}
+        </be:link.editRecord>
+    </td>
+    <td>
+        <f:for each="{backendUserGroup.subgroups}" as="subgroup" iteration="subGroupIterator">
+            <be:link.editRecord table="be_groups" uid="{subgroup.uid}" title="edit">
+                {subgroup.title}
+            </be:link.editRecord>
+            <f:if condition="{subGroupIterator.isLast}"><f:else>, </f:else></f:if>
+        </f:for>
+    </td>
+    <td class="col-control">
+        <div class="btn-group" role="group">
+            <be:link.editRecord class="btn btn-default" table="be_groups" uid="{backendUserGroup.uid}" title="edit">
+                <core:icon identifier="actions-open" />
+            </be:link.editRecord>
+            <f:if condition="{backendUserGroup.hidden}">
+                <f:then>
+                    <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[be_groups][{backendUserGroup.uid}][hidden]=0', currentUrlParameterName:'redirect')}" title="{f:translate(key:'visibility.unhide')}"><core:icon identifier="actions-edit-unhide" /></a>
+                </f:then>
+                <f:else>
+                    <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[be_groups][{backendUserGroup.uid}][hidden]=1', currentUrlParameterName:'redirect')}" title="{f:translate(key:'visibility.hide')}"><core:icon identifier="actions-edit-hide" /></a>
+                </f:else>
+            </f:if>
+        </div>
+        <div class="btn-group" role="group">
+            <a class="btn btn-default" href="#" onclick="top.TYPO3.InfoWindow.showItem('be_groups', '{backendUserGroup.uid}'); return false;"><core:icon identifier="actions-document-info" /></a>
+        </div>
+    </td>
 </tr>
 </f:section>
 </html>

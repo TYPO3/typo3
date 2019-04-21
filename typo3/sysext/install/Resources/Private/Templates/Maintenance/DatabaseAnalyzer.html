@@ -1,63 +1,63 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <p>
-	Compares the database table and field definitions of the current database with the specifications from all loaded
-	extensions' ext_tables.sql files.
-	Depending on the specification, the analyzer can update, delete, and change tables and fields.
+    Compares the database table and field definitions of the current database with the specifications from all loaded
+    extensions' ext_tables.sql files.
+    Depending on the specification, the analyzer can update, delete, and change tables and fields.
 </p>
 
 <div style="display:none;">
-	<div class="t3js-databaseAnalyzer-suggestion-block">
-		<fieldset>
-			<h4 class="t3js-databaseAnalyzer-suggestion-block-legend"></h4>
-			<ol class="list-unstyled t3js-databaseAnalyzer-suggestion-list">
-				<li class="t3-install-form-label-after">
-					<input
-						type="checkbox"
-						class="t3js-databaseAnalyzer-suggestion-block-checkbox"
-					/>
-					<label class="t3js-databaseAnalyzer-suggestion-block-label">select/deselect all</label>
-				</li>
-			</ol>
-		</fieldset>
-	</div>
-	<ul class="t3js-databaseAnalyzer-suggestion-line-template">
-		<li class="t3js-databaseAnalyzer-suggestion-line t3-install-form-label-after">
-			<input
-				type="checkbox"
-				class="t3js-databaseAnalyzer-suggestion-line-checkbox"
-				value="1"
-			/>
-			<label class="t3js-databaseAnalyzer-suggestion-line-label">
-				<span class="t3js-databaseAnalyzer-suggestion-line-statement"></span>
-				<span class="t3js-databaseAnalyzer-suggestion-line-current" style="display:none;">
-					<br/>
-					Current value: <span class="t3js-databaseAnalyzer-suggestion-line-current-value"></span>
-				</span>
-				<span class="t3js-databaseAnalyzer-suggestion-line-count" style="display:none;">
-					<br/>
-					Rows in table: <span class="t3js-databaseAnalyzer-suggestion-line-count-value"></span>
-				</span>
-			</label>
-		</li>
-	</ul>
+    <div class="t3js-databaseAnalyzer-suggestion-block">
+        <fieldset>
+            <h4 class="t3js-databaseAnalyzer-suggestion-block-legend"></h4>
+            <ol class="list-unstyled t3js-databaseAnalyzer-suggestion-list">
+                <li class="t3-install-form-label-after">
+                    <input
+                        type="checkbox"
+                        class="t3js-databaseAnalyzer-suggestion-block-checkbox"
+                    />
+                    <label class="t3js-databaseAnalyzer-suggestion-block-label">select/deselect all</label>
+                </li>
+            </ol>
+        </fieldset>
+    </div>
+    <ul class="t3js-databaseAnalyzer-suggestion-line-template">
+        <li class="t3js-databaseAnalyzer-suggestion-line t3-install-form-label-after">
+            <input
+                type="checkbox"
+                class="t3js-databaseAnalyzer-suggestion-line-checkbox"
+                value="1"
+            />
+            <label class="t3js-databaseAnalyzer-suggestion-line-label">
+                <span class="t3js-databaseAnalyzer-suggestion-line-statement"></span>
+                <span class="t3js-databaseAnalyzer-suggestion-line-current" style="display:none;">
+                    <br/>
+                    Current value: <span class="t3js-databaseAnalyzer-suggestion-line-current-value"></span>
+                </span>
+                <span class="t3js-databaseAnalyzer-suggestion-line-count" style="display:none;">
+                    <br/>
+                    Rows in table: <span class="t3js-databaseAnalyzer-suggestion-line-count-value"></span>
+                </span>
+            </label>
+        </li>
+    </ul>
 </div>
 <div class="t3js-module-content" data-database-analyzer-execute-token="{databaseAnalyzerExecuteToken}">
-	<div class="t3js-databaseAnalyzer-output"></div>
-	<button
-		class="btn btn-default t3js-databaseAnalyzer-analyze"
-		type="button"
-		disabled
-	>
-		Run database compare again
-	</button>
-	<button
-		class="btn btn-warning t3js-databaseAnalyzer-execute"
-		type="button"
-		disabled
-	>
-		Apply selected changes
-	</button>
+    <div class="t3js-databaseAnalyzer-output"></div>
+    <button
+        class="btn btn-default t3js-databaseAnalyzer-analyze"
+        type="button"
+        disabled
+    >
+        Run database compare again
+    </button>
+    <button
+        class="btn btn-warning t3js-databaseAnalyzer-execute"
+        type="button"
+        disabled
+    >
+        Apply selected changes
+    </button>
 </div>
 
 </html>

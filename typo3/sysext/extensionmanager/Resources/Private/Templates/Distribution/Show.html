@@ -5,79 +5,79 @@
 </f:section>
 
 <f:section name="content">
-	<div class="distribution-detail">
-		<div class="distribution-detail-previewpane">
-			<em:distributionImage extensionkey="{extension.extensionKey}" alt="{extension.title}" height="225" width="300" />
-		</div>
-		<div class="distribution-detail-body">
-			<div class="distribution-detail-header">
-				<h1>{extension.title}</h1>
-				<p>{extension.description}</p>
-			</div>
+    <div class="distribution-detail">
+        <div class="distribution-detail-previewpane">
+            <em:distributionImage extensionkey="{extension.extensionKey}" alt="{extension.title}" height="225" width="300" />
+        </div>
+        <div class="distribution-detail-body">
+            <div class="distribution-detail-header">
+                <h1>{extension.title}</h1>
+                <p>{extension.description}</p>
+            </div>
 
-			<ul class="distribution-detail-actions">
-				<f:if condition="{distributionActive}">
-					<f:else>
-						<li>
-							<f:link.action action="installDistribution" controller="Download" arguments="{extension:extension}" class="btn btn-default t3-button-action-installdistribution">
-								<core:icon identifier="actions-system-extension-import" /> <f:translate key="extensionList.installDistribution">Install</f:translate>
-							</f:link.action>
-						</li>
-					</f:else>
-					<f:then>
-						<li>
-							<button class="btn btn-default distribution-openViewModule" onclick="top.goToModule('web_ViewpageView');">
-								<core:icon identifier="actions-document-view" /> <f:translate key="distribution.welcome.openViewModule" />
-							</button>
-						</li>
-						<li>
-							<button class="btn btn-default distribution-openPageModule" onclick="top.goToModule('web_layout');">
-								<core:icon identifier="actions-open" /> <f:translate key="distribution.welcome.openPageModule" />
-							</button>
-						</li>
-					</f:then>
-				</f:if>
-			</ul>
+            <ul class="distribution-detail-actions">
+                <f:if condition="{distributionActive}">
+                    <f:else>
+                        <li>
+                            <f:link.action action="installDistribution" controller="Download" arguments="{extension:extension}" class="btn btn-default t3-button-action-installdistribution">
+                                <core:icon identifier="actions-system-extension-import" /> <f:translate key="extensionList.installDistribution">Install</f:translate>
+                            </f:link.action>
+                        </li>
+                    </f:else>
+                    <f:then>
+                        <li>
+                            <button class="btn btn-default distribution-openViewModule" onclick="top.goToModule('web_ViewpageView');">
+                                <core:icon identifier="actions-document-view" /> <f:translate key="distribution.welcome.openViewModule" />
+                            </button>
+                        </li>
+                        <li>
+                            <button class="btn btn-default distribution-openPageModule" onclick="top.goToModule('web_layout');">
+                                <core:icon identifier="actions-open" /> <f:translate key="distribution.welcome.openPageModule" />
+                            </button>
+                        </li>
+                    </f:then>
+                </f:if>
+            </ul>
 
-			<dl class="dl-horizontal dl-horizontal-wide distribution-detail-summary">
-				<dt><f:translate key="extensionList.distribution.title" /></dt>
-				<dd>{extension.title}</dd>
-				<dt><f:translate key="extensionList.distribution.key" /></dt>
-				<dd>{extension.extensionKey}</dd>
-				<dt><f:translate key="extensionList.distribution.version" /></dt>
-				<dd>{extension.version} (<f:format.date format="d.m.Y">{extension.lastUpdated}</f:format.date>)<br><span class="{extension.stateString}">{extension.stateString}</span></dd>
-				<dt><f:translate key="extensionList.distribution.author" /></dt>
-				<dd>{extension.authorName}</dd>
-				<dt><f:translate key="extensionList.distribution.downloads" /></dt>
-				<dd>{extension.alldownloadcounter}</dd>
-			</dl>
+            <dl class="dl-horizontal dl-horizontal-wide distribution-detail-summary">
+                <dt><f:translate key="extensionList.distribution.title" /></dt>
+                <dd>{extension.title}</dd>
+                <dt><f:translate key="extensionList.distribution.key" /></dt>
+                <dd>{extension.extensionKey}</dd>
+                <dt><f:translate key="extensionList.distribution.version" /></dt>
+                <dd>{extension.version} (<f:format.date format="d.m.Y">{extension.lastUpdated}</f:format.date>)<br><span class="{extension.stateString}">{extension.stateString}</span></dd>
+                <dt><f:translate key="extensionList.distribution.author" /></dt>
+                <dd>{extension.authorName}</dd>
+                <dt><f:translate key="extensionList.distribution.downloads" /></dt>
+                <dd>{extension.alldownloadcounter}</dd>
+            </dl>
 
-			<f:if condition="{extension.dependencies}">
-				<h2><f:translate key="distribution.dependency.headline" /></h2>
-				<div class="table-fit">
-					<table class="table table-striped table-hover">
-						<thead>
-							<tr>
-								<td><f:translate key="distribution.dependency.identifier" /></td>
-								<td><f:translate key="distribution.dependency.type" /></td>
-								<td><f:translate key="distribution.dependency.version" /></td>
-							</tr>
-						</thead>
-						<tbody>
-							<f:for each="{extension.dependencies}" as="dependency">
-								<tr>
-									<td>{dependency.identifier}</td>
-									<td>{dependency.type}</td>
-									<td>
-										{dependency.lowestVersion}<f:if condition="{dependency.highestVersion}">-{dependency.highestVersion}</f:if>
-									</td>
-								</tr>
-							</f:for>
-						</tbody>
-					</table>
-				</div>
-			</f:if>
+            <f:if condition="{extension.dependencies}">
+                <h2><f:translate key="distribution.dependency.headline" /></h2>
+                <div class="table-fit">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <td><f:translate key="distribution.dependency.identifier" /></td>
+                                <td><f:translate key="distribution.dependency.type" /></td>
+                                <td><f:translate key="distribution.dependency.version" /></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <f:for each="{extension.dependencies}" as="dependency">
+                                <tr>
+                                    <td>{dependency.identifier}</td>
+                                    <td>{dependency.type}</td>
+                                    <td>
+                                        {dependency.lowestVersion}<f:if condition="{dependency.highestVersion}">-{dependency.highestVersion}</f:if>
+                                    </td>
+                                </tr>
+                            </f:for>
+                        </tbody>
+                    </table>
+                </div>
+            </f:if>
 
-		</div>
-	</div>
+        </div>
+    </div>
 </f:section>

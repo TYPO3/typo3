@@ -1,12 +1,12 @@
 <p class="lead">
-	<f:translate key="msg.schedulerSetupCheck" />
+    <f:translate key="msg.schedulerSetupCheck" />
 </p>
 
 <f:be.infobox  title="{f:translate(key: 'hdg.lastRun')}" message="{lastRunMessage}" state="{lastRunSeverity}" />
 
 <f:be.infobox title="{f:translate(key: 'hdg.cliScript')}" state="{isExecutableSeverity}">
-	<p>{f:translate(key: 'msg.cliScript', arguments: '{0: script}') -> f:format.raw()}</p>
-	{isExecutableMessage}
+    <p>{f:translate(key: 'msg.cliScript', arguments: '{0: script}') -> f:format.raw()}</p>
+    {isExecutableMessage}
 </f:be.infobox>
 
 <f:render partial="ServerTime" arguments="{now: now}" />

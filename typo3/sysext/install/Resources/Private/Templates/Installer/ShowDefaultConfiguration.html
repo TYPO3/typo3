@@ -1,53 +1,53 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <div class="t3js-module-content" data-installer-default-configuration-execute-token="{executeDefaultConfigurationToken}">
-	<div class="typo3-install-content-body">
-		<h2>Installation Complete</h2>
-		<p>The Installation Wizard can create an empty page at the root of your website to help get you started. If you would like to use this option select "Create empty starting page".</p>
+    <div class="typo3-install-content-body">
+        <h2>Installation Complete</h2>
+        <p>The Installation Wizard can create an empty page at the root of your website to help get you started. If you would like to use this option select "Create empty starting page".</p>
 
-		<div class="typo3-install-content-spacer"></div>
-		<div class="t3js-installer-defaultConfiguration-output"></div>
-		<div class="typo3-install-content-spacer"></div>
+        <div class="typo3-install-content-spacer"></div>
+        <div class="t3js-installer-defaultConfiguration-output"></div>
+        <div class="typo3-install-content-spacer"></div>
 
-		<f:if condition="!{composerMode}">
-			<div class="alert alert-notice">
-				<h3>Want a pre-configured site?</h3>
-				<p>
-					You currently have an empty installation of TYPO3. If you would like to view a list of pre-configured distributions select “download list of distributions” from the list below.
-					<strong>Note: This may take some time to load.</strong>
-				</p>
-			</div>
-		</f:if>
+        <f:if condition="!{composerMode}">
+            <div class="alert alert-notice">
+                <h3>Want a pre-configured site?</h3>
+                <p>
+                    You currently have an empty installation of TYPO3. If you would like to view a list of pre-configured distributions select “download list of distributions” from the list below.
+                    <strong>Note: This may take some time to load.</strong>
+                </p>
+            </div>
+        </f:if>
 
-		<form method="post">
-			<div class="form-group">
-				<f:if condition="!{composerMode}">
-					<div class="radio">
-						<label for="load-distributions">
-							<input type="radio" id="load-distributions" name="install[values][sitesetup]" value="loaddistribution" />
-							Yes, download the list of distributions
-						</label>
-					</div>
-				</f:if>
-				<div class="radio">
-					<label for="create-site">
-						<input type="radio" id="create-site" name="install[values][sitesetup]" value="createsite" />
-						Create empty starting page
-					</label>
-				</div>
-				<div class="radio">
-					<label for="do-nothing">
-						<input type="radio" id="do-nothing" name="install[values][sitesetup]" value="donothing" checked="checked" />
-						Take me straight to the backend
-					</label>
-				</div>
-			</div>
-			<div class="clearfix">
-				<button class="btn btn-success pull-right t3js-installer-defaultConfiguration-execute">
-					Open the TYPO3 Backend
-				</button>
-			</div>
-		</form>
-	</div>
+        <form method="post">
+            <div class="form-group">
+                <f:if condition="!{composerMode}">
+                    <div class="radio">
+                        <label for="load-distributions">
+                            <input type="radio" id="load-distributions" name="install[values][sitesetup]" value="loaddistribution" />
+                            Yes, download the list of distributions
+                        </label>
+                    </div>
+                </f:if>
+                <div class="radio">
+                    <label for="create-site">
+                        <input type="radio" id="create-site" name="install[values][sitesetup]" value="createsite" />
+                        Create empty starting page
+                    </label>
+                </div>
+                <div class="radio">
+                    <label for="do-nothing">
+                        <input type="radio" id="do-nothing" name="install[values][sitesetup]" value="donothing" checked="checked" />
+                        Take me straight to the backend
+                    </label>
+                </div>
+            </div>
+            <div class="clearfix">
+                <button class="btn btn-success pull-right t3js-installer-defaultConfiguration-execute">
+                    Open the TYPO3 Backend
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 </html>

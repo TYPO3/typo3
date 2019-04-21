@@ -1,92 +1,92 @@
 <html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <div class="t3js-module-content" data-upgrade-docs-mark-read-token="{upgradeDocsMarkReadToken}" data-upgrade-docs-unmark-read-token="{upgradeDocsUnmarkReadToken}">
-	<div class="row">
-		<div class="col-md-12">
-			<div class="form-group">
-				<div class="input-group">
-					<span class="input-group-addon">Search:</span>
-					<input
-						type="text"
-						class="form-control t3js-upgradeDocs-fulltext-search"
-						placeholder="search setting"
-						disabled
-					>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<div class="form-group">
-				<div class="input-group">
-					<span class="input-group-addon">Filter by:</span>
-					<select
-						class="chosen-select t3js-upgradeDocs-chosen-select"
-						data-placeholder=""
-						style="width:100%;"
-						multiple
-						tabindex=""
-						disabled
-					>
-					</select>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">Search:</span>
+                    <input
+                        type="text"
+                        class="form-control t3js-upgradeDocs-fulltext-search"
+                        placeholder="search setting"
+                        disabled
+                    >
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">Filter by:</span>
+                    <select
+                        class="chosen-select t3js-upgradeDocs-chosen-select"
+                        data-placeholder=""
+                        style="width:100%;"
+                        multiple
+                        tabindex=""
+                        disabled
+                    >
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<div class="panel-group panel-group-rst" role="tablist" aria-multiselectable="true">
-		<f:for each="{upgradeDocsVersions}" as="version" iteration="iterator">
-			<div class="panel panel-default panel-version t3js-version-changes" data-version="{version}">
-				<div class="panel-heading" role="tab" id="heading-{iterator.index}">
-					<h2 class="panel-title">
-						<a href="#version-{iterator.index}"
-							 class="collapsed" data-toggle="collapse"
-							 aria-expanded="false"
-							 aria-controls="#version-{iterator.index}"
-						>
-							<span class="caret"></span>
-							Version: <strong>{version}</strong>
-							<span class="pull-right t3js-panel-loading"><core:icon identifier="spinner-circle" size="small" /></span>
-						</a>
-					</h2>
-				</div>
-				<div class="panel-collapse collapse"
-						 id="version-{iterator.index}" role="tabpanel" data-group-version="{version}">
-					<div class="panel-body t3js-changelog-list" role="tablist" aria-multiselectable="false"></div>
-				</div>
-			</div>
-		</f:for>
+    <div class="panel-group panel-group-rst" role="tablist" aria-multiselectable="true">
+        <f:for each="{upgradeDocsVersions}" as="version" iteration="iterator">
+            <div class="panel panel-default panel-version t3js-version-changes" data-version="{version}">
+                <div class="panel-heading" role="tab" id="heading-{iterator.index}">
+                    <h2 class="panel-title">
+                        <a href="#version-{iterator.index}"
+                            class="collapsed" data-toggle="collapse"
+                            aria-expanded="false"
+                            aria-controls="#version-{iterator.index}"
+                        >
+                            <span class="caret"></span>
+                            Version: <strong>{version}</strong>
+                            <span class="pull-right t3js-panel-loading"><core:icon identifier="spinner-circle" size="small" /></span>
+                        </a>
+                    </h2>
+                </div>
+                <div class="panel-collapse collapse"
+                        id="version-{iterator.index}" role="tabpanel" data-group-version="{version}">
+                    <div class="panel-body t3js-changelog-list" role="tablist" aria-multiselectable="false"></div>
+                </div>
+            </div>
+        </f:for>
 
-		<div class="panel panel-default panel-version">
-			<div class="panel-heading" role="tab" id="heading-read">
-				<h2 class="panel-title">
-					<a href="#collapseRead" class="collapsed" data-toggle="collapse" aria-expanded="false"
-						 aria-controls="collapseRead">
-						<span class="caret"></span>
-						Files marked as read
-					</a>
-				</h2>
-			</div>
-			<div class="collapse" id="collapseRead" role="tabpanel" data-group-version="read">
-				<div class="panel-body panel-body-read t3js-changelog-list" role="tablist" aria-multiselectable="false"></div>
-			</div>
-		</div>
+        <div class="panel panel-default panel-version">
+            <div class="panel-heading" role="tab" id="heading-read">
+                <h2 class="panel-title">
+                    <a href="#collapseRead" class="collapsed" data-toggle="collapse" aria-expanded="false"
+                        aria-controls="collapseRead">
+                        <span class="caret"></span>
+                        Files marked as read
+                    </a>
+                </h2>
+            </div>
+            <div class="collapse" id="collapseRead" role="tabpanel" data-group-version="read">
+                <div class="panel-body panel-body-read t3js-changelog-list" role="tablist" aria-multiselectable="false"></div>
+            </div>
+        </div>
 
-		<div class="panel panel-default panel-version">
-			<div class="panel-heading" role="tab" id="heading-not-affected">
-				<h2 class="panel-title">
-					<a href="#collapseNotAffected" class="collapsed" data-toggle="collapse">
-						<span class="caret"></span>
-						Files marked as not affected by extension scanner
-					</a>
-				</h2>
-			</div>
-			<div class="collapse" id="collapseNotAffected" role="tabpanel" data-group-version="notAffected">
-				<div class="panel-body panel-body-not-affected t3js-changelog-list" role="tablist" aria-multiselectable="false"></div>
-			</div>
-		</div>
-	</div>
+        <div class="panel panel-default panel-version">
+            <div class="panel-heading" role="tab" id="heading-not-affected">
+                <h2 class="panel-title">
+                    <a href="#collapseNotAffected" class="collapsed" data-toggle="collapse">
+                        <span class="caret"></span>
+                        Files marked as not affected by extension scanner
+                    </a>
+                </h2>
+            </div>
+            <div class="collapse" id="collapseNotAffected" role="tabpanel" data-group-version="notAffected">
+                <div class="panel-body panel-body-not-affected t3js-changelog-list" role="tablist" aria-multiselectable="false"></div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </html>

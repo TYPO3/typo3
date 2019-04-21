@@ -1,29 +1,29 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
 <div id="t3-form-insert-pages-panel">
-	<div class="t3-form-x-component-inner-wrapper">
-		<f:for each="{insertRenderablesPanelConfiguration}" as="insertRenderablePanelConfiguration">
-			<f:if condition="{insertRenderablePanelConfiguration.key} == 'page'">
-				<div class="row">
-					<div class="col-sm-12">
-						<h3 class="t3-form-group-{insertRenderablePanelConfiguration.key}">
-							<span>{insertRenderablePanelConfiguration.label}</span>
-						</h3>
-					</div>
-					<f:for each="{insertRenderablePanelConfiguration.elements}" as="element">
-						<div class="col-sm-4 btn-group">
-							<a class="t3-form-group-{insertRenderablePanelConfiguration.key} t3-form-type-{element.cssKey} btn btn-default btn-block" title="{element.key}" data-element-type="{element.key}">
-								<span class="pull-left">
-									<core:icon identifier="{element.iconIdentifier}" alternativeMarkupIdentifier="inline" />
-									<span>{element.label}</span>
-								</span>
-								<span class="clearfix"></span>
-							</a>
-							<hr>
-						</div>
-					</f:for>
-				</div>
-			</f:if>
-		</f:for>
-	</div>
+    <div class="t3-form-x-component-inner-wrapper">
+        <f:for each="{insertRenderablesPanelConfiguration}" as="insertRenderablePanelConfiguration">
+            <f:if condition="{insertRenderablePanelConfiguration.key} == 'page'">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="t3-form-group-{insertRenderablePanelConfiguration.key}">
+                            <span>{insertRenderablePanelConfiguration.label}</span>
+                        </h3>
+                    </div>
+                    <f:for each="{insertRenderablePanelConfiguration.elements}" as="element">
+                        <div class="col-sm-4 btn-group">
+                            <a class="t3-form-group-{insertRenderablePanelConfiguration.key} t3-form-type-{element.cssKey} btn btn-default btn-block" title="{element.key}" data-element-type="{element.key}">
+                                <span class="pull-left">
+                                    <core:icon identifier="{element.iconIdentifier}" alternativeMarkupIdentifier="inline" />
+                                    <span>{element.label}</span>
+                                </span>
+                                <span class="clearfix"></span>
+                            </a>
+                            <hr>
+                        </div>
+                    </f:for>
+                </div>
+            </f:if>
+        </f:for>
+    </div>
 </div>
 </html>

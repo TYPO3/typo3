@@ -1,95 +1,95 @@
 <html
-	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-	xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
-	data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
 >
 <div role="tabpanel">
-	<!-- Nav tabs -->
-	<ul class="nav nav-tabs" role="tablist">
-		<f:for each="{workspaceList}" as="workspace">
-			<li role="presentation" {f:if(condition: '{activeWorkspaceUid} == {workspace.workspaceId}', then: 'class="active"')}><a href="{workspace.triggerUrl}" aria-controls="{workspace.itemId}" role="tab">{workspace.title}</a></li>
-		</f:for>
-	</ul>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <f:for each="{workspaceList}" as="workspace">
+            <li role="presentation" {f:if(condition: '{activeWorkspaceUid} == {workspace.workspaceId}', then: 'class="active"')}><a href="{workspace.triggerUrl}" aria-controls="{workspace.itemId}" role="tab">{workspace.title}</a></li>
+        </f:for>
+    </ul>
 
-	<!-- Tab panes -->
-	<div class="tab-content">
-		<div role="tabpanel" class="tab-pane active">
-			<div class="form-section" id="workspace-panel">
-				<form id="workspace-settings-form" class="form-inline form-inline-spaced">
-					<div class="form-group">
-						<select name="depth" class="form-control" disabled>
-							<option value="0"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0" /></option>
-							<option value="1"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1" /></option>
-							<option value="2"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2" /></option>
-							<option value="3"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3" /></option>
-							<option value="4"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4" /></option>
-							<option value="999"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi" /></option>
-						</select>
-					</div>
-					<div class="form-group">
-						<div class="input-group">
-							<span class="input-group-addon input-group-icon"></span>
-							<select name="languages" class="form-control" disabled></select>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="input-group">
-							<input class="form-control t3js-clearable" type="text" name="search-text">
-							<span class="input-group-btn">
-								<button type="submit" class="btn btn-default disabled"><core:icon identifier="actions-search" /></button>
-							</span>
-						</div>
-					</div>
-				</form>
-				<div class="hidden" id="workspace-action-icons">
-					<f:comment>We pre-render the required icons that are used in the Workspaces module until we're able to use StandaloneView of Fluid</f:comment>
-					<core:icon identifier="empty-empty" size="small" />
-					<core:icon identifier="actions-version-workspace-preview" size="small" />
-					<core:icon identifier="actions-version-document-remove" size="small" />
-					<core:icon identifier="actions-version-page-open" size="small" />
-					<core:icon identifier="actions-version-swap-version" size="small" />
-					<core:icon identifier="actions-open" size="small" />
-					<core:icon identifier="actions-document-info" size="small" />
-					<core:icon identifier="apps-pagetree-expand" size="small" />
-					<core:icon identifier="apps-pagetree-collapse" size="small" />
-				</div>
-				<div class="table-fit">
-					<table class="table table-striped">
-						<thead>
-						<tr>
-							<th><button type="button" class="btn btn-default t3js-toggle-all"><core:icon identifier="actions-document-select" /></span></button></th>
-							<th><f:translate key="column.wsTitle" /></th>
-							<th><f:translate key="column.liveTitle" /></th>
-							<th><f:translate key="column.stage" /></th>
-							<th><f:translate key="column.integrity" /></th>
-							<th><core:icon identifier="flags-multiple" size="small" /></th>
-							<th></th>
-						</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-				</div>
-				<form id="workspace-actions-form" class="form-inline form-inline-spaced">
-					<div class="form-group">
-						<select name="stage-action" class="form-control" disabled>
-							<option value=""><f:translate key="chooseAction" /></option>
-						</select>
-					</div>
-					<div class="form-group">
-						<select name="selection-action" class="form-control" disabled>
-							<option value=""><f:translate key="chooseSelectionAction" /></option>
-						</select>
-					</div>
-					<div class="form-group">
-						<select name="mass-action" class="form-control" disabled>
-							<option value=""><f:translate key="chooseMassAction" /></option>
-						</select>
-					</div>
-				</form>
-				<nav id="workspace-pagination"></nav>
-			</div>
-		</div>
-	</div>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active">
+            <div class="form-section" id="workspace-panel">
+                <form id="workspace-settings-form" class="form-inline form-inline-spaced">
+                    <div class="form-group">
+                        <select name="depth" class="form-control" disabled>
+                            <option value="0"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0" /></option>
+                            <option value="1"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1" /></option>
+                            <option value="2"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2" /></option>
+                            <option value="3"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3" /></option>
+                            <option value="4"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4" /></option>
+                            <option value="999"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi" /></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon input-group-icon"></span>
+                            <select name="languages" class="form-control" disabled></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input class="form-control t3js-clearable" type="text" name="search-text">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-default disabled"><core:icon identifier="actions-search" /></button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+                <div class="hidden" id="workspace-action-icons">
+                    <f:comment>We pre-render the required icons that are used in the Workspaces module until we're able to use StandaloneView of Fluid</f:comment>
+                    <core:icon identifier="empty-empty" size="small" />
+                    <core:icon identifier="actions-version-workspace-preview" size="small" />
+                    <core:icon identifier="actions-version-document-remove" size="small" />
+                    <core:icon identifier="actions-version-page-open" size="small" />
+                    <core:icon identifier="actions-version-swap-version" size="small" />
+                    <core:icon identifier="actions-open" size="small" />
+                    <core:icon identifier="actions-document-info" size="small" />
+                    <core:icon identifier="apps-pagetree-expand" size="small" />
+                    <core:icon identifier="apps-pagetree-collapse" size="small" />
+                </div>
+                <div class="table-fit">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th><button type="button" class="btn btn-default t3js-toggle-all"><core:icon identifier="actions-document-select" /></span></button></th>
+                            <th><f:translate key="column.wsTitle" /></th>
+                            <th><f:translate key="column.liveTitle" /></th>
+                            <th><f:translate key="column.stage" /></th>
+                            <th><f:translate key="column.integrity" /></th>
+                            <th><core:icon identifier="flags-multiple" size="small" /></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <form id="workspace-actions-form" class="form-inline form-inline-spaced">
+                    <div class="form-group">
+                        <select name="stage-action" class="form-control" disabled>
+                            <option value=""><f:translate key="chooseAction" /></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select name="selection-action" class="form-control" disabled>
+                            <option value=""><f:translate key="chooseSelectionAction" /></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select name="mass-action" class="form-control" disabled>
+                            <option value=""><f:translate key="chooseMassAction" /></option>
+                        </select>
+                    </div>
+                </form>
+                <nav id="workspace-pagination"></nav>
+            </div>
+        </div>
+    </div>
 </div>
 </html>

@@ -4,23 +4,23 @@
     data-namespace-typo3-fluid="true">
 
 <be:moduleLayout>
-	<f:be.pageRenderer
-		includeRequireJsModules="{
-			0:'TYPO3/CMS/Backend/ContextMenu',
-			1:'TYPO3/CMS/Backend/Modal'
-		}"
-	/>
+    <f:be.pageRenderer
+        includeRequireJsModules="{
+            0:'TYPO3/CMS/Backend/ContextMenu',
+            1:'TYPO3/CMS/Backend/Modal'
+        }"
+    />
 
-	<be:moduleLayout.menu identifier="BackendUserModuleMenu">
-		<be:moduleLayout.menuItem label="{f:translate(id: 'backendUsers')}" uri="{f:uri.action(controller: 'BackendUser', action: 'index')}"/>
-		<be:moduleLayout.menuItem label="{f:translate(id: 'backendUserGroupsMenu')}" uri="{f:uri.action(controller: 'BackendUserGroup', action: 'index')}"/>
-		<be:moduleLayout.menuItem label="{f:translate(id: 'onlineUsers')}" uri="{f:uri.action(controller: 'BackendUser', action: 'online')}"/>
-	</be:moduleLayout.menu>
+    <be:moduleLayout.menu identifier="BackendUserModuleMenu">
+        <be:moduleLayout.menuItem label="{f:translate(id: 'backendUsers')}" uri="{f:uri.action(controller: 'BackendUser', action: 'index')}"/>
+        <be:moduleLayout.menuItem label="{f:translate(id: 'backendUserGroupsMenu')}" uri="{f:uri.action(controller: 'BackendUserGroup', action: 'index')}"/>
+        <be:moduleLayout.menuItem label="{f:translate(id: 'onlineUsers')}" uri="{f:uri.action(controller: 'BackendUser', action: 'online')}"/>
+    </be:moduleLayout.menu>
 
-	<f:render section="Buttons" />
-	<be:moduleLayout.button.shortcutButton displayName="{f:translate(id: shortcutLabel)}" />
+    <f:render section="Buttons" />
+    <be:moduleLayout.button.shortcutButton displayName="{f:translate(id: shortcutLabel)}" />
 
-	<f:render section="Content" />
+    <f:render section="Content" />
 
 </be:moduleLayout>
 

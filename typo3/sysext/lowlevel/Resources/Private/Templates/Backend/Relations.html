@@ -2,41 +2,41 @@
 
 <h2>{f:translate(key:'files_no_ref')}</h2>
 <f:if condition="{files.noReferences}">
-	<f:then>
-		<f:for each="{files.noReferences}" as="item">
-			<span class="text-nowrap">{item.0}/<strong>{item.1}</strong></span>
-			<br>
-		</f:for>
-	</f:then>
-	<f:else>
-		<p>{f:translate(key:'no_files_found')}</p>
-	</f:else>
+    <f:then>
+        <f:for each="{files.noReferences}" as="item">
+            <span class="text-nowrap">{item.0}/<strong>{item.1}</strong></span>
+            <br>
+        </f:for>
+    </f:then>
+    <f:else>
+        <p>{f:translate(key:'no_files_found')}</p>
+    </f:else>
 </f:if>
 
 <h2>{f:translate(key:'files_many_ref')}</h2>
 <f:if condition="{files.moreReferences}">
-	<f:then>
-		<f:for each="{files.moreReferences}" as="item">
-			<span class="text-nowrap">{item.0}/<strong>{item.1}</strong>: {item.2} {f:translate(key:'references')}</span>
-			<br>{item.3}<br><br>
-		</f:for>
-	</f:then>
-	<f:else>
-		<p>{f:translate(key:'no_files_found')}</p>
-	</f:else>
+    <f:then>
+        <f:for each="{files.moreReferences}" as="item">
+            <span class="text-nowrap">{item.0}/<strong>{item.1}</strong>: {item.2} {f:translate(key:'references')}</span>
+            <br>{item.3}<br><br>
+        </f:for>
+    </f:then>
+    <f:else>
+        <p>{f:translate(key:'no_files_found')}</p>
+    </f:else>
 </f:if>
 
 <h2>{f:translate(key:'files_no_file')}</h2>
 <f:if condition="{files.noFile}">
-	<f:then>
-		<f:for each="{files.noFile}" as="item">
-			<span class="text-nowrap">{item.0}/<strong>{item.1}</strong> {f:translate(key:'isMissing')}</span>
-			<br>{f:translate(key:'referencedFrom')} {item.2}<br><br>
-		</f:for>
-	</f:then>
-	<f:else>
-		<p>{f:translate(key:'no_files_found')}</p>
-	</f:else>
+    <f:then>
+        <f:for each="{files.noFile}" as="item">
+            <span class="text-nowrap">{item.0}/<strong>{item.1}</strong> {f:translate(key:'isMissing')}</span>
+            <br>{f:translate(key:'referencedFrom')} {item.2}<br><br>
+        </f:for>
+    </f:then>
+    <f:else>
+        <p>{f:translate(key:'no_files_found')}</p>
+    </f:else>
 </f:if>
 
 

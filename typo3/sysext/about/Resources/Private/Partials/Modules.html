@@ -1,43 +1,43 @@
 <p>
-	<f:translate key="LLL:EXT:about/Resources/Private/Language/Modules/locallang_alt_intro.xlf:introtext2" />
+    <f:translate key="LLL:EXT:about/Resources/Private/Language/Modules/locallang_alt_intro.xlf:introtext2" />
 </p>
 <f:for each="{modules}" as="mainModule">
-	<f:if condition="{mainModule.subModules}">
-		<f:if condition="{mainModule.label}">
-			<h2>{f:translate(key: mainModule.label)}</h2>
-		</f:if>
-		<section class="card-container">
-			<f:for each="{mainModule.subModules}" as="subModule" iteration="subModuleIterator">
-				<a
-					href="#"
-					onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
-					title="{f:if(condition: subModule.shortDescription, then: '{f:translate(key: subModule.shortDescription)}')}"
-					class="card card-size-medium"
-				>
-					<div class="card-header">
-						<div class="card-icon">
-							<core:icon identifier="{subModule.iconIdentifier}" size="default" />
-						</div>
-						<f:if condition="{subModule.label}">
-							<div class="card-header-body">
-								<h3 class="card-title">
-									{f:translate(key: subModule.label)}
-								</h3>
-								<f:if condition="{subModule.shortDescription}">
-									<span class="card-subtitle">
-										<f:translate key="{subModule.shortDescription}" />
-									</span>
-								</f:if>
-								<f:if condition="{subModule.longDescription}">
-									<div class="card-longdesc">
-										{f:translate(key: subModule.longDescription) -> f:format.raw()}
-									</div>
-								</f:if>
-							</div>
-						</f:if>
-					</div>
-				</a>
-			</f:for>
-		</section>
-	</f:if>
+    <f:if condition="{mainModule.subModules}">
+        <f:if condition="{mainModule.label}">
+            <h2>{f:translate(key: mainModule.label)}</h2>
+        </f:if>
+        <section class="card-container">
+            <f:for each="{mainModule.subModules}" as="subModule" iteration="subModuleIterator">
+                <a
+                    href="#"
+                    onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
+                    title="{f:if(condition: subModule.shortDescription, then: '{f:translate(key: subModule.shortDescription)}')}"
+                    class="card card-size-medium"
+                >
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <core:icon identifier="{subModule.iconIdentifier}" size="default" />
+                        </div>
+                        <f:if condition="{subModule.label}">
+                            <div class="card-header-body">
+                                <h3 class="card-title">
+                                    {f:translate(key: subModule.label)}
+                                </h3>
+                                <f:if condition="{subModule.shortDescription}">
+                                    <span class="card-subtitle">
+                                        <f:translate key="{subModule.shortDescription}" />
+                                    </span>
+                                </f:if>
+                                <f:if condition="{subModule.longDescription}">
+                                    <div class="card-longdesc">
+                                        {f:translate(key: subModule.longDescription) -> f:format.raw()}
+                                    </div>
+                                </f:if>
+                            </div>
+                        </f:if>
+                    </div>
+                </a>
+            </f:for>
+        </section>
+    </f:if>
 </f:for>

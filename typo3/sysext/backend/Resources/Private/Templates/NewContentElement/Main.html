@@ -1,40 +1,40 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:if condition="{hasAccess}">
-	<f:then>
-		<f:form action="" name="editForm" id="NewContentElementController">
-			<f:form.hidden name="defValues" value="" />
-			<f:if condition="{onClickEvent}">
-				<f:then>
-					<script type="text/javascript">
-						function goToalt_doc() {<f:format.raw>{onClickEvent}</f:format.raw>}
-					</script>
-					{renderedTabs -> f:format.raw()}
-				</f:then>
-				<f:else>
-					<div id="new-content-element-wizard-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
-						<div class="carousel-inner" role="listbox">
-							<div class="item active" data-slide="next">
-								<div class="t3-new-content-element-wizard-title">
-									<h2>{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:1_selectType')}</h2>
-								</div>
-								{renderedTabs -> f:format.raw()}
-							</div>
-							<div class="item">
-								<div class="t3-new-content-element-wizard-title">
-									<h2>{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:2_selectPosition') -> f:format.htmlspecialchars()}</h2>
-								</div>
-								<div class="t3-new-content-element-wizard-body">
-									{posMap -> f:format.raw()}
-								</div>
-							</div>
-						</div>
-					</div>
-				</f:else>
-			</f:if>
-		</f:form>
-	</f:then>
-	<f:else>
-		<h1>{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:newContentElement')}</h1>
-	</f:else>
+    <f:then>
+        <f:form action="" name="editForm" id="NewContentElementController">
+            <f:form.hidden name="defValues" value="" />
+            <f:if condition="{onClickEvent}">
+                <f:then>
+                    <script type="text/javascript">
+                        function goToalt_doc() {<f:format.raw>{onClickEvent}</f:format.raw>}
+                    </script>
+                    {renderedTabs -> f:format.raw()}
+                </f:then>
+                <f:else>
+                    <div id="new-content-element-wizard-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
+                        <div class="carousel-inner" role="listbox">
+                            <div class="item active" data-slide="next">
+                                <div class="t3-new-content-element-wizard-title">
+                                    <h2>{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:1_selectType')}</h2>
+                                </div>
+                                {renderedTabs -> f:format.raw()}
+                            </div>
+                            <div class="item">
+                                <div class="t3-new-content-element-wizard-title">
+                                    <h2>{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:2_selectPosition') -> f:format.htmlspecialchars()}</h2>
+                                </div>
+                                <div class="t3-new-content-element-wizard-body">
+                                    {posMap -> f:format.raw()}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </f:else>
+            </f:if>
+        </f:form>
+    </f:then>
+    <f:else>
+        <h1>{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:newContentElement')}</h1>
+    </f:else>
 </f:if>
 </html>

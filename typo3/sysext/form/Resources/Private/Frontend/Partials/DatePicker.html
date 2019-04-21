@@ -1,47 +1,47 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
 <formvh:renderRenderable renderable="{element}">
-	<div class="form-inline">
-		<f:render partial="Field/Field" arguments="{element: element}" contentAs="elementContent">
-			<formvh:form.datePicker
-				id="{element.uniqueIdentifier}"
-				property="{element.identifier}"
-				dateFormat="{element.properties.dateFormat}"
-				initialDate="{element.properties.initialDate}"
-				enableDatePicker="{element.properties.enableDatePicker}"
-				class="{element.properties.elementClassAttribute}"
-				errorClass="{element.properties.elementErrorClassAttribute}"
-				additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"
-				previewMode="{element.rootForm.renderingOptions.previewMode}"
-			/>
-		</f:render>
-		<f:if condition="{element.properties.displayTimeSelector}">
-			<div class="form-group{f:if(condition: '{validationResults.errors.0}', then: ' has-error')}">
-				<label class="control-label" for="{element.uniqueIdentifier}-time">{formvh:translateElementProperty(element: element, property: 'timeSelectorHourLabel')}</label>
-				<div class="{element.properties.containerClassAttribute}">
-					<formvh:form.timePicker
-						id="{element.uniqueIdentifier}-time"
-						property="{element.identifier}"
-						initialDate="{element.properties.initialDate}"
-						class="{element.properties.timeSelectorClassAttribute} form-control"
-						errorClass="{element.properties.elementErrorClassAttribute}"
-						timeType="hour"
-					/>
-				</div>
-			</div>
-			<div class="form-group{f:if(condition: '{validationResults.errors.0}', then: ' has-error')}">
-				<label class="control-label" for="{element.uniqueIdentifier}-time-minute">{formvh:translateElementProperty(element: element, property: 'timeSelectorMinuteLabel')}</label>
-				<div class="{element.properties.containerClassAttribute}">
-					<formvh:form.timePicker
-						id="{element.uniqueIdentifier}-time-minute"
-						property="{element.identifier}"
-						initialDate="{element.properties.initialDate}"
-						class="{element.properties.timeSelectorClassAttribute} form-control"
-						errorClass="{element.properties.elementErrorClassAttribute}"
-						timeType="minute"
-					/>
-				</div>
-			</div>
-		</f:if>
-	</div>
+    <div class="form-inline">
+        <f:render partial="Field/Field" arguments="{element: element}" contentAs="elementContent">
+            <formvh:form.datePicker
+                id="{element.uniqueIdentifier}"
+                property="{element.identifier}"
+                dateFormat="{element.properties.dateFormat}"
+                initialDate="{element.properties.initialDate}"
+                enableDatePicker="{element.properties.enableDatePicker}"
+                class="{element.properties.elementClassAttribute}"
+                errorClass="{element.properties.elementErrorClassAttribute}"
+                additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"
+                previewMode="{element.rootForm.renderingOptions.previewMode}"
+            />
+        </f:render>
+        <f:if condition="{element.properties.displayTimeSelector}">
+            <div class="form-group{f:if(condition: '{validationResults.errors.0}', then: ' has-error')}">
+                <label class="control-label" for="{element.uniqueIdentifier}-time">{formvh:translateElementProperty(element: element, property: 'timeSelectorHourLabel')}</label>
+                <div class="{element.properties.containerClassAttribute}">
+                    <formvh:form.timePicker
+                        id="{element.uniqueIdentifier}-time"
+                        property="{element.identifier}"
+                        initialDate="{element.properties.initialDate}"
+                        class="{element.properties.timeSelectorClassAttribute} form-control"
+                        errorClass="{element.properties.elementErrorClassAttribute}"
+                        timeType="hour"
+                    />
+                </div>
+            </div>
+            <div class="form-group{f:if(condition: '{validationResults.errors.0}', then: ' has-error')}">
+                <label class="control-label" for="{element.uniqueIdentifier}-time-minute">{formvh:translateElementProperty(element: element, property: 'timeSelectorMinuteLabel')}</label>
+                <div class="{element.properties.containerClassAttribute}">
+                    <formvh:form.timePicker
+                        id="{element.uniqueIdentifier}-time-minute"
+                        property="{element.identifier}"
+                        initialDate="{element.properties.initialDate}"
+                        class="{element.properties.timeSelectorClassAttribute} form-control"
+                        errorClass="{element.properties.elementErrorClassAttribute}"
+                        timeType="minute"
+                    />
+                </div>
+            </div>
+        </f:if>
+    </div>
 </formvh:renderRenderable>
 </html>

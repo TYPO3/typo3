@@ -1,7 +1,7 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-      xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
-      xmlns:adm="http://typo3.org/ns/TYPO3/CMS/Adminpanel/ViewHelpers"
-      data-namespace-typo3-fluid="true">
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:adm="http://typo3.org/ns/TYPO3/CMS/Adminpanel/ViewHelpers"
+    data-namespace-typo3-fluid="true">
 <div class="typo3-adminPanel-module{f:if(condition: uid, then: ' typo3-adminPanel-module-{uid}')}">
     <div class="typo3-adminPanel-module-trigger" data-typo3-role="typo3-adminPanel-module-trigger">
         <f:if condition="{icon}"><span class="typo3-adminPanel-module-trigger-icon">{icon -> f:format.raw()}</span></f:if>
@@ -57,7 +57,7 @@
                                 <div class="typo3-adminPanel-content-panes-item{f:if(condition:'{subModulesIterator.isFirst}',then:' typo3-adminPanel-content-panes-item-active')}" data-typo3-role="typo3-adminPanel-content-pane" data-typo3-tab-id="{sub.identifier}">
                                     <f:if condition="{sub.label}"><h1 class="typo3-adminPanel-headline">{sub.label}</h1></f:if>
                                     <f:format.raw>
-                                      <adm:subModuleRender data="{data}" module="{sub}"/>
+                                        <adm:subModuleRender data="{data}" module="{sub}"/>
                                     </f:format.raw>
                                 </div>
                             </f:for>

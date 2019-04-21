@@ -1,28 +1,28 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
 <formvh:renderRenderable renderable="{element}">
-	<f:render partial="Field/Field" arguments="{element: element, doNotShowLabel: 1}" contentAs="elementContent">
-		<label class="control-label">{formvh:translateElementProperty(element: element, property: 'label')}<f:if condition="{element.required}"><f:render partial="Field/Required" /></f:if></label>
-		<div class="{element.properties.containerClassAttribute}">
-			<div id="{element.uniqueIdentifier}" class="inputs-list">
-				<div class="form-group">
-					<f:for each="{element.properties.options}" as="label" key="value" iteration="idIterator">
-						<div class="radio">
-							<label for="{element.uniqueIdentifier}-{idIterator.index}">
-								<f:form.radio
-									property="{element.identifier}"
-									id="{element.uniqueIdentifier}-{idIterator.index}"
-									class="{element.properties.elementClassAttribute} form-check-input"
-									value="{value}"
-									errorClass="{element.properties.elementErrorClassAttribute}"
-									additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"
-								/>
-								<span>{formvh:translateElementProperty(element: element, property: '{0: \'options\', 1: value}')}</span>
-							</label>
-						</div>
-					</f:for>
-				</div>
-			</div>
-		</div>
-	</f:render>
+    <f:render partial="Field/Field" arguments="{element: element, doNotShowLabel: 1}" contentAs="elementContent">
+        <label class="control-label">{formvh:translateElementProperty(element: element, property: 'label')}<f:if condition="{element.required}"><f:render partial="Field/Required" /></f:if></label>
+        <div class="{element.properties.containerClassAttribute}">
+            <div id="{element.uniqueIdentifier}" class="inputs-list">
+                <div class="form-group">
+                    <f:for each="{element.properties.options}" as="label" key="value" iteration="idIterator">
+                        <div class="radio">
+                            <label for="{element.uniqueIdentifier}-{idIterator.index}">
+                                <f:form.radio
+                                    property="{element.identifier}"
+                                    id="{element.uniqueIdentifier}-{idIterator.index}"
+                                    class="{element.properties.elementClassAttribute} form-check-input"
+                                    value="{value}"
+                                    errorClass="{element.properties.elementErrorClassAttribute}"
+                                    additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"
+                                />
+                                <span>{formvh:translateElementProperty(element: element, property: '{0: \'options\', 1: value}')}</span>
+                            </label>
+                        </div>
+                    </f:for>
+                </div>
+            </div>
+        </div>
+    </f:render>
 </formvh:renderRenderable>
 </html>

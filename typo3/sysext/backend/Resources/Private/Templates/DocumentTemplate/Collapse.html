@@ -1,39 +1,39 @@
 <div class="panel-group" id="{id}" role="tablist" aria-multiselectable="true">
-	<f:for each="{items}" as="item" iteration="iteration">
-		<f:if condition="{item.content}">
-			<div class="panel panel-default">
-				<div class="panel-heading" role="tab" id="{id}-{iteration.cycle}-heading">
-					<a data-toggle="collapse" title="{item.linkTitle}" data-parent="#{id}" href="#{id}-{iteration.cycle}" aria-expanded="true" aria-controls="{id}-{iteration.cycle}">
-						<f:if condition="{item.icon}">
-							<f:format.raw>{item.icon}</f:format.raw>
-						</f:if>
-						{item.label}
-						<f:if condition="{item.requiredIcon}">
-							<f:format.raw>{item.requiredIcon}</f:format.raw>
-						</f:if>
-						<f:if condition="{item.stateIcon}">
-							<f:render partial="StateIcon" arguments="{item: item}" />
-						</f:if>
-					</a>
-				</div>
-				<div id="{id}-{iteration.cycle}" class="panel-collapse collapse{f:if(condition: '{iteration.cycle} == {defaultTabIndex}', then: ' in')}" role="tabpanel" aria-labelledby="{id}-{iteration.cycle}-heading">
-					<f:if condition="{item.description}">
-						<div class="panel-body">
-							<p><f:format.nl2br>{item.description}</f:format.nl2br></p>
-						</div>
-					</f:if>
-					<f:if condition="{wrapContent}">
-						<f:then>
-							<div class="panel-body">
-								<f:format.raw>{item.content}</f:format.raw>
-							</div>
-						</f:then>
-						<f:else>
-							<f:format.raw>{item.content}</f:format.raw>
-						</f:else>
-					</f:if>
-				</div>
-			</div>
-		</f:if>
-	</f:for>
+    <f:for each="{items}" as="item" iteration="iteration">
+        <f:if condition="{item.content}">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="{id}-{iteration.cycle}-heading">
+                    <a data-toggle="collapse" title="{item.linkTitle}" data-parent="#{id}" href="#{id}-{iteration.cycle}" aria-expanded="true" aria-controls="{id}-{iteration.cycle}">
+                        <f:if condition="{item.icon}">
+                            <f:format.raw>{item.icon}</f:format.raw>
+                        </f:if>
+                        {item.label}
+                        <f:if condition="{item.requiredIcon}">
+                            <f:format.raw>{item.requiredIcon}</f:format.raw>
+                        </f:if>
+                        <f:if condition="{item.stateIcon}">
+                            <f:render partial="StateIcon" arguments="{item: item}" />
+                        </f:if>
+                    </a>
+                </div>
+                <div id="{id}-{iteration.cycle}" class="panel-collapse collapse{f:if(condition: '{iteration.cycle} == {defaultTabIndex}', then: ' in')}" role="tabpanel" aria-labelledby="{id}-{iteration.cycle}-heading">
+                    <f:if condition="{item.description}">
+                        <div class="panel-body">
+                            <p><f:format.nl2br>{item.description}</f:format.nl2br></p>
+                        </div>
+                    </f:if>
+                    <f:if condition="{wrapContent}">
+                        <f:then>
+                            <div class="panel-body">
+                                <f:format.raw>{item.content}</f:format.raw>
+                            </div>
+                        </f:then>
+                        <f:else>
+                            <f:format.raw>{item.content}</f:format.raw>
+                        </f:else>
+                    </f:if>
+                </div>
+            </div>
+        </f:if>
+    </f:for>
 </div>

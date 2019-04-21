@@ -1,118 +1,118 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <p>
-	If you upgrade your TYPO3 installation from one major version to another (e.g. 8 LTS to 9 LTS),
-	then the Upgrade Wizards guide you through the necessary steps to upgrade your database
-	records or explicitly install extensions that ship with the latest TYPO3 version.
+    If you upgrade your TYPO3 installation from one major version to another (e.g. 8 LTS to 9 LTS),
+    then the Upgrade Wizards guide you through the necessary steps to upgrade your database
+    records or explicitly install extensions that ship with the latest TYPO3 version.
 </p>
 
 <div style="display: none">
-	<div class="t3js-upgradeWizards-blocking-charset-template">
-		<p>
-			The default database charset of the main MySQL database is not utf-8.
-			<br />
-			You have to run this update wizard before you can run any other update
-			wizard to make sure new tables and fields are created with the correct
-			charset.
-			<br />
-			WARNING: This will NOT convert any existing data.
-		</p>
-		<button class="btn btn-default t3js-upgradeWizards-blocking-charset-fix" type="button">
-			Set default charset to utf8
-		</button>
-	</div>
+    <div class="t3js-upgradeWizards-blocking-charset-template">
+        <p>
+            The default database charset of the main MySQL database is not utf-8.
+            <br />
+            You have to run this update wizard before you can run any other update
+            wizard to make sure new tables and fields are created with the correct
+            charset.
+            <br />
+            WARNING: This will NOT convert any existing data.
+        </p>
+        <button class="btn btn-default t3js-upgradeWizards-blocking-charset-fix" type="button">
+            Set default charset to utf8
+        </button>
+    </div>
 
-	<div class="t3js-upgradeWizards-blocking-adds-template">
-		<p>
-			There are tables or fields in the database which need to be created.
-			<br />
-			You have to run this update wizard before you can run any other update
-			wizard to make sure all needed tables and fields are present.
-		</p>
-		<div>
-			<div class="t3js-upgradeWizards-blocking-adds-rows"></div>
-		</div>
-		<button class="btn btn-default t3js-upgradeWizards-blocking-adds-execute" type="button">
-			Create missing tables and fields
-		</button>
-	</div>
+    <div class="t3js-upgradeWizards-blocking-adds-template">
+        <p>
+            There are tables or fields in the database which need to be created.
+            <br />
+            You have to run this update wizard before you can run any other update
+            wizard to make sure all needed tables and fields are present.
+        </p>
+        <div>
+            <div class="t3js-upgradeWizards-blocking-adds-rows"></div>
+        </div>
+        <button class="btn btn-default t3js-upgradeWizards-blocking-adds-execute" type="button">
+            Create missing tables and fields
+        </button>
+    </div>
 
-	<div class="t3js-upgradeWizards-list-template">
-		<h4>Upgrade status</h4>
-		<p>Progress of upgrade wizards:</p>
-		<div class="progress">
-			<div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
-				aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-				style="width: 0%;">
-				<span>0%</span>
-			</div>
-		</div>
-		<div class="t3js-upgradeWizards-list-rows"></div>
-	</div>
-	<div class="t3js-upgradeWizards-list-row-template">
-		<h4 class="t3js-upgradeWizards-list-row-title"></h4>
-		<div class="row-explanation t3js-upgradeWizards-list-row-explanation"></div>
-		<button class="btn btn-default t3js-upgradeWizards-list-row-execute" type="button">
-			Execute
-		</button>
-		<hr />
-	</div>
+    <div class="t3js-upgradeWizards-list-template">
+        <h4>Upgrade status</h4>
+        <p>Progress of upgrade wizards:</p>
+        <div class="progress">
+            <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                style="width: 0%;">
+                <span>0%</span>
+            </div>
+        </div>
+        <div class="t3js-upgradeWizards-list-rows"></div>
+    </div>
+    <div class="t3js-upgradeWizards-list-row-template">
+        <h4 class="t3js-upgradeWizards-list-row-title"></h4>
+        <div class="row-explanation t3js-upgradeWizards-list-row-explanation"></div>
+        <button class="btn btn-default t3js-upgradeWizards-list-row-execute" type="button">
+            Execute
+        </button>
+        <hr />
+    </div>
 
-	<div class="t3js-upgradeWizards-input">
-		<form>
-			<h4 class="t3js-upgradeWizards-input-title">{updateData.title}</h4>
-			<div class="t3js-upgradeWizards-input-html"></div>
-			<button class="btn btn-warning t3js-upgradeWizards-input-perform" type="button">
-				Perform updates!
-			</button>
-		</form>
-	</div>
+    <div class="t3js-upgradeWizards-input">
+        <form>
+            <h4 class="t3js-upgradeWizards-input-title">{updateData.title}</h4>
+            <div class="t3js-upgradeWizards-input-html"></div>
+            <button class="btn btn-warning t3js-upgradeWizards-input-perform" type="button">
+                Perform updates!
+            </button>
+        </form>
+    </div>
 
-	<div class="t3js-upgradeWizards-done-body-template">
-		<table class="table table-condensed table-striped">
-			<tbody class="t3js-upgradeWizards-done-rows"></tbody>
-		</table>
-	</div>
-	<div class="t3js-upgradeWizards-done-row-template">
-		<table>
-				<tr>
-					<td>
-						<button
-							type="button"
-							class="btn btn-default t3js-upgradeWizards-done-markUndone"
-						>
-							Mark undone
-						</button>
-					</td>
-					<td class="t3js-upgradeWizards-done-title">
-					</td>
-				</tr>
-		</table>
-	</div>
+    <div class="t3js-upgradeWizards-done-body-template">
+        <table class="table table-condensed table-striped">
+            <tbody class="t3js-upgradeWizards-done-rows"></tbody>
+        </table>
+    </div>
+    <div class="t3js-upgradeWizards-done-row-template">
+        <table>
+                <tr>
+                    <td>
+                        <button
+                            type="button"
+                            class="btn btn-default t3js-upgradeWizards-done-markUndone"
+                        >
+                            Mark undone
+                        </button>
+                    </td>
+                    <td class="t3js-upgradeWizards-done-title">
+                    </td>
+                </tr>
+        </table>
+    </div>
 </div>
 
 <hr>
 
 <div class="t3js-upgrade-status-section">
-	<div class="upgradeWizards-wizards-output t3js-upgradeWizards-wizards-output"></div>
+    <div class="upgradeWizards-wizards-output t3js-upgradeWizards-wizards-output"></div>
 
-	<hr>
+    <hr>
 
-	<h4>Wizards marked as done</h4>
-	<p>
-		Some wizards fully automatically check whether they should be executed, while others just
-		set a flag in the system registry if they have been executed once. This "I have been executed"
-		flag can be reset by selecting specific wizards from the list below, so the according wizards
-		show up as possible upgrade wizards again.
-	</p>
-	<div
-		class="t3js-module-content"
-		data-upgrade-wizards-mark-undone-token="{upgradeWizardsMarkUndoneToken}"
-		data-upgrade-wizards-input-token="{upgradeWizardsInputToken}"
-		data-upgrade-wizards-execute-token="{upgradeWizardsExecuteToken}"
-	>
-		<div class="t3js-upgradeWizards-done-output"></div>
-	</div>
+    <h4>Wizards marked as done</h4>
+    <p>
+        Some wizards fully automatically check whether they should be executed, while others just
+        set a flag in the system registry if they have been executed once. This "I have been executed"
+        flag can be reset by selecting specific wizards from the list below, so the according wizards
+        show up as possible upgrade wizards again.
+    </p>
+    <div
+        class="t3js-module-content"
+        data-upgrade-wizards-mark-undone-token="{upgradeWizardsMarkUndoneToken}"
+        data-upgrade-wizards-input-token="{upgradeWizardsInputToken}"
+        data-upgrade-wizards-execute-token="{upgradeWizardsExecuteToken}"
+    >
+        <div class="t3js-upgradeWizards-done-output"></div>
+    </div>
 </div>
 
 </html>

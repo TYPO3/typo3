@@ -1,31 +1,31 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <p>
-	Modified values are written to LocalConfiguration.php. The optional file AdditionalConfiguration.php is not controlled
-	by the TYPO3’s core and may override certain settings. Administrators must maintain AdditionalConfiguration.php
-	manually and should be used with caution.
+    Modified values are written to LocalConfiguration.php. The optional file AdditionalConfiguration.php is not controlled
+    by the TYPO3’s core and may override certain settings. Administrators must maintain AdditionalConfiguration.php
+    manually and should be used with caution.
 </p>
 
 <div class="t3js-module-content" data-local-configuration-write-token="{localConfigurationWriteToken}">
-	<div class="form-group">
-		<div class="input-group">
-			<span class="input-group-addon">Filter by:</span>
-			<input type="text" class="form-control t3js-localConfiguration-search" placeholder="search setting">
-		</div>
-	</div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon">Filter by:</span>
+            <input type="text" class="form-control t3js-localConfiguration-search" placeholder="search setting">
+        </div>
+    </div>
 
-	<div class="panel-group" role="tablist" aria-multiselectable="true">
-		<f:for each="{localConfigurationData}" as="sectionData" key="sectionName">
-			<f:if condition="{sectionData.items}">
-				<f:render partial="Settings/LocalConfiguration/SubSection" arguments="{_all}"/>
-			</f:if>
-		</f:for>
-	</div>
+    <div class="panel-group" role="tablist" aria-multiselectable="true">
+        <f:for each="{localConfigurationData}" as="sectionData" key="sectionName">
+            <f:if condition="{sectionData.items}">
+                <f:render partial="Settings/LocalConfiguration/SubSection" arguments="{_all}"/>
+            </f:if>
+        </f:for>
+    </div>
 
-	<div>
-		<span class="btn btn-default t3js-localConfiguration-write">Write configuration</span>
-		<span class="btn btn-default t3js-localConfiguration-toggleAll">Toggle All</span>
-	</div>
+    <div>
+        <span class="btn btn-default t3js-localConfiguration-write">Write configuration</span>
+        <span class="btn btn-default t3js-localConfiguration-toggleAll">Toggle All</span>
+    </div>
 </div>
 
 </html>

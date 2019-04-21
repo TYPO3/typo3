@@ -1,15 +1,15 @@
 <div class="diff">
-	<f:for each="{differences}" as="differencesItem" key="key">
-		<div class="diff-item">
-			<div class="diff-item-title">
-				<f:if condition="{rollbackUrl}">
-					<a href="{rollbackUrl}" class="btn btn-default" style="margin-right: 5px;">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertField')}</a>
-				</f:if>
-				{differencesItem.link} {differencesItem.title}
-			</div>
-			<div class="diff-item-result"><f:spaceless>
-				<f:format.raw>{differencesItem.result}</f:format.raw>
-			</f:spaceless></div>
-		</div>
-	</f:for>
+    <f:for each="{differences}" as="differencesItem" key="key">
+        <div class="diff-item">
+            <div class="diff-item-title">
+                <f:if condition="{rollbackUrl}">
+                    <a href="{rollbackUrl}" class="btn btn-default" style="margin-right: 5px;">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertField')}</a>
+                </f:if>
+                {differencesItem.link} {differencesItem.title}
+            </div>
+            <div class="diff-item-result"><f:spaceless>
+                <f:format.raw>{differencesItem.result}</f:format.raw>
+            </f:spaceless></div>
+        </div>
+    </f:for>
 </div>

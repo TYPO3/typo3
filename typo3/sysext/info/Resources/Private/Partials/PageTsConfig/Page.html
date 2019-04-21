@@ -1,6 +1,6 @@
 <h1>{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/locallang.xlf:tsconf_title')}</h1>
 <f:if condition="{csh}">
-  <span class="btn btn-default btn-sm"><f:format.raw>{csh}</f:format.raw></span>
+<span class="btn btn-default btn-sm"><f:format.raw>{csh}</f:format.raw></span>
 </f:if>
 <f:render partial="PageTsConfig/Menu" arguments="{_all}"/>
 <f:if condition="{tsconfParts99}">
@@ -10,7 +10,7 @@
                 <div class="panel-heading">
                     <f:if condition="{line.defaultPageTSconfig}">
                         <f:then>
-                          <f:translate key="LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:editTSconfig_default" />
+                        <f:translate key="LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:editTSconfig_default" />
                         </f:then>
                         <f:else>
                             <f:format.raw>{line.title}</f:format.raw>

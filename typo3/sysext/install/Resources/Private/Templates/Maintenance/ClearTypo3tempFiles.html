@@ -1,47 +1,47 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <p>
-	TYPO3 stores processed files and cached images in a dedicated directory.
-	This directory is likely to grow quickly.
+    TYPO3 stores processed files and cached images in a dedicated directory.
+    This directory is likely to grow quickly.
 </p>
 <p>
-	With this action you can delete the files in this folder. Afterwards, you
-	should also clear the cache database tables.
+    With this action you can delete the files in this folder. Afterwards, you
+    should also clear the cache database tables.
 </p>
 <p>
-	The File Abstraction Layer additionally stores a database record for every file
-	it needs to process. (e.g. image thumbnails). In case you modified some graphics
-	settings (All Configuration [GFX]) and you need all processed files to get regenerated,
-	you can use this tool to remove the "_processed_" ones.
+    The File Abstraction Layer additionally stores a database record for every file
+    it needs to process. (e.g. image thumbnails). In case you modified some graphics
+    settings (All Configuration [GFX]) and you need all processed files to get regenerated,
+    you can use this tool to remove the "_processed_" ones.
 </p>
 
 <div class="t3js-module-content" data-clear-typo3temp-delete-token="{clearTypo3tempFilesToken}">
-	<div class="t3js-clearTypo3temp-output"></div>
+    <div class="t3js-clearTypo3temp-output"></div>
 
-	<hr>
+    <hr>
 
-	<div class="form-group">
-		<div class="t3js-clearTypo3temp-stat-container"></div>
-	</div>
+    <div class="form-group">
+        <div class="t3js-clearTypo3temp-stat-container"></div>
+    </div>
 
-	<div style="display:none;">
-		<div class="t3js-clearTypo3temp-stat-template">
-			<button
-				class="btn btn-warning t3js-clearTypo3temp-delete"
-				type="button"
-			>
-				Delete <span class="t3js-clearTypo3temp-stat-numberOfFiles"></span> files in
-				<span class="t3js-clearTypo3temp-stat-directory"></span>
-			</button>
-			<hr class="t3js-clearTypo3temp-stat-lastRuler">
-		</div>
-	</div>
-	<button
-		class="btn btn-default t3js-clearTypo3temp-stats"
-		type="button"
-	>
-		Scan again
-	</button>
+    <div style="display:none;">
+        <div class="t3js-clearTypo3temp-stat-template">
+            <button
+                class="btn btn-warning t3js-clearTypo3temp-delete"
+                type="button"
+            >
+                Delete <span class="t3js-clearTypo3temp-stat-numberOfFiles"></span> files in
+                <span class="t3js-clearTypo3temp-stat-directory"></span>
+            </button>
+            <hr class="t3js-clearTypo3temp-stat-lastRuler">
+        </div>
+    </div>
+    <button
+        class="btn btn-default t3js-clearTypo3temp-stats"
+        type="button"
+    >
+        Scan again
+    </button>
 </div>
 
 </html>

@@ -1,36 +1,36 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
 
 <td>
-	<em:downloadExtension extension="{extension}" />
+    <em:downloadExtension extension="{extension}" />
 </td>
 <td>
-	<f:link.action action="showAllVersions" arguments="{extensionKey: extension.extensionKey}" title="{f:translate(key:'extensionList.showAllVersions.label')}">
-		{extension.title}
-	</f:link.action>
-	<em:showExtensionVersions extension="{extension}" />
+    <f:link.action action="showAllVersions" arguments="{extensionKey: extension.extensionKey}" title="{f:translate(key:'extensionList.showAllVersions.label')}">
+        {extension.title}
+    </f:link.action>
+    <em:showExtensionVersions extension="{extension}" />
 </td>
 <td>
-	<f:link.action action="showAllVersions" arguments="{extensionKey: extension.extensionKey}" title="{f:translate(key:'extensionList.showAllVersions.label')}">
-		{extension.extensionKey}
-	</f:link.action>
+    <f:link.action action="showAllVersions" arguments="{extensionKey: extension.extensionKey}" title="{f:translate(key:'extensionList.showAllVersions.label')}">
+        {extension.extensionKey}
+    </f:link.action>
 </td>
 <td>
-	<f:link.action action="showAllVersions" arguments="{extensionKey: extension.extensionKey}" title="{f:translate(key:'extensionList.showAllVersions.label')}">
-		{extension.version}
-	</f:link.action>
-	<em:showExtensionVersions extension="{extension}" />
+    <f:link.action action="showAllVersions" arguments="{extensionKey: extension.extensionKey}" title="{f:translate(key:'extensionList.showAllVersions.label')}">
+        {extension.version}
+    </f:link.action>
+    <em:showExtensionVersions extension="{extension}" />
 </td>
 <td>
-	<f:format.date>{extension.lastUpdated}</f:format.date>
+    <f:format.date>{extension.lastUpdated}</f:format.date>
 </td>
 <td title="{extension.description}">
-	<f:format.crop maxCharacters="50" respectWordBoundaries="true" respectHtml="false">{extension.description}</f:format.crop>
+    <f:format.crop maxCharacters="50" respectWordBoundaries="true" respectHtml="false">{extension.description}</f:format.crop>
 
-	<div class="author">
-		<div class="author-name">{extension.authorName}</div>
-		<div class="author-email">{extension.authorEmail}</div>
-	</div>
+    <div class="author">
+        <div class="author-name">{extension.authorName}</div>
+        <div class="author-email">{extension.authorEmail}</div>
+    </div>
 </td>
 <td>
-	<span class="label label-{extension.stateString}">{extension.stateString}</span>
+    <span class="label label-{extension.stateString}">{extension.stateString}</span>
 </td>

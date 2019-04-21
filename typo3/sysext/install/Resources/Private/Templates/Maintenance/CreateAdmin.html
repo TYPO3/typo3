@@ -1,68 +1,68 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <p>
-	After you've created the user, log in and add the rest of the user information, like email and real name.
+    After you've created the user, log in and add the rest of the user information, like email and real name.
 </p>
 
 <div class="t3js-module-content" data-create-admin-token="{createAdminToken}">
-	<form action="" id="t3js-createAdmin-form" method="post">
-		<div class="form-group">
-			<label for="t3-install-admin-username" class="control-label">Username:</label>
-			<input
-				id="t3-install-admin-username"
-				class="t3-install-form-input-text t3js-createAdmin-user form-control"
-				type="text"
-				autocomplete="off"
-				required
-			/>
-		</div>
-		<div class="form-group">
-			<label for="t3-install-admin-password" class="control-label">Password:</label>
-			<input
-				id="t3-install-admin-password"
-				class="t3-install-form-input-text t3-install-form-password-strength t3js-createAdmin-password form-control"
-				type="password"
-				autocomplete="off"
-				required
-				minlength="8"
-				pattern=".{8,}"
-				title="Password must be at least eight characters long."
-			/>
-		</div>
-		<div class="form-group">
-			<label for="t3-install-admin-password-repeat" class="control-label">Repeat password:</label>
-			<input
-				id="t3-install-admin-password-repeat"
-				class="t3-install-form-input-text t3js-createAdmin-password-check form-control"
-				type="password"
-				autocomplete="off"
-				required
-				minlength="8"
-				pattern=".{8,}"
-			/>
-		</div>
-		<div class="form-group">
-			<div class="checkbox">
-				<label>
-					<input
-						class="t3-install-form-input-checkbox t3js-createAdmin-system-maintainer"
-						type="checkbox"
-						id="add-as-sytem-maintainer"
-					/>
-					Add as system maintainer
-				</label>
-			</div>
-		</div>
+    <form action="" id="t3js-createAdmin-form" method="post">
+        <div class="form-group">
+            <label for="t3-install-admin-username" class="control-label">Username:</label>
+            <input
+                id="t3-install-admin-username"
+                class="t3-install-form-input-text t3js-createAdmin-user form-control"
+                type="text"
+                autocomplete="off"
+                required
+            />
+        </div>
+        <div class="form-group">
+            <label for="t3-install-admin-password" class="control-label">Password:</label>
+            <input
+                id="t3-install-admin-password"
+                class="t3-install-form-input-text t3-install-form-password-strength t3js-createAdmin-password form-control"
+                type="password"
+                autocomplete="off"
+                required
+                minlength="8"
+                pattern=".{8,}"
+                title="Password must be at least eight characters long."
+            />
+        </div>
+        <div class="form-group">
+            <label for="t3-install-admin-password-repeat" class="control-label">Repeat password:</label>
+            <input
+                id="t3-install-admin-password-repeat"
+                class="t3-install-form-input-text t3js-createAdmin-password-check form-control"
+                type="password"
+                autocomplete="off"
+                required
+                minlength="8"
+                pattern=".{8,}"
+            />
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input
+                        class="t3-install-form-input-checkbox t3js-createAdmin-system-maintainer"
+                        type="checkbox"
+                        id="add-as-sytem-maintainer"
+                    />
+                    Add as system maintainer
+                </label>
+            </div>
+        </div>
 
-		<div class="t3js-createAdmin-output"></div>
+        <div class="t3js-createAdmin-output"></div>
 
-		<button
-			class="btn btn-default t3js-createAdmin-create"
-			type="submit"
-		>
-			Create administrator user
-		</button>
-	</form>
+        <button
+            class="btn btn-default t3js-createAdmin-create"
+            type="submit"
+        >
+            Create administrator user
+        </button>
+    </form>
 </div>
 
 </html>

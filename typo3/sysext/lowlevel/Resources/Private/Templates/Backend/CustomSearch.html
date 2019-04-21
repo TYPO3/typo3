@@ -2,16 +2,14 @@
 
 <f:format.raw>{submenu}</f:format.raw>
 <f:if condition="{searchMode} == 'query'">
-	<f:then>
-		<f:format.raw>{queryMaker}</f:format.raw>
-	</f:then>
-	<f:else>
-		<h2>{f:translate(key:'searchOptions')}</h2>
-		<f:format.raw>{searchOptions}</f:format.raw>
+    <f:then>
+        <f:format.raw>{queryMaker}</f:format.raw>
+    </f:then>
+    <f:else>
+        <h2>{f:translate(key:'searchOptions')}</h2>
+        <f:format.raw>{searchOptions}</f:format.raw>
 
-		<h2>{f:translate(key:'result')}</h2>
-		<f:format.raw>{results}</f:format.raw>
-	</f:else>
+        <h2>{f:translate(key:'result')}</h2>
+        <f:format.raw>{results}</f:format.raw>
+    </f:else>
 </f:if>
-
-

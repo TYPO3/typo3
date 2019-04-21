@@ -1,24 +1,24 @@
 <div class="module" data-module-id="{moduleId}" data-module-name="{moduleName}">
-	<f:if condition="{formTag}">
-		<f:then>
-			<f:format.raw>{formTag}</f:format.raw>
-		</f:then>
-	</f:if>
-	<f:if condition="{docHeader.enabled}">
-		<f:render partial="DocHeader" arguments="{docHeader:docHeader}" />
-	</f:if>
-	<div class="module-body t3js-module-body">
-		<f:if condition="{uiBlock}">
-			<div id="t3js-ui-block" class="ui-block">
-				<core:icon identifier="spinner-circle-light" size="large" />
-			</div>
-		</f:if>
-		<f:flashMessages queueIdentifier="{flashMessageQueueIdentifier}" />
-		<f:format.raw>{content}</f:format.raw>
-	</div>
-	<f:if condition="{formTag}">
-		<f:then>
-			</form>
-		</f:then>
-	</f:if>
+    <f:if condition="{formTag}">
+        <f:then>
+            <f:format.raw>{formTag}</f:format.raw>
+        </f:then>
+    </f:if>
+    <f:if condition="{docHeader.enabled}">
+        <f:render partial="DocHeader" arguments="{docHeader:docHeader}" />
+    </f:if>
+    <div class="module-body t3js-module-body">
+        <f:if condition="{uiBlock}">
+            <div id="t3js-ui-block" class="ui-block">
+                <core:icon identifier="spinner-circle-light" size="large" />
+            </div>
+        </f:if>
+        <f:flashMessages queueIdentifier="{flashMessageQueueIdentifier}" />
+        <f:format.raw>{content}</f:format.raw>
+    </div>
+    <f:if condition="{formTag}">
+        <f:then>
+            </form>
+        </f:then>
+    </f:if>
 </div>

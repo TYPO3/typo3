@@ -1,20 +1,20 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
 <thead>
-	<tr>
-		<th><f:translate key="extensionList.header.extensionActions"/></th>
-		<th><f:translate key="extensionList.header.extensionName"/></th>
-		<th><f:translate key="extensionList.header.version"/></th>
-		<th><f:translate key="extensionList.header.uploadComment"/></th>
-		<th><f:translate key="extensionList.header.lastUpdate"/></th>
-		<th><f:translate key="extensionList.header.extensionState"/></th>
-	</tr>
+    <tr>
+        <th><f:translate key="extensionList.header.extensionActions"/></th>
+        <th><f:translate key="extensionList.header.extensionName"/></th>
+        <th><f:translate key="extensionList.header.version"/></th>
+        <th><f:translate key="extensionList.header.uploadComment"/></th>
+        <th><f:translate key="extensionList.header.lastUpdate"/></th>
+        <th><f:translate key="extensionList.header.extensionState"/></th>
+    </tr>
 </thead>
 <tbody>
-	<f:for each="{extensions}" as="extension">
-		<f:cycle values="{0: 'odd', 1: 'even'}" as="zebraClass">
-			<tr class="{zebraClass}">
-		</f:cycle>
-		<f:render partial="List/TerShowVersionsSingleLine" arguments="{extension:extension}" />
-		</tr>
-	</f:for>
+    <f:for each="{extensions}" as="extension">
+        <f:cycle values="{0: 'odd', 1: 'even'}" as="zebraClass">
+            <tr class="{zebraClass}">
+        </f:cycle>
+        <f:render partial="List/TerShowVersionsSingleLine" arguments="{extension:extension}" />
+        </tr>
+    </f:for>
 </tbody>

@@ -1,25 +1,25 @@
 <html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
 <h3 class="dropdown-headline">
-	{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.help') -> f:format.raw()}
+    {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.help') -> f:format.raw()}
 </h3>
 <hr>
 <div class="dropdown-table">
-	<f:for each="{modules}" as="module">
-		<div class="dropdown-table-row"
-				 id="{module.name -> f:format.htmlspecialchars()}"
-				 data-modulename="{module.name -> f:format.htmlspecialchars()}"
-				 data-navigationcomponentid="{module.navigationFrameScript -> f:format.htmlspecialchars()}"
-				 data-navigationframescript="{module.navigationFrameScript -> f:format.htmlspecialchars()}"
-				 data-navigationframescriptparameters="{module.navigationFrameScriptParameters -> f:format.htmlspecialchars()}">
-			<div class="dropdown-table-column dropdown-table-icon">
-				{module.icon -> f:format.raw()}
-			</div>
-			<div class="dropdown-table-column dropdown-table-title">
-				<a href="#" data-link="{module.link}" title="{module.description -> f:format.htmlspecialchars()}">
-					{module.title}
-				</a>
-			</div>
-		</div>
-	</f:for>
+    <f:for each="{modules}" as="module">
+        <div class="dropdown-table-row"
+                id="{module.name -> f:format.htmlspecialchars()}"
+                data-modulename="{module.name -> f:format.htmlspecialchars()}"
+                data-navigationcomponentid="{module.navigationFrameScript -> f:format.htmlspecialchars()}"
+                data-navigationframescript="{module.navigationFrameScript -> f:format.htmlspecialchars()}"
+                data-navigationframescriptparameters="{module.navigationFrameScriptParameters -> f:format.htmlspecialchars()}">
+            <div class="dropdown-table-column dropdown-table-icon">
+                {module.icon -> f:format.raw()}
+            </div>
+            <div class="dropdown-table-column dropdown-table-title">
+                <a href="#" data-link="{module.link}" title="{module.description -> f:format.htmlspecialchars()}">
+                    {module.title}
+                </a>
+            </div>
+        </div>
+    </f:for>
 </div>
 </html>

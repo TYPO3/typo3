@@ -1,34 +1,34 @@
 <h2>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:mergedDifferences')}</h2>
 <div>
-	<f:if condition="{revertAllUrl}">
-		<f:then>
-			<a href="{revertAllUrl}" class="btn btn-default" style="margin-right: 5px;">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertAll')}</a>
-			<div
-				style="padding-left:10px;border-left:5px solid darkgray;border-bottom:1px dotted darkgray;padding-bottom:2px;">
-				<f:for each="{multipleDiff}" as="historyRow" key="key">
-					<h3>
-						<a href="{historyRow.revertRecordUrl}" class="btn btn-default" style="margin-right: 5px;">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertRecord')}</a>
-						{historyRow.title}
-					</h3>
-					<div>
-						<div
-							style="padding-left:10px;border-left:5px solid darkgray;border-bottom:1px dotted darkgray;padding-bottom:2px;">
-							<f:if condition="{historyRow.insertDelete} == 'delete'">
-								<strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:delete')}</strong><br/>
-							</f:if>
-							<f:if condition="{historyRow.insertDelete} == 'insert'">
-								<strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:insert')}</strong><br/>
-							</f:if>
-							<f:if condition="{historyRow.differences}">
-								<f:render partial="RecordHistory/Diff" arguments="{differences: historyRow.differences}"/>
-							</f:if>
-						</div>
-					</div>
-				</f:for>
-			</div>
-		</f:then>
-		<f:else>
-			{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:noDifferences')}
-		</f:else>
-	</f:if>
+    <f:if condition="{revertAllUrl}">
+        <f:then>
+            <a href="{revertAllUrl}" class="btn btn-default" style="margin-right: 5px;">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertAll')}</a>
+            <div
+                style="padding-left:10px;border-left:5px solid darkgray;border-bottom:1px dotted darkgray;padding-bottom:2px;">
+                <f:for each="{multipleDiff}" as="historyRow" key="key">
+                    <h3>
+                        <a href="{historyRow.revertRecordUrl}" class="btn btn-default" style="margin-right: 5px;">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertRecord')}</a>
+                        {historyRow.title}
+                    </h3>
+                    <div>
+                        <div
+                            style="padding-left:10px;border-left:5px solid darkgray;border-bottom:1px dotted darkgray;padding-bottom:2px;">
+                            <f:if condition="{historyRow.insertDelete} == 'delete'">
+                                <strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:delete')}</strong><br/>
+                            </f:if>
+                            <f:if condition="{historyRow.insertDelete} == 'insert'">
+                                <strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:insert')}</strong><br/>
+                            </f:if>
+                            <f:if condition="{historyRow.differences}">
+                                <f:render partial="RecordHistory/Diff" arguments="{differences: historyRow.differences}"/>
+                            </f:if>
+                        </div>
+                    </div>
+                </f:for>
+            </div>
+        </f:then>
+        <f:else>
+            {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:noDifferences')}
+        </f:else>
+    </f:if>
 </div>

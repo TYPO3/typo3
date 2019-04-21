@@ -551,6 +551,16 @@ module.exports = function (grunt) {
           }
         ]
       }
+    },
+    lintspaces: {
+      html: {
+        src: [
+          '<%= paths.sysext %>*/Resources/Private/**/*.html'
+        ],
+        options: {
+          editorconfig: '../.editorconfig'
+        }
+      }
     }
   });
 
@@ -564,6 +574,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-tslint');
   grunt.loadNpmTasks('grunt-stylelint');
+  grunt.loadNpmTasks('grunt-lintspaces');
   grunt.loadNpmTasks('grunt-contrib-imagemin');
 
   /**
@@ -583,8 +594,9 @@ module.exports = function (grunt) {
    * this task does the following things:
    * - tslint
    * - stylelint
+   * - lintspaces
    */
-  grunt.registerTask('lint', ['tslint', 'stylelint']);
+  grunt.registerTask('lint', ['tslint', 'stylelint', 'lintspaces']);
 
   /**
    * grunt format

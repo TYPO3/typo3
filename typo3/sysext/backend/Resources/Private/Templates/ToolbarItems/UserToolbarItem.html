@@ -2,17 +2,17 @@
 
 <span class="toolbar-item-avatar"><be:avatar backendUser="{currentUser.uid}"/></span>
 <f:if condition="{switchUserMode}">
-	<f:then>
-		<span class="toolbar-item-name"
-					title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:switchtouser')} {currentUser.username}">
-			{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:switchtousershort') -> f:format.raw()}
-			{f:if(condition: '{currentUser.realName}', then: '{currentUser.realName} ({currentUser.username})', else: '{currentUser.username}')}
-		</span>
-	</f:then>
-	<f:else>
-		<span class="toolbar-item-name" title="{username}">
-			{f:if(condition: '{currentUser.realName}', then: '{currentUser.realName}', else: '{currentUser.username}')}
-		</span>
-	</f:else>
+    <f:then>
+        <span class="toolbar-item-name"
+                    title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:switchtouser')} {currentUser.username}">
+            {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:switchtousershort') -> f:format.raw()}
+            {f:if(condition: '{currentUser.realName}', then: '{currentUser.realName} ({currentUser.username})', else: '{currentUser.username}')}
+        </span>
+    </f:then>
+    <f:else>
+        <span class="toolbar-item-name" title="{username}">
+            {f:if(condition: '{currentUser.realName}', then: '{currentUser.realName}', else: '{currentUser.username}')}
+        </span>
+    </f:else>
 </f:if>
 </html>

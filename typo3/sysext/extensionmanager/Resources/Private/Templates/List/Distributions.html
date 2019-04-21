@@ -3,39 +3,39 @@
 <f:layout name="main"/>
 
 <f:section name="headline">
-	<h1><f:translate key="distributions">Get Distributions</f:translate></h1>
+    <h1><f:translate key="distributions">Get Distributions</f:translate></h1>
 </f:section>
 
 <f:section name="content">
-	<f:if condition="{enableDistributionsView}">
-		<f:then>
-			<f:if condition="{showUnsuitableDistributions} == 0">
-				<div class="row">
-					<div class="col-sm-6">
-						<f:form class="typo3-extensionmanager-unsuitable-dist" action="distributions" arguments="{showUnsuitableDistributions: 1}" >
-							<div class="input-group">
-								<span class="input-group-btn">
-									<f:form.submit class="btn btn-default" value="{f:translate(key:'extensionList.showUnsuitableDistributions')}"/>
-								</span>
-							</div>
-						</f:form>
-					</div>
-				</div>
-			</f:if>
-			<div class="card-container">
-				<f:for each="{officialDistributions}" as="distribution">
-					<f:render partial="List/Distribution" arguments="{distribution: distribution, official: 1}" />
-				</f:for>
-				<f:for each="{communityDistributions}" as="distribution">
-					<f:render partial="List/Distribution" arguments="{distribution: distribution, official: 0}" />
-				</f:for>
-			</div>
-		</f:then>
-		<f:else>
-			<p>{f:translate(key: 'extensionList.installImpexp')}</p>
-			<f:link.action action="toggleExtensionInstallationState" controller="Action" arguments="{extensionKey: 'impexp'}" class="btn btn-default t3-button-action-installdistribution">
-				<span class="fa fa-cloud-download">&nbsp;</span><f:translate key="distribution.installImpexp">Install impexp</f:translate>
-			</f:link.action>
-		</f:else>
-	</f:if>
+    <f:if condition="{enableDistributionsView}">
+        <f:then>
+            <f:if condition="{showUnsuitableDistributions} == 0">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <f:form class="typo3-extensionmanager-unsuitable-dist" action="distributions" arguments="{showUnsuitableDistributions: 1}" >
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <f:form.submit class="btn btn-default" value="{f:translate(key:'extensionList.showUnsuitableDistributions')}"/>
+                                </span>
+                            </div>
+                        </f:form>
+                    </div>
+                </div>
+            </f:if>
+            <div class="card-container">
+                <f:for each="{officialDistributions}" as="distribution">
+                    <f:render partial="List/Distribution" arguments="{distribution: distribution, official: 1}" />
+                </f:for>
+                <f:for each="{communityDistributions}" as="distribution">
+                    <f:render partial="List/Distribution" arguments="{distribution: distribution, official: 0}" />
+                </f:for>
+            </div>
+        </f:then>
+        <f:else>
+            <p>{f:translate(key: 'extensionList.installImpexp')}</p>
+            <f:link.action action="toggleExtensionInstallationState" controller="Action" arguments="{extensionKey: 'impexp'}" class="btn btn-default t3-button-action-installdistribution">
+                <span class="fa fa-cloud-download">&nbsp;</span><f:translate key="distribution.installImpexp">Install impexp</f:translate>
+            </f:link.action>
+        </f:else>
+    </f:if>
 </f:section>

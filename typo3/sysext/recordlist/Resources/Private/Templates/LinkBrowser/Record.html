@@ -1,14 +1,14 @@
 <div class="element-browser-panel element-browser-main">
-	<f:if condition="{tree}">
-		<div class="element-browser-main-sidebar">
-			<div class="element-browser-body">
-				{tree -> f:format.raw()}
-			</div>
-		</div>
-	</f:if>
-	<div class="element-browser-main-content">
-		<div class="element-browser-body">
-			{recordList -> f:format.raw()}
-		</div>
-	</div>
+    <f:if condition="{tree}">
+        <div class="element-browser-main-sidebar">
+            <div class="element-browser-body">
+                {tree -> f:format.raw()}
+            </div>
+        </div>
+    </f:if>
+    <div class="element-browser-main-content">
+        <div class="element-browser-body">
+            {recordList -> f:format.raw()}
+        </div>
+    </div>
 </div>

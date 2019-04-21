@@ -5,48 +5,48 @@
 <p>{manual.content -> f:format.raw()}</p>
 
 <f:if condition="{manual.configuration.details}">
-	<h3>
-		<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:details" />
-	</h3>
-	{manual.configuration.details -> f:format.stripTags(allowedTags:'<strong><em><b><i>') -> f:format.nl2br()}
+    <h3>
+        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:details" />
+    </h3>
+    {manual.configuration.details -> f:format.stripTags(allowedTags:'<strong><em><b><i>') -> f:format.nl2br()}
 </f:if>
 
 <f:if condition="{manual.configuration.syntax}">
-	<h3>
-		<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:syntax" />
-	</h3>
-	{manual.configuration.syntax -> f:format.raw()}
+    <h3>
+        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:syntax" />
+    </h3>
+    {manual.configuration.syntax -> f:format.raw()}
 </f:if>
 
 <f:if condition="{manual.images}">
-	<f:for each="{manual.images}" as="image">
-		<div>
-			<img src="../{image.image}" class="img-responsive" />
-			<f:if condition="{image.description}">
-				<p>{image.description}</p>
-			</f:if>
-		</div>
-	</f:for>
-	{manual.configuration.syntax -> f:format.raw()}
+    <f:for each="{manual.images}" as="image">
+        <div>
+            <img src="../{image.image}" class="img-responsive" />
+            <f:if condition="{image.description}">
+                <p>{image.description}</p>
+            </f:if>
+        </div>
+    </f:for>
+    {manual.configuration.syntax -> f:format.raw()}
 </f:if>
 
 <f:if condition="{manual.seeAlso}">
-	<h3>
-		<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:seeAlso" />
-	</h3>
-	<ul>
-		<f:for each="{manual.seeAlso}" as="link">
-			<li>
-				<f:if condition="{link.internal}">
-					<f:then>
-						<f:link.action action="detail" arguments="{link.arguments}">{link.title}</f:link.action>
-					</f:then>
-					<f:else>
-						<a href="{link.url}" target="{link.target}">{link.title}</a>
-					</f:else>
-				</f:if>
+    <h3>
+        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:seeAlso" />
+    </h3>
+    <ul>
+        <f:for each="{manual.seeAlso}" as="link">
+            <li>
+                <f:if condition="{link.internal}">
+                    <f:then>
+                        <f:link.action action="detail" arguments="{link.arguments}">{link.title}</f:link.action>
+                    </f:then>
+                    <f:else>
+                        <a href="{link.url}" target="{link.target}">{link.title}</a>
+                    </f:else>
+                </f:if>
 
-			</li>
-		</f:for>
-	</ul>
+            </li>
+        </f:for>
+    </ul>
 </f:if>

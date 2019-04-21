@@ -3,42 +3,42 @@
 <f:layout name="main" />
 
 <f:section name="headline">
-	<h1><f:translate key="getExtensions">Get Extensions</f:translate></h1>
+    <h1><f:translate key="getExtensions">Get Extensions</f:translate></h1>
 </f:section>
 
 <f:section name="content">
-	<f:render partial="List/UploadForm" />
+    <f:render partial="List/UploadForm" />
 
-	<div class="row">
-		<div class="col-sm-6">
-			<f:form class="typo3-extensionmanager-searchTerForm form-inline" action="ter">
-				<div class="input-group">
-					<f:form.textfield name="search" value="{search}" class="form-control" />
-					<span class="input-group-btn">
-						<f:form.submit class="btn btn-default" value="{f:translate(key:'searchTemplate.submitButton')}"/>
-					</span>
-				</div>
-			</f:form>
-		</div>
-		<div class="col-sm-6">
-			<div class="pull-right">
-				<f:render partial="List/UpdateFromTer" />
-			</div>
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-sm-6">
+            <f:form class="typo3-extensionmanager-searchTerForm form-inline" action="ter">
+                <div class="input-group">
+                    <f:form.textfield name="search" value="{search}" class="form-control" />
+                    <span class="input-group-btn">
+                        <f:form.submit class="btn btn-default" value="{f:translate(key:'searchTemplate.submitButton')}"/>
+                    </span>
+                </div>
+            </f:form>
+        </div>
+        <div class="col-sm-6">
+            <div class="pull-right">
+                <f:render partial="List/UpdateFromTer" />
+            </div>
+        </div>
+    </div>
 
-	<div id="terTableWrapper">
-		<f:if condition="{search}">
-			<f:then>
-				<table id="terSearchTable" class="table table-striped table-hover typo3-extension-list">
-					<f:render partial="List/TerTable" arguments="{paginatedExtensions:extensions, availableAndInstalled:availableAndInstalled}" />
-				</table>
-			</f:then>
-			<f:else>
-				<f:render partial="List/TerPaginator" arguments="{extensions:extensions, showVersionList:showVersionList,  availableAndInstalled:availableAndInstalled}" />
-			</f:else>
-		</f:if>
-		<div class="splash-receivedata x-mask-loading"><core:icon identifier="spinner-circle-dark" /> <f:translate key="extensionList.updateFromTer.label"/></div>
-	</div>
+    <div id="terTableWrapper">
+        <f:if condition="{search}">
+            <f:then>
+                <table id="terSearchTable" class="table table-striped table-hover typo3-extension-list">
+                    <f:render partial="List/TerTable" arguments="{paginatedExtensions:extensions, availableAndInstalled:availableAndInstalled}" />
+                </table>
+            </f:then>
+            <f:else>
+                <f:render partial="List/TerPaginator" arguments="{extensions:extensions, showVersionList:showVersionList,  availableAndInstalled:availableAndInstalled}" />
+            </f:else>
+        </f:if>
+        <div class="splash-receivedata x-mask-loading"><core:icon identifier="spinner-circle-dark" /> <f:translate key="extensionList.updateFromTer.label"/></div>
+    </div>
 
 </f:section>

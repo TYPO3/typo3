@@ -1,12 +1,12 @@
 <f:render partial="TaskList" arguments="{tasks: tasks, moduleUri: moduleUri, missingClasses: missingClasses}" />
 
 <button class="btn btn-default" name="go_cron" id="scheduler_executeselected">
-	<core:icon identifier="extensions-scheduler-run-task-cron" />
-	<f:translate key="label.cronjobSelected" />
+    <core:icon identifier="extensions-scheduler-run-task-cron" />
+    <f:translate key="label.cronjobSelected" />
 </button>
 <button class="btn btn-default" name="go" id="scheduler_executeselected">
-	<core:icon identifier="extensions-scheduler-run-task" />
-	<f:translate key="label.executeSelected" />
+    <core:icon identifier="extensions-scheduler-run-task" />
+    <f:translate key="label.executeSelected" />
 </button>
 
 <f:render partial="ServerTime" arguments="{now: now}" />

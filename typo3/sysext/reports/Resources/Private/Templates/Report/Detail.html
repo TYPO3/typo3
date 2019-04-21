@@ -1,14 +1,14 @@
 <f:layout name="Default" />
 
 <f:section name="content">
-	<h1><f:translate key="title" /></h1>
+    <h1><f:translate key="title" /></h1>
 
-	<f:if condition="{error}">
-		<f:then>
-			{error}
-		</f:then>
-		<f:else>
-			<f:format.html parseFuncTSPath="">{content -> f:format.raw()}</f:format.html>
-		</f:else>
-	</f:if>
+    <f:if condition="{error}">
+        <f:then>
+            {error}
+        </f:then>
+        <f:else>
+            <f:format.html parseFuncTSPath="">{content -> f:format.raw()}</f:format.html>
+        </f:else>
+    </f:if>
 </f:section>

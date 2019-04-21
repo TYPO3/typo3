@@ -6,235 +6,235 @@
     data-namespace-typo3-fluid="true">
 
 <f:if condition="{constraint.groupByPage}">
-	<div>
-		<h2>
-			<f:translate key="overview" />
-		</h2>
-		<f:translate
-			key="timeInfo"
-			arguments="{
-				0: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
-				1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
-			}"
-		/>
-		<p>
-			<f:for each="{groupedLogEntries}" as="pidEntry" key="pid">
-				<f:if condition="{pid} > 0">
-					<br />
-					<f:translate
-						key="pagenameWithUID"
-						arguments="{
-							0: '{belog:be.pagePath(pid:\'{pid}\')}',
-							1: '{pid}'
-						}"
-					/>
-				</f:if>
-			</f:for>
-		</p>
-	</div>
+    <div>
+        <h2>
+            <f:translate key="overview" />
+        </h2>
+        <f:translate
+            key="timeInfo"
+            arguments="{
+                0: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
+                1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
+            }"
+        />
+        <p>
+            <f:for each="{groupedLogEntries}" as="pidEntry" key="pid">
+                <f:if condition="{pid} > 0">
+                    <br />
+                    <f:translate
+                        key="pagenameWithUID"
+                        arguments="{
+                            0: '{belog:be.pagePath(pid:\'{pid}\')}',
+                            1: '{pid}'
+                        }"
+                    />
+                </f:if>
+            </f:for>
+        </p>
+    </div>
 </f:if>
 
 <f:for each="{groupedLogEntries}" as="pidEntry" key="pid">
-	<div>
-		<h2>
-			<f:if condition="{constraint.groupByPage}">
-				<f:then>
-					<f:if condition="{pid} < 1">
-						<f:then>
-							<f:if condition="{pid} == -1">
-								<f:translate
-									key="logForNonPageRelatedActionsOrRootLevelOrPage"
-									arguments="{
-										0: '{f:translate(key:\'forNonPageRelatedActions\')}',
-										1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
-										2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
-									}"
-								/>
-							</f:if>
-							<f:if condition="{pid} == 0">
-								<f:translate
-									key="logForNonPageRelatedActionsOrRootLevelOrPage"
-									arguments="{
-										0: '{f:translate(key:\'forRootLevel\')}',
-										1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
-										2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
-									}"
-								/>
-							</f:if>
-						</f:then>
-						<f:else>
-							<f:comment>
-								Nest view helpers three times:
-								1. Feed pid as argument to be.pagePath
-								2. Use this as argument for 'forPage' translate
-								3. Use this as argument for 'logForNonPageRelatedActionsOrRootLevelOrPage' translate
-							</f:comment>
-							<f:translate
-								key="logForNonPageRelatedActionsOrRootLevelOrPage"
-								arguments="{
-									0: '{f:translate(
-										key:\'forPage\',
-										arguments:\'{
-											0:\\\'{belog:be.pagePath(pid:\\\\\\\'{pid}\\\\\\\')}\\\',
-											1:\\\'{pid}\\\'
-										}\'
-									)}',
-									1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
-									2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
-								}"
-							/>
-						</f:else>
-					</f:if>
-				</f:then>
-				<f:else>
-					<f:translate
-						key="logForNonPageRelatedActionsOrRootLevelOrPage"
-						arguments="{
-							0: '',
-							1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
-							2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
-						}"
-					/>
-				</f:else>
-			</f:if>
-		</h2>
-		<f:for each="{pidEntry}" as="day" key="dayTimestamp">
-			<h3>
-				<f:format.date format="{settings.dateFormat}">@{dayTimestamp}</f:format.date>
-			</h3>
+    <div>
+        <h2>
+            <f:if condition="{constraint.groupByPage}">
+                <f:then>
+                    <f:if condition="{pid} < 1">
+                        <f:then>
+                            <f:if condition="{pid} == -1">
+                                <f:translate
+                                    key="logForNonPageRelatedActionsOrRootLevelOrPage"
+                                    arguments="{
+                                        0: '{f:translate(key:\'forNonPageRelatedActions\')}',
+                                        1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
+                                        2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
+                                    }"
+                                />
+                            </f:if>
+                            <f:if condition="{pid} == 0">
+                                <f:translate
+                                    key="logForNonPageRelatedActionsOrRootLevelOrPage"
+                                    arguments="{
+                                        0: '{f:translate(key:\'forRootLevel\')}',
+                                        1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
+                                        2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
+                                    }"
+                                />
+                            </f:if>
+                        </f:then>
+                        <f:else>
+                            <f:comment>
+                                Nest view helpers three times:
+                                1. Feed pid as argument to be.pagePath
+                                2. Use this as argument for 'forPage' translate
+                                3. Use this as argument for 'logForNonPageRelatedActionsOrRootLevelOrPage' translate
+                            </f:comment>
+                            <f:translate
+                                key="logForNonPageRelatedActionsOrRootLevelOrPage"
+                                arguments="{
+                                    0: '{f:translate(
+                                        key:\'forPage\',
+                                        arguments:\'{
+                                            0:\\\'{belog:be.pagePath(pid:\\\\\\\'{pid}\\\\\\\')}\\\',
+                                            1:\\\'{pid}\\\'
+                                        }\'
+                                    )}',
+                                    1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
+                                    2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
+                                }"
+                            />
+                        </f:else>
+                    </f:if>
+                </f:then>
+                <f:else>
+                    <f:translate
+                        key="logForNonPageRelatedActionsOrRootLevelOrPage"
+                        arguments="{
+                            0: '',
+                            1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
+                            2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
+                        }"
+                    />
+                </f:else>
+            </f:if>
+        </h2>
+        <f:for each="{pidEntry}" as="day" key="dayTimestamp">
+            <h3>
+                <f:format.date format="{settings.dateFormat}">@{dayTimestamp}</f:format.date>
+            </h3>
 
-			<div class="table-fit">
-				<table class="table table-striped table-hover">
-					<thead>
-						<tr>
-							<th>
-								<f:translate key="chLog_l_error"/>
-							</th>
-							<th>
-								<f:translate key="chLog_l_time"/>
-							</th>
-							<th colspan="2">
-								<f:translate key="chLog_l_user"/>
-							</th>
-							<th>
-								<f:if condition="{isSubmoduleLayout}">
-									<f:then>
-										<f:translate key="chLog_l_table"/>
-									</f:then>
-									<f:else>
-										<f:translate key="chLog_l_types"/>
-									</f:else>
-								</f:if>
-							</th>
-							<th>
-								<f:translate key="chLog_l_action"/>
-							</th>
-							<th>
-								<f:translate key="chLog_l_details"/>
-							</th>
-							<th>
-								<f:translate key="actions"/>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<f:for each="{day}" as="logItem">
-							<tr>
-								<td>
-									<f:if condition="{logItem.errorIconClass}">
-										<core:icon identifier="{logItem.errorIconClass}" />
-									</f:if>
-								</td>
-								<td>
-									<f:format.date format="H:i:s">@{logItem.tstamp}</f:format.date>
-								</td>
-								<td>
-									<f:if condition="{belog:username(uid:logItem.backendUserUid)}">
-										<be:avatar backendUser="{logItem.backendUserUid}" showIcon="true"/>
-									</f:if>
-								</td>
-								<td>
-									<f:if condition="{belog:username(uid:logItem.backendUserUid)}">
-										<f:then>
-											<belog:username uid="{logItem.backendUserUid}"/>
-										</f:then>
-										<f:else>[{logItem.backendUserUid}]</f:else>
-									</f:if>
-									<f:if condition="{logItem.logData.originalUser}">
-										({f:translate(key:'viaUser')}
-										<f:if condition="{belog:username(uid:logItem.logData.originalUser)}">
-											<f:then>
-												<belog:username uid="{logItem.logData.originalUser}"/>
-											</f:then>
-											<f:else>[{logItem.logData.originalUser}]</f:else>
-										</f:if>
-										)
-									</f:if>
-									<br>
-									<span class="text-muted">
-										<f:if condition="{belog:workspaceTitle(uid:logItem.workspaceUid)}">
-											<f:then><belog:workspaceTitle uid="{logItem.workspaceUid}"/></f:then>
-											<f:else>[{logItem.workspaceUid}]</f:else>
-										</f:if>
-									</span>
-								</td>
-								<td>
-									<f:if condition="{isSubmoduleLayout}">
-										<f:then>
-											{logItem.tableName}
-										</f:then>
-										<f:else>
-											<f:if condition="{f:translate(key:'type_{logItem.type}')}">
-												<f:then>
-													<f:translate key="type_{logItem.type}"/>
-												</f:then>
-												<f:else>
-													[{logItem.type}]
-												</f:else>
-											</f:if>
-										</f:else>
-									</f:if>
-								</td>
-								<td>
-									<f:if condition="{f:translate(key:'action_{logItem.type}_{logItem.action}')}">
-										<f:then>
-											<f:translate key="action_{logItem.type}_{logItem.action}"/>
-										</f:then>
-										<f:else>
-											[{logItem.action}]
-										</f:else>
-									</f:if>
-								</td>
-								<td class="col-word-break">
-									<belog:formatDetails logEntry="{logItem}"/>
-									<f:if condition="{logItem.logData.history}">
-										<a href="{be:moduleLink(route: 'record_history', arguments: '{historyEntry: logItem.logData.history}')}" title="{f:translate(key: 'showHistory')}">
-											<core:icon identifier="actions-document-history-open" />
-										</a>
-									</f:if>
-									<f:if condition="{logItem.detailsNumber} > 0">
-										(msg#{logItem.type}.{logItem.action}.{logItem.detailsNumber})
-									</f:if>
-								</td>
-								<td>
-									<f:if condition="{logItem.error} == 1">
-										<f:link.action action="deleteMessage" arguments="{errorUid:logItem.uid}" class="btn btn-warning">
-											<f:translate key="actions.deleteWarnings"/>
-										</f:link.action>
-									</f:if>
-									<f:if condition="{logItem.error} == 2">
-										<f:link.action action="deleteMessage" arguments="{errorUid:logItem.uid}" class="btn btn-danger">
-											<f:translate key="actions.delete"/>
-										</f:link.action>
-									</f:if>
-								</td>
-							</tr>
-						</f:for>
-					</tbody>
-				</table>
-			</div>
-		</f:for>
-	</div>
+            <div class="table-fit">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                <f:translate key="chLog_l_error"/>
+                            </th>
+                            <th>
+                                <f:translate key="chLog_l_time"/>
+                            </th>
+                            <th colspan="2">
+                                <f:translate key="chLog_l_user"/>
+                            </th>
+                            <th>
+                                <f:if condition="{isSubmoduleLayout}">
+                                    <f:then>
+                                        <f:translate key="chLog_l_table"/>
+                                    </f:then>
+                                    <f:else>
+                                        <f:translate key="chLog_l_types"/>
+                                    </f:else>
+                                </f:if>
+                            </th>
+                            <th>
+                                <f:translate key="chLog_l_action"/>
+                            </th>
+                            <th>
+                                <f:translate key="chLog_l_details"/>
+                            </th>
+                            <th>
+                                <f:translate key="actions"/>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <f:for each="{day}" as="logItem">
+                            <tr>
+                                <td>
+                                    <f:if condition="{logItem.errorIconClass}">
+                                        <core:icon identifier="{logItem.errorIconClass}" />
+                                    </f:if>
+                                </td>
+                                <td>
+                                    <f:format.date format="H:i:s">@{logItem.tstamp}</f:format.date>
+                                </td>
+                                <td>
+                                    <f:if condition="{belog:username(uid:logItem.backendUserUid)}">
+                                        <be:avatar backendUser="{logItem.backendUserUid}" showIcon="true"/>
+                                    </f:if>
+                                </td>
+                                <td>
+                                    <f:if condition="{belog:username(uid:logItem.backendUserUid)}">
+                                        <f:then>
+                                            <belog:username uid="{logItem.backendUserUid}"/>
+                                        </f:then>
+                                        <f:else>[{logItem.backendUserUid}]</f:else>
+                                    </f:if>
+                                    <f:if condition="{logItem.logData.originalUser}">
+                                        ({f:translate(key:'viaUser')}
+                                        <f:if condition="{belog:username(uid:logItem.logData.originalUser)}">
+                                            <f:then>
+                                                <belog:username uid="{logItem.logData.originalUser}"/>
+                                            </f:then>
+                                            <f:else>[{logItem.logData.originalUser}]</f:else>
+                                        </f:if>
+                                        )
+                                    </f:if>
+                                    <br>
+                                    <span class="text-muted">
+                                        <f:if condition="{belog:workspaceTitle(uid:logItem.workspaceUid)}">
+                                            <f:then><belog:workspaceTitle uid="{logItem.workspaceUid}"/></f:then>
+                                            <f:else>[{logItem.workspaceUid}]</f:else>
+                                        </f:if>
+                                    </span>
+                                </td>
+                                <td>
+                                    <f:if condition="{isSubmoduleLayout}">
+                                        <f:then>
+                                            {logItem.tableName}
+                                        </f:then>
+                                        <f:else>
+                                            <f:if condition="{f:translate(key:'type_{logItem.type}')}">
+                                                <f:then>
+                                                    <f:translate key="type_{logItem.type}"/>
+                                                </f:then>
+                                                <f:else>
+                                                    [{logItem.type}]
+                                                </f:else>
+                                            </f:if>
+                                        </f:else>
+                                    </f:if>
+                                </td>
+                                <td>
+                                    <f:if condition="{f:translate(key:'action_{logItem.type}_{logItem.action}')}">
+                                        <f:then>
+                                            <f:translate key="action_{logItem.type}_{logItem.action}"/>
+                                        </f:then>
+                                        <f:else>
+                                            [{logItem.action}]
+                                        </f:else>
+                                    </f:if>
+                                </td>
+                                <td class="col-word-break">
+                                    <belog:formatDetails logEntry="{logItem}"/>
+                                    <f:if condition="{logItem.logData.history}">
+                                        <a href="{be:moduleLink(route: 'record_history', arguments: '{historyEntry: logItem.logData.history}')}" title="{f:translate(key: 'showHistory')}">
+                                            <core:icon identifier="actions-document-history-open" />
+                                        </a>
+                                    </f:if>
+                                    <f:if condition="{logItem.detailsNumber} > 0">
+                                        (msg#{logItem.type}.{logItem.action}.{logItem.detailsNumber})
+                                    </f:if>
+                                </td>
+                                <td>
+                                    <f:if condition="{logItem.error} == 1">
+                                        <f:link.action action="deleteMessage" arguments="{errorUid:logItem.uid}" class="btn btn-warning">
+                                            <f:translate key="actions.deleteWarnings"/>
+                                        </f:link.action>
+                                    </f:if>
+                                    <f:if condition="{logItem.error} == 2">
+                                        <f:link.action action="deleteMessage" arguments="{errorUid:logItem.uid}" class="btn btn-danger">
+                                            <f:translate key="actions.delete"/>
+                                        </f:link.action>
+                                    </f:if>
+                                </td>
+                            </tr>
+                        </f:for>
+                    </tbody>
+                </table>
+            </div>
+        </f:for>
+    </div>
 </f:for>
 
 </html>

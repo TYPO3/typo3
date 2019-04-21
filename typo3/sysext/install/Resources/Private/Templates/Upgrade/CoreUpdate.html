@@ -2,36 +2,36 @@
 
 <p>Automatically updates the TYPO3 CMS core to its latest minor release if these criteria are met:</p>
 <ul>
-	<li>It only works under Unix and MacOS (support of symbolic links is required).</li>
-	<li><code>typo3_src</code> must be a symbolic link to the extracted TYPO3 source directory.</li>
-	<li>The symbolic link needs to be writable (and deletable) by the web server user.</li>
-	<li>The document root directory needs to be writable.</li>
-	<li>One path above document root (<code>../</code>) needs to be writable (new directories will be created).</li>
-	<li>The <code>tar</code> command must be available for extracting the TYPO3 source package.</li>
+    <li>It only works under Unix and MacOS (support of symbolic links is required).</li>
+    <li><code>typo3_src</code> must be a symbolic link to the extracted TYPO3 source directory.</li>
+    <li>The symbolic link needs to be writable (and deletable) by the web server user.</li>
+    <li>The document root directory needs to be writable.</li>
+    <li>One path above document root (<code>../</code>) needs to be writable (new directories will be created).</li>
+    <li>The <code>tar</code> command must be available for extracting the TYPO3 source package.</li>
 </ul>
 
 <div class="t3js-coreUpdate-output">
-	<f:if condition="!{coreUpdateComposerMode} && {coreUpdateEnabled} && {coreUpdateIsReleasedVersion} && {coreUpdateIsSymLinkedCore}">
-		<f:then>
-			<div class="t3js-coreUpdate-buttonTemplate">
-				<button class="btn btn-warning t3js-coreUpdate-init" type="submit" name="coreUpdateCheckForUpdate"
-					data-action="checkForUpdate"
-				>
-					Check for core updates
-				</button>
-			</div>
-		</f:then>
-		<f:else>
-			<f:be.infobox title="This feature is disabled in this installation">
-				<p>
-					<f:if condition="{coreUpdateComposerMode}">Composer Mode is active. Please update using composer commands.<br></f:if>
-					<f:if condition="!{coreUpdateEnabled}">The environment variable was set <code>TYPO3_DISABLE_CORE_UPDATER=1</code>.<br></f:if>
-					<f:if condition="!{coreUpdateIsReleasedVersion}">This system uses an unreleased TYPO3 core version.<br></f:if>
-					<f:if condition="!{coreUpdateIsSymLinkedCore}">This action can only be used with a linked <code>typo3_src</code>.</f:if>
-				</p>
-			</f:be.infobox>
-		</f:else>
-	</f:if>
+    <f:if condition="!{coreUpdateComposerMode} && {coreUpdateEnabled} && {coreUpdateIsReleasedVersion} && {coreUpdateIsSymLinkedCore}">
+        <f:then>
+            <div class="t3js-coreUpdate-buttonTemplate">
+                <button class="btn btn-warning t3js-coreUpdate-init" type="submit" name="coreUpdateCheckForUpdate"
+                    data-action="checkForUpdate"
+                >
+                    Check for core updates
+                </button>
+            </div>
+        </f:then>
+        <f:else>
+            <f:be.infobox title="This feature is disabled in this installation">
+                <p>
+                    <f:if condition="{coreUpdateComposerMode}">Composer Mode is active. Please update using composer commands.<br></f:if>
+                    <f:if condition="!{coreUpdateEnabled}">The environment variable was set <code>TYPO3_DISABLE_CORE_UPDATER=1</code>.<br></f:if>
+                    <f:if condition="!{coreUpdateIsReleasedVersion}">This system uses an unreleased TYPO3 core version.<br></f:if>
+                    <f:if condition="!{coreUpdateIsSymLinkedCore}">This action can only be used with a linked <code>typo3_src</code>.</f:if>
+                </p>
+            </f:be.infobox>
+        </f:else>
+    </f:if>
 </div>
 
 </html>

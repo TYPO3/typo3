@@ -1,127 +1,127 @@
 <html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:i="http://typo3.org/ns/TYPO3/CMS/Install/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <f:if condition="{context} == 'backend'">
-	<f:then>
-		<div class="module" data-module-id="" data-module-name="">
-			<div class="module-docheader t3js-module-docheader" style="height: auto;">
-				<div class="module-docheader-bar module-docheader-bar-navigation t3js-module-docheader-bar t3js-module-docheader-bar-navigation row" style="height: auto;">
-					<div class="module-docheader-bar-column-left col-xs-12 col-sm-4 col-md-3">
-						<div class="form-inline row"></div>
-					</div>
-					<div class="module-docheader-bar module-docheader-bar-buttons t3js-module-docheader-bar t3js-module-docheader-bar-buttons" style="height: auto;">
-						<div class="module-docheader-bar-column-left">
-							<div class="btn-toolbar" role="toolbar" aria-label=""></div>
-						</div>
-						<div class="module-docheader-bar-column-right"></div>
-					</div>
-				</div>
-			</div>
-			<div class="module-body t3js-module-body" style="padding-top: 89px;">
-				<div id="t3js-ui-block" class="ui-block">
-					<core:icon identifier="spinner-circle" size="large" />
-					<h2 id="t3js-ui-block-detail">Loading cards</h2>
-				</div>
-			</div>
-		</div>
-	</f:then>
+    <f:then>
+        <div class="module" data-module-id="" data-module-name="">
+            <div class="module-docheader t3js-module-docheader" style="height: auto;">
+                <div class="module-docheader-bar module-docheader-bar-navigation t3js-module-docheader-bar t3js-module-docheader-bar-navigation row" style="height: auto;">
+                    <div class="module-docheader-bar-column-left col-xs-12 col-sm-4 col-md-3">
+                        <div class="form-inline row"></div>
+                    </div>
+                    <div class="module-docheader-bar module-docheader-bar-buttons t3js-module-docheader-bar t3js-module-docheader-bar-buttons" style="height: auto;">
+                        <div class="module-docheader-bar-column-left">
+                            <div class="btn-toolbar" role="toolbar" aria-label=""></div>
+                        </div>
+                        <div class="module-docheader-bar-column-right"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="module-body t3js-module-body" style="padding-top: 89px;">
+                <div id="t3js-ui-block" class="ui-block">
+                    <core:icon identifier="spinner-circle" size="large" />
+                    <h2 id="t3js-ui-block-detail">Loading cards</h2>
+                </div>
+            </div>
+        </div>
+    </f:then>
 
-	<f:else>
-		<div class="scaffold t3js-scaffold scaffold-modulemenu-expanded">
-			<div class="t3js-scaffold-header">
-				<div class="scaffold-topbar t3js-scaffold-topbar">
-					<div class="topbar">
-						<div class="topbar-header t3js-topbar-header" style="padding-left: 0">
-							<div class="topbar-header-site">
-								<a href="" target="_top" title="TYPO3.CMS">
-									<span class="topbar-header-site-logo">
-										<img src="{f:uri.resource(path: 'Images/typo3_logo_orange.svg')}" width="22" height="22" title="TYPO3 Content Management System" alt="">
-									</span>
-									<span class="topbar-header-site-title">
-										<span class="topbar-header-site-name">Admin tool on site: {siteName}</span>
-										<span class="topbar-header-site-version">TYPO3 CMS <i:constant name="TYPO3_version" /></span>
-									</span>
-								</a>
-								<button type="button" class="btn btn-default btn-danger pull-right t3js-login-lockInstallTool" style="margin-top: 7px; margin-right: 15px;">
-									<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-logout" data-identifier="actions-logout">
-										<span class="icon-markup">
-											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g class="icon-color"><path d="M9 10v4H2V2h7v4h1V1.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5V10H9z"></path><path d="M10.983 5.041a.5.5 0 0 1 .812-.39l3.7 2.96a.5.5 0 0 1 0 .78l-3.7 2.96a.5.5 0 0 1-.812-.39V9H6V7h4.983V5.041z"></path></g></svg>
-										</span>
-									</span>
-									Logout
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+    <f:else>
+        <div class="scaffold t3js-scaffold scaffold-modulemenu-expanded">
+            <div class="t3js-scaffold-header">
+                <div class="scaffold-topbar t3js-scaffold-topbar">
+                    <div class="topbar">
+                        <div class="topbar-header t3js-topbar-header" style="padding-left: 0">
+                            <div class="topbar-header-site">
+                                <a href="" target="_top" title="TYPO3.CMS">
+                                    <span class="topbar-header-site-logo">
+                                        <img src="{f:uri.resource(path: 'Images/typo3_logo_orange.svg')}" width="22" height="22" title="TYPO3 Content Management System" alt="">
+                                    </span>
+                                    <span class="topbar-header-site-title">
+                                        <span class="topbar-header-site-name">Admin tool on site: {siteName}</span>
+                                        <span class="topbar-header-site-version">TYPO3 CMS <i:constant name="TYPO3_version" /></span>
+                                    </span>
+                                </a>
+                                <button type="button" class="btn btn-default btn-danger pull-right t3js-login-lockInstallTool" style="margin-top: 7px; margin-right: 15px;">
+                                    <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-logout" data-identifier="actions-logout">
+                                        <span class="icon-markup">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g class="icon-color"><path d="M9 10v4H2V2h7v4h1V1.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5V10H9z"></path><path d="M10.983 5.041a.5.5 0 0 1 .812-.39l3.7 2.96a.5.5 0 0 1 0 .78l-3.7 2.96a.5.5 0 0 1-.812-.39V9H6V7h4.983V5.041z"></path></g></svg>
+                                        </span>
+                                    </span>
+                                    Logout
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-			<div class="scaffold-modulemenu t3js-scaffold-modulemenu">
-				<div class="modulemenu t3js-modulemenu">
-					<ul class="nav nav-modules" data-role="modulemenu" id="menu">
-						<li class="modulemenu-group expanded" id="web" data-modulename="web" data-navigationcomponentid="" data-navigationframescript="" data-navigationframescriptparameters="">
-							<div class="modulemenu-group-header">
-								<span class="modulemenu-icon modulemenu-group-icon">
-									<span class="t3js-icon icon icon-size-default icon-state-default icon-module-tools" data-identifier="module-tools">
-										<span class="icon-markup">
-											<core:icon identifier="module-tools" size="default"/>
-										</span>
-									</span>
-								</span>
-								<span class="modulemenu-group-title">
-									Admin Tools
-								</span>
-							</div>
-							<ul class="modulemenu-group-container">
-								<f:render partial="Layout/MenuModuleLink" arguments="{controller: 'maintenance', label: 'Maintenance'}" />
-								<f:render partial="Layout/MenuModuleLink" arguments="{controller: 'settings', label: 'Settings'}" />
-								<f:render partial="Layout/MenuModuleLink" arguments="{controller: 'upgrade', label: 'Upgrade'}" />
-								<f:render partial="Layout/MenuModuleLink" arguments="{controller: 'environment', label: 'Environment'}" />
-							</ul>
-						</li>
-						<li class="modulemenu-group expanded" id="context" data-modulename="context" data-navigationcomponentid="" data-navigationframescript="" data-navigationframescriptparameters="">
-							<ul class="modulemenu-group-container">
-								<li class="modulemenu-item t3js-mainmodule ">
-									<a class="modulemenu-item-link" href="index.php">
-										<span class="modulemenu-icon modulemenu-item-icon">
-											<span class="t3js-icon icon icon-size-default icon-state-default">
-												<span class="icon-markup">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g class="icon-color"><path d="M9 10v4H2V2h7v4h1V1.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5V10H9z"></path><path d="M10.983 5.041a.5.5 0 0 1 .812-.39l3.7 2.96a.5.5 0 0 1 0 .78l-3.7 2.96a.5.5 0 0 1-.812-.39V9H6V7h4.983V5.041z"></path></g></svg>
-												</span>
-											</span>
-										</span>
-										<span class="modulemenu-item-title">Backend admin</span>
-									</a>
-								</li>
-								<li class="modulemenu-item t3js-mainmodule ">
-									<a class="modulemenu-item-link" href="../index.php">
-										<span class="modulemenu-icon modulemenu-item-icon">
-											<span class="t3js-icon icon icon-size-default icon-state-default">
-												<span class="icon-markup">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g class="icon-color"><path d="M9 10v4H2V2h7v4h1V1.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5V10H9z"></path><path d="M10.983 5.041a.5.5 0 0 1 .812-.39l3.7 2.96a.5.5 0 0 1 0 .78l-3.7 2.96a.5.5 0 0 1-.812-.39V9H6V7h4.983V5.041z"></path></g></svg>
-												</span>
-											</span>
-										</span>
-										<span class="modulemenu-item-title">Frontend website</span>
-									</a>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-			</div>
+            <div class="scaffold-modulemenu t3js-scaffold-modulemenu">
+                <div class="modulemenu t3js-modulemenu">
+                    <ul class="nav nav-modules" data-role="modulemenu" id="menu">
+                        <li class="modulemenu-group expanded" id="web" data-modulename="web" data-navigationcomponentid="" data-navigationframescript="" data-navigationframescriptparameters="">
+                            <div class="modulemenu-group-header">
+                                <span class="modulemenu-icon modulemenu-group-icon">
+                                    <span class="t3js-icon icon icon-size-default icon-state-default icon-module-tools" data-identifier="module-tools">
+                                        <span class="icon-markup">
+                                            <core:icon identifier="module-tools" size="default"/>
+                                        </span>
+                                    </span>
+                                </span>
+                                <span class="modulemenu-group-title">
+                                    Admin Tools
+                                </span>
+                            </div>
+                            <ul class="modulemenu-group-container">
+                                <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'maintenance', label: 'Maintenance'}" />
+                                <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'settings', label: 'Settings'}" />
+                                <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'upgrade', label: 'Upgrade'}" />
+                                <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'environment', label: 'Environment'}" />
+                            </ul>
+                        </li>
+                        <li class="modulemenu-group expanded" id="context" data-modulename="context" data-navigationcomponentid="" data-navigationframescript="" data-navigationframescriptparameters="">
+                            <ul class="modulemenu-group-container">
+                                <li class="modulemenu-item t3js-mainmodule ">
+                                    <a class="modulemenu-item-link" href="index.php">
+                                        <span class="modulemenu-icon modulemenu-item-icon">
+                                            <span class="t3js-icon icon icon-size-default icon-state-default">
+                                                <span class="icon-markup">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g class="icon-color"><path d="M9 10v4H2V2h7v4h1V1.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5V10H9z"></path><path d="M10.983 5.041a.5.5 0 0 1 .812-.39l3.7 2.96a.5.5 0 0 1 0 .78l-3.7 2.96a.5.5 0 0 1-.812-.39V9H6V7h4.983V5.041z"></path></g></svg>
+                                                </span>
+                                            </span>
+                                        </span>
+                                        <span class="modulemenu-item-title">Backend admin</span>
+                                    </a>
+                                </li>
+                                <li class="modulemenu-item t3js-mainmodule ">
+                                    <a class="modulemenu-item-link" href="../index.php">
+                                        <span class="modulemenu-icon modulemenu-item-icon">
+                                            <span class="t3js-icon icon icon-size-default icon-state-default">
+                                                <span class="icon-markup">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g class="icon-color"><path d="M9 10v4H2V2h7v4h1V1.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5V10H9z"></path><path d="M10.983 5.041a.5.5 0 0 1 .812-.39l3.7 2.96a.5.5 0 0 1 0 .78l-3.7 2.96a.5.5 0 0 1-.812-.39V9H6V7h4.983V5.041z"></path></g></svg>
+                                                </span>
+                                            </span>
+                                        </span>
+                                        <span class="modulemenu-item-title">Frontend website</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-			<div class="scaffold-content t3js-scaffold-content" style="padding-top:25px; overflow: auto;">
-				<div class="container-fluid">
-					<div class="t3js-module-body">
-						<div id="t3js-ui-block" class="ui-block">
-							<core:icon identifier="spinner-circle" size="large" />
-							<h2 id="t3js-ui-block-detail">Loading cards</h2>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</f:else>
+            <div class="scaffold-content t3js-scaffold-content" style="padding-top:25px; overflow: auto;">
+                <div class="container-fluid">
+                    <div class="t3js-module-body">
+                        <div id="t3js-ui-block" class="ui-block">
+                            <core:icon identifier="spinner-circle" size="large" />
+                            <h2 id="t3js-ui-block-detail">Loading cards</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </f:else>
 </f:if>
 
 </html>

@@ -1,69 +1,69 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:i="http://typo3.org/ns/TYPO3/CMS/Install/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <div class="panel panel-default panel-flat searchhit">
-	<div class="panel-heading" role="tab" id="heading-{extensionKey}">
-		<h3 class="panel-title">
-			<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-{extensionKey}" aria-expanded="true" aria-controls="collapse-{extensionKey}" class="collapsed">
-				<span class="caret"></span>
-				<strong>{extensionData.packageInfo.packageKey}</strong>
-			</a>
-		</h3>
-	</div>
-	<div id="collapse-{extensionKey}" class="panel-collapse collapse search-item" role="tabpanel" aria-labelledby="heading-{extensionKey}">
-		<div class="panel-body">
-			<div role="tabpanel">
-				<ul class="nav nav-tabs" role="tablist">
-					<f:for each="{extensionData.configuration}" as="category" key="categoryName" iteration="iteration">
-						<f:if condition="{categoryName}">
-							<li role="presentation" class="{f:if(condition:'{iteration.isFirst}', then:'active')}">
-								<a class="text-capitalize" href="#{i:format.noSpace(value:'category-{extensionKey}-{categoryName}')}" aria-controls="category-{extensionKey}-{categoryName}" role="tab" data-toggle="tab">{categoryName}</a>
-							</li>
-						</f:if>
-					</f:for>
-				</ul>
+    <div class="panel-heading" role="tab" id="heading-{extensionKey}">
+        <h3 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-{extensionKey}" aria-expanded="true" aria-controls="collapse-{extensionKey}" class="collapsed">
+                <span class="caret"></span>
+                <strong>{extensionData.packageInfo.packageKey}</strong>
+            </a>
+        </h3>
+    </div>
+    <div id="collapse-{extensionKey}" class="panel-collapse collapse search-item" role="tabpanel" aria-labelledby="heading-{extensionKey}">
+        <div class="panel-body">
+            <div role="tabpanel">
+                <ul class="nav nav-tabs" role="tablist">
+                    <f:for each="{extensionData.configuration}" as="category" key="categoryName" iteration="iteration">
+                        <f:if condition="{categoryName}">
+                            <li role="presentation" class="{f:if(condition:'{iteration.isFirst}', then:'active')}">
+                                <a class="text-capitalize" href="#{i:format.noSpace(value:'category-{extensionKey}-{categoryName}')}" aria-controls="category-{extensionKey}-{categoryName}" role="tab" data-toggle="tab">{categoryName}</a>
+                            </li>
+                        </f:if>
+                    </f:for>
+                </ul>
 
-				<form action="#" name="configurationform" class="t3js-extensionConfiguration-form extensionConfiguration-form" data-extensionKey="{extensionKey}">
-					<div class="tab-content">
-						<f:for each="{extensionData.configuration}" as="subcategories" key="categoryName" iteration="iteration">
-							<f:if condition="{categoryName}">
-								<div role="tabpanel" class="tab-pane {f:if(condition:'{iteration.isFirst}', then:'active')}" id="{i:format.noSpace(value:'category-{extensionKey}-{categoryName}')}">
-									<f:for each="{subcategories}" as="subcategory">
-										<div class="form-section">
-											<f:for each="{subcategory}" as="configurationItem" iteration="itemIterator">
-												<f:if condition="{itemIterator.isFirst}">
-													<h2 class="h4 form-section-headline">{configurationItem.subcat_label}</h2>
-												</f:if>
-												<div class="form-group form-group-dashed">
-													<label for="em-{configurationItem.name}">
-														{configurationItem.labels.0}
-													</label>
-													<p>
-														{categoryName}.{configurationItem.name}
-														<f:if condition="{configurationItem.type} != 'user'">
-															<f:if condition="{configurationItem.type}">
-																({configurationItem.type})
-															</f:if>
-														</f:if>
-													</p>
-													<div class="form-control-wrap">
-														<i:form.typoScriptConstants configuration="{configurationItem}"/>
-													</div>
-													<f:if condition="{configurationItem.labels.1}">
-														<div class="help-block">{configurationItem.labels.1 -> f:format.nl2br()}</div>
-													</f:if>
-												</div>
-											</f:for>
-										</div>
-									</f:for>
-								</div>
-							</f:if>
-						</f:for>
-					</div>
-					<button type="submit" class="btn btn-default" name="save">Save "{extensionKey}" configuration</button>
-				</form>
-			</div>
-		</div>
-	</div>
+                <form action="#" name="configurationform" class="t3js-extensionConfiguration-form extensionConfiguration-form" data-extensionKey="{extensionKey}">
+                    <div class="tab-content">
+                        <f:for each="{extensionData.configuration}" as="subcategories" key="categoryName" iteration="iteration">
+                            <f:if condition="{categoryName}">
+                                <div role="tabpanel" class="tab-pane {f:if(condition:'{iteration.isFirst}', then:'active')}" id="{i:format.noSpace(value:'category-{extensionKey}-{categoryName}')}">
+                                    <f:for each="{subcategories}" as="subcategory">
+                                        <div class="form-section">
+                                            <f:for each="{subcategory}" as="configurationItem" iteration="itemIterator">
+                                                <f:if condition="{itemIterator.isFirst}">
+                                                    <h2 class="h4 form-section-headline">{configurationItem.subcat_label}</h2>
+                                                </f:if>
+                                                <div class="form-group form-group-dashed">
+                                                    <label for="em-{configurationItem.name}">
+                                                        {configurationItem.labels.0}
+                                                    </label>
+                                                    <p>
+                                                        {categoryName}.{configurationItem.name}
+                                                        <f:if condition="{configurationItem.type} != 'user'">
+                                                            <f:if condition="{configurationItem.type}">
+                                                                ({configurationItem.type})
+                                                            </f:if>
+                                                        </f:if>
+                                                    </p>
+                                                    <div class="form-control-wrap">
+                                                        <i:form.typoScriptConstants configuration="{configurationItem}"/>
+                                                    </div>
+                                                    <f:if condition="{configurationItem.labels.1}">
+                                                        <div class="help-block">{configurationItem.labels.1 -> f:format.nl2br()}</div>
+                                                    </f:if>
+                                                </div>
+                                            </f:for>
+                                        </div>
+                                    </f:for>
+                                </div>
+                            </f:if>
+                        </f:for>
+                    </div>
+                    <button type="submit" class="btn btn-default" name="save">Save "{extensionKey}" configuration</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 </html>

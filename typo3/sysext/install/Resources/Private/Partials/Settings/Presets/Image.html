@@ -1,57 +1,57 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <div class="panel panel-default panel-flat">
-	<div class="panel-heading" role="tab" id="headingFour">
-		<h4 class="panel-title">
-			<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour" class="collapsed">
-				<span class="caret"></span>
-				Image handling settings
-			</a>
-		</h4>
-	</div>
-	<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-		<div class="panel-body">
-			<p>
-				Advanced image handling in TYPO3 CMS uses the command line tool
-				GraphicsMagick or ImageMagick. The tool needs to be configured
-				correctly depending on the version that is available on the system.
-			</p>
-			<p>
-				This module detects the available image handling versions and sets
-				the system accordingly. If everything is correctly set up the image
-				tests of the install tool section "Test setup" should be fine.
-			</p>
+    <div class="panel-heading" role="tab" id="headingFour">
+        <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour" class="collapsed">
+                <span class="caret"></span>
+                Image handling settings
+            </a>
+        </h4>
+    </div>
+    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+        <div class="panel-body">
+            <p>
+                Advanced image handling in TYPO3 CMS uses the command line tool
+                GraphicsMagick or ImageMagick. The tool needs to be configured
+                correctly depending on the version that is available on the system.
+            </p>
+            <p>
+                This module detects the available image handling versions and sets
+                the system accordingly. If everything is correctly set up the image
+                tests of the install tool section "Test setup" should be fine.
+            </p>
 
-			<p>
-				If ImageMagick or GraphicsMagick executables are located in an unusual place,
-				set the absolute directory name here.
-			</p>
-			<div class="form-group">
-				<div class="col-sm-12">
-					<div class="input-group">
-						<input
-								type="text"
-								name="install[values][{feature.name}][additionalSearchPath]"
-								value="{feature.additionalSearchPath}"
-								class="form-control t3js-presets-image-executable"
-						/>
-						<div class="input-group-btn">
-							<button
-								class="btn btn-default t3js-presets-image-executable-trigger"
-								type="button"
-							>
-								Find executables in this directory
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
+            <p>
+                If ImageMagick or GraphicsMagick executables are located in an unusual place,
+                set the absolute directory name here.
+            </p>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <div class="input-group">
+                        <input
+                                type="text"
+                                name="install[values][{feature.name}][additionalSearchPath]"
+                                value="{feature.additionalSearchPath}"
+                                class="form-control t3js-presets-image-executable"
+                        />
+                        <div class="input-group-btn">
+                            <button
+                                class="btn btn-default t3js-presets-image-executable-trigger"
+                                type="button"
+                            >
+                                Find executables in this directory
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-			<f:for each="{feature.presetsOrderedByPriority}" as="preset">
-				<f:render partial="Settings/Presets/{feature.name}/{preset.name}" arguments="{_all}" />
-			</f:for>
-		</div>
-	</div>
+            <f:for each="{feature.presetsOrderedByPriority}" as="preset">
+                <f:render partial="Settings/Presets/{feature.name}/{preset.name}" arguments="{_all}" />
+            </f:for>
+        </div>
+    </div>
 </div>
 
 </html>

@@ -1,49 +1,49 @@
 <div role="tabpanel">
-	<ul class="nav nav-tabs t3js-tabs" role="tablist" id="tabs-{id}" data-store-last-tab="{storeLastActiveTab}">
-		<f:for each="{items}" as="item" iteration="iteration">
-			<f:if condition="{item.content}">
-				<li role="presentation" class="t3js-tabmenu-item {f:if(condition: '{iteration.cycle} == {defaultTabIndex}', then: ' active')}">
-					<a href="#{id}-{iteration.cycle}" title="{item.linkTitle}" aria-controls="{id}-{iteration.cycle}" role="tab" data-toggle="tab">
-						<f:if condition="{item.icon}">
-							<f:format.raw>{item.icon}</f:format.raw>
-						</f:if>
-						{item.label}
-						<f:if condition="{item.requiredIcon}">
-							<f:format.raw>{item.requiredIcon}</f:format.raw>
-						</f:if>
-						<f:if condition="{item.stateIcon}">
-							<f:render partial="StateIcon" arguments="{item: item}" />
-						</f:if>
-					</a>
-				</li>
-			</f:if>
-		</f:for>
-	</ul>
-	<div class="tab-content">
-		<f:for each="{items}" as="item" iteration="iteration">
-			<f:if condition="{item.content}">
-				<div role="tabpanel" class="tab-pane{f:if(condition: '{iteration.cycle} == {defaultTabIndex}', then: ' active')}" id="{id}-{iteration.cycle}">
-					<f:if condition="{item.description}">
-						<div class="panel panel-tab">
-							<div class="panel-body">
-								<p><f:format.nl2br>{item.description}</f:format.nl2br></p>
-							</div>
-						</div>
-					</f:if>
-					<f:if condition="{wrapContent}">
-						<f:then>
-							<div class="panel panel-tab">
-								<div class="panel-body">
-									<f:format.raw>{item.content}</f:format.raw>
-								</div>
-							</div>
-						</f:then>
-						<f:else>
-							<f:format.raw>{item.content}</f:format.raw>
-						</f:else>
-					</f:if>
-				</div>
-			</f:if>
-		</f:for>
-	</div>
+    <ul class="nav nav-tabs t3js-tabs" role="tablist" id="tabs-{id}" data-store-last-tab="{storeLastActiveTab}">
+        <f:for each="{items}" as="item" iteration="iteration">
+            <f:if condition="{item.content}">
+                <li role="presentation" class="t3js-tabmenu-item {f:if(condition: '{iteration.cycle} == {defaultTabIndex}', then: ' active')}">
+                    <a href="#{id}-{iteration.cycle}" title="{item.linkTitle}" aria-controls="{id}-{iteration.cycle}" role="tab" data-toggle="tab">
+                        <f:if condition="{item.icon}">
+                            <f:format.raw>{item.icon}</f:format.raw>
+                        </f:if>
+                        {item.label}
+                        <f:if condition="{item.requiredIcon}">
+                            <f:format.raw>{item.requiredIcon}</f:format.raw>
+                        </f:if>
+                        <f:if condition="{item.stateIcon}">
+                            <f:render partial="StateIcon" arguments="{item: item}" />
+                        </f:if>
+                    </a>
+                </li>
+            </f:if>
+        </f:for>
+    </ul>
+    <div class="tab-content">
+        <f:for each="{items}" as="item" iteration="iteration">
+            <f:if condition="{item.content}">
+                <div role="tabpanel" class="tab-pane{f:if(condition: '{iteration.cycle} == {defaultTabIndex}', then: ' active')}" id="{id}-{iteration.cycle}">
+                    <f:if condition="{item.description}">
+                        <div class="panel panel-tab">
+                            <div class="panel-body">
+                                <p><f:format.nl2br>{item.description}</f:format.nl2br></p>
+                            </div>
+                        </div>
+                    </f:if>
+                    <f:if condition="{wrapContent}">
+                        <f:then>
+                            <div class="panel panel-tab">
+                                <div class="panel-body">
+                                    <f:format.raw>{item.content}</f:format.raw>
+                                </div>
+                            </div>
+                        </f:then>
+                        <f:else>
+                            <f:format.raw>{item.content}</f:format.raw>
+                        </f:else>
+                    </f:if>
+                </div>
+            </f:if>
+        </f:for>
+    </div>
 </div>

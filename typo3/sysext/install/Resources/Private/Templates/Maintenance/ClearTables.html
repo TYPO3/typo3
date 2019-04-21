@@ -1,44 +1,44 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <p>
-	Some database tables in TYPO3 CMS hold semi-temporary data that is not deleted when clicking "Clear All Cache" in
-	the backend.
-	Those can be cleared here,
-	effectively removing all rows from it. This can be useful in rare cases.
+    Some database tables in TYPO3 CMS hold semi-temporary data that is not deleted when clicking "Clear All Cache" in
+    the backend.
+    Those can be cleared here,
+    effectively removing all rows from it. This can be useful in rare cases.
 </p>
 <p>
-	Use with care! Clearing tables here can have a negative impact on your site functionality.
-	You could log out all users, delete all their basket data, and lose logging information!
+    Use with care! Clearing tables here can have a negative impact on your site functionality.
+    You could log out all users, delete all their basket data, and lose logging information!
 </p>
 
 <div class="t3js-module-content" data-clear-tables-clear-token="{clearTablesClearToken}">
-	<div class="t3js-clearTables-output"></div>
+    <div class="t3js-clearTables-output"></div>
 
-	<button
-		class="btn btn-default t3js-clearTables-stats"
-		type="button"
-	>
-		Scan again
-	</button>
-	<hr>
+    <button
+        class="btn btn-default t3js-clearTables-stats"
+        type="button"
+    >
+        Scan again
+    </button>
+    <hr>
 
-	<div class="form-group">
-		<div class="t3js-clearTables-stat-container"></div>
-	</div>
+    <div class="form-group">
+        <div class="t3js-clearTables-stat-container"></div>
+    </div>
 
-	<div style="display:none;">
-		<div class="t3js-clearTables-stat-template">
-			<p class="t3js-clearTables-stat-description">{clearTableStatistic.description}</p>
-			<button
-				class="btn btn-warning t3js-clearTables-clear"
-				type="button"
-			>
-				Delete <span class="t3js-clearTables-stat-rows"></span> rows
-				from table "<span class="t3js-clearTables-stat-name"></span>" table
-			</button>
-			<hr class="t3js-clearTables-stat-lastRuler">
-		</div>
-	</div>
+    <div style="display:none;">
+        <div class="t3js-clearTables-stat-template">
+            <p class="t3js-clearTables-stat-description">{clearTableStatistic.description}</p>
+            <button
+                class="btn btn-warning t3js-clearTables-clear"
+                type="button"
+            >
+                Delete <span class="t3js-clearTables-stat-rows"></span> rows
+                from table "<span class="t3js-clearTables-stat-name"></span>" table
+            </button>
+            <hr class="t3js-clearTables-stat-lastRuler">
+        </div>
+    </div>
 
 </div>
 

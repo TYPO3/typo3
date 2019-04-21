@@ -1,12 +1,12 @@
 <f:be.widget.paginate objects="{extensions}" as="paginatedExtensions" configuration="{itemsPerPage: 10, maximumNumberOfLinks: 2}">
-	<table id="terTable" class="table table-striped table-hover typo3-extension-list">
-		<f:if condition="{showVersionList}">
-			<f:then>
-				<f:render partial="List/TerShowVersionsTable.html" arguments="{paginatedExtensions:paginatedExtensions}" />
-			</f:then>
-			<f:else>
-				<f:render partial="List/TerTable.html" arguments="{paginatedExtensions:paginatedExtensions, availableAndInstalled:availableAndInstalled}" />
-			</f:else>
-		</f:if>
-	</table>
+    <table id="terTable" class="table table-striped table-hover typo3-extension-list">
+        <f:if condition="{showVersionList}">
+            <f:then>
+                <f:render partial="List/TerShowVersionsTable.html" arguments="{paginatedExtensions:paginatedExtensions}" />
+            </f:then>
+            <f:else>
+                <f:render partial="List/TerTable.html" arguments="{paginatedExtensions:paginatedExtensions, availableAndInstalled:availableAndInstalled}" />
+            </f:else>
+        </f:if>
+    </table>
 </f:be.widget.paginate>

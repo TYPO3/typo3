@@ -1,37 +1,37 @@
 <form action="" id="ConfigurationView" method="post">
-	<h1><f:translate key="configuration" /></h1>
+    <h1><f:translate key="configuration" /></h1>
 
-	<h2><f:translate key="{treeName}" /></h2>
+    <h2><f:translate key="{treeName}" /></h2>
 
-	<div id="lowlevel-config">
-		<div class="form-group">
-			<label for="lowlevel-searchString">
-				<f:translate key="enterSearchPhrase" />
-			</label>
-			<input class="form-control" type="search" id="lowlevel-searchString" name="searchString" value="{searchString}" />
-		</div>
-		<div class="form-group">
-			<div class="checkbox">
-				<label for="lowlevel-regexSearch">
-					<input type="hidden" name="regexSearch" value="0" />
-					<input
-						type="checkbox"
-						class="checkbox"
-						name="regexSearch"
-						id="lowlevel-regexSearch"
-						value="1"
-						{f:if(condition:'{regexSearch}', then: ' checked')}
-					>
-					<f:translate key="useRegExp" />
-				</label>
-			</div>
-		</div>
-		<div class="form-group">
-			<input class="btn btn-default" type="submit" name="search" id="search" value="{f:translate(key: 'search')}"/>
-		</div>
-	</div>
+    <div id="lowlevel-config">
+        <div class="form-group">
+            <label for="lowlevel-searchString">
+                <f:translate key="enterSearchPhrase" />
+            </label>
+            <input class="form-control" type="search" id="lowlevel-searchString" name="searchString" value="{searchString}" />
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label for="lowlevel-regexSearch">
+                    <input type="hidden" name="regexSearch" value="0" />
+                    <input
+                        type="checkbox"
+                        class="checkbox"
+                        name="regexSearch"
+                        id="lowlevel-regexSearch"
+                        value="1"
+                        {f:if(condition:'{regexSearch}', then: ' checked')}
+                    >
+                    <f:translate key="useRegExp" />
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <input class="btn btn-default" type="submit" name="search" id="search" value="{f:translate(key: 'search')}"/>
+        </div>
+    </div>
 
-	<div class="nowrap">
-		<f:format.raw>{tree}</f:format.raw>
-	</div>
+    <div class="nowrap">
+        <f:format.raw>{tree}</f:format.raw>
+    </div>
 </form>

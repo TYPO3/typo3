@@ -1,31 +1,31 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <p>
-	The Configuration Module recommends configuration settings based on information found in your environments setup.
+    The Configuration Module recommends configuration settings based on information found in your environments setup.
 </p>
 <p>
-	TYPO3 can also be run in a specific application context, by setting an environment variable in the web server configuration. The application context can then be accessed e.g. in the AdditionalConfiguration.php file or TypoScript configuration to customize settings accordingly.
+    TYPO3 can also be run in a specific application context, by setting an environment variable in the web server configuration. The application context can then be accessed e.g. in the AdditionalConfiguration.php file or TypoScript configuration to customize settings accordingly.
 </p>
 <p>
-	Changed values are written to LocalConfiguration.php. The optional file AdditionalConfiguration.php is not controlled by the TYPO3’s core and may override certain settings. Administrators must maintain AdditionalConfiguration.php manually and should be used with caution.
+    Changed values are written to LocalConfiguration.php. The optional file AdditionalConfiguration.php is not controlled by the TYPO3’s core and may override certain settings. Administrators must maintain AdditionalConfiguration.php manually and should be used with caution.
 </p>
 
 <div class="t3js-presets-content" data-presets-activate-token="{presetsActivateToken}" data-presets-content-token="{presetsGetContentToken}">
-	<form method="post" class="form-horizontal">
-		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-			<f:for each="{presetFeatures}" as="feature">
-				<f:render partial="Settings/Presets/{feature.name}" arguments="{_all}"/>
-			</f:for>
-		</div>
-	</form>
+    <form method="post" class="form-horizontal">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <f:for each="{presetFeatures}" as="feature">
+                <f:render partial="Settings/Presets/{feature.name}" arguments="{_all}"/>
+            </f:for>
+        </div>
+    </form>
 </div>
 <div class="t3js-presets-output"></div>
 
 <button
-	class="btn btn-default t3js-presets-activate"
-	type="button"
+    class="btn btn-default t3js-presets-activate"
+    type="button"
 >
-	Activate
+    Activate
 </button>
 
 </html>

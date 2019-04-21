@@ -1,46 +1,46 @@
 <tr>
-	<td class="col-icon nowrap">
-		<f:format.raw>{content.icon}</f:format.raw>
-	</td>
-	<td width="95%" class="nowrap">
-		<f:format.raw>{content.title}</f:format.raw>
-		<f:if condition="{tab.id} == 'normal'">
-			<strong>(
-				<f:if condition="{currentMode} == 'copy'">
-					<f:then>
-						{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy')}
-					</f:then>
-					<f:else>
-						{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut')}
-					</f:else>
-				</f:if>
-				)</strong>
-		</f:if>
-		<f:if condition="{content.thumb}">
-			<br>
-			<img src="{content.thumb.image}" title="{content.thumb.title}" />
-		</f:if>
-	</td>
-	<td class="col-control nowrap">
-		<f:if condition="{content.infoLink}">
-			<div class="btn-group">
-				<a class="btn btn-default" href="#" onclick="{content.infoLink}"
-					 title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info')}">
-					<f:format.raw>
-						<core:icon identifier="actions-document-info" alternativeMarkupIdentifier="inline"/>
-					</f:format.raw>
-				</a>
-			</div>
-		</f:if>
-		<f:if condition="{content.removeLink}">
-			<div class="btn-group">
-				<a class="btn btn-default" href="{content.removeLink}#clip_head"
-					 title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.removeItem')}">
-					<f:format.raw>
-						<core:icon identifier="actions-remove" alternativeMarkupIdentifier="inline"/>
-					</f:format.raw>
-				</a>
-			</div>
-		</f:if>
-	</td>
+    <td class="col-icon nowrap">
+        <f:format.raw>{content.icon}</f:format.raw>
+    </td>
+    <td width="95%" class="nowrap">
+        <f:format.raw>{content.title}</f:format.raw>
+        <f:if condition="{tab.id} == 'normal'">
+            <strong>(
+                <f:if condition="{currentMode} == 'copy'">
+                    <f:then>
+                        {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy')}
+                    </f:then>
+                    <f:else>
+                        {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut')}
+                    </f:else>
+                </f:if>
+                )</strong>
+        </f:if>
+        <f:if condition="{content.thumb}">
+            <br>
+            <img src="{content.thumb.image}" title="{content.thumb.title}" />
+        </f:if>
+    </td>
+    <td class="col-control nowrap">
+        <f:if condition="{content.infoLink}">
+            <div class="btn-group">
+                <a class="btn btn-default" href="#" onclick="{content.infoLink}"
+                    title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info')}">
+                    <f:format.raw>
+                        <core:icon identifier="actions-document-info" alternativeMarkupIdentifier="inline"/>
+                    </f:format.raw>
+                </a>
+            </div>
+        </f:if>
+        <f:if condition="{content.removeLink}">
+            <div class="btn-group">
+                <a class="btn btn-default" href="{content.removeLink}#clip_head"
+                    title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.removeItem')}">
+                    <f:format.raw>
+                        <core:icon identifier="actions-remove" alternativeMarkupIdentifier="inline"/>
+                    </f:format.raw>
+                </a>
+            </div>
+        </f:if>
+    </td>
 </tr>

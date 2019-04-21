@@ -25,13 +25,13 @@
     <f:variable name="maxCharacters" value="30" />
     <tr class="{f:if(condition: page.hidden, then: 'inactive')}">
         <td class="nowrap">
-            <span style="width: 1px; height: 1px; display:inline-block; margin-left: {level * 20}px"></span>
+            <span style="width: 1px; height: 1px; display: inline-block; margin-left: {level * 20}px"></span>
             <f:if condition="{page}">
                 <f:then>
                     <f:if condition="{page._templates}">
                         <f:then>
                             <a href="{f:be.uri(route:'web_ts', parameters:{id: page.uid})}"
-                               title="ID: {page.uid}">
+                                title="ID: {page.uid}">
                                 <core:IconForRecord table="pages" row="{page}" />
                                 {page.title -> f:format.crop(maxCharacters: maxCharacters)}
                             </a>
@@ -55,7 +55,7 @@
                     <f:variable name="web_ts_parameters"
                                 value="{id: template.pid, 'SET[templatesOnPage]': template.uid}" />
                     <a href="{f:be.uri(route:'web_ts', parameters:web_ts_parameters)}"
-                       title="ID: {template.uid} {template.sitetitle}">
+                        title="ID: {template.uid} {template.sitetitle}">
                         <core:IconForRecord table="sys_template" row="{template}" />
                         {template.title -> f:format.crop(maxCharacters: maxCharacters)}
                     </a>

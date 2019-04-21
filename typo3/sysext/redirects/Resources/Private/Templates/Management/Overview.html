@@ -1,190 +1,190 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-	  xmlns:rd="http://typo3.org/ns/TYPO3/CMS/Redirects/ViewHelpers"
-	  xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
-	  data-namespace-typo3-fluid="true">
+    xmlns:rd="http://typo3.org/ns/TYPO3/CMS/Redirects/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    data-namespace-typo3-fluid="true">
 <f:layout name="RedirectAdministration" />
 
 <f:section name="headline">
-	<h1><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:heading_text"/></h1>
+    <h1><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:heading_text"/></h1>
 </f:section>
 
 <f:section name="content">
 
-	<f:if condition="{redirects -> f:count()}">
-		<f:then>
-			<f:render section="filter" arguments="{_all}" />
-			<f:render section="table" arguments="{_all}" />
-		</f:then>
-		<f:else>
-			<f:if condition="{demand.constraints}">
-				<f:then>
-					<f:render section="filter" arguments="{_all}" />
-					<f:be.infobox state="-2" title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found_with_filter.title')}">
-						<p><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found_with_filter.message"/></p>
-						<a class="btn btn-default" href="{f:be.uri(route:'site_redirects', parameters: {action: 'overview'})}">
-							<f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_no_filter"/>
-						</a>
-						<be:link.newRecord class="btn btn-primary" table="sys_redirect">
-							<f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_create"/>
-						</be:link.newRecord>
-					</f:be.infobox>
-				</f:then>
-				<f:else>
-					<f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found.title')}">
-						<p><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found.message"/></p>
-						<be:link.newRecord class="btn btn-primary" table="sys_redirect">
-							<f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_create"/>
-						</be:link.newRecord>
-					</f:be.infobox>
-				</f:else>
-			</f:if>
-		</f:else>
-	</f:if>
+    <f:if condition="{redirects -> f:count()}">
+        <f:then>
+            <f:render section="filter" arguments="{_all}" />
+            <f:render section="table" arguments="{_all}" />
+        </f:then>
+        <f:else>
+            <f:if condition="{demand.constraints}">
+                <f:then>
+                    <f:render section="filter" arguments="{_all}" />
+                    <f:be.infobox state="-2" title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found_with_filter.title')}">
+                        <p><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found_with_filter.message"/></p>
+                        <a class="btn btn-default" href="{f:be.uri(route:'site_redirects', parameters: {action: 'overview'})}">
+                            <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_no_filter"/>
+                        </a>
+                        <be:link.newRecord class="btn btn-primary" table="sys_redirect">
+                            <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_create"/>
+                        </be:link.newRecord>
+                    </f:be.infobox>
+                </f:then>
+                <f:else>
+                    <f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found.title')}">
+                        <p><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found.message"/></p>
+                        <be:link.newRecord class="btn btn-primary" table="sys_redirect">
+                            <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_create"/>
+                        </be:link.newRecord>
+                    </f:be.infobox>
+                </f:else>
+            </f:if>
+        </f:else>
+    </f:if>
 </f:section>
 
 <f:section name="table">
-	<f:render partial="Pagination" arguments="{_all}" />
-	<div class="table-fit">
-		<table class="table table-striped table-hover">
-			<thead>
-				<tr>
-					<th><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_host"/></th>
-					<th><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_path"/></th>
-					<th><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:destination"/></th>
-					<f:if condition="{showHitCounter}">
-						<th># <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hits"/></th>
-						<th><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_last"/></th>
-					</f:if>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<f:for each="{redirects}" key="domainName" as="redirect">
-					<f:variable name="pageId" value="{rd:targetPageId(target:redirect.target)}" />
-					<f:variable name="targetUri" value="{f:uri.typolink(parameter:redirect.target)}" />
-					<tr>
-						<td>{redirect.source_host}</td>
-						<td>
-							<f:alias map="{
-								disable: '{f:translate(key: \'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:record_disabled\')}',
-								onlystart: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:start\')}: {f:format.date(date: redirect.starttime, format: \'d.m.Y H:i:s\')}',
-								onlyend: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:stop\')}: {f:format.date(date: redirect.endtime, format: \'d.m.Y H:i:s\')}',
-								startend: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:start\')}: {f:format.date(date: redirect.starttime, format: \'d.m.Y H:i:s\')} - {f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:stop\')}: {f:format.date(date: redirect.endtime, format: \'d.m.Y H:i:s\')}'
-							}">
-							<f:if condition="{redirect.disabled}"><f:then><span title="{disable}"></f:then>
-							<f:else if="{redirect.starttime} && !{redirect.endtime}"><span title="{onlystart}"></f:else>
-							<f:else if="!{redirect.starttime} && {redirect.endtime}"><span title="{onlyend}"></f:else>
-							<f:else if="{redirect.starttime} && {redirect.endtime}"><span title="{startend}"></f:else>
-							<f:else><span></f:else>
-							</f:if>
-							<core:iconForRecord table="sys_redirect" row="{redirect}" /></span>
-							</f:alias>
-							<be:link.editRecord table="sys_redirect" uid="{redirect.uid}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}: {redirect.source_path}">
-								{redirect.source_path -> f:format.crop(maxCharacters:100)}
-							</be:link.editRecord>
-						</td>
-						<td><f:link.typolink parameter="{redirect.target}" target="_blank" title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:visit_destination')} {targetUri}">{targetUri}</f:link.typolink>
-							(<f:if condition="{pageId}"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:pageID"/>: {pageId},
-							</f:if><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:destination_status_code"/>: {redirect.target_statuscode})</td>
-						<f:if condition="{showHitCounter}">
-							<td>
-								<f:if condition="!{redirect.disable_hitcount}">
-										<f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit{f:if(condition:'{redirect.hitcount} > 1',then:'s')}_text" arguments="{0:redirect.hitcount}"/>
-										<f:if condition="{redirect.hitcount} != 0">
-										<a class="t3js-modal-trigger"
-										     href="{be:moduleLink(route:'tce_db', query:'data[sys_redirect][{redirect.uid}][hitcount]=0', currentUrlParameterName:'redirect')}"
-											 title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset')}"
-											 data-title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset.confirm.title')}"
-											 data-content="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset.confirm.content')}"
-											 data-button-close-text="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_record.no')}">
-										<core:icon identifier="actions-edit-restore" /></a>
-									</f:if>
-								</f:if>
-							<td>
-								<f:if condition="{redirect.lasthiton}">
-									<f:then><f:format.date format="d.m.Y H:i:s">@{redirect.lasthiton}</f:format.date></f:then>
-									<f:else><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_last_never"/></f:else>
-								</f:if>
-							</td>
-						</f:if>
-						<td>
-							<div class="btn-group">
-								<f:if condition="{redirect.is_regexp}">
-									<f:then>
-										<span class="btn btn-default disabled"><core:icon identifier="empty-empty" /></span>
-									</f:then>
-									<f:else>
-										<f:link.external class="btn btn-default" uri="{f:if(condition: '{redirect.source_host} == \'*\'', then: defaultUrl, else: redirect.source_host)}{redirect.source_path}" target="_blank">
-											<core:icon identifier="actions-view-page" />
-										</f:link.external>
-									</f:else>
-								</f:if>
-								<be:link.editRecord class="btn btn-default" table="sys_redirect" uid="{redirect.uid}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}">
-									<core:icon identifier="actions-open" />
-								</be:link.editRecord>
-								<f:if condition="{redirect.disabled} == 1">
-									<f:then>
-										<a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[sys_redirect][{redirect.uid}][disabled]=0', currentUrlParameterName:'redirect')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:unHide')}"><core:icon identifier="actions-edit-unhide" /></a>
-									</f:then>
-									<f:else>
-										<a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[sys_redirect][{redirect.uid}][disabled]=1', currentUrlParameterName:'redirect')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:hide')}"><core:icon identifier="actions-edit-hide" /></a>
-									</f:else>
-								</f:if>
-								<a class="btn btn-default t3js-modal-trigger"
-									 href="{be:moduleLink(route:'tce_db', query:'cmd[sys_redirect][{redirect.uid}][delete]=1', currentUrlParameterName:'redirect')}"
-									 title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete')}"
-									 data-severity="warning"
-									 data-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
-									 data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}"
-									 data-button-close-text="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_record.no')}">
-									<core:icon identifier="actions-delete" />
-								</a>
-							</div>
-						</td>
-					</tr>
-				</f:for>
-			</tbody>
-		</table>
-	</div>
-	<f:render partial="Pagination" arguments="{_all}" />
+    <f:render partial="Pagination" arguments="{_all}" />
+    <div class="table-fit">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_host"/></th>
+                    <th><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_path"/></th>
+                    <th><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:destination"/></th>
+                    <f:if condition="{showHitCounter}">
+                        <th># <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hits"/></th>
+                        <th><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_last"/></th>
+                    </f:if>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <f:for each="{redirects}" key="domainName" as="redirect">
+                    <f:variable name="pageId" value="{rd:targetPageId(target:redirect.target)}" />
+                    <f:variable name="targetUri" value="{f:uri.typolink(parameter:redirect.target)}" />
+                    <tr>
+                        <td>{redirect.source_host}</td>
+                        <td>
+                            <f:alias map="{
+                                disable: '{f:translate(key: \'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:record_disabled\')}',
+                                onlystart: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:start\')}: {f:format.date(date: redirect.starttime, format: \'d.m.Y H:i:s\')}',
+                                onlyend: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:stop\')}: {f:format.date(date: redirect.endtime, format: \'d.m.Y H:i:s\')}',
+                                startend: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:start\')}: {f:format.date(date: redirect.starttime, format: \'d.m.Y H:i:s\')} - {f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:stop\')}: {f:format.date(date: redirect.endtime, format: \'d.m.Y H:i:s\')}'
+                            }">
+                            <f:if condition="{redirect.disabled}"><f:then><span title="{disable}"></f:then>
+                            <f:else if="{redirect.starttime} && !{redirect.endtime}"><span title="{onlystart}"></f:else>
+                            <f:else if="!{redirect.starttime} && {redirect.endtime}"><span title="{onlyend}"></f:else>
+                            <f:else if="{redirect.starttime} && {redirect.endtime}"><span title="{startend}"></f:else>
+                            <f:else><span></f:else>
+                            </f:if>
+                            <core:iconForRecord table="sys_redirect" row="{redirect}" /></span>
+                            </f:alias>
+                            <be:link.editRecord table="sys_redirect" uid="{redirect.uid}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}: {redirect.source_path}">
+                                {redirect.source_path -> f:format.crop(maxCharacters:100)}
+                            </be:link.editRecord>
+                        </td>
+                        <td><f:link.typolink parameter="{redirect.target}" target="_blank" title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:visit_destination')} {targetUri}">{targetUri}</f:link.typolink>
+                            (<f:if condition="{pageId}"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:pageID"/>: {pageId},
+                            </f:if><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:destination_status_code"/>: {redirect.target_statuscode})</td>
+                        <f:if condition="{showHitCounter}">
+                            <td>
+                                <f:if condition="!{redirect.disable_hitcount}">
+                                        <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit{f:if(condition:'{redirect.hitcount} > 1',then:'s')}_text" arguments="{0:redirect.hitcount}"/>
+                                        <f:if condition="{redirect.hitcount} != 0">
+                                        <a class="t3js-modal-trigger"
+                                            href="{be:moduleLink(route:'tce_db', query:'data[sys_redirect][{redirect.uid}][hitcount]=0', currentUrlParameterName:'redirect')}"
+                                            title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset')}"
+                                            data-title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset.confirm.title')}"
+                                            data-content="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset.confirm.content')}"
+                                            data-button-close-text="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_record.no')}">
+                                        <core:icon identifier="actions-edit-restore" /></a>
+                                    </f:if>
+                                </f:if>
+                            <td>
+                                <f:if condition="{redirect.lasthiton}">
+                                    <f:then><f:format.date format="d.m.Y H:i:s">@{redirect.lasthiton}</f:format.date></f:then>
+                                    <f:else><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_last_never"/></f:else>
+                                </f:if>
+                            </td>
+                        </f:if>
+                        <td>
+                            <div class="btn-group">
+                                <f:if condition="{redirect.is_regexp}">
+                                    <f:then>
+                                        <span class="btn btn-default disabled"><core:icon identifier="empty-empty" /></span>
+                                    </f:then>
+                                    <f:else>
+                                        <f:link.external class="btn btn-default" uri="{f:if(condition: '{redirect.source_host} == \'*\'', then: defaultUrl, else: redirect.source_host)}{redirect.source_path}" target="_blank">
+                                            <core:icon identifier="actions-view-page" />
+                                        </f:link.external>
+                                    </f:else>
+                                </f:if>
+                                <be:link.editRecord class="btn btn-default" table="sys_redirect" uid="{redirect.uid}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}">
+                                    <core:icon identifier="actions-open" />
+                                </be:link.editRecord>
+                                <f:if condition="{redirect.disabled} == 1">
+                                    <f:then>
+                                        <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[sys_redirect][{redirect.uid}][disabled]=0', currentUrlParameterName:'redirect')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:unHide')}"><core:icon identifier="actions-edit-unhide" /></a>
+                                    </f:then>
+                                    <f:else>
+                                        <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[sys_redirect][{redirect.uid}][disabled]=1', currentUrlParameterName:'redirect')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:hide')}"><core:icon identifier="actions-edit-hide" /></a>
+                                    </f:else>
+                                </f:if>
+                                <a class="btn btn-default t3js-modal-trigger"
+                                    href="{be:moduleLink(route:'tce_db', query:'cmd[sys_redirect][{redirect.uid}][delete]=1', currentUrlParameterName:'redirect')}"
+                                    title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete')}"
+                                    data-severity="warning"
+                                    data-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
+                                    data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}"
+                                    data-button-close-text="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_record.no')}">
+                                    <core:icon identifier="actions-delete" />
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </f:for>
+            </tbody>
+        </table>
+    </div>
+    <f:render partial="Pagination" arguments="{_all}" />
 </f:section>
 
 <f:section name="filter">
-	<form action="{f:be.uri(route:'site_redirects', parameters: {action: 'overview'})}"
-		method="post"
-		enctype="multipart/form-data"
-		name="demand"
-		class="form-inline form-inline-spaced">
+    <form action="{f:be.uri(route:'site_redirects', parameters: {action: 'overview'})}"
+        method="post"
+        enctype="multipart/form-data"
+        name="demand"
+        class="form-inline form-inline-spaced">
 
-		<div class="form-group">
-			<label for="demand-source-host"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_host"/></label>
-			<select id="demand-source-host" class="form-control input-sm" name="demand[source_host]" onchange="submit()">
-				<option value=""><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.source_host.showAll"/></option>
-				<f:for each="{hosts}" as="host">
-					<f:form.select.option value="{host.name}" selected="{host.name} === {demand.sourceHost}">{host.name}</f:form.select.option>
-				</f:for>
-			</select>
-		</div>
-		<div class="form-group">
-			<label for="demand-source-path"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_path"/></label>
-			<input type="text" id="demand-source-path" class="form-control input-sm" name="demand[source_path]" value="{demand.sourcePath}"/>
-		</div>
-		<div class="form-group">
-			<label for="demand-target"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.destination"/></label>
-			<input type="text" id="demand-target" class="form-control input-sm" name="demand[target]" value="{demand.target}"/>
-		</div>
-		<div class="form-group">
-			<label for="demand-target-status-code"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.targetStatusCode"/></label>
-			<select id="demand-target-status-code" class="form-control input-sm" name="demand[target_statuscode]" onchange="submit()">
-				<option value=""><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.source_host.showAll"/></option>
-				<f:for each="{statusCodes}" as="statusCode">
-					<f:form.select.option value="{statusCode.code}" selected="{statusCode.code} === {demand.statusCode}">{statusCode.code}</f:form.select.option>
-				</f:for>
-			</select>
-		</div>
-		<div class="form-group">
-			<input type="submit" value="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.sendButton')}" class="btn btn-default btn-sm" />
-		</div>
-	</form>
+        <div class="form-group">
+            <label for="demand-source-host"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_host"/></label>
+            <select id="demand-source-host" class="form-control input-sm" name="demand[source_host]" onchange="submit()">
+                <option value=""><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.source_host.showAll"/></option>
+                <f:for each="{hosts}" as="host">
+                    <f:form.select.option value="{host.name}" selected="{host.name} === {demand.sourceHost}">{host.name}</f:form.select.option>
+                </f:for>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="demand-source-path"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_path"/></label>
+            <input type="text" id="demand-source-path" class="form-control input-sm" name="demand[source_path]" value="{demand.sourcePath}"/>
+        </div>
+        <div class="form-group">
+            <label for="demand-target"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.destination"/></label>
+            <input type="text" id="demand-target" class="form-control input-sm" name="demand[target]" value="{demand.target}"/>
+        </div>
+        <div class="form-group">
+            <label for="demand-target-status-code"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.targetStatusCode"/></label>
+            <select id="demand-target-status-code" class="form-control input-sm" name="demand[target_statuscode]" onchange="submit()">
+                <option value=""><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.source_host.showAll"/></option>
+                <f:for each="{statusCodes}" as="statusCode">
+                    <f:form.select.option value="{statusCode.code}" selected="{statusCode.code} === {demand.statusCode}">{statusCode.code}</f:form.select.option>
+                </f:for>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.sendButton')}" class="btn btn-default btn-sm" />
+        </div>
+    </form>
 </f:section>
 </html>
