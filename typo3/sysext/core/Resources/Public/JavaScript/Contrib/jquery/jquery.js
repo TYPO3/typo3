@@ -261,8 +261,8 @@ jQuery.extend = jQuery.fn.extend = function() {
 				src = target[ name ];
 				copy = options[ name ];
 
-				// Prevent never-ending loop
-				if ( target === copy ) {
+				// Prevent Object.prototype pollution
+				if ( name === "__proto__" || target === copy ) {
 					continue;
 				}
 
