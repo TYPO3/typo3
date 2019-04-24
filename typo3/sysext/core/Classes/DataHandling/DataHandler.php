@@ -4038,6 +4038,10 @@ class DataHandler implements LoggerAwareInterface
                 // Clear cache after moving
                 $this->registerRecordIdForPageCacheClearing($table, $uid);
                 $this->fixUniqueInPid($table, $uid);
+                $this->fixUniqueInSite($table, (int)$uid);
+                if ($table === 'pages') {
+                    $this->fixUniqueInSiteForSubpages((int)$uid);
+                }
                 // fixCopyAfterDuplFields
                 if ($origDestPid < 0) {
                     $this->fixCopyAfterDuplFields($table, $uid, abs($origDestPid), 1);
@@ -4096,8 +4100,11 @@ class DataHandler implements LoggerAwareInterface
                     }
                     // Clear cache after moving
                     $this->registerRecordIdForPageCacheClearing($table, $uid);
-                    // fixUniqueInPid
                     $this->fixUniqueInPid($table, $uid);
+                    $this->fixUniqueInSite($table, (int)$uid);
+                    if ($table === 'pages') {
+                        $this->fixUniqueInSiteForSubpages((int)$uid);
+                    }
                     // fixCopyAfterDuplFields
                     if ($origDestPid < 0) {
                         $this->fixCopyAfterDuplFields($table, $uid, abs($origDestPid), 1);
@@ -7488,6 +7495,57 @@ class DataHandler implements LoggerAwareInterface
         // IF there are changed fields, then update the database
         if (!empty($newData)) {
             $this->updateDB($table, $uid, $newData);
+        }
+    }
+
+    /**
+     * Checks if any uniqueInSite eval fields are in the record and if so, they are re-written to be correct.
+     *
+     * @param string $table Table name
+     * @param int $uid Record UID
+     * @return bool whether the record had to be fixed or not
+     */
+    protected function fixUniqueInSite(string $table, int $uid): bool
+    {
+        $curData = $this->recordInfo($table, $uid, '*');
+        $workspaceId = $this->BE_USER->workspace;
+        $newData = [];
+        foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
+            if ($conf['config']['type'] === 'slug' && (string)$curData[$field] !== '') {
+                $evalCodesArray = GeneralUtility::trimExplode(',', $conf['config']['eval'], true);
+                if (in_array('uniqueInSite', $evalCodesArray, true)) {
+                    $helper = GeneralUtility::makeInstance(SlugHelper::class, $table, $field, $conf['config'], $workspaceId);
+                    $state = RecordStateFactory::forName($table)->fromArray($curData);
+                    $newValue = $helper->buildSlugForUniqueInSite($curData[$field], $state);
+                    if ((string)$newValue !== (string)$curData[$field]) {
+                        $newData[$field] = $newValue;
+                    }
+                }
+            }
+        }
+        // IF there are changed fields, then update the database
+        if (!empty($newData)) {
+            $this->updateDB($table, $uid, $newData);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if there are subpages that need an adoption as well
+     * @param int $pageId
+     * @param int $pid
+     */
+    protected function fixUniqueInSiteForSubpages(int $pageId)
+    {
+        // Get ALL subpages to update - read-permissions are respected
+        $subPages = $this->int_pageTreeInfo([], $pageId, 99, $pageId);
+        // Now fix uniqueInSite for subpages
+        foreach ($subPages as $thePageUid => $thePagePid) {
+            $recordWasModified = $this->fixUniqueInSite('pages', $thePageUid);
+            if ($recordWasModified) {
+                // @todo: Add logging and history - but how? we don't know the data that was in the system before
+            }
         }
     }
 

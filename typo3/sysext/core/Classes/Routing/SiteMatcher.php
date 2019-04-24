@@ -21,6 +21,7 @@ use Symfony\Component\Routing\Exception\NoConfigurationException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\PseudoSite;
@@ -29,6 +30,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\PseudoSiteFinder;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
  * Returns a site or pseudo-site (with sys_domain records) based on a given request.
@@ -65,6 +67,22 @@ class SiteMatcher implements SingletonInterface
     {
         $this->finder = $finder ?? GeneralUtility::makeInstance(SiteFinder::class);
         $this->pseudoSiteFinder = GeneralUtility::makeInstance(PseudoSiteFinder::class);
+    }
+
+    /**
+     * Only used when a page is moved but the pseudo site caches has this information hard-coded, so the caches
+     * need to be flushed.
+     *
+     * @internal
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     */
+    public function refresh()
+    {
+        /** Ensure root line caches are flushed */
+        RootlineUtility::purgeCaches();
+        GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_rootline')->flush();
+        $this->pseudoSiteFinder = GeneralUtility::makeInstance(PseudoSiteFinder::class);
+        $this->pseudoSiteFinder->refresh();
     }
 
     /**
