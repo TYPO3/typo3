@@ -301,6 +301,7 @@ class SlugHelper
         // The installation contains at least ONE other record with the same slug
         // Now find out if it is the same root page ID
         $siteMatcher = GeneralUtility::makeInstance(SiteMatcher::class);
+        $siteMatcher->refresh();
         $siteOfCurrentRecord = $siteMatcher->matchByPageId($pageId);
         foreach ($records as $record) {
             try {

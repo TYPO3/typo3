@@ -61,10 +61,10 @@ class PseudoSiteFinder
      * Fetches all site root pages, all sys_language and sys_domain records and forms pseudo-sites,
      * but only for the pagetree's that do not have a site configuration available.
      */
-    protected function populate()
+    protected function populate(bool $allowCaching = true)
     {
         $data = $this->cache->get($this->cacheIdentifier);
-        if (empty($data)) {
+        if (empty($data) || $allowCaching === false) {
             $allLanguages = $this->getAllLanguageRecords();
             $groupedDomains = GeneralUtility::makeInstance(LegacyDomainResolver::class)->getGroupedDomainsPerPage();
             $availablePages = $this->getAllRootPagesWithoutSiteConfiguration();
@@ -110,6 +110,16 @@ class PseudoSiteFinder
             $this->populate();
         }
         return $this->pseudoSites;
+    }
+
+    /**
+     * Rebuild the cache information from the database information.
+     *
+     * @internal
+     */
+    public function refresh()
+    {
+        $this->populate(false);
     }
 
     /**
