@@ -12,6 +12,7 @@ declare namespace TYPO3 {
   export let InfoWindow: any;
   export let LoginRefresh: any;
   export let ModuleMenu: any;
+  export let MultiStepWizard: any;
   export let Notification: any;
   export let Modal: any;
   export let OpendocsMenu: any;
@@ -64,6 +65,19 @@ declare namespace TYPO3 {
         public initializeNullNoPlaceholderCheckboxes(): void;
         public initializeNullWithPlaceholderCheckboxes(): void;
       }
+
+      export class MultiStepWizard {
+        public addSlide(identifier: string, title: string, content: string, severity: number, callback?: Function): MultiStepWizard;
+        public lockNextStep(): JQuery;
+        public unlockNextStep(): JQuery;
+        public lockPrevStep(): JQuery;
+        public unlockPrevStep(): JQuery;
+        public blurCancelStep(): JQuery;
+        public getComponent(): JQuery;
+        public addFinalProcessingSlide(callback?: Function): JQueryXHR;
+        public show(): MultiStepWizard;
+        public dismiss(): MultiStepWizard;
+      }
     }
   }
 }
@@ -88,6 +102,11 @@ declare module 'TYPO3/CMS/Backend/FormEngine' {
 
 declare module 'TYPO3/CMS/Backend/FormEngine/Element/SelectTree' {
   const _exported: any;
+  export = _exported;
+}
+
+declare module 'TYPO3/CMS/Backend/MultiStepWizard' {
+  const _exported: TYPO3.CMS.Backend.MultiStepWizard;
   export = _exported;
 }
 

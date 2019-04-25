@@ -18,6 +18,9 @@
             <trans-unit id="formManager.form_template" resname="formManager.form_template" xml:space="preserve">
                 <source>Start template</source>
             </trans-unit>
+            <trans-unit id="formManager.form_copied" xml:space="preserve">
+                <source>Copied form</source>
+            </trans-unit>
             <trans-unit id="formManager.cancel" resname="formManager.cancel" xml:space="preserve">
                 <source>Cancel</source>
             </trans-unit>
@@ -36,17 +39,17 @@
             <trans-unit id="formManager.newFormWizard.step1.noStorages" resname="formManager.newFormWizard.step1.noStorages" xml:space="preserve">
                 <source>No accessible form storage folders</source>
             </trans-unit>
-            <trans-unit id="formManager.newFormWizard.step1.advanced" resname="formManager.newFormWizard.step1.advanced" xml:space="preserve">
-                <source>Advanced settings</source>
-            </trans-unit>
             <trans-unit id="formManager.newFormWizard.step2.title" resname="formManager.newFormWizard.step2.title" xml:space="preserve">
-                <source>Advanced settings</source>
+                <source>Settings</source>
             </trans-unit>
             <trans-unit id="formManager.newFormWizard.step3.title" resname="formManager.newFormWizard.step3.title" xml:space="preserve">
                 <source>Ready</source>
             </trans-unit>
             <trans-unit id="formManager.newFormWizard.step3.message" resname="formManager.newFormWizard.step3.message" xml:space="preserve">
                 <source>Now you are ready to create your new form.</source>
+            </trans-unit>
+            <trans-unit id="formManager.newFormWizard.step3.check" xml:space="preserve">
+                <source>Please check and confirm your entered settings</source>
             </trans-unit>
             <trans-unit id="formManager.newFormWizard.step4.errorTitle" resname="formManager.newFormWizard.step4.errorTitle" xml:space="preserve">
                 <source>Create</source>
@@ -77,6 +80,12 @@
             </trans-unit>
             <trans-unit id="formManager.references.headline" resname="formManager.references.headline" xml:space="preserve">
                 <source>References for "{0}"</source>
+            </trans-unit>
+            <trans-unit id="formManager.blankForm.label" xml:space="preserve">
+                <source>Blank form</source>
+            </trans-unit>
+            <trans-unit id="formManager.predefinedForm.label" xml:space="preserve">
+                <source>Predefined form</source>
             </trans-unit>
         </body>
     </file>

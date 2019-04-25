@@ -297,3 +297,31 @@ $modal-danger-border: $btn-danger-border;
         margin-right: 10px;
     }
 }
+
+//
+// MultiStepWizard-Modal
+//
+.modal-multi-step-wizard {
+    .modal-body {
+        .carousel.slide {
+            min-height: 21em;
+        }
+
+        .btn-createform {
+            padding: 1em 0;
+
+            @media (min-width: $screen-sm) {
+                padding: 7.2em 0;
+            }
+        }
+    }
+
+    .modal-footer {
+        .progress-bar {
+            &.inactive {
+                background: none;
+                color: $text-color;
+            }
+        }
+    }
+}
