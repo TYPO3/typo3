@@ -15,6 +15,11 @@ namespace TYPO3\CMS\Form\Tests\Unit\Controller;
  */
 
 use Prophecy\Argument;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Controller\FormFrontendController;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
@@ -26,6 +31,21 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FormFrontendControllerTest extends UnitTestCase
 {
+    public function setUp()
+    {
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
+        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
+    }
+
+    public function tearDown()
+    {
+        GeneralUtility::purgeInstances();
+        parent::tearDown();
+    }
 
     /**
      * @test
@@ -45,6 +65,38 @@ class FormFrontendControllerTest extends UnitTestCase
             ->with(ConfigurationService::class)
             ->willReturn($configurationServiceProphecy->reveal());
 
+        $sheetIdentifier = md5(
+            implode('', [
+                '1:/foo',
+                'standard',
+                'ext-form-identifier',
+                'EmailToReceiver'
+            ])
+        );
+
+        $flexFormTools = new FlexFormTools;
+        $contentObject = new \stdClass();
+        $contentObject->data = [
+            'pi_flexform' => $flexFormTools->flexArray2Xml([
+                'data' => [
+                    $sheetIdentifier => [
+                        'lDEF' => [
+                            'settings.finishers.EmailToReceiver.subject' => ['vDEF' => 'Mesage Subject overridden'],
+                            'settings.finishers.EmailToReceiver.recipientAddress' => ['vDEF' => 'your.company@example.com overridden'],
+                            'settings.finishers.EmailToReceiver.format' => ['vDEF' => 'html overridden'],
+                        ],
+                    ],
+                ],
+            ]),
+        ];
+
+        $frontendConfigurationManager = $this->createMock(FrontendConfigurationManager::class);
+        $frontendConfigurationManager
+            ->expects($this->any())
+            ->method('getContentObject')
+            ->willReturn($contentObject);
+
+        $mockController->_set('configurationManager', $frontendConfigurationManager);
         $mockController->_set('objectManager', $objectManagerMock);
 
         $configurationServiceProphecy->getPrototypeConfiguration(Argument::cetera())->willReturn([
@@ -63,17 +115,11 @@ class FormFrontendControllerTest extends UnitTestCase
 
         $mockController->_set('settings', [
             'overrideFinishers' => 0,
-            'finishers' => [
-                'EmailToReceiver' => [
-                    'subject' => 'Mesage Subject overridden',
-                    'recipientAddress' => 'your.company@example.com overridden',
-                    'format' => 'html overridden',
-                ],
-            ],
         ]);
 
         $input = [
             'identifier' => 'ext-form-identifier',
+            'persistenceIdentifier' => '1:/foo',
             'prototypeName' => 'standard',
             'finishers' => [
                 0 => [
@@ -89,6 +135,7 @@ class FormFrontendControllerTest extends UnitTestCase
 
         $expected = [
             'identifier' => 'ext-form-identifier',
+            'persistenceIdentifier' => '1:/foo',
             'prototypeName' => 'standard',
             'finishers' => [
                 0 => [
@@ -123,6 +170,38 @@ class FormFrontendControllerTest extends UnitTestCase
             ->with(ConfigurationService::class)
             ->willReturn($configurationServiceProphecy->reveal());
 
+        $sheetIdentifier = md5(
+            implode('', [
+                '1:/foo',
+                'standard',
+                'ext-form-identifier',
+                'EmailToReceiver'
+            ])
+        );
+
+        $flexFormTools = new FlexFormTools;
+        $contentObject = new \stdClass();
+        $contentObject->data = [
+            'pi_flexform' => $flexFormTools->flexArray2Xml([
+                'data' => [
+                    $sheetIdentifier => [
+                        'lDEF' => [
+                            'settings.finishers.EmailToReceiver.subject' => ['vDEF' => 'Mesage Subject overridden'],
+                            'settings.finishers.EmailToReceiver.recipientAddress' => ['vDEF' => 'your.company@example.com overridden'],
+                            'settings.finishers.EmailToReceiver.format' => ['vDEF' => 'html overridden'],
+                        ],
+                    ],
+                ],
+            ]),
+        ];
+
+        $frontendConfigurationManager = $this->createMock(FrontendConfigurationManager::class);
+        $frontendConfigurationManager
+            ->expects($this->any())
+            ->method('getContentObject')
+            ->willReturn($contentObject);
+
+        $mockController->_set('configurationManager', $frontendConfigurationManager);
         $mockController->_set('objectManager', $objectManagerMock);
 
         $configurationServiceProphecy->getPrototypeConfiguration(Argument::cetera())->willReturn([
@@ -141,16 +220,10 @@ class FormFrontendControllerTest extends UnitTestCase
 
         $mockController->_set('settings', [
             'overrideFinishers' => 1,
-            'finishers' => [
-                'EmailToReceiver' => [
-                    'subject' => 'Mesage Subject overridden',
-                    'recipientAddress' => 'your.company@example.com overridden',
-                    'format' => 'html overridden',
-                ],
-            ],
         ]);
 
         $input = [
+            'persistenceIdentifier' => '1:/foo',
             'identifier' => 'ext-form-identifier',
             'prototypeName' => 'standard',
             'finishers' => [
@@ -166,6 +239,7 @@ class FormFrontendControllerTest extends UnitTestCase
         ];
 
         $expected = [
+            'persistenceIdentifier' => '1:/foo',
             'identifier' => 'ext-form-identifier',
             'prototypeName' => 'standard',
             'finishers' => [
@@ -201,6 +275,38 @@ class FormFrontendControllerTest extends UnitTestCase
             ->with(ConfigurationService::class)
             ->willReturn($configurationServiceProphecy->reveal());
 
+        $sheetIdentifier = md5(
+            implode('', [
+                '1:/foo',
+                'standard',
+                'ext-form-identifier',
+                'EmailToReceiver'
+            ])
+        );
+
+        $flexFormTools = new FlexFormTools;
+        $contentObject = new \stdClass();
+        $contentObject->data = [
+            'pi_flexform' => $flexFormTools->flexArray2Xml([
+                'data' => [
+                    $sheetIdentifier => [
+                        'lDEF' => [
+                            'settings.finishers.EmailToReceiver.subject' => ['vDEF' => 'Mesage Subject overridden'],
+                            'settings.finishers.EmailToReceiver.recipientAddress' => ['vDEF' => 'your.company@example.com overridden'],
+                            'settings.finishers.EmailToReceiver.format' => ['vDEF' => 'html overridden'],
+                        ],
+                    ],
+                ],
+            ]),
+        ];
+
+        $frontendConfigurationManager = $this->createMock(FrontendConfigurationManager::class);
+        $frontendConfigurationManager
+            ->expects($this->any())
+            ->method('getContentObject')
+            ->willReturn($contentObject);
+
+        $mockController->_set('configurationManager', $frontendConfigurationManager);
         $mockController->_set('objectManager', $objectManagerMock);
 
         $configurationServiceProphecy->getPrototypeConfiguration(Argument::cetera())->willReturn([
@@ -228,6 +334,7 @@ class FormFrontendControllerTest extends UnitTestCase
         ]);
 
         $input = [
+            'persistenceIdentifier' => '1:/foo',
             'identifier' => 'ext-form-identifier',
             'prototypeName' => 'standard',
             'finishers' => [
@@ -243,6 +350,7 @@ class FormFrontendControllerTest extends UnitTestCase
         ];
 
         $expected = [
+            'persistenceIdentifier' => '1:/foo',
             'identifier' => 'ext-form-identifier',
             'prototypeName' => 'standard',
             'finishers' => [
@@ -252,6 +360,127 @@ class FormFrontendControllerTest extends UnitTestCase
                         'subject' => 'Mesage Subject overridden',
                         'recipientAddress' => 'your.company@example.com overridden',
                         'format' => 'html',
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertSame($expected, $mockController->_call('overrideByFlexFormSettings', $input));
+    }
+
+    /**
+     * @test
+     */
+    public function overrideByFlexFormSettingsReturnsOverriddenConfigurationWhileMultipleSheetsExists()
+    {
+        $mockController = $this->getAccessibleMock(FormFrontendController::class, [
+            'dummy'
+        ], [], '', false);
+
+        $configurationServiceProphecy = $this->prophesize(ConfigurationService::class);
+
+        $objectManagerMock = $this->createMock(ObjectManager::class);
+        $objectManagerMock
+            ->expects($this->any())
+            ->method('get')
+            ->with(ConfigurationService::class)
+            ->willReturn($configurationServiceProphecy->reveal());
+
+        $sheetIdentifier = md5(
+            implode('', [
+                '1:/foo',
+                'standard',
+                'ext-form-identifier',
+                'EmailToReceiver'
+            ])
+        );
+
+        $anotherSheetIdentifier = md5(
+            implode('', [
+                '1:/foobar',
+                'standard',
+                'another-ext-form-identifier',
+                'EmailToReceiver'
+            ])
+        );
+
+        $flexFormTools = new FlexFormTools;
+        $contentObject = new \stdClass();
+        $contentObject->data = [
+            'pi_flexform' => $flexFormTools->flexArray2Xml([
+                'data' => [
+                    $sheetIdentifier => [
+                        'lDEF' => [
+                            'settings.finishers.EmailToReceiver.subject' => ['vDEF' => 'Mesage Subject overridden 1'],
+                            'settings.finishers.EmailToReceiver.recipientAddress' => ['vDEF' => 'your.company@example.com overridden 1'],
+                            'settings.finishers.EmailToReceiver.format' => ['vDEF' => 'html overridden 1'],
+                        ],
+                    ],
+                    $anotherSheetIdentifier => [
+                        'lDEF' => [
+                            'settings.finishers.EmailToReceiver.subject' => ['vDEF' => 'Mesage Subject overridden 2'],
+                            'settings.finishers.EmailToReceiver.recipientAddress' => ['vDEF' => 'your.company@example.com overridden 2'],
+                            'settings.finishers.EmailToReceiver.format' => ['vDEF' => 'html overridden 2'],
+                        ],
+                    ],
+                ],
+            ]),
+        ];
+
+        $frontendConfigurationManager = $this->createMock(FrontendConfigurationManager::class);
+        $frontendConfigurationManager
+            ->expects($this->any())
+            ->method('getContentObject')
+            ->willReturn($contentObject);
+
+        $mockController->_set('configurationManager', $frontendConfigurationManager);
+        $mockController->_set('objectManager', $objectManagerMock);
+
+        $configurationServiceProphecy->getPrototypeConfiguration(Argument::cetera())->willReturn([
+            'finishersDefinition' => [
+                'EmailToReceiver' => [
+                    'FormEngine' => [
+                        'elements' => [
+                            'subject' => ['config' => ['type' => 'input']],
+                            'recipientAddress' => ['config' => ['type' => 'input']],
+                            'format' => ['config' => ['type' => 'input']],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $mockController->_set('settings', [
+            'overrideFinishers' => 1,
+        ]);
+
+        $input = [
+            'persistenceIdentifier' => '1:/foo',
+            'identifier' => 'ext-form-identifier',
+            'prototypeName' => 'standard',
+            'finishers' => [
+                0 => [
+                    'identifier' => 'EmailToReceiver',
+                    'options' => [
+                        'subject' => 'Mesage Subject',
+                        'recipientAddress' => 'your.company@example.com',
+                        'format' => 'html',
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            'persistenceIdentifier' => '1:/foo',
+            'identifier' => 'ext-form-identifier',
+            'prototypeName' => 'standard',
+            'finishers' => [
+                0 => [
+                    'identifier' => 'EmailToReceiver',
+                    'options' => [
+                        'subject' => 'Mesage Subject overridden 1',
+                        'recipientAddress' => 'your.company@example.com overridden 1',
+                        'format' => 'html overridden 1',
                     ],
                 ],
             ],

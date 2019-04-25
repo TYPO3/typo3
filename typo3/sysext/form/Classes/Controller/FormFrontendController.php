@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Form\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -91,15 +93,24 @@ class FormFrontendController extends ActionController
      */
     protected function overrideByFlexFormSettings(array $formDefinition): array
     {
+        $flexFormData = GeneralUtility::xml2array($this->configurationManager->getContentObject()->data['pi_flexform'] ?? '');
+
+        if (!is_array($flexFormData)) {
+            return $formDefinition;
+        }
+
         if (isset($formDefinition['finishers'])) {
+            $prototypeName = $formDefinition['prototypeName'] ?? 'standard';
+            $configurationService = $this->objectManager->get(ConfigurationService::class);
+            $prototypeConfiguration = $configurationService->getPrototypeConfiguration($prototypeName);
+
             foreach ($formDefinition['finishers'] as $index => $formFinisherDefinition) {
                 $finisherIdentifier = $formFinisherDefinition['identifier'];
-                $prototypeName = $formDefinition['prototypeName'] ?? 'standard';
 
-                if ($this->settings['overrideFinishers'] && isset($this->settings['finishers'][$finisherIdentifier])) {
-                    $configurationService = $this->objectManager->get(ConfigurationService::class);
-                    $prototypeConfiguration = $configurationService->getPrototypeConfiguration($prototypeName);
-                    $flexFormSheetSettings = $this->settings;
+                $sheetIdentifier = $this->getFlexformSheetIdentifier($formDefinition, $prototypeName, $finisherIdentifier);
+                $flexFormSheetSettings = $this->getFlexFormSettingsFromSheet($flexFormData, $sheetIdentifier);
+
+                if ($this->settings['overrideFinishers'] && isset($flexFormSheetSettings['finishers'][$finisherIdentifier])) {
                     $prototypeFinisherDefinition = $prototypeConfiguration['finishersDefinition'][$finisherIdentifier] ?? [];
                     $converterDto = GeneralUtility::makeInstance(
                         FlexFormFinisherOverridesConverterDto::class,
@@ -148,5 +159,54 @@ class FormFrontendController extends ActionController
                 ->resolvePossibleTypoScriptConfiguration($formDefinition);
         }
         return $formDefinition;
+    }
+
+    /**
+     * @param array $formDefinition
+     * @param string $prototypeName
+     * @param string $finisherIdentifier
+     * @return string
+     */
+    protected function getFlexformSheetIdentifier(
+        array $formDefinition,
+        string $prototypeName,
+        string $finisherIdentifier
+    ): string {
+        return md5(
+            implode('', [
+                $formDefinition['persistenceIdentifier'],
+                $prototypeName,
+                $formDefinition['identifier'],
+                $finisherIdentifier
+            ])
+        );
+    }
+
+    /**
+     * @param array $flexForm
+     * @param string $sheetIdentifier
+     * @return array
+     */
+    protected function getFlexFormSettingsFromSheet(
+        array $flexForm,
+        string $sheetIdentifier
+    ): array {
+        $sheetData['data'] = array_filter(
+            $flexForm['data'] ?? [],
+            function ($key) use ($sheetIdentifier) {
+                return $key === $sheetIdentifier;
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+
+        if (empty($sheetData['data'])) {
+            return [];
+        }
+
+        $flexFormService = GeneralUtility::makeInstance(FlexFormService::class);
+        $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
+
+        $sheetDataXml = $flexFormTools->flexArray2Xml($sheetData);
+        return $flexFormService->convertFlexFormContentToArray($sheetDataXml)['settings'] ?? [];
     }
 }

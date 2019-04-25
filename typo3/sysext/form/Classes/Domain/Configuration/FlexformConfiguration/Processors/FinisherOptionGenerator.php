@@ -67,14 +67,22 @@ class FinisherOptionGenerator extends AbstractProcessor
 
         // use the option value from the ext:form setup from the current finisher as default value
         try {
-            $optionValue = ArrayUtility::getValueByPath($finisherDefinitionFromSetup['options'], $optionKey, '.');
+            $optionValue = ArrayUtility::getValueByPath(
+                $finisherDefinitionFromSetup,
+                sprintf('options.%s', $optionKey),
+                '.'
+            );
         } catch (MissingArrayPathException $exception) {
             $optionValue = null;
         }
 
         // use the option value from the form definition from the current finisher (if exists) as default value
         try {
-            $optionValue = ArrayUtility::getValueByPath($finisherDefinitionFromFormDefinition['options'], $optionKey, '.');
+            $optionValue = ArrayUtility::getValueByPath(
+                $finisherDefinitionFromFormDefinition,
+                sprintf('options.%s', $optionKey),
+                '.'
+            );
         } catch (MissingArrayPathException $exception) {
         }
 
