@@ -91,7 +91,7 @@ own configuration beginning with the key ``100``.
    plugin.tx_form {
        settings {
            yamlConfigurations {
-               100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
+               100 = EXT:my_site_package/Configuration/Form/CustomFormSetup.yaml
            }
        }
    }
@@ -124,7 +124,7 @@ your own configuration beginning with the key ``100``.
    module.tx_form {
        settings {
            yamlConfigurations {
-               100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
+               100 = EXT:my_site_package/Configuration/Form/CustomFormSetup.yaml
            }
        }
    }
@@ -168,7 +168,7 @@ package::
                    module.tx_form {
                        settings {
                            yamlConfigurations {
-                               100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
+                               100 = EXT:my_site_package/Configuration/Form/CustomFormSetup.yaml
                            }
                        }
                    }
@@ -258,12 +258,12 @@ register an additional configuration file via
            yamlConfigurations {
                # register your own additional configuration
                # choose a number higher than 30 (below is reserved)
-               100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
+               100 = EXT:my_site_package/Configuration/Form/CustomFormSetup.yaml
            }
        }
    }
 
-... you only have to define the following YAML setup in ``EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml``:
+... you only have to define the following YAML setup in ``EXT:my_site_package/Configuration/Form/CustomFormSetup.yaml``:
 
 .. code-block:: yaml
 
@@ -276,11 +276,11 @@ register an additional configuration file via
                Form:
                  renderingOptions:
                    templateRootPaths:
-                     20: 'EXT:my_site_package/Resources/Private/Frontend/Templates/'
+                     20: 'EXT:my_site_package/Resources/Private/Templates/Form/Frontend/'
                    partialRootPaths:
-                     20: 'EXT:my_site_package/Resources/Private/Frontend/Partials/'
+                     20: 'EXT:my_site_package/Resources/Private/Partials/Form/Frontend/'
                    layoutRootPaths:
-                     20: 'EXT:my_site_package/Resources/Private/Frontend/Layouts/'
+                     20: 'EXT:my_site_package/Resources/Private/Layouts/Form/Frontend/'
 
 The values of your own configuration file will overrule the corresponding
 values of the basic configuration file (:file:`EXT:form/Configuration/Yaml/BaseSetup.yaml`).

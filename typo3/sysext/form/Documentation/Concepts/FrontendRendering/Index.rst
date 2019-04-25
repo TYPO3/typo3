@@ -840,11 +840,11 @@ Additional translation files can be defined as follows:
                      translationFile:
                        # translation files for the frontend
                        10: 'EXT:form/Resources/Private/Language/locallang.xlf'
-                       20: 'EXT:my_site_package/Resources/Private/Language/locallang.xlf'
+                       20: 'EXT:my_site_package/Resources/Private/Language/Form/locallang.xlf'
 
 Due to compatibility issues, the setting ``translationFile`` is not defined
 as an array in the default configuration. To load your own translation files,
-you should define an array containing 'EXT:form/Resources/Private/Language/locallang.xlf'
+you should define an array containing 'EXT:form/Resources/Private/Language/Form/locallang.xlf'
 as first entry (key ``10``) followed by your own file (key ``20``) as
 displayed in the example above. The array is processed from the highest key
 to the lowest, i.e. your translation file with the key ``20`` is processed
