@@ -3,6 +3,7 @@
     <f:form.hidden
         property="{element.identifier}"
         id="{element.uniqueIdentifier}"
+        class="{element.properties.elementClassAttribute}"
         additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"
     />
 </formvh:renderRenderable>
