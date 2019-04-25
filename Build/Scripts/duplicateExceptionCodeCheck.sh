@@ -15,9 +15,9 @@ ignoreFiles=()
 # auto generated file, shouldn't be checked
 ignoreFiles+="sysext/core/Tests/Acceptance/Support/_generated/BackendTesterActions.php"
 ignoreFiles+="sysext/core/Tests/Acceptance/Support/_generated/InstallTesterActions.php"
-# a exception in here throws up an code from a previous exception
+# an exception in here throws a code from a previous exception/error
 ignoreFiles+="sysext/extbase/Classes/Core/Bootstrap.php"
-ignoreFiles+="sysext/form/Classes/Mvc/Property/TypeConverter/UploadedFileReferenceConverter.php"
+ignoreFiles+="sysext/form/Classes/Mvc/Property/Exception/TypeConverterException.php"
 
 foundNewFile=0
 oldFilename=""

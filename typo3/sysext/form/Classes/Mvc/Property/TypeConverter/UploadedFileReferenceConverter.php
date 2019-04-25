@@ -22,10 +22,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference as ExtbaseFileReference;
 use TYPO3\CMS\Extbase\Error\Error;
-use TYPO3\CMS\Extbase\Property\Exception\TypeConverterException;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
+use TYPO3\CMS\Form\Mvc\Property\Exception\TypeConverterException;
 use TYPO3\CMS\Form\Service\TranslationService;
 
 /**
@@ -172,6 +172,8 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
 
         try {
             $resource = $this->importUploadedResource($source, $configuration);
+        } catch (TypeConverterException $e) {
+            return $e->getError();
         } catch (\Exception $e) {
             return $this->objectManager->get(Error::class, $e->getMessage(), $e->getCode());
         }
@@ -186,7 +188,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
      * @param array $uploadInfo
      * @param PropertyMappingConfigurationInterface $configuration
      * @return ExtbaseFileReference
-     * @throws TypeConverterException
      */
     protected function importUploadedResource(
         array $uploadInfo,
@@ -209,7 +210,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
                     $validationResult = $validator->validate($uploadedFile);
                     if ($validationResult->hasErrors()) {
                         $uploadedFile->getStorage()->deleteFile($uploadedFile);
-                        throw new TypeConverterException($validationResult->getErrors()[0]->getMessage(), $validationResult->getErrors()[0]->getCode());
+                        throw TypeConverterException::fromError($validationResult->getErrors()[0]);
                     }
                 }
             }
