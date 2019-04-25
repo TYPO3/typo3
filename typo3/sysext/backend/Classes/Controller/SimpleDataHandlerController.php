@@ -215,8 +215,8 @@ class SimpleDataHandlerController
         $this->initClipboard();
         $this->main();
 
-        // Write errors to flash message queue
-        if ($this->prErr) {
+        // Write errors to flash message queue (if not explicitly disabled)
+        if ($this->prErr || $this->prErr === null) {
             $this->tce->printLogErrorMessages();
         }
         if ($this->redirect) {
@@ -249,8 +249,8 @@ class SimpleDataHandlerController
             'hasErrors' => false
         ];
 
-        // Prints errors (= write them to the message queue)
-        if ($this->prErr) {
+        // Prints errors (= write them to the message queue, if not explicitly disabled)
+        if ($this->prErr || $this->prErr === null) {
             $content['hasErrors'] = true;
             $this->tce->printLogErrorMessages();
         }
