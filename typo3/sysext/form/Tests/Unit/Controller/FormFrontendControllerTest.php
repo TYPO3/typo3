@@ -81,9 +81,28 @@ class FormFrontendControllerTest extends UnitTestCase
                 'data' => [
                     $sheetIdentifier => [
                         'lDEF' => [
-                            'settings.finishers.EmailToReceiver.subject' => ['vDEF' => 'Mesage Subject overridden'],
-                            'settings.finishers.EmailToReceiver.recipientAddress' => ['vDEF' => 'your.company@example.com overridden'],
-                            'settings.finishers.EmailToReceiver.format' => ['vDEF' => 'html overridden'],
+                            'settings.finishers.EmailToReceiver.subject' => [
+                                'vDEF' => 'Message Subject overridden',
+                            ],
+                            'settings.finishers.EmailToReceiver.recipients' => [
+                                'el' => [
+                                    'abc' => [
+                                        '_arrayContainer' => [
+                                            'el' => [
+                                                'email' => [
+                                                    'vDEF' => 'your.company@example.com overridden',
+                                                ],
+                                                'name' => [
+                                                    'vDEF' => '',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'settings.finishers.EmailToReceiver.format' => [
+                                'vDEF' => 'html overridden',
+                            ],
                         ],
                     ],
                 ],
@@ -105,7 +124,7 @@ class FormFrontendControllerTest extends UnitTestCase
                     'FormEngine' => [
                         'elements' => [
                             'subject' => [],
-                            'recipientAddress' => [],
+                            'recipients' => [],
                             'format' => [],
                         ],
                     ],
@@ -115,6 +134,15 @@ class FormFrontendControllerTest extends UnitTestCase
 
         $mockController->_set('settings', [
             'overrideFinishers' => 0,
+            'finishers' => [
+                'EmailToReceiver' => [
+                    'subject' => 'Message Subject overridden',
+                    'recipients' => [
+                        'your.company@example.com overridden' => '',
+                    ],
+                    'format' => 'html overridden',
+                ],
+            ],
         ]);
 
         $input = [
@@ -125,8 +153,10 @@ class FormFrontendControllerTest extends UnitTestCase
                 0 => [
                     'identifier' => 'EmailToReceiver',
                     'options' => [
-                        'subject' => 'Mesage Subject',
-                        'recipientAddress' => 'your.company@example.com',
+                        'subject' => 'Message Subject',
+                        'recipients' => [
+                            'your.company@example.com' => '',
+                        ],
                         'format' => 'html',
                     ],
                 ],
@@ -141,8 +171,10 @@ class FormFrontendControllerTest extends UnitTestCase
                 0 => [
                     'identifier' => 'EmailToReceiver',
                     'options' => [
-                        'subject' => 'Mesage Subject',
-                        'recipientAddress' => 'your.company@example.com',
+                        'subject' => 'Message Subject',
+                        'recipients' => [
+                            'your.company@example.com' => '',
+                        ],
                         'format' => 'html',
                     ],
                 ],
@@ -186,9 +218,28 @@ class FormFrontendControllerTest extends UnitTestCase
                 'data' => [
                     $sheetIdentifier => [
                         'lDEF' => [
-                            'settings.finishers.EmailToReceiver.subject' => ['vDEF' => 'Mesage Subject overridden'],
-                            'settings.finishers.EmailToReceiver.recipientAddress' => ['vDEF' => 'your.company@example.com overridden'],
-                            'settings.finishers.EmailToReceiver.format' => ['vDEF' => 'html overridden'],
+                            'settings.finishers.EmailToReceiver.subject' => [
+                                'vDEF' => 'Message Subject overridden',
+                            ],
+                            'settings.finishers.EmailToReceiver.recipients' => [
+                                'el' => [
+                                    'abc' => [
+                                        '_arrayContainer' => [
+                                            'el' => [
+                                                'email' => [
+                                                    'vDEF' => 'your.company@example.com overridden',
+                                                ],
+                                                'name' => [
+                                                    'vDEF' => '',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'settings.finishers.EmailToReceiver.format' => [
+                                'vDEF' => 'html overridden',
+                            ],
                         ],
                     ],
                 ],
@@ -209,9 +260,22 @@ class FormFrontendControllerTest extends UnitTestCase
                 'EmailToReceiver' => [
                     'FormEngine' => [
                         'elements' => [
-                            'subject' => ['config' => ['type' => 'input']],
-                            'recipientAddress' => ['config' => ['type' => 'input']],
-                            'format' => ['config' => ['type' => 'input']],
+                            'subject' => [
+                                'config' => [
+                                    'type' => 'input',
+                                ],
+                            ],
+                            'recipients' => [
+                                'type' => 'array',
+                                'section' => true,
+                                'sectionItemKey' => 'email',
+                                'sectionItemValue' => 'name',
+                            ],
+                            'format' => [
+                                'config' => [
+                                    'type' => 'input',
+                                ],
+                            ],
                         ],
                     ],
                 ],
@@ -220,6 +284,18 @@ class FormFrontendControllerTest extends UnitTestCase
 
         $mockController->_set('settings', [
             'overrideFinishers' => 1,
+            'finishers' => [
+                'EmailToReceiver' => [
+                    'subject' => 'Message Subject overridden',
+                    'recipients' => [
+                        'abcxyz' => [
+                            'email' => 'your.company@example.com overridden',
+                            'name' => '',
+                        ],
+                    ],
+                    'format' => 'html overridden',
+                ],
+            ],
         ]);
 
         $input = [
@@ -230,8 +306,10 @@ class FormFrontendControllerTest extends UnitTestCase
                 0 => [
                     'identifier' => 'EmailToReceiver',
                     'options' => [
-                        'subject' => 'Mesage Subject',
-                        'recipientAddress' => 'your.company@example.com',
+                        'subject' => 'Message Subject',
+                        'recipients' => [
+                            'your.company@example.com' => '',
+                        ],
                         'format' => 'html',
                     ],
                 ],
@@ -246,8 +324,10 @@ class FormFrontendControllerTest extends UnitTestCase
                 0 => [
                     'identifier' => 'EmailToReceiver',
                     'options' => [
-                        'subject' => 'Mesage Subject overridden',
-                        'recipientAddress' => 'your.company@example.com overridden',
+                        'subject' => 'Message Subject overridden',
+                        'recipients' => [
+                            'your.company@example.com overridden' => '',
+                        ],
                         'format' => 'html overridden',
                     ],
                 ],
@@ -291,9 +371,28 @@ class FormFrontendControllerTest extends UnitTestCase
                 'data' => [
                     $sheetIdentifier => [
                         'lDEF' => [
-                            'settings.finishers.EmailToReceiver.subject' => ['vDEF' => 'Mesage Subject overridden'],
-                            'settings.finishers.EmailToReceiver.recipientAddress' => ['vDEF' => 'your.company@example.com overridden'],
-                            'settings.finishers.EmailToReceiver.format' => ['vDEF' => 'html overridden'],
+                            'settings.finishers.EmailToReceiver.subject' => [
+                                'vDEF' => 'Message Subject overridden',
+                            ],
+                            'settings.finishers.EmailToReceiver.recipients' => [
+                                'el' => [
+                                    'abc' => [
+                                        '_arrayContainer' => [
+                                            'el' => [
+                                                'email' => [
+                                                    'vDEF' => 'your.company@example.com overridden',
+                                                ],
+                                                'name' => [
+                                                    'vDEF' => '',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'settings.finishers.EmailToReceiver.format' => [
+                                'vDEF' => 'html overridden',
+                            ],
                         ],
                     ],
                 ],
@@ -314,8 +413,17 @@ class FormFrontendControllerTest extends UnitTestCase
                 'EmailToReceiver' => [
                     'FormEngine' => [
                         'elements' => [
-                            'subject' => ['config' => ['type' => 'input']],
-                            'recipientAddress' => ['config' => ['type' => 'input']],
+                            'subject' => [
+                                'config' => [
+                                    'type' => 'input',
+                                ],
+                            ],
+                            'recipients' => [
+                                'type' => 'array',
+                                'section' => true,
+                                'sectionItemKey' => 'email',
+                                'sectionItemValue' => 'name',
+                            ],
                         ],
                     ],
                 ],
@@ -326,8 +434,13 @@ class FormFrontendControllerTest extends UnitTestCase
             'overrideFinishers' => 1,
             'finishers' => [
                 'EmailToReceiver' => [
-                    'subject' => 'Mesage Subject overridden',
-                    'recipientAddress' => 'your.company@example.com overridden',
+                    'subject' => 'Message Subject overridden',
+                    'recipients' => [
+                        'abcxyz' => [
+                            'email' => 'your.company@example.com overridden',
+                            'name' => '',
+                        ],
+                    ],
                     'format' => 'html overridden',
                 ],
             ],
@@ -341,8 +454,10 @@ class FormFrontendControllerTest extends UnitTestCase
                 0 => [
                     'identifier' => 'EmailToReceiver',
                     'options' => [
-                        'subject' => 'Mesage Subject',
-                        'recipientAddress' => 'your.company@example.com',
+                        'subject' => 'Message Subject',
+                        'recipients' => [
+                            'your.company@example.com' => '',
+                        ],
                         'format' => 'html',
                     ],
                 ],
@@ -357,130 +472,11 @@ class FormFrontendControllerTest extends UnitTestCase
                 0 => [
                     'identifier' => 'EmailToReceiver',
                     'options' => [
-                        'subject' => 'Mesage Subject overridden',
-                        'recipientAddress' => 'your.company@example.com overridden',
+                        'subject' => 'Message Subject overridden',
+                        'recipients' => [
+                            'your.company@example.com overridden' => '',
+                        ],
                         'format' => 'html',
-                    ],
-                ],
-            ],
-        ];
-
-        $this->assertSame($expected, $mockController->_call('overrideByFlexFormSettings', $input));
-    }
-
-    /**
-     * @test
-     */
-    public function overrideByFlexFormSettingsReturnsOverriddenConfigurationWhileMultipleSheetsExists()
-    {
-        $mockController = $this->getAccessibleMock(FormFrontendController::class, [
-            'dummy'
-        ], [], '', false);
-
-        $configurationServiceProphecy = $this->prophesize(ConfigurationService::class);
-
-        $objectManagerMock = $this->createMock(ObjectManager::class);
-        $objectManagerMock
-            ->expects($this->any())
-            ->method('get')
-            ->with(ConfigurationService::class)
-            ->willReturn($configurationServiceProphecy->reveal());
-
-        $sheetIdentifier = md5(
-            implode('', [
-                '1:/foo',
-                'standard',
-                'ext-form-identifier',
-                'EmailToReceiver'
-            ])
-        );
-
-        $anotherSheetIdentifier = md5(
-            implode('', [
-                '1:/foobar',
-                'standard',
-                'another-ext-form-identifier',
-                'EmailToReceiver'
-            ])
-        );
-
-        $flexFormTools = new FlexFormTools;
-        $contentObject = new \stdClass();
-        $contentObject->data = [
-            'pi_flexform' => $flexFormTools->flexArray2Xml([
-                'data' => [
-                    $sheetIdentifier => [
-                        'lDEF' => [
-                            'settings.finishers.EmailToReceiver.subject' => ['vDEF' => 'Mesage Subject overridden 1'],
-                            'settings.finishers.EmailToReceiver.recipientAddress' => ['vDEF' => 'your.company@example.com overridden 1'],
-                            'settings.finishers.EmailToReceiver.format' => ['vDEF' => 'html overridden 1'],
-                        ],
-                    ],
-                    $anotherSheetIdentifier => [
-                        'lDEF' => [
-                            'settings.finishers.EmailToReceiver.subject' => ['vDEF' => 'Mesage Subject overridden 2'],
-                            'settings.finishers.EmailToReceiver.recipientAddress' => ['vDEF' => 'your.company@example.com overridden 2'],
-                            'settings.finishers.EmailToReceiver.format' => ['vDEF' => 'html overridden 2'],
-                        ],
-                    ],
-                ],
-            ]),
-        ];
-
-        $frontendConfigurationManager = $this->createMock(FrontendConfigurationManager::class);
-        $frontendConfigurationManager
-            ->expects($this->any())
-            ->method('getContentObject')
-            ->willReturn($contentObject);
-
-        $mockController->_set('configurationManager', $frontendConfigurationManager);
-        $mockController->_set('objectManager', $objectManagerMock);
-
-        $configurationServiceProphecy->getPrototypeConfiguration(Argument::cetera())->willReturn([
-            'finishersDefinition' => [
-                'EmailToReceiver' => [
-                    'FormEngine' => [
-                        'elements' => [
-                            'subject' => ['config' => ['type' => 'input']],
-                            'recipientAddress' => ['config' => ['type' => 'input']],
-                            'format' => ['config' => ['type' => 'input']],
-                        ],
-                    ],
-                ],
-            ],
-        ]);
-
-        $mockController->_set('settings', [
-            'overrideFinishers' => 1,
-        ]);
-
-        $input = [
-            'persistenceIdentifier' => '1:/foo',
-            'identifier' => 'ext-form-identifier',
-            'prototypeName' => 'standard',
-            'finishers' => [
-                0 => [
-                    'identifier' => 'EmailToReceiver',
-                    'options' => [
-                        'subject' => 'Mesage Subject',
-                        'recipientAddress' => 'your.company@example.com',
-                        'format' => 'html',
-                    ],
-                ],
-            ],
-        ];
-
-        $expected = [
-            'persistenceIdentifier' => '1:/foo',
-            'identifier' => 'ext-form-identifier',
-            'prototypeName' => 'standard',
-            'finishers' => [
-                0 => [
-                    'identifier' => 'EmailToReceiver',
-                    'options' => [
-                        'subject' => 'Mesage Subject overridden 1',
-                        'recipientAddress' => 'your.company@example.com overridden 1',
-                        'format' => 'html overridden 1',
                     ],
                 ],
             ],

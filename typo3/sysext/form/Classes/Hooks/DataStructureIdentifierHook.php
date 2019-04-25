@@ -81,12 +81,12 @@ class DataStructureIdentifierHook
             }
 
             // Add bool - finisher override active or not
-            $identifier['ext-form-overrideFinishers'] = false;
+            $identifier['ext-form-overrideFinishers'] = '';
             if (
                 isset($currentFlexData['data']['sDEF']['lDEF']['settings.overrideFinishers']['vDEF'])
                 && (int)$currentFlexData['data']['sDEF']['lDEF']['settings.overrideFinishers']['vDEF'] === 1
             ) {
-                $identifier['ext-form-overrideFinishers'] = true;
+                $identifier['ext-form-overrideFinishers'] = 'enabled';
             }
         }
         return $identifier;
@@ -177,7 +177,7 @@ class DataStructureIdentifierHook
                         );
                     }
 
-                    if ($identifier['ext-form-overrideFinishers']) {
+                    if ($identifier['ext-form-overrideFinishers'] === 'enabled') {
                         ArrayUtility::mergeRecursiveWithOverrule(
                             $dataStructure,
                             $newSheets
@@ -192,6 +192,7 @@ class DataStructureIdentifierHook
                 $this->addInvalidFrameworkConfigurationFlashMessage($e);
             }
         }
+
         return $dataStructure;
     }
 
@@ -256,7 +257,8 @@ class DataStructureIdentifierHook
                 GeneralUtility::makeInstance(
                     ArrayProcessing::class,
                     'convertToFlexFormSheets',
-                    '^(.*)\.config\.type$',
+                    // Either process leaf form field configuration not within a FlexForm section or FlexForm section
+                    '^(.*)(?:(?<!\.TCEforms)\.config\.type|\.section)$',
                     GeneralUtility::makeInstance(FinisherOptionGenerator::class, $converterDto)
                 )
             );

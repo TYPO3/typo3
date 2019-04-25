@@ -77,7 +77,7 @@ class DataStructureIdentifierHookTest extends UnitTestCase
             []
         );
         $this->assertEquals(
-            ['ext-form-persistenceIdentifier' => '', 'ext-form-overrideFinishers' => false],
+            ['ext-form-persistenceIdentifier' => '', 'ext-form-overrideFinishers' => ''],
             $result
         );
     }
@@ -109,7 +109,7 @@ class DataStructureIdentifierHookTest extends UnitTestCase
         $expected = [
             'aKey' => 'aValue',
             'ext-form-persistenceIdentifier' => '1:user_upload/karl.yml',
-            'ext-form-overrideFinishers' => false,
+            'ext-form-overrideFinishers' => '',
         ];
         $result = (new DataStructureIdentifierHook())->getDataStructureIdentifierPostProcess(
             [],
@@ -144,7 +144,7 @@ class DataStructureIdentifierHookTest extends UnitTestCase
         ];
         $expected = [
             'ext-form-persistenceIdentifier' => '',
-            'ext-form-overrideFinishers' => true,
+            'ext-form-overrideFinishers' => 'enabled',
         ];
         $result = (new DataStructureIdentifierHook())->getDataStructureIdentifierPostProcess(
             [],

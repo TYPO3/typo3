@@ -483,24 +483,48 @@ class FormEditorController extends AbstractBackendController
      */
     protected function transformFormDefinitionForFormEditor(array $formDefinition): array
     {
-        $multiValueProperties = [];
+        $multiValueFormElementProperties = [];
+        $multiValueFinisherProperties = [];
+
         foreach ($this->prototypeConfiguration['formElementsDefinition'] as $type => $configuration) {
             if (!isset($configuration['formEditor']['editors'])) {
                 continue;
             }
             foreach ($configuration['formEditor']['editors'] as $editorConfiguration) {
                 if ($editorConfiguration['templateName'] === 'Inspector-PropertyGridEditor') {
-                    $multiValueProperties[$type][] = $editorConfiguration['propertyPath'];
+                    $multiValueFormElementProperties[$type][] = $editorConfiguration['propertyPath'];
+                }
+            }
+        }
+
+        foreach ($this->prototypeConfiguration['formElementsDefinition']['Form']['formEditor']['propertyCollections']['finishers'] ?? [] as $configuration) {
+            if (!isset($configuration['editors'])) {
+                continue;
+            }
+
+            foreach ($configuration['editors'] as $editorConfiguration) {
+                if ($editorConfiguration['templateName'] === 'Inspector-PropertyGridEditor') {
+                    $multiValueFinisherProperties[$configuration['identifier']][] = $editorConfiguration['propertyPath'];
                 }
             }
         }
 
         $formDefinition = $this->filterEmptyArrays($formDefinition);
         $formDefinition = $this->migrateTranslationFileOptions($formDefinition);
+        $formDefinition = $this->migrateEmailFinisherRecipients($formDefinition);
 
         // @todo: replace with rte parsing
         $formDefinition = ArrayUtility::stripTagsFromValuesRecursive($formDefinition);
-        $formDefinition = $this->transformMultiValueElementsForFormEditor($formDefinition, $multiValueProperties);
+        $formDefinition = $this->transformMultiValuePropertiesForFormEditor(
+            $formDefinition,
+            'type',
+            $multiValueFormElementProperties
+        );
+        $formDefinition = $this->transformMultiValuePropertiesForFormEditor(
+            $formDefinition,
+            'identifier',
+            $multiValueFinisherProperties
+        );
 
         $formDefinitionConversionService = $this->getFormDefinitionConversionService();
         $formDefinition = $formDefinitionConversionService->addHmacData($formDefinition);
@@ -539,39 +563,54 @@ class FormEditorController extends AbstractBackendController
      * ]
      *
      * @param array $formDefinition
+     * @param string $identifierProperty
      * @param array $multiValueProperties
      * @return array
      */
-    protected function transformMultiValueElementsForFormEditor(
+    protected function transformMultiValuePropertiesForFormEditor(
         array $formDefinition,
+        string $identifierProperty,
         array $multiValueProperties
     ): array {
         $output = $formDefinition;
         foreach ($formDefinition as $key => $value) {
-            if (isset($value['type']) && array_key_exists($value['type'], $multiValueProperties)) {
-                $multiValuePropertiesForType = $multiValueProperties[$value['type']];
-                foreach ($multiValuePropertiesForType as $multiValueProperty) {
+            $identifier = $value[$identifierProperty] ?? null;
+
+            if (array_key_exists($identifier, $multiValueProperties)) {
+                $multiValuePropertiesForIdentifier = $multiValueProperties[$identifier];
+
+                foreach ($multiValuePropertiesForIdentifier as $multiValueProperty) {
                     if (!ArrayUtility::isValidPath($value, $multiValueProperty, '.')) {
                         continue;
                     }
+
                     $multiValuePropertyData = ArrayUtility::getValueByPath($value, $multiValueProperty, '.');
+
                     if (!is_array($multiValuePropertyData)) {
                         continue;
                     }
+
                     $newMultiValuePropertyData = [];
+
                     foreach ($multiValuePropertyData as $k => $v) {
                         $newMultiValuePropertyData[] = [
                             '_label' => $v,
-                            '_value' => $k
+                            '_value' => $k,
                         ];
                     }
+
                     $value = ArrayUtility::setValueByPath($value, $multiValueProperty, $newMultiValuePropertyData, '.');
                 }
             }
 
             $output[$key] = $value;
+
             if (is_array($value)) {
-                $output[$key] = $this->transformMultiValueElementsForFormEditor($value, $multiValueProperties);
+                $output[$key] = $this->transformMultiValuePropertiesForFormEditor(
+                    $value,
+                    $identifierProperty,
+                    $multiValueProperties
+                );
             }
         }
 
@@ -644,6 +683,48 @@ class FormEditorController extends AbstractBackendController
                 }
             )
         );
+
+        return $formDefinition;
+    }
+
+    /**
+     * Migrate single recipient options to their list successors
+     *
+     * @param array $formDefinition
+     * @return array
+     */
+    protected function migrateEmailFinisherRecipients(array $formDefinition): array
+    {
+        foreach ($formDefinition['finishers'] ?? [] as $i => $finisherConfiguration) {
+            if (!in_array($finisherConfiguration['identifier'], ['EmailToSender', 'EmailToReceiver'], true)) {
+                continue;
+            }
+
+            $recipientAddress = $finisherConfiguration['options']['recipientAddress'] ?? '';
+            $recipientName = $finisherConfiguration['options']['recipientName'] ?? '';
+            $carbonCopyAddress = $finisherConfiguration['options']['carbonCopyAddress'] ?? '';
+            $blindCarbonCopyAddress = $finisherConfiguration['options']['blindCarbonCopyAddress'] ?? '';
+
+            if (!empty($recipientAddress)) {
+                $finisherConfiguration['options']['recipients'][$recipientAddress] = $recipientName;
+            }
+
+            if (!empty($carbonCopyAddress)) {
+                $finisherConfiguration['options']['carbonCopyRecipients'][$carbonCopyAddress] = '';
+            }
+
+            if (!empty($blindCarbonCopyAddress)) {
+                $finisherConfiguration['options']['blindCarbonCopyRecipients'][$blindCarbonCopyAddress] = '';
+            }
+
+            unset(
+                $finisherConfiguration['options']['recipientAddress'],
+                $finisherConfiguration['options']['recipientName'],
+                $finisherConfiguration['options']['carbonCopyAddress'],
+                $finisherConfiguration['options']['blindCarbonCopyAddress']
+            );
+            $formDefinition['finishers'][$i] = $finisherConfiguration;
+        }
 
         return $formDefinition;
     }

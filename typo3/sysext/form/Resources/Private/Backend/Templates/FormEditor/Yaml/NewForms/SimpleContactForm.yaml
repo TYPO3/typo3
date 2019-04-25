@@ -7,13 +7,13 @@ finishers:
     identifier: EmailToReceiver
     options:
       subject: 'Your message: {subject}'
-      recipientAddress: 'your.company@example.com'
-      recipientName: 'Your Company name'
+      recipients:
+        your.company@example.com: Your Company name'
       senderAddress: '{email}'
       senderName: '{name}'
-      replyToAddress: ''
-      carbonCopyAddress: ''
-      blindCarbonCopyAddress: ''
+      replyToRecipients: {}
+      carbonCopyRecipients: {}
+      blindCarbonCopyRecipients: {}
       format: 'html'
       attachUploads: 'true'
       translation:

@@ -53,6 +53,7 @@ class FinisherOptionsFlexFormOverridesConverter
     public function __invoke(string $_, $__, array $matches): void
     {
         [, $optionKey] = $matches;
+        $prototypeFinisherDefinition = $this->converterDto->getPrototypeFinisherDefinition();
         $finisherDefinition = $this->converterDto->getFinisherDefinition();
         $finisherIdentifier = $this->converterDto->getFinisherIdentifier();
         $flexFormSheetSettings = $this->converterDto->getFlexFormSheetSettings();
@@ -65,6 +66,24 @@ class FinisherOptionsFlexFormOverridesConverter
             );
         } catch (MissingArrayPathException $exception) {
             return;
+        }
+
+        $fieldConfiguration = $prototypeFinisherDefinition['FormEngine']['elements'][$optionKey];
+
+        if ($fieldConfiguration['section'] ?? false) {
+            $processedOptionValue = [];
+
+            foreach ($value ?: [] as $optionListValue) {
+                $key = $optionListValue[$fieldConfiguration['sectionItemKey']];
+                $value = $optionListValue[$fieldConfiguration['sectionItemValue']];
+                $processedOptionValue[$key] = $value;
+            }
+
+            if (empty($processedOptionValue)) {
+                $value = $optionValue;
+            } else {
+                $value = $processedOptionValue;
+            }
         }
 
         $finisherDefinition = ArrayUtility::setValueByPath($finisherDefinition, 'options.' . $optionKey, $value, '.');

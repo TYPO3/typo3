@@ -68,11 +68,17 @@
             <trans-unit id="tt_content.finishersDefinition.EmailToSender.subject.label" xml:space="preserve">
                 <source>Subject of the email</source>
             </trans-unit>
-            <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipientAddress.label" xml:space="preserve">
-                <source>Email address of the recipient</source>
+            <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.label" xml:space="preserve">
+                <source>Recipients</source>
             </trans-unit>
-            <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipientName.label" xml:space="preserve">
-                <source>Human-readable name of the recipient</source>
+            <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.item.label" xml:space="preserve">
+                <source>Recipient</source>
+            </trans-unit>
+            <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.email.label" xml:space="preserve">
+                <source>Email Address</source>
+            </trans-unit>
+            <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.name.label" xml:space="preserve">
+                <source>Name</source>
             </trans-unit>
             <trans-unit id="tt_content.finishersDefinition.EmailToSender.senderAddress.label" xml:space="preserve">
                 <source>Email address of the sender</source>
@@ -80,14 +86,23 @@
             <trans-unit id="tt_content.finishersDefinition.EmailToSender.senderName.label" xml:space="preserve">
                 <source>Human-readable name of the sender</source>
             </trans-unit>
-            <trans-unit id="tt_content.finishersDefinition.EmailToSender.replyToAddress.label" xml:space="preserve">
-                <source>Email address of to be used as reply-to email</source>
+            <trans-unit id="tt_content.finishersDefinition.EmailToSender.replyToRecipients.label" xml:space="preserve">
+                <source>Reply-To Recipients</source>
             </trans-unit>
-            <trans-unit id="tt_content.finishersDefinition.EmailToSender.carbonCopyAddress.label" xml:space="preserve">
-                <source>Email address of the copy recipient</source>
+            <trans-unit id="tt_content.finishersDefinition.EmailToSender.replyToRecipients.item.label" xml:space="preserve">
+                <source>Reply-To Recipient</source>
             </trans-unit>
-            <trans-unit id="tt_content.finishersDefinition.EmailToSender.blindCarbonCopyAddress.label" xml:space="preserve">
-                <source>Email address of the blind copy recipient</source>
+            <trans-unit id="tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.label" xml:space="preserve">
+                <source>CC Recipients</source>
+            </trans-unit>
+            <trans-unit id="tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.item.label" xml:space="preserve">
+                <source>CC Recipient</source>
+            </trans-unit>
+            <trans-unit id="tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.label" xml:space="preserve">
+                <source>BCC Recipients</source>
+            </trans-unit>
+            <trans-unit id="tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.item.label" xml:space="preserve">
+                <source>BCC Recipient</source>
             </trans-unit>
             <trans-unit id="tt_content.finishersDefinition.EmailToSender.format.label" xml:space="preserve">
                 <source>The format of the email</source>
@@ -105,11 +120,8 @@
             <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.subject.label" xml:space="preserve">
                 <source>Subject of the email</source>
             </trans-unit>
-            <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.recipientAddress.label" xml:space="preserve">
-                <source>Email address of the recipient</source>
-            </trans-unit>
-            <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.recipientName.label" xml:space="preserve">
-                <source>Human-readable name of the recipient</source>
+            <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.recipients.label" xml:space="preserve">
+                <source>Email addresses and human-readable names of the recipients</source>
             </trans-unit>
             <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.senderAddress.label" xml:space="preserve">
                 <source>Email address of the sender</source>
@@ -117,14 +129,14 @@
             <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.senderName.label" xml:space="preserve">
                 <source>Human-readable name of the sender</source>
             </trans-unit>
-            <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.replyToAddress.label" xml:space="preserve">
-                <source>Email address of to be used as reply-to email</source>
+            <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.replyToRecipients.label" xml:space="preserve">
+                <source>Reply-To Recipients</source>
             </trans-unit>
-            <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.carbonCopyAddress.label" xml:space="preserve">
-                <source>Email address of the copy recipient</source>
+            <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.carbonCopyRecipients.label" xml:space="preserve">
+                <source>CC Recipients</source>
             </trans-unit>
-            <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.blindCarbonCopyAddress.label" xml:space="preserve">
-                <source>Email address of the blind copy recipient</source>
+            <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.blindCarbonCopyRecipients.label" xml:space="preserve">
+                <source>BCC Recipients</source>
             </trans-unit>
             <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.format.label" xml:space="preserve">
                 <source>Format of the email</source>
@@ -531,12 +543,6 @@
             <trans-unit id="formEditor.elements.SelectionMixin.editor.options.label" xml:space="preserve">
                 <source>Choices</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageTitle" xml:space="preserve">
-                <source>Error</source>
-            </trans-unit>
-            <trans-unit id="formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageMessage" xml:space="preserve">
-                <source>There must be at least one row within your options.</source>
-            </trans-unit>
 
             <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.label" xml:space="preserve">
                 <source>Validators</source>
@@ -596,17 +602,17 @@
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.subject.label" xml:space="preserve">
                 <source>Subject</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipientAddress.label" xml:space="preserve">
-                <source>Recipient address</source>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.label" xml:space="preserve">
+                <source>Recipients</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipientAddress.fieldExplanationText" xml:space="preserve">
-                <source>The email address of the website visitor to whom the email should be sent. You can use the "insert formelement identifier" dropdown to choose a form element which holds the website visitors email address.</source>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.fieldExplanationText" xml:space="preserve">
+                <source>The email addresses and names of the website visitors to which the email should be sent.</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipientName.label" xml:space="preserve">
-                <source>Recipient name</source>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title" xml:space="preserve">
+                <source>Email Address</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipientName.fieldExplanationText" xml:space="preserve">
-                <source>The name of the website visitor which appears in the website visitor email client. You can use the "insert formelement identifier" dropdown to choose one or more form elements which holds the website visitors name.</source>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title" xml:space="preserve">
+                <source>Name</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.label" xml:space="preserve">
                 <source>Sender address</source>
@@ -620,14 +626,14 @@
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.fieldExplanationText" xml:space="preserve">
                 <source>The name of the sender (e.g. your company's name) which appears in the website visitor email client.</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.replyToAddress.label" xml:space="preserve">
-                <source>Reply-to address</source>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.replyToRecipients.label" xml:space="preserve">
+                <source>Reply-To Recipients</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.carbonCopyAddress.label" xml:space="preserve">
-                <source>CC address</source>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.carbonCopyRecipients.label" xml:space="preserve">
+                <source>CC Recipients</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.blindCarbonCopyAddress.label" xml:space="preserve">
-                <source>BCC address</source>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.blindCarbonCopyRecipients.label" xml:space="preserve">
+                <source>BCC Recipients</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.format.label" xml:space="preserve">
                 <source>Format</source>
@@ -648,17 +654,11 @@
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.subject.label" xml:space="preserve">
                 <source>Subject</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientAddress.label" xml:space="preserve">
-                <source>Recipient address</source>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipients.label" xml:space="preserve">
+                <source>Recipients</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientAddress.fieldExplanationText" xml:space="preserve">
-                <source>The email address of the recipient to whom the email should be sent (e.g. your company's email address).</source>
-            </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientName.label" xml:space="preserve">
-                <source>Recipient name</source>
-            </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientName.fieldExplanationText" xml:space="preserve">
-                <source>The name of the recipient which appears in your email client (e.g. your company's name).</source>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipients.fieldExplanationText" xml:space="preserve">
+                <source>The email addresses and names of the recipients to which the email should be sent (e.g. your company's email addresses).</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.label" xml:space="preserve">
                 <source>Sender address</source>
@@ -672,14 +672,14 @@
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.fieldExplanationText" xml:space="preserve">
                 <source>The name of the sender which appears in your email client. If you want, you can use the "insert formelement identifier" dropdown to choose one or more form elements which holds the website visitors name.</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.replyToAddress.label" xml:space="preserve">
-                <source>Reply-to address</source>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.replyToRecipients.label" xml:space="preserve">
+                <source>Reply-To Recipients</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.carbonCopyAddress.label" xml:space="preserve">
-                <source>CC address</source>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.carbonCopyRecipients.label" xml:space="preserve">
+                <source>CC Recipients</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.blindCarbonCopyAddress.label" xml:space="preserve">
-                <source>BCC address</source>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.blindCarbonCopyRecipients.label" xml:space="preserve">
+                <source>BCC Recipients</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.format.label" xml:space="preserve">
                 <source>Format</source>

@@ -448,13 +448,12 @@ TYPO3:
           implementationClassName: 'TYPO3\CMS\Form\Domain\Finishers\EmailFinisher'
           options:
             #subject: ''
-            #recipientAddress: ''
-            #recipientName: ''
+            #recipients: {}
             #senderAddress:
             #senderName: ''
-            #replyToAddress: ''
-            #carbonCopyAddress: ''
-            #blindCarbonCopyAddress: ''
+            #replyToRecipients: {}
+            #carbonCopyRecipients: {}
+            #blindCarbonCopyRecipients: {}
             #format: 'html'
             #attachUploads: true
             #translation:

@@ -143,6 +143,16 @@ define(['jquery'], function($) {
        * @param mixed value
        * @return bool
        */
+      function isNonEmptyArray(value) {
+        return ('array' === $.type(value) && value.length > 0);
+      };
+
+      /**
+       * @public
+       *
+       * @param mixed value
+       * @return bool
+       */
       function isNonEmptyString(value) {
         return ('string' === $.type(value) && value.length > 0);
       };
@@ -236,6 +246,7 @@ define(['jquery'], function($) {
       return {
         assert: assert,
         convertToSimpleObject: convertToSimpleObject,
+        isNonEmptyArray: isNonEmptyArray,
         isNonEmptyString: isNonEmptyString,
         isUndefinedOrNull: isUndefinedOrNull,
         buildPropertyPath: buildPropertyPath

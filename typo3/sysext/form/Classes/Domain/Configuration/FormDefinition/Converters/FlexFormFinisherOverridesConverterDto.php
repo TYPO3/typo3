@@ -23,6 +23,11 @@ class FlexFormFinisherOverridesConverterDto
     /**
      * @var array
      */
+    protected $prototypeFinisherDefinition = [];
+
+    /**
+     * @var array
+     */
     protected $finisherDefinition = [];
 
     /**
@@ -36,18 +41,29 @@ class FlexFormFinisherOverridesConverterDto
     protected $flexFormSheetSettings = [];
 
     /**
+     * @param array $prototypeFinisherDefinition
      * @param array $finisherDefinition
      * @param string $finisherIdentifier
      * @param array $flexFormSheetSettings
      */
     public function __construct(
+        array $prototypeFinisherDefinition,
         array $finisherDefinition,
         string $finisherIdentifier,
         array $flexFormSheetSettings
     ) {
+        $this->prototypeFinisherDefinition = $prototypeFinisherDefinition;
         $this->finisherDefinition = $finisherDefinition;
         $this->finisherIdentifier = $finisherIdentifier;
         $this->flexFormSheetSettings = $flexFormSheetSettings;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPrototypeFinisherDefinition(): array
+    {
+        return $this->prototypeFinisherDefinition;
     }
 
     /**

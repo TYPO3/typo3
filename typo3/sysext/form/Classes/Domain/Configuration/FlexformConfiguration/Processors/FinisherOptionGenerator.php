@@ -93,7 +93,9 @@ class FinisherOptionGenerator extends AbstractProcessor
             $elementConfiguration['label'] .= sprintf(' (%s: "' . $optionValue . '")', $this->languageService->getLL('default'));
         }
 
-        $elementConfiguration['config']['default'] = $optionValue;
+        if (isset($elementConfiguration['config'])) {
+            $elementConfiguration['config']['default'] = $optionValue;
+        }
 
         $sheetElements = $this->converterDto->getResult();
         $sheetElements['settings.finishers.' . $finisherIdentifier . '.' . $optionKey]['TCEforms'] = $elementConfiguration;

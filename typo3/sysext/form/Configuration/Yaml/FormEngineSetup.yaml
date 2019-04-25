@@ -44,20 +44,18 @@ TYPO3:
                 elements:
                   subject:
                     label: 'tt_content.finishersDefinition.EmailToReceiver.subject.label'
-                  recipientAddress:
-                    label: 'tt_content.finishersDefinition.EmailToReceiver.recipientAddress.label'
-                  recipientName:
-                    label: 'tt_content.finishersDefinition.EmailToReceiver.recipientName.label'
+                  recipients:
+                    title: 'tt_content.finishersDefinition.EmailToReceiver.recipients.label'
                   senderAddress:
                     label: 'tt_content.finishersDefinition.EmailToReceiver.senderAddress.label'
                   senderName:
                     label: 'tt_content.finishersDefinition.EmailToReceiver.senderName.label'
-                  replyToAddress:
-                    label: 'tt_content.finishersDefinition.EmailToReceiver.replyToAddress.label'
-                  carbonCopyAddress:
-                    label: 'tt_content.finishersDefinition.EmailToReceiver.carbonCopyAddress.label'
-                  blindCarbonCopyAddress:
-                    label: 'tt_content.finishersDefinition.EmailToReceiver.blindCarbonCopyAddress.label'
+                  replyToRecipients:
+                    title: 'tt_content.finishersDefinition.EmailToReceiver.replyToRecipients.label'
+                  carbonCopyRecipients:
+                    title: 'tt_content.finishersDefinition.EmailToReceiver.carbonCopyRecipients.label'
+                  blindCarbonCopyRecipients:
+                    title: 'tt_content.finishersDefinition.EmailToReceiver.blindCarbonCopyRecipients.label'
                   format:
                     label: 'tt_content.finishersDefinition.EmailToReceiver.format.label'
                   translation:
@@ -105,15 +103,30 @@ TYPO3:
               config:
                 type: 'input'
                 eval: 'required'
-            recipientAddress:
-              label: 'tt_content.finishersDefinition.EmailToSender.recipientAddress.label'
-              config:
-                type: 'input'
-                eval: 'required'
-            recipientName:
-              label: 'tt_content.finishersDefinition.EmailToSender.recipientName.label'
-              config:
-                type: 'input'
+            recipients:
+              title: 'tt_content.finishersDefinition.EmailToSender.recipients.label'
+              type: 'array'
+              # The "section*" options are processed in
+              # FormFrontendController::overrideByFlexFormSettings()
+              section: true
+              sectionItemKey: email
+              sectionItemValue: name
+              el:
+                _arrayContainer:
+                  type: 'array'
+                  title: tt_content.finishersDefinition.EmailToSender.recipients.item.label
+                  el:
+                    email:
+                      TCEforms:
+                        label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                        config:
+                          type: input
+                          eval: required,email
+                    name:
+                      TCEforms:
+                        label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                        config:
+                          type: input
             senderAddress:
               label: 'tt_content.finishersDefinition.EmailToSender.senderAddress.label'
               config:
@@ -123,18 +136,78 @@ TYPO3:
               label: 'tt_content.finishersDefinition.EmailToSender.senderName.label'
               config:
                 type: 'input'
-            replyToAddress:
-              label: 'tt_content.finishersDefinition.EmailToSender.replyToAddress.label'
-              config:
-                type: 'input'
-            carbonCopyAddress:
-              label: 'tt_content.finishersDefinition.EmailToSender.carbonCopyAddress.label'
-              config:
-                type: 'input'
-            blindCarbonCopyAddress:
-              label: 'tt_content.finishersDefinition.EmailToSender.blindCarbonCopyAddress.label'
-              config:
-                type: 'input'
+            replyToRecipients:
+              title: 'tt_content.finishersDefinition.EmailToSender.replyToRecipients.label'
+              type: 'array'
+              # The "section*" options are processed in
+              # FormFrontendController::overrideByFlexFormSettings()
+              section: true
+              sectionItemKey: email
+              sectionItemValue: name
+              el:
+                _arrayContainer:
+                  type: 'array'
+                  title: tt_content.finishersDefinition.EmailToSender.replyToRecipients.item.label
+                  el:
+                    email:
+                      TCEforms:
+                        label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                        config:
+                          type: input
+                          eval: required,email
+                    name:
+                      TCEforms:
+                        label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                        config:
+                          type: input
+            carbonCopyRecipients:
+              title: 'tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.label'
+              type: 'array'
+              # The "section*" options are processed in
+              # FormFrontendController::overrideByFlexFormSettings()
+              section: true
+              sectionItemKey: email
+              sectionItemValue: name
+              el:
+                _arrayContainer:
+                  type: 'array'
+                  title: tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.item.label
+                  el:
+                    email:
+                      TCEforms:
+                        label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                        config:
+                          type: input
+                          eval: required,email
+                    name:
+                      TCEforms:
+                        label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                        config:
+                          type: input
+            blindCarbonCopyRecipients:
+              title: 'tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.label'
+              type: 'array'
+              # The "section*" options are processed in
+              # FormFrontendController::overrideByFlexFormSettings()
+              section: true
+              sectionItemKey: email
+              sectionItemValue: name
+              el:
+                _arrayContainer:
+                  type: 'array'
+                  title: tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.item.label
+                  el:
+                    email:
+                      TCEforms:
+                        label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                        config:
+                          type: input
+                          eval: required,email
+                    name:
+                      TCEforms:
+                        label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                        config:
+                          type: input
             format:
               label: 'tt_content.finishersDefinition.EmailToSender.format.label'
               config:

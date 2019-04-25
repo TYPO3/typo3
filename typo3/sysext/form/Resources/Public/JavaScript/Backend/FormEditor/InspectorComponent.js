@@ -93,12 +93,14 @@ define(['jquery',
 
         inspectorFinishers: 'inspectorFinishers',
         inspectorValidators: 'inspectorValidators',
+        propertyGridEditorHeaderRow: 'headerRow',
         propertyGridEditorAddRow: 'addRow',
         propertyGridEditorAddRowItem: 'addRowItem',
         propertyGridEditorContainer: 'propertyGridContainer',
         propertyGridEditorDeleteRow: 'deleteRow',
         propertyGridEditorLabel: 'label',
         propertyGridEditorRowItem: 'rowItem',
+        propertyGridEditorColumn: 'column',
         propertyGridEditorSelectValue: 'selectValue',
         propertyGridEditorSortRow: 'sortRow',
         propertyGridEditorValue: 'value',
@@ -536,6 +538,7 @@ define(['jquery',
       });
 
       getCurrentlySelectedFormElement().set(propertyPathPrefix + propertyPath, newPropertyData);
+      _validateCollectionElement(propertyPathPrefix + propertyPath, editorHtml);
     };
 
     /**
@@ -1727,8 +1730,8 @@ define(['jquery',
      * @throws 1475419232
      */
     function renderPropertyGridEditor(editorConfiguration, editorHtml, collectionElementIdentifier, collectionName) {
-      var addRowTemplate, defaultValue, multiSelection, propertyData, propertyPathPrefix,
-        rowItemTemplate, setData;
+      var addRowTemplate, gridColumns, defaultValue, multiSelection, propertyData, propertyPathPrefix,
+        rowItemTemplate, setData, useLabelAsFallbackValue;
       assert(
         'object' === $.type(editorConfiguration),
         'Invalid parameter "editorConfiguration"',
@@ -1765,7 +1768,18 @@ define(['jquery',
         1475419232
       );
 
-      getHelper().getTemplatePropertyDomElement('label', editorHtml).append(editorConfiguration['label']);
+      getHelper().getTemplatePropertyDomElement('label', editorHtml)
+        .append(editorConfiguration['label']);
+      if (getUtility().isNonEmptyString(editorConfiguration['fieldExplanationText'])) {
+        getHelper()
+          .getTemplatePropertyDomElement('fieldExplanationText', editorHtml)
+          .text(editorConfiguration['fieldExplanationText']);
+      } else {
+        getHelper()
+          .getTemplatePropertyDomElement('fieldExplanationText', editorHtml)
+          .remove();
+      }
+
       propertyPathPrefix = getFormEditorApp().buildPropertyPath(
         undefined,
         collectionElementIdentifier,
@@ -1776,6 +1790,65 @@ define(['jquery',
       if (getUtility().isNonEmptyString(propertyPathPrefix)) {
         propertyPathPrefix = propertyPathPrefix + '.';
       }
+
+      if (getUtility().isUndefinedOrNull(editorConfiguration['useLabelAsFallbackValue'])) {
+        useLabelAsFallbackValue = true;
+      } else {
+        useLabelAsFallbackValue = editorConfiguration['useLabelAsFallbackValue'];
+      }
+
+      gridColumns = [
+        {name: 'label', title: 'Label'},
+        {name: 'value', title: 'Value'},
+        {name: 'selected', title: 'Selected'},
+      ];
+      if (getUtility().isNonEmptyArray(editorConfiguration['gridColumns'])) {
+        gridColumns = editorConfiguration['gridColumns'];
+      }
+      var orderedGridColumnNames = gridColumns.map(function(item) {
+        return item.name;
+      });
+      var orderedGridColumnTitles = gridColumns.map(function(item) {
+        return item.title || null;
+      });
+
+      $([
+        getHelper().getDomElementDataIdentifierSelector('propertyGridEditorHeaderRow'),
+        getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'),
+        getHelper().getDomElementDataIdentifierSelector('propertyGridEditorAddRowItem'),
+      ].join(','), $(editorHtml)).each(function (i, row) {
+        var $columns = $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorColumn'), row);
+        var $columnsAfter = $columns.last().nextAll();
+        var columnsByName = {};
+
+        // Collect columns by names, skip undesired columns
+        $columns
+          .detach()
+          .each(function(i, element) {
+            var $column = $(element);
+            var columnName = $column.data('column');
+
+            if (!orderedGridColumnNames.includes(columnName)) {
+              return;
+            }
+
+            columnsByName[columnName] = $column;
+          });
+
+        // Insert columns in desired order
+        orderedGridColumnNames.forEach(function(columnName, i) {
+          var $column = columnsByName[columnName];
+
+          if ($column.is('th')) {
+            $column.append(orderedGridColumnTitles[i]);
+          }
+
+          $column.appendTo(row);
+        });
+
+        // Insert remaining columns
+        $columnsAfter.appendTo(row);
+      });
 
       if (getUtility().isUndefinedOrNull(editorConfiguration['multiSelection'])) {
         multiSelection = false;
@@ -1793,26 +1866,18 @@ define(['jquery',
         $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorDeleteRow'),
           $(rowItemTemplate)
         ).on('click', function() {
-          if ($(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'), $(editorHtml)).length > 1) {
-            $(this)
-              .closest(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'))
-              .off()
-              .empty()
-              .remove();
+          $(this)
+            .closest(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'))
+            .off()
+            .empty()
+            .remove();
 
-            _setPropertyGridData(
-              $(editorHtml),
-              multiSelection,
-              editorConfiguration['propertyPath'],
-              propertyPathPrefix
-            );
-          } else {
-            Notification.error(
-              editorConfiguration['removeLastAvailableRowFlashMessageTitle'],
-              editorConfiguration['removeLastAvailableRowFlashMessageMessage'],
-              2
-            );
-          }
+          _setPropertyGridData(
+            $(editorHtml),
+            multiSelection,
+            editorConfiguration['propertyPath'],
+            propertyPathPrefix
+          );
         });
       } else {
         $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorDeleteRow'), $(rowItemTemplate))
@@ -1828,7 +1893,12 @@ define(['jquery',
             revert: 'true',
             items: getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'),
             update: function(e, o) {
-              _setPropertyGridData($(editorHtml), multiSelection, editorConfiguration['propertyPath'], propertyPathPrefix);
+              _setPropertyGridData(
+                $(editorHtml),
+                multiSelection,
+                editorConfiguration['propertyPath'],
+                propertyPathPrefix
+              );
             }
           });
       } else {
@@ -1846,30 +1916,42 @@ define(['jquery',
             .not($(this))
             .prop('checked', false);
         }
-        _setPropertyGridData($(editorHtml), multiSelection, editorConfiguration['propertyPath'], propertyPathPrefix);
+        _setPropertyGridData(
+          $(editorHtml),
+          multiSelection,
+          editorConfiguration['propertyPath'],
+          propertyPathPrefix
+        );
       });
 
       $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorLabel') + ',' +
         getHelper().getDomElementDataIdentifierSelector('propertyGridEditorValue'),
         $(rowItemTemplate)
       ).on('keyup paste', function() {
-        _setPropertyGridData($(editorHtml), multiSelection, editorConfiguration['propertyPath'], propertyPathPrefix);
+        _setPropertyGridData(
+          $(editorHtml),
+          multiSelection,
+          editorConfiguration['propertyPath'],
+          propertyPathPrefix
+         );
       });
 
-      $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorLabel'),
-        $(rowItemTemplate)
-      ).on('focusout', function() {
-        if ('' === $(this)
-            .closest(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'))
-            .find(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorValue'))
-            .val()
-        ) {
-          $(this)
-            .closest(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'))
-            .find(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorValue'))
-            .val($(this).val());
-        }
-      });
+      if (useLabelAsFallbackValue) {
+        $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorLabel'),
+          $(rowItemTemplate)
+        ).on('focusout', function() {
+          if ('' === $(this)
+              .closest(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'))
+              .find(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorValue'))
+              .val()
+          ) {
+            $(this)
+              .closest(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'))
+              .find(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorValue'))
+              .val($(this).val());
+          }
+        });
+      }
 
       if (!!editorConfiguration['enableAddRow']) {
         addRowTemplate = $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorAddRowItem'), $(editorHtml)).clone();
@@ -1879,6 +1961,13 @@ define(['jquery',
           $(this)
             .closest(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorAddRowItem'))
             .before($(rowItemTemplate).clone(true, true));
+
+            _setPropertyGridData(
+              $(editorHtml),
+              multiSelection,
+              editorConfiguration['propertyPath'],
+              propertyPathPrefix
+            );
         });
         $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorContainer'), $(editorHtml))
           .prepend($(addRowTemplate).clone(true, true));
@@ -1916,6 +2005,7 @@ define(['jquery',
 
         $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorLabel'), $(newRowTemplate)).val(label);
         $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorValue'), $(newRowTemplate)).val(value);
+
         if (isPreselected) {
           $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorSelectValue'), $(newRowTemplate))
             .prop('checked', true);
@@ -1949,6 +2039,8 @@ define(['jquery',
           }
         }
       }
+
+      _validateCollectionElement(propertyPathPrefix + editorConfiguration['propertyPath'], editorHtml);
     };
 
     /**

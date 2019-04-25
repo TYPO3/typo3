@@ -392,7 +392,7 @@ class FormEditorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function transformMultiValueElementsForFormEditorConvertMultiValueDataIntoMetaData()
+    public function transformMultiValuePropertiesForFormEditorConvertMultiValueDataIntoMetaData()
     {
         $mockController = $this->getAccessibleMock(FormEditorController::class, [
             'dummy'
@@ -468,7 +468,7 @@ class FormEditorControllerTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $mockController->_call('transformMultiValueElementsForFormEditor', $input, $multiValueProperties));
+        $this->assertSame($expected, $mockController->_call('transformMultiValuePropertiesForFormEditor', $input, 'type', $multiValueProperties));
     }
 
     /**
