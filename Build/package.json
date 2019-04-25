@@ -25,7 +25,7 @@
     "@typo3/icons": "1.8.0",
     "autoprefixer": "^6.3.7",
     "autosize": "^3.0.21",
-    "bootstrap-sass": "^3.4.0",
+    "bootstrap-sass": "^3.4.1",
     "bootstrap-slider": "^9.7.3",
     "chosen-js": "^1.7.0",
     "ckeditor": "^4.11.3",
