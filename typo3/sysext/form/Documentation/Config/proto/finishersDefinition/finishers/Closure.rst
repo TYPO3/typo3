@@ -40,7 +40,7 @@ implementationClassName
            implementationClassName: TYPO3\CMS\Form\Domain\Finishers\ClosureFinisher
 
 :aspect:`Good to know`
-      - :ref:`"Custom finisher implementations"<concepts-frontendrendering-codecomponents-customfinisherimplementations>`
+      - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
       .. include:: ../properties/implementationClassName.rst
@@ -69,7 +69,7 @@ options.closure
 .. :aspect:`Good to know`
       ToDo
       - :ref:`"Closure finisher"<apireference-finisheroptions-closurefinisher>`
-      - :ref:`"Custom finisher implementations"<concepts-frontendrendering-codecomponents-customfinisherimplementations>`
+      - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
       The closure which are invoked if the finisher is treggered.

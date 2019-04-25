@@ -39,7 +39,7 @@ implementationClassName
            implementationClassName: TYPO3\CMS\Form\Domain\Finishers\SaveToDatabaseFinisher
 
 :aspect:`Good to know`
-      - :ref:`"Custom finisher implementations"<concepts-frontendrendering-codecomponents-customfinisherimplementations>`
+      - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
       .. include:: ../properties/implementationClassName.rst
@@ -67,7 +67,7 @@ options.table
 
 :aspect:`Good to know`
       - :ref:`"SaveToDatabase finisher"<apireference-finisheroptions-savetodatabasefinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       Insert or update values into this table.
@@ -98,7 +98,7 @@ options.mode
 
 :aspect:`Good to know`
       - :ref:`"SaveToDatabase finisher"<apireference-finisheroptions-savetodatabasefinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       ``insert`` will create a new database row with the values from the submitted form and/or some predefined values. @see options.elements and options.databaseFieldMappings
@@ -128,7 +128,7 @@ options.whereClause
 
 :aspect:`Good to know`
       - :ref:`"SaveToDatabase finisher"<apireference-finisheroptions-savetodatabasefinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       This where clause will be used for a database update action.
@@ -156,7 +156,7 @@ options.elements
 
 :aspect:`Good to know`
       - :ref:`"SaveToDatabase finisher"<apireference-finisheroptions-savetodatabasefinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       Use ``options.elements`` to map form element values to existing database columns.
@@ -186,7 +186,7 @@ options.elements.<formElementIdentifier>.mapOnDatabaseColumn
 
 :aspect:`Good to know`
       - :ref:`"SaveToDatabase finisher"<apireference-finisheroptions-savetodatabasefinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       The value from the submitted form element with the identifier ``<formElementIdentifier>`` will be written into this database column.
@@ -214,7 +214,7 @@ options.elements.<formElementIdentifier>.saveFileIdentifierInsteadOfUid
 
 :aspect:`Good to know`
       - :ref:`"SaveToDatabase finisher"<apireference-finisheroptions-savetodatabasefinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       Set this to true if the database column should not be written if the value from the submitted form element with the identifier
@@ -247,7 +247,7 @@ options.elements.<formElementIdentifier>.skipIfValueIsEmpty
 
 :aspect:`Good to know`
       - :ref:`"SaveToDatabase finisher"<apireference-finisheroptions-savetodatabasefinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       Set this to true if the database column should not be written if the value from the submitted form element with the identifier
@@ -277,7 +277,7 @@ options.elements.<formElementIdentifier>.dateFormat
 
 :aspect:`Good to know`
       - :ref:`"SaveToDatabase finisher"<apireference-finisheroptions-savetodatabasefinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       If the internal Datatype is \DateTime which is true for the form element types "DatePicker" and "Date",
@@ -309,7 +309,7 @@ options.databaseColumnMappings
 
 :aspect:`Good to know`
       - :ref:`"SaveToDatabase finisher"<apireference-finisheroptions-savetodatabasefinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       Use this to map database columns to static values.
@@ -344,11 +344,11 @@ options.databaseColumnMappings.<databaseColumnName>.value
 
 :aspect:`Good to know`
       - :ref:`"SaveToDatabase finisher"<apireference-finisheroptions-savetodatabasefinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       The value which will be written to the database column.
-      You can also use the :ref:`FormRuntime accessor feature<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>` to access every getable property from the ``FormRuntime``
+      You can also use the :ref:`FormRuntime accessor feature<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>` to access every getable property from the ``FormRuntime``
       In short: use something like ``{<formElementIdentifier>}`` to get the value from the submitted form element with the identifier ``<formElementIdentifier>``.
 
       If you use the FormRuntime accessor feature within ``options.databaseColumnMappings``, than the functionality is nearly equal
@@ -377,7 +377,7 @@ options.databaseColumnMappings.<databaseColumnName>.skipIfValueIsEmpty
 
 :aspect:`Good to know`
       - :ref:`"SaveToDatabase finisher"<apireference-finisheroptions-savetodatabasefinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       Set this to true if the database column should not be written if the value from `options.databaseColumnMappings.
@@ -406,7 +406,7 @@ options.translation.translationFile
 
 :aspect:`Good to know`
       - :ref:`"SaveToDatabase finisher"<apireference-finisheroptions-savetodatabasefinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
       - :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
 
 :aspect:`Description`

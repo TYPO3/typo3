@@ -43,13 +43,13 @@ implementationClassName
 :aspect:`Default value (for prototype 'standard')`
       .. code-block:: yaml
          :linenos:
-             :emphasize-lines: 2
+         :emphasize-lines: 2
 
              FileSize:
                implementationClassName: TYPO3\CMS\Form\Mvc\Validation\FileSizeValidator
 
 :aspect:`Good to know`
-      - :ref:`"Custom validator implementations"<concepts-frontendrendering-codecomponents-customvalidatorimplementations>`
+      - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
 
 :aspect:`Description`
       .. include:: ../properties/implementationClassName.rst
@@ -123,7 +123,7 @@ formeditor.iconIdentifier
 :aspect:`Default value (for prototype 'standard')`
       .. code-block:: yaml
          :linenos:
-             :emphasize-lines: 3
+         :emphasize-lines: 3
 
              FileSize:
                formEditor:
@@ -157,7 +157,7 @@ formeditor.label
 :aspect:`Default value (for prototype 'standard')`
       .. code-block:: yaml
          :linenos:
-             :emphasize-lines: 4
+         :emphasize-lines: 4
 
              FileSize:
                formEditor:
@@ -191,7 +191,7 @@ formeditor.predefinedDefaults
 :aspect:`Default value (for prototype 'standard')`
       .. code-block:: yaml
          :linenos:
-             :emphasize-lines: 3-
+         :emphasize-lines: 3-
 
              FileSize:
                formEditor:

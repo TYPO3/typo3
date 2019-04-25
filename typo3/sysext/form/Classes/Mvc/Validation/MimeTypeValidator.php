@@ -35,8 +35,8 @@ class MimeTypeValidator extends AbstractValidator
     ];
 
     /**
-     * The given $value is valid if it is an FileReference of the
-     * configured type (one of the image/* IANA media subtypes)
+     * The given $value is valid if it is a FileReference of the
+     * configured type (one of the IANA media types)
      *
      * Note: a value of NULL or empty string ('') is considered valid
      *

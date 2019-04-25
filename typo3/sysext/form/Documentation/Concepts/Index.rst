@@ -18,6 +18,7 @@ chapters also cover topics for developers.
    FormConfigurationFormDefinition/Index
    FormFileStorages/Index
    FrontendRendering/Index
+   Validators/Index
    Finishers/Index
    FormManager/Index
    FormEditor/Index

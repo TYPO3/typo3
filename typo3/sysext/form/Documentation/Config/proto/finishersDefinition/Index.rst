@@ -41,7 +41,7 @@ Properties
                [...]
 
 :aspect:`Good to know`
-      - :ref:`"Custom finisher implementations"<concepts-frontendrendering-codecomponents-customfinisherimplementations>`
+      - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
       Array which defines the available finishers. Every key within this array is called the ``<finisherIdentifier>``.
@@ -95,7 +95,7 @@ Properties
       - :ref:`"[FinishersEditor] selectOptions.[*].value"<typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.selectoptions.*.value-finisherseditor>`
 
 :aspect:`Good to know`
-      - :ref:`"Custom finisher implementations"<concepts-frontendrendering-codecomponents-customfinisherimplementations>`
+      - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
       This array key identifies a finisher. This identifier could be used to attach a finisher to a form.
@@ -128,7 +128,7 @@ implementationClassName
       Depends (see :ref:`concrete finishers configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
-      - :ref:`"Custom finisher implementations"<concepts-frontendrendering-codecomponents-customfinisherimplementations>`
+      - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
       .. include:: properties/implementationClassName.rst
@@ -155,7 +155,7 @@ options
       Depends (see :ref:`concrete finishers configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
-      - :ref:`"Custom finisher implementations"<concepts-frontendrendering-codecomponents-customfinisherimplementations>`
+      - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
       Array with finisher options.
