@@ -49,7 +49,7 @@ class DeleteUploadsFinisher extends AbstractFinisher
             if ($file instanceof FileReference) {
                 $file = $file->getOriginalResource();
             }
-            $file->getStorage()->deleteFile($file);
+            $file->getStorage()->deleteFile($file->getOriginalFile());
         }
     }
 }
