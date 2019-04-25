@@ -1141,7 +1141,7 @@ Signature::
 parseOption()
 '''''''''''''
 
-Please read :ref:`Accessing finisher options<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions>`
+Please read :ref:`Accessing finisher options<concepts-finishers-customfinisherimplementations-accessingoptions>`
 
 Signature::
 
@@ -1218,7 +1218,7 @@ Signature::
 TYPO3\\CMS\\Form\\Domain\\Finishers\\FinisherVariableProvider
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-Please read :ref:`Share data between finishers<concepts-frontendrendering-codecomponents-customfinisherimplementations-finishercontext-sharedatabetweenfinishers>`
+Please read :ref:`Share data between finishers<concepts-finishers-customfinisherimplementations-finishercontext-sharedatabetweenfinishers>`
 
 .. _apireference-frontendrendering-programmatically-apimethods-finishervariableprovider-add:
 
@@ -2830,7 +2830,7 @@ databaseColumnMappings.<databaseColumnName>.value
 
 :aspect:`Description`
       The value which will be written to the database column.
-      You can also use the :ref:`FormRuntime accessor feature<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>` to access every getable property from the ``FormRuntime``
+      You can also use the :ref:`FormRuntime accessor feature<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>` to access every getable property from the ``FormRuntime``
       In short: use something like ``{<formElementIdentifier>}`` to get the value from the submitted form element with the identifier ``<formElementIdentifier>``.
 
       If you use the FormRuntime accessor feature within ``options.databaseColumnMappings``, the functionality is nearly identical

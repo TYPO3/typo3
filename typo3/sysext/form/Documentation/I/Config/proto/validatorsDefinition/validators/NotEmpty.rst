@@ -51,7 +51,7 @@ implementationClassName
            implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator
 
 :aspect:`Good to know`
-      - :ref:`"Custom validator implementations"<concepts-frontendrendering-codecomponents-customvalidatorimplementations>`
+      - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
 
 :aspect:`Description`
       .. include:: ../properties/implementationClassName.rst

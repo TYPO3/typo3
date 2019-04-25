@@ -39,7 +39,7 @@ implementationClassName
            implementationClassName: TYPO3\CMS\Form\Domain\Finishers\DeleteUploadsFinisher
 
 :aspect:`Good to know`
-      - :ref:`"Custom finisher implementations"<concepts-frontendrendering-codecomponents-customfinisherimplementations>`
+      - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
       Array which defines the available finishers. Every key within this array is called the ``<finisherIdentifier>``

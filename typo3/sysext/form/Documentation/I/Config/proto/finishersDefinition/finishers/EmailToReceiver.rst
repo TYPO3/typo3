@@ -39,7 +39,7 @@ implementationClassName
            implementationClassName: TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
 
 :aspect:`Good to know`
-      - :ref:`"Custom finisher implementations"<concepts-frontendrendering-codecomponents-customfinisherimplementations>`
+      - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
       .. include:: ../properties/implementationClassName.rst
@@ -67,7 +67,7 @@ options.subject
 
 :aspect:`Good to know`
       - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
       - :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
 
 :aspect:`Description`
@@ -96,7 +96,7 @@ options.recipientAddress
 
 :aspect:`Good to know`
       - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       Email address of the recipient (To).
@@ -124,7 +124,7 @@ options.recipientName
 
 :aspect:`Good to know`
       - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       Human-readable name of the recipient.
@@ -152,7 +152,7 @@ options.senderAddress
 
 :aspect:`Good to know`
       - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       Email address of the sender/ visitor (From).
@@ -180,7 +180,7 @@ options.senderName
 
 :aspect:`Good to know`
       - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       Human-readable name of the sender.
@@ -208,7 +208,7 @@ options.replyToAddress
 
 :aspect:`Good to know`
       - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       Email address of to be used as reply-to email (use multiple addresses with an array).
@@ -240,7 +240,7 @@ options.carbonCopyAddress
 
 :aspect:`Good to know`
       - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       Email address of the copy recipient (use multiple addresses with an array)
@@ -272,7 +272,7 @@ options.blindCarbonCopyAddress
 
 :aspect:`Good to know`
       - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       Email address of the blind copy recipient (use multiple addresses with an array)
@@ -307,7 +307,7 @@ options.format
 
 :aspect:`Good to know`
       - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       The format of the email. By default mails are sent as HTML.
@@ -335,7 +335,7 @@ options.attachUploads
 
 :aspect:`Good to know`
       - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       If set, all uploaded items are attached to the email.
@@ -363,7 +363,7 @@ options.translation.language
 
 :aspect:`Good to know`
       - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
       - :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
 
 :aspect:`Description`
@@ -394,7 +394,7 @@ options.translation.translationFile
 
 :aspect:`Good to know`
       - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
       - :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
 
 :aspect:`Description`

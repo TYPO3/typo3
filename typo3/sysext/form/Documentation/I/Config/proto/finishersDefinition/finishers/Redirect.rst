@@ -39,7 +39,7 @@ implementationClassName
            implementationClassName: TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher
 
 :aspect:`Good to know`
-      - :ref:`"Custom finisher implementations"<concepts-frontendrendering-codecomponents-customfinisherimplementations>`
+      - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
       .. include:: ../properties/implementationClassName.rst
@@ -67,7 +67,7 @@ options.pageUid
 
 :aspect:`Good to know`
       - :ref:`"Redirect finisher"<apireference-finisheroptions-redirectfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       Redirect to this page uid.
@@ -95,7 +95,7 @@ options.additionalParameters
 
 :aspect:`Good to know`
       - :ref:`"Redirect finisher"<apireference-finisheroptions-redirectfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       Additional parameters which should be used on the target page.
@@ -123,7 +123,7 @@ options.delay
 
 :aspect:`Good to know`
       - :ref:`"Redirect finisher"<apireference-finisheroptions-redirectfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       The redirect delay in seconds.
@@ -151,7 +151,7 @@ options.statusCode
 
 :aspect:`Good to know`
       - :ref:`"Redirect finisher"<apireference-finisheroptions-redirectfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
       The HTTP status code for the redirect. Default is "303 See Other".
@@ -179,7 +179,7 @@ options.translation.translationFile
 
 :aspect:`Good to know`
       - :ref:`"Redirect finisher"<apireference-finisheroptions-redirectfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-frontendrendering-codecomponents-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
       - :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
 
 :aspect:`Description`

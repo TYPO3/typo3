@@ -72,6 +72,7 @@ Additional link parameters can be added to the URL.
    This finisher stops the execution of all subsequent finishers in order to perform a redirect.
    Therefore, this finisher should always be the last finisher to be executed.
 
+
 .. _concepts-finishers-savetodatabasefinisher:
 
 SaveToDatabase finisher
@@ -80,11 +81,361 @@ SaveToDatabase finisher
 The 'SaveToDatabase finisher' saves the data of a submitted form into a
 database table.
 
-.. _concepts-finishers-writecustomfinisher:
+
+.. _concepts-finishers-translation:
+
+Translation of finisher options
+-------------------------------
+
+To learn more about this topic, please continue :ref:`here<concepts-frontendrendering-translation-finishers>`.
+
+
+.. _concepts-finishers-customfinisherimplementations:
 
 Write a custom finisher
 -----------------------
 
-:ref:`Learn how to create a custom finisher here.<concepts-frontendrendering-codecomponents-customfinisherimplementations>`
+If you want to make the finisher configurable in the backend UI read :ref:`here<concepts-finishers-customfinisherimplementations-extend-gui>`.
 
-If you want to make the finisher configurable in the backend UI read :ref:`here<concepts-formeditor-extending-custom-finisher>`.
+Finishers are defined as part of a ``prototype`` within a
+``finishersDefinition``. The property ``implementationClassName`` is to be
+utilized to load the finisher implementation.
+
+.. code-block:: yaml
+
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             finishersDefinition:
+               CustomFinisher:
+                 implementationClassName: 'VENDOR\MySitePackage\Domain\Finishers\CustomFinisher'
+
+If the finisher requires options, you can define those within the
+``options`` property. The options will be used as default values and can
+be overridden using the ``form definition``.
+
+Define the default value:
+
+.. code-block:: yaml
+
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             finishersDefinition:
+               CustomFinisher:
+                 implementationClassName: 'VENDOR\MySitePackage\Domain\Finishers\CustomFinisher'
+                 options:
+                   yourCustomOption: 'Ralf'
+
+Override the option using the ``form definition``:
+
+.. code-block:: yaml
+
+   identifier: sample-form
+   label: 'Simple Contact Form'
+   prototype: standard
+   type: Form
+
+   finishers:
+     -
+       identifier: CustomFinisher
+       options:
+         yourCustomOption: 'Björn'
+
+   renderables:
+     ...
+
+Each finisher has to be programmed to the interface ``TYPO3\CMS\Form\Domain\Finishers\FinisherInterface``
+and should extend the class ``TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher``.
+In doing so, the logic of the finisher should start with the method
+``executeInternal()``.
+
+
+.. _concepts-finishers-customfinisherimplementations-accessingoptions:
+
+Accessing finisher options
+""""""""""""""""""""""""""
+
+If your finisher extends ``TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher``,
+you can access your finisher options with the help of the ``parseOption()``
+method::
+
+   $yourCustomOption = $this->parseOption('yourCustomOption');
+
+``parseOption()`` is looking for 'yourCustomOption' in your
+``form definition``. If it cannot be found, the method checks
+
+1. the ``prototype`` configuration for a default value,
+
+2. the finisher class itself by searching for a default value within the
+   ``$defaultOptions`` property::
+
+      declare(strict_types = 1);
+      namespace VENDOR\MySitePackage\Domain\Finishers;
+
+      class CustomFinisher extends \TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher
+      {
+
+          protected $defaultOptions = [
+              'yourCustomOption' => 'Olli',
+          ];
+
+          // ...
+      }
+
+If the option cannot be found by processing this fallback chain, ``null`` is
+returned.
+
+If the option is found, the process checks whether the option value will
+access :ref:`FormRuntime values<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`.
+If the ``FormRuntime`` returns a positive result, it is checked whether the
+option value :ref:`can access values of preceding finishers<concepts-finishers-customfinisherimplementations-finishercontext-sharedatabetweenfinishers>`.
+At the very end, it tries to :ref:`translate the finisher options<concepts-frontendrendering-translation-finishers>`.
+
+
+.. _concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor:
+
+Accessing form runtime values
+'''''''''''''''''''''''''''''
+
+By utilizing a specific notation, finisher options can be populated with
+submitted form values (assuming you are using the ``parseOption()`` method).
+You can access values of the ``FormRuntime`` and thus values of each single
+form element by encapsulating the option values with ``{}``. If there is a
+form element with the ``identifier`` 'subject', you can access its value
+within the the finisher configuration. Check out the following example to
+get the whole idea.
+
+.. code-block:: yaml
+
+   identifier: simple-contact-form
+   label: 'Simple Contact Form'
+   prototype: standard
+   type: Form
+
+   finishers:
+     -
+       identifier: Custom
+       options:
+         yourCustomOption: '{subject}'
+
+   renderables:
+     -
+       identifier: subject
+       label: 'Subject'
+       type: Text
+
+::
+
+   // $yourCustomOption contains the value of the form element with the
+   // identifier 'subject'
+   $yourCustomOption = $this->parseOption('yourCustomOption');
+
+In addition, you can use ``{__currentTimestamp}`` as a special option value.
+It will return the current UNIX timestamp.
+
+
+.. _concepts-finishers-customfinisherimplementations-finishercontext:
+
+Finisher Context
+""""""""""""""""
+
+The class ``TYPO3\CMS\Form\Domain\Finishers\FinisherContext`` takes care of
+transferring a finisher context to each finisher. Given the finisher is
+derived from ``TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher`` the
+finisher context will be available via::
+
+   $this->finisherContext
+
+The method ``cancel`` prevents the execution of successive finishers::
+
+   $this->finisherContext->cancel();
+
+The method ``getFormValues`` returns all of the submitted form values.
+
+``getFormValues``::
+
+   $this->finisherContext->getFormValues();
+
+The method ``getFormRuntime`` returns the ``FormRuntime``::
+
+   $this->finisherContext->getFormRuntime();
+
+
+.. _concepts-finishers-customfinisherimplementations-finishercontext-sharedatabetweenfinishers:
+
+Share data between finishers
+''''''''''''''''''''''''''''
+
+The method ``getFinisherVariableProvider`` returns an object (``TYPO3\CMS\Form\Domain\Finishers\FinisherVariableProvider``)
+which allows you to store data and transfer it to other finishers. The data
+can be easily accessed programmatically or within your configuration::
+
+   $this->finisherContext->getFinisherVariableProvider();
+
+The data is stored within the ``FinisherVariableProvider`` and is addressed
+by a user-defined 'finisher identifier' and a custom option value path. The
+name of the 'finisher identifier' should consist of the name of the finisher
+without the potential 'Finisher' appendix. If your finisher is derived from
+the class ``TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher``, the name of
+this construct is stored in the following variable::
+
+   $this->shortFinisherIdentifier
+
+For example, if the name of your finisher class is 'CustomFinisher', the
+mentioned variable will contain the value 'Custom'.
+
+There are a bunch of methods to access and manage the finisher data:
+
+- Add data::
+
+      $this->finisherContext->getFinisherVariableProvider()->add(
+          $this->shortFinisherIdentifier,
+          'unique.value.identifier',
+          $value
+      );
+
+- Get data::
+
+      $this->finisherContext->getFinisherVariableProvider()->get(
+          $this->shortFinisherIdentifier,
+          'unique.value.identifier',
+          'default value'
+      );
+
+- Check the existence of data::
+
+      $this->finisherContext->getFinisherVariableProvider()->exists(
+          $this->shortFinisherIdentifier,
+          'unique.value.identifier'
+      );
+
+- Delete data::
+
+      $this->finisherContext->getFinisherVariableProvider()->remove(
+          $this->shortFinisherIdentifier,
+          'unique.value.identifier'
+      );
+
+In this way, each finisher can access data programmatically. Moreover, it is
+possible to retrieve the data via configuration, provided that a finisher
+stores the values within the ``FinisherVariableProvider``.
+
+Assuming that a finisher called 'Custom' sets data as follows::
+
+   $this->finisherContext->getFinisherVariableProvider()->add(
+       $this->shortFinisherIdentifier,
+       'unique.value.identifier',
+       'Wouter'
+   );
+
+... you are now able to access the value 'Wouter' via ``{Custom.unique.value.identifier}``
+in any other finisher.
+
+.. code-block:: yaml
+
+   identifier: sample-form
+   label: 'Simple Contact Form'
+   prototype: standard
+   type: Form
+
+   finishers:
+     -
+       identifier: Custom
+       options:
+         yourCustomOption: 'Frans'
+
+     -
+       identifier: SomeOtherStuff
+       options:
+         someOtherCustomOption: '{Custom.unique.value.identifier}'
+
+
+.. _concepts-finishers-customfinisherimplementations-extend-gui:
+
+Add finisher to backend UI
+''''''''''''''''''''''''''
+
+After adding a custom finisher you can also add the finisher to the
+form editor GUI to let your backend users configure it visually. Add the
+following to the backend yaml setup:
+
+.. code-block:: yaml
+
+   TYPO3:
+      CMS:
+       Form:
+         prototypes:
+           standard:
+             formElementsDefinition:
+               Form:
+                 formEditor:
+                   editors:
+                     900:
+                       # Extend finisher drop down
+                       selectOptions:
+                         35:
+                           value: 'CustomFinisher'
+                           label: 'Custom Finisher'
+                   propertyCollections:
+                     finishers:
+                        # add finisher fields
+                        25:
+                           identifier: 'CustomFinisher'
+                           editors:
+                              __inheritances:
+                                 10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                              100:
+                                label: "Custom Finisher"
+                              # custom field (input, required)
+                              110:
+                                identifier: 'customField'
+                                templateName: 'Inspector-TextEditor'
+                                label: 'Custom Field'
+                                propertyPath: 'options.customField'
+                                propertyValidators:
+                                  10: 'NotEmpty'
+                              # email field
+                              120:
+                                identifier: 'email'
+                                templateName: 'Inspector-TextEditor'
+                                label: 'Subscribers email'
+                                propertyPath: 'options.email'
+                                enableFormelementSelectionButton: true
+                                propertyValidators:
+                                  10: 'NotEmpty'
+                                  20: 'FormElementIdentifierWithinCurlyBracesInclusive'
+
+                finishersDefinition:
+                  CustomFinisher:
+                    formEditor:
+                      iconIdentifier: 'form-finisher'
+                      label: 'Custom Finisher'
+                      predefinedDefaults:
+                        options:
+                          customField: ''
+                          email: ''
+                    # displayed when overriding finisher settings
+                    FormEngine:
+                      label: 'Custom Finisher'
+                      elements:
+                        customField:
+                          label: 'Custom Field'
+                          config:
+                            type: 'text'
+                        email:
+                          label: 'Subscribers email'
+                          config:
+                            type: 'text'
+
+Make sure the setup file is registered in the backend:
+
+.. code-block:: typoscript
+
+   module.tx_form.settings.yamlConfigurations {
+      123456789 = EXT:yourExtension/Configuration/Form/Backend.yml
+   }

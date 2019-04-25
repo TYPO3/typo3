@@ -41,7 +41,7 @@ Properties
                [...]
 
 :aspect:`Good to know`
-      - :ref:`"Custom validator implementations"<concepts-frontendrendering-codecomponents-customvalidatorimplementations>`
+      - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
 
 :aspect:`Description`
       Array which defines the available serverside validators. Every key within this array is called the ``<validatoridentifier>``.
@@ -101,7 +101,7 @@ Properties
       - :ref:`"[RequiredValidatorEditor] validatorIdentifier"<typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.validatoridentifier-requiredvalidatoreditor>`
 
 :aspect:`Good to know`
-      - :ref:`"Custom validator implementations"<concepts-frontendrendering-codecomponents-customvalidatorimplementations>`
+      - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
 
 :aspect:`Description`
       This array key identifies a validator. This identifier could be used to attach a validator to a form element.
@@ -133,7 +133,7 @@ implementationClassName
       Depends (see :ref:`concrete validators configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
-      - :ref:`"Custom validator implementations"<concepts-frontendrendering-codecomponents-customvalidatorimplementations>`
+      - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
 
 :aspect:`Description`
       .. include:: properties/implementationClassName.rst
@@ -160,7 +160,7 @@ options
       Depends (see :ref:`concrete validators configuration <typo3.cms.form.prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
 
 :aspect:`Good to know`
-      - :ref:`"Custom validator implementations"<concepts-frontendrendering-codecomponents-customvalidatorimplementations>`
+      - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
 
 :aspect:`Description`
       Array with validator options.
