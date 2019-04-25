@@ -38,13 +38,13 @@ TypoScript.
            yamlConfigurations {
                # register your own additional configuration
                # choose a number higher than 30 (below is reserved)
-               100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
+               100 = EXT:my_site_package/Configuration/Form/CustomFormSetup.yaml
            }
        }
    }
 
 
-EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
+EXT:my_site_package/Configuration/Form/CustomFormSetup.yaml
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Next, define the additional fluid template search paths via YAML.
@@ -60,11 +60,11 @@ Next, define the additional fluid template search paths via YAML.
                Form:
                  renderingOptions:
                    templateRootPaths:
-                     20: 'EXT:my_site_package/Resources/Private/Form/Frontend/Templates/'
+                     20: 'EXT:my_site_package/Resources/Private/Templates/Form/Frontend/'
                    partialRootPaths:
-                     20: 'EXT:my_site_package/Resources/Private/Form/Frontend/Partials/'
+                     20: 'EXT:my_site_package/Resources/Private/Partials/Form/Frontend/'
                    layoutRootPaths:
-                     20: 'EXT:my_site_package/Resources/Private/Form/Frontend/Layouts/'
+                     20: 'EXT:my_site_package/Resources/Private/Layouts/Form/Frontend/'
 
 .. note::
 
@@ -85,7 +85,7 @@ to learn about the recommended ways.
    module.tx_form {
        settings {
            yamlConfigurations {
-               100 = EXT:my_site_package/Configuration/Yaml/CustomFormSetup.yaml
+               100 = EXT:my_site_package/Configuration/Form/CustomFormSetup.yaml
            }
        }
    }
@@ -109,7 +109,8 @@ Is there a frontend validation?
 ===============================
 
 Yes, an HTML 5 based frontend validation is implemented. Nevertheless,
-there is no JavaScript validation. This has to be integrated manually.
+there is no JavaScript validation included by default. We as the TYPO3
+core have no plans to opt for a specific solution. This has to be integrated manually.
 Reliable and maintained projects are `Parsley <https://github.com/guillaumepotier/Parsley.js>`_
 and `jQuery Validation <https://github.com/jquery-validation/jquery-validation>`_.
 
@@ -149,9 +150,10 @@ Possible, yes. But we are not aware of an integration.
 Is there some kind of export module for saved forms?
 ====================================================
 
-Currently, there are no plans to implement such a feature. There are huge
+Currently, there are no plans to implement such a feature. There are
 concerns regarding the data privacy when it comes to storing user data in
-your TYPO3 database permanently.
+your TYPO3 database permanently. The great folks of Pagemachine created an
+`extension <https://github.com/pagemachine/typo3-formlog>`_ for this behalf.
 
 
 .. _faq-honeypt-session:
@@ -198,7 +200,29 @@ If you want to make the finisher configurable in the backend UI read :ref:`here<
 .. _faq-form-element-custom-validator:
 
 How do I create a custom validator for my form?
-==============================================
+===============================================
 
 :ref:`Learn how to create a custom validator here.<concepts-frontendrendering-codecomponents-customvalidatorimplementations>`
 
+
+.. faq-form-proposed-folder-structure:
+
+Which folder structure do you recommend?
+========================================
+
+When shipping a custom form configuration, form definitions, differing
+form templates, or language files you may wonder how the perfect folder
+structure within your site package could look like.
+We recommend the following structure:
+
+* Custom form configuration: ``EXT:/my_site_package/Configuration/Form/``
+* Form definitions: ``EXT:/my_site_package/Resources/Private/Forms/``
+* Custom form templates:
+   * Templates ``EXT:/my_site_package/Resources/Private/Templates/Form/``
+   * Partials ``EXT:/my_site_package/Resources/Private/Partials/Form/``
+   * Layouts ``EXT:/my_site_package/Resources/Private/Layouts/Form/``
+   * Keep in mind that form comes with templates for both the frontend
+     (this is your website) and the TYPO3 backend. Therefore, we recommend
+     splitting the templates in subfolders called ``Frontend/`` and
+     ``Backend/``.
+* Translations: ``EXT:my_site_package/Resources/Private/Language/Form/``

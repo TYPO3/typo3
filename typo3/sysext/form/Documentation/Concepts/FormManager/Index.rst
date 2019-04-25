@@ -119,7 +119,7 @@ The translation files of the ``form manager`` are loaded as follows:
            translationFile:
              # translation files for the form manager
              10: 'EXT:form/Resources/Private/Language/Database.xlf'
-             20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'
+             20: 'EXT:my_site_package/Resources/Private/Language/Form/Database.xlf'
 
 The process searches for each option value within all of the defined
 translation files. If a translation is found, the translated option value
@@ -134,7 +134,7 @@ Imagine, the following is defined for an option value:
    ...
 
 First of all, the process searches for the translation key ``formManager.selectablePrototypesConfiguration.standard.label``
-within the file ``20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'``
+within the file ``20: 'EXT:my_site_package/Resources/Private/Language/Form/Database.xlf'``
 and after it inside the file ``10: 'EXT:form/Resources/Private/Language/Database.xlf'``.
 If nothing is found, the option value will be displayed unmodified.
 
