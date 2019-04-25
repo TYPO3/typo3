@@ -7,8 +7,8 @@
     </f:for>
         </f:then>
         <f:else>
-<formvh:translateElementProperty element="{formValue.element}" property="label" />: <f:if condition="{formValue.processedValue}"><f:then>{formValue.processedValue}</f:then><f:else>-</f:else></f:if>
-        </f:else>
+<formvh:translateElementProperty element="{formValue.element}" property="label" />: <f:if condition="{formValue.processedValue}"><f:then>{formValue.processedValue -> f:format.raw()}</f:then><f:else>-</f:else></f:if>
+</f:else>
     </f:if>
 </f:spaceless>
 </formvh:renderAllFormValues>
