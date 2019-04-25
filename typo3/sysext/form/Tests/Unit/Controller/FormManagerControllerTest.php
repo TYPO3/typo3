@@ -417,6 +417,20 @@ class FormManagerControllerTest extends UnitTestCase
     /**
      * @test
      */
+    public function convertFormNameToIdentifierConvertAccentedCharacters(): void
+    {
+        $mockController = $this->getAccessibleMock(FormManagerController::class, [
+            'dummy'
+        ], [], '', false);
+
+        $input = 'téstform';
+        $expected = 'testform';
+        $this->assertSame($expected, $mockController->_call('convertFormNameToIdentifier', $input));
+    }
+
+    /**
+     * @test
+     */
     public function convertFormNameToIdentifierRemoveSpecialChars(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
@@ -424,7 +438,7 @@ class FormManagerControllerTest extends UnitTestCase
         ], [], '', false);
 
         $input = 'test form ä#!_-01';
-        $expected = 'testform_-01';
+        $expected = 'testformae_-01';
         $this->assertSame($expected, $mockController->_call('convertFormNameToIdentifier', $input));
     }
 }

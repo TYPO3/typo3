@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -503,7 +504,10 @@ class FormManagerController extends AbstractBackendController
      */
     protected function convertFormNameToIdentifier(string $formName): string
     {
-        $formIdentifier = preg_replace('/[^a-zA-Z0-9-_]/', '', $formName);
+        $csConverter = GeneralUtility::makeInstance(CharsetConverter::class);
+
+        $formIdentifier = $csConverter->specCharsToASCII('utf-8', $formName);
+        $formIdentifier = preg_replace('/[^a-zA-Z0-9-_]/', '', $formIdentifier);
         $formIdentifier = lcfirst($formIdentifier);
         return $formIdentifier;
     }
