@@ -12,7 +12,7 @@ Form
    form
 
 :Version:
-   latest (9-dev)
+   9
 
 :Language:
    en
