@@ -38,6 +38,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *    <a href="/typo3/index.php?route=/record/edit&edit[a_table][42]=edit&returnUrl=foo/bar">
  *      Edit record
  *    </a>
+ *
+ * Link to edit page uid=3 and then return back to the BE module "web_MyextensionList"::
+ *
+ *    <be.link.editRecord uid="3" table="pages" returnUrl="{f:be.uri(route: 'web_MyextensionList')}">
  */
 class EditRecordViewHelper extends AbstractTagBasedViewHelper
 {
@@ -52,7 +56,7 @@ class EditRecordViewHelper extends AbstractTagBasedViewHelper
         $this->registerUniversalTagAttributes();
         $this->registerArgument('uid', 'int', 'uid of record to be edited', true);
         $this->registerArgument('table', 'string', 'target database table', true);
-        $this->registerArgument('returnUrl', 'string', '', false, '');
+        $this->registerArgument('returnUrl', 'string', 'return to this URL after closing the edit dialog', false, '');
     }
 
     /**
