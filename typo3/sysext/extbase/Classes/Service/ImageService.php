@@ -116,13 +116,13 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
      * It should be removed once we do not support string sources for images anymore.
      *
      * @param string $src
-     * @param FileInterface|null $image
+     * @param FileInterface|\TYPO3\CMS\Extbase\Domain\Model\FileReference|null $image
      * @param bool $treatIdAsReference
      * @return FileInterface
      * @throws \UnexpectedValueException
      * @internal
      */
-    public function getImage(string $src, ?FileInterface $image, bool $treatIdAsReference): FileInterface
+    public function getImage(string $src, $image, bool $treatIdAsReference): FileInterface
     {
         if ($image === null) {
             $image = $this->getImageFromSourceString($src, $treatIdAsReference);
