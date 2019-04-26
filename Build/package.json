@@ -62,9 +62,11 @@
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
     "nprogress": "^0.2.0",
+    "patch-package": "^6.1.2",
     "phantomjs-prebuilt": "^2.1.7",
     "postcss-banner": "^3.0.0",
     "postcss-clean": "^1.0.2",
+    "postinstall-postinstall": "^2.0.0",
     "requirejs": "^2.3.3",
     "stylefmt": "^5.3.0",
     "taboverride": "^4.0.3",
@@ -78,6 +80,7 @@
     "build": "./node_modules/.bin/grunt build",
     "format": "./node_modules/.bin/grunt format",
     "update": "./node_modules/.bin/grunt update",
-    "lint": "./node_modules/.bin/grunt lint"
+    "lint": "./node_modules/.bin/grunt lint",
+    "postinstall": "patch-package"
   }
 }
