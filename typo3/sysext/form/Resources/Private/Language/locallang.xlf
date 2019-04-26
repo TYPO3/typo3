@@ -97,6 +97,9 @@
             <trans-unit id="validation.error.1521293687" xml:space="preserve">
                 <source>You must select a date after %s.</source>
             </trans-unit>
+            <trans-unit id="validation.error.1556283177" xml:space="preserve">
+                <source>Password does not match confirmation</source>
+            </trans-unit>
             <trans-unit id="form_new_wizard_title" xml:space="preserve">
                 <source>Form</source>
             </trans-unit>
