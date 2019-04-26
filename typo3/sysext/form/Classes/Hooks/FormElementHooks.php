@@ -20,6 +20,7 @@ use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
+use TYPO3\CMS\Form\Service\TranslationService;
 
 /**
  * Scope: frontend
@@ -48,7 +49,11 @@ class FormElementHooks
                 $processingRule = $renderable->getRootForm()->getProcessingRule($renderable->getIdentifier());
                 $processingRule->getProcessingMessages()->addError(
                     GeneralUtility::makeInstance(ObjectManager::class)
-                        ->get(Error::class, 'Password doesn\'t match confirmation', 1334768052)
+                        ->get(
+                            Error::class,
+                            TranslationService::getInstance()->translate('validation.error.1521293688', null, 'EXT:form/Resources/Private/Language/locallang.xlf'),
+                            1556283177
+                        )
                 );
             }
             $elementValue = $elementValue['password'];
