@@ -16,8 +16,13 @@ namespace TYPO3\CMS\Form\Controller;
  */
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessing;
+use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessor;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
+use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\FinisherOptionsFlexFormOverridesConverter;
+use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\FlexFormFinisherOverridesConverterDto;
 use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
 
 /**
@@ -87,24 +92,33 @@ class FormFrontendController extends ActionController
     protected function overrideByFlexFormSettings(array $formDefinition): array
     {
         if (isset($formDefinition['finishers'])) {
-            foreach ($formDefinition['finishers'] as &$finisherValue) {
-                $finisherIdentifier = $finisherValue['identifier'];
+            foreach ($formDefinition['finishers'] as $index => $formFinisherDefinition) {
+                $finisherIdentifier = $formFinisherDefinition['identifier'];
+                $prototypeName = $formDefinition['prototypeName'] ?? 'standard';
+
                 if ($this->settings['overrideFinishers'] && isset($this->settings['finishers'][$finisherIdentifier])) {
-                    $prototypeName = $formDefinition['prototypeName'] ?? 'standard';
                     $configurationService = $this->objectManager->get(ConfigurationService::class);
                     $prototypeConfiguration = $configurationService->getPrototypeConfiguration($prototypeName);
+                    $flexFormSheetSettings = $this->settings;
+                    $prototypeFinisherDefinition = $prototypeConfiguration['finishersDefinition'][$finisherIdentifier] ?? [];
+                    $converterDto = GeneralUtility::makeInstance(
+                        FlexFormFinisherOverridesConverterDto::class,
+                        $formFinisherDefinition,
+                        $finisherIdentifier,
+                        $flexFormSheetSettings
+                    );
 
-                    foreach ($finisherValue['options'] as $optionKey => $optionValue) {
-                        // If a previous overridden finisher property is excluded at some time
-                        // it is still present in the flexform database row.
-                        // To avoid a override from the time the property is excluded, this check is needed
-                        if (!isset($prototypeConfiguration['finishersDefinition'][$finisherIdentifier]['FormEngine']['elements'][$optionKey])) {
-                            continue;
-                        }
-                        if (isset($this->settings['finishers'][$finisherIdentifier][$optionKey])) {
-                            $finisherValue['options'][$optionKey] = $this->settings['finishers'][$finisherIdentifier][$optionKey];
-                        }
-                    }
+                    // Iterate over all `TYPO3.CMS.Form.prototypes.<prototypeName>.finishersDefinition.<finisherIdentifier>.FormEngine.elements` values
+                    GeneralUtility::makeInstance(ArrayProcessor::class, $prototypeFinisherDefinition['FormEngine']['elements'])->forEach(
+                        GeneralUtility::makeInstance(
+                            ArrayProcessing::class,
+                            'modifyFinisherOptionsFromFlexFormOverrides',
+                            '^(.*)\.config\.type$',
+                            GeneralUtility::makeInstance(FinisherOptionsFlexFormOverridesConverter::class, $converterDto)
+                        )
+                    );
+
+                    $formDefinition['finishers'][$index] = $converterDto->getFinisherDefinition();
                 }
             }
         }
