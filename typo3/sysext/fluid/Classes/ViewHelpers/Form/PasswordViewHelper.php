@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * View Helper which creates a simple Password Text Box (<input type="password">).
  *
  * Examples
- * --------
+ * ========
  *
  * Example::
  *

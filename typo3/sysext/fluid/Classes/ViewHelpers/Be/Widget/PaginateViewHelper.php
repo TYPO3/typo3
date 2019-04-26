@@ -19,7 +19,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
  * This ViewHelper renders a Pagination of objects for the TYPO3 Backend.
  *
  * Examples
- * --------
+ * ========
  *
  * required arguments::
  *
@@ -38,7 +38,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
  * The recordsLabel can be used to replace the text in "Records 1 - 99" with a label of your own choice
  *
  * Performance characteristics
- * ---------------------------
+ * ===========================
  *
  * In the above examples, it looks like {blogs} contains all Blog objects, thus
  * you might wonder if all objects were fetched from the database.

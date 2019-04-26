@@ -27,7 +27,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *
  * Examples
- * --------
+ * ========
  *
  * Simple::
  *

@@ -22,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Formats a given float to a currency representation.
  *
  * Examples
- * --------
+ * ========
  *
  * Defaults::
  *

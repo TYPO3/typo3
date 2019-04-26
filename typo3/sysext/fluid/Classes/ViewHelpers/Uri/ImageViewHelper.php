@@ -28,7 +28,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Resizes a given image (if required) and returns its relative path.
  *
  * Examples
- * --------
+ * ========
  *
  * Default::
  *

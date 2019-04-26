@@ -21,7 +21,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  * View helper which allows you to create extbase based modules in the style of TYPO3 default modules.
  *
  * Examples
- * --------
+ * ========
  *
  * Simple::
  *

@@ -23,7 +23,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * This ViewHelper generates a HTML dump of the tagged variable.
  *
  * Examples
- * --------
+ * ========
  *
  * Simple::
  *

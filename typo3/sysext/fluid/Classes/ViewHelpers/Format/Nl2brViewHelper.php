@@ -23,7 +23,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * @see http://www.php.net/manual/en/function.nl2br.php
  *
  * Examples
- * --------
+ * ========
  *
  * Example::
  *

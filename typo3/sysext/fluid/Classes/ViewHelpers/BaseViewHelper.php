@@ -24,7 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * In TYPO3 Flow, you should always include this ViewHelper to make the links work.
  *
  * Examples
- * --------
+ * ========
  *
  * Example::
  *

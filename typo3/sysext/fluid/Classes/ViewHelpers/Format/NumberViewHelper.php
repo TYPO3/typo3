@@ -24,7 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * @see http://www.php.net/manual/en/function.number-format.php
  *
  * Examples
- * --------
+ * ========
  *
  * Defaults::
  *

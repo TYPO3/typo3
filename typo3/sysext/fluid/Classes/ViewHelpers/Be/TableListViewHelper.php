@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Note: This feature is experimental!
  *
  * Examples
- * --------
+ * ========
  *
  * Minimal::
  *

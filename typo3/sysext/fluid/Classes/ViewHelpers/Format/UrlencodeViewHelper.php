@@ -25,7 +25,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * Note: The output is not escaped. You may have to ensure proper escaping on your own.
  *
  * Examples
- * --------
+ * ========
  *
  * default notation::
  *

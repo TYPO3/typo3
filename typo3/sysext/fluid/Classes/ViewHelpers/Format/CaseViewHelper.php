@@ -46,7 +46,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * @see http://php.net/manual/function.mb-convert-case.php [1]
  *
  * Examples
- * --------
+ * ========
  *
  * Example::
  *

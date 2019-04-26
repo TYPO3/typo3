@@ -20,7 +20,7 @@ use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
  * View helper which groups options of an option tag.
  *
  * Example
- * -------
+ * =======
  *
  * ::
  *

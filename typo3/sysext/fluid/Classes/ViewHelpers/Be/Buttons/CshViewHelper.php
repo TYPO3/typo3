@@ -25,7 +25,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  * Note: This view helper is experimental!
  *
  * Examples
- * --------
+ * ========
  *
  * Default::
  *

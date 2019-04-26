@@ -22,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * A view helper for creating URIs to extbase actions within widgets.
  *
  * Examples
- * --------
+ * ========
  *
  * URI to the show-action of the current controller::
  *

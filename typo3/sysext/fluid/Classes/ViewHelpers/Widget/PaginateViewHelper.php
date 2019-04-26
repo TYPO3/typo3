@@ -21,7 +21,7 @@ use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
  * This ViewHelper renders a Pagination of objects.
  *
  * Examples
- * --------
+ * ========
  *
  * required arguments::
  *
@@ -38,7 +38,7 @@ use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
  *    </f:widget.paginate>
  *
  * Performance characteristics
- * ---------------------------
+ * ===========================
  *
  * In the above examples, it looks like {blogs} contains all Blog objects, thus
  * you might wonder if all objects were fetched from the database.

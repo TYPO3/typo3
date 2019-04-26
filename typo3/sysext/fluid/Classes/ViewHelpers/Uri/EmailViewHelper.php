@@ -23,7 +23,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Generates an email URI incorporating TYPO3s spamProtectEmailAddresses-settings.
  *
  * Example
- * -------
+ * =======
  *
  * Basic email URI::
  *

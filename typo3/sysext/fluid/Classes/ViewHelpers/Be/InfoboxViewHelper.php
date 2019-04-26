@@ -23,7 +23,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * View helper for rendering a styled content infobox markup.
  *
  * States
- * ------
+ * ======
  *
  * The Infobox provides different context sensitive states that
  * can be used to provide an additional visual feedback to the
@@ -44,7 +44,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *    Error
  *
  * Examples
- * --------
+ * ========
  *
  * Simple::
  *

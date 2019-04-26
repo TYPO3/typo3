@@ -22,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * A view helper for creating URIs to TYPO3 pages.
  *
  * Examples
- * --------
+ * ========
  *
  * URI to the current page::
  *
