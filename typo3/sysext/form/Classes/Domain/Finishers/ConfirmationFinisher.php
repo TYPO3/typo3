@@ -119,7 +119,10 @@ class ConfirmationFinisher extends AbstractFinisher
             $this->finisherContext->getFormRuntime()
         );
 
-        $standaloneView->assign('message', $message);
+        $standaloneView->assignMultiple([
+            'message' => $message,
+            'isPreparedMessage' => !empty($contentElementUid),
+        ]);
 
         return $standaloneView->render();
     }
