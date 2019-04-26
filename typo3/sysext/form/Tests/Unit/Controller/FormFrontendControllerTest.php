@@ -130,9 +130,9 @@ class FormFrontendControllerTest extends UnitTestCase
                 'EmailToReceiver' => [
                     'FormEngine' => [
                         'elements' => [
-                            'subject' => [],
-                            'recipientAddress' => [],
-                            'format' => [],
+                            'subject' => ['config' => ['type' => 'input']],
+                            'recipientAddress' => ['config' => ['type' => 'input']],
+                            'format' => ['config' => ['type' => 'input']],
                         ],
                     ],
                 ],
@@ -208,8 +208,8 @@ class FormFrontendControllerTest extends UnitTestCase
                 'EmailToReceiver' => [
                     'FormEngine' => [
                         'elements' => [
-                            'subject' => [],
-                            'recipientAddress' => [],
+                            'subject' => ['config' => ['type' => 'input']],
+                            'recipientAddress' => ['config' => ['type' => 'input']],
                         ],
                     ],
                 ],

@@ -20,10 +20,13 @@ use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessing;
+use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessor;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
+use TYPO3\CMS\Form\Domain\Configuration\FlexformConfiguration\Processors\FinisherOptionGenerator;
+use TYPO3\CMS\Form\Domain\Configuration\FlexformConfiguration\Processors\ProcessorDto;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
@@ -194,69 +197,47 @@ class DataStructureIdentifierHook
         $finishersDefinition = $prototypeConfiguration['finishersDefinition'];
 
         $sheets = ['sheets' => []];
-        foreach ($formDefinition['finishers'] as $finisherValue) {
-            $finisherIdentifier = $finisherValue['identifier'];
+        foreach ($formDefinition['finishers'] as $formFinisherDefinition) {
+            $finisherIdentifier = $formFinisherDefinition['identifier'];
             if (!isset($finishersDefinition[$finisherIdentifier]['FormEngine']['elements'])) {
                 continue;
             }
-            $sheetIdentifier = md5(
-                implode('', [
-                    $persistenceIdentifier,
-                    $prototypeName,
-                    $formIdentifier,
-                    $finisherIdentifier
-                ])
+            $sheetIdentifier = $this->buildFlexformSheetIdentifier(
+                $persistenceIdentifier,
+                $prototypeName,
+                $formIdentifier,
+                $finisherIdentifier
             );
 
-            if (isset($finishersDefinition[$finisherIdentifier]['FormEngine']['translationFile'])) {
-                $translationFile = $finishersDefinition[$finisherIdentifier]['FormEngine']['translationFile'];
-            } else {
-                $translationFile = $prototypeConfiguration['formEngine']['translationFile'];
-            }
-
-            $finishersDefinition[$finisherIdentifier]['FormEngine'] = TranslationService::getInstance()->translateValuesRecursive(
-                $finishersDefinition[$finisherIdentifier]['FormEngine'],
-                $translationFile
+            $finishersDefinition = $this->translateFinisherDefinitionByIdentifier(
+                $finisherIdentifier,
+                $finishersDefinition,
+                $prototypeConfiguration
             );
-            $finisherLabel = $finishersDefinition[$finisherIdentifier]['FormEngine']['label'];
+
+            $prototypeFinisherDefinition = $finishersDefinition[$finisherIdentifier];
+            $finisherLabel = $prototypeFinisherDefinition['FormEngine']['label'] ?? '';
             $sheet = $this->initializeNewSheetArray($sheetIdentifier, $finisherLabel);
 
-            $sheetElements = [];
-            foreach ($finisherValue['options'] as $optionKey => $optionValue) {
-                if (is_array($optionValue)) {
-                    $optionKey = $optionKey . '.' . $this->implodeArrayKeys($finisherValue['options'][$optionKey]);
-                    try {
-                        $elementConfiguration = ArrayUtility::getValueByPath(
-                            $finishersDefinition[$finisherIdentifier]['FormEngine']['elements'],
-                            $optionKey,
-                            '.'
-                        );
-                    } catch (MissingArrayPathException $exception) {
-                        $elementConfiguration = null;
-                    }
-                    try {
-                        $optionValue = ArrayUtility::getValueByPath($finisherValue['options'], $optionKey, '.');
-                    } catch (MissingArrayPathException $exception) {
-                        $optionValue = null;
-                    }
-                } else {
-                    $elementConfiguration = $finishersDefinition[$finisherIdentifier]['FormEngine']['elements'][$optionKey];
-                }
+            $converterDto = GeneralUtility::makeInstance(
+                ProcessorDto::class,
+                $finisherIdentifier,
+                $prototypeFinisherDefinition,
+                $formFinisherDefinition
+            );
 
-                if (empty($elementConfiguration)) {
-                    continue;
-                }
+            // Iterate over all `TYPO3.CMS.Form.prototypes.<prototypeName>.finishersDefinition.<finisherIdentifier>.FormEngine.elements` values
+            // and convert them to FlexForm elements
+            GeneralUtility::makeInstance(ArrayProcessor::class, $prototypeFinisherDefinition['FormEngine']['elements'])->forEach(
+                GeneralUtility::makeInstance(
+                    ArrayProcessing::class,
+                    'convertToFlexFormSheets',
+                    '^(.*)\.config\.type$',
+                    GeneralUtility::makeInstance(FinisherOptionGenerator::class, $converterDto)
+                )
+            );
 
-                if (empty($optionValue)) {
-                    $elementConfiguration['label'] .= ' (default: "[Empty]")';
-                } else {
-                    $elementConfiguration['label'] .= ' (default: "' . $optionValue . '")';
-                }
-                $elementConfiguration['config']['default'] = $optionValue;
-                $sheetElements['settings.finishers.' . $finisherIdentifier . '.' . $optionKey] = $elementConfiguration;
-            }
-
-            $sheet[$sheetIdentifier]['ROOT']['el'] = $sheetElements;
+            $sheet[$sheetIdentifier]['ROOT']['el'] = $converterDto->getResult();
             ArrayUtility::mergeRecursiveWithOverrule($sheets['sheets'], $sheet);
         }
         if (empty($sheets['sheets'])) {
@@ -294,23 +275,6 @@ class DataStructureIdentifierHook
                 ],
             ],
         ];
-    }
-
-    /**
-     * Recursive helper to implode a nested array to a dotted path notation
-     *
-     * ['a' => [ 'b' => 42 ] ] becomes 'a.b'
-     *
-     * @param array $nestedArray
-     * @return string
-     */
-    protected function implodeArrayKeys(array $nestedArray): string
-    {
-        $dottedPath = (string)key($nestedArray);
-        if (is_array($nestedArray[$dottedPath])) {
-            $dottedPath .= '.' . $this->implodeArrayKeys($nestedArray[$dottedPath]);
-        }
-        return $dottedPath;
     }
 
     /**
@@ -355,6 +319,54 @@ class DataStructureIdentifierHook
                     true
                 )
             );
+    }
+
+    /**
+     * @param string $persistenceIdentifier
+     * @param string $prototypeName
+     * @param string $formIdentifier
+     * @param string $finisherIdentifier
+     * @return string
+     */
+    protected function buildFlexformSheetIdentifier(
+        string $persistenceIdentifier,
+        string $prototypeName,
+        string $formIdentifier,
+        string $finisherIdentifier
+    ): string {
+        return md5(
+            implode('', [
+                $persistenceIdentifier,
+                $prototypeName,
+                $formIdentifier,
+                $finisherIdentifier
+            ])
+        );
+    }
+
+    /**
+     * @param string $finisherIdentifier
+     * @param array $finishersDefinition
+     * @param array $prototypeConfiguration
+     * @return array
+     */
+    protected function translateFinisherDefinitionByIdentifier(
+        string $finisherIdentifier,
+        array $finishersDefinition,
+        array $prototypeConfiguration
+    ): array {
+        if (isset($finishersDefinition[$finisherIdentifier]['FormEngine']['translationFile'])) {
+            $translationFile = $finishersDefinition[$finisherIdentifier]['FormEngine']['translationFile'];
+        } else {
+            $translationFile = $prototypeConfiguration['formEngine']['translationFile'];
+        }
+
+        $finishersDefinition[$finisherIdentifier]['FormEngine'] = TranslationService::getInstance()->translateValuesRecursive(
+            $finishersDefinition[$finisherIdentifier]['FormEngine'],
+            $translationFile
+        );
+
+        return $finishersDefinition;
     }
 
     /**
