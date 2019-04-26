@@ -71,6 +71,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *    <a href="/typo3/index.php?route=/record/edit&edit[a_table][-17]=new&returnUrl=foo/bar">
  *      Edit record
  *    </a>
+ *
+ * Link to create a new record then return back to the BE module "web_MyextensionList"::
+ *
+ *    <be.link.newRecord table="a_table" returnUrl="{f:be.uri(route: 'web_MyextensionList')}" pid="17">
  */
 class NewRecordViewHelper extends AbstractTagBasedViewHelper
 {
@@ -86,7 +90,7 @@ class NewRecordViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('uid', 'int', 'uid < 0 will insert the record after the given uid', false);
         $this->registerArgument('pid', 'int', 'the page id where the record will be created', false);
         $this->registerArgument('table', 'string', 'target database table', true);
-        $this->registerArgument('returnUrl', 'string', '', false, '');
+        $this->registerArgument('returnUrl', 'string', 'return to this URL after closing the edit dialog', false, '');
     }
 
     /**
