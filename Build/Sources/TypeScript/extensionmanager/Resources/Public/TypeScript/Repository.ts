@@ -79,8 +79,9 @@ class Repository {
     installButtons.on('click', (event: JQueryEventObject): void => {
       event.preventDefault();
       const $element: any = $(event.currentTarget);
-      const url = $($element.form).attr('data-href');
-      this.downloadPath = $($element.form).find('input.downloadPath:checked').val();
+      const $form = $element.closest('form');
+      const url = $form.attr('data-href');
+      this.downloadPath = $form.find('input.downloadPath:checked').val();
       $.ajax({
         url: url,
         dataType: 'json',
