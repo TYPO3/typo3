@@ -23,7 +23,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  * Resizes a given image (if required) and renders the respective img tag
  *
  * Examples
- * --------
+ * ========
  *
  * Default::
  *

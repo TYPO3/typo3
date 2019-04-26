@@ -27,7 +27,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * For new records, use the newRecordViewHelper
  *
  * Examples
- * --------
+ * ========
  *
  * Link to the record-edit action passed to FormEngine::
  *

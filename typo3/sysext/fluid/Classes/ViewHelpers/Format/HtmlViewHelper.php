@@ -28,7 +28,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * By default lib.parseFunc_RTE is used to parse the string.
  *
  * Examples
- * --------
+ * ========
  *
  * Default parameters::
  *

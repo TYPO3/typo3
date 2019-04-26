@@ -27,7 +27,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
  * You can include the provided TS template that includes the above snippet to the pages headerData.
  *
  * Examples
- * --------
+ * ========
  *
  * Render lib object::
  *

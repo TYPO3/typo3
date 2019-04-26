@@ -24,7 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * Wrapper for PHPs json_encode function.
  *
  * Examples
- * --------
+ * ========
  *
  * encoding a view variable::
  *

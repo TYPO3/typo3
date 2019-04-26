@@ -29,7 +29,7 @@ use TYPO3Fluid\Fluid\View\Exception;
  * It must be a child of <be:moduleLayout.menu>
  *
  * Examples
- * --------
+ * ========
  *
  * Default::
  *

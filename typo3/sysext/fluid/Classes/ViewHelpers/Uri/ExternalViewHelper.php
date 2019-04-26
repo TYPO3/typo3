@@ -23,7 +23,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Currently the specified URI is simply passed through.
  *
  * Examples
- * --------
+ * ========
  *
  * Default::
  *

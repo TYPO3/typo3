@@ -25,7 +25,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * "Resources/Private/Language/".
  *
  * Examples
- * --------
+ * ========
  *
  * Translate key::
  *

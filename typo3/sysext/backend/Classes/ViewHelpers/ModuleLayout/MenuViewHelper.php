@@ -30,7 +30,7 @@ use TYPO3Fluid\Fluid\View\Exception;
  * only <be:moduleLayout.menuItem> view helpers as children.
  *
  * Examples
- * --------
+ * ========
  *
  * Default::
  *

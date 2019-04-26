@@ -40,7 +40,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * To edit records, use the editRecordViewHelper
  *
  * Examples
- * --------
+ * ========
  *
  * Link to create a new record of a_table after record 17 on the same pid::
  *

@@ -22,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * @see http://www.php.net/html_entity_decode
  *
  * Examples
- * --------
+ * ========
  *
  * default notation::
  *

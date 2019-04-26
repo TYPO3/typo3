@@ -24,7 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * Formats an integer with a byte count into human-readable form.
  *
  * Examples
- * --------
+ * ========
  *
  * Defaults::
  *

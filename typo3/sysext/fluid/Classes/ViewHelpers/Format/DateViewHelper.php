@@ -24,7 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * Formats an object implementing \DateTimeInterface.
  *
  * Examples
- * --------
+ * ========
  *
  * Defaults::
  *

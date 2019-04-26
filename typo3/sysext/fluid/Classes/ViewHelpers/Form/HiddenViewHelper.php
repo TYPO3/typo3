@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * Renders an <input type="hidden" ...> tag.
  *
  * Examples
- * --------
+ * ========
  *
  * Example::
  *

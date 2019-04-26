@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * View Helper which creates a simple checkbox (<input type="checkbox">).
  *
  * Examples
- * --------
+ * ========
  *
  * Example::
  *

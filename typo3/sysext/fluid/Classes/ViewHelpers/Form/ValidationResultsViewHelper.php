@@ -22,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Validation results view helper
  *
  * Examples
- * --------
+ * ========
  *
  * Output error messages as a list::
  *

@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * This view helper generates a <select> dropdown list for the use with a form.
  *
  * Basic usage
- * -----------
+ * ===========
  *
  * The most straightforward way is to supply an associative array as the "options" parameter.
  * The array key is used as option key, and the value is used as human-readable name.

@@ -25,7 +25,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * A ViewHelper to create uris from fields supported by the link wizard
  *
  * Example
- * -------
+ * =======
  *
  * ``{link}`` contains ``19 - - - &X=y``
  * Please note that due to the nature of typolink you have to provide a

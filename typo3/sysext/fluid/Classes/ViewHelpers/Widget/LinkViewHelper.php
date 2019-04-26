@@ -20,7 +20,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * A view helper for creating Links to extbase actions within widets.
  *
  * Examples
- * --------
+ * ========
  *
  * URI to the show-action of the current controller::
  *

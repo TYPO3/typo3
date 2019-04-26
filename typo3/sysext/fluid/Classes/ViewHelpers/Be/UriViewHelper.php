@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * A view helper for creating URIs to modules.
  *
  * Examples
- * --------
+ * ========
  *
  * URI to the web_ts module on page 92::
  *

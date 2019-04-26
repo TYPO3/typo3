@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * Creates a submit button.
  *
  * Examples
- * --------
+ * ========
  *
  * Defaults::
  *

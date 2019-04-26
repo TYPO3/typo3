@@ -24,7 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * Note: This view helper is experimental!
  *
  * Examples
- * --------
+ * ========
  *
  * Simple::
  *

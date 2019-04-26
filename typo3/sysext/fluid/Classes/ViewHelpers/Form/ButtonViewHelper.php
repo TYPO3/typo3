@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * Creates a button.
  *
  * Examples
- * --------
+ * ========
  *
  * Defaults::
  *

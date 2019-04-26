@@ -20,8 +20,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * Email link view helper.
  * Generates an email link incorporating TYPO3s spamProtectEmailAddresses-settings.
  *
- * Exampl
- * ------
+ * Examples
+ * ========
  *
  * basic email link::
  *

@@ -28,7 +28,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * NOTE: You have to ensure proper escaping (htmlspecialchars/intval/etc.) on your own!
  *
  * Examples
- * --------
+ * ========
  *
  * Render lib object::
  *

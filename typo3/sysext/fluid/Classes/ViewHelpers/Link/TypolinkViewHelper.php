@@ -26,7 +26,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * A ViewHelper to create links from fields supported by the link wizard
  *
  * Example
- * -------
+ * =======
  *
  * {link} contains "19 _blank - "testtitle with whitespace" &X=y"
  *

@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * View Helper which creates a text field (<input type="text">).
  *
  * Examples
- * --------
+ * ========
  *
  * Example::
  *

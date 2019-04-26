@@ -30,7 +30,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * back to the ImageViewHelper as that is the "Renderer" class for images in Fluid context.
  *
  * Examples
- * --------
+ * ========
  *
  * Image Object::
  *

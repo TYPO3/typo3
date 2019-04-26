@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * Make sure to set enctype="multipart/form-data" on the form!
  *
  * Examples
- * --------
+ * ========
  *
  * Example::
  *

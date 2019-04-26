@@ -20,7 +20,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * A view helper for creating links to external targets.
  *
  * Examples
- * --------
+ * ========
  *
  * Default::
  *
