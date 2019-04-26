@@ -10,3 +10,4 @@ Tutorials
 .. toctree::
 
    BasicForm/Index
+   PhotoContest/Index
