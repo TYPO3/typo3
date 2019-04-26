@@ -130,9 +130,10 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
         $this->setArgumentsUnderTest($this->viewHelper, $arguments);
 
         $image = $this->getMockBuilder(FileReference::class)
-            ->setMethods(['getProperty'])
+            ->setMethods(['getProperty', 'hasProperty'])
             ->disableOriginalConstructor()
             ->getMock();
+        $image->expects($this->any())->method('hasProperty')->willReturn(true);
         $image->expects($this->any())->method('getProperty')->willReturnMap([
             ['width', $arguments['width']],
             ['height', $arguments['height']],
@@ -140,6 +141,106 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
             ['title', 'title'],
             ['crop', 'crop']
         ]);
+        $originalFile = $this->getMockBuilder(File::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $originalFile->expects($this->any())->method('getProperties')->willReturn([]);
+
+        $processedFile = $this->getMockBuilder(ProcessedFile::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $processedFile->expects($this->any())->method('getProperty')->willReturnMap([
+            ['width', $arguments['width']],
+            ['height', $arguments['height']],
+        ]);
+
+        $this->inject($image, 'originalFile', $originalFile);
+        $this->inject($image, 'propertiesOfFileReference', []);
+        $imageService = $this->createMock(ImageService::class);
+        $imageService->expects($this->once())->method('getImage')->willReturn($image);
+        $imageService->expects($this->once())->method('applyProcessingInstructions')->with($image, $this->anything())->willReturn($processedFile);
+        $imageService->expects($this->once())->method('getImageUri')->with($processedFile)->willReturn('test.png');
+
+        $this->inject($this->viewHelper, 'imageService', $imageService);
+
+        $tagBuilder = $this->getMockBuilder(TagBuilder::class)
+            ->setMethods(['addAttribute', 'render'])
+            ->getMock();
+        $index = -1;
+        foreach ($expected as $expectedAttribute => $expectedValue) {
+            $tagBuilder->expects($this->at(++ $index))->method('addAttribute')->with($expectedAttribute, $expectedValue);
+        }
+        $tagBuilder->expects($this->once())->method('render');
+        $this->inject($this->viewHelper, 'tag', $tagBuilder);
+
+        $this->viewHelper->render();
+    }
+
+    /**
+     * @return array
+     */
+    public function getRenderMethodTestValuesWithoutFallbackProperties()
+    {
+        return [
+            [
+                [
+                    'src' => 'test',
+                    'width' => 100,
+                    'height' => 200,
+                    'minWidth' => 300,
+                    'maxWidth' => 400,
+                    'minHeight' => 500,
+                    'maxHeight' => 600,
+                    'crop' => false
+                ],
+                [
+                    'src' => 'test.png',
+                    'width' => '100',
+                    'height' => '200',
+                    'alt' => ''
+                ]
+            ],
+            [
+                [
+                    'src' => 'test',
+                    'width' => 100,
+                    'height' => 200,
+                    'minWidth' => 300,
+                    'maxWidth' => 400,
+                    'minHeight' => 500,
+                    'maxHeight' => 600,
+                    'crop' => null
+                ],
+                [
+                    'src' => 'test.png',
+                    'width' => '100',
+                    'height' => '200',
+                    'alt' => '',
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider getRenderMethodTestValuesWithoutFallbackProperties
+     * @param array $arguments
+     * @param array $expected
+     */
+    public function renderMethodCreatesExpectedTagWithoutFallbackProperties(array $arguments, array $expected)
+    {
+        $this->setArgumentsUnderTest($this->viewHelper, $arguments);
+
+        $image = $this->getMockBuilder(FileReference::class)
+            ->setMethods(['getProperty', 'hasProperty'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $image->expects($this->any())->method('hasProperty')->willReturn(false);
+
+        $e = new \InvalidArgumentException('', 1556282257);
+        $image->expects($this->any())->method('getProperty')->willThrowException($e);
+
         $originalFile = $this->getMockBuilder(File::class)
             ->disableOriginalConstructor()
             ->getMock();

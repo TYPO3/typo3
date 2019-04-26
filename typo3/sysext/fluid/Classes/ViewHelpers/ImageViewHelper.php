@@ -160,15 +160,12 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
             $this->tag->addAttribute('width', $processedImage->getProperty('width'));
             $this->tag->addAttribute('height', $processedImage->getProperty('height'));
 
-            $alt = $image->getProperty('alternative');
-            $title = $image->getProperty('title');
-
             // The alt-attribute is mandatory to have valid html-code, therefore add it even if it is empty
             if (empty($this->arguments['alt'])) {
-                $this->tag->addAttribute('alt', $alt);
+                $this->tag->addAttribute('alt', $image->hasProperty('alternative') ? $image->getProperty('alternative') : '');
             }
-            if (empty($this->arguments['title']) && $title) {
-                $this->tag->addAttribute('title', $title);
+            if (empty($this->arguments['title']) && $image->hasProperty('title')) {
+                $this->tag->addAttribute('title', $image->getProperty('title'));
             }
         } catch (ResourceDoesNotExistException $e) {
             // thrown if file does not exist
