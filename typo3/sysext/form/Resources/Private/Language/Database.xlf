@@ -19,6 +19,9 @@
             <trans-unit id="tt_content.pi_flexform.formframework.overrideFinishers" xml:space="preserve">
                 <source>Override finisher settings</source>
             </trans-unit>
+            <trans-unit id="tt_content.pi_flexform.formframework.overrideFinishers.empty" xml:space="preserve">
+                <source>There are no finishers or finisher options in the current form definition.</source>
+            </trans-unit>
 
             <trans-unit id="tt_content.preview.noPersistenceIdentifier" xml:space="preserve">
                 <source>No form selected.</source>

@@ -142,18 +142,47 @@ class DataStructureIdentifierHook
                 }
 
                 // If a specific form is selected and if finisher override is active, add finisher sheets
-                if (!empty($identifier['ext-form-persistenceIdentifier'])
-                    && $formIsAccessible
-                    && isset($identifier['ext-form-overrideFinishers'])
-                    && $identifier['ext-form-overrideFinishers'] === true
-                ) {
+                if (!empty($identifier['ext-form-persistenceIdentifier']) && $formIsAccessible) {
                     $persistenceIdentifier = $identifier['ext-form-persistenceIdentifier'];
                     $formDefinition = $formPersistenceManager->load($persistenceIdentifier);
-                    $newSheets = $this->getAdditionalFinisherSheets($persistenceIdentifier, $formDefinition);
-                    ArrayUtility::mergeRecursiveWithOverrule(
-                        $dataStructure,
-                        $newSheets
-                    );
+
+                    $translationFile = 'LLL:EXT:form/Resources/Private/Language/Database.xlf';
+                    $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.overrideFinishers'] = [
+                        'TCEforms' => [
+                            'label' => $translationFile . ':tt_content.pi_flexform.formframework.overrideFinishers',
+                            'onChange' => 'reload',
+                            'config' => [
+                                'type' => 'check',
+                            ],
+                        ],
+                    ];
+
+                    $newSheets = [];
+
+                    if (isset($formDefinition['finishers']) && !empty($formDefinition['finishers'])) {
+                        $newSheets = $this->getAdditionalFinisherSheets($persistenceIdentifier, $formDefinition);
+                    }
+
+                    if (empty($newSheets)) {
+                        ArrayUtility::mergeRecursiveWithOverrule(
+                            $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.overrideFinishers'],
+                            [
+                                'TCEforms' => [
+                                    'description' => $translationFile . ':tt_content.pi_flexform.formframework.overrideFinishers.empty',
+                                    'config' => [
+                                        'readOnly' => true,
+                                    ],
+                                ],
+                            ]
+                        );
+                    }
+
+                    if ($identifier['ext-form-overrideFinishers']) {
+                        ArrayUtility::mergeRecursiveWithOverrule(
+                            $dataStructure,
+                            $newSheets
+                        );
+                    }
                 }
             } catch (NoSuchFileException $e) {
                 $dataStructure = $this->addSelectedPersistenceIdentifier($identifier['ext-form-persistenceIdentifier'], $dataStructure);
