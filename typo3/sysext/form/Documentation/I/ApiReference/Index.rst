@@ -2306,7 +2306,7 @@ messageCode
       int
 
 :aspect:`Mandatory`
-      No
+      Yes
 
 :aspect:`Default value`
       null
