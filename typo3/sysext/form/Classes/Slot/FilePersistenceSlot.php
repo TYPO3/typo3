@@ -137,6 +137,12 @@ class FilePersistenceSlot implements SingletonInterface
             $targetFolder,
             $targetFileName
         );
+        // while assertFileName below also checks if it's a form definition
+        // we want an early return here to get rid of the file_get_contents
+        // below which would be triggered on every file add command otherwise
+        if (!$this->isFormDefinition($combinedFileIdentifier)) {
+            return;
+        }
         $this->assertFileName(
             self::COMMAND_FILE_ADD,
             $combinedFileIdentifier,
