@@ -624,6 +624,25 @@ define(['jquery',
        *
        * @param string
        * @param array
+       *              args[0] = formElementIdentifierPath
+       *              args[1] = newLabel
+       * @return void
+       * @subscribe view/tree/node/clicked
+       */
+      getPublisherSubscriber().subscribe('view/tree/node/changed', function(topic, args) {
+        var formElement = getFormEditorApp().getFormElementByIdentifierPath(args[0]);
+        formElement.set('label', args[1]);
+        getViewModel().getStructure().setTreeNodeTitle(null, formElement);
+        if(getCurrentlySelectedFormElement().get('__identifierPath') === args[0]) {
+          getViewModel().renderInspectorEditors(args[0], false);
+        }
+      });
+
+      /**
+       * @private
+       *
+       * @param string
+       * @param array
        * @return void
        * @subscribe view/structure/root/selected
        */
