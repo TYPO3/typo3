@@ -100,6 +100,7 @@ TYPO3:
               Inspector-CheckboxEditor: 'Inspector/CheckboxEditor'
               Inspector-ValidationErrorMessageEditor: 'Inspector/ValidationErrorMessageEditor'
               Inspector-Typo3WinBrowserEditor: 'Inspector/Typo3WinBrowserEditor'
+              Inspector-MaximumFileSizeEditor: 'Inspector/MaximumFileSizeEditor'
 
             formElementPropertyValidatorsDefinition:
               NotEmpty:
@@ -1492,6 +1493,10 @@ TYPO3:
                         20: 'TYPO3.CMS.Form.mixins.formElementMixins.MinimumMaximumEditorsMixin'
                       100:
                         label: 'formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label'
+                      150:
+                        identifier: 'maximumFileSize'
+                        templateName: 'Inspector-MaximumFileSizeEditor'
+                        label: 'formEditor.elements.FileUpload.editor.maximumFileSize.label'
                       200:
                         propertyValidators:
                           10: 'FileSize'

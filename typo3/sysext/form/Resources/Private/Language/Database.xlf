@@ -990,6 +990,12 @@
             <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.label" xml:space="preserve">
                 <source>Allowed file mime types</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.FileUpload.editor.maximumFileSize.label" xml:space="preserve">
+                <source>
+                    Your servers' maximum upload file size is {0}. Be aware setting higher values can result in errors when submitting the form.
+                    If you need higher values contact your administrator for help.
+                </source>
+            </trans-unit>
             <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.doc" xml:space="preserve">
                 <source>Documents (doc)</source>
             </trans-unit>

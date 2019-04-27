@@ -59,7 +59,8 @@ define(['jquery',
         validator: 'data-validator-identifier',
         randomId: 'data-random-id',
         randomIdTarget: 'data-random-id-attribute',
-        randomIdIndex: 'data-random-id-number'
+        randomIdIndex: 'data-random-id-number',
+        maximumFileSize: 'data-maximumFileSize'
       },
       domElementDataAttributeValues: {
         collapse: 'actions-view-table-expand',
@@ -251,6 +252,12 @@ define(['jquery',
             editorHtml,
             collectionElementIdentifier,
             collectionName
+          );
+          break;
+        case 'Inspector-MaximumFileSizeEditor':
+          renderMaximumFileSizeEditor(
+            editorConfiguration,
+            editorHtml
           );
           break;
         case 'Inspector-TextEditor':
@@ -1189,6 +1196,30 @@ define(['jquery',
 
       if (editorConfiguration['label']) {
         getHelper().getTemplatePropertyDomElement('label', editorHtml).append(editorConfiguration['label']);
+      }
+    };
+
+    function renderMaximumFileSizeEditor(editorConfiguration, editorHtml) {
+      assert(
+        'object' === $.type(editorConfiguration),
+        'Invalid parameter "editorConfiguration"',
+        1475421258
+      );
+      assert(
+        getUtility().isNonEmptyString(editorConfiguration['label']),
+        'Invalid configuration "label"',
+        1475421257
+      );
+      assert(
+        'object' === $.type(editorHtml),
+        'Invalid parameter "editorHtml"',
+        1475421259
+      );
+
+      if (editorConfiguration['label']) {
+        var element = getHelper().getTemplatePropertyDomElement('label', editorHtml);
+        var maximumFileSize = element.attr(getHelper().getDomElementDataAttribute('maximumFileSize'));
+        element.append(editorConfiguration['label'].replace('{0}', maximumFileSize));
       }
     };
 
@@ -2499,6 +2530,7 @@ define(['jquery',
       renderCheckboxEditor: renderCheckboxEditor,
       renderCollectionElementEditors: renderCollectionElementEditors,
       renderCollectionElementHeaderEditor: renderCollectionElementHeaderEditor,
+      renderFileMaxSizeEditor: renderMaximumFileSizeEditor,
       renderCollectionElementSelectionEditor: renderCollectionElementSelectionEditor,
       renderEditors: renderEditors,
       renderFormElementHeaderEditor: renderFormElementHeaderEditor,

@@ -1,0 +1,12 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+<f:if condition="{formvh:be.maximumFileSize()} > 0">
+    <div class="t3-form-validator-editor">
+        <div data-template-property="header-label" class="t3-form-control-group">
+            <span data-template-property="label" data-maximumFileSize="{formvh:be.maximumFileSize()}" class="inspector-editor-hint" />
+        </div>
+    </div>
+</f:if>
+</html>
