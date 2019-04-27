@@ -1,8 +1,8 @@
-renderingOptions.translation.translationFile
---------------------------------------------
+renderingOptions.translation.translationFiles
+---------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.translation.translationFile
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.translation.translationFiles
 
 :aspect:`Data type`
       string
@@ -27,7 +27,8 @@ renderingOptions.translation.translationFile
          Form:
            renderingOptions:
              translation:
-               translationFile: 'EXT:form/Resources/Private/Language/locallang.xlf'
+               translationFiles:
+                 10: 'EXT:form/Resources/Private/Language/locallang.xlf'
              templateRootPaths:
                10: 'EXT:form/Resources/Private/Frontend/Templates/'
              partialRootPaths:
@@ -53,4 +54,4 @@ renderingOptions.translation.translationFile
 
 :aspect:`Description`
       Filesystem path(s) to translation files which should be searched for form element property translations.
-      If ``translationFile`` is undefined, - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.translation.translationFile"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.translation.translationfile>` will be used.
+      If ``translationFiles`` is undefined, - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.translation.translationFiles"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.translation.translationfiles>` will be used.

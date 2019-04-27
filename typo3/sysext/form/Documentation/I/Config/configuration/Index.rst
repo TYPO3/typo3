@@ -374,7 +374,8 @@ Full default configuration
             rendererClassName: TYPO3\CMS\Form\Domain\Renderer\FluidFormRenderer
             renderingOptions:
               translation:
-                translationFile: 'EXT:form/Resources/Private/Language/locallang.xlf'
+                translationFiles:
+                  10: 'EXT:form/Resources/Private/Language/locallang.xlf'
               templateRootPaths:
                 10: 'EXT:form/Resources/Private/Frontend/Templates/'
               partialRootPaths:
@@ -3775,7 +3776,8 @@ Full default configuration
                   maximum: '10M'
 
         formEditor:
-          translationFile: 'EXT:form/Resources/Private/Language/Database.xlf'
+          translationFiles:
+            10: 'EXT:form/Resources/Private/Language/Database.xlf'
           dynamicRequireJsModules:
             app: TYPO3/CMS/Form/Backend/FormEditor
             mediator: TYPO3/CMS/Form/Backend/FormEditor/Mediator
@@ -3860,11 +3862,13 @@ Full default configuration
             page:
               label: formEditor.formElementGroups.page.label
         formEngine:
-          translationFile: 'EXT:form/Resources/Private/Language/Database.xlf'
+          translationFiles:
+            10: 'EXT:form/Resources/Private/Language/Database.xlf'
     mixins:
       translationSettingsMixin:
         translation:
-          translationFile: 'EXT:form/Resources/Private/Language/locallang.xlf'
+          translationFiles:
+            10: 'EXT:form/Resources/Private/Language/locallang.xlf'
       formElementMixins:
         BaseFormElementMixin:
           formEditor:
@@ -4649,7 +4653,8 @@ Full default configuration
         viewModel: TYPO3/CMS/Form/Backend/FormManager/ViewModel
       stylesheets:
         100: 'EXT:form/Resources/Public/Css/form.css'
-      translationFile: 'EXT:form/Resources/Private/Language/Database.xlf'
+      translationFiles:
+        10: 'EXT:form/Resources/Private/Language/Database.xlf'
       javaScriptTranslationFile: 'EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf'
       selectablePrototypesConfiguration:
         100:

@@ -12,8 +12,8 @@
 Properties
 ==========
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.translation.translationfile:
-.. include:: Form/renderingOptions/translation/translationFile.rst
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.translation.translationfiles:
+.. include:: Form/renderingOptions/translation/translationFiles.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.templaterootpaths:
 .. include:: Form/renderingOptions/templateRootPaths.rst

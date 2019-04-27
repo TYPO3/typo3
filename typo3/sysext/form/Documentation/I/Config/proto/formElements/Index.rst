@@ -178,13 +178,13 @@ implementationClassName
       Classname which implements the form element.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.renderingoptions.translation.translationfile:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.renderingoptions.translation.translationfiles:
 
-renderingOptions.translation.translationFile
---------------------------------------------
+renderingOptions.translation.translationFiles
+---------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.renderingOptions.translation.translationFile
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.renderingOptions.translation.translationFiles
 
 :aspect:`Data type`
       string/ array
@@ -204,7 +204,7 @@ renderingOptions.translation.translationFile
 
 :aspect:`Description`
       Filesystem path(s) to translation files which should be searched for form element property translations.
-      If ``translationFile`` is undefined, - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.translation.translationFile"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.translation.translationfile>` will be used.
+      If ``translationFiles`` is undefined, - :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.translation.translationFiles"<typo3.cms.form.prototypes.\<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.translation.translationfiles>` will be used.
 
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.renderingOptions.translation.translatePropertyValueIfEmpty:

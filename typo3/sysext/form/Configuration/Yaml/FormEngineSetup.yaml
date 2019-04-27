@@ -4,7 +4,8 @@ TYPO3:
       prototypes:
         standard:
           formEngine:
-            translationFile: 'EXT:form/Resources/Private/Language/Database.xlf'
+            translationFiles:
+              10: 'EXT:form/Resources/Private/Language/Database.xlf'
 
           ########### TCE Forms CONFIGURATION ###########
 

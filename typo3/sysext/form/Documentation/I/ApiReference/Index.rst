@@ -2081,10 +2081,10 @@ attachUploads
       If set, all uploaded items are attached to the email.
 
 
-.. _apireference-finisheroptions-emailfinisher-options-translation-translationfile:
+.. _apireference-finisheroptions-emailfinisher-options-translation-translationfiles:
 
-translation.translationFile
-+++++++++++++++++++++++++++
+translation.translationFiles
+++++++++++++++++++++++++++++
 
 :aspect:`Data type`
       string/ array

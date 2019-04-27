@@ -187,13 +187,13 @@ options.severity
       See \TYPO3\CMS\Core\Messaging\AbstractMessage constants for the codes.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.translation.translationfile:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.translation.translationfiles:
 
-options.translation.translationFile
------------------------------------
+options.translation.translationFiles
+------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.translation.translationFile
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.translation.translationFiles
 
 :aspect:`Data type`
       string/ array

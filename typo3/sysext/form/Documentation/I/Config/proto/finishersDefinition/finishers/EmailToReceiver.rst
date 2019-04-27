@@ -372,13 +372,13 @@ options.translation.language
       Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.translation.translationfile:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.translation.translationfiles:
 
-options.translation.translationFile
------------------------------------
+options.translation.translationFiles
+------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.translation.translationFile
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.translation.translationFiles
 
 :aspect:`Data type`
       string/ array

@@ -290,7 +290,7 @@ class TranslationServiceTest extends UnitTestCase
      */
     public function translateValuesRecursiveTranslateRecursive(): void
     {
-        $xlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
+        $xlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
 
         $input = [
             'Stan' => [
@@ -314,43 +314,43 @@ class TranslationServiceTest extends UnitTestCase
             ],
         ];
 
-        $this->store->flushData($xlfPath);
+        $this->store->flushData($xlfPaths);
         $this->assertEquals($expected, $this->mockTranslationService->_call(
             'translateValuesRecursive',
             $input,
-            $xlfPath
+            $xlfPaths
         ));
     }
 
     /**
      * @test
      */
-    public function translateFormElementValueTranslateLabelForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
+    public function translateFormElementValueTranslateLabelForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFilesAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
-        $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
+        $textElementXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf'];
 
         $formRuntimeIdentifier = 'form-runtime-identifier';
         $formElementIdentifier = 'form-element-identifier';
 
         $formRuntimeRenderingOptions = [
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
-                'translationFile' => $textElementXlfPath,
+                'translationFiles' => $textElementXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
         $expected = 'form-element-identifier LABEL EN';
 
-        $this->store->flushData($formRuntimeXlfPath);
-        $this->store->flushData($textElementXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
+        $this->store->flushData($textElementXlfPaths);
 
         $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
 
@@ -369,32 +369,32 @@ class TranslationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function translateFormElementValueTranslateLabelForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementLabelIsEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
+    public function translateFormElementValueTranslateLabelForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFilesAndElementLabelIsEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
-        $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
+        $textElementXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf'];
 
         $formRuntimeIdentifier = 'form-runtime-identifier';
         $formElementIdentifier = 'form-element-identifier';
 
         $formRuntimeRenderingOptions = [
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
-                'translationFile' => $textElementXlfPath,
+                'translationFiles' => $textElementXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
         $expected = 'form-element-identifier LABEL EN';
 
-        $this->store->flushData($formRuntimeXlfPath);
-        $this->store->flushData($textElementXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
+        $this->store->flushData($textElementXlfPaths);
 
         $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
 
@@ -413,32 +413,32 @@ class TranslationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function translateFormElementValueNotTranslateLabelForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementLabelIsEmptyAndPropertyShouldNotBeTranslatedAndTranslationExists(): void
+    public function translateFormElementValueNotTranslateLabelForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFilesAndElementLabelIsEmptyAndPropertyShouldNotBeTranslatedAndTranslationExists(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
-        $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
+        $textElementXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf'];
 
         $formRuntimeIdentifier = 'form-runtime-identifier';
         $formElementIdentifier = 'form-element-identifier';
 
         $formRuntimeRenderingOptions = [
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
-                'translationFile' => $textElementXlfPath,
+                'translationFiles' => $textElementXlfPaths,
                 'translatePropertyValueIfEmpty' => false
             ],
         ];
 
         $expected = '';
 
-        $this->store->flushData($formRuntimeXlfPath);
-        $this->store->flushData($textElementXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
+        $this->store->flushData($textElementXlfPaths);
 
         $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
 
@@ -457,32 +457,32 @@ class TranslationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function translateFormElementValueTranslateLabelForConcreteFormElementIfElementRenderingOptionsContainsATranslationFileAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
+    public function translateFormElementValueTranslateLabelForConcreteFormElementIfElementRenderingOptionsContainsATranslationFilesAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
-        $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
+        $textElementXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf'];
 
         $formRuntimeIdentifier = 'another-form-runtime-identifier';
         $formElementIdentifier = 'form-element-identifier';
 
         $formRuntimeRenderingOptions = [
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
-                'translationFile' => $textElementXlfPath,
+                'translationFiles' => $textElementXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
         $expected = 'form-element-identifier LABEL EN 1';
 
-        $this->store->flushData($formRuntimeXlfPath);
-        $this->store->flushData($textElementXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
+        $this->store->flushData($textElementXlfPaths);
 
         $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
 
@@ -501,32 +501,32 @@ class TranslationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function translateFormElementValueTranslateLabelForFormElementTypeIfElementRenderingOptionsContainsATranslationFileAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
+    public function translateFormElementValueTranslateLabelForFormElementTypeIfElementRenderingOptionsContainsATranslationFilesAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
-        $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
+        $textElementXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf'];
 
         $formRuntimeIdentifier = 'another-form-runtime-identifier';
         $formElementIdentifier = 'another-form-element-identifier';
 
         $formRuntimeRenderingOptions = [
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
-                'translationFile' => $textElementXlfPath,
+                'translationFiles' => $textElementXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
         $expected = 'form-element-identifier LABEL EN 2';
 
-        $this->store->flushData($formRuntimeXlfPath);
-        $this->store->flushData($textElementXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
+        $this->store->flushData($textElementXlfPaths);
 
         $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
 
@@ -545,24 +545,24 @@ class TranslationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function translateFormElementValueTranslatePropertyForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementPropertyIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
+    public function translateFormElementValueTranslatePropertyForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFilesAndElementPropertyIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
-        $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
+        $textElementXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf'];
 
         $formRuntimeIdentifier = 'form-runtime-identifier';
         $formElementIdentifier = 'form-element-identifier';
 
         $formRuntimeRenderingOptions = [
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
-                'translationFile' => $textElementXlfPath,
+                'translationFiles' => $textElementXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
@@ -572,8 +572,8 @@ class TranslationServiceTest extends UnitTestCase
 
         $expected = 'form-element-identifier PLACEHOLDER EN';
 
-        $this->store->flushData($formRuntimeXlfPath);
-        $this->store->flushData($textElementXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
+        $this->store->flushData($textElementXlfPaths);
 
         $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
 
@@ -592,24 +592,24 @@ class TranslationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function translateFormElementValueNotTranslatePropertyForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementPropertyIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationNotExists(): void
+    public function translateFormElementValueNotTranslatePropertyForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFilesAndElementPropertyIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationNotExists(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
-        $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
+        $textElementXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf'];
 
         $formRuntimeIdentifier = 'another-form-runtime-identifier';
         $formElementIdentifier = 'another-form-element-identifier';
 
         $formRuntimeRenderingOptions = [
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
-                'translationFile' => $textElementXlfPath,
+                'translationFiles' => $textElementXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
@@ -619,8 +619,8 @@ class TranslationServiceTest extends UnitTestCase
 
         $expected = 'placeholder';
 
-        $this->store->flushData($formRuntimeXlfPath);
-        $this->store->flushData($textElementXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
+        $this->store->flushData($textElementXlfPaths);
 
         $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
 
@@ -639,17 +639,17 @@ class TranslationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function translateFormElementValueTranslateRenderingOptionForConcreteFormAndConcreteSectionElementIfElementRenderingOptionsContainsATranslationFileAndElementRenderingOptionIsNotEmptyAndRenderingOptionShouldBeTranslatedAndTranslationExists(): void
+    public function translateFormElementValueTranslateRenderingOptionForConcreteFormAndConcreteSectionElementIfElementRenderingOptionsContainsATranslationFilesAndElementRenderingOptionIsNotEmptyAndRenderingOptionShouldBeTranslatedAndTranslationExists(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
-        $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
+        $textElementXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf'];
 
         $formRuntimeIdentifier = 'form-runtime-identifier';
         $formElementIdentifier = 'form-element-identifier-page';
 
         $formRuntimeRenderingOptions = [
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
@@ -657,7 +657,7 @@ class TranslationServiceTest extends UnitTestCase
         $formElementRenderingOptions = [
             'nextButtonLabel' => 'next button label',
             'translation' => [
-                'translationFile' => $textElementXlfPath,
+                'translationFiles' => $textElementXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
@@ -667,8 +667,8 @@ class TranslationServiceTest extends UnitTestCase
 
         $expected = 'form-element-identifier nextButtonLabel EN';
 
-        $this->store->flushData($formRuntimeXlfPath);
-        $this->store->flushData($textElementXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
+        $this->store->flushData($textElementXlfPaths);
 
         $mockFormElement = $this->getAccessibleMock(Page::class, ['dummy'], [], '', false);
 
@@ -687,24 +687,24 @@ class TranslationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function translateFormElementValueTranslateOptionsPropertyForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementOptionsPropertyIsAnArrayAndPropertyShouldBeTranslatedAndTranslationExists(): void
+    public function translateFormElementValueTranslateOptionsPropertyForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFilesAndElementOptionsPropertyIsAnArrayAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
-        $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
+        $textElementXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf'];
 
         $formRuntimeIdentifier = 'form-runtime-identifier';
         $formElementIdentifier = 'options-form-element-identifier';
 
         $formRuntimeRenderingOptions = [
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
-                'translationFile' => $textElementXlfPath,
+                'translationFiles' => $textElementXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
@@ -720,8 +720,8 @@ class TranslationServiceTest extends UnitTestCase
             'optionValue2' => 'options-form-element-identifier option 2 EN'
         ];
 
-        $this->store->flushData($formRuntimeXlfPath);
-        $this->store->flushData($textElementXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
+        $this->store->flushData($textElementXlfPaths);
 
         $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
 
@@ -740,24 +740,24 @@ class TranslationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function translateFormElementValueTranslateOptionsPropertyForConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementOptionsPropertyIsAnArrayAndPropertyShouldBeTranslatedAndTranslationExists(): void
+    public function translateFormElementValueTranslateOptionsPropertyForConcreteElementIfElementRenderingOptionsContainsATranslationFilesAndElementOptionsPropertyIsAnArrayAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
-        $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
+        $textElementXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf'];
 
         $formRuntimeIdentifier = 'another-form-runtime-identifier';
         $formElementIdentifier = 'options-form-element-identifier';
 
         $formRuntimeRenderingOptions = [
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
-                'translationFile' => $textElementXlfPath,
+                'translationFiles' => $textElementXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
@@ -773,8 +773,8 @@ class TranslationServiceTest extends UnitTestCase
             'optionValue2' => 'options-form-element-identifier option 2 EN'
         ];
 
-        $this->store->flushData($formRuntimeXlfPath);
-        $this->store->flushData($textElementXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
+        $this->store->flushData($textElementXlfPaths);
 
         $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
 
@@ -793,30 +793,30 @@ class TranslationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function translateFinisherOptionTranslateOptionForConcreteFormIfFinisherTranslationOptionsContainsATranslationFileAndFinisherOptionIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
+    public function translateFinisherOptionTranslateOptionForConcreteFormIfFinisherTranslationOptionsContainsATranslationFilesAndFinisherOptionIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
-        $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
+        $textElementXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf'];
 
         $formRuntimeIdentifier = 'form-runtime-identifier';
         $finisherIdentifier = 'SaveToDatabaseFinisher';
 
         $formRuntimeRenderingOptions = [
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
         $finisherRenderingOptions = [
-            'translationFile' => $textElementXlfPath,
+            'translationFiles' => $textElementXlfPaths,
             'translatePropertyValueIfEmpty' => true
         ];
 
         $expected = 'form-element-identifier SaveToDatabase subject EN';
 
-        $this->store->flushData($formRuntimeXlfPath);
-        $this->store->flushData($textElementXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
+        $this->store->flushData($textElementXlfPaths);
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
         $mockFormRuntime->expects($this->any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
@@ -828,30 +828,30 @@ class TranslationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function translateFinisherOptionTranslateOptionIfFinisherTranslationOptionsContainsATranslationFileAndFinisherOptionIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
+    public function translateFinisherOptionTranslateOptionIfFinisherTranslationOptionsContainsATranslationFilesAndFinisherOptionIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
-        $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
+        $textElementXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf'];
 
         $formRuntimeIdentifier = 'another-form-runtime-identifier';
         $finisherIdentifier = 'SaveToDatabaseFinisher';
 
         $formRuntimeRenderingOptions = [
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
         $finisherRenderingOptions = [
-            'translationFile' => $textElementXlfPath,
+            'translationFiles' => $textElementXlfPaths,
             'translatePropertyValueIfEmpty' => true
         ];
 
         $expected = 'form-element-identifier SaveToDatabase subject EN 1';
 
-        $this->store->flushData($formRuntimeXlfPath);
-        $this->store->flushData($textElementXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
+        $this->store->flushData($textElementXlfPaths);
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
         $mockFormRuntime->expects($this->any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
@@ -863,17 +863,17 @@ class TranslationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function translateFormElementValueTranslateLabelForConcreteFormAndConcreteElementFromFormRumtimeTranslationFileIfElementRenderingOptionsContainsNoTranslationFileAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
+    public function translateFormElementValueTranslateLabelForConcreteFormAndConcreteElementFromFormRumtimeTranslationFilesIfElementRenderingOptionsContainsNoTranslationFilesAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
-        $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
+        $textElementXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf'];
 
         $formRuntimeIdentifier = 'my-form-runtime-identifier';
         $formElementIdentifier = 'my-form-element-identifier';
 
         $formRuntimeRenderingOptions = [
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
@@ -882,8 +882,8 @@ class TranslationServiceTest extends UnitTestCase
 
         $expected = 'my-form-runtime-identifier my-form-element-identifier LABEL EN';
 
-        $this->store->flushData($formRuntimeXlfPath);
-        $this->store->flushData($textElementXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
+        $this->store->flushData($textElementXlfPaths);
 
         $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
 
@@ -904,16 +904,16 @@ class TranslationServiceTest extends UnitTestCase
      */
     public function supportsArgumentsForFormElementValueTranslations(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
 
-        $this->store->flushData($formRuntimeXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
 
         /** @var FormRuntime|\Prophecy\Prophecy\ObjectProphecy */
         $formRuntime = $this->prophesize(FormRuntime::class);
         $formRuntime->getIdentifier()->willReturn('my-form-runtime-identifier');
         $formRuntime->getRenderingOptions()->willReturn([
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true,
             ],
         ]);
@@ -943,17 +943,17 @@ class TranslationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function translateFinisherOptionTranslateOptionForConcreteFormFromFormRuntimeIfFinisherTranslationOptionsContainsNoTranslationFileAndFinisherOptionIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
+    public function translateFinisherOptionTranslateOptionForConcreteFormFromFormRuntimeIfFinisherTranslationOptionsContainsNoTranslationFilesAndFinisherOptionIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
-        $textElementXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
+        $textElementXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf'];
 
         $formRuntimeIdentifier = 'my-form-runtime-identifier';
         $finisherIdentifier = 'SaveToDatabaseFinisher';
 
         $formRuntimeRenderingOptions = [
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
@@ -962,8 +962,8 @@ class TranslationServiceTest extends UnitTestCase
 
         $expected = 'my-form-runtime-identifier form-element-identifier SaveToDatabase subject EN';
 
-        $this->store->flushData($formRuntimeXlfPath);
-        $this->store->flushData($textElementXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
+        $this->store->flushData($textElementXlfPaths);
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
         $mockFormRuntime->expects($this->any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
@@ -977,16 +977,16 @@ class TranslationServiceTest extends UnitTestCase
      */
     public function supportsArgumentsForFinisherOptionTranslations(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
 
-        $this->store->flushData($formRuntimeXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
 
         /** @var FormRuntime|\Prophecy\Prophecy\ObjectProphecy */
         $formRuntime = $this->prophesize(FormRuntime::class);
         $formRuntime->getIdentifier()->willReturn('my-form-runtime-identifier');
         $formRuntime->getRenderingOptions()->willReturn([
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true,
             ],
         ]);
@@ -1007,10 +1007,10 @@ class TranslationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function translateFormElementValueTranslateLabelFromAdditionalTranslationForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
+    public function translateFormElementValueTranslateLabelFromAdditionalTranslationForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFilesAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
-        $textElementXlfPaths = [
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
+        $textElementXlfPathss = [
             10 => 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf',
             20 => 'EXT:form/Tests/Unit/Service/Fixtures/locallang_additional_text.xlf'
          ];
@@ -1020,24 +1020,24 @@ class TranslationServiceTest extends UnitTestCase
 
         $formRuntimeRenderingOptions = [
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
-                'translationFile' => $textElementXlfPaths,
+                'translationFiles' => $textElementXlfPathss,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
         $expected = 'form-element-identifier ADDITIONAL LABEL EN';
 
-        $this->store->flushData($formRuntimeXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
 
-        foreach ($textElementXlfPaths as $textElementXlfPath) {
-            $this->store->flushData($textElementXlfPath);
+        foreach ($textElementXlfPathss as $textElementXlfPaths) {
+            $this->store->flushData($textElementXlfPaths);
         }
 
         $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
@@ -1059,7 +1059,7 @@ class TranslationServiceTest extends UnitTestCase
      */
     public function translateFormElementTranslateFormWithContentElementUidIfFormContainsNoOriginalIdentifier(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_01.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_01.xlf'];
 
         $formRuntimeIdentifier = 'form-runtime-identifier-42';
         $formElementIdentifier = 'form-element-identifier';
@@ -1067,12 +1067,12 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeRenderingOptions = [
             'submitButtonLabel' => '',
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
-        $this->store->flushData($formRuntimeXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType'], [], '', false);
 
@@ -1098,7 +1098,7 @@ class TranslationServiceTest extends UnitTestCase
      */
     public function translateFormElementTranslateFormWithContentElementUidIfFormContainsOriginalIdentifier(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_02.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_02.xlf'];
 
         $formRuntimeIdentifier = 'form-runtime-identifier-42';
         $formElementIdentifier = 'form-element-identifier';
@@ -1107,12 +1107,12 @@ class TranslationServiceTest extends UnitTestCase
             'submitButtonLabel' => '',
             '_originalIdentifier' => 'form-runtime-identifier',
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
-        $this->store->flushData($formRuntimeXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType'], [], '', false);
 
@@ -1138,19 +1138,19 @@ class TranslationServiceTest extends UnitTestCase
      */
     public function translateFormElementErrorTranslateErrorFromFormWithContentElementUidIfFormContainsNoOriginalIdentifier(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_01.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_01.xlf'];
 
         $formRuntimeIdentifier = 'form-runtime-identifier-42';
         $formElementIdentifier = 'form-element-identifier';
 
         $formRuntimeRenderingOptions = [
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
-        $this->store->flushData($formRuntimeXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType', 'getProperties'], [], '', false);
 
@@ -1178,7 +1178,7 @@ class TranslationServiceTest extends UnitTestCase
      */
     public function translateFormElementErrorTranslateErrorFromFormWithContentElementUidIfFormContainsOriginalIdentifier(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_02.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_02.xlf'];
 
         $formRuntimeIdentifier = 'form-runtime-identifier-42';
         $formElementIdentifier = 'form-element-identifier';
@@ -1186,12 +1186,12 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeRenderingOptions = [
             '_originalIdentifier' => 'form-runtime-identifier',
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
-        $this->store->flushData($formRuntimeXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType', 'getProperties'], [], '', false);
 
@@ -1219,18 +1219,18 @@ class TranslationServiceTest extends UnitTestCase
      */
     public function translateFinisherOptionTranslateOptionFromFormWithContentElementUidIfFormContainsNoOriginalIdentifier(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_01.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_01.xlf'];
 
         $formRuntimeIdentifier = 'form-runtime-identifier-42';
 
         $formRuntimeRenderingOptions = [
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
-        $this->store->flushData($formRuntimeXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType', 'getProperties'], [], '', false);
 
@@ -1248,19 +1248,19 @@ class TranslationServiceTest extends UnitTestCase
      */
     public function translateFinisherOptionTranslateOptionFromFormWithContentElementUidIfFormContainsOriginalIdentifier(): void
     {
-        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_02.xlf';
+        $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_02.xlf'];
 
         $formRuntimeIdentifier = 'form-runtime-identifier-42';
 
         $formRuntimeRenderingOptions = [
             '_originalIdentifier' => 'form-runtime-identifier',
             'translation' => [
-                'translationFile' => $formRuntimeXlfPath,
+                'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
 
-        $this->store->flushData($formRuntimeXlfPath);
+        $this->store->flushData($formRuntimeXlfPaths);
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType', 'getProperties'], [], '', false);
 

@@ -157,13 +157,13 @@ options.statusCode
       The HTTP status code for the redirect. Default is "303 See Other".
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.translation.translationfile:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.translation.translationfiles:
 
-options.translation.translationFile
------------------------------------
+options.translation.translationFiles
+------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.options.translation.translationFile
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.options.translation.translationFiles
 
 :aspect:`Data type`
       string/ array

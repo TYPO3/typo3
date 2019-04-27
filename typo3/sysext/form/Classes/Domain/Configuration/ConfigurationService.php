@@ -628,7 +628,7 @@ class ConfigurationService implements SingletonInterface
             }
             $formElement['predefinedDefaults'] = $this->getTranslationService()->translateValuesRecursive(
                 $formElement['predefinedDefaults'],
-                $prototypeConfiguration['formEditor']['translationFile'] ?? null
+                $prototypeConfiguration['formEditor']['translationFiles'] ?? []
             );
             $formElements[$name] = $formElement;
         }

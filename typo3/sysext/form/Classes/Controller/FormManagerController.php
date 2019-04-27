@@ -266,7 +266,7 @@ class FormManagerController extends AbstractBackendController
         } else {
             $controllerConfiguration = TranslationService::getInstance()->translateValuesRecursive(
                 $this->formSettings['formManager']['controller'],
-                $this->formSettings['formManager']['translationFile']
+                $this->formSettings['formManager']['translationFiles'] ?? []
             );
 
             $this->addFlashMessage(
@@ -333,7 +333,7 @@ class FormManagerController extends AbstractBackendController
         $formManagerAppInitialData = ArrayUtility::reIndexNumericArrayKeysRecursive($formManagerAppInitialData);
         $formManagerAppInitialData = TranslationService::getInstance()->translateValuesRecursive(
             $formManagerAppInitialData,
-            $this->formSettings['formManager']['translationFile'] ?? null
+            $this->formSettings['formManager']['translationFiles'] ?? []
         );
         return json_encode($formManagerAppInitialData);
     }

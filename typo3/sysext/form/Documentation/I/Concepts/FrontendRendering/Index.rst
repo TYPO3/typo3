@@ -505,19 +505,14 @@ Additional translation files can be defined as follows:
                Form:
                  renderingOptions:
                    translation:
-                     translationFile:
-                       # translation files for the frontend
-                       10: 'EXT:form/Resources/Private/Language/locallang.xlf'
+                     translationFiles:
+                       # custom translation file
                        20: 'EXT:my_site_package/Resources/Private/Language/Form/locallang.xlf'
 
-Due to compatibility issues, the setting ``translationFile`` is not defined
-as an array in the default configuration. To load your own translation files,
-you should define an array containing 'EXT:form/Resources/Private/Language/Form/locallang.xlf'
-as first entry (key ``10``) followed by your own file (key ``20``) as
-displayed in the example above. The array is processed from the highest key
-to the lowest, i.e. your translation file with the key ``20`` is processed
-first. If the look-up process does not find a key within all of the provided
-files, the property value will be displayed unmodified.
+The array is processed from the highest key to the lowest, i.e. your
+translation file with the key ``20`` is processed first. If the look-up
+process does not find a key within all of the provided files, the
+property value will be displayed unmodified.
 
 The following properties can be translated:
 
@@ -770,7 +765,8 @@ Pure YAML is sufficient to add simple, static values:
        label: This is a %s feature
        renderingOptions:
          translation:
-           translationFile: path/to/locallang.xlf
+           translationFiles:
+             10: path/to/locallang.xlf
            arguments:
              label:
                - useful
@@ -800,7 +796,8 @@ should be enough:
        label: I agree to the <a href="%s">terms and conditions</a>
        renderingOptions:
          translation:
-           translationFile: path/to/locallang.xlf
+           translationFiles:
+             10: path/to/locallang.xlf
 
 The following TypoScript setup uses the named key :yaml:`fieldWithTranslationArguments` to refer
 to the field and adds a page URL as translation argument:
@@ -870,7 +867,8 @@ The same mechanism (YAML, YAML + TypoScript) works for finisher options:
          recipientAddress: foo@example.org
          senderAddress: bar@example.org
          translation:
-           translationFile: path/to/locallang.xlf
+           translationFiles:
+             10: path/to/locallang.xlf
            arguments:
              subject:
                - awesome

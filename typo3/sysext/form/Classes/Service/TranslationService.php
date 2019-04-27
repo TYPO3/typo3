@@ -176,34 +176,29 @@ class TranslationService implements SingletonInterface
      * Recursively translate values.
      *
      * @param array $array
-     * @param array|string|null $translationFile
+     * @param array $translationFiles
      * @return array the modified array
      * @internal
      */
-    public function translateValuesRecursive(array $array, $translationFile = null): array
+    public function translateValuesRecursive(array $array, array $translationFiles = []): array
     {
         $result = $array;
         foreach ($result as $key => $value) {
             if (is_array($value)) {
-                $result[$key] = $this->translateValuesRecursive($value, $translationFile);
+                $result[$key] = $this->translateValuesRecursive($value, $translationFiles);
             } else {
-                $translationFiles = null;
-                if (is_string($translationFile)) {
-                    $translationFiles = [$translationFile];
-                } elseif (is_array($translationFile)) {
-                    $translationFiles = $this->sortArrayWithIntegerKeysDescending($translationFile);
-                }
+                $this->sortArrayWithIntegerKeysDescending($translationFiles);
 
-                if ($translationFiles) {
-                    foreach ($translationFiles as $_translationFile) {
-                        $translatedValue = $this->translate($value, null, $_translationFile, null);
+                if (!empty($translationFiles)) {
+                    foreach ($translationFiles as $translationFile) {
+                        $translatedValue = $this->translate($value, null, $translationFile, null);
                         if (!empty($translatedValue)) {
                             $result[$key] = $translatedValue;
                             break;
                         }
                     }
                 } else {
-                    $result[$key] = $this->translate($value, null, $translationFile, null, $value);
+                    $result[$key] = $this->translate($value, null, null, null, $value);
                 }
             }
         }
@@ -234,16 +229,12 @@ class TranslationService implements SingletonInterface
         }
 
         $finisherIdentifier = preg_replace('/Finisher$/', '', $finisherIdentifier);
-        $translationFile = $renderingOptions['translationFile'] ?? null;
-        if (empty($translationFile)) {
-            $translationFile = $formRuntime->getRenderingOptions()['translation']['translationFile'];
+        $translationFiles = $renderingOptions['translationFiles'] ?? [];
+        if (empty($translationFiles)) {
+            $translationFiles = $formRuntime->getRenderingOptions()['translation']['translationFiles'];
         }
 
-        if (is_string($translationFile)) {
-            $translationFiles = [$translationFile];
-        } else {
-            $translationFiles = $this->sortArrayWithIntegerKeysDescending($translationFile);
-        }
+        $translationFiles = $this->sortArrayWithIntegerKeysDescending($translationFiles);
 
         if (isset($renderingOptions['translatePropertyValueIfEmpty'])) {
             $translatePropertyValueIfEmpty = (bool)$renderingOptions['translatePropertyValueIfEmpty'];
@@ -337,16 +328,12 @@ class TranslationService implements SingletonInterface
         }
 
         $defaultValue = empty($defaultValue) ? '' : $defaultValue;
-        $translationFile = $renderingOptions['translation']['translationFile'] ?? null;
-        if (empty($translationFile)) {
-            $translationFile = $formRuntime->getRenderingOptions()['translation']['translationFile'];
+        $translationFiles = $renderingOptions['translation']['translationFiles'] ?? [];
+        if (empty($translationFiles)) {
+            $translationFiles = $formRuntime->getRenderingOptions()['translation']['translationFiles'];
         }
 
-        if (is_string($translationFile)) {
-            $translationFiles = [$translationFile];
-        } else {
-            $translationFiles = $this->sortArrayWithIntegerKeysDescending($translationFile);
-        }
+        $translationFiles = $this->sortArrayWithIntegerKeysDescending($translationFiles);
 
         $language = null;
         if (isset($renderingOptions['translation']['language'])) {
@@ -460,16 +447,12 @@ class TranslationService implements SingletonInterface
         }
 
         $renderingOptions = $element->getRenderingOptions();
-        $translationFile = $renderingOptions['translation']['translationFile'] ?? null;
-        if (empty($translationFile)) {
-            $translationFile = $formRuntime->getRenderingOptions()['translation']['translationFile'];
+        $translationFiles = $renderingOptions['translation']['translationFiles'] ?? [];
+        if (empty($translationFiles)) {
+            $translationFiles = $formRuntime->getRenderingOptions()['translation']['translationFiles'];
         }
 
-        if (is_string($translationFile)) {
-            $translationFiles = [$translationFile];
-        } else {
-            $translationFiles = $this->sortArrayWithIntegerKeysDescending($translationFile);
-        }
+        $translationFiles = $this->sortArrayWithIntegerKeysDescending($translationFiles);
 
         $language = null;
         if (isset($renderingOptions['language'])) {

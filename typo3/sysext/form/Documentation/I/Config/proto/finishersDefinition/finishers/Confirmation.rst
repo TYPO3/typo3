@@ -201,13 +201,13 @@ options.templateRootPaths
       Used to define several paths for templates, which will be tried in reversed order (the paths are searched from bottom to top).
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.translation.translationfile:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.translation.translationfiles:
 
-options.translation.translationFile
------------------------------------
+options.translation.translationFiles
+------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.translation.translationFile
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.translation.translationFiles
 
 :aspect:`Data type`
       string/ array

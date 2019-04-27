@@ -13,13 +13,13 @@
 Properties
 ==========
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.translationfile:
+.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.translationfiles:
 
-translationFile
----------------
+translationFiles
+----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.translationFile
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.translationFiles
 
 :aspect:`Data type`
       string/ array
@@ -36,7 +36,8 @@ translationFile
          :emphasize-lines: 2
 
          formEditor:
-           translationFile: 'EXT:form/Resources/Private/Language/Database.xlf'
+           translationFiles:
+             10: 'EXT:form/Resources/Private/Language/Database.xlf'
 
 :aspect:`Good to know`
       - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
@@ -227,7 +228,7 @@ maximumUndoSteps
 :aspect:`Default value (prototype 'standard')`
       .. code-block:: yaml
          :linenos:
-         :emphasize-lines: 5
+         :emphasize-lines: 2
 
          formEditor:
            maximumUndoSteps: 10

@@ -13,13 +13,13 @@
 Properties
 ==========
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formengine.translationfile:
+.. _typo3.cms.form.prototypes.<prototypeidentifier>.formengine.translationfiles:
 
-translationFile
----------------
+translationFiles
+----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formEngine.translationFile
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formEngine.translationFiles
 
 :aspect:`Data type`
       string/ array
@@ -36,7 +36,8 @@ translationFile
          :emphasize-lines: 2
 
          formEngine:
-           translationFile: 'EXT:form/Resources/Private/Language/Database.xlf'
+           translationFiles:
+             10: 'EXT:form/Resources/Private/Language/Database.xlf'
 
 :aspect:`Good to know`
       - :ref:`"Translate form plugin settings"<concepts-formplugin-translation-formengine>`

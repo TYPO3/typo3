@@ -116,9 +116,8 @@ The translation files of the ``form manager`` are loaded as follows:
      CMS:
        Form:
          formManager:
-           translationFile:
-             # translation files for the form manager
-             10: 'EXT:form/Resources/Private/Language/Database.xlf'
+           translationFiles:
+             # custom translation file
              20: 'EXT:my_site_package/Resources/Private/Language/Form/Database.xlf'
 
 The process searches for each option value within all of the defined
@@ -135,11 +134,6 @@ Imagine, the following is defined for an option value:
 
 First of all, the process searches for the translation key ``formManager.selectablePrototypesConfiguration.standard.label``
 within the file ``20: 'EXT:my_site_package/Resources/Private/Language/Form/Database.xlf'``
-and after it inside the file ``10: 'EXT:form/Resources/Private/Language/Database.xlf'``.
-If nothing is found, the option value will be displayed unmodified.
-
-Due to compatibility issues, the setting ``translationFile`` is not defined
-as an array in the default configuration. To load your own translation files,
-you should define an array containing 'EXT:form/Resources/Private/Language/Database.xlf'
-as first entry (key ``10``) followed by your own file (key ``20``) as
-displayed in the example above.
+and after it inside the file ``10: 'EXT:form/Resources/Private/Language/Database.xlf'``
+(loaded by default). If nothing is found, the option value will be
+displayed unmodified.

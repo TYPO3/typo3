@@ -102,13 +102,13 @@ stylesheets
       Internal setting. Path for the form manager CSS file.
 
 
-.. _typo3.cms.form.formmanager.translationfile:
+.. _typo3.cms.form.formmanager.translationfiles:
 
-translationFile
----------------
+translationFiles
+----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.formManager.translationFile
+      TYPO3.CMS.Form.formManager.translationFiles
 
 :aspect:`Data type`
       string/ array
@@ -123,7 +123,8 @@ translationFile
       .. code-block:: yaml
          :linenos:
 
-         translationFile: 'EXT:form/Resources/Private/Language/Database.xlf'
+         translationFiles:
+           10: 'EXT:form/Resources/Private/Language/Database.xlf'
 
 :aspect:`Good to know`
       :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`

@@ -384,13 +384,13 @@ options.databaseColumnMappings.<databaseColumnName>.skipIfValueIsEmpty
       <databaseColumnName>.value` is empty. Empty means strings without content, whitespace is valid content.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.translation.translationfile:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.translation.translationfiles:
 
-options.translation.translationFile
------------------------------------
+options.translation.translationFiles
+------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.translation.translationFile
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.translation.translationFiles
 
 :aspect:`Data type`
       string/ array

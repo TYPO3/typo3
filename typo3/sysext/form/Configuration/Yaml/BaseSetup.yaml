@@ -380,7 +380,8 @@ TYPO3:
       mixins:
         translationSettingsMixin:
           translation:
-            translationFile: 'EXT:form/Resources/Private/Language/locallang.xlf'
+            translationFiles:
+              10: 'EXT:form/Resources/Private/Language/locallang.xlf'
             #translatePropertyValueIfEmpty: true
 
         ########### FORM ELEMENT MIXINS ###########

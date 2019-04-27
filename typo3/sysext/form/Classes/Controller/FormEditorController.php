@@ -25,9 +25,12 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Fluid\View\TemplateView;
+use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessing;
+use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessor;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionConversionService;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
@@ -281,7 +284,7 @@ class FormEditorController extends AbstractBackendController
 
             $formElementConfiguration = TranslationService::getInstance()->translateValuesRecursive(
                 $formElementConfiguration,
-                $this->prototypeConfiguration['formEditor']['translationFile'] ?? null
+                $this->prototypeConfiguration['formEditor']['translationFiles'] ?? []
             );
 
             $formElementsByGroup[$formElementConfiguration['group']][] = [
@@ -306,7 +309,7 @@ class FormEditorController extends AbstractBackendController
 
             $groupConfiguration = TranslationService::getInstance()->translateValuesRecursive(
                 $groupConfiguration,
-                $this->prototypeConfiguration['formEditor']['translationFile'] ?? null
+                $this->prototypeConfiguration['formEditor']['translationFiles'] ?? []
             );
 
             $formGroups[] = [
@@ -346,7 +349,7 @@ class FormEditorController extends AbstractBackendController
         $formEditorDefinitions = ArrayUtility::reIndexNumericArrayKeysRecursive($formEditorDefinitions);
         $formEditorDefinitions = TranslationService::getInstance()->translateValuesRecursive(
             $formEditorDefinitions,
-            $this->prototypeConfiguration['formEditor']['translationFile'] ?? null
+            $this->prototypeConfiguration['formEditor']['translationFiles'] ?? []
         );
         return $formEditorDefinitions;
     }
@@ -493,6 +496,7 @@ class FormEditorController extends AbstractBackendController
         }
 
         $formDefinition = $this->filterEmptyArrays($formDefinition);
+        $formDefinition = $this->migrateTranslationFileOptions($formDefinition);
 
         // @todo: replace with rte parsing
         $formDefinition = ArrayUtility::stripTagsFromValuesRecursive($formDefinition);
@@ -597,6 +601,51 @@ class FormEditorController extends AbstractBackendController
         }
 
         return $array;
+    }
+
+    /**
+     * Migrate singular "translationFile" options to plural "translationFiles"
+     *
+     * @param array $formDefinition
+     * @return array
+     * @deprecated since v10 and will be removed in TYPO3 v11
+     */
+    protected function migrateTranslationFileOptions(array $formDefinition): array
+    {
+        GeneralUtility::makeInstance(ArrayProcessor::class, $formDefinition)->forEach(
+            GeneralUtility::makeInstance(
+                ArrayProcessing::class,
+                'translationFile',
+                '((.+)\.translationFile)(?:\.|$)',
+                function ($key, $value, $matches) use (&$formDefinition) {
+                    [, $singleOptionPath, $parentOptionPath] = $matches;
+
+                    try {
+                        $translationFiles = ArrayUtility::getValueByPath($formDefinition, $singleOptionPath, '.');
+                    } catch (MissingArrayPathException $e) {
+                        // Already migrated by a previous "translationFile.N" entry
+                        return;
+                    }
+
+                    if (is_string($translationFiles)) {
+                        // 10 is usually used by EXT:form
+                        $translationFiles = [20 => $translationFiles];
+                    }
+
+                    $formDefinition = ArrayUtility::setValueByPath(
+                        $formDefinition,
+                        sprintf('%s.translationFiles', $parentOptionPath),
+                        $translationFiles,
+                        '.'
+                    );
+                    $formDefinition = ArrayUtility::removeByPath($formDefinition, $singleOptionPath, '.');
+
+                    return $value;
+                }
+            )
+        );
+
+        return $formDefinition;
     }
 
     /**

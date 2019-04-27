@@ -379,15 +379,15 @@ class DataStructureIdentifierHook
         array $finishersDefinition,
         array $prototypeConfiguration
     ): array {
-        if (isset($finishersDefinition[$finisherIdentifier]['FormEngine']['translationFile'])) {
-            $translationFile = $finishersDefinition[$finisherIdentifier]['FormEngine']['translationFile'];
+        if (isset($finishersDefinition[$finisherIdentifier]['FormEngine']['translationFiles'])) {
+            $translationFiles = $finishersDefinition[$finisherIdentifier]['FormEngine']['translationFiles'];
         } else {
-            $translationFile = $prototypeConfiguration['formEngine']['translationFile'];
+            $translationFiles = $prototypeConfiguration['formEngine']['translationFiles'];
         }
 
         $finishersDefinition[$finisherIdentifier]['FormEngine'] = TranslationService::getInstance()->translateValuesRecursive(
             $finishersDefinition[$finisherIdentifier]['FormEngine'],
-            $translationFile
+            $translationFiles
         );
 
         return $finishersDefinition;

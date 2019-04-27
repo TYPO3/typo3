@@ -27,7 +27,8 @@ renderingOptions.argumentsToBeExcludedFromQueryString
          Form:
            renderingOptions:
              translation:
-               translationFile: 'EXT:form/Resources/Private/Language/locallang.xlf'
+               translationFiles:
+                 10: 'EXT:form/Resources/Private/Language/locallang.xlf'
              templateRootPaths:
                10: 'EXT:form/Resources/Private/Frontend/Templates/'
              partialRootPaths:
