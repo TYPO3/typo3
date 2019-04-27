@@ -95,7 +95,7 @@ class FinisherOptionGenerator extends AbstractProcessor
         $elementConfiguration['config']['default'] = $optionValue;
 
         $sheetElements = $this->converterDto->getResult();
-        $sheetElements['settings.finishers.' . $finisherIdentifier . '.' . $optionKey] = $elementConfiguration;
+        $sheetElements['settings.finishers.' . $finisherIdentifier . '.' . $optionKey]['TCEforms'] = $elementConfiguration;
 
         $this->converterDto->setResult($sheetElements);
     }
