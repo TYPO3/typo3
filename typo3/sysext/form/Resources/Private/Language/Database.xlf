@@ -412,6 +412,10 @@
                 <source>Regular expression</source>
             </trans-unit>
 
+            <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.Count.label" xml:space="preserve">
+                <source>Number of submitted values</source>
+            </trans-unit>
+
             <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label" xml:space="preserve">
                 <source>Alphanumeric</source>
             </trans-unit>
@@ -475,7 +479,6 @@
             <trans-unit id="formEditor.elements.TextMixin.validators.Number.editor.header.label" xml:space="preserve">
                 <source>Number</source>
             </trans-unit>
-
             <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.header.label" xml:space="preserve">
                 <source>Number range</source>
             </trans-unit>
@@ -502,6 +505,16 @@
                 <source>Error message which is shown if the validation does not succeed</source>
             </trans-unit>
 
+            <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label" xml:space="preserve">
+                <source>Number of submitted values</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.label" xml:space="preserve">
+                <source>Custom error message</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve">
+                <source>Error message which is shown if the validation does not succeed</source>
+            </trans-unit>
+
             <trans-unit id="formEditor.elements.SelectionMixin.editor.inactiveOption.label" xml:space="preserve">
                 <source>First option (empty value)</source>
             </trans-unit>
@@ -523,12 +536,6 @@
             </trans-unit>
             <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.EmptyValue.label" xml:space="preserve">
                 <source>Add validator</source>
-            </trans-unit>
-            <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.Count.label" xml:space="preserve">
-                <source>Number of submitted values</source>
-            </trans-unit>
-            <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label" xml:space="preserve">
-                <source>Number of submitted values</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.FileUploadMixin.editor.saveToFileMount.label" xml:space="preserve">

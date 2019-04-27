@@ -1461,8 +1461,8 @@ TYPO3:
                       400:
                         identifier: 'validationErrorMessage'
                         templateName: 'Inspector-ValidationErrorMessageEditor'
-                        label: 'formEditor.elements.TextMixin.validators.Count.editor.validationErrorMessage.label'
-                        fieldExplanationText: 'formEditor.elements.TextMixin.validators.Count.editor.validationErrorMessage.fieldExplanationText'
+                        label: 'formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.label'
+                        fieldExplanationText: 'formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.fieldExplanationText'
                         errorCodes:
                           10: 1475002976
                           20: 1475002994
