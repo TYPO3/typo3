@@ -15,15 +15,16 @@
  * Module: TYPO3/CMS/Form/Backend/FormEditor
  */
 define(['jquery',
-  'TYPO3/CMS/Form/Backend/FormEditor/Core'
-], function($, core) {
+  'TYPO3/CMS/Form/Backend/FormEditor/Core',
+  'TYPO3/CMS/Backend/Notification'
+], function($, core, Notification) {
   'use strict';
 
   /**
    * Return a static method named "getInstance".
    * Use this method to create the formeditor app.
    */
-  return (function(_core) {
+  return (function(_core, Notification) {
 
     /**
      * @private
@@ -1051,8 +1052,19 @@ define(['jquery',
           throw 'You can not run the app twice (1473200696)';
         }
 
-        _bootstrap();
-        _isRunning = true;
+        try {
+          _bootstrap();
+          _isRunning = true;
+        } catch(error) {
+          Notification.error(
+            TYPO3.lang['formEditor.error.headline'],
+            TYPO3.lang['formEditor.error.message']
+            + "\r\n"
+            + "\r\n"
+            + TYPO3.lang['formEditor.error.technicalReason']
+            + "\r\n"
+            + error.message);
+        }
         return this;
       };
 
@@ -1158,5 +1170,5 @@ define(['jquery',
         return _formEditorInstance;
       }
     };
-  })(core);
+  })(core, Notification);
 });

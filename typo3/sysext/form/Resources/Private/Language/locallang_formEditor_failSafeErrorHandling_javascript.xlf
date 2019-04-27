@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+    <file t3:id="1877653884" source-language="en" datatype="plaintext" original="messages" date="2019-04-27T03:38:32Z" product-name="form">
+        <header/>
+        <body>
+            <trans-unit id="formEditor.error.headline" xml:space="preserve">
+                <source>Oops! Something went wrong.</source>
+            </trans-unit>
+            <trans-unit id="formEditor.error.message" xml:space="preserve">
+                <source>Please contact your administrator.</source>
+            </trans-unit>
+            <trans-unit id="formEditor.error.technicalReason" xml:space="preserve">
+                <source>Technical Reason:</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
