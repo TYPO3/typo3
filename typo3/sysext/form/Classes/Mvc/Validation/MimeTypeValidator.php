@@ -67,7 +67,8 @@ class MimeTypeValidator extends AbstractValidator
                     'form',
                     [$resource->getMimeType()]
                 ),
-                1471708998
+                1471708998,
+                [$resource->getMimeType()]
             );
         }
     }
