@@ -147,7 +147,7 @@ options.messageCode
       Frontend
 
 :aspect:`Mandatory`
-      No
+      Yes
 
 :aspect:`Default value`
       null
