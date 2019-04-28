@@ -5,7 +5,7 @@ formEditor.editors.230
       TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Password.formEditor.editors.230
 
 :aspect:`Data type`
-      string
+      array/ :ref:`[TextEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.texteditor>`
 
 :aspect:`Needed by`
       Frontend/ Backend (form editor)
@@ -14,4 +14,15 @@ formEditor.editors.230
       No
 
 :aspect:`Default value (for prototype 'standard')`
-      Undefined
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 4-
+
+         Date:
+           formEditor:
+             editors:
+               230:
+                 identifier: elementDescription
+                 templateName: Inspector-TextEditor
+                 label: formEditor.elements.FormElement.editor.elementDescription.label
+                 propertyPath: properties.elementDescription

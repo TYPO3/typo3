@@ -112,7 +112,7 @@ browsableType
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.iconidentifier-typo3winbrowsereditor:
 
 iconIdentifier
--------------
+--------------
 
 :aspect:`Data type`
       string

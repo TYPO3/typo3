@@ -29,4 +29,3 @@ formEditor.propertyCollections.validators.80.editors.100
                        identifier: header
                        templateName: Inspector-CollectionElementHeaderEditor
                        label: formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label
-

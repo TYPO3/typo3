@@ -1,0 +1,35 @@
+formEditor.propertyCollections.validators.50.editors.200
+--------------------------------------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Date.formEditor.propertyCollections.validators.50.editors.200
+
+:aspect:`Data type`
+      array/ :ref:`[ValidationErrorMessageEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.validationerrormessageeditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 8-
+
+         Date:
+           formEditor:
+             propertyCollections:
+               validators:
+                 50:
+                   identifier: Integer
+                   editors:
+                     200:
+                       identifier: validationErrorMessage
+                       templateName: Inspector-ValidationErrorMessageEditor
+                       label: formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.label
+                       fieldExplanationText: formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.fieldExplanationText
+                       errorCodes:
+                         10: 1221560494
+                       propertyPath: properties.validationErrorMessages

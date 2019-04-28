@@ -2181,7 +2181,7 @@ partialRootPaths
 .. _apireference-finisheroptions-emailfinisher-options-templaterootpaths:
 
 templateRootPaths
-++++++++++++++++
++++++++++++++++++
 
 :aspect:`Data type`
       array

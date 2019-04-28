@@ -108,3 +108,4 @@ available inspector editors
    inspectorEditors/TextEditor
    inspectorEditors/Typo3WinBrowserEditor
    inspectorEditors/ValidatorsEditor
+   inspectorEditors/ValidationErrorMessageEditor

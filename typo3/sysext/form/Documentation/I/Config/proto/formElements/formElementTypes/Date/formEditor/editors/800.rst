@@ -1,0 +1,43 @@
+formEditor.editors.800
+----------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Date.formEditor.editors.800
+
+:aspect:`Data type`
+      array/ :ref:`[RequiredValidatorEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.requiredvalidatoreditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+.. :aspect:`Related options`
+      @ToDo
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 4-
+
+         Date:
+           formEditor:
+             editors:
+               800:
+                 identifier: requiredValidator
+                 templateName: Inspector-RequiredValidatorEditor
+                 label: formEditor.elements.FormElement.editor.requiredValidator.label
+                 validatorIdentifier: NotEmpty
+                 propertyPath: properties.fluidAdditionalAttributes.required
+                 propertyValue: required
+                 configurationOptions:
+                   validationErrorMessage:
+                     label: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label
+                     propertyPath: properties.validationErrorMessages
+                     fieldExplanationText: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.fieldExplanationText
+                     errorCodes:
+                       10: 1221560910
+                       20: 1221560718
+                       30: 1347992400
+                       40: 1347992453

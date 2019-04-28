@@ -28,4 +28,3 @@ formEditor.propertyCollections.validators.40.editors.9999
                      100:
                        identifier: removeButton
                        templateName: Inspector-RemoveElementEditor
-
