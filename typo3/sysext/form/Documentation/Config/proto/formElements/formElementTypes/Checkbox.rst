@@ -21,6 +21,9 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.checkbox.properties.elementclassattribute:
 .. include:: Checkbox/properties/elementClassAttribute.rst
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.checkbox.properties.elementDescription:
+.. include:: Checkbox/properties/elementDescription.rst
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.checkbox.properties.elementerrorclassattribute:
 .. include:: Checkbox/properties/elementErrorClassAttribute.rst
 
@@ -35,6 +38,9 @@ Properties
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.checkbox.formeditor.editors.200:
 .. include:: Checkbox/formEditor/editors/200.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.checkbox.formeditor.editors.230:
+.. include:: Checkbox/formEditor/editors/230.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.checkbox.formeditor.editors.700:
 .. include:: Checkbox/formEditor/editors/700.rst

@@ -1,14 +1,14 @@
 .. include:: ../Includes.txt
 
 
-.. _quickstart:
+.. _quickstartIntegrators:
 
-===========
-Quick start
-===========
+===========================
+Quick Start for Integrators
+===========================
 
-You could make EXT:form work for your site quickly. Just follow these easy
-steps!
+You are an integrator, your admin or you installed the form extension
+and you want to get started quickly? Just follow these steps!
 
 .. rst-class:: bignums-xxl
 

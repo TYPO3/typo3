@@ -1,0 +1,17 @@
+formEditor.editors.230
+----------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.MultiCheckbox.formEditor.editors.230
+
+:aspect:`Data type`
+      string
+
+:aspect:`Needed by`
+      Frontend/ Backend (form editor)
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value (for prototype 'standard')`
+      Undefined

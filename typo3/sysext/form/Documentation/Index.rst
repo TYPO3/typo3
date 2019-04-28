@@ -46,7 +46,8 @@ a GNU/GPL CMS/Framework available from https://typo3.org/
 
    Sitemap/Index
    Introduction/Index
-   QuickStart/Index
+   QuickStartForEditors/Index
+   QuickStartForIntegrators/Index
    Concepts/Index
    Config/Index
    ApiReference/Index

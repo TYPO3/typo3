@@ -21,6 +21,9 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.password.properties.elementclassattribute:
 .. include:: Password/properties/elementClassAttribute.rst
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.password.properties.elementDescription:
+.. include:: Password/properties/elementDescription.rst
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.password.properties.elementerrorclassattribute:
 .. include:: Password/properties/elementErrorClassAttribute.rst
 
@@ -32,6 +35,9 @@ Properties
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.password.formeditor.editors.200:
 .. include:: Password/formEditor/editors/200.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.password.formeditor.editors.230:
+.. include:: Password/formEditor/editors/230.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.password.formeditor.editors.400:
 .. include:: Password/formEditor/editors/400.rst

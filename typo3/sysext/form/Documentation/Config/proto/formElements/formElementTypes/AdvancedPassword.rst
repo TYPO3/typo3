@@ -21,6 +21,9 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.advancedpassword.properties.elementclassattribute:
 .. include:: AdvancedPassword/properties/elementClassAttribute.rst
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.advancedpassword.properties.elementDescription:
+.. include:: AdvancedPassword/properties/elementDescription.rst
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.advancedpassword.properties.elementerrorclassattribute:
 .. include:: AdvancedPassword/properties/elementErrorClassAttribute.rst
 
@@ -38,6 +41,9 @@ Properties
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.advancedpassword.formeditor.editors.200:
 .. include:: AdvancedPassword/formEditor/editors/200.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.advancedpassword.formeditor.editors.230:
+.. include:: AdvancedPassword/formEditor/editors/230.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.advancedpassword.formeditor.editors.300:
 .. include:: AdvancedPassword/formEditor/editors/300.rst

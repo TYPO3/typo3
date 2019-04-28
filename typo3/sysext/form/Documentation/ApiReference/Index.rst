@@ -422,8 +422,8 @@ You only need a class which connects to this hook. Then detect the form element 
 
 .. _apireference-frontendrendering-programmatically-apimethods:
 
-API Methods
-^^^^^^^^^^^
+Further API Methods
+^^^^^^^^^^^^^^^^^^^
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime:

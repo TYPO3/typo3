@@ -29,6 +29,11 @@ formEditor
                  templateName: Inspector-TextEditor
                  label: formEditor.elements.FormElement.editor.label.label
                  propertyPath: label
+               230:
+                 identifier: elementDescription
+                 templateName: Inspector-TextEditor
+                 label: formEditor.elements.FormElement.editor.elementDescription.label
+                 propertyPath: properties.elementDescription
                300:
                  identifier: dateFormat
                  templateName: Inspector-TextEditor

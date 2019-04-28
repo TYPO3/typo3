@@ -21,6 +21,9 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.multicheckbox.properties.elementclassattribute:
 .. include:: MultiCheckbox/properties/elementClassAttribute.rst
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.multicheckbox.properties.elementDescription:
+.. include:: MultiCheckbox/properties/elementDescription.rst
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.multicheckbox.properties.elementerrorclassattribute:
 .. include:: MultiCheckbox/properties/elementErrorClassAttribute.rst
 
@@ -32,6 +35,9 @@ Properties
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.multicheckbox.formeditor.editors.200:
 .. include:: MultiCheckbox/formEditor/editors/200.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.multicheckbox.formeditor.editors.230:
+.. include:: MultiCheckbox/formEditor/editors/230.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.multicheckbox.formeditor.editors.300:
 .. include:: MultiCheckbox/formEditor/editors/300.rst

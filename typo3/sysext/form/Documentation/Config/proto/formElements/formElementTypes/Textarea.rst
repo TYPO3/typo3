@@ -21,6 +21,9 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.textarea.properties.elementclassattribute:
 .. include:: Textarea/properties/elementClassAttribute.rst
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.textarea.properties.elementDescription:
+.. include:: Textarea/properties/elementDescription.rst
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.textarea.properties.elementerrorclassattribute:
 .. include:: Textarea/properties/elementErrorClassAttribute.rst
 
@@ -32,6 +35,9 @@ Properties
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.textarea.formeditor.editors.200:
 .. include:: Textarea/formEditor/editors/200.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.textarea.formeditor.editors.230:
+.. include:: Textarea/formEditor/editors/230.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.textarea.formeditor.editors.400:
 .. include:: Textarea/formEditor/editors/400.rst
