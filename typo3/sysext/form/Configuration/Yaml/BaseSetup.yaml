@@ -253,17 +253,36 @@ TYPO3:
               __inheritances:
                 10: 'TYPO3.CMS.Form.mixins.formElementMixins.FileUploadMixin'
               properties:
-                allowedMimeTypes: ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.oasis.opendocument.text', 'application/pdf']
+                allowedMimeTypes: []
+              variants:
+                -
+                  identifier: legacy-mime-types
+                  properties:
+                    allowedMimeTypes:
+                      - 'application/msword'
+                      - 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                      - 'application/vnd.oasis.opendocument.text'
+                      - 'application/pdf'
+                  condition: 'feature("form.legacyUploadMimeTypes")'
 
             ImageUpload:
               __inheritances:
                 10: 'TYPO3.CMS.Form.mixins.formElementMixins.FileUploadMixin'
               properties:
-                allowedMimeTypes: ['image/jpeg', 'image/png', 'image/bmp']
+                allowedMimeTypes: []
                 elementClassAttribute: 'lightbox'
                 imageLinkMaxWidth: 500
                 imageMaxWidth: 500
                 imageMaxHeight: 500
+              variants:
+                -
+                  identifier: legacy-mime-types
+                  properties:
+                    allowedMimeTypes:
+                      - 'image/jpeg'
+                      - 'image/png'
+                      - 'image/bmp'
+                  condition: 'feature("form.legacyUploadMimeTypes")'
 
           ### FINISHERS ###
 
