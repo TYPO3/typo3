@@ -2232,6 +2232,15 @@ define(['jquery',
       getHelper()
         .getTemplatePropertyDomElement('label', editorHtml)
         .append(editorConfiguration['label']);
+      if (getUtility().isNonEmptyString(editorConfiguration['fieldExplanationText'])) {
+        getHelper()
+          .getTemplatePropertyDomElement('fieldExplanationText', editorHtml)
+          .text(editorConfiguration['fieldExplanationText']);
+      } else {
+        getHelper()
+          .getTemplatePropertyDomElement('fieldExplanationText', editorHtml)
+          .remove();
+      }
 
       propertyPath = getFormEditorApp()
         .buildPropertyPath(editorConfiguration['propertyPath'], collectionElementIdentifier, collectionName);

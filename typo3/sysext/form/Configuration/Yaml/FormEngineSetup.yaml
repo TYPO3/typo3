@@ -56,8 +56,8 @@ TYPO3:
                     title: 'tt_content.finishersDefinition.EmailToReceiver.carbonCopyRecipients.label'
                   blindCarbonCopyRecipients:
                     title: 'tt_content.finishersDefinition.EmailToReceiver.blindCarbonCopyRecipients.label'
-                  format:
-                    label: 'tt_content.finishersDefinition.EmailToReceiver.format.label'
+                  addHtmlPart:
+                    label: 'tt_content.finishersDefinition.EmailToReceiver.addHtmlPart.label'
                   translation:
                     language:
                       label: 'tt_content.finishersDefinition.EmailToReceiver.language.label'
@@ -208,18 +208,8 @@ TYPO3:
                         label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
                         config:
                           type: input
-            format:
-              label: 'tt_content.finishersDefinition.EmailToSender.format.label'
+            addHtmlPart:
+              label: 'tt_content.finishersDefinition.EmailToSender.addHtmlPart.label'
               config:
-                type: select
-                renderType: 'selectSingle'
-                minitems: 1
-                maxitems: 1
-                size: 1
-                items:
-                  10:
-                    0: 'tt_content.finishersDefinition.EmailToSender.format.1'
-                    1: 'html'
-                  20:
-                    0: 'tt_content.finishersDefinition.EmailToSender.format.2'
-                    1: 'plaintext'
+                type: 'check'
+                default: 1

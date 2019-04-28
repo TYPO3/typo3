@@ -61,8 +61,8 @@ class EmailFinisher extends AbstractFinisher
     protected $defaultOptions = [
         'recipientName' => '',
         'senderName' => '',
-        'format' => self::FORMAT_HTML,
-        'attachUploads' => true
+        'addHtmlPart' => true,
+        'attachUploads' => true,
     ];
 
     /**
@@ -73,17 +73,13 @@ class EmailFinisher extends AbstractFinisher
      */
     protected function executeInternal()
     {
-        $formRuntime = $this->finisherContext->getFormRuntime();
-        $standaloneView = $this->initializeStandaloneView($formRuntime);
-
-        $translationService = TranslationService::getInstance();
-        if (isset($this->options['translation']['language']) && !empty($this->options['translation']['language'])) {
-            $languageBackup = $translationService->getLanguage();
-            $translationService->setLanguage($this->options['translation']['language']);
-        }
-        $message = $standaloneView->render();
-        if (!empty($languageBackup)) {
-            $translationService->setLanguage($languageBackup);
+        // Flexform overrides write strings instead of integers so
+        // we need to cast the string '0' to false.
+        if (
+            isset($this->options['addHtmlPart'])
+            && $this->options['addHtmlPart'] === '0'
+        ) {
+            $this->options['addHtmlPart'] = false;
         }
 
         $subject = $this->parseOption('subject');
@@ -93,7 +89,7 @@ class EmailFinisher extends AbstractFinisher
         $replyToRecipients = $this->getRecipients('replyToRecipients', 'replyToAddress');
         $carbonCopyRecipients = $this->getRecipients('carbonCopyRecipients', 'carbonCopyAddress');
         $blindCarbonCopyRecipients = $this->getRecipients('blindCarbonCopyRecipients', 'blindCarbonCopyAddress');
-        $format = $this->parseOption('format');
+        $addHtmlPart = $this->isHtmlPartAdded();
         $attachUploads = $this->parseOption('attachUploads');
 
         if (empty($subject)) {
@@ -124,10 +120,41 @@ class EmailFinisher extends AbstractFinisher
             $mail->setBcc($blindCarbonCopyRecipients);
         }
 
-        if ($format === self::FORMAT_PLAINTEXT) {
-            $mail->setBody($message, 'text/plain');
-        } else {
-            $mail->setBody($message, 'text/html');
+        $formRuntime = $this->finisherContext->getFormRuntime();
+
+        $translationService = TranslationService::getInstance();
+        if (isset($this->options['translation']['language']) && !empty($this->options['translation']['language'])) {
+            $languageBackup = $translationService->getLanguage();
+            $translationService->setLanguage($this->options['translation']['language']);
+        }
+
+        $parts = [
+            [
+                'format' => 'Plaintext',
+                'contentType' => 'text/plain',
+            ],
+        ];
+
+        if ($addHtmlPart) {
+            $parts[] = [
+                'format' => 'Html',
+                'contentType' => 'text/html',
+            ];
+        }
+
+        foreach ($parts as $i => $part) {
+            $standaloneView = $this->initializeStandaloneView($formRuntime, $part['format']);
+            $message = $standaloneView->render();
+
+            if ($i > 0) {
+                $mail->addPart($message, $part['contentType']);
+            } else {
+                $mail->setBody($message, $part['contentType']);
+            }
+        }
+
+        if (!empty($languageBackup)) {
+            $translationService->setLanguage($languageBackup);
         }
 
         $elements = $formRuntime->getFormDefinition()->getRenderablesRecursively();
@@ -153,12 +180,12 @@ class EmailFinisher extends AbstractFinisher
 
     /**
      * @param FormRuntime $formRuntime
+     * @param string $format
      * @return StandaloneView
      * @throws FinisherException
      */
-    protected function initializeStandaloneView(FormRuntime $formRuntime): StandaloneView
+    protected function initializeStandaloneView(FormRuntime $formRuntime, string $format): StandaloneView
     {
-        $format = ucfirst($this->parseOption('format'));
         $standaloneView = $this->objectManager->get(StandaloneView::class);
 
         if (isset($this->options['templatePathAndFilename'])) {
@@ -170,10 +197,12 @@ class EmailFinisher extends AbstractFinisher
             if (!isset($this->options['templateName'])) {
                 throw new FinisherException('The option "templateName" must be set for the EmailFinisher.', 1327058829);
             }
-            $this->options['templateName'] = strtr($this->options['templateName'], [
+            // use local variable instead of augmenting the options to
+            // keep the format intact when sending multi-format mails
+            $templateName = strtr($this->options['templateName'], [
                 '{@format}' => $format
             ]);
-            $standaloneView->setTemplate($this->options['templateName']);
+            $standaloneView->setTemplate($templateName);
         }
 
         $standaloneView->assign('finisherVariableProvider', $this->finisherContext->getFinisherVariableProvider());
@@ -252,5 +281,32 @@ class EmailFinisher extends AbstractFinisher
         }, ARRAY_FILTER_USE_BOTH);
 
         return $recipients;
+    }
+
+    /**
+     * Get plaintext preference
+     *
+     * @return bool
+     *
+     * @deprecated since TYPO3 v10.0, will be removed in TYPO3 v11.0.
+     */
+    protected function isHtmlPartAdded(): bool
+    {
+        $format = $this->parseOption('format');
+
+        if ($format !== null) {
+            trigger_error(
+                'Usage of format option in form email finisher is deprecated - use addHtmlPart instead.',
+                E_USER_DEPRECATED
+            );
+        }
+
+        // FORMAT_HTML was the default value for "format", so
+        // FORMAT_PLAINTEXT must have been set intentionally
+        if ($format === self::FORMAT_PLAINTEXT) {
+            return false;
+        }
+
+        return $this->parseOption('addHtmlPart') ? true : false;
     }
 }

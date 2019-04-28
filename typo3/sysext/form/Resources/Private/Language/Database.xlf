@@ -104,14 +104,8 @@
             <trans-unit id="tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.item.label" xml:space="preserve">
                 <source>BCC Recipient</source>
             </trans-unit>
-            <trans-unit id="tt_content.finishersDefinition.EmailToSender.format.label" xml:space="preserve">
-                <source>The format of the email</source>
-            </trans-unit>
-            <trans-unit id="tt_content.finishersDefinition.EmailToSender.format.1" xml:space="preserve">
-                <source>HTML</source>
-            </trans-unit>
-            <trans-unit id="tt_content.finishersDefinition.EmailToSender.format.2" xml:space="preserve">
-                <source>Plain text</source>
+            <trans-unit id="tt_content.finishersDefinition.EmailToSender.addHtmlPart.label" xml:space="preserve">
+                <source>Add HTML mail part</source>
             </trans-unit>
 
             <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.label" xml:space="preserve">
@@ -138,14 +132,8 @@
             <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.blindCarbonCopyRecipients.label" xml:space="preserve">
                 <source>BCC Recipients</source>
             </trans-unit>
-            <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.format.label" xml:space="preserve">
-                <source>Format of the email</source>
-            </trans-unit>
-            <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.format.1" xml:space="preserve">
-                <source>HTML</source>
-            </trans-unit>
-            <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.format.2" xml:space="preserve">
-                <source>Plain text</source>
+            <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.addHtmlPart.label" xml:space="preserve">
+                <source>Add HTML part</source>
             </trans-unit>
             <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.language.label" xml:space="preserve">
                 <source>Translation language</source>
@@ -635,14 +623,11 @@
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.blindCarbonCopyRecipients.label" xml:space="preserve">
                 <source>BCC Recipients</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.format.label" xml:space="preserve">
-                <source>Format</source>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.label" xml:space="preserve">
+                <source>Add HTML part</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.format.1" xml:space="preserve">
-                <source>Plain text</source>
-            </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.format.2" xml:space="preserve">
-                <source>HTML</source>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.fieldExplanationText" xml:space="preserve">
+                <source>If enabled, the email will contain a plaintext and an HTML part, otherwise only a plaintext part.</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.attachUploads.label" xml:space="preserve">
                 <source>Attach uploads</source>
@@ -681,14 +666,11 @@
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.blindCarbonCopyRecipients.label" xml:space="preserve">
                 <source>BCC Recipients</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.format.label" xml:space="preserve">
-                <source>Format</source>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.label" xml:space="preserve">
+                <source>Add HTML part</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.format.1" xml:space="preserve">
-                <source>Plain text</source>
-            </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.format.2" xml:space="preserve">
-                <source>HTML</source>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.fieldExplanationText" xml:space="preserve">
+                <source>If enabled, the email will contain a plaintext and an HTML part, otherwise only a plaintext part.</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.attachUploads.label" xml:space="preserve">
                 <source>Attach uploads</source>

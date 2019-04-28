@@ -235,8 +235,9 @@ TYPO3:
                           label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.carbonCopyRecipients.label'
                         950:
                           label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.blindCarbonCopyRecipients.label'
-                        1000:
-                          label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.format.label'
+                        1050:
+                          label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.label'
+                          fieldExplanationText: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.fieldExplanationText'
                         1100:
                           label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.attachUploads.label'
                         1200:
@@ -918,7 +919,7 @@ TYPO3:
                     replyToRecipients: {}
                     carbonCopyRecipients: {}
                     blindCarbonCopyRecipients: {}
-                    format: 'html'
+                    addHtmlPart: true
                     attachUploads: true
 
             EmailToReceiver:
@@ -934,7 +935,7 @@ TYPO3:
                     replyToRecipients: {}
                     carbonCopyRecipients: {}
                     blindCarbonCopyRecipients: {}
-                    format: 'html'
+                    addHtmlPart: true
                     attachUploads: true
                     translation:
                       language: ''
@@ -1407,6 +1408,8 @@ TYPO3:
                   isSortable: true
                   enableAddRow: true
                   enableDeleteRow: true
+                  removeLastAvailableRowFlashMessageTitle: 'formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageTitle'
+                  removeLastAvailableRowFlashMessageMessage: 'formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageMessage'
 
           SingleSelectionMixin:
             formEditor:
@@ -1595,18 +1598,12 @@ TYPO3:
                     title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title
                   - name: label
                     title: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title
-              1000:
-                identifier: 'format'
-                templateName: 'Inspector-SingleSelectEditor'
-                label: 'formEditor.elements.Form.finisher.EmailToSender.editor.format.label'
-                propertyPath: 'options.format'
-                selectOptions:
-                  10:
-                    value: 'plaintext'
-                    label: 'formEditor.elements.Form.finisher.EmailToSender.editor.format.1'
-                  20:
-                    value: 'html'
-                    label: 'formEditor.elements.Form.finisher.EmailToSender.editor.format.2'
+              1050:
+                identifier: 'addHtmlPart'
+                templateName: 'Inspector-CheckboxEditor'
+                label: 'formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.label'
+                propertyPath: 'options.addHtmlPart'
+                fieldExplanationText: 'formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.fieldExplanationText'
               1100:
                 identifier: 'attachUploads'
                 templateName: 'Inspector-CheckboxEditor'
