@@ -3909,6 +3909,11 @@ Full default configuration
                 templateName: Inspector-TextEditor
                 label: formEditor.elements.FormElement.editor.label.label
                 propertyPath: label
+              230:
+                  identifier: elementDescription
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.FormElement.editor.elementDescription.label
+                  propertyPath: properties.elementDescription
               700:
                 identifier: gridColumnViewPortConfiguration
                 templateName: Inspector-GridColumnViewPortConfigurationEditor
@@ -3938,6 +3943,16 @@ Full default configuration
                 validatorIdentifier: NotEmpty
                 propertyPath: properties.fluidAdditionalAttributes.required
                 propertyValue: required
+                configurationOptions:
+                  validationErrorMessage:
+                    label: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label
+                    propertyPath: properties.validationErrorMessages
+                    fieldExplanationText: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.fieldExplanationText
+                    errorCodes:
+                      10: 1221560910
+                      20: 1221560718
+                      30: 1347992400
+                      40: 1347992453
               9999:
                 identifier: removeButton
                 templateName: Inspector-RemoveElementEditor

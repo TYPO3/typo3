@@ -21,6 +21,9 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.url.properties.elementclassattribute:
 .. include:: Url/properties/elementClassAttribute.rst
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.url.properties.elementDescription:
+.. include:: Url/properties/elementDescription.rst
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.url.properties.elementerrorclassattribute:
 .. include:: Url/properties/elementErrorClassAttribute.rst
 
@@ -35,6 +38,9 @@ Properties
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.url.formeditor.editors.200:
 .. include:: Url/formEditor/editors/200.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.url.formeditor.editors.230:
+.. include:: Url/formEditor/editors/230.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.url.formeditor.editors.400:
 .. include:: Url/formEditor/editors/400.rst

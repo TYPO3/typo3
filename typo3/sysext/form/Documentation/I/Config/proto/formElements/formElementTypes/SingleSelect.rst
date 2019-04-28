@@ -21,6 +21,9 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.singleselect.properties.elementclassattribute:
 .. include:: SingleSelect/properties/elementClassAttribute.rst
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.singleselect.properties.elementDescription:
+.. include:: SingleSelect/properties/elementDescription.rst
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.singleselect.properties.elementerrorclassattribute:
 .. include:: SingleSelect/properties/elementErrorClassAttribute.rst
 
@@ -38,6 +41,9 @@ Properties
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.singleselect.formeditor.editors.200:
 .. include:: SingleSelect/formEditor/editors/200.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.singleselect.formeditor.editors.230:
+.. include:: SingleSelect/formEditor/editors/230.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.singleselect.formeditor.editors.250:
 .. include:: SingleSelect/formEditor/editors/250.rst

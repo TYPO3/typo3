@@ -21,6 +21,9 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.radiobutton.properties.elementclassattribute:
 .. include:: RadioButton/properties/elementClassAttribute.rst
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.radiobutton.properties.elementDescription:
+.. include:: RadioButton/properties/elementDescription.rst
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.radiobutton.properties.elementerrorclassattribute:
 .. include:: RadioButton/properties/elementErrorClassAttribute.rst
 
@@ -32,6 +35,9 @@ Properties
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.radiobutton.formeditor.editors.200:
 .. include:: RadioButton/formEditor/editors/200.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.radiobutton.formeditor.editors.230:
+.. include:: RadioButton/formEditor/editors/230.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.radiobutton.formeditor.editors.300:
 .. include:: RadioButton/formEditor/editors/300.rst

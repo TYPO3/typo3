@@ -21,6 +21,9 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.imageupload.properties.elementclassattribute:
 .. include:: ImageUpload/properties/elementClassAttribute.rst
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.imageupload.properties.elementDescription:
+.. include:: ImageUpload/properties/elementDescription.rst
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.imageupload.properties.elementerrorclassattribute:
 .. include:: ImageUpload/properties/elementErrorClassAttribute.rst
 
@@ -47,6 +50,9 @@ Properties
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.imageupload.formeditor.editors.200:
 .. include:: ImageUpload/formEditor/editors/200.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.imageupload.formeditor.editors.230:
+.. include:: ImageUpload/formEditor/editors/230.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.imageupload.formeditor.editors.300:
 .. include:: ImageUpload/formEditor/editors/300.rst

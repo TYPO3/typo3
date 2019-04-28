@@ -291,6 +291,35 @@ properties
       Array with form element specific properties.
 
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.properties.elementDescription:
+
+properties.elementDescription
+-----------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.<formElementTypeIdentifier>.properties.elementDescription
+
+:aspect:`Data type`
+      string
+
+:aspect:`Needed by`
+      Frontend/ Backend (form editor)
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value`
+      Undefined
+
+:aspect:`Good to know`
+      - :ref:`"Custom form element implementations"<concepts-frontendrendering-codecomponents-customformelementimplementations>`
+      - :ref:`"Translate form definition"<concepts-frontendrendering-translation-formdefinition>`
+
+:aspect:`Description`
+      Set a description of the form element. By default, it is displayed
+      below the form element.
+
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.properties.fluidadditionalattributes:
 
 properties.fluidAdditionalAttributes
@@ -385,7 +414,7 @@ label
       - :ref:`"Translate form definition"<concepts-frontendrendering-translation-formdefinition>`
 
 :aspect:`Description`
-      The label for the form element.
+      The label of the form element.
 
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor:

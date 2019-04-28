@@ -21,6 +21,9 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.multiselect.properties.elementclassattribute:
 .. include:: MultiSelect/properties/elementClassAttribute.rst
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.multiselect.properties.elementDescription:
+.. include:: MultiSelect/properties/elementDescription.rst
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.multiselect.properties.elementerrorclassattribute:
 .. include:: MultiSelect/properties/elementErrorClassAttribute.rst
 
@@ -38,6 +41,9 @@ Properties
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.multiselect.formeditor.editors.200:
 .. include:: MultiSelect/formEditor/editors/200.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.multiselect.formeditor.editors.230:
+.. include:: MultiSelect/formEditor/editors/230.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.multiselect.formeditor.editors.250:
 .. include:: MultiSelect/formEditor/editors/250.rst

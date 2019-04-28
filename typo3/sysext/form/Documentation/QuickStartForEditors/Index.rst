@@ -7,7 +7,8 @@
 Quick Start for Editors
 =======================
 
-You are an editor, your admin installed the form extension and you want to get started quickly? Follow these steps!
+You are an editor, your admin installed the form extension and you want
+to get started quickly? Follow these steps!
 
 .. rst-class:: bignums-xxl
 

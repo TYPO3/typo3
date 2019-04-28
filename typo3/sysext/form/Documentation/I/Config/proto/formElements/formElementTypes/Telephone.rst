@@ -21,6 +21,9 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.telephone.properties.elementclassattribute:
 .. include:: Telephone/properties/elementClassAttribute.rst
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.telephone.properties.elementDescription:
+.. include:: Telephone/properties/elementDescription.rst
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.telephone.properties.elementerrorclassattribute:
 .. include:: Telephone/properties/elementErrorClassAttribute.rst
 
@@ -35,6 +38,9 @@ Properties
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.telephone.formeditor.editors.200:
 .. include:: Telephone/formEditor/editors/200.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.telephone.formeditor.editors.230:
+.. include:: Telephone/formEditor/editors/230.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.telephone.formeditor.editors.400:
 .. include:: Telephone/formEditor/editors/400.rst

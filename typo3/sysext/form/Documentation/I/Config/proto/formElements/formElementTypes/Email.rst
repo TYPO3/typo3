@@ -21,6 +21,9 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.email.properties.elementclassattribute:
 .. include:: Email/properties/elementClassAttribute.rst
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.email.properties.elementDescription:
+.. include:: Email/properties/elementDescription.rst
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.email.properties.elementerrorclassattribute:
 .. include:: Email/properties/elementErrorClassAttribute.rst
 
@@ -35,6 +38,9 @@ Properties
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.email.formeditor.editors.200:
 .. include:: Email/formEditor/editors/200.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.email.formeditor.editors.230:
+.. include:: Email/formEditor/editors/230.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.email.formeditor.editors.400:
 .. include:: Email/formEditor/editors/400.rst

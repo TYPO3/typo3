@@ -21,6 +21,9 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.datepicker.properties.elementclassattribute:
 .. include:: DatePicker/properties/elementClassAttribute.rst
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.datepicker.properties.elementDescription:
+.. include:: DatePicker/properties/elementDescription.rst
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.datepicker.properties.elementerrorclassattribute:
 .. include:: DatePicker/properties/elementErrorClassAttribute.rst
 
@@ -50,6 +53,9 @@ Properties
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.datepicker.formeditor.editors.200:
 .. include:: DatePicker/formEditor/editors/200.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.datepicker.formeditor.editors.230:
+.. include:: DatePicker/formEditor/editors/230.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.datepicker.formeditor.editors.300:
 .. include:: DatePicker/formEditor/editors/300.rst

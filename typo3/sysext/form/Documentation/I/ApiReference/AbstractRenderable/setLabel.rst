@@ -1,7 +1,7 @@
 setLabel()
 ''''''''''
 
-Set the label for the form element.
+Set the label of the form element.
 
 Signature::
 
