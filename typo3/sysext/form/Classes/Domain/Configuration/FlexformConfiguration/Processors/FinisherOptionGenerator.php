@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Form\Domain\Configuration\FlexformConfiguration\Processors;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,8 +39,8 @@ class FinisherOptionGenerator extends AbstractProcessor
     {
         parent::__construct($converterDto);
 
-        $this->languageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
-        $this->languageService->includeLLFile('EXT:form/Resources/Private/Language/locallang.xlf');
+        $this->languageService = GeneralUtility::makeInstance(LanguageService::class);
+        $this->languageService->includeLLFile('EXT:form/Resources/Private/Language/Database.xlf');
     }
 
     /**
