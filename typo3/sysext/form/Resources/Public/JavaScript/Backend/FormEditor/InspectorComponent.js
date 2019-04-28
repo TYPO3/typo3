@@ -469,7 +469,7 @@ define(['jquery',
      * @return void
      */
     function _setPropertyGridData(editorHtml, multiSelection, propertyPath, propertyPathPrefix) {
-      var defaultValue, newPropertyData;
+      var defaultValue, newPropertyData, value;
 
       if (multiSelection) {
         defaultValue = [];
@@ -478,27 +478,33 @@ define(['jquery',
           getHelper().getDomElementDataIdentifierSelector('propertyGridEditorSelectValue') + ':checked',
           $(editorHtml)
         ).each(function(i) {
-          defaultValue.push(
-            $(this)
-              .closest(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'))
-              .find(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorValue'))
-              .val()
-          );
+          value = $(this)
+            .closest(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'))
+            .find(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorValue'))
+            .val();
+
+          if (getUtility().canBeInterpretedAsInteger(value)) {
+              value = parseInt(value, 10);
+          }
+
+          defaultValue.push(value);
         });
         getCurrentlySelectedFormElement().set(propertyPathPrefix + 'defaultValue', defaultValue);
       } else {
-        getCurrentlySelectedFormElement().set(
-          propertyPathPrefix + 'defaultValue',
-          $(
+        value = $(
             getHelper().getDomElementDataIdentifierSelector('propertyGridEditorContainer') + ' ' +
             getHelper().getDomElementDataIdentifierSelector('propertyGridEditorSelectValue') + ':checked',
             $(editorHtml)
           ).first()
             .closest(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'))
             .find(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorValue'))
-            .val(),
-          true
-        );
+            .val();
+
+        if (getUtility().canBeInterpretedAsInteger(value)) {
+            value = parseInt(value, 10);
+        }
+
+        getCurrentlySelectedFormElement().set(propertyPathPrefix + 'defaultValue', value, true);
       }
 
       newPropertyData = [];

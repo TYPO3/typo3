@@ -150,6 +150,20 @@ define(['jquery'], function($) {
       /**
        * @public
        *
+       * @param mixed value
+       * @return bool
+       */
+      function canBeInterpretedAsInteger(value) {
+        if (value === '' || 'object' === $.type(value) || 'array' === $.type(value) || isUndefinedOrNull(value)) {
+            return false;
+        }
+
+        return (value * 1).toString() === value.toString() && value.toString().indexOf('.') === -1;
+      };
+
+      /**
+       * @public
+       *
        * @param string propertyPath
        * @param string collectionElementIdentifier
        * @param string collectionName
@@ -238,7 +252,8 @@ define(['jquery'], function($) {
         convertToSimpleObject: convertToSimpleObject,
         isNonEmptyString: isNonEmptyString,
         isUndefinedOrNull: isUndefinedOrNull,
-        buildPropertyPath: buildPropertyPath
+        buildPropertyPath: buildPropertyPath,
+        canBeInterpretedAsInteger: canBeInterpretedAsInteger
       };
     };
 
