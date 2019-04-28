@@ -3,12 +3,6 @@
     <file t3:id="1475977066" source-language="en" datatype="plaintext" original="messages" date="2016-10-09T03:38:32Z" product-name="form">
         <header/>
         <body>
-            <trans-unit id="default" xml:space="preserve">
-                <source>Default</source>
-            </trans-unit>
-             <trans-unit id="empty" xml:space="preserve">
-                <source>[Empty]</source>
-            </trans-unit>
             <trans-unit id="element.ImageUpload.properties.SummaryPage.altText" xml:space="preserve">
                 <source>Uploaded image</source>
             </trans-unit>

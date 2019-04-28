@@ -7,6 +7,13 @@
                 <source>Form manager</source>
             </trans-unit>
 
+            <trans-unit id="default" xml:space="preserve">
+                <source>Default</source>
+            </trans-unit>
+             <trans-unit id="empty" xml:space="preserve">
+                <source>[Empty]</source>
+            </trans-unit>
+
             <trans-unit id="tt_content.pi_flexform.formframework.persistenceIdentifier" xml:space="preserve">
                 <source>Form definition</source>
             </trans-unit>
