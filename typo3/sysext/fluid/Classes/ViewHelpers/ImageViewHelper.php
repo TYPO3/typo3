@@ -109,9 +109,9 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('width', 'string', 'width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.');
         $this->registerArgument('height', 'string', 'height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.');
         $this->registerArgument('minWidth', 'int', 'minimum width of the image');
-        $this->registerArgument('minHeight', 'int', 'minimum width of the image');
-        $this->registerArgument('maxWidth', 'int', 'minimum width of the image');
-        $this->registerArgument('maxHeight', 'int', 'minimum width of the image');
+        $this->registerArgument('minHeight', 'int', 'minimum height of the image');
+        $this->registerArgument('maxWidth', 'int', 'maximum width of the image');
+        $this->registerArgument('maxHeight', 'int', 'maximum height of the image');
         $this->registerArgument('absolute', 'bool', 'Force absolute URL', false, false);
     }
 
