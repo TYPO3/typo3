@@ -139,7 +139,7 @@ class UploadExtensionFileController extends AbstractController
                 );
             }
             $extensionData = $this->extractExtensionFromFile($tempFile, $fileName, $overwrite);
-            $isAutomaticInstallationEnabled = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'offlineMode');
+            $isAutomaticInstallationEnabled = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'automaticInstallation');
             if (!$isAutomaticInstallationEnabled) {
                 $this->addFlashMessage(
                     $this->translate('extensionList.uploadFlashMessage.message', [$extensionData['extKey']]),
