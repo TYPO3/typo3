@@ -80,4 +80,38 @@
         <doktype>254</doktype>
         <deleted>0</deleted>
     </pages>
+    <pages>
+        <uid>12</uid>
+        <pid>1</pid>
+        <title>Complete Entry</title>
+        <tstamp>1491811200</tstamp>
+        <slug>/complete-entry</slug>
+        <deleted>0</deleted>
+    </pages>
+    <pages>
+        <uid>13</uid>
+        <pid>1</pid>
+        <title>Only changefreq</title>
+        <tstamp>1491811200</tstamp>
+        <slug>/only-changefreq</slug>
+        <deleted>0</deleted>
+    </pages>
+    <pages>
+        <uid>14</uid>
+        <pid>1</pid>
+        <title>Clean</title>
+        <tstamp>1491811200</tstamp>
+        <slug>/clean</slug>
+        <deleted>0</deleted>
+    </pages>
+    <pages>
+        <uid>100</uid>
+        <pid>0</pid>
+        <title>Root FR</title>
+        <is_siteroot>1</is_siteroot>
+        <slug>/</slug>
+        <deleted>0</deleted>
+        <sys_language_uid>1</sys_language_uid>
+        <l10n_parent>1</l10n_parent>
+    </pages>
 </dataset>

@@ -11,6 +11,7 @@
 		<endtime>0</endtime>
 		<sorting>256</sorting>
 		<title>Examples</title>
+		<sys_language_uid>0</sys_language_uid>
 	</sys_category>
 	<sys_category>
 		<uid>2</uid>
@@ -23,5 +24,19 @@
 		<endtime>0</endtime>
 		<sorting>128</sorting>
 		<title>News</title>
+		<sys_language_uid>0</sys_language_uid>
+	</sys_category>
+	<sys_category>
+		<uid>3</uid>
+		<pid>11</pid>
+		<tstamp>1556568228</tstamp>
+		<crdate>1556568228</crdate>
+		<deleted>0</deleted>
+		<hidden>0</hidden>
+		<starttime>0</starttime>
+		<endtime>0</endtime>
+		<sorting>64</sorting>
+		<title>Alternative language</title>
+		<sys_language_uid>1</sys_language_uid>
 	</sys_category>
 </data>

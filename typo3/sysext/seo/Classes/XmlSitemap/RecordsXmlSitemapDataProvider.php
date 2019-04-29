@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Seo\XmlSitemap;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -47,7 +48,9 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
      */
     public function generateItems(): void
     {
-        if (empty($this->config['table'])) {
+        $table = $this->config['table'];
+
+        if (empty($table)) {
             throw new MissingConfigurationException(
                 'No configuration found for sitemap ' . $this->getKey(),
                 1535576053
@@ -59,9 +62,18 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         $sortField = $this->config['sortField'] ?? 'sorting';
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->config['table']);
+            ->getQueryBuilderForTable($table);
 
         $constraints = [];
+        if (!empty($GLOBALS['TCA'][$table]['ctrl']['languageField'])) {
+            $constraints[] = $queryBuilder->expr()->in(
+                $GLOBALS['TCA'][$table]['ctrl']['languageField'],
+                [
+                    -1, // All languages
+                    $this->getLanguageId()  // Current language
+                ]
+            );
+        }
 
         if (!empty($pids)) {
             $recursiveLevel = isset($this->config['recursive']) ? (int)$this->config['recursive'] : 0;
@@ -84,7 +96,7 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         }
 
         $queryBuilder->select('*')
-            ->from($this->config['table']);
+            ->from($table);
 
         if (!empty($constraints)) {
             $queryBuilder->where(
@@ -168,5 +180,15 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         }
 
         return $additionalParams;
+    }
+
+    /**
+     * @return int
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
+     */
+    protected function getLanguageId(): int
+    {
+        $context = GeneralUtility::makeInstance(Context::class);
+        return (int)$context->getPropertyFromAspect('language', 'id');
     }
 }
