@@ -957,10 +957,10 @@ class PageLayoutView implements LoggerAwareInterface
                         $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                     }
                     $title = htmlspecialchars($this->getLanguageService()->getLL('newContentElement'));
-                    $link = '<a href="#" data-url="' . htmlspecialchars($url) . '" '
+                    $link = '<a href="' . htmlspecialchars($url) . '" '
                         . 'title="' . $title . '"'
                         . 'data-title="' . $title . '"'
-                        . 'class="btn btn-default btn-sm t3js-toggle-new-content-element-wizard">'
+                        . 'class="btn btn-default btn-sm ' . ($this->option_newWizard ? 't3js-toggle-new-content-element-wizard' : '') . '">'
                         . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render()
                         . ' '
                         . htmlspecialchars($this->getLanguageService()->getLL('content')) . '</a>';
@@ -1061,10 +1061,10 @@ class PageLayoutView implements LoggerAwareInterface
                                     $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                                 }
                                 $title = htmlspecialchars($this->getLanguageService()->getLL('newContentElement'));
-                                $singleElementHTML .= '<a href="#" data-url="' . htmlspecialchars($url) . '" '
+                                $singleElementHTML .= '<a href="' . htmlspecialchars($url) . '" '
                                     . 'title="' . $title . '"'
                                     . 'data-title="' . $title . '"'
-                                    . 'class="btn btn-default btn-sm t3js-toggle-new-content-element-wizard">'
+                                    . 'class="btn btn-default btn-sm ' . ($this->option_newWizard ? 't3js-toggle-new-content-element-wizard' : '') . '">'
                                     . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render()
                                     . ' '
                                     . htmlspecialchars($this->getLanguageService()->getLL('content')) . '</a>';
@@ -1489,7 +1489,7 @@ class PageLayoutView implements LoggerAwareInterface
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
             $title = htmlspecialchars($this->getLanguageService()->getLL('new'));
-            $theData['__cmds__'] = '<a href="#" data-url="' . htmlspecialchars($url) . '" class="t3js-toggle-new-content-element-wizard" '
+            $theData['__cmds__'] = '<a href="' . htmlspecialchars($url) . '" class="' . ($this->option_newWizard ? 't3js-toggle-new-content-element-wizard' : '') . '" '
                 . 'title="' . $title . '"'
                 . 'data-title="' . $title . '">'
                 . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . '</a>';

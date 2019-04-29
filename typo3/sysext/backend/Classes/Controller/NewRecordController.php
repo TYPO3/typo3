@@ -224,19 +224,7 @@ class NewRecordController
         // Setting up the context sensitive menu:
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule(
-            'TYPO3/CMS/Backend/Wizard/NewContentElement',
-            'function(NewContentElement) {
-                require([\'jquery\'], function($) {
-                    $(function() {
-                        $(\'.t3js-toggle-new-content-element-wizard\').click(function() {
-                            var $me = $(this);
-                            NewContentElement.wizard($me.data(\'url\'), $me.data(\'title\'));
-                        });
-                    });
-                });
-            }'
-        );
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/PageActions');
         // Creating content
         $this->content = '';
         $this->content .= '<h1>'
@@ -573,7 +561,7 @@ class NewRecordController
                             $url = (string)$uriBuilder->buildUriFromRoute($moduleName, ['id' => $this->id, 'returnUrl' => $normalizedParams->getRequestUri()]);
                             $rowContent .= '<li>' . $newLink . ' ' . BackendUtility::wrapInHelp($table, '') . '</li>'
                                 . '<li>'
-                                . '<a href="#" data-url="' . htmlspecialchars($url) . '" data-title="' . htmlspecialchars($this->getLanguageService()->getLL('newContentElement')) . '" class="t3js-toggle-new-content-element-wizard">'
+                                . '<a href="' . htmlspecialchars($url) . '" data-title="' . htmlspecialchars($this->getLanguageService()->getLL('newContentElement')) . '" class="t3js-toggle-new-content-element-wizard">'
                                 . $newContentIcon . htmlspecialchars($lang->getLL('clickForWizard'))
                                 . '</a>'
                                 . '</li>'

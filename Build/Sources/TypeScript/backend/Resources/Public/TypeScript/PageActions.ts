@@ -228,8 +228,10 @@ class PageActions {
    */
   private initializeNewContentElementWizard(): void {
     $(IdentifierEnum.newButton).click((e: JQueryEventObject): void => {
+      e.preventDefault();
+
       const $me = $(e.currentTarget);
-      NewContentElement.wizard($me.data('url'), $me.data('title'));
+      NewContentElement.wizard($me.attr('href'), $me.data('title'));
     });
   }
 }
