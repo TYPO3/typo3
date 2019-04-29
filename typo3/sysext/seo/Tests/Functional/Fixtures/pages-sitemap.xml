@@ -107,4 +107,14 @@
         <slug>/clean</slug>
         <deleted>0</deleted>
     </pages>
+    <pages>
+        <uid>100</uid>
+        <pid>0</pid>
+        <title>Root FR</title>
+        <is_siteroot>1</is_siteroot>
+        <slug>/</slug>
+        <deleted>0</deleted>
+        <sys_language_uid>1</sys_language_uid>
+        <l10n_parent>1</l10n_parent>
+    </pages>
 </dataset>

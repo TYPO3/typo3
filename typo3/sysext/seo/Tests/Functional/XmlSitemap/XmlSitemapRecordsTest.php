@@ -50,25 +50,26 @@ class XmlSitemapRecordsTest extends AbstractTestCase
                 ],
             ]
         );
-    }
 
-    /**
-     * @test
-     */
-    public function checkIfSiteMapIndexContainsSysCategoryLinks(): void
-    {
         $this->writeSiteConfiguration(
             'website-local',
             $this->buildSiteConfiguration(1, 'http://localhost/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('FR', '/fr'),
             ]
         );
+    }
 
+    /**
+     * @test
+     * @dataProvider sitemapEntriesToCheck
+     */
+    public function checkIfSiteMapIndexContainsSysCategoryLinks($host, $expectedEntries, $notExpectedEntries): void
+    {
         $response = $this->executeFrontendRequest(
-            (new InternalRequest('http://localhost/'))->withQueryParameters(
+            (new InternalRequest($host))->withQueryParameters(
                 [
-                    'id' => 1,
                     'type' => 1533906435,
                     'sitemap' => 'records',
                 ]
@@ -80,11 +81,50 @@ class XmlSitemapRecordsTest extends AbstractTestCase
         $stream = $response->getBody();
         $stream->rewind();
         $content = $stream->getContents();
-        self::assertContains('http://localhost/?tx_example_category%5Bid%5D=1&amp;', $content);
-        self::assertContains('http://localhost/?tx_example_category%5Bid%5D=2&amp;', $content);
-        self::assertContains('<priority>0.5</priority>', $content);
+
+        foreach ($expectedEntries as $expectedEntry) {
+            self::assertContains($expectedEntry, $content);
+        }
+
+        foreach ($notExpectedEntries as $notExpectedEntry) {
+            self::assertNotContains($notExpectedEntry, $content);
+        }
 
         $this->assertGreaterThan(0, $response->getHeader('Content-Length')[0]);
+    }
+
+    /**
+     * @return array
+     */
+    public function sitemapEntriesToCheck(): array
+    {
+        return [
+            'default-language' => [
+                'http://localhost/',
+                [
+                    'http://localhost/?tx_example_category%5Bid%5D=1&amp;',
+                    'http://localhost/?tx_example_category%5Bid%5D=2&amp;',
+                    '<priority>0.5</priority>'
+                ],
+                [
+                    'http://localhost/?tx_example_category%5Bid%5D=3&amp;',
+                    'http://localhost/fr/?tx_example_category%5Bid%5D=3&amp;',
+                ]
+            ],
+            'french-language' => [
+                'http://localhost/fr',
+                [
+                    'http://localhost/fr/?tx_example_category%5Bid%5D=3&amp;',
+                    '<priority>0.5</priority>'
+                ],
+                [
+                    'http://localhost/fr/?tx_example_category%5Bid%5D=1&amp;',
+                    'http://localhost/fr/?tx_example_category%5Bid%5D=2&amp;',
+                    'http://localhost/?tx_example_category%5Bid%5D=1&amp;',
+                    'http://localhost/?tx_example_category%5Bid%5D=2&amp;',
+                ]
+            ],
+        ];
     }
 
     /**
@@ -92,14 +132,6 @@ class XmlSitemapRecordsTest extends AbstractTestCase
      */
     public function checkIfSiteMapIndexContainsCustomChangeFreqAndPriorityValues(): void
     {
-        $this->writeSiteConfiguration(
-            'website-local',
-            $this->buildSiteConfiguration(1, 'http://localhost/'),
-            [
-                $this->buildDefaultLanguageConfiguration('EN', '/'),
-            ]
-        );
-
         $response = $this->executeFrontendRequest(
             (new InternalRequest('http://localhost/'))->withQueryParameters(
                 [
