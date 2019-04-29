@@ -72,6 +72,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
             $resolvedUrl = $this->resolveUrl($request, $this->errorHandlerConfiguration['errorContentSource']);
             $content = null;
             $report = [];
+
             if ($resolvedUrl !== (string)$request->getUri()) {
                 $content = GeneralUtility::getUrl($resolvedUrl, 0, null, $report);
                 if ($content === false && ((int)$report['error'] === -1 || (int)$report['error'] > 200)) {
@@ -112,10 +113,28 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
         if (!$language instanceof SiteLanguage || !$language->isEnabled()) {
             $language = $site->getDefaultLanguage();
         }
+
         // Build Url
-        return (string)$site->getRouter()->generateUri(
+        $uri = $site->getRouter()->generateUri(
             (int)$urlParams['pageuid'],
             ['_language' => $language]
         );
+
+        // Fallback to the current URL if the site is not having a proper scheme and host
+        $currentUri = $request->getUri();
+        if (empty($uri->getScheme())) {
+            $uri = $uri->withScheme($currentUri->getScheme());
+        }
+        if (empty($uri->getUserInfo())) {
+            $uri = $uri->withUserInfo($currentUri->getUserInfo());
+        }
+        if (empty($uri->getHost())) {
+            $uri = $uri->withHost($currentUri->getHost());
+        }
+        if ($uri->getPort() === null) {
+            $uri = $uri->withPort($currentUri->getPort());
+        }
+
+        return (string)$uri;
     }
 }
