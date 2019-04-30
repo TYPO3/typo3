@@ -2213,8 +2213,11 @@ Usage within form definition
      -
        identifier: FlashMessage
        options:
-         messageBody: 'Thx for using TYPO3'
          messageTitle: 'Merci'
+         messageCode: 201905041245
+         messageBody: 'Thx for using %s'
+         messageArguments:
+           - 'TYPO3'
          severity: 0
    ...
 
@@ -2222,8 +2225,10 @@ Usage within form definition
 Usage through code::
 
    $formDefinition->createFinisher('FlashMessage', [
-       'messageBody' => 'Thx for using TYPO3',
        'messageTitle' => 'Merci',
+       'messageCode' => 201905041245,
+       'messageBody' => 'Thx for using %s',
+       'messageArguments' => ['TYPO3'],
        'severity' => \TYPO3\CMS\Core\Messaging\AbstractMessage::OK,
    ]);
 
@@ -2231,8 +2236,10 @@ or create manually (not preferred)::
 
    $flashMessageFinisher = $this->objectManager->get(FlashMessageFinisher::class);
    $flashMessageFinisher->setOptions([
-       'messageBody' => 'Thx for using TYPO3',
        'messageTitle' => 'Merci',
+       'messageCode' => 201905041245,
+       'messageBody' => 'Thx for using %s',
+       'messageArguments' => ['TYPO3'],
        'severity' => \TYPO3\CMS\Core\Messaging\AbstractMessage::OK,
    ]);
    $formDefinition->addFinisher($flashMessageFinisher);
@@ -2254,9 +2261,6 @@ messageBody
 :aspect:`Mandatory`
       Yes
 
-:aspect:`Default value`
-      null
-
 :aspect:`Description`
       The flash message body
 
@@ -2276,7 +2280,7 @@ messageTitle
       empty string
 
 :aspect:`Description`
-      The flash message title
+      The flash message title, if needed
 
 
 .. _apireference-finisheroptions-flashmessagefinisher-options-messagearguments:
@@ -2308,11 +2312,8 @@ messageCode
 :aspect:`Mandatory`
       Yes
 
-:aspect:`Default value`
-      null
-
 :aspect:`Description`
-      The flash message code, if needed
+      The flash message code
 
 
 .. _apireference-finisheroptions-flashmessagefinisher-options-severity:
