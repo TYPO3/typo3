@@ -26,27 +26,31 @@ import com.atlassian.bamboo.specs.api.builders.plan.Plan;
 import com.atlassian.bamboo.specs.api.builders.plan.Stage;
 import com.atlassian.bamboo.specs.api.builders.plan.branches.BranchCleanup;
 import com.atlassian.bamboo.specs.api.builders.plan.branches.PlanBranchManagement;
+import com.atlassian.bamboo.specs.api.builders.plan.configuration.AllOtherPluginsConfiguration;
 import com.atlassian.bamboo.specs.api.builders.project.Project;
+import com.atlassian.bamboo.specs.api.builders.requirement.Requirement;
 import com.atlassian.bamboo.specs.builders.notification.PlanCompletedNotification;
 import com.atlassian.bamboo.specs.builders.task.ScriptTask;
-import com.atlassian.bamboo.specs.builders.trigger.ScheduledTrigger;
+import com.atlassian.bamboo.specs.builders.trigger.RemoteTrigger;
+import com.atlassian.bamboo.specs.builders.trigger.RepositoryPollingTrigger;
 import com.atlassian.bamboo.specs.model.task.ScriptTaskProperties;
 import com.atlassian.bamboo.specs.util.BambooServer;
+import com.atlassian.bamboo.specs.util.MapBuilder;
 
 /**
- * Core 8.7 nightly test plan.
+ * Core 8.7 security test plan.
  */
 @BambooSpec
-public class NightlySpec extends AbstractCoreSpec {
+public class SecuritySpec extends AbstractCoreSpec {
 
-    protected static String planName = "Core 8.7 nightly";
-    protected static String planKey = "GTN87";
+    protected static String planName = "Core 8.7 security";
+    protected static String planKey = "GTS87";
 
     protected int numberOfAcceptanceTestJobs = 8;
-    protected int numberOfFunctionalMysqlJobs = 6;
+    protected int numberOfFunctionalMysqlJobs = 10;
     protected int numberOfFunctionalMssqlJobs = 10;
-    protected int numberOfFunctionalPgsqlJobs = 6;
-    protected int numberOfUnitRandomOrderJobs = 2;
+    protected int numberOfFunctionalPgsqlJobs = 10;
+    protected int numberOfUnitRandomOrderJobs = 1;
 
     /**
      * Run main to publish plan on Bamboo
@@ -54,12 +58,12 @@ public class NightlySpec extends AbstractCoreSpec {
     public static void main(final String[] args) throws Exception {
         // By default credentials are read from the '.credentials' file.
         BambooServer bambooServer = new BambooServer(bambooServerName);
-        bambooServer.publish(new NightlySpec().createPlan());
-        bambooServer.publish(new NightlySpec().getDefaultPlanPermissions(projectKey, planKey));
+        bambooServer.publish(new SecuritySpec().createPlan());
+        bambooServer.publish(new SecuritySpec().getSecurityPlanPermissions(projectKey, planKey));
     }
 
     /**
-     * Core 8.7 pre-merge plan is in "TYPO3 core" project of bamboo
+     * Core 8.7 security plan is in "TYPO3 core" project of bamboo
      */
     Project project() {
         return new Project().name(projectName).key(projectKey);
@@ -75,80 +79,65 @@ public class NightlySpec extends AbstractCoreSpec {
         Stage stagePreparation = new Stage("Preparation")
             .jobs(jobsPreparationStage.toArray(new Job[jobsPreparationStage.size()]));
 
+        // EARLY stage
+        ArrayList<Job> jobsEarlyStage = new ArrayList<Job>();
+        jobsEarlyStage.add(this.getJobCglCheckGitCommit("PHP72", true));
+        jobsEarlyStage.add(this.getJobComposerValidate("PHP72", true));
+        Stage stageEarly = new Stage("Early")
+            .jobs(jobsEarlyStage.toArray(new Job[jobsEarlyStage.size()]));
 
         // MAIN stage
         ArrayList<Job> jobsMainStage = new ArrayList<Job>();
 
-        jobsMainStage.add(this.getJobComposerValidate("PHP72", false));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql("PHP73", true));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql("PHP72", true));
 
-        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql("PHP72", false));
-        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql("PHP73", false));
+        jobsMainStage.addAll(this.getJobsAcceptanceTestsBackendMysql(this.numberOfAcceptanceTestJobs, "PHP72", true));
 
-        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql("PHP72", false));
-        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql("PHP73", false));
+        jobsMainStage.add(this.getJobIntegrationVarious("PHP72", true));
 
-        jobsMainStage.addAll(this.getJobsAcceptanceTestsBackendMysql(this.numberOfAcceptanceTestJobs, "PHP72", false));
-        jobsMainStage.addAll(this.getJobsAcceptanceTestsBackendMysql(this.numberOfAcceptanceTestJobs, "PHP73", false));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP73", true));
+        // mssql functionals are not executed as pre-merge
+        // jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, "PHP72", true));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, "PHP70", true));
 
-        jobsMainStage.add(this.getJobCglCheckFullCore("PHP72", false));
+        jobsMainStage.add(this.getJobUnitJavaScript("PHP72", true));
 
-        jobsMainStage.add(this.getJobIntegrationVarious("PHP72", false));
+        jobsMainStage.add(this.getJobLintPhp("PHP70", true));
+        jobsMainStage.add(this.getJobLintPhp("PHP71", true));
+        jobsMainStage.add(this.getJobLintPhp("PHP72", true));
+        jobsMainStage.add(this.getJobLintPhp("PHP73", true));
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP70", false));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP71", false));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP72", false));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP73", false));
+        jobsMainStage.add(this.getJobLintScssTs("PHP72", true));
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, "PHP70", false));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, "PHP71", false));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, "PHP72", false));
-        // no mssql with php 7.3 yet
-        // jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, "PHP73", false));
+        jobsMainStage.add(this.getJobUnitPhp("PHP70", true));
+        jobsMainStage.add(this.getJobUnitPhp("PHP71", true));
+        jobsMainStage.add(this.getJobUnitPhp("PHP72", true));
+        jobsMainStage.add(this.getJobUnitPhp("PHP73", true));
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, "PHP70", false));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, "PHP71", false));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, "PHP72", false));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, "PHP73", false));
-
-        jobsMainStage.add(this.getJobUnitJavaScript("PHP72", false));
-
-        jobsMainStage.add(this.getJobLintPhp("PHP70", false));
-        jobsMainStage.add(this.getJobLintPhp("PHP71", false));
-        jobsMainStage.add(this.getJobLintPhp("PHP72", false));
-        jobsMainStage.add(this.getJobLintPhp("PHP73", false));
-
-        jobsMainStage.add(this.getJobLintScssTs("PHP72", false));
-
-        jobsMainStage.add(this.getJobUnitPhp("PHP70", false));
-        jobsMainStage.add(this.getJobUnitPhp("PHP71", false));
-        jobsMainStage.add(this.getJobUnitPhp("PHP72", false));
-        jobsMainStage.add(this.getJobUnitPhp("PHP73", false));
-
-        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP70", false));
-        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP71", false));
-        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP72", false));
-        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP73", false));
+        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP70", true));
+        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP71", true));
+        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP72", true));
+        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP73", true));
 
         Stage stageMainStage = new Stage("Main stage")
             .jobs(jobsMainStage.toArray(new Job[jobsMainStage.size()]));
 
-
         // Compile plan
         return new Plan(project(), planName, planKey)
-            .description("Execute TYPO3 core 8.7 nightly tests. Auto generated! See Build/bamboo of core git repository.")
+            .description("Execute TYPO3 core 8.7 security tests. Auto generated! See Build/bamboo of core git repository.")
             .pluginConfigurations(this.getDefaultPlanPluginConfiguration())
             .stages(
                 stagePreparation,
+                stageEarly,
                 stageMainStage
             )
             .linkedRepositories("github TYPO3 TYPO3.CMS 8.7")
             .triggers(
-                new ScheduledTrigger()
-                    .name("Scheduled")
-                    .description("daily at night")
-                    // daily 04:42
-                    .cronExpression("0 42 4 ? * *")
-            )
+                new RemoteTrigger()
+                    .name("Remote trigger for pre-merge builds")
+                    .description("Gerrit")
+                    .triggerIPAddresses("5.10.165.218,91.184.35.13"))
             .variables(
                 new Variable("changeUrl", ""),
                 new Variable("patchset", "")
@@ -163,18 +152,18 @@ public class NightlySpec extends AbstractCoreSpec {
                 .recipients(new AnyNotificationRecipient(new AtlassianModule("com.atlassian.bamboo.plugins.bamboo-slack:recipient.slack"))
                     .recipientString("https://intercept.typo3.com/bamboo")
                 )
-            );
+        );
     }
 
     /**
-     * Job checking CGL of all core php files
+     * Job checking CGL of last git commit
      *
      * @param String requirementIdentifier
      * @param Boolean isSecurity
      */
-    protected Job getJobCglCheckFullCore(String requirementIdentifier, Boolean isSecurity) {
+    protected Job getJobCglCheckGitCommit(String requirementIdentifier, Boolean isSecurity) {
         return new Job("Integration CGL", new BambooKey("CGLCHECK"))
-            .description("Check coding guidelines of full core")
+            .description("Check coding guidelines by executing Build/Scripts/cglFixMyCommit.sh script")
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
@@ -182,11 +171,11 @@ public class NightlySpec extends AbstractCoreSpec {
                 this.getTaskStopDanglingContainers(),
                 this.getTaskComposerInstall(requirementIdentifier),
                 new ScriptTask()
-                    .description("Execute cgl check")
+                    .description("Execute cgl check script")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        "function phpCsFixer() {\n" +
+                        "function cglFixMyCommit() {\n" +
                         "    docker run \\\n" +
                         "        -u ${HOST_UID} \\\n" +
                         "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
@@ -194,11 +183,10 @@ public class NightlySpec extends AbstractCoreSpec {
                         "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
                         "        --rm \\\n" +
                         "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
-                        "        bin/bash -c \"cd ${PWD}; php -n -c /etc/php/cli-no-xdebug/php.ini bin/php-cs-fixer $*\"\n" +
+                        "        bin/bash -c \"cd ${PWD}; ./Build/Scripts/cglFixMyCommit.sh $*\"\n" +
                         "}\n" +
                         "\n" +
-                        "phpCsFixer fix -v --dry-run --path-mode intersection --config=Build/.php_cs typo3/\n" +
-                        "exit $?"
+                        "cglFixMyCommit dryrun\n"
                     )
             )
             .requirements(

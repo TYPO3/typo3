@@ -81,44 +81,44 @@ public class PreMergeSpec extends AbstractCoreSpec {
 
         // EARLY stage
         ArrayList<Job> jobsEarlyStage = new ArrayList<Job>();
-        jobsEarlyStage.add(this.getJobCglCheckGitCommit("PHP72"));
-        jobsEarlyStage.add(this.getJobComposerValidate("PHP72"));
+        jobsEarlyStage.add(this.getJobCglCheckGitCommit("PHP72", false));
+        jobsEarlyStage.add(this.getJobComposerValidate("PHP72", false));
         Stage stageEarly = new Stage("Early")
             .jobs(jobsEarlyStage.toArray(new Job[jobsEarlyStage.size()]));
 
         // MAIN stage
         ArrayList<Job> jobsMainStage = new ArrayList<Job>();
 
-        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql("PHP73"));
-        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql("PHP72"));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql("PHP73", false));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql("PHP72", false));
 
-        jobsMainStage.addAll(this.getJobsAcceptanceTestsBackendMysql(this.numberOfAcceptanceTestJobs, "PHP72"));
+        jobsMainStage.addAll(this.getJobsAcceptanceTestsBackendMysql(this.numberOfAcceptanceTestJobs, "PHP72", false));
 
-        jobsMainStage.add(this.getJobIntegrationVarious("PHP72"));
+        jobsMainStage.add(this.getJobIntegrationVarious("PHP72", false));
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP73"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, "PHP73", false));
         // mssql functionals are not executed as pre-merge
-        // jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, "PHP72"));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, "PHP70"));
+        // jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, "PHP72", false));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, "PHP70", false));
 
-        jobsMainStage.add(this.getJobUnitJavaScript("PHP72"));
+        jobsMainStage.add(this.getJobUnitJavaScript("PHP72", false));
 
-        jobsMainStage.add(this.getJobLintPhp("PHP70"));
-        jobsMainStage.add(this.getJobLintPhp("PHP71"));
-        jobsMainStage.add(this.getJobLintPhp("PHP72"));
-        jobsMainStage.add(this.getJobLintPhp("PHP73"));
+        jobsMainStage.add(this.getJobLintPhp("PHP70", false));
+        jobsMainStage.add(this.getJobLintPhp("PHP71", false));
+        jobsMainStage.add(this.getJobLintPhp("PHP72", false));
+        jobsMainStage.add(this.getJobLintPhp("PHP73", false));
 
-        jobsMainStage.add(this.getJobLintScssTs("PHP72"));
+        jobsMainStage.add(this.getJobLintScssTs("PHP72", false));
 
-        jobsMainStage.add(this.getJobUnitPhp("PHP70"));
-        jobsMainStage.add(this.getJobUnitPhp("PHP71"));
-        jobsMainStage.add(this.getJobUnitPhp("PHP72"));
-        jobsMainStage.add(this.getJobUnitPhp("PHP73"));
+        jobsMainStage.add(this.getJobUnitPhp("PHP70", false));
+        jobsMainStage.add(this.getJobUnitPhp("PHP71", false));
+        jobsMainStage.add(this.getJobUnitPhp("PHP72", false));
+        jobsMainStage.add(this.getJobUnitPhp("PHP73", false));
 
-        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP70"));
-        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP71"));
-        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP72"));
-        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP73"));
+        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP70", false));
+        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP71", false));
+        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP72", false));
+        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, "PHP73", false));
 
         Stage stageMainStage = new Stage("Main stage")
             .jobs(jobsMainStage.toArray(new Job[jobsMainStage.size()]));
@@ -161,14 +161,15 @@ public class PreMergeSpec extends AbstractCoreSpec {
      * Job checking CGL of last git commit
      *
      * @param String requirementIdentifier
+     * @param Boolean isSecurity
      */
-    protected Job getJobCglCheckGitCommit(String requirementIdentifier) {
+    protected Job getJobCglCheckGitCommit(String requirementIdentifier, Boolean isSecurity) {
         return new Job("Integration CGL", new BambooKey("CGLCHECK"))
             .description("Check coding guidelines by executing Build/Scripts/cglFixMyCommit.sh script")
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
-                this.getTaskGitCherryPick(),
+                this.getTaskGitCherryPick(isSecurity),
                 this.getTaskStopDanglingContainers(),
                 this.getTaskComposerInstall(requirementIdentifier),
                 new ScriptTask()

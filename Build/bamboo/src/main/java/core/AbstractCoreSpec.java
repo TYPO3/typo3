@@ -80,11 +80,25 @@ abstract public class AbstractCoreSpec {
     protected PlanPermissions getDefaultPlanPermissions(String projectKey, String planKey) {
         return new PlanPermissions(new PlanIdentifier(projectKey, planKey))
             .permissions(new Permissions()
-            .groupPermissions("TYPO3 GmbH", PermissionType.ADMIN, PermissionType.VIEW, PermissionType.EDIT, PermissionType.BUILD, PermissionType.CLONE)
-            .groupPermissions("TYPO3 Core Team", PermissionType.VIEW, PermissionType.BUILD)
-            .loggedInUserPermissions(PermissionType.VIEW)
-            .anonymousUserPermissionView()
-        );
+                .groupPermissions("TYPO3 GmbH", PermissionType.ADMIN, PermissionType.VIEW, PermissionType.EDIT, PermissionType.BUILD, PermissionType.CLONE)
+                .groupPermissions("TYPO3 Core Team", PermissionType.VIEW, PermissionType.BUILD)
+                .loggedInUserPermissions(PermissionType.VIEW)
+                .anonymousUserPermissionView()
+            );
+    }
+
+    /**
+     * Default permissions on core security plans
+     *
+     * @param projectName
+     * @param planName
+     * @return
+     */
+    protected PlanPermissions getSecurityPlanPermissions(String projectKey, String planKey) {
+        return new PlanPermissions(new PlanIdentifier(projectKey, planKey))
+            .permissions(new Permissions()
+                .groupPermissions("TYPO3 GmbH", PermissionType.ADMIN, PermissionType.VIEW, PermissionType.EDIT, PermissionType.BUILD, PermissionType.CLONE)
+            );
     }
 
     /**
@@ -183,14 +197,15 @@ abstract public class AbstractCoreSpec {
      * Job composer validate
      *
      * @param String requirementIdentifier
+     * @param Boolean isSecurity
      */
-    protected Job getJobComposerValidate(String requirementIdentifier) {
+    protected Job getJobComposerValidate(String requirementIdentifier, Boolean isSecurity) {
         return new Job("Validate composer.json", new BambooKey("VC"))
         .description("Validate composer.json before actual tests are executed")
         .pluginConfigurations(this.getDefaultJobPluginConfiguration())
         .tasks(
             this.getTaskGitCloneRepository(),
-            this.getTaskGitCherryPick(),
+            this.getTaskGitCherryPick(isSecurity),
             this.getTaskStopDanglingContainers(),
             new ScriptTask()
                 .description("composer validate")
@@ -212,14 +227,15 @@ abstract public class AbstractCoreSpec {
      * Job acceptance test installs system on mysql
      *
      * @param String requirementIdentfier
+     * @param Boolean isSecurity
      */
-    protected Job getJobAcceptanceTestInstallMysql(String requirementIdentifier) {
+    protected Job getJobAcceptanceTestInstallMysql(String requirementIdentifier, Boolean isSecurity) {
         return new Job("Accept inst my " + requirementIdentifier, new BambooKey("ACINSTMY" + requirementIdentifier))
             .description("Install TYPO3 on mariadb and load introduction package " + requirementIdentifier)
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
-                this.getTaskGitCherryPick(),
+                this.getTaskGitCherryPick(isSecurity),
                 this.getTaskStopDanglingContainers(),
                 this.getTaskComposerInstall(requirementIdentifier),
                 this.getTaskPrepareAcceptanceTest(),
@@ -268,14 +284,15 @@ abstract public class AbstractCoreSpec {
      * Job acceptance test installs system and introduction package on pgsql
      *
      * @param String requirementIdentfier
+     * @param Boolean isSecurity
      */
-    protected Job getJobAcceptanceTestInstallPgsql(String requirementIdentifier) {
+    protected Job getJobAcceptanceTestInstallPgsql(String requirementIdentifier, Boolean isSecurity) {
         return new Job("Accept inst pg " + requirementIdentifier, new BambooKey("ACINSTPG" + requirementIdentifier))
         .description("Install TYPO3 on pgsql and load introduction package " + requirementIdentifier)
         .pluginConfigurations(this.getDefaultJobPluginConfiguration())
         .tasks(
             this.getTaskGitCloneRepository(),
-            this.getTaskGitCherryPick(),
+            this.getTaskGitCherryPick(isSecurity),
             this.getTaskStopDanglingContainers(),
             this.getTaskComposerInstall(requirementIdentifier),
             this.getTaskPrepareAcceptanceTest(),
@@ -325,8 +342,9 @@ abstract public class AbstractCoreSpec {
      *
      * @param int numberOfChunks
      * @param String requirementIdentifier
+     * @param Boolean isSecurity
      */
-    protected ArrayList<Job> getJobsAcceptanceTestsBackendMysql(int numberOfChunks, String requirementIdentifier) {
+    protected ArrayList<Job> getJobsAcceptanceTestsBackendMysql(int numberOfChunks, String requirementIdentifier, Boolean isSecurity) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=1; i<=numberOfChunks; i++) {
@@ -335,7 +353,7 @@ abstract public class AbstractCoreSpec {
                 .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
                     this.getTaskGitCloneRepository(),
-                    this.getTaskGitCherryPick(),
+                    this.getTaskGitCherryPick(isSecurity),
                     this.getTaskStopDanglingContainers(),
                     this.getTaskComposerInstall(requirementIdentifier),
                     this.getTaskPrepareAcceptanceTest(),
@@ -407,8 +425,9 @@ abstract public class AbstractCoreSpec {
      *
      * @param int numberOfChunks
      * @param String requirementIdentifier
+     * @param Boolean isSecurity
      */
-    protected ArrayList<Job> getJobsFunctionalTestsMysql(int numberOfChunks, String requirementIdentifier) {
+    protected ArrayList<Job> getJobsFunctionalTestsMysql(int numberOfChunks, String requirementIdentifier, Boolean isSecurity) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=0; i<numberOfChunks; i++) {
@@ -417,7 +436,7 @@ abstract public class AbstractCoreSpec {
                 .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
                     this.getTaskGitCloneRepository(),
-                    this.getTaskGitCherryPick(),
+                    this.getTaskGitCherryPick(isSecurity),
                     this.getTaskStopDanglingContainers(),
                     this.getTaskComposerInstall(requirementIdentifier),
                     this.getTaskDockerDependenciesFunctionalMariadb10(),
@@ -468,8 +487,9 @@ abstract public class AbstractCoreSpec {
      *
      * @param int numberOfChunks
      * @param String requirementIdentifier
+     * @param Boolean isSecurity
      */
-    protected ArrayList<Job> getJobsFunctionalTestsMssql(int numberOfChunks, String requirementIdentifier) {
+    protected ArrayList<Job> getJobsFunctionalTestsMssql(int numberOfChunks, String requirementIdentifier, Boolean isSecurity) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=0; i<numberOfChunks; i++) {
@@ -478,7 +498,7 @@ abstract public class AbstractCoreSpec {
                 .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
                     this.getTaskGitCloneRepository(),
-                    this.getTaskGitCherryPick(),
+                    this.getTaskGitCherryPick(isSecurity),
                     this.getTaskStopDanglingContainers(),
                     this.getTaskComposerInstall(requirementIdentifier),
                     this.getTaskDockerDependenciesFunctionalMssql(),
@@ -533,8 +553,9 @@ abstract public class AbstractCoreSpec {
      *
      * @param int numberOfChunks
      * @param String requirementIdentifier
+     * @param Boolean isSecurity
      */
-    protected ArrayList<Job> getJobsFunctionalTestsPgsql(int numberOfChunks, String requirementIdentifier) {
+    protected ArrayList<Job> getJobsFunctionalTestsPgsql(int numberOfChunks, String requirementIdentifier, Boolean isSecurity) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=0; i<numberOfChunks; i++) {
@@ -543,7 +564,7 @@ abstract public class AbstractCoreSpec {
                 .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
                     this.getTaskGitCloneRepository(),
-                    this.getTaskGitCherryPick(),
+                    this.getTaskGitCherryPick(isSecurity),
                     this.getTaskStopDanglingContainers(),
                     this.getTaskComposerInstall(requirementIdentifier),
                     this.getTaskDockerDependenciesFunctionalPostgres95(),
@@ -594,15 +615,16 @@ abstract public class AbstractCoreSpec {
      * Job with various smaller script tests
      *
      * @param String requirementIdentifier
+     * @param Boolean isSecurity
      */
-    protected Job getJobIntegrationVarious(String requirementIdentifier) {
+    protected Job getJobIntegrationVarious(String requirementIdentifier, Boolean isSecurity) {
         // Exception code checker, xlf, permissions, rst file check
         return new Job("Integration various", new BambooKey("CDECC"))
             .description("Checks duplicate exceptions, git submodules, xlf files, permissions, rst")
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
-                this.getTaskGitCherryPick(),
+                this.getTaskGitCherryPick(isSecurity),
                 this.getTaskStopDanglingContainers(),
                 this.getTaskComposerInstall(requirementIdentifier),
                 new ScriptTask()
@@ -708,14 +730,15 @@ abstract public class AbstractCoreSpec {
      * Job for javascript unit tests
      *
      * @param String requirementIdentifier
+     * @param Boolean isSecurity
      */
-    protected Job getJobUnitJavaScript(String requirementIdentifier) {
+    protected Job getJobUnitJavaScript(String requirementIdentifier, Boolean isSecurity) {
         return new Job("Unit JavaScript", new BambooKey("JSUT"))
             .description("Run JavaScript unit tests")
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
-                this.getTaskGitCherryPick(),
+                this.getTaskGitCherryPick(isSecurity),
                 this.getTaskStopDanglingContainers(),
                 this.getTaskComposerInstall(requirementIdentifier),
                 new ScriptTask()
@@ -777,15 +800,16 @@ abstract public class AbstractCoreSpec {
     /**
      * Job for PHP lint
      *
-     * @param String requirementIdentfier
+     * @param String requirementIdentifier
+     * @param Boolean isSecurity
      */
-    protected Job getJobLintPhp(String requirementIdentifier) {
+    protected Job getJobLintPhp(String requirementIdentifier, Boolean isSecurity) {
         return new Job("Lint " + requirementIdentifier, new BambooKey("L" + requirementIdentifier))
             .description("Run php -l on source files for linting " + requirementIdentifier)
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
-                this.getTaskGitCherryPick(),
+                this.getTaskGitCherryPick(isSecurity),
                 this.getTaskStopDanglingContainers(),
                 new ScriptTask()
                     .description("Run php lint")
@@ -817,14 +841,15 @@ abstract public class AbstractCoreSpec {
      * Job for lint npm scss and typescript
      *
      * @param String requirementIdentifier
+     * @param Boolean isSecurity
      */
-    protected Job getJobLintScssTs(String requirementIdentifier) {
+    protected Job getJobLintScssTs(String requirementIdentifier, Boolean isSecurity) {
         return new Job("Lint scss ts", new BambooKey("LSTS"))
             .description("Lint scss and ts, build css and js, test git is clean")
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
-                this.getTaskGitCherryPick(),
+                this.getTaskGitCherryPick(isSecurity),
                 this.getTaskStopDanglingContainers(),
                 new ScriptTask()
                     .description("yarn install in Build/ dir")
@@ -920,14 +945,15 @@ abstract public class AbstractCoreSpec {
      * Job for unit testing PHP
      *
      * @param String requirementIdentfier
+     * @param Boolean isSecurity
      */
-    protected Job getJobUnitPhp(String requirementIdentifier) {
+    protected Job getJobUnitPhp(String requirementIdentifier, Boolean isSecurity) {
         return new Job("Unit " + requirementIdentifier, new BambooKey("UT" + requirementIdentifier))
             .description("Run unit tests " + requirementIdentifier)
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
-                this.getTaskGitCherryPick(),
+                this.getTaskGitCherryPick(isSecurity),
                 this.getTaskStopDanglingContainers(),
                 this.getTaskComposerInstall(requirementIdentifier),
                 this.getTaskDockerDependenciesUnit(),
@@ -969,8 +995,9 @@ abstract public class AbstractCoreSpec {
      *
      * @param int numberOfRuns
      * @param String requirementIdentfier
+     * @param Boolean isSecurity
      */
-    protected ArrayList<Job> getJobUnitPhpRandom(int numberOfRuns, String requirementIdentifier) {
+    protected ArrayList<Job> getJobUnitPhpRandom(int numberOfRuns, String requirementIdentifier, Boolean isSecurity) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=0; i<numberOfRuns; i++) {
@@ -979,7 +1006,7 @@ abstract public class AbstractCoreSpec {
                 .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
                     this.getTaskGitCloneRepository(),
-                    this.getTaskGitCherryPick(),
+                    this.getTaskGitCherryPick(isSecurity),
                     this.getTaskStopDanglingContainers(),
                     this.getTaskComposerInstall(requirementIdentifier),
                     this.getTaskDockerDependenciesUnit(),
@@ -1030,21 +1057,39 @@ abstract public class AbstractCoreSpec {
 
     /**
      * Task definition to cherry pick a patch set from gerrit on top of cloned core
+     *
+     * @param Boolean isSecurity
      */
-    protected Task getTaskGitCherryPick() {
-        return new ScriptTask()
-            .description("Gerrit cherry pick")
-            .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
-            .inlineBody(
-                this.getScriptTaskBashInlineBody() +
-                "CHANGEURL=${bamboo.changeUrl}\n" +
-                "CHANGEURLID=${CHANGEURL#https://review.typo3.org/}\n" +
-                "PATCHSET=${bamboo.patchset}\n" +
-                "\n" +
-                "if [[ $CHANGEURL ]]; then\n" +
-                "    gerrit-cherry-pick https://review.typo3.org/Packages/TYPO3.CMS $CHANGEURLID/$PATCHSET || exit 1\n" +
-                "fi\n"
-            );
+    protected Task getTaskGitCherryPick(Boolean isSecurity) {
+        if (isSecurity) {
+            return new ScriptTask()
+                .description("Gerrit cherry pick")
+                .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                .inlineBody(
+                    this.getScriptTaskBashInlineBody() +
+                    "CHANGEURL=${bamboo.changeUrl}\n" +
+                    "CHANGEURLID=${CHANGEURL#https://review.typo3.org/}\n" +
+                    "PATCHSET=${bamboo.patchset}\n" +
+                    "\n" +
+                    "if [[ $CHANGEURL ]]; then\n" +
+                    "    gerrit-cherry-pick https://review.typo3.org/Teams/Security/TYPO3v4-Core $CHANGEURLID/$PATCHSET || exit 1\n" +
+                    "fi\n"
+                );
+        } else {
+            return new ScriptTask()
+                .description("Gerrit cherry pick")
+                .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                .inlineBody(
+                    this.getScriptTaskBashInlineBody() +
+                    "CHANGEURL=${bamboo.changeUrl}\n" +
+                    "CHANGEURLID=${CHANGEURL#https://review.typo3.org/}\n" +
+                    "PATCHSET=${bamboo.patchset}\n" +
+                    "\n" +
+                    "if [[ $CHANGEURL ]]; then\n" +
+                    "    gerrit-cherry-pick https://review.typo3.org/Packages/TYPO3.CMS $CHANGEURLID/$PATCHSET || exit 1\n" +
+                    "fi\n"
+                );
+        }
     }
 
     /**
