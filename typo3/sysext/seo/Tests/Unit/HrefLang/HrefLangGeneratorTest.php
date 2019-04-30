@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Seo\Tests\Unit\HrefLang;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Seo\HrefLang\HrefLangGenerator;
@@ -41,10 +42,9 @@ class HrefLangGeneratorTest extends UnitTestCase
             ['getSiteLanguage'],
             [
                 $this->prophesize(ContentObjectRenderer::class)->reveal(),
-                $this->prophesize(TypoScriptFrontendController::class)->reveal()
-            ],
-            '',
-            true
+                $this->prophesize(TypoScriptFrontendController::class)->reveal(),
+                $this->prophesize(ServerRequestInterface::class)->reveal()
+            ]
         );
 
         $check = $shouldBeCalled ? $this->once() : $this->never();
