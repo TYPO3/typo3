@@ -36,13 +36,13 @@ import com.atlassian.bamboo.specs.model.task.ScriptTaskProperties;
 import com.atlassian.bamboo.specs.util.BambooServer;
 
 /**
- * Core master pre-merge test plan.
+ * Core master security test plan.
  */
 @BambooSpec
-public class PreMergeSpec extends AbstractCoreSpec {
+public class SecuritySpec extends AbstractCoreSpec {
 
-    protected static String planName = "Core master pre-merge";
-    protected static String planKey = "GTC";
+    protected static String planName = "Core master security";
+    protected static String planKey = "GTS";
 
     protected int numberOfAcceptanceTestJobs = 10;
     protected int numberOfFunctionalMysqlJobs = 10;
@@ -57,8 +57,8 @@ public class PreMergeSpec extends AbstractCoreSpec {
     public static void main(final String[] args) throws Exception {
         // By default credentials are read from the '.credentials' file.
         BambooServer bambooServer = new BambooServer(bambooServerName);
-        bambooServer.publish(new PreMergeSpec().createPlan());
-        bambooServer.publish(new PreMergeSpec().getDefaultPlanPermissions(projectKey, planKey));
+        bambooServer.publish(new SecuritySpec().createPlan());
+        bambooServer.publish(new SecuritySpec().getSecurityPlanPermissions(projectKey, planKey));
     }
 
     /**
@@ -80,50 +80,50 @@ public class PreMergeSpec extends AbstractCoreSpec {
 
         // EARLY stage
         ArrayList<Job> jobsEarlyStage = new ArrayList<Job>();
-        jobsEarlyStage.add(this.getJobCglCheckGitCommit("PHP72", false));
-        jobsEarlyStage.add(this.getJobComposerValidate("PHP72", false));
+        jobsEarlyStage.add(this.getJobCglCheckGitCommit("PHP72", true));
+        jobsEarlyStage.add(this.getJobComposerValidate("PHP72", true));
         Stage stageEarly = new Stage("Early")
             .jobs(jobsEarlyStage.toArray(new Job[jobsEarlyStage.size()]));
 
         // MAIN stage
         ArrayList<Job> jobsMainStage = new ArrayList<Job>();
 
-        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(0, "PHP73", this.getTaskComposerInstall("PHP73"), false));
-        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql(0, "PHP72", this.getTaskComposerInstall("PHP72"), false));
-        jobsMainStage.add(this.getJobAcceptanceTestInstallSqlite(0, "PHP72", this.getTaskComposerInstall("PHP72"), false));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(0, "PHP73", this.getTaskComposerInstall("PHP73"), true));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql(0, "PHP72", this.getTaskComposerInstall("PHP72"), true));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallSqlite(0, "PHP72", this.getTaskComposerInstall("PHP72"), true));
 
-        jobsMainStage.addAll(this.getJobsAcceptanceTestsBackendMysql(0, this.numberOfAcceptanceTestJobs, "PHP73", this.getTaskComposerInstall("PHP73"), false));
+        jobsMainStage.addAll(this.getJobsAcceptanceTestsBackendMysql(0, this.numberOfAcceptanceTestJobs, "PHP73", this.getTaskComposerInstall("PHP73"), true));
 
-        jobsMainStage.add(this.getJobIntegrationAnnotations(0, "PHP72", this.getTaskComposerInstall("PHP72"), false));
+        jobsMainStage.add(this.getJobIntegrationAnnotations(0, "PHP72", this.getTaskComposerInstall("PHP72"), true));
 
-        jobsMainStage.add(this.getJobIntegrationVarious(0, "PHP72", this.getTaskComposerInstall("PHP72"), false));
+        jobsMainStage.add(this.getJobIntegrationVarious(0, "PHP72", this.getTaskComposerInstall("PHP72"), true));
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(0, this.numberOfFunctionalMysqlJobs, "PHP73", this.getTaskComposerInstall("PHP73"), false));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(0, this.numberOfFunctionalMysqlJobs, "PHP73", this.getTaskComposerInstall("PHP73"), true));
         // mssql functionals are not executed as pre-merge
-        // jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(0, this.numberOfFunctionalMssqlJobs, "PHP72", this.getTaskComposerInstall("PHP72"), false));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(0, this.numberOfFunctionalPgsqlJobs, "PHP72", this.getTaskComposerInstall("PHP72"), false));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsSqlite(0, this.numberOfFunctionalSqliteJobs, "PHP72", this.getTaskComposerInstall("PHP72"), false));
+        // jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(0, this.numberOfFunctionalMssqlJobs, "PHP72", this.getTaskComposerInstall("PHP72"), true));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(0, this.numberOfFunctionalPgsqlJobs, "PHP72", this.getTaskComposerInstall("PHP72"), true));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsSqlite(0, this.numberOfFunctionalSqliteJobs, "PHP72", this.getTaskComposerInstall("PHP72"), true));
 
-        jobsMainStage.add(this.getJobUnitJavaScript(0, "PHP72", this.getTaskComposerInstall("PHP72"), false));
+        jobsMainStage.add(this.getJobUnitJavaScript(0, "PHP72", this.getTaskComposerInstall("PHP72"), true));
 
-        jobsMainStage.add(this.getJobLintPhp("PHP72", false));
-        jobsMainStage.add(this.getJobLintPhp("PHP73", false));
+        jobsMainStage.add(this.getJobLintPhp("PHP72", true));
+        jobsMainStage.add(this.getJobLintPhp("PHP73", true));
 
-        jobsMainStage.add(this.getJobLintScssTs("PHP72", false));
+        jobsMainStage.add(this.getJobLintScssTs("PHP72", true));
 
-        jobsMainStage.add(this.getJobUnitPhp(0, "PHP72", this.getTaskComposerInstall("PHP72"), false));
-        jobsMainStage.add(this.getJobUnitPhp(0, "PHP73", this.getTaskComposerInstall("PHP73"), false));
-        jobsMainStage.add(this.getJobUnitDeprecatedPhp(0, "PHP72", this.getTaskComposerInstall("PHP72"), false));
-        jobsMainStage.add(this.getJobUnitDeprecatedPhp(0, "PHP73", this.getTaskComposerInstall("PHP73"), false));
-        jobsMainStage.addAll(this.getJobUnitPhpRandom(0, this.numberOfUnitRandomOrderJobs, "PHP72", this.getTaskComposerInstall("PHP72"), false));
-        jobsMainStage.addAll(this.getJobUnitPhpRandom(0, this.numberOfUnitRandomOrderJobs, "PHP73", this.getTaskComposerInstall("PHP73"), false));
+        jobsMainStage.add(this.getJobUnitPhp(0, "PHP72", this.getTaskComposerInstall("PHP72"), true));
+        jobsMainStage.add(this.getJobUnitPhp(0, "PHP73", this.getTaskComposerInstall("PHP73"), true));
+        jobsMainStage.add(this.getJobUnitDeprecatedPhp(0, "PHP72", this.getTaskComposerInstall("PHP72"), true));
+        jobsMainStage.add(this.getJobUnitDeprecatedPhp(0, "PHP73", this.getTaskComposerInstall("PHP73"), true));
+        jobsMainStage.addAll(this.getJobUnitPhpRandom(0, this.numberOfUnitRandomOrderJobs, "PHP72", this.getTaskComposerInstall("PHP72"), true));
+        jobsMainStage.addAll(this.getJobUnitPhpRandom(0, this.numberOfUnitRandomOrderJobs, "PHP73", this.getTaskComposerInstall("PHP73"), true));
 
         Stage stageMainStage = new Stage("Main stage")
             .jobs(jobsMainStage.toArray(new Job[jobsMainStage.size()]));
 
         // Compile plan
         return new Plan(project(), planName, planKey)
-            .description("Execute TYPO3 core master pre-merge tests. Auto generated! See Build/bamboo of core git repository.")
+            .description("Execute TYPO3 core master security tests. Auto generated! See Build/bamboo of core git repository.")
             .pluginConfigurations(this.getDefaultPlanPluginConfiguration())
             .stages(
                 stagePreparation,
@@ -132,10 +132,8 @@ public class PreMergeSpec extends AbstractCoreSpec {
             )
             .linkedRepositories("github TYPO3 TYPO3.CMS")
             .triggers(
-                new RepositoryPollingTrigger()
-                    .name("Repository polling for post-merge builds"),
                 new RemoteTrigger()
-                    .name("Remote trigger for pre-merge builds")
+                    .name("Remote trigger for security builds")
                     .description("Gerrit")
                     .triggerIPAddresses("5.10.165.218,91.184.35.13"))
             .variables(
