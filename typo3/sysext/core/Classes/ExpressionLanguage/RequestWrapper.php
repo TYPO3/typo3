@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\ExpressionLanguage;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Routing\RouteResultInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
@@ -76,5 +77,10 @@ class RequestWrapper
     public function getNormalizedParams(): ?NormalizedParams
     {
         return $this->request->getAttribute('normalizedParams');
+    }
+
+    public function getPageArguments(): ?RouteResultInterface
+    {
+        return $this->request->getAttribute('routing');
     }
 }
