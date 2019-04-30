@@ -454,9 +454,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     public function localizePageWithLocalizationExclude()
     {
         $GLOBALS['TCA'][self::TABLE_Page]['columns'][self::FIELD_PageHotel]['l10n_mode'] = 'exclude';
-        // in these test cases we expect new pages not to be hidden in order to
-        // verify proper overlaying behavior during the frontend render process
-        $GLOBALS['TCA'][self::TABLE_Page]['columns']['hidden']['config']['default'] = 0;
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
     }
@@ -464,9 +461,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     public function localizePageTwiceWithLocalizationExclude()
     {
         $GLOBALS['TCA'][self::TABLE_Page]['columns'][self::FIELD_PageHotel]['l10n_mode'] = 'exclude';
-        // in these test cases we expect new pages not to be hidden in order to
-        // verify proper overlaying behavior during the frontend render process
-        $GLOBALS['TCA'][self::TABLE_Page]['columns']['hidden']['config']['default'] = 0;
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageIdFirst'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
@@ -476,9 +470,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     public function localizePageAndAddHotelChildWithLocalizationExclude()
     {
         $GLOBALS['TCA'][self::TABLE_Page]['columns'][self::FIELD_PageHotel]['l10n_mode'] = 'exclude';
-        // in these test cases we expect new pages not to be hidden in order to
-        // verify proper overlaying behavior during the frontend render process
-        $GLOBALS['TCA'][self::TABLE_Page]['columns']['hidden']['config']['default'] = 0;
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
         $this->actionService->modifyRecords(
@@ -492,9 +483,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
     public function localizePageWithLanguageSynchronization()
     {
-        // in these test cases we expect new pages not to be hidden in order to
-        // verify proper overlaying behavior during the frontend render process
-        $GLOBALS['TCA'][self::TABLE_Page]['columns']['hidden']['config']['default'] = 0;
         $GLOBALS['TCA'][self::TABLE_Page]['columns'][self::FIELD_PageHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
@@ -502,9 +490,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
     public function localizePageAndAddHotelChildWithLanguageSynchronization()
     {
-        // in these test cases we expect new pages not to be hidden in order to
-        // verify proper overlaying behavior during the frontend render process
-        $GLOBALS['TCA'][self::TABLE_Page]['columns']['hidden']['config']['default'] = 0;
         $GLOBALS['TCA'][self::TABLE_Page]['columns'][self::FIELD_PageHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
@@ -519,9 +504,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
     public function localizePageAndAddMonoglotHotelChildWithLanguageSynchronization()
     {
-        // in these test cases we expect new pages not to be hidden in order to
-        // verify proper overlaying behavior during the frontend render process
-        $GLOBALS['TCA'][self::TABLE_Page]['columns']['hidden']['config']['default'] = 0;
         unset($GLOBALS['TCA'][self::TABLE_Hotel]['ctrl']['languageField']);
         unset($GLOBALS['TCA'][self::TABLE_Hotel]['ctrl']['transOrigPointerField']);
         $GLOBALS['TCA'][self::TABLE_Page]['columns'][self::FIELD_PageHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
@@ -538,9 +520,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
     public function localizeAndCopyPageWithLanguageSynchronization()
     {
-        // in these test cases we expect new pages not to be hidden in order to
-        // verify proper overlaying behavior during the frontend render process
-        $GLOBALS['TCA'][self::TABLE_Page]['columns']['hidden']['config']['default'] = 0;
         $GLOBALS['TCA'][self::TABLE_Page]['columns'][self::FIELD_PageHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
@@ -550,9 +529,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
     public function localizePageWithSynchronizationAndCustomLocalizedHotel()
     {
-        // in these test cases we expect new pages not to be hidden in order to
-        // verify proper overlaying behavior during the frontend render process
-        $GLOBALS['TCA'][self::TABLE_Page]['columns']['hidden']['config']['default'] = 0;
         $GLOBALS['TCA'][self::TABLE_Page]['columns'][self::FIELD_PageHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];

@@ -4367,6 +4367,12 @@ class DataHandler implements LoggerAwareInterface
         } else {
             // Create new page which needs to contain the same pid as the original page
             $overrideValues['pid'] = $row['pid'];
+            // Take over the hidden state of the original language state, this is done due to legacy reasons where-as
+            // pages_language_overlay was set to "hidden -> default=0" but pages hidden -> default 1"
+            if (!empty($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'])) {
+                $hiddenFieldName = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
+                $overrideValues[$hiddenFieldName] = $row[$hiddenFieldName] ?? $GLOBALS['TCA'][$table]['columns'][$hiddenFieldName]['config']['default'];
+            }
             $temporaryId = StringUtility::getUniqueId('NEW');
             $copyTCE = $this->getLocalTCE();
             $copyTCE->start([$table => [$temporaryId => $overrideValues]], [], $this->BE_USER);
@@ -4374,7 +4380,6 @@ class DataHandler implements LoggerAwareInterface
             // Getting the new UID as if it had been copied:
             $theNewSQLID = $copyTCE->substNEWwithIDs[$temporaryId];
             if ($theNewSQLID) {
-                // If is by design that $table is used and not $table! See "l10nmgr" extension. Could be debated, but this is what I chose for this "pseudo case"
                 $this->copyMappingArray[$table][$uid] = $theNewSQLID;
                 $newId = $theNewSQLID;
             }
