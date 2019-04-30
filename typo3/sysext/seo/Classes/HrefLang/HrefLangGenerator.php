@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Seo\HrefLang;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -44,12 +45,17 @@ class HrefLangGenerator
     protected $typoScriptFrontendController;
 
     /**
+     * @var ServerRequestInterface
+     */
+    protected $request;
+
+    /**
      * HreflangGenerator constructor
      *
      * @param ContentObjectRenderer|null $cObj
      * @param TypoScriptFrontendController|null $typoScriptFrontendController
      */
-    public function __construct(ContentObjectRenderer $cObj = null, TypoScriptFrontendController $typoScriptFrontendController = null)
+    public function __construct(ContentObjectRenderer $cObj = null, TypoScriptFrontendController $typoScriptFrontendController = null, ServerRequestInterface $request = null)
     {
         if ($cObj === null) {
             $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
@@ -57,9 +63,13 @@ class HrefLangGenerator
         if ($typoScriptFrontendController === null) {
             $typoScriptFrontendController = $this->getTypoScriptFrontendController();
         }
+        if ($request === null) {
+            $request = $this->getRequest();
+        }
 
         $this->cObj = $cObj;
         $this->typoScriptFrontendController = $typoScriptFrontendController;
+        $this->request = $request;
     }
 
     public function generate(): string
@@ -69,7 +79,7 @@ class HrefLangGenerator
             return '';
         }
 
-        if ($GLOBALS['TYPO3_REQUEST']->getAttribute('site') instanceof Site) {
+        if ($this->request->getAttribute('site') instanceof Site) {
             $languageMenu = GeneralUtility::makeInstance(LanguageMenuProcessor::class);
             $languages = $languageMenu->process($this->cObj, [], [], []);
             foreach ($languages['languagemenu'] as $language) {
@@ -115,7 +125,7 @@ class HrefLangGenerator
      */
     protected function getSiteLanguage(): SiteLanguage
     {
-        return $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
+        return $this->request->getAttribute('language');
     }
 
     /**
@@ -124,5 +134,13 @@ class HrefLangGenerator
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
+    }
+
+    /**
+     * @return ServerRequestInterface
+     */
+    protected function getRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }
