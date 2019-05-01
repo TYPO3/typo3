@@ -370,6 +370,10 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
             ],
         ];
 
+        $formElementWithoutHmac = [
+            'test' => 'xxx',
+        ];
+
         $invalidFormElement = [
             'test' => 'xxx1',
             '_orig_test' => [
@@ -448,7 +452,6 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 1528588036,
                 $validationDto
             ],
-
             [
                 [
                     'isFormElementPropertyDefinedInFormEditorSetup' => false,
@@ -467,6 +470,17 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                     'getFormElementPredefinedDefaultValueFromFormEditorSetup' => 'default',
                 ],
                 $formElement,
+                $sessionToken,
+                -1,
+                $validationDto
+            ],
+            [
+                [
+                    'isFormElementPropertyDefinedInFormEditorSetup' => false,
+                    'isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup' => true,
+                    'getFormElementPredefinedDefaultValueFromFormEditorSetup' => 'default',
+                ],
+                $formElementWithoutHmac,
                 $sessionToken,
                 1528588035,
                 $validationDto
@@ -492,6 +506,10 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 'value' => 'xxx',
                 'hmac' => GeneralUtility::hmac(serialize([$identifier, 'validators', 'StringLength', 'test', 'xxx']), $sessionToken),
             ],
+        ];
+
+        $formElementWithoutHmac = [
+            'test' => 'xxx',
         ];
 
         $invalidFormElement = [
@@ -591,6 +609,17 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                     'getPropertyCollectionPredefinedDefaultValueFromFormEditorSetup' => 'default',
                 ],
                 $formElement,
+                $sessionToken,
+                -1,
+                $validationDto
+            ],
+            [
+                [
+                    'isPropertyCollectionPropertyDefinedInFormEditorSetup' => false,
+                    'isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup' => true,
+                    'getPropertyCollectionPredefinedDefaultValueFromFormEditorSetup' => 'default',
+                ],
+                $formElementWithoutHmac,
                 $sessionToken,
                 1528591502,
                 $validationDto

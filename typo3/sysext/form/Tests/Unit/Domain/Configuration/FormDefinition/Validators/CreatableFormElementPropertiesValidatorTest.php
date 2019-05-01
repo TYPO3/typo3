@@ -31,7 +31,7 @@ class CreatableFormElementPropertiesValidatorTest extends UnitTestCase
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528588035);
 
-        $validationDto = new ValidationDto(null, null, 'test-1', 'label');
+        $validationDto = new ValidationDto('standard', null, 'test-1', 'label');
         $input = 'xxx';
         $typeConverter = $this->getAccessibleMock(
             CreatableFormElementPropertiesValidator::class,
