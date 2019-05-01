@@ -32,7 +32,7 @@ class CreatablePropertyCollectionElementPropertiesValidatorTest extends UnitTest
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528591502);
 
-        $validationDto = new ValidationDto(null, null, 'test-1', 'label', 'validators', 'StringLength');
+        $validationDto = new ValidationDto('standard', null, 'test-1', 'label', 'validators', 'StringLength');
         $typeConverter = $this->getAccessibleMock(
             CreatablePropertyCollectionElementPropertiesValidator::class,
             ['getConfigurationService'],

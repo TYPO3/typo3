@@ -205,6 +205,35 @@ class TranslationService implements SingletonInterface
     }
 
     /**
+     * @param string $key
+     * @param array $arguments
+     * @param array $translationFiles
+     * @return array the modified array
+     * @internal
+     */
+    public function translateToAllBackendLanguages(
+        string $key,
+        array $arguments = null,
+        array $translationFiles = []
+    ): array {
+        $result = [];
+        $translationFiles = $this->sortArrayWithIntegerKeysDescending($translationFiles);
+
+        foreach ($this->getAllTypo3BackendLanguages() as $language) {
+            $result[$language] = $key;
+            foreach ($translationFiles as $translationFile) {
+                $translatedValue = $this->translate($key, $arguments, $translationFile, $language, $key);
+                if ($translatedValue !== $key) {
+                    $result[$language] = $translatedValue;
+                    break;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * @param FormRuntime $formRuntime
      * @param string $finisherIdentifier
      * @param string $optionKey
@@ -681,6 +710,19 @@ class TranslationService implements SingletonInterface
             return $GLOBALS['TYPO3_REQUEST']->getAttribute('language', null);
         }
         return null;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getAllTypo3BackendLanguages(): array
+    {
+        $languages = array_merge(
+            ['default'],
+            array_values($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'] ?? [])
+        );
+
+        return $languages;
     }
 
     /**

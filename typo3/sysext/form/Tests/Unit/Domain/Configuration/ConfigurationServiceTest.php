@@ -1136,6 +1136,9 @@ class ConfigurationServiceTest extends UnitTestCase
                             'predefinedDefaults' => [
                                 'foo.bar' => 'xxx',
                             ],
+                            'untranslatedPredefinedDefaults' => [
+                                'foo.bar' => 'xxx',
+                            ],
                         ],
                     ],
                 ],
@@ -1470,6 +1473,9 @@ class ConfigurationServiceTest extends UnitTestCase
                         'validators' => [
                             'someValidator' => [
                                 'predefinedDefaults' => [
+                                    'some.property' => 'value',
+                                ],
+                                'untranslatedPredefinedDefaults' => [
                                     'some.property' => 'value',
                                 ],
                             ],
