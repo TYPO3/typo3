@@ -103,7 +103,7 @@ class SimpleLockStrategyTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     public function releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory($file)
     {
         // Create test file
-        touch($file);
+        @touch($file);
         if (!is_file($file)) {
             $this->markTestIncomplete('releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory() skipped: Test file could not be created');
         }
