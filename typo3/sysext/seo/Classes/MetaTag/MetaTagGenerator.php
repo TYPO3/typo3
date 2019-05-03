@@ -79,6 +79,13 @@ class MetaTagGenerator
             }
         }
 
+        /*
+         * Set type of twitter card to summary. This value can be overridden by TypoScript or the MetaTag API by
+         * using the replace option. In v10 this will be a page property
+        */
+        $manager = $metaTagManagerRegistry->getManagerForProperty('twitter:card');
+        $manager->addProperty('twitter:card', 'summary');
+
         if (!empty($params['page']['twitter_title'])) {
             $manager = $metaTagManagerRegistry->getManagerForProperty('twitter:title');
             $manager->addProperty('twitter:title', $params['page']['twitter_title']);
