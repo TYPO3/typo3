@@ -35,7 +35,7 @@
 		"typo3/class-alias-loader": "^1.0",
 		"typo3/cms-cli": "^1.0.2",
 		"typo3/cms-composer-installers": "^1.2.8",
-		"typo3/phar-stream-wrapper": "^3.0.1"
+		"typo3/phar-stream-wrapper": "^3.1.1"
 	},
 	"suggest": {
 		"ext-fileinfo": "Used for proper file type detection in the file abstraction layer",
