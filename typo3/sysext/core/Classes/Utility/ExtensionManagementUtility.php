@@ -124,6 +124,14 @@ class ExtensionManagementUtility
             trigger_error('EXT:version has been moved into EXT:workspaces, you should check against "workspaces", as this might lead to unexpected behaviour in the future.', E_USER_DEPRECATED);
             $key = 'workspaces';
         }
+        if ($key === 'sv') {
+            trigger_error('EXT:sv has been moved into EXT:core, you should remove your check as code is always loaded, as this might lead to unexpected behaviour in the future.', E_USER_DEPRECATED);
+            return true;
+        }
+        if ($key === 'saltedpasswords') {
+            trigger_error('EXT:saltedpasswords has been moved into EXT:core, you should remove your check as code is always loaded, as this might lead to unexpected behaviour in the future.', E_USER_DEPRECATED);
+            return true;
+        }
         if ($exitOnError !== null) {
             trigger_error('Calling ExtensionManagementUtility::isLoaded() with a second argument via "exitOnError" will be removed in TYPO3 v10.0, handle an unloaded package yourself in the future.', E_USER_DEPRECATED);
         }
