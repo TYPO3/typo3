@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c35f3fa1a21d51fe53bef3a32a429a5f",
+    "content-hash": "dd75c56b773d10022589ed34561b54ba",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -2455,16 +2455,16 @@
         },
         {
             "name": "typo3/phar-stream-wrapper",
-            "version": "v3.1.0",
+            "version": "v3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/phar-stream-wrapper.git",
-                "reference": "19edc4e0ca5174764e3c946431b8b00326304944"
+                "reference": "fff6f5e037882f816cd41a9f5ccd8d8f97bfdebf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/phar-stream-wrapper/zipball/19edc4e0ca5174764e3c946431b8b00326304944",
-                "reference": "19edc4e0ca5174764e3c946431b8b00326304944",
+                "url": "https://api.github.com/repos/TYPO3/phar-stream-wrapper/zipball/fff6f5e037882f816cd41a9f5ccd8d8f97bfdebf",
+                "reference": "fff6f5e037882f816cd41a9f5ccd8d8f97bfdebf",
                 "shasum": ""
             },
             "require": {
@@ -2473,6 +2473,7 @@
                 "php": "^7.0"
             },
             "require-dev": {
+                "ext-xdebug": "*",
                 "phpunit/phpunit": "^6.5"
             },
             "type": "library",
@@ -2493,7 +2494,7 @@
                 "security",
                 "stream-wrapper"
             ],
-            "time": "2019-03-01T23:18:27+00:00"
+            "time": "2019-05-05T17:30:25+00:00"
         },
         {
             "name": "typo3fluid/fluid",
