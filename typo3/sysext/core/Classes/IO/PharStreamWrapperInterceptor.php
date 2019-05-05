@@ -17,10 +17,11 @@ namespace TYPO3\CMS\Core\IO;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\PharStreamWrapper\Assertable;
 use TYPO3\PharStreamWrapper\Exception;
+use TYPO3\PharStreamWrapper\Manager;
 
-class PharStreamWrapperInterceptor implements \TYPO3\PharStreamWrapper\Assertable
+class PharStreamWrapperInterceptor implements Assertable
 {
     /**
      * Asserts the given path of a Phar file is located in a valid path
@@ -48,71 +49,12 @@ class PharStreamWrapperInterceptor implements \TYPO3\PharStreamWrapper\Assertabl
      */
     protected function isAllowed(string $path): bool
     {
-        $path = $this->determineBaseFile($path);
-        if (!GeneralUtility::isAbsPath($path)) {
-            $path = Environment::getPublicPath() . '/' . $path;
+        $invocation = Manager::instance()->resolve($path);
+        if ($invocation === null) {
+            return false;
         }
-
-        if (GeneralUtility::validPathStr($path)
-            && GeneralUtility::isFirstPartOfStr(
-                $path,
-                Environment::getExtensionsPath()
-            )
-        ) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Normalizes a path, removes phar:// prefix, fixes Windows directory
-     * separators. Result is without trailing slash.
-     *
-     * @param string $path
-     * @return string
-     */
-    protected function normalizePath(string $path): string
-    {
-        return rtrim(
-            PathUtility::getCanonicalPath(
-                GeneralUtility::fixWindowsFilePath(
-                    $this->removePharPrefix($path)
-                )
-            ),
-            '/'
-        );
-    }
-
-    /**
-     * @param string $path
-     * @return string
-     */
-    protected function removePharPrefix(string $path): string
-    {
-        return preg_replace('#^phar://#i', '', $path);
-    }
-
-    /**
-     * Determines base file that can be accessed using the regular file system.
-     * For e.g. "phar:///home/user/bundle.phar/content.txt" that would result
-     * into "/home/user/bundle.phar".
-     *
-     * @param string $path
-     * @return string|null
-     */
-    protected function determineBaseFile(string $path)
-    {
-        $parts = explode('/', $this->normalizePath($path));
-
-        while (count($parts)) {
-            $currentPath = implode('/', $parts);
-            if (@file_exists($currentPath)) {
-                return $currentPath;
-            }
-            array_pop($parts);
-        }
-
-        return null;
+        $baseName = $invocation->getBaseName();
+        return GeneralUtility::validPathStr($baseName)
+            && GeneralUtility::isFirstPartOfStr($baseName, Environment::getExtensionsPath());
     }
 }

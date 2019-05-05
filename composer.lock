@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "12a1e619f4da424ce28206232c756c1d",
+    "content-hash": "e217014a0558a45d1f34848ebb7a4429",
     "packages": [
         {
             "name": "algo26-matthias/idna-convert",
@@ -1612,7 +1612,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -2151,22 +2151,25 @@
         },
         {
             "name": "typo3/phar-stream-wrapper",
-            "version": "v3.0.1",
+            "version": "v3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/phar-stream-wrapper.git",
-                "reference": "b3cbcfd2e4de5943bf05ec975d42d0e8d85c0009"
+                "reference": "fff6f5e037882f816cd41a9f5ccd8d8f97bfdebf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/phar-stream-wrapper/zipball/b3cbcfd2e4de5943bf05ec975d42d0e8d85c0009",
-                "reference": "b3cbcfd2e4de5943bf05ec975d42d0e8d85c0009",
+                "url": "https://api.github.com/repos/TYPO3/phar-stream-wrapper/zipball/fff6f5e037882f816cd41a9f5ccd8d8f97bfdebf",
+                "reference": "fff6f5e037882f816cd41a9f5ccd8d8f97bfdebf",
                 "shasum": ""
             },
             "require": {
+                "ext-fileinfo": "*",
+                "ext-json": "*",
                 "php": "^7.0"
             },
             "require-dev": {
+                "ext-xdebug": "*",
                 "phpunit/phpunit": "^6.5"
             },
             "type": "library",
@@ -2187,7 +2190,7 @@
                 "security",
                 "stream-wrapper"
             ],
-            "time": "2018-10-18T08:50:44+00:00"
+            "time": "2019-05-05T17:30:25+00:00"
         },
         {
             "name": "typo3fluid/fluid",
