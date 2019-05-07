@@ -1010,6 +1010,17 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     }
 
     /**
+     * Regenerates the session ID and sets the cookie again.
+     *
+     * @internal
+     */
+    public function enforceNewSessionId()
+    {
+        $this->regenerateSessionId();
+        $this->setSessionCookie();
+    }
+
+    /**
      * Log out current user!
      * Removes the current session record, sets the internal ->user array to a blank string;
      * Thereby the current user (if any) is effectively logged out!
