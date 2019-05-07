@@ -793,14 +793,14 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                     $logData = [
                         'loginData' => $loginData
                     ];
-                    $this->logger->warning('Login failed', $logData);
+                    $this->logger->debug('Login failed', $logData);
                 }
                 if (!empty($tempuserArr)) {
                     $logData = [
                         $this->userid_column => $tempuser[$this->userid_column],
                         $this->username_column => $tempuser[$this->username_column],
                     ];
-                    $this->logger->warning('Login failed', $logData);
+                    $this->logger->debug('Login failed', $logData);
                 }
             }
         }
