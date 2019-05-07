@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Resource\OnlineMedia\Processing;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Imaging\ImageMagickFile;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
@@ -138,11 +139,10 @@ class PreviewProcessing
             $arguments = CommandUtility::escapeShellArguments([
                 'width' => $configuration['width'],
                 'height' => $configuration['height'],
-                'originalFileName' => $originalFileName,
-                'temporaryFileName' => $temporaryFileName,
             ]);
-            $parameters = '-sample ' . $arguments['width'] . 'x' . $arguments['height'] . ' '
-                . $arguments['originalFileName'] . '[0] ' . $arguments['temporaryFileName'];
+            $parameters = '-sample ' . $arguments['width'] . 'x' . $arguments['height']
+                . ' ' . ImageMagickFile::fromFilePath($originalFileName, 0)
+                . ' ' . CommandUtility::escapeShellArgument($temporaryFileName);
 
             $cmd = CommandUtility::imageMagickCommand('convert', $parameters) . ' 2>&1';
             CommandUtility::exec($cmd);
