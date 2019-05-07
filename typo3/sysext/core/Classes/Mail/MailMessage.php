@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Mail;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 
 /**
@@ -265,7 +266,7 @@ class MailMessage extends \Swift_Message
         }
         $domain = substr($email, $atPosition + 1);
         $local = substr($email, 0, $atPosition);
-        $domain = (string)idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+        $domain = (string)HttpUtility::idn_to_ascii($domain);
 
         return $local . '@' . $domain;
     }

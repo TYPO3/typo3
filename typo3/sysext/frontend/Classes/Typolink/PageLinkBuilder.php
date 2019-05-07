@@ -469,7 +469,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', false, $tsfe->extTarget);
             // Convert IDNA-like domain (if any)
             if (!preg_match('/^[a-z0-9.\\-]*$/i', $targetDomain)) {
-                $targetDomain = (string)idn_to_ascii($targetDomain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+                $targetDomain = HttpUtility::idn_to_ascii($targetDomain);
             }
             $url = $absoluteUrlScheme . '://' . $targetDomain . '/index.php?id=' . $page['uid'] . $additionalQueryParams;
         } else {

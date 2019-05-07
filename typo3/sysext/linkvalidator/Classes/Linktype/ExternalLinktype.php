@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
 use GuzzleHttp\Cookie\CookieJar;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * This class provides Check External Links plugin implementation
@@ -207,6 +208,6 @@ class ExternalLinktype extends AbstractLinktype
      */
     protected function preprocessUrl(string $url): string
     {
-        return (string)idn_to_ascii($url, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+        return (string)HttpUtility::idn_to_ascii($url);
     }
 }

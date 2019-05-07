@@ -867,7 +867,7 @@ class GeneralUtility
         $domain = substr($email, $atPosition + 1);
         $user = substr($email, 0, $atPosition);
         if (!preg_match('/^[a-z0-9.\\-]*$/i', $domain)) {
-            $domain = idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+            $domain = HttpUtility::idn_to_ascii($domain);
             if ($domain === false) {
                 return false;
             }
@@ -895,11 +895,11 @@ class GeneralUtility
         if ($atPosition !== false) {
             $domain = substr($value, $atPosition + 1);
             $local = substr($value, 0, $atPosition);
-            $domain = (string)idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+            $domain = (string)HttpUtility::idn_to_ascii($domain);
             // Return if no @ found or it is placed at the very beginning or end of the email
             return $local . '@' . $domain;
         }
-        return (string)idn_to_ascii($value, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+        return (string)HttpUtility::idn_to_ascii($value);
     }
 
     /**
@@ -982,7 +982,7 @@ class GeneralUtility
             return false;
         }
         if (isset($parsedUrl['host']) && !preg_match('/^[a-z0-9.\\-]*$/i', $parsedUrl['host'])) {
-            $host = idn_to_ascii($parsedUrl['host'], IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+            $host = HttpUtility::idn_to_ascii($parsedUrl['host']);
             if ($host === false) {
                 return false;
             }

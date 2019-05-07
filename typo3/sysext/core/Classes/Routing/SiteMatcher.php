@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\PseudoSiteFinder;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
@@ -135,7 +136,7 @@ class SiteMatcher implements SingletonInterface
             $context = new RequestContext(
                 '',
                 $request->getMethod(),
-                idn_to_ascii($request->getUri()->getHost(), IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46),
+                HttpUtility::idn_to_ascii($request->getUri()->getHost()),
                 $request->getUri()->getScheme(),
                 // Ports are only necessary for URL generation in Symfony which is not used by TYPO3
                 80,
@@ -235,7 +236,7 @@ class SiteMatcher implements SingletonInterface
                     ['site' => $site, 'language' => $siteLanguage, 'tail' => ''],
                     array_filter(['tail' => '.*', 'port' => (string)$uri->getPort()]),
                     ['utf8' => true],
-                    idn_to_ascii($uri->getHost(), IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46) ?: '',
+                    HttpUtility::idn_to_ascii($uri->getHost()) ?: '',
                     $uri->getScheme()
                 );
                 $identifier = 'site_' . $site->getIdentifier() . '_' . $siteLanguage->getLanguageId();
