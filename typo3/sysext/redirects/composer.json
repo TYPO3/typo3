@@ -15,7 +15,7 @@
 	"require": {
 		"typo3/cms-backend": "9.5.*@dev",
 		"typo3/cms-core": "9.5.*@dev",
-		"typo3fluid/fluid": "^2.6.0"
+		"typo3fluid/fluid": "^2.6.1"
 	},
 	"conflict": {
 		"typo3/cms": "*"
