@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6fbc49a76b743bc2a93510a0f0543585",
+    "content-hash": "c7598106914ab0cac1ae130fc375aae0",
     "packages": [
         {
             "name": "algo26-matthias/idna-convert",
@@ -1498,16 +1498,16 @@
         },
         {
             "name": "typo3fluid/fluid",
-            "version": "2.5.4",
+            "version": "2.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/Fluid.git",
-                "reference": "bcd0ff44dd3c4f9d0f37097b0237db6319c2b181"
+                "reference": "e4ca051ad105a6bce02b2809172fb26d45fd06a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/bcd0ff44dd3c4f9d0f37097b0237db6319c2b181",
-                "reference": "bcd0ff44dd3c4f9d0f37097b0237db6319c2b181",
+                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/e4ca051ad105a6bce02b2809172fb26d45fd06a3",
+                "reference": "e4ca051ad105a6bce02b2809172fb26d45fd06a3",
                 "shasum": ""
             },
             "require": {
@@ -1533,7 +1533,7 @@
                 "LGPL-3.0-or-later"
             ],
             "description": "The TYPO3 Fluid template rendering engine",
-            "time": "2018-07-09T12:55:32+00:00"
+            "time": "2019-05-07T07:21:41+00:00"
         }
     ],
     "packages-dev": [
@@ -4279,7 +4279,7 @@
     "minimum-stability": "stable",
     "stability-flags": [],
     "prefer-stable": false,
-    "prefer-lowest": false,
+    "prefer-lowest": true,
     "platform": {
         "php": "^7.0 <7.4",
         "ext-json": "*",
