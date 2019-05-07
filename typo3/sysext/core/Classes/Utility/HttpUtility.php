@@ -178,4 +178,23 @@ class HttpUtility
 
         return $queryString && $prependCharacter ? $prependCharacter . $queryString : $queryString;
     }
+
+    /**
+     * Compatibility layer for PHP versions running ICU 4.4, as the constant INTL_IDNA_VARIANT_UTS46
+     * is only available as of ICU 4.6.
+     *
+     * Please note: Once PHP 7.4 is the minimum requirement, this method will vanish without further notice
+     * as it is recommended to use the native method instead, when working against a clean environment.
+     *
+     * @internal
+     * @param string $domain the domain name to convert Punicode to ASCII.
+     * @return string|bool
+     */
+    public static function idn_to_ascii(string $domain)
+    {
+        if (defined('INTL_IDNA_VARIANT_UTS46')) {
+            return idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+        }
+        return idn_to_ascii($domain);
+    }
 }
