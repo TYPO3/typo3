@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  */
 
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Imaging\ImageMagickFile;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -151,11 +152,10 @@ class LocalPreviewHelper
                 $arguments = CommandUtility::escapeShellArguments([
                     'width' => $configuration['width'],
                     'height' => $configuration['height'],
-                    'originalFileName' => $originalFileName,
-                    'targetFilePath' => $targetFilePath,
                 ]);
-                $parameters = '-sample ' . $arguments['width'] . 'x' . $arguments['height'] . ' '
-                    . $arguments['originalFileName'] . '[0] ' . $arguments['targetFilePath'];
+                $parameters = '-sample ' . $arguments['width'] . 'x' . $arguments['height']
+                    . ' ' . ImageMagickFile::fromFilePath($originalFileName, 0)
+                    . ' ' . CommandUtility::escapeShellArgument($targetFilePath);
 
                 $cmd = CommandUtility::imageMagickCommand('convert', $parameters) . ' 2>&1';
                 CommandUtility::exec($cmd);
