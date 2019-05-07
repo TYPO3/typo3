@@ -15,14 +15,14 @@ Hooks can be registered via
 
 .. code-block:: php
 
-   $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config']['generatorOptions']['postModifiers'][] = My\Class->method;
+    $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config']['generatorOptions']['postModifiers'][] = My\Class::class . '->method';
 
 in `EXT:myextension/Configuration/TCA/Overrides/table.php`, where $tableName can be a table like `pages` and
 `$fieldName` matches the slug field name, e.g. `slug`.
 
 .. code-block:: php
 
-   $GLOBALS['TCA']['pages']['columns']['slug']['config']['generatorOptions']['postModifiers'][] = My\Class->modifySlug;
+    $GLOBALS['TCA']['pages']['columns']['slug']['config']['generatorOptions']['postModifiers'][] = My\Class::class . '->modifySlug';
 
 The method then receives an parameter array with the following values:
 
