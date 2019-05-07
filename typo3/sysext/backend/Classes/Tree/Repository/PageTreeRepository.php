@@ -142,7 +142,7 @@ class PageTreeRepository
         if (!isset($tree['_children'])) {
             return;
         }
-        foreach ($tree['_children'] as $k => $childPage) {
+        foreach ($tree['_children'] as $k => &$childPage) {
             if (!call_user_func_array($callback, [$childPage])) {
                 unset($tree['_children'][$k]);
                 continue;
