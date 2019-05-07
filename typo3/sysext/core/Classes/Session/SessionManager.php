@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Session;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -60,6 +61,32 @@ class SessionManager implements SingletonInterface
             $this->sessionBackends[$identifier] = $sessionBackend;
         }
         return $this->sessionBackends[$identifier];
+    }
+
+    /**
+     * Removes all sessions for a specific user ID
+     *
+     * @param SessionBackendInterface $backend see constants
+     * @param int $userId
+     * @param AbstractUserAuthentication $userAuthentication
+     */
+    public function invalidateAllSessionsByUserId(SessionBackendInterface $backend, int $userId, AbstractUserAuthentication $userAuthentication = null)
+    {
+        $sessionToRenew = '';
+        // Prevent destroying the session of the current user session, but renew session id
+        if ($userAuthentication !== null && (int)$userAuthentication->user['uid'] === $userId) {
+            $sessionToRenew = $userAuthentication->getSessionId();
+        }
+
+        foreach ($backend->getAll() as $session) {
+            if ($userAuthentication !== null && $session['ses_id'] === $sessionToRenew) {
+                $userAuthentication->enforceNewSessionId();
+                continue;
+            }
+            if ((int)$session['ses_userid'] === $userId) {
+                $backend->remove($session['ses_id']);
+            }
+        }
     }
 
     /**
