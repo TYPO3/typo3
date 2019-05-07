@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -407,6 +408,7 @@ class FrontendLoginController extends AbstractPlugin
                                     )
                                 )
                                 ->execute();
+                            $this->invalidateUserSessions((int)$user['uid']);
 
                             $markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText(
                                 'change_password_done_message',
@@ -1019,5 +1021,17 @@ class FrontendLoginController extends AbstractPlugin
             $marker['###USER###'] = $marker['###FEUSER_USERNAME###'];
         }
         return $marker;
+    }
+
+    /**
+     * Invalidate all frontend user sessions by given user id
+     *
+     * @param int $userId the user UID
+     */
+    protected function invalidateUserSessions(int $userId)
+    {
+        $sessionManager = GeneralUtility::makeInstance(SessionManager::class);
+        $sessionBackend = $sessionManager->getSessionBackend('FE');
+        $sessionManager->invalidateAllSessionsByUserId($sessionBackend, $userId, $this->frontendController->fe_user);
     }
 }
