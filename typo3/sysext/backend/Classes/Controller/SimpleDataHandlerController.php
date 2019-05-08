@@ -251,7 +251,7 @@ class SimpleDataHandlerController
 
         // Prints errors (= write them to the message queue, if not explicitly disabled)
         if ($this->prErr || $this->prErr === null) {
-            $content['hasErrors'] = true;
+            $content['hasErrors'] = !empty($this->tce->errorLog);
             $this->tce->printLogErrorMessages();
         }
 
