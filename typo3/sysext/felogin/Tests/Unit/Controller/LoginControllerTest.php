@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Felogin\Tests\Unit\Controller;
  */
 
 use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Context\Context;
@@ -107,22 +108,9 @@ class LoginControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function loginActionShouldAssingLoginFailedToViewOnNotLoggedInUser(): void
+    public function loginActionShouldAssingDefaultMessageKey(): void
     {
-        $this->setLoginTypeLogin();
-        $this->setUserLoggedIn(false);
-
-        $this->view
-            ->assign('loginFailed', true)
-            ->shouldBeCalled();
-
-        $this->view
-            ->assignMultiple(
-                Argument::withEntry(
-                    'storagePid', ''
-                )
-            )
-            ->shouldBeCalled();
+        $this->assertMessageKey(LoginController::MESSAGEKEY_DEFAULT);
 
         $this->subject->loginAction();
     }
@@ -130,27 +118,74 @@ class LoginControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function loginActionShouldRedirectToOverviewOnSuccessfulLogin(): void
+    public function loginActionShouldAssingLoginFailedToViewOnNotLoggedInUser(): void
     {
-        $this->setLoginTypeLogin();
+        $this->setLoginType();
+        $this->setUserLoggedIn(false);
+
+        $this->assertMessageKey(LoginController::MESSAGEKEY_ERROR);
+
+        $this->subject->loginAction();
+    }
+
+    /**
+     * @test
+     */
+    public function loginActionShouldAssingLogoutMessageKey(): void
+    {
+        $this->setLoginType(LoginType::LOGOUT);
+
+        $this->assertMessageKey(LoginController::MESSAGEKEY_LOGOUT);
+
+        $this->subject->loginAction();
+    }
+
+    /**
+     * @test
+     */
+    public function loginActionShouldRedirectToOverviewOnSuccessfulLoginAndShowLogoutFormAfterLoginDisabled(): void
+    {
+        $this->setLoginType();
         $this->setUserLoggedIn(true);
+        $this->inject($this->subject, 'settings', ['showLogoutFormAfterLogin' => false]);
 
-        $webRequest = $this->prophesize(Request::class);
-
-        $webRequest
-            ->setDispatched(false)
-            ->shouldBeCalled();
-        $webRequest
-            ->setControllerActionName('overview')
-            ->shouldBeCalled();
+        $webRequest = $this->injectRequestForControllerAction('overview');
         $webRequest
             ->setArguments(['showLoginMessage' => true])
             ->shouldBeCalled();
 
-        $this->inject($this->subject, 'request', $webRequest->reveal());
-
         $this->expectException(StopActionException::class);
         $this->expectExceptionMessage('forward');
+
+        $this->subject->loginAction();
+    }
+
+    /**
+     * @test
+     */
+    public function loginActionShouldRedirectToLogoutOnSuccessfulLoginAndShowLogoutFormAfterLoginEnabled(): void
+    {
+        $this->setLoginType();
+        $this->setUserLoggedIn(true);
+
+        $this->inject($this->subject, 'settings', ['showLogoutFormAfterLogin' => true]);
+        $this->injectRequestForControllerAction('logout');
+
+        $this->expectException(StopActionException::class);
+
+        $this->subject->loginAction();
+    }
+
+    /**
+     * @test
+     */
+    public function loginActionShouldRedirectToLogoutForAlreadyLoggedInUser(): void
+    {
+        $this->setUserLoggedIn(true);
+
+        $this->injectRequestForControllerAction('logout');
+
+        $this->expectException(StopActionException::class);
 
         $this->subject->loginAction();
     }
@@ -216,16 +251,7 @@ class LoginControllerTest extends UnitTestCase
     {
         $this->setUserLoggedIn(false);
 
-        $webRequest = $this->prophesize(Request::class);
-
-        $webRequest
-            ->setDispatched(false)
-            ->shouldBeCalled();
-        $webRequest
-            ->setControllerActionName('login')
-            ->shouldBeCalled();
-
-        $this->inject($this->subject, 'request', $webRequest->reveal());
+        $this->injectRequestForControllerAction('login');
 
         $this->expectException(StopActionException::class);
         $this->expectExceptionMessage('forward');
@@ -233,23 +259,52 @@ class LoginControllerTest extends UnitTestCase
         $this->subject->overviewAction();
     }
 
-    private function setLoginTypeLogin(): void
+    protected function setLoginType(string $loginType = LoginType::LOGIN): void
     {
         $this->request
             ->getParsedBody()
             ->willReturn(
                 [
-                    'logintype' => LoginType::LOGIN
+                    'logintype' => $loginType
                 ]
             );
     }
 
-    private function setUserLoggedIn(bool $userLoggedIn): void
+    protected function setUserLoggedIn(bool $userLoggedIn): void
     {
         $userAspect = $this->prophesize(UserAspect::class);
         $userAspect
             ->get('isLoggedIn')
             ->willReturn($userLoggedIn);
         GeneralUtility::makeInstance(Context::class)->setAspect('frontend.user', $userAspect->reveal());
+    }
+
+    /**
+     * @param string $messageKey
+     */
+    protected function assertMessageKey(string $messageKey): void
+    {
+        $this->view
+            ->assignMultiple(
+                Argument::withEntry(
+                    'messageKey', $messageKey
+                )
+            )
+            ->shouldBeCalled();
+    }
+
+    protected function injectRequestForControllerAction(string $controllerActionName): ObjectProphecy
+    {
+        $webRequest = $this->prophesize(Request::class);
+        $webRequest
+            ->setDispatched(false)
+            ->shouldBeCalled();
+        $webRequest
+            ->setControllerActionName($controllerActionName)
+            ->shouldBeCalled();
+
+        $this->inject($this->subject, 'request', $webRequest->reveal());
+
+        return $webRequest;
     }
 }

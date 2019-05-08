@@ -1,20 +1,12 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:flashMessages/>
 
-<f:comment>
-	@todo: formular ausblenden und logout anzeigen
-	@todo: benutzerdaten hier anzeigen?
-	@todo: enable flashmessage flag für plugin != libs
-</f:comment>
-<f:if condition="{loginFailed}">
-	<f:then>
-		<h3><f:translate key="ll_error_header" /></h3>
-		<f:translate key="ll_error_message" />
-	</f:then>
+<f:if condition="{messageKey}">
+	<h3><f:translate key="ll_{messageKey}_header" /></h3>
+	<p><f:translate key="ll_{messageKey}_message" /></p>
 </f:if>
 <f:form target="_top" fieldNamePrefix="">
 	<fieldset>
-		<legend><f:translate key="ll_welcome_header" /></legend>
+		<legend><f:translate key="login" /></legend>
 		<div>
 			<label>
 				<f:translate key="username" />
@@ -47,12 +39,12 @@
 		</f:if>
 
 		<div>
-			<input type="submit" name="submit" value="{f:translate(key: 'login')}" />
+			<f:form.submit value="{f:translate(key: 'login')}" name="submit" />
 		</div>
 
 		<div class="felogin-hidden">
-			<input type="hidden" name="logintype" value="login" />
-			<input type="hidden" name="pid" value="{storagePid}" />
+			<f:form.hidden name="logintype" value="login" />
+			<f:form.hidden name="pid" value="{storagePid}" />
 		</div>
 	</fieldset>
 </f:form>

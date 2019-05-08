@@ -1,0 +1,26 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<h3><f:translate key="ll_status_header" /></h3>
+<p><f:translate key="ll_status_message" /></p>
+
+<f:form target="_top" fieldNamePrefix="">
+	<fieldset>
+		<legend><f:translate key="logout" /></legend>
+		<div>
+			<label><f:translate key="username" /></label>
+			{user.username}
+		</div>
+		<div>
+			<f:form.submit value="{f:translate(key: 'logout')}" name="submit" />
+		</div>
+
+		<div class="felogin-hidden">
+			<f:form.hidden name="logintype" value="logout" />
+			<f:form.hidden name="pid" value="{storagePid}" />
+			<f:comment>
+				<input type="hidden" name="###PREFIXID###[noredirect]" value="###NOREDIRECT###" />
+			</f:comment>
+		</div>
+	</fieldset>
+</f:form>
+</html>

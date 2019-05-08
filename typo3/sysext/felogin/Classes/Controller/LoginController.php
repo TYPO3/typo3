@@ -27,17 +27,23 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  */
 class LoginController extends ActionController
 {
+    public const MESSAGEKEY_DEFAULT = 'welcome';
+    public const MESSAGEKEY_ERROR = 'error';
+    public const MESSAGEKEY_LOGOUT = 'logout';
+
     /**
      * show login form
-     *
-     * @return void
      */
     public function loginAction(): void
     {
-        $this->handleLogin($this->isUserLoggedIn(), (string)$this->getPropertyFromGetAndPost('logintype'));
+        $loginType = (string)$this->getPropertyFromGetAndPost('logintype');
+        $isLoggedInd = $this->isUserLoggedIn();
+
+        $this->handleForwards($isLoggedInd, $loginType);
 
         $this->view->assignMultiple(
             [
+                'messageKey'       => $this->getStatusMessage($loginType, $isLoggedInd),
                 'storagePid'       => $this->getStoragePid(),
                 'permaloginStatus' => $this->getPermaloginStatus()
             ]
@@ -63,6 +69,24 @@ class LoginController extends ActionController
         );
     }
 
+    /**
+     * show logout form
+     */
+    public function logoutAction(): void
+    {
+        $this->view->assignMultiple(
+            [
+                'user'       => $GLOBALS['TSFE']->fe_user->user ?? [],
+                'storagePid' => $this->getStoragePid(),
+            ]
+        );
+    }
+
+    /**
+     * returns the parsed storagePid list including recursions
+     *
+     * @return string
+     */
     protected function getStoragePid(): string
     {
         return (string)($this->configurationManager->getConfiguration(
@@ -85,20 +109,19 @@ class LoginController extends ActionController
     }
 
     /**
-     * redirect on current login state
+     * handle forwards to overview and logout actions
      *
      * @param bool $userLoggedIn
      * @param string $loginType
      */
-    protected function handleLogin(bool $userLoggedIn, string $loginType): void
+    protected function handleForwards(bool $userLoggedIn, string $loginType): void
     {
-        $loginInProgress = $loginType === LoginType::LOGIN;
-        if ($userLoggedIn) {
-            $this->forward('overview', null, null, ['showLoginMessage' => $loginInProgress]);
+        if ($this->shouldRedirectToOverview($userLoggedIn, $loginType === LoginType::LOGIN)) {
+            $this->forward('overview', null, null, ['showLoginMessage' => true]);
         }
 
-        if ($loginInProgress) {
-            $this->view->assign('loginFailed', true);
+        if ($userLoggedIn) {
+            $this->forward('logout');
         }
     }
 
@@ -129,5 +152,36 @@ class LoginController extends ActionController
     protected function isPermaloginDisabled(int $permaLogin): bool
     {
         return $permaLogin > 1 || (int)($this->settings['showPermaLogin'] ?? 0) === 0 || $GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] === 0;
+    }
+
+    /**
+     * redirect to overview on login successful and setting showLogoutFormAfterLogin disabled
+     *
+     * @param bool $userLoggedIn
+     * @param bool $isLoginTypeLogin
+     * @return bool
+     */
+    protected function shouldRedirectToOverview(bool $userLoggedIn, bool $isLoginTypeLogin): bool
+    {
+        return $userLoggedIn && $isLoginTypeLogin && !($this->settings['showLogoutFormAfterLogin'] ?? 0);
+    }
+
+    /**
+     * return message key based on user login status
+     *
+     * @param string $loginType
+     * @param bool $isLoggedInd
+     * @return string
+     */
+    protected function getStatusMessage(string $loginType, bool $isLoggedInd): string
+    {
+        $messageKey = self::MESSAGEKEY_DEFAULT;
+        if ($loginType === LoginType::LOGIN && !$isLoggedInd) {
+            $messageKey = self::MESSAGEKEY_ERROR;
+        } elseif ($loginType === LoginType::LOGOUT) {
+            $messageKey = self::MESSAGEKEY_LOGOUT;
+        }
+
+        return $messageKey;
     }
 }
