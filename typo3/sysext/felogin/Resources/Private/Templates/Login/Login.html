@@ -1,8 +1,8 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <f:if condition="{messageKey}">
-	<h3><f:translate key="ll_{messageKey}_header" /></h3>
-	<p><f:translate key="ll_{messageKey}_message" /></p>
+	<h3><f:render partial="RenderLabelOrMessage" arguments="{key: '{messageKey}_header'}" /></h3>
+	<p><f:render partial="RenderLabelOrMessage" arguments="{key: '{messageKey}_header'}" /></p>
 </f:if>
 <f:form target="_top" fieldNamePrefix="">
 	<fieldset>

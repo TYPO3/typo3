@@ -6,6 +6,13 @@ defined('TYPO3_MODE') or die();
         ->isFeatureEnabled('felogin.extbase');
 
     if ($feloginExtbase) {
+        // Add the FlexForm
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
+            '*',
+            'FILE:EXT:felogin/Configuration/FlexForms/Login.xml',
+            'felogin_login'
+        );
+
         $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['felogin_login'] = 'mimetypes-x-content-login';
 
         // check if there is already a forms tab and add the item after that, otherwise

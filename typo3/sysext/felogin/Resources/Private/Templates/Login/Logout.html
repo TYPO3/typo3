@@ -1,7 +1,7 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
-<h3><f:translate key="ll_status_header" /></h3>
-<p><f:translate key="ll_status_message" /></p>
+<h3><f:render partial="RenderLabelOrMessage" arguments="{key: 'status_header'}" /></h3>
+<p><f:render partial="RenderLabelOrMessage" arguments="{key: 'status_message'}" /></p>
 
 <f:form target="_top" fieldNamePrefix="">
 	<fieldset>
