@@ -218,6 +218,9 @@ SYS:
               security.frontend.keepSessionDataOnLogout:
                 type: bool
                 description: 'If on, session data is kept in an anonymous session after frontend user logged out. As this is a potential security risk, it is recommended to disable this option if not specifically needed.'
+              felogin.pibase:
+                type: bool
+                description: 'If activated, and if extension "felogin" is loaded, pibase based code will be used instead of extbase version'
         availablePasswordHashAlgorithms:
             type: array
             description: 'A list of available password hash mechanisms. Extensions may register additional mechanisms here. This is usually not extended in LocalConfiguration.php.'

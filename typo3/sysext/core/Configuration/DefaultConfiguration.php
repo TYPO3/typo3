@@ -75,6 +75,7 @@ return [
             'redirects.hitCount' => false,
             'unifiedPageTranslationHandling' => false,
             'security.frontend.keepSessionDataOnLogout' => false,
+            'felogin.pibase' => true,
         ],
         'createGroup' => '',
         'sitename' => 'TYPO3',
