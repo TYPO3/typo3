@@ -2,10 +2,10 @@
 defined('TYPO3_MODE') or die();
 
 (static function (): void {
-    $feloginPibase = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\Features::class)
-        ->isFeatureEnabled('felogin.pibase');
+    $feloginExtbase = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\Features::class)
+        ->isFeatureEnabled('felogin.extbase');
 
-    if ($feloginPibase === false) {
+    if ($feloginExtbase) {
         $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['felogin_login'] = 'mimetypes-x-content-login';
 
         // check if there is already a forms tab and add the item after that, otherwise

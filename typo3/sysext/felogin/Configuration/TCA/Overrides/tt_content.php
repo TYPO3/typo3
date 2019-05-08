@@ -1,11 +1,11 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-call_user_func(function () {
-    $feloginPibase = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\Features::class)
-        ->isFeatureEnabled('felogin.pibase');
+(function () {
+    $feloginExtbase = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\Features::class)
+        ->isFeatureEnabled('felogin.extbase');
 
-    if ($feloginPibase) {
+    if (!$feloginExtbase) {
         // Add the FlexForm
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
             '*',
@@ -76,4 +76,4 @@ call_user_func(function () {
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
         ';
     }
-});
+})();

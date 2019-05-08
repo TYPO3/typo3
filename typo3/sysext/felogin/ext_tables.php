@@ -2,10 +2,10 @@
 defined('TYPO3_MODE') or die();
 
 (static function (): void {
-    $feloginPibase = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\Features::class)
-        ->isFeatureEnabled('felogin.pibase');
+    $feloginExtbase = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\Features::class)
+        ->isFeatureEnabled('felogin.extbase');
 
-    if ($feloginPibase === true) {
+    if (!$feloginExtbase) {
         return;
     }
 

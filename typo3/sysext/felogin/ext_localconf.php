@@ -11,12 +11,12 @@ defined('TYPO3_MODE') or die();
     );
 })();
 
-//Add additional TypoScript & TsConfig depending on the value of the feature toggle "felogin.pibase"
+//Add additional TypoScript & TsConfig depending on the value of the feature toggle "felogin.extbase"
 (static function (): void {
-    $feloginPibase = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\Features::class)
-        ->isFeatureEnabled('felogin.pibase');
+    $feloginExtbase = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\Features::class)
+        ->isFeatureEnabled('felogin.extbase');
 
-    if ($feloginPibase) {
+    if (!$feloginExtbase) {
         // Add a default TypoScript for the CType "login"
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptConstants(
             "@import 'EXT:felogin/Configuration/TypoScript/PiBase/constants.typoscript'"
