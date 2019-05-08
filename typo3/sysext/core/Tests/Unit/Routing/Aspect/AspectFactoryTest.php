@@ -16,7 +16,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Routing\Enhancer;
  * The TYPO3 project - inspiring people to share!
  */
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Prophecy\ObjectProphecy;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Routing\Aspect\AspectFactory;
 use TYPO3\CMS\Core\Routing\Aspect\AspectInterface;
 use TYPO3\CMS\Core\Routing\Aspect\PersistedMappableAspectInterface;
@@ -61,12 +63,16 @@ class AspectFactoryTest extends UnitTestCase
             'Persisted' => $this->persistedMockClass,
             'Aspect' => $this->aspectMockClass,
         ];
-        $this->subject = new AspectFactory();
+        /** @var Context|MockObject $contextMock */
+        $contextMock = $this->getMockBuilder(Context::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->subject = new AspectFactory($contextMock);
     }
 
     protected function tearDown()
     {
-        unset($this->subject, $this->languageProphecy);
+        unset($this->subject, $this->languageProphecy, $this->persistedMockClass, $this->aspectMockClass);
         parent::tearDown();
     }
 

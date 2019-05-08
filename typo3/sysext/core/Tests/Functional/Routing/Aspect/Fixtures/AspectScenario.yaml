@@ -16,7 +16,7 @@ entitySettings:
   content:
     tableName: 'tt_content'
     languageColumnNames: ['l18n_parent', 'l10n_source']
-    columnNames: {title: 'header', type: 'CType'}
+    columnNames: {title: 'header', type: 'CType', visitorGroups: 'fe_group'}
     defaultValues: {CType: 'text'}
   language:
     tableName: 'sys_language'
@@ -48,3 +48,6 @@ entities:
                 languageVariants:
                   - self: {id: 4042, title: '40xx-slug-fr-ca', language: 2}
               - self: {id: 4043, title: '40xx-slug-es', language: 3}
+          - self: {id: 5011, title: 'hidden-visibility-slug', language: 0, hidden: 1}
+          - self: {id: 5012, title: 'restricted-visibility-slug', language: 0, visitorGroups: '13'}
+          - self: {id: 5013, title: 'scheduled-visibility-slug', language: 0, starttime: 10000, endtime: 30000}

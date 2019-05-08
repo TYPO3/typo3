@@ -15,6 +15,10 @@ namespace TYPO3\CMS\Core\Tests\Functional\Routing\Aspect;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
+use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Routing\Aspect\PersistedAliasMapper;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -102,6 +106,7 @@ class PersistedAliasMapperTest extends FunctionalTestCase
             'default' => $site->getLanguageById(0),
         ];
         $this->subject = new PersistedAliasMapper(self::ASPECT_CONFIGURATION);
+        $this->subject->setSiteLanguage($this->languages['default']);
     }
 
     protected function setUpDatabase()
@@ -174,5 +179,88 @@ class PersistedAliasMapperTest extends FunctionalTestCase
     {
         $this->subject->setSiteLanguage($this->languages[$language]);
         self::assertSame($expectation, $this->subject->resolve($requestValue));
+    }
+
+    public function recordVisibilityDataProvider(): array
+    {
+        $rawContext = new Context();
+        $visibleContext = new Context();
+        $visibleContext->setAspect(
+            'visibility',
+            new VisibilityAspect(false, true, false)
+        );
+        $frontendGroupsContext = new Context();
+        $frontendGroupsContext->setAspect(
+            'frontend.user',
+            new UserAspect(null, [13])
+        );
+        $scheduledContext = new Context();
+        $scheduledContext->setAspect(
+            'date',
+            new DateTimeAspect(new \DateTimeImmutable('@20000'))
+        );
+
+        return [
+            'hidden-visibility-slug, raw context' => [
+                $rawContext,
+                ['slug' => 'hidden-visibility-slug', 'uid' => '5011'],
+                false,
+            ],
+            'restricted-visibility-slug, raw context' => [
+                $rawContext,
+                ['slug' => 'restricted-visibility-slug', 'uid' => '5012'],
+                false,
+            ],
+            'scheduled-visibility-slug, raw context' => [
+                $rawContext,
+                ['slug' => 'scheduled-visibility-slug', 'uid' => '5013'],
+                false,
+            ],
+            'hidden-visibility-slug, visibility context (include hidden content)' => [
+                $visibleContext,
+                ['slug' => 'hidden-visibility-slug', 'uid' => '5011'],
+                true,
+            ],
+            'restricted-visibility-slug, frontend-groups context (13)' => [
+                $frontendGroupsContext,
+                ['slug' => 'restricted-visibility-slug', 'uid' => '5012'],
+                false, // @todo actually `true`, FrontendGroupRestriction does not support Context, yet
+            ],
+            'scheduled-visibility-slug, scheduled context (timestamp 20000)' => [
+                $scheduledContext,
+                ['slug' => 'scheduled-visibility-slug', 'uid' => '5013'],
+                false, // @todo actually `true`, Start-/EndTimeRestriction do not support Context, yet
+            ],
+        ];
+    }
+
+    /**
+     * @param Context $context
+     * @param array $parameters
+     * @param bool $expectation
+     *
+     * @test
+     * @dataProvider recordVisibilityDataProvider
+     */
+    public function recordVisibilityIsConsideredForResolving(Context $context, array $parameters, bool $expectation): void
+    {
+        $this->subject->setContext($context);
+        $expectedResult = $expectation ? $parameters['uid'] : null;
+        self::assertSame($expectedResult, $this->subject->resolve($parameters['slug']));
+    }
+
+    /**
+     * @param Context $context
+     * @param array $parameters
+     * @param bool $expectation
+     *
+     * @test
+     * @dataProvider recordVisibilityDataProvider
+     */
+    public function recordVisibilityIsConsideredForGeneration(Context $context, array $parameters, bool $expectation): void
+    {
+        $this->subject->setContext($context);
+        $expectedResult = $expectation ? $parameters['slug'] : null;
+        self::assertSame($expectedResult, $this->subject->generate($parameters['uid']));
     }
 }

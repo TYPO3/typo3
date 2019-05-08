@@ -66,7 +66,8 @@ class Context implements SingletonInterface
         }
         // Ensure the default aspects are set, this is mostly necessary for tests to not set up everything
         if (!$this->hasAspect('date')) {
-            $this->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['EXEC_TIME'])));
+            $time = $GLOBALS['EXEC_TIME'] ?? time();
+            $this->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $time)));
         }
         if (!$this->hasAspect('visibility')) {
             $this->setAspect('visibility', new VisibilityAspect());

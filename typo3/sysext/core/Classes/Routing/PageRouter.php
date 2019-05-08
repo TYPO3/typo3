@@ -100,8 +100,9 @@ class PageRouter implements RouterInterface
     public function __construct(Site $site)
     {
         $this->site = $site;
+        $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->enhancerFactory = GeneralUtility::makeInstance(EnhancerFactory::class);
-        $this->aspectFactory = GeneralUtility::makeInstance(AspectFactory::class);
+        $this->aspectFactory = GeneralUtility::makeInstance(AspectFactory::class, $this->context);
         $this->cacheHashCalculator = GeneralUtility::makeInstance(CacheHashCalculator::class);
     }
 
