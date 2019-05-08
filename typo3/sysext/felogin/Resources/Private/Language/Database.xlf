@@ -6,6 +6,12 @@
 			<trans-unit id="tt_content.CType_pi1">
 				<source>Website User Login</source>
 			</trans-unit>
+			<trans-unit id="tt_content.CType.felogin_login.title">
+				<source>Login Form</source>
+			</trans-unit>
+			<trans-unit id="tt_content.CType.felogin_login.description">
+				<source>Login/logout form used to password protect pages allowing only authorised website users and groups access.</source>
+			</trans-unit>
 			<trans-unit id="felogin_redirectPid">
 				<source>Redirect at Login to Page (felogin)</source>
 			</trans-unit>

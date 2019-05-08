@@ -12,7 +12,7 @@ styles.content.loginform {
   recursive = 0
 
   # cat=Frontend Login/02_Template/100; type=string; label= Login template: Enter the path for the HTML template to be used
-  templateFile = EXT:felogin/Resources/Private/Templates/FrontendLogin.html
+  templateFile = EXT:felogin/Resources/Private/Templates/Login/Login.html
   # cat=Frontend Login/02_Template/101; type=string; label= BaseURL for generated links: Base url if something other than the system base URL is needed
   feloginBaseURL =
   # cat=Frontend Login/02_Template/102; type=string; label= Date format: Format for the link is valid until message (forget password email)

@@ -3,6 +3,13 @@
 	<file t3:id="1415814821" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="felogin">
 		<header/>
 		<body>
+			<trans-unit id="login_user_info">
+				<source>You are now logged in as '%s'</source>
+			</trans-unit>
+
+
+
+
 			<trans-unit id="ll_welcome_header">
 				<source>User login</source>
 			</trans-unit>

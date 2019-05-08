@@ -1,0 +1,11 @@
+mod.wizards.newContentElement.wizardItems.forms {
+  elements.login {
+    iconIdentifier = content-elements-login
+    title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_login_title
+    description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_login_description
+    tt_content_defValues {
+      CType = login
+    }
+  }
+  show := addToList(login)
+}

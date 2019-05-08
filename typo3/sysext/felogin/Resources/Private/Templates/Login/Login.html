@@ -1,0 +1,41 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:flashMessages/>
+
+<f:comment>
+	@todo: formular ausblenden und logout anzeigen
+	@todo: benutzerdaten hier anzeigen?
+	@todo: enable flashmessage flag für plugin != libs
+</f:comment>
+<f:if condition="{loginFailed}">
+	<f:then>
+		<h3><f:translate key="ll_error_header" /></h3>
+		<f:translate key="ll_error_message" />
+	</f:then>
+</f:if>
+<f:form target="_top" fieldNamePrefix="">
+	<fieldset>
+		<legend><f:translate key="ll_welcome_header" /></legend>
+		<div>
+			<label>
+				<f:translate key="username" />
+				<f:form.textfield name="user" />
+			</label>
+		</div>
+		<div>
+			<label>
+				<f:translate key="password" />
+				<f:form.password name="pass" data="{rsa-encryption: ''}" />
+			</label>
+		</div>
+
+		<div>
+			<input type="submit" name="submit" value="{f:translate(key: 'login')}" />
+		</div>
+
+		<div class="felogin-hidden">
+			<input type="hidden" name="logintype" value="login" />
+			<input type="hidden" name="pid" value="{storagePid}" />
+		</div>
+	</fieldset>
+</f:form>
+</html>
