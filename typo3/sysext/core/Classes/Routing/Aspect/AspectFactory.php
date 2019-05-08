@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Core\Routing\Aspect;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\ContextAwareInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
@@ -32,10 +34,18 @@ class AspectFactory
     protected $availableAspects;
 
     /**
-     * AspectFactory constructor.
+     * @var Context
      */
-    public function __construct()
+    protected $context;
+
+    /**
+     * AspectFactory constructor.
+     *
+     * @param Context $context
+     */
+    public function __construct(Context $context = null)
     {
+        $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->availableAspects = $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects'] ?? [];
     }
 
@@ -102,6 +112,9 @@ class AspectFactory
         // the check for the trait can be removed at any time after TYPO3 v11
         if ($aspect instanceof SiteLanguageAwareInterface || in_array(SiteLanguageAwareTrait::class, class_uses($aspect), true)) {
             $aspect->setSiteLanguage($language);
+        }
+        if ($aspect instanceof ContextAwareInterface) {
+            $aspect->setContext($this->context);
         }
         return $aspect;
     }

@@ -18,9 +18,12 @@ namespace TYPO3\CMS\Core\Routing\Aspect;
 
 use Doctrine\DBAL\Connection;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\ContextAwareInterface;
+use TYPO3\CMS\Core\Context\ContextAwareTrait;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Routing\Legacy\PersistedAliasMapperLegacyTrait;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
@@ -45,9 +48,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *           routeFieldName: 'path_segment'
  *           routeValuePrefix: '/'
  */
-class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, SiteLanguageAwareInterface
+class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, ContextAwareInterface, SiteLanguageAwareInterface
 {
     use SiteLanguageAccessorTrait;
+    use ContextAwareTrait;
     use PersistedAliasMapperLegacyTrait;
 
     /**
@@ -230,9 +234,13 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
 
     protected function createQueryBuilder(): QueryBuilder
     {
-        return GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->tableName)
             ->from($this->tableName);
+        $queryBuilder->setRestrictions(
+            GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context)
+        );
+        return $queryBuilder;
     }
 
     /**

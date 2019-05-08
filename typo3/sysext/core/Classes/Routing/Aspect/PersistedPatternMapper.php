@@ -18,9 +18,12 @@ namespace TYPO3\CMS\Core\Routing\Aspect;
 
 use Doctrine\DBAL\Connection;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\ContextAwareInterface;
+use TYPO3\CMS\Core\Context\ContextAwareTrait;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Routing\Legacy\PersistedPatternMapperLegacyTrait;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
@@ -48,9 +51,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal might change its options in the future, be aware that there might be modifications.
  */
-class PersistedPatternMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, SiteLanguageAwareInterface
+class PersistedPatternMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, ContextAwareInterface, SiteLanguageAwareInterface
 {
     use SiteLanguageAccessorTrait;
+    use ContextAwareTrait;
     use PersistedPatternMapperLegacyTrait;
 
     protected const PATTERN_RESULT = '#\{(?P<fieldName>[^}]+)\}#';
@@ -229,9 +233,13 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
 
     protected function createQueryBuilder(): QueryBuilder
     {
-        return GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->tableName)
             ->from($this->tableName);
+        $queryBuilder->setRestrictions(
+            GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context)
+        );
+        return $queryBuilder;
     }
 
     /**
