@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Felogin\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Context\Context;
@@ -93,7 +94,11 @@ class LoginControllerTest extends UnitTestCase
             );
 
         $this->view
-            ->assign('storagePid', '1,2,3')
+            ->assignMultiple(
+                Argument::withEntry(
+                    'storagePid', '1,2,3'
+                )
+            )
             ->shouldBeCalled();
 
         $this->subject->loginAction();
@@ -112,7 +117,11 @@ class LoginControllerTest extends UnitTestCase
             ->shouldBeCalled();
 
         $this->view
-            ->assign('storagePid', '')
+            ->assignMultiple(
+                Argument::withEntry(
+                    'storagePid', ''
+                )
+            )
             ->shouldBeCalled();
 
         $this->subject->loginAction();
@@ -135,7 +144,7 @@ class LoginControllerTest extends UnitTestCase
             ->setControllerActionName('overview')
             ->shouldBeCalled();
         $webRequest
-            ->setArguments(['loginMessage' => true])
+            ->setArguments(['showLoginMessage' => true])
             ->shouldBeCalled();
 
         $this->inject($this->subject, 'request', $webRequest->reveal());
@@ -144,6 +153,38 @@ class LoginControllerTest extends UnitTestCase
         $this->expectExceptionMessage('forward');
 
         $this->subject->loginAction();
+    }
+
+    /**
+     * @test
+     * @dataProvider permaloginStatusDataProvider
+     */
+    public function permaloginStatusShouldAddCorrectPermaloginStatus(int $expected, int $conf, int $settings, int $lifetime): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] = $conf;
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] = $lifetime;
+
+        $this->inject($this->subject, 'settings', ['showPermaLogin' => $settings]);
+
+        $this->view
+            ->assignMultiple(
+                Argument::withEntry(
+                    'permaloginStatus', $expected
+                )
+            )
+            ->shouldBeCalled();
+
+        $this->subject->loginAction();
+    }
+
+    public function permaloginStatusDataProvider(): \Generator
+    {
+        yield '-1 => lifetime = 0' => [-1, 1, 1, 0];
+        yield '-1 => setting = 0' => [-1, 1, 0, 60*60];
+        yield '-1 => TYPO3_CONF_VARS -1, settings = 0' => [-1, -1, 1, 60*60];
+        yield '0 => TYPO3_CONF_VARS 0, setting = 1' => [0, 0, 1, 60*60];
+        yield '1 => TYPO3_CONF_VARS 1, setting = 1' => [1, 1, 1, 60*60];
+        yield '-1 => TYPO3_CONF_VARS 2, setting = 1' => [-1, 2, 1, 60*60];
     }
 
     /**

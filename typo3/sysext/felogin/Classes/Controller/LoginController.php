@@ -36,7 +36,12 @@ class LoginController extends ActionController
     {
         $this->handleLogin($this->isUserLoggedIn(), (string)$this->getPropertyFromGetAndPost('logintype'));
 
-        $this->view->assign('storagePid', $this->getStoragePid());
+        $this->view->assignMultiple(
+            [
+                'storagePid'       => $this->getStoragePid(),
+                'permaloginStatus' => $this->getPermaloginStatus()
+            ]
+        );
     }
 
     /**
@@ -106,5 +111,23 @@ class LoginController extends ActionController
     {
         return (bool)GeneralUtility::makeInstance(Context::class)
             ->getPropertyFromAspect('frontend.user', 'isLoggedIn');
+    }
+
+    /**
+     * The permanent login checkbox should only be shown if permalogin is not deactivated (-1),
+     * not forced to be always active (2) and lifetime is greater than 0
+     *
+     * @return int
+     */
+    protected function getPermaloginStatus(): int
+    {
+        $permaLogin = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'];
+
+        return $this->isPermaloginDisabled($permaLogin) ? -1 : $permaLogin;
+    }
+
+    protected function isPermaloginDisabled(int $permaLogin): bool
+    {
+        return $permaLogin > 1 || (int)($this->settings['showPermaLogin'] ?? 0) === 0 || $GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] === 0;
     }
 }

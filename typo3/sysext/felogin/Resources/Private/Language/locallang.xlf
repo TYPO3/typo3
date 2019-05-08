@@ -6,10 +6,6 @@
 			<trans-unit id="login_user_info">
 				<source>You are now logged in as '%s'</source>
 			</trans-unit>
-
-
-
-
 			<trans-unit id="ll_welcome_header">
 				<source>User login</source>
 			</trans-unit>
