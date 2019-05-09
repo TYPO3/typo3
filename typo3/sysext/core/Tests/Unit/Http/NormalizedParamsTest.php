@@ -355,24 +355,62 @@ class NormalizedParamsTest extends UnitTestCase
                 [],
                 ''
             ],
-            'use ORIG_PATH_INFO' => [
+            'use ORIG_SCRIPT_NAME if ORIG_PATH_INFO is set but empty' => [
                 [
-                    'ORIG_PATH_INFO' => '/orig/path/info.php',
-                    'PATH_INFO' => '/path/info.php',
+                    'ORIG_PATH_INFO' => '',
+                    'PATH_INFO' => '',
                     'ORIG_SCRIPT_NAME' => '/orig/script/name.php',
                     'SCRIPT_NAME' => '/script/name.php',
                 ],
                 [],
-                '/orig/path/info.php',
+                '/orig/script/name.php',
             ],
-            'use PATH_INFO' => [
+            'use ORIG_SCRIPT_NAME if PATH_INFO is set but empty' => [
                 [
-                    'PATH_INFO' => '/path/info.php',
+                    'PATH_INFO' => '',
                     'ORIG_SCRIPT_NAME' => '/orig/script/name.php',
                     'SCRIPT_NAME' => '/script/name.php',
                 ],
                 [],
-                '/path/info.php',
+                '/orig/script/name.php',
+            ],
+            'use SCRIPT_NAME if ORIG_PATH_INFO is set but empty' => [
+                [
+                    'ORIG_PATH_INFO' => '',
+                    'PATH_INFO' => '',
+                    'ORIG_SCRIPT_NAME' => '',
+                    'SCRIPT_NAME' => '/script/name.php',
+                ],
+                [],
+                '/script/name.php',
+            ],
+            'use SCRIPT_NAME if PATH_INFO is set but empty' => [
+                [
+                    'PATH_INFO' => '',
+                    'ORIG_SCRIPT_NAME' => '',
+                    'SCRIPT_NAME' => '/script/name.php',
+                ],
+                [],
+                '/script/name.php',
+            ],
+            'use SCRIPT_NAME if ORIG_PATH_INFO is set' => [
+                [
+                    'ORIG_PATH_INFO' => '/foo/bar',
+                    'PATH_INFO' => '',
+                    'ORIG_SCRIPT_NAME' => '',
+                    'SCRIPT_NAME' => '/script/name.php',
+                ],
+                [],
+                '/script/name.php',
+            ],
+            'use SCRIPT_NAME if PATH_INFO is set' => [
+                [
+                    'PATH_INFO' => '/foo/bar',
+                    'ORIG_SCRIPT_NAME' => '',
+                    'SCRIPT_NAME' => '/script/name.php',
+                ],
+                [],
+                '/script/name.php',
             ],
             'use ORIG_SCRIPT_NAME' => [
                 [
@@ -393,7 +431,7 @@ class NormalizedParamsTest extends UnitTestCase
                 [
                     'REMOTE_ADDR' => '123.123.123.123',
                     'HTTPS' => 'on',
-                    'PATH_INFO' => '/path/info.php',
+                    'SCRIPT_NAME' => '/path/info.php',
                 ],
                 [
                     'reverseProxyIP' => '123.123.123.123',
@@ -404,7 +442,7 @@ class NormalizedParamsTest extends UnitTestCase
             'add proxy prefix' => [
                 [
                     'REMOTE_ADDR' => '123.123.123.123',
-                    'PATH_INFO' => '/path/info.php',
+                    'SCRIPT_NAME' => '/path/info.php',
                 ],
                 [
                     'reverseProxyIP' => '123.123.123.123',
@@ -562,7 +600,7 @@ class NormalizedParamsTest extends UnitTestCase
     {
         $serverParams = [
             'HTTP_HOST' => 'www.domain.com',
-            'PATH_INFO' => '/typo3/index.php',
+            'SCRIPT_NAME' => '/typo3/index.php',
         ];
         $expected = 'http://www.domain.com/typo3/index.php';
         $serverRequestParameters = new NormalizedParams($serverParams, [], '', '');
@@ -576,7 +614,7 @@ class NormalizedParamsTest extends UnitTestCase
     {
         $serverParams = [
             'HTTP_HOST' => 'www.domain.com',
-            'PATH_INFO' => '/typo3/index.php',
+            'SCRIPT_NAME' => '/typo3/index.php',
         ];
         $expected = 'http://www.domain.com/typo3/';
         $serverRequestParameters = new NormalizedParams($serverParams, [], '', '');

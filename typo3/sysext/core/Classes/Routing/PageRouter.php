@@ -123,7 +123,7 @@ class PageRouter implements RouterInterface
             $normalizedParams = $request->getAttribute('normalizedParams');
             if ($normalizedParams instanceof NormalizedParams) {
                 $scriptName = ltrim($normalizedParams->getScriptName(), '/');
-                if (strpos($urlPath, $scriptName) !== false) {
+                if ($scriptName !== '' && strpos($urlPath, $scriptName) !== false) {
                     $urlPath = str_replace($scriptName, '', $urlPath);
                 }
             }

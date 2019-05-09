@@ -609,11 +609,7 @@ class NormalizedParams
      */
     protected static function determineScriptName(array $serverParams, array $configuration, bool $isHttps, bool $isBehindReverseProxy): string
     {
-        $scriptName = $serverParams['ORIG_PATH_INFO'] ??
-            $serverParams['PATH_INFO'] ??
-            $serverParams['ORIG_SCRIPT_NAME'] ??
-            $serverParams['SCRIPT_NAME'] ??
-            '';
+        $scriptName = ($serverParams['ORIG_SCRIPT_NAME'] ?? '') ?: ($serverParams['SCRIPT_NAME'] ?? '');
         if ($isBehindReverseProxy) {
             // Add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
             if ($isHttps && !empty($configuration['reverseProxyPrefixSSL'])) {
