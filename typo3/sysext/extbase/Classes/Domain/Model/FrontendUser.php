@@ -130,6 +130,7 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->username = $username;
         $this->password = $password;
         $this->usergroup = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->image = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
     }
 
     /**
