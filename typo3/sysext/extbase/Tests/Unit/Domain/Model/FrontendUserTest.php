@@ -375,9 +375,9 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getImageInitiallyReturnsEmptyString()
+    public function getImageInitiallyReturnsObjectStorage()
     {
-        $this->assertSame(null, $this->subject->getImage());
+        $this->assertInstanceOf(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class, $this->subject->getImage());
     }
 
     /**
