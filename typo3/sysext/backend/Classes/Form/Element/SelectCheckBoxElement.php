@@ -166,10 +166,11 @@ class SelectCheckBoxElement extends AbstractFormElement
             // Building the checkboxes
             foreach ($groups as $groupKey => $group) {
                 $groupId = htmlspecialchars($parameterArray['itemFormElID']) . '-group-' . $groupKey;
-                $html[] = '<div class="panel panel-default">';
+                $groupIdCollapsible = $groupId . '-collapse';
+                $html[] = '<div id="' . $groupId . '" class="panel panel-default">';
                 if (is_array($group['header'])) {
                     $html[] = '<div class="panel-heading">';
-                    $html[] = '<a data-toggle="collapse" href="#' . $groupId . '" aria-expanded="false" aria-controls="' . $groupId . '">';
+                    $html[] = '<a data-toggle="collapse" href="#' . $groupIdCollapsible . '" aria-expanded="false" aria-controls="' . $groupIdCollapsible . '">';
                     $html[] = $group['header']['icon'];
                     $html[] = htmlspecialchars($group['header']['title']);
                     $html[] = '</a>';
@@ -177,7 +178,6 @@ class SelectCheckBoxElement extends AbstractFormElement
                 }
                 if (is_array($group['items']) && !empty($group['items'])) {
                     $tableRows = [];
-                    $resetGroup = [];
 
                     // Render rows
                     foreach ($group['items'] as $item) {
@@ -199,24 +199,22 @@ class SelectCheckBoxElement extends AbstractFormElement
                         $tableRows[] =    '</td>';
                         $tableRows[] =    '<td class="text-right">' . $item['help'] . '</td>';
                         $tableRows[] = '</tr>';
-                        $resetGroup[] = 'document.editform[' . GeneralUtility::quoteJSvalue($item['name']) . '].checked=' . $item['checked'] . ';';
                     }
 
                     // Build reset group button
                     $resetGroupBtn = '';
-                    if (!empty($resetGroup)) {
-                        $resetGroup[] = 'TYPO3.FormEngine.updateCheckboxState(this);';
+                    if (!empty($group['items'])) {
                         $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.revertSelection'));
-                        $resetGroupBtn = '<a href="#" '
-                            . 'class="btn btn-default btn-sm" '
-                            . 'onclick="' . implode('', $resetGroup) . ' return false;" '
-                            . 'title="' . $title . '">'
+                        $resetGroupBtn = '<button type="button" '
+                            . 'class="btn btn-default btn-sm t3js-revert-selection" '
+                            . 'title="' . $title . '"'
+                            . '>'
                             . $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render() . ' '
-                            . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.revertSelection') . '</a>';
+                            . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.revertSelection') . '</button>';
                     }
 
                     if (is_array($group['header'])) {
-                        $html[] = '<div id="' . $groupId . '" class="panel-collapse collapse" role="tabpanel">';
+                        $html[] = '<div id="' . $groupIdCollapsible . '" class="panel-collapse collapse" role="tabpanel">';
                     }
                     $checkboxId = uniqid($groupId);
                     $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleall'));
